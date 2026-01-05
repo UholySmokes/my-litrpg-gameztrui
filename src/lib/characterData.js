@@ -490,7 +490,7 @@ export function getRandomTalents(count = 3) {
 }
 
 // Import skills functions from skills.js
-import { getSkillsByClass as getSkillsByClassFromSkills } from './skills.js';
+import { getSkillsByClass as getSkillsByClassFromSkills, getSkillById as getSkillByIdFromSkills } from './skills.js';
 
 export function getSkillsByClass(classId) {
   // Delegate to skills.js for the new system
@@ -499,5 +499,14 @@ export function getSkillsByClass(classId) {
   } catch (error) {
     console.warn(`Error getting skills for class ${classId}:`, error);
     return { active: [], passive: [] };
+  }
+}
+
+export function getSkillById(skillId) {
+  try {
+    return getSkillByIdFromSkills(skillId);
+  } catch (error) {
+    console.warn(`Error getting skill by id ${skillId}:`, error);
+    return null;
   }
 }

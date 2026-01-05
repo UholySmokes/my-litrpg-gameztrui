@@ -64,10 +64,13 @@ export async function generateNarrative(prompt) {
           throw new Error('No response from OpenAI API');
         }
 
+        // Clean response text (remove Markdown code blocks if present)
+        const cleanedResponseText = responseText.replace(/```json\n?|\n?```/g, '').trim();
+
         // Parse JSON response
         let parsedResponse;
         try {
-          parsedResponse = JSON.parse(responseText);
+          parsedResponse = JSON.parse(cleanedResponseText);
         } catch (parseError) {
           console.error('Failed to parse AI response:', responseText);
           throw new Error('Invalid JSON response from AI');

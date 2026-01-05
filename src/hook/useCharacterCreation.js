@@ -4,7 +4,7 @@
 // =================================================================
 
 import { useState, useCallback } from 'react';
-import { getRandomTalents, getRaceById, getClassById, getSkillsByClass } from '../lib/characterData';
+import { getRandomTalents, getRaceById, getClassById, getSkillsByClass, getSkillById } from '../lib/characterData';
 
 export const INITIAL_FREE_POINTS = 15;
 
@@ -33,7 +33,11 @@ export function useCharacterCreation() {
     luck: 5,
     soul: 5
   });
-  const [remainingPoints, setRemainingPoints] = useState(INITIAL_FREE_POINTS);
+
+  // Calculate remaining points dynamically to prevent state desync
+  const totalAllocated = Object.values(attributePoints).reduce((sum, val) => sum + val, 0);
+  const basePoints = 8 * 5; // 8 attributes * 5 base value
+  const remainingPoints = INITIAL_FREE_POINTS - (totalAllocated - basePoints);
 
   // Initialize talents on mount
   const initializeTalents = useCallback(() => {
@@ -86,8 +90,7 @@ export function useCharacterCreation() {
   // Handle active skill selection
   const handleActiveSkillSelect = useCallback((skillId) => {
     if (!selectedClass) return;
-    const skills = getSkillsByClass(selectedClass.id);
-    const skill = skills.active.find(s => s.id === skillId);
+    const skill = getSkillById(skillId);
     setSelectedActiveSkill(skill);
   }, [selectedClass]);
 
@@ -97,8 +100,7 @@ export function useCharacterCreation() {
     fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:87',message:'handlePassiveSkillToggle entry',data:{skillId,hasSelectedClass:!!selectedClass,currentPassiveCount:selectedPassiveSkills.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
     // #endregion
     if (!selectedClass) return;
-    const skills = getSkillsByClass(selectedClass.id);
-    const skill = skills.passive.find(s => s.id === skillId);
+    const skill = getSkillById(skillId);
     // #region agent log
     fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:90',message:'skill found',data:{skillFound:!!skill,skillId:skill?.id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
     // #endregion
@@ -140,16 +142,12 @@ export function useCharacterCreation() {
 
   // Handle attribute point allocation
   const allocateAttributePoint = useCallback((attribute) => {
-    // Use the derived remainingPoints from the outer scope or recalculate to be safe.
-    // Since we are inside the hook, we can use the 'remainingPoints' variable defined above.
-    // However, for the callback to work correctly with the closure, we should check the current state.
-    // But since 'remainingPoints' is now derived during render, we can't use 'setRemainingPoints'.
-    
     // We need to calculate if we can add based on current state
     setAttributePoints(prev => {
       const currentTotal = Object.values(prev).reduce((a, b) => a + b, 0);
       const currentRemaining = INITIAL_FREE_POINTS - (currentTotal - (8 * 5));
       
+      // Safety check: Don't allocate if no points left
       if (currentRemaining <= 0) return prev;
       
       return {
@@ -161,6 +159,7 @@ export function useCharacterCreation() {
 
   const deallocateAttributePoint = useCallback((attribute) => {
     setAttributePoints(prev => {
+      // Safety check: Don't go below base 5
       if (prev[attribute] <= 5) return prev;
       
       return {
@@ -172,14 +171,19 @@ export function useCharacterCreation() {
 
   // Validation
   const validateStep1 = useCallback(() => {
-    if (!name.trim()) return { valid: false, error: 'Name is required' };
-    if (!gender) return { valid: false, error: 'Gender is required' };
-    if (!selectedRace) return { valid: false, error: 'Race is required' };
-    if (!selectedClass) return { valid: false, error: 'Class is required' };
-    if (!selectedTalent) return { valid: false, error: 'Talent is required' };
-    if (!selectedActiveSkill) return { valid: false, error: 'Active skill is required' };
-    if (selectedPassiveSkills.length !== 3) return { valid: false, error: 'Must select exactly 3 passive skills' };
+    console.log("Validating Step 1...");
+    if (!name.trim()) { console.log("Validation Failed: Name"); return { valid: false, error: 'Name is required' }; }
+    if (!gender) { console.log("Validation Failed: Gender"); return { valid: false, error: 'Gender is required' }; }
+    if (!selectedRace) { console.log("Validation Failed: Race"); return { valid: false, error: 'Race is required' }; }
+    if (!selectedClass) { console.log("Validation Failed: Class"); return { valid: false, error: 'Class is required' }; }
+    if (!selectedTalent) { console.log("Validation Failed: Talent"); return { valid: false, error: 'Talent is required' }; }
+    if (!selectedActiveSkill) { console.log("Validation Failed: Active Skill"); return { valid: false, error: 'Active skill is required' }; }
+    if (selectedPassiveSkills.length !== 3) { 
+      console.log(`Validation Failed: Passive Skills (Count: ${selectedPassiveSkills.length})`); 
+      return { valid: false, error: `Must select exactly 3 passive skills (Selected: ${selectedPassiveSkills.length})` }; 
+    }
     
+    console.log("Validation Passed");
     return { valid: true };
   }, [name, gender, selectedRace, selectedClass, selectedTalent, selectedActiveSkill, selectedPassiveSkills]);
 

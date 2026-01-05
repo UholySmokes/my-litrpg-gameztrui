@@ -4,9 +4,10 @@
 // They do not modify the original state object.
 // =================================================================
 
-import { getItemData } from './gameData';
-import { getSkillById } from './skills';
-import { createEnemy, getEnemySkillById, calculateEnemyDrops } from './enemyData';
+import { getItemData } from './gameData.js';
+import { getSkillById } from './skills.js';
+import { createEnemy, getEnemySkillById, calculateEnemyDrops } from './enemyData.js';
+import { calculateGainedXP, xpForNextLevel } from './logic/levelSystem.js';
 
 const DEBUG_LOGGING_ENABLED = false;
 
@@ -76,7 +77,7 @@ export function addXp(state, amount) {
         xp: {
           ...state.player.xp,
           current: overflowXp,
-          max: Math.floor(state.player.xp.max * state.config.xpScalingFactor)
+          max: xpForNextLevel(state.player.level + 1, state.config)
         },
   
         // 3. Restore HP and Mana to full

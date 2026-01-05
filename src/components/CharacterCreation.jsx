@@ -202,13 +202,18 @@ export default function CharacterCreation({ onComplete }) {
     }
   }, [selectedClass]);
 
+  // Ensure error is visible when set
+  useEffect(() => {
+    if (error) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [error]);
+
   const handleNext = () => {
     setError(null);
     const result = nextStep();
     if (!result.valid) {
       setError(result.error);
-      // Scroll to error if possible
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 

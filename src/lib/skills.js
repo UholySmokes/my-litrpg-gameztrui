@@ -1412,7 +1412,7 @@ export function getSkillsByClass(classId) {
   }
   
   return {
-    active: getRandomSkills(classSkills.active || [], 4),
+    active: getRandomSkills(classSkills.active || [], 8),
     passive: getRandomSkills(classSkills.passive || [], 12)
   };
 }

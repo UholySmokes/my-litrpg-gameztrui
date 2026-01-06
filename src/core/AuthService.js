@@ -3,7 +3,7 @@
 // Handles user authentication with Supabase
 // =================================================================
 
-import { supabase } from './supabaseService';
+import { supabase } from './SupabaseService.js';
 
 /**
  * Signs up a new user

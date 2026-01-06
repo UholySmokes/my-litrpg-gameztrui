@@ -3,7 +3,7 @@
 // Includes simple anti-exploit hooks (once-only flags, cooldown stubs).
 // =================================================================
 
-import { addXp } from './gamelogic';
+import { addXp } from './LevelingManager.js';
 
 /**
  * Awards main XP for milestone-style events.

@@ -223,3 +223,18 @@ export const initialgamestate = {
     // --- REWIND SYSTEM ---
     previousState: null // Stores the state before the last action for single-step rewind
   };
+
+/**
+ * Resets the justLeveledUp flag to false
+ * @param {object} state - The current game state object
+ * @returns {object} A new game state object with justLeveledUp set to false
+ */
+export function resetLevelUpFlag(state) {
+  return {
+    ...state,
+    player: {
+      ...state.player,
+      justLeveledUp: false
+    }
+  };
+}

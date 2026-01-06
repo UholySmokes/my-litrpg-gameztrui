@@ -1,9 +1,8 @@
-// GameUI.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import { useGameEngine } from '../hook/usegamestate';
 import { useNarrative } from '../hook/useNarrative';
-import { renderstatusblock } from '../util/statusrenderer';
-import { formatNumberCompact } from '../lib/numberFormat';
+import { renderstatusblock } from '../util/statusrenderer.js';
+import { formatNumberCompact } from '../util/numberFormat.js';
 import AuthUI from './AuthUI';
 import SaveLoadUI from './SaveLoadUI';
 import SaveLoadScreen from './SaveLoadScreen';
@@ -13,15 +12,18 @@ import ShopUI from './ShopUI';
 import GachaUI from './GachaUI';
 import QuestLogUI from './QuestLogUI';
 import TitleUI from './TitleUI';
+<<<<<<< HEAD
+import { playerAttack, processEnemyTurns, escapeCombat, startCombat } from '../systems/combat/CombatSystem.js';
+import { addItem } from '../systems/inventory/InventorySystem.js';
+import { titleDatabase } from '../data/titleData.js';
+import { consumeMana, canAffordSkill } from '../systems/magic/ManaSystem.js';
+import { calculateManaCost } from '../systems/magic/ManaBalance.js';
+=======
 import { playerAttack, processEnemyTurns, escapeCombat, startCombat, addItem } from '../lib/gamelogic';
 import { titleDatabase } from '../lib/titleData';
+>>>>>>> parent of b907677 (snapshot before refactoring6.1 6:50uhr)
 
 export default function GameUI() {
-  // #region agent log
-  try {
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:18',message:'GameUI component render start',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'N'})}).catch(()=>{});
-  } catch (e) {}
-  // #endregion
   const [isLocalGame] = useState(() => {
     return localStorage.getItem('localGame') === 'true';
   });
@@ -116,9 +118,6 @@ export default function GameUI() {
 
   // Handle character creation completion
   const handleCharacterCreationComplete = (characterData) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:112',message:'handleCharacterCreationComplete entry',data:{hasAttributes:!!characterData.attributes,str:characterData.attributes?.str,int:characterData.attributes?.int,will:characterData.attributes?.will,soul:characterData.attributes?.soul},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
     // Calculate HP and Mana based on attributes (config-driven)
     const cfg = state.config || {};
     const baseHp = cfg.startHp ?? 100;
@@ -127,14 +126,10 @@ export default function GameUI() {
     const int = characterData.attributes?.int ?? 0;
     const will = characterData.attributes?.will ?? 0;
     const soul = characterData.attributes?.soul ?? 0;
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:118',message:'attribute values before calculation',data:{str,int,will,soul},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
+
     const calculatedHp = baseHp + (str * (cfg.hpPerStr ?? 0)) + (will * (cfg.hpPerWill ?? 0));
     const calculatedMana = baseMana + (int * (cfg.manaPerInt ?? 0)) + (soul * (cfg.manaPerSoul ?? 0));
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:119',message:'calculated HP and Mana',data:{calculatedHp,calculatedMana,isNaN_Hp:isNaN(calculatedHp),isNaN_Mana:isNaN(calculatedMana)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
+
     
     // Update game state with character data
     setState(prevState => ({
@@ -164,24 +159,15 @@ export default function GameUI() {
     }));
     
     // Mark character as created
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:160',message:'marking character as created',data:{characterName:characterData.name,abilitiesCount:characterData.abilities?.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-    // #endregion
     localStorage.setItem('characterCreated', 'true');
     setCharacterCreated(true);
     
     // Reset hasGeneratedInitial so initial narrative is generated
     setHasGeneratedInitial(false);
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:165',message:'character creation complete, hasGeneratedInitial reset',data:{characterCreated:true,hasGeneratedInitial:false},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-    // #endregion
   };
 
   // Effect to handle level up
   useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:157',message:'level up effect check',data:{justLeveledUp:state.player.justLeveledUp},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
     if (state.player.justLeveledUp) {
       // Generate the ASCII status string
       const statusString = renderstatusblock(state.player);
@@ -190,9 +176,6 @@ export default function GameUI() {
       addSystemMessage(statusString, 'status-update');
       
       // Reset the level up flag immediately after displaying the message
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:166',message:'calling acknowledgeLevelUp',data:{justLeveledUp:state.player.justLeveledUp},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
       acknowledgeLevelUp();
     }
   }, [state.player.justLeveledUp, addSystemMessage, acknowledgeLevelUp]);
@@ -217,28 +200,13 @@ export default function GameUI() {
 
   // Generate initial narrative on mount or after character creation
   useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:187',message:'initial narrative effect check',data:{hasGeneratedInitial,characterCreated,playerName:state.player.name,chatLogLength:chatLog.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-    // #endregion
     if (!hasGeneratedInitial && characterCreated && state.player.name && state.player.name !== 'User' && chatLog.length === 0) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:189',message:'scheduling initial narrative generation',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-      // #endregion
       // Small delay to ensure state is fully updated
       const timer = setTimeout(() => {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:192',message:'calling generateInitialNarrativeText',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-        // #endregion
         try {
           generateInitialNarrativeText(state);
           setHasGeneratedInitial(true);
-          // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:195',message:'generateInitialNarrativeText completed',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-          // #endregion
         } catch (error) {
-          // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:197',message:'generateInitialNarrativeText error',data:{error:error.message,stack:error.stack},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-          // #endregion
           console.error('Error generating initial narrative:', error);
         }
       }, 100);
@@ -281,9 +249,6 @@ export default function GameUI() {
     return <CharacterCreation onComplete={handleCharacterCreationComplete} />;
   }
 
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:220',message:'rendering main game UI',data:{characterCreated,playerName:state.player.name,hasHp:!!state.player.hp,hasMana:!!state.player.mana,hpCurrent:state.player.hp?.current,hpMax:state.player.hp?.max},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-  // #endregion
 
   // Calculate health and mana percentages for bars
   // Add comprehensive safety checks to prevent crashes
@@ -296,9 +261,6 @@ export default function GameUI() {
   const isLowHealth = healthPercentage < 30;
   const isLowMana = manaPercentage < 30;
   
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:228',message:'calculated percentages',data:{hpCurrent,hpMax,manaCurrent,manaMax,healthPercentage,manaPercentage},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'})}).catch(()=>{});
-  // #endregion
 
   // Handle input submission
   const handleSubmit = async (e) => {
@@ -309,9 +271,6 @@ export default function GameUI() {
     setUserInput('');
     
     // Save state for rewind before action
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:234',message:'saving previousState for rewind',data:{hasPreviousState:!!state.previousState,currentLevel:state.player.level},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-    // #endregion
     setState(prevState => ({
       ...prevState,
       previousState: JSON.parse(JSON.stringify(prevState))
@@ -340,13 +299,7 @@ export default function GameUI() {
   
   // Combat handlers
   const handleCombatAttack = (enemyIndex) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:262',message:'handleCombatAttack entry',data:{enemyIndex,combatStatus:state.combat?.status,combatTurn:state.combat?.turn,enemiesCount:state.combat?.enemies?.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
     const result = playerAttack(state, enemyIndex);
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:264',message:'playerAttack result',data:{success:result.success,newCombatStatus:result.state?.combat?.status,newCombatTurn:result.state?.combat?.turn},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
     if (result.success) {
       // Save state for rewind before combat action
       setState(prevState => {
@@ -355,23 +308,11 @@ export default function GameUI() {
           previousState: JSON.parse(JSON.stringify(prevState))
         };
         // Process enemy turns after player attack
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:267',message:'setTimeout scheduled',data:{stateBeforeTimeout:newState.combat?.status},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-        // #endregion
         setTimeout(() => {
-          // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:268',message:'setTimeout executed',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-          // #endregion
           setState(prevState => {
             // Only process enemy turns if still in combat
             if (prevState.combat?.status === 'active' && prevState.combat?.turn === 'enemy') {
-              // #region agent log
-              fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:269',message:'processEnemyTurns called',data:{prevStateCombatStatus:prevState.combat?.status,prevStateCombatTurn:prevState.combat?.turn},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-              // #endregion
               const newState = processEnemyTurns(prevState);
-              // #region agent log
-              fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:269',message:'processEnemyTurns result',data:{newStateCombatStatus:newState.combat?.status,newStateCombatTurn:newState.combat?.turn},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-              // #endregion
               return newState;
             }
             return prevState;
@@ -437,9 +378,6 @@ export default function GameUI() {
   
   // Shop handlers
   const handleShopPurchase = (item) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:297',message:'handleShopPurchase entry',data:{itemName:item.name,hasPreviousState:!!state.previousState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-    // #endregion
     const currency = state.player.currency || { goldCoins: 0, soulpoints: 0 };
     
     // Check if can afford
@@ -595,9 +533,6 @@ export default function GameUI() {
     addSystemMessage('Rewound last action!', 'system');
   };
 
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameUI.jsx:457',message:'GameUI about to return JSX',data:{characterCreated,hasState:!!state,hasPlayer:!!state.player},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'N'})}).catch(()=>{});
-  // #endregion
   
   return (
     <>
@@ -877,22 +812,81 @@ export default function GameUI() {
               )}
             </div>
             
+<<<<<<< HEAD
+            {/* Action Buttons (Updated) */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '1rem', marginBottom: '1rem', justifyContent: 'center' }}>
+              {/* Fixed Buttons */}
+              <button
+                className="holo-button"
+                onClick={() => handleActionClick('Explore')}
+                disabled={isLoading}
+                style={{
+                  height: '45px',
+                  minWidth: '120px',
+                  background: 'rgba(0, 20, 0, 0.6)',
+                  borderColor: 'var(--holo-green)',
+                  color: 'var(--holo-green)',
+                  fontWeight: 'bold',
+                  flex: '1 1 auto'
+                }}
+              >
+                Explore
+              </button>
+              <button
+                className="holo-button"
+                onClick={() => handleActionClick('Analyze')}
+                disabled={isLoading}
+                style={{
+                  height: '45px',
+                  minWidth: '120px',
+                  background: 'rgba(0, 20, 20, 0.6)',
+                  borderColor: 'var(--holo-cyan)',
+                  color: 'var(--holo-cyan)',
+                  fontWeight: 'bold',
+                  flex: '1 1 auto'
+                }}
+              >
+                Analyze
+              </button>
+
+              {/* Context Buttons */}
+              {[
+                { label: 'Combat', color: 'var(--holo-alert)', action: 'Attack' },
+                { label: 'Skills', color: 'var(--holo-blue)', action: 'Use Skill' },
+                { label: 'Inventory', color: 'var(--holo-green)', action: 'Check Inventory' },
+                { label: 'Talents', color: '#9b59b6', action: 'Check Talents' },
+                { label: 'System', color: '#95a5a6', action: 'Check Status' },
+                { label: 'Help', color: 'var(--text-main)', action: 'Help' }
+              ].map((btn, idx) => (
+=======
             {/* Action Buttons (AI-generated) */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem', marginBottom: '1rem' }}>
               {actionSuggestions.slice(0, 6).map((suggestion, index) => (
+>>>>>>> parent of b907677 (snapshot before refactoring6.1 6:50uhr)
                 <button
-                  key={index}
+                  key={idx}
                   className="holo-button"
-                  onClick={() => handleActionClick(suggestion)}
+                  onClick={() => handleActionClick(btn.action)}
                   disabled={isLoading}
                   style={{
+                    height: '45px',
+                    minWidth: '100px',
+                    borderColor: btn.color,
+                    color: btn.color,
                     flex: '1 1 auto',
+<<<<<<< HEAD
+                    opacity: isLoading ? 0.5 : 1
+                  }}
+                >
+                  {btn.label}
+=======
                     minWidth: '150px',
                     opacity: isLoading ? 0.5 : 1,
                     cursor: isLoading ? 'not-allowed' : 'pointer'
                   }}
                 >
                   {suggestion}
+>>>>>>> parent of b907677 (snapshot before refactoring6.1 6:50uhr)
                 </button>
               ))}
             </div>

@@ -1,6 +1,6 @@
 // ShopUI.jsx
 import React, { useState } from 'react';
-import { getShopItemsByCategory } from '../lib/shopData';
+import { getShopItemsByCategory } from '../data/shopData.js';
 
 export default function ShopUI({ isOpen, onClose, gameState, onPurchase }) {
   const [selectedCategory, setSelectedCategory] = useState('all');

@@ -3,7 +3,7 @@
 // Cheat Prevention Layer - Validates actions before execution
 // =================================================================
 
-import { getItemData } from './gameData';
+import { getItemData } from '../entities/ItemRegistry.js';
 
 /**
  * Validates an action before it's executed

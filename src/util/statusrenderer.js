@@ -1,5 +1,5 @@
 // statusRenderer.js
-import { formatNumberCompact } from '../lib/numberFormat';
+import { formatNumberCompact } from '../util/numberFormat.js';
 export function renderstatusblock(player) {
   const name = player.name || "Unknown";
   const level = player.level || 1;

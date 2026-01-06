@@ -106,7 +106,7 @@
   color: var(--text-main);
 }
 
-/* Health bar styling */
+/* Health and Mana bar styling */
 .health-bar-container {
   margin-top: 0.5rem;
 }
@@ -126,6 +126,73 @@
   background: linear-gradient(90deg, var(--holo-alert), var(--holo-cyan));
   transition: width 0.3s ease;
   box-shadow: var(--glow-subtle);
+}
+
+/* Mana bar styling - matches health bar with blue theme */
+.mana-bar-container {
+  margin-top: 0.5rem;
+}
+
+.mana-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--holo-blue);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mana-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--holo-blue), var(--holo-cyan));
+  transition: width 0.3s ease;
+  box-shadow: var(--glow-subtle);
+}
+
+/* Mana consumption animation */
+.mana-bar-fill.consuming {
+  animation: mana-consume 0.5s ease-out;
+}
+
+@keyframes mana-consume {
+  0% {
+    filter: brightness(1.5);
+    box-shadow: 0 0 10px var(--holo-blue);
+  }
+  50% {
+    filter: brightness(1.8);
+    box-shadow: 0 0 15px var(--holo-cyan);
+  }
+  100% {
+    filter: brightness(1);
+    box-shadow: var(--glow-subtle);
+  }
+}
+
+/* Insufficient mana styling */
+.mana-bar-fill.insufficient {
+  background: linear-gradient(90deg, var(--holo-gray), var(--holo-dark));
+  animation: mana-insufficient 0.3s ease-in-out;
+}
+
+@keyframes mana-insufficient {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Mana regeneration pulse */
+.mana-bar-fill.regenerating {
+  animation: mana-regen 2s ease-in-out infinite;
+}
+
+@keyframes mana-regen {
+  0%, 100% { 
+    filter: brightness(1);
+  }
+  50% { 
+    filter: brightness(1.2);
+  }
 }
 
 /* Narrative Log - Center area (75%) */

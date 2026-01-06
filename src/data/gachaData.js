@@ -2,7 +2,7 @@
 // GACHA DATABASE - Pools, rates, and rarity tiers
 // =================================================================
 
-import { getItemData } from './gameData';
+import { getItemData } from '../entities/ItemRegistry.js';
 
 export const gachaPools = {
   equipment: {

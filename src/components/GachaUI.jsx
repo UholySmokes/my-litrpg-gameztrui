@@ -1,6 +1,6 @@
 // GachaUI.jsx
 import React, { useState } from 'react';
-import { gachaPools, calculateGachaResult } from '../lib/gachaData';
+import { gachaPools, calculateGachaResult } from '../data/gachaData.js';
 
 const rarityColors = {
   common: '#9d9d9d',

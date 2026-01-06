@@ -1,0 +1,6948 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-06T07:21:17.965Z",
+    "config": {
+      "TOTAL_RUNS": 10,
+      "TARGET_LEVEL": 20,
+      "MAX_SIMULATION_TIME": 300000,
+      "OUTPUT_FORMAT": "json",
+      "ENABLE_DETAILED_LOGS": true,
+      "PROGRESS_UPDATE_INTERVAL": 5,
+      "SAVE_INTERMEDIATE_RESULTS": true,
+      "INTERMEDIATE_SAVE_INTERVAL": 25,
+      "RANDOM_SEED": null,
+      "MIN_FIGHT_TIME": 1000,
+      "MAX_FIGHT_TIME": 5000,
+      "DEATH_PENALTY_TIME": 5000,
+      "BASE_XP_PER_FIGHT": 100,
+      "CRITICAL_FAILURE_RATE": 0.01
+    },
+    "scriptVersion": "1.0.0"
+  },
+  "statistics": {
+    "totalRuns": 10,
+    "successfulRuns": 10,
+    "failedRuns": 0,
+    "successRate": 100,
+    "averageTime": 103,
+    "medianTime": 108,
+    "standardDeviation": 7,
+    "minTime": 90,
+    "maxTime": 109,
+    "averageFights": 75,
+    "averageDeaths": 39.9,
+    "errors": 0,
+    "errorRate": 0
+  },
+  "results": [
+    {
+      "runNumber": 1,
+      "startTime": 1767684076645,
+      "fights": [
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4026,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 2,
+          "enemyLevel": 3,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2659,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 3,
+          "enemyLevel": 4,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2277,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 3,
+          "enemyLevel": 3,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4151,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 4,
+          "enemyLevel": 5,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1388,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2667,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4734,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3436,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3682,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3839,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3817,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4970,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2951,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2545,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1917,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4825,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3852,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4737,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4066,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2961,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3314,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4510,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1350,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2388,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2103,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1292,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4009,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3654,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3532,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2080,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3474,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2856,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2432,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1173,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2819,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1618,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4264,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4922,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2117,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2770,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3272,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1711,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2294,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1140,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1033,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2266,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4580,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3868,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2539,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1488,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3389,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1069,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1675,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2829,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4030,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4536,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4985,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4933,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3907,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4473,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2320,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1979,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1793,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2860,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4446,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2746,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4065,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1388,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2755,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4684,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4189,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2142,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2585,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4991,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2861,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3602,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3422,
+          "xpMultiplier": 1
+        }
+      ],
+      "level": 20,
+      "totalXP": 5026,
+      "targetXP": 5012,
+      "totalTime": 90,
+      "deaths": 43,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684076735
+    },
+    {
+      "runNumber": 2,
+      "startTime": 1767684076738,
+      "fights": [
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4705,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 1,
+          "enemyLevel": 2,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1736,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1571,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 3,
+          "enemyLevel": 4,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2531,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2352,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 5,
+          "enemyLevel": 6,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3710,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1863,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3561,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3748,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4213,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3086,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2585,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2937,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1166,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1114,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3523,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3321,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2204,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4436,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1815,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3870,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1390,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1812,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3953,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4369,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3656,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3593,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1751,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1688,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3940,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1025,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4690,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1609,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1531,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2363,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1862,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1110,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3017,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3397,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3366,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2643,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4912,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1507,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2881,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4918,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3223,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1136,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3232,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1137,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1326,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1658,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3147,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4862,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4135,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2070,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3863,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4474,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2653,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1571,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1449,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4211,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1550,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2228,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4481,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3768,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4298,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3423,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2994,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1241,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4550,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4995,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2807,
+          "xpMultiplier": 1
+        }
+      ],
+      "level": 20,
+      "totalXP": 5012,
+      "targetXP": 5012,
+      "totalTime": 104,
+      "deaths": 35,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684076842
+    },
+    {
+      "runNumber": 3,
+      "startTime": 1767684076843,
+      "fights": [
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2412,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4974,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 3,
+          "enemyLevel": 3,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1141,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3539,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 4,
+          "enemyLevel": 5,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3524,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4215,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4249,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 5,
+          "enemyLevel": 6,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3006,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2919,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 6,
+          "enemyLevel": 7,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2442,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3315,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1318,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1160,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2577,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4463,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4914,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2010,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3255,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1936,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1853,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2569,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1658,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4900,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3553,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3254,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4632,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1760,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2966,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2544,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2715,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4600,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1016,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1777,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3142,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2640,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4439,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3448,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3573,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2958,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2535,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3743,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3923,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3159,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4758,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2777,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4685,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1443,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4465,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2271,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2680,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4693,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2502,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2973,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3812,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4756,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1573,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4487,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1381,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2090,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2880,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2927,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4584,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1021,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4687,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4813,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2569,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4288,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1507,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4602,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2479,
+          "xpMultiplier": 1
+        }
+      ],
+      "level": 20,
+      "totalXP": 5050,
+      "targetXP": 5012,
+      "totalTime": 108,
+      "deaths": 31,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684076951
+    },
+    {
+      "runNumber": 4,
+      "startTime": 1767684076952,
+      "fights": [
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4127,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3316,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 3,
+          "enemyLevel": 3,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2287,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 4,
+          "enemyLevel": 5,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4841,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3220,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2932,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2820,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 6,
+          "enemyLevel": 7,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2330,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 6,
+          "enemyLevel": 7,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3812,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1283,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3117,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4346,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2529,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2965,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4417,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4866,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4872,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3371,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3497,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4341,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1237,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2384,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4106,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1304,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4262,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1600,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4625,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2394,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4909,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2558,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2225,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3185,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2877,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2133,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4746,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1737,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1918,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3831,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1072,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3684,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2983,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2207,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4126,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2856,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2626,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3753,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4405,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1041,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3090,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3400,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1414,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2525,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1769,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4496,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4523,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3041,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4779,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1411,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3438,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3674,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4079,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3670,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2910,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2927,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1079,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4800,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1374,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4003,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1272,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1188,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2809,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2822,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4366,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1890,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3647,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1266,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3622,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1671,
+          "xpMultiplier": 1
+        }
+      ],
+      "level": 20,
+      "totalXP": 5012,
+      "targetXP": 5012,
+      "totalTime": 94,
+      "deaths": 46,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684077046
+    },
+    {
+      "runNumber": 5,
+      "startTime": 1767684077046,
+      "fights": [
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2395,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1021,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1124,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1802,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 3,
+          "enemyLevel": 3,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3196,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4383,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4756,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2865,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3192,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1593,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1059,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4523,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1259,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2852,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4932,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2545,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2901,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1283,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1468,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1308,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3536,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3143,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2329,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4663,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4671,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3549,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4481,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4495,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2922,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3187,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1494,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3388,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1777,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1750,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4893,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2740,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3862,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3745,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3968,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1804,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3042,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1794,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3413,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2027,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4477,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4103,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1041,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3067,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2813,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4266,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1782,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4029,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1164,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2641,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2724,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4856,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3147,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3211,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2944,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3382,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4969,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4310,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1185,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1740,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3458,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1083,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3946,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2860,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4993,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4943,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4103,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4367,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1833,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3246,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1015,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1214,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2697,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4973,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4512,
+          "xpMultiplier": 1.2
+        }
+      ],
+      "level": 20,
+      "totalXP": 5018,
+      "targetXP": 5012,
+      "totalTime": 108,
+      "deaths": 44,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684077154
+    },
+    {
+      "runNumber": 6,
+      "startTime": 1767684077155,
+      "fights": [
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1506,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1294,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 3,
+          "enemyLevel": 3,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1064,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3751,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2079,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1773,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4879,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4032,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 6,
+          "enemyLevel": 7,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4923,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1543,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1328,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4538,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2601,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4753,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4235,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3532,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4952,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1699,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2613,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1149,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2884,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3135,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4269,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2149,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3410,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1786,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1010,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4989,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3203,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4394,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3671,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2717,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1868,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3768,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3853,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4337,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4239,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2649,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3221,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4839,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3936,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1994,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4672,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3014,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3626,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2582,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4810,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2121,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2812,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3885,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3644,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3914,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2059,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4819,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3991,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3778,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3646,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3876,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2958,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3935,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1183,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1521,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2611,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1743,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1669,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4553,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2764,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3929,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4617,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3648,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3186,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4912,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2673,
+          "xpMultiplier": 1
+        }
+      ],
+      "level": 20,
+      "totalXP": 5062,
+      "targetXP": 5012,
+      "totalTime": 107,
+      "deaths": 37,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684077262
+    },
+    {
+      "runNumber": 7,
+      "startTime": 1767684077262,
+      "fights": [
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 1,
+          "enemyLevel": 2,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3120,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4650,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 3,
+          "enemyLevel": 4,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2017,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2420,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3527,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3198,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4230,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 6,
+          "enemyLevel": 7,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4321,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3730,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2454,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3867,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3026,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2085,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1103,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1168,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2676,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3409,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2537,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3209,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1599,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4947,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1848,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4533,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3929,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4086,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1059,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1177,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1181,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1635,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2921,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4388,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4547,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2390,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4805,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2599,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2348,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1689,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2205,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3994,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4456,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4632,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2749,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1732,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2065,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2007,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2703,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2155,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4527,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2769,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1055,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2073,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2573,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1236,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1085,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2365,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4891,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4331,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4231,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2657,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3298,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1069,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4476,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2480,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2265,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1213,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1651,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3857,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2837,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2891,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2402,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1921,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3918,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2676,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2372,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2342,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1395,
+          "xpMultiplier": 1
+        }
+      ],
+      "level": 20,
+      "totalXP": 5016,
+      "targetXP": 5012,
+      "totalTime": 108,
+      "deaths": 41,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684077370
+    },
+    {
+      "runNumber": 8,
+      "startTime": 1767684077371,
+      "fights": [
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4774,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1891,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 3,
+          "enemyLevel": 3,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3552,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3082,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1222,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 5,
+          "enemyLevel": 6,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2291,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2056,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3884,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4096,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4567,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2098,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2361,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1903,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3770,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4885,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1484,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2535,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2821,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2922,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1088,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1871,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1075,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2143,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3078,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3982,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4617,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3161,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2723,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 11,
+          "enemyLevel": 12,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2433,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3679,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2413,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3877,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4500,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1566,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3538,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3501,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1383,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1149,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2154,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3278,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3111,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4758,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1878,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2205,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3712,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2025,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4074,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1788,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1646,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2749,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 16,
+          "enemyLevel": 17,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1577,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2028,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1744,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1521,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3867,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3455,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2830,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3129,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3137,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3646,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1556,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2748,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4132,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2454,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3011,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3379,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3084,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3918,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1398,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4591,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2385,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4721,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3306,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1476,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2455,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3417,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2258,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3207,
+          "xpMultiplier": 1
+        }
+      ],
+      "level": 20,
+      "totalXP": 5036,
+      "targetXP": 5012,
+      "totalTime": 109,
+      "deaths": 45,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684077480
+    },
+    {
+      "runNumber": 9,
+      "startTime": 1767684077481,
+      "fights": [
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 1,
+          "enemyLevel": 2,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2672,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2768,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 3,
+          "enemyLevel": 3,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3342,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 4,
+          "enemyLevel": 5,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3207,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2368,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Cave Troll",
+          "playerLevel": 5,
+          "enemyLevel": 5,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2376,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 6,
+          "enemyLevel": 7,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3692,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2974,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 7,
+          "enemyLevel": 8,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2634,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1267,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 8,
+          "enemyLevel": 9,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2835,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4167,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1330,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1897,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4814,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4716,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2608,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4322,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3771,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1230,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3715,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3778,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4073,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1340,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4745,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4211,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2633,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2231,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1453,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2317,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2668,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2226,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4401,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1136,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4480,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3541,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2582,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3676,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4513,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2607,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4938,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4809,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2073,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2832,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4959,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3135,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3306,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1168,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4169,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2067,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2686,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2342,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3617,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3071,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1613,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4327,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4395,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2658,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1926,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2488,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4372,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1364,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4325,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2803,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3436,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1767,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1649,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3580,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4238,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1441,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4616,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3333,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2017,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3374,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3245,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4111,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4300,
+          "xpMultiplier": 1.2
+        }
+      ],
+      "level": 20,
+      "totalXP": 5080,
+      "targetXP": 5012,
+      "totalTime": 109,
+      "deaths": 42,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684077590
+    },
+    {
+      "runNumber": 10,
+      "startTime": 1767684077591,
+      "fights": [
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3913,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Goblin",
+          "playerLevel": 1,
+          "enemyLevel": 1,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3777,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Skeleton",
+          "playerLevel": 2,
+          "enemyLevel": 2,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4722,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Orc",
+          "playerLevel": 3,
+          "enemyLevel": 3,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4160,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Bandit",
+          "playerLevel": 4,
+          "enemyLevel": 4,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3862,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 5,
+          "enemyLevel": 6,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3421,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3735,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dark Mage",
+          "playerLevel": 6,
+          "enemyLevel": 6,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1469,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 6,
+          "enemyLevel": 7,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4371,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Werewolf",
+          "playerLevel": 7,
+          "enemyLevel": 7,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3950,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4419,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4578,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Dragon Whelp",
+          "playerLevel": 8,
+          "enemyLevel": 8,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4831,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4614,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Stone Golem",
+          "playerLevel": 9,
+          "enemyLevel": 9,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2163,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 9,
+          "enemyLevel": 10,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4868,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 10,
+          "enemyLevel": 11,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4445,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2907,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4180,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Fire Elemental",
+          "playerLevel": 10,
+          "enemyLevel": 10,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4170,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2886,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4394,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ice Giant",
+          "playerLevel": 11,
+          "enemyLevel": 11,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4003,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2913,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 12,
+          "enemyLevel": 13,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1598,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4347,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1810,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Thunder Bird",
+          "playerLevel": 12,
+          "enemyLevel": 12,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2390,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 13,
+          "enemyLevel": 14,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1978,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4042,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Shadow Assassin",
+          "playerLevel": 13,
+          "enemyLevel": 13,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1702,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3407,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1756,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3208,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2831,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 14,
+          "enemyLevel": 15,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1676,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4240,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Crystal Spider",
+          "playerLevel": 14,
+          "enemyLevel": 14,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2030,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4087,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 4480,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 2538,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 15,
+          "enemyLevel": 16,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1044,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2131,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4759,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Lava Beast",
+          "playerLevel": 15,
+          "enemyLevel": 15,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3572,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2222,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1757,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1134,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Storm Elemental",
+          "playerLevel": 16,
+          "enemyLevel": 16,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3202,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1125,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3936,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 2802,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 2865,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Death Knight",
+          "playerLevel": 17,
+          "enemyLevel": 17,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 3676,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 1925,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 17,
+          "enemyLevel": 18,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1321,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 2432,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3319,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1701,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 1072,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4046,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 18,
+          "enemyLevel": 19,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 3783,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3905,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Phoenix",
+          "playerLevel": 18,
+          "enemyLevel": 18,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 1054,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 4196,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4434,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 1207,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4471,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 120,
+          "won": true,
+          "fightTime": 4377,
+          "xpMultiplier": 1.2
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 100,
+          "won": true,
+          "fightTime": 4265,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Ancient Dragon",
+          "playerLevel": 19,
+          "enemyLevel": 19,
+          "xpGained": 30,
+          "won": false,
+          "fightTime": 3470,
+          "xpMultiplier": 1
+        },
+        {
+          "enemy": "Demon Lord",
+          "playerLevel": 19,
+          "enemyLevel": 20,
+          "xpGained": 36,
+          "won": false,
+          "fightTime": 3584,
+          "xpMultiplier": 1.2
+        }
+      ],
+      "level": 20,
+      "totalXP": 5042,
+      "targetXP": 5012,
+      "totalTime": 91,
+      "deaths": 35,
+      "status": "success",
+      "error": null,
+      "endTime": 1767684077682
+    }
+  ],
+  "errors": []
+}

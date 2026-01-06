@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useCharacterCreation, INITIAL_FREE_POINTS } from '../hook/useCharacterCreation';
-import { races, classes, getSkillsByClass } from '../lib/characterData';
+import { races, classes, getSkillsByClass } from '../entities/Player.js';
 
 // --- Styles & Components ---
 const styles = {
@@ -72,7 +72,7 @@ const styles = {
   },
   buttonSelected: {
     background: 'rgba(255, 215, 0, 0.15)',
-    borderColor: 'var(--holo-gold, #ffd700)',
+    border: '1px solid var(--holo-gold, #ffd700)',
     color: 'var(--holo-gold, #ffd700)',
     boxShadow: '0 0 10px rgba(255, 215, 0, 0.2)'
   },
@@ -175,32 +175,28 @@ export default function CharacterCreation({ onComplete }) {
     previousStep,
     finalizeCharacter,
     skipBootSequence,
-    initializeTalents,
-    validateStep1
+    initializeTalents
   } = useCharacterCreation();
 
   const [error, setError] = useState(null);
-  const [selectedClassSkills, setSelectedClassSkills] = useState({ active: [], passive: [] });
+
+  const selectedClassSkills = useMemo(() => {
+    if (selectedClass) {
+      try {
+        return getSkillsByClass(selectedClass.id);
+      } catch (error) {
+        console.error('Error loading skills:', error);
+        return { active: [], passive: [] };
+      }
+    }
+    return { active: [], passive: [] };
+  }, [selectedClass]);
 
   useEffect(() => {
     if (!showBootSequence) {
       initializeTalents();
     }
   }, [showBootSequence, initializeTalents]);
-
-  useEffect(() => {
-    if (selectedClass) {
-      try {
-        const skills = getSkillsByClass(selectedClass.id);
-        setSelectedClassSkills(skills);
-      } catch (error) {
-        console.error('Error loading skills:', error);
-        setSelectedClassSkills({ active: [], passive: [] });
-      }
-    } else {
-      setSelectedClassSkills({ active: [], passive: [] });
-    }
-  }, [selectedClass]);
 
   // Ensure error is visible when set
   useEffect(() => {
@@ -322,7 +318,7 @@ export default function CharacterCreation({ onComplete }) {
                 <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}>
                   <strong>Bonuses:</strong>{' '}
                   {Object.entries(selectedRace.statBonuses)
-                    .filter(([_, val]) => val !== 0)
+                    .filter(([stat, val]) => val !== 0)
                     .map(([key, val]) => `${key.toUpperCase()} ${val > 0 ? '+' : ''}${val}`)
                     .join(', ')}
                 </div>

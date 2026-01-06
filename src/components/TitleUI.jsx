@@ -1,6 +1,6 @@
 // TitleUI.jsx
 import React, { useState } from 'react';
-import { titleDatabase, getPurchasableTitles } from '../lib/titleData';
+import { titleDatabase, getPurchasableTitles } from '../data/titleData.js';
 
 export default function TitleUI({ isOpen, onClose, gameState, onUnlock, onEquip, onUnequip, onPurchase }) {
   const [activeTab, setActiveTab] = useState('unlocked');

@@ -4,7 +4,7 @@
 // =================================================================
 
 import { useState, useCallback } from 'react';
-import { getRandomTalents, getRaceById, getClassById, getSkillsByClass, getSkillById } from '../lib/characterData';
+import { getRandomTalents, getRaceById, getClassById, getSkillsByClass, getSkillById } from '../entities/Player.js';
 
 export const INITIAL_FREE_POINTS = 15;
 
@@ -60,25 +60,16 @@ export function useCharacterCreation() {
 
   // Handle class selection
   const handleClassSelect = useCallback((classId) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:58',message:'handleClassSelect entry',data:{classId,currentPassiveCount:selectedPassiveSkills.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'I'})}).catch(()=>{});
-    // #endregion
     const classData = getClassById(classId);
     setSelectedClass(classData);
     
     // Load skills for this class
     const skills = getSkillsByClass(classId);
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:63',message:'skills loaded',data:{activeCount:skills.active.length,passiveCount:skills.passive.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'I'})}).catch(()=>{});
-    // #endregion
     if (skills.active.length > 0) {
       setSelectedActiveSkill(skills.active[0]);
     }
     // Clear passive skills selection when changing class - user must manually select
     setSelectedPassiveSkills([]);
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:68',message:'passive skills cleared',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'I'})}).catch(()=>{});
-    // #endregion
   }, []);
 
   // Handle talent selection
@@ -96,45 +87,24 @@ export function useCharacterCreation() {
 
   // Handle passive skill selection (toggle)
   const handlePassiveSkillToggle = useCallback((skillId) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:87',message:'handlePassiveSkillToggle entry',data:{skillId,hasSelectedClass:!!selectedClass,currentPassiveCount:selectedPassiveSkills.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
-    // #endregion
     if (!selectedClass) return;
     const skill = getSkillById(skillId);
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:90',message:'skill found',data:{skillFound:!!skill,skillId:skill?.id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
-    // #endregion
     if (!skill) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:92',message:'skill not found, returning',data:{skillId},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
-      // #endregion
       return;
     }
     
     setSelectedPassiveSkills(prev => {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:95',message:'toggle logic before',data:{prevCount:prev.length,skillExists:!!prev.find(s => s.id === skillId)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
-      // #endregion
       const exists = prev.find(s => s.id === skillId);
       if (exists) {
         // Remove if already selected
         const newState = prev.filter(s => s.id !== skillId);
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:99',message:'removing skill',data:{newCount:newState.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
-        // #endregion
         return newState;
       } else {
         // Add if not selected (max 3)
         if (prev.length >= 3) {
-          // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:103',message:'max skills reached',data:{prevCount:prev.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
-          // #endregion
           return prev; // Can't add more
         }
         const newState = [...prev, skill];
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:107',message:'adding skill',data:{newCount:newState.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'})}).catch(()=>{});
-        // #endregion
         return newState;
       }
     });
@@ -196,14 +166,8 @@ export function useCharacterCreation() {
 
   // Finalize character creation
   const finalizeCharacter = useCallback(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:149',message:'finalizeCharacter entry',data:{hasActiveSkill:!!selectedActiveSkill,passiveSkillsCount:selectedPassiveSkills.length,hasSelectedClass:!!selectedClass,hasSelectedRace:!!selectedRace,hasSelectedTalent:!!selectedTalent},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'K'})}).catch(()=>{});
-    // #endregion
     const validation = validateStep2();
     if (!validation.valid) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:152',message:'validation failed',data:{error:validation.error},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'K'})}).catch(()=>{});
-      // #endregion
       return validation;
     }
 
@@ -231,17 +195,8 @@ export function useCharacterCreation() {
         canFuse: false
       });
     }
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:179',message:'processing passive skills',data:{passiveSkillsCount:selectedPassiveSkills.length,passiveSkillIds:selectedPassiveSkills.map(s => s?.id)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'K'})}).catch(()=>{});
-    // #endregion
     selectedPassiveSkills.forEach((skill, index) => {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:180',message:'processing passive skill',data:{index,skillId:skill?.id,skillName:skill?.name,hasId:!!skill?.id,hasName:!!skill?.name,hasClass:!!selectedClass,classId:selectedClass?.id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'K'})}).catch(()=>{});
-      // #endregion
       if (!skill || !skill.id) {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:182',message:'invalid skill, skipping',data:{index,skill},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'K'})}).catch(()=>{});
-        // #endregion
         return;
       }
       abilities.push({
@@ -258,9 +213,6 @@ export function useCharacterCreation() {
       });
     });
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useCharacterCreation.js:196',message:'finalizeCharacter success',data:{abilitiesCount:abilities.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'K'})}).catch(()=>{});
-    // #endregion
     return {
       valid: true,
       characterData: {

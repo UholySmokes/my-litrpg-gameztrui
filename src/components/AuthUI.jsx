@@ -1,6 +1,6 @@
 // AuthUI.jsx
 import React, { useState, useEffect } from 'react';
-import { signUp, signIn, signOut, getCurrentUser, onAuthStateChange, resetPassword } from '../lib/authService';
+import { signUp, signIn, signOut, getCurrentUser, onAuthStateChange, resetPassword } from '../core/AuthService.js';
 
 export default function AuthUI({ onAuthChange, onLocalGame }) {
   const [user, setUser] = useState(null);
@@ -216,12 +216,27 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
 
   // Show login/signup form
   return (
-    <div className="holo-panel" style={{ marginBottom: '1rem' }}>
-      <h3 style={{ 
+    <section className="holo-panel" style={{ 
+      position: 'fixed',
+      bottom: '20px',
+      left: '20px',
+      right: '20px',
+      margin: '0 auto',
+      maxWidth: '400px',
+      zIndex: 1000,
+      marginBottom: '0',
+      transition: 'all 0.3s ease-in-out',
+      padding: '1.5rem',
+      backgroundColor: 'rgba(10, 15, 30, 0.95)',
+      backdropFilter: 'blur(5px)',
+      boxShadow: '0 0 20px rgba(0, 243, 255, 0.2)'
+    }} aria-labelledby="auth-heading">
+      <h3 id="auth-heading" style={{ 
         fontFamily: 'var(--font-hud)', 
         fontSize: '1.2rem', 
         marginBottom: '1rem',
-        color: 'var(--holo-cyan)'
+        color: 'var(--holo-cyan)',
+        textAlign: 'center'
       }}>
         {isSignUp ? 'Create Account' : 'Sign In'}
       </h3>
@@ -229,7 +244,7 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
       {/* Local Game Option for Developers */}
       {onLocalGame && (
         <div style={{ marginBottom: '1rem', padding: '0.75rem', background: 'rgba(255, 215, 0, 0.1)', borderRadius: '4px', border: '1px solid var(--holo-gold)' }}>
-          <p style={{ fontSize: '0.85rem', color: 'var(--holo-gold)', marginBottom: '0.5rem' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--holo-gold)', marginBottom: '0.5rem', textAlign: 'center' }}>
             Developer Mode
           </p>
           <button
@@ -239,7 +254,11 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
             style={{
               width: '100%',
               borderColor: 'var(--holo-gold)',
-              color: 'var(--holo-gold)'
+              color: 'var(--holo-gold)',
+              height: '45px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             Play Local Game (No Login)
@@ -247,8 +266,8 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
         </div>
       )}
       
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        <div style={{ position: 'relative', width: '80%', margin: '0 auto' }}>
           <input
             type="email"
             value={email}
@@ -266,12 +285,12 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
               fontSize: '1rem',
               padding: '0.75rem',
               outline: 'none',
-              marginBottom: '0.5rem'
+              transition: 'border-color 0.3s ease'
             }}
           />
         </div>
         
-        <div style={{ marginBottom: '1rem' }}>
+        <div style={{ position: 'relative', width: '80%', margin: '0 auto' }}>
           <input
             type="password"
             value={password}
@@ -290,17 +309,44 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
               fontSize: '1rem',
               padding: '0.75rem',
               outline: 'none',
-              marginBottom: '0.5rem'
+              transition: 'border-color 0.3s ease'
             }}
           />
         </div>
+
+        {isSignUp && (
+          <div style={{ position: 'relative', width: '80%', margin: '0 auto' }}>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              required
+              minLength={6}
+              className="holo-input"
+              style={{
+                width: '100%',
+                background: 'transparent',
+                border: 'none',
+                borderBottom: '2px solid var(--holo-cyan)',
+                color: 'var(--text-main)',
+                fontFamily: 'var(--font-text)',
+                fontSize: '1rem',
+                padding: '0.75rem',
+                outline: 'none',
+                transition: 'border-color 0.3s ease'
+              }}
+            />
+          </div>
+        )}
 
         {error && (
           <div style={{ 
             color: 'var(--holo-alert)', 
             fontSize: '0.85rem', 
-            marginBottom: '0.5rem' 
-          }}>
+            textAlign: 'center',
+            padding: '0.5rem',
+            background: 'rgba(255, 50, 50, 0.1)',
+            borderRadius: '4px'
+          }} role="alert">
             {error}
           </div>
         )}
@@ -309,8 +355,11 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
           <div style={{ 
             color: 'var(--holo-cyan)', 
             fontSize: '0.85rem', 
-            marginBottom: '0.5rem' 
-          }}>
+            textAlign: 'center',
+            padding: '0.5rem',
+            background: 'rgba(0, 243, 255, 0.1)',
+            borderRadius: '4px'
+          }} role="status">
             {message}
           </div>
         )}
@@ -319,12 +368,19 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
           type="submit"
           className="holo-button"
           disabled={loading}
-          style={{ width: '100%', marginBottom: '0.5rem' }}
+          style={{ 
+            width: '100%', 
+            height: '45px',
+            fontSize: '1rem',
+            marginTop: '0.5rem',
+            opacity: loading ? 0.7 : 1,
+            cursor: loading ? 'not-allowed' : 'pointer'
+          }}
         >
           {loading ? '...' : (isSignUp ? 'Sign Up' : 'Sign In')}
         </button>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.5rem' }}>
           <button
             type="button"
             onClick={() => {
@@ -337,9 +393,11 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
               border: 'none',
               color: 'var(--holo-cyan)',
               cursor: 'pointer',
-              fontSize: '0.85rem',
+              fontSize: '0.9rem',
               textDecoration: 'underline',
-              width: '100%'
+              width: '100%',
+              padding: '0.5rem',
+              transition: 'color 0.2s ease'
             }}
           >
             {isSignUp 
@@ -358,11 +416,12 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: 'var(--holo-cyan)',
+                color: 'var(--text-muted)',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
                 textDecoration: 'underline',
-                width: '100%'
+                width: '100%',
+                padding: '0.25rem'
               }}
             >
               Forgot Password?
@@ -370,6 +429,6 @@ export default function AuthUI({ onAuthChange, onLocalGame }) {
           )}
         </div>
       </form>
-    </div>
+    </section>
   );
 }

@@ -1,9 +1,12 @@
 // useGameEngine.js
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { initialgamestate } from '../lib/gamestate';
-import { addXp, takeDamage, addItem, resetLevelUpFlag } from '../lib/gamelogic';
-import { saveGameState, updateGameState, loadGameState, listSaves, isSupabaseConfigured } from '../lib/supabaseService';
-import { getCurrentUser } from '../lib/authService';
+import { initialgamestate } from '../core/GameState.js';
+import { addXp } from '../systems/leveling/LevelingManager.js';
+import { takeDamage } from '../systems/combat/CombatSystem.js';
+import { addItem } from '../systems/inventory/InventorySystem.js';
+import { resetLevelUpFlag } from '../core/GameState.js';
+import { saveGameState, updateGameState, loadGameState, listSaves, isSupabaseConfigured } from '../core/SupabaseService.js';
+import { getCurrentUser } from '../core/AuthService.js';
 
 export function useGameEngine() {
   const [state, setState] = useState(initialgamestate);
@@ -62,17 +65,8 @@ export function useGameEngine() {
 
   // Reset level up flag after displaying status page
   const acknowledgeLevelUp = useCallback(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'usegamestate.js:59',message:'acknowledgeLevelUp called',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
     setState(prevState => {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'usegamestate.js:60',message:'resetLevelUpFlag before',data:{justLeveledUp:prevState.player.justLeveledUp},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
       const newState = resetLevelUpFlag(prevState);
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'usegamestate.js:61',message:'resetLevelUpFlag after',data:{justLeveledUp:newState.player.justLeveledUp},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
       return newState;
     });
   }, []);
@@ -108,22 +102,13 @@ export function useGameEngine() {
     }
 
     // Set new timer for auto-save
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'usegamestate.js:94',message:'auto-save timer scheduled',data:{stateLevel:state.player.level,stateHp:state.player.hp.current,lastStateRefLevel:lastStateRef.current?.player?.level},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-    // #endregion
     autoSaveTimerRef.current = setTimeout(async () => {
       // Use ref to get the latest state instead of closure variable
       const currentState = lastStateRef.current;
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'usegamestate.js:95',message:'auto-save timer executed',data:{stateLevel:currentState.player.level,stateHp:currentState.player.hp.current,lastStateRefLevel:lastStateRef.current?.player?.level},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-      // #endregion
       if (currentSaveId) {
         // Update existing save
         setIsSaving(true);
         const result = await updateGameState(currentUserId, currentSaveId, currentState);
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'usegamestate.js:98',message:'auto-save update result',data:{success:result.success,savedLevel:currentState.player.level},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-        // #endregion
         if (result.success) {
           setLastSaveTime(new Date());
         }
@@ -132,9 +117,6 @@ export function useGameEngine() {
         // Create new auto-save
         setIsSaving(true);
         const result = await saveGameState(currentUserId, currentState, 'Auto Save');
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'usegamestate.js:106',message:'auto-save create result',data:{success:result.success,savedLevel:currentState.player.level},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-        // #endregion
         if (result.success) {
           setCurrentSaveId(result.saveId);
           setLastSaveTime(new Date());
@@ -239,7 +221,7 @@ export function useGameEngine() {
       };
     }
 
-    const { deleteSave: deleteSaveFunction } = await import('../lib/supabaseService');
+    const { deleteSave: deleteSaveFunction } = await import('../core/SupabaseService.js');
     return await deleteSaveFunction(currentUserId, saveId);
   }, [currentUserId]);
 

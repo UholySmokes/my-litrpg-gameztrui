@@ -1,7 +1,10 @@
 // =================================================================
-// CHARACTER DATA - Race, Class, Talent, and Skill Definitions
+// TALENT DEFINITIONS
+// Defines the ex-rank talents available in the game
 // =================================================================
 
+<<<<<<< HEAD:src/systems/skills/TalentDefinitions.js
+=======
 /**
  * RACES - 20 Fantasy/Cultivation themed races
  */
@@ -275,6 +278,7 @@ export const classes = [
   }
 ];
 
+>>>>>>> parent of b907677 (snapshot before refactoring6.1 6:50uhr):src/lib/characterData.js
 /**
  * EX-RANK TALENTS - 120 powerful hidden abilities
  */
@@ -459,27 +463,6 @@ export const exRankTalents = [
   { id: 'usage_control', name: 'Usage Control', description: 'Control usage and application.' }
 ];
 
-/**
- * SKILLS DATABASE - Now references the comprehensive skills.js system
- * This is kept for backward compatibility but delegates to skills.js
- */
-export const skillsDatabase = {
-  // Legacy structure - now uses skills.js
-  activeSkills: {},
-  passiveSkills: {}
-};
-
-/**
- * Helper functions
- */
-export function getRaceById(id) {
-  return races.find(r => r.id === id) || null;
-}
-
-export function getClassById(id) {
-  return classes.find(c => c.id === id) || null;
-}
-
 export function getTalentById(id) {
   return exRankTalents.find(t => t.id === id) || null;
 }
@@ -487,26 +470,4 @@ export function getTalentById(id) {
 export function getRandomTalents(count = 3) {
   const shuffled = [...exRankTalents].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
-}
-
-// Import skills functions from skills.js
-import { getSkillsByClass as getSkillsByClassFromSkills, getSkillById as getSkillByIdFromSkills } from './skills.js';
-
-export function getSkillsByClass(classId) {
-  // Delegate to skills.js for the new system
-  try {
-    return getSkillsByClassFromSkills(classId);
-  } catch (error) {
-    console.warn(`Error getting skills for class ${classId}:`, error);
-    return { active: [], passive: [] };
-  }
-}
-
-export function getSkillById(skillId) {
-  try {
-    return getSkillByIdFromSkills(skillId);
-  } catch (error) {
-    console.warn(`Error getting skill by id ${skillId}:`, error);
-    return null;
-  }
 }

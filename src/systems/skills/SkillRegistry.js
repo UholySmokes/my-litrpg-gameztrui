@@ -19,7 +19,19 @@ function getRandomSkills(skills, count) {
 // Knight Class Skills
 const knightActiveSkills = [
   { id: 'knight_charge', name: 'Charge', type: 'active', class: 'knight', description: 'Rush forward and strike with increased damage.', level: 1, manaCost: 10, cooldown: 3 },
-  { id: 'knight_shield_bash', name: 'Shield Bash', type: 'active', class: 'knight', description: 'Bash enemy with shield, stunning them.', level: 1, manaCost: 15, cooldown: 5 },
+  { 
+    id: 'knight_shield_bash', 
+    name: 'Shield Bash', 
+    type: 'active', 
+    class: 'knight', 
+    description: 'Bash enemy with shield, stunning them.', 
+    level: 1, 
+    manaCost: 15, 
+    cooldown: 5,
+    effects: [
+      { id: 'stun', duration: 1 }
+    ]
+  },
   { id: 'knight_taunt', name: 'Taunt', type: 'active', class: 'knight', description: 'Force enemies to attack you, protecting allies.', level: 1, manaCost: 20, cooldown: 8 },
   { id: 'knight_armor_boost', name: 'Armor Boost', type: 'active', class: 'knight', description: 'Temporarily increase defense significantly.', level: 1, manaCost: 25, cooldown: 10 },
   { id: 'knight_cleave', name: 'Cleave', type: 'active', class: 'knight', description: 'Sweeping attack hitting multiple enemies.', level: 1, manaCost: 12, cooldown: 4 },
@@ -27,14 +39,50 @@ const knightActiveSkills = [
   { id: 'knight_guardian_stance', name: 'Guardian Stance', type: 'active', class: 'knight', description: 'Enter defensive stance reducing all damage.', level: 1, manaCost: 30, cooldown: 15 },
   { id: 'knight_heroic_leap', name: 'Heroic Leap', type: 'active', class: 'knight', description: 'Leap to target location dealing area damage.', level: 1, manaCost: 22, cooldown: 12 },
   { id: 'knight_second_wind', name: 'Second Wind', type: 'active', class: 'knight', description: 'Restore health when below 30% HP.', level: 1, manaCost: 35, cooldown: 60 },
-  { id: 'knight_war_cry', name: 'War Cry', type: 'active', class: 'knight', description: 'Buff allies and debuff enemies with battle cry.', level: 1, manaCost: 28, cooldown: 20 },
+  { 
+    id: 'knight_war_cry', 
+    name: 'War Cry', 
+    type: 'active', 
+    class: 'knight', 
+    description: 'Buff allies and debuff enemies with battle cry.', 
+    level: 1, 
+    manaCost: 28, 
+    cooldown: 20,
+    effects: [
+      { id: 'might', duration: 3, target: 'self' }
+    ]
+  },
   { id: 'knight_iron_will', name: 'Iron Will', type: 'active', class: 'knight', description: 'Become immune to status effects temporarily.', level: 1, manaCost: 40, cooldown: 30 },
   { id: 'knight_whirlwind', name: 'Whirlwind', type: 'active', class: 'knight', description: 'Spin attack hitting all nearby enemies.', level: 1, manaCost: 20, cooldown: 8 },
   { id: 'knight_shield_wall', name: 'Shield Wall', type: 'active', class: 'knight', description: 'Create barrier protecting area from projectiles.', level: 1, manaCost: 45, cooldown: 25 },
-  { id: 'knight_judgment', name: 'Judgment', type: 'active', class: 'knight', description: 'Divine strike dealing extra damage to evil enemies.', level: 1, manaCost: 32, cooldown: 15 },
+  { id: 'knight_judgment', name: 'Judgment', type: 'active', class: 'knight', description: 'Divine strike dealing extra damage to evil enemies.', level: 1, manaCost: 32, cooldown: 15, tags: ['Holy_Damage'] },
   { id: 'knight_phalanx', name: 'Phalanx Formation', type: 'active', class: 'knight', description: 'Formation that increases party defense.', level: 1, manaCost: 50, cooldown: 40 },
-  { id: 'knight_rend', name: 'Rend', type: 'active', class: 'knight', description: 'Bleeding attack that deals damage over time.', level: 1, manaCost: 15, cooldown: 6 },
-  { id: 'knight_concussive_blow', name: 'Concussive Blow', type: 'active', class: 'knight', description: 'Heavy strike that can stun enemies.', level: 1, manaCost: 25, cooldown: 10 },
+  { 
+    id: 'knight_rend', 
+    name: 'Rend', 
+    type: 'active', 
+    class: 'knight', 
+    description: 'Bleeding attack that deals damage over time.', 
+    level: 1, 
+    manaCost: 15, 
+    cooldown: 6,
+    effects: [
+      { id: 'bleed', duration: 3 }
+    ]
+  },
+  { 
+    id: 'knight_concussive_blow', 
+    name: 'Concussive Blow', 
+    type: 'active', 
+    class: 'knight', 
+    description: 'Heavy strike that can stun enemies.', 
+    level: 1, 
+    manaCost: 25, 
+    cooldown: 10,
+    effects: [
+      { id: 'stun', duration: 2, chance: 0.6 }
+    ]
+  },
   { id: 'knight_battle_standard', name: 'Battle Standard', type: 'active', class: 'knight', description: 'Plant banner that buffs nearby allies.', level: 1, manaCost: 38, cooldown: 45 },
   { id: 'knight_intercept', name: 'Intercept', type: 'active', class: 'knight', description: 'Quickly move to intercept attack on ally.', level: 1, manaCost: 20, cooldown: 12 },
   { id: 'knight_last_stand', name: 'Last Stand', type: 'active', class: 'knight', description: 'When near death, gain massive power boost.', level: 1, manaCost: 0, cooldown: 120 }
@@ -86,7 +134,19 @@ const knightPassiveSkills = [
 // Mage Class Skills (sample - will create similar for all 20 classes)
 const mageActiveSkills = [
   { id: 'mage_fireball', name: 'Fireball', type: 'active', class: 'mage', description: 'Launch explosive fire projectile.', level: 1, manaCost: 15, cooldown: 2 },
-  { id: 'mage_ice_bolt', name: 'Ice Bolt', type: 'active', class: 'mage', description: 'Freezing bolt that slows enemies.', level: 1, manaCost: 12, cooldown: 2 },
+  { 
+    id: 'mage_ice_bolt', 
+    name: 'Ice Bolt', 
+    type: 'active', 
+    class: 'mage', 
+    description: 'Freezing bolt that slows enemies.', 
+    level: 1, 
+    manaCost: 12, 
+    cooldown: 2,
+    effects: [
+      { id: 'slow', duration: 2, target: 'enemy' }
+    ]
+  },
   { id: 'mage_lightning', name: 'Lightning', type: 'active', class: 'mage', description: 'Chain lightning between enemies.', level: 1, manaCost: 20, cooldown: 4 },
   { id: 'mage_teleport', name: 'Teleport', type: 'active', class: 'mage', description: 'Instantly move to nearby location.', level: 1, manaCost: 25, cooldown: 8 },
   { id: 'mage_barrier', name: 'Barrier', type: 'active', class: 'mage', description: 'Create protective magic shield.', level: 1, manaCost: 30, cooldown: 10 },
@@ -95,9 +155,33 @@ const mageActiveSkills = [
   { id: 'mage_chain_lightning', name: 'Chain Lightning', type: 'active', class: 'mage', description: 'Lightning jumps between multiple enemies.', level: 1, manaCost: 35, cooldown: 12 },
   { id: 'mage_mana_shield', name: 'Mana Shield', type: 'active', class: 'mage', description: 'Convert mana to health protection.', level: 1, manaCost: 0, cooldown: 15 },
   { id: 'mage_polymorph', name: 'Polymorph', type: 'active', class: 'mage', description: 'Transform enemy into harmless creature.', level: 1, manaCost: 45, cooldown: 25 },
-  { id: 'mage_time_slow', name: 'Time Slow', type: 'active', class: 'mage', description: 'Slow time in area around you.', level: 1, manaCost: 60, cooldown: 45 },
+  { 
+    id: 'mage_time_slow', 
+    name: 'Time Slow', 
+    type: 'active', 
+    class: 'mage', 
+    description: 'Slow time in area around you.', 
+    level: 1, 
+    manaCost: 60, 
+    cooldown: 45,
+    effects: [
+      { id: 'slow', duration: 5, target: 'enemy', aoe: true }
+    ]
+  },
   { id: 'mage_arcane_missiles', name: 'Arcane Missiles', type: 'active', class: 'mage', description: 'Rapid fire magic projectiles.', level: 1, manaCost: 18, cooldown: 3 },
-  { id: 'mage_frost_nova', name: 'Frost Nova', type: 'active', class: 'mage', description: 'Freeze all nearby enemies.', level: 1, manaCost: 28, cooldown: 10 },
+  { 
+    id: 'mage_frost_nova', 
+    name: 'Frost Nova', 
+    type: 'active', 
+    class: 'mage', 
+    description: 'Freeze all nearby enemies.', 
+    level: 1, 
+    manaCost: 28, 
+    cooldown: 10,
+    effects: [
+      { id: 'freeze', duration: 3, target: 'enemy', aoe: true }
+    ]
+  },
   { id: 'mage_fire_wall', name: 'Fire Wall', type: 'active', class: 'mage', description: 'Create wall of fire blocking path.', level: 1, manaCost: 32, cooldown: 15 },
   { id: 'mage_mana_blast', name: 'Mana Blast', type: 'active', class: 'mage', description: 'Powerful single target magic attack.', level: 1, manaCost: 25, cooldown: 5 },
   { id: 'mage_telekinetic_push', name: 'Telekinetic Push', type: 'active', class: 'mage', description: 'Push enemies away with force.', level: 1, manaCost: 20, cooldown: 6 },
@@ -152,7 +236,7 @@ const magePassiveSkills = [
 const assassinActiveSkills = [
   { id: 'assassin_backstab', name: 'Backstab', type: 'active', class: 'assassin', description: 'Massive damage from behind.', level: 1, manaCost: 20, cooldown: 5 },
   { id: 'assassin_stealth', name: 'Stealth', type: 'active', class: 'assassin', description: 'Become invisible to enemies.', level: 1, manaCost: 15, cooldown: 10 },
-  { id: 'assassin_poison_blade', name: 'Poison Blade', type: 'active', class: 'assassin', description: 'Apply deadly poison to weapon.', level: 1, manaCost: 12, cooldown: 8 },
+  { id: 'assassin_poison_blade', name: 'Poison Blade', type: 'active', class: 'assassin', description: 'Apply deadly poison to weapon.', level: 1, manaCost: 12, cooldown: 8, effects: [ { id: 'poison', duration: 5, target: 'enemy' } ] },
   { id: 'assassin_shadow_step', name: 'Shadow Step', type: 'active', class: 'assassin', description: 'Teleport behind enemy.', level: 1, manaCost: 25, cooldown: 12 },
   { id: 'assassin_death_mark', name: 'Death Mark', type: 'active', class: 'assassin', description: 'Mark target for increased damage.', level: 1, manaCost: 18, cooldown: 15 },
   { id: 'assassin_blade_flurry', name: 'Blade Flurry', type: 'active', class: 'assassin', description: 'Rapid attacks on multiple targets.', level: 1, manaCost: 22, cooldown: 8 },
@@ -160,7 +244,7 @@ const assassinActiveSkills = [
   { id: 'assassin_garrote', name: 'Garrote', type: 'active', class: 'assassin', description: 'Silent kill from stealth.', level: 1, manaCost: 30, cooldown: 25 },
   { id: 'assassin_venom_strike', name: 'Venom Strike', type: 'active', class: 'assassin', description: 'Poison attack that spreads.', level: 1, manaCost: 20, cooldown: 10 },
   { id: 'assassin_shadow_clone', name: 'Shadow Clone', type: 'active', class: 'assassin', description: 'Create decoy to confuse enemies.', level: 1, manaCost: 35, cooldown: 30 },
-  { id: 'assassin_bleed', name: 'Bleed', type: 'active', class: 'assassin', description: 'Cause bleeding damage over time.', level: 1, manaCost: 15, cooldown: 6 },
+  { id: 'assassin_bleed', name: 'Bleed', type: 'active', class: 'assassin', description: 'Cause bleeding damage over time.', level: 1, manaCost: 15, cooldown: 6, effects: [ { id: 'bleed', duration: 3, target: 'enemy' } ] },
   { id: 'assassin_vanish', name: 'Vanish', type: 'active', class: 'assassin', description: 'Instantly enter stealth.', level: 1, manaCost: 25, cooldown: 45 },
   { id: 'assassin_throwing_knives', name: 'Throwing Knives', type: 'active', class: 'assassin', description: 'Throw multiple knives at targets.', level: 1, manaCost: 12, cooldown: 4 },
   { id: 'assassin_cripple', name: 'Cripple', type: 'active', class: 'assassin', description: 'Slow enemy movement significantly.', level: 1, manaCost: 18, cooldown: 8 },
@@ -169,7 +253,8 @@ const assassinActiveSkills = [
   { id: 'assassin_poison_cloud', name: 'Poison Cloud', type: 'active', class: 'assassin', description: 'Area poison damage.', level: 1, manaCost: 28, cooldown: 15 },
   { id: 'assassin_blade_trap', name: 'Blade Trap', type: 'active', class: 'assassin', description: 'Set trap that triggers on approach.', level: 1, manaCost: 20, cooldown: 12 },
   { id: 'assassin_mark_of_death', name: 'Mark of Death', type: 'active', class: 'assassin', description: 'Mark that increases all damage taken.', level: 1, manaCost: 22, cooldown: 20 },
-  { id: 'assassin_shadow_strike', name: 'Shadow Strike', type: 'active', class: 'assassin', description: 'Strike from shadows for bonus damage.', level: 1, manaCost: 15, cooldown: 5 }
+  { id: 'assassin_shadow_strike', name: 'Shadow Strike', type: 'active', class: 'assassin', description: 'Strike from shadows for bonus damage.', level: 1, manaCost: 15, cooldown: 5 },
+  { id: 'assassin_shadow_dash', name: 'Shadow Dash', type: 'active', class: 'assassin', description: 'Dash through shadows, blurring your form.', level: 1, manaCost: 12, cooldown: 6, effects: [ { id: 'blur', duration: 3, target: 'self' } ] }
 ];
 
 const assassinPassiveSkills = [
@@ -219,14 +304,62 @@ const warriorActiveSkills = [
   { id: 'warrior_battle_cry', name: 'Battle Cry', type: 'active', class: 'warrior', description: 'Let loose a fierce cry that increases your damage for a short time.', level: 1, manaCost: 15, cooldown: 20 },
   { id: 'warrior_slam', name: 'Slam', type: 'active', class: 'warrior', description: 'Slam your weapon into the ground, damaging all nearby enemies.', level: 1, manaCost: 18, cooldown: 6 },
   { id: 'warrior_heroic_strike', name: 'Heroic Strike', type: 'active', class: 'warrior', description: 'A powerful strike infused with combat experience.', level: 1, manaCost: 10, cooldown: 3 },
-  { id: 'warrior_rend', name: 'Rend', type: 'active', class: 'warrior', description: 'Tear into the enemy causing them to bleed over time.', level: 1, manaCost: 12, cooldown: 5 },
+  { 
+    id: 'warrior_rend', 
+    name: 'Rend', 
+    type: 'active', 
+    class: 'warrior', 
+    description: 'Tear into the enemy causing them to bleed over time.', 
+    level: 1, 
+    manaCost: 12, 
+    cooldown: 5,
+    effects: [
+      { id: 'bleed', duration: 4, target: 'enemy' }
+    ]
+  },
   { id: 'warrior_overpower', name: 'Overpower', type: 'active', class: 'warrior', description: 'Exploit an opening to deal increased damage that cannot be blocked.', level: 1, manaCost: 8, cooldown: 4 },
   { id: 'warrior_mortal_strike', name: 'Mortal Strike', type: 'active', class: 'warrior', description: 'A vicious strike that reduces healing received by the target.', level: 1, manaCost: 22, cooldown: 10 },
-  { id: 'warrior_thunder_clap', name: 'Thunder Clap', type: 'active', class: 'warrior', description: 'Slam the ground creating a shockwave that damages and slows enemies.', level: 1, manaCost: 16, cooldown: 8 },
-  { id: 'warrior_hamstring', name: 'Hamstring', type: 'active', class: 'warrior', description: 'Maim the enemy, significantly reducing their movement speed.', level: 1, manaCost: 10, cooldown: 6 },
+  { 
+    id: 'warrior_thunder_clap', 
+    name: 'Thunder Clap', 
+    type: 'active', 
+    class: 'warrior', 
+    description: 'Slam the ground creating a shockwave that damages and slows enemies.', 
+    level: 1, 
+    manaCost: 16, 
+    cooldown: 8,
+    effects: [
+      { id: 'slow', duration: 3, target: 'enemy', aoe: true }
+    ]
+  },
+  { 
+    id: 'warrior_hamstring', 
+    name: 'Hamstring', 
+    type: 'active', 
+    class: 'warrior', 
+    description: 'Maim the enemy, significantly reducing their movement speed.', 
+    level: 1, 
+    manaCost: 10, 
+    cooldown: 6,
+    effects: [
+      { id: 'slow', duration: 4, target: 'enemy' }
+    ]
+  },
   { id: 'warrior_sweeping_strikes', name: 'Sweeping Strikes', type: 'active', class: 'warrior', description: 'Your attacks hit an additional nearby enemy for a duration.', level: 1, manaCost: 25, cooldown: 15 },
   { id: 'warrior_pummel', name: 'Pummel', type: 'active', class: 'warrior', description: 'Interrupt an enemy spellcast and lock them out of that school.', level: 1, manaCost: 8, cooldown: 12 },
-  { id: 'warrior_intimidating_shout', name: 'Intimidating Shout', type: 'active', class: 'warrior', description: 'Cause enemies to flee in fear for a short duration.', level: 1, manaCost: 20, cooldown: 45 },
+  { 
+    id: 'warrior_intimidating_shout', 
+    name: 'Intimidating Shout', 
+    type: 'active', 
+    class: 'warrior', 
+    description: 'Cause enemies to flee in fear for a short duration.', 
+    level: 1, 
+    manaCost: 20, 
+    cooldown: 45,
+    effects: [
+      { id: 'fear', duration: 3, target: 'enemy', aoe: true }
+    ]
+  },
   { id: 'warrior_recklessness', name: 'Recklessness', type: 'active', class: 'warrior', description: 'Enter a reckless state where all attacks critically strike.', level: 1, manaCost: 0, cooldown: 90 },
   { id: 'warrior_colossus_smash', name: 'Colossus Smash', type: 'active', class: 'warrior', description: 'Smash through enemy armor, making them vulnerable to damage.', level: 1, manaCost: 25, cooldown: 20 },
   { id: 'warrior_bladestorm', name: 'Bladestorm', type: 'active', class: 'warrior', description: 'Become a whirlwind of blades, hitting all enemies around you.', level: 1, manaCost: 35, cooldown: 30 },

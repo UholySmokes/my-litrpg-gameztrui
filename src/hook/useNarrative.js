@@ -4,11 +4,11 @@
 // =================================================================
 
 import { useState, useCallback } from 'react';
-import { parseAction } from '../lib/actionParser';
-import { validateActionComprehensive } from '../lib/actionValidator';
-import { executeAction } from '../lib/gamelogic';
-import { assemblePrompt, buildInitialPrompt } from '../lib/promptAssembler';
-import { generateNarrative, generateInitialNarrative } from '../lib/aiService';
+import { parseAction } from '../core/InputParser.js';
+import { validateActionComprehensive } from '../core/InputValidator.js';
+import { executeAction } from '../core/ActionDispatcher.js';
+import { assemblePrompt, buildInitialPrompt } from '../core/PromptAssembler.js';
+import { generateNarrative, generateInitialNarrative } from '../core/AIService.js';
 
 /**
  * Custom hook for managing AI narrative and user actions
@@ -85,9 +85,6 @@ export function useNarrative(setState, addSystemMessage) {
 
       // Step 4: Update game state if action succeeded
       if (actionResult.success && !actionResult.readOnly) {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useNarrative.js:87',message:'setState called in submitInput',data:{actionType:action.type,newStateLevel:newState.player.level},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
-        // #endregion
         setState(newState);
       }
 
@@ -109,9 +106,6 @@ export function useNarrative(setState, addSystemMessage) {
         addSystemMessage(aiResponse.narrative, 'narrative');
         
         // Update narrative history in state
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useNarrative.js:109',message:'setState for narrative history',data:{prevStateLevel:currentState.player.level},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'})}).catch(()=>{});
-        // #endregion
         setState(prevState => ({
           ...prevState,
           narrative: {

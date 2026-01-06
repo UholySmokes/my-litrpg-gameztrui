@@ -2,7 +2,7 @@
 // SHOP DATABASE - Items, skills, upgrades, materials, and services
 // =================================================================
 
-import { getItemData } from './gameData';
+import { getItemData } from '../entities/ItemRegistry.js';
 
 const shopItems = [
   {

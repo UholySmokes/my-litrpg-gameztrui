@@ -1,7 +1,7 @@
 import GameUI from './components/GameUI';
 import AuthUI from './components/AuthUI';
 import { useState, useEffect } from 'react';
-import { getCurrentUser, onAuthStateChange } from './lib/authService';
+import { getCurrentUser, onAuthStateChange } from './core/AuthService.js';
 import './index.css';
 import './App.css';
 
@@ -85,6 +85,13 @@ function App() {
   }
 
   // Show game UI if authenticated or in local game
+<<<<<<< HEAD
+  if (isMounted) {
+    // Game UI is ready to mount
+  }
+  
+  return <GameUI />;
+=======
   // #region agent log
   fetch('http://127.0.0.1:7242/ingest/3f03f283-383d-430a-bf4d-6c4ae328671d',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'App.jsx:88',message:'App rendering GameUI',data:{hasUser:!!user,isLocalGame},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'N'})}).catch(()=>{});
   // #endregion
@@ -115,6 +122,7 @@ function App() {
       </div>
     );
   }
+>>>>>>> parent of b907677 (snapshot before refactoring6.1 6:50uhr)
 }
 
 export default App;

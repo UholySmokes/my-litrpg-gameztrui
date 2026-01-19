@@ -593,7 +593,7 @@ function canAfford(player, ability) {
     case "focus":
       return focus >= ability.cost;
     case "energy":
-      return (player.energy || 0) >= ability.cost;
+      return (resources.energy ?? player.energy ?? 0) >= ability.cost;
     case "mana":
       return (player.mana?.current || 0) >= ability.cost;
     case "shards":

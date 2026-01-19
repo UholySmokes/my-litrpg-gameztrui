@@ -23,7 +23,11 @@ export default function CombatUI({
   const livingEnemies = (combat.enemies || [])
     .map((enemy, index) => ({ enemy, index }))
     .filter(({ enemy }) => enemy?.stats?.hp?.current > 0);
-  const availableSkills = player?.skills?.active || [];
+  const availableSkills =
+    player?.activeSkills?.length
+      ? player.activeSkills
+      : player?.skills?.active ||
+        (player?.abilities || []).filter((ability) => ability.type === "active");
 
   return (
     <div
@@ -146,7 +150,7 @@ export default function CombatUI({
                   minWidth: "120px",
                 }}
               >
-                {skill.name} (Cost: {skill.manaCost || 0} MP)
+                {skill.name} (Cost: {skill.manaCost ?? skill.cost?.mana ?? 0} MP)
               </button>
             ))}
           </div>

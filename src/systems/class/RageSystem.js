@@ -18,6 +18,18 @@ const RAGE_CONFIG = {
   enrageDefenseMultiplier: 0.7,
 };
 
+const getRageValue = (player) =>
+  player?.resources?.rage ?? player?.rage ?? 0;
+
+const setRageValue = (player, value) => ({
+  ...player,
+  rage: value,
+  resources: {
+    ...(player.resources || {}),
+    rage: value,
+  },
+});
+
 /**
  * Initialize rage for berserker
  * @param {object} player - Player object
@@ -28,6 +40,10 @@ export function initializeRage(player) {
     return {
       ...player,
       rage: 0,
+      resources: {
+        ...(player.resources || {}),
+        rage: 0,
+      },
       isEnraged: false,
       rageMultipliers: {
         damage: 1.0,
@@ -39,76 +55,69 @@ export function initializeRage(player) {
 }
 
 /**
- * Gain rage via dispatch (deterministic)
- * @param {function} dispatch - Redux-like dispatch function
+ * Gain rage on hit or damage
  * @param {object} player - Player object
  * @param {number} amount - Amount of rage to gain
  * @param {string} reason - Reason for rage gain
+ * @returns {object} Updated player
  */
-export function gainRage(dispatch, player, amount, reason = "unknown") {
+export function gainRage(player, amount, reason = "unknown") {
   const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return;
+  if (classId !== "berserker") return player;
 
   const delta = Math.max(0, amount);
+  const currentRage = getRageValue(player);
+  const nextRage = Math.min(RAGE_CONFIG.maxRage, currentRage + delta);
+  const updated = setRageValue(player, nextRage);
 
-  // Dispatch resource update to reducer
-  dispatch({
-    type: "UPDATE_RESOURCES",
-    payload: { rage: delta },
-  });
-
-  // Note: Enrage logic should be moved to observer or handled separately
-  // For now, we'll keep the event emission for UI feedback
-  if (amount > 0) {
-    emit("rage:gain", { player: player.name, amount, reason });
+  if (delta > 0) {
+    emit("rage:gain", { player: player.name, amount: delta, reason });
   }
+
+  return updated;
 }
 
 /**
- * Consume rage via dispatch (deterministic)
- * @param {function} dispatch - Redux-like dispatch function
+ * Consume rage
  * @param {object} player - Player object
- * @param {number} amount - Amount of rage to consume (or 'all')
- * @returns {boolean} Success
+ * @param {number|string} amount - Amount of rage to consume (or 'all')
+ * @returns {object} { success: boolean, player: object, consumed: number }
  */
-export function consumeRage(dispatch, player, amount) {
+export function consumeRage(player, amount) {
   const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return false;
+  if (classId !== "berserker") {
+    return { success: false, player, consumed: 0 };
+  }
 
-  const currentRage = player.resources?.rage || 0;
-
-  // Handle 'all' consumption
+  const currentRage = getRageValue(player);
   const consumeAmount = amount === "all" ? currentRage : Math.max(0, amount);
 
-  if (consumeAmount > currentRage) return false;
+  if (consumeAmount > currentRage) {
+    return { success: false, player, consumed: 0 };
+  }
 
-  // Dispatch negative delta to reducer
-  dispatch({
-    type: "UPDATE_RESOURCES",
-    payload: { rage: -consumeAmount },
-  });
-
-  return true;
+  const nextRage = Math.max(0, currentRage - consumeAmount);
+  return {
+    success: true,
+    player: setRageValue(player, nextRage),
+    consumed: consumeAmount,
+  };
 }
 
 /**
- * Process rage decay per turn (now uses dispatch)
- * @param {function} dispatch - Redux-like dispatch function
+ * Process rage decay per turn
  * @param {object} player - Player object
+ * @returns {object} Updated player
  */
-export function processRageDecay(dispatch, player) {
+export function processRageDecay(player) {
   const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return;
+  if (classId !== "berserker") return player;
 
-  const currentRage = player.resources?.rage || 0;
+  const currentRage = getRageValue(player);
   const decayAmount = Math.min(currentRage, RAGE_CONFIG.rageDecayPerTurn);
+  if (decayAmount <= 0) return player;
 
-  if (decayAmount > 0) {
-    dispatch({
-      type: "UPDATE_RESOURCES",
-      payload: { rage: -decayAmount },
-    });
-  }
+  return setRageValue(player, currentRage - decayAmount);
 }
 
 /**
@@ -133,15 +142,14 @@ export function getRageMultipliers(player) {
 /**
  * Check if player can use rage ability
  * @param {object} player - Player object
- * @param {number} rageCost - Rage cost of ability
+ * @param {number|string} rageCost - Rage cost of ability
  * @returns {boolean} True if can use
  */
 export function canUseRageAbility(player, rageCost) {
   const classId = player.class?.id || player.class;
   if (classId !== "berserker") return false;
 
-  const currentRage = player.resources?.rage || 0;
-
+  const currentRage = getRageValue(player);
   if (rageCost === "all") return currentRage > 0;
 
   return currentRage >= rageCost;
@@ -156,7 +164,7 @@ export function getRagePercentage(player) {
   const classId = player.class?.id || player.class;
   if (classId !== "berserker") return 0;
 
-  const currentRage = player.resources?.rage || 0;
+  const currentRage = getRageValue(player);
   return Math.floor((currentRage / RAGE_CONFIG.maxRage) * 100);
 }
 
@@ -165,13 +173,9 @@ export function getRagePercentage(player) {
  * @param {object} player - Player object
  * @returns {object} Updated player
  */
-export function resetRage(dispatch, player) {
+export function resetRage(player) {
   const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return;
+  if (classId !== "berserker") return player;
 
-  // Reset rage to 0 via reducer
-  dispatch({
-    type: "UPDATE_RESOURCES",
-    payload: { rage: -(player.resources?.rage || 0) },
-  });
+  return setRageValue(player, 0);
 }

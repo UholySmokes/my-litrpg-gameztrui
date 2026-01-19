@@ -1,6 +1,10 @@
 import { DataRegistry } from "../data/DataRegistry.js";
 import { moveToLocation } from "../systems/exploration/ExplorationSystem.js";
-import { startCombat, playerAttack } from "../systems/combat/CombatSystem.js";
+import {
+  startCombat,
+  playerAttack,
+  processEnemyTurns,
+} from "../systems/combat/CombatSystem.js";
 
 /**
  * Executes an action and returns the result
@@ -107,7 +111,7 @@ export function executeAction(state, action, options = {}) {
         if (!result.success) {
           return { success: false, reason: result.reason, state: state };
         }
-        newState = result.state;
+        newState = processEnemyTurns(result.state);
         const targetName =
           newState.combat.enemies?.[enemyIndex]?.name || "enemy";
         description = `Attacked ${targetName}`;

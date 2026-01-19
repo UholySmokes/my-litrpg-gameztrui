@@ -422,7 +422,14 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   }
 
   // === CHECK FOR CONFUSE EFFECT ===
-  const confuseEffect = state.player.effects?.find(
+  const resolvedState =
+    updatedPlayer === state.player
+      ? state
+      : {
+          ...state,
+          player: updatedPlayer,
+        };
+  const confuseEffect = resolvedState.player.effects?.find(
     (effect) => effect.id === "confuse",
   );
   if (confuseEffect && Math.random() < confuseEffect.magnitude) {
@@ -431,66 +438,80 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       // Attack self
       const selfDamage = Math.floor(damageResult.damage * 0.5);
       const combatLog = [
-        ...state.combat.log,
-        `❌ Confused! You attack yourself for ${selfDamage} damage!`,
+        ...resolvedState.combat.log,
+        ...damageResult.messages,
+        `ƒ?O Confused! You attack yourself for ${selfDamage} damage!`,
       ];
+      const selfDamageResult = takeDamage(
+        {
+          ...resolvedState,
+          combat: { ...resolvedState.combat, log: combatLog },
+        },
+        selfDamage,
+      );
       return {
         success: true,
-        state: takeDamage(
-          {
-            ...state,
-            combat: { ...state.combat, log: combatLog },
+        damage: selfDamageResult.damage,
+        state: {
+          ...selfDamageResult.state,
+          combat: {
+            ...selfDamageResult.state.combat,
+            turn: "enemy",
           },
-          selfDamage,
-        ),
+        },
       };
     } else {
       // Miss completely
       const combatLog = [
-        ...state.combat.log,
-        `❌ Confused! You attack wildly and miss!`,
+        ...resolvedState.combat.log,
+        ...damageResult.messages,
+        `ƒ?O Confused! You attack wildly and miss!`,
       ];
       return {
         success: true,
+        damage: 0,
         state: {
-          ...state,
-          combat: { ...state.combat, log: combatLog, turn: "enemy" },
+          ...resolvedState,
+          combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
         },
       };
     }
   }
 
   // Apply damage
-  const newEnemyHp = Math.max(0, enemy.stats.hp.current - damageResult.damage);
-  const newEnemies = state.combat.enemies.map((e, idx) =>
+  const newEnemyHp = Math.max(
+    0,
+    updatedEnemy.stats.hp.current - damageResult.damage,
+  );
+  const newEnemies = resolvedState.combat.enemies.map((e, idx) =>
     idx === enemyIndex
       ? {
-          ...e,
+          ...updatedEnemy,
           stats: {
-            ...e.stats,
-            hp: { ...e.stats.hp, current: newEnemyHp },
+            ...updatedEnemy.stats,
+            hp: { ...updatedEnemy.stats.hp, current: newEnemyHp },
           },
         }
       : e,
   );
 
   const newLog = [
-    ...state.combat.log,
+    ...resolvedState.combat.log,
     damageResult.messages.join(" ") ||
-      `You dealt ${damageResult.damage} damage to ${enemy.name}.`,
+      `You dealt ${damageResult.damage} damage to ${updatedEnemy.name}.`,
   ];
 
   // === RAGE GAIN ON HIT (Berserker) ===
   let rageGainAmount = 0;
-  const classId = state.player.class?.id || state.player.class;
+  const classId = resolvedState.player.class?.id || resolvedState.player.class;
   if (classId === "berserker" && damageResult.damage > 0) {
     rageGainAmount = 10; // Base rage per hit
   }
 
   let newState = {
-    ...state,
+    ...resolvedState,
     combat: {
-      ...state.combat,
+      ...resolvedState.combat,
       enemies: newEnemies,
       log: newLog,
       turn: "enemy",
@@ -531,7 +552,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   if (weapon?.uniquePassive?.proc) {
     const procResult = checkItemProc(
       newState.player,
-      enemy,
+      newState.combat.enemies[enemyIndex],
       damageResult.damage,
       weapon,
     );

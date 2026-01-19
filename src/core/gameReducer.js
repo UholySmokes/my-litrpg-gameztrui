@@ -6,6 +6,7 @@ import {
   playerAttack,
   startCombat,
   escapeCombat,
+  processEnemyTurns,
 } from "../systems/combat/CombatSystem.js";
 
 const ensureCombatStructure = (state) =>
@@ -323,7 +324,10 @@ const gameReducer = (state, action) => {
         { ...state, combat: combatState },
         enemyIndex,
       );
-      return result.success ? result.state : state;
+      if (!result.success) {
+        return state;
+      }
+      return processEnemyTurns(result.state);
     }
 
     case "PLAYER_USE_SKILL": {
@@ -337,7 +341,10 @@ const gameReducer = (state, action) => {
         enemyIndex,
         skillId,
       );
-      return result.success ? result.state : state;
+      if (!result.success) {
+        return state;
+      }
+      return processEnemyTurns(result.state);
     }
 
     case "PLAYER_ESCAPE": {

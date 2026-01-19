@@ -160,6 +160,8 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
 
   // Calculate derived stats with memoization for performance
   const derivedStats = useMemo(() => {
+    const resourceSystem =
+      selectedClass?.resourceSystem || selectedClass?.resource || null;
     const raceBonuses = ensureAttributeShape(selectedRace?.baseStats, 0);
     const classBonuses = ensureAttributeShape(selectedClass?.baseStats, 0);
 
@@ -185,10 +187,11 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
         max: 50 + intellectScore * 3,
       },
       resources: {
-        rage: selectedClass?.resource === "rage" ? 100 : 0,
-        chi: selectedClass?.resource === "chi" ? 100 : 0,
-        focus: selectedClass?.resource === "focus" ? 100 : 0,
-        stealth: selectedClass?.resource === "stealth" ? 100 : 0,
+        rage: resourceSystem === "rage" ? 100 : 0,
+        chi: resourceSystem === "chi" ? 100 : 0,
+        focus: resourceSystem === "focus" ? 100 : 0,
+        stealth: resourceSystem === "stealth" ? 100 : 0,
+        energy: resourceSystem === "energy" ? 100 : 0,
       },
     };
   }, [allocationPoints, selectedRace, selectedClass]);

@@ -2,6 +2,7 @@ import { DataRegistry } from "../data/DataRegistry.js";
 import { xpForNextLevel } from "../utils/CombatMath.js";
 import { performLevelUp } from "../systems/leveling/LevelingManager.js";
 import { toCanonicalAttributeKey } from "../constants/attributes.js";
+import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import {
   playerAttack,
   startCombat,
@@ -385,16 +386,17 @@ const gameReducer = (state, action) => {
         }
       });
 
-      inventory.push({
+      const craftedItem = {
         ...recipe.result,
-        quantity: recipe.result.count || 1,
-      });
+        quantity: toNumber(recipe.result?.count ?? recipe.result?.quantity, 1),
+      };
+      const nextInventory = mergeInventoryItems(inventory, [craftedItem]);
 
       return {
         ...state,
         player: {
           ...state.player,
-          inventory,
+          inventory: nextInventory,
         },
       };
     }

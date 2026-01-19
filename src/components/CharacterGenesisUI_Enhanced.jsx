@@ -97,6 +97,8 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
   const {
     selectedRace,
     selectedClass,
+    selectedTalent,
+    currentTalents,
     characterName: hookCharacterName,
     gender,
     attributePoints,
@@ -108,14 +110,17 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
     rerollsRemaining,
     handleRaceSelect,
     handleClassSelect,
+    handleTalentSelect,
     setName,
     setGender,
     allocateAttributePoint: handleStatIncrement,
     deallocateAttributePoint: handleStatDecrement,
     handleReroll,
+    rerollTalents,
     handleActiveSkillSelect,
     handlePassiveSkillToggle,
     finalizeCharacter,
+    initializeTalents,
   } = useCharacterCreationReworked();
 
   // Local state for name to ensure it works
@@ -132,6 +137,10 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
 
   // Use local name for validation and display
   const characterName = localName;
+
+  useEffect(() => {
+    initializeTalents();
+  }, [initializeTalents]);
 
   const allocationPoints = useMemo(
     () => ensureAttributeShape(attributePoints, 5),
@@ -246,12 +255,18 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
     const className = selectedClass?.name || "Class not selected";
     const classDescription =
       selectedClass?.description || "Choose a class to view combat protocols.";
+    const talentName = selectedTalent?.name || selectedTalent || "Talent not selected";
+    const talentDescription =
+      selectedTalent?.description ||
+      "Choose a talent to unlock a core directive.";
 
     return {
       raceName,
       raceDescription,
       className,
       classDescription,
+      talentName,
+      talentDescription,
       activeSkills:
         selectedActiveSkills.length > 0 ? selectedActiveSkills : null,
       passiveSkills:
@@ -260,26 +275,30 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
   }, [
     selectedRace,
     selectedClass,
+    selectedTalent,
     selectedActiveSkills,
     selectedPassiveSkills,
   ]);
 
   // Update sync progress based on completion
   useEffect(() => {
+    const stepValue = 100 / 7;
     let progress = 0;
-    if (characterName && characterName.trim().length > 0) progress += 16.67; // 100/6
-    if (gender) progress += 16.67;
-    if (selectedRace) progress += 16.67;
-    if (selectedClass) progress += 16.67;
-    if (availablePoints === 0) progress += 16.67;
+    if (characterName && characterName.trim().length > 0) progress += stepValue;
+    if (gender) progress += stepValue;
+    if (selectedRace) progress += stepValue;
+    if (selectedClass) progress += stepValue;
+    if (selectedTalent) progress += stepValue;
+    if (availablePoints === 0) progress += stepValue;
     if (selectedActiveSkills?.length >= 3 && selectedPassiveSkills?.length >= 6)
-      progress += 16.67;
-    setSyncProgress(progress);
+      progress += stepValue;
+    setSyncProgress(Math.min(100, progress));
   }, [
     characterName,
     gender,
     selectedRace,
     selectedClass,
+    selectedTalent,
     availablePoints,
     selectedActiveSkills,
     selectedPassiveSkills,
@@ -292,6 +311,7 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
     gender &&
     selectedRace &&
     selectedClass &&
+    selectedTalent &&
     availablePoints === 0 &&
     selectedActiveSkills?.length >= 3 &&
     selectedPassiveSkills?.length >= 6;
@@ -575,6 +595,17 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
                 </div>
                 <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
                   {selectionSummary.classDescription}
+                </div>
+              </div>
+              <div style={{ color: "var(--holo-cyan)" }}>
+                <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
+                  TALENT
+                </div>
+                <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
+                  {selectionSummary.talentName}
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
+                  {selectionSummary.talentDescription}
                 </div>
               </div>
             </div>
@@ -947,6 +978,97 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
           >
             Reset Initialization ({rerollsRemaining} remaining)
           </button>
+        </div>
+
+        {/* Talent Selection Controls */}
+        <div>
+          <div
+            style={{
+              color: "var(--holo-cyan)",
+              fontFamily: "monospace",
+              marginBottom: "0.5rem",
+            }}
+          >
+            TALENT SELECTION
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <div style={{ fontSize: "0.75rem", color: "var(--text-dim)" }}>
+              Select 1 talent
+            </div>
+            <button
+              onClick={() => handleClick(() => rerollTalents())}
+              style={{
+                padding: "0.35rem 0.6rem",
+                background: "rgba(0, 243, 255, 0.15)",
+                border: "1px solid rgba(0, 243, 255, 0.4)",
+                color: "#00F3FF",
+                fontFamily: "monospace",
+                fontSize: "0.7rem",
+                cursor: "pointer",
+                borderRadius: "4px",
+              }}
+            >
+              REROLL
+            </button>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gap: "0.25rem",
+              maxHeight: "140px",
+              overflowY: "auto",
+            }}
+          >
+            {(currentTalents || []).length > 0 ? (
+              (currentTalents || []).map((talent) => {
+                const isSelected =
+                  selectedTalent?.id === talent.id || selectedTalent === talent.id;
+                return (
+                  <button
+                    key={talent.id}
+                    onClick={() => handleClick(() => handleTalentSelect(talent.id))}
+                    style={{
+                      padding: "0.5rem",
+                      background: isSelected
+                        ? "rgba(0, 243, 255, 0.3)"
+                        : "rgba(0, 0, 0, 0.6)",
+                      border: isSelected
+                        ? "1px solid var(--holo-cyan)"
+                        : "1px solid rgba(0, 243, 255, 0.3)",
+                      color: "#00F3FF",
+                      fontFamily: "monospace",
+                      textAlign: "left",
+                      cursor: "pointer",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    <div style={{ fontSize: "0.75rem", fontWeight: "bold" }}>
+                      {talent.name || talent.id}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.65rem",
+                        color: "var(--text-dim)",
+                      }}
+                    >
+                      {talent.description || "No description provided."}
+                    </div>
+                  </button>
+                );
+              })
+            ) : (
+              <div style={{ fontSize: "0.7rem", color: "var(--text-dim)" }}>
+                Talent pool initializing...
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Skill Selection Controls */}

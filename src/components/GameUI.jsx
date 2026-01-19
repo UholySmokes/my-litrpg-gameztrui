@@ -1,5 +1,5 @@
 // GameUI.jsx - Technical Cleanup & Dashboard Refactor
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import { useGameEngine } from "../hook/usegamestate";
 import { useNarrative } from "../hook/useNarrative";
 import { renderStatusBlock } from "../util/statusrenderer.js";
@@ -51,6 +51,26 @@ const renderTypewriterText = (text = "") => {
   });
 };
 
+const mergeInventoryItems = (inventory = [], items = []) => {
+  if (!Array.isArray(items) || items.length === 0) return [...inventory];
+  const next = [...inventory];
+  items.forEach((item) => {
+    if (!item?.id) return;
+    const quantity = Number.isFinite(item.quantity) ? item.quantity : 1;
+    const index = next.findIndex((entry) => entry.id === item.id);
+    if (index >= 0) {
+      const existing = next[index];
+      next[index] = {
+        ...existing,
+        quantity: (existing.quantity || 0) + quantity,
+      };
+    } else {
+      next.push({ ...item, quantity });
+    }
+  });
+  return next;
+};
+
 export default function GameUI() {
   // PART 1: State Sanitation - Define missing visibility states
   const [showShop, setShowShop] = useState(false);
@@ -72,7 +92,7 @@ export default function GameUI() {
 
   const narrativeSummary = state?.narrative?.summary;
   const narrativeMemory = state?.narrative?.chatLog || [];
-  const recentNarrativeEntries = narrativeMemory.slice(-10);
+  const recentNarrativeEntries = narrativeMemory.slice(-10).reverse();
   const latestNarrativeEntry = narrativeMemory[narrativeMemory.length - 1];
   const latestNarrativeText = latestNarrativeEntry?.text?.trim() || "";
   const latestEntryTypewriterContent = useMemo(() => {
@@ -84,6 +104,12 @@ export default function GameUI() {
     sanitizedNarrativeSummary.length > 0 &&
     sanitizedNarrativeSummary !== latestNarrativeText;
   const narrativeMemoryRef = useRef(null);
+  useEffect(() => {
+    const container = narrativeMemoryRef.current;
+    if (container) {
+      container.scrollTop = 0;
+    }
+  }, [narrativeMemory.length]);
 
   const {
     submitInput,
@@ -152,7 +178,10 @@ export default function GameUI() {
 
     if (currentGold >= itemCost) {
       const newGold = currentGold - itemCost;
-      const updatedInventory = [...(state.player.inventory || []), item];
+      const updatedInventory = mergeInventoryItems(
+        state.player.inventory || [],
+        [{ ...item, quantity: item.quantity ?? 1 }],
+      );
       const existingCurrency = state.player.currency || {};
       dispatchSystemEvent({
         type: "UPDATE_STATE",

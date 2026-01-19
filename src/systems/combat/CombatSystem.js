@@ -338,73 +338,88 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     return { success: false, reason: "Enemy already defeated", state };
   }
 
-  // If using a skill, validate mana cost first
+  let updatedPlayer = state.player;
+  let updatedEnemy = enemy;
+  let damageResult = null;
+
   if (skillId) {
     const skill = getSkillById(skillId);
     if (!skill) {
       return { success: false, reason: "Skill not found", state };
     }
 
-    // Check if player can afford the skill
-    const affordability = canAffordSkill(skill, state.player);
-    if (!affordability.canAfford) {
+    const skillResult = executeSkill(updatedPlayer, updatedEnemy, skillId);
+    if (skillResult.insufficientMana) {
       return {
         success: false,
-        reason: affordability.feedback?.error || "Insufficient mana",
+        reason: skillResult.messages?.[0] || "Insufficient mana",
         state,
       };
     }
 
-    // Consume mana
-    const consumption = consumeMana(skill, state.player, {
-      showFeedback: false,
-      scaleWithLevel: true,
-    });
-
-    if (!consumption.success) {
-      return { success: false, reason: consumption.error, state };
-    }
-
-    // Update player mana in state
-    state = {
-      ...state,
-      player: {
-        ...state.player,
-        mana: {
-          ...state.player.mana,
-          current: consumption.remainingMana,
-        },
-      },
+    updatedPlayer = skillResult.updatedAttacker || updatedPlayer;
+    updatedEnemy = skillResult.updatedDefender || updatedEnemy;
+    damageResult = {
+      damage: skillResult.damage,
+      isCritical: false,
+      messages: [`${updatedPlayer.name} uses ${skill.name}!`],
     };
+
+    if (skillResult.backfireDamage && skillResult.backfireDamage > 0) {
+      const backfireLog = [
+        ...state.combat.log,
+        ...damageResult.messages,
+        `${updatedPlayer.name}'s magic backfires for ${skillResult.backfireDamage} damage!`,
+      ];
+      const backfireResult = takeDamage(
+        {
+          ...state,
+          player: updatedPlayer,
+          combat: { ...state.combat, log: backfireLog },
+        },
+        skillResult.backfireDamage,
+      );
+      return {
+        success: true,
+        damage: 0,
+        state: {
+          ...backfireResult.state,
+          combat: {
+            ...backfireResult.state.combat,
+            turn: "enemy",
+          },
+        },
+      };
+    }
+  } else {
+    // Get config values (with fallbacks)
+    const strToDamageMultiplier = state.config?.strToDamageMultiplier || 2;
+    const baseAttributeValue = state.config?.baseAttributeValue || 5;
+
+    // Get player stats using config multipliers
+    const normalizedPlayerAttributes = ensureAttributeShape(
+      state.player.attributes,
+      baseAttributeValue,
+    );
+    const playerStrength = getAttributeValue(
+      normalizedPlayerAttributes,
+      "strength",
+    );
+    const playerStats = {
+      attack:
+        (playerStrength || baseAttributeValue) * strToDamageMultiplier +
+        (state.player.equipment?.weapon?.stats?.attack || 0),
+      attributes: normalizedPlayerAttributes,
+    };
+
+    // Calculate damage, passing config for all calculations
+    damageResult = calculateDamage(
+      playerStats,
+      enemy.stats,
+      null,
+      state.config,
+    );
   }
-
-  // Get config values (with fallbacks)
-  const strToDamageMultiplier = state.config?.strToDamageMultiplier || 2;
-  const baseAttributeValue = state.config?.baseAttributeValue || 5;
-
-  // Get player stats using config multipliers
-  const normalizedPlayerAttributes = ensureAttributeShape(
-    state.player.attributes,
-    baseAttributeValue,
-  );
-  const playerStrength = getAttributeValue(
-    normalizedPlayerAttributes,
-    "strength",
-  );
-  const playerStats = {
-    attack:
-      (playerStrength || baseAttributeValue) * strToDamageMultiplier +
-      (state.player.equipment?.weapon?.stats?.attack || 0),
-    attributes: normalizedPlayerAttributes,
-  };
-
-  // Calculate damage, passing config for all calculations
-  const damageResult = calculateDamage(
-    playerStats,
-    enemy.stats,
-    skillId ? getSkillById(skillId) : null,
-    state.config,
-  );
 
   // === CHECK FOR CONFUSE EFFECT ===
   const confuseEffect = state.player.effects?.find(

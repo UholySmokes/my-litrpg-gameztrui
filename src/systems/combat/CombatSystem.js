@@ -34,7 +34,7 @@ import {
 } from "../skills/TalentManager.js";
 import { getModifiedSkill } from "../skills/SkillRegistry.js";
 import { effectApplicationSystem } from "../effects/EffectApplicationSystem.js";
-import { consumeMana, canAffordSkill } from "../magic/ManaSystem.js";
+import { consumeMana } from "../magic/ManaSystem.js";
 import { calculateManaCost } from "../magic/ManaBalance.js";
 import { emit } from "../../core/EventBus.js";
 import {

@@ -29,18 +29,23 @@ const styles = {
   },
 };
 
+const toNumber = (value, fallback = 0) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
 const mergeInventoryItems = (inventory = [], items = []) => {
   if (!Array.isArray(items) || items.length === 0) return [...inventory];
   const next = [...inventory];
   items.forEach((item) => {
     if (!item?.id) return;
-    const quantity = Number.isFinite(item.quantity) ? item.quantity : 1;
+    const quantity = toNumber(item.quantity, 1);
     const index = next.findIndex((entry) => entry.id === item.id);
     if (index >= 0) {
       const existing = next[index];
       next[index] = {
         ...existing,
-        quantity: (existing.quantity || 0) + quantity,
+        quantity: toNumber(existing.quantity, 0) + quantity,
       };
     } else {
       next.push({ ...item, quantity });

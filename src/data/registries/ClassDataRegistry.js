@@ -168,6 +168,86 @@ export const classes = [
     upgradePath: 'void_assassin',
     resourceSystem: 'energy',
     coreMechanics: ['shadow_step', 'mark_for_death', 'shadow_strikes']
+  },
+  {
+    id: 'chronomancer',
+    name: 'Chronomancer',
+    description: 'Temporal arcanist who bends time to control turn flow, cooldowns, and burst windows.',
+    upgradePath: 'time_archon',
+    resourceSystem: 'mana',
+    coreMechanics: ['cooldown_warp', 'time_dilation', 'rewind']
+  },
+  {
+    id: 'alchemist',
+    name: 'Alchemist',
+    description: 'Combat chemist brewing bombs, mutagens, and elixirs on the fly.',
+    upgradePath: 'master_alchemist',
+    resourceSystem: 'mana',
+    coreMechanics: ['transmutation', 'potion_bombs', 'mutagens']
+  },
+  {
+    id: 'spellbreaker',
+    name: 'Spellbreaker',
+    description: 'Anti-mage duelist who shatters wards, interrupts casting, and punishes spell reliance.',
+    upgradePath: 'null_knight',
+    resourceSystem: 'focus',
+    coreMechanics: ['spell_sunder', 'silence', 'mana_drain']
+  },
+  {
+    id: 'gunslinger',
+    name: 'Gunslinger',
+    description: 'Ranged specialist using firearms, trick shots, and explosive rounds.',
+    upgradePath: 'deadeye',
+    resourceSystem: 'focus',
+    coreMechanics: ['trick_shots', 'ammo_management', 'overwatch']
+  },
+  {
+    id: 'warden',
+    name: 'Warden',
+    description: 'Stoic guardian wielding nature wards and protective runes to outlast any foe.',
+    upgradePath: 'ancient_sentinel',
+    resourceSystem: 'mana',
+    coreMechanics: ['warding', 'thorns', 'protective_totems']
+  },
+  {
+    id: 'psion',
+    name: 'Psion',
+    description: 'Mind-weaver who assaults the psyche with illusions, fear, and telekinetic force.',
+    upgradePath: 'mind_lord',
+    resourceSystem: 'mana',
+    coreMechanics: ['mental_stacks', 'telekinesis', 'illusion']
+  },
+  {
+    id: 'reaper',
+    name: 'Reaper',
+    description: 'Soul-harvester who marks prey, feeds on fear, and executes weakened targets.',
+    upgradePath: 'soul_harvester',
+    resourceSystem: 'energy',
+    coreMechanics: ['execute', 'soul_fragments', 'curse_marks']
+  },
+  {
+    id: 'tinkerer',
+    name: 'Tinkerer',
+    description: 'Gadgeteer deploying drones, traps, and overclocked contraptions to control the field.',
+    upgradePath: 'machinist',
+    resourceSystem: 'focus',
+    coreMechanics: ['deployables', 'overclock', 'gadget_chains']
+  },
+  {
+    id: 'oracle',
+    name: 'Oracle',
+    description: 'Prophetic support-caster who manipulates fate, mitigates disaster, and enables allies.',
+    upgradePath: 'seer',
+    resourceSystem: 'mana',
+    coreMechanics: ['foresight', 'fate_marks', 'probability_shift']
+  },
+  {
+    id: 'blade_dancer',
+    name: 'Blade Dancer',
+    description: 'Swift dual-wielder chaining steps, parries, and whirling slashes into relentless pressure.',
+    upgradePath: 'storm_dancer',
+    resourceSystem: 'energy',
+    coreMechanics: ['combo_steps', 'riposte', 'whirling_blades']
   }
 ];
 

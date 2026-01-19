@@ -337,7 +337,7 @@
   box-shadow: var(--glow-subtle);
 }
 
-.chat-container::-webkit-scrollbar-thumb:hover {
+.chat-container:hover::-webkit-scrollbar-thumb {
   background: var(--holo-gold);
 }
 

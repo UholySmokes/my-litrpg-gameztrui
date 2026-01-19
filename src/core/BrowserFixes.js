@@ -6,7 +6,7 @@ export function initBrowserFixes() {
 
   // 1. Deprecated API: InstallTrigger
   // Firefox-specific API often checked by legacy scripts
-  if (!window.InstallTrigger) {
+  if (!("InstallTrigger" in window)) {
     Object.defineProperty(window, "InstallTrigger", {
       get: () => undefined,
       configurable: true,

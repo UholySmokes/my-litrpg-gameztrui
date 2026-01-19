@@ -37,6 +37,7 @@ const initialGameState = {
       chi: 0,
       focus: 0,
       stealth: 0,
+      energy: 0,
     },
     inventory: [],
     equipment: {},

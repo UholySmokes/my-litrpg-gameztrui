@@ -484,6 +484,15 @@ export function useCharacterCreationReworked() {
     const startingGold = 100;
     const startingSoulpoints = 0;
     const selectedTalentId = selectedTalent?.id || null;
+    const resourceSystem =
+      selectedClass?.resourceSystem || selectedClass?.resource || null;
+    const initialResources = {
+      rage: resourceSystem === "rage" ? 100 : 0,
+      chi: resourceSystem === "chi" ? 100 : 0,
+      focus: resourceSystem === "focus" ? 100 : 0,
+      stealth: resourceSystem === "stealth" ? 100 : 0,
+      energy: resourceSystem === "energy" ? 100 : 0,
+    };
 
     const characterData = {
       name: name.trim(),
@@ -516,6 +525,7 @@ export function useCharacterCreationReworked() {
         current: baseMana,
         max: baseMana,
       },
+      resources: initialResources,
       gold: startingGold,
       soulpoints: startingSoulpoints,
       currency: {

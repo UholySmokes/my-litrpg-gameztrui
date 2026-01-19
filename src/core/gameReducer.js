@@ -526,6 +526,21 @@ const gameReducer = (state, action) => {
       attributes.freePoints = freePoints - 1;
       attributeInvestments[attributeKey] =
         toNumber(attributeInvestments[attributeKey], 0) + 1;
+      const hp = typeof player.hp === "object" && player.hp !== null ? player.hp : {};
+      const mana =
+        typeof player.mana === "object" && player.mana !== null ? player.mana : {};
+      const nextHpMax = calculateMaxHp(attributes);
+      const nextManaMax = calculateMaxMana(attributes);
+      const nextHpCurrent = clamp(
+        toNumber(hp.current, nextHpMax),
+        0,
+        nextHpMax,
+      );
+      const nextManaCurrent = clamp(
+        toNumber(mana.current, nextManaMax),
+        0,
+        nextManaMax,
+      );
 
       return {
         ...state,
@@ -533,6 +548,16 @@ const gameReducer = (state, action) => {
           ...player,
           attributes,
           attributeInvestments,
+          hp: {
+            ...hp,
+            max: nextHpMax,
+            current: nextHpCurrent,
+          },
+          mana: {
+            ...mana,
+            max: nextManaMax,
+            current: nextManaCurrent,
+          },
         },
       };
     }
@@ -558,6 +583,21 @@ const gameReducer = (state, action) => {
       } else {
         delete attributeInvestments[attributeKey];
       }
+      const hp = typeof player.hp === "object" && player.hp !== null ? player.hp : {};
+      const mana =
+        typeof player.mana === "object" && player.mana !== null ? player.mana : {};
+      const nextHpMax = calculateMaxHp(attributes);
+      const nextManaMax = calculateMaxMana(attributes);
+      const nextHpCurrent = clamp(
+        toNumber(hp.current, nextHpMax),
+        0,
+        nextHpMax,
+      );
+      const nextManaCurrent = clamp(
+        toNumber(mana.current, nextManaMax),
+        0,
+        nextManaMax,
+      );
 
       return {
         ...state,
@@ -565,6 +605,16 @@ const gameReducer = (state, action) => {
           ...player,
           attributes,
           attributeInvestments,
+          hp: {
+            ...hp,
+            max: nextHpMax,
+            current: nextHpCurrent,
+          },
+          mana: {
+            ...mana,
+            max: nextManaMax,
+            current: nextManaCurrent,
+          },
         },
       };
     }

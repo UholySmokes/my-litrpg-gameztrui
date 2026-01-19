@@ -1,5 +1,5 @@
 // GameUI.jsx - Technical Cleanup & Dashboard Refactor
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useGameEngine } from "../hook/usegamestate";
 import { useNarrative } from "../hook/useNarrative";
 import { renderStatusBlock } from "../util/statusrenderer.js";
@@ -99,11 +99,11 @@ export default function GameUI() {
   const narrativeMemory = state?.narrative?.chatLog || [];
   const recentNarrativeEntries = narrativeMemory.slice(-10).reverse();
   const latestNarrativeEntry = narrativeMemory[narrativeMemory.length - 1];
-  const latestNarrativeText = latestNarrativeEntry?.text?.trim() || "";
-  const latestEntryTypewriterContent = useMemo(() => {
-    if (!latestNarrativeEntry) return null;
-    return renderTypewriterText(latestNarrativeEntry.text);
-  }, [latestNarrativeEntry]);
+  const latestNarrativeRawText = latestNarrativeEntry?.text || "";
+  const latestNarrativeText = latestNarrativeRawText.trim();
+  const latestEntryTypewriterContent = latestNarrativeRawText
+    ? renderTypewriterText(latestNarrativeRawText)
+    : null;
   const sanitizedNarrativeSummary = narrativeSummary?.trim() || "";
   const shouldShowNarrativeSummary =
     sanitizedNarrativeSummary.length > 0 &&

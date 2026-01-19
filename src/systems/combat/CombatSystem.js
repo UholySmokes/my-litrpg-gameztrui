@@ -1177,7 +1177,9 @@ function calculateDamage(attacker, defender, skill = null) {
   // --- 4. Defense & Resistance (Defender) ---
   // Simple defense: subtract defense value
   const defStats = defender.attributes || defender.stats || { str: 10 };
-  const defense = Math.floor((defStats.str || 0) / 2);
+  const defense = Math.floor(
+    Number(getAttributeValue(defStats, "strength") || 0) / 2,
+  );
 
   // Apply Racial Defenses (if Defender is Player)
   let finalDefense = defense;
@@ -1276,11 +1278,13 @@ function calculateDamage(attacker, defender, skill = null) {
 function calculateDamagePipeline(attacker, defender, skill = null) {
   const log = [];
   const isMagic = skill ? skill.isMagic : false;
-  const stats = attacker.attributes ||
-    attacker.stats || { str: 10, int: 10, luck: 10 };
+  const stats = attacker.attributes || attacker.stats || { str: 10, int: 10, luck: 10 };
   const base =
-    Math.floor((isMagic ? stats.int : stats.str) * 2) +
-    (skill ? skill.damage || 0 : 0);
+    Math.floor(
+      Number(
+        getAttributeValue(stats, isMagic ? "intelligence" : "strength") || 0,
+      ) * 2,
+    ) + (skill ? Number(skill.damage || 0) : 0);
   log.push({
     stage: "RAW",
     value: base,
@@ -1339,7 +1343,9 @@ function calculateDamagePipeline(attacker, defender, skill = null) {
 
   // Defender mitigation
   const defStats = defender.attributes || defender.stats || { str: 10 };
-  const defense = Math.floor((defStats.str || 0) / 2);
+  const defense = Math.floor(
+    Number(getAttributeValue(defStats, "strength") || 0) / 2,
+  );
   let afterMitigation = Math.max(1, afterAttackers - defense);
   const defReasons = [`Defense ${defense}`];
   const element = skill ? skill.element : "physical";

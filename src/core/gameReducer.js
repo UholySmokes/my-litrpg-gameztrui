@@ -1,5 +1,4 @@
 import { DataRegistry } from "../data/DataRegistry.js";
-import { xpForNextLevel } from "../utils/CombatMath.js";
 import { performLevelUp } from "../systems/leveling/LevelingManager.js";
 import { toCanonicalAttributeKey } from "../constants/attributes.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
@@ -147,23 +146,6 @@ const gameReducer = (state, action) => {
         0,
       );
       const nextXp = currentXp + action.payload;
-      const currentLevel = state.player.level || 1;
-      const xpThreshold = xpForNextLevel(currentLevel);
-
-      // Check for level-up
-      if (nextXp >= xpThreshold) {
-        // Trigger LEVEL_UP via observer for now; could be inline here
-        return {
-          ...state,
-          player: {
-            ...state.player,
-            xp:
-              typeof state.player.xp === "object" && state.player.xp !== null
-                ? { ...state.player.xp, current: nextXp }
-                : nextXp,
-          },
-        };
-      }
 
       return {
         ...state,

@@ -1,5 +1,4 @@
 import React from "react";
-import { xpForNextLevel } from "../utils/CombatMath.js";
 
 const styles = {
   container: {
@@ -43,7 +42,7 @@ export default function ExperienceBar({ player }) {
 
   const currentXp = player.xp?.current || player.xp || 0;
   const level = player.level || 1;
-  const xpForNext = xpForNextLevel(level);
+  const xpForNext = player.xp?.max || 0;
   const percentage =
     xpForNext > 0 && Number.isFinite(currentXp)
       ? Math.min(100, (currentXp / xpForNext) * 100)

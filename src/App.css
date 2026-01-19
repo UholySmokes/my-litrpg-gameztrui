@@ -139,6 +139,16 @@
   gap: 1rem;
 }
 
+.narrative-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 0;
+  padding-right: 0.35rem;
+}
+
 .systems-dock {
   display: flex;
   flex-direction: column;

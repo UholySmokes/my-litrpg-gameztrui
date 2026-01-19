@@ -184,7 +184,10 @@ function DiscreteBar({ current, max, color, icon }) {
  * Render continuous resource bar
  */
 function ContinuousBar({ current, max, gradient, color }) {
-  const percentage = Math.min(100, (current / max) * 100);
+  const ratio = max > 0 ? current / max : 0;
+  const percentage = Number.isFinite(ratio)
+    ? Math.max(0, Math.min(100, ratio * 100))
+    : 0;
   
   return (
     <div style={{

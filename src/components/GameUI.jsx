@@ -481,20 +481,12 @@ export default function GameUI() {
         )}
 
         {/* Column 2: Center - Narrative */}
-        <div
-          className="narrative-column"
-          style={{
-            overflowY: "auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            minHeight: 0,
-          }}
-        >
-          {/* ASCII Status Block */}
-          <div className="status-terminal" style={{ marginBottom: "1rem" }}>
-            {renderStatusBlock(state?.player || {})}
-          </div>
+        <div className="narrative-column">
+          <div className="narrative-scroll">
+            {/* ASCII Status Block */}
+            <div className="status-terminal" style={{ marginBottom: "1rem" }}>
+              {renderStatusBlock(state?.player || {})}
+            </div>
 
           {/* Narrative Content */}
           <div style={{ flex: 1, marginBottom: "1rem" }}>
@@ -581,6 +573,7 @@ export default function GameUI() {
               </div>
             </div>
           )}
+          </div>
 
           {/* Command Form - Pinned to bottom */}
           <div
@@ -589,7 +582,6 @@ export default function GameUI() {
               border: "1px solid rgba(0, 243, 255, 0.3)",
               padding: "1rem",
               borderRadius: "4px",
-              marginTop: "auto",
             }}
           >
             <form onSubmit={handleSubmit}>

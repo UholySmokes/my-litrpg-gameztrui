@@ -2,13 +2,23 @@
 // Displays active pets, demons, undead minions, and totems
 import React from 'react';
 
+const toPercent = (current, max) => {
+  if (!Number.isFinite(current) || !Number.isFinite(max) || max <= 0) {
+    return 0;
+  }
+  return Math.max(0, Math.min(100, (current / max) * 100));
+};
+
 /**
  * Pet card component (Ranger)
  */
 function PetCard({ pet }) {
   if (!pet) return null;
   
-  const hpPercent = (pet.stats.hp.current / pet.stats.hp.max) * 100;
+  const hpPercent = toPercent(
+    pet?.stats?.hp?.current ?? 0,
+    pet?.stats?.hp?.max ?? 0
+  );
   
   return (
     <div style={{
@@ -55,7 +65,10 @@ function PetCard({ pet }) {
 function DemonCard({ demon }) {
   if (!demon) return null;
   
-  const hpPercent = (demon.stats.hp.current / demon.stats.hp.max) * 100;
+  const hpPercent = toPercent(
+    demon?.stats?.hp?.current ?? 0,
+    demon?.stats?.hp?.max ?? 0
+  );
   
   return (
     <div style={{
@@ -102,7 +115,10 @@ function DemonCard({ demon }) {
 function UndeadCard({ undead }) {
   if (!undead) return null;
   
-  const hpPercent = (undead.stats.hp.current / undead.stats.hp.max) * 100;
+  const hpPercent = toPercent(
+    undead?.stats?.hp?.current ?? 0,
+    undead?.stats?.hp?.max ?? 0
+  );
   
   return (
     <div style={{

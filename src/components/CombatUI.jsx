@@ -28,6 +28,12 @@ export default function CombatUI({
       ? player.activeSkills
       : player?.skills?.active ||
         (player?.abilities || []).filter((ability) => ability.type === "active");
+  const toPercent = (current, max) => {
+    if (!Number.isFinite(current) || !Number.isFinite(max) || max <= 0) {
+      return 0;
+    }
+    return Math.max(0, Math.min(100, (current / max) * 100));
+  };
 
   return (
     <div
@@ -66,8 +72,10 @@ export default function CombatUI({
           Enemies:
         </div>
         {livingEnemies.map(({ enemy, index }) => {
-          const hpPercentage =
-            (enemy.stats.hp.current / enemy.stats.hp.max) * 100;
+          const hpPercentage = toPercent(
+            enemy?.stats?.hp?.current ?? 0,
+            enemy?.stats?.hp?.max ?? 0,
+          );
 
           return (
             <div

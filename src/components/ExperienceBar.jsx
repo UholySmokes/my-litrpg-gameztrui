@@ -44,7 +44,10 @@ export default function ExperienceBar({ player }) {
   const currentXp = player.xp?.current || player.xp || 0;
   const level = player.level || 1;
   const xpForNext = xpForNextLevel(level);
-  const percentage = Math.min(100, (currentXp / xpForNext) * 100);
+  const percentage =
+    xpForNext > 0 && Number.isFinite(currentXp)
+      ? Math.min(100, (currentXp / xpForNext) * 100)
+      : 0;
 
   return (
     <div style={styles.container}>

@@ -29,6 +29,26 @@ const styles = {
   },
 };
 
+const mergeInventoryItems = (inventory = [], items = []) => {
+  if (!Array.isArray(items) || items.length === 0) return [...inventory];
+  const next = [...inventory];
+  items.forEach((item) => {
+    if (!item?.id) return;
+    const quantity = Number.isFinite(item.quantity) ? item.quantity : 1;
+    const index = next.findIndex((entry) => entry.id === item.id);
+    if (index >= 0) {
+      const existing = next[index];
+      next[index] = {
+        ...existing,
+        quantity: (existing.quantity || 0) + quantity,
+      };
+    } else {
+      next.push({ ...item, quantity });
+    }
+  });
+  return next;
+};
+
 export default function AdminTools({ dispatch, getState }) {
   const [output, setOutput] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -149,12 +169,10 @@ export default function AdminTools({ dispatch, getState }) {
       payload: {
         player: {
           ...(getState?.().player || {}),
-          inventory: [
-            ...((getState?.().player?.inventory || []).map((item) => ({
-              ...item,
-            })) || []),
-            ...mats,
-          ],
+          inventory: mergeInventoryItems(
+            (getState?.().player?.inventory || []).map((item) => ({ ...item })),
+            mats,
+          ),
         },
       },
     });
@@ -181,12 +199,10 @@ export default function AdminTools({ dispatch, getState }) {
       payload: {
         player: {
           ...(getState?.().player || {}),
-          inventory: [
-            ...((getState?.().player?.inventory || []).map((item) => ({
-              ...item,
-            })) || []),
-            ...loot,
-          ],
+          inventory: mergeInventoryItems(
+            (getState?.().player?.inventory || []).map((item) => ({ ...item })),
+            loot,
+          ),
         },
       },
     });

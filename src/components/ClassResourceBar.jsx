@@ -11,6 +11,7 @@ function getClassResource(player) {
   const rage = resources.rage ?? player.rage ?? 0;
   const chi = resources.chi ?? player.chi ?? 0;
   const focus = resources.focus ?? player.focus?.current ?? player.focus ?? 0;
+  const energy = resources.energy ?? player.energy ?? 0;
 
   switch(classId) {
     case 'berserker':
@@ -59,7 +60,7 @@ function getClassResource(player) {
       return {
         type: 'energy',
         label: 'Energy',
-        current: player.energy || 0,
+        current: energy,
         max: player.maxEnergy || 100,
         color: '#ffff44',
         gradient: 'linear-gradient(90deg, #ffff44, #ffcc00)',

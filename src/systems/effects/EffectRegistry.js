@@ -7,123 +7,237 @@
  * Standardized Effect Types
  */
 export const EFFECT_TYPES = {
-  BUFF: 'BUFF',
-  DEBUFF: 'DEBUFF',
-  DOT: 'DOT', // Damage over time
-  HOT: 'HOT', // Heal over time
-  CONTROL: 'CONTROL' // Stun, Freeze, etc.
+  BUFF: "BUFF",
+  DEBUFF: "DEBUFF",
+  DOT: "DOT", // Damage over time
+  HOT: "HOT", // Heal over time
+  CONTROL: "CONTROL", // Stun, Freeze, etc.
 };
 
 /**
  * Stacking Behaviors
  */
 export const STACKING_RULES = {
-  DONT_STACK: 'DONT_STACK', // New application refreshes duration only
-  STACK_DURATION: 'STACK_DURATION', // Add new duration to existing
-  STACK_INTENSITY: 'STACK_INTENSITY', // Add new magnitude to existing
-  INDEPENDENT: 'INDEPENDENT' // Track each instance separately
+  DONT_STACK: "DONT_STACK", // New application refreshes duration only
+  STACK_DURATION: "STACK_DURATION", // Add new duration to existing
+  STACK_INTENSITY: "STACK_INTENSITY", // Add new magnitude to existing
+  INDEPENDENT: "INDEPENDENT", // Track each instance separately
 };
 
 /**
  * EFFECT DEFINITIONS
  * Templates for creating concrete effect instances
  */
-export const EFFECT_DEFINITIONS = {
+const EFFECT_DEFINITIONS = {
   // --- BUFFS ---
   BLUR: {
-    id: 'blur',
-    name: 'Blur',
+    id: "blur",
+    name: "Blur",
     type: EFFECT_TYPES.BUFF,
-    description: 'Reduces enemy hit chance by 20%.',
+    description: "Reduces enemy hit chance by 20%.",
     duration: 3, // Turns
-    magnitude: 0.20,
+    magnitude: 0.2,
     stacking: STACKING_RULES.DONT_STACK,
-    onApply: (target, effect) => {
+    onApply: () => {
       // Logic handled in combat calculation via tag lookup
     },
-    tags: ['DODGE_BOOST']
+    tags: ["DODGE_BOOST"],
   },
   HASTE: {
-    id: 'haste',
-    name: 'Haste',
+    id: "haste",
+    name: "Haste",
     type: EFFECT_TYPES.BUFF,
-    description: 'Increases attack speed/initiative.',
+    description: "Increases attack speed/initiative.",
     duration: 3,
-    magnitude: 0.30,
+    magnitude: 0.3,
     stacking: STACKING_RULES.DONT_STACK,
-    tags: ['SPEED_BOOST']
+    tags: ["SPEED_BOOST"],
   },
   MIGHT: {
-    id: 'might',
-    name: 'Might',
+    id: "might",
+    name: "Might",
     type: EFFECT_TYPES.BUFF,
-    description: 'Increases physical damage.',
+    description: "Increases physical damage.",
     duration: 5,
-    magnitude: 0.20,
+    magnitude: 0.2,
     stacking: STACKING_RULES.STACK_INTENSITY,
     maxStacks: 5,
-    tags: ['DMG_BOOST_PHYSICAL']
+    tags: ["DMG_BOOST_PHYSICAL"],
   },
 
   // --- DEBUFFS ---
   BURN: {
-    id: 'burn',
-    name: 'Burn',
+    id: "burn",
+    name: "Burn",
     type: EFFECT_TYPES.DOT,
-    description: 'Deals Fire damage at start of turn.',
+    description: "Deals Fire damage at start of turn.",
     duration: 3,
     magnitude: 10, // Base damage per turn
     stacking: STACKING_RULES.INDEPENDENT,
-    element: 'fire'
+    element: "fire",
   },
   POISON: {
-    id: 'poison',
-    name: 'Poison',
+    id: "poison",
+    name: "Poison",
     type: EFFECT_TYPES.DOT,
-    description: 'Deals Nature damage at start of turn.',
+    description: "Deals Nature damage at start of turn.",
     duration: 5,
     magnitude: 5,
     stacking: STACKING_RULES.STACK_INTENSITY,
     maxStacks: 10,
-    element: 'nature'
+    element: "nature",
   },
   STUN: {
-    id: 'stun',
-    name: 'Stun',
+    id: "stun",
+    name: "Stun",
     type: EFFECT_TYPES.CONTROL,
-    description: 'Cannot act this turn.',
+    description: "Cannot act this turn.",
     duration: 1,
     magnitude: 1,
     stacking: STACKING_RULES.DONT_STACK,
-    tags: ['SKIP_TURN']
+    tags: ["SKIP_TURN"],
   },
   FREEZE: {
-    id: 'freeze',
-    name: 'Freeze',
+    id: "freeze",
+    name: "Freeze",
     type: EFFECT_TYPES.CONTROL,
-    description: 'Frozen solid. Cannot act. Shatters on physical hit.',
+    description: "Frozen solid. Cannot act. Shatters on physical hit.",
     duration: 2,
     magnitude: 1,
     stacking: STACKING_RULES.DONT_STACK,
-    tags: ['SKIP_TURN', 'WEAK_PHYSICAL']
+    tags: ["SKIP_TURN", "WEAK_PHYSICAL"],
   },
   BLEED: {
-    id: 'bleed',
-    name: 'Bleed',
+    id: "bleed",
+    name: "Bleed",
     type: EFFECT_TYPES.DOT,
-    description: 'Physical damage over time.',
+    description: "Physical damage over time.",
     duration: 3,
     magnitude: 8,
     stacking: STACKING_RULES.STACK_INTENSITY,
-    tags: ['PHYSICAL_DOT']
-  }
+    tags: ["PHYSICAL_DOT"],
+  },
+
+  // --- CONTROL EFFECTS ---
+  CHARM: {
+    id: "charm",
+    name: "Charm",
+    type: EFFECT_TYPES.CONTROL,
+    description: "Forced to attack allies.",
+    duration: 2,
+    magnitude: 1,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["ATTACK_ALLIES"],
+  },
+  CONFUSE: {
+    id: "confuse",
+    name: "Confuse",
+    type: EFFECT_TYPES.CONTROL,
+    description: "50% chance to attack self or miss.",
+    duration: 3,
+    magnitude: 0.5,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["RANDOM_TARGET", "MISS_CHANCE"],
+  },
+  TAUNT: {
+    id: "taunt",
+    name: "Taunt",
+    type: EFFECT_TYPES.CONTROL,
+    description: "Forced to target the taunter.",
+    duration: 2,
+    magnitude: 1,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["FORCE_TARGET"],
+  },
+  SILENCE: {
+    id: "silence",
+    name: "Silence",
+    type: EFFECT_TYPES.CONTROL,
+    description: "Cannot use magical abilities.",
+    duration: 3,
+    magnitude: 1,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["BLOCK_MAGIC"],
+  },
+  DISARM: {
+    id: "disarm",
+    name: "Disarm",
+    type: EFFECT_TYPES.CONTROL,
+    description: "Cannot use weapon attacks.",
+    duration: 2,
+    magnitude: 1,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["BLOCK_PHYSICAL"],
+  },
+  ROOT: {
+    id: "root",
+    name: "Root",
+    type: EFFECT_TYPES.CONTROL,
+    description: "Cannot move but can still attack.",
+    duration: 3,
+    magnitude: 1,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["IMMOBILE"],
+  },
+
+  // --- UTILITY EFFECTS ---
+  INVISIBLE: {
+    id: "invisible",
+    name: "Invisible",
+    type: EFFECT_TYPES.BUFF,
+    description: "Cannot be targeted by enemies.",
+    duration: 2,
+    magnitude: 1,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["UNTARGETABLE"],
+  },
+  TRANSFORM: {
+    id: "transform",
+    name: "Transform",
+    type: EFFECT_TYPES.BUFF,
+    description: "Changed form with altered stats.",
+    duration: 5,
+    magnitude: 1,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["FORM_CHANGE"],
+  },
+  SHIELD: {
+    id: "shield",
+    name: "Shield",
+    type: EFFECT_TYPES.BUFF,
+    description: "Absorbs incoming damage.",
+    duration: 3,
+    magnitude: 50, // Damage absorbed
+    stacking: STACKING_RULES.INDEPENDENT,
+    tags: ["DAMAGE_ABSORB"],
+  },
+  REFLECT: {
+    id: "reflect",
+    name: "Reflect",
+    type: EFFECT_TYPES.BUFF,
+    description: "Reflects 25% of damage taken.",
+    duration: 4,
+    magnitude: 0.25,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["DAMAGE_REFLECT"],
+  },
+  SLOW: {
+    id: "slow",
+    name: "Slow",
+    type: EFFECT_TYPES.DEBUFF,
+    description: "Reduces attack speed/initiative.",
+    duration: 3,
+    magnitude: -0.3,
+    stacking: STACKING_RULES.DONT_STACK,
+    tags: ["SPEED_REDUCTION"],
+  },
 };
 
 /**
  * Helper to get an effect template
  */
 export function getEffectDefinition(effectId) {
-  const def = Object.values(EFFECT_DEFINITIONS).find(e => e.id === effectId);
+  const def = Object.values(EFFECT_DEFINITIONS).find((e) => e.id === effectId);
   if (!def) {
     console.warn(`Effect definition not found for ID: ${effectId}`);
     return null;

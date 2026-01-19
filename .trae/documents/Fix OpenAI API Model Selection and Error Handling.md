@@ -1,0 +1,3 @@
+I will update `src/core/AIService.js` to fix the OpenAI API error by:
+1.  **Reordering the `models` list** to prioritize valid, existing models (`gpt-4o`, `gpt-4-turbo`, `gpt-3.5-turbo`) over speculative ones.
+2.  **Updating the error handling logic** in the model selection loop to catch `404` (Model Not Found) errors, allowing the service to try the next model in the list instead of failing immediately.

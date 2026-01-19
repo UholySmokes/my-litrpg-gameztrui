@@ -11,7 +11,7 @@ import { getItemData } from '../entities/ItemRegistry.js';
  * @param {object} gameState - Current game state
  * @returns {object} Validation result with valid flag and reason
  */
-export function validateAction(action, gameState) {
+function validateAction(action, gameState) {
   if (!action || !action.type) {
     return {
       valid: false,
@@ -190,7 +190,7 @@ function validateAttack(action, gameState) {
  * Validates that an action doesn't violate game rules
  * This is a catch-all for any other validation rules
  */
-export function validateGameRules(action, gameState) {
+function validateGameRules(action, gameState) {
   // Prevent actions that would modify state in invalid ways
   // This is where you'd add rules like:
   // - Can't use items in certain locations

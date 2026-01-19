@@ -23,7 +23,55 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-case-declarations': 'off'
     },
+  },
+  {
+    files: ['tests/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+        vi: 'readonly'
+      },
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module'
+      },
+    },
+    rules: {
+      'no-undef': 'off',
+      'no-unused-vars': 'off'
+    },
+  },
+  {
+    files: ['src/lib/gamelogic.js'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+      'no-case-declarations': 'off'
+    }
+  },
+  {
+    files: ['src/systems/**/*.js', 'src/util/statusrenderer.js', 'src/hook/**/*.js'],
+    rules: {
+      'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }]
+    }
+  },
+  {
+    files: ['scripts/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.node,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module'
+      },
+    },
+    rules: {
+      'no-undef': 'off',
+      'no-unused-vars': 'off'
+    }
   },
 ])

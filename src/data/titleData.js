@@ -105,14 +105,14 @@ export const titleDatabase = [
 /**
  * Get title by ID
  */
-export function getTitleById(titleId) {
+function getTitleById(titleId) {
   return titleDatabase.find(t => t.id === titleId) || null;
 }
 
 /**
  * Check if title unlock conditions are met
  */
-export function checkTitleUnlockConditions(title, gameState) {
+function checkTitleUnlockConditions(title, gameState) {
   if (!title.unlockConditions) return true;
   
   const conditions = title.unlockConditions;
@@ -178,7 +178,7 @@ export function checkTitleUnlockConditions(title, gameState) {
 /**
  * Get available titles (unlock conditions met)
  */
-export function getAvailableTitles(gameState) {
+function getAvailableTitles(gameState) {
   const unlockedIds = gameState.player.unlockedTitles || [];
   return titleDatabase.filter(title => {
     if (unlockedIds.includes(title.id)) return false; // Already unlocked

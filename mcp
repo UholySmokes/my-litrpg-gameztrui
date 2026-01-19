@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "GitKraken": {
+      "args": [
+        "mcp",
+        "--host=windsurf",
+        "--source=gitlens",
+        "--scheme=windsurf"
+      ],
+      "command": "c:\\Users\\fmars\\AppData\\Roaming\\Windsurf\\User\\globalStorage\\eamodio.gitlens\\gk.exe",
+      "type": "stdio"
+    },
+    "supabase-mcp-server": {
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--access-token",
+        "sbp_4bdfa32970385861a6a85c1a1f4013077aff0456"
+      ],
+      "command": "npx",
+      "disabled": false,
+      "env": {}
+    }
+  }
+}

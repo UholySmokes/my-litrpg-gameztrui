@@ -1,4 +1,4 @@
-import { getItemData } from '../../entities/ItemRegistry.js';
+import { getItemData } from "../../entities/ItemRegistry.js";
 
 const DEBUG_LOGGING_ENABLED = false;
 
@@ -12,11 +12,13 @@ const DEBUG_LOGGING_ENABLED = false;
 export function addItem(state, item) {
   // If item is just a string ID, look it up in the database
   let itemData;
-  if (typeof item === 'string') {
+  if (typeof item === "string") {
     itemData = getItemData(item);
     if (!itemData) {
-      console.warn(`Item "${item}" not found in database. Adding as basic item.`);
-      itemData = { id: item, name: item, type: 'misc', quantity: 1 };
+      console.warn(
+        `Item "${item}" not found in database. Adding as basic item.`,
+      );
+      itemData = { id: item, name: item, type: "misc", quantity: 1 };
     }
   } else {
     // If it's an object, check if we need to enrich it with database data
@@ -24,21 +26,24 @@ export function addItem(state, item) {
     // Merge provided data with database data (provided data takes precedence)
     itemData = { ...itemData, ...item };
   }
-  
+
   const inventory = [...state.player.inventory];
-  const existingItemIndex = inventory.findIndex(invItem => invItem.id === itemData.id);
-  
+  const existingItemIndex = inventory.findIndex(
+    (invItem) => invItem.id === itemData.id,
+  );
+
   if (existingItemIndex >= 0) {
     // Item already exists, increase quantity
     inventory[existingItemIndex] = {
       ...inventory[existingItemIndex],
-      quantity: inventory[existingItemIndex].quantity + (itemData.quantity || 1)
+      quantity:
+        inventory[existingItemIndex].quantity + (itemData.quantity || 1),
     };
   } else {
     // New item, add to inventory with full data from database
     inventory.push({
       ...itemData,
-      quantity: itemData.quantity || 1
+      quantity: itemData.quantity || 1,
     });
   }
 
@@ -46,8 +51,8 @@ export function addItem(state, item) {
     ...state,
     player: {
       ...state.player,
-      inventory
-    }
+      inventory,
+    },
   };
 }
 
@@ -57,33 +62,33 @@ export function addItem(state, item) {
  * @param {string} itemId - The ID of the item to use
  * @returns {object} A new game state object with item consumed and effects applied
  */
-export function useItem(state, itemId) {
+export function consumeItem(state, itemId) {
   const inventory = [...state.player.inventory];
-  const itemIndex = inventory.findIndex(item => item.id === itemId);
-  
+  const itemIndex = inventory.findIndex((item) => item.id === itemId);
+
   if (itemIndex === -1) {
     // Item not found in inventory
     return state;
   }
-  
+
   const item = inventory[itemIndex];
   const itemData = getItemData(itemId);
-  
-  if (!itemData || itemData.type !== 'consumable') {
+
+  if (!itemData || itemData.type !== "consumable") {
     // Item cannot be used
     return state;
   }
-  
+
   // Start with base state
   let newState = { ...state };
-  
+
   // Apply item effects
   if (itemData.effect) {
     if (itemData.effect.heal) {
       // Heal HP
       const newHp = Math.min(
         state.player.hp.max,
-        state.player.hp.current + itemData.effect.heal
+        state.player.hp.current + itemData.effect.heal,
       );
       newState = {
         ...newState,
@@ -91,17 +96,17 @@ export function useItem(state, itemId) {
           ...newState.player,
           hp: {
             ...newState.player.hp,
-            current: newHp
-          }
-        }
+            current: newHp,
+          },
+        },
       };
     }
-    
+
     if (itemData.effect.mana) {
       // Restore Mana
       const newMana = Math.min(
         state.player.mana.max,
-        state.player.mana.current + itemData.effect.mana
+        state.player.mana.current + itemData.effect.mana,
       );
       newState = {
         ...newState,
@@ -109,30 +114,30 @@ export function useItem(state, itemId) {
           ...newState.player,
           mana: {
             ...newState.player.mana,
-            current: newMana
-          }
-        }
+            current: newMana,
+          },
+        },
       };
     }
   }
-  
+
   // Remove item from inventory (or decrease quantity)
   if (item.quantity > 1) {
     inventory[itemIndex] = {
       ...item,
-      quantity: item.quantity - 1
+      quantity: item.quantity - 1,
     };
   } else {
     inventory.splice(itemIndex, 1);
   }
-  
+
   newState = {
     ...newState,
     player: {
       ...newState.player,
-      inventory
-    }
+      inventory,
+    },
   };
-  
+
   return newState;
 }

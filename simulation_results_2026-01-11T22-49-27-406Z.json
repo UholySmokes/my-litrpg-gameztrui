@@ -1,0 +1,9076 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-11T22:49:27.407Z",
+    "config": {
+      "TOTAL_RUNS": 1000,
+      "TARGET_LEVEL": 20,
+      "MAX_SIMULATION_TIME": 300000,
+      "OUTPUT_FORMAT": "json",
+      "ENABLE_DETAILED_LOGS": false,
+      "PROGRESS_UPDATE_INTERVAL": 5,
+      "SAVE_INTERMEDIATE_RESULTS": true,
+      "INTERMEDIATE_SAVE_INTERVAL": 25,
+      "RANDOM_SEED": null,
+      "MIN_FIGHT_TIME": 1000,
+      "MAX_FIGHT_TIME": 5000,
+      "DEATH_PENALTY_TIME": 5000,
+      "BASE_XP_PER_FIGHT": 100,
+      "CRITICAL_FAILURE_RATE": 0.01
+    },
+    "scriptVersion": "1.0.0"
+  },
+  "statistics": {
+    "totalRuns": 1000,
+    "successfulRuns": 993,
+    "failedRuns": 7,
+    "successRate": 99.3,
+    "averageTime": 108,
+    "medianTime": 108,
+    "standardDeviation": 16,
+    "minTime": 29,
+    "maxTime": 310,
+    "averageFights": 75,
+    "averageDeaths": 38.4,
+    "errors": 7,
+    "errorRate": 0.7000000000000001
+  },
+  "results": [
+    {
+      "runNumber": 1,
+      "status": "success",
+      "totalTime": 87,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 2,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 3,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 4,
+      "status": "success",
+      "totalTime": 78,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 5,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 6,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 7,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 8,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 30,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 9,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 10,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 11,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 12,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 13,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 14,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 15,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 16,
+      "status": "success",
+      "totalTime": 121,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 17,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 18,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 19,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 46,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 20,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 21,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 30,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 22,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 23,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 24,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 25,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 26,
+      "status": "success",
+      "totalTime": 120,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 27,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 28,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 29,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 30,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 50,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 31,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 32,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 33,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 34,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 35,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 46,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 36,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 37,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 38,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 39,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 40,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 29,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 41,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 42,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 43,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 44,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 45,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 46,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 47,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 48,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 49,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 50,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 51,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 52,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 53,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 23,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 54,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 55,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 56,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 57,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 58,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 59,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 60,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 61,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 62,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 63,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 64,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 65,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 66,
+      "status": "success",
+      "totalTime": 77,
+      "level": 20,
+      "deaths": 25,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 67,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 68,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 69,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 70,
+      "status": "success",
+      "totalTime": 112,
+      "level": 20,
+      "deaths": 42,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 71,
+      "status": "success",
+      "totalTime": 74,
+      "level": 20,
+      "deaths": 24,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 72,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 45,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 73,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 74,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 75,
+      "status": "success",
+      "totalTime": 187,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 76,
+      "status": "success",
+      "totalTime": 130,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 77,
+      "status": "success",
+      "totalTime": 119,
+      "level": 20,
+      "deaths": 49,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 78,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 79,
+      "status": "success",
+      "totalTime": 78,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 80,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 81,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 35,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 82,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 83,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 84,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 85,
+      "status": "success",
+      "totalTime": 77,
+      "level": 20,
+      "deaths": 54,
+      "fights": 86,
+      "error": null
+    },
+    {
+      "runNumber": 86,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 33,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 87,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 88,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 89,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 90,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 91,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 92,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 93,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 46,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 94,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 95,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 96,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 41,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 97,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 98,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 46,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 99,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 100,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 29,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 101,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 49,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 102,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 103,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 51,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 104,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 105,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 106,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 107,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 108,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 109,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 110,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 111,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 33,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 112,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 113,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 114,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 115,
+      "status": "success",
+      "totalTime": 127,
+      "level": 20,
+      "deaths": 52,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 116,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 117,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 118,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 119,
+      "status": "success",
+      "totalTime": 76,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 120,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 55,
+      "fights": 87,
+      "error": null
+    },
+    {
+      "runNumber": 121,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 49,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 122,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 36,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 123,
+      "status": "success",
+      "totalTime": 114,
+      "level": 20,
+      "deaths": 48,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 124,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 125,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 53,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 126,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 53,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 127,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 49,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 128,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 129,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 42,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 130,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 131,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 132,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 133,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 134,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 135,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 136,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 137,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 138,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 139,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 140,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 141,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 142,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 143,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 57,
+      "fights": 87,
+      "error": null
+    },
+    {
+      "runNumber": 144,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 145,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 146,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 147,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 148,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 149,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 150,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 151,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 152,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 153,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 154,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 51,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 155,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 25,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 156,
+      "status": "success",
+      "totalTime": 121,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 157,
+      "status": "success",
+      "totalTime": 97,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 158,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 159,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 160,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 161,
+      "status": "success",
+      "totalTime": 62,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 162,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 26,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 163,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 164,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 165,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 166,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 167,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 168,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 169,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 29,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 170,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 171,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 172,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 173,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 23,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 174,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 175,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 176,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 177,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 45,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 178,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 179,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 180,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 20,
+      "fights": 62,
+      "error": null
+    },
+    {
+      "runNumber": 181,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 182,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 183,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 53,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 184,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 49,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 185,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 186,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 187,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 188,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 189,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 190,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 33,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 191,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 192,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 193,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 194,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 195,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 196,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 197,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 198,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 199,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 200,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 201,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 202,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 203,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 204,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 205,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 206,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 46,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 207,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 32,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 208,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 209,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 210,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 35,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 211,
+      "status": "success",
+      "totalTime": 121,
+      "level": 20,
+      "deaths": 49,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 212,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 213,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 214,
+      "status": "success",
+      "totalTime": 75,
+      "level": 20,
+      "deaths": 22,
+      "fights": 63,
+      "error": null
+    },
+    {
+      "runNumber": 215,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 216,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 217,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 218,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 219,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 220,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 221,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 222,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 223,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 224,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 225,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 226,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 227,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 228,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 229,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 230,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 231,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 52,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 232,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 233,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 234,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 235,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 236,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 237,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 238,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 239,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 240,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 241,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 242,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 243,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 244,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 245,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 246,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 247,
+      "status": "success",
+      "totalTime": 96,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 248,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 249,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 250,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 251,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 252,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 253,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 254,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 255,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 256,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 257,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 258,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 259,
+      "status": "success",
+      "totalTime": 100,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 260,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 261,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 262,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 263,
+      "status": "error",
+      "totalTime": 0,
+      "level": 1,
+      "deaths": 0,
+      "fights": 0,
+      "error": "Critical failure occurred"
+    },
+    {
+      "runNumber": 264,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 265,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 266,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 267,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 268,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 269,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 42,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 270,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 271,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 272,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 273,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 274,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 275,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 276,
+      "status": "success",
+      "totalTime": 76,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 277,
+      "status": "success",
+      "totalTime": 115,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 278,
+      "status": "success",
+      "totalTime": 83,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 279,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 280,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 281,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 282,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 283,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 284,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 285,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 286,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 287,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 288,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 289,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 290,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 27,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 291,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 292,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 22,
+      "fights": 63,
+      "error": null
+    },
+    {
+      "runNumber": 293,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 294,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 295,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 296,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 297,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 298,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 299,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 27,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 300,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 301,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 56,
+      "fights": 86,
+      "error": null
+    },
+    {
+      "runNumber": 302,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 303,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 56,
+      "fights": 87,
+      "error": null
+    },
+    {
+      "runNumber": 304,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 26,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 305,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 306,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 307,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 308,
+      "status": "success",
+      "totalTime": 104,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 309,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 310,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 53,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 311,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 312,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 313,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 29,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 314,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 315,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 316,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 317,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 318,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 319,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 320,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 321,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 322,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 52,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 323,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 324,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 325,
+      "status": "success",
+      "totalTime": 99,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 326,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 49,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 327,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 328,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 329,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 330,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 331,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 332,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 24,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 333,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 334,
+      "status": "success",
+      "totalTime": 77,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 335,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 33,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 336,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 337,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 338,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 42,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 339,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 340,
+      "status": "success",
+      "totalTime": 116,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 341,
+      "status": "success",
+      "totalTime": 102,
+      "level": 20,
+      "deaths": 42,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 342,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 343,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 344,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 345,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 54,
+      "fights": 86,
+      "error": null
+    },
+    {
+      "runNumber": 346,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 347,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 348,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 349,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 350,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 53,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 351,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 352,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 353,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 354,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 355,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 50,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 356,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 357,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 358,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 359,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 360,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 361,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 362,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 53,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 363,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 29,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 364,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 365,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 366,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 367,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 368,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 369,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 370,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 371,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 372,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 373,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 52,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 374,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 375,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 376,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 377,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 378,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 379,
+      "status": "success",
+      "totalTime": 156,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 380,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 24,
+      "fights": 64,
+      "error": null
+    },
+    {
+      "runNumber": 381,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 382,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 51,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 383,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 384,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 385,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 386,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 387,
+      "status": "success",
+      "totalTime": 77,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 388,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 51,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 389,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 390,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 27,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 391,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 392,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 393,
+      "status": "success",
+      "totalTime": 158,
+      "level": 20,
+      "deaths": 30,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 394,
+      "status": "success",
+      "totalTime": 160,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 395,
+      "status": "success",
+      "totalTime": 103,
+      "level": 20,
+      "deaths": 46,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 396,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 397,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 398,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 46,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 399,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 50,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 400,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 401,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 402,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 55,
+      "fights": 86,
+      "error": null
+    },
+    {
+      "runNumber": 403,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 404,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 405,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 406,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 407,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 22,
+      "fights": 63,
+      "error": null
+    },
+    {
+      "runNumber": 408,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 409,
+      "status": "success",
+      "totalTime": 78,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 410,
+      "status": "success",
+      "totalTime": 77,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 411,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 412,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 413,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 414,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 415,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 416,
+      "status": "error",
+      "totalTime": 1,
+      "level": 1,
+      "deaths": 0,
+      "fights": 0,
+      "error": "Critical failure occurred"
+    },
+    {
+      "runNumber": 417,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 51,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 418,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 419,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 420,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 50,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 421,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 422,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 423,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 424,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 425,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 50,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 426,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 427,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 428,
+      "status": "success",
+      "totalTime": 96,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 429,
+      "status": "success",
+      "totalTime": 104,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 430,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 431,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 432,
+      "status": "error",
+      "totalTime": 0,
+      "level": 1,
+      "deaths": 0,
+      "fights": 0,
+      "error": "Critical failure occurred"
+    },
+    {
+      "runNumber": 433,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 434,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 435,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 436,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 437,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 42,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 438,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 439,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 440,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 441,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 442,
+      "status": "success",
+      "totalTime": 175,
+      "level": 20,
+      "deaths": 51,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 443,
+      "status": "success",
+      "totalTime": 133,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 444,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 445,
+      "status": "success",
+      "totalTime": 104,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 446,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 447,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 448,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 449,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 450,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 451,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 452,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 453,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 25,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 454,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 455,
+      "status": "success",
+      "totalTime": 113,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 456,
+      "status": "success",
+      "totalTime": 104,
+      "level": 20,
+      "deaths": 54,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 457,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 458,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 459,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 460,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 461,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 462,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 463,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 464,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 465,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 53,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 466,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 467,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 468,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 30,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 469,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 470,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 471,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 472,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 33,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 473,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 474,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 50,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 475,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 476,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 477,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 478,
+      "status": "success",
+      "totalTime": 78,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 479,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 50,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 480,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 481,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 25,
+      "fights": 64,
+      "error": null
+    },
+    {
+      "runNumber": 482,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 27,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 483,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 31,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 484,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 52,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 485,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 486,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 57,
+      "fights": 88,
+      "error": null
+    },
+    {
+      "runNumber": 487,
+      "status": "success",
+      "totalTime": 120,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 488,
+      "status": "success",
+      "totalTime": 81,
+      "level": 20,
+      "deaths": 29,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 489,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 490,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 491,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 492,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 50,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 493,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 49,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 494,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 495,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 496,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 497,
+      "status": "success",
+      "totalTime": 143,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 498,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 29,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 499,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 500,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 501,
+      "status": "success",
+      "totalTime": 29,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 502,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 50,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 503,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 504,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 505,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 506,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 507,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 23,
+      "fights": 63,
+      "error": null
+    },
+    {
+      "runNumber": 508,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 509,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 510,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 511,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 512,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 513,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 514,
+      "status": "error",
+      "totalTime": 0,
+      "level": 1,
+      "deaths": 0,
+      "fights": 0,
+      "error": "Critical failure occurred"
+    },
+    {
+      "runNumber": 515,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 516,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 517,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 518,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 519,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 46,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 520,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 521,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 41,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 522,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 523,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 524,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 46,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 525,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 526,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 527,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 26,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 528,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 529,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 530,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 531,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 532,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 533,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 534,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 25,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 535,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 536,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 537,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 538,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 539,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 540,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 30,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 541,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 542,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 33,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 543,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 544,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 545,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 546,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 547,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 548,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 549,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 550,
+      "status": "success",
+      "totalTime": 77,
+      "level": 20,
+      "deaths": 25,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 551,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 552,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 553,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 554,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 555,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 56,
+      "fights": 87,
+      "error": null
+    },
+    {
+      "runNumber": 556,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 557,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 558,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 559,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 560,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 27,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 561,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 562,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 563,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 564,
+      "status": "success",
+      "totalTime": 193,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 565,
+      "status": "success",
+      "totalTime": 139,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 566,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 567,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 568,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 569,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 34,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 570,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 571,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 572,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 573,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 40,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 574,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 54,
+      "fights": 86,
+      "error": null
+    },
+    {
+      "runNumber": 575,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 576,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 577,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 578,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 579,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 27,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 580,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 581,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 582,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 583,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 584,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 27,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 585,
+      "status": "success",
+      "totalTime": 121,
+      "level": 20,
+      "deaths": 46,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 586,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 587,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 588,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 589,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 590,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 24,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 591,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 592,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 593,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 594,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 595,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 596,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 597,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 598,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 599,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 46,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 600,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 601,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 602,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 603,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 47,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 604,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 605,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 606,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 607,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 608,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 609,
+      "status": "success",
+      "totalTime": 148,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 610,
+      "status": "success",
+      "totalTime": 186,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 611,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 612,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 33,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 613,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 614,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 615,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 616,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 26,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 617,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 618,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 619,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 620,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 46,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 621,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 622,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 623,
+      "status": "success",
+      "totalTime": 170,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 624,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 625,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 37,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 626,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 627,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 45,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 628,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 29,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 629,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 57,
+      "fights": 88,
+      "error": null
+    },
+    {
+      "runNumber": 630,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 30,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 631,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 632,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 52,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 633,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 634,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 635,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 636,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 42,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 637,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 638,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 31,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 639,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 640,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 641,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 52,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 642,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 643,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 50,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 644,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 645,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 646,
+      "status": "error",
+      "totalTime": 0,
+      "level": 1,
+      "deaths": 0,
+      "fights": 0,
+      "error": "Critical failure occurred"
+    },
+    {
+      "runNumber": 647,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 648,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 649,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 650,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 651,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 652,
+      "status": "success",
+      "totalTime": 273,
+      "level": 20,
+      "deaths": 60,
+      "fights": 90,
+      "error": null
+    },
+    {
+      "runNumber": 653,
+      "status": "success",
+      "totalTime": 132,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 654,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 56,
+      "fights": 87,
+      "error": null
+    },
+    {
+      "runNumber": 655,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 50,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 656,
+      "status": "success",
+      "totalTime": 78,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 657,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 658,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 659,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 660,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 661,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 662,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 663,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 664,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 665,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 666,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 667,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 668,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 669,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 670,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 671,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 672,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 673,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 674,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 44,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 675,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 676,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 30,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 677,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 678,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 679,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 680,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 681,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 682,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 683,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 19,
+      "fights": 62,
+      "error": null
+    },
+    {
+      "runNumber": 684,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 685,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 686,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 687,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 688,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 689,
+      "status": "success",
+      "totalTime": 76,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 690,
+      "status": "success",
+      "totalTime": 97,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 691,
+      "status": "success",
+      "totalTime": 100,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 692,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 693,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 694,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 695,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 696,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 697,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 698,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 699,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 700,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 701,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 702,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 703,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 704,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 705,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 706,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 707,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 708,
+      "status": "success",
+      "totalTime": 135,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 709,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 710,
+      "status": "success",
+      "totalTime": 157,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 711,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 23,
+      "fights": 64,
+      "error": null
+    },
+    {
+      "runNumber": 712,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 713,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 714,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 715,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 716,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 717,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 718,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 719,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 720,
+      "status": "success",
+      "totalTime": 76,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 721,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 722,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 723,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 724,
+      "status": "success",
+      "totalTime": 96,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 725,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 726,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 727,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 728,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 729,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 730,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 731,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 732,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 22,
+      "fights": 61,
+      "error": null
+    },
+    {
+      "runNumber": 733,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 734,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 735,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 736,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 737,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 738,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 739,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 740,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 741,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 742,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 743,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 744,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 745,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 746,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 747,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 748,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 749,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 750,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 751,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 25,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 752,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 753,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 24,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 754,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 755,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 756,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 757,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 758,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 759,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 760,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 761,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 762,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 763,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 24,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 764,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 33,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 765,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 766,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 767,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 768,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 51,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 769,
+      "status": "success",
+      "totalTime": 112,
+      "level": 20,
+      "deaths": 51,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 770,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 771,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 772,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 773,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 774,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 775,
+      "status": "success",
+      "totalTime": 77,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 776,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 777,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 778,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 779,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 780,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 781,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 782,
+      "status": "success",
+      "totalTime": 96,
+      "level": 20,
+      "deaths": 25,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 783,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 784,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 785,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 786,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 26,
+      "fights": 65,
+      "error": null
+    },
+    {
+      "runNumber": 787,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 788,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 789,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 19,
+      "fights": 61,
+      "error": null
+    },
+    {
+      "runNumber": 790,
+      "status": "success",
+      "totalTime": 76,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 791,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 35,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 792,
+      "status": "success",
+      "totalTime": 113,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 793,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 794,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 795,
+      "status": "success",
+      "totalTime": 113,
+      "level": 20,
+      "deaths": 35,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 796,
+      "status": "success",
+      "totalTime": 102,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 797,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 798,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 799,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 800,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 801,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 802,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 803,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 804,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 805,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 806,
+      "status": "error",
+      "totalTime": 0,
+      "level": 1,
+      "deaths": 0,
+      "fights": 0,
+      "error": "Critical failure occurred"
+    },
+    {
+      "runNumber": 807,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 808,
+      "status": "success",
+      "totalTime": 116,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 809,
+      "status": "success",
+      "totalTime": 310,
+      "level": 20,
+      "deaths": 54,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 810,
+      "status": "success",
+      "totalTime": 115,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 811,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 812,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 813,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 814,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 815,
+      "status": "success",
+      "totalTime": 95,
+      "level": 20,
+      "deaths": 30,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 816,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 817,
+      "status": "success",
+      "totalTime": 78,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 818,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 819,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 820,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 821,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 822,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 823,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 824,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 825,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 826,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 827,
+      "status": "success",
+      "totalTime": 138,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 828,
+      "status": "success",
+      "totalTime": 130,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 829,
+      "status": "success",
+      "totalTime": 130,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 830,
+      "status": "success",
+      "totalTime": 120,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 831,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 832,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 833,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 834,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 835,
+      "status": "success",
+      "totalTime": 78,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 836,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 837,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 51,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 838,
+      "status": "success",
+      "totalTime": 96,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 839,
+      "status": "success",
+      "totalTime": 76,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 840,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 49,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 841,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 46,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 842,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 843,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 844,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 845,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 52,
+      "fights": 85,
+      "error": null
+    },
+    {
+      "runNumber": 846,
+      "status": "success",
+      "totalTime": 126,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 847,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 848,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 849,
+      "status": "success",
+      "totalTime": 112,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 850,
+      "status": "success",
+      "totalTime": 104,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 851,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 852,
+      "status": "success",
+      "totalTime": 74,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 853,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 854,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 855,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 856,
+      "status": "success",
+      "totalTime": 112,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 857,
+      "status": "success",
+      "totalTime": 121,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 858,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 859,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 860,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 861,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 862,
+      "status": "error",
+      "totalTime": 0,
+      "level": 1,
+      "deaths": 0,
+      "fights": 0,
+      "error": "Critical failure occurred"
+    },
+    {
+      "runNumber": 863,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 864,
+      "status": "success",
+      "totalTime": 104,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 865,
+      "status": "success",
+      "totalTime": 80,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 866,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 41,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 867,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 868,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 869,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 40,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 870,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 49,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 871,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 872,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 873,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 29,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 874,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 875,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 876,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 877,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 878,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 49,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 879,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 880,
+      "status": "success",
+      "totalTime": 89,
+      "level": 20,
+      "deaths": 27,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 881,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 882,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 883,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 884,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 885,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 886,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 33,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 887,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 46,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 888,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 889,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 890,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 891,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 50,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 892,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 893,
+      "status": "success",
+      "totalTime": 197,
+      "level": 20,
+      "deaths": 47,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 894,
+      "status": "success",
+      "totalTime": 161,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 895,
+      "status": "success",
+      "totalTime": 102,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 896,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 897,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 898,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 899,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 900,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 901,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 902,
+      "status": "success",
+      "totalTime": 120,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 903,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 904,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 905,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 906,
+      "status": "success",
+      "totalTime": 103,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 907,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 908,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 909,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 910,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 911,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 912,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 913,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 914,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 915,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 916,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 917,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 918,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 919,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 920,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 921,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 44,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 922,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 923,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 924,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 48,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 925,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 926,
+      "status": "success",
+      "totalTime": 104,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 927,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 928,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 929,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 41,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 930,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 931,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 29,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 932,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 933,
+      "status": "success",
+      "totalTime": 90,
+      "level": 20,
+      "deaths": 26,
+      "fights": 66,
+      "error": null
+    },
+    {
+      "runNumber": 934,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 31,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 935,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 36,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 936,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 937,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 938,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 939,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 940,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 941,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 49,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 942,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 35,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 943,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 944,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 945,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 946,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 947,
+      "status": "success",
+      "totalTime": 94,
+      "level": 20,
+      "deaths": 33,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 948,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 949,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 950,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 951,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 952,
+      "status": "success",
+      "totalTime": 89,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 953,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 954,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 28,
+      "fights": 68,
+      "error": null
+    },
+    {
+      "runNumber": 955,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 956,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 957,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 958,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 51,
+      "fights": 83,
+      "error": null
+    },
+    {
+      "runNumber": 959,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 960,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 28,
+      "fights": 67,
+      "error": null
+    },
+    {
+      "runNumber": 961,
+      "status": "success",
+      "totalTime": 92,
+      "level": 20,
+      "deaths": 29,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 962,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 963,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 964,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 35,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 965,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 966,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 967,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 42,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 968,
+      "status": "success",
+      "totalTime": 76,
+      "level": 20,
+      "deaths": 30,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 969,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 970,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 38,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 971,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 972,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 45,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 973,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 974,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 32,
+      "fights": 70,
+      "error": null
+    },
+    {
+      "runNumber": 975,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 37,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 976,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 43,
+      "fights": 78,
+      "error": null
+    },
+    {
+      "runNumber": 977,
+      "status": "success",
+      "totalTime": 120,
+      "level": 20,
+      "deaths": 51,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 978,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 39,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 979,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 38,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 980,
+      "status": "success",
+      "totalTime": 122,
+      "level": 20,
+      "deaths": 47,
+      "fights": 80,
+      "error": null
+    },
+    {
+      "runNumber": 981,
+      "status": "success",
+      "totalTime": 128,
+      "level": 20,
+      "deaths": 34,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 982,
+      "status": "success",
+      "totalTime": 101,
+      "level": 20,
+      "deaths": 43,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 983,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 984,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 48,
+      "fights": 81,
+      "error": null
+    },
+    {
+      "runNumber": 985,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 986,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 41,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 987,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 40,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 988,
+      "status": "success",
+      "totalTime": 112,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 989,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 990,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 42,
+      "fights": 77,
+      "error": null
+    },
+    {
+      "runNumber": 991,
+      "status": "success",
+      "totalTime": 111,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 992,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 993,
+      "status": "success",
+      "totalTime": 123,
+      "level": 20,
+      "deaths": 49,
+      "fights": 82,
+      "error": null
+    },
+    {
+      "runNumber": 994,
+      "status": "success",
+      "totalTime": 110,
+      "level": 20,
+      "deaths": 45,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 995,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 34,
+      "fights": 72,
+      "error": null
+    },
+    {
+      "runNumber": 996,
+      "status": "success",
+      "totalTime": 124,
+      "level": 20,
+      "deaths": 53,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 997,
+      "status": "success",
+      "totalTime": 125,
+      "level": 20,
+      "deaths": 53,
+      "fights": 84,
+      "error": null
+    },
+    {
+      "runNumber": 998,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 32,
+      "fights": 71,
+      "error": null
+    },
+    {
+      "runNumber": 999,
+      "status": "success",
+      "totalTime": 109,
+      "level": 20,
+      "deaths": 39,
+      "fights": 76,
+      "error": null
+    },
+    {
+      "runNumber": 1000,
+      "status": "success",
+      "totalTime": 107,
+      "level": 20,
+      "deaths": 33,
+      "fights": 71,
+      "error": null
+    }
+  ],
+  "errors": [
+    {
+      "runNumber": 263,
+      "error": "Critical failure occurred",
+      "timestamp": 1768171686989
+    },
+    {
+      "runNumber": 416,
+      "error": "Critical failure occurred",
+      "timestamp": 1768171703593
+    },
+    {
+      "runNumber": 432,
+      "error": "Critical failure occurred",
+      "timestamp": 1768171705279
+    },
+    {
+      "runNumber": 514,
+      "error": "Critical failure occurred",
+      "timestamp": 1768171714142
+    },
+    {
+      "runNumber": 646,
+      "error": "Critical failure occurred",
+      "timestamp": 1768171728514
+    },
+    {
+      "runNumber": 806,
+      "error": "Critical failure occurred",
+      "timestamp": 1768171745952
+    },
+    {
+      "runNumber": 862,
+      "error": "Critical failure occurred",
+      "timestamp": 1768171752241
+    }
+  ]
+}

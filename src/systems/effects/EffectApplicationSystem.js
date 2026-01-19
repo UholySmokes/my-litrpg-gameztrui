@@ -6,7 +6,7 @@ import { emit } from '../../core/EventBus.js';
  * Centralizes effect handling with consistent error handling and logging
  */
 
-export class EffectApplicationSystem {
+class EffectApplicationSystem {
   constructor() {
     this.effectHistory = new Map();
     this.activeEffects = new Map();
@@ -241,4 +241,3 @@ export class EffectApplicationSystem {
 
 // Export singleton instance
 export const effectApplicationSystem = new EffectApplicationSystem();
-export default effectApplicationSystem;

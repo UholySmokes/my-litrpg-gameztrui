@@ -55,7 +55,7 @@ const shopItems = [
   }
 ];
 
-export const shopDatabase = {
+const shopDatabase = {
   items: shopItems,
   
   skills: [
@@ -195,7 +195,7 @@ export function getShopItemsByCategory(category) {
 /**
  * Get shop item by ID
  */
-export function getShopItemById(itemId) {
+function getShopItemById(itemId) {
   const allItems = getShopItemsByCategory('items');
   return allItems.find(item => item.id === itemId) || null;
 }

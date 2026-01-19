@@ -15,11 +15,20 @@ export function emit(event, payload) {
   const set = listeners.get(event);
   if (!set) return;
   for (const fn of set) {
-    try { fn(payload); } catch (e) { /* noop */ }
+    try {
+      fn(payload);
+    } catch (error) {
+      console.error(`EventBus error in ${event}:`, error);
+    }
   }
 }
 
-export function clear() {
+export const EventBus = {
+  on,
+  off,
+  emit,
+};
+
+function clear() {
   listeners.clear();
 }
-

@@ -7,16 +7,16 @@ This document tracks the implementation status of all game features.
 
 ## Quick Status
 
-| Category | Status | Notes |
-|----------|--------|-------|
-| Core Game Loop | ✅ Complete | Playable |
-| Character Creation | ✅ Complete | Full race/class/skill selection |
-| Combat System | ✅ Complete | Turn-based, skills, escape |
-| Save/Load | ✅ Complete | Supabase integration |
-| Skills Database | ✅ Complete | 20/20 classes complete |
-| Shop System | ✅ Complete | Basic shop UI |
-| Gacha System | ✅ Complete | Working rolls |
-| Quest System | 🔄 Partial | Structure exists, limited content |
+| Category           | Status      | Notes                             |
+| ------------------ | ----------- | --------------------------------- |
+| Core Game Loop     | ✅ Complete | Playable                          |
+| Character Creation | ✅ Complete | Full race/class/skill selection   |
+| Combat System      | ✅ Complete | Turn-based, skills, escape        |
+| Save/Load          | ✅ Complete | Supabase integration              |
+| Skills Database    | ✅ Complete | 20/20 classes complete            |
+| Shop System        | ✅ Complete | Basic shop UI                     |
+| Gacha System       | ✅ Complete | Working rolls                     |
+| Quest System       | 🔄 Partial  | Structure exists, limited content |
 
 ---
 
@@ -28,7 +28,6 @@ This document tracks the implementation status of all game features.
   - Centralized state object
   - Config section for game constants
   - Immutable state updates
-  
 - [x] **Game Logic** (`gamelogic.js`)
   - XP and level up system
   - Damage calculation
@@ -104,6 +103,7 @@ This document tracks the implementation status of all game features.
 - [x] **Title Screen** (`TitleUI.jsx`)
 - [x] **Game UI** (`GameUI.jsx`) - Main game interface
 - [x] **Combat UI** (`CombatUI.jsx`) - Battle interface
+- [x] **Class Resource HUD** (`GameUI.jsx`, `ClassResourceBar.jsx`) - Rage/Chi/Stealth meters now visible in the System Interface panel and Combat UI
 - [x] **Character Creation** (`CharacterCreation.jsx`)
 - [x] **Quest Log** (`QuestLogUI.jsx`)
 - [x] **Shop UI** (`ShopUI.jsx`)
@@ -139,14 +139,17 @@ This document tracks the implementation status of all game features.
 ## Known Bugs
 
 ### Critical
+
 - None currently known
 
 ### Medium Priority
+
 - [ ] Mana doesn't regenerate outside of level-up (no passive regen)
 - [ ] Skill cooldowns not visually displayed in UI
 - [ ] Some hardcoded values in `gamelogic.js` should use config
 
 ### Low Priority
+
 - [ ] Debug logging (fetch calls) still present in `gamelogic.js`
 - [ ] No sound effects or music
 - [ ] No animation on combat actions
@@ -156,12 +159,14 @@ This document tracks the implementation status of all game features.
 ## In Progress
 
 ### Current Sprint
+
 1. ✅ **Creating anchor documentation files** (system_specs.md, current_state.md, .cursorrules) - COMPLETE
 2. ✅ **Expanding gamestate.js config** with all game constants - COMPLETE
 3. ✅ **Refactoring hardcoded values** in gamelogic.js - COMPLETE
 4. ✅ **Completing all 17 remaining class skill sets** - COMPLETE
 
 ### Upcoming
+
 - Universal skills expansion (thousands of learnable skills)
 - Advanced combat mechanics (status effects)
 - Equipment crafting system
@@ -173,22 +178,28 @@ This document tracks the implementation status of all game features.
 ## Architecture Notes
 
 ### State Flow
-```
+
+```text
 User Input → ActionParser → ActionValidator → GameLogic → New State → UI Update
+
 ```
 
 ### AI Integration
-```
+
+```text
 User Input → PromptAssembler (builds context) → AI Service → ActionParser → GameLogic
+
 ```
 
 ### File Organization
-```
+
+```text
 src/
 ├── components/     # React UI components
 ├── hook/           # Custom React hooks
 ├── lib/            # Game logic and data
 └── util/           # Helper utilities
+
 ```
 
 ### Key Patterns
@@ -222,17 +233,18 @@ src/
 
 ## Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 0.2.0 | Current | Complete skill database (1,200 skills), anchor docs, config expansion |
-| 0.1.1 | Previous | Added anchor docs, config expansion |
-| 0.1.0 | Initial | Core game systems |
+| Version | Date     | Changes                                                               |
+| ------- | -------- | --------------------------------------------------------------------- |
+| 0.2.0   | Current  | Complete skill database (1,200 skills), anchor docs, config expansion |
+| 0.1.1   | Previous | Added anchor docs, config expansion                                   |
+| 0.1.0   | Initial  | Core game systems                                                     |
 
 ---
 
 ## Notes for AI Assistant
 
 When implementing new features:
+
 1. Check this file first to understand what exists
 2. Reference `system_specs.md` for formulas and rules
 3. Follow patterns in `.cursorrules`

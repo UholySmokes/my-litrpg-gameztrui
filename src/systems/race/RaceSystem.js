@@ -3,12 +3,17 @@
 // Handles scaling logic for race bonuses and passive abilities
 // =================================================================
 
-import { getRaceById } from './RaceRegistry.js';
+import { getRaceById } from "./RaceRegistry.js";
+import {
+  createAttributeBaseline,
+  ensureAttributeShape,
+  toCanonicalAttributeKey,
+} from "../../constants/attributes.js";
 
 /**
  * Applies the level-up stat growth for a specific race.
  * This is called every time the player levels up.
- * 
+ *
  * @param {object} attributes - The current player attributes (e.g., { str: 10, agi: 5 ... })
  * @param {string} raceId - The ID of the player's race
  * @returns {object} The updated attributes with the race growth applied
@@ -17,17 +22,19 @@ export function applyRaceLevelUpGrowth(attributes, raceId) {
   const race = getRaceById(raceId);
   if (!race || !race.statBonuses) return attributes;
 
-  const newAttributes = { ...attributes };
-  
-  // Apply growth points
-  // e.g. if str: 2, add 2 STR to the total
+  const base = ensureAttributeShape(attributes, 0);
+  const next = {
+    ...base,
+    freePoints: attributes?.freePoints ?? base.freePoints ?? 0,
+  };
+
   for (const [stat, bonus] of Object.entries(race.statBonuses)) {
-    if (newAttributes[stat] !== undefined) {
-      newAttributes[stat] += bonus;
-    }
+    const canonicalKey = toCanonicalAttributeKey(stat);
+    if (!canonicalKey) continue;
+    next[canonicalKey] = (next[canonicalKey] || 0) + bonus;
   }
 
-  return newAttributes;
+  return next;
 }
 
 /**
@@ -37,25 +44,17 @@ export function applyRaceLevelUpGrowth(attributes, raceId) {
 export function calculateInitialStats(raceId) {
   const BASE_STAT = 5;
   const race = getRaceById(raceId);
-  
+
   const stats = {
-    str: BASE_STAT,
-    agi: BASE_STAT,
-    dex: BASE_STAT,
-    int: BASE_STAT,
-    cha: BASE_STAT,
-    will: BASE_STAT,
-    luck: BASE_STAT,
-    soul: BASE_STAT,
-    freePoints: 0
+    ...createAttributeBaseline(BASE_STAT),
+    freePoints: 0,
   };
 
   if (race && race.statBonuses) {
     for (const [stat, bonus] of Object.entries(race.statBonuses)) {
-      if (stats[stat] !== undefined) {
-        // Initial bonus is applied once at Level 1
-        stats[stat] += bonus;
-      }
+      const canonicalKey = toCanonicalAttributeKey(stat);
+      if (!canonicalKey) continue;
+      stats[canonicalKey] = (stats[canonicalKey] || BASE_STAT) + bonus;
     }
   }
 

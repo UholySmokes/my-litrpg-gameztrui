@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-18T13:59:11.689Z",
+    "config": {
+      "TOTAL_RUNS": 10,
+      "TARGET_LEVEL": 20,
+      "MAX_SIMULATION_TIME": 300000,
+      "OUTPUT_FORMAT": "json",
+      "ENABLE_DETAILED_LOGS": false,
+      "PROGRESS_UPDATE_INTERVAL": 5,
+      "SAVE_INTERMEDIATE_RESULTS": true,
+      "INTERMEDIATE_SAVE_INTERVAL": 25,
+      "RANDOM_SEED": null,
+      "MIN_FIGHT_TIME": 1000,
+      "MAX_FIGHT_TIME": 5000,
+      "DEATH_PENALTY_TIME": 5000,
+      "BASE_XP_PER_FIGHT": 100,
+      "CRITICAL_FAILURE_RATE": 0.01
+    },
+    "scriptVersion": "1.0.0"
+  },
+  "statistics": {
+    "totalRuns": 10,
+    "successfulRuns": 10,
+    "failedRuns": 0,
+    "successRate": 100,
+    "averageTime": 104,
+    "medianTime": 106,
+    "standardDeviation": 7,
+    "minTime": 91,
+    "maxTime": 113,
+    "averageFights": 75,
+    "averageDeaths": 38.9,
+    "errors": 0,
+    "errorRate": 0
+  },
+  "results": [
+    {
+      "runNumber": 1,
+      "status": "success",
+      "totalTime": 101,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 2,
+      "status": "success",
+      "totalTime": 93,
+      "level": 20,
+      "deaths": 36,
+      "fights": 73,
+      "error": null
+    },
+    {
+      "runNumber": 3,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 4,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 37,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 5,
+      "status": "success",
+      "totalTime": 113,
+      "level": 20,
+      "deaths": 40,
+      "fights": 75,
+      "error": null
+    },
+    {
+      "runNumber": 6,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 44,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 7,
+      "status": "success",
+      "totalTime": 106,
+      "level": 20,
+      "deaths": 43,
+      "fights": 79,
+      "error": null
+    },
+    {
+      "runNumber": 8,
+      "status": "success",
+      "totalTime": 105,
+      "level": 20,
+      "deaths": 39,
+      "fights": 74,
+      "error": null
+    },
+    {
+      "runNumber": 9,
+      "status": "success",
+      "totalTime": 91,
+      "level": 20,
+      "deaths": 31,
+      "fights": 69,
+      "error": null
+    },
+    {
+      "runNumber": 10,
+      "status": "success",
+      "totalTime": 108,
+      "level": 20,
+      "deaths": 36,
+      "fights": 72,
+      "error": null
+    }
+  ],
+  "errors": []
+}

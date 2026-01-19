@@ -15,6 +15,7 @@ All game logic MUST reference these specifications. Any changes to game balance 
 6. [Equipment](#equipment)
 7. [Gacha & Drops](#gacha--drops)
 8. [Economy](#economy)
+9. [System Architecture & Audit](#system-architecture--audit)
 
 ---
 
@@ -412,10 +413,37 @@ Each race provides stat bonuses at character creation:
 
 ---
 
+## System Architecture & Audit
+
+### Dependency Matrix
+
+| System | Dependencies (Imports) | Status |
+|--------|------------------------|--------|
+| **CombatSystem** | Inventory, Leveling, Enemy, Skills, Race, Effects, Talents, Mana | Active |
+| **EffectSystem** | EffectRegistry, EventBus | Active |
+| **EffectApplicationSystem** | EffectSystem, EventBus | Active |
+| **ExplorationSystem** | LevelingManager | Active |
+| **InventorySystem** | ItemRegistry | Active |
+| **LevelingManager** | LevelingSystem, RaceSystem | Active |
+| **ManaSystem** | ManaBalance | Active |
+| **RaceSystem** | RaceRegistry | Active |
+| **SkillEvolutionManager** | SkillRegistry, EventBus | Active |
+| **TalentManager** | Player, TalentRegistry | Active |
+
+### Audit Findings
+
+- **Modular Design**: Systems are well-separated by concern (e.g., `CombatSystem` orchestrates logic but delegates damage calculation and state updates to sub-systems).
+- **Circular Dependencies**: None detected in direct imports.
+- **Event Bus**: Used for decoupling side effects (e.g., `EffectSystem` triggering events).
+- **Registry Pattern**: extensively used (`ClassRegistry`, `RaceRegistry`, `SkillRegistry`, `TalentRegistry`) to separate data from logic.
+
+---
+
 ## Version History
 
+- **0.1.2** - Added System Architecture & Audit section
 - **0.1.1** - Current version
-- Initial system specs document created
+- **0.1.0** - Initial system specs document created
 
 ---
 
@@ -428,3 +456,247 @@ ESCAPE_CHANCE = 0.3 + (AGI × 0.01)
 XP_NEXT = current_max × 1.5
 POINTS_PER_LEVEL = 3
 ```
+
+### Connection Verification Report
+
+Timestamp: 2026-01-08T08:59:33.644Z
+
+| System Module | Status | Response Time (ms) | Errors | Imports |
+|---|---|---:|---|---|
+| class\ClassRegistry.js | active | 1.4088 | - |  |
+| combat\CombatSystem.js | active | 45.9998 | - | ../inventory/InventorySystem.js, ../leveling/LevelingManager.js, ../../entities/Enemy.js, ../skills/SkillRegistry.js, ../leveling/LevelingSystem.js, ../race/RaceRegistry.js, ../effects/EffectSystem.js, ../skills/TalentManager.js, ../effects/EffectApplicationSystem.js, ../magic/ManaSystem.js, ../magic/ManaBalance.js, ../../core/EventBus.js |
+| effects\EffectApplicationSystem.js | active | 0.3827 | - | ./EffectSystem.js, ../../core/EventBus.js |
+| effects\EffectRegistry.js | active | 0.254 | - |  |
+| effects\EffectSystem.js | active | 0.6246 | - | ./EffectRegistry.js, ../../core/EventBus.js |
+| exploration\ExplorationSystem.js | active | 3.5823 | - | ../leveling/LevelingManager.js |
+| inventory\InventorySystem.js | active | 0.2974 | - | ../../entities/ItemRegistry.js |
+| leveling\LevelingManager.js | active | 0.253 | - | ./LevelingSystem.js, ../race/RaceSystem.js |
+| leveling\LevelingSystem.js | active | 0.434 | - |  |
+| leveling\XpSystem.js | active | 1.0436 | - | ./LevelingManager.js |
+| magic\ManaBalance.js | active | 0.309 | - |  |
+| magic\ManaSystem.js | active | 0.3428 | - | ./ManaBalance.js |
+| race\RaceRegistry.js | active | 0.2734 | - |  |
+| race\RaceSystem.js | active | 0.2648 | - | ./RaceRegistry.js |
+| skills\generateFusionName.js | active | 0.6738 | - |  |
+| skills\SkillEvolutionManager.js | active | 2.1388 | - | ./SkillRegistry.js, ../../core/EventBus.js, ./generateFusionName.js |
+| skills\SkillRegistry.js | active | 1.1476 | - |  |
+| skills\TalentDefinitions.js | active | 1.566 | - |  |
+| skills\TalentManager.js | active | 0.4327 | - | ../../entities/Player.js, ../../data/talent.registry.json, ./TalentRegistry.js |
+| skills\TalentRegistry.js | active | 0.2264 | - |  |
+| stats\StatSystem.js | active | 0.7184 | - |  |
+| SystemCore.js | inactive | - | The requested module './skills/TalentManager.js' does not provide an export named 'systemDescribeTalent' |  |
+| ui\SystemInterface.js | active | 1.1155 | - | ../../core/EventBus.js |
+
+#### Dependency Chains
+- class\ClassRegistry.js → (none)
+- combat\CombatSystem.js → inventory\InventorySystem.js, leveling\LevelingManager.js, skills\SkillRegistry.js, leveling\LevelingSystem.js, race\RaceRegistry.js, effects\EffectSystem.js, skills\TalentManager.js, effects\EffectApplicationSystem.js, magic\ManaSystem.js, magic\ManaBalance.js
+- effects\EffectApplicationSystem.js → effects\EffectSystem.js
+- effects\EffectRegistry.js → (none)
+- effects\EffectSystem.js → effects\EffectRegistry.js
+- exploration\ExplorationSystem.js → leveling\LevelingManager.js
+- inventory\InventorySystem.js → (none)
+- leveling\LevelingManager.js → leveling\LevelingSystem.js, race\RaceSystem.js
+- leveling\LevelingSystem.js → (none)
+- leveling\XpSystem.js → leveling\LevelingManager.js
+- magic\ManaBalance.js → (none)
+- magic\ManaSystem.js → magic\ManaBalance.js
+- race\RaceRegistry.js → (none)
+- race\RaceSystem.js → race\RaceRegistry.js
+- skills\generateFusionName.js → (none)
+- skills\SkillEvolutionManager.js → skills\SkillRegistry.js, skills\generateFusionName.js
+- skills\SkillRegistry.js → (none)
+- skills\TalentDefinitions.js → (none)
+- skills\TalentManager.js → skills\TalentRegistry.js
+- skills\TalentRegistry.js → (none)
+- stats\StatSystem.js → (none)
+- SystemCore.js → (none)
+- ui\SystemInterface.js → (none)
+
+Error Rate: 4.35%
+
+Resolution Steps:
+- SystemCore.js: verify ESM imports with extensions and fix runtime import errors.
+
+
+### Connection Verification Report
+
+Timestamp: 2026-01-08T09:02:13.805Z
+
+| System Module | Status | Response Time (ms) | Errors | Imports |
+|---|---|---:|---|---|
+| class\ClassRegistry.js | active | 1.503 | - |  |
+| combat\CombatSystem.js | active | 45.3659 | - | ../inventory/InventorySystem.js, ../leveling/LevelingManager.js, ../../entities/Enemy.js, ../skills/SkillRegistry.js, ../leveling/LevelingSystem.js, ../race/RaceRegistry.js, ../effects/EffectSystem.js, ../skills/TalentManager.js, ../effects/EffectApplicationSystem.js, ../magic/ManaSystem.js, ../magic/ManaBalance.js, ../../core/EventBus.js |
+| effects\EffectApplicationSystem.js | active | 0.2974 | - | ./EffectSystem.js, ../../core/EventBus.js |
+| effects\EffectRegistry.js | active | 0.9987 | - |  |
+| effects\EffectSystem.js | active | 0.4473 | - | ./EffectRegistry.js, ../../core/EventBus.js |
+| exploration\ExplorationSystem.js | active | 1.6548 | - | ../leveling/LevelingManager.js |
+| inventory\InventorySystem.js | active | 0.3333 | - | ../../entities/ItemRegistry.js |
+| leveling\LevelingManager.js | active | 0.275 | - | ./LevelingSystem.js, ../race/RaceSystem.js |
+| leveling\LevelingSystem.js | active | 0.3264 | - |  |
+| leveling\XpSystem.js | active | 1.2192 | - | ./LevelingManager.js |
+| magic\ManaBalance.js | active | 0.277 | - |  |
+| magic\ManaSystem.js | active | 0.2473 | - | ./ManaBalance.js |
+| race\RaceRegistry.js | active | 0.3292 | - |  |
+| race\RaceSystem.js | active | 0.221 | - | ./RaceRegistry.js |
+| skills\generateFusionName.js | active | 0.7687 | - |  |
+| skills\SkillEvolutionManager.js | active | 2.0134 | - | ./SkillRegistry.js, ../../core/EventBus.js, ./generateFusionName.js |
+| skills\SkillRegistry.js | active | 0.3662 | - |  |
+| skills\TalentDefinitions.js | active | 0.983 | - |  |
+| skills\TalentManager.js | active | 0.3659 | - | ../../entities/Player.js, ../../data/talent.registry.json, ./TalentRegistry.js |
+| skills\TalentRegistry.js | active | 0.2353 | - |  |
+| stats\StatSystem.js | active | 0.7698 | - |  |
+| SystemCore.js | active | 3.624 | - |  |
+| ui\SystemInterface.js | active | 0.2715 | - | ../../core/EventBus.js |
+
+#### Dependency Chains
+- class\ClassRegistry.js → (none)
+- combat\CombatSystem.js → inventory\InventorySystem.js, leveling\LevelingManager.js, skills\SkillRegistry.js, leveling\LevelingSystem.js, race\RaceRegistry.js, effects\EffectSystem.js, skills\TalentManager.js, effects\EffectApplicationSystem.js, magic\ManaSystem.js, magic\ManaBalance.js
+- effects\EffectApplicationSystem.js → effects\EffectSystem.js
+- effects\EffectRegistry.js → (none)
+- effects\EffectSystem.js → effects\EffectRegistry.js
+- exploration\ExplorationSystem.js → leveling\LevelingManager.js
+- inventory\InventorySystem.js → (none)
+- leveling\LevelingManager.js → leveling\LevelingSystem.js, race\RaceSystem.js
+- leveling\LevelingSystem.js → (none)
+- leveling\XpSystem.js → leveling\LevelingManager.js
+- magic\ManaBalance.js → (none)
+- magic\ManaSystem.js → magic\ManaBalance.js
+- race\RaceRegistry.js → (none)
+- race\RaceSystem.js → race\RaceRegistry.js
+- skills\generateFusionName.js → (none)
+- skills\SkillEvolutionManager.js → skills\SkillRegistry.js, skills\generateFusionName.js
+- skills\SkillRegistry.js → (none)
+- skills\TalentDefinitions.js → (none)
+- skills\TalentManager.js → skills\TalentRegistry.js
+- skills\TalentRegistry.js → (none)
+- stats\StatSystem.js → (none)
+- SystemCore.js → (none)
+- ui\SystemInterface.js → (none)
+
+Error Rate: 0.00%
+
+Resolution Steps:
+- All modules imported successfully.
+
+
+### Connection Verification Report
+
+Timestamp: 2026-01-08T09:24:28.832Z
+
+| System Module | Status | Response Time (ms) | Errors | Imports |
+|---|---|---:|---|---|
+| class\ClassRegistry.js | active | 1.3194 | - |  |
+| combat\CombatSystem.js | active | 31.4769 | - | ../inventory/InventorySystem.js, ../leveling/LevelingManager.js, ../../entities/Enemy.js, ../skills/SkillRegistry.js, ../leveling/LevelingSystem.js, ../race/RaceRegistry.js, ../effects/EffectSystem.js, ../skills/TalentManager.js, ../effects/EffectApplicationSystem.js, ../magic/ManaSystem.js, ../magic/ManaBalance.js, ../../core/EventBus.js |
+| effects\EffectApplicationSystem.js | active | 0.2995 | - | ./EffectSystem.js, ../../core/EventBus.js |
+| effects\EffectRegistry.js | active | 0.231 | - |  |
+| effects\EffectSystem.js | active | 0.2127 | - | ./EffectRegistry.js, ../../core/EventBus.js |
+| exploration\ExplorationSystem.js | active | 1.0179 | - | ../leveling/LevelingManager.js |
+| inventory\InventorySystem.js | active | 0.4636 | - | ../../entities/ItemRegistry.js |
+| leveling\LevelingManager.js | active | 0.3243 | - | ./LevelingSystem.js, ../race/RaceSystem.js |
+| leveling\LevelingSystem.js | active | 0.273 | - |  |
+| leveling\XpSystem.js | active | 0.9085 | - | ./LevelingManager.js |
+| magic\ManaBalance.js | active | 0.2478 | - |  |
+| magic\ManaSystem.js | active | 0.2869 | - | ./ManaBalance.js |
+| race\RaceRegistry.js | active | 0.2772 | - |  |
+| race\RaceSystem.js | active | 0.2245 | - | ./RaceRegistry.js |
+| skills\generateFusionName.js | active | 0.7197 | - |  |
+| skills\SkillEvolutionManager.js | active | 2.0001 | - | ./SkillRegistry.js, ../../core/EventBus.js, ./generateFusionName.js |
+| skills\SkillRegistry.js | active | 0.5248 | - |  |
+| skills\TalentDefinitions.js | active | 0.2399 | - |  |
+| skills\TalentManager.js | active | 0.4786 | - | ../../entities/Player.js, ../../data/talent.registry.json, ./TalentRegistry.js |
+| skills\TalentRegistry.js | active | 0.2396 | - |  |
+| stats\StatSystem.js | active | 0.753 | - |  |
+| SystemCore.js | active | 3.0027 | - |  |
+| ui\SystemInterface.js | active | 0.2805 | - | ../../core/EventBus.js |
+
+#### Dependency Chains
+- class\ClassRegistry.js → (none)
+- combat\CombatSystem.js → inventory\InventorySystem.js, leveling\LevelingManager.js, skills\SkillRegistry.js, leveling\LevelingSystem.js, race\RaceRegistry.js, effects\EffectSystem.js, skills\TalentManager.js, effects\EffectApplicationSystem.js, magic\ManaSystem.js, magic\ManaBalance.js
+- effects\EffectApplicationSystem.js → effects\EffectSystem.js
+- effects\EffectRegistry.js → (none)
+- effects\EffectSystem.js → effects\EffectRegistry.js
+- exploration\ExplorationSystem.js → leveling\LevelingManager.js
+- inventory\InventorySystem.js → (none)
+- leveling\LevelingManager.js → leveling\LevelingSystem.js, race\RaceSystem.js
+- leveling\LevelingSystem.js → (none)
+- leveling\XpSystem.js → leveling\LevelingManager.js
+- magic\ManaBalance.js → (none)
+- magic\ManaSystem.js → magic\ManaBalance.js
+- race\RaceRegistry.js → (none)
+- race\RaceSystem.js → race\RaceRegistry.js
+- skills\generateFusionName.js → (none)
+- skills\SkillEvolutionManager.js → skills\SkillRegistry.js, skills\generateFusionName.js
+- skills\SkillRegistry.js → (none)
+- skills\TalentDefinitions.js → (none)
+- skills\TalentManager.js → skills\TalentRegistry.js
+- skills\TalentRegistry.js → (none)
+- stats\StatSystem.js → (none)
+- SystemCore.js → (none)
+- ui\SystemInterface.js → (none)
+
+Error Rate: 0.00%
+
+Resolution Steps:
+- All modules imported successfully.
+
+
+### Connection Verification Report
+
+Timestamp: 2026-01-08T10:13:08.847Z
+
+| System Module | Status | Response Time (ms) | Errors | Imports |
+|---|---|---:|---|---|
+| class\ClassRegistry.js | active | 1.3612 | - |  |
+| combat\CombatSystem.js | active | 40.9351 | - | ../inventory/InventorySystem.js, ../leveling/LevelingManager.js, ../../entities/Enemy.js, ../skills/SkillRegistry.js, ../leveling/LevelingSystem.js, ../race/RaceRegistry.js, ../effects/EffectSystem.js, ../skills/TalentManager.js, ../effects/EffectApplicationSystem.js, ../magic/ManaSystem.js, ../magic/ManaBalance.js, ../../core/EventBus.js |
+| effects\EffectApplicationSystem.js | active | 0.4033 | - | ./EffectSystem.js, ../../core/EventBus.js |
+| effects\EffectRegistry.js | active | 0.2639 | - |  |
+| effects\EffectSystem.js | active | 0.2254 | - | ./EffectRegistry.js, ../../core/EventBus.js |
+| exploration\ExplorationSystem.js | active | 0.9477 | - | ../leveling/LevelingManager.js |
+| inventory\InventorySystem.js | active | 0.2781 | - | ../../entities/ItemRegistry.js |
+| leveling\LevelingManager.js | active | 0.2375 | - | ./LevelingSystem.js, ../race/RaceSystem.js |
+| leveling\LevelingSystem.js | active | 0.25 | - |  |
+| leveling\XpSystem.js | active | 0.9151 | - | ./LevelingManager.js |
+| magic\ManaBalance.js | active | 0.2358 | - |  |
+| magic\ManaSystem.js | active | 0.2229 | - | ./ManaBalance.js |
+| race\RaceRegistry.js | active | 0.2036 | - |  |
+| race\RaceSystem.js | active | 0.1937 | - | ./RaceRegistry.js |
+| skills\generateFusionName.js | active | 0.6307 | - |  |
+| skills\SkillEvolutionManager.js | active | 2.4245 | - | ./SkillRegistry.js, ../../core/EventBus.js, ./generateFusionName.js |
+| skills\SkillRegistry.js | active | 0.3589 | - |  |
+| skills\TalentDefinitions.js | active | 0.3135 | - |  |
+| skills\TalentManager.js | active | 4.1892 | - | ../../entities/Player.js, ../../data/talent.registry.json, ./TalentRegistry.js |
+| skills\TalentRegistry.js | active | 1.7767 | - |  |
+| stats\StatSystem.js | active | 1.2698 | - |  |
+| SystemCore.js | active | 4.5354 | - |  |
+| ui\SystemInterface.js | active | 0.2824 | - | ../../core/EventBus.js |
+
+#### Dependency Chains
+- class\ClassRegistry.js → (none)
+- combat\CombatSystem.js → inventory\InventorySystem.js, leveling\LevelingManager.js, skills\SkillRegistry.js, leveling\LevelingSystem.js, race\RaceRegistry.js, effects\EffectSystem.js, skills\TalentManager.js, effects\EffectApplicationSystem.js, magic\ManaSystem.js, magic\ManaBalance.js
+- effects\EffectApplicationSystem.js → effects\EffectSystem.js
+- effects\EffectRegistry.js → (none)
+- effects\EffectSystem.js → effects\EffectRegistry.js
+- exploration\ExplorationSystem.js → leveling\LevelingManager.js
+- inventory\InventorySystem.js → (none)
+- leveling\LevelingManager.js → leveling\LevelingSystem.js, race\RaceSystem.js
+- leveling\LevelingSystem.js → (none)
+- leveling\XpSystem.js → leveling\LevelingManager.js
+- magic\ManaBalance.js → (none)
+- magic\ManaSystem.js → magic\ManaBalance.js
+- race\RaceRegistry.js → (none)
+- race\RaceSystem.js → race\RaceRegistry.js
+- skills\generateFusionName.js → (none)
+- skills\SkillEvolutionManager.js → skills\SkillRegistry.js, skills\generateFusionName.js
+- skills\SkillRegistry.js → (none)
+- skills\TalentDefinitions.js → (none)
+- skills\TalentManager.js → skills\TalentRegistry.js
+- skills\TalentRegistry.js → (none)
+- stats\StatSystem.js → (none)
+- SystemCore.js → (none)
+- ui\SystemInterface.js → (none)
+
+Error Rate: 0.00%
+
+Resolution Steps:
+- All modules imported successfully.
+

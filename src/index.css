@@ -26,7 +26,7 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* -moz-osx-font-smoothing: grayscale; */
 }
 
 * {
@@ -49,6 +49,7 @@ body {
   width: 100vw;
   height: 100vh;
   position: relative;
+  transition: all 0.3s ease;
 }
 
 /* Scanlines Overlay */

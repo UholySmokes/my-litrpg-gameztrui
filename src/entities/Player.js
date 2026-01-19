@@ -2,9 +2,19 @@
 // CHARACTER DATA - Race, Class, Talent, and Skill Definitions
 // =================================================================
 
-import { getPassiveAbility, getHiddenTraits, getRaceById as getRaceByIdFromRegistry, races as racesFromRegistry } from '../systems/race/RaceRegistry.js';
-import { classes as classesFromRegistry, getClassById as getClassByIdFromRegistry } from '../systems/class/ClassRegistry.js';
-import { exRankTalents as talentsFromRegistry, getTalentById as getTalentByIdFromRegistry, getRandomTalents as getRandomTalentsFromRegistry } from '../systems/skills/TalentDefinitions.js';
+import {
+  getRaceById as getRaceByIdFromRegistry,
+  races as racesFromRegistry,
+} from "../systems/race/RaceRegistry.js";
+import {
+  classes as classesFromRegistry,
+  getClassById as getClassByIdFromRegistry,
+} from "../systems/class/ClassRegistry.js";
+import {
+  exRankTalents as talentsFromRegistry,
+  getTalentById as getTalentByIdFromRegistry,
+  getRandomTalents as getRandomTalentsFromRegistry,
+} from "../systems/skills/TalentDefinitions.js";
 
 // Re-export for backward compatibility
 export const races = racesFromRegistry;
@@ -31,14 +41,11 @@ export function getRandomTalents(count = 3) {
  * SKILLS DATABASE - Now references the comprehensive skills.js system
  * This is kept for backward compatibility but delegates to skills.js
  */
-export const skillsDatabase = {
-  // Legacy structure - now uses skills.js
-  activeSkills: {},
-  passiveSkills: {}
-};
-
 // Import skills functions from skills.js
-import { getSkillsByClass as getSkillsByClassFromSkills, getSkillById as getSkillByIdFromSkills } from '../systems/skills/SkillRegistry.js';
+import {
+  getSkillsByClass as getSkillsByClassFromSkills,
+  getSkillById as getSkillByIdFromSkills,
+} from "../systems/skills/SkillRegistry.js";
 
 export function getSkillsByClass(classId) {
   // Delegate to skills.js for the new system

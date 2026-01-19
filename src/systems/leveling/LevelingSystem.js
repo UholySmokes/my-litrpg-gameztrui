@@ -7,11 +7,11 @@ const SAFE_MAX = Number.MAX_SAFE_INTEGER;
 
 // Default bracket configuration (piecewise exponential)
 const defaultBrackets = [
-  { end: 10,   base: 50,    growth: 1.25 },
-  { end: 50,   base: 200,   growth: 1.15 },
-  { end: 100,  base: 1000,  growth: 1.12 },
-  { end: 500,  base: 6000,  growth: 1.08 },
-  { end: 1000, base: 25000, growth: 1.05 }
+  { end: 10, base: 50, growth: 1.25 },
+  { end: 50, base: 200, growth: 1.15 },
+  { end: 100, base: 1000, growth: 1.12 },
+  { end: 500, base: 6000, growth: 1.08 },
+  { end: 1000, base: 25000, growth: 1.05 },
 ];
 
 function getBrackets(config) {
@@ -20,10 +20,10 @@ function getBrackets(config) {
 
 function getDeltaConfig(config) {
   return {
-    bonusPerLevel: config?.xpBonusPerLevelDiff ?? 0.2,      // +20% per level above player
-    malusPerLevel: config?.xpMalusPerLevelDiff ?? 0.1,      // -10% per level below player
-    zeroBelow: config?.xpNoRewardBelowDelta ?? 10,          // 0 XP if mob is >= this many levels below
-    minMultiplier: config?.xpMinMultiplier ?? 0             // floor multiplier
+    bonusPerLevel: config?.xpBonusPerLevelDiff ?? 0.2, // +20% per level above player
+    malusPerLevel: config?.xpMalusPerLevelDiff ?? 0.1, // -10% per level below player
+    zeroBelow: config?.xpNoRewardBelowDelta ?? 10, // 0 XP if mob is >= this many levels below
+    minMultiplier: config?.xpMinMultiplier ?? 0, // floor multiplier
   };
 }
 
@@ -33,9 +33,7 @@ function getDeltaConfig(config) {
 export function xpForNextLevel(level, config) {
   if (level < 1) return 0;
   const brackets = getBrackets(config);
-  let cumulative = 0;
   let prevEnd = 0;
-  let prevValue = 0;
 
   for (const bracket of brackets) {
     const start = prevEnd;
@@ -50,9 +48,7 @@ export function xpForNextLevel(level, config) {
       return clampSafe(value);
     } else {
       const count = end - start;
-      const lastValue = Math.floor(base * Math.pow(growth, count - 1));
-      cumulative += geometricSum(base, growth, count);
-      prevValue = lastValue;
+      geometricSum(base, growth, count); // iterate to advance bracket boundaries
       prevEnd = end;
     }
   }
@@ -84,7 +80,8 @@ export function xpToReachLevel(level, config) {
  * Level-delta XP calculation with configurable bonus/malus.
  */
 export function calculateGainedXP(playerLevel, mobLevel, baseXP, config) {
-  const { bonusPerLevel, malusPerLevel, zeroBelow, minMultiplier } = getDeltaConfig(config);
+  const { bonusPerLevel, malusPerLevel, zeroBelow, minMultiplier } =
+    getDeltaConfig(config);
   const levelDiff = (mobLevel ?? playerLevel) - (playerLevel ?? 1);
 
   if (levelDiff < -zeroBelow) {
@@ -108,7 +105,7 @@ export function calculateGainedXP(playerLevel, mobLevel, baseXP, config) {
 function geometricSum(a1, r, n) {
   if (n <= 0) return 0;
   if (r === 1) return a1 * n;
-  return Math.floor(a1 * (1 - Math.pow(r, n)) / (1 - r));
+  return Math.floor((a1 * (1 - Math.pow(r, n))) / (1 - r));
 }
 
 function clampSafe(value) {

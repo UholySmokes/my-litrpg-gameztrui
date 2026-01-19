@@ -10,15 +10,18 @@
  * @returns {object} Structured action object
  */
 export function parseAction(userInput, gameState) {
-  if (!userInput || typeof userInput !== 'string') {
-    return { type: 'invalid', reason: 'No input provided' };
+  if (!userInput || typeof userInput !== "string") {
+    return { type: "invalid", reason: "No input provided" };
   }
 
   const input = userInput.trim().toLowerCase();
-  
+
   // Remove common filler words
   const cleanedInput = input
-    .replace(/\b(please|can you|would you|could you|i want to|i'd like to)\b/gi, '')
+    .replace(
+      /\b(please|can you|would you|could you|i want to|i'd like to)\b/gi,
+      "",
+    )
     .trim();
 
   // Parse different action types
@@ -42,9 +45,9 @@ export function parseAction(userInput, gameState) {
 
   // Default: treat as narrative/exploration
   return {
-    type: 'narrative',
+    type: "narrative",
     originalInput: userInput,
-    description: `Player said: "${userInput}"`
+    description: `Player said: "${userInput}"`,
   };
 }
 
@@ -54,7 +57,7 @@ export function parseAction(userInput, gameState) {
 function parseUseItem(input, gameState) {
   const usePatterns = [
     /^(use|drink|eat|consume|take|apply)\s+(.+)$/i,
-    /^(.+)\s+(potion|pills|elixir|food|item)$/i
+    /^(.+)\s+(potion|pills|elixir|food|item)$/i,
   ];
 
   for (const pattern of usePatterns) {
@@ -62,13 +65,13 @@ function parseUseItem(input, gameState) {
     if (match) {
       const itemName = match[2] || match[1];
       const item = findItemByName(itemName, gameState);
-      
+
       if (item) {
         return {
-          type: 'use_item',
+          type: "use_item",
           itemId: item.id,
           itemName: item.name,
-          originalInput: input
+          originalInput: input,
         };
       }
     }
@@ -78,12 +81,17 @@ function parseUseItem(input, gameState) {
   const inventory = gameState.player.inventory || [];
   for (const item of inventory) {
     const itemNameLower = item.name.toLowerCase();
-    if (input.includes(itemNameLower) && (input.includes('use') || input.includes('drink') || input.includes('eat'))) {
+    if (
+      input.includes(itemNameLower) &&
+      (input.includes("use") ||
+        input.includes("drink") ||
+        input.includes("eat"))
+    ) {
       return {
-        type: 'use_item',
+        type: "use_item",
         itemId: item.id,
         itemName: item.name,
-        originalInput: input
+        originalInput: input,
       };
     }
   }
@@ -98,7 +106,7 @@ function parseMove(input, gameState) {
   const movePatterns = [
     /^(go|move|walk|run|travel|head|proceed)\s+(north|south|east|west|up|down|forward|backward|left|right|to)\s*(.+)?$/i,
     /^(go|move|walk|run|travel|head|proceed)\s+(.+)$/i,
-    /^(north|south|east|west|up|down|forward|backward|left|right)$/i
+    /^(north|south|east|west|up|down|forward|backward|left|right)$/i,
   ];
 
   for (const pattern of movePatterns) {
@@ -106,12 +114,12 @@ function parseMove(input, gameState) {
     if (match) {
       const direction = match[2] || match[1];
       const location = match[3] || direction;
-      
+
       return {
-        type: 'move',
+        type: "move",
         direction: direction.toLowerCase(),
         targetLocation: location.toLowerCase(),
-        originalInput: input
+        originalInput: input,
       };
     }
   }
@@ -119,14 +127,16 @@ function parseMove(input, gameState) {
   // Check for location names in world
   const world = gameState.world || {};
   const visitedLocations = world.location?.visited || [];
-  const currentLocation = world.location?.current || '';
-  
+
   for (const location of visitedLocations) {
-    if (input.includes(location.toLowerCase()) && (input.includes('go') || input.includes('move') || input.includes('to'))) {
+    if (
+      input.includes(location.toLowerCase()) &&
+      (input.includes("go") || input.includes("move") || input.includes("to"))
+    ) {
       return {
-        type: 'move',
+        type: "move",
         targetLocation: location,
-        originalInput: input
+        originalInput: input,
       };
     }
   }
@@ -140,18 +150,18 @@ function parseMove(input, gameState) {
 function parseAttack(input, gameState) {
   const attackPatterns = [
     /^(attack|hit|strike|fight|combat|engage)\s+(.+)$/i,
-    /^(attack|hit|strike|fight|combat|engage)$/i
+    /^(attack|hit|strike|fight|combat|engage)$/i,
   ];
 
   for (const pattern of attackPatterns) {
     const match = input.match(pattern);
     if (match) {
-      const target = match[2] || 'nearest enemy';
-      
+      const target = match[2] || "nearest enemy";
+
       return {
-        type: 'attack',
+        type: "attack",
         target: target,
-        originalInput: input
+        originalInput: input,
       };
     }
   }
@@ -165,16 +175,16 @@ function parseAttack(input, gameState) {
 function parseLook(input) {
   const lookPatterns = [
     /^(look|examine|inspect|check|observe|view|see)\s+(.+)$/i,
-    /^(look|examine|inspect|check|observe|view|see|around)$/i
+    /^(look|examine|inspect|check|observe|view|see|around)$/i,
   ];
 
   for (const pattern of lookPatterns) {
     const match = input.match(pattern);
     if (match) {
       return {
-        type: 'look',
-        target: match[2] || 'around',
-        originalInput: input
+        type: "look",
+        target: match[2] || "around",
+        originalInput: input,
       };
     }
   }
@@ -188,14 +198,14 @@ function parseLook(input) {
 function parseInventory(input) {
   const inventoryPatterns = [
     /^(inventory|inv|items|bag|backpack|equipment|gear)$/i,
-    /^(show|check|list|open)\s+(inventory|inv|items|bag|backpack|equipment|gear)$/i
+    /^(show|check|list|open)\s+(inventory|inv|items|bag|backpack|equipment|gear)$/i,
   ];
 
   for (const pattern of inventoryPatterns) {
     if (pattern.test(input)) {
       return {
-        type: 'inventory',
-        originalInput: input
+        type: "inventory",
+        originalInput: input,
       };
     }
   }
@@ -209,14 +219,14 @@ function parseInventory(input) {
 function parseStatus(input) {
   const statusPatterns = [
     /^(status|stats|stat|character|char|info|information)$/i,
-    /^(show|check|view|display)\s+(status|stats|stat|character|char|info|information)$/i
+    /^(show|check|view|display)\s+(status|stats|stat|character|char|info|information)$/i,
   ];
 
   for (const pattern of statusPatterns) {
     if (pattern.test(input)) {
       return {
-        type: 'status',
-        originalInput: input
+        type: "status",
+        originalInput: input,
       };
     }
   }
@@ -230,29 +240,32 @@ function parseStatus(input) {
 function findItemByName(itemName, gameState) {
   const inventory = gameState.player.inventory || [];
   const searchTerm = itemName.toLowerCase().trim();
-  
+
   // Exact match
   for (const item of inventory) {
     if (item.name.toLowerCase() === searchTerm) {
       return item;
     }
   }
-  
+
   // Partial match
   for (const item of inventory) {
     const itemNameLower = item.name.toLowerCase();
-    if (itemNameLower.includes(searchTerm) || searchTerm.includes(itemNameLower)) {
+    if (
+      itemNameLower.includes(searchTerm) ||
+      searchTerm.includes(itemNameLower)
+    ) {
       return item;
     }
   }
-  
+
   // Check for common item name variations
   const itemVariations = {
-    'potion': ['health potion', 'minor health potion', 'major health potion'],
-    'sword': ['rusty sword', 'iron sword', 'steel sword'],
-    'armor': ['leather armor', 'chain mail']
+    potion: ["health potion", "minor health potion", "major health potion"],
+    sword: ["rusty sword", "iron sword", "steel sword"],
+    armor: ["leather armor", "chain mail"],
   };
-  
+
   for (const [key, variations] of Object.entries(itemVariations)) {
     if (searchTerm.includes(key)) {
       for (const variation of variations) {
@@ -264,6 +277,6 @@ function findItemByName(itemName, gameState) {
       }
     }
   }
-  
+
   return null;
 }

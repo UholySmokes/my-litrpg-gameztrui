@@ -580,13 +580,18 @@ function getClassAbilities(player) {
  * Check if player can afford ability
  */
 function canAfford(player, ability) {
+  const resources = player.resources || {};
+  const rage = resources.rage ?? player.rage ?? 0;
+  const chi = resources.chi ?? player.chi ?? 0;
+  const focus = resources.focus ?? player.focus?.current ?? player.focus ?? 0;
+
   switch (ability.costType) {
     case "rage":
-      return (player.rage || 0) >= ability.cost;
+      return rage >= ability.cost;
     case "chi":
-      return (player.chi || 0) >= ability.cost;
+      return chi >= ability.cost;
     case "focus":
-      return (player.focus?.current || player.focus || 0) >= ability.cost;
+      return focus >= ability.cost;
     case "energy":
       return (player.energy || 0) >= ability.cost;
     case "mana":

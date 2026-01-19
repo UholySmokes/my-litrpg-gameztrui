@@ -7,13 +7,17 @@ import React from 'react';
  */
 function getClassResource(player) {
   const classId = player.class?.id || player.class;
-  
+  const resources = player.resources || {};
+  const rage = resources.rage ?? player.rage ?? 0;
+  const chi = resources.chi ?? player.chi ?? 0;
+  const focus = resources.focus ?? player.focus?.current ?? player.focus ?? 0;
+
   switch(classId) {
     case 'berserker':
       return {
         type: 'rage',
         label: 'Rage',
-        current: player.rage || 0,
+        current: rage,
         max: 100,
         color: '#ff4444',
         gradient: 'linear-gradient(90deg, #ff4444, #ff8800)',
@@ -26,7 +30,7 @@ function getClassResource(player) {
       return {
         type: 'chi',
         label: 'Chi',
-        current: player.chi || 0,
+        current: chi,
         max: 100,
         color: '#44ff88',
         gradient: 'linear-gradient(90deg, #44ff88, #88ffcc)',
@@ -40,7 +44,7 @@ function getClassResource(player) {
       return {
         type: 'focus',
         label: 'Focus',
-        current: player.focus?.current || player.focus || 0,
+        current: focus,
         max: player.focus?.max || 100,
         color: '#4488ff',
         gradient: 'linear-gradient(90deg, #4488ff, #88ccff)',

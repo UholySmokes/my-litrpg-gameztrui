@@ -26,6 +26,17 @@ const CHI_CONFIG = {
   unarmedDamagePerDex: 0.5,
 };
 
+const getChiValue = (player) => player?.resources?.chi ?? player?.chi ?? 0;
+
+const setChiValue = (player, value) => ({
+  ...player,
+  chi: value,
+  resources: {
+    ...(player.resources || {}),
+    chi: value,
+  },
+});
+
 /**
  * Initialize chi for monk
  * @param {object} player - Player object
@@ -35,8 +46,7 @@ export function initializeChi(player) {
   const classId = player.class?.id || player.class;
   if (classId === "monk" || classId === "grandmaster") {
     return {
-      ...player,
-      chi: CHI_CONFIG.maxChi,
+      ...setChiValue(player, CHI_CONFIG.maxChi),
       comboCount: 0,
       lastComboTime: 0,
     };
@@ -50,15 +60,19 @@ export function initializeChi(player) {
  * @param {object} player - Player object
  * @param {number} amount - Amount of chi to gain
  */
-function gainChi(dispatch, player, amount) {
-  if (!usesChi(player)) return;
+function gainChi(player, amount, reason = "unknown") {
+  if (!usesChi(player)) return player;
 
   const delta = Math.max(0, amount);
+  const currentChi = getChiValue(player);
+  const nextChi = Math.min(CHI_CONFIG.maxChi, currentChi + delta);
+  const updated = setChiValue(player, nextChi);
 
-  dispatch({
-    type: "UPDATE_RESOURCES",
-    payload: { chi: delta },
-  });
+  if (delta > 0) {
+    emit("chi:gain", { player: player.name, amount: delta, reason, newChi: nextChi });
+  }
+
+  return updated;
 }
 
 /**
@@ -68,19 +82,29 @@ function gainChi(dispatch, player, amount) {
  * @param {number} amount - Amount of chi to consume
  * @returns {boolean} Success
  */
-function consumeChi(dispatch, player, amount) {
-  if (!usesChi(player)) return false;
+function consumeChi(player, amount) {
+  if (!usesChi(player)) {
+    return { success: false, player, consumed: 0, reason: "Not a monk" };
+  }
 
-  const currentChi = player.resources?.chi || 0;
+  const currentChi = getChiValue(player);
 
-  if (amount > currentChi) return false;
+  if (amount > currentChi) {
+    return {
+      success: false,
+      player,
+      consumed: 0,
+      reason: `Insufficient chi (${currentChi}/${amount})`,
+    };
+  }
 
-  dispatch({
-    type: "UPDATE_RESOURCES",
-    payload: { chi: -amount },
-  });
-
-  return true;
+  const nextChi = currentChi - amount;
+  return {
+    success: true,
+    player: setChiValue(player, nextChi),
+    consumed: amount,
+    reason: "",
+  };
 }
 
 /**
@@ -97,17 +121,14 @@ function usesChi(entity) {
 export function gainChiLegacy(player, amount, reason = "unknown") {
   if (!usesChi(player)) return player;
 
-  const oldChi = player.chi || 0;
+  const oldChi = getChiValue(player);
   const newChi = Math.min(CHI_CONFIG.maxChi, oldChi + amount);
 
   if (amount > 0) {
     emit("chi:gain", { player: player.name, amount, reason, newChi });
   }
 
-  return {
-    ...player,
-    chi: newChi,
-  };
+  return setChiValue(player, newChi);
 }
 
 /**
@@ -121,7 +142,7 @@ export function consumeChiLegacy(player, amount) {
     return { success: false, player, consumed: 0, reason: "Not a monk" };
   }
 
-  const currentChi = player.chi || 0;
+  const currentChi = getChiValue(player);
 
   if (currentChi < amount) {
     return {
@@ -138,7 +159,7 @@ export function consumeChiLegacy(player, amount) {
 
   return {
     success: true,
-    player: { ...player, chi: newChi },
+    player: setChiValue(player, newChi),
     consumed: amount,
     reason: "",
   };
@@ -273,7 +294,7 @@ export function meditate(state) {
     };
   }
 
-  const currentChi = player.chi || 0;
+  const currentChi = getChiValue(player);
   const chiGained = Math.min(
     CHI_CONFIG.chiPerMeditate,
     CHI_CONFIG.maxChi - currentChi,
@@ -288,10 +309,7 @@ export function meditate(state) {
     chiGained,
     state: {
       ...state,
-      player: {
-        ...player,
-        chi: newChi,
-      },
+      player: setChiValue(player, newChi),
     },
   };
 }
@@ -307,7 +325,7 @@ export function canAffordChiAbility(player, chiCost) {
     return { canAfford: false, reason: "Not a monk" };
   }
 
-  const currentChi = player.chi || 0;
+  const currentChi = getChiValue(player);
 
   if (currentChi < chiCost) {
     return {
@@ -370,10 +388,11 @@ export function getChiStatus(player) {
     return null;
   }
 
+  const currentChi = getChiValue(player);
   return {
-    current: player.chi || 0,
+    current: currentChi,
     max: CHI_CONFIG.maxChi,
-    percentage: Math.floor(((player.chi || 0) / CHI_CONFIG.maxChi) * 100),
+    percentage: Math.floor((currentChi / CHI_CONFIG.maxChi) * 100),
     comboCount: player.comboCount || 0,
     comboMultiplier: getComboMultiplier(player),
     unarmedDamage: calculateUnarmedDamage(player),
@@ -406,8 +425,7 @@ export function resetChi(player) {
   if (!usesChi(player)) return player;
 
   return {
-    ...player,
-    chi: CHI_CONFIG.maxChi,
+    ...setChiValue(player, CHI_CONFIG.maxChi),
     comboCount: 0,
     lastComboTime: 0,
   };

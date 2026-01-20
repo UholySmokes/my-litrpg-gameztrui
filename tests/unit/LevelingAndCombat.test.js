@@ -138,6 +138,22 @@ describe("Title system", () => {
     expect(normalized.player.unlockedTitles).toContain("legendary_hero");
   });
 
+  it("auto-unlocks Wealthy Merchant based on totalGoldEarned", () => {
+    const normalized = normalizeGameState({
+      config: {},
+      player: {
+        level: 5,
+        xp: { current: 0, max: 1 },
+        currency: { goldCoins: 1000, soulpoints: 0 },
+        gold: 1000,
+        attributes: { strength: 5, vitality: 5, intelligence: 5 },
+      },
+      quests: { active: [], completed: [] },
+    });
+
+    expect(normalized.player.unlockedTitles).toContain("wealthy_merchant");
+  });
+
   it("PURCHASE_TITLE deducts currency and unlocks", () => {
     const state = {
       ...initialGameState,
@@ -360,6 +376,40 @@ describe("Title system", () => {
     } finally {
       Math.random = originalRandom;
     }
+  });
+
+  it("quest gold rewards apply title goldGain bonus", () => {
+    const state = normalizeGameState({
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        level: 5,
+        gold: 0,
+        currency: { ...initialGameState.player.currency, goldCoins: 0 },
+        unlockedTitles: [
+          ...(initialGameState.player.unlockedTitles || []),
+          "wealthy_merchant",
+        ],
+        titles: [...(initialGameState.player.titles || []), "wealthy_merchant"],
+        equippedTitle: "wealthy_merchant",
+      },
+      quests: {
+        active: [{ id: "quest_1" }],
+        completed: [],
+      },
+    });
+
+    const next = gameReducer(state, {
+      type: "COMPLETE_QUEST",
+      payload: {
+        questId: "quest_1",
+        reward: { gold: 5 },
+      },
+    });
+
+    expect(next.player.currency.goldCoins).toBe(6);
+    expect(next.player.gold).toBe(6);
+    expect(next.player.progress.totalGoldEarned).toBe(6);
   });
 
   it("gachaBonus shifts rates away from common", () => {

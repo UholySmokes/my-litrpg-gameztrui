@@ -10,6 +10,7 @@ import {
   ensureAttributeShape,
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
+import { getEffectiveAttributes } from "../titles/TitleSystem.js";
 
 /**
  * STEALTH CONFIGURATION
@@ -76,8 +77,18 @@ export function enterStealth(state) {
   // Calculate stealth power based on agility and race bonus
   const raceId = player.race?.id || player.race;
   const stealthBonus = hasRaceTag(raceId, "STEALTH_BOOST") ? 0.5 : 0;
-  const normalizedAttributes = ensureAttributeShape(player.attributes, 5);
-  const agilityValue = getAttributeValue(normalizedAttributes, "agility") || 5;
+  const baseAttributeValue = state.config?.baseAttributeValue ?? 5;
+  const normalizedAttributes = ensureAttributeShape(
+    player.attributes,
+    baseAttributeValue,
+  );
+  const effectiveAttributes = getEffectiveAttributes(
+    { ...player, attributes: normalizedAttributes },
+    { ...state.config, baseAttributeValue },
+    normalizedAttributes,
+  );
+  const agilityValue =
+    getAttributeValue(effectiveAttributes, "agility") || baseAttributeValue;
   const agilityBonus = agilityValue * 2;
   const stealthPower = Math.floor(agilityBonus * (1 + stealthBonus));
 
@@ -298,8 +309,18 @@ export function useVanish(state, duration = 2) {
   // Calculate stealth power
   const raceId = player.race?.id || player.race;
   const stealthBonus = hasRaceTag(raceId, "STEALTH_BOOST") ? 0.5 : 0;
-  const normalizedAttributes = ensureAttributeShape(player.attributes, 5);
-  const agilityValue = getAttributeValue(normalizedAttributes, "agility") || 5;
+  const baseAttributeValue = state.config?.baseAttributeValue ?? 5;
+  const normalizedAttributes = ensureAttributeShape(
+    player.attributes,
+    baseAttributeValue,
+  );
+  const effectiveAttributes = getEffectiveAttributes(
+    { ...player, attributes: normalizedAttributes },
+    { ...state.config, baseAttributeValue },
+    normalizedAttributes,
+  );
+  const agilityValue =
+    getAttributeValue(effectiveAttributes, "agility") || baseAttributeValue;
   const agilityBonus = agilityValue * 2;
   const stealthPower = Math.floor(agilityBonus * (1 + stealthBonus));
 

@@ -66,7 +66,8 @@ export default function AdminTools({ dispatch, getState }) {
     }
 
     // Add gold directly to player state
-    const currentGold = currentState.player?.gold || 0;
+    const existingCurrency = currentState.player?.currency || {};
+    const currentGold = existingCurrency.goldCoins ?? currentState.player?.gold ?? 0;
     const newGold = currentGold + amount;
 
     dispatch({
@@ -75,6 +76,10 @@ export default function AdminTools({ dispatch, getState }) {
         player: {
           ...currentState.player,
           gold: newGold,
+          currency: {
+            ...existingCurrency,
+            goldCoins: newGold,
+          },
         },
       },
     });

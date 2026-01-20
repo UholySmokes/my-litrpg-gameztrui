@@ -178,11 +178,8 @@ export function areNonPurchaseUnlockConditionsMet(titleOrId, gameState) {
   }
 
   if (conditions.totalGold) {
-    const currentGold = toNumber(
-      player.currency?.goldCoins ?? player.gold,
-      0,
-    );
-    if (currentGold < conditions.totalGold) {
+    const totalGoldEarned = toNumber(progress.totalGoldEarned, 0);
+    if (totalGoldEarned < conditions.totalGold) {
       return false;
     }
   }

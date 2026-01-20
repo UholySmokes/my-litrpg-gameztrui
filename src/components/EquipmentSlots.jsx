@@ -1,4 +1,5 @@
 import React from "react";
+import { getTitleById } from "../systems/titles/TitleSystem.js";
 
 const styles = {
   container: {
@@ -53,6 +54,9 @@ const styles = {
 
 export default function EquipmentSlots({ player, equipment: equipmentProp }) {
   const equipment = player?.equipment ?? equipmentProp ?? {};
+  const equippedTitleId =
+    typeof player?.equippedTitle === "string" ? player.equippedTitle : null;
+  const equippedTitle = equippedTitleId ? getTitleById(equippedTitleId) : null;
 
   const slots = [
     { key: "weapon", label: "Weapon", item: equipment?.weapon },
@@ -61,12 +65,19 @@ export default function EquipmentSlots({ player, equipment: equipmentProp }) {
     {
       key: "title",
       label: "Title",
-      item: player?.title
+      item: equippedTitle
         ? {
-            name: player.title,
-            description: player.titleDescription || "Equipped honorific title",
+            id: equippedTitle.id,
+            name: equippedTitle.name,
+            description: equippedTitle.description,
           }
-        : null,
+        : player?.title
+          ? {
+              name: player.title,
+              description:
+                player.titleDescription || "Equipped honorific title",
+            }
+          : null,
     },
   ];
 

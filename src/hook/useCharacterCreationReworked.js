@@ -24,11 +24,24 @@ import { xpForNextLevel } from "../systems/leveling/LevelingSystem.js";
 const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;
 const BASE_ATTRIBUTE_TOTAL = CANONICAL_ATTRIBUTES.length * BASE_ATTRIBUTE_VALUE;
+const INITIAL_REROLLS = 3;
 const MAX_ACTIVE_SKILLS = 3;
 const MAX_PASSIVE_SKILLS = 6;
 const ACTIVE_POOL_SIZE = 10;
 const PASSIVE_POOL_SIZE = 10;
 const TALENT_POOL_SIZE = 8;
+
+function normalizeEntityRef(value, fallback) {
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    const id = typeof value.id === "string" && value.id ? value.id : null;
+    const name =
+      typeof value.name === "string" && value.name ? value.name : id;
+    if (id) return { id, name };
+    if (name) return name;
+  }
+  if (typeof value === "string" && value) return value;
+  return fallback;
+}
 
 // Helper to shuffle array
 function shuffleArray(array) {
@@ -49,6 +62,7 @@ function getRandomSubset(array, count) {
 export function useCharacterCreationReworked() {
   const [currentStep, setCurrentStep] = useState(1);
   const [showBootSequence, setShowBootSequence] = useState(true);
+  const [rerollsRemaining, setRerollsRemaining] = useState(INITIAL_REROLLS);
 
   // Generated Content State
   const [generatedRaces, setGeneratedRaces] = useState(() => {
@@ -176,6 +190,31 @@ export function useCharacterCreationReworked() {
     setAvailableActiveSkills([]);
     setAvailablePassiveSkills([]);
   }, []);
+
+  const handleReroll = useCallback(() => {
+    if (rerollsRemaining <= 0) return;
+
+    setRerollsRemaining((prev) => Math.max(0, prev - 1));
+
+    const options = ContentGenerator.generateCharacterOptions(5);
+    setGeneratedRaces(options.races);
+    setGeneratedClasses(options.classes);
+
+    setCurrentStep(1);
+    setShowBootSequence(false);
+    setName("");
+    setGender("");
+    setSelectedRace(null);
+    setSelectedClass(null);
+    setSelectedTalent(null);
+    setSelectedProfession(null);
+    setCurrentTalents([]);
+    setSelectedActiveSkills([]);
+    setSelectedPassiveSkills([]);
+    setAvailableActiveSkills([]);
+    setAvailablePassiveSkills([]);
+    setAttributePoints(createAttributeBaseline(BASE_ATTRIBUTE_VALUE));
+  }, [rerollsRemaining]);
 
   // Calculate remaining points
   const totalAllocated = Object.values(attributePoints).reduce(
@@ -499,8 +538,8 @@ export function useCharacterCreationReworked() {
     const characterData = {
       name: name.trim(),
       gender,
-      race: selectedRace?.name || selectedRace || "Unknown",
-      class: selectedClass?.name || selectedClass || "None",
+      race: normalizeEntityRef(selectedRace, "Unknown"),
+      class: normalizeEntityRef(selectedClass, "None"),
       talent: selectedTalent?.name || selectedTalent || "None",
       talents: selectedTalentId ? [selectedTalentId] : [],
       activeSkills: selectedActiveSkills,
@@ -569,6 +608,7 @@ export function useCharacterCreationReworked() {
     currentStep,
     showBootSequence,
     name,
+    characterName: name,
     gender,
     selectedRace,
     selectedClass,
@@ -583,6 +623,7 @@ export function useCharacterCreationReworked() {
     generatedClasses,
     availableActiveSkills,
     availablePassiveSkills,
+    rerollsRemaining,
 
     // Setters
     setName,
@@ -595,6 +636,7 @@ export function useCharacterCreationReworked() {
     handleClassSelect,
     handleTalentSelect,
     handleProfessionSelect,
+    handleReroll,
     rerollTalents,
     rerollActiveSkills,
     rerollPassiveSkills,

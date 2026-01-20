@@ -12,6 +12,7 @@ import {
   generateNarrative,
   generateInitialNarrative,
 } from "../core/AIService.js";
+import { renderStatusBlock } from "../util/statusrenderer.js";
 
 const initialNarrativeCache = new Map();
 
@@ -22,6 +23,11 @@ const DEFAULT_ACTION_SUGGESTIONS = [
   { t: "talk to nearby NPC", w: 1 },
 ];
 
+const toNumber = (value, fallback = 0) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
 function buildActionSuggestions(state) {
   if (!state) {
     return DEFAULT_ACTION_SUGGESTIONS;
@@ -29,7 +35,7 @@ function buildActionSuggestions(state) {
 
   const suggestions = [];
   const player = state.player || {};
-  const inCombat = Boolean(state.combat?.inCombat);
+  const inCombat = Boolean(state.combat?.inCombat ?? state.combat?.status === "active");
 
   if (inCombat) {
     suggestions.push(
@@ -47,9 +53,17 @@ function buildActionSuggestions(state) {
     );
   }
 
+  const hpCurrent = toNumber(
+    typeof player.hp === "object" ? player.hp?.current : player.hp,
+    toNumber(player.health, 0),
+  );
+  const hpMax = toNumber(
+    typeof player.hp === "object" ? player.hp?.max : player.maxHp ?? player.maxHealth,
+    1,
+  );
+
   if (
-    (player.hp ?? player.health ?? 0) <
-    0.3 * (player.maxHp ?? player.maxHealth ?? 1)
+    hpCurrent < 0.3 * Math.max(1, hpMax)
   ) {
     suggestions.push({ t: "rest to recover", w: 0.9 });
   }
@@ -170,8 +184,7 @@ export function useNarrative(
 
         // Step 5: Handle special actions (like status display)
         if (actionResult.showStatus) {
-          const { renderstatusblock } = await import("../util/statusrenderer");
-          const statusString = renderstatusblock(newState.player);
+          const statusString = renderStatusBlock(newState.player, newState.config);
           addSystemMessage(statusString, "status-update");
           setIsLoading(false);
           return;

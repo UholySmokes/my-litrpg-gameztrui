@@ -6,15 +6,26 @@ import {
   calculateMaxHp,
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
+import {
+  getEffectiveAttributes,
+  getTitleById,
+} from "../systems/titles/TitleSystem.js";
 
 export default function StatusOverlay({
   player,
+  config,
   isOpen,
   onClose,
   onAllocateAttribute,
   onDeallocateAttribute,
 }) {
   if (!isOpen || !player) return null;
+
+  const resolvedConfig =
+    config && typeof config === "object" && !Array.isArray(config) ? config : {};
+  const baseAttributeValue = Number.isFinite(resolvedConfig.baseAttributeValue)
+    ? resolvedConfig.baseAttributeValue
+    : 5;
 
   const handleAllocateAttribute = (attributeKey) => {
     if (typeof onAllocateAttribute === "function") {
@@ -28,10 +39,19 @@ export default function StatusOverlay({
     }
   };
 
-  const normalizedAttributes = ensureAttributeShape(player.attributes, 5);
+  const normalizedAttributes = ensureAttributeShape(
+    player.attributes,
+    baseAttributeValue,
+  );
+  const effectiveAttributes = getEffectiveAttributes(
+    { ...player, attributes: normalizedAttributes },
+    { ...resolvedConfig, baseAttributeValue },
+    normalizedAttributes,
+  );
   const attributeEntries = ATTRIBUTE_METADATA.map((attribute) => ({
     ...attribute,
-    value: getAttributeValue(normalizedAttributes, attribute.key) || 0,
+    value: getAttributeValue(effectiveAttributes, attribute.key) || 0,
+    baseValue: getAttributeValue(normalizedAttributes, attribute.key) || 0,
   }));
 
   const abilityList = player.abilities || [];
@@ -40,21 +60,36 @@ export default function StatusOverlay({
   const freeAttributePoints = player.attributes?.freePoints ?? 0;
   const attributeInvestments = player.attributeInvestments || {};
 
-  const hpMaxCanonical = calculateMaxHp(normalizedAttributes);
-  const manaMaxCanonical = calculateMaxMana(normalizedAttributes);
+  const hpMaxCanonical = calculateMaxHp(effectiveAttributes);
+  const manaMaxCanonical = calculateMaxMana(effectiveAttributes);
   const hpMax = player.hp?.max ?? hpMaxCanonical;
   const hpCurrent = player.hp?.current ?? hpMaxCanonical;
   const manaMax = player.mana?.max ?? manaMaxCanonical;
   const manaCurrent = player.mana?.current ?? manaMaxCanonical;
 
-  const strength = getAttributeValue(normalizedAttributes, "strength");
-  const dexterity = getAttributeValue(normalizedAttributes, "dexterity");
-  const agility = getAttributeValue(normalizedAttributes, "agility");
-  const vitality = getAttributeValue(normalizedAttributes, "vitality");
-  const intelligence = getAttributeValue(normalizedAttributes, "intelligence");
-  const wisdom = getAttributeValue(normalizedAttributes, "wisdom");
-  const willpower = getAttributeValue(normalizedAttributes, "willpower");
-  const luck = getAttributeValue(normalizedAttributes, "luck");
+  const strength = getAttributeValue(effectiveAttributes, "strength");
+  const dexterity = getAttributeValue(effectiveAttributes, "dexterity");
+  const agility = getAttributeValue(effectiveAttributes, "agility");
+  const vitality = getAttributeValue(effectiveAttributes, "vitality");
+  const intelligence = getAttributeValue(effectiveAttributes, "intelligence");
+  const wisdom = getAttributeValue(effectiveAttributes, "wisdom");
+  const willpower = getAttributeValue(effectiveAttributes, "willpower");
+  const luck = getAttributeValue(effectiveAttributes, "luck");
+
+  const equippedTitleId =
+    typeof player.equippedTitle === "string" ? player.equippedTitle : null;
+  const equippedTitle = equippedTitleId ? getTitleById(equippedTitleId) : null;
+  const legacyTitleName = typeof player.title === "string" ? player.title : null;
+  const titleLabel = equippedTitle?.name || legacyTitleName || "None";
+
+  const raceLabel =
+    typeof player.race === "string"
+      ? player.race
+      : player.race?.name || player.race?.id || "Unknown";
+  const classLabel =
+    typeof player.class === "string"
+      ? player.class
+      : player.class?.name || player.class?.id || "";
 
   const derivedCombatStats = [
     {
@@ -93,7 +128,21 @@ export default function StatusOverlay({
     { key: "weapon", label: "Weapon" },
     { key: "armor", label: "Armor" },
     { key: "accessory", label: "Accessory" },
-    { key: "title", label: "Title", item: player.title },
+    {
+      key: "title",
+      label: "Title",
+      item: equippedTitle
+        ? {
+            name: equippedTitle.name,
+            description: equippedTitle.description,
+          }
+        : legacyTitleName
+          ? {
+              name: legacyTitleName,
+              description: player.titleDescription || "Equipped honorific title",
+            }
+          : null,
+    },
   ];
 
   return (
@@ -131,7 +180,7 @@ export default function StatusOverlay({
                 [STATUS OVERLAY]
               </h2>
               <div style={{ color: "var(--text-main)" }}>
-                {player.name} · Level {player.level || 1} {player.class || ""}
+                {player.name} · Level {player.level || 1} {classLabel}
               </div>
             </div>
             <button
@@ -171,8 +220,8 @@ export default function StatusOverlay({
                 label="Experience"
                 value={`${player.xp?.current || 0} / ${player.xp?.max || 100}`}
               />
-              <StatCard label="Title" value={player.title || "None"} />
-              <StatCard label="Race" value={player.race || "Unknown"} />
+              <StatCard label="Title" value={titleLabel} />
+              <StatCard label="Race" value={raceLabel} />
               <StatCard label="Talent" value={player.talent || "None"} />
             </div>
           </section>
@@ -232,7 +281,13 @@ export default function StatusOverlay({
                     flexDirection: "column",
                     gap: "0.5rem",
                   }}
-                  title={entry.description}
+                  title={
+                    entry.value !== entry.baseValue
+                      ? `${entry.description} (Titles: ${
+                          entry.value - entry.baseValue > 0 ? "+" : ""
+                        }${entry.value - entry.baseValue})`
+                      : entry.description
+                  }
                 >
                   <div
                     style={{
@@ -250,6 +305,14 @@ export default function StatusOverlay({
                   </div>
                   <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
                     {entry.description}
+                    {entry.value !== entry.baseValue && (
+                      <span>
+                        {" "}
+                        (Titles:{" "}
+                        {entry.value - entry.baseValue > 0 ? "+" : ""}
+                        {entry.value - entry.baseValue})
+                      </span>
+                    )}
                   </div>
                   <div
                     style={{
@@ -375,8 +438,7 @@ export default function StatusOverlay({
               }}
             >
               {equipmentEntries.map((slot) => {
-                const item =
-                  slot.key === "title" ? player.title : equipment[slot.key];
+                const item = slot.item ?? equipment[slot.key];
                 if (!item) {
                   return (
                     <div

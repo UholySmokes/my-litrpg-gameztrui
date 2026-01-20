@@ -9,6 +9,7 @@ import {
   ensureAttributeShape,
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
+import { getEffectiveAttributes } from "../titles/TitleSystem.js";
 
 /**
  * CHARM CONFIGURATION
@@ -78,8 +79,18 @@ export function attemptCharm(state, enemyIndex, charmPower = 1.0) {
   }
 
   // Calculate charm chance
-  const normalizedAttributes = ensureAttributeShape(player.attributes, 5);
-  const playerCha = getAttributeValue(normalizedAttributes, "charisma") || 5;
+  const baseAttributeValue = state.config?.baseAttributeValue ?? 5;
+  const normalizedAttributes = ensureAttributeShape(
+    player.attributes,
+    baseAttributeValue,
+  );
+  const effectiveAttributes = getEffectiveAttributes(
+    { ...player, attributes: normalizedAttributes },
+    { ...state.config, baseAttributeValue },
+    normalizedAttributes,
+  );
+  const playerCha =
+    getAttributeValue(effectiveAttributes, "charisma") || baseAttributeValue;
   const enemyWill = enemy.stats?.will || enemy.stats?.int || enemy.level || 5;
 
   // Fae Touched bonus

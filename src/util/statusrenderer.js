@@ -6,34 +6,71 @@ import {
   calculateMaxHp,
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
+import {
+  getEffectiveAttributes,
+  getTitleById,
+} from "../systems/titles/TitleSystem.js";
 
-export function renderStatusBlock(player) {
+export function renderStatusBlock(player, config) {
   const name = player.name || "Unknown";
   const level = player.level || 1;
   const xpCurrent = player.xp?.current || 0;
   const xpMax = player.xp?.max || 100;
-  const title = player.title || "None";
-  const race = player.race || "Unknown";
-  const playerClass = player.class || "None";
+  const race =
+    typeof player.race === "string"
+      ? player.race
+      : player.race?.name || player.race?.id || "Unknown";
+  const playerClass =
+    typeof player.class === "string"
+      ? player.class
+      : player.class?.name || player.class?.id || "None";
   const talent = player.talent || "None";
-  const normalizedAttributes = ensureAttributeShape(player.attributes, 5);
-  const canonicalHpMax = calculateMaxHp(normalizedAttributes);
-  const canonicalManaMax = calculateMaxMana(normalizedAttributes);
+  const resolvedConfig =
+    config && typeof config === "object" && !Array.isArray(config) ? config : {};
+  const baseAttributeValue = Number.isFinite(resolvedConfig.baseAttributeValue)
+    ? resolvedConfig.baseAttributeValue
+    : 5;
+
+  const equippedTitleId =
+    typeof player.equippedTitle === "string" ? player.equippedTitle : null;
+  const equippedTitle = equippedTitleId ? getTitleById(equippedTitleId) : null;
+  const title = equippedTitle?.name || player.title || "None";
+
+  const normalizedAttributes = ensureAttributeShape(
+    player.attributes,
+    baseAttributeValue,
+  );
+  const effectiveAttributes = getEffectiveAttributes(
+    { ...player, attributes: normalizedAttributes },
+    { ...resolvedConfig, baseAttributeValue },
+    normalizedAttributes,
+  );
+  const canonicalHpMax = calculateMaxHp(effectiveAttributes);
+  const canonicalManaMax = calculateMaxMana(effectiveAttributes);
   const hpMax = player.hp?.max ?? canonicalHpMax;
   const hpCurrent = player.hp?.current ?? canonicalHpMax;
   const manaMax = player.mana?.max ?? canonicalManaMax;
   const manaCurrent = player.mana?.current ?? canonicalManaMax;
   const freePoints = player.attributes?.freePoints || 0;
 
-  const str = getAttributeValue(normalizedAttributes, "strength") || 5;
-  const agi = getAttributeValue(normalizedAttributes, "agility") || 5;
-  const dex = getAttributeValue(normalizedAttributes, "dexterity") || 5;
-  const vit = getAttributeValue(normalizedAttributes, "vitality") || 5;
-  const int = getAttributeValue(normalizedAttributes, "intelligence") || 5;
-  const cha = getAttributeValue(normalizedAttributes, "charisma") || 5;
-  const will = getAttributeValue(normalizedAttributes, "willpower") || 5;
-  const luck = getAttributeValue(normalizedAttributes, "luck") || 5;
-  const soul = getAttributeValue(normalizedAttributes, "soul") || 5;
+  const str =
+    getAttributeValue(effectiveAttributes, "strength") || baseAttributeValue;
+  const agi =
+    getAttributeValue(effectiveAttributes, "agility") || baseAttributeValue;
+  const dex =
+    getAttributeValue(effectiveAttributes, "dexterity") || baseAttributeValue;
+  const vit =
+    getAttributeValue(effectiveAttributes, "vitality") || baseAttributeValue;
+  const int =
+    getAttributeValue(effectiveAttributes, "intelligence") || baseAttributeValue;
+  const cha =
+    getAttributeValue(effectiveAttributes, "charisma") || baseAttributeValue;
+  const will =
+    getAttributeValue(effectiveAttributes, "willpower") || baseAttributeValue;
+  const luck =
+    getAttributeValue(effectiveAttributes, "luck") || baseAttributeValue;
+  const soul =
+    getAttributeValue(effectiveAttributes, "soul") || baseAttributeValue;
 
   // Format abilities - show active and passive skills with levels
   const abilities = player.abilities || [];
@@ -50,9 +87,13 @@ export function renderStatusBlock(player) {
   const inventoryList = [];
 
   if (equipped.weapon)
-    inventoryList.push(`- ${equipped.weapon.name} [Equipped: Weapon]`);
+    inventoryList.push(
+      `- ${equipped.weapon.name || equipped.weapon.id || equipped.weapon} [Equipped: Weapon]`,
+    );
   if (equipped.armor)
-    inventoryList.push(`- ${equipped.armor.name} [Equipped: Armor]`);
+    inventoryList.push(
+      `- ${equipped.armor.name || equipped.armor.id || equipped.armor} [Equipped: Armor]`,
+    );
 
   const otherItems = inventory
     .filter(

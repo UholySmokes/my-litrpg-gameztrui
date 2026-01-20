@@ -1,4 +1,5 @@
 import { ensureAttributeShape } from "../constants/attributes.js";
+import { DataRegistry } from "../data/DataRegistry.js";
 import { titleDatabase } from "../data/titleData.js";
 import { xpForNextLevel } from "../systems/leveling/LevelingSystem.js";
 import {
@@ -49,6 +50,46 @@ const toNumber = (value, fallback = 0) =>
   Number.isFinite(value) ? value : fallback;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+function normalizeEntityRef(value, { kind, fallback } = {}) {
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    const id = typeof value.id === "string" && value.id ? value.id : null;
+    const name =
+      typeof value.name === "string" && value.name ? value.name : id;
+    if (id) return { id, name };
+  }
+
+  if (typeof value === "string" && value) {
+    const trimmed = value.trim();
+    if (!trimmed) return fallback ?? null;
+
+    if (kind === "race") {
+      const byId = DataRegistry.getRaceById(trimmed);
+      if (byId) return { id: byId.id, name: byId.name || byId.id };
+      const lowered = trimmed.toLowerCase();
+      const byName = DataRegistry.getRaces().find(
+        (race) => typeof race?.name === "string" && race.name.toLowerCase() === lowered,
+      );
+      if (byName) return { id: byName.id, name: byName.name || byName.id };
+      return trimmed;
+    }
+
+    if (kind === "class") {
+      const byId = DataRegistry.getClassById(trimmed);
+      if (byId) return { id: byId.id, name: byId.name || byId.id };
+      const lowered = trimmed.toLowerCase();
+      const byName = DataRegistry.getClasses().find(
+        (cls) => typeof cls?.name === "string" && cls.name.toLowerCase() === lowered,
+      );
+      if (byName) return { id: byName.id, name: byName.name || byName.id };
+      return trimmed;
+    }
+
+    return trimmed;
+  }
+
+  return fallback ?? null;
+}
 
 function normalizeConfig(rawConfig) {
   const source =
@@ -193,6 +234,14 @@ function normalizePlayer(rawPlayer, config) {
       : {};
 
   const level = Math.max(1, Math.floor(toNumber(player.level, 1)));
+  const normalizedRace = normalizeEntityRef(player.race, {
+    kind: "race",
+    fallback: null,
+  });
+  const normalizedClass = normalizeEntityRef(player.class, {
+    kind: "class",
+    fallback: null,
+  });
   const attributes = normalizeAttributes(
     player.attributes,
     config.baseAttributeValue,
@@ -228,6 +277,8 @@ function normalizePlayer(rawPlayer, config) {
     ...player,
     name: player.name ?? "Wanderer",
     level,
+    race: normalizedRace,
+    class: normalizedClass,
     attributes,
     attributeInvestments:
       player.attributeInvestments && typeof player.attributeInvestments === "object"
@@ -263,8 +314,8 @@ function normalizePlayer(rawPlayer, config) {
       killsByEnemyId,
       gachaPulls: Math.max(0, Math.floor(toNumber(progress.gachaPulls, 0))),
       totalGoldEarned: Math.max(
-        0,
-        Math.floor(toNumber(progress.totalGoldEarned, 0)),
+        goldCoins,
+        Math.max(0, Math.floor(toNumber(progress.totalGoldEarned, 0))),
       ),
     },
   };

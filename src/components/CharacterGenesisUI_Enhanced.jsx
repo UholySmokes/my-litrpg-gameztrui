@@ -88,10 +88,6 @@ const RACE_ASCII = {
     ╚═══════════╝`,
 };
 
-const styles = {
-  // Panel-specific inline styles remain below; layout handled via CSS classes.
-};
-
 export default function CharacterGenesisUI_Enhanced({ onComplete }) {
   // Use existing character creation hook
   const {
@@ -99,7 +95,7 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
     selectedClass,
     selectedTalent,
     currentTalents,
-    characterName: hookCharacterName,
+    name: characterName,
     gender,
     attributePoints,
     remainingPoints,
@@ -122,21 +118,6 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
     finalizeCharacter,
     initializeTalents,
   } = useCharacterCreationReworked();
-
-  // Local state for name to ensure it works
-  const [localName, setLocalName] = useState(hookCharacterName || "");
-
-  // Update both local and hook state when name changes
-  const handleNameInputChange = useCallback(
-    (value) => {
-      setLocalName(value);
-      setName(value); // Update hook state
-    },
-    [setName],
-  );
-
-  // Use local name for validation and display
-  const characterName = localName;
 
   useEffect(() => {
     initializeTalents();
@@ -171,8 +152,12 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
   const derivedStats = useMemo(() => {
     const resourceSystem =
       selectedClass?.resourceSystem || selectedClass?.resource || null;
-    const raceBonuses = ensureAttributeShape(selectedRace?.baseStats, 0);
-    const classBonuses = ensureAttributeShape(selectedClass?.baseStats, 0);
+    const raceBonusSource =
+      selectedRace?.statBonuses || selectedRace?.modifiers || selectedRace?.baseStats;
+    const classBonusSource =
+      selectedClass?.baseStats || selectedClass?.statBonuses || selectedClass?.modifiers;
+    const raceBonuses = ensureAttributeShape(raceBonusSource, 0);
+    const classBonuses = ensureAttributeShape(classBonusSource, 0);
 
     const totals = CANONICAL_ATTRIBUTES.reduce((acc, key) => {
       const playerValue = allocationPoints[key] ?? 5;
@@ -359,7 +344,7 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
             value={characterName || ""}
             onChange={(e) => {
               const newValue = e.target.value;
-              handleNameInputChange(newValue);
+              setName(newValue);
             }}
             placeholder="Enter designation..."
             style={{

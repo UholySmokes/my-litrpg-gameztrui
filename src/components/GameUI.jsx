@@ -1,5 +1,5 @@
 // GameUI.jsx - Technical Cleanup & Dashboard Refactor
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, lazy, Suspense } from "react";
 import { useGameEngine } from "../hook/usegamestate";
 import { useNarrative } from "../hook/useNarrative";
 import { renderStatusBlock } from "../util/statusrenderer.js";
@@ -10,16 +10,17 @@ import StatusEffects from "./StatusEffects";
 import ExperienceBar from "./ExperienceBar";
 import EquipmentSlots from "./EquipmentSlots";
 import QuestTracker from "./QuestTracker";
-import ShopUI from "./ShopUI";
-import GachaUI from "./GachaUI";
-import TitleUI from "./TitleUI";
 import AdminTools from "./AdminTools";
 import CombatUI from "./CombatUI";
-import ProfessionUI from "./ProfessionUI";
 import { QuestManager } from "../systems/quest/QuestManager.js";
 import { gachaPools } from "../data/gachaData.js";
 import { getTitleBonuses } from "../systems/titles/TitleSystem.js";
-import StatusOverlay from "./StatusOverlay.jsx";
+
+const ShopUI = lazy(() => import("./ShopUI"));
+const GachaUI = lazy(() => import("./GachaUI"));
+const TitleUI = lazy(() => import("./TitleUI"));
+const ProfessionUI = lazy(() => import("./ProfessionUI"));
+const StatusOverlay = lazy(() => import("./StatusOverlay.jsx"));
 
 const TYPEWRITER_CHAR_DELAY_MS = 28;
 
@@ -486,7 +487,7 @@ export default function GameUI() {
               overflowY: "auto",
             }}
           >
-            <HudVitals player={state?.player} />
+            <HudVitals player={state?.player} config={state?.config} />
             <ExperienceBar player={state?.player} />
             <ClassResourceBar player={state?.player} />
             <EquipmentSlots player={state?.player} />
@@ -595,7 +596,7 @@ export default function GameUI() {
           <div className="narrative-scroll">
             {/* ASCII Status Block */}
             <div className="status-terminal" style={{ marginBottom: "1rem" }}>
-              {renderStatusBlock(state?.player || {})}
+              {renderStatusBlock(state?.player || {}, state?.config)}
             </div>
 
           {/* Narrative Content */}
@@ -894,44 +895,57 @@ export default function GameUI() {
         </div>
       )}
 
-      <ShopUI
-        isOpen={showShop}
-        onClose={() => setShowShop(false)}
-        gameState={state}
-        onPurchase={handleShopPurchase}
-      />
+      <Suspense fallback={null}>
+        {showShop && (
+          <ShopUI
+            isOpen={showShop}
+            onClose={() => setShowShop(false)}
+            gameState={state}
+            onPurchase={handleShopPurchase}
+          />
+        )}
 
-      <GachaUI
-        isOpen={showGacha}
-        onClose={() => setShowGacha(false)}
-        gameState={state}
-        onPull={handleGachaPull}
-      />
+        {showGacha && (
+          <GachaUI
+            isOpen={showGacha}
+            onClose={() => setShowGacha(false)}
+            gameState={state}
+            onPull={handleGachaPull}
+          />
+        )}
 
-      <TitleUI
-        isOpen={showTitleSystem}
-        onClose={() => setShowTitleSystem(false)}
-        gameState={state}
-        onUnlock={() => {}}
-        onEquip={handleTitleEquip}
-        onUnequip={handleTitleUnequip}
-        onPurchase={handleTitlePurchase}
-      />
+        {showTitleSystem && (
+          <TitleUI
+            isOpen={showTitleSystem}
+            onClose={() => setShowTitleSystem(false)}
+            gameState={state}
+            onUnlock={() => {}}
+            onEquip={handleTitleEquip}
+            onUnequip={handleTitleUnequip}
+            onPurchase={handleTitlePurchase}
+          />
+        )}
 
-      <ProfessionUI
-        isOpen={showProfessions}
-        onClose={() => setShowProfessions(false)}
-        gameState={state}
-        onCraft={handleCraft}
-      />
+        {showProfessions && (
+          <ProfessionUI
+            isOpen={showProfessions}
+            onClose={() => setShowProfessions(false)}
+            gameState={state}
+            onCraft={handleCraft}
+          />
+        )}
 
-      <StatusOverlay
-        player={state?.player}
-        isOpen={showStatusOverlay}
-        onClose={() => setShowStatusOverlay(false)}
-        onAllocateAttribute={handleAllocateAttributePoint}
-        onDeallocateAttribute={handleDeallocateAttributePoint}
-      />
+        {showStatusOverlay && (
+          <StatusOverlay
+            player={state?.player}
+            config={state?.config}
+            isOpen={showStatusOverlay}
+            onClose={() => setShowStatusOverlay(false)}
+            onAllocateAttribute={handleAllocateAttributePoint}
+            onDeallocateAttribute={handleDeallocateAttributePoint}
+          />
+        )}
+      </Suspense>
 
       <AdminTools dispatch={dispatchSystemEvent} getState={() => state} />
     </div>

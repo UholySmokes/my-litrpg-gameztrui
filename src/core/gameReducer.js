@@ -8,6 +8,7 @@ import {
   getAutoUnlockableTitles,
   canPurchaseTitle,
   getTitleById,
+  getTitleBonuses,
 } from "../systems/titles/TitleSystem.js";
 import {
   playerAttack,
@@ -181,6 +182,58 @@ const applyQuestRewards = (state, reward) => {
 
   if (reward.resources && typeof reward.resources === "object") {
     player.resources = mergeResources(player.resources, reward.resources);
+    playerChanged = true;
+  }
+
+  if (Number.isFinite(reward.gold) && reward.gold !== 0) {
+    const rawDelta = toNumber(reward.gold, 0);
+    const titleBonuses = getTitleBonuses(player);
+    const goldGain = Number.isFinite(titleBonuses.goldGain)
+      ? titleBonuses.goldGain
+      : 0;
+    const delta =
+      rawDelta > 0 ? Math.ceil(rawDelta * (1 + goldGain)) : rawDelta;
+    const currentGold = toNumber(player.currency?.goldCoins ?? player.gold, 0);
+    const nextGold = currentGold + delta;
+
+    player.gold = nextGold;
+    player.currency = {
+      ...(player.currency || {}),
+      goldCoins: nextGold,
+      soulpoints: toNumber(player.currency?.soulpoints ?? player.soulpoints, 0),
+    };
+    if (player.soulpoints !== undefined) {
+      player.soulpoints = toNumber(player.soulpoints, 0);
+    }
+
+    const progress =
+      player.progress && typeof player.progress === "object"
+        ? player.progress
+        : {};
+    const earnedDelta = Math.max(0, delta);
+    player.progress = {
+      ...progress,
+      totalGoldEarned: toNumber(progress.totalGoldEarned, 0) + earnedDelta,
+    };
+
+    playerChanged = true;
+  }
+
+  if (Number.isFinite(reward.soulpoints) && reward.soulpoints !== 0) {
+    const delta = toNumber(reward.soulpoints, 0);
+    const currentSoul = toNumber(
+      player.currency?.soulpoints ?? player.soulpoints,
+      0,
+    );
+    const nextSoul = currentSoul + delta;
+
+    player.soulpoints = nextSoul;
+    player.currency = {
+      ...(player.currency || {}),
+      goldCoins: toNumber(player.currency?.goldCoins ?? player.gold, 0),
+      soulpoints: nextSoul,
+    };
+
     playerChanged = true;
   }
 

@@ -4,12 +4,30 @@ import {
   calculateMaxHp,
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
+import { getEffectiveAttributes } from "../systems/titles/TitleSystem.js";
 
-export default function HudVitals({ player }) {
-  const normalizedAttributes = ensureAttributeShape(player?.attributes, 5);
-  const hpMax = player?.hp?.max ?? calculateMaxHp(normalizedAttributes);
+export default function HudVitals({ player, config }) {
+  const resolvedConfig =
+    config && typeof config === "object" && !Array.isArray(config) ? config : {};
+  const baseAttributeValue = Number.isFinite(resolvedConfig.baseAttributeValue)
+    ? resolvedConfig.baseAttributeValue
+    : 5;
+
+  const normalizedAttributes = ensureAttributeShape(
+    player?.attributes,
+    baseAttributeValue,
+  );
+  const effectiveAttributes = getEffectiveAttributes(
+    { ...(player || {}), attributes: normalizedAttributes },
+    { ...resolvedConfig, baseAttributeValue },
+    normalizedAttributes,
+  );
+  const canonicalHpMax = calculateMaxHp(effectiveAttributes);
+  const canonicalManaMax = calculateMaxMana(effectiveAttributes);
+
+  const hpMax = player?.hp?.max ?? canonicalHpMax;
   const hpCurrent = player?.hp?.current ?? hpMax;
-  const manaMax = player?.mana?.max ?? calculateMaxMana(normalizedAttributes);
+  const manaMax = player?.mana?.max ?? canonicalManaMax;
   const manaCurrent = player?.mana?.current ?? manaMax;
 
   const healthPercentage = hpMax > 0 ? (hpCurrent / hpMax) * 100 : 100;

@@ -284,6 +284,9 @@ const gameReducer = (state, action) => {
         ...(action.payload || {}),
       });
 
+    case "SYNC_STATE":
+      return normalizeGameState(action.payload || state);
+
     case "SET_STATE":
       if (typeof action.payload === "function") {
         return normalizeGameState(action.payload(state));

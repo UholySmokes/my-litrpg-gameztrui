@@ -94,9 +94,14 @@ const initialGameState = {
     completed: [],
   },
   world: {
-    location: "Starting Zone",
+    location: {
+      current: "Starting Zone",
+      visited: ["Starting Zone"],
+      unlockedAreas: [],
+    },
     flags: {},
     time: 0,
+    turnCount: 0,
   },
   chatLog: [],
   narrative: {

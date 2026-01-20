@@ -13,7 +13,8 @@ import {
  * @param {object} action - The action object from InputParser
  * @returns {object} Result object with success flag, new state, and description
  */
-export function executeAction(state, action, options = {}) {
+export function executeAction(state, action, _options = {}) {
+  void _options;
   if (!action || !action.type) {
     return {
       success: false,
@@ -48,11 +49,9 @@ export function executeAction(state, action, options = {}) {
         };
       }
 
-      // Check if item is in inventory
-      const hasItem = (state.player.inventory || []).some(
-        (i) => i.id === action.itemId,
-      );
-      if (!hasItem) {
+      const inventory = [...(state.player.inventory || [])];
+      const itemIndex = inventory.findIndex((i) => i.id === action.itemId);
+      if (itemIndex === -1) {
         return {
           success: false,
           reason: `You don't have ${action.itemName || action.itemId}`,
@@ -60,20 +59,74 @@ export function executeAction(state, action, options = {}) {
         };
       }
 
-      // Dispatch CONSUME_ITEM to reducer instead of calling system directly
+      const player = state.player;
+      let nextPlayer = { ...player };
+
+      // Apply effects with clamping
+      if (item.effect?.heal) {
+        const currentHp =
+          typeof player.hp === "object" && player.hp !== null
+            ? player.hp.current ?? 0
+            : player.hp ?? 0;
+        const maxHp =
+          typeof player.hp === "object" && player.hp !== null
+            ? player.hp.max ?? 100
+            : player.maxHp ?? player.maxHealth ?? 100;
+        const nextHp = Math.min(maxHp, currentHp + item.effect.heal);
+        nextPlayer = {
+          ...nextPlayer,
+          hp:
+            typeof player.hp === "object" && player.hp !== null
+              ? { ...player.hp, current: nextHp }
+              : nextHp,
+        };
+        changes.hp =
+          typeof player.hp === "object" && player.hp !== null
+            ? { ...player.hp, current: nextHp, max: maxHp }
+            : { current: nextHp, max: maxHp };
+      }
+
+      if (item.effect?.mana) {
+        const currentMana =
+          typeof player.mana === "object" && player.mana !== null
+            ? player.mana.current ?? 0
+            : player.mana ?? 0;
+        const maxMana =
+          typeof player.mana === "object" && player.mana !== null
+            ? player.mana.max ?? 100
+            : player.maxMana ?? 100;
+        const nextMana = Math.min(maxMana, currentMana + item.effect.mana);
+        nextPlayer = {
+          ...nextPlayer,
+          mana:
+            typeof player.mana === "object" && player.mana !== null
+              ? { ...player.mana, current: nextMana }
+              : nextMana,
+        };
+        changes.mana =
+          typeof player.mana === "object" && player.mana !== null
+            ? { ...player.mana, current: nextMana, max: maxMana }
+            : { current: nextMana, max: maxMana };
+      }
+
+      // Remove item from inventory
+      const existing = inventory[itemIndex] || { quantity: 1 };
+      if ((existing.quantity || 1) > 1) {
+        inventory[itemIndex] = {
+          ...existing,
+          quantity: (existing.quantity || 1) - 1,
+        };
+      } else {
+        inventory.splice(itemIndex, 1);
+      }
+
       newState = {
         ...state,
-        // Note: The actual state mutation happens in the reducer
-        // We'll apply the action via options.dispatchSystemEvent if provided
+        player: {
+          ...nextPlayer,
+          inventory,
+        },
       };
-
-      // Queue the action for the reducer to handle
-      if (typeof options.dispatchSystemEvent === "function") {
-        options.dispatchSystemEvent({
-          type: "CONSUME_ITEM",
-          payload: { itemId: action.itemId },
-        });
-      }
 
       description = `Used ${action.itemName || action.itemId}`;
       changes.itemUsed = action.itemName || action.itemId;

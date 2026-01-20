@@ -329,6 +329,52 @@ function normalizeObject(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
 }
 
+function normalizeLocation(rawLocation) {
+  if (rawLocation && typeof rawLocation === "object" && !Array.isArray(rawLocation)) {
+    const current =
+      typeof rawLocation.current === "string" && rawLocation.current.trim()
+        ? rawLocation.current.trim()
+        : null;
+    const visited = Array.isArray(rawLocation.visited)
+      ? rawLocation.visited.filter(
+          (value) => typeof value === "string" && value.trim(),
+        )
+      : [];
+    const unlockedAreas = Array.isArray(rawLocation.unlockedAreas)
+      ? rawLocation.unlockedAreas.filter(
+          (value) => typeof value === "string" && value.trim(),
+        )
+      : [];
+
+    const resolvedCurrent = current ?? visited[0] ?? "Starting Zone";
+    const resolvedVisited = visited.includes(resolvedCurrent)
+      ? visited
+      : [resolvedCurrent, ...visited];
+
+    return {
+      ...rawLocation,
+      current: resolvedCurrent,
+      visited: resolvedVisited,
+      unlockedAreas,
+    };
+  }
+
+  if (typeof rawLocation === "string" && rawLocation.trim()) {
+    const current = rawLocation.trim();
+    return {
+      current,
+      visited: [current],
+      unlockedAreas: [],
+    };
+  }
+
+  return {
+    current: "Starting Zone",
+    visited: ["Starting Zone"],
+    unlockedAreas: [],
+  };
+}
+
 export function normalizeGameState(rawState) {
   const state =
     rawState && typeof rawState === "object" && !Array.isArray(rawState)
@@ -354,9 +400,10 @@ export function normalizeGameState(rawState) {
     },
     world: {
       ...world,
-      location: world.location ?? "Starting Zone",
+      location: normalizeLocation(world.location),
       flags: normalizeObject(world.flags),
       time: toNumber(world.time, 0),
+      turnCount: Math.max(0, Math.floor(toNumber(world.turnCount, 0))),
     },
     combat: {
       ...combat,

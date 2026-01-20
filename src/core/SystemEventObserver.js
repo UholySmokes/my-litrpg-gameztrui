@@ -54,8 +54,12 @@ export const SystemEventObserver = {
     if (!state || !autoComplete) return false;
 
     const inventory = state.player?.inventory || [];
-    const killLog = state.world?.kills || [];
-    const location = state.world?.location;
+    const killsByEnemyId = state.player?.progress?.killsByEnemyId || {};
+    const rawLocation = state.world?.location;
+    const location =
+      rawLocation && typeof rawLocation === "object" && !Array.isArray(rawLocation)
+        ? rawLocation.current
+        : rawLocation;
 
     const checks = [];
 
@@ -70,7 +74,9 @@ export const SystemEventObserver = {
 
     if (Array.isArray(autoComplete.requiresKills)) {
       checks.push(
-        autoComplete.requiresKills.every((killId) => killLog.includes(killId)),
+        autoComplete.requiresKills.every(
+          (enemyId) => (killsByEnemyId[enemyId] || 0) > 0,
+        ),
       );
     }
 
@@ -147,5 +153,4 @@ export const SystemEventObserver = {
     }
   },
 };
-
 

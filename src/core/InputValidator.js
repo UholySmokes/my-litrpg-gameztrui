@@ -112,7 +112,7 @@ function validateUseItem(action, gameState) {
  */
 function validateMove(action, gameState) {
   const world = gameState.world || {};
-  const currentLocation = world.location?.current || 'start_room';
+  const currentLocation = world.location?.current || "Starting Zone";
   const visitedLocations = world.location?.visited || [];
   const unlockedAreas = world.location?.unlockedAreas || [];
 

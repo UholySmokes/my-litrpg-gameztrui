@@ -81,7 +81,12 @@ export const SystemEventObserver = {
     }
 
     if (autoComplete.requiresLocation) {
-      checks.push(location === autoComplete.requiresLocation);
+      const current = typeof location === "string" ? location : "";
+      const required =
+        typeof autoComplete.requiresLocation === "string"
+          ? autoComplete.requiresLocation
+          : "";
+      checks.push(current.toLowerCase() === required.toLowerCase());
     }
 
     return checks.length > 0 && checks.every(Boolean);

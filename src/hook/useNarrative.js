@@ -100,6 +100,7 @@ export function useNarrative(
   const [error, setError] = useState(null);
   const [userInput, setUserInput] = useState("");
   const inputRef = useRef(null);
+  const initialNarrativeKeyRef = useRef(null);
   const [actionSuggestions, setActionSuggestions] = useState(
     DEFAULT_ACTION_SUGGESTIONS,
   );
@@ -278,6 +279,11 @@ export function useNarrative(
             : currentState.player?.profession?.id,
         ];
         const cacheKey = cacheKeyParts.filter(Boolean).join("|");
+
+        if (initialNarrativeKeyRef.current === cacheKey) {
+          return;
+        }
+        initialNarrativeKeyRef.current = cacheKey;
 
         let aiResponse;
         if (initialNarrativeCache.has(cacheKey)) {

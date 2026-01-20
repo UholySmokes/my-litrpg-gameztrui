@@ -6,13 +6,8 @@
 const SAFE_MAX = Number.MAX_SAFE_INTEGER;
 
 // Default bracket configuration (piecewise exponential)
-const defaultBrackets = [
-  { end: 10, base: 50, growth: 1.25 },
-  { end: 50, base: 200, growth: 1.15 },
-  { end: 100, base: 1000, growth: 1.12 },
-  { end: 500, base: 6000, growth: 1.08 },
-  { end: 1000, base: 25000, growth: 1.05 },
-];
+// Keep this aligned with system_specs.md unless the spec is updated.
+const defaultBrackets = [{ end: 1000, base: 100, growth: 1.5 }];
 
 function getBrackets(config) {
   return config?.xpBrackets || defaultBrackets;

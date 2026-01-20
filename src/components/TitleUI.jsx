@@ -153,7 +153,7 @@ export default function TitleUI({
                       {equippedTitle?.id === title.id ? (
                         <button
                           className="holo-button"
-                          onClick={() => onUnequip()}
+                          onClick={() => onUnequip(title.id)}
                           style={{
                             fontSize: "0.85rem",
                             borderColor: "var(--holo-alert)",

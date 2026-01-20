@@ -1,6 +1,7 @@
 // ShopUI.jsx
 import React, { useState } from "react";
 import { getShopItemsByCategory } from "../data/shopData.js";
+import { getTitleBonuses } from "../systems/titles/TitleSystem.js";
 
 export default function ShopUI({ isOpen, onClose, gameState, onPurchase }) {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -21,18 +22,36 @@ export default function ShopUI({ isOpen, onClose, gameState, onPurchase }) {
   }
 
   const items = getShopItemsByCategory(selectedCategory);
-  const currency = gameState.player.gold
-    ? { goldCoins: gameState.player.gold }
-    : { goldCoins: 0, soulpoints: 0 };
+  const currencySource = gameState.player.currency || {};
+  const currency = {
+    goldCoins: currencySource.goldCoins ?? gameState.player.gold ?? 0,
+    soulpoints: currencySource.soulpoints ?? gameState.player.soulpoints ?? 0,
+  };
+  const titleBonuses = getTitleBonuses(gameState.player);
+  const shopDiscount = Number.isFinite(titleBonuses.shopDiscount)
+    ? Math.min(Math.max(titleBonuses.shopDiscount, 0), 0.9)
+    : 0;
 
   const handlePurchase = (item) => {
     onPurchase(item);
   };
 
+  const getDiscountedPrice = (item) => {
+    const baseGold = item.price?.goldCoins ?? 0;
+    const baseSoul = item.price?.soulpoints ?? 0;
+    const multiplier = 1 - shopDiscount;
+    return {
+      goldCoins:
+        baseGold > 0 ? Math.max(0, Math.floor(baseGold * multiplier)) : 0,
+      soulpoints:
+        baseSoul > 0 ? Math.max(0, Math.floor(baseSoul * multiplier)) : 0,
+    };
+  };
+
   const canAfford = (item) => {
-    if (item.price.goldCoins && currency.goldCoins < item.price.goldCoins)
-      return false;
-    if (item.price.soulpoints && currency.soulpoints < item.price.soulpoints)
+    const price = getDiscountedPrice(item);
+    if (price.goldCoins && currency.goldCoins < price.goldCoins) return false;
+    if (price.soulpoints && currency.soulpoints < price.soulpoints)
       return false;
     return true;
   };
@@ -128,9 +147,19 @@ export default function ShopUI({ isOpen, onClose, gameState, onPurchase }) {
           >
             {items.map((item) => {
               const affordable = canAfford(item);
-              const priceText = item.price.goldCoins
-                ? `${item.price.goldCoins} Gold`
-                : `${item.price.soulpoints} Soulpoints`;
+              const discounted = getDiscountedPrice(item);
+              const baseGold = item.price?.goldCoins ?? 0;
+              const baseSoul = item.price?.soulpoints ?? 0;
+              const baseText = baseGold
+                ? `${baseGold} Gold`
+                : `${baseSoul} Soulpoints`;
+              const discountedText = discounted.goldCoins
+                ? `${discounted.goldCoins} Gold`
+                : `${discounted.soulpoints} Soulpoints`;
+              const priceText =
+                shopDiscount > 0 && discountedText !== baseText
+                  ? `${discountedText} (was ${baseText})`
+                  : baseText;
 
               return (
                 <div

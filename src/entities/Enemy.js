@@ -282,7 +282,8 @@ export function calculateEnemyDrops(enemy) {
     }
   });
 
-  const totalGold = goldDrops.reduce((sum, gold) => sum + gold, 0);
+  const fixedGold = Number.isFinite(enemy?.goldReward) ? enemy.goldReward : 0;
+  const totalGold = fixedGold + goldDrops.reduce((sum, gold) => sum + gold, 0);
 
   return {
     items: drops,

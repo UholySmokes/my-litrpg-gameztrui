@@ -18,6 +18,8 @@ import {
   ensureAttributeShape,
   toCanonicalAttributeKey,
 } from "../constants/attributes.js";
+import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
+import { xpForNextLevel } from "../systems/leveling/LevelingSystem.js";
 
 const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;
@@ -476,8 +478,8 @@ export function useCharacterCreationReworked() {
     ];
 
     // Calculate derived stats (HP/Mana)
-    const baseHp = 100 + (finalStats.vitality || 0) * 5;
-    const baseMana = 50 + (finalStats.intelligence || 0) * 3;
+    const baseHp = calculateMaxHp(finalStats);
+    const baseMana = calculateMaxMana(finalStats);
 
     const professionId = selectedProfession?.id || null;
     const professionName = selectedProfession?.name || null;
@@ -515,7 +517,7 @@ export function useCharacterCreationReworked() {
       level: 1,
       xp: {
         current: 0,
-        max: 100,
+        max: xpForNextLevel(1),
       },
       hp: {
         current: baseHp,

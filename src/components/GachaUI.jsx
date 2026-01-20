@@ -1,6 +1,11 @@
 // GachaUI.jsx
 import React, { useState } from "react";
-import { gachaPools, calculateGachaResult } from "../data/gachaData.js";
+import {
+  gachaPools,
+  calculateGachaResult,
+  getAdjustedRarityRates,
+} from "../data/gachaData.js";
+import { getTitleBonuses } from "../systems/titles/TitleSystem.js";
 
 const rarityColors = {
   common: "#9d9d9d",
@@ -30,6 +35,11 @@ export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
   }
 
   const pool = gachaPools[selectedPool];
+  const titleBonuses = getTitleBonuses(gameState.player);
+  const gachaBonus = Number.isFinite(titleBonuses.gachaBonus)
+    ? Math.min(Math.max(titleBonuses.gachaBonus, 0), 0.5)
+    : 0;
+  const effectiveRates = getAdjustedRarityRates(pool.rarityRates, gachaBonus);
   const currencySource = gameState.player.currency || {};
   const currency = {
     goldCoins: currencySource.goldCoins ?? gameState.player.gold ?? 0,
@@ -47,7 +57,9 @@ export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
   const handlePull = () => {
     if (!canAfford()) return;
 
-    const results = calculateGachaResult(selectedPool, pool.pullCount);
+    const results = calculateGachaResult(selectedPool, pool.pullCount, {
+      gachaBonus,
+    });
     setLastResults(results);
     onPull(selectedPool, results);
   };
@@ -160,7 +172,7 @@ export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
               }}
             >
               <div>Rates:</div>
-              {Object.entries(pool.rarityRates).map(([rarity, rate]) => (
+              {Object.entries(effectiveRates).map(([rarity, rate]) => (
                 <div key={rarity} style={{ color: rarityColors[rarity] }}>
                   {rarity.charAt(0).toUpperCase() + rarity.slice(1)}:{" "}
                   {(rate * 100).toFixed(1)}%

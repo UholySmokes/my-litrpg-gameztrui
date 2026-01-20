@@ -128,12 +128,68 @@ export const gachaPools = {
 };
 
 /**
+ * Adjust rarity rates with a title bonus.
+ * `gachaBonus` is treated as a probability shift (e.g., 0.05 moves 5% from common to higher rarities).
+ */
+export function getAdjustedRarityRates(rarityRates = {}, gachaBonus = 0) {
+  const rates =
+    rarityRates && typeof rarityRates === "object" && !Array.isArray(rarityRates)
+      ? { ...rarityRates }
+      : {};
+
+  const bonus = Number.isFinite(gachaBonus)
+    ? Math.min(Math.max(gachaBonus, 0), 0.5)
+    : 0;
+  if (!bonus) return rates;
+
+  const keys = Object.keys(rates);
+  if (keys.length === 0) return rates;
+
+  const commonKey = Object.prototype.hasOwnProperty.call(rates, "common")
+    ? "common"
+    : keys[0];
+
+  const commonRate = Number(rates[commonKey]) || 0;
+  const shift = Math.min(commonRate, bonus);
+  if (shift <= 0) return rates;
+
+  rates[commonKey] = commonRate - shift;
+
+  const otherKeys = keys.filter((key) => key !== commonKey);
+  const otherSum = otherKeys.reduce((sum, key) => {
+    const value = Number(rates[key]) || 0;
+    return sum + value;
+  }, 0);
+
+  if (otherSum <= 0) {
+    rates[commonKey] = commonRate;
+    return rates;
+  }
+
+  otherKeys.forEach((key) => {
+    const value = Number(rates[key]) || 0;
+    rates[key] = value + shift * (value / otherSum);
+  });
+
+  const total = keys.reduce((sum, key) => sum + (Number(rates[key]) || 0), 0);
+  if (total > 0) {
+    keys.forEach((key) => {
+      rates[key] = (Number(rates[key]) || 0) / total;
+    });
+  }
+
+  return rates;
+}
+
+/**
  * Calculate gacha result based on rates
  */
-export function calculateGachaResult(poolId, pullCount = 1) {
+export function calculateGachaResult(poolId, pullCount = 1, options = {}) {
   const pool = gachaPools[poolId];
   if (!pool) return null;
 
+  const gachaBonus = options?.gachaBonus ?? 0;
+  const rarityRates = getAdjustedRarityRates(pool.rarityRates, gachaBonus);
   const results = [];
 
   for (let i = 0; i < pullCount; i++) {
@@ -141,7 +197,7 @@ export function calculateGachaResult(poolId, pullCount = 1) {
     let rarity = "common";
     let cumulative = 0;
 
-    for (const [rarityName, rate] of Object.entries(pool.rarityRates)) {
+    for (const [rarityName, rate] of Object.entries(rarityRates)) {
       cumulative += rate;
       if (roll <= cumulative) {
         rarity = rarityName;

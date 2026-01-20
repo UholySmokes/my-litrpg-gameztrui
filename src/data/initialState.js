@@ -1,36 +1,61 @@
+import { xpForNextLevel } from "../systems/leveling/LevelingSystem.js";
+import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
+
+const INITIAL_CONFIG = {
+  maxLevel: 100,
+  attributePointsPerLevel: 3,
+
+  baseAttributeValue: 5,
+  strToDamageMultiplier: 2,
+  baseLuckCritChance: 0.01,
+  agilityEscapeBonus: 0.01,
+  baseEscapeChance: 0.3,
+  defenseReductionFactor: 0.5,
+
+  xpBrackets: [{ end: 1000, base: 100, growth: 1.5 }],
+  xpBonusPerLevelDiff: 0.2,
+  xpMalusPerLevelDiff: 0.1,
+  xpNoRewardBelowDelta: 10,
+  xpMinMultiplier: 0.1,
+};
+
+const INITIAL_ATTRIBUTES = {
+  strength: 5,
+  agility: 5,
+  dexterity: 5,
+  vitality: 5,
+  intelligence: 5,
+  wisdom: 5,
+  charisma: 5,
+  willpower: 5,
+  luck: 5,
+  soul: 5,
+  freePoints: 0,
+};
+
+const INITIAL_LEVEL = 1;
+const INITIAL_HP_MAX = calculateMaxHp(INITIAL_ATTRIBUTES);
+const INITIAL_MANA_MAX = calculateMaxMana(INITIAL_ATTRIBUTES);
+const INITIAL_XP_MAX = xpForNextLevel(INITIAL_LEVEL, INITIAL_CONFIG);
+
 const initialGameState = {
-  config: {
-    maxLevel: 100,
-    attributePointsPerLevel: 3,
-  },
+  config: INITIAL_CONFIG,
   player: {
     name: "Wanderer",
-    level: 1,
+    level: INITIAL_LEVEL,
     xp: {
       current: 0,
-      max: 100,
+      max: INITIAL_XP_MAX,
     },
     hp: {
-      current: 100,
-      max: 100,
+      current: INITIAL_HP_MAX,
+      max: INITIAL_HP_MAX,
     },
     mana: {
-      current: 50,
-      max: 50,
+      current: INITIAL_MANA_MAX,
+      max: INITIAL_MANA_MAX,
     },
-    attributes: {
-      strength: 5,
-      agility: 5,
-      dexterity: 5,
-      vitality: 5,
-      intelligence: 5,
-      wisdom: 5,
-      charisma: 5,
-      willpower: 5,
-      luck: 5,
-      soul: 5,
-      freePoints: 0,
-    },
+    attributes: INITIAL_ATTRIBUTES,
     attributeInvestments: {},
     resources: {
       rage: 0,
@@ -42,7 +67,9 @@ const initialGameState = {
     inventory: [],
     equipment: {},
     abilities: [],
-    titles: [],
+    titles: ["novice_adventurer"],
+    unlockedTitles: ["novice_adventurer"],
+    equippedTitle: null,
     activeSkills: [],
     passiveSkills: [],
     gold: 0,

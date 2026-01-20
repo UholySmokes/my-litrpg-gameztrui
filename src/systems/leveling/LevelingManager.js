@@ -5,6 +5,7 @@ import {
   calculateMaxMana,
   ensureAttributeShape,
 } from "../../utils/AttributeMath.js";
+import { getEffectiveAttributes } from "../titles/TitleSystem.js";
 
 const DEBUG_LOGGING_ENABLED = false;
 
@@ -76,8 +77,13 @@ export function performLevelUp(state) {
   };
 
   const nextLevel = currentLevel + 1;
-  const nextHpMax = calculateMaxHp(newAttributes);
-  const nextManaMax = calculateMaxMana(newAttributes);
+  const effectiveAttributes = getEffectiveAttributes(
+    state.player,
+    state.config,
+    newAttributes,
+  );
+  const nextHpMax = calculateMaxHp(effectiveAttributes);
+  const nextManaMax = calculateMaxMana(effectiveAttributes);
 
   const newState = {
     ...state,

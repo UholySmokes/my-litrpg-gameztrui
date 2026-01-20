@@ -2,6 +2,11 @@ import { DataRegistry } from "../data/DataRegistry.js";
 import { performLevelUp } from "../systems/leveling/LevelingManager.js";
 import { toCanonicalAttributeKey } from "../constants/attributes.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
+import { normalizeGameState } from "./StateNormalizer.js";
+import {
+  getEffectiveAttributes,
+  getTitleById,
+} from "../systems/titles/TitleSystem.js";
 import {
   playerAttack,
   startCombat,
@@ -29,6 +34,41 @@ const mergeResources = (existing = {}, rewardResources = {}) => {
     next[key] = toNumber(next[key], 0) + delta;
   });
   return next;
+};
+
+const updatePlayerVitals = (player, config, attributesOverride) => {
+  const effectiveAttributes = getEffectiveAttributes(
+    player,
+    config,
+    attributesOverride,
+  );
+  const nextHpMax = calculateMaxHp(effectiveAttributes);
+  const nextManaMax = calculateMaxMana(effectiveAttributes);
+
+  const rawHp = player?.hp;
+  const hp =
+    rawHp && typeof rawHp === "object" && rawHp !== null
+      ? rawHp
+      : { current: toNumber(rawHp, nextHpMax), max: nextHpMax };
+  const rawMana = player?.mana;
+  const mana =
+    rawMana && typeof rawMana === "object" && rawMana !== null
+      ? rawMana
+      : { current: toNumber(rawMana, nextManaMax), max: nextManaMax };
+
+  return {
+    ...player,
+    hp: {
+      ...hp,
+      max: nextHpMax,
+      current: clamp(toNumber(hp.current, nextHpMax), 0, nextHpMax),
+    },
+    mana: {
+      ...mana,
+      max: nextManaMax,
+      current: clamp(toNumber(mana.current, nextManaMax), 0, nextManaMax),
+    },
+  };
 };
 
 const mergeInventoryItems = (inventory = [], rewardItems = []) => {
@@ -87,11 +127,17 @@ const applyQuestRewards = (state, reward) => {
   }
 
   if (Array.isArray(reward.titles) && reward.titles.length > 0) {
-    const titleSet = new Set(player.titles || []);
+    const unlockedIds = player.unlockedTitles || player.titles || [];
+    const titleSet = new Set(unlockedIds);
     reward.titles.forEach((title) => {
-      if (title) titleSet.add(title);
+      if (typeof title === "string" && title) {
+        titleSet.add(title);
+      }
     });
-    player.titles = Array.from(titleSet);
+    const unlockedTitles = Array.from(titleSet);
+    player.unlockedTitles = unlockedTitles;
+    player.titles = unlockedTitles;
+    Object.assign(player, updatePlayerVitals(player, state.config));
     playerChanged = true;
   }
 
@@ -117,13 +163,16 @@ const applyQuestRewards = (state, reward) => {
 const gameReducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_STATE":
-      return { ...state, ...action.payload };
+      return normalizeGameState({
+        ...state,
+        ...(action.payload || {}),
+      });
 
     case "SET_STATE":
       if (typeof action.payload === "function") {
-        return action.payload(state);
+        return normalizeGameState(action.payload(state));
       }
-      return action.payload;
+      return normalizeGameState(action.payload);
 
     case "ADD_SYSTEM_MESSAGE": {
       const { message, type = "system" } = action.payload;
@@ -471,6 +520,106 @@ const gameReducer = (state, action) => {
       };
     }
 
+    case "PURCHASE_TITLE": {
+      const titleId = action.payload?.titleId;
+      if (!titleId || !state.player) return state;
+
+      const title = getTitleById(titleId);
+      if (!title?.unlockConditions?.purchase) return state;
+
+      const requiredLevel = title.unlockConditions.level;
+      if (requiredLevel && toNumber(state.player.level, 1) < requiredLevel) {
+        return state;
+      }
+
+      const unlocked = new Set(
+        (state.player.unlockedTitles || state.player.titles || []).filter(
+          (id) => typeof id === "string" && id,
+        ),
+      );
+      if (unlocked.has(titleId)) {
+        return state;
+      }
+
+      const cost = title.unlockConditions.purchase || {};
+      const goldCost = toNumber(cost.goldCoins, 0);
+      const soulCost = toNumber(cost.soulpoints, 0);
+
+      const currentGold = toNumber(
+        state.player.currency?.goldCoins ?? state.player.gold,
+        0,
+      );
+      const currentSoul = toNumber(
+        state.player.currency?.soulpoints ?? state.player.soulpoints,
+        0,
+      );
+
+      if (currentGold < goldCost || currentSoul < soulCost) {
+        return state;
+      }
+
+      const nextGold = currentGold - goldCost;
+      const nextSoul = currentSoul - soulCost;
+      unlocked.add(titleId);
+      const unlockedTitles = Array.from(unlocked);
+
+      const updatedPlayer = updatePlayerVitals(
+        {
+          ...state.player,
+          gold: nextGold,
+          soulpoints: nextSoul,
+          currency: {
+            ...(state.player.currency || {}),
+            goldCoins: nextGold,
+            soulpoints: nextSoul,
+          },
+          titles: unlockedTitles,
+          unlockedTitles,
+        },
+        state.config,
+      );
+
+      return {
+        ...state,
+        player: updatedPlayer,
+      };
+    }
+
+    case "EQUIP_TITLE": {
+      const titleId = action.payload?.titleId;
+      if (!titleId || !state.player) return state;
+
+      const unlockedIds = state.player.unlockedTitles || state.player.titles || [];
+      if (!Array.isArray(unlockedIds) || !unlockedIds.includes(titleId)) {
+        return state;
+      }
+
+      return {
+        ...state,
+        player: updatePlayerVitals(
+          {
+            ...state.player,
+            equippedTitle: titleId,
+          },
+          state.config,
+        ),
+      };
+    }
+
+    case "UNEQUIP_TITLE": {
+      if (!state.player?.equippedTitle) return state;
+      return {
+        ...state,
+        player: updatePlayerVitals(
+          {
+            ...state.player,
+            equippedTitle: null,
+          },
+          state.config,
+        ),
+      };
+    }
+
     case "LEVEL_UP": {
       if (!state?.player?.xp) {
         return state;
@@ -508,40 +657,17 @@ const gameReducer = (state, action) => {
       attributes.freePoints = freePoints - 1;
       attributeInvestments[attributeKey] =
         toNumber(attributeInvestments[attributeKey], 0) + 1;
-      const hp =
-        typeof player.hp === "object" && player.hp !== null ? player.hp : {};
-      const mana =
-        typeof player.mana === "object" && player.mana !== null ? player.mana : {};
-      const nextHpMax = calculateMaxHp(attributes);
-      const nextManaMax = calculateMaxMana(attributes);
-      const nextHpCurrent = clamp(
-        toNumber(hp.current, nextHpMax),
-        0,
-        nextHpMax,
-      );
-      const nextManaCurrent = clamp(
-        toNumber(mana.current, nextManaMax),
-        0,
-        nextManaMax,
-      );
-
       return {
         ...state,
-        player: {
-          ...player,
+        player: updatePlayerVitals(
+          {
+            ...player,
+            attributes,
+            attributeInvestments,
+          },
+          state.config,
           attributes,
-          attributeInvestments,
-          hp: {
-            ...hp,
-            max: nextHpMax,
-            current: nextHpCurrent,
-          },
-          mana: {
-            ...mana,
-            max: nextManaMax,
-            current: nextManaCurrent,
-          },
-        },
+        ),
       };
     }
 
@@ -566,40 +692,17 @@ const gameReducer = (state, action) => {
       } else {
         delete attributeInvestments[attributeKey];
       }
-      const hp =
-        typeof player.hp === "object" && player.hp !== null ? player.hp : {};
-      const mana =
-        typeof player.mana === "object" && player.mana !== null ? player.mana : {};
-      const nextHpMax = calculateMaxHp(attributes);
-      const nextManaMax = calculateMaxMana(attributes);
-      const nextHpCurrent = clamp(
-        toNumber(hp.current, nextHpMax),
-        0,
-        nextHpMax,
-      );
-      const nextManaCurrent = clamp(
-        toNumber(mana.current, nextManaMax),
-        0,
-        nextManaMax,
-      );
-
       return {
         ...state,
-        player: {
-          ...player,
+        player: updatePlayerVitals(
+          {
+            ...player,
+            attributes,
+            attributeInvestments,
+          },
+          state.config,
           attributes,
-          attributeInvestments,
-          hp: {
-            ...hp,
-            max: nextHpMax,
-            current: nextHpCurrent,
-          },
-          mana: {
-            ...mana,
-            max: nextManaMax,
-            current: nextManaCurrent,
-          },
-        },
+        ),
       };
     }
 

@@ -18,6 +18,7 @@ import CombatUI from "./CombatUI";
 import ProfessionUI from "./ProfessionUI";
 import { QuestManager } from "../systems/quest/QuestManager.js";
 import { gachaPools } from "../data/gachaData.js";
+import { getTitleBonuses } from "../systems/titles/TitleSystem.js";
 import StatusOverlay from "./StatusOverlay.jsx";
 
 const TYPEWRITER_CHAR_DELAY_MS = 28;
@@ -178,37 +179,105 @@ export default function GameUI() {
   };
 
   const handleShopPurchase = (item) => {
-    const currentGold = state.player.gold || 0;
-    const itemCost = item.price.goldCoins || 0;
+    const currentCurrency = state.player.currency || {};
+    const currentGold = currentCurrency.goldCoins ?? state.player.gold ?? 0;
+    const currentSoul =
+      currentCurrency.soulpoints ?? state.player.soulpoints ?? 0;
 
-    if (currentGold >= itemCost) {
-      const newGold = currentGold - itemCost;
-      const updatedInventory = mergeInventoryItems(
-        state.player.inventory || [],
-        [{ ...item, quantity: item.quantity ?? 1 }],
-      );
-      const existingCurrency = state.player.currency || {};
-      dispatchSystemEvent({
-        type: "UPDATE_STATE",
-        payload: {
-          player: {
-            ...state.player,
-            gold: newGold,
-            currency: {
-              ...existingCurrency,
-              goldCoins: newGold,
-              soulpoints:
-                existingCurrency.soulpoints ?? state.player.soulpoints ?? 0,
-            },
-            inventory: updatedInventory,
-          },
-        },
-      });
+    const titleBonuses = getTitleBonuses(state.player);
+    const shopDiscount = Number.isFinite(titleBonuses.shopDiscount)
+      ? Math.min(Math.max(titleBonuses.shopDiscount, 0), 0.9)
+      : 0;
+    const multiplier = 1 - shopDiscount;
 
-      addSystemMessage(`Purchased ${item.name} for ${itemCost} gold`, "system");
-    } else {
+    const baseGoldCost = item?.price?.goldCoins ?? 0;
+    const baseSoulCost = item?.price?.soulpoints ?? 0;
+    const goldCost =
+      baseGoldCost > 0 ? Math.max(0, Math.floor(baseGoldCost * multiplier)) : 0;
+    const soulCost =
+      baseSoulCost > 0 ? Math.max(0, Math.floor(baseSoulCost * multiplier)) : 0;
+
+    if (currentGold < goldCost || currentSoul < soulCost) {
       addSystemMessage(`Cannot afford ${item.name}`, "system");
+      return;
     }
+
+    const nextGold = currentGold - goldCost;
+    const nextSoul = currentSoul - soulCost;
+
+    let nextPlayer = {
+      ...state.player,
+      gold: nextGold,
+      soulpoints: nextSoul,
+      currency: {
+        ...currentCurrency,
+        goldCoins: nextGold,
+        soulpoints: nextSoul,
+      },
+    };
+
+    if (item?.itemId) {
+      nextPlayer.inventory = mergeInventoryItems(state.player.inventory || [], [
+        {
+          ...(item.itemData || {}),
+          id: item.itemId,
+          name: item.name,
+          quantity: item.quantity ?? 1,
+        },
+      ]);
+    } else if (item?.skillData?.id) {
+      const abilities = Array.isArray(state.player.abilities)
+        ? state.player.abilities
+        : [];
+      const alreadyKnown = abilities.some(
+        (ability) => ability.id === item.skillData.id,
+      );
+      nextPlayer.abilities = alreadyKnown
+        ? abilities
+        : [...abilities, item.skillData];
+    } else if (item?.service) {
+      const equipment = { ...(state.player.equipment || {}) };
+      if (item.service === "enhance_weapon") {
+        const weapon = equipment.weapon;
+        if (weapon) {
+          equipment.weapon = {
+            ...weapon,
+            stats: {
+              ...(weapon.stats || {}),
+              attack: (weapon.stats?.attack || 0) + 5,
+            },
+          };
+          nextPlayer.equipment = equipment;
+        }
+      } else if (item.service === "enhance_armor") {
+        const armor = equipment.armor;
+        if (armor) {
+          equipment.armor = {
+            ...armor,
+            stats: {
+              ...(armor.stats || {}),
+              defense: (armor.stats?.defense || 0) + 5,
+            },
+          };
+          nextPlayer.equipment = equipment;
+        }
+      }
+    }
+
+    dispatchSystemEvent({
+      type: "UPDATE_STATE",
+      payload: {
+        player: nextPlayer,
+      },
+    });
+
+    const costText =
+      goldCost > 0
+        ? `${goldCost} gold`
+        : soulCost > 0
+          ? `${soulCost} soulpoints`
+          : "free";
+    addSystemMessage(`Purchased ${item.name} for ${costText}`, "system");
   };
 
   const handleGachaPull = (poolType, results = []) => {
@@ -322,8 +391,15 @@ export default function GameUI() {
     addSystemMessage(`Crafted ${recipe.name} (+${recipe.xp} XP)`, "system");
   };
 
-  const handleTitlePurchase = (titleId) => {
-    // Handle title purchase logic
+  const handleTitlePurchase = (titleOrId) => {
+    const titleId =
+      typeof titleOrId === "string" ? titleOrId : titleOrId?.id || null;
+    if (!titleId) return;
+
+    dispatchSystemEvent({
+      type: "PURCHASE_TITLE",
+      payload: { titleId },
+    });
     addSystemMessage(`Purchased title: ${titleId}`, "system");
   };
 

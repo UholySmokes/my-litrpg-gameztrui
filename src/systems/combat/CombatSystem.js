@@ -63,6 +63,10 @@ import {
   ensureAttributeShape,
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
+import {
+  getEffectiveAttributes,
+  getTitleBonuses,
+} from "../titles/TitleSystem.js";
 
 const DEBUG_LOGGING_ENABLED = false;
 
@@ -348,7 +352,12 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       return { success: false, reason: "Skill not found", state };
     }
 
-    const skillResult = executeSkill(updatedPlayer, updatedEnemy, skillId);
+    const skillResult = executeSkill(
+      updatedPlayer,
+      updatedEnemy,
+      skillId,
+      state.config,
+    );
     if (skillResult.insufficientMana) {
       return {
         success: false,
@@ -397,19 +406,25 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     const baseAttributeValue = state.config?.baseAttributeValue || 5;
 
     // Get player stats using config multipliers
-    const normalizedPlayerAttributes = ensureAttributeShape(
-      state.player.attributes,
-      baseAttributeValue,
+    const titleBonuses = getTitleBonuses(state.player);
+    const attackBonus = Number.isFinite(titleBonuses.attack)
+      ? titleBonuses.attack
+      : 0;
+    const effectivePlayerAttributes = getEffectiveAttributes(
+      state.player,
+      state.config,
     );
     const playerStrength = getAttributeValue(
-      normalizedPlayerAttributes,
+      effectivePlayerAttributes,
       "strength",
     );
     const playerStats = {
+      ...state.player,
       attack:
         (playerStrength || baseAttributeValue) * strToDamageMultiplier +
-        (state.player.equipment?.weapon?.stats?.attack || 0),
-      attributes: normalizedPlayerAttributes,
+        (state.player.equipment?.weapon?.stats?.attack || 0) +
+        attackBonus,
+      attributes: effectivePlayerAttributes,
     };
 
     // Calculate damage, passing config for all calculations
@@ -628,7 +643,8 @@ function enemyAttack(state, enemyIndex) {
   }
 
   // Simple AI: use random skill or basic attack
-  const availableSkills = enemy.skills.filter((skillId) => {
+  const availableSkills = (Array.isArray(enemy.skills) ? enemy.skills : []).filter(
+    (skillId) => {
     const skill = getEnemySkillById(skillId);
     if (!skill) return false;
     const cooldown = enemy.skillCooldowns?.[skillId] || 0;
@@ -636,7 +652,8 @@ function enemyAttack(state, enemyIndex) {
       cooldown <= 0 &&
       (!skill.manaCost || enemy.stats.mana.current >= skill.manaCost)
     );
-  });
+    },
+  );
 
   let skill = null;
   if (availableSkills.length > 0 && Math.random() < 0.5) {
@@ -673,11 +690,8 @@ function enemyAttack(state, enemyIndex) {
 
   // Calculate damage using config values
   const baseAttributeValue = state.config?.baseAttributeValue || 5;
-  const normalizedAttributes = ensureAttributeShape(
-    state.player.attributes,
-    baseAttributeValue,
-  );
-  const defenseStat = getAttributeValue(normalizedAttributes, "strength");
+  const effectiveAttributes = getEffectiveAttributes(state.player, state.config);
+  const defenseStat = getAttributeValue(effectiveAttributes, "strength");
   const playerDefense =
     (defenseStat || baseAttributeValue) +
     (state.player.equipment?.armor?.stats?.defense || 0);
@@ -722,7 +736,8 @@ export function processEnemyTurns(state) {
   // Process each alive enemy
   state.combat.enemies.forEach((enemy, index) => {
     if (enemy.stats.hp.current > 0) {
-      newState = enemyAttack(newState, index);
+      const result = enemyAttack(newState, index);
+      newState = result?.state ?? result;
 
       // Update cooldowns
       const updatedEnemy = newState.combat.enemies[index];
@@ -877,19 +892,26 @@ export function processEnemyTurns(state) {
 function handleEnemyDefeat(state, enemyIndex) {
   const enemy = state.combat.enemies[enemyIndex];
   const drops = calculateEnemyDrops(enemy);
+  const titleBonuses = getTitleBonuses(state.player);
+  const goldGain = Number.isFinite(titleBonuses.goldGain)
+    ? titleBonuses.goldGain
+    : 0;
+  const goldEarned =
+    drops.gold > 0 ? Math.max(0, Math.ceil(drops.gold * (1 + goldGain))) : 0;
 
   // Add drops to player
   let newState = state;
 
   // Add gold
-  if (drops.gold > 0) {
+  if (goldEarned > 0) {
     newState = {
       ...newState,
       player: {
         ...newState.player,
+        gold: (newState.player.gold || 0) + goldEarned,
         currency: {
           ...newState.player.currency,
-          goldCoins: (newState.player.currency?.goldCoins || 0) + drops.gold,
+          goldCoins: (newState.player.currency?.goldCoins || 0) + goldEarned,
         },
       },
     };
@@ -917,7 +939,7 @@ function handleEnemyDefeat(state, enemyIndex) {
 
   const newLog = [
     ...newState.combat.log,
-    `${enemy.name} defeated! Gained ${xpGained} XP (Base: ${drops.xp}), ${drops.gold} gold, and ${drops.items.length} item(s).`,
+    `${enemy.name} defeated! Gained ${xpGained} XP (Base: ${drops.xp}), ${goldEarned} gold, and ${drops.items.length} item(s).`,
   ];
 
   newState = {
@@ -1005,12 +1027,9 @@ export function escapeCombat(state) {
   const baseAttributeValue = state.config?.baseAttributeValue || 5;
 
   // Escape chance based on agility using config values
-  const normalizedAttributes = ensureAttributeShape(
-    state.player.attributes,
-    baseAttributeValue,
-  );
+  const effectiveAttributes = getEffectiveAttributes(state.player, state.config);
   const agility =
-    getAttributeValue(normalizedAttributes, "agility") || baseAttributeValue;
+    getAttributeValue(effectiveAttributes, "agility") || baseAttributeValue;
   const escapeChance = baseEscapeChance + agility * agilityEscapeBonus;
   const escaped = Math.random() < escapeChance;
 
@@ -1036,7 +1055,7 @@ export function escapeCombat(state) {
   }
 }
 
-function calculateDamage(attacker, defender, skill = null) {
+function calculateDamage(attacker, defender, skill = null, config = {}) {
   let damage = 0;
   let isCritical = false;
   let messages = [];
@@ -1057,12 +1076,28 @@ function calculateDamage(attacker, defender, skill = null) {
   const isMagic = skill ? skill.isMagic : false; // Assume skills define if they are magic
   const scalingStat = isMagic ? stats.intelligence : stats.strength;
 
-  // Base damage from stat
-  damage = Math.floor(scalingStat * 2);
+  // Base damage from stat (fallback when no explicit attack value is provided)
+  const baseAttack = Math.floor(scalingStat * 2);
+  const attackValue = Number(attacker?.attack);
+  damage = !skill && Number.isFinite(attackValue) ? attackValue : baseAttack;
 
-  // Add Skill Damage
+  // Apply skill damage (supports numeric or { base, multiplier } shapes)
+  if (skill && skill.damage !== undefined && skill.damage !== null) {
+    if (typeof skill.damage === "number") {
+      damage += skill.damage;
+    } else if (typeof skill.damage === "object") {
+      const baseOverride = Number(skill.damage.base);
+      if (Number.isFinite(baseOverride)) {
+        damage = baseOverride;
+      }
+      const multiplier = Number(skill.damage.multiplier);
+      if (Number.isFinite(multiplier)) {
+        damage = Math.floor(damage * multiplier);
+      }
+    }
+  }
+
   if (skill) {
-    damage += skill.damage || 0;
     messages.push(`${attacker.name} uses ${skill.name}!`);
   } else {
     messages.push(`${attacker.name} attacks!`);
@@ -1175,11 +1210,17 @@ function calculateDamage(attacker, defender, skill = null) {
   }
 
   // --- 4. Defense & Resistance (Defender) ---
-  // Simple defense: subtract defense value
-  const defStats = defender.attributes || defender.stats || { str: 10 };
-  const defense = Math.floor(
-    Number(getAttributeValue(defStats, "strength") || 0) / 2,
-  );
+  const defenseReductionFactor = config?.defenseReductionFactor ?? 0.5;
+  const defenseInput = Number(defender?.defense ?? defender?.stats?.defense);
+  const defenseValue = Number.isFinite(defenseInput)
+    ? defenseInput
+    : Number(
+        getAttributeValue(
+          defender?.attributes || defender?.stats || { str: 10 },
+          "strength",
+        ) || 0,
+      );
+  const defense = Math.floor(defenseValue * defenseReductionFactor);
 
   // Apply Racial Defenses (if Defender is Player)
   let finalDefense = defense;
@@ -1275,16 +1316,54 @@ function calculateDamage(attacker, defender, skill = null) {
   return result;
 }
 
-function calculateDamagePipeline(attacker, defender, skill = null) {
+function calculateDamagePipeline(attacker, defender, skill = null, config = {}) {
   const log = [];
   const isMagic = skill ? skill.isMagic : false;
-  const stats = attacker.attributes || attacker.stats || { str: 10, int: 10, luck: 10 };
-  const base =
-    Math.floor(
-      Number(
-        getAttributeValue(stats, isMagic ? "intelligence" : "strength") || 0,
-      ) * 2,
-    ) + (skill ? Number(skill.damage || 0) : 0);
+  const defenseReductionFactor = config?.defenseReductionFactor ?? 0.5;
+  const strToDamageMultiplier = config?.strToDamageMultiplier ?? 2;
+  const titleBonuses = getTitleBonuses(attacker);
+  const attackBonus = Number.isFinite(titleBonuses.attack)
+    ? titleBonuses.attack
+    : 0;
+  const magicBonus = Number.isFinite(titleBonuses.magic) ? titleBonuses.magic : 0;
+  const skillPower = Number.isFinite(titleBonuses.skillPower)
+    ? titleBonuses.skillPower
+    : 0;
+
+  const statsSource = attacker.attributes || attacker.stats || {
+    str: 10,
+    int: 10,
+    luck: 10,
+  };
+  const stats =
+    attacker && attacker.attributes
+      ? getEffectiveAttributes(attacker, config)
+      : statsSource;
+
+  const strength = Number(getAttributeValue(stats, "strength") || 0);
+  const intelligence = Number(getAttributeValue(stats, "intelligence") || 0);
+  const weaponAttack = Number(attacker?.equipment?.weapon?.stats?.attack ?? 0);
+
+  let base = Math.floor(
+    isMagic
+      ? intelligence * 2 + magicBonus
+      : strength * strToDamageMultiplier + weaponAttack + attackBonus,
+  );
+
+  if (skill && skill.damage !== undefined && skill.damage !== null) {
+    if (typeof skill.damage === "number") {
+      base += skill.damage;
+    } else if (typeof skill.damage === "object") {
+      const baseOverride = Number(skill.damage.base);
+      if (Number.isFinite(baseOverride)) {
+        base = baseOverride;
+      }
+      const multiplier = Number(skill.damage.multiplier);
+      if (Number.isFinite(multiplier)) {
+        base = Math.floor(base * multiplier);
+      }
+    }
+  }
   log.push({
     stage: "RAW",
     value: base,
@@ -1329,6 +1408,10 @@ function calculateDamagePipeline(attacker, defender, skill = null) {
     afterAttackers = Math.floor(afterAttackers * 1.2);
     attackerReasons.push("Racial: Fire +20%");
   }
+  if (skill && skillPower) {
+    afterAttackers = Math.floor(afterAttackers * (1 + skillPower));
+    attackerReasons.push(`Title: Skill Power +${Math.round(skillPower * 100)}%`);
+  }
 
   // Tag-based matchup bonuses (e.g., Holy vs Undead)
   if (attackerTags.includes("Holy_Damage") && defenderTags.includes("Undead")) {
@@ -1342,10 +1425,16 @@ function calculateDamagePipeline(attacker, defender, skill = null) {
   });
 
   // Defender mitigation
-  const defStats = defender.attributes || defender.stats || { str: 10 };
-  const defense = Math.floor(
-    Number(getAttributeValue(defStats, "strength") || 0) / 2,
-  );
+  const defStatsSource = defender.attributes || defender.stats || { str: 10 };
+  const defStats =
+    defender && defender.attributes
+      ? getEffectiveAttributes(defender, config)
+      : defStatsSource;
+  const defenseInput = Number(defender?.defense ?? defender?.stats?.defense);
+  const defenseValue = Number.isFinite(defenseInput)
+    ? defenseInput
+    : Number(getAttributeValue(defStats, "strength") || 0);
+  const defense = Math.floor(defenseValue * defenseReductionFactor);
   let afterMitigation = Math.max(1, afterAttackers - defense);
   const defReasons = [`Defense ${defense}`];
   const element = skill ? skill.element : "physical";
@@ -1401,7 +1490,7 @@ function calculateDamagePipeline(attacker, defender, skill = null) {
   return { damage: final, log };
 }
 
-export function executeSkill(attacker, defender, skillId) {
+export function executeSkill(attacker, defender, skillId, config = {}) {
   const skill = getSkillById(skillId);
   if (!skill) return { damage: 0, messages: ["Skill not found"] };
 
@@ -1454,6 +1543,7 @@ export function executeSkill(attacker, defender, skillId) {
     updatedAttacker,
     updatedDefender,
     skill,
+    config,
   );
 
   // Apply Chaos Born gamble modifier

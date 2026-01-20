@@ -92,7 +92,7 @@ function AppContent() {
     );
   }
 
-  return <GameUI />;
+  return <GameUI user={user} />;
 }
 
 // Wrap with ThemeProvider

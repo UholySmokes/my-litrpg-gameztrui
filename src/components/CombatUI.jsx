@@ -20,6 +20,7 @@ export default function CombatUI({
     return null;
   }
 
+  const skillCooldowns = combat.skillCooldowns || {};
   const livingEnemies = (combat.enemies || [])
     .map((enemy, index) => ({ enemy, index }))
     .filter(({ enemy }) => enemy?.stats?.hp?.current > 0);
@@ -145,22 +146,36 @@ export default function CombatUI({
             Skills:
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-            {availableSkills.slice(0, 4).map((skill) => (
-              <button
-                key={skill.id}
-                className="holo-button"
-                onClick={() =>
-                  onUseSkill(skill.id, livingEnemies[0]?.index ?? 0)
-                }
-                style={{
-                  fontSize: "0.85rem",
-                  flex: "1 1 auto",
-                  minWidth: "120px",
-                }}
-              >
-                {skill.name} (Cost: {skill.manaCost ?? skill.cost?.mana ?? 0} MP)
-              </button>
-            ))}
+            {availableSkills.slice(0, 4).map((skill) => {
+              const remainingCooldown = skillCooldowns?.[skill.id] || 0;
+              const disabled = remainingCooldown > 0;
+
+              return (
+                <button
+                  key={skill.id}
+                  className="holo-button"
+                  onClick={() =>
+                    onUseSkill(skill.id, livingEnemies[0]?.index ?? 0)
+                  }
+                  disabled={disabled}
+                  style={{
+                    fontSize: "0.85rem",
+                    flex: "1 1 auto",
+                    minWidth: "120px",
+                    opacity: disabled ? 0.6 : 1,
+                    cursor: disabled ? "not-allowed" : "pointer",
+                  }}
+                  title={
+                    disabled
+                      ? `${skill.name} is on cooldown (${remainingCooldown} turn(s) remaining)`
+                      : skill.description || skill.name
+                  }
+                >
+                  {skill.name} (Cost: {skill.manaCost ?? skill.cost?.mana ?? 0} MP
+                  {disabled ? ` | CD: ${remainingCooldown}` : ""})
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

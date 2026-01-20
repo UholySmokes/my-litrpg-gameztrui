@@ -21,6 +21,7 @@ const GachaUI = lazy(() => import("./GachaUI"));
 const TitleUI = lazy(() => import("./TitleUI"));
 const ProfessionUI = lazy(() => import("./ProfessionUI"));
 const StatusOverlay = lazy(() => import("./StatusOverlay.jsx"));
+const SaveLoadUI = lazy(() => import("./SaveLoadUI.jsx"));
 
 const TYPEWRITER_CHAR_DELAY_MS = 28;
 
@@ -78,7 +79,7 @@ const mergeInventoryItems = (inventory = [], items = []) => {
   return next;
 };
 
-export default function GameUI() {
+export default function GameUI({ user }) {
   // PART 1: State Sanitation - Define missing visibility states
   const [showShop, setShowShop] = useState(false);
   const [showGacha, setShowGacha] = useState(false);
@@ -87,6 +88,7 @@ export default function GameUI() {
   const [characterCreated, setCharacterCreated] = useState(false);
   const [showLoadoutPanel, setShowLoadoutPanel] = useState(false);
   const [showStatusOverlay, setShowStatusOverlay] = useState(false);
+  const [showSaveLoad, setShowSaveLoad] = useState(false);
 
   const {
     state,
@@ -418,6 +420,12 @@ export default function GameUI() {
       type: "PLAYER_USE_SKILL",
       payload: { skillId, enemyIndex },
     });
+  };
+
+  const handleLoadState = (loadedState) => {
+    if (!loadedState) return;
+    setState(loadedState);
+    addSystemMessage("Loaded save game.", "system");
   };
 
   const handleCombatEscape = () => {
@@ -856,6 +864,13 @@ export default function GameUI() {
             >
               [STATUS]
             </button>
+            <button
+              className="holo-button"
+              onClick={() => setShowSaveLoad(true)}
+              style={{ fontSize: "0.8rem" }}
+            >
+              [SAVE/LOAD]
+            </button>
           </div>
         </div>
       </div>
@@ -943,6 +958,17 @@ export default function GameUI() {
             onClose={() => setShowStatusOverlay(false)}
             onAllocateAttribute={handleAllocateAttributePoint}
             onDeallocateAttribute={handleDeallocateAttributePoint}
+          />
+        )}
+
+        {showSaveLoad && (
+          <SaveLoadUI
+            isOpen={showSaveLoad}
+            onClose={() => setShowSaveLoad(false)}
+            gameState={state}
+            onLoadState={handleLoadState}
+            addSystemMessage={addSystemMessage}
+            user={user}
           />
         )}
       </Suspense>

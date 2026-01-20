@@ -113,12 +113,47 @@ export default function GameUI({ user }) {
     sanitizedNarrativeSummary.length > 0 &&
     sanitizedNarrativeSummary !== latestNarrativeText;
   const narrativeMemoryRef = useRef(null);
+  const autosaveTimerRef = useRef(null);
   useEffect(() => {
     const container = narrativeMemoryRef.current;
     if (container) {
       container.scrollTop = 0;
     }
   }, [narrativeMemory.length]);
+
+  useEffect(() => {
+    if (!state) return;
+
+    // Debounced local autosave
+    if (autosaveTimerRef.current) {
+      clearTimeout(autosaveTimerRef.current);
+    }
+
+    autosaveTimerRef.current = setTimeout(() => {
+      try {
+        localStorage.setItem(
+          "localAutosave:v1",
+          JSON.stringify({
+            id: "autosave",
+            save_name: "Autosave",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            user_id: user?.id || "unknown",
+            game_state: state,
+          }),
+        );
+      } catch (err) {
+        console.warn("Autosave failed:", err);
+      }
+    }, 600);
+
+    return () => {
+      if (autosaveTimerRef.current) {
+        clearTimeout(autosaveTimerRef.current);
+        autosaveTimerRef.current = null;
+      }
+    };
+  }, [state, user?.id]);
 
   const {
     submitInput,

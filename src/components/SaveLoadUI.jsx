@@ -8,6 +8,7 @@ import {
 } from "../core/SupabaseService.js";
 
 const LOCAL_SAVE_KEY = "localSaves:v1";
+const LOCAL_AUTOSAVE_KEY = "localAutosave:v1";
 
 const safeJsonParse = (value, fallback) => {
   try {
@@ -23,6 +24,12 @@ const readLocalSaves = () => {
   return Array.isArray(parsed) ? parsed : [];
 };
 
+const readAutosave = () => {
+  const raw = localStorage.getItem(LOCAL_AUTOSAVE_KEY);
+  const parsed = safeJsonParse(raw, null);
+  return parsed && typeof parsed === "object" ? parsed : null;
+};
+
 const writeLocalSaves = (saves) => {
   localStorage.setItem(LOCAL_SAVE_KEY, JSON.stringify(saves));
 };
@@ -36,6 +43,7 @@ export default function SaveLoadUI({
   user,
 }) {
   const [localSaves, setLocalSaves] = useState([]);
+  const [autosave, setAutosave] = useState(null);
   const [remoteSaves, setRemoteSaves] = useState([]);
   const [isBusy, setIsBusy] = useState(false);
   const [error, setError] = useState(null);
@@ -49,6 +57,7 @@ export default function SaveLoadUI({
     if (!isOpen) return;
     setError(null);
     setLocalSaves(readLocalSaves());
+    setAutosave(readAutosave());
   }, [isOpen]);
 
   const refreshRemote = async () => {
@@ -236,6 +245,43 @@ export default function SaveLoadUI({
             <h3 style={{ color: "var(--holo-cyan)", margin: "0 0 0.5rem 0" }}>
               Local Saves
             </h3>
+            {autosave?.game_state && (
+              <div
+                style={{
+                  padding: "0.75rem",
+                  border: "1px solid rgba(255, 215, 0, 0.3)",
+                  borderRadius: "6px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "0.75rem",
+                  alignItems: "center",
+                  marginBottom: "0.5rem",
+                  background: "rgba(255, 215, 0, 0.06)",
+                }}
+              >
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ color: "var(--holo-gold)", fontWeight: 700 }}>
+                    Autosave
+                  </div>
+                  <div style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                    {autosave.updated_at || autosave.created_at || ""}
+                  </div>
+                </div>
+                <button
+                  className="holo-button"
+                  onClick={() =>
+                    handleLocalLoad({
+                      id: "autosave",
+                      save_name: "Autosave",
+                      game_state: autosave.game_state,
+                    })
+                  }
+                  disabled={isBusy}
+                >
+                  Load
+                </button>
+              </div>
+            )}
             {localSaves.length === 0 ? (
               <div style={{ color: "var(--text-muted)" }}>No local saves yet.</div>
             ) : (
@@ -344,4 +390,3 @@ export default function SaveLoadUI({
     </div>
   );
 }
-

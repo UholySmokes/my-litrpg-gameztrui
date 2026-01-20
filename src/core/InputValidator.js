@@ -25,6 +25,9 @@ function validateAction(action, gameState) {
     
     case 'move':
       return validateMove(action, gameState);
+
+    case "rest":
+      return validateRest(action, gameState);
     
     case 'attack':
       return validateAttack(action, gameState);
@@ -154,6 +157,35 @@ function validateMove(action, gameState) {
       valid: false,
       reason: `You are already at ${currentLocation}.`
     };
+  }
+
+  return { valid: true };
+}
+
+/**
+ * Validates rest/recovery actions
+ */
+function validateRest(action, gameState) {
+  void action;
+  const combat = gameState.combat || {};
+  if (combat.status === "active") {
+    return {
+      valid: false,
+      reason: "You cannot rest during combat.",
+    };
+  }
+
+  const hp = gameState.player?.hp;
+  const mana = gameState.player?.mana;
+
+  const hpCurrent = hp?.current ?? 0;
+  const hpMax = hp?.max ?? 0;
+  const manaCurrent = mana?.current ?? 0;
+  const manaMax = mana?.max ?? 0;
+
+  const needsRest = hpCurrent < hpMax || manaCurrent < manaMax;
+  if (!needsRest) {
+    return { valid: false, reason: "You already feel fully rested." };
   }
 
   return { valid: true };

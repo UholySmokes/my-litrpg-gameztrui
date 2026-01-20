@@ -172,6 +172,47 @@ export function executeAction(state, action, _options = {}) {
       }
       break;
 
+    case "rest": {
+      if (state.combat?.status === "active") {
+        return { success: false, reason: "Cannot rest during combat", state };
+      }
+
+      const player = state.player;
+      const hp =
+        player.hp && typeof player.hp === "object" && player.hp !== null
+          ? player.hp
+          : { current: player.hp ?? 0, max: player.maxHp ?? 100 };
+      const mana =
+        player.mana && typeof player.mana === "object" && player.mana !== null
+          ? player.mana
+          : { current: player.mana ?? 0, max: player.maxMana ?? 100 };
+
+      const config = state.config || {};
+      const hpAmount = Number.isFinite(config.restHealAmount)
+        ? config.restHealAmount
+        : Math.max(5, Math.floor(hp.max * 0.25));
+      const manaAmount = Number.isFinite(config.restManaAmount)
+        ? config.restManaAmount
+        : Math.max(5, Math.floor(mana.max * 0.25));
+
+      const nextHp = Math.min(hp.max, (hp.current ?? 0) + hpAmount);
+      const nextMana = Math.min(mana.max, (mana.current ?? 0) + manaAmount);
+
+      newState = {
+        ...state,
+        player: {
+          ...player,
+          hp: { ...hp, current: nextHp },
+          mana: { ...mana, current: nextMana },
+        },
+      };
+
+      description = "Rested and recovered.";
+      changes.hp = { current: nextHp, max: hp.max };
+      changes.mana = { current: nextMana, max: mana.max };
+      break;
+    }
+
     case "look":
     case "inventory":
       // These are read-only actions, no state change

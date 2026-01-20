@@ -299,6 +299,7 @@ export function startCombat(state, enemyIds) {
       status: "active",
       turn: "player",
       enemies: enemies,
+      skillCooldowns: {},
       log: combatLog,
     },
   };
@@ -345,8 +346,18 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   let updatedPlayer = state.player;
   let updatedEnemy = enemy;
   let damageResult = null;
+  let skillCooldownUpdate = null;
 
   if (skillId) {
+    const existingCooldown = state.combat?.skillCooldowns?.[skillId] || 0;
+    if (existingCooldown > 0) {
+      return {
+        success: false,
+        reason: `Skill on cooldown (${existingCooldown} turns remaining)`,
+        state,
+      };
+    }
+
     const skill = getSkillById(skillId);
     if (!skill) {
       return { success: false, reason: "Skill not found", state };
@@ -373,6 +384,11 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       isCritical: false,
       messages: [`${updatedPlayer.name} uses ${skill.name}!`],
     };
+
+    const cd = skillResult.cooldown || 0;
+    if (cd > 0) {
+      skillCooldownUpdate = { skillId, cooldown: cd };
+    }
 
     if (skillResult.backfireDamage && skillResult.backfireDamage > 0) {
       const backfireLog = [
@@ -532,6 +548,19 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       turn: "enemy",
     },
   };
+
+  if (skillCooldownUpdate) {
+    newState = {
+      ...newState,
+      combat: {
+        ...newState.combat,
+        skillCooldowns: {
+          ...(newState.combat.skillCooldowns || {}),
+          [skillCooldownUpdate.skillId]: skillCooldownUpdate.cooldown,
+        },
+      },
+    };
+  }
 
   // Apply rage gain if berserker
   if (rageGainAmount > 0) {
@@ -875,6 +904,22 @@ export function processEnemyTurns(state) {
 
   // === TIME-BASED EFFECTS (Sun regen, etc.) ===
   newState = processTimeEffects(newState);
+
+  // Decrement player skill cooldowns (combat skills)
+  if (newState.combat?.skillCooldowns) {
+    const nextCooldowns = {};
+    Object.entries(newState.combat.skillCooldowns).forEach(([id, value]) => {
+      const remaining = (value || 0) - 1;
+      if (remaining > 0) nextCooldowns[id] = remaining;
+    });
+    newState = {
+      ...newState,
+      combat: {
+        ...newState.combat,
+        skillCooldowns: nextCooldowns,
+      },
+    };
+  }
 
   // Switch back to player turn
   return {

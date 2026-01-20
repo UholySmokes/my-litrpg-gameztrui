@@ -24,6 +24,9 @@ const DEFAULT_CONFIG = {
   xpMalusPerLevelDiff: 0.1,
   xpNoRewardBelowDelta: 10,
   xpMinMultiplier: 0.1,
+
+  restHealAmount: 0,
+  restManaAmount: 0,
 };
 
 const DEFAULT_RESOURCES = {
@@ -410,6 +413,7 @@ export function normalizeGameState(rawState) {
       status: combat.status ?? "inactive",
       turn: combat.turn ?? "player",
       enemies: normalizeArray(combat.enemies),
+      skillCooldowns: normalizeObject(combat.skillCooldowns),
       log: normalizeArray(combat.log),
     },
     chatLog: normalizeArray(state.chatLog),

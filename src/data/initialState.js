@@ -12,6 +12,9 @@ const INITIAL_CONFIG = {
   baseEscapeChance: 0.3,
   defenseReductionFactor: 0.5,
 
+  restHealAmount: 0,
+  restManaAmount: 0,
+
   xpBrackets: [{ end: 1000, base: 100, growth: 1.5 }],
   xpBonusPerLevelDiff: 0.2,
   xpMalusPerLevelDiff: 0.1,

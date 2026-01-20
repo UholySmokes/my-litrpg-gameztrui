@@ -43,6 +43,9 @@ export function parseAction(userInput, gameState) {
   const statusAction = parseStatus(cleanedInput);
   if (statusAction) return statusAction;
 
+  const restAction = parseRest(cleanedInput);
+  if (restAction) return restAction;
+
   // Default: treat as narrative/exploration
   return {
     type: "narrative",
@@ -226,6 +229,27 @@ function parseStatus(input) {
     if (pattern.test(input)) {
       return {
         type: "status",
+        originalInput: input,
+      };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Parses rest/recovery actions
+ */
+function parseRest(input) {
+  const restPatterns = [
+    /^(rest|sleep|camp|recover)$/i,
+    /^(take a rest|take rest|make camp)$/i,
+  ];
+
+  for (const pattern of restPatterns) {
+    if (pattern.test(input)) {
+      return {
+        type: "rest",
         originalInput: input,
       };
     }

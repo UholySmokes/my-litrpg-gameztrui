@@ -902,6 +902,39 @@ function handleEnemyDefeat(state, enemyIndex) {
   // Add drops to player
   let newState = state;
 
+  // Update progress (kills, gold earned)
+  {
+    const progressSource =
+      newState.player.progress &&
+      typeof newState.player.progress === "object" &&
+      newState.player.progress !== null
+        ? newState.player.progress
+        : {};
+    const killsByEnemyIdSource =
+      progressSource.killsByEnemyId &&
+      typeof progressSource.killsByEnemyId === "object" &&
+      progressSource.killsByEnemyId !== null
+        ? progressSource.killsByEnemyId
+        : {};
+    const killsByEnemyId = { ...killsByEnemyIdSource };
+    if (enemy?.id) {
+      killsByEnemyId[enemy.id] = (killsByEnemyId[enemy.id] || 0) + 1;
+    }
+
+    newState = {
+      ...newState,
+      player: {
+        ...newState.player,
+        progress: {
+          ...progressSource,
+          totalKills: (progressSource.totalKills || 0) + 1,
+          killsByEnemyId,
+          totalGoldEarned: (progressSource.totalGoldEarned || 0) + goldEarned,
+        },
+      },
+    };
+  }
+
   // Add gold
   if (goldEarned > 0) {
     newState = {

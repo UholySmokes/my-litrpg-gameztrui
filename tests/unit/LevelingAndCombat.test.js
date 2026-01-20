@@ -9,6 +9,7 @@ import {
   calculateGachaResult,
   getAdjustedRarityRates,
 } from "../../src/data/gachaData.js";
+import { getPurchasableTitles } from "../../src/systems/titles/TitleSystem.js";
 import {
   startCombat,
   playerAttack,
@@ -123,6 +124,20 @@ describe("Title system", () => {
     expect(normalized.player.unlockedTitles).toContain("novice_adventurer");
   });
 
+  it("normalizeGameState auto-unlocks non-purchase titles when eligible", () => {
+    const normalized = normalizeGameState({
+      config: {},
+      player: {
+        level: 20,
+        xp: { current: 0, max: 1 },
+        attributes: { strength: 5, vitality: 5, intelligence: 5 },
+      },
+      quests: { active: [], completed: [] },
+    });
+
+    expect(normalized.player.unlockedTitles).toContain("legendary_hero");
+  });
+
   it("PURCHASE_TITLE deducts currency and unlocks", () => {
     const state = {
       ...initialGameState,
@@ -208,6 +223,112 @@ describe("Title system", () => {
       config,
     );
     expect(skillPowerTitle.damage).toBe(23);
+  });
+
+  it("auto-unlocks titles after combat milestones (killCount + killType)", () => {
+    const originalRandom = Math.random;
+    Math.random = () => 1;
+
+    try {
+      const monsterSlayerState = normalizeGameState({
+        ...initialGameState,
+        player: {
+          ...initialGameState.player,
+          level: 3,
+          attributes: { ...initialGameState.player.attributes, strength: 100 },
+          progress: {
+            ...initialGameState.player.progress,
+            totalKills: 9,
+            killsByEnemyId: {},
+          },
+        },
+      });
+      const monsterCombat = startCombat(monsterSlayerState, ["goblin"]);
+      const afterMonsterKill = gameReducer(monsterCombat, {
+        type: "PLAYER_ATTACK",
+        payload: { enemyIndex: 0 },
+      });
+      expect(afterMonsterKill.player.unlockedTitles).toContain("monster_slayer");
+
+      const dragonState = normalizeGameState({
+        ...initialGameState,
+        player: {
+          ...initialGameState.player,
+          level: 8,
+          attributes: { ...initialGameState.player.attributes, strength: 1000 },
+          progress: {
+            ...initialGameState.player.progress,
+            totalKills: 0,
+            killsByEnemyId: {},
+          },
+        },
+      });
+      const dragonCombat = startCombat(dragonState, ["dragon_whelp"]);
+      const afterDragonKill = gameReducer(dragonCombat, {
+        type: "PLAYER_ATTACK",
+        payload: { enemyIndex: 0 },
+      });
+      expect(afterDragonKill.player.unlockedTitles).toContain("dragon_slayer");
+    } finally {
+      Math.random = originalRandom;
+    }
+  });
+
+  it("getPurchasableTitles respects non-purchase conditions", () => {
+    const base = normalizeGameState({
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        currency: { ...initialGameState.player.currency, soulpoints: 1000 },
+        soulpoints: 1000,
+        progress: {
+          ...initialGameState.player.progress,
+          gachaPulls: 99,
+        },
+      },
+    });
+
+    expect(getPurchasableTitles(base).some((t) => t.id === "gacha_master")).toBe(
+      false,
+    );
+
+    const eligible = normalizeGameState({
+      ...base,
+      player: {
+        ...base.player,
+        progress: {
+          ...base.player.progress,
+          gachaPulls: 100,
+        },
+      },
+    });
+
+    expect(
+      getPurchasableTitles(eligible).some((t) => t.id === "gacha_master"),
+    ).toBe(true);
+  });
+
+  it("PURCHASE_TITLE enforces non-purchase conditions", () => {
+    const state = normalizeGameState({
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        currency: { ...initialGameState.player.currency, soulpoints: 1000 },
+        soulpoints: 1000,
+        progress: {
+          ...initialGameState.player.progress,
+          gachaPulls: 0,
+        },
+      },
+    });
+
+    const next = gameReducer(state, {
+      type: "PURCHASE_TITLE",
+      payload: { titleId: "gacha_master" },
+    });
+
+    expect(next.player.unlockedTitles).not.toContain("gacha_master");
+    expect(next.player.currency.soulpoints).toBe(1000);
   });
 
   it("combat gold rewards apply title goldGain bonus", () => {

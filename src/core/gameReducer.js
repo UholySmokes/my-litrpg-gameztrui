@@ -5,6 +5,8 @@ import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeGameState } from "./StateNormalizer.js";
 import {
   getEffectiveAttributes,
+  getAutoUnlockableTitles,
+  canPurchaseTitle,
   getTitleById,
 } from "../systems/titles/TitleSystem.js";
 import {
@@ -69,6 +71,67 @@ const updatePlayerVitals = (player, config, attributesOverride) => {
       current: clamp(toNumber(mana.current, nextManaMax), 0, nextManaMax),
     },
   };
+};
+
+const appendSystemMessages = (state, messages = []) => {
+  if (!Array.isArray(messages) || messages.length === 0) return state;
+  const timestamp = Date.now();
+  const entries = messages
+    .filter((message) => typeof message === "string" && message.trim())
+    .map((text, idx) => ({
+      type: "system",
+      text,
+      timestamp: timestamp + idx,
+    }));
+
+  if (entries.length === 0) return state;
+  return {
+    ...state,
+    chatLog: [...(state.chatLog || []), ...entries].slice(-100),
+  };
+};
+
+const applyAutoTitleUnlocks = (state, { announce = false } = {}) => {
+  if (!state?.player) return state;
+  const unlockable = getAutoUnlockableTitles(state);
+  if (!Array.isArray(unlockable) || unlockable.length === 0) return state;
+
+  const unlocked = new Set(
+    (state.player.unlockedTitles || state.player.titles || []).filter(
+      (id) => typeof id === "string" && id,
+    ),
+  );
+
+  const newlyUnlocked = [];
+  unlockable.forEach((title) => {
+    if (!title?.id) return;
+    if (unlocked.has(title.id)) return;
+    unlocked.add(title.id);
+    newlyUnlocked.push(title);
+  });
+
+  if (newlyUnlocked.length === 0) return state;
+
+  const unlockedTitles = Array.from(unlocked);
+  const player = updatePlayerVitals(
+    {
+      ...state.player,
+      unlockedTitles,
+      titles: unlockedTitles,
+    },
+    state.config,
+  );
+
+  const nextState = {
+    ...state,
+    player,
+  };
+
+  if (!announce) return nextState;
+  return appendSystemMessages(
+    nextState,
+    newlyUnlocked.map((title) => `Unlocked title: ${title.name}`),
+  );
 };
 
 const mergeInventoryItems = (inventory = [], rewardItems = []) => {
@@ -228,7 +291,9 @@ const gameReducer = (state, action) => {
           ],
         },
       };
-      return applyQuestRewards(nextState, reward);
+      return applyAutoTitleUnlocks(applyQuestRewards(nextState, reward), {
+        announce: true,
+      });
 
     case "UPDATE_RESOURCES": {
       const current = state.player.resources || {};
@@ -359,7 +424,9 @@ const gameReducer = (state, action) => {
       if (!result.success) {
         return state;
       }
-      return processEnemyTurns(result.state);
+      return applyAutoTitleUnlocks(processEnemyTurns(result.state), {
+        announce: true,
+      });
     }
 
     case "PLAYER_USE_SKILL": {
@@ -376,7 +443,9 @@ const gameReducer = (state, action) => {
       if (!result.success) {
         return state;
       }
-      return processEnemyTurns(result.state);
+      return applyAutoTitleUnlocks(processEnemyTurns(result.state), {
+        announce: true,
+      });
     }
 
     case "PLAYER_ESCAPE": {
@@ -499,8 +568,13 @@ const gameReducer = (state, action) => {
       );
 
       const nextSoul = currentSoul - soulCost;
+      const progress =
+        state.player.progress && typeof state.player.progress === "object"
+          ? state.player.progress
+          : {};
+      const pullCount = Array.isArray(results) ? results.length : 0;
 
-      return {
+      const nextState = {
         ...state,
         player: {
           ...state.player,
@@ -516,8 +590,14 @@ const gameReducer = (state, action) => {
           },
           inventory: nextInventory,
           equipment: equipmentState,
+          progress: {
+            ...progress,
+            gachaPulls: toNumber(progress.gachaPulls, 0) + pullCount,
+          },
         },
       };
+
+      return applyAutoTitleUnlocks(nextState, { announce: true });
     }
 
     case "PURCHASE_TITLE": {
@@ -525,21 +605,14 @@ const gameReducer = (state, action) => {
       if (!titleId || !state.player) return state;
 
       const title = getTitleById(titleId);
-      if (!title?.unlockConditions?.purchase) return state;
-
-      const requiredLevel = title.unlockConditions.level;
-      if (requiredLevel && toNumber(state.player.level, 1) < requiredLevel) {
-        return state;
-      }
+      if (!title) return state;
+      if (!canPurchaseTitle(title, state)) return state;
 
       const unlocked = new Set(
         (state.player.unlockedTitles || state.player.titles || []).filter(
           (id) => typeof id === "string" && id,
         ),
       );
-      if (unlocked.has(titleId)) {
-        return state;
-      }
 
       const cost = title.unlockConditions.purchase || {};
       const goldCost = toNumber(cost.goldCoins, 0);
@@ -640,7 +713,9 @@ const gameReducer = (state, action) => {
         leveledUp = true;
       }
 
-      return leveledUp ? nextState : state;
+      return leveledUp
+        ? applyAutoTitleUnlocks(nextState, { announce: true })
+        : state;
     }
 
     case "ALLOCATE_ATTRIBUTE_POINT": {

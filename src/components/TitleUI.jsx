@@ -1,6 +1,7 @@
 // TitleUI.jsx
 import React, { useState } from "react";
-import { titleDatabase, getPurchasableTitles } from "../data/titleData.js";
+import { titleDatabase } from "../data/titleData.js";
+import { getPurchasableTitles } from "../systems/titles/TitleSystem.js";
 
 export default function TitleUI({
   isOpen,

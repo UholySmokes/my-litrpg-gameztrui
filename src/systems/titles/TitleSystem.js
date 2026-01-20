@@ -130,3 +130,113 @@ export function getEffectiveAttributes(player, config = {}, baseAttributesOverri
   return effective;
 }
 
+function isUnlocked(player, titleId) {
+  if (!titleId) return false;
+  return getUnlockedTitleIds(player).includes(titleId);
+}
+
+function getPlayerProgress(player) {
+  const progress =
+    player?.progress && typeof player.progress === "object" && !Array.isArray(player.progress)
+      ? player.progress
+      : {};
+  const killsByEnemyId =
+    progress.killsByEnemyId &&
+    typeof progress.killsByEnemyId === "object" &&
+    !Array.isArray(progress.killsByEnemyId)
+      ? progress.killsByEnemyId
+      : {};
+  return { ...progress, killsByEnemyId };
+}
+
+export function areNonPurchaseUnlockConditionsMet(titleOrId, gameState) {
+  const title =
+    typeof titleOrId === "string" ? getTitleById(titleOrId) : titleOrId;
+  if (!title) return false;
+
+  const conditions = title.unlockConditions || {};
+  const state = gameState || {};
+  const player = state.player || {};
+  const progress = getPlayerProgress(player);
+
+  if (conditions.level && toNumber(player.level, 1) < conditions.level) {
+    return false;
+  }
+
+  if (conditions.quest) {
+    const completed = Array.isArray(state.quests?.completed)
+      ? state.quests.completed
+      : [];
+    const questCompleted = completed.some((q) => q?.id === conditions.quest);
+    if (!questCompleted) return false;
+  }
+
+  if (conditions.killCount) {
+    if (toNumber(progress.totalKills, 0) < conditions.killCount) {
+      return false;
+    }
+  }
+
+  if (conditions.totalGold) {
+    const currentGold = toNumber(
+      player.currency?.goldCoins ?? player.gold,
+      0,
+    );
+    if (currentGold < conditions.totalGold) {
+      return false;
+    }
+  }
+
+  if (conditions.maxedSkills) {
+    const abilities = Array.isArray(player.abilities) ? player.abilities : [];
+    const maxed = abilities.filter((ability) => (ability?.level || 0) >= 10).length;
+    if (maxed < conditions.maxedSkills) {
+      return false;
+    }
+  }
+
+  if (conditions.killType) {
+    const kills = toNumber(progress.killsByEnemyId?.[conditions.killType], 0);
+    if (kills <= 0) {
+      return false;
+    }
+  }
+
+  if (conditions.gachaPulls) {
+    if (toNumber(progress.gachaPulls, 0) < conditions.gachaPulls) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function getAutoUnlockableTitles(gameState) {
+  const state = gameState || {};
+  const player = state.player || {};
+
+  return titleDatabase.filter((title) => {
+    if (!title?.id) return false;
+    if (title.unlockConditions?.purchase) return false;
+    if (isUnlocked(player, title.id)) return false;
+    return areNonPurchaseUnlockConditionsMet(title, state);
+  });
+}
+
+export function canPurchaseTitle(titleOrId, gameState) {
+  const title =
+    typeof titleOrId === "string" ? getTitleById(titleOrId) : titleOrId;
+  if (!title?.id) return false;
+
+  const state = gameState || {};
+  const player = state.player || {};
+  if (isUnlocked(player, title.id)) return false;
+  if (!title.unlockConditions?.purchase) return false;
+
+  return areNonPurchaseUnlockConditionsMet(title, state);
+}
+
+export function getPurchasableTitles(gameState) {
+  const state = gameState || {};
+  return titleDatabase.filter((title) => canPurchaseTitle(title, state));
+}

@@ -1,7 +1,10 @@
 import { ensureAttributeShape } from "../constants/attributes.js";
 import { titleDatabase } from "../data/titleData.js";
 import { xpForNextLevel } from "../systems/leveling/LevelingSystem.js";
-import { getEffectiveAttributes } from "../systems/titles/TitleSystem.js";
+import {
+  getAutoUnlockableTitles,
+  getEffectiveAttributes,
+} from "../systems/titles/TitleSystem.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 
 const DEFAULT_CONFIG = {
@@ -33,6 +36,13 @@ const DEFAULT_RESOURCES = {
 const DEFAULT_CURRENCY = {
   goldCoins: 0,
   soulpoints: 0,
+};
+
+const DEFAULT_PROGRESS = {
+  totalKills: 0,
+  killsByEnemyId: {},
+  gachaPulls: 0,
+  totalGoldEarned: 0,
 };
 
 const toNumber = (value, fallback = 0) =>
@@ -190,6 +200,16 @@ function normalizePlayer(rawPlayer, config) {
 
   const { goldCoins, soulpoints, currency } = normalizeCurrency(player);
   const { unlockedTitles, equippedTitle } = normalizeTitles(player);
+  const progress =
+    player.progress && typeof player.progress === "object" && !Array.isArray(player.progress)
+      ? player.progress
+      : {};
+  const killsByEnemyId =
+    progress.killsByEnemyId &&
+    typeof progress.killsByEnemyId === "object" &&
+    !Array.isArray(progress.killsByEnemyId)
+      ? progress.killsByEnemyId
+      : {};
 
   const effectiveAttributes = getEffectiveAttributes(
     {
@@ -236,6 +256,17 @@ function normalizePlayer(rawPlayer, config) {
       player.professions && typeof player.professions === "object" && !Array.isArray(player.professions)
         ? player.professions
         : {},
+    progress: {
+      ...DEFAULT_PROGRESS,
+      ...progress,
+      totalKills: Math.max(0, Math.floor(toNumber(progress.totalKills, 0))),
+      killsByEnemyId,
+      gachaPulls: Math.max(0, Math.floor(toNumber(progress.gachaPulls, 0))),
+      totalGoldEarned: Math.max(
+        0,
+        Math.floor(toNumber(progress.totalGoldEarned, 0)),
+      ),
+    },
   };
 }
 
@@ -261,7 +292,7 @@ export function normalizeGameState(rawState) {
   const narrative = normalizeObject(state.narrative);
   const combat = normalizeObject(state.combat);
 
-  return {
+  let normalized = {
     ...state,
     config,
     player,
@@ -290,4 +321,56 @@ export function normalizeGameState(rawState) {
       chatLog: normalizeArray(narrative.chatLog),
     },
   };
+
+  const autoUnlockable = getAutoUnlockableTitles(normalized);
+  if (Array.isArray(autoUnlockable) && autoUnlockable.length > 0) {
+    const unlocked = new Set(
+      (normalized.player.unlockedTitles || []).filter(
+        (id) => typeof id === "string" && id,
+      ),
+    );
+    autoUnlockable.forEach((title) => {
+      if (title?.id) unlocked.add(title.id);
+    });
+
+    const unlockedTitles = Array.from(unlocked);
+    const equippedTitle =
+      typeof normalized.player.equippedTitle === "string" &&
+      unlocked.has(normalized.player.equippedTitle)
+        ? normalized.player.equippedTitle
+        : null;
+
+    const nextPlayer = {
+      ...normalized.player,
+      titles: unlockedTitles,
+      unlockedTitles,
+      equippedTitle,
+    };
+
+    const effective = getEffectiveAttributes(nextPlayer, normalized.config);
+    const nextHpMax = calculateMaxHp(effective);
+    const nextManaMax = calculateMaxMana(effective);
+    normalized = {
+      ...normalized,
+      player: {
+        ...nextPlayer,
+        hp: {
+          ...nextPlayer.hp,
+          max: nextHpMax,
+          current: clamp(toNumber(nextPlayer.hp?.current, nextHpMax), 0, nextHpMax),
+        },
+        mana: {
+          ...nextPlayer.mana,
+          max: nextManaMax,
+          current: clamp(
+            toNumber(nextPlayer.mana?.current, nextManaMax),
+            0,
+            nextManaMax,
+          ),
+        },
+      },
+    };
+  }
+
+  return normalized;
 }

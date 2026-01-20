@@ -82,6 +82,12 @@ const initialGameState = {
     talents: [],
     profession: null,
     professions: {},
+    progress: {
+      totalKills: 0,
+      killsByEnemyId: {},
+      gachaPulls: 0,
+      totalGoldEarned: 0,
+    },
   },
   quests: {
     active: [],

@@ -371,58 +371,6 @@ const gameReducer = (state, action) => {
       };
     }
 
-    case "CONSUME_ITEM": {
-      const { itemId } = action.payload;
-      const item = DataRegistry.getItemById(itemId);
-
-      if (!item || item.type !== "consumable") {
-        return state; // Silent fail: validation happens in dispatcher
-      }
-
-      const inventory = [...(state.player.inventory || [])];
-      const itemIndex = inventory.findIndex((i) => i.id === itemId);
-
-      if (itemIndex === -1) {
-        return state; // Item not in inventory
-      }
-
-      let newState = { ...state };
-
-      // Apply effects with clamping
-      if (item.effect?.heal) {
-        const currentHp = state.player.hp?.current ?? 0;
-        const maxHp = state.player.hp?.max ?? 100;
-        const newHp = Math.min(maxHp, currentHp + item.effect.heal);
-        newState.player = {
-          ...newState.player,
-          hp: { ...newState.player.hp, current: newHp },
-        };
-      }
-
-      if (item.effect?.mana) {
-        const currentMana = state.player.mana?.current ?? 0;
-        const maxMana = state.player.mana?.max ?? 100;
-        const newMana = Math.min(maxMana, currentMana + item.effect.mana);
-        newState.player = {
-          ...newState.player,
-          mana: { ...newState.player.mana, current: newMana },
-        };
-      }
-
-      // Remove item from inventory
-      if (inventory[itemIndex].quantity > 1) {
-        inventory[itemIndex] = {
-          ...inventory[itemIndex],
-          quantity: inventory[itemIndex].quantity - 1,
-        };
-      } else {
-        inventory.splice(itemIndex, 1);
-      }
-
-      newState.player.inventory = inventory;
-      return newState;
-    }
-
     case "EQUIP_ITEM": {
       const { slot, item } = action.payload;
       const equipment = { ...(state.player.equipment || {}) };

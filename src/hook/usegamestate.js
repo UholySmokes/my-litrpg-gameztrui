@@ -32,8 +32,9 @@ export function useGameEngine() {
       payload: nextStateOrUpdater,
     });
 
-  const evaluateQuestProgress = () => {
-    SystemEventObserver.checkQuestObjectives(state, state, dispatch);
+  const evaluateQuestProgress = (nextState) => {
+    const resolvedNext = nextState ?? state;
+    SystemEventObserver.checkQuestObjectives(state, resolvedNext, dispatch);
   };
 
   return {

@@ -118,7 +118,7 @@ function parseMove(input, gameState) {
       return {
         type: "move",
         direction: direction.toLowerCase(),
-        targetLocation: location.toLowerCase(),
+        targetLocation: location,
         originalInput: input,
       };
     }

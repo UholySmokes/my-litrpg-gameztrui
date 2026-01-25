@@ -679,11 +679,19 @@ export default function GameUI({ user }) {
                           </div>
                         ) : (
                           <ul className="command-deck__list">
-                            {abilityList.slice(0, 8).map((ability, idx) => (
-                              <li key={`${ability.name}-${idx}`}>
-                                {ability.name} (Lvl {ability.level || 1})
-                              </li>
-                            ))}
+                            {abilityList.slice(0, 8).map((ability, idx) => {
+                              const remainingCooldown =
+                                state?.combat?.skillCooldowns?.[ability.id] || 0;
+                              return (
+                                <li key={`${ability.name}-${idx}`}>
+                                  {ability.name} (Lvl {ability.level || 1}
+                                  {remainingCooldown > 0
+                                    ? ` | CD ${remainingCooldown}`
+                                    : ""}
+                                  )
+                                </li>
+                              );
+                            })}
                           </ul>
                         )}
                       </div>

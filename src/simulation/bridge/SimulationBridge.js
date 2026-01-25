@@ -11,24 +11,16 @@
 
 import { executeAction } from "../../core/ActionDispatcher.js";
 import { SimBridge } from "./SimulationContext.js";
-
-export { SimBridge };
-
+export { SimBridge } from "./SimulationContext.js";
 
 /**
- * Wrapper for action execution that logs commands and events
+ * Wrapper for action execution that logs commands and emits events
  */
 export function wrapActionExecution(actionType, actionPayload, executeFn) {
-  // Log command
-  SimBridge.logCommand({
-    type: actionType,
-    payload: actionPayload,
-  });
+  SimBridge.logCommand({ type: actionType, payload: actionPayload });
 
-  // Execute action
   const result = executeFn();
 
-  // Emit state change event
   if (result && result.success) {
     SimBridge.emitEvent("StateChanged", {
       actionType,

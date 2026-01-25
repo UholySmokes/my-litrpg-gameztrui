@@ -40,16 +40,7 @@ function buildSystemPrompt() {
 3. Maintain consistency with the game's fantasy/sci-fi setting
 4. Keep responses concise but atmospheric (5-9 sentences typically)
 
-IMPORTANT: You must respond ONLY with valid JSON in this exact format:
-{
-  "narrative": "Your descriptive text here describing what happened",
-  "mood": "neutral|tense|triumphant|defeated|mysterious",
-  "suggestions": ["suggestion 1", "suggestion 2", "suggestion 3"]
-}
-
-The "narrative" field should describe what happened based on the action result.
-The "mood" field sets the emotional tone.
-The "suggestions" field provides 3 brief hints about what the player might do next.`;
+Respond with narrative text only. Do not include JSON, lists, or metadata.`;
 }
 
 /**
@@ -229,10 +220,5 @@ ${questLines}
 
 TASK: Deliver an atmospheric opening (3-5 sentences) that references the scene and nudges the player toward the listed quests. Close with a compelling hook.
 
-Respond with JSON:
-{
-  "narrative": "Opening narrative here",
-  "mood": "neutral|tense|triumphant|mysterious|defeated",
-  "suggestions": ["Suggestion tied to main quest", "Suggestion tied to side hook", "General exploration suggestion"]
-}`;
+Respond with narrative text only.`;
 }

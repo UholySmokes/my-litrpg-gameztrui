@@ -1,4 +1,4 @@
-const API_ENDPOINT = "/api/narrative";
+const API_ENDPOINT = "/api/narrate";
 
 const OFFLINE_RESPONSE = {
   narrative:

@@ -6,10 +6,7 @@ import {
   calculateMaxHp,
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
-import {
-  getEffectiveAttributes,
-  getTitleById,
-} from "../systems/titles/TitleSystem.js";
+import { getEffectiveAttributes, getTitleById } from "../core/titleLogic.js";
 
 export default function StatusOverlay({
   player,
@@ -22,7 +19,9 @@ export default function StatusOverlay({
   if (!isOpen || !player) return null;
 
   const resolvedConfig =
-    config && typeof config === "object" && !Array.isArray(config) ? config : {};
+    config && typeof config === "object" && !Array.isArray(config)
+      ? config
+      : {};
   const baseAttributeValue = Number.isFinite(resolvedConfig.baseAttributeValue)
     ? resolvedConfig.baseAttributeValue
     : 5;
@@ -79,7 +78,8 @@ export default function StatusOverlay({
   const equippedTitleId =
     typeof player.equippedTitle === "string" ? player.equippedTitle : null;
   const equippedTitle = equippedTitleId ? getTitleById(equippedTitleId) : null;
-  const legacyTitleName = typeof player.title === "string" ? player.title : null;
+  const legacyTitleName =
+    typeof player.title === "string" ? player.title : null;
   const titleLabel = equippedTitle?.name || legacyTitleName || "None";
 
   const raceLabel =
@@ -139,7 +139,8 @@ export default function StatusOverlay({
         : legacyTitleName
           ? {
               name: legacyTitleName,
-              description: player.titleDescription || "Equipped honorific title",
+              description:
+                player.titleDescription || "Equipped honorific title",
             }
           : null,
     },
@@ -308,8 +309,7 @@ export default function StatusOverlay({
                     {entry.value !== entry.baseValue && (
                       <span>
                         {" "}
-                        (Titles:{" "}
-                        {entry.value - entry.baseValue > 0 ? "+" : ""}
+                        (Titles: {entry.value - entry.baseValue > 0 ? "+" : ""}
                         {entry.value - entry.baseValue})
                       </span>
                     )}

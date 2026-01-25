@@ -14,7 +14,7 @@ import AdminTools from "./AdminTools";
 import CombatUI from "./CombatUI";
 import { QuestManager } from "../systems/quest/QuestManager.js";
 import { gachaPools } from "../data/gachaData.js";
-import { getTitleBonuses } from "../systems/titles/TitleSystem.js";
+import { getTitleBonuses } from "../core/titleLogic.js";
 
 const ShopUI = lazy(() => import("./ShopUI"));
 const GachaUI = lazy(() => import("./GachaUI"));
@@ -530,297 +530,300 @@ export default function GameUI({ user }) {
           </div>
         ) : null}
         <div className="command-deck">
-        <header className="command-deck__header">
-          <div className="command-deck__title">
-            <span className="command-deck__title-label">AETHER COMMAND</span>
-            <span className="command-deck__subtitle">
-              Live ops // narrative control
-            </span>
-          </div>
-          <div className="command-deck__quick-actions">
-            <button className="holo-button" onClick={() => setShowShop(true)}>
-              [SHOP]
-            </button>
-            <button className="holo-button" onClick={() => setShowGacha(true)}>
-              [GACHA]
-            </button>
-            <button
-              className="holo-button"
-              onClick={() => setShowProfessions(true)}
-            >
-              [CRAFT]
-            </button>
-            <button
-              className="holo-button"
-              onClick={() => setShowStatusOverlay(true)}
-            >
-              [STATUS]
-            </button>
-            <button
-              className="holo-button"
-              onClick={() => setShowTitleSystem(true)}
-            >
-              [TITLES]
-            </button>
-          </div>
-        </header>
-
-        <div className="command-deck__body">
-          <section className="command-deck__story">
-            <div className="holo-panel command-deck__status-panel">
-              <div className="status-terminal">
-                {renderStatusBlock(state?.player || {})}
-              </div>
+          <header className="command-deck__header">
+            <div className="command-deck__title">
+              <span className="command-deck__title-label">AETHER COMMAND</span>
+              <span className="command-deck__subtitle">
+                Live ops // narrative control
+              </span>
             </div>
-
-            <div className="holo-panel command-deck__narrative-panel">
-              <div className="command-deck__narrative-log">
-                {chatLog.map((msg, index) => (
-                  <div
-                    key={index}
-                    className={msg.type}
-                    style={{ marginBottom: "0.5rem" }}
-                  >
-                    {msg.text}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {narrativeMemory.length > 0 && (
-              <div className="holo-panel narrative-memory-panel">
-                <div className="command-deck__panel-title">
-                  AI Narrative Memory
-                </div>
-                {shouldShowNarrativeSummary && (
-                  <p className="command-deck__summary">{narrativeSummary}</p>
-                )}
-                <div className="narrative-memory-side-wrapper">
-                  <div
-                    className="narrative-memory-entries"
-                    ref={narrativeMemoryRef}
-                    aria-label="AI narrative memory entries"
-                  >
-                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                      {recentNarrativeEntries.map((entry) => {
-                        const isLatest =
-                          entry.timestamp === latestNarrativeEntry?.timestamp;
-                        const classNames = ["narrative-memory-entry"];
-                        if (isLatest) {
-                          classNames.push("narrative-memory-entry--latest");
-                        }
-                        return (
-                          <li
-                            key={entry.timestamp}
-                            className={classNames.join(" ")}
-                          >
-                            {isLatest
-                              ? latestEntryTypewriterContent
-                              : entry.text}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                  <div
-                    className="narrative-memory-side-controls"
-                    aria-hidden="false"
-                  >
-                    <button
-                      type="button"
-                      className="narrative-memory-scroll-button"
-                      onClick={() => handleNarrativeMemoryScroll("up")}
-                    >
-                      ▲
-                    </button>
-                    <div className="narrative-memory-side-separator" />
-                    <button
-                      type="button"
-                      className="narrative-memory-scroll-button"
-                      onClick={() => handleNarrativeMemoryScroll("down")}
-                    >
-                      ▼
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </section>
-
-          <aside className="command-deck__sidebar">
-            <div className="command-deck__sidebar-scroll">
-              <div className="holo-panel command-deck__hud-panel">
-                <HudVitals player={state?.player} />
-                <ExperienceBar player={state?.player} />
-                <ClassResourceBar player={state?.player} />
-              </div>
-
-              <div className="holo-panel command-deck__gear-panel">
-                <EquipmentSlots player={state?.player} />
-                <StatusEffects player={state?.player} />
-                <button
-                  className="holo-button command-deck__loadout-toggle"
-                  onClick={() => setShowLoadoutPanel((prev) => !prev)}
-                >
-                  {showLoadoutPanel ? "[HIDE LOADOUT]" : "[SHOW LOADOUT]"}
-                </button>
-                {showLoadoutPanel && (
-                  <div className="command-deck__loadout-panel">
-                    <div>
-                      <div className="command-deck__panel-title">
-                        Active Abilities
-                      </div>
-                      {abilityList.length === 0 ? (
-                        <div className="command-deck__muted">
-                          None learned.
-                        </div>
-                      ) : (
-                        <ul className="command-deck__list">
-                          {abilityList.slice(0, 8).map((ability, idx) => (
-                            <li key={`${ability.name}-${idx}`}>
-                              {ability.name} (Lvl {ability.level || 1})
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                    <div>
-                      <div className="command-deck__panel-title">
-                        Inventory Snapshot
-                      </div>
-                      {inventoryPreview.length === 0 ? (
-                        <div className="command-deck__muted">
-                          Inventory empty.
-                        </div>
-                      ) : (
-                        <ul className="command-deck__list">
-                          {inventoryPreview.map((item, idx) => (
-                            <li key={`${item.id}-${idx}`}>
-                              {item.name || item.id}
-                              {item.quantity ? ` x${item.quantity}` : ""}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {state?.combat?.status === "active" && (
-                <div className="holo-panel command-deck__combat-panel">
-                  <CombatUI
-                    combatState={state.combat}
-                    playerState={state.player}
-                    onAttack={handleCombatAttack}
-                    onUseSkill={handleSkillUse}
-                    onEscape={handleCombatEscape}
-                  />
-                </div>
-              )}
-
-              <div className="holo-panel command-deck__quest-panel">
-                <div className="command-deck__panel-title">Active Quests</div>
-                <QuestTracker quests={state?.quests} />
-              </div>
-
-              <div className="holo-panel command-deck__feed-panel">
-                <div className="command-deck__panel-title">Command Feed</div>
-                <div className="command-feed-panel">
-                  <div className="command-feed-scroll">
-                    {chatLog
-                      .slice(-50)
-                      .reverse()
-                      .map((entry, idx) => {
-                        const timestampLabel = entry.timestamp
-                          ? new Date(entry.timestamp).toLocaleTimeString()
-                          : "--:--";
-                        return (
-                          <div
-                            key={`${entry.timestamp || idx}-${idx}`}
-                            className="command-feed-entry"
-                            style={{
-                              color:
-                                entry.type === "user"
-                                  ? "var(--holo-cyan)"
-                                  : entry.type === "narrative"
-                                    ? "var(--text-main)"
-                                    : "var(--text-dim)",
-                            }}
-                          >
-                            <span className="command-feed-timestamp">
-                              {timestampLabel}
-                            </span>
-                            <span>{entry.text}</span>
-                          </div>
-                        );
-                      })}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </aside>
-        </div>
-
-        <footer className="command-deck__command">
-          <form onSubmit={handleSubmit}>
-            <div className="command-deck__input-row">
-              <input
-                ref={inputRef}
-                type="text"
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                placeholder="Enter command..."
-                disabled={isLoading ? true : false}
-                className="command-deck__input"
-              />
+            <div className="command-deck__quick-actions">
+              <button className="holo-button" onClick={() => setShowShop(true)}>
+                [SHOP]
+              </button>
               <button
-                type="submit"
-                disabled={isLoading ? true : false}
-                className="holo-button command-deck__exec"
+                className="holo-button"
+                onClick={() => setShowGacha(true)}
               >
-                {isLoading ? "..." : "EXEC"}
+                [GACHA]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() => setShowProfessions(true)}
+              >
+                [CRAFT]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() => setShowStatusOverlay(true)}
+              >
+                [STATUS]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() => setShowTitleSystem(true)}
+              >
+                [TITLES]
               </button>
             </div>
-          </form>
+          </header>
 
-          {actionSuggestions && actionSuggestions.length > 0 && (
-            <div className="command-deck__actions">
-              {actionSuggestions.map((action, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleActionClick(action.t)}
-                  disabled={isLoading ? true : false}
-                  className="holo-button command-deck__action-chip"
-                  style={{ opacity: action.w || 1 }}
-                >
-                  {action.t}
-                </button>
-              ))}
-            </div>
-          )}
-          <div className="command-deck__footer-actions">
-            <button
-              className="holo-button holo-button--compact"
-              onClick={() => setShowProfessions(true)}
-            >
-              [CRAFT]
-            </button>
-            <button
-              className="holo-button holo-button--compact"
-              onClick={() => setShowStatusOverlay(true)}
-            >
-              [STATUS]
-            </button>
-            <button
-              className="holo-button holo-button--compact"
-              onClick={() => setShowSaveLoad(true)}
-            >
-              [SAVE/LOAD]
-            </button>
+          <div className="command-deck__body">
+            <section className="command-deck__story">
+              <div className="holo-panel command-deck__status-panel">
+                <div className="status-terminal">
+                  {renderStatusBlock(state?.player || {})}
+                </div>
+              </div>
+
+              <div className="holo-panel command-deck__narrative-panel">
+                <div className="command-deck__narrative-log">
+                  {chatLog.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={msg.type}
+                      style={{ marginBottom: "0.5rem" }}
+                    >
+                      {msg.text}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {narrativeMemory.length > 0 && (
+                <div className="holo-panel narrative-memory-panel">
+                  <div className="command-deck__panel-title">
+                    AI Narrative Memory
+                  </div>
+                  {shouldShowNarrativeSummary && (
+                    <p className="command-deck__summary">{narrativeSummary}</p>
+                  )}
+                  <div className="narrative-memory-side-wrapper">
+                    <div
+                      className="narrative-memory-entries"
+                      ref={narrativeMemoryRef}
+                      aria-label="AI narrative memory entries"
+                    >
+                      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                        {recentNarrativeEntries.map((entry) => {
+                          const isLatest =
+                            entry.timestamp === latestNarrativeEntry?.timestamp;
+                          const classNames = ["narrative-memory-entry"];
+                          if (isLatest) {
+                            classNames.push("narrative-memory-entry--latest");
+                          }
+                          return (
+                            <li
+                              key={entry.timestamp}
+                              className={classNames.join(" ")}
+                            >
+                              {isLatest
+                                ? latestEntryTypewriterContent
+                                : entry.text}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                    <div
+                      className="narrative-memory-side-controls"
+                      aria-hidden="false"
+                    >
+                      <button
+                        type="button"
+                        className="narrative-memory-scroll-button"
+                        onClick={() => handleNarrativeMemoryScroll("up")}
+                      >
+                        ▲
+                      </button>
+                      <div className="narrative-memory-side-separator" />
+                      <button
+                        type="button"
+                        className="narrative-memory-scroll-button"
+                        onClick={() => handleNarrativeMemoryScroll("down")}
+                      >
+                        ▼
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </section>
+
+            <aside className="command-deck__sidebar">
+              <div className="command-deck__sidebar-scroll">
+                <div className="holo-panel command-deck__hud-panel">
+                  <HudVitals player={state?.player} />
+                  <ExperienceBar player={state?.player} />
+                  <ClassResourceBar player={state?.player} />
+                </div>
+
+                <div className="holo-panel command-deck__gear-panel">
+                  <EquipmentSlots player={state?.player} />
+                  <StatusEffects player={state?.player} />
+                  <button
+                    className="holo-button command-deck__loadout-toggle"
+                    onClick={() => setShowLoadoutPanel((prev) => !prev)}
+                  >
+                    {showLoadoutPanel ? "[HIDE LOADOUT]" : "[SHOW LOADOUT]"}
+                  </button>
+                  {showLoadoutPanel && (
+                    <div className="command-deck__loadout-panel">
+                      <div>
+                        <div className="command-deck__panel-title">
+                          Active Abilities
+                        </div>
+                        {abilityList.length === 0 ? (
+                          <div className="command-deck__muted">
+                            None learned.
+                          </div>
+                        ) : (
+                          <ul className="command-deck__list">
+                            {abilityList.slice(0, 8).map((ability, idx) => (
+                              <li key={`${ability.name}-${idx}`}>
+                                {ability.name} (Lvl {ability.level || 1})
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      <div>
+                        <div className="command-deck__panel-title">
+                          Inventory Snapshot
+                        </div>
+                        {inventoryPreview.length === 0 ? (
+                          <div className="command-deck__muted">
+                            Inventory empty.
+                          </div>
+                        ) : (
+                          <ul className="command-deck__list">
+                            {inventoryPreview.map((item, idx) => (
+                              <li key={`${item.id}-${idx}`}>
+                                {item.name || item.id}
+                                {item.quantity ? ` x${item.quantity}` : ""}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {state?.combat?.status === "active" && (
+                  <div className="holo-panel command-deck__combat-panel">
+                    <CombatUI
+                      combatState={state.combat}
+                      playerState={state.player}
+                      onAttack={handleCombatAttack}
+                      onUseSkill={handleSkillUse}
+                      onEscape={handleCombatEscape}
+                    />
+                  </div>
+                )}
+
+                <div className="holo-panel command-deck__quest-panel">
+                  <div className="command-deck__panel-title">Active Quests</div>
+                  <QuestTracker quests={state?.quests} />
+                </div>
+
+                <div className="holo-panel command-deck__feed-panel">
+                  <div className="command-deck__panel-title">Command Feed</div>
+                  <div className="command-feed-panel">
+                    <div className="command-feed-scroll">
+                      {chatLog
+                        .slice(-50)
+                        .reverse()
+                        .map((entry, idx) => {
+                          const timestampLabel = entry.timestamp
+                            ? new Date(entry.timestamp).toLocaleTimeString()
+                            : "--:--";
+                          return (
+                            <div
+                              key={`${entry.timestamp || idx}-${idx}`}
+                              className="command-feed-entry"
+                              style={{
+                                color:
+                                  entry.type === "user"
+                                    ? "var(--holo-cyan)"
+                                    : entry.type === "narrative"
+                                      ? "var(--text-main)"
+                                      : "var(--text-dim)",
+                              }}
+                            >
+                              <span className="command-feed-timestamp">
+                                {timestampLabel}
+                              </span>
+                              <span>{entry.text}</span>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
           </div>
-        </footer>
-      </div>
+
+          <footer className="command-deck__command">
+            <form onSubmit={handleSubmit}>
+              <div className="command-deck__input-row">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  placeholder="Enter command..."
+                  disabled={isLoading ? true : false}
+                  className="command-deck__input"
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading ? true : false}
+                  className="holo-button command-deck__exec"
+                >
+                  {isLoading ? "..." : "EXEC"}
+                </button>
+              </div>
+            </form>
+
+            {actionSuggestions && actionSuggestions.length > 0 && (
+              <div className="command-deck__actions">
+                {actionSuggestions.map((action, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleActionClick(action.t)}
+                    disabled={isLoading ? true : false}
+                    className="holo-button command-deck__action-chip"
+                    style={{ opacity: action.w || 1 }}
+                  >
+                    {action.t}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="command-deck__footer-actions">
+              <button
+                className="holo-button holo-button--compact"
+                onClick={() => setShowProfessions(true)}
+              >
+                [CRAFT]
+              </button>
+              <button
+                className="holo-button holo-button--compact"
+                onClick={() => setShowStatusOverlay(true)}
+              >
+                [STATUS]
+              </button>
+              <button
+                className="holo-button holo-button--compact"
+                onClick={() => setShowSaveLoad(true)}
+              >
+                [SAVE/LOAD]
+              </button>
+            </div>
+          </footer>
+        </div>
       </div>
 
       {state?.player?.isDead && (

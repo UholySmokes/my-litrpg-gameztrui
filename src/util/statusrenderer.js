@@ -6,10 +6,7 @@ import {
   calculateMaxHp,
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
-import {
-  getEffectiveAttributes,
-  getTitleById,
-} from "../systems/titles/TitleSystem.js";
+import { getEffectiveAttributes, getTitleById } from "../core/titleLogic.js";
 
 export function renderStatusBlock(player, config) {
   const name = player.name || "Unknown";
@@ -26,7 +23,9 @@ export function renderStatusBlock(player, config) {
       : player.class?.name || player.class?.id || "None";
   const talent = player.talent || "None";
   const resolvedConfig =
-    config && typeof config === "object" && !Array.isArray(config) ? config : {};
+    config && typeof config === "object" && !Array.isArray(config)
+      ? config
+      : {};
   const baseAttributeValue = Number.isFinite(resolvedConfig.baseAttributeValue)
     ? resolvedConfig.baseAttributeValue
     : 5;
@@ -62,7 +61,8 @@ export function renderStatusBlock(player, config) {
   const vit =
     getAttributeValue(effectiveAttributes, "vitality") || baseAttributeValue;
   const int =
-    getAttributeValue(effectiveAttributes, "intelligence") || baseAttributeValue;
+    getAttributeValue(effectiveAttributes, "intelligence") ||
+    baseAttributeValue;
   const cha =
     getAttributeValue(effectiveAttributes, "charisma") || baseAttributeValue;
   const will =

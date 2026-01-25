@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
+  base: "/", // ✅ custom domain root (void-verse.com)
   plugins: [
     react({
       include: ["**/*.jsx", "**/*.js"],
@@ -24,21 +24,11 @@ export default defineConfig({
             return "vendor";
           }
 
-          if (normalizedId.includes("/src/data/registries/")) {
+          if (normalizedId.includes("/src/data/registries/"))
             return "data-registries";
-          }
-
-          if (normalizedId.includes("/src/data/")) {
-            return "data";
-          }
-
-          if (normalizedId.includes("/src/systems/")) {
-            return "systems";
-          }
-
-          if (normalizedId.includes("/src/core/")) {
-            return "core";
-          }
+          if (normalizedId.includes("/src/data/")) return "data";
+          if (normalizedId.includes("/src/systems/")) return "systems";
+          if (normalizedId.includes("/src/core/")) return "core";
 
           return undefined;
         },

@@ -16,6 +16,7 @@ import {
   escapeCombat,
   processEnemyTurns,
 } from "../systems/combat/CombatSystem.js";
+import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -76,7 +77,7 @@ const updatePlayerVitals = (player, config, attributesOverride) => {
 
 const appendSystemMessages = (state, messages = []) => {
   if (!Array.isArray(messages) || messages.length === 0) return state;
-  const timestamp = Date.now();
+  const timestamp = SimBridge.now();
   const entries = messages
     .filter((message) => typeof message === "string" && message.trim())
     .map((text, idx) => ({
@@ -302,9 +303,59 @@ const gameReducer = (state, action) => {
           {
             type,
             text: message,
-            timestamp: Date.now(),
+            timestamp: SimBridge.now(),
           },
         ].slice(-100), // Keep last 100 messages
+      };
+    }
+
+    case "APPEND_SIMULATION_LOG": {
+      const incoming = Array.isArray(action.payload?.entries)
+        ? action.payload.entries
+        : [];
+
+      if (incoming.length === 0) {
+        return state;
+      }
+
+      const now = SimBridge.now();
+      const normalizedEntries = incoming
+        .filter(
+          (entry) =>
+            entry && typeof entry.text === "string" && entry.text.trim(),
+        )
+        .map((entry, index) => ({
+          id: entry.id || `sim_evt_${now}_${index}`,
+          tick: entry.tick,
+          timestamp: entry.timestamp ?? now + index,
+          type: entry.type || "Event",
+          text: entry.text.trim(),
+          details: entry.details,
+        }));
+
+      if (normalizedEntries.length === 0) {
+        return state;
+      }
+
+      const combatState = ensureCombatStructure(state);
+      const updatedCombat = {
+        ...combatState,
+        log: [...(combatState.log || []), ...normalizedEntries].slice(-200),
+      };
+
+      const combatChatEntries = normalizedEntries.map((entry) => ({
+        type: "combat",
+        text: entry.text,
+        timestamp: entry.timestamp,
+      }));
+
+      return {
+        ...state,
+        combat: {
+          ...state.combat,
+          ...updatedCombat,
+        },
+        chatLog: [...(state.chatLog || []), ...combatChatEntries].slice(-100),
       };
     }
 
@@ -341,7 +392,7 @@ const gameReducer = (state, action) => {
             ...state.quests.completed,
             {
               id: questId,
-              date: Date.now(),
+              date: SimBridge.now(),
               ...(questMeta ? { meta: questMeta } : {}),
             },
           ],
@@ -666,7 +717,8 @@ const gameReducer = (state, action) => {
       const titleId = action.payload?.titleId;
       if (!titleId || !state.player) return state;
 
-      const unlockedIds = state.player.unlockedTitles || state.player.titles || [];
+      const unlockedIds =
+        state.player.unlockedTitles || state.player.titles || [];
       if (!Array.isArray(unlockedIds) || !unlockedIds.includes(titleId)) {
         return state;
       }

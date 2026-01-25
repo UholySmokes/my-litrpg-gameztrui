@@ -27,6 +27,35 @@ const CONFIG = {
   CRITICAL_FAILURE_RATE: 0.01, // 1% chance of critical failure
 };
 
+const CONFIG_KEYS = new Set(Object.keys(CONFIG));
+
+function mergeConfig(target, source) {
+  if (!source || typeof source !== "object" || Array.isArray(source)) return;
+  for (const [key, value] of Object.entries(source)) {
+    if (CONFIG_KEYS.has(key)) {
+      target[key] = value;
+    }
+  }
+}
+
+function loadConfigFile(filePath) {
+  if (!filePath) {
+    throw new Error("Missing value for --config");
+  }
+
+  const resolved = path.isAbsolute(filePath)
+    ? filePath
+    : path.join(process.cwd(), filePath);
+  const raw = fs.readFileSync(resolved, "utf8");
+  const parsed = JSON.parse(raw);
+
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error("Config file must contain a JSON object.");
+  }
+
+  return parsed;
+}
+
 // Game state simulation
 class GameSimulator {
   constructor(config = {}) {
@@ -474,28 +503,42 @@ async function main() {
     const args = process.argv.slice(2);
     const config = {};
 
+    const configIndex = args.indexOf("--config");
+    if (configIndex !== -1) {
+      const fileConfig = loadConfigFile(args[configIndex + 1]);
+      mergeConfig(config, fileConfig);
+    }
+
     for (let i = 0; i < args.length; i += 2) {
-      const key = args[i].replace("--", "");
+      const rawKey = args[i];
+      if (!rawKey) continue;
+      if (rawKey === "--config") continue;
+
       const value = args[i + 1];
+      if (value === undefined) {
+        throw new Error(`Missing value for ${rawKey}`);
+      }
+
+      const key = rawKey.replace("--", "");
 
       switch (key) {
         case "runs":
-          config.TOTAL_RUNS = parseInt(value);
+          config.TOTAL_RUNS = Number.parseInt(value, 10);
           break;
         case "level":
-          config.TARGET_LEVEL = parseInt(value);
+          config.TARGET_LEVEL = Number.parseInt(value, 10);
           break;
         case "format":
           config.OUTPUT_FORMAT = value;
           break;
         case "seed":
-          config.RANDOM_SEED = parseInt(value);
+          config.RANDOM_SEED = Number.parseInt(value, 10);
           break;
         case "logs":
           config.ENABLE_DETAILED_LOGS = value === "true";
           break;
         case "max-time":
-          config.MAX_SIMULATION_TIME = parseInt(value) * 1000;
+          config.MAX_SIMULATION_TIME = Number.parseInt(value, 10) * 1000;
           break;
       }
     }

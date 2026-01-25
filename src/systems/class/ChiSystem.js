@@ -8,6 +8,7 @@ import {
   ensureAttributeShape,
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
+import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
 
 /**
  * CHI CONFIGURATION
@@ -69,7 +70,12 @@ function gainChi(player, amount, reason = "unknown") {
   const updated = setChiValue(player, nextChi);
 
   if (delta > 0) {
-    emit("chi:gain", { player: player.name, amount: delta, reason, newChi: nextChi });
+    emit("chi:gain", {
+      player: player.name,
+      amount: delta,
+      reason,
+      newChi: nextChi,
+    });
   }
 
   return updated;
@@ -219,7 +225,7 @@ function processComboHit(player) {
     player: {
       ...player,
       comboCount: newCombo,
-      lastComboTime: Date.now(),
+      lastComboTime: SimBridge.now(),
     },
     multiplier,
     comboCount: newCombo,

@@ -11,6 +11,7 @@ import {
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
 import { getEffectiveAttributes } from "../titles/TitleSystem.js";
+import { random } from "../../utils/DeterministicRandom.js";
 
 /**
  * STEALTH CONFIGURATION
@@ -174,7 +175,7 @@ function checkDetection(player, enemy) {
     Math.min(0.95, enemyPerception / (playerStealth + enemyPerception)),
   );
 
-  const roll = Math.random();
+  const roll = random();
 
   if (roll < detectionChance) {
     return { detected: true, reason: "Enemy spotted you" };

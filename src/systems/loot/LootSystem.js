@@ -21,6 +21,12 @@ import {
   getAffixDisplayName,
   getAffixesByTags as getTieredAffixesByTags,
 } from "./AffixTierRegistry.js";
+import {
+  random,
+  randomChoice,
+  randomInt,
+} from "../../utils/DeterministicRandom.js";
+import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
 
 // =====================================================
 // RARITY TIERS
@@ -161,7 +167,7 @@ function rollAffixValue(affix, tier, isPerfect = false, isExalted = false) {
     return max;
   }
 
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return randomInt(min, max);
 }
 
 // =====================================================
@@ -171,12 +177,12 @@ function rollAffixValue(affix, tier, isPerfect = false, isExalted = false) {
 function weightedRandom(items) {
   if (!items || items.length === 0) return null;
   const totalWeight = items.reduce((sum, item) => sum + (item.weight || 1), 0);
-  let random = Math.random() * totalWeight;
+  let roll = random() * totalWeight;
   for (const item of items) {
-    if (random < (item.weight || 1)) {
+    if (roll < (item.weight || 1)) {
       return item;
     }
-    random -= item.weight || 1;
+    roll -= item.weight || 1;
   }
   return items[items.length - 1];
 }
@@ -345,7 +351,7 @@ export function generateAffixedItem(
   if (typeof rarityData.prefixes === "object") {
     // Uncommon: random distribution
     const total = rarityData.totalAffixes || 1;
-    if (Math.random() < 0.5) {
+    if (random() < 0.5) {
       prefixCount = total;
     } else {
       suffixCount = total;
@@ -393,7 +399,7 @@ export function generateAffixedItem(
   // Apply greater affix chance for Epic+
   if (rarityData.greaterAffixChance) {
     [...prefixes, ...suffixes].forEach((affix) => {
-      if (Math.random() < rarityData.greaterAffixChance) {
+      if (random() < rarityData.greaterAffixChance) {
         affix.isGreater = true;
         affix.value = Math.floor(affix.value * 1.3); // 30% bonus
       }
@@ -472,7 +478,7 @@ export function generateAffixedItem(
   // Build the item
   const newItem = {
     ...itemData,
-    id: `${itemData.id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    id: `${itemData.id}_${SimBridge.now()}_${random().toString(36).substr(2, 9)}`,
     baseId: itemData.id,
     name: newName,
     rarity,
@@ -486,7 +492,7 @@ export function generateAffixedItem(
     catalystSlot,
     stats,
     generated: true,
-    generatedAt: Date.now(),
+    generatedAt: SimBridge.now(),
   };
 
   return newItem;
@@ -571,7 +577,7 @@ export function rollRarity(luckBonus = 0, areaBonus = 0, bossKill = false) {
   });
 
   // Roll
-  let roll = Math.random() * totalWeight;
+  let roll = random() * totalWeight;
   for (const { key, weight } of modifiedRarities) {
     if (roll < weight) {
       return key;
@@ -601,7 +607,7 @@ export function generateLootDrop(baseItems, count = 1, options = {}) {
   for (let i = 0; i < count; i++) {
     // Select random base item
     const baseItem = Array.isArray(baseItems)
-      ? baseItems[Math.floor(Math.random() * baseItems.length)]
+      ? randomChoice(baseItems)
       : baseItems;
 
     // Roll rarity
@@ -609,9 +615,7 @@ export function generateLootDrop(baseItems, count = 1, options = {}) {
       guaranteedRarity || rollRarity(luckBonus, areaBonus, bossKill);
 
     // Calculate item level
-    const itemLevel =
-      Math.floor(Math.random() * (maxItemLevel - minItemLevel + 1)) +
-      minItemLevel;
+    const itemLevel = randomInt(minItemLevel, maxItemLevel);
 
     // Generate the item
     const item = generateAffixedItem(baseItem, rarity, itemLevel);

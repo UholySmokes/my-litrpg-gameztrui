@@ -9,6 +9,7 @@ import {
   EFFECT_TYPES,
 } from "./EffectRegistry.js";
 import { emit } from "../../core/EventBus.js";
+import { random } from "../../utils/DeterministicRandom.js";
 
 /**
  * Applies an effect to a target entity.
@@ -30,7 +31,7 @@ export function applyEffect(target, effectId, source = null, overrides = {}) {
   // Create new effect instance
   const newInstance = {
     ...def,
-    instanceId: Math.random().toString(36).substr(2, 9),
+    instanceId: random().toString(36).substr(2, 9),
     sourceId: source?.id || "environment",
     duration: overrides.duration ?? def.duration,
     magnitude: overrides.magnitude ?? def.magnitude,

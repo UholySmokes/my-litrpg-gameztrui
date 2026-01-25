@@ -8,9 +8,45 @@ import {
   ensureAttributeShape,
 } from "../constants/attributes.js";
 
-// Audio placeholder
+// Simple Web Audio feedback (no external assets required)
+let audioContext = null;
+const SOUND_PROFILES = {
+  click: { freq: 520, duration: 0.05, volume: 0.05, type: "square" },
+  theme_change: { freq: 660, duration: 0.08, volume: 0.05, type: "sine" },
+};
+
 const playSystemSound = (sound) => {
-  console.log(`[AUDIO] Playing: ${sound}`);
+  if (typeof window === "undefined") return;
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) {
+    console.log(`[AUDIO] Playing: ${sound}`);
+    return;
+  }
+  try {
+    if (!audioContext) {
+      audioContext = new AudioCtx();
+    }
+    const profile = SOUND_PROFILES[sound] || SOUND_PROFILES.click;
+    const now = audioContext.currentTime;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    osc.type = profile.type || "sine";
+    osc.frequency.setValueAtTime(profile.freq, now);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(profile.volume, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(
+      0.0001,
+      now + profile.duration,
+    );
+
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    osc.start(now);
+    osc.stop(now + profile.duration + 0.02);
+  } catch (err) {
+    console.log(`[AUDIO] Playing: ${sound}`);
+  }
 };
 
 // Theme configuration for class selection
@@ -1114,9 +1150,19 @@ export default function CharacterGenesisUI_Enhanced({ onComplete }) {
                         borderRadius: "4px",
                       }}
                     >
-                      {skill.name || skill.id}
+                      <div style={{ fontWeight: "bold" }}>
+                        {skill.name || skill.id}
+                      </div>
+                      <div style={{ fontSize: "0.65rem", opacity: 0.85 }}>
+                        {skill.description || "No description provided."}
+                      </div>
                     </button>
                   ))}
+                  {availableActiveSkills?.length === 0 && (
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-dim)" }}>
+                      No active skills generated yet.
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -4,6 +4,7 @@
 // =================================================================
 
 import { emit } from "../../core/EventBus.js";
+import { random } from "../../utils/DeterministicRandom.js";
 
 /**
  * PROC CONFIGURATION
@@ -36,7 +37,7 @@ export function checkItemProc(attacker, defender, damage, weapon) {
   }
 
   const proc = weapon.uniquePassive.proc;
-  const roll = Math.random();
+  const roll = random();
 
   if (roll >= proc.chance) {
     return result; // Proc didn't trigger
@@ -172,7 +173,7 @@ export function checkArmorProc(defender, attacker, damage, armor) {
 
   // Check proc effects
   if (passive.proc) {
-    const roll = Math.random();
+    const roll = random();
 
     if (roll < passive.proc.chance) {
       result.procTriggered = true;

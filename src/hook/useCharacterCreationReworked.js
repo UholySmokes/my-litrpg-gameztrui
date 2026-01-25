@@ -7,11 +7,13 @@
 // - Persistent selections across rerolls
 // =================================================================
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { getRandomTalents, getSkillsByClass } from "../entities/Player.js";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
 import { getAllSkills } from "../systems/skills/SkillRegistry.js";
+import { randomInt } from "../utils/DeterministicRandom.js";
+
 import {
   CANONICAL_ATTRIBUTES,
   createAttributeBaseline,
@@ -34,8 +36,7 @@ const TALENT_POOL_SIZE = 8;
 function normalizeEntityRef(value, fallback) {
   if (value && typeof value === "object" && !Array.isArray(value)) {
     const id = typeof value.id === "string" && value.id ? value.id : null;
-    const name =
-      typeof value.name === "string" && value.name ? value.name : id;
+    const name = typeof value.name === "string" && value.name ? value.name : id;
     if (id) return { id, name };
     if (name) return name;
   }
@@ -47,7 +48,7 @@ function normalizeEntityRef(value, fallback) {
 function shuffleArray(array) {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = randomInt(0, i);
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
@@ -172,6 +173,26 @@ export function useCharacterCreationReworked() {
     },
     [getAllClassSkills, selectedActiveSkills, selectedPassiveSkills],
   );
+
+  useEffect(() => {
+    if (!selectedClass) return;
+    const skills = getAllClassSkills(selectedClass);
+    const hasActiveSkills = skills.active.length > 0;
+    const hasPassiveSkills = skills.passive.length > 0;
+    const needsActiveSkills =
+      hasActiveSkills && (availableActiveSkills?.length || 0) === 0;
+    const needsPassiveSkills =
+      hasPassiveSkills && (availablePassiveSkills?.length || 0) === 0;
+    if (needsActiveSkills || needsPassiveSkills) {
+      generateSkillPools(selectedClass);
+    }
+  }, [
+    selectedClass,
+    availableActiveSkills,
+    availablePassiveSkills,
+    generateSkillPools,
+    getAllClassSkills,
+  ]);
 
   // Regenerate races
   const regenerateRaces = useCallback(() => {

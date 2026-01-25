@@ -3,6 +3,7 @@
 // =================================================================
 
 import { getItemData } from "../entities/ItemRegistry.js";
+import { random, randomChoice } from "../utils/DeterministicRandom.js";
 
 export const gachaPools = {
   equipment: {
@@ -133,7 +134,9 @@ export const gachaPools = {
  */
 export function getAdjustedRarityRates(rarityRates = {}, gachaBonus = 0) {
   const rates =
-    rarityRates && typeof rarityRates === "object" && !Array.isArray(rarityRates)
+    rarityRates &&
+    typeof rarityRates === "object" &&
+    !Array.isArray(rarityRates)
       ? { ...rarityRates }
       : {};
 
@@ -193,7 +196,7 @@ export function calculateGachaResult(poolId, pullCount = 1, options = {}) {
   const results = [];
 
   for (let i = 0; i < pullCount; i++) {
-    const roll = Math.random();
+    const roll = random();
     let rarity = "common";
     let cumulative = 0;
 
@@ -207,8 +210,7 @@ export function calculateGachaResult(poolId, pullCount = 1, options = {}) {
 
     const rarityItems = pool.items[rarity];
     if (rarityItems && rarityItems.length > 0) {
-      const randomItem =
-        rarityItems[Math.floor(Math.random() * rarityItems.length)];
+      const randomItem = randomChoice(rarityItems);
       const itemData = getItemData(randomItem.id) || null;
       // Preserve any metadata on the entry (e.g., skill name/description) as fallback.
       results.push({

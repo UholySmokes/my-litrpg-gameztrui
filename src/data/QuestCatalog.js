@@ -1,7 +1,9 @@
 // ============================================================================
 // QUEST CATALOG
-// Provides placeholder quest data + deterministic selection helpers
+// Curated quest data + deterministic selection helpers
 // ============================================================================
+
+import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
 
 const MAIN_QUESTS = [
   {
@@ -77,6 +79,156 @@ const MAIN_QUESTS = [
       tones: ["triumphant", "mystical"],
       favoredClasses: ["druid", "ranger"],
       favoredRaces: ["nature_spirit", "beast_kin"],
+    },
+  },
+  {
+    id: "mq_starforge_siege",
+    name: "Starforge Siege",
+    description:
+      "Sky raiders have seized the skydocks forge. Shut down their engines before the city core is breached.",
+    objectives: [
+      {
+        id: "mq_starforge_siege_obj_1",
+        description: "Secure the outer skydocks gantries",
+        completed: false,
+      },
+      {
+        id: "mq_starforge_siege_obj_2",
+        description: "Disable the starforge core",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 140, items: [{ id: "skyforge_core", quantity: 1 }] },
+    tags: {
+      biome: "skydocks",
+      tones: ["urgent", "heroic"],
+      favoredClasses: ["templar", "archer", "battlemage"],
+      favoredRaces: ["skybound", "starseer", "stormforged"],
+    },
+  },
+  {
+    id: "mq_ashen_caldera",
+    name: "Ashen Caldera Descent",
+    description:
+      "Seismic vents destabilize a volcanic ring. Descend into the caldera and seal the ruptures before magma floods the wilds.",
+    objectives: [
+      {
+        id: "mq_ashen_caldera_obj_1",
+        description: "Navigate the ash tunnels",
+        completed: false,
+      },
+      {
+        id: "mq_ashen_caldera_obj_2",
+        description: "Seal the caldera vents",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 155, items: [{ id: "caldera_seal", quantity: 2 }] },
+    tags: {
+      biome: "volcanic",
+      tones: ["grim", "mystical"],
+      favoredClasses: ["berserker", "warlock", "druid"],
+      favoredRaces: ["emberkin", "phoenix_reborn", "demon_kin"],
+    },
+  },
+  {
+    id: "mq_veil_archive",
+    name: "Veil Archive Heist",
+    description:
+      "An undercity archive hides the ledger of a forgotten guild. Slip inside and extract the ledger before the veil wardens arrive.",
+    objectives: [
+      {
+        id: "mq_veil_archive_obj_1",
+        description: "Bypass the veil ward sigils",
+        completed: false,
+      },
+      {
+        id: "mq_veil_archive_obj_2",
+        description: "Retrieve the shadow ledger",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 135, items: [{ id: "veil_ledger", quantity: 1 }] },
+    tags: {
+      biome: "undercity",
+      tones: ["tense", "mysterious"],
+      favoredClasses: ["rogue", "shadowblade", "necromancer"],
+      favoredRaces: ["gloomshade", "duskborne", "undead_awakened"],
+    },
+  },
+  {
+    id: "mq_crystal_forge",
+    name: "Crystal Forge Resonance",
+    description:
+      "A mountain forge hums out of tune. Align the crystal matrices before the resonance shatters the ridge.",
+    objectives: [
+      {
+        id: "mq_crystal_forge_obj_1",
+        description: "Collect the fractured resonance shards",
+        completed: false,
+      },
+      {
+        id: "mq_crystal_forge_obj_2",
+        description: "Stabilize the crystal lattice",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 145, items: [{ id: "resonance_shard", quantity: 3 }] },
+    tags: {
+      biome: "mountain",
+      tones: ["stoic", "mysterious"],
+      favoredClasses: ["mage", "shaman", "battlemage"],
+      favoredRaces: ["crystal_being", "rune_sentinel", "ironroot"],
+    },
+  },
+  {
+    id: "mq_tide_breach",
+    name: "Tide Breach",
+    description:
+      "A coastal ward has collapsed and the tide surges inland. Restore the ward and drive back the abyssal swarm.",
+    objectives: [
+      {
+        id: "mq_tide_breach_obj_1",
+        description: "Reclaim the flooded ward stones",
+        completed: false,
+      },
+      {
+        id: "mq_tide_breach_obj_2",
+        description: "Reignite the tidal barrier",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 150, items: [{ id: "tide_ward_charm", quantity: 1 }] },
+    tags: {
+      biome: "coast",
+      tones: ["urgent"],
+      favoredClasses: ["shaman", "ranger", "monk"],
+      favoredRaces: ["tidecaller", "frostborne", "astral_nomad"],
+    },
+  },
+  {
+    id: "mq_oracle_sundial",
+    name: "Oracle of the Sundial",
+    description:
+      "A desert sundial predicts a solar blackout. Track the oracle and decode the warning before the mirage storm descends.",
+    objectives: [
+      {
+        id: "mq_oracle_sundial_obj_1",
+        description: "Locate the wandering oracle",
+        completed: false,
+      },
+      {
+        id: "mq_oracle_sundial_obj_2",
+        description: "Interpret the sundial glyphs",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 135, items: [{ id: "sundial_glyph", quantity: 1 }] },
+    tags: {
+      biome: "desert",
+      tones: ["ethereal", "mysterious"],
+      favoredClasses: ["mage", "bard", "shadowblade"],
+      favoredRaces: ["umbral_oracle", "mirageborn", "sandstrider"],
     },
   },
 ];
@@ -168,6 +320,195 @@ const SIDE_QUESTS = [
       favoredRaces: ["void_walker", "phoenix_reborn"],
     },
   },
+  {
+    id: "sq_storm_capacitor",
+    name: "Storm Capacitor",
+    description:
+      "A skydock capacitor is overloaded. Discharge it safely before it detonates.",
+    objectives: [
+      {
+        id: "sq_storm_capacitor_obj",
+        description: "Stabilize the storm capacitor coils",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 40, items: [{ id: "storm_capacitor", quantity: 1 }] },
+    autoComplete: null,
+    tags: {
+      biome: "skydocks",
+      tones: ["urgent"],
+      favoredClasses: ["templar", "archer"],
+      favoredRaces: ["stormforged", "skybound"],
+    },
+  },
+  {
+    id: "sq_frost_lattice",
+    name: "Frost Lattice",
+    description:
+      "A frost lattice was stolen from the lab. Recover it before it melts in the sun.",
+    objectives: [
+      {
+        id: "sq_frost_lattice_obj",
+        description: "Recover the lattice shard",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 50, items: [{ id: "frost_lattice", quantity: 1 }] },
+    autoComplete: null,
+    tags: {
+      biome: "ruins",
+      tones: ["mysterious"],
+      favoredClasses: ["mage", "battlemage"],
+      favoredRaces: ["frostborne", "crystal_being"],
+    },
+  },
+  {
+    id: "sq_rune_cache",
+    name: "Rune Cache",
+    description:
+      "A collapsed tunnel hides an ancient rune cache. Retrieve it before tremors erase the path.",
+    objectives: [
+      {
+        id: "sq_rune_cache_obj",
+        description: "Secure the rune cache",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 55, items: [{ id: "rune_cache", quantity: 1 }] },
+    autoComplete: null,
+    tags: {
+      biome: "mountain",
+      tones: ["stoic"],
+      favoredClasses: ["shaman", "paladin"],
+      favoredRaces: ["rune_sentinel", "ironroot"],
+    },
+  },
+  {
+    id: "sq_bloomed_spores",
+    name: "Bloomed Spores",
+    description:
+      "The grove is overrun with aggressive spores. Gather samples for antidote research.",
+    objectives: [
+      {
+        id: "sq_bloomed_spores_obj",
+        description: "Collect five spore sacs",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 45, items: [{ id: "spore_sac", quantity: 2 }] },
+    autoComplete: null,
+    tags: {
+      biome: "wilds",
+      tones: ["mystical"],
+      favoredClasses: ["druid", "ranger"],
+      favoredRaces: ["verdant_shaper", "nature_spirit"],
+    },
+  },
+  {
+    id: "sq_venom_exchange",
+    name: "Venom Exchange",
+    description:
+      "A healer needs fresh venom to craft antidotes. Negotiate with the venom traders in the undercity.",
+    objectives: [
+      {
+        id: "sq_venom_exchange_obj",
+        description: "Secure a vial of prime venom",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 50, items: [{ id: "prime_venom", quantity: 1 }] },
+    autoComplete: null,
+    tags: {
+      biome: "undercity",
+      tones: ["tense"],
+      favoredClasses: ["rogue", "assassin"],
+      favoredRaces: ["venomtail", "gloomshade"],
+    },
+  },
+  {
+    id: "sq_auric_harmony",
+    name: "Auric Harmony",
+    description:
+      "A cathedral choir is beset by a dissonant relic. Guard the ritual until the harmony is restored.",
+    objectives: [
+      {
+        id: "sq_auric_harmony_obj",
+        description: "Protect the auric ritual",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 45, items: [{ id: "auric_chime", quantity: 1 }] },
+    autoComplete: null,
+    tags: {
+      biome: "city",
+      tones: ["triumphant"],
+      favoredClasses: ["priest", "paladin"],
+      favoredRaces: ["auric_seraph", "celestial_descendant"],
+    },
+  },
+  {
+    id: "sq_quake_relief",
+    name: "Quake Relief",
+    description:
+      "Aftershocks threaten a refugee tunnel. Reinforce the supports before the next quake.",
+    objectives: [
+      {
+        id: "sq_quake_relief_obj",
+        description: "Reinforce the tunnel supports",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 60, items: [{ id: "support_brace", quantity: 2 }] },
+    autoComplete: null,
+    tags: {
+      biome: "undercity",
+      tones: ["grim"],
+      favoredClasses: ["warrior", "berserker"],
+      favoredRaces: ["quakeborn", "ironroot"],
+    },
+  },
+  {
+    id: "sq_astral_waypoint",
+    name: "Astral Waypoint",
+    description:
+      "An astral waypoint flickers out at sea. Recalibrate it before navigation fails.",
+    objectives: [
+      {
+        id: "sq_astral_waypoint_obj",
+        description: "Recalibrate the astral waypoint",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 50, items: [{ id: "waypoint_fragment", quantity: 1 }] },
+    autoComplete: null,
+    tags: {
+      biome: "coast",
+      tones: ["mysterious"],
+      favoredClasses: ["battlemage", "summoner"],
+      favoredRaces: ["astral_nomad", "starseer"],
+    },
+  },
+  {
+    id: "sq_mirage_map",
+    name: "Mirage Map",
+    description:
+      "A shifting map reveals a lost caravan trail. Decode it before the sands move again.",
+    objectives: [
+      {
+        id: "sq_mirage_map_obj",
+        description: "Decode the mirage map",
+        completed: false,
+      },
+    ],
+    rewards: { xp: 40, items: [{ id: "mirage_map", quantity: 1 }] },
+    autoComplete: null,
+    tags: {
+      biome: "desert",
+      tones: ["ethereal"],
+      favoredClasses: ["bard", "ranger"],
+      favoredRaces: ["mirageborn", "sandstrider"],
+    },
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -186,7 +527,7 @@ export function mulberry32(seed) {
 
 export function hashSeed(seedInput) {
   if (seedInput === undefined || seedInput === null) {
-    return Date.now() >>> 0;
+    return SimBridge.now() >>> 0;
   }
   if (typeof seedInput === "number") {
     return seedInput >>> 0;

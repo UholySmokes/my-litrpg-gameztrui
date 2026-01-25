@@ -67,6 +67,8 @@ import {
   getEffectiveAttributes,
   getTitleBonuses,
 } from "../titles/TitleSystem.js";
+import { random, randomChoice } from "./DeterministicRandom.js";
+import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
 
 const DEBUG_LOGGING_ENABLED = false;
 
@@ -176,7 +178,7 @@ function takeDamage(state, amount) {
         );
         newHp = reviveHp;
         isDead = false;
-        playerUpdates.lastRebirthTime = Date.now();
+        playerUpdates.lastRebirthTime = SimBridge.now();
         combatLog.push(
           `🔥 RISE FROM ASHES! ${state.player.name} is reborn in flames with ${reviveHp} HP!`,
         );
@@ -463,9 +465,9 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   const confuseEffect = resolvedState.player.effects?.find(
     (effect) => effect.id === "confuse",
   );
-  if (confuseEffect && Math.random() < confuseEffect.magnitude) {
+  if (confuseEffect && random() < confuseEffect.magnitude) {
     // 50% chance to attack self or miss
-    if (Math.random() < 0.5) {
+    if (random() < 0.5) {
       // Attack self
       const selfDamage = Math.floor(damageResult.damage * 0.5);
       const combatLog = [
@@ -672,8 +674,9 @@ function enemyAttack(state, enemyIndex) {
   }
 
   // Simple AI: use random skill or basic attack
-  const availableSkills = (Array.isArray(enemy.skills) ? enemy.skills : []).filter(
-    (skillId) => {
+  const availableSkills = (
+    Array.isArray(enemy.skills) ? enemy.skills : []
+  ).filter((skillId) => {
     const skill = getEnemySkillById(skillId);
     if (!skill) return false;
     const cooldown = enemy.skillCooldowns?.[skillId] || 0;
@@ -681,14 +684,14 @@ function enemyAttack(state, enemyIndex) {
       cooldown <= 0 &&
       (!skill.manaCost || enemy.stats.mana.current >= skill.manaCost)
     );
-    },
-  );
+  });
 
   let skill = null;
-  if (availableSkills.length > 0 && Math.random() < 0.5) {
-    const skillId =
-      availableSkills[Math.floor(Math.random() * availableSkills.length)];
-    skill = getEnemySkillById(skillId);
+  if (availableSkills.length > 0 && random() < 0.5) {
+    const skillId = randomChoice(availableSkills);
+    if (skillId) {
+      skill = getEnemySkillById(skillId);
+    }
 
     // Update cooldowns and mana
     const newEnemies = [...state.combat.enemies];
@@ -719,7 +722,10 @@ function enemyAttack(state, enemyIndex) {
 
   // Calculate damage using config values
   const baseAttributeValue = state.config?.baseAttributeValue || 5;
-  const effectiveAttributes = getEffectiveAttributes(state.player, state.config);
+  const effectiveAttributes = getEffectiveAttributes(
+    state.player,
+    state.config,
+  );
   const defenseStat = getAttributeValue(effectiveAttributes, "strength");
   const playerDefense =
     (defenseStat || baseAttributeValue) +
@@ -814,8 +820,7 @@ export function processEnemyTurns(state) {
       .filter((e) => e.enemy.stats.hp.current > 0);
 
     if (aliveEnemies.length > 0 && !newState.player.berserkAttackedThisTurn) {
-      const target =
-        aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
+      const target = randomChoice(aliveEnemies);
       const berserkLog = [
         ...newState.combat.log,
         `🔴 BLOOD FRENZY! ${newState.player.name} loses control and attacks wildly!`,
@@ -846,7 +851,7 @@ export function processEnemyTurns(state) {
   // === MUTANT RANDOM DEBUFF CHECK ===
   if (
     (hasRaceTag(raceId, "RANDOM_DEBUFF") || raceId === "mutant") &&
-    Math.random() < 0.15
+    random() < 0.15
   ) {
     const debuff = getRandomDebuff();
     const currentEffects = newState.player.effects || [];
@@ -1105,11 +1110,14 @@ export function escapeCombat(state) {
   const baseAttributeValue = state.config?.baseAttributeValue || 5;
 
   // Escape chance based on agility using config values
-  const effectiveAttributes = getEffectiveAttributes(state.player, state.config);
+  const effectiveAttributes = getEffectiveAttributes(
+    state.player,
+    state.config,
+  );
   const agility =
     getAttributeValue(effectiveAttributes, "agility") || baseAttributeValue;
   const escapeChance = baseEscapeChance + agility * agilityEscapeBonus;
-  const escaped = Math.random() < escapeChance;
+  const escaped = random() < escapeChance;
 
   if (escaped) {
     return {
@@ -1270,7 +1278,7 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
   // Cap crit chance at 50% (soft cap)
   critChance = Math.min(critChance, 0.5);
 
-  if (Math.random() < critChance) {
+  if (random() < critChance) {
     isCritical = true;
     let critMultiplier = applyCritMultiplier(1.5, talentBypasses);
 
@@ -1357,7 +1365,7 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
 
     // Chance to Negate (Void Walker)
     if (hasRaceTag(defRaceId, "DMG_NEGATE_CHANCE")) {
-      if (Math.random() < 0.2) {
+      if (random() < 0.2) {
         finalDamage = 0;
         messages.push("Void Step: Damage Negated!");
       }
@@ -1394,7 +1402,12 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
   return result;
 }
 
-function calculateDamagePipeline(attacker, defender, skill = null, config = {}) {
+function calculateDamagePipeline(
+  attacker,
+  defender,
+  skill = null,
+  config = {},
+) {
   const log = [];
   const isMagic = skill ? skill.isMagic : false;
   const defenseReductionFactor = config?.defenseReductionFactor ?? 0.5;
@@ -1403,16 +1416,19 @@ function calculateDamagePipeline(attacker, defender, skill = null, config = {}) 
   const attackBonus = Number.isFinite(titleBonuses.attack)
     ? titleBonuses.attack
     : 0;
-  const magicBonus = Number.isFinite(titleBonuses.magic) ? titleBonuses.magic : 0;
+  const magicBonus = Number.isFinite(titleBonuses.magic)
+    ? titleBonuses.magic
+    : 0;
   const skillPower = Number.isFinite(titleBonuses.skillPower)
     ? titleBonuses.skillPower
     : 0;
 
-  const statsSource = attacker.attributes || attacker.stats || {
-    str: 10,
-    int: 10,
-    luck: 10,
-  };
+  const statsSource = attacker.attributes ||
+    attacker.stats || {
+      str: 10,
+      int: 10,
+      luck: 10,
+    };
   const stats =
     attacker && attacker.attributes
       ? getEffectiveAttributes(attacker, config)
@@ -1488,7 +1504,9 @@ function calculateDamagePipeline(attacker, defender, skill = null, config = {}) 
   }
   if (skill && skillPower) {
     afterAttackers = Math.floor(afterAttackers * (1 + skillPower));
-    attackerReasons.push(`Title: Skill Power +${Math.round(skillPower * 100)}%`);
+    attackerReasons.push(
+      `Title: Skill Power +${Math.round(skillPower * 100)}%`,
+    );
   }
 
   // Tag-based matchup bonuses (e.g., Holy vs Undead)

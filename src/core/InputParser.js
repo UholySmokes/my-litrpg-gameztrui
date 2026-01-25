@@ -81,8 +81,9 @@ function parseUseItem(input, gameState) {
   }
 
   // Check for direct item mentions
-  const inventory = gameState.player.inventory || [];
+  const inventory = gameState?.player?.inventory || [];
   for (const item of inventory) {
+    if (!item?.name) continue;
     const itemNameLower = item.name.toLowerCase();
     if (
       input.includes(itemNameLower) &&
@@ -262,11 +263,13 @@ function parseRest(input) {
  * Finds an item in inventory by name (fuzzy matching)
  */
 function findItemByName(itemName, gameState) {
-  const inventory = gameState.player.inventory || [];
+  const inventory = gameState?.player?.inventory || [];
+  if (!itemName || typeof itemName !== "string") return null;
   const searchTerm = itemName.toLowerCase().trim();
 
   // Exact match
   for (const item of inventory) {
+    if (!item?.name) continue;
     if (item.name.toLowerCase() === searchTerm) {
       return item;
     }
@@ -274,6 +277,7 @@ function findItemByName(itemName, gameState) {
 
   // Partial match
   for (const item of inventory) {
+    if (!item?.name) continue;
     const itemNameLower = item.name.toLowerCase();
     if (
       itemNameLower.includes(searchTerm) ||
@@ -294,6 +298,7 @@ function findItemByName(itemName, gameState) {
     if (searchTerm.includes(key)) {
       for (const variation of variations) {
         for (const item of inventory) {
+          if (!item?.name) continue;
           if (item.name.toLowerCase().includes(variation)) {
             return item;
           }

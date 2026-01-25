@@ -2,11 +2,18 @@ import { useReducer, useEffect, useRef } from "react";
 import { gameReducer } from "../core/gameReducer.js";
 import { initialGameState } from "../data/initialState.js";
 import { SystemEventObserver } from "../core/SystemEventObserver.js";
+import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
+import { serializeEvent } from "../simulation/logging/CombatLogSerializer.ts";
 
 export function useGameEngine() {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const prevStateRef = useRef(state);
   const isInitialRender = useRef(true);
+  const stateRef = useRef(state);
+
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   useEffect(() => {
     if (isInitialRender.current) {
@@ -18,6 +25,45 @@ export function useGameEngine() {
     SystemEventObserver.evaluate(prevStateRef.current, state, dispatch);
     prevStateRef.current = state;
   }, [state, dispatch]);
+
+  useEffect(() => {
+    const resolveEntityName = (entityId) => {
+      if (!entityId) return "Unknown";
+      const currentState = stateRef.current;
+      if (!currentState) return entityId;
+
+      if (entityId === "player") {
+        return currentState.player?.name || "Player";
+      }
+
+      if (entityId.startsWith("enemy_")) {
+        const [_, rawIndex] = entityId.split("_");
+        const index = Number.parseInt(rawIndex, 10);
+        const enemyName = currentState.combat?.enemies?.[index]?.name;
+        return (
+          enemyName || `Enemy ${Number.isFinite(index) ? index + 1 : entityId}`
+        );
+      }
+
+      return entityId;
+    };
+
+    const unsubscribe = SimBridge.subscribeToEvents((event) => {
+      const entry = serializeEvent(event, {
+        resolveName: resolveEntityName,
+      });
+      dispatch({
+        type: "APPEND_SIMULATION_LOG",
+        payload: { entries: [entry] },
+      });
+    });
+
+    return () => {
+      if (typeof unsubscribe === "function") {
+        unsubscribe();
+      }
+    };
+  }, [dispatch]);
 
   const addSystemMessage = (message, type = "system") => {
     dispatch({

@@ -1,3 +1,5 @@
+import { random, randomChoice } from "../../utils/DeterministicRandom.js";
+
 const SYLLABLES = {
   prefixes: [
     "Ae",
@@ -106,16 +108,16 @@ const TITLES = {
 
 export function generateName(type = "fantasy") {
   const pools = getNamePools(type);
-  const p = pools.prefixes[Math.floor(Math.random() * pools.prefixes.length)];
-  const m = pools.middles[Math.floor(Math.random() * pools.middles.length)];
-  const s = pools.suffixes[Math.floor(Math.random() * pools.suffixes.length)];
+  const p = randomChoice(pools.prefixes);
+  const m = randomChoice(pools.middles);
+  const s = randomChoice(pools.suffixes);
 
   // 30% chance for 2 syllables, 70% for 3
-  return Math.random() > 0.3 ? `${p}${m}${s}` : `${p}${s}`;
+  return random() > 0.3 ? `${p}${m}${s}` : `${p}${s}`;
 }
 
 export function generateTitle() {
-  const p = TITLES.prefixes[Math.floor(Math.random() * TITLES.prefixes.length)];
-  const s = TITLES.suffixes[Math.floor(Math.random() * TITLES.suffixes.length)];
+  const p = randomChoice(TITLES.prefixes);
+  const s = randomChoice(TITLES.suffixes);
   return `${p} ${s}`;
 }

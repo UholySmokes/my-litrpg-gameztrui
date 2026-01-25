@@ -4,7 +4,7 @@
 // ============================================================================
 
 import { hashSeed, mulberry32 } from "./QuestCatalog";
-import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
 const OPENING_SCENES = [
   {

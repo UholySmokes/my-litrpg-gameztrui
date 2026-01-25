@@ -5,7 +5,7 @@
  * Usage: Replace Math.random() with random() from this module
  */
 
-import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
 /**
  * Get random number (0-1) - uses simulation bridge if active

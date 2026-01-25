@@ -3,7 +3,7 @@
 // Curated quest data + deterministic selection helpers
 // ============================================================================
 
-import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
 const MAIN_QUESTS = [
   {

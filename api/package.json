@@ -2,7 +2,6 @@
   "name": "void-verse-api",
   "private": true,
   "version": "0.0.0",
-  "type": "commonjs",
   "dependencies": {
     "@azure/identity": "^4.0.0"
   }

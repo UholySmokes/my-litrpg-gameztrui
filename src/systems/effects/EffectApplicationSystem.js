@@ -267,5 +267,10 @@ class EffectApplicationSystem {
   }
 }
 
-// Export singleton instance
-export const effectApplicationSystem = new EffectApplicationSystem();
+// Factory function to create effect application system instance
+export function createEffectApplicationSystem() {
+  return new EffectApplicationSystem();
+}
+
+// Default singleton for backward compatibility
+export const effectApplicationSystem = createEffectApplicationSystem();

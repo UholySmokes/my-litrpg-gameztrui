@@ -17,4 +17,5 @@ export function getClasses() {
   return DataRegistry.getClasses();
 }
 
-export const classes = DataRegistry.getClasses();
+// Lazy evaluation to avoid top-level circular dependency
+export const classes = getClasses();

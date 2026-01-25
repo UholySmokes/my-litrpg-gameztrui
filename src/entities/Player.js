@@ -16,10 +16,10 @@ import {
   getRandomTalents as getRandomTalentsFromRegistry,
 } from "../systems/skills/TalentDefinitions.js";
 
-// Re-export for backward compatibility
-export const races = racesFromRegistry;
-export const classes = classesFromRegistry;
-export const exRankTalents = talentsFromRegistry;
+// Re-export for backward compatibility with lazy evaluation
+export const races = () => racesFromRegistry;
+export const classes = () => classesFromRegistry;
+export const exRankTalents = () => talentsFromRegistry;
 
 export function getRaceById(id) {
   return getRaceByIdFromRegistry(id);

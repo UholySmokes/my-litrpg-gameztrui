@@ -2,7 +2,7 @@
 // GACHA DATABASE - Pools, rates, and rarity tiers
 // =================================================================
 
-import { getItemData } from "../entities/ItemRegistry.js";
+import { DataRegistry } from "./DataRegistry.js";
 import { random, randomChoice } from "../utils/DeterministicRandom.js";
 
 export const gachaPools = {

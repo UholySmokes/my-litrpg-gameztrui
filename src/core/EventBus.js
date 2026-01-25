@@ -1,4 +1,4 @@
-import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
 const listeners = new Map();
 

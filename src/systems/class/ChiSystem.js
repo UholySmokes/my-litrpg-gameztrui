@@ -8,7 +8,7 @@ import {
   ensureAttributeShape,
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
-import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 /**
  * CHI CONFIGURATION

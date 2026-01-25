@@ -2,7 +2,7 @@
 import { MAIN_QUESTS, SIDE_QUESTS } from "../../data/QuestCatalog.js";
 import { DataRegistry } from "../../data/DataRegistry.js";
 import { randomInt } from "../../utils/DeterministicRandom.js";
-import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 export class QuestManager {
   static generateInitialQuests(player) {

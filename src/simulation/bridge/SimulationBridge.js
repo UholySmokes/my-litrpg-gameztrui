@@ -9,7 +9,6 @@
  * Design principle: Don't duplicate logic, wrap and instrument existing systems
  */
 
-import { executeAction } from "../../core/ActionDispatcher.js";
 import { SimBridge } from "./SimulationContext.js";
 export { SimBridge } from "./SimulationContext.js";
 
@@ -98,14 +97,15 @@ export async function replaySimulation(
   SimBridge.initialize(replayData.seed);
 
   let state = initialState;
-  const executeCommand =
-    typeof execute === "function"
-      ? execute
-      : (currentState, command) => {
-          const action = command.payload ?? { type: command.type, ...command };
-          const result = executeAction(currentState, action, {});
-          return result;
-        };
+  let executeCommand = execute;
+
+  if (typeof executeCommand !== "function") {
+    const { executeAction } = await import("../../core/ActionDispatcher.js");
+    executeCommand = (currentState, command) => {
+      const action = command.payload ?? { type: command.type, ...command };
+      return executeAction(currentState, action, {});
+    };
+  }
 
   // Replay commands deterministically
   for (const command of replayData.commands) {

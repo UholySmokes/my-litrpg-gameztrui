@@ -11,7 +11,7 @@ import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
  * EFFECT TAG DEFINITIONS
  * Standardized tags for the combat system to interpret.
  */
-const EFFECT_TAGS = {
+export const EFFECT_TAGS = {
   // Defensive
   IMMUNE_BLEED: "IMMUNE_BLEED",
   IMMUNE_POISON: "IMMUNE_POISON",

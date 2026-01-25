@@ -1514,6 +1514,10 @@ export const races = [
 // HELPER FUNCTIONS
 // ============================================
 
+export function getRaceById(id) {
+  return races.find((race) => race.id === id) || null;
+}
+
 export function getPassiveAbility(raceId) {
   return RACE_TRAITS[raceId]?.passive || null;
 }

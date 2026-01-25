@@ -3,7 +3,7 @@
 // Handles scaling logic for race bonuses and passive abilities
 // =================================================================
 
-import { getRaceById } from "./RaceRegistry.js";
+import { getRaceById } from "../../data/registries/RaceDataRegistry.js";
 import {
   createAttributeBaseline,
   ensureAttributeShape,

@@ -4,7 +4,7 @@
 // =================================================================
 
 import { emit } from "../../core/EventBus.js";
-import { hasRaceTag } from "../race/RaceRegistry.js";
+import { hasRaceTag } from "../../data/registries/RaceDataRegistry.js";
 import {
   ensureAttributeShape,
   getAttributeValue,

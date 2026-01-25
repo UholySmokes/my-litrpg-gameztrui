@@ -17,7 +17,7 @@ import {
   getRandomDebuff,
   rollGambleCast,
   getRandomElementAbsorption,
-} from "../race/RaceRegistry.js";
+} from "../../data/registries/RaceDataRegistry.js";
 import {
   hasEffectTag,
   getEffectTagMagnitude,

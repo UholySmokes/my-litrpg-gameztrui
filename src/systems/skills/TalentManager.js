@@ -118,9 +118,14 @@ function buildTalentRuleBreaker(id, entry) {
 }
 
 // Initialize rule-breakers from registry at module load
-for (const [id, entry] of REGISTRY_MAP.entries()) {
-  buildTalentRuleBreaker(id, entry);
+function initializeTalentRules() {
+  for (const [id, entry] of REGISTRY_MAP.entries()) {
+    buildTalentRuleBreaker(id, entry);
+  }
 }
+
+// Initialize rules when module is first imported
+initializeTalentRules();
 
 function getTalentRule(id) {
   return TALENT_RULES[id] || null;

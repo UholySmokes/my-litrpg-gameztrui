@@ -6,7 +6,7 @@ import {
   calculateEnemyDrops,
 } from "../../entities/Enemy.js";
 import { getSkillById } from "../skills/SkillRegistry.js";
-import { calculateGainedXP } from "../leveling/LevelingSystem.js";
+import { calculateGainedXP } from "../../core/xpCurve.js";
 import {
   hasRaceTag,
   EFFECT_TAGS as RACE_EFFECT_TAGS,

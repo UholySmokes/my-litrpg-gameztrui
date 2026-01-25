@@ -1,4 +1,4 @@
-import { xpForNextLevel } from "./LevelingSystem.js";
+import { xpForNextLevel } from "../../core/xpCurve.js";
 import { applyRaceLevelUpGrowth } from "../race/RaceSystem.js";
 import {
   calculateMaxHp,

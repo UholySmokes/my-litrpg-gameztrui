@@ -21,7 +21,7 @@ import {
   toCanonicalAttributeKey,
 } from "../constants/attributes.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
-import { xpForNextLevel } from "../systems/leveling/LevelingSystem.js";
+import { xpForNextLevel } from "../core/xpCurve.js";
 
 const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;

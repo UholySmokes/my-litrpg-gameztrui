@@ -5,7 +5,7 @@ import {
   calculateGachaResult,
   getAdjustedRarityRates,
 } from "../data/gachaData.js";
-import { getTitleBonuses } from "../systems/titles/TitleSystem.js";
+import { getTitleBonuses } from "../core/titleLogic.js";
 
 const rarityColors = {
   common: "#9d9d9d",
@@ -126,7 +126,9 @@ export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
                     className="gacha-modal__rate"
                     style={{ "--rarity-color": rarityColors[rarity] }}
                   >
-                    <span>{rarity.charAt(0).toUpperCase() + rarity.slice(1)}</span>
+                    <span>
+                      {rarity.charAt(0).toUpperCase() + rarity.slice(1)}
+                    </span>
                     <span>{(rate * 100).toFixed(1)}%</span>
                   </div>
                 ))}

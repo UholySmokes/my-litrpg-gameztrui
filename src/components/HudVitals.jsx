@@ -4,11 +4,13 @@ import {
   calculateMaxHp,
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
-import { getEffectiveAttributes } from "../systems/titles/TitleSystem.js";
+import { getEffectiveAttributes } from "../core/titleLogic.js";
 
 export default function HudVitals({ player, config }) {
   const resolvedConfig =
-    config && typeof config === "object" && !Array.isArray(config) ? config : {};
+    config && typeof config === "object" && !Array.isArray(config)
+      ? config
+      : {};
   const baseAttributeValue = Number.isFinite(resolvedConfig.baseAttributeValue)
     ? resolvedConfig.baseAttributeValue
     : 5;

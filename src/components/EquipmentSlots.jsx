@@ -1,5 +1,5 @@
 import React from "react";
-import { getTitleById } from "../systems/titles/TitleSystem.js";
+import { getTitleById } from "../core/titleLogic.js";
 
 const styles = {
   container: {

@@ -9,7 +9,7 @@ import {
   canPurchaseTitle,
   getTitleById,
   getTitleBonuses,
-} from "../systems/titles/TitleSystem.js";
+} from "./titleLogic.js";
 import {
   playerAttack,
   startCombat,

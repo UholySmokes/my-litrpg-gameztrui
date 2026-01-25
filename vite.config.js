@@ -2,7 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-  base: "/", // ✅ custom domain root (void-verse.com)
+  // Basis-Pfad für deine Root-Domain (void-verse.com)
+  base: "/",
   plugins: [
     react({
       include: ["**/*.jsx", "**/*.js"],
@@ -12,7 +13,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          const normalizedId = id.split("\\").join("/");
+          // Pfadtrennzeichen auf Windows/Linux vereinheitlichen
+          const normalizedId = id.replace(/\\/g, "/");
 
           if (normalizedId.includes("/node_modules/")) {
             if (

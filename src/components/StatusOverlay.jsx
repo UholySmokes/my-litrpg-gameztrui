@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ATTRIBUTE_METADATA } from "../constants/attributes.js";
 import {
   ensureAttributeShape,
@@ -7,6 +7,9 @@ import {
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
 import { getEffectiveAttributes, getTitleById } from "../core/titleLogic.js";
+import { DataRegistry } from "../data/DataRegistry.js";
+import { canEvolveSkill } from "../systems/skills/SkillEvolutionSystem.js";
+import { canFuseSkills } from "../systems/skills/SkillFusionSystem.js";
 
 export default function StatusOverlay({
   player,
@@ -15,7 +18,13 @@ export default function StatusOverlay({
   onClose,
   onAllocateAttribute,
   onDeallocateAttribute,
+  onEvolveSkill,
+  onFuseSkills,
+  onEvolveClass,
 }) {
+  const [fusionSkillA, setFusionSkillA] = useState("");
+  const [fusionSkillB, setFusionSkillB] = useState("");
+
   if (!isOpen || !player) return null;
 
   const resolvedConfig =
@@ -58,6 +67,16 @@ export default function StatusOverlay({
   const equipment = player.equipment || {};
   const freeAttributePoints = player.attributes?.freePoints ?? 0;
   const attributeInvestments = player.attributeInvestments || {};
+  const evolvableSkills = abilityList.filter((skill) => canEvolveSkill(skill));
+  const fusionCandidates = abilityList.filter((skill) => skill?.id);
+  const selectedSkillA = fusionCandidates.find(
+    (skill) => skill.id === fusionSkillA,
+  );
+  const selectedSkillB = fusionCandidates.find(
+    (skill) => skill.id === fusionSkillB,
+  );
+  const canFuseSelection = canFuseSkills(selectedSkillA, selectedSkillB);
+  const professionEntries = Object.entries(player.professions || {});
 
   const hpMaxCanonical = calculateMaxHp(effectiveAttributes);
   const manaMaxCanonical = calculateMaxMana(effectiveAttributes);
@@ -90,6 +109,14 @@ export default function StatusOverlay({
     typeof player.class === "string"
       ? player.class
       : player.class?.name || player.class?.id || "";
+  const classId = player.class?.id || player.class;
+  const classData = classId ? DataRegistry.getClassById(classId) : null;
+  const nextClass = classData?.upgradePath
+    ? DataRegistry.getClassById(classData.upgradePath)
+    : null;
+  const canEvolveClass =
+    !!nextClass &&
+    (player.level || 1) >= (resolvedConfig.classEvolutionLevel ?? 10);
 
   const derivedCombatStats = [
     {
@@ -420,6 +447,160 @@ export default function StatusOverlay({
                         {ability.description}
                       </div>
                     )}
+                  </div>
+                ))
+              )}
+            </div>
+          </section>
+
+          <section>
+            <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+              Class Evolution
+            </h3>
+            <div
+              style={{
+                border: "1px solid rgba(0, 243, 255, 0.2)",
+                padding: "0.75rem",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span>Current: {classLabel || "Unknown"}</span>
+                <span>
+                  Next: {nextClass?.name || nextClass?.id || "None"}
+                </span>
+              </div>
+              <div style={{ color: "var(--text-dim)", marginTop: "0.25rem" }}>
+                Requires Level {resolvedConfig.classEvolutionLevel ?? 10}
+              </div>
+              <button
+                className="holo-button"
+                style={{ marginTop: "0.5rem" }}
+                disabled={!canEvolveClass || typeof onEvolveClass !== "function"}
+                onClick={() => onEvolveClass?.()}
+              >
+                Evolve Class
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+              Skill Evolution
+            </h3>
+            <div
+              style={{
+                border: "1px solid rgba(0, 243, 255, 0.2)",
+                padding: "0.75rem",
+                maxHeight: "200px",
+                overflowY: "auto",
+              }}
+            >
+              {evolvableSkills.length === 0 ? (
+                <div style={{ color: "var(--text-dim)" }}>
+                  No skills available to evolve.
+                </div>
+              ) : (
+                evolvableSkills.map((skill) => (
+                  <div
+                    key={skill.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "0.35rem 0",
+                      borderBottom: "1px solid rgba(0, 243, 255, 0.1)",
+                    }}
+                  >
+                    <span>
+                      {skill.name} (Lvl {skill.level || 1})
+                    </span>
+                    <button
+                      className="holo-button"
+                      style={{ fontSize: "0.75rem" }}
+                      disabled={typeof onEvolveSkill !== "function"}
+                      onClick={() => onEvolveSkill?.(skill.id)}
+                    >
+                      Evolve
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </section>
+
+          <section>
+            <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+              Skill Fusion
+            </h3>
+            <div
+              style={{
+                border: "1px solid rgba(0, 243, 255, 0.2)",
+                padding: "0.75rem",
+              }}
+            >
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <select
+                  value={fusionSkillA}
+                  onChange={(event) => setFusionSkillA(event.target.value)}
+                  style={{ flex: 1 }}
+                >
+                  <option value="">Select Skill A</option>
+                  {fusionCandidates.map((skill) => (
+                    <option key={skill.id} value={skill.id}>
+                      {skill.name} ({skill.type})
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={fusionSkillB}
+                  onChange={(event) => setFusionSkillB(event.target.value)}
+                  style={{ flex: 1 }}
+                >
+                  <option value="">Select Skill B</option>
+                  {fusionCandidates.map((skill) => (
+                    <option key={skill.id} value={skill.id}>
+                      {skill.name} ({skill.type})
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                className="holo-button"
+                style={{ marginTop: "0.5rem" }}
+                disabled={!canFuseSelection || typeof onFuseSkills !== "function"}
+                onClick={() => onFuseSkills?.(fusionSkillA, fusionSkillB)}
+              >
+                Fuse Skills
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+              Professions
+            </h3>
+            <div
+              style={{
+                border: "1px solid rgba(0, 243, 255, 0.2)",
+                padding: "0.75rem",
+              }}
+            >
+              {professionEntries.length === 0 ? (
+                <div style={{ color: "var(--text-dim)" }}>
+                  No professions learned.
+                </div>
+              ) : (
+                professionEntries.map(([id, data]) => (
+                  <div
+                    key={id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      padding: "0.25rem 0",
+                    }}
+                  >
+                    <span>{id}</span>
+                    <span>XP {data?.xp ?? 0}</span>
                   </div>
                 ))
               )}

@@ -42,6 +42,9 @@
       "<rootDir>/tests/skillEffects.test.js",
       "<rootDir>/tests/endToEndEffects.test.js",
       "<rootDir>/tests/magnitudeCapsFusion.test.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/backups/"
     ]
   }
 }

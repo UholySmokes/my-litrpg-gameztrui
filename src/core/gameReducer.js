@@ -17,6 +17,14 @@ import {
   processEnemyTurns,
 } from "../systems/combat/CombatSystem.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
+import {
+  canFuseSkills,
+  fuseSkills,
+} from "../systems/skills/SkillFusionSystem.js";
+import {
+  canEvolveSkill,
+  evolveSkill,
+} from "../systems/skills/SkillEvolutionSystem.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -552,6 +560,112 @@ const gameReducer = (state, action) => {
         player: {
           ...state.player,
           inventory: nextInventory,
+        },
+      };
+    }
+
+    case "FUSE_SKILLS": {
+      const skillAId = action.payload?.skillAId;
+      const skillBId = action.payload?.skillBId;
+      if (!skillAId || !skillBId || skillAId === skillBId) return state;
+      const player = state.player || {};
+      const abilities = Array.isArray(player.abilities)
+        ? [...player.abilities]
+        : [];
+      const activeSkills = Array.isArray(player.activeSkills)
+        ? [...player.activeSkills]
+        : [];
+      const passiveSkills = Array.isArray(player.passiveSkills)
+        ? [...player.passiveSkills]
+        : [];
+      const allSkills = [...abilities, ...activeSkills, ...passiveSkills];
+      const skillA = allSkills.find((skill) => skill?.id === skillAId);
+      const skillB = allSkills.find((skill) => skill?.id === skillBId);
+      if (!canFuseSkills(skillA, skillB)) return state;
+      const existingIds = new Set(allSkills.map((skill) => skill?.id));
+      const fused = fuseSkills(skillA, skillB, { existingIds });
+      if (!fused) return state;
+
+      const removeIds = new Set([skillAId, skillBId]);
+      const nextAbilities = abilities.filter((skill) => !removeIds.has(skill.id));
+      const nextActive = activeSkills.filter((skill) => !removeIds.has(skill.id));
+      const nextPassive = passiveSkills.filter((skill) => !removeIds.has(skill.id));
+
+      if (fused.type === "passive") {
+        nextPassive.push(fused);
+      } else {
+        nextActive.push(fused);
+      }
+      nextAbilities.push(fused);
+
+      return {
+        ...state,
+        player: {
+          ...player,
+          abilities: nextAbilities,
+          activeSkills: nextActive,
+          passiveSkills: nextPassive,
+        },
+      };
+    }
+
+    case "EVOLVE_SKILL": {
+      const skillId = action.payload?.skillId;
+      if (!skillId) return state;
+      const player = state.player || {};
+      const abilities = Array.isArray(player.abilities)
+        ? [...player.abilities]
+        : [];
+      const activeSkills = Array.isArray(player.activeSkills)
+        ? [...player.activeSkills]
+        : [];
+      const passiveSkills = Array.isArray(player.passiveSkills)
+        ? [...player.passiveSkills]
+        : [];
+      const allSkills = [...abilities, ...activeSkills, ...passiveSkills];
+      const skill = allSkills.find((entry) => entry?.id === skillId);
+      if (!canEvolveSkill(skill)) return state;
+      const existingIds = new Set(allSkills.map((entry) => entry?.id));
+      const evolved = evolveSkill(skill, { existingIds });
+      if (!evolved) return state;
+
+      const nextAbilities = abilities.filter((entry) => entry.id !== skillId);
+      const nextActive = activeSkills.filter((entry) => entry.id !== skillId);
+      const nextPassive = passiveSkills.filter((entry) => entry.id !== skillId);
+
+      if (evolved.type === "passive") {
+        nextPassive.push(evolved);
+      } else {
+        nextActive.push(evolved);
+      }
+      nextAbilities.push(evolved);
+
+      return {
+        ...state,
+        player: {
+          ...player,
+          abilities: nextAbilities,
+          activeSkills: nextActive,
+          passiveSkills: nextPassive,
+        },
+      };
+    }
+
+    case "EVOLVE_CLASS": {
+      const player = state.player || {};
+      const classId = player.class?.id || player.class;
+      if (!classId) return state;
+      const classData = DataRegistry.getClassById(classId);
+      if (!classData?.upgradePath) return state;
+      const requiredLevel = state.config?.classEvolutionLevel ?? 10;
+      if ((player.level || 1) < requiredLevel) return state;
+      const nextClass = DataRegistry.getClassById(classData.upgradePath);
+      if (!nextClass) return state;
+      return {
+        ...state,
+        player: {
+          ...player,
+          class: nextClass,
         },
       };
     }

@@ -37,6 +37,7 @@ import { effectApplicationSystem } from "../effects/EffectApplicationSystem.js";
 import { consumeMana } from "../magic/ManaSystem.js";
 import { calculateManaCost } from "../magic/ManaBalance.js";
 import { emit } from "../../core/EventBus.js";
+import { getSetBonuses } from "../items/SetBonusSystem.js";
 import {
   gainRage,
   processRageDecay,
@@ -71,6 +72,28 @@ import { random, randomChoice } from "./DeterministicRandom.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 const DEBUG_LOGGING_ENABLED = false;
+
+const getLaneDistance = (combatState, enemyIndex) => {
+  const playerLane = combatState?.lanes?.player;
+  const enemyLane = combatState?.lanes?.enemies?.[enemyIndex];
+  if (!Number.isFinite(playerLane) || !Number.isFinite(enemyLane)) {
+    return 0;
+  }
+  return Math.abs(playerLane - enemyLane);
+};
+
+const applyLaneModifier = (damageResult, laneDistance) => {
+  if (!damageResult || laneDistance <= 0) return damageResult;
+  const multiplier = laneDistance === 1 ? 0.85 : 0.7;
+  const nextDamage = Math.max(1, Math.floor(damageResult.damage * multiplier));
+  const messages = Array.isArray(damageResult.messages)
+    ? [...damageResult.messages, `Lane gap ${laneDistance}: x${multiplier}`]
+    : [`Lane gap ${laneDistance}: x${multiplier}`];
+  return { ...damageResult, damage: nextDamage, messages };
+};
+
+const toNumberSafe = (value, fallback = 0) =>
+  Number.isFinite(value) ? value : fallback;
 
 /**
  * Applies damage to the player. If HP drops to 0 or below, checks for death prevention mechanics.
@@ -241,7 +264,11 @@ export function startCombat(state, enemyIds) {
 
   const enemies = enemyIds
     .map((id) => createEnemy(id))
-    .filter((e) => e !== null);
+    .filter((e) => e !== null)
+    .map((enemy, index) => ({
+      ...enemy,
+      lane: index % 3,
+    }));
 
   if (enemies.length === 0) {
     return state;
@@ -303,6 +330,10 @@ export function startCombat(state, enemyIds) {
       enemies: enemies,
       skillCooldowns: {},
       log: combatLog,
+      lanes: {
+        player: 1,
+        enemies: enemies.map((enemy) => enemy.lane ?? 1),
+      },
     },
   };
 }
@@ -453,6 +484,9 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       state.config,
     );
   }
+
+  const laneDistance = getLaneDistance(state.combat, enemyIndex);
+  damageResult = applyLaneModifier(damageResult, laneDistance);
 
   // === CHECK FOR CONFUSE EFFECT ===
   const resolvedState =
@@ -731,12 +765,14 @@ function enemyAttack(state, enemyIndex) {
     (defenseStat || baseAttributeValue) +
     (state.player.equipment?.armor?.stats?.defense || 0);
   const playerStats = { defense: playerDefense };
-  const damageResult = calculateDamage(
+  let damageResult = calculateDamage(
     enemy.stats,
     playerStats,
     skill,
     state.config,
   );
+  const laneDistance = getLaneDistance(state.combat, enemyIndex);
+  damageResult = applyLaneModifier(damageResult, laneDistance);
 
   const critText = damageResult.isCritical ? " (CRITICAL!)" : "";
   const skillText = skill ? ` using ${skill.name}` : "";
@@ -1183,6 +1219,24 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
     }
   }
 
+  const setBonuses = isPlayer ? getSetBonuses(attacker.equipment || {}) : {};
+  const physicalBonus = toNumberSafe(setBonuses.physicalDamage, 0);
+  const spellBonus = toNumberSafe(setBonuses.spellDamage, 0);
+  const elementalBonus = toNumberSafe(setBonuses.elementalDamage, 0);
+
+  if (!isMagic && physicalBonus) {
+    damage = Math.floor(damage * (1 + physicalBonus));
+    messages.push(`Set Bonus: +${Math.round(physicalBonus * 100)}% Physical`);
+  }
+  if (isMagic && spellBonus) {
+    damage = Math.floor(damage * (1 + spellBonus));
+    messages.push(`Set Bonus: +${Math.round(spellBonus * 100)}% Spell`);
+  }
+  if (skill?.element && elementalBonus) {
+    damage = Math.floor(damage * (1 + elementalBonus));
+    messages.push(`Set Bonus: +${Math.round(elementalBonus * 100)}% Elemental`);
+  }
+
   if (skill) {
     messages.push(`${attacker.name} uses ${skill.name}!`);
   } else {
@@ -1253,6 +1307,11 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
   if (attacker.isStealthed) {
     damage = Math.floor(damage * 2.0);
     messages.push(`🗡️ AMBUSH! Damage x2.0`);
+    const backstabBonus = toNumberSafe(setBonuses.backstabDamage, 0);
+    if (backstabBonus) {
+      damage = Math.floor(damage * (1 + backstabBonus));
+      messages.push(`Set Bonus: Backstab +${Math.round(backstabBonus * 100)}%`);
+    }
   }
 
   // --- 4. Critical Hit Calculation ---
@@ -1260,6 +1319,7 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
   let critChance = luck * 0.01;
   const talentBypasses = resolveBypasses(attacker.talents || []);
   critChance = applyCritOverride(critChance, talentBypasses);
+  critChance += toNumberSafe(setBonuses.critChance, 0);
 
   // Racial Crit Bonus
   if (
@@ -1281,6 +1341,7 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
   if (random() < critChance) {
     isCritical = true;
     let critMultiplier = applyCritMultiplier(1.5, talentBypasses);
+    critMultiplier += toNumberSafe(setBonuses.critDamage, 0);
 
     // Racial Crit Damage Bonus
     if (
@@ -1797,6 +1858,9 @@ export function canApplyStatusEffect(effectId, target) {
       "poison",
       "bleed",
       "burn",
+      "frostbite",
+      "shock",
+      "sunder",
       "fear",
       "charm",
       "silence",

@@ -29,6 +29,7 @@ export default function CombatUI({
       ? player.activeSkills
       : player?.skills?.active ||
         (player?.abilities || []).filter((ability) => ability.type === "active");
+  const playerLane = combat?.lanes?.player;
   const toPercent = (current, max) => {
     if (!Number.isFinite(current) || !Number.isFinite(max) || max <= 0) {
       return 0;
@@ -50,6 +51,9 @@ export default function CombatUI({
         }}
       >
         [COMBAT]
+      </div>
+      <div style={{ color: "var(--text-dim)", marginBottom: "0.5rem" }}>
+        Position: Lane {Number.isFinite(playerLane) ? playerLane : 1}
       </div>
 
       {/* Class Resource Bar */}
@@ -101,6 +105,12 @@ export default function CombatUI({
                 <span style={{ color: "var(--text-main)" }}>
                   HP: {enemy.stats.hp.current}/{enemy.stats.hp.max}
                 </span>
+              </div>
+              <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>
+                Lane:{" "}
+                {Number.isFinite(combat?.lanes?.enemies?.[index])
+                  ? combat.lanes.enemies[index]
+                  : enemy.lane ?? 1}
               </div>
               <div
                 className="health-bar-container"

@@ -76,6 +76,7 @@ const knightActiveSkills = [
     level: 1,
     manaCost: 12,
     cooldown: 4,
+    effects: [{ id: "bleed", duration: 3, target: "enemy" }],
   },
   {
     id: "knight_retribution",
@@ -567,6 +568,7 @@ const mageActiveSkills = [
     level: 1,
     manaCost: 15,
     cooldown: 2,
+    effects: [{ id: "burn", duration: 3, target: "enemy" }],
   },
   {
     id: "mage_ice_bolt",
@@ -577,7 +579,10 @@ const mageActiveSkills = [
     level: 1,
     manaCost: 12,
     cooldown: 2,
-    effects: [{ id: "slow", duration: 2, target: "enemy" }],
+    effects: [
+      { id: "slow", duration: 2, target: "enemy" },
+      { id: "frostbite", duration: 3, target: "enemy" },
+    ],
   },
   {
     id: "mage_lightning",
@@ -588,6 +593,7 @@ const mageActiveSkills = [
     level: 1,
     manaCost: 20,
     cooldown: 4,
+    effects: [{ id: "shock", duration: 2, target: "enemy" }],
   },
   {
     id: "mage_teleport",

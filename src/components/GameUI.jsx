@@ -97,6 +97,7 @@ export default function GameUI({ user }) {
     setState,
     evaluateQuestProgress,
     dispatchSystemEvent,
+    dispatch,
   } = useGameEngine();
 
   const narrativeSummary = state?.narrative?.summary;
@@ -169,6 +170,24 @@ export default function GameUI({ user }) {
     evaluateQuestProgress,
     dispatchSystemEvent,
   );
+
+  const handleEvolveSkill = (skillId) => {
+    dispatch({
+      type: "EVOLVE_SKILL",
+      payload: { skillId },
+    });
+  };
+
+  const handleFuseSkills = (skillAId, skillBId) => {
+    dispatch({
+      type: "FUSE_SKILLS",
+      payload: { skillAId, skillBId },
+    });
+  };
+
+  const handleEvolveClass = () => {
+    dispatch({ type: "EVOLVE_CLASS" });
+  };
 
   // Event handlers - ALL hooks must be called before any conditional returns
   const handleCharacterCreationComplete = async (characterData) => {
@@ -917,6 +936,9 @@ export default function GameUI({ user }) {
             onClose={() => setShowStatusOverlay(false)}
             onAllocateAttribute={handleAllocateAttributePoint}
             onDeallocateAttribute={handleDeallocateAttributePoint}
+            onEvolveSkill={handleEvolveSkill}
+            onFuseSkills={handleFuseSkills}
+            onEvolveClass={handleEvolveClass}
           />
         )}
 

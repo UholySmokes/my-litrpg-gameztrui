@@ -1,1 +1,19 @@
-{"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
+{
+  "headers": [
+    {
+      "source": "/src/(.*)\\.jsx",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/javascript; charset=UTF-8"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,5 +1,34 @@
 import { EventBus } from "../events/EventBus";
-import { SeededPRNG } from "../kernel/SimulationKernel";
+
+class SeededPRNG {
+  constructor(seed) {
+    this.seed = seed;
+  }
+
+  next() {
+    this.seed ^= this.seed << 13;
+    this.seed ^= this.seed >> 17;
+    this.seed ^= this.seed << 5;
+    return (this.seed >>> 0) / 0xffffffff;
+  }
+
+  randomInt(min, max) {
+    return Math.floor(this.next() * (max - min + 1)) + min;
+  }
+
+  randomFloat(min, max) {
+    return this.next() * (max - min) + min;
+  }
+
+  randomBool(probability = 0.5) {
+    return this.next() < probability;
+  }
+
+  randomChoice(array) {
+    if (!array || array.length === 0) return undefined;
+    return array[this.randomInt(0, array.length - 1)];
+  }
+}
 
 /**
  * Global simulation context that existing systems can access

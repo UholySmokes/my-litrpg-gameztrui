@@ -24,10 +24,10 @@
 - [x] Versioned AI outputs (content hash / seed)
 
 ### P3: Depth & Scale (later)
-- [ ] Universal skill fusion system
-- [ ] Skill evolution trees UI
-- [ ] Class evolution paths
-- [ ] Equipment crafting & professions
-- [ ] Legendary item proc & set bonuses
-- [ ] Advanced combat status effects
-- [ ] Tactical positioning / lanes
+- [x] Universal skill fusion system
+- [x] Skill evolution trees UI
+- [x] Class evolution paths
+- [x] Equipment crafting & professions
+- [x] Legendary item proc & set bonuses
+- [x] Advanced combat status effects
+- [x] Tactical positioning / lanes

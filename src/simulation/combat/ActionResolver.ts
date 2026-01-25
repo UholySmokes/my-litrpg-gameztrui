@@ -20,11 +20,11 @@ import {
 } from "../types/core";
 import { spendActionPoints } from "./ActionScheduler";
 import { applyEffect as applySimulationEffect } from "../effects/EffectEngine";
-import { getSkillById } from "../../systems/skills/SkillRegistry";
+import { getSkillById } from "../../systems/skills/SkillRegistry.js";
 import {
   STACKING_RULES,
   getEffectDefinition,
-} from "../../systems/effects/EffectRegistry";
+} from "../../systems/effects/EffectRegistry.js";
 
 export type ActionResolutionContext = {
   tick: Tick;

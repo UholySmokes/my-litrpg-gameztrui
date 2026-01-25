@@ -4,6 +4,7 @@ import {
   toCanonicalAttributeKey,
 } from "../constants/attributes.js";
 import { titleDatabase } from "../data/titleData.js";
+import { getSetBonuses } from "../systems/items/SetBonusSystem.js";
 
 const toNumber = (value, fallback = 0) =>
   Number.isFinite(value) ? value : fallback;
@@ -120,13 +121,16 @@ export function getEffectiveAttributes(
   const normalized = ensureAttributeShape(baseAttributes, baseAttributeValue);
 
   const bonuses = getTitleBonuses(player);
-  const allStats = toNumber(bonuses.allStats, 0);
+  const setBonuses = getSetBonuses(player?.equipment || {});
+  const allStats =
+    toNumber(bonuses.allStats, 0) + toNumber(setBonuses.allStats, 0);
 
   const effective = { ...normalized };
   CANONICAL_ATTRIBUTES.forEach((key) => {
     effective[key] =
       toNumber(effective[key], 0) +
       toNumber(bonuses.attributes[key], 0) +
+      toNumber(setBonuses[key], 0) +
       allStats;
   });
 

@@ -1,6 +1,7 @@
 import { generateAffixedItem } from "../systems/loot/LootSystem.js";
 import { getItemData } from "./ItemRegistry.js";
 import { DataRegistry } from "../data/DataRegistry.js";
+import { random, randomInt } from "../utils/DeterministicRandom.js";
 
 /**
  * Enemy skills database
@@ -244,20 +245,18 @@ export function calculateEnemyDrops(enemy) {
 
   enemy.dropTable.forEach((drop) => {
     // Check if the drop happens
-    if (Math.random() < drop.chance) {
+    if (random() < drop.chance) {
       // Handle item drops
       if (drop.item) {
         const baseItem = getItemData(drop.item);
         if (!baseItem) return; // Skip if item data not found
 
         const quantity = drop.quantity
-          ? Math.floor(
-              Math.random() * (drop.quantity.max - drop.quantity.min + 1),
-            ) + drop.quantity.min
+          ? randomInt(drop.quantity.min, drop.quantity.max)
           : 1;
 
         for (let i = 0; i < quantity; i++) {
-          const roll = Math.random();
+          const roll = random();
           if (roll < rareChance) {
             // Generate a rare item
             const rareItem = generateAffixedItem(baseItem, "rare");
@@ -274,9 +273,7 @@ export function calculateEnemyDrops(enemy) {
       }
       // Handle gold drops
       else if (drop.gold) {
-        const goldAmount =
-          Math.floor(Math.random() * (drop.gold.max - drop.gold.min + 1)) +
-          drop.gold.min;
+        const goldAmount = randomInt(drop.gold.min, drop.gold.max);
         goldDrops.push(goldAmount);
       }
     }

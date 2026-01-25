@@ -1,6 +1,8 @@
 // QuestManager.js - Manages quest generation and assignment
 import { MAIN_QUESTS, SIDE_QUESTS } from "../../data/QuestCatalog.js";
 import { DataRegistry } from "../../data/DataRegistry.js";
+import { randomInt } from "../../utils/DeterministicRandom.js";
+import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
 
 export class QuestManager {
   static generateInitialQuests(player) {
@@ -65,13 +67,13 @@ export class QuestManager {
 
   static selectQuestByPriority(quests) {
     // Backwards-compatible helper when removal isn't needed
-    const randomIndex = Math.floor(Math.random() * quests.length);
+    const randomIndex = randomInt(0, quests.length - 1);
     return quests[randomIndex];
   }
 
   static pullQuestByPriority(quests) {
     if (!quests?.length) return null;
-    const randomIndex = Math.floor(Math.random() * quests.length);
+    const randomIndex = randomInt(0, quests.length - 1);
     const [quest] = quests.splice(randomIndex, 1);
     return quest;
   }
@@ -80,7 +82,7 @@ export class QuestManager {
     return {
       ...questTemplate,
       status: "active",
-      acceptedAt: Date.now(),
+      acceptedAt: SimBridge.now(),
       progress: {},
       objectives: questTemplate.objectives.map((obj) => ({
         ...obj,
@@ -104,7 +106,7 @@ export class QuestManager {
       );
       if (allObjectivesComplete) {
         updatedQuest.status = "completed";
-        updatedQuest.completedAt = Date.now();
+        updatedQuest.completedAt = SimBridge.now();
       }
     }
 

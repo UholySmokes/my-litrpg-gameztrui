@@ -1,27 +1,35 @@
 :root {
   /* Backgrounds */
-  --bg-deep: #050510;       /* Almost black blue */
-  --bg-glass: rgba(10, 20, 40, 0.7); /* Semi-transparent blue for panels */
-  
-  /* Hologram Colors */
-  --holo-cyan: #00f3ff;     /* Primary Interface Color */
-  --holo-alert: #ff2a6d;    /* For Health Low / Combat */
-  --holo-gold: #ffd700;     /* For Legendary Items/Level Ups */
-  
+  --bg-deep: #f2e9d7;
+  --bg-glass: rgba(255, 252, 244, 0.86);
+  --bg-panel: rgba(255, 252, 244, 0.92);
+
+  /* Interface Colors */
+  --holo-cyan: #1f7d78;
+  --holo-alert: #c2443a;
+  --holo-gold: #b7742f;
+  --holo-blue: #2d6f8f;
+  --holo-gray: #b4a99a;
+  --holo-dark: #3d332a;
+
   /* Effects */
-  --glow-strong: 0 0 10px var(--holo-cyan), 0 0 20px var(--holo-cyan);
-  --glow-subtle: 0 0 5px rgba(0, 243, 255, 0.3);
-  --border-glass: 1px solid rgba(0, 243, 255, 0.2);
-  --glow-border: 0 0 8px rgba(0, 243, 255, 0.3);
-  --glass-blur: blur(12px);
-  
+  --glow-strong: 0 0 18px rgba(31, 125, 120, 0.35);
+  --glow-subtle: 0 0 6px rgba(31, 125, 120, 0.18);
+  --border-glass: 1px solid rgba(31, 125, 120, 0.2);
+  --glow-border: 0 0 12px rgba(31, 125, 120, 0.22);
+  --glass-blur: blur(10px);
+
   /* Fonts */
-  --font-hud: 'Orbitron', sans-serif;  /* Headers */
-  --font-text: 'Rajdhani', sans-serif; /* Narrative Body */
-  --font-code: 'JetBrains Mono', monospace; /* Stats/Terminal */
-  
+  --font-hud: 'Unbounded', sans-serif;
+  --font-text: 'Spline Sans', sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
+
   /* Text */
-  --text-main: #e0e6ed;
+  --text-main: #241a14;
+  --text-dim: #6f5e50;
+  --button-bg: rgba(31, 125, 120, 0.1);
+  --button-selected: rgba(183, 116, 47, 0.18);
+  --border-radius: 14px;
   
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -69,7 +77,7 @@ body {
   bottom: 0;
   pointer-events: none; /* Let clicks pass through */
   z-index: 999;
-  opacity: 0.15;
+  opacity: 0.08;
 }
 
 /* Glitch Effect */

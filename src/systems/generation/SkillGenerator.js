@@ -1,4 +1,5 @@
 import { generateName } from "./NameGenerator.js";
+import { randomChoice } from "../../utils/DeterministicRandom.js";
 
 const ELEMENTS = [
   { name: "Fire", type: "physical", effect: "burn" },
@@ -27,8 +28,8 @@ const FORMS = [
 ];
 
 export function generateSkill(level = 1) {
-  const element = ELEMENTS[Math.floor(Math.random() * ELEMENTS.length)];
-  const form = FORMS[Math.floor(Math.random() * FORMS.length)];
+  const element = randomChoice(ELEMENTS);
+  const form = randomChoice(FORMS);
 
   const theme = element.type === "magical" ? "celestial" : "primal";
   const epithet = generateName(theme).toLowerCase().replace(/\s+/g, "_");

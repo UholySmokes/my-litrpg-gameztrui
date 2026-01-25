@@ -4,6 +4,7 @@
 // =================================================================
 
 import { emit } from "../../core/EventBus.js";
+import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
 
 /**
  * TIME CONFIGURATION
@@ -51,7 +52,7 @@ export function initializeTime(state, startTime = 480) {
         currentTime: startTime,
         timeOfDay: getTimeOfDay(startTime),
         isOutdoors: true,
-        lastUpdate: Date.now(),
+        lastUpdate: SimBridge.now(),
       },
     },
   };
@@ -116,7 +117,7 @@ export function updateTime(state, deltaMinutes) {
         ...state.world.time,
         currentTime: newTime,
         timeOfDay: newTimeOfDay,
-        lastUpdate: Date.now(),
+        lastUpdate: SimBridge.now(),
       },
     },
   };
@@ -132,7 +133,7 @@ export function processRealTimeUpdate(state) {
     return initializeTime(state);
   }
 
-  const now = Date.now();
+  const now = SimBridge.now();
   const lastUpdate = state.world.time.lastUpdate || now;
   const realMinutesPassed = (now - lastUpdate) / 60000;
   const gameMinutesPassed = Math.floor(

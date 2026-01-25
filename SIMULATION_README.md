@@ -1,4 +1,4 @@
-# LitRPG Game Simulation Script
+﻿# LitRPG Game Simulation Script
 
 A comprehensive simulation script for testing game progression from level 1 to 20 in the LitRPG game.
 
@@ -18,31 +18,37 @@ A comprehensive simulation script for testing game progression from level 1 to 2
 ### Basic Usage
 ```bash
 # Run default simulation (100 runs to level 20)
-node sim_gamestart.js
+node sim_gamestart_fixed.js
 ```
 
 ### Command Line Options
 ```bash
 # Custom number of runs
-node sim_gamestart.js --runs 50
+node sim_gamestart_fixed.js --runs 50
 
 # Custom target level
-node sim_gamestart.js --level 30
+node sim_gamestart_fixed.js --level 30
 
 # CSV output format
-node sim_gamestart.js --format csv
+node sim_gamestart_fixed.js --format csv
 
 # Reproducible results with seed
-node sim_gamestart.js --seed 12345
+node sim_gamestart_fixed.js --seed 12345
 
 # Disable detailed logs
-node sim_gamestart.js --logs false
+node sim_gamestart_fixed.js --logs false
 
 # Custom max time per run (in seconds)
-node sim_gamestart.js --max-time 180
+node sim_gamestart_fixed.js --max-time 180
 
 # Combine options
-node sim_gamestart.js --runs 200 --level 25 --format csv --seed 42
+node sim_gamestart_fixed.js --runs 200 --level 25 --format csv --seed 42
+```
+
+### Config File
+```bash
+# Load a JSON config file (CONFIG keys)
+node sim_gamestart_fixed.js --config scripts/sim_gamestart.example.json
 ```
 
 ### Package.json Script
@@ -50,16 +56,17 @@ Add to your `package.json`:
 ```json
 {
   "scripts": {
-    "simulate": "node sim_gamestart.js",
-    "simulate:quick": "node sim_gamestart.js --runs 10 --logs false",
-    "simulate:csv": "node sim_gamestart.js --format csv"
+    "simulate": "node sim_gamestart_fixed.js",
+    "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",
+    "simulate:csv": "node sim_gamestart_fixed.js --format csv"
   }
 }
 ```
 
 ## Configuration
 
-Edit the `CONFIG` object at the top of the script:
+Edit the `CONFIG` object at the top of the script, or provide a JSON config
+file using `--config`. CLI flags override values from the config file.
 
 ```javascript
 const CONFIG = {
@@ -193,8 +200,8 @@ Use the generated data for:
 ### Debug Mode
 ```bash
 # Enable verbose logging
-DEBUG=1 node sim_gamestart.js
+DEBUG=1 node sim_gamestart_fixed.js
 
 # Run with Node.js debug flags
-node --inspect sim_gamestart.js
+node --inspect sim_gamestart_fixed.js
 ```

@@ -13,6 +13,10 @@ import {
   generateInitialNarrative,
 } from "../core/AIService.js";
 import { renderStatusBlock } from "../util/statusrenderer.js";
+import {
+  SimBridge,
+  wrapActionExecution,
+} from "../simulation/bridge/SimulationBridge.js";
 
 const initialNarrativeCache = new Map();
 
@@ -22,6 +26,8 @@ const DEFAULT_ACTION_SUGGESTIONS = [
   { t: "open inventory", w: 1 },
   { t: "talk to nearby NPC", w: 1 },
 ];
+
+const READ_ONLY_ACTIONS = new Set(["look", "inventory", "status"]);
 
 const toNumber = (value, fallback = 0) => {
   const parsed = Number(value);
@@ -35,7 +41,9 @@ function buildActionSuggestions(state) {
 
   const suggestions = [];
   const player = state.player || {};
-  const inCombat = Boolean(state.combat?.inCombat ?? state.combat?.status === "active");
+  const inCombat = Boolean(
+    state.combat?.inCombat ?? state.combat?.status === "active",
+  );
 
   if (inCombat) {
     suggestions.push(
@@ -58,13 +66,13 @@ function buildActionSuggestions(state) {
     toNumber(player.health, 0),
   );
   const hpMax = toNumber(
-    typeof player.hp === "object" ? player.hp?.max : player.maxHp ?? player.maxHealth,
+    typeof player.hp === "object"
+      ? player.hp?.max
+      : (player.maxHp ?? player.maxHealth),
     1,
   );
 
-  if (
-    hpCurrent < 0.3 * Math.max(1, hpMax)
-  ) {
+  if (hpCurrent < 0.3 * Math.max(1, hpMax)) {
     suggestions.push({ t: "rest to recover", w: 0.9 });
   }
 
@@ -164,9 +172,14 @@ export function useNarrative(
           };
         } else {
           // Execute state-changing action
-          actionResult = executeAction(currentState, action, {
-            dispatchSystemEvent,
-          });
+          const execute = () =>
+            executeAction(currentState, action, {
+              dispatchSystemEvent,
+            });
+
+          actionResult = READ_ONLY_ACTIONS.has(action.type)
+            ? execute()
+            : wrapActionExecution(action.type, action, execute);
           newState = actionResult.state;
         }
 
@@ -176,6 +189,7 @@ export function useNarrative(
           if (typeof evaluateQuestProgress === "function") {
             evaluateQuestProgress(newState);
           }
+          SimBridge.advanceTick();
         }
 
         const suggestionSource = actionResult.readOnly
@@ -185,7 +199,10 @@ export function useNarrative(
 
         // Step 5: Handle special actions (like status display)
         if (actionResult.showStatus) {
-          const statusString = renderStatusBlock(newState.player, newState.config);
+          const statusString = renderStatusBlock(
+            newState.player,
+            newState.config,
+          );
           addSystemMessage(statusString, "status-update");
           setIsLoading(false);
           return;
@@ -210,7 +227,7 @@ export function useNarrative(
                 {
                   type: "narrative",
                   text: aiResponse.narrative,
-                  timestamp: Date.now(),
+                  timestamp: SimBridge.now(),
                 },
               ].slice(-50), // Keep last 50 messages for history
             },
@@ -306,7 +323,7 @@ export function useNarrative(
               {
                 type: "narrative",
                 text: aiResponse.narrative,
-                timestamp: Date.now(),
+                timestamp: SimBridge.now(),
               },
             ],
           },

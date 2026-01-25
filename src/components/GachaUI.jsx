@@ -23,11 +23,9 @@ export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
 
   if (!gameState || !gameState.player) {
     return (
-      <div className="holo-panel" style={{ padding: "1rem" }}>
-        <div style={{ color: "var(--holo-cyan)", marginBottom: "1rem" }}>
-          Gacha unavailable
-        </div>
-        <div style={{ color: "rgba(0, 243, 255, 0.7)", fontSize: "0.9rem" }}>
+      <div className="holo-panel gacha-empty">
+        <div className="gacha-empty__title">Gacha unavailable</div>
+        <div className="gacha-empty__body">
           Character data not loaded. Please complete character creation first.
         </div>
       </div>
@@ -71,158 +69,97 @@ export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
-        className="modal-content"
+        className="modal-content gacha-modal"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: "600px" }}
       >
-        <div className="holo-panel" style={{ padding: "1.5rem" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "1rem",
-            }}
-          >
-            <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>[GACHA]</h2>
-            <button
-              className="holo-button"
-              onClick={onClose}
-              style={{
-                borderColor: "var(--holo-alert)",
-                color: "var(--holo-alert)",
-              }}
-            >
-              Close
-            </button>
+        <header className="gacha-modal__header">
+          <div className="gacha-modal__title-group">
+            <div className="gacha-modal__title">Gacha terminal</div>
+            <div className="gacha-modal__subtitle">Fortune engine online</div>
           </div>
+          <button className="holo-button holo-button--danger" onClick={onClose}>
+            Close
+          </button>
+        </header>
 
-          <div style={{ marginBottom: "1rem" }}>
-            <div style={{ color: "var(--text-main)", marginBottom: "0.5rem" }}>
-              Gold:{" "}
-              <span style={{ color: "var(--holo-gold)" }}>
-                {currency.goldCoins}
-              </span>{" "}
-              | Soulpoints:{" "}
-              <span style={{ color: "var(--holo-cyan)" }}>
-                {currency.soulpoints}
-              </span>
-            </div>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              gap: "0.5rem",
-              marginBottom: "1rem",
-              flexWrap: "wrap",
-            }}
-          >
-            {Object.keys(gachaPools).map((poolId) => (
-              <button
-                key={poolId}
-                className="holo-button"
-                onClick={() => {
-                  setSelectedPool(poolId);
-                  setLastResults([]);
-                }}
-                style={{
-                  backgroundColor:
-                    selectedPool === poolId
-                      ? "rgba(0, 243, 255, 0.2)"
-                      : "transparent",
-                  textTransform: "capitalize",
-                }}
-              >
-                {gachaPools[poolId].name}
-              </button>
-            ))}
-          </div>
-
-          <div
-            className="holo-panel"
-            style={{ padding: "1rem", marginBottom: "1rem" }}
-          >
-            <div
-              style={{
-                color: "var(--holo-cyan)",
-                fontWeight: "bold",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {pool.name}
-            </div>
-            <div
-              style={{
-                color: "var(--text-main)",
-                fontSize: "0.9rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {pool.description}
-            </div>
-            <div style={{ color: "var(--holo-gold)", marginBottom: "1rem" }}>
-              Cost: {priceText}
-            </div>
-            <div
-              style={{
-                marginBottom: "1rem",
-                fontSize: "0.85rem",
-                color: "var(--text-main)",
-              }}
-            >
-              <div>Rates:</div>
-              {Object.entries(effectiveRates).map(([rarity, rate]) => (
-                <div key={rarity} style={{ color: rarityColors[rarity] }}>
-                  {rarity.charAt(0).toUpperCase() + rarity.slice(1)}:{" "}
-                  {(rate * 100).toFixed(1)}%
-                </div>
-              ))}
-            </div>
-            <button
-              className="holo-button"
-              onClick={handlePull}
-              disabled={!canAfford() ? true : false}
-              style={{
-                width: "100%",
-                fontSize: "1.1rem",
-                padding: "0.75rem",
-                opacity: canAfford() ? 1 : 0.5,
-                cursor: canAfford() ? "pointer" : "not-allowed",
-              }}
-            >
-              {canAfford() ? "Pull!" : "Cannot Afford"}
-            </button>
-          </div>
-
-          {lastResults.length > 0 && (
-            <div className="holo-panel" style={{ padding: "1rem" }}>
-              <div
-                style={{
-                  color: "var(--holo-cyan)",
-                  fontWeight: "bold",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                Results:
+        <div className="gacha-modal__body">
+          <aside className="gacha-modal__sidebar">
+            <div className="gacha-modal__currency">
+              <div>
+                Gold: <span>{currency.goldCoins}</span>
               </div>
-              {lastResults.map((result, index) => (
-                <div
-                  key={index}
-                  style={{
-                    padding: "0.5rem",
-                    marginBottom: "0.5rem",
-                    border: `2px solid ${rarityColors[result.rarity]}`,
-                    borderRadius: "4px",
-                    color: rarityColors[result.rarity],
-                    fontWeight: "bold",
-                  }}
-                >
-                  {result.name} ({result.rarity.toUpperCase()})
-                </div>
-              ))}
+              <div>
+                Soulpoints: <span>{currency.soulpoints}</span>
+              </div>
             </div>
-          )}
+
+            <div className="gacha-modal__pool-list">
+              {Object.keys(gachaPools).map((poolId) => {
+                const isSelected = selectedPool === poolId;
+                return (
+                  <button
+                    key={poolId}
+                    className={`holo-button gacha-modal__pool-button${
+                      isSelected ? " gacha-modal__pool-button--active" : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedPool(poolId);
+                      setLastResults([]);
+                    }}
+                  >
+                    {gachaPools[poolId].name}
+                  </button>
+                );
+              })}
+            </div>
+          </aside>
+
+          <section className="gacha-modal__details">
+            <div className="gacha-modal__pool-card">
+              <div className="gacha-modal__pool-name">{pool.name}</div>
+              <div className="gacha-modal__pool-desc">{pool.description}</div>
+              <div className="gacha-modal__pool-cost">Cost: {priceText}</div>
+              <div className="gacha-modal__rates">
+                {Object.entries(effectiveRates).map(([rarity, rate]) => (
+                  <div
+                    key={rarity}
+                    className="gacha-modal__rate"
+                    style={{ "--rarity-color": rarityColors[rarity] }}
+                  >
+                    <span>{rarity.charAt(0).toUpperCase() + rarity.slice(1)}</span>
+                    <span>{(rate * 100).toFixed(1)}%</span>
+                  </div>
+                ))}
+              </div>
+              <button
+                className="holo-button holo-button--solid gacha-modal__pull"
+                onClick={handlePull}
+                disabled={!canAfford() ? true : false}
+              >
+                {canAfford() ? "Pull" : "Cannot afford"}
+              </button>
+            </div>
+
+            {lastResults.length > 0 && (
+              <div className="gacha-modal__results">
+                <div className="gacha-modal__results-title">Drop log</div>
+                <div className="gacha-modal__results-grid">
+                  {lastResults.map((result, index) => (
+                    <div
+                      key={index}
+                      className="gacha-modal__result"
+                      style={{ "--rarity-color": rarityColors[result.rarity] }}
+                    >
+                      <div>{result.name}</div>
+                      <div className="gacha-modal__result-rarity">
+                        {result.rarity.toUpperCase()}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
         </div>
       </div>
     </div>

@@ -4,6 +4,8 @@
 // iLvl determines max tier: maxTier = ceil(iLvl / 10)
 // Exalted: +25% above tier max | Mythical: 2 perfect rolls
 
+import { random, randomInt } from "../../utils/DeterministicRandom.js";
+
 export const TIER_NAMES = {
   1: { prefix: "Mortal", suffix: "Minor" },
   2: { prefix: "Iron", suffix: "Lesser" },
@@ -477,9 +479,9 @@ export function rollTieredAffixValue(
 
   // Standard roll
   if (tierData.isPercent || maxVal < 1) {
-    return Math.round((Math.random() * (maxVal - minVal) + minVal) * 100) / 100;
+    return Math.round((random() * (maxVal - minVal) + minVal) * 100) / 100;
   }
-  return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+  return randomInt(minVal, maxVal);
 }
 
 /**

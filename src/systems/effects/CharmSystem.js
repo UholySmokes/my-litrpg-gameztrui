@@ -10,6 +10,8 @@ import {
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
 import { getEffectiveAttributes } from "../titles/TitleSystem.js";
+import { random, randomChoice } from "../../utils/DeterministicRandom.js";
+import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
 
 /**
  * CHARM CONFIGURATION
@@ -107,7 +109,7 @@ export function attemptCharm(state, enemyIndex, charmPower = 1.0) {
     ),
   );
 
-  const roll = Math.random();
+  const roll = random();
   const combatLog = [...state.combat.log];
 
   if (roll < charmChance) {
@@ -218,8 +220,7 @@ export function processCharmedEnemyAction(state, charmedEnemy) {
   if (hostileEnemies.length === 0) return state;
 
   // Attack random hostile enemy
-  const target =
-    hostileEnemies[Math.floor(Math.random() * hostileEnemies.length)];
+  const target = randomChoice(hostileEnemies);
   const targetIndex = state.combat.enemies.findIndex((e) => e.id === target.id);
 
   // Calculate damage
@@ -281,7 +282,7 @@ export function createIllusion(state, illusionType = "decoy") {
   }
 
   const illusion = {
-    id: `illusion_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+    id: `illusion_${SimBridge.now()}_${random().toString(36).substr(2, 5)}`,
     name: `${player.name}'s ${illusionType === "mirror_image" ? "Mirror Image" : "Decoy"}`,
     type: illusionType,
     hp: ILLUSION_CONFIG.illusionHp,
@@ -325,11 +326,8 @@ export function checkIllusionTarget(player) {
   if (activeIllusions.length === 0) return null;
 
   // Chance to target illusion instead
-  if (
-    Math.random() <
-    ILLUSION_CONFIG.decoyTargetChance * activeIllusions.length
-  ) {
-    return activeIllusions[Math.floor(Math.random() * activeIllusions.length)];
+  if (random() < ILLUSION_CONFIG.decoyTargetChance * activeIllusions.length) {
+    return randomChoice(activeIllusions);
   }
 
   return null;

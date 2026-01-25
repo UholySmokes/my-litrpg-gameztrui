@@ -78,5 +78,19 @@ export function initBrowserFixes() {
     originalConsoleError.apply(console, args);
   };
 
+  const originalConsoleWarn = console.warn;
+  console.warn = (...args) => {
+    const msg = args.map(String).join(" ");
+    if (
+      msg.includes(
+        "Layout-Darstellung wurde erzwungen, bevor die Seite vollständig geladen war",
+      ) ||
+      msg.includes("Layout was forced before the page was fully loaded")
+    ) {
+      return;
+    }
+    originalConsoleWarn.apply(console, args);
+  };
+
   console.log("Browser compatibility fixes initialized.");
 }

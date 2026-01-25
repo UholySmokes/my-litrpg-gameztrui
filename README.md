@@ -44,13 +44,16 @@ npm install
 
 ### Environment
 
-Create `.env.local` (or use Vite’s `.env` support):
+Create `.env.local` (for local dev only):
 
 ```bash
-VITE_OPENAI_API_KEY=sk-...
+# Supabase (optional; enables persistence)
 VITE_SUPABASE_URL=...
-VITE_SUPABASE_KEY=...
+VITE_SUPABASE_ANON_KEY=...
 
+# OpenAI is not used on GitHub Pages.
+# If you run a serverless host, set OPENAI_API_KEY on the server.
+OPENAI_API_KEY=...
 ```
 
 ### Run / Build / Test

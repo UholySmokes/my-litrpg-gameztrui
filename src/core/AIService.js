@@ -1,5 +1,12 @@
 const API_ENDPOINT = "/api/narrative";
 
+const OFFLINE_RESPONSE = {
+  narrative:
+    "The Aether is silent here. This realm runs without an oracle, so your story must unfold by your own hand. (AI Offline)",
+  mood: "offline",
+  suggestions: ["Look around", "Check status", "Continue"],
+};
+
 /**
  * Calls OpenAI API to generate narrative response
  * @param {string} prompt - The complete prompt string
@@ -17,6 +24,10 @@ export async function generateNarrative(prompt) {
 
     const data = await response.json().catch(() => null);
     if (!response.ok) {
+      if (response.status === 404) {
+        return OFFLINE_RESPONSE;
+      }
+
       const message =
         typeof data?.error === "string"
           ? data.error
@@ -24,9 +35,7 @@ export async function generateNarrative(prompt) {
       throw new Error(message);
     }
 
-    if (!data || typeof data.narrative !== "string") {
-      throw new Error("Invalid response from narrative service.");
-    }
+    if (!data || typeof data.narrative !== "string") return OFFLINE_RESPONSE;
 
     return {
       narrative: data.narrative || "Something happened.",
@@ -36,7 +45,9 @@ export async function generateNarrative(prompt) {
         : ["Look around", "Check inventory", "Continue"],
     };
   } catch (error) {
-    console.error("AI Service Error:", error);
+    if (import.meta.env.DEV) {
+      console.error("AI Service Error:", error);
+    }
 
     if (
       error.message &&

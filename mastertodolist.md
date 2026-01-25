@@ -1,32 +1,33 @@
-# Master TODO List
+## Priority Plan
 
-1. **Core schema migration** ✅
-   - Update `initialState`, `useCharacterCreationReworked`, and `CharacterGenesisUI_Enhanced` to emit canonical attribute keys.
-2. **Normalization layer** ✅
-   - Flip `AttributeMath` alias map to canonical-first and align RaceSystem (initial stats + growth).
-3. **Gameplay systems** ✅
-   - Update LevelingManager and combat/class systems to consume canonical stats and recompute HP/Mana via AttributeMath.
-4. **UI + renderers** ✅
-   - HUD (HudVitals/ClassResourceBar) + EquipmentSlots consume canonical attributes via AttributeMath.
-   - CharacterGenesis selection summary renders skill descriptions + rank metadata.
-   - Loadout toggle + StatusOverlay provide canonical vitals, derived stats, and tooltip-rich summaries.
-   - ASCII `statusrenderer` now mirrors AttributeMath output; right-column SystemLog replaced by the unified Command Feed.
+### P0: Unblock AI (ship now)
+- [x] Finish /api/narrate → NarratorAgent (text-only)
+- [x] Validate QuestAgent JSON schema against game state
+- [x] Test narration length / tone guards
+- [x] Frontend error handling on AI failure
 
-5. **Data/guides & verification** *(in progress)*
-   - Run a post-migration smoke pass (character creation → quest handoff, combat loop, crafting) and log findings.
-   - Align generators/spec docs + README/UI integration notes with canonical attribute architecture.
-   - Capture updated screenshots/UX notes for Loadout, StatusOverlay, and Command Feed.
-   - Verify ProfessionUI ingredient counter across existing recipes and flag any remaining data gaps.
+### P1: Stabilize Core Loop (next)
+- [x] Post‑migration smoke testing
+- [x] Level‑up flow end‑to‑end test
+- [x] Attribute math verification
+- [x] Combat loop regression test
+- [x] Mana regeneration outside level‑up
+- [x] Skill cooldowns visible in UI
+- [x] Free attribute points on level‑up
 
-6. **Leveling & attribute allocation** *(new)*
-   - Level-ups currently fail to grant free attribute points and derived stats do not scale; inspect leveling flow and AttributeMath integration.
-   - Expose free point controls directly in StatusOverlay by placing [+] and [-] buttons beside each canonical attribute and wiring them into the allocation logic.
+### P2: AI Operations (after stability)
+- [x] Admin approval flow for Factory drafts
+- [x] Persist AI outputs as drafts (quests, lore, NPCs)
+- [x] Error envelope standard { ok, errorCode, message }
+- [x] Add request tracing + per‑agent logging
+- [x] Rate limiting & retry policy for Foundry calls
+- [x] Versioned AI outputs (content hash / seed)
 
-7. **HUD framing + feed UX** *(new)*
-   - Wrap the full in-game UI with a thematic frame so every rendered panel sits inside a cohesive border treatment.
-   - Add a dedicated scrollbar to the Command Feed so long sessions remain navigable without expanding the entire sidebar.
-   - Add a dedicated scrollbar to the AI Narrative Memory so long sessions remain navigable without expanding the entire middle panel.
-
-8. **AI Narrative Memory polish** *(new)*
-   - Increase the narrative text size slightly for legibility and render new entries with a typewriter (letter-by-letter) animation.
-   - Prevent duplicate intro paragraphs—the opening prompt currently echoes twice per generation.
+### P3: Depth & Scale (later)
+- [ ] Universal skill fusion system
+- [ ] Skill evolution trees UI
+- [ ] Class evolution paths
+- [ ] Equipment crafting & professions
+- [ ] Legendary item proc & set bonuses
+- [ ] Advanced combat status effects
+- [ ] Tactical positioning / lanes

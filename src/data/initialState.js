@@ -14,6 +14,7 @@ const INITIAL_CONFIG = {
 
   restHealAmount: 0,
   restManaAmount: 0,
+  manaRegenPerTurn: 2,
 
   xpBrackets: [{ end: 1000, base: 100, growth: 1.5 }],
   xpBonusPerLevelDiff: 0.2,

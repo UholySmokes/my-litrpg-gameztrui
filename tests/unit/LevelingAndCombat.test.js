@@ -16,6 +16,7 @@ import {
   processEnemyTurns,
   executeSkill,
 } from "../../src/systems/combat/CombatSystem.js";
+import { processTimeEffects } from "../../src/systems/world/TimeSystem.js";
 
 describe("Leveling and combat invariants", () => {
   it("uses spec-aligned XP curve defaults", () => {
@@ -58,6 +59,35 @@ describe("Leveling and combat invariants", () => {
     );
   });
 
+  it("LEVEL_UP reducer flow grants free points", () => {
+    const state = {
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        xp: {
+          ...initialGameState.player.xp,
+          current: initialGameState.player.xp.max,
+        },
+      },
+    };
+
+    const next = gameReducer(state, { type: "LEVEL_UP" });
+    expect(next.player.level).toBe(2);
+    expect(next.player.attributes.freePoints).toBe(
+      (state.player.attributes.freePoints ?? 0) +
+        (state.config.attributePointsPerLevel ?? 0),
+    );
+  });
+
+  it("attribute math matches expected scaling", () => {
+    const attributes = {
+      vitality: 10,
+      intelligence: 7,
+    };
+    expect(calculateMaxHp(attributes)).toBe(150);
+    expect(calculateMaxMana(attributes)).toBe(71);
+  });
+
   it("basic combat remains deterministic under fixed RNG", () => {
     const originalRandom = Math.random;
     Math.random = () => 1;
@@ -77,6 +107,41 @@ describe("Leveling and combat invariants", () => {
     } finally {
       Math.random = originalRandom;
     }
+  });
+
+  it("skill cooldowns tick down after enemy turn", () => {
+    const originalRandom = Math.random;
+    Math.random = () => 1;
+
+    try {
+      const state = startCombat(initialGameState, ["goblin"]);
+      const attack = playerAttack(state, 0, "knight_charge");
+      expect(attack.success).toBe(true);
+      expect(attack.state.combat.skillCooldowns.knight_charge).toBe(3);
+
+      const afterEnemies = processEnemyTurns(attack.state);
+      expect(afterEnemies.combat.skillCooldowns.knight_charge).toBe(2);
+    } finally {
+      Math.random = originalRandom;
+    }
+  });
+
+  it("processTimeEffects regenerates mana per turn", () => {
+    const state = {
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        mana: {
+          ...initialGameState.player.mana,
+          current: initialGameState.player.mana.max - 5,
+        },
+      },
+    };
+
+    const next = processTimeEffects(state);
+    expect(next.player.mana.current).toBe(
+      initialGameState.player.mana.max - 3,
+    );
   });
 
   it("executeSkill scales physical skills with STR + weapon attack", () => {

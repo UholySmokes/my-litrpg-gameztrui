@@ -5,6 +5,7 @@
 
 import { emit } from "../../core/EventBus.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
+import { regenerateMana } from "../magic/ManaSystem.js";
 
 /**
  * TIME CONFIGURATION
@@ -272,6 +273,25 @@ export function processTimeEffects(state) {
 
   let combatLog = state.combat?.log ? [...state.combat.log] : [];
   let playerUpdates = {};
+
+  const manaRegenPerTurn = state.config?.manaRegenPerTurn ?? 0;
+
+  if (
+    manaRegenPerTurn > 0 &&
+    player.mana?.current !== undefined &&
+    player.mana?.max !== undefined &&
+    player.mana.current < player.mana.max
+  ) {
+    const regenerated = regenerateMana(player, manaRegenPerTurn, {
+      showFeedback: false,
+    });
+    const gained =
+      (regenerated.mana?.current ?? player.mana.current) -
+      player.mana.current;
+    if (gained > 0) {
+      playerUpdates.mana = regenerated.mana;
+    }
+  }
 
   // Apply sun regeneration for Nature Spirit
   if (modifiers.regen > 0 && player.hp.current < player.hp.max) {

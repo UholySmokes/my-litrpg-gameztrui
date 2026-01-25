@@ -27,3 +27,6 @@ dist
 *.sln
 *.sw?
 node_modules
+
+# GitHub Pages
+.nojekyll

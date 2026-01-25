@@ -5,7 +5,7 @@
 import {
   getRaceById as getRaceByIdFromRegistry,
   races as racesFromRegistry,
-} from "../systems/race/RaceRegistry.js";
+} from "../data/registries/RaceDataRegistry.js";
 import {
   classes as classesFromRegistry,
   getClassById as getClassByIdFromRegistry,

@@ -3,7 +3,9 @@
 // Provides backward-compatible exports without duplicating data
 // =================================================================
 
-import {
+import * as RaceDataRegistry from "../../data/registries/RaceDataRegistry.js";
+
+const {
   EFFECT_TAGS,
   RACE_TRAITS,
   races,
@@ -18,7 +20,7 @@ import {
   getRandomDebuff,
   rollGambleCast,
   getRandomElementAbsorption,
-} from "../../data/registries/RaceDataRegistry.js";
+} = RaceDataRegistry;
 
 export {
   EFFECT_TAGS,

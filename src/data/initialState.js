@@ -1,4 +1,4 @@
-import { xpForNextLevel } from "../systems/leveling/LevelingSystem.js";
+import { xpForNextLevel } from "../core/xpCurve.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 
 const INITIAL_CONFIG = {

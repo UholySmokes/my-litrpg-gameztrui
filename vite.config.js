@@ -68,5 +68,24 @@ export default defineConfig(({ mode }) => {
         },
       },
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            const normalizedId = id.replace(/\\/g, "/");
+            if (!normalizedId.includes("/node_modules/")) return undefined;
+
+            if (
+              normalizedId.includes("/react/") ||
+              normalizedId.includes("/react-dom/")
+            ) {
+              return "vendor-react";
+            }
+
+            return "vendor";
+          },
+        },
+      },
+    },
   };
 });

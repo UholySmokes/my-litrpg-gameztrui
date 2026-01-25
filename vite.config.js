@@ -26,12 +26,6 @@ export default defineConfig({
             return "vendor";
           }
 
-          if (normalizedId.includes("/src/data/registries/"))
-            return "data-registries";
-          if (normalizedId.includes("/src/data/")) return "data";
-          if (normalizedId.includes("/src/systems/")) return "systems";
-          if (normalizedId.includes("/src/core/")) return "core";
-
           return undefined;
         },
       },

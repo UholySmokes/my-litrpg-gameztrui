@@ -4,7 +4,7 @@
 // =================================================================
 
 import { emit } from "../../core/EventBus.js";
-import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 /**
  * TIME CONFIGURATION

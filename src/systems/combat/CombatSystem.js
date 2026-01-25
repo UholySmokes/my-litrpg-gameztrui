@@ -68,7 +68,7 @@ import {
   getTitleBonuses,
 } from "../titles/TitleSystem.js";
 import { random, randomChoice } from "./DeterministicRandom.js";
-import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 const DEBUG_LOGGING_ENABLED = false;
 

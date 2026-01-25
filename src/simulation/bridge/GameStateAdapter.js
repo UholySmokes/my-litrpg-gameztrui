@@ -1,4 +1,4 @@
-import { SimBridge } from "./SimulationBridge.js";
+import { SimBridge } from "./SimulationContext.js";
 
 /**
  * GameStateAdapter - Converts between existing game state and simulation state

@@ -16,7 +16,7 @@ import {
   escapeCombat,
   processEnemyTurns,
 } from "../systems/combat/CombatSystem.js";
-import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {

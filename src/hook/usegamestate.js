@@ -2,7 +2,7 @@ import { useReducer, useEffect, useRef } from "react";
 import { gameReducer } from "../core/gameReducer.js";
 import { initialGameState } from "../data/initialState.js";
 import { SystemEventObserver } from "../core/SystemEventObserver.js";
-import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { serializeEvent } from "../simulation/logging/CombatLogSerializer.ts";
 
 export function useGameEngine() {

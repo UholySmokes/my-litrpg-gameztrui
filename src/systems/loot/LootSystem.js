@@ -26,7 +26,7 @@ import {
   randomChoice,
   randomInt,
 } from "../../utils/DeterministicRandom.js";
-import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 // =====================================================
 // RARITY TIERS

@@ -11,7 +11,7 @@ import {
 } from "../../utils/AttributeMath.js";
 import { getEffectiveAttributes } from "../titles/TitleSystem.js";
 import { random, randomChoice } from "../../utils/DeterministicRandom.js";
-import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 /**
  * CHARM CONFIGURATION

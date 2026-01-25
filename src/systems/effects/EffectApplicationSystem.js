@@ -1,6 +1,6 @@
 import { applyEffect } from "./EffectSystem.js";
 import { emit } from "../../core/EventBus.js";
-import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 /**
  * Unified effect application system for all skills

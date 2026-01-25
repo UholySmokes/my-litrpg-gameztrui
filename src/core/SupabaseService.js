@@ -6,15 +6,29 @@
 import { createClient } from "@supabase/supabase-js";
 
 // Initialize Supabase client
-const env =
+const buildEnv =
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
-const supabaseUrl = env.VITE_SUPABASE_URL;
-const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY;
+const runtimeEnv =
+  typeof globalThis !== "undefined" && globalThis.__RUNTIME_CONFIG__
+    ? globalThis.__RUNTIME_CONFIG__
+    : {};
 
+const supabaseUrl =
+  runtimeEnv.VITE_SUPABASE_URL ?? buildEnv.VITE_SUPABASE_URL;
+const supabaseAnonKey =
+  runtimeEnv.VITE_SUPABASE_ANON_KEY ??
+  runtimeEnv.VITE_SUPABASE_KEY ??
+  buildEnv.VITE_SUPABASE_ANON_KEY ??
+  buildEnv.VITE_SUPABASE_KEY;
+
+let didWarnMissingCredentials = false;
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn(
-    "Supabase credentials not configured. Persistence features will be disabled.",
-  );
+  if (buildEnv.DEV && !didWarnMissingCredentials) {
+    console.warn(
+      "Supabase credentials not configured. Persistence features will be disabled.",
+    );
+    didWarnMissingCredentials = true;
+  }
 }
 
 export const supabase =

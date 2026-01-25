@@ -7,7 +7,7 @@ import { verifyEnv } from "./core/EnvCheck.js";
 import { initBrowserFixes } from "./core/BrowserFixes.js";
 
 initBrowserFixes();
-verifyEnv();
+if (import.meta.env.DEV) verifyEnv();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

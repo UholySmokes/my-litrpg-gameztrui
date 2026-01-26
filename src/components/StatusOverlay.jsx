@@ -21,11 +21,13 @@ export default function StatusOverlay({
   onEvolveSkill,
   onFuseSkills,
   onEvolveClass,
+  variant = "modal",
 }) {
   const [fusionSkillA, setFusionSkillA] = useState("");
   const [fusionSkillB, setFusionSkillB] = useState("");
 
-  if (!isOpen || !player) return null;
+  const isModal = variant !== "window";
+  if ((isModal && !isOpen) || !player) return null;
 
   const resolvedConfig =
     config && typeof config === "object" && !Array.isArray(config)
@@ -173,29 +175,18 @@ export default function StatusOverlay({
     },
   ];
 
-  return (
-    <div className="modal-overlay" onClick={onClose} style={{ zIndex: 1200 }}>
-      <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          maxWidth: "900px",
-          width: "100%",
-          maxHeight: "90vh",
-          overflow: "auto",
-          background: "rgba(0, 0, 0, 0.92)",
-          border: "1px solid rgba(0, 243, 255, 0.4)",
-        }}
-      >
-        <div
-          className="holo-panel"
-          style={{
-            padding: "1.5rem",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-          }}
-        >
+  const panel = (
+    <div
+      className="holo-panel"
+      style={{
+        padding: "1.5rem",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        background: "rgba(0, 0, 0, 0.92)",
+        border: "1px solid rgba(0, 243, 255, 0.4)",
+      }}
+    >
           <div
             style={{
               display: "flex",
@@ -734,7 +725,28 @@ export default function StatusOverlay({
               )}
             </div>
           </section>
-        </div>
+    </div>
+  );
+
+  if (!isModal) {
+    return <div style={{ maxHeight: "100%", overflow: "auto" }}>{panel}</div>;
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose} style={{ zIndex: 1200 }}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: "900px",
+          width: "100%",
+          maxHeight: "90vh",
+          overflow: "auto",
+          background: "rgba(0, 0, 0, 0.92)",
+          border: "1px solid rgba(0, 243, 255, 0.4)",
+        }}
+      >
+        {panel}
       </div>
     </div>
   );

@@ -41,6 +41,7 @@ export default function SaveLoadUI({
   onLoadState,
   addSystemMessage,
   user,
+  variant = "modal",
 }) {
   const [localSaves, setLocalSaves] = useState([]);
   const [autosave, setAutosave] = useState(null);
@@ -166,46 +167,36 @@ export default function SaveLoadUI({
     }
   };
 
-  if (!isOpen) return null;
+  const isModal = variant !== "window";
+  if (isModal && !isOpen) return null;
 
-  return (
-    <div className="modal-overlay" onClick={onClose} style={{ zIndex: 1300 }}>
+  const panel = (
+    <div className="holo-panel" style={{ padding: "1.25rem" }}>
       <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
         style={{
-          maxWidth: "820px",
-          width: "100%",
-          maxHeight: "90vh",
-          overflow: "auto",
-          background: "rgba(0, 0, 0, 0.92)",
-          border: "1px solid rgba(0, 243, 255, 0.4)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "1rem",
+          marginBottom: "1rem",
         }}
       >
-        <div className="holo-panel" style={{ padding: "1.25rem" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: "1rem",
-              marginBottom: "1rem",
-            }}
-          >
-            <div>
-              <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>[SAVE/LOAD]</h2>
-              <div style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-                Local saves always available. Cloud saves require Supabase login.
-              </div>
-            </div>
-            <button
-              className="holo-button"
-              onClick={onClose}
-              style={{ borderColor: "var(--holo-alert)", color: "var(--holo-alert)" }}
-            >
-              Close
-            </button>
+        <div>
+          <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>[SAVE/LOAD]</h2>
+          <div style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+            Local saves always available. Cloud saves require Supabase login.
           </div>
+        </div>
+        {onClose && (
+          <button
+            className="holo-button"
+            onClick={onClose}
+            style={{ borderColor: "var(--holo-alert)", color: "var(--holo-alert)" }}
+          >
+            Close
+          </button>
+        )}
+      </div>
 
           {error && (
             <div style={{ color: "var(--holo-alert)", marginBottom: "0.75rem" }}>
@@ -385,7 +376,28 @@ export default function SaveLoadUI({
               </div>
             )}
           </section>
-        </div>
+    </div>
+  );
+
+  if (!isModal) {
+    return <div style={{ maxHeight: "100%", overflow: "auto" }}>{panel}</div>;
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose} style={{ zIndex: 1300 }}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: "820px",
+          width: "100%",
+          maxHeight: "90vh",
+          overflow: "auto",
+          background: "rgba(0, 0, 0, 0.92)",
+          border: "1px solid rgba(0, 243, 255, 0.4)",
+        }}
+      >
+        {panel}
       </div>
     </div>
   );

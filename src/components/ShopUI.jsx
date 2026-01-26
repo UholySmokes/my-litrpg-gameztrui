@@ -3,10 +3,17 @@ import React, { useState } from "react";
 import { getShopItemsByCategory } from "../data/shopData.js";
 import { getTitleBonuses } from "../core/titleLogic.js";
 
-export default function ShopUI({ isOpen, onClose, gameState, onPurchase }) {
+export default function ShopUI({
+  isOpen,
+  onClose,
+  gameState,
+  onPurchase,
+  variant = "modal",
+}) {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  if (!isOpen) return null;
+  const isModal = variant !== "window";
+  if (isModal && !isOpen) return null;
 
   if (!gameState || !gameState.player) {
     return (
@@ -56,34 +63,30 @@ export default function ShopUI({ isOpen, onClose, gameState, onPurchase }) {
     return true;
   };
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
+  const panel = (
+    <div className="holo-panel" style={{ padding: "1.5rem" }}>
       <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: "800px", maxHeight: "90vh", overflow: "auto" }}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "1rem",
+        }}
       >
-        <div className="holo-panel" style={{ padding: "1.5rem" }}>
-          <div
+        <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>[SHOP]</h2>
+        {onClose && (
+          <button
+            className="holo-button"
+            onClick={onClose}
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "1rem",
+              borderColor: "var(--holo-alert)",
+              color: "var(--holo-alert)",
             }}
           >
-            <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>[SHOP]</h2>
-            <button
-              className="holo-button"
-              onClick={onClose}
-              style={{
-                borderColor: "var(--holo-alert)",
-                color: "var(--holo-alert)",
-              }}
-            >
-              Close
-            </button>
-          </div>
+            Close
+          </button>
+        )}
+      </div>
 
           <div
             style={{
@@ -211,7 +214,21 @@ export default function ShopUI({ isOpen, onClose, gameState, onPurchase }) {
               );
             })}
           </div>
-        </div>
+    </div>
+  );
+
+  if (!isModal) {
+    return <div style={{ maxHeight: "100%", overflow: "auto" }}>{panel}</div>;
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: "800px", maxHeight: "90vh", overflow: "auto" }}
+      >
+        {panel}
       </div>
     </div>
   );

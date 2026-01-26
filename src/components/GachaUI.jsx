@@ -15,11 +15,18 @@ const rarityColors = {
   legendary: "#ff8000",
 };
 
-export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
+export default function GachaUI({
+  isOpen,
+  onClose,
+  gameState,
+  onPull,
+  variant = "modal",
+}) {
   const [selectedPool, setSelectedPool] = useState("equipment");
   const [lastResults, setLastResults] = useState([]);
 
-  if (!isOpen) return null;
+  const isModal = variant !== "window";
+  if (isModal && !isOpen) return null;
 
   if (!gameState || !gameState.player) {
     return (
@@ -66,21 +73,19 @@ export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
     ? `${pool.cost.goldCoins} Gold`
     : `${pool.cost.soulpoints} Soulpoints`;
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-content gacha-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <header className="gacha-modal__header">
-          <div className="gacha-modal__title-group">
-            <div className="gacha-modal__title">Gacha terminal</div>
-            <div className="gacha-modal__subtitle">Fortune engine online</div>
-          </div>
+  const panel = (
+    <div className="gacha-modal__frame">
+      <header className="gacha-modal__header">
+        <div className="gacha-modal__title-group">
+          <div className="gacha-modal__title">Gacha terminal</div>
+          <div className="gacha-modal__subtitle">Fortune engine online</div>
+        </div>
+        {onClose && (
           <button className="holo-button holo-button--danger" onClick={onClose}>
             Close
           </button>
-        </header>
+        )}
+      </header>
 
         <div className="gacha-modal__body">
           <aside className="gacha-modal__sidebar">
@@ -163,6 +168,24 @@ export default function GachaUI({ isOpen, onClose, gameState, onPull }) {
             )}
           </section>
         </div>
+    </div>
+  );
+
+  if (!isModal) {
+    return (
+      <div className="gacha-modal" style={{ maxHeight: "100%", overflow: "auto" }}>
+        {panel}
+      </div>
+    );
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-content gacha-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {panel}
       </div>
     </div>
   );

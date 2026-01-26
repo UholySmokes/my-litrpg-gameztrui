@@ -10,15 +10,15 @@ Notes:
 
 ## 1) High-Level UI Concept
 Implement a Window Manager + Docking Layout System that supports:
-- ✅ draggable panels
-- ✅ resizable panels
-- ✅ collapse/minimize
-- ✅ pin (always open)
-- ✅ docking (snap to left / right / center areas)
-- ✅ z-index focus (active window on top)
-- ✅ persistent layout storage (localStorage)
-- ✅ modes: Character Creation Mode + Game Mode
-- ✅ Narrative always visible as a fixed right dock panel with optional minimize width toggle but never fully removed.
+- ✅ ~~draggable panels~~
+- ✅ ~~resizable panels~~
+- ✅ ~~collapse/minimize~~
+- ✅ ~~pin (always open)~~
+- ✅ ~~docking (snap to left / right / center areas)~~
+- ✅ ~~z-index focus (active window on top)~~
+- ✅ ~~persistent layout storage (localStorage)~~
+- ✅ ~~modes: Character Creation Mode + Game Mode~~
+- ✅ ~~Narrative always visible as a fixed right dock panel with optional minimize width toggle but never fully removed.~~
 
 ## 2) UI Layout Structure
 ### 2.1 Root Frame Zones
@@ -66,10 +66,10 @@ When Character Creation runs:
   - SkillSelectionPanel
   - IdentityPanel (Name + Gender)
   - CreationSummaryPanel
-- ✅ ALL are translucent panels
-- ✅ each can be dragged, resized, collapsed
-- ✅ user can rearrange them freely
-- ✅ default layout: panels appear distributed across center-left area
+- ✅ ~~ALL are translucent panels~~
+- ✅ ~~each can be dragged, resized, collapsed~~
+- ✅ ~~user can rearrange them freely~~
+- ✅ ~~default layout: panels appear distributed across center-left area~~
 - Narrative stays docked right
 - NarrativeMemoryPanel on right is always visible
 - Additionally, there is a Creation Narrative inside the center area:
@@ -197,20 +197,20 @@ Animations:
 - subtle hover glows
 
 ## 6) Navigation + Panel Spawn System
-Add a compact icon toolbar (top or left edge of center zone) to toggle floating windows:
+✅ ~~Add a compact icon toolbar (top or left edge of center zone) to toggle floating windows:~~
 
 Buttons:
-- Quests
-- Gacha
-- Crafting
-- Titles
-- Shop
-- Status
+- ✅ ~~Quests~~
+- ✅ ~~Gacha~~
+- ✅ ~~Crafting~~
+- ✅ ~~Titles~~
+- ✅ ~~Shop~~
+- ✅ ~~Status~~
 
 Behavior:
-- click → open floating window (if closed)
-- click again → focus + bring to front
-- close button hides window but remembers last position
+- ✅ ~~click → open floating window (if closed)~~
+- ✅ ~~click again → focus + bring to front~~
+- ✅ ~~close button hides window but remembers last position~~
 
 ## 7) File Structure (Recommended)
 Implement in clean modules:
@@ -247,21 +247,21 @@ Rules to enforce:
 - in Character Creation mode, panels start medium sized and spread out
 - important panel (Race/Class) should not be forced into narrow columns
 - narrative must not overlap, must stay readable
-- implement Focus Mode: double click a window = maximize it in center temporarily
+- ✅ ~~implement Focus Mode: double click a window = maximize it in center temporarily~~
 
 ## 9) Transition Between Modes (The Cool Part)
 When player clicks Initialize Avatar:
-- ✅ animate floating windows smoothly into dock positions
-- ✅ fade out creation-only panels
-- ✅ fade in game HUD panels
-- ✅ keep narrative continuous (no blank screen)
-- ✅ keep memory panel unchanged
+- ✅ ~~animate floating windows smoothly into dock positions~~
+- ✅ ~~fade out creation-only panels~~
+- ✅ ~~fade in game HUD panels~~
+- ✅ ~~keep narrative continuous (no blank screen)~~
+- ✅ ~~keep memory panel unchanged~~
 
 ## 10) Success Criteria Checklist
-- ✅ Narrative panel always visible on right
-- ✅ Character creation is modular, draggable, resizable
-- ✅ Game UI uses same system with left dock HUD and center command deck
-- ✅ Extra panels open as floating windows
-- ✅ Layout persists between sessions
-- ✅ No cramped fixed 3-column layout
-- ✅ Modern high-tech vibe
+- ✅ ~~Narrative panel always visible on right~~
+- ✅ ~~Character creation is modular, draggable, resizable~~
+- ✅ ~~Game UI uses same system with left dock HUD and center command deck~~
+- ✅ ~~Extra panels open as floating windows~~
+- ✅ ~~Layout persists between sessions~~
+- ✅ ~~No cramped fixed 3-column layout~~
+- ✅ ~~Modern high-tech vibe~~

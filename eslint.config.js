@@ -74,4 +74,18 @@ export default defineConfig([
       'no-unused-vars': 'off'
     }
   },
+  {
+    files: ['api/**/*.js', 'vite.config.js'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.node,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module'
+      },
+    },
+    rules: {
+      'no-undef': 'off'
+    }
+  },
 ])

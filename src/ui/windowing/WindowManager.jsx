@@ -3,27 +3,42 @@ import GameWindow from "./GameWindow.jsx";
 import DockZone from "./DockZone.jsx";
 import { useWindowLayout } from "./useWindowLayout.js";
 
+const DEFAULT_DOCK_METRICS = {
+  left: { min: 280, max: 340, width: 320 },
+  right: { min: 340, max: 460, width: 380, compactWidth: 80 },
+  snap: 80,
+};
+
 export default function WindowManager({
   mode = "game",
   windows = [],
   focusWindowRequest = null,
+  forceFloating = false,
 }) {
   const { layout, setWindowState, bringToFront } = useWindowLayout(mode);
-  const windowMap = layout?.windows || {};
+  const windowMap = useMemo(() => layout?.windows || {}, [layout]);
+  const rightDockCompact = Boolean(windowMap?.narrativeMemory?.dockCompact);
   const containerRef = useRef(null);
   const [bounds, setBounds] = useState({ width: 0, height: 0 });
   const [containerOffset, setContainerOffset] = useState({ left: 0, top: 0 });
   const [draggingId, setDraggingId] = useState(null);
   const [snapZone, setSnapZone] = useState(null);
   const [focusState, setFocusState] = useState({ id: null, snapshot: null });
-  const dockMetrics = useMemo(
-    () => ({
-      left: { min: 280, max: 340, width: 320 },
-      right: { min: 340, max: 460, width: 380 },
-      snap: 80,
-    }),
-    [],
-  );
+  const dockMetrics = useMemo(() => {
+    const rightWidth = rightDockCompact
+      ? DEFAULT_DOCK_METRICS.right.compactWidth
+      : DEFAULT_DOCK_METRICS.right.width;
+    return {
+      left: DEFAULT_DOCK_METRICS.left,
+      right: {
+        ...DEFAULT_DOCK_METRICS.right,
+        width: rightWidth,
+        min: rightDockCompact ? rightWidth : DEFAULT_DOCK_METRICS.right.min,
+        max: rightDockCompact ? rightWidth : DEFAULT_DOCK_METRICS.right.max,
+      },
+      snap: DEFAULT_DOCK_METRICS.snap,
+    };
+  }, [rightDockCompact]);
 
   useEffect(() => {
     const updateBounds = () => {
@@ -45,6 +60,7 @@ export default function WindowManager({
 
   const resolveSnapZone = useMemo(() => {
     return (position, size, windowConfig) => {
+      if (forceFloating) return "float";
       if (!bounds.width || !bounds.height) return "float";
       const width = size?.w || 300;
       const leftEdge = position.x;
@@ -63,7 +79,7 @@ export default function WindowManager({
       if (centerSnap) return "center";
       return "float";
     };
-  }, [bounds.height, bounds.width, dockMetrics]);
+  }, [bounds.height, bounds.width, dockMetrics, forceFloating]);
 
   const applyFocus = useCallback(
     (id, snapshot) => {
@@ -99,21 +115,33 @@ export default function WindowManager({
 
   const renderWindow = (windowConfig) => {
     const state = windowMap[windowConfig.id] || windowConfig;
-    const resolvedDockZone = windowConfig.lockDockZone || state.dockZone;
+    const resolvedDockZone = forceFloating
+      ? "float"
+      : windowConfig.lockDockZone ||
+        state.dockZone ||
+        windowConfig.dockZone ||
+        "float";
     const resolvedPosition = state.position || windowConfig.position || { x: 0, y: 0 };
     const resolvedSize = state.size || windowConfig.size || { w: 300, h: 200 };
     const isLocked = Boolean(windowConfig.lockDockZone);
+    const isDockable = forceFloating
+      ? false
+      : windowConfig.isDockable ?? !isLocked;
     const isActive = (state.zIndex ?? windowConfig.zIndex ?? 0) === maxZ;
+    const dockCompact =
+      resolvedDockZone === "right" && Boolean(state.dockCompact);
     const dockOrder = windowConfig.dockOrder || ["float", "left", "center", "right"];
     const allowedDockOrder = dockOrder.filter(
       (zone) => zone !== "right" || windowConfig.allowRightDock,
     );
+    const canDockCompact = Boolean(windowConfig.allowDockCompact);
     return (
       <GameWindow
         key={windowConfig.id}
         id={windowConfig.id}
         title={windowConfig.title}
         icon={windowConfig.icon}
+        compactLabel={windowConfig.compactLabel}
         dockZone={resolvedDockZone}
         position={resolvedPosition}
         size={resolvedSize}
@@ -126,13 +154,15 @@ export default function WindowManager({
         collapsed={state.collapsed}
         pinned={state.pinned}
         alwaysVisible={state.alwaysVisible}
+        dockCompact={dockCompact}
         zIndex={state.zIndex}
         isActive={isActive}
+        isDragging={draggingId === windowConfig.id}
         isDraggable={windowConfig.isDraggable ?? true}
         isResizable={windowConfig.isResizable ?? true}
         isCollapsible={windowConfig.isCollapsible ?? true}
         isPinnable={windowConfig.isPinnable ?? true}
-        isDockable={windowConfig.isDockable ?? !isLocked}
+        isDockable={isDockable}
         onToggleFocus={() => {
           const snapshot = {
             dockZone: resolvedDockZone,
@@ -151,7 +181,7 @@ export default function WindowManager({
           }
         }}
         onDock={
-          isLocked
+          isLocked || forceFloating
             ? undefined
             : () => {
                 if (!allowedDockOrder.length) return;
@@ -208,6 +238,14 @@ export default function WindowManager({
         onTogglePin={() =>
           setWindowState(windowConfig.id, { pinned: !state.pinned })
         }
+        onToggleDockCompact={
+          canDockCompact
+            ? () =>
+                setWindowState(windowConfig.id, {
+                  dockCompact: !dockCompact,
+                })
+            : undefined
+        }
         onClose={
           windowConfig.onClose
             ? () => windowConfig.onClose?.()
@@ -242,38 +280,46 @@ export default function WindowManager({
     );
   };
 
-  const leftWindows = windows
-    .filter(
-      (windowConfig) =>
-        (windowConfig.lockDockZone ||
-          windowMap[windowConfig.id]?.dockZone ||
-          windowConfig.dockZone) === "left",
-    )
-    .map(renderWindow);
-  const centerWindows = windows
-    .filter(
-      (windowConfig) =>
-        (windowConfig.lockDockZone ||
-          windowMap[windowConfig.id]?.dockZone ||
-          windowConfig.dockZone) === "center",
-    )
-    .map(renderWindow);
-  const rightWindows = windows
-    .filter(
-      (windowConfig) =>
-        (windowConfig.lockDockZone ||
-          windowMap[windowConfig.id]?.dockZone ||
-          windowConfig.dockZone) === "right",
-    )
-    .map(renderWindow);
-  const floatWindows = windows
-    .filter(
-      (windowConfig) =>
-        (windowConfig.lockDockZone ||
-          windowMap[windowConfig.id]?.dockZone ||
-          windowConfig.dockZone) === "float",
-    )
-    .map(renderWindow);
+  const leftWindows = forceFloating
+    ? []
+    : windows
+        .filter(
+          (windowConfig) =>
+            (windowConfig.lockDockZone ||
+              windowMap[windowConfig.id]?.dockZone ||
+              windowConfig.dockZone) === "left",
+        )
+        .map(renderWindow);
+  const centerWindows = forceFloating
+    ? []
+    : windows
+        .filter(
+          (windowConfig) =>
+            (windowConfig.lockDockZone ||
+              windowMap[windowConfig.id]?.dockZone ||
+              windowConfig.dockZone) === "center",
+        )
+        .map(renderWindow);
+  const rightWindows = forceFloating
+    ? []
+    : windows
+        .filter(
+          (windowConfig) =>
+            (windowConfig.lockDockZone ||
+              windowMap[windowConfig.id]?.dockZone ||
+              windowConfig.dockZone) === "right",
+        )
+        .map(renderWindow);
+  const floatWindows = forceFloating
+    ? windows.map(renderWindow)
+    : windows
+        .filter(
+          (windowConfig) =>
+            (windowConfig.lockDockZone ||
+              windowMap[windowConfig.id]?.dockZone ||
+              windowConfig.dockZone) === "float",
+        )
+        .map(renderWindow);
 
   const overlayStyle = useMemo(() => {
     if (!snapZone) return null;
@@ -303,6 +349,21 @@ export default function WindowManager({
     }
     return null;
   }, [dockMetrics.left.width, dockMetrics.right.width, snapZone]);
+
+  if (forceFloating) {
+    return (
+      <div
+        ref={containerRef}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+        }}
+      >
+        {floatWindows}
+      </div>
+    );
+  }
 
   return (
     <div

@@ -9,6 +9,8 @@ import WindowManager from "../windowing/WindowManager.jsx";
 import NarrativeMemoryPanel from "../panels/NarrativeMemoryPanel.jsx";
 import CreationNarrativePanel from "../panels/CreationNarrativePanel.jsx";
 import CreationIdentityPanel from "../panels/creation/CreationIdentityPanel.jsx";
+import CreationRacePanel from "../panels/creation/CreationRacePanel.jsx";
+import CreationClassPanel from "../panels/creation/CreationClassPanel.jsx";
 import CreationAttributesPanel from "../panels/creation/CreationAttributesPanel.jsx";
 import CreationTalentPanel from "../panels/creation/CreationTalentPanel.jsx";
 import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
@@ -419,18 +421,46 @@ export default function CharacterCreationMode({ onComplete }) {
       id: "identity",
       title: "Identity",
       dockZone: "float",
-      position: { x: 40, y: 90 },
-      size: { w: 360, h: 720 },
-      minWidth: 320,
-      minHeight: 520,
+      position: { x: 40, y: 80 },
+      size: { w: 320, h: 240 },
+      minWidth: 260,
+      minHeight: 200,
       content: (
         <CreationIdentityPanel
           characterName={characterName}
           onNameChange={setName}
           gender={gender}
           onGenderSelect={setGender}
+          onAction={handleClick}
+        />
+      ),
+    },
+    {
+      id: "race",
+      title: "Race",
+      dockZone: "float",
+      position: { x: 40, y: 340 },
+      size: { w: 320, h: 380 },
+      minWidth: 260,
+      minHeight: 260,
+      content: (
+        <CreationRacePanel
           selectedRace={selectedRace}
           onRaceSelect={handleRaceSelect}
+          onAction={handleClick}
+        />
+      ),
+    },
+    {
+      id: "class",
+      title: "Class",
+      dockZone: "float",
+      position: { x: 380, y: 80 },
+      size: { w: 320, h: 240 },
+      minWidth: 260,
+      minHeight: 200,
+      content: (
+        <CreationClassPanel
           selectedClass={selectedClass}
           onClassSelect={handleClassSelect}
           onAction={handleClick}
@@ -441,10 +471,10 @@ export default function CharacterCreationMode({ onComplete }) {
       id: "attributes",
       title: "Attributes",
       dockZone: "float",
-      position: { x: 420, y: 90 },
-      size: { w: 360, h: 720 },
-      minWidth: 320,
-      minHeight: 520,
+      position: { x: 380, y: 340 },
+      size: { w: 320, h: 380 },
+      minWidth: 260,
+      minHeight: 280,
       content: (
         <CreationAttributesPanel
           allocationPoints={allocationPoints}
@@ -461,10 +491,10 @@ export default function CharacterCreationMode({ onComplete }) {
       id: "talents",
       title: "Talents",
       dockZone: "float",
-      position: { x: 800, y: 90 },
-      size: { w: 320, h: 340 },
+      position: { x: 720, y: 80 },
+      size: { w: 300, h: 280 },
       minWidth: 280,
-      minHeight: 260,
+      minHeight: 220,
       content: (
         <CreationTalentPanel
           currentTalents={currentTalents}
@@ -479,8 +509,8 @@ export default function CharacterCreationMode({ onComplete }) {
       id: "skills",
       title: "Skills",
       dockZone: "float",
-      position: { x: 800, y: 450 },
-      size: { w: 320, h: 360 },
+      position: { x: 720, y: 380 },
+      size: { w: 300, h: 340 },
       minWidth: 280,
       minHeight: 280,
       content: (
@@ -535,6 +565,8 @@ export default function CharacterCreationMode({ onComplete }) {
       title: "Narrative Memory",
       dockZone: "right",
       lockDockZone: "right",
+      allowDockCompact: true,
+      compactLabel: "MEM",
       minWidth: 320,
       minHeight: 240,
       content: (
@@ -550,5 +582,5 @@ export default function CharacterCreationMode({ onComplete }) {
       ),
     },
   ];
-  return <WindowManager mode="creation" windows={windows} />;
+  return <WindowManager mode="creation" windows={windows} forceFloating={true} />;
 }

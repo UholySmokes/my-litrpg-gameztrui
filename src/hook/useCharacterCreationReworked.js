@@ -7,7 +7,7 @@
 // - Persistent selections across rerolls
 // =================================================================
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { getRandomTalents, getSkillsByClass } from "../entities/Player.js";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
@@ -173,26 +173,6 @@ export function useCharacterCreationReworked() {
     },
     [getAllClassSkills, selectedActiveSkills, selectedPassiveSkills],
   );
-
-  useEffect(() => {
-    if (!selectedClass) return;
-    const skills = getAllClassSkills(selectedClass);
-    const hasActiveSkills = skills.active.length > 0;
-    const hasPassiveSkills = skills.passive.length > 0;
-    const needsActiveSkills =
-      hasActiveSkills && (availableActiveSkills?.length || 0) === 0;
-    const needsPassiveSkills =
-      hasPassiveSkills && (availablePassiveSkills?.length || 0) === 0;
-    if (needsActiveSkills || needsPassiveSkills) {
-      generateSkillPools(selectedClass);
-    }
-  }, [
-    selectedClass,
-    availableActiveSkills,
-    availablePassiveSkills,
-    generateSkillPools,
-    getAllClassSkills,
-  ]);
 
   // Regenerate races
   const regenerateRaces = useCallback(() => {

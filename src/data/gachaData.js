@@ -4,6 +4,7 @@
 
 import { DataRegistry } from "./DataRegistry.js";
 import { random, randomChoice } from "../utils/DeterministicRandom.js";
+import { getItemData } from "../entities/ItemRegistry.js";
 
 export const gachaPools = {
   equipment: {

@@ -146,6 +146,8 @@ export default function GameMode({
       dockZone: "right",
       lockDockZone: "right",
       allowRightDock: true,
+      allowDockCompact: true,
+      compactLabel: "MEM",
       minWidth: 320,
       minHeight: 240,
       content: (
@@ -350,6 +352,7 @@ export default function GameMode({
       mode="game"
       windows={windows}
       focusWindowRequest={focusWindowRequest}
+      forceFloating={true}
     />
   );
 }

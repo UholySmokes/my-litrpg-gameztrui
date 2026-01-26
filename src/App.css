@@ -121,6 +121,21 @@
   transform: translateY(0) scale(1);
 }
 
+.game-window {
+  animation: windowPop 0.25s ease;
+}
+
+@keyframes windowPop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .mode-transition-overlay {
   position: absolute;
   inset: 0;

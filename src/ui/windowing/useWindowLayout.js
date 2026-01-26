@@ -5,6 +5,7 @@ const STORAGE_KEYS = {
   creation: "layout_characterCreation",
   game: "layout_gameMode",
 };
+const SHARED_PIN_KEY = "layout_sharedPins";
 
 const readLayout = (mode) => {
   if (typeof window === "undefined") return null;
@@ -30,9 +31,46 @@ const writeLayout = (mode, layout) => {
   }
 };
 
+const readSharedPins = () => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(SHARED_PIN_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
+const writeSharedPins = (pins) => {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(SHARED_PIN_KEY, JSON.stringify(pins));
+  } catch {
+    return;
+  }
+};
+
+const applySharedPins = (layout) => {
+  if (!layout || !layout.windows) return layout;
+  const pins = readSharedPins();
+  if (!pins || typeof pins.narrativeMemory !== "boolean") return layout;
+  return {
+    ...layout,
+    windows: {
+      ...layout.windows,
+      narrativeMemory: {
+        ...layout.windows.narrativeMemory,
+        pinned: pins.narrativeMemory,
+      },
+    },
+  };
+};
+
 export function useWindowLayout(mode = "game") {
   const initialLayout = useMemo(() => {
-    return readLayout(mode) || layoutPresets[mode] || layoutPresets.game;
+    const base = readLayout(mode) || layoutPresets[mode] || layoutPresets.game;
+    return applySharedPins(base);
   }, [mode]);
   const [layouts, setLayouts] = useState(() => ({ [mode]: initialLayout }));
   const layout = layouts[mode] || initialLayout;
@@ -40,6 +78,16 @@ export function useWindowLayout(mode = "game") {
   const setWindowState = useCallback((id, updates) => {
     setLayouts((prev) => {
       const currentLayout = prev[mode] || initialLayout;
+      if (
+        id === "narrativeMemory" &&
+        Object.prototype.hasOwnProperty.call(updates, "pinned")
+      ) {
+        const existingPins = readSharedPins() || {};
+        writeSharedPins({
+          ...existingPins,
+          narrativeMemory: updates.pinned,
+        });
+      }
       const next = {
         ...currentLayout,
         windows: {

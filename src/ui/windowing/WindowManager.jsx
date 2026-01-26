@@ -158,6 +158,7 @@ export default function WindowManager({
         zIndex={state.zIndex}
         isActive={isActive}
         isDragging={draggingId === windowConfig.id}
+        freeDrag={forceFloating}
         isDraggable={windowConfig.isDraggable ?? true}
         isResizable={windowConfig.isResizable ?? true}
         isCollapsible={windowConfig.isCollapsible ?? true}

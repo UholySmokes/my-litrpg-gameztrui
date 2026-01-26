@@ -11,6 +11,7 @@ export default function GameWindow({
   maxWidth,
   maxHeight,
   bounds,
+  containerOffset,
   collapsed,
   pinned,
   alwaysVisible,
@@ -34,13 +35,24 @@ export default function GameWindow({
 
   const handlePointerDown = useCallback(
     (event) => {
-      if (!isDraggable || dockZone !== "float") return;
+      if (!isDraggable) return;
       onFocus?.();
-      onDragStart?.();
+      const rect = dragRef.current?.getBoundingClientRect();
+      onDragStart?.({ rect });
       const startX = event.clientX;
       const startY = event.clientY;
-      const startLeft = position?.x || 0;
-      const startTop = position?.y || 0;
+      const startLeft =
+        dockZone === "float"
+          ? position?.x || 0
+          : rect && containerOffset
+            ? rect.left - containerOffset.left
+            : position?.x || 0;
+      const startTop =
+        dockZone === "float"
+          ? position?.y || 0
+          : rect && containerOffset
+            ? rect.top - containerOffset.top
+            : position?.y || 0;
       const move = (moveEvent) => {
         let nextX = startLeft + (moveEvent.clientX - startX);
         let nextY = startTop + (moveEvent.clientY - startY);
@@ -61,7 +73,18 @@ export default function GameWindow({
       window.addEventListener("pointermove", move);
       window.addEventListener("pointerup", end);
     },
-    [bounds, dockZone, isDraggable, onDragEnd, onDragMove, onDragStart, onFocus, position, size],
+    [
+      bounds,
+      containerOffset,
+      dockZone,
+      isDraggable,
+      onDragEnd,
+      onDragMove,
+      onDragStart,
+      onFocus,
+      position,
+      size,
+    ],
   );
 
   const handleResizePointerDown = useCallback(
@@ -126,7 +149,7 @@ export default function GameWindow({
           padding: "0.4rem 0.6rem",
           background: "rgba(5, 8, 12, 0.85)",
           borderBottom: "1px solid rgba(0, 243, 255, 0.15)",
-          cursor: dockZone === "float" ? "grab" : "default",
+          cursor: isDraggable ? "grab" : "default",
           fontFamily: "monospace",
           color: "var(--holo-cyan)",
           fontSize: "0.75rem",

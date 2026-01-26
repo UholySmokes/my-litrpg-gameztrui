@@ -8,6 +8,7 @@ export default function WindowManager({ mode = "game", windows = [] }) {
   const windowMap = layout?.windows || {};
   const containerRef = useRef(null);
   const [bounds, setBounds] = useState({ width: 0, height: 0 });
+  const [containerOffset, setContainerOffset] = useState({ left: 0, top: 0 });
   const [draggingId, setDraggingId] = useState(null);
   const [snapZone, setSnapZone] = useState(null);
   const [focusState, setFocusState] = useState({ id: null, snapshot: null });
@@ -25,6 +26,7 @@ export default function WindowManager({ mode = "game", windows = [] }) {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       setBounds({ width: rect.width, height: rect.height });
+      setContainerOffset({ left: rect.left, top: rect.top });
     };
     updateBounds();
     window.addEventListener("resize", updateBounds);
@@ -95,6 +97,7 @@ export default function WindowManager({ mode = "game", windows = [] }) {
         maxWidth={windowConfig.maxWidth}
         maxHeight={windowConfig.maxHeight}
         bounds={bounds}
+        containerOffset={containerOffset}
         collapsed={state.collapsed}
         pinned={state.pinned}
         alwaysVisible={state.alwaysVisible}
@@ -118,11 +121,22 @@ export default function WindowManager({ mode = "game", windows = [] }) {
             applyFocus(windowConfig.id, snapshot);
           }
         }}
-        onDragStart={() => {
+        onDragStart={(payload) => {
           if (isLocked) return;
           if (focusState.id === windowConfig.id) {
             clearFocus();
           }
+          const rect = payload?.rect;
+          if (rect) {
+            const nextX = Math.max(0, rect.left - containerOffset.left);
+            const nextY = Math.max(0, rect.top - containerOffset.top);
+            setWindowState(windowConfig.id, {
+              dockZone: "float",
+              position: { x: nextX, y: nextY },
+              size: { w: rect.width, h: rect.height },
+            });
+          }
+          bringToFront(windowConfig.id);
           setDraggingId(windowConfig.id);
           setSnapZone(null);
         }}

@@ -21,6 +21,7 @@ export default function GameWindow({
   zIndex,
   isActive,
   isDragging = false,
+  freeDrag = false,
   isDraggable = true,
   isResizable = true,
   isCollapsible = true,
@@ -81,7 +82,7 @@ export default function GameWindow({
       const move = (moveEvent) => {
         let nextX = startLeft + (moveEvent.clientX - startX);
         let nextY = startTop + (moveEvent.clientY - startY);
-        if (bounds && bounds.width > 0 && bounds.height > 0) {
+        if (!freeDrag && bounds && bounds.width > 0 && bounds.height > 0) {
           const maxX = Math.max(0, bounds.width - (size?.w || 300));
           const maxY = Math.max(0, bounds.height - (size?.h || 200));
           nextX = Math.min(Math.max(0, nextX), maxX);
@@ -102,6 +103,7 @@ export default function GameWindow({
       bounds,
       containerOffset,
       dockZone,
+      freeDrag,
       isDraggable,
       onDragEnd,
       onDragMove,

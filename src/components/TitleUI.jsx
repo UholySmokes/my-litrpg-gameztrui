@@ -10,10 +10,12 @@ export default function TitleUI({
   onEquip,
   onUnequip,
   onPurchase,
+  variant = "modal",
 }) {
   const [activeTab, setActiveTab] = useState("unlocked");
 
-  if (!isOpen) return null;
+  const isModal = variant !== "window";
+  if (isModal && !isOpen) return null;
 
   const unlockedTitles = (gameState.player.unlockedTitles || [])
     .map((id) => titleDatabase.find((t) => t.id === id))
@@ -41,36 +43,32 @@ export default function TitleUI({
     return true;
   };
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
+  const panel = (
+    <div className="holo-panel" style={{ padding: "1.5rem" }}>
       <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: "700px", maxHeight: "90vh", overflow: "auto" }}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "1rem",
+        }}
       >
-        <div className="holo-panel" style={{ padding: "1.5rem" }}>
-          <div
+        <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>
+          [TITLE SYSTEM]
+        </h2>
+        {onClose && (
+          <button
+            className="holo-button"
+            onClick={onClose}
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "1rem",
+              borderColor: "var(--holo-alert)",
+              color: "var(--holo-alert)",
             }}
           >
-            <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>
-              [TITLE SYSTEM]
-            </h2>
-            <button
-              className="holo-button"
-              onClick={onClose}
-              style={{
-                borderColor: "var(--holo-alert)",
-                color: "var(--holo-alert)",
-              }}
-            >
-              Close
-            </button>
-          </div>
+            Close
+          </button>
+        )}
+      </div>
 
           <div style={{ marginBottom: "1rem" }}>
             <div style={{ color: "var(--text-main)" }}>
@@ -287,7 +285,21 @@ export default function TitleUI({
               </div>
             )}
           </div>
-        </div>
+    </div>
+  );
+
+  if (!isModal) {
+    return <div style={{ maxHeight: "100%", overflow: "auto" }}>{panel}</div>;
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: "700px", maxHeight: "90vh", overflow: "auto" }}
+      >
+        {panel}
       </div>
     </div>
   );

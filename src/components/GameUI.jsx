@@ -1,5 +1,5 @@
 // GameUI.jsx - Technical Cleanup & Dashboard Refactor
-import React, { useState, useRef, useEffect, lazy, Suspense } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useGameEngine } from "../hook/usegamestate";
 import { useNarrative } from "../hook/useNarrative";
 import AdminTools from "./AdminTools";
@@ -8,13 +8,6 @@ import { gachaPools } from "../data/gachaData.js";
 import { getTitleBonuses } from "../core/titleLogic.js";
 import CharacterCreationMode from "../ui/modes/CharacterCreationMode.jsx";
 import GameMode from "../ui/modes/GameMode.jsx";
-
-const ShopUI = lazy(() => import("./ShopUI"));
-const GachaUI = lazy(() => import("./GachaUI"));
-const TitleUI = lazy(() => import("./TitleUI"));
-const ProfessionUI = lazy(() => import("./ProfessionUI"));
-const StatusOverlay = lazy(() => import("./StatusOverlay.jsx"));
-const SaveLoadUI = lazy(() => import("./SaveLoadUI.jsx"));
 
 const TYPEWRITER_CHAR_DELAY_MS = 28;
 
@@ -81,6 +74,7 @@ export default function GameUI({ user }) {
   const [characterCreated, setCharacterCreated] = useState(false);
   const [showStatusOverlay, setShowStatusOverlay] = useState(false);
   const [showSaveLoad, setShowSaveLoad] = useState(false);
+  const [showQuests, setShowQuests] = useState(false);
 
   const {
     state,
@@ -107,6 +101,7 @@ export default function GameUI({ user }) {
     sanitizedNarrativeSummary !== latestNarrativeText;
   const narrativeMemoryRef = useRef(null);
   const autosaveTimerRef = useRef(null);
+  const transitionAudioRef = useRef(null);
   useEffect(() => {
     const container = narrativeMemoryRef.current;
     if (container) {
@@ -206,7 +201,14 @@ export default function GameUI({ user }) {
         completed: [],
       },
     }));
-    setCharacterCreated(true);
+    setIsTransitioning(true);
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current);
+    }
+    transitionTimeoutRef.current = setTimeout(() => {
+      setCharacterCreated(true);
+      setIsTransitioning(false);
+    }, transitionDurationMs);
 
     // Generate initial narrative after character creation using seeded quests
     try {
@@ -518,61 +520,291 @@ export default function GameUI({ user }) {
     container.scrollBy({ top: delta, behavior: "smooth" });
   };
 
-  // Show character creation if character not created (AFTER all hooks)
-  if (!characterCreated) {
-    return <CharacterCreationMode onComplete={handleCharacterCreationComplete} />;
-  }
+  const transitionDurationMs = 1200;
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const transitionTimeoutRef = useRef(null);
+  useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+      }
+    };
+  }, []);
+  useEffect(() => {
+    if (!isTransitioning) return;
+    if (typeof window === "undefined") return;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    try {
+      if (!transitionAudioRef.current) {
+        transitionAudioRef.current = new AudioCtx();
+      }
+      const ctx = transitionAudioRef.current;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const classId = state?.player?.class?.id || state?.player?.class;
+      const audioProfile = (() => {
+        switch (classId) {
+          case "warrior":
+            return {
+              type: "square",
+              start: 180,
+              end: 420,
+              gain: 0.07,
+              duration: 0.45,
+            };
+          case "mage":
+            return {
+              type: "sine",
+              start: 300,
+              end: 980,
+              gain: 0.08,
+              duration: 0.5,
+            };
+          case "rogue":
+            return {
+              type: "triangle",
+              start: 260,
+              end: 720,
+              gain: 0.06,
+              duration: 0.35,
+            };
+          case "monk":
+            return {
+              type: "sine",
+              start: 200,
+              end: 600,
+              gain: 0.055,
+              duration: 0.4,
+            };
+          case "paladin":
+            return {
+              type: "sawtooth",
+              start: 220,
+              end: 520,
+              gain: 0.07,
+              duration: 0.5,
+            };
+          case "necromancer":
+            return {
+              type: "sawtooth",
+              start: 140,
+              end: 420,
+              gain: 0.06,
+              duration: 0.55,
+            };
+          case "ranger":
+            return {
+              type: "triangle",
+              start: 240,
+              end: 680,
+              gain: 0.06,
+              duration: 0.4,
+            };
+          case "berserker":
+            return {
+              type: "square",
+              start: 160,
+              end: 520,
+              gain: 0.08,
+              duration: 0.45,
+            };
+          default:
+            return {
+              type: "sine",
+              start: 220,
+              end: 880,
+              gain: 0.08,
+              duration: 0.5,
+            };
+        }
+      })();
+      osc.type = audioProfile.type;
+      osc.frequency.setValueAtTime(audioProfile.start, now);
+      osc.frequency.exponentialRampToValueAtTime(
+        audioProfile.end,
+        now + audioProfile.duration * 0.5,
+      );
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(
+        audioProfile.gain,
+        now + 0.05,
+      );
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        now + audioProfile.duration,
+      );
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + audioProfile.duration + 0.05);
+    } catch {
+      return;
+    }
+  }, [isTransitioning, state?.player?.class]);
+
+  const showCreationMode = !characterCreated;
+  const showGameMode = characterCreated || isTransitioning;
+  const [focusWindowRequest, setFocusWindowRequest] = useState(null);
+  const requestWindowFocus = (id) => {
+    setFocusWindowRequest({ id, nonce: Date.now() });
+  };
+  const toggleWindow = (id, isOpen, setOpen) => {
+    if (isOpen) {
+      requestWindowFocus(id);
+      return;
+    }
+    setOpen(true);
+    requestWindowFocus(id);
+  };
 
   return (
     <div className="app-frame">
       <div className="app-container">
-        <div className="command-deck__quick-actions">
-          <button className="holo-button" onClick={() => setShowShop(true)}>
-            [SHOP]
-          </button>
-          <button className="holo-button" onClick={() => setShowGacha(true)}>
-            [GACHA]
-          </button>
-          <button className="holo-button" onClick={() => setShowProfessions(true)}>
-            [CRAFT]
-          </button>
-          <button
-            className="holo-button"
-            onClick={() => setShowStatusOverlay(true)}
+        <div className="mode-stage">
+          {isTransitioning && (
+            <div className="mode-transition-overlay" aria-hidden="true">
+              <div className="mode-transition-overlay__scan" />
+              <div className="mode-transition-overlay__glow" />
+              <div className="mode-transition-overlay__copy">
+                SYSTEM HANDOFF
+              </div>
+              <div className="mode-transition-overlay__subcopy">
+                Synchronizing narrative stream...
+              </div>
+            </div>
+          )}
+          <div
+            className={[
+              "mode-shell",
+              "mode-shell--creation",
+              showCreationMode ? "mode-shell--active" : "",
+              isTransitioning ? "mode-shell--fade-out" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
           >
-            [STATUS]
-          </button>
-          <button className="holo-button" onClick={() => setShowTitleSystem(true)}>
-            [TITLES]
-          </button>
-          <button className="holo-button" onClick={() => setShowSaveLoad(true)}>
-            [SAVE/LOAD]
-          </button>
+            <CharacterCreationMode onComplete={handleCharacterCreationComplete} />
+          </div>
+          <div
+            className={[
+              "mode-shell",
+              "mode-shell--game",
+              showGameMode ? "mode-shell--active" : "",
+              isTransitioning ? "mode-shell--fade-in" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            <div className="command-deck__quick-actions">
+              <button
+                className="holo-button"
+                onClick={() => toggleWindow("quests", showQuests, setShowQuests)}
+              >
+                [QUESTS]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() => toggleWindow("shop", showShop, setShowShop)}
+              >
+                [SHOP]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() => toggleWindow("gacha", showGacha, setShowGacha)}
+              >
+                [GACHA]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() =>
+                  toggleWindow("craft", showProfessions, setShowProfessions)
+                }
+              >
+                [CRAFT]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() =>
+                  toggleWindow("status", showStatusOverlay, setShowStatusOverlay)
+                }
+              >
+                [STATUS]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() =>
+                  toggleWindow("titles", showTitleSystem, setShowTitleSystem)
+                }
+              >
+                [TITLES]
+              </button>
+              <button
+                className="holo-button"
+                onClick={() =>
+                  toggleWindow("saveLoad", showSaveLoad, setShowSaveLoad)
+                }
+              >
+                [SAVE/LOAD]
+              </button>
+            </div>
+            <GameMode
+              player={state?.player}
+              config={state?.config}
+              gameState={state}
+              chatLog={chatLog}
+              userInput={userInput}
+              onInputChange={setUserInput}
+              onSubmit={handleSubmit}
+              isLoading={isLoading}
+              inputRef={inputRef}
+              suggestions={actionSuggestions}
+              onSuggestionSelect={handleSuggestionClick}
+              narrativeSummary={shouldShowNarrativeSummary ? narrativeSummary : ""}
+              narrativeEntries={recentNarrativeEntries}
+              latestEntry={latestNarrativeEntry}
+              latestEntryText={latestEntryTypewriterContent}
+              narrativeMemoryRef={narrativeMemoryRef}
+              onScrollUp={() => handleNarrativeMemoryScroll("up")}
+              onScrollDown={() => handleNarrativeMemoryScroll("down")}
+              quests={state?.quests}
+              combatState={state?.combat}
+              onAttack={handleCombatAttack}
+              onUseSkill={handleSkillUse}
+              onEscape={handleCombatEscape}
+              showShop={showShop}
+              showGacha={showGacha}
+              showTitleSystem={showTitleSystem}
+              showProfessions={showProfessions}
+              showStatusOverlay={showStatusOverlay}
+              showSaveLoad={showSaveLoad}
+              showQuests={showQuests}
+              onCloseShop={() => setShowShop(false)}
+              onCloseGacha={() => setShowGacha(false)}
+              onCloseTitleSystem={() => setShowTitleSystem(false)}
+              onCloseProfessions={() => setShowProfessions(false)}
+              onCloseStatusOverlay={() => setShowStatusOverlay(false)}
+              onCloseSaveLoad={() => setShowSaveLoad(false)}
+              onCloseQuests={() => setShowQuests(false)}
+              onShopPurchase={handleShopPurchase}
+              onGachaPull={handleGachaPull}
+              onTitleEquip={handleTitleEquip}
+              onTitleUnequip={handleTitleUnequip}
+              onTitlePurchase={handleTitlePurchase}
+              onCraft={handleCraft}
+              onAllocateAttribute={handleAllocateAttributePoint}
+              onDeallocateAttribute={handleDeallocateAttributePoint}
+              onEvolveSkill={handleEvolveSkill}
+              onFuseSkills={handleFuseSkills}
+              onEvolveClass={handleEvolveClass}
+              onLoadState={handleLoadState}
+              addSystemMessage={addSystemMessage}
+              user={user}
+              focusWindowRequest={focusWindowRequest}
+            />
+          </div>
         </div>
-        <GameMode
-          player={state?.player}
-          config={state?.config}
-          chatLog={chatLog}
-          userInput={userInput}
-          onInputChange={setUserInput}
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-          inputRef={inputRef}
-          suggestions={actionSuggestions}
-          onSuggestionSelect={handleSuggestionClick}
-          narrativeSummary={shouldShowNarrativeSummary ? narrativeSummary : ""}
-          narrativeEntries={recentNarrativeEntries}
-          latestEntry={latestNarrativeEntry}
-          latestEntryText={latestEntryTypewriterContent}
-          narrativeMemoryRef={narrativeMemoryRef}
-          onScrollUp={() => handleNarrativeMemoryScroll("up")}
-          onScrollDown={() => handleNarrativeMemoryScroll("down")}
-          quests={state?.quests}
-          combatState={state?.combat}
-          onAttack={handleCombatAttack}
-          onUseSkill={handleSkillUse}
-          onEscape={handleCombatEscape}
-        />
       </div>
 
       {state?.player?.isDead && (
@@ -609,72 +841,6 @@ export default function GameUI({ user }) {
           </button>
         </div>
       )}
-
-      <Suspense fallback={null}>
-        {showShop && (
-          <ShopUI
-            isOpen={showShop}
-            onClose={() => setShowShop(false)}
-            gameState={state}
-            onPurchase={handleShopPurchase}
-          />
-        )}
-
-        {showGacha && (
-          <GachaUI
-            isOpen={showGacha}
-            onClose={() => setShowGacha(false)}
-            gameState={state}
-            onPull={handleGachaPull}
-          />
-        )}
-
-        {showTitleSystem && (
-          <TitleUI
-            isOpen={showTitleSystem}
-            onClose={() => setShowTitleSystem(false)}
-            gameState={state}
-            onUnlock={() => {}}
-            onEquip={handleTitleEquip}
-            onUnequip={handleTitleUnequip}
-            onPurchase={handleTitlePurchase}
-          />
-        )}
-
-        {showProfessions && (
-          <ProfessionUI
-            isOpen={showProfessions}
-            onClose={() => setShowProfessions(false)}
-            gameState={state}
-            onCraft={handleCraft}
-          />
-        )}
-
-        {showStatusOverlay && (
-          <StatusOverlay
-            player={state?.player}
-            config={state?.config}
-            isOpen={showStatusOverlay}
-            onClose={() => setShowStatusOverlay(false)}
-            onAllocateAttribute={handleAllocateAttributePoint}
-            onDeallocateAttribute={handleDeallocateAttributePoint}
-            onEvolveSkill={handleEvolveSkill}
-            onFuseSkills={handleFuseSkills}
-            onEvolveClass={handleEvolveClass}
-          />
-        )}
-
-        {showSaveLoad && (
-          <SaveLoadUI
-            isOpen={showSaveLoad}
-            onClose={() => setShowSaveLoad(false)}
-            gameState={state}
-            onLoadState={handleLoadState}
-            addSystemMessage={addSystemMessage}
-            user={user}
-          />
-        )}
-      </Suspense>
 
       <AdminTools dispatch={dispatchSystemEvent} getState={() => state} />
     </div>

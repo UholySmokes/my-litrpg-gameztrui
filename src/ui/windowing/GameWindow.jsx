@@ -3,6 +3,7 @@ import { useCallback, useRef } from "react";
 export default function GameWindow({
   id,
   title,
+  icon,
   dockZone,
   position,
   size,
@@ -16,13 +17,18 @@ export default function GameWindow({
   pinned,
   alwaysVisible,
   zIndex,
+  isActive,
   isDraggable = true,
   isResizable = true,
+  isCollapsible = true,
+  isPinnable = true,
+  isDockable = true,
   onDragStart,
   onDragMove,
   onToggleFocus,
   onToggleCollapse,
   onTogglePin,
+  onDock,
   onClose,
   onDragEnd,
   onResizeEnd,
@@ -89,14 +95,15 @@ export default function GameWindow({
 
   const handleResizePointerDown = useCallback(
     (event) => {
-      if (!isResizable || dockZone !== "float") return;
+      if (!isResizable) return;
       onFocus?.();
+      const allowWidthResize = dockZone === "float";
       const startX = event.clientX;
       const startY = event.clientY;
       const startW = size?.w || 300;
       const startH = size?.h || 200;
       const move = (moveEvent) => {
-        let nextW = startW + (moveEvent.clientX - startX);
+        let nextW = allowWidthResize ? startW + (moveEvent.clientX - startX) : startW;
         let nextH = startH + (moveEvent.clientY - startY);
         const maxAllowedW =
           maxWidth ??
@@ -127,11 +134,17 @@ export default function GameWindow({
     zIndex: zIndex || 1,
     backdropFilter: "blur(14px)",
     background: "rgba(10, 12, 18, 0.78)",
-    border: "1px solid rgba(0, 243, 255, 0.3)",
+    border: isActive
+      ? "1px solid rgba(0, 243, 255, 0.75)"
+      : "1px solid rgba(0, 243, 255, 0.3)",
     borderRadius: "16px",
-    boxShadow: "0 0 18px rgba(0, 243, 255, 0.18)",
+    boxShadow: isActive
+      ? "0 0 28px rgba(0, 243, 255, 0.38)"
+      : "0 0 18px rgba(0, 243, 255, 0.18)",
     overflow: "hidden",
     display: alwaysVisible || !collapsed ? "block" : "none",
+    transition:
+      "left 0.2s ease, top 0.2s ease, width 0.2s ease, height 0.2s ease, box-shadow 0.2s ease",
   };
 
   return (
@@ -158,24 +171,41 @@ export default function GameWindow({
         onPointerDown={handlePointerDown}
         onDoubleClick={() => onToggleFocus?.()}
       >
-        <div>{title}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          {icon && <span>{icon}</span>}
+          <span>{title}</span>
+        </div>
         <div style={{ display: "flex", gap: "0.35rem" }}>
-          <button
-            className="holo-button"
-            type="button"
-            onClick={onToggleCollapse}
-            style={{ padding: "0 0.4rem", fontSize: "0.65rem" }}
-          >
-            {collapsed ? "+" : "–"}
-          </button>
-          <button
-            className="holo-button"
-            type="button"
-            onClick={onTogglePin}
-            style={{ padding: "0 0.4rem", fontSize: "0.65rem" }}
-          >
-            {pinned ? "📌" : "📍"}
-          </button>
+          {isDockable && onDock && (
+            <button
+              className="holo-button"
+              type="button"
+              onClick={onDock}
+              style={{ padding: "0 0.4rem", fontSize: "0.65rem" }}
+            >
+              ⇄
+            </button>
+          )}
+          {isCollapsible && (
+            <button
+              className="holo-button"
+              type="button"
+              onClick={onToggleCollapse}
+              style={{ padding: "0 0.4rem", fontSize: "0.65rem" }}
+            >
+              {collapsed ? "+" : "–"}
+            </button>
+          )}
+          {isPinnable && (
+            <button
+              className="holo-button"
+              type="button"
+              onClick={onTogglePin}
+              style={{ padding: "0 0.4rem", fontSize: "0.65rem" }}
+            >
+              {pinned ? "📌" : "📍"}
+            </button>
+          )}
           {onClose && (
             <button
               className="holo-button"
@@ -189,19 +219,22 @@ export default function GameWindow({
         </div>
       </div>
       {!collapsed && <div style={{ padding: "0.75rem" }}>{children}</div>}
-      {dockZone === "float" && isResizable && (
+      {isResizable && (dockZone === "float" || dockZone === "left" || dockZone === "center") && (
         <div
           ref={resizeRef}
           onPointerDown={handleResizePointerDown}
           style={{
             position: "absolute",
-            right: 6,
+            right: dockZone === "float" ? 6 : 12,
             bottom: 6,
-            width: 12,
+            width: dockZone === "float" ? 12 : 40,
             height: 12,
-            cursor: "nwse-resize",
-            borderRight: "2px solid rgba(0, 243, 255, 0.5)",
+            cursor: dockZone === "float" ? "nwse-resize" : "ns-resize",
+            borderRight:
+              dockZone === "float" ? "2px solid rgba(0, 243, 255, 0.5)" : "none",
             borderBottom: "2px solid rgba(0, 243, 255, 0.5)",
+            left: dockZone === "float" ? "auto" : "50%",
+            transform: dockZone === "float" ? "none" : "translateX(-50%)",
           }}
         />
       )}

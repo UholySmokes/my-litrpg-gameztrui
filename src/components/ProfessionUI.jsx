@@ -7,10 +7,17 @@ import {
   getFullProfessionRank,
 } from "../systems/profession/ProfessionRegistry.js";
 
-export default function ProfessionUI({ isOpen, onClose, gameState, onCraft }) {
+export default function ProfessionUI({
+  isOpen,
+  onClose,
+  gameState,
+  onCraft,
+  variant = "modal",
+}) {
   const [selectedProfession, setSelectedProfession] = useState(null);
 
-  if (!isOpen) return null;
+  const isModal = variant !== "window";
+  if (isModal && !isOpen) return null;
 
   if (!gameState || !gameState.player) {
     return (
@@ -54,36 +61,32 @@ export default function ProfessionUI({ isOpen, onClose, gameState, onCraft }) {
     return getFullProfessionRank(xp);
   };
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
+  const panel = (
+    <div className="holo-panel" style={{ padding: "1.5rem" }}>
       <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: "900px", maxHeight: "90vh", overflow: "auto" }}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "1rem",
+        }}
       >
-        <div className="holo-panel" style={{ padding: "1.5rem" }}>
-          <div
+        <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>
+          [PROFESSIONS]
+        </h2>
+        {onClose && (
+          <button
+            className="holo-button"
+            onClick={onClose}
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "1rem",
+              borderColor: "var(--holo-alert)",
+              color: "var(--holo-alert)",
             }}
           >
-            <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>
-              [PROFESSIONS]
-            </h2>
-            <button
-              className="holo-button"
-              onClick={onClose}
-              style={{
-                borderColor: "var(--holo-alert)",
-                color: "var(--holo-alert)",
-              }}
-            >
-              Close
-            </button>
-          </div>
+            Close
+          </button>
+        )}
+      </div>
 
           <div
             style={{
@@ -276,6 +279,20 @@ export default function ProfessionUI({ isOpen, onClose, gameState, onCraft }) {
             </div>
           </div>
         </div>
+  );
+
+  if (!isModal) {
+    return <div style={{ maxHeight: "100%", overflow: "auto" }}>{panel}</div>;
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: "900px", maxHeight: "90vh", overflow: "auto" }}
+      >
+        {panel}
       </div>
     </div>
   );

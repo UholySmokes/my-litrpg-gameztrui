@@ -183,9 +183,15 @@ export default function WindowManager({
     const resolvedPosition = state.position || windowConfig.position || { x: 0, y: 0 };
     const resolvedSize = state.size || windowConfig.size || { w: 300, h: 200 };
     const isLocked = Boolean(windowConfig.lockDockZone);
+    const moveOnly = forceFloating && (windowConfig.moveOnly ?? true);
     const isDockable = forceFloating
       ? false
       : windowConfig.isDockable ?? !isLocked;
+    const isResizable =
+      windowConfig.isResizable ?? (moveOnly ? false : true);
+    const isCollapsible =
+      windowConfig.isCollapsible ?? (moveOnly ? false : true);
+    const isPinnable = windowConfig.isPinnable ?? (moveOnly ? false : true);
     const isActive = (state.zIndex ?? windowConfig.zIndex ?? 0) === maxZ;
     const dockCompact =
       resolvedDockZone === "right" && Boolean(state.dockCompact);
@@ -193,7 +199,8 @@ export default function WindowManager({
     const allowedDockOrder = dockOrder.filter(
       (zone) => zone !== "right" || windowConfig.allowRightDock,
     );
-    const canDockCompact = Boolean(windowConfig.allowDockCompact);
+    const canDockCompact = Boolean(windowConfig.allowDockCompact) && !moveOnly;
+    const resolvedCollapsed = isCollapsible ? state.collapsed : false;
     return (
       <GameWindow
         key={windowConfig.id}
@@ -210,7 +217,7 @@ export default function WindowManager({
         maxHeight={windowConfig.maxHeight}
         bounds={bounds}
         containerOffset={containerOffset}
-        collapsed={state.collapsed}
+        collapsed={resolvedCollapsed}
         pinned={state.pinned}
         alwaysVisible={state.alwaysVisible}
         dockCompact={dockCompact}
@@ -219,16 +226,16 @@ export default function WindowManager({
         isDragging={draggingId === windowConfig.id}
         freeDrag={forceFloating}
         isDraggable={windowConfig.isDraggable ?? true}
-        isResizable={windowConfig.isResizable ?? true}
-        isCollapsible={windowConfig.isCollapsible ?? true}
-        isPinnable={windowConfig.isPinnable ?? true}
+        isResizable={isResizable}
+        isCollapsible={isCollapsible}
+        isPinnable={isPinnable}
         isDockable={isDockable}
         onToggleFocus={() => {
           const snapshot = {
             dockZone: resolvedDockZone,
             position: resolvedPosition,
             size: resolvedSize,
-            collapsed: state.collapsed,
+            collapsed: resolvedCollapsed,
             zIndex: state.zIndex,
           };
           if (focusState.id && focusState.id !== windowConfig.id) {
@@ -309,7 +316,7 @@ export default function WindowManager({
         onClose={
           windowConfig.onClose
             ? () => windowConfig.onClose?.()
-            : state.alwaysVisible
+            : state.alwaysVisible || !isCollapsible
               ? undefined
               : () => setWindowState(windowConfig.id, { collapsed: true })
         }

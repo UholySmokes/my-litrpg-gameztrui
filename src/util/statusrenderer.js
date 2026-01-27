@@ -7,6 +7,7 @@ import {
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
 import { getEffectiveAttributes, getTitleById } from "../core/titleLogic.js";
+import { getTalentById } from "../entities/Player.js";
 
 export function renderStatusBlock(player, config) {
   const name = player.name || "Unknown";
@@ -21,7 +22,11 @@ export function renderStatusBlock(player, config) {
     typeof player.class === "string"
       ? player.class
       : player.class?.name || player.class?.id || "None";
-  const talent = player.talent || "None";
+  const talentIds = Array.isArray(player.talents) ? player.talents : [];
+  const talentNames = talentIds
+    .map((id) => getTalentById(id)?.name || id)
+    .filter(Boolean);
+  const talent = talentNames.length ? talentNames.join(", ") : player.talent || "None";
   const resolvedConfig =
     config && typeof config === "object" && !Array.isArray(config)
       ? config
@@ -118,7 +123,7 @@ export function renderStatusBlock(player, config) {
 Level:  ${level} (XP: ${formatNumberCompact(xpCurrent)}/${formatNumberCompact(xpMax)})   Title: ${title}
 Race:   ${race}        (Current Evolution Stage)
 Class:  ${playerClass}
-Talent: ${talent}
+Talents: ${talent}
 --------------------------------------------------
 [VITALITY]
 Health: ${hpCurrent}/${hpMax}      Mana: ${manaCurrent}/${manaMax}

@@ -19,6 +19,7 @@ export default function WindowManager({
   const windowMap = useMemo(() => layout?.windows || {}, [layout]);
   const rightDockCompact = Boolean(windowMap?.narrativeMemory?.dockCompact);
   const containerRef = useRef(null);
+  const fullscreenOnceRef = useRef(new Set());
   const [bounds, setBounds] = useState({ width: 0, height: 0 });
   const [containerOffset, setContainerOffset] = useState({ left: 0, top: 0 });
   const [draggingId, setDraggingId] = useState(null);
@@ -57,6 +58,38 @@ export default function WindowManager({
       bringToFront(focusWindowRequest.id);
     }
   }, [bringToFront, focusWindowRequest]);
+
+  useEffect(() => {
+    if (!bounds.width || !bounds.height) return;
+    windows.forEach((windowConfig) => {
+      if (!windowConfig?.openFullscreenOnce) return;
+      const id = windowConfig.id;
+      if (!id || fullscreenOnceRef.current.has(id)) return;
+      const storageKey = `window_fullscreen_once_${mode}_${id}`;
+      let hasOpened = false;
+      try {
+        hasOpened = localStorage.getItem(storageKey) === "1";
+      } catch {
+        hasOpened = false;
+      }
+      if (hasOpened) {
+        fullscreenOnceRef.current.add(id);
+        return;
+      }
+      setWindowState(id, {
+        dockZone: "float",
+        position: { x: 0, y: 0 },
+        size: { w: bounds.width, h: bounds.height },
+        collapsed: false,
+      });
+      fullscreenOnceRef.current.add(id);
+      try {
+        localStorage.setItem(storageKey, "1");
+      } catch {
+        return;
+      }
+    });
+  }, [bounds.height, bounds.width, mode, setWindowState, windows]);
 
   const resolveSnapZone = useMemo(() => {
     return (position, size, windowConfig) => {

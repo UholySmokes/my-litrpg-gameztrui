@@ -474,6 +474,30 @@ const gameReducer = (state, action) => {
       };
     }
 
+    case "UNEQUIP_ITEM": {
+      const slot = action.payload?.slot;
+      if (!slot || !state.player) return state;
+      const equipment = { ...(state.player.equipment || {}) };
+      const inventory = [...(state.player.inventory || [])];
+      const unequipped = equipment[slot];
+      if (!unequipped) return state;
+
+      delete equipment[slot];
+      const quantity = toNumber(unequipped.quantity, 1);
+      const nextInventory = mergeInventoryItems(inventory, [
+        { ...unequipped, quantity },
+      ]);
+
+      return {
+        ...state,
+        player: {
+          ...state.player,
+          equipment,
+          inventory: nextInventory,
+        },
+      };
+    }
+
     case "PLAYER_ATTACK": {
       const enemyIndex = action.payload?.enemyIndex ?? 0;
       const combatState = ensureCombatStructure(state);

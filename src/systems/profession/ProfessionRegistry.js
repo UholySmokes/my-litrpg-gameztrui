@@ -1066,6 +1066,291 @@ const RECIPES = {
   },
 };
 
+const GENERATED_RECIPE_TIERS = [
+  { tier: 1, label: "Basic", xp: 12, time: 6 },
+  { tier: 3, label: "Sturdy", xp: 28, time: 12 },
+  { tier: 5, label: "Enchanted", xp: 65, time: 24 },
+  { tier: 7, label: "Masterwork", xp: 140, time: 40 },
+  { tier: 9, label: "Mythic", xp: 240, time: 60 },
+];
+
+const DEFAULT_CATALYSTS = [
+  "binding_agent",
+  "refined_oil",
+  "arcane_dust",
+  "spirit_essence",
+  "primordial_essence",
+];
+
+const PROFESSION_RECIPE_TEMPLATES = {
+  blacksmithing: {
+    items: ["Blade", "Shield", "Armor", "Tool"],
+    materials: [
+      "iron_ingot",
+      "steel_ingot",
+      "mythril_ingot",
+      "adamantine_ingot",
+      "divine_metal",
+    ],
+  },
+  alchemy: {
+    items: ["Potion", "Elixir", "Tonic", "Catalyst"],
+    materials: [
+      "common_herb",
+      "medicinal_herb",
+      "spirit_flower",
+      "ancient_root",
+      "void_essence",
+    ],
+  },
+  enchanting: {
+    items: ["Rune", "Sigil", "Ward", "Charm"],
+    materials: [
+      "arcane_ink",
+      "elemental_shard",
+      "soul_gem",
+      "void_essence",
+      "primordial_essence",
+    ],
+  },
+  tailoring: {
+    items: ["Robe", "Cloak", "Gloves", "Bag"],
+    materials: [
+      "linen_cloth",
+      "wool_cloth",
+      "silk_cloth",
+      "mageweave_cloth",
+      "mooncloth",
+    ],
+  },
+  jewelcrafting: {
+    items: ["Ring", "Amulet", "Gem", "Circlet"],
+    materials: [
+      "rough_gem",
+      "polished_gem",
+      "perfect_gem",
+      "prismatic_gem",
+      "soul_gem",
+    ],
+  },
+  engineering: {
+    items: ["Bomb", "Turret", "Gadget", "Automaton"],
+    materials: [
+      "copper_gear",
+      "steel_gear",
+      "arcane_core",
+      "mana_battery",
+      "void_capacitor",
+    ],
+  },
+  construction: {
+    items: ["Wall", "Gate", "Tower", "Workshop"],
+    materials: [
+      "timber",
+      "stone_block",
+      "reinforced_brick",
+      "enchanted_masonry",
+      "void_structure",
+    ],
+  },
+  mining: {
+    items: ["Refined Ore", "Cut Gem", "Alloy", "Core"],
+    materials: [
+      "copper_ore",
+      "iron_ore",
+      "mythril_ore",
+      "adamantine_ore",
+      "divine_ore",
+    ],
+  },
+  herbalism: {
+    items: ["Herb Bundle", "Tonic", "Salve", "Draught"],
+    materials: [
+      "common_herb",
+      "medicinal_herb",
+      "spirit_flower",
+      "ancient_root",
+      "divine_bloom",
+    ],
+  },
+  skinning: {
+    items: ["Leather", "Hide Armor", "Trophy", "Pelt"],
+    materials: [
+      "raw_hide",
+      "thick_hide",
+      "exotic_hide",
+      "dragon_hide",
+      "divine_hide",
+    ],
+  },
+  logging: {
+    items: ["Plank", "Bow", "Totem", "Workbench"],
+    materials: [
+      "oak_wood",
+      "maple_wood",
+      "ironwood",
+      "ancient_wood",
+      "world_tree_wood",
+    ],
+  },
+  fishing: {
+    items: ["Fish Fillet", "Oil", "Bait", "Talisman"],
+    materials: [
+      "common_fish",
+      "rare_fish",
+      "magical_fish",
+      "legendary_fish",
+      "divine_fish",
+    ],
+  },
+  farming: {
+    items: ["Grain Sack", "Fertilizer", "Seedling", "Harvest Feast"],
+    materials: [
+      "wheat",
+      "fruit",
+      "magical_crop",
+      "ancient_seed",
+      "divine_harvest",
+    ],
+  },
+  cooking: {
+    items: ["Meal", "Stew", "Skewer", "Dessert"],
+    materials: [
+      "raw_meat",
+      "prime_meat",
+      "spices",
+      "rare_herb",
+      "divine_flesh",
+    ],
+  },
+  brewing: {
+    items: ["Ale", "Wine", "Tonic", "Elixir"],
+    materials: [
+      "grain",
+      "fruit",
+      "spirit_flower",
+      "void_essence",
+      "divine_nectar",
+    ],
+  },
+  butchery: {
+    items: ["Cured Meat", "Jerky", "Sausage", "Ration"],
+    materials: [
+      "raw_meat",
+      "prime_meat",
+      "exotic_meat",
+      "dragon_steak",
+      "divine_flesh",
+    ],
+  },
+  inscription: {
+    items: ["Scroll", "Glyph", "Rune", "Contract"],
+    materials: [
+      "parchment",
+      "arcane_ink",
+      "rune_stone",
+      "soul_ink",
+      "void_ink",
+    ],
+  },
+  first_aid: {
+    items: ["Bandage", "Salve", "Kit", "Antidote"],
+    materials: [
+      "clean_cloth",
+      "herb_paste",
+      "healing_kit",
+      "regeneration_kit",
+      "divine_intervention_kit",
+    ],
+  },
+  repair: {
+    items: ["Repair Kit", "Polish", "Reinforcement", "Restoration"],
+    materials: [
+      "scrap_metal",
+      "polishing_oil",
+      "reinforced_plate",
+      "arcane_binding",
+      "divine_thread",
+    ],
+  },
+  portal_creation: {
+    items: ["Portal Rune", "Waypoint Seal", "Anchor Stone", "Gate Sigil"],
+    materials: [
+      "portal_shard",
+      "waypoint_core",
+      "dimensional_anchor",
+      "planar_key",
+      "void_crystal",
+    ],
+  },
+  dyeing: {
+    items: ["Dye", "Pattern", "Glamour", "Finish"],
+    materials: [
+      "basic_dye",
+      "metallic_pigment",
+      "prismatic_pigment",
+      "illusion_dust",
+      "divine_radiance",
+    ],
+  },
+};
+
+const toRecipeId = (professionId, label, itemName) => {
+  const slug = `${label}_${itemName}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  return `${professionId}_${slug}`;
+};
+
+const generateTieredRecipes = () => {
+  const generated = {};
+  Object.entries(PROFESSION_RECIPE_TEMPLATES).forEach(
+    ([professionId, template]) => {
+      const items = template.items || [];
+      const materials = template.materials || [];
+      const catalysts = template.catalysts || DEFAULT_CATALYSTS;
+
+      GENERATED_RECIPE_TIERS.forEach((tierInfo, tierIndex) => {
+        const material =
+          materials[tierIndex] || materials[materials.length - 1] || "essence";
+        items.forEach((itemName) => {
+          const id = toRecipeId(professionId, tierInfo.label, itemName);
+          const ingredientCount = 2 + tierIndex;
+          const ingredients = [{ id: material, count: ingredientCount }];
+          if (tierIndex >= 2) {
+            ingredients.push({
+              id: catalysts[tierIndex] || catalysts[catalysts.length - 1],
+              count: 1,
+            });
+          }
+          if (tierIndex >= 4) {
+            ingredients.push({ id: "rare_essence", count: 1 });
+          }
+
+          generated[id] = {
+            id,
+            name: `${tierInfo.label} ${itemName}`,
+            profession: professionId,
+            tier: tierInfo.tier,
+            description: `${tierInfo.label} ${itemName} crafted through ${professionId.replace(
+              /_/g,
+              " ",
+            )}.`,
+            ingredients,
+            result: { id, count: 1 },
+            xp: tierInfo.xp + tierIndex * 5,
+            time: tierInfo.time + tierIndex * 4,
+          };
+        });
+      });
+    },
+  );
+  return generated;
+};
+
+Object.assign(RECIPES, generateTieredRecipes());
+
 // =====================================================
 // HELPER FUNCTIONS
 // =====================================================

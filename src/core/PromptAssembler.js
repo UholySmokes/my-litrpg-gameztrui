@@ -90,8 +90,14 @@ World Flags: ${
  * Builds the history section from recent narrative log
  */
 function buildHistorySection(gameState) {
-  const chatLog = gameState.narrative.chatLog || [];
-  const recentHistory = chatLog.slice(-10); // Last 10 messages
+  const narrativeLog = gameState.narrative.chatLog || [];
+  const systemLog = (gameState.chatLog || []).filter((msg) =>
+    ["system", "status-update"].includes(msg.type),
+  );
+  const mergedHistory = [...narrativeLog, ...systemLog].sort(
+    (a, b) => (a.timestamp || 0) - (b.timestamp || 0),
+  );
+  const recentHistory = mergedHistory.slice(-10); // Last 10 messages
 
   if (recentHistory.length === 0) {
     return `=== RECENT HISTORY ===
@@ -102,11 +108,14 @@ ${gameState.narrative.summary || "The adventure has just begun."}`;
     .map((msg) => {
       if (msg.type === "narrative") {
         return `Narrator: ${msg.text}`;
-      } else if (msg.type === "system") {
-        return `System: ${msg.text}`;
-      } else {
-        return msg.text;
       }
+      if (msg.type === "system") {
+        return `System: ${msg.text}`;
+      }
+      if (msg.type === "status-update") {
+        return `Status: ${msg.text}`;
+      }
+      return msg.text;
     })
     .join("\n");
 

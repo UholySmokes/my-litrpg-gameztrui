@@ -1,18 +1,20 @@
 // =================================================================
 // USE CHARACTER CREATION REWORKED HOOK
-// Enhanced character creation with expanded skill/talent pools
-// - 10 active skills shown, select 3
-// - 10 passive skills shown, select 6
-// - 8 talents shown, select 1
+// Enhanced character creation with expanded skill pools
+// - All compatible skills shown (class + race + general), select 3 active
+// - All compatible passive skills shown, select 6
+// - Talents are auto-assigned after creation based on class
 // - Persistent selections across rerolls
 // =================================================================
 
 import { useState, useCallback } from "react";
-import { getRandomTalents, getSkillsByClass } from "../entities/Player.js";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
 import { getAllSkills } from "../systems/skills/SkillRegistry.js";
-import { randomInt } from "../utils/DeterministicRandom.js";
+import {
+  assignTalentsForClass,
+  getTalentById,
+} from "../systems/skills/TalentDefinitions.js";
 
 import {
   CANONICAL_ATTRIBUTES,
@@ -29,9 +31,7 @@ const BASE_ATTRIBUTE_TOTAL = CANONICAL_ATTRIBUTES.length * BASE_ATTRIBUTE_VALUE;
 const INITIAL_REROLLS = 3;
 const MAX_ACTIVE_SKILLS = 3;
 const MAX_PASSIVE_SKILLS = 6;
-const ACTIVE_POOL_SIZE = 10;
-const PASSIVE_POOL_SIZE = 10;
-const TALENT_POOL_SIZE = 8;
+const BASE_CREATION_LEVEL = 1;
 
 function normalizeEntityRef(value, fallback) {
   if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -44,20 +44,95 @@ function normalizeEntityRef(value, fallback) {
   return fallback;
 }
 
-// Helper to shuffle array
-function shuffleArray(array) {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = randomInt(0, i);
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
+function dedupeSkills(skills = []) {
+  const seen = new Set();
+  return skills.filter((skill) => {
+    const id = skill?.id;
+    if (!id || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
 }
 
-// Helper to get random subset
-function getRandomSubset(array, count) {
-  const shuffled = shuffleArray(array);
-  return shuffled.slice(0, Math.min(count, shuffled.length));
+function normalizeSkillEntry(entry, fallbackType, skillIndex) {
+  if (!entry) return null;
+  if (typeof entry === "string") {
+    const resolved = skillIndex?.get(entry);
+    if (!resolved) return null;
+    if (fallbackType && resolved.type !== fallbackType) {
+      return { ...resolved, type: fallbackType };
+    }
+    return resolved;
+  }
+  if (typeof entry === "object") {
+    if (!entry.id) return null;
+    if (fallbackType && !entry.type) {
+      return { ...entry, type: fallbackType };
+    }
+    return entry;
+  }
+  return null;
+}
+
+function collectSkillEntries(entries, fallbackType, skillIndex) {
+  if (!Array.isArray(entries)) return [];
+  const results = [];
+  for (const entry of entries) {
+    const normalized = normalizeSkillEntry(entry, fallbackType, skillIndex);
+    if (normalized?.id) {
+      results.push(normalized);
+    }
+  }
+  return results;
+}
+
+function splitSkillsByType(skills = []) {
+  const active = [];
+  const passive = [];
+  for (const skill of skills) {
+    if (!skill) continue;
+    if (skill.type === "passive") {
+      passive.push(skill);
+    } else {
+      active.push(skill);
+    }
+  }
+  return { active, passive };
+}
+
+function isGeneralSkillCompatible(skill, classId, raceId) {
+  if (!skill) return false;
+  if (Array.isArray(skill.allowedClasses) && skill.allowedClasses.length) {
+    if (!classId || !skill.allowedClasses.includes(classId)) return false;
+  }
+  if (Array.isArray(skill.requiredClasses) && skill.requiredClasses.length) {
+    if (!classId || !skill.requiredClasses.includes(classId)) return false;
+  }
+  if (typeof skill.requiredClass === "string" && skill.requiredClass) {
+    if (!classId || skill.requiredClass !== classId) return false;
+  }
+  if (Array.isArray(skill.allowedRaces) && skill.allowedRaces.length) {
+    if (!raceId || !skill.allowedRaces.includes(raceId)) return false;
+  }
+  if (Array.isArray(skill.requiredRaces) && skill.requiredRaces.length) {
+    if (!raceId || !skill.requiredRaces.includes(raceId)) return false;
+  }
+  if (typeof skill.requiredRace === "string" && skill.requiredRace) {
+    if (!raceId || skill.requiredRace !== raceId) return false;
+  }
+
+  const conditions = skill.unlockConditions;
+  if (!conditions) return true;
+  if (conditions.level && conditions.level > BASE_CREATION_LEVEL) return false;
+  if (conditions.quest || conditions.item) return false;
+  if (conditions.location) return false;
+  if (
+    Array.isArray(conditions.skillPrerequisites) &&
+    conditions.skillPrerequisites.length > 0
+  ) {
+    return false;
+  }
+  return true;
 }
 
 export function useCharacterCreationReworked() {
@@ -89,10 +164,6 @@ export function useCharacterCreationReworked() {
   const [selectedActiveSkills, setSelectedActiveSkills] = useState([]);
   const [selectedPassiveSkills, setSelectedPassiveSkills] = useState([]);
 
-  // Talent Pool & Selection
-  const [currentTalents, setCurrentTalents] = useState([]);
-  const [selectedTalent, setSelectedTalent] = useState(null);
-
   // Step 2: Profession
   const [selectedProfession, setSelectedProfession] = useState(null);
 
@@ -103,75 +174,100 @@ export function useCharacterCreationReworked() {
 
   // Initial content seeded via lazy state initializers to avoid cascading renders
 
-  // Get all available skills for current class
-  const getAllClassSkills = useCallback((cls) => {
+  const buildSkillPools = useCallback((cls, race) => {
     if (!cls) return { active: [], passive: [] };
 
-    if (cls.skills) {
-      // Generated class structure
-      return {
-        active: cls.skills.filter((s) => s.type === "active"),
-        passive: cls.skills.filter((s) => s.type === "passive"),
-      };
-    } else {
-      // Static class structure
-      const skills = getSkillsByClass(cls.id);
-      // Also get universal skills
-      try {
-        const allSkills = getAllSkills();
-        const universalActive = allSkills.filter(
-          (s) => s.type === "active" && s.class === "universal",
-        );
-        const universalPassive = allSkills.filter(
-          (s) => s.type === "passive" && s.class === "universal",
-        );
-        return {
-          active: [...skills.active, ...universalActive],
-          passive: [...skills.passive, ...universalPassive],
-        };
-      } catch {
-        return skills;
+    let allSkills = [];
+    try {
+      allSkills = getAllSkills();
+    } catch {
+      allSkills = [];
+    }
+
+    const skillIndex = new Map(
+      allSkills.filter((skill) => skill?.id).map((skill) => [skill.id, skill]),
+    );
+
+    const classEntries = Array.isArray(cls.skills)
+      ? collectSkillEntries(cls.skills, null, skillIndex)
+      : allSkills.filter((skill) => skill.class === cls.id);
+    const classPools = splitSkillsByType(classEntries);
+
+    const raceEntries = [];
+    if (race) {
+      raceEntries.push(...collectSkillEntries(race.skills, null, skillIndex));
+      raceEntries.push(
+        ...collectSkillEntries(race.activeSkills, "active", skillIndex),
+      );
+      raceEntries.push(
+        ...collectSkillEntries(race.passiveSkills, "passive", skillIndex),
+      );
+      if (race.passiveAbility) {
+        const passiveTraitId =
+          race.passiveAbility.id || `${race.id || "race"}_passive_trait`;
+        raceEntries.push({
+          ...race.passiveAbility,
+          id: passiveTraitId,
+          name: race.passiveAbility.name || "Racial Trait",
+          description:
+            race.passiveAbility.description || "Innate racial trait.",
+          type: "passive",
+          source: "race",
+        });
+      }
+      if (race.activeAbility) {
+        const activeTraitId =
+          race.activeAbility.id || `${race.id || "race"}_active_trait`;
+        raceEntries.push({
+          ...race.activeAbility,
+          id: activeTraitId,
+          name: race.activeAbility.name || "Racial Technique",
+          description:
+            race.activeAbility.description || "Innate racial technique.",
+          type: "active",
+          source: "race",
+        });
       }
     }
+    const racePools = splitSkillsByType(raceEntries);
+
+    const generalEntries = allSkills.filter(
+      (skill) => skill.class === "universal" || skill.class === "general",
+    );
+    const generalPools = splitSkillsByType(
+      generalEntries.filter((skill) =>
+        isGeneralSkillCompatible(skill, cls?.id, race?.id),
+      ),
+    );
+
+    return {
+      active: dedupeSkills([
+        ...classPools.active,
+        ...racePools.active,
+        ...generalPools.active,
+      ]),
+      passive: dedupeSkills([
+        ...classPools.passive,
+        ...racePools.passive,
+        ...generalPools.passive,
+      ]),
+    };
   }, []);
 
-  // Generate skill pools for the selected class
+  // Generate skill pools for the selected class + race
   const generateSkillPools = useCallback(
-    (cls) => {
-      const skills = getAllClassSkills(cls);
-
-      // Get random subset of active skills, keeping any already selected
-      const activePool = getRandomSubset(skills.active, ACTIVE_POOL_SIZE);
-      // Ensure selected skills are in the pool
-      const activeWithSelected = [...activePool];
-      selectedActiveSkills.forEach((skill) => {
-        if (!activeWithSelected.find((s) => s.id === skill.id)) {
-          activeWithSelected.push(skill);
-        }
-      });
-      setAvailableActiveSkills(
-        activeWithSelected.slice(
-          0,
-          Math.max(ACTIVE_POOL_SIZE, activeWithSelected.length),
-        ),
+    (cls, race) => {
+      const pools = buildSkillPools(cls, race);
+      setAvailableActiveSkills(pools.active);
+      setAvailablePassiveSkills(pools.passive);
+      setSelectedActiveSkills((prev) =>
+        prev.filter((skill) => pools.active.some((s) => s.id === skill.id)),
       );
-
-      // Get random subset of passive skills, keeping any already selected
-      const passivePool = getRandomSubset(skills.passive, PASSIVE_POOL_SIZE);
-      const passiveWithSelected = [...passivePool];
-      selectedPassiveSkills.forEach((skill) => {
-        if (!passiveWithSelected.find((s) => s.id === skill.id)) {
-          passiveWithSelected.push(skill);
-        }
-      });
-      setAvailablePassiveSkills(
-        passiveWithSelected.slice(
-          0,
-          Math.max(PASSIVE_POOL_SIZE, passiveWithSelected.length),
-        ),
+      setSelectedPassiveSkills((prev) =>
+        prev.filter((skill) => pools.passive.some((s) => s.id === skill.id)),
       );
     },
-    [getAllClassSkills, selectedActiveSkills, selectedPassiveSkills],
+    [buildSkillPools],
   );
 
   // Regenerate races
@@ -179,7 +275,10 @@ export function useCharacterCreationReworked() {
     const options = ContentGenerator.generateCharacterOptions(5);
     setGeneratedRaces(options.races);
     setSelectedRace(null);
-  }, []);
+    if (selectedClass) {
+      generateSkillPools(selectedClass, null);
+    }
+  }, [generateSkillPools, selectedClass]);
 
   // Regenerate classes
   const regenerateClasses = useCallback(() => {
@@ -207,9 +306,7 @@ export function useCharacterCreationReworked() {
     setGender("");
     setSelectedRace(null);
     setSelectedClass(null);
-    setSelectedTalent(null);
     setSelectedProfession(null);
-    setCurrentTalents([]);
     setSelectedActiveSkills([]);
     setSelectedPassiveSkills([]);
     setAvailableActiveSkills([]);
@@ -225,86 +322,16 @@ export function useCharacterCreationReworked() {
   const remainingPoints =
     INITIAL_FREE_POINTS - (totalAllocated - BASE_ATTRIBUTE_TOTAL);
 
-  // Initialize talents
-  const initializeTalents = useCallback(() => {
-    if (currentTalents.length === 0) {
-      setCurrentTalents(getRandomTalents(TALENT_POOL_SIZE));
-    }
-  }, [currentTalents.length]);
-
-  // Reroll talents - keeps selected talent if it was in the pool
-  const rerollTalents = useCallback(() => {
-    const newTalents = getRandomTalents(TALENT_POOL_SIZE);
-    // If selected talent exists, ensure it's in the new pool
-    if (selectedTalent && !newTalents.find((t) => t.id === selectedTalent.id)) {
-      newTalents[0] = selectedTalent; // Replace first talent with selected
-    }
-    setCurrentTalents(shuffleArray(newTalents));
-  }, [selectedTalent]);
-
-  // Reroll active skills - keeps selected skills in pool
-  const rerollActiveSkills = useCallback(() => {
-    if (!selectedClass) return;
-    const skills = getAllClassSkills(selectedClass);
-
-    // Get new random pool
-    let newPool = getRandomSubset(skills.active, ACTIVE_POOL_SIZE);
-
-    // Ensure all selected skills remain in pool
-    selectedActiveSkills.forEach((skill) => {
-      if (!newPool.find((s) => s.id === skill.id)) {
-        // Replace a non-selected skill with the selected one
-        const replaceIdx = newPool.findIndex(
-          (s) => !selectedActiveSkills.find((sel) => sel.id === s.id),
-        );
-        if (replaceIdx >= 0) {
-          newPool[replaceIdx] = skill;
-        } else {
-          newPool.push(skill);
-        }
-      }
-    });
-
-    setAvailableActiveSkills(
-      shuffleArray(newPool).slice(
-        0,
-        Math.max(ACTIVE_POOL_SIZE, newPool.length),
-      ),
-    );
-  }, [selectedClass, getAllClassSkills, selectedActiveSkills]);
-
-  // Reroll passive skills - keeps selected skills in pool
-  const rerollPassiveSkills = useCallback(() => {
-    if (!selectedClass) return;
-    const skills = getAllClassSkills(selectedClass);
-
-    let newPool = getRandomSubset(skills.passive, PASSIVE_POOL_SIZE);
-
-    selectedPassiveSkills.forEach((skill) => {
-      if (!newPool.find((s) => s.id === skill.id)) {
-        const replaceIdx = newPool.findIndex(
-          (s) => !selectedPassiveSkills.find((sel) => sel.id === s.id),
-        );
-        if (replaceIdx >= 0) {
-          newPool[replaceIdx] = skill;
-        } else {
-          newPool.push(skill);
-        }
-      }
-    });
-
-    setAvailablePassiveSkills(
-      shuffleArray(newPool).slice(
-        0,
-        Math.max(PASSIVE_POOL_SIZE, newPool.length),
-      ),
-    );
-  }, [selectedClass, getAllClassSkills, selectedPassiveSkills]);
-
   // Handle race selection
-  const handleRaceSelect = useCallback((race) => {
-    setSelectedRace(race);
-  }, []);
+  const handleRaceSelect = useCallback(
+    (race) => {
+      setSelectedRace(race);
+      if (selectedClass) {
+        generateSkillPools(selectedClass, race);
+      }
+    },
+    [generateSkillPools, selectedClass],
+  );
 
   // Handle class selection
   const handleClassSelect = useCallback(
@@ -312,24 +339,15 @@ export function useCharacterCreationReworked() {
       setSelectedClass(cls);
       setSelectedActiveSkills([]);
       setSelectedPassiveSkills([]);
-      generateSkillPools(cls);
+      generateSkillPools(cls, selectedRace);
     },
-    [generateSkillPools],
+    [generateSkillPools, selectedRace],
   );
 
   // Handle profession selection
   const handleProfessionSelect = useCallback((profId) => {
     setSelectedProfession(PROFESSIONS[profId]);
   }, []);
-
-  // Handle talent selection
-  const handleTalentSelect = useCallback(
-    (talentId) => {
-      const talent = currentTalents.find((t) => t.id === talentId);
-      setSelectedTalent((prev) => (prev?.id === talentId ? null : talent));
-    },
-    [currentTalents],
-  );
 
   // Handle active skill selection (toggle, max 3)
   const handleActiveSkillSelect = useCallback((skill) => {
@@ -413,7 +431,6 @@ export function useCharacterCreationReworked() {
     if (!gender) return { valid: false, error: "Gender is required" };
     if (!selectedRace) return { valid: false, error: "Race is required" };
     if (!selectedClass) return { valid: false, error: "Class is required" };
-    if (!selectedTalent) return { valid: false, error: "Talent is required" };
     if (selectedActiveSkills.length !== MAX_ACTIVE_SKILLS) {
       return {
         valid: false,
@@ -432,7 +449,6 @@ export function useCharacterCreationReworked() {
     gender,
     selectedRace,
     selectedClass,
-    selectedTalent,
     selectedActiveSkills,
     selectedPassiveSkills,
   ]);
@@ -525,7 +541,15 @@ export function useCharacterCreationReworked() {
     const professionName = selectedProfession?.name || null;
     const startingGold = 100;
     const startingSoulpoints = 0;
-    const selectedTalentId = selectedTalent?.id || null;
+    const classId =
+      typeof selectedClass === "string" ? selectedClass : selectedClass?.id;
+    const assignedTalentIds = classId ? assignTalentsForClass(classId) : [];
+    const assignedTalentNames = assignedTalentIds
+      .map((id) => getTalentById(id)?.name || id)
+      .filter(Boolean);
+    const talentLabel = assignedTalentNames.length
+      ? assignedTalentNames.join(", ")
+      : "None";
     const resourceSystem =
       selectedClass?.resourceSystem || selectedClass?.resource || null;
     const initialResources = {
@@ -541,8 +565,8 @@ export function useCharacterCreationReworked() {
       gender,
       race: normalizeEntityRef(selectedRace, "Unknown"),
       class: normalizeEntityRef(selectedClass, "None"),
-      talent: selectedTalent?.name || selectedTalent || "None",
-      talents: selectedTalentId ? [selectedTalentId] : [],
+      talent: talentLabel,
+      talents: assignedTalentIds,
       activeSkills: selectedActiveSkills,
       passiveSkills: selectedPassiveSkills,
       profession: professionId
@@ -593,7 +617,6 @@ export function useCharacterCreationReworked() {
     gender,
     selectedRace,
     selectedClass,
-    selectedTalent,
     selectedActiveSkills,
     selectedPassiveSkills,
     selectedProfession,
@@ -613,8 +636,6 @@ export function useCharacterCreationReworked() {
     gender,
     selectedRace,
     selectedClass,
-    selectedTalent,
-    currentTalents,
     selectedActiveSkills,
     selectedPassiveSkills,
     selectedProfession,
@@ -635,12 +656,8 @@ export function useCharacterCreationReworked() {
     regenerateClasses,
     handleRaceSelect,
     handleClassSelect,
-    handleTalentSelect,
     handleProfessionSelect,
     handleReroll,
-    rerollTalents,
-    rerollActiveSkills,
-    rerollPassiveSkills,
     handleActiveSkillSelect,
     handlePassiveSkillToggle,
     allocateAttributePoint,
@@ -649,7 +666,6 @@ export function useCharacterCreationReworked() {
     previousStep,
     finalizeCharacter,
     skipBootSequence,
-    initializeTalents,
 
     // Helpers
     getAvailableActiveSkills,

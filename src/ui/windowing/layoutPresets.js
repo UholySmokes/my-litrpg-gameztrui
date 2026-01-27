@@ -37,15 +37,6 @@ const creationLayout = {
       collapsed: false,
       pinned: false,
     },
-    talents: {
-      id: "talents",
-      title: "Talents",
-      dockZone: "float",
-      position: { x: 720, y: 80 },
-      size: { w: 300, h: 280 },
-      collapsed: false,
-      pinned: false,
-    },
     skills: {
       id: "skills",
       title: "Skills",

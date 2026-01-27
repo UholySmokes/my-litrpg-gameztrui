@@ -19,7 +19,8 @@ export default function CreationNarrativePanel({
         <li>1. Select a race to anchor your origin.</li>
         <li>2. Choose a class to define combat doctrine.</li>
         <li>3. Allocate attribute points for survivability.</li>
-        <li>4. Confirm talents and finalize identity.</li>
+        <li>4. Select skills for your starting loadout.</li>
+        <li>5. Finalize identity. Talents are assigned automatically.</li>
       </ul>
       <div style={{ display: "grid", gap: "0.35rem", fontSize: "0.8rem" }}>
         {statusLines.map((line) => (

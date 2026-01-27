@@ -3,6 +3,9 @@ import { MAIN_QUESTS, SIDE_QUESTS } from "../../data/QuestCatalog.js";
 import { DataRegistry } from "../../data/DataRegistry.js";
 import { randomInt } from "../../utils/DeterministicRandom.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
+import {
+  getArchetypeSystemById,
+} from "../archetype/ArchetypeSystemRegistry.js";
 
 export class QuestManager {
   static generateInitialQuests(player) {
@@ -32,7 +35,50 @@ export class QuestManager {
       quests.push(this.initializeQuest(sideQuest));
     }
 
+    const archetypeSystem = this.resolveArchetypeSystem(player);
+    if (archetypeSystem?.questHooks?.length) {
+      const hookIndex = randomInt(0, archetypeSystem.questHooks.length - 1);
+      const hook = archetypeSystem.questHooks[hookIndex];
+      const systemQuest = this.buildSystemQuest(archetypeSystem, hook);
+      quests.push(this.initializeQuest(systemQuest));
+    }
+
     return quests;
+  }
+
+  static resolveArchetypeSystem(player) {
+    if (!player) return null;
+    const raw = player.archetypeSystem;
+    if (!raw) return null;
+    if (typeof raw === "string") {
+      return getArchetypeSystemById(raw) || { id: raw, name: raw };
+    }
+    if (typeof raw === "object" && !Array.isArray(raw)) {
+      const resolved = raw.id ? getArchetypeSystemById(raw.id) : null;
+      return resolved || raw;
+    }
+    return null;
+  }
+
+  static buildSystemQuest(archetypeSystem, hookText) {
+    const idSuffix = `${archetypeSystem.id || "system"}_${SimBridge.now()}`;
+    return {
+      id: `sys_${idSuffix}`,
+      name: `${archetypeSystem.name || "System"} Directive`,
+      description: hookText || "Carry out the system directive.",
+      objectives: [
+        {
+          id: `sys_${idSuffix}_obj_1`,
+          description: hookText || "Fulfill the directive.",
+          completed: false,
+        },
+      ],
+      rewards: { xp: 90, items: [] },
+      tags: {
+        systemDriven: true,
+        favoredSystems: archetypeSystem.id ? [archetypeSystem.id] : [],
+      },
+    };
   }
 
   static isQuestSuitable(quest, player) {
@@ -41,9 +87,19 @@ export class QuestManager {
       return false;
     }
 
+    const playerSystemId =
+      player.archetypeSystem?.id || player.archetypeSystem || null;
+
     // Check level requirements
     if (quest.levelRequirement && player.level < quest.levelRequirement) {
       return false;
+    }
+
+    if (quest.tags?.requiredSystems) {
+      if (!playerSystemId) return false;
+      if (!quest.tags.requiredSystems.includes(playerSystemId)) {
+        return false;
+      }
     }
 
     // Check favored classes (bonus compatibility)

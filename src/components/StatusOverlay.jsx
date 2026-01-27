@@ -120,6 +120,18 @@ export default function StatusOverlay({
     resolvedTalentNames.length > 0
       ? resolvedTalentNames.join(", ")
       : player.talent || "None";
+  const archetypeSystemName =
+    typeof player.archetypeSystem === "string"
+      ? player.archetypeSystem
+      : player.archetypeSystem?.name || player.archetypeSystem?.id || "None";
+  const archetypeSystemCategory =
+    typeof player.archetypeSystem === "object"
+      ? player.archetypeSystem?.category
+      : null;
+  const archetypeSystemLabel =
+    archetypeSystemName !== "None" && archetypeSystemCategory
+      ? `${archetypeSystemName} (${archetypeSystemCategory})`
+      : archetypeSystemName;
   const classId = player.class?.id || player.class;
   const classData = classId ? DataRegistry.getClassById(classId) : null;
   const nextClass = classData?.upgradePath
@@ -249,6 +261,7 @@ export default function StatusOverlay({
                 value={`${player.xp?.current || 0} / ${player.xp?.max || 100}`}
               />
               <StatCard label="Title" value={titleLabel} />
+              <StatCard label="System" value={archetypeSystemLabel} />
               <StatCard label="Race" value={raceLabel} />
               <StatCard label="Talents" value={talentLabel} />
             </div>

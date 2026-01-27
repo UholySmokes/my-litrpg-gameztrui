@@ -10,6 +10,7 @@
 import { useState, useCallback } from "react";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
+import { ARCHETYPE_SYSTEMS } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import { getAllSkills } from "../systems/skills/SkillRegistry.js";
 import {
   assignTalentsForClass,
@@ -155,6 +156,7 @@ export function useCharacterCreationReworked() {
   const [gender, setGender] = useState("");
   const [selectedRace, setSelectedRace] = useState(null);
   const [selectedClass, setSelectedClass] = useState(null);
+  const [selectedArchetypeSystem, setSelectedArchetypeSystem] = useState(null);
 
   // Skill Pools - Available skills to choose from
   const [availableActiveSkills, setAvailableActiveSkills] = useState([]);
@@ -306,6 +308,7 @@ export function useCharacterCreationReworked() {
     setGender("");
     setSelectedRace(null);
     setSelectedClass(null);
+    setSelectedArchetypeSystem(null);
     setSelectedProfession(null);
     setSelectedActiveSkills([]);
     setSelectedPassiveSkills([]);
@@ -347,6 +350,14 @@ export function useCharacterCreationReworked() {
   // Handle profession selection
   const handleProfessionSelect = useCallback((profId) => {
     setSelectedProfession(PROFESSIONS[profId]);
+  }, []);
+
+  const handleArchetypeSystemSelect = useCallback((systemId) => {
+    const system =
+      ARCHETYPE_SYSTEMS.find((entry) => entry.id === systemId) || null;
+    setSelectedArchetypeSystem((prev) =>
+      prev?.id === system?.id ? null : system,
+    );
   }, []);
 
   // Handle active skill selection (toggle, max 3)
@@ -431,6 +442,8 @@ export function useCharacterCreationReworked() {
     if (!gender) return { valid: false, error: "Gender is required" };
     if (!selectedRace) return { valid: false, error: "Race is required" };
     if (!selectedClass) return { valid: false, error: "Class is required" };
+    if (!selectedArchetypeSystem)
+      return { valid: false, error: "System selection is required" };
     if (selectedActiveSkills.length !== MAX_ACTIVE_SKILLS) {
       return {
         valid: false,
@@ -449,6 +462,7 @@ export function useCharacterCreationReworked() {
     gender,
     selectedRace,
     selectedClass,
+    selectedArchetypeSystem,
     selectedActiveSkills,
     selectedPassiveSkills,
   ]);
@@ -565,6 +579,15 @@ export function useCharacterCreationReworked() {
       gender,
       race: normalizeEntityRef(selectedRace, "Unknown"),
       class: normalizeEntityRef(selectedClass, "None"),
+      archetypeSystem: selectedArchetypeSystem
+        ? {
+            id: selectedArchetypeSystem.id,
+            name: selectedArchetypeSystem.name,
+            category: selectedArchetypeSystem.category,
+            summary: selectedArchetypeSystem.summary,
+            description: selectedArchetypeSystem.description,
+          }
+        : null,
       talent: talentLabel,
       talents: assignedTalentIds,
       activeSkills: selectedActiveSkills,
@@ -617,6 +640,7 @@ export function useCharacterCreationReworked() {
     gender,
     selectedRace,
     selectedClass,
+    selectedArchetypeSystem,
     selectedActiveSkills,
     selectedPassiveSkills,
     selectedProfession,
@@ -636,6 +660,7 @@ export function useCharacterCreationReworked() {
     gender,
     selectedRace,
     selectedClass,
+    selectedArchetypeSystem,
     selectedActiveSkills,
     selectedPassiveSkills,
     selectedProfession,
@@ -645,6 +670,7 @@ export function useCharacterCreationReworked() {
     generatedClasses,
     availableActiveSkills,
     availablePassiveSkills,
+    availableArchetypeSystems: ARCHETYPE_SYSTEMS,
     rerollsRemaining,
 
     // Setters
@@ -656,6 +682,7 @@ export function useCharacterCreationReworked() {
     regenerateClasses,
     handleRaceSelect,
     handleClassSelect,
+    handleArchetypeSystemSelect,
     handleProfessionSelect,
     handleReroll,
     handleActiveSkillSelect,

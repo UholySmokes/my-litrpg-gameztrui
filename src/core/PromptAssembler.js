@@ -7,6 +7,22 @@ import {
   describeOpeningScene,
   getOpeningSceneById,
 } from "../data/OpeningScenes.js";
+import {
+  getArchetypeSystemById,
+} from "../systems/archetype/ArchetypeSystemRegistry.js";
+
+function resolveArchetypeSystem(player = {}) {
+  const raw = player.archetypeSystem;
+  if (!raw) return null;
+  if (typeof raw === "string") {
+    return getArchetypeSystemById(raw) || { id: raw, name: raw };
+  }
+  if (typeof raw === "object" && !Array.isArray(raw)) {
+    const resolved = raw.id ? getArchetypeSystemById(raw.id) : null;
+    return resolved || raw;
+  }
+  return null;
+}
 
 /**
  * Assembles the complete prompt for the AI narrative engine
@@ -49,6 +65,27 @@ Respond with narrative text only. Do not include JSON, lists, or metadata.`;
 function buildContextSection(gameState) {
   const player = gameState.player;
   const world = gameState.world;
+  const archetypeSystem = resolveArchetypeSystem(player);
+  const systemLines = [];
+  if (archetypeSystem) {
+    const systemName = archetypeSystem.name || archetypeSystem.id || "Unknown";
+    const category = archetypeSystem.category
+      ? ` (${archetypeSystem.category})`
+      : "";
+    systemLines.push(`Archetype System: ${systemName}${category}`);
+    const summary = archetypeSystem.summary || archetypeSystem.description;
+    if (summary) {
+      systemLines.push(`System Summary: ${summary}`);
+    }
+    const narrativeHooks = Array.isArray(archetypeSystem.narrativeHooks)
+      ? archetypeSystem.narrativeHooks.slice(0, 2)
+      : [];
+    if (narrativeHooks.length) {
+      systemLines.push(
+        `System Narrative Hooks: ${narrativeHooks.join(" | ")}`,
+      );
+    }
+  }
 
   // Build inventory list
   const inventoryList =
@@ -78,6 +115,7 @@ Location: ${world.location.current}
 ${equippedItems.length > 0 ? `Equipped: ${equippedItems.join(", ")}` : ""}
 Inventory: ${inventoryList}
 Active Quests: ${activeQuests}
+${systemLines.join("\n")}
 World Flags: ${
     Object.entries(world.flags)
       .filter(([, flagValue]) => flagValue)
@@ -185,6 +223,15 @@ export function buildInitialPrompt(gameState = {}) {
     typeof player.class === "string"
       ? player.class
       : player.class?.name || "Drifter";
+  const archetypeSystem = resolveArchetypeSystem(player);
+  const systemName = archetypeSystem?.name || "Unbound";
+  const systemCategory = archetypeSystem?.category
+    ? ` (${archetypeSystem.category})`
+    : "";
+  const systemSummary = archetypeSystem?.summary || archetypeSystem?.description;
+  const systemHooks = Array.isArray(archetypeSystem?.questHooks)
+    ? archetypeSystem.questHooks.slice(0, 2)
+    : [];
   const professionName =
     typeof player.profession === "string"
       ? player.profession
@@ -219,6 +266,8 @@ export function buildInitialPrompt(gameState = {}) {
 Name: ${playerName}
 Race: ${raceName}
 Class: ${className}
+System: ${systemName}${systemCategory}
+${systemSummary ? `System Summary: ${systemSummary}` : ""}
 Profession: ${professionName}
 
 === OPENING SCENE ===
@@ -226,6 +275,7 @@ ${sceneDescription}
 
 === QUEST THREADS ===
 ${questLines}
+${systemHooks.length ? `\n=== SYSTEM HOOKS ===\n${systemHooks.join("\n")}` : ""}
 
 TASK: Deliver an atmospheric opening (3-5 sentences) that references the scene and nudges the player toward the listed quests. Close with a compelling hook.
 

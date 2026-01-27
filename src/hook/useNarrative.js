@@ -90,6 +90,59 @@ function buildActionSuggestions(state) {
     : DEFAULT_ACTION_SUGGESTIONS;
 }
 
+function resolveArchetypeSystemLabel(player = {}) {
+  const raw = player.archetypeSystem;
+  if (!raw) return null;
+  if (typeof raw === "string") return raw;
+  if (typeof raw === "object" && !Array.isArray(raw)) {
+    return raw.name || raw.id || null;
+  }
+  return null;
+}
+
+function buildFallbackNarrative({
+  userInput,
+  actionResult,
+  state,
+  isInitial = false,
+}) {
+  const player = state?.player || {};
+  const systemLabel = resolveArchetypeSystemLabel(player);
+  const location =
+    state?.world?.location?.current ||
+    state?.world?.location ||
+    "the current zone";
+  const name = player.name || "The wanderer";
+  const classLabel =
+    typeof player.class === "string"
+      ? player.class
+      : player.class?.name || "adventurer";
+
+  if (isInitial) {
+    const quests = Array.isArray(state?.quests?.active)
+      ? state.quests.active
+      : [];
+    const questHint = quests.length
+      ? `A new directive forms around "${quests[0].name}".`
+      : "No directives surface yet, only the weight of possibility.";
+    const systemLine = systemLabel
+      ? `The ${systemLabel} hums softly, ready to shape your path.`
+      : "The world hums with latent system energy.";
+    return `${name}, a ${classLabel}, arrives at ${location}. ${systemLine} ${questHint}`;
+  }
+
+  const baseAction =
+    actionResult?.description ||
+    (userInput ? `You attempt to ${userInput}` : "You take action");
+  const successLine = actionResult?.success
+    ? `${baseAction}. The world responds and the moment settles.`
+    : `You attempt to ${userInput || "act"}, but ${actionResult?.reason || "something blocks the way"}.`;
+  const systemLine = systemLabel
+    ? `Your ${systemLabel} stirs, watching for leverage.`
+    : "The system remains watchful.";
+  return `${successLine} ${systemLine}`;
+}
+
 /**
  * Custom hook for managing AI narrative and user actions
  * @param {function} setState - Function to update game state
@@ -146,12 +199,42 @@ export function useNarrative(
 
             const aiResponse = await generateNarrative(failurePrompt);
             addSystemMessage(aiResponse.narrative, "narrative");
+            setState((prevState) => ({
+              ...prevState,
+              narrative: {
+                ...prevState.narrative,
+                chatLog: [
+                  ...(prevState.narrative?.chatLog || []),
+                  {
+                    type: "narrative",
+                    text: aiResponse.narrative,
+                    timestamp: SimBridge.now(),
+                  },
+                ].slice(-50),
+              },
+            }));
           } catch (aiError) {
             console.error("AI narrative generation failed:", aiError);
-            addSystemMessage(
-              `You cannot do that. ${validation.reason}`,
-              "system",
-            );
+            const fallbackNarrative = buildFallbackNarrative({
+              userInput,
+              actionResult: { success: false, reason: validation.reason },
+              state: currentState,
+            });
+            addSystemMessage(fallbackNarrative, "narrative");
+            setState((prevState) => ({
+              ...prevState,
+              narrative: {
+                ...prevState.narrative,
+                chatLog: [
+                  ...(prevState.narrative?.chatLog || []),
+                  {
+                    type: "narrative",
+                    text: fallbackNarrative,
+                    timestamp: SimBridge.now(),
+                  },
+                ].slice(-50),
+              },
+            }));
           }
 
           setIsLoading(false);
@@ -242,18 +325,26 @@ export function useNarrative(
           });
         } catch (aiError) {
           console.error("AI narrative generation failed:", aiError);
-          // Fallback message if AI fails
-          if (actionResult.success) {
-            addSystemMessage(
-              actionResult.description || "Action completed successfully.",
-              "system",
-            );
-          } else {
-            addSystemMessage(
-              actionResult.reason || "Action could not be completed.",
-              "system",
-            );
-          }
+          const fallbackNarrative = buildFallbackNarrative({
+            userInput,
+            actionResult,
+            state: actionResult.readOnly ? currentState : newState,
+          });
+          addSystemMessage(fallbackNarrative, "narrative");
+          setState((prevState) => ({
+            ...prevState,
+            narrative: {
+              ...prevState.narrative,
+              chatLog: [
+                ...(prevState.narrative?.chatLog || []),
+                {
+                  type: "narrative",
+                  text: fallbackNarrative,
+                  timestamp: SimBridge.now(),
+                },
+              ].slice(-50),
+            },
+          }));
         } finally {
           setIsNarrating(false);
         }
@@ -340,10 +431,25 @@ export function useNarrative(
       } catch (err) {
         console.error("Error generating initial narrative:", err);
         setError(err.message || "Failed to generate initial narrative.");
-        addSystemMessage(
-          "Welcome to your LitRPG adventure! Type your actions to begin.",
-          "system",
-        );
+        const fallbackNarrative = buildFallbackNarrative({
+          state: currentState,
+          isInitial: true,
+        });
+        addSystemMessage(fallbackNarrative, "narrative");
+        setState((prevState) => ({
+          ...prevState,
+          narrative: {
+            ...prevState.narrative,
+            summary: fallbackNarrative,
+            chatLog: [
+              {
+                type: "narrative",
+                text: fallbackNarrative,
+                timestamp: SimBridge.now(),
+              },
+            ],
+          },
+        }));
       } finally {
         setIsLoading(false);
         setIsNarrating(false);

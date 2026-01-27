@@ -91,6 +91,32 @@ export default function WindowManager({
     });
   }, [bounds.height, bounds.width, mode, setWindowState, windows]);
 
+  useEffect(() => {
+    if (!bounds.width || !bounds.height) return;
+    windows.forEach((windowConfig) => {
+      const state = windowMap[windowConfig.id];
+      const resolvedDockZone = forceFloating
+        ? "float"
+        : windowConfig.lockDockZone ||
+          state?.dockZone ||
+          windowConfig.dockZone ||
+          "float";
+      if (resolvedDockZone !== "float") return;
+      const resolvedSize = state?.size || windowConfig.size || { w: 300, h: 200 };
+      const resolvedPosition =
+        state?.position || windowConfig.position || { x: 0, y: 0 };
+      const maxX = Math.max(0, bounds.width - (resolvedSize?.w || 300));
+      const maxY = Math.max(0, bounds.height - (resolvedSize?.h || 200));
+      const nextX = Math.min(Math.max(0, resolvedPosition.x || 0), maxX);
+      const nextY = Math.min(Math.max(0, resolvedPosition.y || 0), maxY);
+      if (nextX !== resolvedPosition.x || nextY !== resolvedPosition.y) {
+        setWindowState(windowConfig.id, {
+          position: { x: nextX, y: nextY },
+        });
+      }
+    });
+  }, [bounds.height, bounds.width, forceFloating, setWindowState, windowMap, windows]);
+
   const resolveSnapZone = useMemo(() => {
     return (position, size, windowConfig) => {
       if (forceFloating) return "float";

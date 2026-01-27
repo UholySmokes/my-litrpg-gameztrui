@@ -67,9 +67,34 @@ const applySharedPins = (layout) => {
   };
 };
 
+const mergeLayouts = (preset, stored) => {
+  if (!stored) return preset;
+  if (!preset) return stored;
+  const presetWindows = preset.windows || {};
+  const storedWindows = stored.windows || {};
+  const mergedWindows = {};
+  const windowIds = new Set([
+    ...Object.keys(presetWindows),
+    ...Object.keys(storedWindows),
+  ]);
+  windowIds.forEach((id) => {
+    mergedWindows[id] = {
+      ...(presetWindows[id] || {}),
+      ...(storedWindows[id] || {}),
+    };
+  });
+  return {
+    ...preset,
+    ...stored,
+    windows: mergedWindows,
+  };
+};
+
 export function useWindowLayout(mode = "game") {
   const initialLayout = useMemo(() => {
-    const base = readLayout(mode) || layoutPresets[mode] || layoutPresets.game;
+    const preset = layoutPresets[mode] || layoutPresets.game;
+    const stored = readLayout(mode);
+    const base = mergeLayouts(preset, stored);
     return applySharedPins(base);
   }, [mode]);
   const [layouts, setLayouts] = useState(() => ({ [mode]: initialLayout }));

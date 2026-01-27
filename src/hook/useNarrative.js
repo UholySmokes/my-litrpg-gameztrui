@@ -100,11 +100,19 @@ function resolveArchetypeSystemLabel(player = {}) {
   return null;
 }
 
+function pickVariant(options, seed) {
+  if (!Array.isArray(options) || options.length === 0) return "";
+  const safeSeed = Number.isFinite(seed) ? seed : Date.now();
+  const index = Math.abs(Math.floor(safeSeed)) % options.length;
+  return options[index];
+}
+
 function buildFallbackNarrative({
   userInput,
   actionResult,
   state,
   isInitial = false,
+  variantSeed,
 }) {
   const player = state?.player || {};
   const systemLabel = resolveArchetypeSystemLabel(player);
@@ -126,20 +134,109 @@ function buildFallbackNarrative({
       ? `A new directive forms around "${quests[0].name}".`
       : "No directives surface yet, only the weight of possibility.";
     const systemLine = systemLabel
-      ? `The ${systemLabel} hums softly, ready to shape your path.`
-      : "The world hums with latent system energy.";
+      ? pickVariant(
+          [
+            `The ${systemLabel} hums softly, ready to shape your path.`,
+            `The ${systemLabel} awakens, its protocols aligning to your steps.`,
+            `The ${systemLabel} steadies, searching for its first leverage point.`,
+          ],
+          variantSeed,
+        )
+      : pickVariant(
+          [
+            "The world hums with latent system energy.",
+            "A low-grade system pulse flickers through the air.",
+            "Something unseen calibrates the world around you.",
+          ],
+          variantSeed,
+        );
     return `${name}, a ${classLabel}, arrives at ${location}. ${systemLine} ${questHint}`;
   }
 
-  const baseAction =
+  const trimmedInput = typeof userInput === "string" ? userInput.trim() : "";
+  const fallbackAction =
     actionResult?.description ||
-    (userInput ? `You attempt to ${userInput}` : "You take action");
+    (trimmedInput ? `You attempt to ${trimmedInput}` : "You take action");
+  const lowerInput = trimmedInput.toLowerCase();
+  const verbHints = [
+    "explore",
+    "look",
+    "scan",
+    "speak",
+    "talk",
+    "open",
+    "review",
+    "train",
+    "rest",
+    "attack",
+    "use",
+    "cast",
+    "travel",
+    "move",
+    "search",
+    "inspect",
+    "read",
+    "listen",
+    "follow",
+    "enter",
+    "leave",
+    "check",
+  ];
+  const startsWithVerb = verbHints.some(
+    (verb) =>
+      lowerInput === verb || lowerInput.startsWith(`${verb} `),
+  );
+  let actionText = fallbackAction.replace(/^Player said:\s*/i, "You say: ");
+  if (trimmedInput) {
+    if (!startsWithVerb && !lowerInput.includes(" ")) {
+      actionText = `You check ${trimmedInput}`;
+    } else if (startsWithVerb) {
+      actionText =
+        variantSeed && variantSeed % 2 === 0
+          ? `You attempt to ${trimmedInput}`
+          : `You ${trimmedInput}`;
+    } else {
+      actionText = `You attempt to ${trimmedInput}`;
+    }
+  }
+  const reasonText =
+    actionResult?.reason || "something blocks the way";
   const successLine = actionResult?.success
-    ? `${baseAction}. The world responds and the moment settles.`
-    : `You attempt to ${userInput || "act"}, but ${actionResult?.reason || "something blocks the way"}.`;
+    ? pickVariant(
+        [
+          `${actionText}. The world shifts around you, then settles.`,
+          `${actionText}. A faint current passes through the air.`,
+          `${actionText}. The moment answers with a subtle change of tone.`,
+          `${actionText}. Your intent echoes, then quiets.`,
+        ],
+        variantSeed,
+      )
+    : pickVariant(
+        [
+          `${actionText}, but ${reasonText}.`,
+          `${actionText}. ${reasonText} blocks the attempt.`,
+          `${actionText}, yet ${reasonText} keeps it out of reach.`,
+        ],
+        variantSeed,
+      );
   const systemLine = systemLabel
-    ? `Your ${systemLabel} stirs, watching for leverage.`
-    : "The system remains watchful.";
+    ? pickVariant(
+        [
+          `Your ${systemLabel} stirs, watching for leverage.`,
+          `The ${systemLabel} records the moment, seeking an opening.`,
+          `A muted pulse from the ${systemLabel} lingers at the edge of thought.`,
+          `${systemLabel} remains attentive, mapping possible outcomes.`,
+        ],
+        variantSeed,
+      )
+    : pickVariant(
+        [
+          "The system remains watchful.",
+          "A soft system ping fades into silence.",
+          "No system directive follows—only the ambient hum.",
+        ],
+        variantSeed,
+      );
   return `${successLine} ${systemLine}`;
 }
 
@@ -165,6 +262,7 @@ export function useNarrative(
   const [actionSuggestions, setActionSuggestions] = useState(
     DEFAULT_ACTION_SUGGESTIONS,
   );
+  const fallbackCounterRef = useRef(0);
 
   /**
    * Processes user input through the full narrative pipeline
@@ -215,10 +313,12 @@ export function useNarrative(
             }));
           } catch (aiError) {
             console.error("AI narrative generation failed:", aiError);
+            fallbackCounterRef.current += 1;
             const fallbackNarrative = buildFallbackNarrative({
               userInput,
               actionResult: { success: false, reason: validation.reason },
               state: currentState,
+              variantSeed: fallbackCounterRef.current,
             });
             addSystemMessage(fallbackNarrative, "narrative");
             setState((prevState) => ({
@@ -325,10 +425,12 @@ export function useNarrative(
           });
         } catch (aiError) {
           console.error("AI narrative generation failed:", aiError);
+          fallbackCounterRef.current += 1;
           const fallbackNarrative = buildFallbackNarrative({
             userInput,
             actionResult,
             state: actionResult.readOnly ? currentState : newState,
+            variantSeed: fallbackCounterRef.current,
           });
           addSystemMessage(fallbackNarrative, "narrative");
           setState((prevState) => ({
@@ -431,9 +533,11 @@ export function useNarrative(
       } catch (err) {
         console.error("Error generating initial narrative:", err);
         setError(err.message || "Failed to generate initial narrative.");
+        fallbackCounterRef.current += 1;
         const fallbackNarrative = buildFallbackNarrative({
           state: currentState,
           isInitial: true,
+          variantSeed: fallbackCounterRef.current,
         });
         addSystemMessage(fallbackNarrative, "narrative");
         setState((prevState) => ({

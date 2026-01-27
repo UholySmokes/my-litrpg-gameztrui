@@ -85,6 +85,7 @@ const initialGameState = {
     },
     talent: "None",
     talents: [],
+    archetypeSystem: null,
     profession: null,
     professions: {},
     progress: {

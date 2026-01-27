@@ -259,6 +259,14 @@ function normalizePlayer(rawPlayer, config) {
   );
 
   const { goldCoins, soulpoints, currency } = normalizeCurrency(player);
+  const archetypeSystem =
+    player.archetypeSystem &&
+    typeof player.archetypeSystem === "object" &&
+    !Array.isArray(player.archetypeSystem)
+      ? player.archetypeSystem
+      : typeof player.archetypeSystem === "string"
+        ? { id: player.archetypeSystem, name: player.archetypeSystem }
+        : null;
   const { unlockedTitles, equippedTitle } = normalizeTitles(player);
   const progress =
     player.progress &&
@@ -320,6 +328,7 @@ function normalizePlayer(rawPlayer, config) {
     gold: goldCoins,
     soulpoints,
     currency,
+    archetypeSystem,
     talents: Array.isArray(player.talents) ? player.talents : [],
     professions:
       player.professions &&

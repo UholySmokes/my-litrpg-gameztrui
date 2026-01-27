@@ -13,6 +13,7 @@ import CreationRacePanel from "../panels/creation/CreationRacePanel.jsx";
 import CreationClassPanel from "../panels/creation/CreationClassPanel.jsx";
 import CreationAttributesPanel from "../panels/creation/CreationAttributesPanel.jsx";
 import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
+import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSystemPanel.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 
 let audioContext = null;
@@ -120,6 +121,7 @@ export default function CharacterCreationMode({ onComplete }) {
   const {
     selectedRace,
     selectedClass,
+    selectedArchetypeSystem,
     name: characterName,
     gender,
     attributePoints,
@@ -128,9 +130,11 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedPassiveSkills,
     availableActiveSkills,
     availablePassiveSkills,
+    availableArchetypeSystems,
     rerollsRemaining,
     handleRaceSelect,
     handleClassSelect,
+    handleArchetypeSystemSelect,
     setName,
     setGender,
     allocateAttributePoint: handleStatIncrement,
@@ -247,6 +251,12 @@ export default function CharacterCreationMode({ onComplete }) {
     const talentDescription = selectedClass
       ? `Talents will be assigned based on the ${selectedClass.name} class.`
       : "Select a class to determine your talent pool.";
+    const systemName =
+      selectedArchetypeSystem?.name || "System not selected";
+    const systemDescription =
+      selectedArchetypeSystem?.summary ||
+      selectedArchetypeSystem?.description ||
+      "Choose an archetype system to shape progression.";
     return {
       raceName,
       raceDescription,
@@ -254,6 +264,8 @@ export default function CharacterCreationMode({ onComplete }) {
       classDescription,
       talentName,
       talentDescription,
+      systemName,
+      systemDescription,
       activeSkills: selectedActiveSkills.length > 0 ? selectedActiveSkills : null,
       passiveSkills:
         selectedPassiveSkills.length > 0 ? selectedPassiveSkills : null,
@@ -261,17 +273,19 @@ export default function CharacterCreationMode({ onComplete }) {
   }, [
     selectedRace,
     selectedClass,
+    selectedArchetypeSystem,
     selectedActiveSkills,
     selectedPassiveSkills,
   ]);
 
   useEffect(() => {
-    const stepValue = 100 / 6;
+    const stepValue = 100 / 7;
     let progress = 0;
     if (characterName && characterName.trim().length > 0) progress += stepValue;
     if (gender) progress += stepValue;
     if (selectedRace) progress += stepValue;
     if (selectedClass) progress += stepValue;
+    if (selectedArchetypeSystem) progress += stepValue;
     if (availablePoints === 0) progress += stepValue;
     if (selectedActiveSkills?.length >= 3 && selectedPassiveSkills?.length >= 6)
       progress += stepValue;
@@ -281,6 +295,7 @@ export default function CharacterCreationMode({ onComplete }) {
     gender,
     selectedRace,
     selectedClass,
+    selectedArchetypeSystem,
     availablePoints,
     selectedActiveSkills,
     selectedPassiveSkills,
@@ -292,6 +307,7 @@ export default function CharacterCreationMode({ onComplete }) {
     gender &&
     selectedRace &&
     selectedClass &&
+    selectedArchetypeSystem &&
     availablePoints === 0 &&
     selectedActiveSkills?.length >= 3 &&
     selectedPassiveSkills?.length >= 6;
@@ -321,6 +337,10 @@ export default function CharacterCreationMode({ onComplete }) {
         active: Boolean(selectedClass),
       },
       {
+        label: `System: ${selectedArchetypeSystem?.name || "pending"}`,
+        active: Boolean(selectedArchetypeSystem),
+      },
+      {
         label: "Talents: auto-assigned after creation",
         active: Boolean(selectedClass),
       },
@@ -340,6 +360,7 @@ export default function CharacterCreationMode({ onComplete }) {
       gender,
       selectedActiveSkills.length,
       selectedClass,
+      selectedArchetypeSystem,
       selectedPassiveSkills.length,
       selectedRace,
     ],
@@ -363,6 +384,12 @@ export default function CharacterCreationMode({ onComplete }) {
         text: `Talents queued for auto-assignment (${selectedClass.name}).`,
       });
     }
+    if (selectedArchetypeSystem) {
+      entries.push({
+        timestamp: "system",
+        text: `Archetype system: ${selectedArchetypeSystem.name}`,
+      });
+    }
     if (selectedActiveSkills.length) {
       entries.push({
         timestamp: "active-skills",
@@ -383,6 +410,7 @@ export default function CharacterCreationMode({ onComplete }) {
   }, [
     selectedActiveSkills,
     selectedClass,
+    selectedArchetypeSystem,
     selectedPassiveSkills,
     selectedRace,
   ]);
@@ -444,6 +472,23 @@ export default function CharacterCreationMode({ onComplete }) {
       ),
     },
     {
+      id: "archetypeSystem",
+      title: "System",
+      dockZone: "float",
+      position: { x: 720, y: 80 },
+      size: { w: 320, h: 320 },
+      minWidth: 280,
+      minHeight: 240,
+      content: (
+        <CreationArchetypeSystemPanel
+          systems={availableArchetypeSystems}
+          selectedSystem={selectedArchetypeSystem}
+          onSystemSelect={handleArchetypeSystemSelect}
+          onAction={handleClick}
+        />
+      ),
+    },
+    {
       id: "attributes",
       title: "Attributes",
       dockZone: "float",
@@ -467,7 +512,7 @@ export default function CharacterCreationMode({ onComplete }) {
       id: "skills",
       title: "Skills",
       dockZone: "float",
-      position: { x: 720, y: 380 },
+      position: { x: 720, y: 420 },
       size: { w: 300, h: 340 },
       minWidth: 280,
       minHeight: 280,

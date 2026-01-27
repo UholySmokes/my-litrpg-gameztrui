@@ -83,6 +83,17 @@
               {selectionSummary.talentDescription}
             </div>
           </div>
+          <div style={{ color: "var(--holo-cyan)" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
+              SYSTEM
+            </div>
+            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
+              {selectionSummary.systemName}
+            </div>
+            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
+              {selectionSummary.systemDescription}
+            </div>
+          </div>
         </div>
         <div
           style={{

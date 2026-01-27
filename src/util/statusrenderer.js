@@ -27,6 +27,18 @@ export function renderStatusBlock(player, config) {
     .map((id) => getTalentById(id)?.name || id)
     .filter(Boolean);
   const talent = talentNames.length ? talentNames.join(", ") : player.talent || "None";
+  const archetypeSystemName =
+    typeof player.archetypeSystem === "string"
+      ? player.archetypeSystem
+      : player.archetypeSystem?.name || player.archetypeSystem?.id || "None";
+  const archetypeSystemCategory =
+    typeof player.archetypeSystem === "object"
+      ? player.archetypeSystem?.category
+      : null;
+  const archetypeSystem =
+    archetypeSystemName !== "None" && archetypeSystemCategory
+      ? `${archetypeSystemName} (${archetypeSystemCategory})`
+      : archetypeSystemName;
   const resolvedConfig =
     config && typeof config === "object" && !Array.isArray(config)
       ? config
@@ -123,6 +135,7 @@ export function renderStatusBlock(player, config) {
 Level:  ${level} (XP: ${formatNumberCompact(xpCurrent)}/${formatNumberCompact(xpMax)})   Title: ${title}
 Race:   ${race}        (Current Evolution Stage)
 Class:  ${playerClass}
+System: ${archetypeSystem}
 Talents: ${talent}
 --------------------------------------------------
 [VITALITY]

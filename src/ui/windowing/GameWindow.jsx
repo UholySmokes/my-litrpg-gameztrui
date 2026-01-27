@@ -165,7 +165,8 @@ export default function GameWindow({
       ? "0 0 28px rgba(0, 243, 255, 0.38)"
       : "0 0 18px rgba(0, 243, 255, 0.18)",
     overflow: "hidden",
-    display: alwaysVisible || !isCollapsed ? "block" : "none",
+    display: alwaysVisible || !isCollapsed ? "flex" : "none",
+    flexDirection: "column",
     transition:
       isDragging
         ? "none"
@@ -284,7 +285,7 @@ export default function GameWindow({
           )}
         </div>
       </div>
-      {!isCollapsed && <div style={{ padding: "0.75rem" }}>{children}</div>}
+      {!isCollapsed && <div className="game-window__body">{children}</div>}
       {isResizable &&
         !isCompact &&
         (dockZone === "float" || dockZone === "left" || dockZone === "center") && (

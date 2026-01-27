@@ -12,7 +12,6 @@ import CreationIdentityPanel from "../panels/creation/CreationIdentityPanel.jsx"
 import CreationRacePanel from "../panels/creation/CreationRacePanel.jsx";
 import CreationClassPanel from "../panels/creation/CreationClassPanel.jsx";
 import CreationAttributesPanel from "../panels/creation/CreationAttributesPanel.jsx";
-import CreationTalentPanel from "../panels/creation/CreationTalentPanel.jsx";
 import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 
@@ -121,8 +120,6 @@ export default function CharacterCreationMode({ onComplete }) {
   const {
     selectedRace,
     selectedClass,
-    selectedTalent,
-    currentTalents,
     name: characterName,
     gender,
     attributePoints,
@@ -134,21 +131,15 @@ export default function CharacterCreationMode({ onComplete }) {
     rerollsRemaining,
     handleRaceSelect,
     handleClassSelect,
-    handleTalentSelect,
     setName,
     setGender,
     allocateAttributePoint: handleStatIncrement,
     deallocateAttributePoint: handleStatDecrement,
     handleReroll,
-    rerollTalents,
     handleActiveSkillSelect,
     handlePassiveSkillToggle,
     finalizeCharacter,
-    initializeTalents,
   } = useCharacterCreationReworked();
-  useEffect(() => {
-    initializeTalents();
-  }, [initializeTalents]);
 
   const allocationPoints = useMemo(
     () => ensureAttributeShape(attributePoints, 5),
@@ -250,9 +241,12 @@ export default function CharacterCreationMode({ onComplete }) {
     const className = selectedClass?.name || "Class not selected";
     const classDescription =
       selectedClass?.description || "Choose a class to view combat protocols.";
-    const talentName = selectedTalent?.name || selectedTalent || "Talent not selected";
-    const talentDescription =
-      selectedTalent?.description || "Choose a talent to unlock a core directive.";
+    const talentName = selectedClass
+      ? "Auto-assigned after creation"
+      : "Talents pending";
+    const talentDescription = selectedClass
+      ? `Talents will be assigned based on the ${selectedClass.name} class.`
+      : "Select a class to determine your talent pool.";
     return {
       raceName,
       raceDescription,
@@ -267,19 +261,17 @@ export default function CharacterCreationMode({ onComplete }) {
   }, [
     selectedRace,
     selectedClass,
-    selectedTalent,
     selectedActiveSkills,
     selectedPassiveSkills,
   ]);
 
   useEffect(() => {
-    const stepValue = 100 / 7;
+    const stepValue = 100 / 6;
     let progress = 0;
     if (characterName && characterName.trim().length > 0) progress += stepValue;
     if (gender) progress += stepValue;
     if (selectedRace) progress += stepValue;
     if (selectedClass) progress += stepValue;
-    if (selectedTalent) progress += stepValue;
     if (availablePoints === 0) progress += stepValue;
     if (selectedActiveSkills?.length >= 3 && selectedPassiveSkills?.length >= 6)
       progress += stepValue;
@@ -289,7 +281,6 @@ export default function CharacterCreationMode({ onComplete }) {
     gender,
     selectedRace,
     selectedClass,
-    selectedTalent,
     availablePoints,
     selectedActiveSkills,
     selectedPassiveSkills,
@@ -301,7 +292,6 @@ export default function CharacterCreationMode({ onComplete }) {
     gender &&
     selectedRace &&
     selectedClass &&
-    selectedTalent &&
     availablePoints === 0 &&
     selectedActiveSkills?.length >= 3 &&
     selectedPassiveSkills?.length >= 6;
@@ -331,10 +321,8 @@ export default function CharacterCreationMode({ onComplete }) {
         active: Boolean(selectedClass),
       },
       {
-        label: `Talent: ${
-          selectedTalent?.name || selectedTalent || "pending"
-        }`,
-        active: Boolean(selectedTalent),
+        label: "Talents: auto-assigned after creation",
+        active: Boolean(selectedClass),
       },
       {
         label: `Attribute points: ${availablePoints === 0 ? "locked" : "open"}`,
@@ -354,7 +342,6 @@ export default function CharacterCreationMode({ onComplete }) {
       selectedClass,
       selectedPassiveSkills.length,
       selectedRace,
-      selectedTalent,
     ],
   );
 
@@ -371,13 +358,9 @@ export default function CharacterCreationMode({ onComplete }) {
         timestamp: "class",
         text: `Class protocol: ${selectedClass.name}`,
       });
-    }
-    if (selectedTalent) {
       entries.push({
-        timestamp: "talent",
-        text: `Talent core: ${
-          selectedTalent.name || selectedTalent
-        }`,
+        timestamp: "talents",
+        text: `Talents queued for auto-assignment (${selectedClass.name}).`,
       });
     }
     if (selectedActiveSkills.length) {
@@ -402,19 +385,12 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedClass,
     selectedPassiveSkills,
     selectedRace,
-    selectedTalent,
   ]);
   const latestEntry =
     creationMemoryEntries.length > 0
       ? creationMemoryEntries[creationMemoryEntries.length - 1]
       : null;
   const narrativeMemoryRef = useRef(null);
-  const handleNarrativeMemoryScroll = (direction = "down") => {
-    const container = narrativeMemoryRef.current;
-    if (!container) return;
-    const delta = direction === "up" ? -200 : 200;
-    container.scrollBy({ top: delta, behavior: "smooth" });
-  };
 
   const windows = [
     {
@@ -484,24 +460,6 @@ export default function CharacterCreationMode({ onComplete }) {
           onAction={handleClick}
           rerollsRemaining={rerollsRemaining}
           onReroll={handleReroll}
-        />
-      ),
-    },
-    {
-      id: "talents",
-      title: "Talents",
-      dockZone: "float",
-      position: { x: 720, y: 80 },
-      size: { w: 300, h: 280 },
-      minWidth: 280,
-      minHeight: 220,
-      content: (
-        <CreationTalentPanel
-          currentTalents={currentTalents}
-          selectedTalent={selectedTalent}
-          onTalentSelect={handleTalentSelect}
-          onReroll={rerollTalents}
-          onAction={handleClick}
         />
       ),
     },
@@ -576,8 +534,6 @@ export default function CharacterCreationMode({ onComplete }) {
           latestEntry={latestEntry}
           latestEntryText={latestEntry?.text || ""}
           containerRef={narrativeMemoryRef}
-          onScrollUp={() => handleNarrativeMemoryScroll("up")}
-          onScrollDown={() => handleNarrativeMemoryScroll("down")}
         />
       ),
     },

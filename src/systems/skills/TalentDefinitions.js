@@ -1101,13 +1101,209 @@ export const exRankTalents = [
   },
 ];
 
+export const STANDARD_TALENTS = [
+  {
+    id: "martial_precision",
+    name: "Martial Precision",
+    description: "Refine your strikes for steadier damage and sharper timing.",
+    affinities: ["martial", "precision"],
+  },
+  {
+    id: "iron_resolve",
+    name: "Iron Resolve",
+    description: "Harden your stance to sustain longer exchanges.",
+    affinities: ["martial", "defense"],
+  },
+  {
+    id: "battle_rhythm",
+    name: "Battle Rhythm",
+    description: "Chain actions with a practiced cadence to recover faster.",
+    affinities: ["martial"],
+  },
+  {
+    id: "arcane_flow",
+    name: "Arcane Flow",
+    description: "Smooth your spellcasting to reduce strain and waste.",
+    affinities: ["arcane"],
+  },
+  {
+    id: "spellweaver",
+    name: "Spellweaver",
+    description: "Tighten spell loops to shorten recovery between casts.",
+    affinities: ["arcane"],
+  },
+  {
+    id: "mana_attunement",
+    name: "Mana Attunement",
+    description: "Align with ambient mana to stabilize your output.",
+    affinities: ["arcane", "support"],
+  },
+  {
+    id: "shadow_veil",
+    name: "Shadow Veil",
+    description: "Slip between sight lines and punish openings.",
+    affinities: ["shadow", "precision"],
+  },
+  {
+    id: "ghost_step",
+    name: "Ghost Step",
+    description: "Move with near-silent intent and strike with composure.",
+    affinities: ["shadow"],
+  },
+  {
+    id: "poisoned_edge",
+    name: "Poisoned Edge",
+    description: "Lace your offense with lingering harm.",
+    affinities: ["shadow", "feral"],
+  },
+  {
+    id: "divine_bulwark",
+    name: "Divine Bulwark",
+    description: "Sustain allies with protective timing.",
+    affinities: ["divine", "defense"],
+  },
+  {
+    id: "radiant_charge",
+    name: "Radiant Charge",
+    description: "Drive forward with luminous force and resolve.",
+    affinities: ["divine", "martial"],
+  },
+  {
+    id: "sacred_focus",
+    name: "Sacred Focus",
+    description: "Center your rites for cleaner, steadier results.",
+    affinities: ["divine", "support"],
+  },
+  {
+    id: "grave_tether",
+    name: "Grave Tether",
+    description: "Anchor your power to lingering spirits.",
+    affinities: ["dark"],
+  },
+  {
+    id: "bonecraft",
+    name: "Bonecraft",
+    description: "Shape the remains of battles into enduring force.",
+    affinities: ["dark"],
+  },
+  {
+    id: "verdant_pulse",
+    name: "Verdant Pulse",
+    description: "Let growth magic cycle longer before fading.",
+    affinities: ["nature", "support"],
+  },
+  {
+    id: "tracker_instinct",
+    name: "Tracker Instinct",
+    description: "Read the field and strike true when it counts.",
+    affinities: ["nature", "precision"],
+  },
+  {
+    id: "spirit_echo",
+    name: "Spirit Echo",
+    description: "Let inner echoes reinforce your techniques.",
+    affinities: ["spirit"],
+  },
+  {
+    id: "inner_balance",
+    name: "Inner Balance",
+    description: "Steady your rhythm to sustain momentum longer.",
+    affinities: ["spirit", "defense"],
+  },
+  {
+    id: "feral_instinct",
+    name: "Feral Instinct",
+    description: "Fight with sharpened reflex and raw pressure.",
+    affinities: ["feral"],
+  },
+  {
+    id: "primal_fury",
+    name: "Primal Fury",
+    description: "Lean into aggression without losing control.",
+    affinities: ["feral", "martial"],
+  },
+  {
+    id: "wayfarer",
+    name: "Wayfarer",
+    description: "Endurance grows with every step forward.",
+    affinities: ["generic"],
+  },
+  {
+    id: "system_favor",
+    name: "System Favor",
+    description: "A minor protocol grants efficient resource use.",
+    affinities: ["generic"],
+  },
+  {
+    id: "oathbound",
+    name: "Oathbound",
+    description: "Sworn intent steadies your execution under pressure.",
+    affinities: ["generic", "defense"],
+  },
+];
+
+const CLASS_TALENT_TAGS = {
+  knight: ["martial", "defense"],
+  warrior: ["martial", "defense"],
+  berserker: ["martial", "feral"],
+  mage: ["arcane"],
+  sorcerer: ["arcane"],
+  necromancer: ["dark"],
+  warlock: ["dark"],
+  rogue: ["shadow", "precision"],
+  ranger: ["nature", "precision"],
+  monk: ["spirit", "defense"],
+  paladin: ["divine", "defense", "martial"],
+  priest: ["divine", "support"],
+  druid: ["nature", "spirit"],
+};
+
+const TALENT_COUNT_TABLE = [
+  { count: 10, chance: 0.00001 },
+  { count: 4, chance: 0.01 },
+  { count: 3, chance: 0.05 },
+  { count: 2, chance: 0.1 },
+];
+
 export function getTalentById(id) {
-  return exRankTalents.find((t) => t.id === id) || null;
+  return (
+    STANDARD_TALENTS.find((t) => t.id === id) ||
+    exRankTalents.find((t) => t.id === id) ||
+    null
+  );
 }
 
 export function getRandomTalents(count = 8) {
-  const shuffled = shuffle(exRankTalents);
+  const shuffled = shuffle(STANDARD_TALENTS);
   return shuffled.slice(0, count);
+}
+
+export function getClassTalentPool(classId) {
+  const tags = CLASS_TALENT_TAGS[classId] || [];
+  const pool = STANDARD_TALENTS.filter((talent) => {
+    const affinities = talent.affinities || [];
+    if (!affinities.length) return true;
+    if (affinities.includes("generic")) return true;
+    return affinities.some((tag) => tags.includes(tag));
+  });
+  return pool.length ? pool : STANDARD_TALENTS;
+}
+
+export function rollTalentCount() {
+  const roll = random();
+  let cumulative = 0;
+  for (const entry of TALENT_COUNT_TABLE) {
+    cumulative += entry.chance;
+    if (roll < cumulative) return entry.count;
+  }
+  return 1;
+}
+
+export function assignTalentsForClass(classId) {
+  const pool = getClassTalentPool(classId);
+  const count = rollTalentCount();
+  const shuffled = shuffle(pool);
+  return shuffled.slice(0, Math.min(count, shuffled.length)).map((t) => t.id);
 }
 
 // =====================================================
@@ -2365,8 +2561,246 @@ export const TALENT_COMPONENTS = {
         value: { enhanceRunes: true, reduceMiscast: true },
       },
     ],
-  },
-};
+    },
+  };
+  // === STANDARD TALENTS (Balanced) ===
+  Object.assign(TALENT_COMPONENTS, {
+    martial_precision: {
+      id: "martial_precision",
+      name: "Martial Precision",
+      description: "Sharper strikes and steadier crit timing.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.05 },
+        { type: MODIFIER_TYPES.CRIT, operation: "add", value: { chance: 0.02 } },
+      ],
+    },
+    iron_resolve: {
+      id: "iron_resolve",
+      name: "Iron Resolve",
+      description: "Defensive techniques linger longer.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.DURATION, operation: "multiply", value: 1.05 },
+        { type: MODIFIER_TYPES.COST, operation: "multiply", value: 0.95 },
+      ],
+    },
+    battle_rhythm: {
+      id: "battle_rhythm",
+      name: "Battle Rhythm",
+      description: "Cooldowns recover slightly faster.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [{ type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.95 }],
+    },
+    arcane_flow: {
+      id: "arcane_flow",
+      name: "Arcane Flow",
+      description: "Mana costs ease with practice.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [{ type: MODIFIER_TYPES.COST, operation: "multiply", value: 0.93 }],
+    },
+    spellweaver: {
+      id: "spellweaver",
+      name: "Spellweaver",
+      description: "Spell recovery accelerates.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [{ type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.94 }],
+    },
+    mana_attunement: {
+      id: "mana_attunement",
+      name: "Mana Attunement",
+      description: "Control mana flow for steadier output.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.COST, operation: "multiply", value: 0.95 },
+        { type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.02 },
+      ],
+    },
+    shadow_veil: {
+      id: "shadow_veil",
+      name: "Shadow Veil",
+      description: "Strikes find soft spots more often.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [{ type: MODIFIER_TYPES.CRIT, operation: "add", value: { chance: 0.03 } }],
+    },
+    ghost_step: {
+      id: "ghost_step",
+      name: "Ghost Step",
+      description: "Quicker resets after decisive moves.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.96 },
+        { type: MODIFIER_TYPES.CRIT, operation: "add", value: { chance: 0.01 } },
+      ],
+    },
+    poisoned_edge: {
+      id: "poisoned_edge",
+      name: "Poisoned Edge",
+      description: "Lingering effects last longer.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.04 },
+        { type: MODIFIER_TYPES.DURATION, operation: "multiply", value: 1.08 },
+      ],
+    },
+    divine_bulwark: {
+      id: "divine_bulwark",
+      name: "Divine Bulwark",
+      description: "Protective rites persist with less delay.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.DURATION, operation: "multiply", value: 1.1 },
+        { type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.96 },
+      ],
+    },
+    radiant_charge: {
+      id: "radiant_charge",
+      name: "Radiant Charge",
+      description: "Charged attacks hit harder and wider.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.04 },
+        { type: MODIFIER_TYPES.AOE, operation: "multiply", value: 1.05 },
+      ],
+    },
+    sacred_focus: {
+      id: "sacred_focus",
+      name: "Sacred Focus",
+      description: "Sacred workings stay stable longer.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.COST, operation: "multiply", value: 0.95 },
+        { type: MODIFIER_TYPES.DURATION, operation: "multiply", value: 1.05 },
+      ],
+    },
+    grave_tether: {
+      id: "grave_tether",
+      name: "Grave Tether",
+      description: "Dark bindings hold and bite deeper.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.DURATION, operation: "multiply", value: 1.1 },
+        { type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.03 },
+      ],
+    },
+    bonecraft: {
+      id: "bonecraft",
+      name: "Bonecraft",
+      description: "Grim techniques return quicker.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.95 },
+        { type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.02 },
+      ],
+    },
+    verdant_pulse: {
+      id: "verdant_pulse",
+      name: "Verdant Pulse",
+      description: "Nature effects persist with less effort.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.DURATION, operation: "multiply", value: 1.1 },
+        { type: MODIFIER_TYPES.COST, operation: "multiply", value: 0.95 },
+      ],
+    },
+    tracker_instinct: {
+      id: "tracker_instinct",
+      name: "Tracker Instinct",
+      description: "Critical hits come easier on decisive shots.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.CRIT, operation: "add", value: { chance: 0.03 } },
+        { type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.97 },
+      ],
+    },
+    spirit_echo: {
+      id: "spirit_echo",
+      name: "Spirit Echo",
+      description: "Inner echoes reinforce longer forms.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.COST, operation: "multiply", value: 0.95 },
+        { type: MODIFIER_TYPES.DURATION, operation: "multiply", value: 1.08 },
+      ],
+    },
+    inner_balance: {
+      id: "inner_balance",
+      name: "Inner Balance",
+      description: "Balanced forms recover with less strain.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.95 },
+        { type: MODIFIER_TYPES.COST, operation: "multiply", value: 0.95 },
+      ],
+    },
+    feral_instinct: {
+      id: "feral_instinct",
+      name: "Feral Instinct",
+      description: "Primal attacks hit with extra force.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [{ type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.05 }],
+    },
+    primal_fury: {
+      id: "primal_fury",
+      name: "Primal Fury",
+      description: "Aggressive chains gain momentum.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 2,
+      modifiers: [
+        { type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.06 },
+        { type: MODIFIER_TYPES.CRIT, operation: "add", value: { chance: 0.01 } },
+      ],
+    },
+    wayfarer: {
+      id: "wayfarer",
+      name: "Wayfarer",
+      description: "Actions reset slightly faster on the move.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 1,
+      modifiers: [{ type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.97 }],
+    },
+    system_favor: {
+      id: "system_favor",
+      name: "System Favor",
+      description: "System protocols favor efficient execution.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 1,
+      modifiers: [
+        { type: MODIFIER_TYPES.COST, operation: "multiply", value: 0.95 },
+        { type: MODIFIER_TYPES.COOLDOWN, operation: "multiply", value: 0.97 },
+      ],
+    },
+    oathbound: {
+      id: "oathbound",
+      name: "Oathbound",
+      description: "Sworn intent steadies your output.",
+      priority: TALENT_PRIORITY.NORMAL,
+      strainCost: 1,
+      modifiers: [
+        { type: MODIFIER_TYPES.DURATION, operation: "multiply", value: 1.05 },
+        { type: MODIFIER_TYPES.DAMAGE, operation: "multiply", value: 1.02 },
+      ],
+    },
+  });
 
 // =====================================================
 // TALENT COMPONENT UTILITIES

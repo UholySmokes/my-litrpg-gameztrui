@@ -75,6 +75,7 @@ export default function GameUI({ user }) {
   const [showStatusOverlay, setShowStatusOverlay] = useState(false);
   const [showSaveLoad, setShowSaveLoad] = useState(false);
   const [showQuests, setShowQuests] = useState(false);
+  const [equipmentSelectSlot, setEquipmentSelectSlot] = useState(null);
 
   const {
     state,
@@ -378,6 +379,22 @@ export default function GameUI({ user }) {
     });
   };
 
+  const handleEquipItem = (slot, item) => {
+    if (!slot || !item) return;
+    dispatch({
+      type: "EQUIP_ITEM",
+      payload: { slot, item },
+    });
+  };
+
+  const handleUnequipItem = (slot) => {
+    if (!slot) return;
+    dispatch({
+      type: "UNEQUIP_ITEM",
+      payload: { slot },
+    });
+  };
+
   const normalizeAttributeLabel = (attributeKey) => {
     if (!attributeKey) return "attribute";
     return attributeKey.charAt(0).toUpperCase() + attributeKey.slice(1);
@@ -513,12 +530,6 @@ export default function GameUI({ user }) {
     await submitInput(actionText, state);
   };
 
-  const handleNarrativeMemoryScroll = (direction = "down") => {
-    const container = narrativeMemoryRef.current;
-    if (!container) return;
-    const delta = direction === "up" ? -200 : 200;
-    container.scrollBy({ top: delta, behavior: "smooth" });
-  };
 
   const transitionDurationMs = 1200;
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -659,6 +670,16 @@ export default function GameUI({ user }) {
     requestWindowFocus(id);
   };
 
+  const handleOpenEquipmentSlot = (slotKey) => {
+    if (!slotKey) return;
+    setEquipmentSelectSlot(slotKey);
+    requestWindowFocus("equipmentSelect");
+  };
+
+  const handleCloseEquipmentSelect = () => {
+    setEquipmentSelectSlot(null);
+  };
+
   return (
     <div className="app-frame">
       <div className="app-container">
@@ -766,8 +787,13 @@ export default function GameUI({ user }) {
               latestEntry={latestNarrativeEntry}
               latestEntryText={latestEntryTypewriterContent}
               narrativeMemoryRef={narrativeMemoryRef}
-              onScrollUp={() => handleNarrativeMemoryScroll("up")}
-              onScrollDown={() => handleNarrativeMemoryScroll("down")}
+              equipmentSelectSlot={equipmentSelectSlot}
+              onSelectEquipmentSlot={handleOpenEquipmentSlot}
+              onCloseEquipmentSelect={handleCloseEquipmentSelect}
+              onEquipItem={handleEquipItem}
+              onUnequipItem={handleUnequipItem}
+              onEquipTitle={handleTitleEquip}
+              onUnequipTitle={handleTitleUnequip}
               quests={state?.quests}
               combatState={state?.combat}
               onAttack={handleCombatAttack}

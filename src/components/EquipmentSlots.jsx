@@ -52,7 +52,11 @@ const styles = {
   },
 };
 
-export default function EquipmentSlots({ player, equipment: equipmentProp }) {
+export default function EquipmentSlots({
+  player,
+  equipment: equipmentProp,
+  onSelectSlot,
+}) {
   const equipment = player?.equipment ?? equipmentProp ?? {};
   const equippedTitleId =
     typeof player?.equippedTitle === "string" ? player.equippedTitle : null;
@@ -89,6 +93,16 @@ export default function EquipmentSlots({ player, equipment: equipmentProp }) {
           style={{
             ...styles.slot,
             ...(slot.item ? styles.slotFilled : {}),
+          }}
+          onClick={() => onSelectSlot?.(slot.key)}
+          role={onSelectSlot ? "button" : undefined}
+          tabIndex={onSelectSlot ? 0 : undefined}
+          onKeyDown={(event) => {
+            if (!onSelectSlot) return;
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              onSelectSlot(slot.key);
+            }
           }}
         >
           <div style={styles.slotLabel}>{slot.label}</div>

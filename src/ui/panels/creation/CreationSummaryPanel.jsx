@@ -1,4 +1,4 @@
-export default function CreationSummaryPanel({
+﻿export default function CreationSummaryPanel({
   asciiArt,
   selectionSummary,
   selectedActiveSkills,
@@ -74,7 +74,7 @@ export default function CreationSummaryPanel({
           </div>
           <div style={{ color: "var(--holo-cyan)" }}>
             <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              TALENT
+              TALENTS
             </div>
             <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
               {selectionSummary.talentName}
@@ -115,7 +115,7 @@ export default function CreationSummaryPanel({
                   const desc = skill.description || "No description provided.";
                   return (
                     <li key={skill.id}>
-                      <strong>{skill.name}</strong> — {desc} (Rank {rank})
+                      <strong>{skill.name}</strong> - {desc} (Rank {rank})
                     </li>
                   );
                 })
@@ -150,7 +150,7 @@ export default function CreationSummaryPanel({
                   const desc = skill.description || "No description provided.";
                   return (
                     <li key={skill.id}>
-                      <strong>{skill.name}</strong> — {desc} (Rank {rank})
+                      <strong>{skill.name}</strong> - {desc} (Rank {rank})
                     </li>
                   );
                 })

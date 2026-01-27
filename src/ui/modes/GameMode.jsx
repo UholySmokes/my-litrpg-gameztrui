@@ -1,12 +1,12 @@
 import WindowManager from "../windowing/WindowManager.jsx";
 import VitalsPanel from "../panels/VitalsPanel.jsx";
 import EquipmentPanel from "../panels/EquipmentPanel.jsx";
+import EquipmentSelectionPanel from "../panels/EquipmentSelectionPanel.jsx";
 import InventoryPanel from "../panels/InventoryPanel.jsx";
 import StatusEffectsPanel from "../panels/StatusEffectsPanel.jsx";
-import NarrativeLogPanel from "../panels/NarrativeLogPanel.jsx";
+import NarrativeHubPanel from "../panels/NarrativeHubPanel.jsx";
 import CommandTerminalPanel from "../panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../panels/ActionSuggestionsPanel.jsx";
-import NarrativeMemoryPanel from "../panels/NarrativeMemoryPanel.jsx";
 import QuestPanel from "../panels/QuestPanel.jsx";
 import CombatUI from "../../components/CombatUI.jsx";
 import ShopUI from "../../components/ShopUI.jsx";
@@ -33,8 +33,13 @@ export default function GameMode({
   latestEntry,
   latestEntryText,
   narrativeMemoryRef,
-  onScrollUp,
-  onScrollDown,
+  equipmentSelectSlot,
+  onSelectEquipmentSlot,
+  onCloseEquipmentSelect = () => {},
+  onEquipItem = () => {},
+  onUnequipItem = () => {},
+  onEquipTitle = () => {},
+  onUnequipTitle = () => {},
   quests,
   combatState,
   onAttack,
@@ -70,6 +75,9 @@ export default function GameMode({
   user = null,
   focusWindowRequest = null,
 }) {
+  const equipmentSelectLabel = equipmentSelectSlot
+    ? equipmentSelectSlot.charAt(0).toUpperCase() + equipmentSelectSlot.slice(1)
+    : "";
   const windows = [
     {
       id: "vitals",
@@ -85,7 +93,9 @@ export default function GameMode({
       dockZone: "left",
       minWidth: 260,
       minHeight: 180,
-      content: <EquipmentPanel player={player} />,
+      content: (
+        <EquipmentPanel player={player} onSelectSlot={onSelectEquipmentSlot} />
+      ),
     },
     {
       id: "inventory",
@@ -104,12 +114,21 @@ export default function GameMode({
       content: <StatusEffectsPanel player={player} />,
     },
     {
-      id: "narrativeLog",
-      title: "Narrative Log",
+      id: "narrative",
+      title: "Narrative",
       dockZone: "center",
-      minWidth: 420,
-      minHeight: 240,
-      content: <NarrativeLogPanel chatLog={chatLog} />,
+      minWidth: 520,
+      minHeight: 320,
+      content: (
+        <NarrativeHubPanel
+          chatLog={chatLog}
+          summary={narrativeSummary}
+          entries={narrativeEntries}
+          latestEntry={latestEntry}
+          latestEntryText={latestEntryText}
+          memoryRef={narrativeMemoryRef}
+        />
+      ),
     },
     {
       id: "commandTerminal",
@@ -140,28 +159,6 @@ export default function GameMode({
         />
       ),
     },
-    {
-      id: "narrativeMemory",
-      title: "Narrative Memory",
-      dockZone: "right",
-      lockDockZone: "right",
-      allowRightDock: true,
-      allowDockCompact: true,
-      compactLabel: "MEM",
-      minWidth: 320,
-      minHeight: 240,
-      content: (
-        <NarrativeMemoryPanel
-          summary={narrativeSummary}
-          entries={narrativeEntries}
-          latestEntry={latestEntry}
-          latestEntryText={latestEntryText}
-          containerRef={narrativeMemoryRef}
-          onScrollUp={onScrollUp}
-          onScrollDown={onScrollDown}
-        />
-      ),
-    },
     ...(showQuests
       ? [
           {
@@ -172,6 +169,7 @@ export default function GameMode({
             size: { w: 420, h: 380 },
             minWidth: 320,
             minHeight: 240,
+            openFullscreenOnce: true,
             onClose: onCloseQuests,
             content: <QuestPanel quests={quests} />,
           },
@@ -208,6 +206,7 @@ export default function GameMode({
             size: { w: 640, h: 520 },
             minWidth: 420,
             minHeight: 320,
+            openFullscreenOnce: true,
             onClose: onCloseShop,
             content: (
               <ShopUI
@@ -231,6 +230,7 @@ export default function GameMode({
             size: { w: 640, h: 520 },
             minWidth: 420,
             minHeight: 320,
+            openFullscreenOnce: true,
             onClose: onCloseGacha,
             content: (
               <GachaUI
@@ -254,6 +254,7 @@ export default function GameMode({
             size: { w: 640, h: 520 },
             minWidth: 420,
             minHeight: 320,
+            openFullscreenOnce: true,
             onClose: onCloseTitleSystem,
             content: (
               <TitleUI
@@ -279,6 +280,7 @@ export default function GameMode({
             size: { w: 720, h: 560 },
             minWidth: 520,
             minHeight: 360,
+            openFullscreenOnce: true,
             onClose: onCloseProfessions,
             content: (
               <ProfessionUI
@@ -302,6 +304,7 @@ export default function GameMode({
             size: { w: 720, h: 560 },
             minWidth: 520,
             minHeight: 360,
+            openFullscreenOnce: true,
             onClose: onCloseStatusOverlay,
             content: (
               <StatusOverlay
@@ -330,6 +333,7 @@ export default function GameMode({
             size: { w: 720, h: 520 },
             minWidth: 520,
             minHeight: 360,
+            openFullscreenOnce: true,
             onClose: onCloseSaveLoad,
             content: (
               <SaveLoadUI
@@ -340,6 +344,30 @@ export default function GameMode({
                 onLoadState={onLoadState}
                 addSystemMessage={addSystemMessage}
                 user={user}
+              />
+            ),
+          },
+        ]
+      : []),
+    ...(equipmentSelectSlot
+      ? [
+          {
+            id: "equipmentSelect",
+            title: `Select ${equipmentSelectLabel}`,
+            dockZone: "float",
+            position: { x: 240, y: 160 },
+            size: { w: 520, h: 520 },
+            minWidth: 360,
+            minHeight: 320,
+            onClose: onCloseEquipmentSelect,
+            content: (
+              <EquipmentSelectionPanel
+                player={player}
+                slotKey={equipmentSelectSlot}
+                onEquipItem={onEquipItem}
+                onUnequipItem={onUnequipItem}
+                onEquipTitle={onEquipTitle}
+                onUnequipTitle={onUnequipTitle}
               />
             ),
           },

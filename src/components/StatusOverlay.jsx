@@ -10,6 +10,7 @@ import { getEffectiveAttributes, getTitleById } from "../core/titleLogic.js";
 import { DataRegistry } from "../data/DataRegistry.js";
 import { canEvolveSkill } from "../systems/skills/SkillEvolutionSystem.js";
 import { canFuseSkills } from "../systems/skills/SkillFusionSystem.js";
+import { getTalentById } from "../entities/Player.js";
 
 export default function StatusOverlay({
   player,
@@ -111,6 +112,14 @@ export default function StatusOverlay({
     typeof player.class === "string"
       ? player.class
       : player.class?.name || player.class?.id || "";
+  const talentIds = Array.isArray(player.talents) ? player.talents : [];
+  const resolvedTalentNames = talentIds
+    .map((id) => getTalentById(id)?.name || id)
+    .filter(Boolean);
+  const talentLabel =
+    resolvedTalentNames.length > 0
+      ? resolvedTalentNames.join(", ")
+      : player.talent || "None";
   const classId = player.class?.id || player.class;
   const classData = classId ? DataRegistry.getClassById(classId) : null;
   const nextClass = classData?.upgradePath
@@ -241,7 +250,7 @@ export default function StatusOverlay({
               />
               <StatCard label="Title" value={titleLabel} />
               <StatCard label="Race" value={raceLabel} />
-              <StatCard label="Talent" value={player.talent || "None"} />
+              <StatCard label="Talents" value={talentLabel} />
             </div>
           </section>
 

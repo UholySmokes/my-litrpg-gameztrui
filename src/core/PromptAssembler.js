@@ -11,6 +11,9 @@ import {
   getArchetypeSystemById,
 } from "../systems/archetype/ArchetypeSystemRegistry.js";
 
+const MAX_HISTORY_ENTRIES = 20;
+const MAX_HISTORY_CHARS = 4000;
+
 function resolveArchetypeSystem(player = {}) {
   const raw = player.archetypeSystem;
   if (!raw) return null;
@@ -128,21 +131,32 @@ World Flags: ${
  * Builds the history section from recent narrative log
  */
 function buildHistorySection(gameState) {
-  const narrativeLog = gameState.narrative.chatLog || [];
-  const systemLog = (gameState.chatLog || []).filter((msg) =>
-    ["system", "status-update"].includes(msg.type),
-  );
-  const mergedHistory = [...narrativeLog, ...systemLog].sort(
-    (a, b) => (a.timestamp || 0) - (b.timestamp || 0),
-  );
-  const recentHistory = mergedHistory.slice(-10); // Last 10 messages
+  const narrativeLog = Array.isArray(gameState?.narrative?.chatLog)
+    ? gameState.narrative.chatLog
+    : [];
+  const systemLog = Array.isArray(gameState?.chatLog)
+    ? gameState.chatLog.filter((msg) =>
+        ["system", "status-update"].includes(msg?.type),
+      )
+    : [];
+  const mergedHistory = [...narrativeLog, ...systemLog]
+    .map((msg, index) => ({
+      ...msg,
+      __order: index,
+      timestamp: Number.isFinite(msg?.timestamp) ? msg.timestamp : 0,
+    }))
+    .sort((a, b) => {
+      if (a.timestamp !== b.timestamp) return a.timestamp - b.timestamp;
+      return a.__order - b.__order;
+    });
+  const recentHistory = mergedHistory.slice(-MAX_HISTORY_ENTRIES);
 
   if (recentHistory.length === 0) {
     return `=== RECENT HISTORY ===
 ${gameState.narrative.summary || "The adventure has just begun."}`;
   }
 
-  const historyText = recentHistory
+  const historyLines = recentHistory
     .map((msg) => {
       if (msg.type === "narrative") {
         return `Narrator: ${msg.text}`;
@@ -155,7 +169,20 @@ ${gameState.narrative.summary || "The adventure has just begun."}`;
       }
       return msg.text;
     })
-    .join("\n");
+    .filter((line) => typeof line === "string" && line.trim().length > 0);
+
+  let historyText = historyLines.join("\n");
+  if (historyText.length > MAX_HISTORY_CHARS) {
+    const trimmed = [];
+    let total = 0;
+    for (let i = historyLines.length - 1; i >= 0; i -= 1) {
+      const line = historyLines[i];
+      if (total + line.length + 1 > MAX_HISTORY_CHARS) break;
+      trimmed.unshift(line);
+      total += line.length + 1;
+    }
+    historyText = trimmed.join("\n");
+  }
 
   return `=== RECENT HISTORY ===
 ${historyText}`;

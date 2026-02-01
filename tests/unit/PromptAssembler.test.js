@@ -74,8 +74,8 @@ describe("buildHistorySection", () => {
       },
     });
     const lines = history.split("\n").slice(1);
-    expect(lines.length).toBe(12);
-    expect(lines[0]).toBe("Narrator: Event 3");
-    expect(lines[11]).toBe("Narrator: Event 14");
+    expect(lines.length).toBe(15);
+    expect(lines[0]).toBe("Narrator: Event 0");
+    expect(lines[14]).toBe("Narrator: Event 14");
   });
 });

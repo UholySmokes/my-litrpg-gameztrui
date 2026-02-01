@@ -265,3 +265,13 @@ When player clicks Initialize Avatar:
 - ✅ ~~Layout persists between sessions~~
 - ✅ ~~No cramped fixed 3-column layout~~
 - ✅ ~~Modern high-tech vibe~~
+
+## 11) Narrative Pipeline Hardening (In Progress)
+Goal: Make narrative flow consistent, safe, and bounded.
+
+Tasks:
+- ⬜ Audit narrative log flows and ordering (chatLog vs narrative.chatLog)
+- ⬜ Define unified narrative log schema + migration path
+- ⬜ Add prompt history bounds + stable ordering (PromptAssembler)
+- ⬜ Harden AIService fallbacks/timeouts + response format consistency
+- ⬜ Refresh narrative summary cadence + UI memory consistency

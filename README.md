@@ -47,6 +47,10 @@ npm install
 Create `.env.local` (for local dev only):
 
 ```bash
+# Narrative API (client-side)
+# For static hosting, set to your deployed API URL.
+VITE_NARRATE_ENDPOINT=...
+
 # Supabase (optional; enables persistence)
 VITE_SUPABASE_URL=...
 VITE_SUPABASE_ANON_KEY=...
@@ -55,6 +59,11 @@ VITE_SUPABASE_ANON_KEY=...
 # If you run a serverless host, set OPENAI_API_KEY on the server.
 OPENAI_API_KEY=...
 ```
+
+Narrative endpoint notes:
+- Static hosting (GitHub Pages): deploy the API separately and set `VITE_NARRATE_ENDPOINT` to its full URL.
+- Vercel: `/api/narrative` uses `OPENAI_API_KEY` on the server.
+- Azure Static Web Apps: `/api/narrate` uses Azure Foundry credentials (see `api/narrate/index.js`).
 
 ### Run / Build / Test
 

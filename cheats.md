@@ -74,8 +74,6 @@ The Innkeeper — MC: (not shown) — Territory/inn system: safe-zone authority 
 
 Evolving My Undead Legion In A Game-Like World — MC: (not shown) — Undead army evolves like units with ranks/skills.
 
-Pain Immunity: Worried the Villains Aren’t Twisted Enough — MC: (not shown) — Zero pain + fearless brutality = unstoppable combat pacing.
-
 Supreme Harem God System — MC: (not shown) — Relationship/task rewards feed direct stat inflation.
 
 Genetic Ascension — MC: (not shown) — Gene upgrades → physical laws stop applying to him politely.
@@ -102,7 +100,7 @@ Investing in the Reborn Empress… — MC: (not shown) — Investment rewards wi
 
 Harem Stealer: Reborn with the God-Tier Sharing System — MC: (not shown) — Shares/steals benefits via system-linking partners.
 
-Primordial Chaos Dragon Tower: Harem System — MC: (not shown) — Dragon tower trials + reward ladders.
+Primordial Chaos Dragon Tower — MC: (not shown) — Dragon tower trials + reward ladders.
 
 Atticus’s Odyssey: Reincarnated Into A Playground — Atticus — Reincarnation + “playground” growth opportunities.
 
@@ -120,7 +118,7 @@ Horror Game Developer: My Games Aren’t That Scary! — MC: (not shown) — “
 
 Titan King: Ascension of the Giant — MC: (not shown) — Giant blood + size/strength scaling becomes broken.
 
-Grinding Cultivation Toward Martial Saint — MC: (not shown) — Grind-based scaling; stat growth from repetition without bottlenecks.
+Grinding Cultivation Toward Martial Sovereign — MC: (not shown) — Grind-based scaling; stat growth from repetition without bottlenecks.
 
 Steadily Becoming a Saint… Tend the Horses — MC: (not shown) — Low-profile saint growth with hidden cheat advantages.
 
@@ -514,3 +512,7 @@ Divine Bloodline: King of Elves — Class weakness flips into divine-form suprem
 Underworld Cheat Save File — Keeps prior “cheat run” powers inside a new round.
 
 System-of-Systems Creator — Builds systems, patches reality like software.
+
+# This is a fixed hidden System default for all. doesnt use a place.
+
+My Talent’s Name Is Generator — MC: (not shown) — Generates abilities/resources continuously (permanent engine).

@@ -1,23 +1,23 @@
 :root {
   /* Backgrounds */
-  --bg-deep: #f2e9d7;
-  --bg-glass: rgba(255, 252, 244, 0.86);
-  --bg-panel: rgba(255, 252, 244, 0.92);
+  --bg-deep: #050a10;
+  --bg-glass: rgba(5, 16, 26, 0.6);
+  --bg-panel: rgba(5, 16, 26, 0.82);
 
   /* Interface Colors */
-  --holo-cyan: #1f7d78;
-  --holo-alert: #c2443a;
-  --holo-gold: #b7742f;
-  --holo-blue: #2d6f8f;
-  --holo-gray: #b4a99a;
-  --holo-dark: #3d332a;
+  --holo-cyan: #00f3ff;
+  --holo-alert: #ff2a6d;
+  --holo-gold: #ffd700;
+  --holo-blue: #4361ee;
+  --holo-gray: #7b7bad;
+  --holo-dark: #05080c;
 
   /* Effects */
-  --glow-strong: 0 0 18px rgba(31, 125, 120, 0.35);
-  --glow-subtle: 0 0 6px rgba(31, 125, 120, 0.18);
-  --border-glass: 1px solid rgba(31, 125, 120, 0.2);
-  --glow-border: 0 0 12px rgba(31, 125, 120, 0.22);
-  --glass-blur: blur(10px);
+  --glow-strong: 0 0 18px rgba(0, 243, 255, 0.35);
+  --glow-subtle: 0 0 6px rgba(0, 243, 255, 0.18);
+  --border-glass: 1px solid rgba(0, 243, 255, 0.22);
+  --glow-border: 0 0 12px rgba(0, 243, 255, 0.22);
+  --glass-blur: blur(12px);
 
   /* Fonts */
   --font-hud: 'Unbounded', sans-serif;
@@ -25,10 +25,10 @@
   --font-code: 'JetBrains Mono', monospace;
 
   /* Text */
-  --text-main: #241a14;
-  --text-dim: #6f5e50;
-  --button-bg: rgba(31, 125, 120, 0.1);
-  --button-selected: rgba(183, 116, 47, 0.18);
+  --text-main: #e0e6ed;
+  --text-dim: rgba(224, 230, 237, 0.65);
+  --button-bg: rgba(0, 243, 255, 0.08);
+  --button-selected: rgba(255, 215, 0, 0.18);
   --border-radius: 14px;
   
   font-synthesis: none;

@@ -20,13 +20,13 @@ export default function NarrativeMemoryPanel({
       >
         <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
           {entries.map((entry) => {
-            const isLatest = entry.timestamp === latestEntry?.timestamp;
+            const isLatest = entry.id === latestEntry?.id;
             const classNames = ["narrative-memory-entry"];
             if (isLatest) {
               classNames.push("narrative-memory-entry--latest");
             }
             return (
-              <li key={entry.timestamp} className={classNames.join(" ")}>
+              <li key={entry.id} className={classNames.join(" ")}>
                 {isLatest ? latestEntryText : entry.text}
               </li>
             );

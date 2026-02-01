@@ -112,7 +112,8 @@ const initialGameState = {
   chatLog: [],
   narrative: {
     summary: "",
-    chatLog: [],
+    entries: [],
+    sequence: 0,
   },
 };
 

@@ -17,6 +17,7 @@ import {
   SimBridge,
   wrapActionExecution,
 } from "../simulation/bridge/SimulationBridge.js";
+import { appendNarrativeEntry } from "../core/narrativeLog.js";
 
 const initialNarrativeCache = new Map();
 
@@ -28,6 +29,13 @@ const DEFAULT_ACTION_SUGGESTIONS = [
 ];
 
 const READ_ONLY_ACTIONS = new Set(["look", "inventory", "status"]);
+const SUMMARY_REFRESH_INTERVAL = 5;
+const shouldRefreshSummary = (narrativeState = {}) => {
+  const count = Array.isArray(narrativeState.entries)
+    ? narrativeState.entries.length
+    : 0;
+  return count > 0 && count % SUMMARY_REFRESH_INTERVAL === 0;
+};
 
 const toNumber = (value, fallback = 0) => {
   const parsed = Number(value);
@@ -264,6 +272,22 @@ export function useNarrative(
   );
   const fallbackCounterRef = useRef(0);
 
+  const updateNarrativeState = (prevState, entry) => {
+    const nextNarrative = appendNarrativeEntry(prevState.narrative, entry, {
+      maxEntries: 80,
+    });
+    const summary = shouldRefreshSummary(nextNarrative)
+      ? nextNarrative.entries[nextNarrative.entries.length - 1]?.text
+      : prevState.narrative?.summary;
+    return {
+      ...prevState,
+      narrative: {
+        ...nextNarrative,
+        summary: summary ?? "",
+      },
+    };
+  };
+
   /**
    * Processes user input through the full narrative pipeline
    */
@@ -296,20 +320,13 @@ export function useNarrative(
             });
 
             const aiResponse = await generateNarrative(failurePrompt);
-            addSystemMessage(aiResponse.narrative, "narrative");
             setState((prevState) => ({
-              ...prevState,
-              narrative: {
-                ...prevState.narrative,
-                chatLog: [
-                  ...(prevState.narrative?.chatLog || []),
-                  {
-                    type: "narrative",
-                    text: aiResponse.narrative,
-                    timestamp: SimBridge.now(),
-                  },
-                ].slice(-50),
-              },
+              ...updateNarrativeState(prevState, {
+                type: "narrative",
+                text: aiResponse.narrative,
+                timestamp: SimBridge.now(),
+                source: "ai",
+              }),
             }));
           } catch (aiError) {
             console.error("AI narrative generation failed:", aiError);
@@ -320,20 +337,13 @@ export function useNarrative(
               state: currentState,
               variantSeed: fallbackCounterRef.current,
             });
-            addSystemMessage(fallbackNarrative, "narrative");
             setState((prevState) => ({
-              ...prevState,
-              narrative: {
-                ...prevState.narrative,
-                chatLog: [
-                  ...(prevState.narrative?.chatLog || []),
-                  {
-                    type: "narrative",
-                    text: fallbackNarrative,
-                    timestamp: SimBridge.now(),
-                  },
-                ].slice(-50),
-              },
+              ...updateNarrativeState(prevState, {
+                type: "narrative",
+                text: fallbackNarrative,
+                timestamp: SimBridge.now(),
+                source: "fallback",
+              }),
             }));
           }
 
@@ -397,24 +407,14 @@ export function useNarrative(
           const prompt = assemblePrompt(currentState, userInput, actionResult);
           const aiResponse = await generateNarrative(prompt);
 
-          // Add AI narrative to chat log
-          addSystemMessage(aiResponse.narrative, "narrative");
-
           // Update narrative history in state
-          const updatedState = (prevState) => ({
-            ...prevState,
-            narrative: {
-              ...prevState.narrative,
-              chatLog: [
-                ...(prevState.narrative?.chatLog || []),
-                {
-                  type: "narrative",
-                  text: aiResponse.narrative,
-                  timestamp: SimBridge.now(),
-                },
-              ].slice(-50), // Keep last 50 messages for history
-            },
-          });
+          const updatedState = (prevState) =>
+            updateNarrativeState(prevState, {
+              type: "narrative",
+              text: aiResponse.narrative,
+              timestamp: SimBridge.now(),
+              source: "ai",
+            });
 
           setState((prevState) => {
             const resolved = updatedState(prevState);
@@ -432,20 +432,13 @@ export function useNarrative(
             state: actionResult.readOnly ? currentState : newState,
             variantSeed: fallbackCounterRef.current,
           });
-          addSystemMessage(fallbackNarrative, "narrative");
           setState((prevState) => ({
-            ...prevState,
-            narrative: {
-              ...prevState.narrative,
-              chatLog: [
-                ...(prevState.narrative?.chatLog || []),
-                {
-                  type: "narrative",
-                  text: fallbackNarrative,
-                  timestamp: SimBridge.now(),
-                },
-              ].slice(-50),
-            },
+            ...updateNarrativeState(prevState, {
+              type: "narrative",
+              text: fallbackNarrative,
+              timestamp: SimBridge.now(),
+              source: "fallback",
+            }),
           }));
         } finally {
           setIsNarrating(false);
@@ -504,21 +497,21 @@ export function useNarrative(
           initialNarrativeCache.set(cacheKey, aiResponse);
         }
 
-        addSystemMessage(aiResponse.narrative, "narrative");
-
         // Update narrative history
         const seededState = {
           ...currentState,
           narrative: {
-            ...currentState.narrative,
-            summary: aiResponse.narrative,
-            chatLog: [
+            ...appendNarrativeEntry(
+              currentState.narrative,
               {
                 type: "narrative",
                 text: aiResponse.narrative,
                 timestamp: SimBridge.now(),
+                source: "ai",
               },
-            ],
+              { maxEntries: 80 },
+            ),
+            summary: aiResponse.narrative,
           },
         };
 
@@ -539,19 +532,20 @@ export function useNarrative(
           isInitial: true,
           variantSeed: fallbackCounterRef.current,
         });
-        addSystemMessage(fallbackNarrative, "narrative");
         setState((prevState) => ({
           ...prevState,
           narrative: {
-            ...prevState.narrative,
-            summary: fallbackNarrative,
-            chatLog: [
+            ...appendNarrativeEntry(
+              prevState.narrative,
               {
                 type: "narrative",
                 text: fallbackNarrative,
                 timestamp: SimBridge.now(),
+                source: "fallback",
               },
-            ],
+              { maxEntries: 80 },
+            ),
+            summary: fallbackNarrative,
           },
         }));
       } finally {

@@ -121,9 +121,8 @@ export default function GameMode({
       minHeight: 320,
       content: (
         <NarrativeHubPanel
-          chatLog={chatLog}
-          summary={narrativeSummary}
           entries={narrativeEntries}
+          summary={narrativeSummary}
           latestEntry={latestEntry}
           latestEntryText={latestEntryText}
           memoryRef={narrativeMemoryRef}

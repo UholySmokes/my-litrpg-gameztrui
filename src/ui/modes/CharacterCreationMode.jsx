@@ -567,7 +567,6 @@ export default function CharacterCreationMode({ onComplete }) {
       id: "narrativeMemory",
       title: "Narrative Memory",
       dockZone: "right",
-      lockDockZone: "right",
       allowDockCompact: true,
       compactLabel: "MEM",
       minWidth: 320,

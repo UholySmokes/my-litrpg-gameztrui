@@ -5,6 +5,9 @@ const API_ENDPOINTS = [
 ].filter(Boolean);
 
 const MAX_NARRATIVE_LENGTH = 1200;
+const REQUEST_TIMEOUT_MS = 12000;
+const MAX_RETRIES = 2;
+const RETRY_STATUS = new Set([408, 429, 500, 502, 503, 504]);
 export const NARRATION_GUARD_FALLBACK =
   "The story presses onward, waiting for your next move.";
 const TONE_BLOCKLIST = [
@@ -21,6 +24,53 @@ function stripToneViolations(text) {
     (sentence) => !TONE_BLOCKLIST.some((pattern) => pattern.test(sentence)),
   );
   return kept.join(" ").replace(/\s+/g, " ").trim();
+}
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function fetchWithTimeout(url, options, timeoutMs) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    return response;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function fetchJsonWithRetry(url, options) {
+  let lastError = null;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
+    try {
+      const response = await fetchWithTimeout(
+        url,
+        options,
+        REQUEST_TIMEOUT_MS,
+      );
+      const data = await response.json().catch(() => null);
+
+      if (RETRY_STATUS.has(response.status) && attempt < MAX_RETRIES) {
+        await delay(300 * (attempt + 1) ** 2);
+        continue;
+      }
+
+      return { response, data };
+    } catch (error) {
+      lastError = error;
+      if (attempt < MAX_RETRIES) {
+        await delay(300 * (attempt + 1) ** 2);
+        continue;
+      }
+      throw error;
+    }
+  }
+
+  throw lastError || new Error("Narrator service unavailable.");
 }
 
 export function applyNarrationGuards(response) {
@@ -53,23 +103,23 @@ export async function generateNarrative(prompt) {
 
   for (const endpoint of API_ENDPOINTS) {
     try {
-      const response = await fetch(endpoint, {
+      const { response, data } = await fetchJsonWithRetry(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ prompt }),
       });
-
-      const data = await response.json().catch(() => null);
       if (!response.ok) {
         if (response.status === 404 || response.status === 405) {
           continue;
         }
 
         const message =
-          typeof data?.error === "string"
-            ? data.error
+          typeof data?.message === "string"
+            ? data.message
+            : typeof data?.error === "string"
+              ? data.error
             : "Narrative generation failed.";
         throw new Error(message);
       }

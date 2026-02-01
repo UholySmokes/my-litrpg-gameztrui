@@ -7,6 +7,7 @@ import {
   getEffectiveAttributes,
 } from "./titleLogic.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
+import { normalizeNarrativeEntries } from "./narrativeLog.js";
 
 const DEFAULT_CONFIG = {
   maxLevel: 100,
@@ -423,6 +424,17 @@ export function normalizeGameState(rawState) {
   const world = normalizeObject(state.world);
   const narrative = normalizeObject(state.narrative);
   const combat = normalizeObject(state.combat);
+  const legacyNarrativeEntries = normalizeArray(narrative.chatLog);
+  const legacySystemEntries = normalizeArray(state.chatLog).filter((entry) =>
+    ["system", "status-update"].includes(entry?.type),
+  );
+  const normalizedEntries = normalizeNarrativeEntries(
+    normalizeArray(narrative.entries),
+  );
+  const legacyEntries = normalizeNarrativeEntries([
+    ...legacyNarrativeEntries,
+    ...legacySystemEntries,
+  ]);
 
   let normalized = {
     ...state,
@@ -452,7 +464,12 @@ export function normalizeGameState(rawState) {
     narrative: {
       ...narrative,
       summary: narrative.summary ?? "",
-      chatLog: normalizeArray(narrative.chatLog),
+      entries: normalizedEntries.length ? normalizedEntries : legacyEntries,
+      sequence: Math.max(
+        0,
+        ...normalizedEntries.map((entry) => entry.sequence || 0),
+        ...legacyEntries.map((entry) => entry.sequence || 0),
+      ),
     },
   };
 

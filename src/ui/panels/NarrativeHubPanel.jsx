@@ -3,9 +3,8 @@ import NarrativeLogPanel from "./NarrativeLogPanel.jsx";
 import NarrativeMemoryPanel from "./NarrativeMemoryPanel.jsx";
 
 export default function NarrativeHubPanel({
-  chatLog = [],
-  summary = "",
   entries = [],
+  summary = "",
   latestEntry = null,
   latestEntryText = "",
   memoryRef,
@@ -38,7 +37,7 @@ export default function NarrativeHubPanel({
       </div>
       <div className="narrative-hub__content">
         {activeTab === "log" ? (
-          <NarrativeLogPanel chatLog={chatLog} />
+          <NarrativeLogPanel entries={entries} />
         ) : (
           <NarrativeMemoryPanel
             summary={summary}

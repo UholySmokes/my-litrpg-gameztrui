@@ -183,7 +183,7 @@ export default function WindowManager({
     const resolvedPosition = state.position || windowConfig.position || { x: 0, y: 0 };
     const resolvedSize = state.size || windowConfig.size || { w: 300, h: 200 };
     const isLocked = Boolean(windowConfig.lockDockZone);
-    const moveOnly = forceFloating && (windowConfig.moveOnly ?? true);
+    const moveOnly = Boolean(windowConfig.moveOnly);
     const isDockable = forceFloating
       ? false
       : windowConfig.isDockable ?? !isLocked;
@@ -199,7 +199,10 @@ export default function WindowManager({
     const allowedDockOrder = dockOrder.filter(
       (zone) => zone !== "right" || windowConfig.allowRightDock,
     );
-    const canDockCompact = Boolean(windowConfig.allowDockCompact) && !moveOnly;
+    const canDockCompact =
+      Boolean(windowConfig.allowDockCompact) &&
+      resolvedDockZone === "right" &&
+      !moveOnly;
     const resolvedCollapsed = isCollapsible ? state.collapsed : false;
     return (
       <GameWindow

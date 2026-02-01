@@ -1,9 +1,9 @@
-export default function NarrativeLogPanel({ chatLog }) {
+export default function NarrativeLogPanel({ entries }) {
   return (
     <div className="command-deck__narrative-log">
-      {chatLog.map((msg, index) => (
+      {entries.map((msg) => (
         <div
-          key={index}
+          key={msg.id || `${msg.timestamp}-${msg.text}`}
           className={msg.type}
           style={{ marginBottom: "0.5rem" }}
         >

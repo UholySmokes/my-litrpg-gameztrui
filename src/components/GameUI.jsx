@@ -88,9 +88,9 @@ export default function GameUI({ user }) {
   } = useGameEngine();
 
   const narrativeSummary = state?.narrative?.summary;
-  const narrativeMemory = state?.narrative?.chatLog || [];
-  const recentNarrativeEntries = narrativeMemory.slice(-10).reverse();
-  const latestNarrativeEntry = narrativeMemory[narrativeMemory.length - 1];
+  const narrativeEntries = state?.narrative?.entries || [];
+  const recentNarrativeEntries = narrativeEntries.slice(-10).reverse();
+  const latestNarrativeEntry = narrativeEntries[narrativeEntries.length - 1];
   const latestNarrativeRawText = latestNarrativeEntry?.text || "";
   const latestNarrativeText = latestNarrativeRawText.trim();
   const latestEntryTypewriterContent = latestNarrativeRawText
@@ -108,7 +108,7 @@ export default function GameUI({ user }) {
     if (container) {
       container.scrollTop = 0;
     }
-  }, [narrativeMemory.length]);
+  }, [narrativeEntries.length]);
 
   useEffect(() => {
     if (!state) return;

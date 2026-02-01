@@ -25,6 +25,7 @@ import {
   canEvolveSkill,
   evolveSkill,
 } from "../systems/skills/SkillEvolutionSystem.js";
+import { appendNarrativeEntry } from "./narrativeLog.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -304,8 +305,15 @@ const gameReducer = (state, action) => {
 
     case "ADD_SYSTEM_MESSAGE": {
       const { message, type = "system" } = action.payload;
+      const nextNarrative = appendNarrativeEntry(state.narrative, {
+        type,
+        text: message,
+        timestamp: SimBridge.now(),
+        source: "system",
+      });
       return {
         ...state,
+        narrative: nextNarrative,
         chatLog: [
           ...(state.chatLog || []),
           {

@@ -100,8 +100,19 @@ export function applyNarrationGuards(response) {
  */
 export async function generateNarrative(prompt) {
   let lastError = null;
+  let attemptedEndpoints = 0;
+  let missingEndpointCount = 0;
+
+  if (API_ENDPOINTS.length === 0) {
+    const error = new Error(
+      "No narrator endpoints configured. Set VITE_NARRATE_ENDPOINT or deploy /api/narrative.",
+    );
+    error.code = "NARRATOR_ENDPOINT_MISSING";
+    throw error;
+  }
 
   for (const endpoint of API_ENDPOINTS) {
+    attemptedEndpoints += 1;
     try {
       const { response, data } = await fetchJsonWithRetry(endpoint, {
         method: "POST",
@@ -112,6 +123,7 @@ export async function generateNarrative(prompt) {
       });
       if (!response.ok) {
         if (response.status === 404 || response.status === 405) {
+          missingEndpointCount += 1;
           continue;
         }
 
@@ -149,6 +161,14 @@ export async function generateNarrative(prompt) {
         console.error("AI Service Error:", error);
       }
     }
+  }
+
+  if (attemptedEndpoints > 0 && missingEndpointCount === attemptedEndpoints) {
+    const error = new Error(
+      "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT or deploy /api/narrative.",
+    );
+    error.code = "NARRATOR_ENDPOINT_MISSING";
+    throw error;
   }
 
   if (lastError?.message?.includes("rate limit")) {

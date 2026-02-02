@@ -1,5 +1,8 @@
+const runtimeEnv =
+  typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
+
 const API_ENDPOINTS = [
-  import.meta.env.VITE_NARRATE_ENDPOINT,
+  runtimeEnv.VITE_NARRATE_ENDPOINT,
   "/api/narrate",
   "/api/narrative",
 ].filter(Boolean);
@@ -157,7 +160,7 @@ export async function generateNarrative(prompt) {
       });
     } catch (error) {
       lastError = error;
-      if (import.meta.env.DEV) {
+      if (runtimeEnv.DEV) {
         console.error("AI Service Error:", error);
       }
     }

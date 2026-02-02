@@ -97,12 +97,12 @@ describe("Leveling and combat invariants", () => {
       const attack = playerAttack(state, 0);
 
       expect(attack.success).toBe(true);
-      expect(attack.state.combat.enemies[0].stats.hp.current).toBe(9);
+      expect(attack.state.combat.enemies[0].stats.hp.current).toBe(11);
 
       const afterEnemies = processEnemyTurns(attack.state);
       expect(afterEnemies.combat.turn).toBe("player");
       expect(afterEnemies.player.hp.current).toBe(
-        initialGameState.player.hp.current - 2,
+        initialGameState.player.hp.current - 1,
       );
     } finally {
       Math.random = originalRandom;

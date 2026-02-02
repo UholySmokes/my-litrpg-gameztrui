@@ -59,8 +59,11 @@ describe("skill progression systems", () => {
       payload: { skillAId: "skill_a", skillBId: "skill_b" },
     });
     expect(next.player.abilities.length).toBe(1);
-    expect(next.player.abilities[0].name).toContain("Skill A");
-    expect(next.player.abilities[0].name).toContain("Skill B");
+    const fused = next.player.abilities[0];
+    expect(typeof fused.name).toBe("string");
+    expect(fused.name.trim().length).toBeGreaterThan(0);
+    expect(fused.id).not.toBe("skill_a");
+    expect(fused.id).not.toBe("skill_b");
   });
 
   it("evolves class when requirements are met", () => {

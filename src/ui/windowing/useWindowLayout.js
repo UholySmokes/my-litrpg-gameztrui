@@ -67,6 +67,23 @@ const applySharedPins = (layout) => {
   };
 };
 
+const normalizeLayout = (layout) => {
+  if (!layout || !layout.windows) return layout;
+  const nextWindows = { ...layout.windows };
+  Object.keys(nextWindows).forEach((id) => {
+    if (id !== "narrativeMemory" && nextWindows[id]?.alwaysVisible) {
+      nextWindows[id] = { ...nextWindows[id], alwaysVisible: false };
+    }
+    if (id !== "narrativeMemory" && nextWindows[id]?.dockCompact) {
+      nextWindows[id] = { ...nextWindows[id], dockCompact: false };
+    }
+  });
+  return {
+    ...layout,
+    windows: nextWindows,
+  };
+};
+
 const mergeLayouts = (preset, stored) => {
   if (!stored) return preset;
   if (!preset) return stored;
@@ -95,7 +112,7 @@ export function useWindowLayout(mode = "game") {
     const preset = layoutPresets[mode] || layoutPresets.game;
     const stored = readLayout(mode);
     const base = mergeLayouts(preset, stored);
-    return applySharedPins(base);
+    return normalizeLayout(applySharedPins(base));
   }, [mode]);
   const [layouts, setLayouts] = useState(() => ({ [mode]: initialLayout }));
   const layout = layouts[mode] || initialLayout;
@@ -123,10 +140,11 @@ export function useWindowLayout(mode = "game") {
           },
         },
       };
-      writeLayout(mode, next);
+      const normalized = normalizeLayout(next);
+      writeLayout(mode, normalized);
       return {
         ...prev,
-        [mode]: next,
+        [mode]: normalized,
       };
     });
   }, [initialLayout, mode]);

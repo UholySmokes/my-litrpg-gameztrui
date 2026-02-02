@@ -33,24 +33,51 @@ function withEndpoint(configText, endpointValue) {
   return `${trimmed}\n${assignment}\n`;
 }
 
+function withApiBase(configText, apiBaseValue) {
+  const serialized = JSON.stringify(apiBaseValue);
+  const assignment = `globalThis.__RUNTIME_CONFIG__.VITE_API_BASE_URL = ${serialized};`;
+  const pattern =
+    /globalThis\.__RUNTIME_CONFIG__\.VITE_API_BASE_URL\s*=\s*[^;]+;/;
+  if (pattern.test(configText)) {
+    return configText.replace(pattern, assignment);
+  }
+  const trimmed = ensureBase(configText).replace(/\s*$/, "");
+  return `${trimmed}\n${assignment}\n`;
+}
+
 function hasEndpoint(configText) {
   return /VITE_NARRATE_ENDPOINT/.test(configText);
 }
 
+function hasApiBase(configText) {
+  return /VITE_API_BASE_URL|VITE_API_BASE/.test(configText);
+}
+
 async function main() {
   const envEndpoint = (process.env.VITE_NARRATE_ENDPOINT || "").trim();
+  const envApiBase = (
+    process.env.VITE_API_BASE_URL ||
+    process.env.VITE_API_BASE ||
+    ""
+  ).trim();
   const publicConfig = await readPublicConfig();
 
   let output = publicConfig;
   let sourceLabel = "public";
 
-  if (envEndpoint) {
-    output = withEndpoint(publicConfig, envEndpoint);
+  if (envEndpoint || envApiBase) {
+    output = ensureBase(publicConfig);
+    if (envEndpoint) {
+      output = withEndpoint(output, envEndpoint);
+    }
+    if (envApiBase) {
+      output = withApiBase(output, envApiBase);
+    }
     sourceLabel = "env";
-  } else if (!hasEndpoint(publicConfig)) {
+  } else if (!hasEndpoint(publicConfig) && !hasApiBase(publicConfig)) {
     if (process.env.CI) {
       throw new Error(
-        "VITE_NARRATE_ENDPOINT is missing. Set it in the build environment or in public/runtime-config.js.",
+        "VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL is missing. Set it in the build environment or in public/runtime-config.js.",
       );
     }
     output = ensureBase(publicConfig);

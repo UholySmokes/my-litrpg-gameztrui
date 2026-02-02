@@ -2,10 +2,20 @@ const { DefaultAzureCredential } = require("@azure/identity");
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
-
-function toStringSafe(value) { 
-  return typeof value === "string" ? value : ""; 
-} 
+const {
+  jsonResponse,
+  toStringSafe,
+  getRequiredEnv,
+  normalizeEndpoint,
+  generateId,
+  hashContent,
+  readJsonBody,
+  fetchJson,
+  extractAssistantText,
+  getApiVersion,
+  getTimeoutMs,
+  rateLimit,
+} = require("../lib/azure-ai-utils");
 
 function clampInt(value, min, max, fallback) { 
   const parsed = Number.parseInt(String(value), 10); 
@@ -13,37 +23,12 @@ function clampInt(value, min, max, fallback) {
   return Math.min(max, Math.max(min, parsed)); 
 } 
 
-function jsonResponse(status, body) { 
-  return { 
-    status, 
-    headers: { "Content-Type": "application/json" }, 
-    body 
-  }; 
-} 
-
-function getRequiredEnv(name) { 
-  const value = process.env[name]; 
-  return typeof value === "string" && value.trim() ? value.trim() : ""; 
-} 
-
-function normalizeEndpoint(endpoint) { 
-  return endpoint.replace(/\/+$/g, ""); 
-} 
-
 const draftsStorePath = path.join(process.cwd(), "api", "factory-drafts.json");
-const rateLimitState = new Map();
 
 function nowIso() {
   return new Date().toISOString();
 }
 
-function generateId(prefix) {
-  return `${prefix}_${crypto.randomBytes(6).toString("hex")}`;
-}
-
-function hashContent(text) {
-  return crypto.createHash("sha256").update(String(text || ""), "utf8").digest("hex");
-}
 
 function readDrafts() {
   try {
@@ -75,114 +60,6 @@ function updateDraftStatus(draftId, status) {
   return next.find((draft) => draft.id === draftId) || null;
 }
 
-function rateLimit(key, limit) {
-  if (!limit || limit <= 0) return true;
-  const now = Date.now();
-  const windowMs = 60000;
-  const bucket = rateLimitState.get(key) || [];
-  const recent = bucket.filter((t) => now - t < windowMs);
-  if (recent.length >= limit) {
-    rateLimitState.set(key, recent);
-    return false;
-  }
-  recent.push(now);
-  rateLimitState.set(key, recent);
-  return true;
-}
-
-async function readJsonBody(req) { 
-  if (!req) return {}; 
-  if (req.body && typeof req.body === "object" && req.body !== null) return req.body; 
-  if (typeof req.body === "string") { 
-    try { return JSON.parse(req.body); } catch { return {}; } 
-  } 
-  return {}; 
-} 
-
-let fetchImpl = typeof fetch === "function" ? fetch : null;
-
-async function resolveFetch() {
-  if (fetchImpl) return fetchImpl;
-  try {
-    const mod = await import("undici");
-    fetchImpl = mod.fetch;
-  } catch {
-    fetchImpl = null;
-  }
-  if (!fetchImpl) {
-    throw new Error("fetch is not available in this runtime");
-  }
-  return fetchImpl;
-}
-
-async function fetchJson(url, { method, token, body, retries }) { 
-  const fetchFn = await resolveFetch();
-  const maxRetries = Number.isFinite(retries) ? retries : 2;
-  let attempt = 0;
-
-  while (true) {
-    const response = await fetchFn(url, { 
-      method, 
-      headers: { 
-        Authorization: `Bearer ${token}`, 
-        "Content-Type": "application/json" 
-      }, 
-      body: body ? JSON.stringify(body) : undefined 
-    }); 
-
-    const text = await response.text(); 
-    let json = null; 
-    try { json = text ? JSON.parse(text) : null; } catch { json = null; } 
-
-    if (!response.ok) { 
-      const detail = json || text || response.statusText; 
-      const error = new Error(`Foundry request failed (${response.status})`); 
-      error.status = response.status; 
-      error.detail = detail; 
-
-      if ([429, 500, 502, 503, 504].includes(response.status) && attempt < maxRetries) {
-        const delay = Math.min(2000, 300 * (attempt + 1));
-        await new Promise((r) => setTimeout(r, delay));
-        attempt += 1;
-        continue;
-      }
-
-      throw error; 
-    } 
-
-    return json; 
-  }
-} 
-
-function extractAssistantText(messagesResponse) { 
-  const data = Array.isArray(messagesResponse?.data) 
-    ? messagesResponse.data 
-    : Array.isArray(messagesResponse?.messages) 
-      ? messagesResponse.messages 
-      : []; 
-
-  for (const message of data) { 
-    if (message?.role !== "assistant") continue; 
-    const content = message?.content; 
-
-    if (typeof content === "string" && content.trim()) return content.trim(); 
-
-    if (Array.isArray(content)) { 
-      const parts = []; 
-      for (const item of content) { 
-        const textValue = item?.text?.value; 
-        if (typeof textValue === "string" && textValue.trim()) parts.push(textValue.trim()); 
-        const directText = item?.text; 
-        if (typeof directText === "string" && directText.trim()) parts.push(directText.trim()); 
-      } 
-      if (parts.length) return parts.join("\n"); 
-    } 
-
-    const nestedText = message?.content?.text?.value; 
-    if (typeof nestedText === "string" && nestedText.trim()) return nestedText.trim(); 
-  } 
-  return ""; 
-} 
 
 module.exports = async function factoryRun(context, req) { 
   try { 
@@ -215,9 +92,16 @@ module.exports = async function factoryRun(context, req) {
         context.res = jsonResponse(400, { ok: false, errorCode: "MISSING_DRAFT_ID", message: "draftId is required." });
         return;
       }
-      if (adminKey && providedKey !== adminKey) {
-        context.res = jsonResponse(403, { ok: false, errorCode: "FORBIDDEN", message: "Admin approval denied." });
-        return;
+      if (adminKey) {
+        const providedBuffer = Buffer.from(providedKey || "");
+        const adminBuffer = Buffer.from(adminKey);
+        const isMatch =
+          providedBuffer.length === adminBuffer.length &&
+          crypto.timingSafeEqual(providedBuffer, adminBuffer);
+        if (!isMatch) {
+          context.res = jsonResponse(403, { ok: false, errorCode: "FORBIDDEN", message: "Admin approval denied." });
+          return;
+        }
       }
       const approved = updateDraftStatus(draftId, "approved");
       if (!approved) {
@@ -229,7 +113,10 @@ module.exports = async function factoryRun(context, req) {
     }
 
     const clientKey = toStringSafe(req?.headers?.["x-forwarded-for"] || req?.headers?.["x-client-id"] || "anonymous");
-    if (!rateLimit(clientKey, rateLimitPerMin)) {
+    const canProceed = await rateLimit(clientKey, rateLimitPerMin, {
+      logger: context?.log?.bind(context),
+    });
+    if (!canProceed) {
       context.res = jsonResponse(429, { ok: false, errorCode: "RATE_LIMITED", message: "Rate limit exceeded." });
       return;
     }
@@ -240,7 +127,7 @@ module.exports = async function factoryRun(context, req) {
 
     const instruction = `Generate ${count} draft ${contentType} for an early-game underground ruin.`; 
     const endpointBase = normalizeEndpoint(projectEndpoint); 
-    const apiVersion = "2025-05-01"; 
+    const apiVersion = getApiVersion(); 
 
     const credential = managedIdentityClientId
       ? new DefaultAzureCredential({ managedIdentityClientId })
@@ -285,7 +172,10 @@ module.exports = async function factoryRun(context, req) {
       return; 
     } 
 
-    const timeoutMs = 25000; 
+    const timeoutMs = getTimeoutMs(
+      "FACTORY_RUN_TIMEOUT_MS",
+      getTimeoutMs("AZURE_AI_RUN_TIMEOUT_MS", 25000),
+    ); 
     const startedAt = Date.now(); 
     let currentRun = run; 
     let sleepMs = 500; 
@@ -300,7 +190,13 @@ module.exports = async function factoryRun(context, req) {
       } 
 
       if (Date.now() - startedAt > timeoutMs) { 
-        context.res = jsonResponse(504, { ok: false, errorCode: "RUN_TIMEOUT", message: "Agent run timeout." }); 
+        context.res = jsonResponse(504, { 
+          ok: false, 
+          errorCode: "RUN_TIMEOUT", 
+          message: "Agent run timeout.", 
+          threadId, 
+          runId 
+        }); 
         return; 
       } 
 

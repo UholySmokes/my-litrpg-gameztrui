@@ -60,6 +60,12 @@ VITE_SUPABASE_ANON_KEY=...
 OPENAI_API_KEY=...
 ```
 
+Azure Functions local dev (for `api/`):
+
+- Copy `api/local.settings.example.json` to `api/local.settings.json`.
+- Fill in `FOUNDRY_PROJECT_ENDPOINT`, agent IDs, and Azure credentials.
+- Keep `api/local.settings.json` out of git (it is ignored).
+
 Narrative endpoint notes:
 - Static hosting (GitHub Pages): deploy the API separately and set `VITE_NARRATE_ENDPOINT` to its full URL.
 - Vercel: `/api/narrative` uses `OPENAI_API_KEY` on the server.

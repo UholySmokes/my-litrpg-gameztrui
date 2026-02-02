@@ -17,7 +17,7 @@ const creationLayout = {
       position: { x: 40, y: 340 },
       size: { w: 320, h: 380 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     class: {
       id: "class",
@@ -26,7 +26,7 @@ const creationLayout = {
       position: { x: 380, y: 80 },
       size: { w: 320, h: 240 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     attributes: {
       id: "attributes",
@@ -35,7 +35,7 @@ const creationLayout = {
       position: { x: 380, y: 340 },
       size: { w: 320, h: 380 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     archetypeSystem: {
       id: "archetypeSystem",
@@ -44,7 +44,7 @@ const creationLayout = {
       position: { x: 720, y: 80 },
       size: { w: 320, h: 320 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     skills: {
       id: "skills",
@@ -53,7 +53,7 @@ const creationLayout = {
       position: { x: 720, y: 420 },
       size: { w: 300, h: 340 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     summary: {
       id: "summary",
@@ -71,7 +71,7 @@ const creationLayout = {
       position: { x: 0, y: 540 },
       size: { w: 680, h: 240 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     narrativeMemory: {
       id: "narrativeMemory",
@@ -106,7 +106,7 @@ const gameLayout = {
       position: { x: 0, y: 240 },
       size: { w: 300, h: 220 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     inventory: {
       id: "inventory",
@@ -115,7 +115,7 @@ const gameLayout = {
       position: { x: 0, y: 480 },
       size: { w: 300, h: 220 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     statusEffects: {
       id: "statusEffects",
@@ -124,7 +124,7 @@ const gameLayout = {
       position: { x: 0, y: 720 },
       size: { w: 300, h: 180 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     narrativeLog: {
       id: "narrativeLog",
@@ -151,7 +151,7 @@ const gameLayout = {
       position: { x: 0, y: 760 },
       size: { w: 760, h: 140 },
       collapsed: true,
-      pinned: false,
+      pinned: true,
     },
     narrativeMemory: {
       id: "narrativeMemory",

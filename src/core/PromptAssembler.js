@@ -7,9 +7,7 @@ import {
   describeOpeningScene,
   getOpeningSceneById,
 } from "../data/OpeningScenes.js";
-import {
-  getArchetypeSystemById,
-} from "../systems/archetype/ArchetypeSystemRegistry.js";
+import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
 
 const MAX_HISTORY_ENTRIES = 20;
 const MAX_HISTORY_CHARS = 4000;
@@ -84,9 +82,7 @@ function buildContextSection(gameState) {
       ? archetypeSystem.narrativeHooks.slice(0, 2)
       : [];
     if (narrativeHooks.length) {
-      systemLines.push(
-        `System Narrative Hooks: ${narrativeHooks.join(" | ")}`,
-      );
+      systemLines.push(`System Narrative Hooks: ${narrativeHooks.join(" | ")}`);
     }
   }
 
@@ -260,7 +256,8 @@ export function buildInitialPrompt(gameState = {}) {
   const systemCategory = archetypeSystem?.category
     ? ` (${archetypeSystem.category})`
     : "";
-  const systemSummary = archetypeSystem?.summary || archetypeSystem?.description;
+  const systemSummary =
+    archetypeSystem?.summary || archetypeSystem?.description;
   const systemHooks = Array.isArray(archetypeSystem?.questHooks)
     ? archetypeSystem.questHooks.slice(0, 2)
     : [];
@@ -309,7 +306,7 @@ ${sceneDescription}
 ${questLines}
 ${systemHooks.length ? `\n=== SYSTEM HOOKS ===\n${systemHooks.join("\n")}` : ""}
 
-TASK: Deliver an atmospheric opening (3-5 sentences) that references the scene and nudges the player toward the listed quests. Close with a compelling hook.
+TASK: Deliver an atmospheric opening (6-9sentences) that references the scene and nudges the player toward the listed quests. Close with a compelling hook.
 
 Respond with narrative text only.`;
 }

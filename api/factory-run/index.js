@@ -1,4 +1,4 @@
-const { ClientSecretCredential } = require("@azure/identity"); 
+const { DefaultAzureCredential } = require("@azure/identity"); 
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
@@ -173,20 +173,16 @@ module.exports = async function factoryRun(context, req) {
     const requestId = generateId("factory");
     const projectEndpoint = getRequiredEnv("FOUNDRY_PROJECT_ENDPOINT"); 
     const assistantId = getRequiredEnv("FACTORY_AGENT_ID"); 
-    const tenantId = getRequiredEnv("AZURE_TENANT_ID"); 
-    const clientId = getRequiredEnv("AZURE_CLIENT_ID"); 
-    const clientSecret = getRequiredEnv("AZURE_CLIENT_SECRET"); 
+    const managedIdentityClientId = getRequiredEnv("AZURE_CLIENT_ID"); 
     const debug = getRequiredEnv("DEBUG_FACTORY") === "1"; 
     const requireApproval = getRequiredEnv("FACTORY_REQUIRE_APPROVAL") === "1";
     const adminKey = getRequiredEnv("FACTORY_ADMIN_KEY");
     const rateLimitPerMin = Number.parseInt(getRequiredEnv("FACTORY_RATE_LIMIT_PER_MIN") || "0", 10);
 
+    // Azure auth handled by DefaultAzureCredential (CLI/managed identity).
     const missing = [ 
       ["FOUNDRY_PROJECT_ENDPOINT", projectEndpoint], 
-      ["FACTORY_AGENT_ID", assistantId], 
-      ["AZURE_TENANT_ID", tenantId], 
-      ["AZURE_CLIENT_ID", clientId], 
-      ["AZURE_CLIENT_SECRET", clientSecret] 
+      ["FACTORY_AGENT_ID", assistantId] 
     ].filter(([, v]) => !v).map(([k]) => k); 
 
     if (missing.length) { 
@@ -230,7 +226,9 @@ module.exports = async function factoryRun(context, req) {
     const endpointBase = normalizeEndpoint(projectEndpoint); 
     const apiVersion = "2025-05-01"; 
 
-    const credential = new ClientSecretCredential(tenantId, clientId, clientSecret); 
+    const credential = managedIdentityClientId
+      ? new DefaultAzureCredential({ managedIdentityClientId })
+      : new DefaultAzureCredential(); 
     const tokenResult = await credential.getToken("https://ai.azure.com/.default"); 
     const token = tokenResult?.token; 
     if (!token) { 

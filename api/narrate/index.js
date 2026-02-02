@@ -64,14 +64,29 @@ async function readJsonBody(req) {
   return {};
 }
 
-async function fetchJson(url, { method, token, body, retries }) {
-  if (typeof fetch !== "function")
+let fetchImpl = typeof fetch === "function" ? fetch : null;
+
+async function resolveFetch() {
+  if (fetchImpl) return fetchImpl;
+  try {
+    const mod = await import("undici");
+    fetchImpl = mod.fetch;
+  } catch {
+    fetchImpl = null;
+  }
+  if (!fetchImpl) {
     throw new Error("fetch is not available in this runtime");
+  }
+  return fetchImpl;
+}
+
+async function fetchJson(url, { method, token, body, retries }) {
+  const fetchFn = await resolveFetch();
   const maxRetries = Number.isFinite(retries) ? retries : 2;
   let attempt = 0;
 
   while (true) {
-    const response = await fetch(url, {
+    const response = await fetchFn(url, {
       method,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -158,7 +173,6 @@ module.exports = async function narrate(context, req) {
     const missing = [
       ["FOUNDRY_PROJECT_ENDPOINT", projectEndpoint],
       ["NARRATOR_AGENT_ID", assistantId],
-      ["AZURE_CLIENT_ID", managedIdentityClientId],
     ]
       .filter(([, v]) => !v)
       .map(([k]) => k);
@@ -194,10 +208,10 @@ module.exports = async function narrate(context, req) {
     const endpointBase = normalizeEndpoint(projectEndpoint);
     const apiVersion = "2025-05-01";
 
-    // ✅ Managed Identity auth (User Assigned)
-    const credential = new DefaultAzureCredential({
-      managedIdentityClientId,
-    });
+    // ✅ Managed Identity auth (user-assigned when AZURE_CLIENT_ID is set)
+    const credential = managedIdentityClientId
+      ? new DefaultAzureCredential({ managedIdentityClientId })
+      : new DefaultAzureCredential();
 
     const tokenResult = await credential.getToken(
       "https://ai.azure.com/.default",

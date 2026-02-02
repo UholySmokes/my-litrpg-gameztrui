@@ -1,11 +1,25 @@
-const runtimeEnv =
+const buildEnv =
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
+const runtimeEnv =
+  typeof globalThis !== "undefined" && globalThis.__RUNTIME_CONFIG__
+    ? globalThis.__RUNTIME_CONFIG__
+    : {};
 
-const API_ENDPOINTS = [
+const pickEnvValue = (...values) => {
+  for (const value of values) {
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return undefined;
+};
+
+const narrateEndpoint = pickEnvValue(
   runtimeEnv.VITE_NARRATE_ENDPOINT,
-  "/api/narrate",
-  "/api/narrative",
-].filter(Boolean);
+  buildEnv.VITE_NARRATE_ENDPOINT,
+);
+
+const API_ENDPOINTS = [narrateEndpoint, "/api/narrate", "/api/narrative"].filter(
+  Boolean,
+);
 
 const MAX_NARRATIVE_LENGTH = 1200;
 const REQUEST_TIMEOUT_MS = 12000;
@@ -160,7 +174,7 @@ export async function generateNarrative(prompt) {
       });
     } catch (error) {
       lastError = error;
-      if (runtimeEnv.DEV) {
+      if (buildEnv.DEV) {
         console.error("AI Service Error:", error);
       }
     }

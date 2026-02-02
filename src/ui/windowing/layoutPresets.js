@@ -7,7 +7,7 @@ const creationLayout = {
       dockZone: "float",
       position: { x: 40, y: 80 },
       size: { w: 320, h: 240 },
-      collapsed: false,
+      collapsed: true,
       pinned: true,
     },
     race: {
@@ -16,7 +16,7 @@ const creationLayout = {
       dockZone: "float",
       position: { x: 40, y: 340 },
       size: { w: 320, h: 380 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     class: {
@@ -25,7 +25,7 @@ const creationLayout = {
       dockZone: "float",
       position: { x: 380, y: 80 },
       size: { w: 320, h: 240 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     attributes: {
@@ -34,7 +34,7 @@ const creationLayout = {
       dockZone: "float",
       position: { x: 380, y: 340 },
       size: { w: 320, h: 380 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     archetypeSystem: {
@@ -43,7 +43,7 @@ const creationLayout = {
       dockZone: "float",
       position: { x: 720, y: 80 },
       size: { w: 320, h: 320 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     skills: {
@@ -52,7 +52,7 @@ const creationLayout = {
       dockZone: "float",
       position: { x: 720, y: 420 },
       size: { w: 300, h: 340 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     summary: {
@@ -61,7 +61,7 @@ const creationLayout = {
       dockZone: "center",
       position: { x: 0, y: 0 },
       size: { w: 680, h: 520 },
-      collapsed: false,
+      collapsed: true,
       pinned: true,
     },
     creationNarrative: {
@@ -70,7 +70,7 @@ const creationLayout = {
       dockZone: "center",
       position: { x: 0, y: 540 },
       size: { w: 680, h: 240 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     narrativeMemory: {
@@ -79,7 +79,7 @@ const creationLayout = {
       dockZone: "right",
       position: { x: 0, y: 0 },
       size: { w: 360, h: 720 },
-      collapsed: false,
+      collapsed: true,
       pinned: true,
       alwaysVisible: true,
       dockCompact: false,
@@ -96,7 +96,7 @@ const gameLayout = {
       dockZone: "left",
       position: { x: 0, y: 0 },
       size: { w: 300, h: 220 },
-      collapsed: false,
+      collapsed: true,
       pinned: true,
     },
     equipment: {
@@ -105,7 +105,7 @@ const gameLayout = {
       dockZone: "left",
       position: { x: 0, y: 240 },
       size: { w: 300, h: 220 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     inventory: {
@@ -114,7 +114,7 @@ const gameLayout = {
       dockZone: "left",
       position: { x: 0, y: 480 },
       size: { w: 300, h: 220 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     statusEffects: {
@@ -123,7 +123,7 @@ const gameLayout = {
       dockZone: "left",
       position: { x: 0, y: 720 },
       size: { w: 300, h: 180 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     narrativeLog: {
@@ -132,7 +132,7 @@ const gameLayout = {
       dockZone: "center",
       position: { x: 0, y: 0 },
       size: { w: 760, h: 520 },
-      collapsed: false,
+      collapsed: true,
       pinned: true,
     },
     commandTerminal: {
@@ -141,7 +141,7 @@ const gameLayout = {
       dockZone: "center",
       position: { x: 0, y: 540 },
       size: { w: 760, h: 200 },
-      collapsed: false,
+      collapsed: true,
       pinned: true,
     },
     actionSuggestions: {
@@ -150,7 +150,7 @@ const gameLayout = {
       dockZone: "center",
       position: { x: 0, y: 760 },
       size: { w: 760, h: 140 },
-      collapsed: false,
+      collapsed: true,
       pinned: false,
     },
     narrativeMemory: {

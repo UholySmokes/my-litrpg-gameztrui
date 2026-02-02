@@ -17,7 +17,11 @@ const narrateEndpoint = pickEnvValue(
   buildEnv.VITE_NARRATE_ENDPOINT,
 );
 
-const API_ENDPOINTS = [narrateEndpoint, "/api/narrate"].filter(Boolean);
+const API_ENDPOINTS = [
+  narrateEndpoint,
+  "/api/narrate",
+  "/api/narrative",
+].filter(Boolean);
 
 const MAX_NARRATIVE_LENGTH = 1200;
 const REQUEST_TIMEOUT_MS = (() => {
@@ -124,10 +128,11 @@ export async function generateNarrative(prompt) {
   let lastError = null;
   let attemptedEndpoints = 0;
   let missingEndpointCount = 0;
+  const attemptedUrls = [];
 
   if (API_ENDPOINTS.length === 0) {
     const error = new Error(
-      "No narrator endpoints configured. Set VITE_NARRATE_ENDPOINT or deploy /api/narrate.",
+      "No narrator endpoints configured. Set VITE_NARRATE_ENDPOINT or deploy /api/narrate or /api/narrative.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
     throw error;
@@ -135,6 +140,7 @@ export async function generateNarrative(prompt) {
 
   for (const endpoint of API_ENDPOINTS) {
     attemptedEndpoints += 1;
+    attemptedUrls.push(endpoint);
     try {
       const { response, data } = await fetchJsonWithRetry(endpoint, {
         method: "POST",
@@ -143,6 +149,12 @@ export async function generateNarrative(prompt) {
         },
         body: JSON.stringify({ prompt }),
       });
+      if (buildEnv.DEV) {
+        console.info("Narrator endpoint response:", {
+          endpoint,
+          status: response.status,
+        });
+      }
       if (!response.ok) {
         if (response.status === 404 || response.status === 405) {
           missingEndpointCount += 1;
@@ -187,9 +199,12 @@ export async function generateNarrative(prompt) {
 
   if (attemptedEndpoints > 0 && missingEndpointCount === attemptedEndpoints) {
     const error = new Error(
-      "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT or deploy /api/narrate.",
+      "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT or deploy /api/narrate or /api/narrative.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
+    if (buildEnv.DEV) {
+      console.warn("Narrator endpoints attempted:", attemptedUrls);
+    }
     throw error;
   }
 
@@ -208,6 +223,9 @@ export async function generateNarrative(prompt) {
     );
   }
 
+  if (buildEnv.DEV) {
+    console.warn("Narrator endpoints attempted:", attemptedUrls);
+  }
   throw new Error(lastError?.message || "Narrator service unavailable.");
 }
 

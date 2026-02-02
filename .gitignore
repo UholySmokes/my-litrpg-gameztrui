@@ -11,6 +11,11 @@ node_module
 dist
 *.local
 
+# Analysis reports (temporary)
+middleware-report.json
+*-analysis-*.json
+reports/
+
 # Environment variables
 .env
 .env.local

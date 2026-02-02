@@ -1,0 +1,21 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "FOUNDRY_PROJECT_ENDPOINT": "https://voidverse-resource.services.ai.azure.com/api/projects/voidverse",
+    "NARRATOR_AGENT_ID": "NarratorAgent",
+    "QUEST_AGENT_ID": "QuestGiver",
+    "FACTORY_AGENT_ID": "ContentSmith",
+    "AZURE_TENANT_ID": "",
+    "AZURE_CLIENT_ID": "",
+    "AZURE_CLIENT_SECRET": "",
+    "OPENAI_API_KEY": "",
+    "NARRATE_RATE_LIMIT_PER_MIN": "0",
+    "QUEST_RATE_LIMIT_PER_MIN": "0",
+    "FACTORY_RATE_LIMIT_PER_MIN": "0",
+    "DEBUG_FACTORY": "0",
+    "FACTORY_REQUIRE_APPROVAL": "0",
+    "FACTORY_ADMIN_KEY": ""
+  }
+}

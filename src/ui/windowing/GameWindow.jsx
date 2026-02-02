@@ -272,17 +272,6 @@ export default function GameWindow({
               {isCompact ? ">>" : "<<"}
             </button>
           )}
-          {!isCompact && onClose && (
-            <button
-              className="holo-button"
-              type="button"
-              onClick={onClose}
-              style={controlButtonStyle}
-              title="Close"
-            >
-              ✕
-            </button>
-          )}
         </div>
       </div>
       {!isCollapsed && <div className="game-window__body">{children}</div>}

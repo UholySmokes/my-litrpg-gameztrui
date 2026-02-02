@@ -25,7 +25,7 @@ const resolveNarrateEndpoints = () => {
     runtimeEnv["VITE_NARRATE_ENDPOINT"],
     buildEnv["VITE_NARRATE_ENDPOINT"],
   );
-  return [narrateEndpoint, "/api/narrate", "/api/narrative"].filter(Boolean);
+  return [narrateEndpoint, "/api/narrate"].filter(Boolean);
 };
 
 const resolveRequestTimeoutMs = () => {
@@ -139,7 +139,7 @@ export async function generateNarrative(prompt) {
 
   if (apiEndpoints.length === 0) {
     const error = new Error(
-      "No narrator endpoints configured. Set VITE_NARRATE_ENDPOINT or deploy /api/narrate or /api/narrative.",
+      "No narrator endpoints configured. Set VITE_NARRATE_ENDPOINT or deploy /api/narrate.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
     throw error;
@@ -210,7 +210,7 @@ export async function generateNarrative(prompt) {
 
   if (attemptedEndpoints > 0 && missingEndpointCount === attemptedEndpoints) {
     const error = new Error(
-      "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT or deploy /api/narrate or /api/narrative.",
+      "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT or deploy /api/narrate.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
     if (isDev) {

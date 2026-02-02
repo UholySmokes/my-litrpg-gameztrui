@@ -1,4 +1,4 @@
-const { ClientSecretCredential } = require("@azure/identity");
+const { DefaultAzureCredential } = require("@azure/identity");
 const crypto = require("crypto");
 
 function jsonResponse(status, body) {
@@ -140,6 +140,18 @@ function isNonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+function ensureQuestId(quest) {
+  if (!quest || typeof quest !== "object") return quest;
+  if (isNonEmptyString(quest.id)) return quest;
+  const base = {
+    name: quest.name || "",
+    description: quest.description || "",
+    objectives: Array.isArray(quest.objectives) ? quest.objectives : []
+  };
+  const suffix = hashContent(JSON.stringify(base)).slice(0, 12);
+  return { ...quest, id: `quest_${suffix}` };
+}
+
 function validateQuestSchema(quest) {
   if (!quest || typeof quest !== "object") return "Quest must be an object.";
   if (!isNonEmptyString(quest.id)) return "Quest.id must be a non-empty string.";
@@ -183,17 +195,13 @@ module.exports = async function questCreate(context, req) {
     const requestId = generateId("quest");
     const projectEndpoint = getRequiredEnv("FOUNDRY_PROJECT_ENDPOINT");
     const assistantId = getRequiredEnv("QUEST_AGENT_ID");
-    const tenantId = getRequiredEnv("AZURE_TENANT_ID");
-    const clientId = getRequiredEnv("AZURE_CLIENT_ID");
-    const clientSecret = getRequiredEnv("AZURE_CLIENT_SECRET");
+    const managedIdentityClientId = getRequiredEnv("AZURE_CLIENT_ID");
     const rateLimitPerMin = Number.parseInt(getRequiredEnv("QUEST_RATE_LIMIT_PER_MIN") || "0", 10);
 
+    // Azure auth handled by DefaultAzureCredential (CLI/managed identity).
     const missing = [
       ["FOUNDRY_PROJECT_ENDPOINT", projectEndpoint],
-      ["QUEST_AGENT_ID", assistantId],
-      ["AZURE_TENANT_ID", tenantId],
-      ["AZURE_CLIENT_ID", clientId],
-      ["AZURE_CLIENT_SECRET", clientSecret]
+      ["QUEST_AGENT_ID", assistantId]
     ].filter(([, v]) => !v).map(([k]) => k);
 
     if (missing.length) {
@@ -215,7 +223,9 @@ module.exports = async function questCreate(context, req) {
     const endpointBase = normalizeEndpoint(projectEndpoint);
     const apiVersion = "2025-05-01";
 
-    const credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+    const credential = managedIdentityClientId
+      ? new DefaultAzureCredential({ managedIdentityClientId })
+      : new DefaultAzureCredential();
     const tokenResult = await credential.getToken("https://ai.azure.com/.default");
     const token = tokenResult?.token;
     if (!token) {
@@ -304,7 +314,8 @@ module.exports = async function questCreate(context, req) {
       return;
     }
 
-    const schemaError = validateQuestSchema(parsed);
+    const normalizedQuest = ensureQuestId(parsed);
+    const schemaError = validateQuestSchema(normalizedQuest);
     if (schemaError) {
       context.res = jsonResponse(422, { ok: false, errorCode: "INVALID_SCHEMA", message: schemaError });
       return;
@@ -312,7 +323,7 @@ module.exports = async function questCreate(context, req) {
 
     context.log?.(`quest-create ${requestId} assistant=${assistantId} thread=${threadId} run=${runId} status=${currentRun?.status}`);
 
-    context.res = jsonResponse(200, { ok: true, quest: parsed, outputHash });
+    context.res = jsonResponse(200, { ok: true, quest: normalizedQuest, outputHash });
   } catch (error) {
     context.res = jsonResponse(500, {
       ok: false,

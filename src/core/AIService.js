@@ -1,9 +1,15 @@
-const buildEnv =
+const DEFAULT_TIMEOUT_MS = 25000;
+
+const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
-const runtimeEnv =
-  typeof globalThis !== "undefined" && globalThis.__RUNTIME_CONFIG__
-    ? globalThis.__RUNTIME_CONFIG__
+
+const getRuntimeEnv = () => {
+  if (typeof globalThis === "undefined") return {};
+  const runtimeConfig = globalThis["__RUNTIME_CONFIG__"];
+  return runtimeConfig && typeof runtimeConfig === "object"
+    ? runtimeConfig
     : {};
+};
 
 const pickEnvValue = (...values) => {
   for (const value of values) {
@@ -12,26 +18,28 @@ const pickEnvValue = (...values) => {
   return undefined;
 };
 
-const narrateEndpoint = pickEnvValue(
-  runtimeEnv.VITE_NARRATE_ENDPOINT,
-  buildEnv.VITE_NARRATE_ENDPOINT,
-);
+const resolveNarrateEndpoints = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  const narrateEndpoint = pickEnvValue(
+    runtimeEnv["VITE_NARRATE_ENDPOINT"],
+    buildEnv["VITE_NARRATE_ENDPOINT"],
+  );
+  return [narrateEndpoint, "/api/narrate", "/api/narrative"].filter(Boolean);
+};
 
-const API_ENDPOINTS = [
-  narrateEndpoint,
-  "/api/narrate",
-  "/api/narrative",
-].filter(Boolean);
-
-const MAX_NARRATIVE_LENGTH = 1200;
-const REQUEST_TIMEOUT_MS = (() => {
+const resolveRequestTimeoutMs = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
   const value = pickEnvValue(
-    runtimeEnv.VITE_NARRATE_TIMEOUT_MS,
-    buildEnv.VITE_NARRATE_TIMEOUT_MS,
+    runtimeEnv["VITE_NARRATE_TIMEOUT_MS"],
+    buildEnv["VITE_NARRATE_TIMEOUT_MS"],
   );
   const parsed = Number.parseInt(value, 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 25000;
-})();
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_TIMEOUT_MS;
+};
+
+const MAX_NARRATIVE_LENGTH = 1200;
 const MAX_RETRIES = 2;
 const RETRY_STATUS = new Set([408, 429, 500, 502, 503, 504]);
 export const NARRATION_GUARD_FALLBACK =
@@ -68,16 +76,12 @@ async function fetchWithTimeout(url, options, timeoutMs) {
   }
 }
 
-async function fetchJsonWithRetry(url, options) {
+async function fetchJsonWithRetry(url, options, timeoutMs) {
   let lastError = null;
 
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
     try {
-      const response = await fetchWithTimeout(
-        url,
-        options,
-        REQUEST_TIMEOUT_MS,
-      );
+      const response = await fetchWithTimeout(url, options, timeoutMs);
       const data = await response.json().catch(() => null);
 
       if (RETRY_STATUS.has(response.status) && attempt < MAX_RETRIES) {
@@ -129,8 +133,11 @@ export async function generateNarrative(prompt) {
   let attemptedEndpoints = 0;
   let missingEndpointCount = 0;
   const attemptedUrls = [];
+  const apiEndpoints = resolveNarrateEndpoints();
+  const timeoutMs = resolveRequestTimeoutMs();
+  const isDev = Boolean(getBuildEnv().DEV);
 
-  if (API_ENDPOINTS.length === 0) {
+  if (apiEndpoints.length === 0) {
     const error = new Error(
       "No narrator endpoints configured. Set VITE_NARRATE_ENDPOINT or deploy /api/narrate or /api/narrative.",
     );
@@ -138,18 +145,22 @@ export async function generateNarrative(prompt) {
     throw error;
   }
 
-  for (const endpoint of API_ENDPOINTS) {
+  for (const endpoint of apiEndpoints) {
     attemptedEndpoints += 1;
     attemptedUrls.push(endpoint);
     try {
-      const { response, data } = await fetchJsonWithRetry(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const { response, data } = await fetchJsonWithRetry(
+        endpoint,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt }),
         },
-        body: JSON.stringify({ prompt }),
-      });
-      if (buildEnv.DEV) {
+        timeoutMs,
+      );
+      if (isDev) {
         console.info("Narrator endpoint response:", {
           endpoint,
           status: response.status,
@@ -191,7 +202,7 @@ export async function generateNarrative(prompt) {
       });
     } catch (error) {
       lastError = error;
-      if (buildEnv.DEV) {
+      if (isDev) {
         console.error("AI Service Error:", error);
       }
     }
@@ -202,7 +213,7 @@ export async function generateNarrative(prompt) {
       "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT or deploy /api/narrate or /api/narrative.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
-    if (buildEnv.DEV) {
+    if (isDev) {
       console.warn("Narrator endpoints attempted:", attemptedUrls);
     }
     throw error;
@@ -223,7 +234,7 @@ export async function generateNarrative(prompt) {
     );
   }
 
-  if (buildEnv.DEV) {
+  if (isDev) {
     console.warn("Narrator endpoints attempted:", attemptedUrls);
   }
   throw new Error(lastError?.message || "Narrator service unavailable.");

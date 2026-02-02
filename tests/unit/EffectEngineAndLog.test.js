@@ -2,8 +2,8 @@ import { describe, it, expect } from "@jest/globals";
 import {
   applyEffect,
   tickEffects,
-} from "../../src/simulation/effects/EffectEngine.ts";
-import { serializeEvent } from "../../src/simulation/logging/CombatLogSerializer.ts";
+} from "../../src/simulation/effects/EffectEngine";
+import { serializeEvent } from "../../src/simulation/logging/CombatLogSerializer";
 
 function createEntity(overrides = {}) {
   return {

@@ -3,7 +3,7 @@ import { gameReducer } from "../core/gameReducer.js";
 import { initialGameState } from "../data/initialState.js";
 import { SystemEventObserver } from "../core/SystemEventObserver.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
-import { serializeEvent } from "../simulation/logging/CombatLogSerializer.ts";
+import { serializeEvent } from "../simulation/logging/CombatLogSerializer";
 
 export function useGameEngine() {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);

@@ -14,7 +14,11 @@
     "simulate": "node sim_gamestart_fixed.js",
     "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",
     "simulate:csv": "node sim_gamestart_fixed.js --format csv",
-    "simulate:full": "node sim_gamestart_fixed.js --runs 100"
+    "simulate:full": "node sim_gamestart_fixed.js --runs 100",
+    "analyze:middleware": "node scripts/analyze-middleware-dependencies.cjs",
+    "analyze:middleware:json": "node scripts/analyze-middleware-dependencies.cjs --format=json",
+    "analyze:middleware:md": "node scripts/analyze-middleware-dependencies.cjs --format=markdown",
+    "analyze:graph": "node scripts/generate-dependency-graph.cjs --output=docs/MIDDLEWARE_DEPENDENCY_GRAPH.md"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.89.0",

@@ -20,7 +20,14 @@ const narrateEndpoint = pickEnvValue(
 const API_ENDPOINTS = [narrateEndpoint, "/api/narrate"].filter(Boolean);
 
 const MAX_NARRATIVE_LENGTH = 1200;
-const REQUEST_TIMEOUT_MS = 12000;
+const REQUEST_TIMEOUT_MS = (() => {
+  const value = pickEnvValue(
+    runtimeEnv.VITE_NARRATE_TIMEOUT_MS,
+    buildEnv.VITE_NARRATE_TIMEOUT_MS,
+  );
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 25000;
+})();
 const MAX_RETRIES = 2;
 const RETRY_STATUS = new Set([408, 429, 500, 502, 503, 504]);
 export const NARRATION_GUARD_FALLBACK =

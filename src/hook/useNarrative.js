@@ -267,6 +267,7 @@ export function useNarrative(
   const [userInput, setUserInput] = useState("");
   const inputRef = useRef(null);
   const initialNarrativeKeyRef = useRef(null);
+  const busyRef = useRef(false);
   const [actionSuggestions, setActionSuggestions] = useState(
     DEFAULT_ACTION_SUGGESTIONS,
   );
@@ -296,6 +297,10 @@ export function useNarrative(
       if (!userInput || !userInput.trim()) {
         return;
       }
+      if (busyRef.current) {
+        return;
+      }
+      busyRef.current = true;
 
       setIsLoading(true);
       setError(null);
@@ -451,6 +456,7 @@ export function useNarrative(
           "system",
         );
       } finally {
+        busyRef.current = false;
         setIsLoading(false);
       }
     },

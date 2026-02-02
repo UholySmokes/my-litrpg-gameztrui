@@ -17,6 +17,13 @@ const toNumber = (value, fallback = 0) => {
   return Number.isFinite(parsed) ? parsed : fallback;
 };
 
+const sanitizeUserInput = (input) => {
+  if (typeof input !== "string") return "";
+  const noNewlines = input.replace(/[\r\n\t]+/g, " ");
+  const collapsed = noNewlines.replace(/\s{2,}/g, " ").trim();
+  return collapsed.slice(0, 400);
+};
+
 function resolveArchetypeSystem(player = {}) {
   const raw = player.archetypeSystem;
   if (!raw) return null;
@@ -229,7 +236,7 @@ ${historyText}`;
  * Builds the action section describing what the user did and what happened
  */
 function buildActionSection(userInput, actionResult) {
-  const safeUserInput = typeof userInput === "string" ? userInput : "";
+  const safeUserInput = sanitizeUserInput(userInput);
   const result =
     actionResult && typeof actionResult === "object"
       ? actionResult

@@ -409,7 +409,8 @@ export function useNarrative(
         // Step 6: Generate AI narrative response
         setIsNarrating(true);
         try {
-          const prompt = assemblePrompt(currentState, userInput, actionResult);
+          const promptState = actionResult.readOnly ? currentState : newState;
+          const prompt = assemblePrompt(promptState, userInput, actionResult);
           const aiResponse = await generateNarrative(prompt);
 
           // Update narrative history in state
@@ -468,6 +469,10 @@ export function useNarrative(
    */
   const generateInitialNarrativeText = useCallback(
     async (currentState) => {
+      if (busyRef.current) {
+        return;
+      }
+      busyRef.current = true;
       setIsLoading(true);
       setIsNarrating(true);
       setError(null);
@@ -555,6 +560,7 @@ export function useNarrative(
           },
         }));
       } finally {
+        busyRef.current = false;
         setIsLoading(false);
         setIsNarrating(false);
       }

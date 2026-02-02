@@ -3,4 +3,4 @@ globalThis.__RUNTIME_CONFIG__ = globalThis.__RUNTIME_CONFIG__ || {};
 // globalThis.__RUNTIME_CONFIG__.VITE_NARRATE_ENDPOINT =
 //   "https://your-host/api/narrate";
 globalThis.__RUNTIME_CONFIG__.VITE_NARRATE_ENDPOINT =
-	"https://voidfunction.azurewebsites.net/api/narrate";
+	"https://voidfunct.azurewebsites.net/api/narrate";

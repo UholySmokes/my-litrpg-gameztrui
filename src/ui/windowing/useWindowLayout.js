@@ -78,6 +78,19 @@ const normalizeLayout = (layout) => {
       nextWindows[id] = { ...nextWindows[id], dockCompact: false };
     }
   });
+  if (layout.mode === "creation") {
+    const creationWindowIds = Object.keys(nextWindows).filter(
+      (id) => id !== "narrativeMemory",
+    );
+    const allCollapsed =
+      creationWindowIds.length > 0 &&
+      creationWindowIds.every((id) => nextWindows[id]?.collapsed);
+    if (allCollapsed) {
+      creationWindowIds.forEach((id) => {
+        nextWindows[id] = { ...nextWindows[id], collapsed: false };
+      });
+    }
+  }
   return {
     ...layout,
     windows: nextWindows,

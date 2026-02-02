@@ -17,9 +17,7 @@ const narrateEndpoint = pickEnvValue(
   buildEnv.VITE_NARRATE_ENDPOINT,
 );
 
-const API_ENDPOINTS = [narrateEndpoint, "/api/narrate", "/api/narrative"].filter(
-  Boolean,
-);
+const API_ENDPOINTS = [narrateEndpoint, "/api/narrate"].filter(Boolean);
 
 const MAX_NARRATIVE_LENGTH = 1200;
 const REQUEST_TIMEOUT_MS = 12000;
@@ -111,7 +109,7 @@ export function applyNarrationGuards(response) {
 }
 
 /**
- * Calls OpenAI API to generate narrative response
+ * Calls narrative API to generate response
  * @param {string} prompt - The complete prompt string
  * @returns {Promise<object>} The parsed JSON response with narrative, mood, and suggestions
  */
@@ -122,7 +120,7 @@ export async function generateNarrative(prompt) {
 
   if (API_ENDPOINTS.length === 0) {
     const error = new Error(
-      "No narrator endpoints configured. Set VITE_NARRATE_ENDPOINT or deploy /api/narrative.",
+      "No narrator endpoints configured. Set VITE_NARRATE_ENDPOINT or deploy /api/narrate.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
     throw error;
@@ -182,7 +180,7 @@ export async function generateNarrative(prompt) {
 
   if (attemptedEndpoints > 0 && missingEndpointCount === attemptedEndpoints) {
     const error = new Error(
-      "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT or deploy /api/narrative.",
+      "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT or deploy /api/narrate.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
     throw error;

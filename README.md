@@ -20,7 +20,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - **Frontend**: React 18 + Vite, hooks-first architecture
 - **State/Game Logic**: Custom hook `useGameEngine`, immutable reducers, config-driven balance
 - **Styling**: CSS modules + inline HUD styling for neon HUD aesthetic
-- **Backend Integrations**: Supabase (auth + cloud saves), OpenAI-compatible narrative service
+- **Backend Integrations**: Supabase (auth + cloud saves), Azure Foundry narrative service
 - **Tooling**: ESLint (React hooks rules), npm scripts, Node 18+
 
 ---
@@ -31,7 +31,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 
 - Node.js 18+
 - npm 9+ (comes with Node)
-- Supabase + OpenAI/API keys (optional but needed for save + AI narrative)
+- Supabase + narrative API endpoint (optional; needed for saves + AI narrative)
 
 ### Installation
 
@@ -55,9 +55,8 @@ VITE_NARRATE_ENDPOINT=...
 VITE_SUPABASE_URL=...
 VITE_SUPABASE_ANON_KEY=...
 
-# OpenAI is not used on GitHub Pages.
-# If you run a serverless host, set OPENAI_API_KEY on the server.
-OPENAI_API_KEY=...
+# Narrative API runs via /api/narrate (Azure Foundry + managed identity).
+# No OpenAI key is required for this setup.
 ```
 
 Azure Functions local dev (for `api/`):
@@ -68,8 +67,7 @@ Azure Functions local dev (for `api/`):
 
 Narrative endpoint notes:
 - Static hosting (GitHub Pages): deploy the API separately and set `VITE_NARRATE_ENDPOINT` to its full URL.
-- Vercel: `/api/narrative` uses `OPENAI_API_KEY` on the server.
-- Azure Static Web Apps: `/api/narrate` uses Azure Foundry credentials (see `api/narrate/index.js`).
+- Azure Static Web Apps / Functions: `/api/narrate` uses Azure Foundry credentials (see `api/narrate/index.js`).
 
 ### Run / Build / Test
 

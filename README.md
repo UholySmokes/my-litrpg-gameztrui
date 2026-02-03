@@ -68,6 +68,8 @@ Azure Functions local dev (for `api/`):
 Narrative endpoint notes:
 - Static hosting (GitHub Pages): deploy the API separately and set `VITE_NARRATE_ENDPOINT` to its full URL.
 - Azure Static Web Apps / Functions: `/api/narrate` uses Azure Foundry credentials (see `api/narrate/index.js`).
+- Runtime config: `public/runtime-config.js` is copied to `dist/runtime-config.js` during build. Leave it empty, or set `VITE_API_BASE_URL` / `VITE_NARRATE_ENDPOINT` in CI so `scripts/generate-runtime-config.js` injects values at build time.
+- SWA routing: keep `public/staticwebapp.config.json` in the build output so `/runtime-config.js` is served as a static file.
 
 ### Run / Build / Test
 

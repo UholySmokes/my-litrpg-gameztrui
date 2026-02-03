@@ -10,6 +10,7 @@ import { getEffectiveAttributes, getTitleById } from "../core/titleLogic.js";
 import { DataRegistry } from "../data/DataRegistry.js";
 import { canEvolveSkill } from "../systems/skills/SkillEvolutionSystem.js";
 import { canFuseSkills } from "../systems/skills/SkillFusionSystem.js";
+import { isSpellSkill } from "../systems/skills/SpellStudySystem.js";
 import { getTalentById } from "../entities/Player.js";
 
 export default function StatusOverlay({
@@ -22,10 +23,12 @@ export default function StatusOverlay({
   onEvolveSkill,
   onFuseSkills,
   onEvolveClass,
+  onStudySpell,
   variant = "modal",
 }) {
   const [fusionSkillA, setFusionSkillA] = useState("");
   const [fusionSkillB, setFusionSkillB] = useState("");
+  const [studySkillId, setStudySkillId] = useState("");
 
   const isModal = variant !== "window";
   if ((isModal && !isOpen) || !player) return null;
@@ -72,6 +75,10 @@ export default function StatusOverlay({
   const attributeInvestments = player.attributeInvestments || {};
   const evolvableSkills = abilityList.filter((skill) => canEvolveSkill(skill));
   const fusionCandidates = abilityList.filter((skill) => skill?.id);
+  const spellCandidates = abilityList.filter((skill) => isSpellSkill(skill));
+  const selectedSpell = spellCandidates.find(
+    (skill) => skill.id === studySkillId,
+  );
   const selectedSkillA = fusionCandidates.find(
     (skill) => skill.id === fusionSkillA,
   );
@@ -585,6 +592,54 @@ export default function StatusOverlay({
               >
                 Fuse Skills
               </button>
+            </div>
+          </section>
+
+          <section>
+            <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+              Spell Study
+            </h3>
+            <div
+              style={{
+                border: "1px solid rgba(0, 243, 255, 0.2)",
+                padding: "0.75rem",
+              }}
+            >
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                <button
+                  className="holo-button"
+                  disabled={typeof onStudySpell !== "function"}
+                  onClick={() => onStudySpell?.({ mode: "create" })}
+                >
+                  Study New Spell
+                </button>
+                <select
+                  value={studySkillId}
+                  onChange={(event) => setStudySkillId(event.target.value)}
+                  style={{ flex: 1, minWidth: "200px" }}
+                >
+                  <option value="">Select spell to improve</option>
+                  {spellCandidates.map((skill) => (
+                    <option key={skill.id} value={skill.id}>
+                      {skill.name} (Lvl {skill.level || 1})
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="holo-button"
+                  disabled={
+                    !selectedSpell || typeof onStudySpell !== "function"
+                  }
+                  onClick={() =>
+                    onStudySpell?.({
+                      mode: "improve",
+                      skillId: selectedSpell?.id,
+                    })
+                  }
+                >
+                  Improve Spell
+                </button>
+              </div>
             </div>
           </section>
 

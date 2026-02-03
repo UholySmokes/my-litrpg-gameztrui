@@ -13,6 +13,7 @@ import {
 import {
   playerAttack,
   playerUseClassAbility,
+  playerUseRaceAbility,
   startCombat,
   escapeCombat,
   processEnemyTurns,
@@ -26,6 +27,11 @@ import {
   canEvolveSkill,
   evolveSkill,
 } from "../systems/skills/SkillEvolutionSystem.js";
+import {
+  createStudiedSpell,
+  improveStudiedSpell,
+  isSpellSkill,
+} from "../systems/skills/SpellStudySystem.js";
 import { appendNarrativeEntry } from "./narrativeLog.js";
 
 const ensureCombatStructure = (state) =>
@@ -563,6 +569,25 @@ const gameReducer = (state, action) => {
       });
     }
 
+    case "PLAYER_USE_RACE_ABILITY": {
+      const { abilityId, enemyIndex = 0 } = action.payload || {};
+      const combatState = ensureCombatStructure(state);
+      if (combatState.status !== "active") {
+        return state;
+      }
+      const result = playerUseRaceAbility(
+        { ...state, combat: combatState },
+        enemyIndex,
+        abilityId,
+      );
+      if (!result.success) {
+        return state;
+      }
+      return applyAutoTitleUnlocks(processEnemyTurns(result.state), {
+        announce: true,
+      });
+    }
+
     case "PLAYER_ESCAPE": {
       const combatState = ensureCombatStructure(state);
       if (combatState.status !== "active") {
@@ -701,6 +726,83 @@ const gameReducer = (state, action) => {
           passiveSkills: nextPassive,
         },
       };
+    }
+
+    case "STUDY_SPELL": {
+      const player = state.player || {};
+      const abilities = Array.isArray(player.abilities)
+        ? [...player.abilities]
+        : [];
+      const activeSkills = Array.isArray(player.activeSkills)
+        ? [...player.activeSkills]
+        : [];
+      const passiveSkills = Array.isArray(player.passiveSkills)
+        ? [...player.passiveSkills]
+        : [];
+      const allSkills = [...abilities, ...activeSkills, ...passiveSkills];
+      const existingIds = new Set(allSkills.map((entry) => entry?.id));
+
+      const mode = action.payload?.mode || "create";
+      if (mode === "improve") {
+        const skillId = action.payload?.skillId;
+        if (!skillId) return state;
+        const skill = allSkills.find((entry) => entry?.id === skillId);
+        if (!skill || !isSpellSkill(skill)) return state;
+        const evolved = improveStudiedSpell(skill, { existingIds });
+        if (!evolved) return state;
+
+        const nextAbilities = abilities.filter((entry) => entry.id !== skillId);
+        const nextActive = activeSkills.filter((entry) => entry.id !== skillId);
+        const nextPassive = passiveSkills.filter((entry) => entry.id !== skillId);
+
+        if (evolved.type === "passive") {
+          nextPassive.push(evolved);
+        } else {
+          nextActive.push(evolved);
+        }
+        nextAbilities.push(evolved);
+
+        const nextState = {
+          ...state,
+          player: {
+            ...player,
+            abilities: nextAbilities,
+            activeSkills: nextActive,
+            passiveSkills: nextPassive,
+          },
+        };
+        return appendSystemMessages(nextState, [
+          `Study complete: ${evolved.name} improved.`,
+        ]);
+      }
+
+      const created = createStudiedSpell({
+        level: player.level || 1,
+        existingIds,
+      });
+      if (!created) return state;
+
+      const nextAbilities = [...abilities, created];
+      const nextActive = [...activeSkills];
+      const nextPassive = [...passiveSkills];
+      if (created.type === "passive") {
+        nextPassive.push(created);
+      } else {
+        nextActive.push(created);
+      }
+
+      const nextState = {
+        ...state,
+        player: {
+          ...player,
+          abilities: nextAbilities,
+          activeSkills: nextActive,
+          passiveSkills: nextPassive,
+        },
+      };
+      return appendSystemMessages(nextState, [
+        `Study complete: learned ${created.name}.`,
+      ]);
     }
 
     case "EVOLVE_CLASS": {

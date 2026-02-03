@@ -2,6 +2,7 @@
 import React from "react";
 import ClassResourceBar from "./ClassResourceBar";
 import ClassAbilities from "./ClassAbilities";
+import RaceAbilities from "./RaceAbilities";
 import StatusEffects from "./StatusEffects";
 import MinionPanel from "./MinionPanel";
 
@@ -11,6 +12,7 @@ export default function CombatUI({
   onAttack,
   onUseSkill,
   onUseClassAbility,
+  onUseRaceAbility,
   onEscape,
 }) {
   const combat = combatState;
@@ -196,6 +198,15 @@ export default function CombatUI({
           player={player}
           onUseAbility={onUseClassAbility}
           cooldowns={combat?.classAbilityCooldowns || {}}
+        />
+      )}
+
+      {/* Race Ability */}
+      {player && onUseRaceAbility && (
+        <RaceAbilities
+          player={player}
+          onUseAbility={onUseRaceAbility}
+          cooldowns={combat?.raceAbilityCooldowns || {}}
         />
       )}
 

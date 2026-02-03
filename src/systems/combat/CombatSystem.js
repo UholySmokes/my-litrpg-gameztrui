@@ -59,6 +59,10 @@ import {
   isClassAbilityAllowed,
 } from "../class/ClassAbilityRegistry.js";
 import {
+  getRaceAbilityById,
+  isRaceAbilityAllowed,
+} from "../race/RaceAbilityRegistry.js";
+import {
   processCharmDuration,
   processCharmedEnemyAction,
   checkIllusionTarget,
@@ -210,6 +214,15 @@ const removeEffectsByTypes = (target, types = []) => {
   };
 };
 
+const removeEffectsByIds = (target, ids = []) => {
+  if (!target?.effects || ids.length === 0) return target;
+  const removeSet = new Set(ids);
+  return {
+    ...target,
+    effects: target.effects.filter((effect) => !removeSet.has(effect.id)),
+  };
+};
+
 const applySummonToPlayer = (player, summon) => {
   if (!summon?.type) return player;
   const stamp = SimBridge.now();
@@ -290,6 +303,93 @@ const resolveAbilityTargets = (combatState, enemyIndex, ability) => {
   const maxTargets = ability.aoe.maxTargets || living.length;
   const ordered = [primary, ...living.filter((idx) => idx !== primary)];
   return ordered.slice(0, maxTargets);
+};
+
+const ELEMENTAL_REACTIONS = [
+  {
+    element: "fire",
+    requires: ["frostbite", "freeze"],
+    multiplier: 1.25,
+    remove: ["frostbite", "freeze"],
+    addEffects: [{ id: "burn", target: "enemy", duration: 2, magnitude: 6 }],
+    message: "Elemental Reaction: Melt!",
+  },
+  {
+    element: "ice",
+    requires: ["burn"],
+    multiplier: 1.2,
+    remove: ["burn"],
+    addEffects: [{ id: "slow", target: "enemy", duration: 2, magnitude: -0.2 }],
+    message: "Elemental Reaction: Quench!",
+  },
+  {
+    element: "lightning",
+    requires: ["frostbite", "slow"],
+    multiplier: 1.2,
+    addEffects: [{ id: "shock", target: "enemy", duration: 2, magnitude: 0.1 }],
+    message: "Elemental Reaction: Conduction!",
+  },
+  {
+    element: "nature",
+    requires: ["burn"],
+    multiplier: 1.15,
+    addEffects: [{ id: "poison", target: "enemy", duration: 3, magnitude: 4 }],
+    message: "Elemental Reaction: Wildfire Spores!",
+  },
+  {
+    element: "holy",
+    requires: ["curse"],
+    multiplier: 1.25,
+    remove: ["curse"],
+    addEffects: [
+      { id: "radiant_mark", target: "enemy", duration: 3, magnitude: 0.12 },
+    ],
+    message: "Elemental Reaction: Purge!",
+  },
+  {
+    element: "dark",
+    requires: ["radiant_mark"],
+    multiplier: 1.25,
+    remove: ["radiant_mark"],
+    addEffects: [{ id: "curse", target: "enemy", duration: 3, magnitude: 0.12 }],
+    message: "Elemental Reaction: Eclipse!",
+  },
+];
+
+const applyElementalReactions = ({ attacker, defender, element, damage }) => {
+  if (!element || !defender) {
+    return { damage, defender, messages: [] };
+  }
+  const elementKey = String(element).toLowerCase();
+  const activeIds = new Set((defender.effects || []).map((effect) => effect.id));
+  let updatedDamage = damage;
+  let updatedDefender = defender;
+  const messages = [];
+
+  for (const reaction of ELEMENTAL_REACTIONS) {
+    if (reaction.element !== elementKey) continue;
+    const hasRequired = reaction.requires.some((id) => activeIds.has(id));
+    if (!hasRequired) continue;
+
+    updatedDamage = Math.floor(updatedDamage * reaction.multiplier);
+    messages.push(reaction.message);
+
+    if (reaction.remove?.length) {
+      updatedDefender = removeEffectsByIds(updatedDefender, reaction.remove);
+      reaction.remove.forEach((id) => activeIds.delete(id));
+    }
+
+    if (reaction.addEffects?.length) {
+      updatedDefender = effectApplicationSystem.applyEffects(
+        updatedDefender,
+        reaction.addEffects,
+        attacker,
+      );
+    }
+    break;
+  }
+
+  return { damage: updatedDamage, defender: updatedDefender, messages };
 };
 
 /**
@@ -527,6 +627,7 @@ export function startCombat(state, enemyIds) {
       enemies: enemies,
       skillCooldowns: {},
       classAbilityCooldowns: {},
+      raceAbilityCooldowns: {},
       log: combatLog,
       lanes: {
         player: 1,
@@ -610,10 +711,16 @@ export function playerAttack(state, enemyIndex, skillId = null) {
 
     updatedPlayer = skillResult.updatedAttacker || updatedPlayer;
     updatedEnemy = skillResult.updatedDefender || updatedEnemy;
+    const reactionMessages = Array.isArray(skillResult.reactionMessages)
+      ? skillResult.reactionMessages
+      : [];
     damageResult = {
       damage: skillResult.damage,
       isCritical: false,
-      messages: [`${updatedPlayer.name} uses ${skill.name}!`],
+      messages: [
+        `${updatedPlayer.name} uses ${skill.name}!`,
+        ...reactionMessages,
+      ],
     };
 
     const cd = skillResult.cooldown || 0;
@@ -869,35 +976,8 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   return { success: true, damage: damageResult.damage, state: newState };
 }
 
-/**
- * Player uses a class ability
- */
-export function playerUseClassAbility(state, enemyIndex, abilityId) {
-  if (state.combat.status !== "active") {
-    return { success: false, reason: "Not in combat", state };
-  }
-
-  const player = state.player;
-  const classId = player.class?.id || player.class;
-  if (!isClassAbilityAllowed(classId, abilityId)) {
-    return { success: false, reason: "Ability not available", state };
-  }
-
-  const ability = getClassAbilityById(abilityId);
-  if (!ability) {
-    return { success: false, reason: "Ability not found", state };
-  }
-
-  const currentCooldown = state.combat?.classAbilityCooldowns?.[abilityId] || 0;
-  if (currentCooldown > 0) {
-    return {
-      success: false,
-      reason: `Ability on cooldown (${currentCooldown} turns remaining)`,
-      state,
-    };
-  }
-
-  const costResult = consumeAbilityCost(player, ability);
+const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
+  const costResult = consumeAbilityCost(state.player, ability);
   if (!costResult.success) {
     return {
       success: false,
@@ -908,7 +988,10 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
 
   let updatedPlayer = costResult.player;
   let updatedEnemies = [...state.combat.enemies];
-  let combatLog = [...state.combat.log, `${updatedPlayer.name} uses ${ability.name}!`];
+  let combatLog = [
+    ...state.combat.log,
+    `${updatedPlayer.name} uses ${ability.name}!`,
+  ];
 
   // Stance updates
   if (ability.setStance) {
@@ -926,6 +1009,41 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
         defense: ability.setEnrage.defenseMultiplier || 0.85,
       },
     };
+  }
+
+  if (ability.setAbsorption) {
+    const absorption = getRandomElementAbsorption();
+    updatedPlayer = { ...updatedPlayer, currentAbsorption: absorption };
+    combatLog.push(`Elemental Flux: ${absorption.message}`);
+    emit("combat:elementalFlux", {
+      absorbed: absorption.absorbed,
+      weakTo: absorption.weakTo,
+    });
+  }
+
+  if (ability.randomBuff) {
+    const buff = getRandomStartBuff();
+    const currentEffects = updatedPlayer.effects || [];
+    updatedPlayer = {
+      ...updatedPlayer,
+      effects: [
+        ...currentEffects,
+        {
+          id: buff.id,
+          name: buff.name,
+          type: "BUFF",
+          stat: buff.stat,
+          magnitude: buff.value,
+          remainingDuration: buff.duration,
+          tags: ["MUTATION_BUFF"],
+        },
+      ],
+    };
+    combatLog.push(
+      `Adaptive mutation: ${buff.name} (${buff.stat} +${Math.round(
+        buff.value * 100,
+      )}% for ${buff.duration} turns)`,
+    );
   }
 
   let newState = {
@@ -985,6 +1103,7 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
   );
 
   let totalDamage = 0;
+  let randomDebuffApplied = false;
 
   for (const targetIndex of targetIndices) {
     const enemy = updatedEnemies[targetIndex];
@@ -996,6 +1115,30 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
         enemy,
         ability.purge.types,
       );
+    }
+
+    if (ability.randomDebuff && !randomDebuffApplied) {
+      const debuff = getRandomDebuff();
+      const currentEffects = updatedEnemies[targetIndex].effects || [];
+      updatedEnemies[targetIndex] = {
+        ...updatedEnemies[targetIndex],
+        effects: [
+          ...currentEffects,
+          {
+            id: debuff.id,
+            name: debuff.name,
+            type: "DEBUFF",
+            stat: debuff.stat,
+            magnitude: debuff.value,
+            remainingDuration: debuff.duration,
+            tags: ["MUTATION_DEBUFF"],
+          },
+        ],
+      };
+      combatLog.push(
+        `Cellular instability: ${debuff.name} afflicts ${enemy.name}!`,
+      );
+      randomDebuffApplied = true;
     }
 
     let damage = 0;
@@ -1045,6 +1188,18 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
 
       const laneDistance = getLaneDistance(newState.combat, targetIndex);
       damage = applyLaneModifier({ damage, messages: [] }, laneDistance).damage;
+
+      const reactionResult = applyElementalReactions({
+        attacker: updatedPlayer,
+        defender: updatedEnemies[targetIndex],
+        element: ability.damage.element,
+        damage,
+      });
+      damage = reactionResult.damage;
+      updatedEnemies[targetIndex] = reactionResult.defender;
+      if (reactionResult.messages.length > 0) {
+        combatLog.push(...reactionResult.messages);
+      }
 
       if (updatedPlayer.isStealthed) {
         const stealthResult = handleStealthAttack(
@@ -1103,13 +1258,13 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
       enemies: updatedEnemies,
       log: combatLog,
       turn: "enemy",
-      classAbilityCooldowns:
+      [cooldownKey]:
         ability.cooldown && ability.cooldown > 0
           ? {
-              ...(newState.combat.classAbilityCooldowns || {}),
-              [abilityId]: ability.cooldown,
+              ...(newState.combat[cooldownKey] || {}),
+              [ability.id]: ability.cooldown,
             }
-          : newState.combat.classAbilityCooldowns || {},
+          : newState.combat[cooldownKey] || {},
     },
   };
 
@@ -1128,6 +1283,68 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
   });
 
   return { success: true, damage: totalDamage, state: newState };
+};
+
+/**
+ * Player uses a class ability
+ */
+export function playerUseClassAbility(state, enemyIndex, abilityId) {
+  if (state.combat.status !== "active") {
+    return { success: false, reason: "Not in combat", state };
+  }
+
+  const player = state.player;
+  const classId = player.class?.id || player.class;
+  if (!isClassAbilityAllowed(classId, abilityId)) {
+    return { success: false, reason: "Ability not available", state };
+  }
+
+  const ability = getClassAbilityById(abilityId);
+  if (!ability) {
+    return { success: false, reason: "Ability not found", state };
+  }
+
+  const currentCooldown = state.combat?.classAbilityCooldowns?.[abilityId] || 0;
+  if (currentCooldown > 0) {
+    return {
+      success: false,
+      reason: `Ability on cooldown (${currentCooldown} turns remaining)`,
+      state,
+    };
+  }
+
+  return performAbilityUse(state, enemyIndex, ability, "classAbilityCooldowns");
+}
+
+/**
+ * Player uses a race ability
+ */
+export function playerUseRaceAbility(state, enemyIndex, abilityId) {
+  if (state.combat.status !== "active") {
+    return { success: false, reason: "Not in combat", state };
+  }
+
+  const player = state.player;
+  const raceId = player.race?.id || player.race;
+  if (!isRaceAbilityAllowed(raceId, abilityId)) {
+    return { success: false, reason: "Ability not available", state };
+  }
+
+  const ability = getRaceAbilityById(abilityId);
+  if (!ability) {
+    return { success: false, reason: "Ability not found", state };
+  }
+
+  const currentCooldown = state.combat?.raceAbilityCooldowns?.[abilityId] || 0;
+  if (currentCooldown > 0) {
+    return {
+      success: false,
+      reason: `Ability on cooldown (${currentCooldown} turns remaining)`,
+      state,
+    };
+  }
+
+  return performAbilityUse(state, enemyIndex, ability, "raceAbilityCooldowns");
 }
 
 /**
@@ -1459,6 +1676,24 @@ export function processEnemyTurns(state) {
       combat: {
         ...newState.combat,
         classAbilityCooldowns: nextCooldowns,
+      },
+    };
+  }
+
+  // Decrement race ability cooldowns
+  if (newState.combat?.raceAbilityCooldowns) {
+    const nextCooldowns = {};
+    Object.entries(newState.combat.raceAbilityCooldowns).forEach(
+      ([id, value]) => {
+        const remaining = (value || 0) - 1;
+        if (remaining > 0) nextCooldowns[id] = remaining;
+      },
+    );
+    newState = {
+      ...newState,
+      combat: {
+        ...newState.combat,
+        raceAbilityCooldowns: nextCooldowns,
       },
     };
   }
@@ -1872,6 +2107,11 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
 
   // Apply Racial Defenses (if Defender is Player)
   let finalDefense = defense;
+  const defenseDown = getEffectTagMagnitude(defender, "DEFENSE_DOWN");
+  if (defenseDown) {
+    finalDefense = Math.max(0, Math.floor(finalDefense * (1 - defenseDown)));
+    messages.push(`Defense Down: -${Math.round(defenseDown * 100)}%`);
+  }
   if (!isPlayer && defender.race) {
     // If defender is player (in enemy turn) or PvP
     // Note: Currently simple logic assumes 'attacker.race' means player.
@@ -1886,9 +2126,9 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
   // --- 5. Racial Resistances/Weaknesses (Defender) ---
   // We need to know if defender has racial traits.
   // Assuming 'defender' object has 'race' property if it's a player.
+  const element = skill ? skill.element : "physical";
   if (defender.race) {
     const defRaceId = defender.race.id;
-    const element = skill ? skill.element : "physical";
 
     // Weaknesses (+50% Damage Taken)
     if (
@@ -1946,6 +2186,18 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
         messages.push(`Elemental Flux: Weak to ${element}! (+100% Dmg)`);
       }
     }
+  }
+
+  // --- 6. Status Vulnerability/Weakness ---
+  const vulnerable = getEffectTagMagnitude(defender, "VULNERABLE");
+  if (vulnerable && finalDamage > 0) {
+    finalDamage = Math.floor(finalDamage * (1 + vulnerable));
+    messages.push(`Vulnerable: +${Math.round(vulnerable * 100)}%`);
+  }
+
+  if (element === "physical" && hasEffectTag(defender, "WEAK_PHYSICAL")) {
+    finalDamage = Math.floor(finalDamage * 1.25);
+    messages.push("Weakness: Physical (+25% Dmg)");
   }
 
   finalDamage = Math.floor(finalDamage);
@@ -2092,9 +2344,14 @@ function calculateDamagePipeline(
   const defenseValue = Number.isFinite(defenseInput)
     ? defenseInput
     : Number(getAttributeValue(defStats, "strength") || 0);
-  const defense = Math.floor(defenseValue * defenseReductionFactor);
-  let afterMitigation = Math.max(1, afterAttackers - defense);
+  let defense = Math.floor(defenseValue * defenseReductionFactor);
   const defReasons = [`Defense ${defense}`];
+  const defenseDown = getEffectTagMagnitude(defender, "DEFENSE_DOWN");
+  if (defenseDown) {
+    defense = Math.max(0, Math.floor(defense * (1 - defenseDown)));
+    defReasons.push(`Defense Down -${Math.round(defenseDown * 100)}%`);
+  }
+  let afterMitigation = Math.max(1, afterAttackers - defense);
   const element = skill ? skill.element : "physical";
   if (
     element === "fire" &&
@@ -2109,6 +2366,17 @@ function calculateDamagePipeline(
   ) {
     afterMitigation = Math.floor(afterMitigation * 1.5);
     defReasons.push("Weak: Lightning +50%");
+  }
+
+  const vulnerable = getEffectTagMagnitude(defender, "VULNERABLE");
+  if (vulnerable && afterMitigation > 0) {
+    afterMitigation = Math.floor(afterMitigation * (1 + vulnerable));
+    defReasons.push(`Vulnerable +${Math.round(vulnerable * 100)}%`);
+  }
+
+  if (element === "physical" && hasEffectTag(defender, "WEAK_PHYSICAL")) {
+    afterMitigation = Math.floor(afterMitigation * 1.25);
+    defReasons.push("Weak: Physical +25%");
   }
   log.push({
     stage: "DEFENDER_MITIGATION",
@@ -2204,6 +2472,15 @@ export function executeSkill(attacker, defender, skillId, config = {}) {
     config,
   );
 
+  const reactionResult = applyElementalReactions({
+    attacker: updatedAttacker,
+    defender: updatedDefender,
+    element: skill.element,
+    damage: result.damage,
+  });
+  result.damage = reactionResult.damage;
+  updatedDefender = reactionResult.defender;
+
   // Apply Chaos Born gamble modifier
   if (gambleResult) {
     if (gambleResult.success) {
@@ -2282,6 +2559,7 @@ export function executeSkill(attacker, defender, skillId, config = {}) {
     remainingMana: consumption.remainingMana,
     updatedAttacker,
     updatedDefender,
+    reactionMessages: reactionResult.messages,
   };
 }
 

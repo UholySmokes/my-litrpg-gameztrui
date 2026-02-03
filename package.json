@@ -36,6 +36,7 @@
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "babel-jest": "^29.7.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
@@ -47,14 +48,16 @@
     "vite": "^7.2.4"
   },
   "jest": {
-    "testEnvironment": "jsdom",
+    "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "<rootDir>/tests/skillEffects.test.js",
       "<rootDir>/tests/endToEndEffects.test.js",
       "<rootDir>/tests/magnitudeCapsFusion.test.js",
       "/node_modules/"
     ],
-    "transform": {},
+    "transform": {
+      "^.+\\.[tj]sx?$": "babel-jest"
+    },
     "moduleNameMapper": {
       "\\.(css|less|scss|sass)$": "identity-obj-proxy",
       "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/tests/__mocks__/fileMock.js"

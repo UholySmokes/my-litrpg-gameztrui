@@ -96,7 +96,7 @@ const gameLayout = {
       dockZone: "left",
       position: { x: 0, y: 0 },
       size: { w: 300, h: 220 },
-      collapsed: true,
+      collapsed: false,
       pinned: true,
     },
     equipment: {
@@ -105,7 +105,7 @@ const gameLayout = {
       dockZone: "left",
       position: { x: 0, y: 240 },
       size: { w: 300, h: 220 },
-      collapsed: true,
+      collapsed: false,
       pinned: true,
     },
     inventory: {
@@ -114,7 +114,7 @@ const gameLayout = {
       dockZone: "left",
       position: { x: 0, y: 480 },
       size: { w: 300, h: 220 },
-      collapsed: true,
+      collapsed: false,
       pinned: true,
     },
     statusEffects: {
@@ -123,16 +123,16 @@ const gameLayout = {
       dockZone: "left",
       position: { x: 0, y: 720 },
       size: { w: 300, h: 180 },
-      collapsed: true,
+      collapsed: false,
       pinned: true,
     },
-    narrativeLog: {
-      id: "narrativeLog",
-      title: "Narrative Log",
+    narrative: {
+      id: "narrative",
+      title: "Narrative",
       dockZone: "center",
       position: { x: 0, y: 0 },
       size: { w: 760, h: 520 },
-      collapsed: true,
+      collapsed: false,
       pinned: true,
     },
     commandTerminal: {
@@ -141,7 +141,7 @@ const gameLayout = {
       dockZone: "center",
       position: { x: 0, y: 540 },
       size: { w: 760, h: 200 },
-      collapsed: true,
+      collapsed: false,
       pinned: true,
     },
     actionSuggestions: {
@@ -150,7 +150,7 @@ const gameLayout = {
       dockZone: "center",
       position: { x: 0, y: 760 },
       size: { w: 760, h: 140 },
-      collapsed: true,
+      collapsed: false,
       pinned: true,
     },
     narrativeMemory: {

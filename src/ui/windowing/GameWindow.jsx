@@ -16,7 +16,6 @@ export default function GameWindow({
   containerOffset,
   collapsed,
   pinned,
-  alwaysVisible,
   dockCompact,
   zIndex,
   isActive,
@@ -165,7 +164,7 @@ export default function GameWindow({
       ? "0 0 28px rgba(0, 243, 255, 0.38)"
       : "0 0 18px rgba(0, 243, 255, 0.18)",
     overflow: "hidden",
-    display: alwaysVisible || !isCollapsed ? "flex" : "none",
+    display: "flex",
     flexDirection: "column",
     transition:
       isDragging
@@ -228,6 +227,17 @@ export default function GameWindow({
           </span>
         </div>
         <div style={{ display: "flex", gap: "0.35rem" }}>
+          {onClose && (
+            <button
+              className="holo-button"
+              type="button"
+              onClick={onClose}
+              style={controlButtonStyle}
+              title="Close"
+            >
+              ✕
+            </button>
+          )}
           {!isCompact && isDockable && onDock && (
             <button
               className="holo-button"

@@ -23,7 +23,9 @@ function clampInt(value, min, max, fallback) {
   return Math.min(max, Math.max(min, parsed)); 
 } 
 
-const draftsStorePath = path.join(process.cwd(), "api", "factory-drafts.json");
+const draftsStorePath =
+  process.env.FACTORY_DRAFTS_PATH ||
+  path.resolve(__dirname, "..", "factory-drafts.json");
 
 function nowIso() {
   return new Date().toISOString();
@@ -254,4 +256,3 @@ module.exports = async function factoryRun(context, req) {
     }); 
   } 
 }; 
-

@@ -73,6 +73,7 @@ Narrative endpoint notes:
 - For SWA auth to work with `/api/saves`, call the API on the same host (use relative `/api` or set `VITE_API_BASE_URL` to the SWA host, not the raw Function App URL).
 - Runtime config: `public/runtime-config.js` is copied to `dist/runtime-config.js` during build. Leave it empty, or set `VITE_API_BASE_URL` / `VITE_NARRATE_ENDPOINT` in CI so `scripts/generate-runtime-config.js` injects values at build time.
 - SWA routing: keep `public/staticwebapp.config.json` in the build output so `/runtime-config.js` is served as a static file.
+- Health check: `/api/health` verifies Azure SQL connectivity (requires auth in SWA).
 
 ### Run / Build / Test
 

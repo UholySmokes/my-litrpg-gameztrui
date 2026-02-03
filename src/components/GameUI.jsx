@@ -177,6 +177,13 @@ export default function GameUI({ user }) {
     dispatch({ type: "EVOLVE_CLASS" });
   };
 
+  const handleStudySpell = (payload = { mode: "create" }) => {
+    dispatchSystemEvent({
+      type: "STUDY_SPELL",
+      payload,
+    });
+  };
+
   // Event handlers - ALL hooks must be called before any conditional returns
   const handleCharacterCreationComplete = async (characterData) => {
     console.log("=== CHARACTER CREATION COMPLETE ===");
@@ -495,6 +502,14 @@ export default function GameUI({ user }) {
     });
   };
 
+  const handleRaceAbilityUse = (abilityId, enemyIndex = 0) => {
+    if (state?.combat?.status !== "active") return;
+    dispatchSystemEvent({
+      type: "PLAYER_USE_RACE_ABILITY",
+      payload: { abilityId, enemyIndex },
+    });
+  };
+
   const handleLoadState = (loadedState) => {
     if (!loadedState) return;
     setState(loadedState);
@@ -807,6 +822,7 @@ export default function GameUI({ user }) {
               onAttack={handleCombatAttack}
               onUseSkill={handleSkillUse}
               onUseClassAbility={handleClassAbilityUse}
+              onUseRaceAbility={handleRaceAbilityUse}
               onEscape={handleCombatEscape}
               showShop={showShop}
               showGacha={showGacha}
@@ -833,6 +849,7 @@ export default function GameUI({ user }) {
               onEvolveSkill={handleEvolveSkill}
               onFuseSkills={handleFuseSkills}
               onEvolveClass={handleEvolveClass}
+              onStudySpell={handleStudySpell}
               onLoadState={handleLoadState}
               addSystemMessage={addSystemMessage}
               user={user}

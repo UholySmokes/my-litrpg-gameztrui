@@ -45,6 +45,7 @@ export default function GameMode({
   onAttack,
   onUseSkill,
   onUseClassAbility,
+  onUseRaceAbility,
   onEscape,
   showShop = false,
   showGacha = false,
@@ -71,6 +72,7 @@ export default function GameMode({
   onEvolveSkill = () => {},
   onFuseSkills = () => {},
   onEvolveClass = () => {},
+  onStudySpell = () => {},
   onLoadState = () => {},
   addSystemMessage = () => {},
   user = null,
@@ -191,6 +193,7 @@ export default function GameMode({
             onAttack={onAttack}
             onUseSkill={onUseSkill}
             onUseClassAbility={onUseClassAbility}
+            onUseRaceAbility={onUseRaceAbility}
             onEscape={onEscape}
           />
         ) : (
@@ -319,6 +322,7 @@ export default function GameMode({
                 onEvolveSkill={onEvolveSkill}
                 onFuseSkills={onFuseSkills}
                 onEvolveClass={onEvolveClass}
+                onStudySpell={onStudySpell}
               />
             ),
           },

@@ -1,7 +1,5 @@
 const { DefaultAzureCredential } = require("@azure/identity"); 
 const crypto = require("crypto");
-const fs = require("fs");
-const path = require("path");
 const {
   jsonResponse,
   toStringSafe,
@@ -16,6 +14,7 @@ const {
   getTimeoutMs,
   rateLimit,
 } = require("../lib/azure-ai-utils");
+const { saveDraft, updateDraftStatus } = require("../lib/draft-store");
 
 function clampInt(value, min, max, fallback) { 
   const parsed = Number.parseInt(String(value), 10); 
@@ -23,43 +22,8 @@ function clampInt(value, min, max, fallback) {
   return Math.min(max, Math.max(min, parsed)); 
 } 
 
-const draftsStorePath =
-  process.env.FACTORY_DRAFTS_PATH ||
-  path.resolve(__dirname, "..", "factory-drafts.json");
-
 function nowIso() {
   return new Date().toISOString();
-}
-
-
-function readDrafts() {
-  try {
-    const raw = fs.readFileSync(draftsStorePath, "utf8");
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function writeDrafts(drafts) {
-  fs.writeFileSync(draftsStorePath, JSON.stringify(drafts, null, 2));
-}
-
-function saveDraft(entry) {
-  const drafts = readDrafts();
-  drafts.unshift(entry);
-  writeDrafts(drafts.slice(0, 200));
-  return entry;
-}
-
-function updateDraftStatus(draftId, status) {
-  const drafts = readDrafts();
-  const next = drafts.map((draft) =>
-    draft.id === draftId ? { ...draft, status, updatedAt: nowIso() } : draft
-  );
-  writeDrafts(next);
-  return next.find((draft) => draft.id === draftId) || null;
 }
 
 
@@ -105,7 +69,7 @@ module.exports = async function factoryRun(context, req) {
           return;
         }
       }
-      const approved = updateDraftStatus(draftId, "approved");
+      const approved = await updateDraftStatus(draftId, "approved", nowIso());
       if (!approved) {
         context.res = jsonResponse(404, { ok: false, errorCode: "DRAFT_NOT_FOUND", message: "Draft not found." });
         return;
@@ -220,7 +184,7 @@ module.exports = async function factoryRun(context, req) {
     const assistantText = extractAssistantText(messages); 
     const outputHash = hashContent(assistantText);
     const draftStatus = requireApproval ? "pending" : "approved";
-    const draft = saveDraft({
+    const draft = await saveDraft({
       id: generateId("draft"),
       requestId,
       type: contentType,

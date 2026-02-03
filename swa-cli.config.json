@@ -2,7 +2,7 @@
   "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
   "configurations": {
     "my-litrpg-gameztrui": {
-      "appLocation": "D:\\ai t6ext\\my-litrpg-gameztrui",
+      "appLocation": ".",
       "apiLocation": "api",
       "outputLocation": "dist",
       "apiLanguage": "node",

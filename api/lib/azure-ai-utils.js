@@ -24,6 +24,17 @@ function getOptionalEnv(name, fallback = "") {
     : fallback;
 }
 
+function isTruthyFlag(value) {
+  if (typeof value !== "string") return false;
+  return ["1", "true", "yes", "on"].includes(value.trim().toLowerCase());
+}
+
+function isProductionEnv() {
+  const env = getOptionalEnv("AZURE_FUNCTIONS_ENVIRONMENT") || getOptionalEnv("NODE_ENV");
+  const normalized = String(env || "").trim().toLowerCase();
+  return normalized === "production" || normalized === "prod";
+}
+
 function normalizeEndpoint(endpoint) {
   return endpoint.replace(/\/+$/g, "");
 }
@@ -167,9 +178,12 @@ function getTimeoutMs(name, fallbackMs) {
 const inMemoryRateState = new Map();
 let redisClientPromise = null;
 
+function getRedisUrl() {
+  return getOptionalEnv("REDIS_URL") || getOptionalEnv("REDIS_CONNECTION_STRING");
+}
+
 async function getRedisClient() {
-  const url =
-    getOptionalEnv("REDIS_URL") || getOptionalEnv("REDIS_CONNECTION_STRING");
+  const url = getRedisUrl();
   if (!url) return null;
   if (!redisClientPromise) {
     const { createClient } = require("redis");
@@ -200,6 +214,13 @@ async function rateLimit(key, limit, options = {}) {
   const now = Date.now();
   const windowKey = Math.floor(now / windowMs);
   const cacheKey = `rate:${key}:${windowKey}`;
+  const requireRedis =
+    isTruthyFlag(getOptionalEnv("REQUIRE_REDIS_RATE_LIMIT")) || isProductionEnv();
+  const redisUrl = getRedisUrl();
+
+  if (requireRedis && !redisUrl) {
+    throw new Error("Redis is required for rate limiting but REDIS_URL is not configured.");
+  }
 
   try {
     const client = await getRedisClient();
@@ -211,6 +232,9 @@ async function rateLimit(key, limit, options = {}) {
       return count <= limit;
     }
   } catch (err) {
+    if (requireRedis) {
+      throw err;
+    }
     const logger = options.logger;
     if (typeof logger === "function") {
       logger(`rateLimit redis error: ${String(err?.message || err)}`);
@@ -236,6 +260,8 @@ module.exports = {
   toStringSafe,
   getRequiredEnv,
   getOptionalEnv,
+  isTruthyFlag,
+  isProductionEnv,
   normalizeEndpoint,
   generateId,
   hashContent,
@@ -246,4 +272,6 @@ module.exports = {
   getApiVersion,
   getTimeoutMs,
   rateLimit,
+  getRedisClient,
+  getRedisUrl,
 };

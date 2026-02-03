@@ -47,7 +47,7 @@ import {
   handleStealthAttack,
   processStealthDetection,
   processVanishDuration,
-  useVanish,
+  useVanish as applyVanish,
 } from "./StealthSystem.js";
 import {
   processChiOnHit,
@@ -1085,7 +1085,7 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
 
   // Stealth handling
   if (ability.stealth?.duration) {
-    const stealthResult = useVanish(newState, ability.stealth.duration);
+    const stealthResult = applyVanish(newState, ability.stealth.duration);
     if (stealthResult.success) {
       newState = stealthResult.state;
       updatedPlayer = newState.player;

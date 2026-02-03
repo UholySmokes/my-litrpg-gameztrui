@@ -15,6 +15,15 @@
     "DEBUG_FACTORY": "0",
     "FACTORY_REQUIRE_APPROVAL": "0",
     "FACTORY_ADMIN_KEY": "",
-    "FACTORY_DRAFTS_PATH": ""
+    "FACTORY_DRAFTS_PATH": "",
+    "AZURE_SQL_SERVER": "voids.database.windows.net",
+    "AZURE_SQL_DATABASE": "sqlfree",
+    "AZURE_SQL_CLIENT_ID": "",
+    "AZURE_SQL_USER": "",
+    "AZURE_SQL_PASSWORD": "",
+    "AZURE_SQL_ENCRYPT": "true",
+    "AZURE_SQL_TRUST_SERVER_CERT": "false",
+    "DEV_USER_ID": "",
+    "DEV_USER_EMAIL": ""
   }
 }

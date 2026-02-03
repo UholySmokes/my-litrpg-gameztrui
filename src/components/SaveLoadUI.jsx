@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
   deleteSave,
-  isSupabaseConfigured,
+  isCloudSaveConfigured,
   listSaves,
   loadGameState,
   saveGameState,
-} from "../core/SupabaseService.js";
+} from "../core/CloudSaveService.js";
 
 const LOCAL_SAVE_KEY = "localSaves:v1";
 const LOCAL_AUTOSAVE_KEY = "localAutosave:v1";
@@ -51,7 +51,7 @@ export default function SaveLoadUI({
   const [saveName, setSaveName] = useState("Auto Save");
 
   const canUseRemote = useMemo(() => {
-    return Boolean(isSupabaseConfigured() && user?.id && user.id !== "local");
+    return Boolean(isCloudSaveConfigured() && user?.id && user.id !== "local");
   }, [user?.id]);
 
   useEffect(() => {
@@ -184,7 +184,7 @@ export default function SaveLoadUI({
         <div>
           <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>[SAVE/LOAD]</h2>
           <div style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-            Local saves always available. Cloud saves require Supabase login.
+            Local saves always available. Cloud saves require cloud login.
           </div>
         </div>
         {onClose && (
@@ -224,9 +224,7 @@ export default function SaveLoadUI({
               className="holo-button"
               onClick={handleRemoteSave}
               disabled={isBusy || !canUseRemote}
-              title={
-                canUseRemote ? "Save to cloud" : "Cloud saves require Supabase login"
-              }
+              title={canUseRemote ? "Save to cloud" : "Cloud saves require login"}
             >
               Save Cloud
             </button>
@@ -327,7 +325,7 @@ export default function SaveLoadUI({
             </h3>
             {!canUseRemote ? (
               <div style={{ color: "var(--text-muted)" }}>
-                Cloud saves disabled (missing Supabase config or not logged in).
+                Cloud saves disabled (missing config or not logged in).
               </div>
             ) : remoteSaves.length === 0 ? (
               <div style={{ color: "var(--text-muted)" }}>No cloud saves yet.</div>

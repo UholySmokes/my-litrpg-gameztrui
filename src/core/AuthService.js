@@ -1,187 +1,158 @@
-// =================================================================
-// AUTH SERVICE
-// Handles user authentication with Supabase
-// =================================================================
+const getBuildEnv = () =>
+  typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
 
-import { supabase } from './SupabaseService.js';
+const getRuntimeEnv = () => {
+  if (typeof globalThis === "undefined") return {};
+  const runtimeConfig = globalThis.__RUNTIME_CONFIG__;
+  return runtimeConfig && typeof runtimeConfig === "object"
+    ? runtimeConfig
+    : {};
+};
 
-/**
- * Signs up a new user
- * @param {string} email - User's email
- * @param {string} password - User's password
- * @returns {Promise<object>} Result object with user data or error
- */
-export async function signUp(email, password) {
-  if (!supabase) {
-    return {
-      success: false,
-      error: 'Supabase not configured'
-    };
+const pickEnvValue = (...values) => {
+  for (const value of values) {
+    if (typeof value === "string" && value.trim()) return value.trim();
   }
+  return undefined;
+};
 
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin
-      }
-    });
+const normalizeBaseUrl = (value) => value.replace(/\/+$/g, "");
 
-    if (error) {
-      throw error;
-    }
+const resolveAuthBaseUrl = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  const base = pickEnvValue(
+    runtimeEnv.VITE_AUTH_BASE_URL,
+    buildEnv.VITE_AUTH_BASE_URL,
+  );
+  return base ? normalizeBaseUrl(base) : "";
+};
 
-    return {
-      success: true,
-      user: data.user,
-      session: data.session
-    };
-  } catch (error) {
-    console.error('Sign up error:', error);
-    return {
-      success: false,
-      error: error.message || 'Failed to sign up'
-    };
-  }
+const resolveAuthProvider = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  return (
+    pickEnvValue(runtimeEnv.VITE_AUTH_PROVIDER, buildEnv.VITE_AUTH_PROVIDER) ||
+    "aad"
+  );
+};
+
+const getDevUser = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  const devUserId = pickEnvValue(
+    runtimeEnv.VITE_DEV_USER_ID,
+    buildEnv.VITE_DEV_USER_ID,
+  );
+  if (!devUserId) return null;
+  const devUserEmail = pickEnvValue(
+    runtimeEnv.VITE_DEV_USER_EMAIL,
+    buildEnv.VITE_DEV_USER_EMAIL,
+  );
+  return {
+    id: devUserId,
+    email: devUserEmail || devUserId,
+    provider: "dev",
+    roles: ["authenticated"],
+  };
+};
+
+const mapClientPrincipal = (principal) => {
+  if (!principal || typeof principal !== "object") return null;
+  const userId = principal.userId || principal.userDetails;
+  if (!userId) return null;
+  return {
+    id: String(userId),
+    email: principal.userDetails ? String(principal.userDetails) : String(userId),
+    provider: principal.identityProvider ? String(principal.identityProvider) : "",
+    roles: Array.isArray(principal.userRoles) ? principal.userRoles : [],
+  };
+};
+
+const buildAuthUrl = (path, redirectTo) => {
+  const base = resolveAuthBaseUrl();
+  const prefix = base ? `${base}` : "";
+  const redirect = redirectTo || window.location.href;
+  const encoded = encodeURIComponent(redirect);
+  return `${prefix}${path}?post_login_redirect_uri=${encoded}`;
+};
+
+export async function signUp() {
+  return signIn();
 }
 
-/**
- * Signs in an existing user
- * @param {string} email - User's email
- * @param {string} password - User's password
- * @returns {Promise<object>} Result object with user data or error
- */
-export async function signIn(email, password) {
-  if (!supabase) {
-    return {
-      success: false,
-      error: 'Supabase not configured'
-    };
+export async function signIn() {
+  const devUser = getDevUser();
+  if (devUser) {
+    return { success: true, user: devUser };
   }
 
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) {
-      throw error;
-    }
-
-    return {
-      success: true,
-      user: data.user,
-      session: data.session
-    };
-  } catch (error) {
-    console.error('Sign in error:', error);
-    return {
-      success: false,
-      error: error.message || 'Failed to sign in'
-    };
-  }
+  const provider = resolveAuthProvider();
+  window.location.assign(buildAuthUrl(`/.auth/login/${provider}`));
+  return { success: true };
 }
 
-/**
- * Signs out the current user
- * @returns {Promise<object>} Result object
- */
 export async function signOut() {
-  if (!supabase) {
-    return {
-      success: false,
-      error: 'Supabase not configured'
-    };
+  const devUser = getDevUser();
+  if (devUser) {
+    return { success: true };
   }
 
-  try {
-    const { error } = await supabase.auth.signOut();
-
-    if (error) {
-      throw error;
-    }
-
-    return {
-      success: true
-    };
-  } catch (error) {
-    console.error('Sign out error:', error);
-    return {
-      success: false,
-      error: error.message || 'Failed to sign out'
-    };
-  }
+  const base = resolveAuthBaseUrl();
+  const redirect = encodeURIComponent(window.location.href);
+  const url = `${base}/.auth/logout?post_logout_redirect_uri=${redirect}`;
+  window.location.assign(url);
+  return { success: true };
 }
 
-/**
- * Gets the current user session
- * @returns {Promise<object>} Current user or null
- */
 export async function getCurrentUser() {
-  if (!supabase) {
-    return null;
-  }
+  const devUser = getDevUser();
+  if (devUser) return devUser;
 
   try {
-    const { data: { session } } = await supabase.auth.getSession();
-    return session?.user || null;
+    const base = resolveAuthBaseUrl();
+    const response = await fetch(`${base}/.auth/me`, {
+      credentials: "include",
+    });
+    if (!response.ok) return null;
+    const data = await response.json().catch(() => null);
+    return mapClientPrincipal(data?.clientPrincipal);
   } catch (error) {
-    console.error('Get current user error:', error);
+    console.error("Get current user error:", error);
     return null;
   }
 }
 
-/**
- * Subscribes to auth state changes
- * @param {function} callback - Function to call when auth state changes
- * @returns {function} Unsubscribe function
- */
 export function onAuthStateChange(callback) {
-  if (!supabase) {
-    return () => {};
-  }
+  let active = true;
 
-  const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-    callback(session?.user || null, event);
-  });
+  const notify = async () => {
+    if (!active) return;
+    const user = await getCurrentUser();
+    if (active) callback(user);
+  };
+
+  notify();
+
+  const handleVisibility = () => {
+    if (document.visibilityState === "visible") {
+      notify();
+    }
+  };
+
+  window.addEventListener("focus", notify);
+  document.addEventListener("visibilitychange", handleVisibility);
 
   return () => {
-    subscription.unsubscribe();
+    active = false;
+    window.removeEventListener("focus", notify);
+    document.removeEventListener("visibilitychange", handleVisibility);
   };
 }
 
-/**
- * Resets password for a user
- * @param {string} email - User's email
- * @returns {Promise<object>} Result object
- */
-export async function resetPassword(email) {
-  if (!supabase) {
-    return {
-      success: false,
-      error: 'Supabase not configured'
-    };
-  }
-
-  try {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`
-    });
-
-    if (error) {
-      throw error;
-    }
-
-    return {
-      success: true
-    };
-  } catch (error) {
-    console.error('Reset password error:', error);
-    return {
-      success: false,
-      error: error.message || 'Failed to send password reset email'
-    };
-  }
+export async function resetPassword() {
+  return {
+    success: false,
+    error: "Password reset is handled by the identity provider.",
+  };
 }

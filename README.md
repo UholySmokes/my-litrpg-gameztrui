@@ -10,7 +10,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - **Dynamic Quest & Opening Scene Builder** – `QuestSetup.js` derives quests/scenes from character snapshots and cached seeds.
 - **AI Narrative Layer** – `useNarrative` + `PromptAssembler` craft opening prompts and story beats, with caching to keep scenes consistent.
 - **Combat + Class Resources** – turn-based combat, class abilities, and HUD widgets for Berserker Rage, Monk Chi combos, and stealth readiness.
-- **Persistence** – Supabase save/load, local autosave, and deterministic rewinds.
+- **Persistence** – Azure SQL cloud saves via Functions, local autosave, and deterministic rewinds.
 - **Support Systems** – Gacha, Shop, Title unlocks, quest log, minion panel, etc.
 
 ---
@@ -20,7 +20,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - **Frontend**: React 18 + Vite, hooks-first architecture
 - **State/Game Logic**: Custom hook `useGameEngine`, immutable reducers, config-driven balance
 - **Styling**: CSS modules + inline HUD styling for neon HUD aesthetic
-- **Backend Integrations**: Supabase (auth + cloud saves), Azure Foundry narrative service
+- **Backend Integrations**: Azure SQL (cloud saves) + Azure Functions, Azure Foundry narrative service
 - **Tooling**: ESLint (React hooks rules), npm scripts, Node 18+
 
 ---
@@ -31,7 +31,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 
 - Node.js 18+
 - npm 9+ (comes with Node)
-- Supabase + narrative API endpoint (optional; needed for saves + AI narrative)
+- Azure SQL + Functions (optional; needed for cloud saves) and narrative API endpoint
 
 ### Installation
 
@@ -51,9 +51,10 @@ Create `.env.local` (for local dev only):
 # For static hosting, set to your deployed API URL.
 VITE_NARRATE_ENDPOINT=...
 
-# Supabase (optional; enables persistence)
-VITE_SUPABASE_URL=...
-VITE_SUPABASE_ANON_KEY=...
+# Cloud saves (optional; enables persistence)
+# Uses Azure Functions + Azure SQL (Managed Identity).
+VITE_API_BASE_URL=...
+VITE_AUTH_PROVIDER=aad
 
 # Narrative API runs via /api/narrate (Azure Foundry + managed identity).
 # No OpenAI key is required for this setup.

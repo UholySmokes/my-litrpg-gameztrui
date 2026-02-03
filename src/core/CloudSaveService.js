@@ -113,7 +113,8 @@ async function requestJson(path, { method, body } = {}) {
   throw lastError || new Error("Cloud save endpoint unavailable.");
 }
 
-const buildError = (data, fallback) => {
+const buildError = (data, fallback, status) => {
+  if (status === 401) return "Sign in required.";
   if (typeof data?.message === "string" && data.message.trim()) {
     return data.message;
   }
@@ -133,7 +134,7 @@ export async function saveGameState(_userId, gameState, saveName = "Auto Save") 
     if (!response.ok || data?.ok === false) {
       return {
         success: false,
-        error: buildError(data, "Failed to save game state."),
+        error: buildError(data, "Failed to save game state.", response.status),
       };
     }
 
@@ -160,7 +161,11 @@ export async function updateGameState(_userId, saveId, gameState, saveName) {
     if (!response.ok || data?.ok === false) {
       return {
         success: false,
-        error: buildError(data, "Failed to update game state."),
+        error: buildError(
+          data,
+          "Failed to update game state.",
+          response.status,
+        ),
       };
     }
 
@@ -185,7 +190,7 @@ export async function loadGameState(_userId, saveId) {
     if (!response.ok || data?.ok === false) {
       return {
         success: false,
-        error: buildError(data, "Failed to load game state."),
+        error: buildError(data, "Failed to load game state.", response.status),
       };
     }
 
@@ -213,7 +218,7 @@ export async function listSaves(_userId) {
     if (!response.ok || data?.ok === false) {
       return {
         success: false,
-        error: buildError(data, "Failed to list saves."),
+        error: buildError(data, "Failed to list saves.", response.status),
         saves: [],
       };
     }
@@ -240,7 +245,7 @@ export async function deleteSave(_userId, saveId) {
     if (!response.ok || data?.ok === false) {
       return {
         success: false,
-        error: buildError(data, "Failed to delete save."),
+        error: buildError(data, "Failed to delete save.", response.status),
       };
     }
 

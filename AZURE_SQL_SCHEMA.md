@@ -30,6 +30,16 @@ ALTER ROLE db_datareader ADD MEMBER [<identity-name>];
 ALTER ROLE db_datawriter ADD MEMBER [<identity-name>];
 ```
 
+## Function App Settings
+
+Set these in the Function App configuration:
+
+```
+AZURE_SQL_SERVER=voids.database.windows.net
+AZURE_SQL_DATABASE=sqlfree
+AZURE_SQL_CLIENT_ID=<user-assigned-managed-identity-client-id>
+```
+
 ## Local Development (Optional)
 
 If you want to use SQL auth locally, set:

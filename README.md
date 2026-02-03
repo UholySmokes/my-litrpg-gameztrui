@@ -65,10 +65,12 @@ Azure Functions local dev (for `api/`):
 - Copy `api/local.settings.example.json` to `api/local.settings.json`.
 - Fill in `FOUNDRY_PROJECT_ENDPOINT`, agent IDs, and Azure credentials.
 - Keep `api/local.settings.json` out of git (it is ignored).
+- Cloud auth uses Azure Static Web Apps / Easy Auth (`/.auth/login/<provider>`). Set `VITE_AUTH_PROVIDER` if you use a provider other than `aad`.
 
 Narrative endpoint notes:
 - Static hosting (GitHub Pages): deploy the API separately and set `VITE_NARRATE_ENDPOINT` to its full URL.
 - Azure Static Web Apps / Functions: `/api/narrate` uses Azure Foundry credentials (see `api/narrate/index.js`).
+- For SWA auth to work with `/api/saves`, call the API on the same host (use relative `/api` or set `VITE_API_BASE_URL` to the SWA host, not the raw Function App URL).
 - Runtime config: `public/runtime-config.js` is copied to `dist/runtime-config.js` during build. Leave it empty, or set `VITE_API_BASE_URL` / `VITE_NARRATE_ENDPOINT` in CI so `scripts/generate-runtime-config.js` injects values at build time.
 - SWA routing: keep `public/staticwebapp.config.json` in the build output so `/runtime-config.js` is served as a static file.
 

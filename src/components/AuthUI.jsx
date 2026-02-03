@@ -33,6 +33,9 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
     const result = await signIn();
     if (result?.success === false) {
       setError(result.error || "Failed to sign in.");
+    } else if (result?.user) {
+      setUser(result.user);
+      onAuthChange?.(result.user);
     }
     setLoading(false);
   };

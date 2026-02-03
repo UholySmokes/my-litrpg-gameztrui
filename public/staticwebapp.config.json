@@ -4,6 +4,14 @@
   },
   "routes": [
     {
+      "route": "/api/saves",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/saves/*",
+      "allowedRoles": ["authenticated"]
+    },
+    {
       "route": "/runtime-config.js"
     }
   ]

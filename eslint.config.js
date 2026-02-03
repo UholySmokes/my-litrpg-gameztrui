@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'build', 'coverage']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -14,8 +14,11 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.browser,
+        ...globals.es2021,
+      },
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
@@ -24,68 +27,77 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],
-      'no-case-declarations': 'off'
+      'no-case-declarations': 'off',
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      'no-undef': 'error',
     },
   },
   {
-    files: ['tests/**/*.js'],
+    files: ['tests/**/*.js', '**/*.test.js', '**/*.spec.js'],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       globals: {
         ...globals.node,
         ...globals.jest,
-        vi: 'readonly'
+        performance: 'readonly',
       },
       parserOptions: {
         ecmaVersion: 'latest',
-        sourceType: 'module'
+        sourceType: 'module',
       },
     },
     rules: {
       'no-undef': 'off',
-      'no-unused-vars': 'off'
+      'no-unused-vars': 'off',
     },
   },
   {
     files: ['src/lib/gamelogic.js'],
     rules: {
       'react-hooks/rules-of-hooks': 'off',
-      'no-case-declarations': 'off'
-    }
+      'no-case-declarations': 'off',
+    },
   },
   {
     files: ['src/systems/**/*.js', 'src/util/statusrenderer.js', 'src/hook/**/*.js'],
     rules: {
-      'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }]
-    }
+      'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],
+    },
   },
   {
-    files: ['scripts/**/*.js'],
+    files: ['scripts/**/*.js', 'scripts/**/*.cjs'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.node,
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.node,
+      },
       parserOptions: {
         ecmaVersion: 'latest',
-        sourceType: 'module'
+        sourceType: 'module',
       },
     },
     rules: {
       'no-undef': 'off',
-      'no-unused-vars': 'off'
-    }
+      'no-unused-vars': 'off',
+    },
   },
   {
     files: ['api/**/*.js', 'vite.config.js'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.node,
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.node,
+      },
       parserOptions: {
         ecmaVersion: 'latest',
-        sourceType: 'module'
+        sourceType: 'module',
       },
     },
     rules: {
-      'no-undef': 'off'
-    }
+      'no-undef': 'off',
+    },
   },
 ])

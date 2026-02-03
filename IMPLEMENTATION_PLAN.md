@@ -338,7 +338,9 @@ clear deliverables so you can track progress and avoid design drift.
 - Deliverables:
   - Meta progression data and rules.
 
-### 5.3 Supabase integration plan
+### 5.3 Azure SQL integration plan
+
+- Note: Supabase plan replaced by Azure SQL + Functions. See `AZURE_SQL_SCHEMA.md`.
 
 - Scope: Auth, persistence, and realtime later.
 - Tasks:

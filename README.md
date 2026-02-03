@@ -101,6 +101,7 @@ Key documentation:
 - `IMPLEMENTATION_PLAN.md` – multi-phase roadmap
 - `CLASS_SYSTEMS_SUMMARY.md` – rage/chi/stealth design notes
 - `RPG_BLUEPRINT.md` – attribute, race, and class reference
+- `AZURE_SQL_SCHEMA.md` – Azure SQL schema for cloud saves
 
 ---
 

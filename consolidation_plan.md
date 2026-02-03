@@ -91,7 +91,7 @@ export class GameSystemTests {
 
 - `aiService.js` - AI integration
 - `authService.js` - Authentication
-- `supabaseService.js` - Database operations
+- `CloudSaveService.js` - Database operations
 
 **Solution:** Create `src/lib/services/` directory
 
@@ -100,7 +100,7 @@ export class GameSystemTests {
 export class ServiceManager {
   static ai = new AIService();
   static auth = new AuthService();
-  static database = new SupabaseService();
+  static database = new CloudSaveService();
 }
 
 ```

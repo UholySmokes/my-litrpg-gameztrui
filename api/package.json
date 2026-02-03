@@ -5,6 +5,7 @@
   "dependencies": {
     "@azure/identity": "^4.0.0",
     "durable-functions": "^2.1.4",
+    "mssql": "^11.0.1",
     "redis": "^4.7.1",
     "undici": "^6.21.0"
   }

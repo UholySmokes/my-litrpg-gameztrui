@@ -24,7 +24,6 @@
     "analyze:graph": "node scripts/generate-dependency-graph.cjs --output=docs/MIDDLEWARE_DEPENDENCY_GRAPH.md"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.89.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

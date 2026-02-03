@@ -12,7 +12,7 @@ This document tracks the implementation status of all game features.
 | Core Game Loop     | ✅ Complete | Playable                          |
 | Character Creation | ✅ Complete | Full race/class/skill selection   |
 | Combat System      | ✅ Complete | Turn-based, skills, escape        |
-| Save/Load          | ✅ Complete | Supabase integration              |
+| Save/Load          | ✅ Complete | Azure SQL + Functions integration |
 | Skills Database    | ✅ Complete | 20/20 classes complete            |
 | Shop System        | ✅ Complete | Basic shop UI                     |
 | Gacha System       | ✅ Complete | Working rolls                     |
@@ -121,15 +121,15 @@ This document tracks the implementation status of all game features.
 - [x] **Title Data** (`titleData.js`) - Achievement titles
 - [x] **AI Service** (`aiService.js`) - LLM integration
 - [x] **Auth Service** (`authService.js`) - Authentication
-- [x] **Supabase Service** (`supabaseService.js`) - Cloud saves
+- [x] **Cloud Save Service** (`CloudSaveService.js`) - Cloud saves
 - [x] **Prompt Assembler** (`promptAssembler.js`) - AI context building
 - [x] **Action Parser** (`actionParser.js`) - Input parsing
 - [x] **Action Validator** (`actionValidator.js`) - Action validation
 
 ### Persistence
 
-- [x] **Supabase Integration**
-  - User authentication
+- [x] **Azure SQL Integration**
+  - Entra ID authentication (SWA / Easy Auth)
   - Cloud save/load
   - Multiple save slots
   - Auto-save support

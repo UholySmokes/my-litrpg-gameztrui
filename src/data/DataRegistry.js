@@ -16,7 +16,14 @@ import {
   canRaceRebirth,
 } from "./registries/RaceDataRegistry.js";
 import { classes as classData } from "./registries/ClassDataRegistry.js";
-import { itemDatabase, getItemData } from "./registries/ItemDataRegistry.js";
+import {
+  getEquipmentBySlot,
+  getItemData,
+  getItems,
+  getItemsByRarity,
+  getItemsByType,
+  itemDatabase,
+} from "./registries/ItemDataRegistry.js";
 import { enemies as enemyData } from "./registries/EnemyDataRegistry.js";
 import { getQuestById } from "../data/QuestCatalog.js";
 
@@ -182,7 +189,7 @@ export class DataRegistry {
    * @returns {Array} Items of specified type
    */
   static getItemsByType(type) {
-    return Object.values(itemDatabase).filter((item) => item.type === type);
+    return getItemsByType(type);
   }
 
   /**
@@ -191,7 +198,7 @@ export class DataRegistry {
    * @returns {Array} Items of specified rarity
    */
   static getItemsByRarity(rarity) {
-    return Object.values(itemDatabase).filter((item) => item.rarity === rarity);
+    return getItemsByRarity(rarity);
   }
 
   /**
@@ -200,9 +207,7 @@ export class DataRegistry {
    * @returns {Array} Equipment for specified slot
    */
   static getEquipmentBySlot(slot) {
-    return Object.values(itemDatabase).filter(
-      (item) => item.type === "equipment" && item.equipSlot === slot,
-    );
+    return getEquipmentBySlot(slot);
   }
 
   // ============================================
@@ -333,7 +338,7 @@ export class DataRegistry {
    */
   static searchItems(query) {
     const lowerQuery = query.toLowerCase();
-    return Object.values(itemDatabase).filter(
+    return getItems().filter(
       (item) =>
         item.name.toLowerCase().includes(lowerQuery) ||
         item.description.toLowerCase().includes(lowerQuery),
@@ -360,8 +365,8 @@ export class DataRegistry {
       },
       items: {
         total: Object.keys(itemDatabase).length,
-        byType: this._groupBy(Object.values(itemDatabase), "type"),
-        byRarity: this._groupBy(Object.values(itemDatabase), "rarity"),
+        byType: this._groupBy(getItems(), "type"),
+        byRarity: this._groupBy(getItems(), "rarity"),
       },
       enemies: {
         total: enemyData.length,

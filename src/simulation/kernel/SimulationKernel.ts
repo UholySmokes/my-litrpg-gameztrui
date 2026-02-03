@@ -37,10 +37,9 @@ function normalizeForHash(value: unknown): unknown {
   }
 
   if (value instanceof Map) {
-    const entries = Array.from(value.entries()).map(([key, entry]) => [
-      String(key),
-      normalizeForHash(entry),
-    ]);
+    const entries: Array<[string, unknown]> = Array.from(value.entries()).map(
+      ([key, entry]) => [String(key), normalizeForHash(entry)],
+    );
     entries.sort((a, b) => a[0].localeCompare(b[0]));
     return entries;
   }

@@ -371,9 +371,10 @@ export class EventReplayer {
       }
 
       // Apply delay based on speed
-      if (options.speed !== undefined && options.speed < 1) {
+      const speed = options.speed;
+      if (typeof speed === "number" && speed < 1) {
         await new Promise((resolve) =>
-          setTimeout(resolve, (1 - options.speed) * 100),
+          setTimeout(resolve, (1 - speed) * 100),
         );
       }
 

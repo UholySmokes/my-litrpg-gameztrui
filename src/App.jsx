@@ -1,10 +1,11 @@
-import GameUI from "./components/GameUI";
-import AuthUI from "./components/AuthUI";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { getCurrentUser, onAuthStateChange } from "./core/AuthService.js";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import "./index.css";
 import "./App.css";
+
+const GameUI = lazy(() => import("./components/GameUI"));
+const AuthUI = lazy(() => import("./components/AuthUI"));
 
 function AppContent() {
   const [user, setUser] = useState(null);
@@ -12,6 +13,22 @@ function AppContent() {
     return localStorage.getItem("localGame") === "true";
   });
   const [loading, setLoading] = useState(true);
+  const loadingScreen = (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "var(--bg-deep)",
+        color: "var(--holo-cyan)",
+        fontFamily: "var(--font-hud)",
+      }}
+    >
+      Loading...
+    </div>
+  );
 
   useEffect(() => {
     // Check for existing session
@@ -50,22 +67,7 @@ function AppContent() {
   };
 
   if (loading) {
-    return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "var(--bg-deep)",
-          color: "var(--holo-cyan)",
-          fontFamily: "var(--font-hud)",
-        }}
-      >
-        Loading...
-      </div>
-    );
+    return loadingScreen;
   }
 
   // Show login if not authenticated and not in local game
@@ -83,16 +85,22 @@ function AppContent() {
         }}
       >
         <div style={{ maxWidth: "400px", width: "100%" }}>
-          <AuthUI
-            onAuthChange={handleAuthChange}
-            onLocalGame={handleLocalGame}
-          />
+          <Suspense fallback={loadingScreen}>
+            <AuthUI
+              onAuthChange={handleAuthChange}
+              onLocalGame={handleLocalGame}
+            />
+          </Suspense>
         </div>
       </div>
     );
   }
 
-  return <GameUI user={user} />;
+  return (
+    <Suspense fallback={loadingScreen}>
+      <GameUI user={user} />
+    </Suspense>
+  );
 }
 
 // Wrap with ThemeProvider

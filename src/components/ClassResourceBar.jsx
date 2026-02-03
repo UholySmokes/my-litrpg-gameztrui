@@ -15,6 +15,7 @@ function getClassResource(player) {
 
   switch(classId) {
     case 'berserker':
+    case 'bloodline_vanguard':
       return {
         type: 'rage',
         label: 'Rage',
@@ -42,6 +43,14 @@ function getClassResource(player) {
     case 'archer':
     case 'ranger':
     case 'sniper':
+    case 'gunslinger':
+    case 'spellbreaker':
+    case 'tinkerer':
+    case 'system_hacker':
+    case 'chrono_duelist':
+    case 'beast_lord':
+    case 'starbound_archer':
+    case 'ironclad_engineer':
       return {
         type: 'focus',
         label: 'Focus',
@@ -57,6 +66,9 @@ function getClassResource(player) {
     case 'assassin':
     case 'master_thief':
     case 'shadowblade':
+    case 'blade_dancer':
+    case 'shadow_tactician':
+    case 'void_marauder':
       return {
         type: 'energy',
         label: 'Energy',

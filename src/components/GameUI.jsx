@@ -487,6 +487,14 @@ export default function GameUI({ user }) {
     });
   };
 
+  const handleClassAbilityUse = (abilityId, enemyIndex = 0) => {
+    if (state?.combat?.status !== "active") return;
+    dispatchSystemEvent({
+      type: "PLAYER_USE_CLASS_ABILITY",
+      payload: { abilityId, enemyIndex },
+    });
+  };
+
   const handleLoadState = (loadedState) => {
     if (!loadedState) return;
     setState(loadedState);
@@ -798,6 +806,7 @@ export default function GameUI({ user }) {
               combatState={state?.combat}
               onAttack={handleCombatAttack}
               onUseSkill={handleSkillUse}
+              onUseClassAbility={handleClassAbilityUse}
               onEscape={handleCombatEscape}
               showShop={showShop}
               showGacha={showGacha}

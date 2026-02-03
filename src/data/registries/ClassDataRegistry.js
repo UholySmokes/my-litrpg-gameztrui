@@ -5,7 +5,7 @@
 // =================================================================
 
 /**
- * CLASSES - 20 RPG Classes
+ * CLASSES - 50 RPG Classes
  * Each class can be upgraded later to advanced versions
  */
 export const classes = [
@@ -248,6 +248,166 @@ export const classes = [
     upgradePath: 'storm_dancer',
     resourceSystem: 'energy',
     coreMechanics: ['combo_steps', 'riposte', 'whirling_blades']
+  },
+  {
+    id: 'system_hacker',
+    name: 'System Hacker',
+    description: 'Rule-breaking technician who exploits interfaces and bends combat protocols.',
+    upgradePath: 'reality_architect',
+    resourceSystem: 'focus',
+    coreMechanics: ['rule_break', 'exploit_threads', 'system_override']
+  },
+  {
+    id: 'bloodline_vanguard',
+    name: 'Bloodline Vanguard',
+    description: 'Frontline warrior empowered by ancestral blood and inherited ferocity.',
+    upgradePath: 'blood_titan',
+    resourceSystem: 'rage',
+    coreMechanics: ['blood_surge', 'ancestral_guard', 'lineage_rituals']
+  },
+  {
+    id: 'shadow_tactician',
+    name: 'Shadow Tactician',
+    description: 'Battlefield controller who marks targets and strikes from cover.',
+    upgradePath: 'umbra_commander',
+    resourceSystem: 'energy',
+    coreMechanics: ['shadow_marks', 'battlefield_control', 'assassination']
+  },
+  {
+    id: 'aether_sage',
+    name: 'Aether Sage',
+    description: 'Mystic scholar who channels aether into lances and barriers.',
+    upgradePath: 'aether_paragon',
+    resourceSystem: 'mana',
+    coreMechanics: ['aether_lance', 'mana_well', 'phase_barrier']
+  },
+  {
+    id: 'rift_blade',
+    name: 'Rift Blade',
+    description: 'Swordmage who cuts through space and strikes across gaps.',
+    upgradePath: 'rift_reaver',
+    resourceSystem: 'mana',
+    coreMechanics: ['rift_slash', 'blink_strike', 'void_guard']
+  },
+  {
+    id: 'worldtree_warden',
+    name: 'Worldtree Warden',
+    description: 'Guardian of living roots who binds foes and mends allies.',
+    upgradePath: 'worldtree_sentinel',
+    resourceSystem: 'mana',
+    coreMechanics: ['verdant_bind', 'life_bloom', 'barkskin']
+  },
+  {
+    id: 'chrono_duelist',
+    name: 'Chrono Duelist',
+    description: 'Fencer who bends time windows to reset mistakes and surge tempo.',
+    upgradePath: 'chrono_archon',
+    resourceSystem: 'focus',
+    coreMechanics: ['time_cut', 'rewind', 'tempo_boost']
+  },
+  {
+    id: 'storm_caller',
+    name: 'Storm Caller',
+    description: 'Elementalist who commands thunder, shock, and stormfront pressure.',
+    upgradePath: 'tempest_lord',
+    resourceSystem: 'mana',
+    coreMechanics: ['storm_bolt', 'thunderclap', 'eye_of_storm']
+  },
+  {
+    id: 'grave_binder',
+    name: 'Grave Binder',
+    description: 'Necrotic binder who anchors souls and raises bonewarders.',
+    upgradePath: 'grave_sentinel',
+    resourceSystem: 'mana',
+    coreMechanics: ['soul_chain', 'grave_shield', 'boneguard']
+  },
+  {
+    id: 'beast_lord',
+    name: 'Beast Lord',
+    description: 'Alpha commander who directs pack assaults and dominates the field.',
+    upgradePath: 'primal_overlord',
+    resourceSystem: 'focus',
+    coreMechanics: ['command_roar', 'pack_assault', 'alpha_guard']
+  },
+  {
+    id: 'void_marauder',
+    name: 'Void Marauder',
+    description: 'Skirmisher who weaponizes darkness and entropy to break defenses.',
+    upgradePath: 'void_warlord',
+    resourceSystem: 'energy',
+    coreMechanics: ['void_rend', 'shadow_meld', 'entropy_strike']
+  },
+  {
+    id: 'rune_artificer',
+    name: 'Rune Artificer',
+    description: 'Arcane crafter who inscribes wards and detonates sigils.',
+    upgradePath: 'rune_architect',
+    resourceSystem: 'mana',
+    coreMechanics: ['runic_blast', 'ward_inscribe', 'sigil_bind']
+  },
+  {
+    id: 'starbound_archer',
+    name: 'Starbound Archer',
+    description: 'Marksman guided by starlight, layering burns and precision fire.',
+    upgradePath: 'astral_marksman',
+    resourceSystem: 'focus',
+    coreMechanics: ['stellar_pierce', 'meteor_shot', 'orbit_step']
+  },
+  {
+    id: 'soul_weaver',
+    name: 'Soul Weaver',
+    description: 'Spirit manipulator who tears souls and stitches vitality.',
+    upgradePath: 'soul_sovereign',
+    resourceSystem: 'mana',
+    coreMechanics: ['soul_rend', 'spirit_mend', 'wraith_shroud']
+  },
+  {
+    id: 'ironclad_engineer',
+    name: 'Ironclad Engineer',
+    description: 'Gadgeteer who overclocks systems and deploys fortified tech.',
+    upgradePath: 'siege_machinist',
+    resourceSystem: 'focus',
+    coreMechanics: ['overclock', 'deployables', 'reinforce_plating']
+  },
+  {
+    id: 'fatebinder',
+    name: 'Fatebinder',
+    description: 'Weaver of probability who shields through omen and destiny.',
+    upgradePath: 'fate_archon',
+    resourceSystem: 'mana',
+    coreMechanics: ['destiny_cut', 'omen_shield', 'fate_twist']
+  },
+  {
+    id: 'plague_doctor',
+    name: 'Plague Doctor',
+    description: 'Toxic specialist who spreads miasma and purges ailments.',
+    upgradePath: 'pestilent_saint',
+    resourceSystem: 'mana',
+    coreMechanics: ['virulent_dart', 'antitoxin', 'miasma']
+  },
+  {
+    id: 'mirror_mage',
+    name: 'Mirror Mage',
+    description: 'Illusionist who refracts damage and shields with prisms.',
+    upgradePath: 'prism_archmage',
+    resourceSystem: 'mana',
+    coreMechanics: ['mirror_shard', 'prism_guard', 'mirror_step']
+  },
+  {
+    id: 'hexblade',
+    name: 'Hexblade',
+    description: 'Cursed swordsman who binds targets with lingering hexes.',
+    upgradePath: 'hex_reaper',
+    resourceSystem: 'mana',
+    coreMechanics: ['hex_strike', 'wither_hex', 'dark_guard']
+  },
+  {
+    id: 'guardian_martyr',
+    name: 'Guardian Martyr',
+    description: 'Sacrificial bulwark who trades vitality for overwhelming shields.',
+    upgradePath: 'martyr_saint',
+    resourceSystem: 'mana',
+    coreMechanics: ['sacrificial_aegis', 'vow_of_endurance', 'judgment']
   }
 ];
 

@@ -21,7 +21,14 @@ const STEALTH_CONFIG = {
   stealthBreakOnAttack: true,
   ambushDamageMultiplier: 2.0,
   stealthDecayChancePerTurn: 0.1, // 10% chance to be detected per turn
-  stealthClasses: ["assassin", "rogue", "shadowblade", "void_assassin"],
+  stealthClasses: [
+    "assassin",
+    "rogue",
+    "shadowblade",
+    "void_assassin",
+    "shadow_tactician",
+    "void_marauder",
+  ],
   stealthRaces: ["shadow_walker"],
 };
 
@@ -194,6 +201,16 @@ export function processStealthDetection(state) {
 
   if (!player.isStealthed || !state.combat?.enemies) {
     return state;
+  }
+
+  if (player.vanishTurnsRemaining && player.vanishTurnsRemaining > 0) {
+    return {
+      ...state,
+      player: {
+        ...player,
+        stealthTurns: (player.stealthTurns || 0) + 1,
+      },
+    };
   }
 
   // Increment stealth turns

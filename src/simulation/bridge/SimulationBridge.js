@@ -10,6 +10,7 @@
  */
 
 import { SimBridge } from "./SimulationContext.js";
+import { executeAction } from "../../core/ActionDispatcher.js";
 export { SimBridge } from "./SimulationContext.js";
 
 /**
@@ -100,7 +101,6 @@ export async function replaySimulation(
   let executeCommand = execute;
 
   if (typeof executeCommand !== "function") {
-    const { executeAction } = await import("../../core/ActionDispatcher.js");
     executeCommand = (currentState, command) => {
       const action = command.payload ?? { type: command.type, ...command };
       return executeAction(currentState, action, {});

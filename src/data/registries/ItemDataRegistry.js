@@ -446,6 +446,67 @@ export const itemDatabase = {
 };
 
 /**
+ * Cached item lookup data.
+ * Populated lazily on first lookup and cleared via resetItemCaches() if the
+ * item database is modified at runtime.
+ */
+let itemListCache = null;
+const itemsByTypeCache = new Map();
+const itemsByRarityCache = new Map();
+const equipmentBySlotCache = new Map();
+
+// Internal helper for cached lookup operations; returns the shared cache array.
+const getItemListCache = () => {
+  if (!itemListCache) {
+    itemListCache = Object.values(itemDatabase);
+  }
+  return itemListCache;
+};
+
+const getItemsByTypeCache = (type) => {
+  if (!itemsByTypeCache.has(type)) {
+    itemsByTypeCache.set(
+      type,
+      getItemListCache().filter((item) => item.type === type),
+    );
+  }
+  return itemsByTypeCache.get(type);
+};
+
+const getItemsByRarityCache = (rarity) => {
+  if (!itemsByRarityCache.has(rarity)) {
+    itemsByRarityCache.set(
+      rarity,
+      getItemListCache().filter((item) => item.rarity === rarity),
+    );
+  }
+  return itemsByRarityCache.get(rarity);
+};
+
+const getEquipmentBySlotCache = (slot) => {
+  if (!equipmentBySlotCache.has(slot)) {
+    equipmentBySlotCache.set(
+      slot,
+      getItemListCache().filter(
+        (item) => item.type === "equipment" && item.equipSlot === slot,
+      ),
+    );
+  }
+  return equipmentBySlotCache.get(slot);
+};
+
+/**
+ * Clears cached lookup results so subsequent calls recompute from itemDatabase.
+ * Call this after mutating itemDatabase at runtime.
+ */
+export function resetItemCaches() {
+  itemListCache = null;
+  itemsByTypeCache.clear();
+  itemsByRarityCache.clear();
+  equipmentBySlotCache.clear();
+}
+
+/**
  * Looks up an item in the database by ID
  * @param {string} itemId - The ID of the item to look up
  * @returns {object|null} The item definition or null if not found
@@ -460,7 +521,7 @@ export function getItemData(itemId) {
  * @returns {Array} Items of specified type
  */
 export function getItemsByType(type) {
-  return Object.values(itemDatabase).filter((item) => item.type === type);
+  return getItemsByTypeCache(type).slice();
 }
 
 /**
@@ -469,9 +530,18 @@ export function getItemsByType(type) {
  * @returns {Array} Items of specified rarity
  */
 export function getItemsByRarity(rarity) {
-  return Object.values(itemDatabase).filter((item) => item.rarity === rarity);
+  return getItemsByRarityCache(rarity).slice();
+}
+
+/**
+ * Get equipment by slot
+ * @param {string} slot - Equipment slot
+ * @returns {Array} Equipment for the specified slot
+ */
+export function getEquipmentBySlot(slot) {
+  return getEquipmentBySlotCache(slot).slice();
 }
 
 export function getItems() {
-  return Object.values(itemDatabase);
+  return getItemListCache().slice();
 }

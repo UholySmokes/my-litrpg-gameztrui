@@ -1,9 +1,17 @@
 {
   "bindings": [
     {
-      "name": "context",
-      "type": "entityTrigger",
-      "direction": "in"
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": ["get"],
+      "route": "VoidverseFunction"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
     }
   ]
 }

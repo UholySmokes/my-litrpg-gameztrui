@@ -458,6 +458,8 @@ export function normalizeGameState(rawState) {
       turn: combat.turn ?? "player",
       enemies: normalizeArray(combat.enemies),
       skillCooldowns: normalizeObject(combat.skillCooldowns),
+      classAbilityCooldowns: normalizeObject(combat.classAbilityCooldowns),
+      raceAbilityCooldowns: normalizeObject(combat.raceAbilityCooldowns),
       log: normalizeArray(combat.log),
     },
     chatLog: normalizeArray(state.chatLog),

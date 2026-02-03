@@ -12,7 +12,7 @@
     "postbuild": "node scripts/generate-runtime-config.js",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache",
     "test:performance": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/performanceEffects.test.js",
     "simulate": "node sim_gamestart_fixed.js",
     "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",
@@ -40,16 +40,25 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "typescript": "^5.9.3",
     "vite": "^7.2.4"
   },
   "jest": {
+    "testEnvironment": "jsdom",
     "testPathIgnorePatterns": [
       "<rootDir>/tests/skillEffects.test.js",
       "<rootDir>/tests/endToEndEffects.test.js",
-      "<rootDir>/tests/magnitudeCapsFusion.test.js"
+      "<rootDir>/tests/magnitudeCapsFusion.test.js",
+      "/node_modules/"
     ],
+    "transform": {},
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/tests/__mocks__/fileMock.js"
+    },
     "modulePathIgnorePatterns": [
       "<rootDir>/backups/"
     ]

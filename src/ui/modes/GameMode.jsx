@@ -44,6 +44,7 @@ export default function GameMode({
   combatState,
   onAttack,
   onUseSkill,
+  onUseClassAbility,
   onEscape,
   showShop = false,
   showGacha = false,
@@ -189,6 +190,7 @@ export default function GameMode({
             playerState={player}
             onAttack={onAttack}
             onUseSkill={onUseSkill}
+            onUseClassAbility={onUseClassAbility}
             onEscape={onEscape}
           />
         ) : (

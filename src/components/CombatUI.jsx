@@ -192,7 +192,11 @@ export default function CombatUI({
 
       {/* Class Abilities */}
       {player && onUseClassAbility && (
-        <ClassAbilities player={player} onUseAbility={onUseClassAbility} />
+        <ClassAbilities
+          player={player}
+          onUseAbility={onUseClassAbility}
+          cooldowns={combat?.classAbilityCooldowns || {}}
+        />
       )}
 
       {/* Escape Button */}

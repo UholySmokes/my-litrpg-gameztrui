@@ -12,6 +12,7 @@ import {
 } from "./titleLogic.js";
 import {
   playerAttack,
+  playerUseClassAbility,
   startCombat,
   escapeCombat,
   processEnemyTurns,
@@ -534,6 +535,25 @@ const gameReducer = (state, action) => {
         { ...state, combat: combatState },
         enemyIndex,
         skillId,
+      );
+      if (!result.success) {
+        return state;
+      }
+      return applyAutoTitleUnlocks(processEnemyTurns(result.state), {
+        announce: true,
+      });
+    }
+
+    case "PLAYER_USE_CLASS_ABILITY": {
+      const { abilityId, enemyIndex = 0 } = action.payload || {};
+      const combatState = ensureCombatStructure(state);
+      if (combatState.status !== "active") {
+        return state;
+      }
+      const result = playerUseClassAbility(
+        { ...state, combat: combatState },
+        enemyIndex,
+        abilityId,
       );
       if (!result.success) {
         return state;

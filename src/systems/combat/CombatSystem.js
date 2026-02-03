@@ -46,12 +46,18 @@ import {
 import {
   handleStealthAttack,
   processStealthDetection,
+  processVanishDuration,
+  useVanish,
 } from "./StealthSystem.js";
 import {
   processChiOnHit,
   resetCombo,
   getComboMultiplier,
 } from "../class/ChiSystem.js";
+import {
+  getClassAbilityById,
+  isClassAbilityAllowed,
+} from "../class/ClassAbilityRegistry.js";
 import {
   processCharmDuration,
   processCharmedEnemyAction,
@@ -94,6 +100,197 @@ const applyLaneModifier = (damageResult, laneDistance) => {
 
 const toNumberSafe = (value, fallback = 0) =>
   Number.isFinite(value) ? value : fallback;
+
+const getResourceValue = (player, type) => {
+  if (!player) return 0;
+  const resources = player.resources || {};
+  switch (type) {
+    case "mana":
+      return toNumberSafe(player.mana?.current, 0);
+    case "energy":
+      return toNumberSafe(resources.energy ?? player.energy, 0);
+    case "focus":
+      return toNumberSafe(
+        resources.focus ?? player.focus?.current ?? player.focus,
+        0,
+      );
+    case "rage":
+      return toNumberSafe(resources.rage ?? player.rage, 0);
+    case "chi":
+      return toNumberSafe(resources.chi ?? player.chi, 0);
+    case "shards":
+      return toNumberSafe(player.soulShards, 0);
+    case "hp":
+      return toNumberSafe(player.hp?.current, 0);
+    default:
+      return 0;
+  }
+};
+
+const setResourceValue = (player, type, value) => {
+  const resources = { ...(player.resources || {}) };
+  const next = { ...player };
+
+  switch (type) {
+    case "mana":
+      return {
+        ...next,
+        mana: {
+          ...(player.mana || { current: value, max: value }),
+          current: value,
+        },
+      };
+    case "energy":
+      resources.energy = value;
+      return { ...next, resources, energy: value };
+    case "focus": {
+      resources.focus = value;
+      const focus =
+        player.focus && typeof player.focus === "object"
+          ? { ...player.focus, current: value }
+          : value;
+      return { ...next, resources, focus };
+    }
+    case "rage":
+      resources.rage = value;
+      return { ...next, resources, rage: value };
+    case "chi":
+      resources.chi = value;
+      return { ...next, resources, chi: value };
+    case "shards":
+      return { ...next, soulShards: value };
+    case "hp":
+      return {
+        ...next,
+        hp: {
+          ...(player.hp || { current: value, max: value }),
+          current: value,
+        },
+      };
+    default:
+      return next;
+  }
+};
+
+const applyResourceGain = (player, gain) => {
+  if (!gain?.type || !Number.isFinite(gain.amount)) return player;
+  const current = getResourceValue(player, gain.type);
+  let nextValue = current + gain.amount;
+  if (gain.type === "mana" && player.mana?.max) {
+    nextValue = Math.min(player.mana.max, nextValue);
+  }
+  if (gain.type === "hp" && player.hp?.max) {
+    nextValue = Math.min(player.hp.max, nextValue);
+  }
+  return setResourceValue(player, gain.type, nextValue);
+};
+
+const applyHealToPlayer = (player, heal) => {
+  if (!heal || !player?.hp) return player;
+  const maxHp = player.hp.max || 0;
+  const flat = Number.isFinite(heal.flat) ? heal.flat : 0;
+  const percent = Number.isFinite(heal.percent) ? heal.percent : 0;
+  const amount = Math.max(0, Math.floor(flat + maxHp * percent));
+  if (amount <= 0) return player;
+  const nextHp = Math.min(maxHp, player.hp.current + amount);
+  return {
+    ...player,
+    hp: {
+      ...player.hp,
+      current: nextHp,
+    },
+  };
+};
+
+const removeEffectsByTypes = (target, types = []) => {
+  if (!target?.effects || types.length === 0) return target;
+  return {
+    ...target,
+    effects: target.effects.filter((effect) => !types.includes(effect.type)),
+  };
+};
+
+const applySummonToPlayer = (player, summon) => {
+  if (!summon?.type) return player;
+  const stamp = SimBridge.now();
+  const base = {
+    id: `${summon.type}_${stamp}`,
+    name: summon.name || "Summon",
+    duration: summon.duration || 3,
+    ...(summon.stats ? { stats: summon.stats } : {}),
+    ...(summon.abilities ? { abilities: summon.abilities } : {}),
+    ...(summon.element ? { element: summon.element } : {}),
+    armed: summon.type === "trap",
+  };
+
+  switch (summon.type) {
+    case "demon":
+      return { ...player, activeDemon: base };
+    case "undead": {
+      const undead = [...(player.undead || []), base];
+      return { ...player, undead };
+    }
+    case "totem": {
+      const totems = [...(player.totems || []), base];
+      return { ...player, totems };
+    }
+    case "trap": {
+      const traps = [...(player.traps || []), base];
+      return { ...player, traps };
+    }
+    default:
+      return player;
+  }
+};
+
+const consumeAbilityCost = (player, ability) => {
+  const costType = ability.costType || "none";
+  if (costType === "none") return { success: true, player };
+
+  if (costType === "hp") {
+    const maxHp = player.hp?.max || 0;
+    const percent = Number.isFinite(ability.hpCostPercent)
+      ? ability.hpCostPercent
+      : 0;
+    const flat = Number.isFinite(ability.cost) ? ability.cost : 0;
+    const amount = Math.max(0, Math.floor(maxHp * percent + flat));
+    if (player.hp.current - amount <= maxHp * 0.1) {
+      return { success: false, player, reason: "HP too low" };
+    }
+    return {
+      success: true,
+      player: setResourceValue(player, "hp", player.hp.current - amount),
+    };
+  }
+
+  const current = getResourceValue(player, costType);
+  const cost = Number.isFinite(ability.cost) ? ability.cost : 0;
+  if (current < cost) {
+    return { success: false, player, reason: "Insufficient resources" };
+  }
+  return {
+    success: true,
+    player: setResourceValue(player, costType, current - cost),
+  };
+};
+
+const collectLivingEnemyIndices = (combatState) =>
+  (combatState?.enemies || [])
+    .map((enemy, index) => ({ enemy, index }))
+    .filter(({ enemy }) => enemy?.stats?.hp?.current > 0)
+    .map(({ index }) => index);
+
+const resolveAbilityTargets = (combatState, enemyIndex, ability) => {
+  if (ability.target === "self") return [];
+  const living = collectLivingEnemyIndices(combatState);
+  if (living.length === 0) return [];
+  const primary = living.includes(enemyIndex) ? enemyIndex : living[0];
+  if (!ability.aoe) return [primary];
+
+  const maxTargets = ability.aoe.maxTargets || living.length;
+  const ordered = [primary, ...living.filter((idx) => idx !== primary)];
+  return ordered.slice(0, maxTargets);
+};
 
 /**
  * Applies damage to the player. If HP drops to 0 or below, checks for death prevention mechanics.
@@ -171,7 +368,7 @@ function takeDamage(state, amount) {
 
   // === RAGE GAIN ON DAMAGE (Berserker) ===
   const classId = state.player.class?.id || state.player.class;
-  if (classId === "berserker" && amount > 0) {
+  if ((classId === "berserker" || classId === "bloodline_vanguard") && amount > 0) {
     const rageAmount = Math.floor(amount / 10) * 15; // Scale with damage taken
     playerUpdates.rageGained = rageAmount;
   }
@@ -329,6 +526,7 @@ export function startCombat(state, enemyIds) {
       turn: "player",
       enemies: enemies,
       skillCooldowns: {},
+      classAbilityCooldowns: {},
       log: combatLog,
       lanes: {
         player: 1,
@@ -571,7 +769,10 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   // === RAGE GAIN ON HIT (Berserker) ===
   let rageGainAmount = 0;
   const classId = resolvedState.player.class?.id || resolvedState.player.class;
-  if (classId === "berserker" && damageResult.damage > 0) {
+  if (
+    (classId === "berserker" || classId === "bloodline_vanguard") &&
+    damageResult.damage > 0
+  ) {
     rageGainAmount = 10; // Base rage per hit
   }
 
@@ -666,6 +867,267 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   }
 
   return { success: true, damage: damageResult.damage, state: newState };
+}
+
+/**
+ * Player uses a class ability
+ */
+export function playerUseClassAbility(state, enemyIndex, abilityId) {
+  if (state.combat.status !== "active") {
+    return { success: false, reason: "Not in combat", state };
+  }
+
+  const player = state.player;
+  const classId = player.class?.id || player.class;
+  if (!isClassAbilityAllowed(classId, abilityId)) {
+    return { success: false, reason: "Ability not available", state };
+  }
+
+  const ability = getClassAbilityById(abilityId);
+  if (!ability) {
+    return { success: false, reason: "Ability not found", state };
+  }
+
+  const currentCooldown = state.combat?.classAbilityCooldowns?.[abilityId] || 0;
+  if (currentCooldown > 0) {
+    return {
+      success: false,
+      reason: `Ability on cooldown (${currentCooldown} turns remaining)`,
+      state,
+    };
+  }
+
+  const costResult = consumeAbilityCost(player, ability);
+  if (!costResult.success) {
+    return {
+      success: false,
+      reason: costResult.reason || "Insufficient resources",
+      state,
+    };
+  }
+
+  let updatedPlayer = costResult.player;
+  let updatedEnemies = [...state.combat.enemies];
+  let combatLog = [...state.combat.log, `${updatedPlayer.name} uses ${ability.name}!`];
+
+  // Stance updates
+  if (ability.setStance) {
+    updatedPlayer = { ...updatedPlayer, currentStance: ability.setStance };
+  }
+
+  // Enrage updates
+  if (ability.setEnrage) {
+    updatedPlayer = {
+      ...updatedPlayer,
+      isEnraged: true,
+      enrageTurnsRemaining: ability.setEnrage.turns || 2,
+      rageMultipliers: {
+        damage: ability.setEnrage.damageMultiplier || 1.4,
+        defense: ability.setEnrage.defenseMultiplier || 0.85,
+      },
+    };
+  }
+
+  let newState = {
+    ...state,
+    player: updatedPlayer,
+    combat: {
+      ...state.combat,
+      enemies: updatedEnemies,
+      log: combatLog,
+    },
+  };
+
+  // Stealth handling
+  if (ability.stealth?.duration) {
+    const stealthResult = useVanish(newState, ability.stealth.duration);
+    if (stealthResult.success) {
+      newState = stealthResult.state;
+      updatedPlayer = newState.player;
+      updatedEnemies = newState.combat.enemies;
+      combatLog = newState.combat.log;
+    }
+  }
+
+  // Cleanse self
+  if (ability.cleanse?.types?.length) {
+    updatedPlayer = removeEffectsByTypes(updatedPlayer, ability.cleanse.types);
+  }
+
+  // Heal, resource gain, summons
+  if (ability.heal) {
+    updatedPlayer = applyHealToPlayer(updatedPlayer, ability.heal);
+  }
+  if (ability.resourceGain) {
+    updatedPlayer = applyResourceGain(updatedPlayer, ability.resourceGain);
+  }
+  if (ability.summon) {
+    updatedPlayer = applySummonToPlayer(updatedPlayer, ability.summon);
+  }
+
+  // Apply self effects
+  const selfEffects = Array.isArray(ability.effects)
+    ? ability.effects.filter((effect) => effect.target === "self")
+    : [];
+  if (selfEffects.length > 0) {
+    updatedPlayer = effectApplicationSystem.applyEffects(
+      updatedPlayer,
+      selfEffects,
+      updatedPlayer,
+    );
+  }
+
+  // Resolve targets
+  const targetIndices = resolveAbilityTargets(
+    newState.combat,
+    enemyIndex,
+    ability,
+  );
+
+  let totalDamage = 0;
+
+  for (const targetIndex of targetIndices) {
+    const enemy = updatedEnemies[targetIndex];
+    if (!enemy || enemy.stats?.hp?.current <= 0) continue;
+
+    // Purge enemy buffs
+    if (ability.purge?.target === "enemy" && ability.purge.types?.length) {
+      updatedEnemies[targetIndex] = removeEffectsByTypes(
+        enemy,
+        ability.purge.types,
+      );
+    }
+
+    let damage = 0;
+    if (ability.damage) {
+      const skillProxy = {
+        name: ability.name,
+        isMagic: ability.damage.isMagic ?? false,
+        element: ability.damage.element,
+        damage: {
+          base: ability.damage.base,
+          multiplier: ability.damage.multiplier,
+        },
+      };
+      const result = calculateDamagePipeline(
+        updatedPlayer,
+        updatedEnemies[targetIndex],
+        skillProxy,
+        state.config,
+      );
+      damage = result.damage;
+
+      if (ability.executeThreshold) {
+        const hpPercent =
+          updatedEnemies[targetIndex].stats.hp.current /
+          updatedEnemies[targetIndex].stats.hp.max;
+        if (hpPercent <= ability.executeThreshold) {
+          damage = Math.floor(damage * 1.5);
+        }
+      }
+
+      if (ability.bonusVsTags?.tags?.length) {
+        const tagSet = new Set(ability.bonusVsTags.tags);
+        const enemyTags = [
+          ...(updatedEnemies[targetIndex].tags || []),
+          ...(updatedEnemies[targetIndex].entityTags || []),
+        ];
+        if (enemyTags.some((tag) => tagSet.has(tag))) {
+          damage = Math.floor(
+            damage * (ability.bonusVsTags.multiplier || 1.5),
+          );
+        }
+      }
+
+      if (ability.aoe?.damageMultiplier) {
+        damage = Math.floor(damage * ability.aoe.damageMultiplier);
+      }
+
+      const laneDistance = getLaneDistance(newState.combat, targetIndex);
+      damage = applyLaneModifier({ damage, messages: [] }, laneDistance).damage;
+
+      if (updatedPlayer.isStealthed) {
+        const stealthResult = handleStealthAttack(
+          {
+            ...newState,
+            player: updatedPlayer,
+            combat: { ...newState.combat, enemies: updatedEnemies, log: combatLog },
+          },
+          damage,
+        );
+        newState = stealthResult.state;
+        updatedPlayer = newState.player;
+        updatedEnemies = newState.combat.enemies;
+        combatLog = newState.combat.log;
+        damage = stealthResult.damage;
+      }
+
+      totalDamage += damage;
+      const nextHp = Math.max(
+        0,
+        updatedEnemies[targetIndex].stats.hp.current - damage,
+      );
+      updatedEnemies[targetIndex] = {
+        ...updatedEnemies[targetIndex],
+        stats: {
+          ...updatedEnemies[targetIndex].stats,
+          hp: { ...updatedEnemies[targetIndex].stats.hp, current: nextHp },
+        },
+      };
+      combatLog.push(`${ability.name} hits ${enemy.name} for ${damage} damage.`);
+    }
+
+    const targetEffects = Array.isArray(ability.effects)
+      ? ability.effects.filter((effect) => effect.target !== "self")
+      : [];
+    if (targetEffects.length > 0) {
+      updatedEnemies[targetIndex] = effectApplicationSystem.applyEffects(
+        updatedEnemies[targetIndex],
+        targetEffects,
+        updatedPlayer,
+      );
+    }
+  }
+
+  if (ability.lifesteal && totalDamage > 0) {
+    updatedPlayer = applyHealToPlayer(updatedPlayer, {
+      flat: Math.floor(totalDamage * ability.lifesteal),
+    });
+  }
+
+  newState = {
+    ...newState,
+    player: updatedPlayer,
+    combat: {
+      ...newState.combat,
+      enemies: updatedEnemies,
+      log: combatLog,
+      turn: "enemy",
+      classAbilityCooldowns:
+        ability.cooldown && ability.cooldown > 0
+          ? {
+              ...(newState.combat.classAbilityCooldowns || {}),
+              [abilityId]: ability.cooldown,
+            }
+          : newState.combat.classAbilityCooldowns || {},
+    },
+  };
+
+  if (ability.selfDamagePercentOfDamage && totalDamage > 0) {
+    const recoil = Math.floor(totalDamage * ability.selfDamagePercentOfDamage);
+    if (recoil > 0) {
+      newState = takeDamage(newState, recoil);
+    }
+  }
+
+  // Handle enemy defeats
+  targetIndices.forEach((idx) => {
+    if (newState.combat.enemies[idx]?.stats?.hp?.current <= 0) {
+      newState = handleEnemyDefeat(newState, idx);
+    }
+  });
+
+  return { success: true, damage: totalDamage, state: newState };
 }
 
 /**
@@ -920,7 +1382,7 @@ export function processEnemyTurns(state) {
 
   // === RAGE DECAY (Berserker) ===
   const classId = newState.player.class?.id || newState.player.class;
-  if (classId === "berserker") {
+  if (classId === "berserker" || classId === "bloodline_vanguard") {
     newState.player = processRageDecay(newState.player);
   }
 
@@ -946,6 +1408,27 @@ export function processEnemyTurns(state) {
   // === TIME-BASED EFFECTS (Sun regen, etc.) ===
   newState = processTimeEffects(newState);
 
+  // === VANISH DURATION DECAY ===
+  newState = processVanishDuration(newState);
+
+  // === ENRAGE DURATION DECAY ===
+  if (newState.player.enrageTurnsRemaining) {
+    const remaining = newState.player.enrageTurnsRemaining - 1;
+    if (remaining <= 0) {
+      newState.player = {
+        ...newState.player,
+        enrageTurnsRemaining: 0,
+        isEnraged: false,
+        rageMultipliers: { damage: 1.0, defense: 1.0 },
+      };
+    } else {
+      newState.player = {
+        ...newState.player,
+        enrageTurnsRemaining: remaining,
+      };
+    }
+  }
+
   // Decrement player skill cooldowns (combat skills)
   if (newState.combat?.skillCooldowns) {
     const nextCooldowns = {};
@@ -958,6 +1441,24 @@ export function processEnemyTurns(state) {
       combat: {
         ...newState.combat,
         skillCooldowns: nextCooldowns,
+      },
+    };
+  }
+
+  // Decrement class ability cooldowns
+  if (newState.combat?.classAbilityCooldowns) {
+    const nextCooldowns = {};
+    Object.entries(newState.combat.classAbilityCooldowns).forEach(
+      ([id, value]) => {
+        const remaining = (value || 0) - 1;
+        if (remaining > 0) nextCooldowns[id] = remaining;
+      },
+    );
+    newState = {
+      ...newState,
+      combat: {
+        ...newState.combat,
+        classAbilityCooldowns: nextCooldowns,
       },
     };
   }
@@ -1433,7 +1934,7 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
     }
 
     // Elemental Attuned: Dynamic absorption/weakness based on current combat state
-    if (defRaceId === "elemental_attuned" && defender.currentAbsorption) {
+    if (hasRaceTag(defRaceId, "ABSORB_RANDOM") && defender.currentAbsorption) {
       const absorption = defender.currentAbsorption;
       if (element === absorption.absorbed) {
         // Absorb damage as healing

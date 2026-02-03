@@ -18,6 +18,11 @@ const RAGE_CONFIG = {
   enrageDefenseMultiplier: 0.7,
 };
 
+const usesRage = (player) => {
+  const classId = player.class?.id || player.class;
+  return classId === "berserker" || classId === "bloodline_vanguard";
+};
+
 const getRageValue = (player) =>
   player?.resources?.rage ?? player?.rage ?? 0;
 
@@ -36,7 +41,7 @@ const setRageValue = (player, value) => ({
  * @returns {object} Updated player with rage initialized
  */
 export function initializeRage(player) {
-  if (player.class === "berserker" || player.class?.id === "berserker") {
+  if (usesRage(player)) {
     return {
       ...player,
       rage: 0,
@@ -62,8 +67,7 @@ export function initializeRage(player) {
  * @returns {object} Updated player
  */
 export function gainRage(player, amount, reason = "unknown") {
-  const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return player;
+  if (!usesRage(player)) return player;
 
   const delta = Math.max(0, amount);
   const currentRage = getRageValue(player);
@@ -84,8 +88,7 @@ export function gainRage(player, amount, reason = "unknown") {
  * @returns {object} { success: boolean, player: object, consumed: number }
  */
 export function consumeRage(player, amount) {
-  const classId = player.class?.id || player.class;
-  if (classId !== "berserker") {
+  if (!usesRage(player)) {
     return { success: false, player, consumed: 0 };
   }
 
@@ -110,8 +113,7 @@ export function consumeRage(player, amount) {
  * @returns {object} Updated player
  */
 export function processRageDecay(player) {
-  const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return player;
+  if (!usesRage(player)) return player;
 
   const currentRage = getRageValue(player);
   const decayAmount = Math.min(currentRage, RAGE_CONFIG.rageDecayPerTurn);
@@ -126,8 +128,7 @@ export function processRageDecay(player) {
  * @returns {object} { damage: number, defense: number }
  */
 export function getRageMultipliers(player) {
-  const classId = player.class?.id || player.class;
-  if (classId !== "berserker" || !player.isEnraged) {
+  if (!usesRage(player) || !player.isEnraged) {
     return { damage: 1.0, defense: 1.0 };
   }
 
@@ -146,8 +147,7 @@ export function getRageMultipliers(player) {
  * @returns {boolean} True if can use
  */
 export function canUseRageAbility(player, rageCost) {
-  const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return false;
+  if (!usesRage(player)) return false;
 
   const currentRage = getRageValue(player);
   if (rageCost === "all") return currentRage > 0;
@@ -161,8 +161,7 @@ export function canUseRageAbility(player, rageCost) {
  * @returns {number} Rage percentage (0-100)
  */
 export function getRagePercentage(player) {
-  const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return 0;
+  if (!usesRage(player)) return 0;
 
   const currentRage = getRageValue(player);
   return Math.floor((currentRage / RAGE_CONFIG.maxRage) * 100);
@@ -174,8 +173,7 @@ export function getRagePercentage(player) {
  * @returns {object} Updated player
  */
 export function resetRage(player) {
-  const classId = player.class?.id || player.class;
-  if (classId !== "berserker") return player;
+  if (!usesRage(player)) return player;
 
   return setRageValue(player, 0);
 }

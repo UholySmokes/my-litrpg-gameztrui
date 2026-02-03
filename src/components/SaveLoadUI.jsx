@@ -50,9 +50,23 @@ export default function SaveLoadUI({
   const [error, setError] = useState(null);
   const [saveName, setSaveName] = useState("Auto Save");
 
+  const cloudConfigEnabled = useMemo(() => isCloudSaveConfigured(), []);
   const canUseRemote = useMemo(() => {
-    return Boolean(isCloudSaveConfigured() && user?.id && user.id !== "local");
-  }, [user?.id]);
+    return Boolean(cloudConfigEnabled && user?.id && user.id !== "local");
+  }, [cloudConfigEnabled, user?.id]);
+
+  const cloudStatusMessage = useMemo(() => {
+    if (!cloudConfigEnabled) {
+      return "Cloud saves disabled by configuration.";
+    }
+    if (!user?.id) {
+      return "Sign in to enable cloud saves.";
+    }
+    if (user.id === "local") {
+      return "Cloud saves disabled in local-only mode.";
+    }
+    return null;
+  }, [cloudConfigEnabled, user?.id]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -325,7 +339,7 @@ export default function SaveLoadUI({
             </h3>
             {!canUseRemote ? (
               <div style={{ color: "var(--text-muted)" }}>
-                Cloud saves disabled (missing config or not logged in).
+                {cloudStatusMessage || "Cloud saves unavailable."}
               </div>
             ) : remoteSaves.length === 0 ? (
               <div style={{ color: "var(--text-muted)" }}>No cloud saves yet.</div>

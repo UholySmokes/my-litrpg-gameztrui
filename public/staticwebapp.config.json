@@ -12,6 +12,10 @@
       "allowedRoles": ["authenticated"]
     },
     {
+      "route": "/api/health",
+      "allowedRoles": ["authenticated"]
+    },
+    {
       "route": "/runtime-config.js"
     }
   ]

@@ -305,6 +305,29 @@ const resolveAbilityTargets = (combatState, enemyIndex, ability) => {
   return ordered.slice(0, maxTargets);
 };
 
+const resolveSkillDefinition = (state, skillInput) => {
+  if (!skillInput) return null;
+  if (typeof skillInput === "object") return skillInput;
+
+  const skillId = skillInput;
+  const registrySkill = getSkillById(skillId);
+  if (registrySkill) return registrySkill;
+
+  const player = state?.player;
+  const pools = [];
+  if (Array.isArray(player?.activeSkills)) {
+    pools.push(...player.activeSkills);
+  }
+  if (Array.isArray(player?.skills?.active)) {
+    pools.push(...player.skills.active);
+  }
+  if (Array.isArray(player?.abilities)) {
+    pools.push(...player.abilities);
+  }
+
+  return pools.find((skill) => skill?.id === skillId) || null;
+};
+
 const ELEMENTAL_REACTIONS = [
   {
     element: "fire",
@@ -681,7 +704,10 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   let skillCooldownUpdate = null;
 
   if (skillId) {
-    const existingCooldown = state.combat?.skillCooldowns?.[skillId] || 0;
+    const skillKey = typeof skillId === "string" ? skillId : skillId?.id;
+    const existingCooldown = skillKey
+      ? state.combat?.skillCooldowns?.[skillKey] || 0
+      : 0;
     if (existingCooldown > 0) {
       return {
         success: false,
@@ -690,7 +716,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       };
     }
 
-    const skill = getSkillById(skillId);
+    const skill = resolveSkillDefinition(state, skillId);
     if (!skill) {
       return { success: false, reason: "Skill not found", state };
     }
@@ -698,7 +724,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     const skillResult = executeSkill(
       updatedPlayer,
       updatedEnemy,
-      skillId,
+      skill,
       state.config,
     );
     if (skillResult.insufficientMana) {
@@ -718,14 +744,15 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       damage: skillResult.damage,
       isCritical: false,
       messages: [
-        `${updatedPlayer.name} uses ${skill.name}!`,
+        `${updatedPlayer.name} uses ${skill.name || "a skill"}!`,
         ...reactionMessages,
       ],
     };
 
     const cd = skillResult.cooldown || 0;
-    if (cd > 0) {
-      skillCooldownUpdate = { skillId, cooldown: cd };
+    const resolvedSkillId = skill?.id || skillKey;
+    if (cd > 0 && resolvedSkillId) {
+      skillCooldownUpdate = { skillId: resolvedSkillId, cooldown: cd };
     }
 
     if (skillResult.backfireDamage && skillResult.backfireDamage > 0) {
@@ -2416,8 +2443,9 @@ function calculateDamagePipeline(
   return { damage: final, log };
 }
 
-export function executeSkill(attacker, defender, skillId, config = {}) {
-  const skill = getSkillById(skillId);
+export function executeSkill(attacker, defender, skillInput, config = {}) {
+  const skill =
+    typeof skillInput === "string" ? getSkillById(skillInput) : skillInput;
   if (!skill) return { damage: 0, messages: ["Skill not found"] };
 
   const bypasses = resolveBypasses(attacker.talents || []);

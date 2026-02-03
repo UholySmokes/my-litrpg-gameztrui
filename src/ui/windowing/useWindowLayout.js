@@ -70,6 +70,14 @@ const applySharedPins = (layout) => {
 const normalizeLayout = (layout) => {
   if (!layout || !layout.windows) return layout;
   const nextWindows = { ...layout.windows };
+  if (layout.mode === "game" && nextWindows.narrativeLog && !nextWindows.narrative) {
+    nextWindows.narrative = {
+      ...nextWindows.narrativeLog,
+      id: "narrative",
+      title: nextWindows.narrativeLog.title || "Narrative",
+    };
+    delete nextWindows.narrativeLog;
+  }
   Object.keys(nextWindows).forEach((id) => {
     if (id !== "narrativeMemory" && nextWindows[id]?.alwaysVisible) {
       nextWindows[id] = { ...nextWindows[id], alwaysVisible: false };

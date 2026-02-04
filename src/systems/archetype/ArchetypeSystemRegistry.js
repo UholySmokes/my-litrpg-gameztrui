@@ -2086,6 +2086,38 @@ export const ARCHETYPE_SYSTEMS = [
     ],
     tags: ["social", "influence", "charm", "seduction", "diplomacy", "scaling"],
   },
+  {
+    id: "slime_evolution_core",
+    name: "Slime Evolution Core",
+    category: "System",
+    summary: "Evolve from a primordial state by absorbing everything.",
+    description: "You are a creature of endless potential, starting as a basic slime. Your power comes from your unique ability to absorb the traits, skills, and matter of anything you consume. Every monster defeated, every magic item eaten, every strange mineral consumed becomes a part of your ever-expanding evolutionary matrix.",
+    coreLoop: [
+      "'Absorb' a target creature or object, breaking it down into raw 'Genetic Essence' and 'Trait Fragments'.",
+      "Use Genetic Essence to increase your core stats (e.g., mass, density, agility).",
+      "Integrate Trait Fragments into your slime body to gain new skills or properties (e.g., absorb a bat to gain echolocation, absorb steel to gain a hardened shell).",
+      "Manage your 'Instability'—absorbing too many conflicting traits at once can lead to dangerous mutations."
+    ],
+    progression: [
+      "Unlock 'Apex Forms' by absorbing a powerful 'Prime' specimen of a species, allowing you to temporarily mimic its form.",
+      "Develop 'Skill Synthesis,' allowing you to combine absorbed traits into new, hybrid abilities (e.g., combining 'Fire Resistance' and 'Steel Shell' to create a 'Magma-Forged Carapace').",
+      "Gain the ability of 'Mitosis,' allowing you to split off smaller, specialized slime drones that can perform tasks for you.",
+      "Achieve 'Perfect Mimicry,' allowing you to flawlessly replicate the appearance and abilities of any creature you have fully absorbed."
+    ],
+    narrativeHooks: [
+      "No one takes you seriously at first, allowing you to operate unnoticed until your power becomes terrifyingly obvious.",
+      "Your physical form is constantly in flux, making it difficult to form lasting relationships or be recognized by allies.",
+      "You have an insatiable hunger for new traits, driving you to seek out the rarest and most dangerous creatures and artifacts.",
+      "Fragments of the memories and personalities of creatures you absorb may linger, causing strange dreams or personality shifts."
+    ],
+    questHooks: [
+      "To evolve past a certain threshold, you must find and absorb a piece of a legendary, mythical creature (e.g., a dragon's scale, a phoenix's feather).",
+      "A powerful alchemist wants to capture you, believing you are the ultimate catalyst for creating a philosopher's stone.",
+      "You have absorbed a 'Cursed' trait that is causing you to slowly lose control. You must find and absorb its conceptual 'antidote' before you become a mindless monster.",
+      "An entire ecosystem is threatened by a magical plague; you can save it by absorbing the plague, but you risk being completely consumed by it yourself."
+    ],
+    tags: ["evolution", "absorption", "mimicry", "monster", "adaptation", "scaling"],
+  },
 ];
 
 export function getArchetypeSystemById(id) {

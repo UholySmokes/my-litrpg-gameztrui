@@ -2118,9 +2118,6 @@ export const ARCHETYPE_SYSTEMS = [
     ],
     tags: ["evolution", "absorption", "mimicry", "monster", "adaptation", "scaling"],
   },
-
-  {
-
   {
     id: "past_life_sage",
     name: "Past Life Sage (Reincarnated Knowledge)",

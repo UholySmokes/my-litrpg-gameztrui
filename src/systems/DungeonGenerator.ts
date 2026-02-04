@@ -22,17 +22,20 @@ export class DungeonGenerator {
     // 1. Initialize with Walls
     this.map = Array(this.height).fill(null).map(() => Array(this.width).fill(TileType.Wall));
 
-    // 2. Carve Rooms (Simple Random Walk or Room placement)
-    // For brevity, we'll do a simple random placement
+    // 2. Random Fill (Cellular Automata initialization)
     for (let y = 1; y < this.height - 1; y++) {
       for (let x = 1; x < this.width - 1; x++) {
-        if (Math.random() > 0.3) {
-          this.map[y][x] = TileType.Floor;
-        }
+        // 45% chance to be a wall, 55% floor
+        this.map[y][x] = Math.random() < 0.45 ? TileType.Wall : TileType.Floor;
       }
     }
 
-    // 3. Place Entities based on difficulty
+    // 3. Smooth Map (Create organic caves)
+    for (let i = 0; i < 5; i++) {
+      this.smoothMap();
+    }
+
+    // 4. Place Entities based on difficulty
     this.placeFeature(TileType.Enemy, 5 + difficulty); // More enemies on higher difficulty
     this.placeFeature(TileType.Loot, 2 + Math.floor(difficulty / 2));
     this.placeFeature(TileType.Start, 1);
@@ -52,5 +55,33 @@ export class DungeonGenerator {
         placed++;
       }
     }
+  }
+
+  private smoothMap() {
+    const newMap = this.map.map(row => [...row]);
+    for (let y = 1; y < this.height - 1; y++) {
+      for (let x = 1; x < this.width - 1; x++) {
+        const neighbors = this.getNeighborWallCount(x, y);
+        if (neighbors > 4) newMap[y][x] = TileType.Wall;
+        else if (neighbors < 4) newMap[y][x] = TileType.Floor;
+      }
+    }
+    this.map = newMap;
+  }
+
+  private getNeighborWallCount(gridX: number, gridY: number): number {
+    let wallCount = 0;
+    for (let neighborY = gridY - 1; neighborY <= gridY + 1; neighborY++) {
+      for (let neighborX = gridX - 1; neighborX <= gridX + 1; neighborX++) {
+        if (neighborX >= 0 && neighborX < this.width && neighborY >= 0 && neighborY < this.height) {
+          if (neighborX !== gridX || neighborY !== gridY) {
+            if (this.map[neighborY][neighborX] === TileType.Wall) wallCount++;
+          }
+        } else {
+          wallCount++; // Borders count as walls
+        }
+      }
+    }
+    return wallCount;
   }
 }

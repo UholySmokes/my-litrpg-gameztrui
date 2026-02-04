@@ -33,6 +33,7 @@ import {
   isSpellSkill,
 } from "../systems/skills/SpellStudySystem.js";
 import { appendNarrativeEntry } from "./narrativeLog.js";
+import { withTraceSpan } from "../observability/traceShim.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -293,8 +294,14 @@ const applyQuestRewards = (state, reward) => {
   };
 };
 
-const gameReducer = (state, action) => {
-  switch (action.type) {
+const gameReducer = (state, action) =>
+  withTraceSpan(
+    "core.gameReducer",
+    {
+      "game.action.type": action?.type ? String(action.type) : "unknown",
+    },
+    () => {
+      switch (action.type) {
     case "UPDATE_STATE":
       return normalizeGameState({
         ...state,
@@ -1105,9 +1112,10 @@ const gameReducer = (state, action) => {
       };
     }
 
-    default:
-      return state;
-  }
-};
+        default:
+          return state;
+      }
+    },
+  );
 
 export { gameReducer };

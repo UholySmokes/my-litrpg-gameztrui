@@ -1,4 +1,5 @@
 const { DefaultAzureCredential } = require("@azure/identity");
+const { initApiTracing, withTraceSpan } = require("../lib/tracing");
 const {
   jsonResponse,
   toStringSafe,
@@ -89,8 +90,14 @@ function validateQuestSchema(quest) {
 }
 
 module.exports = async function questCreate(context, req) {
+  initApiTracing({ serviceName: "void-verse-api" });
+
   try {
     const requestId = generateId("quest");
+    return await withTraceSpan(
+      "api.quest-create",
+      { "app.request_id": requestId },
+      async () => {
     const projectEndpoint = getRequiredEnv("FOUNDRY_PROJECT_ENDPOINT");
     const assistantId = getRequiredEnv("QUEST_AGENT_ID");
     const managedIdentityClientId = getRequiredEnv("AZURE_CLIENT_ID");
@@ -222,6 +229,8 @@ module.exports = async function questCreate(context, req) {
     if (!parsed || typeof parsed !== "object") {
       context.res = jsonResponse(502, { ok: false, errorCode: "NON_JSON_OUTPUT", message: "QuestAgent returned non-JSON output." });
       return;
+        },
+      );
     }
 
     const normalizedQuest = ensureQuestId(parsed);

@@ -1,5 +1,6 @@
 const { DefaultAzureCredential } = require("@azure/identity"); 
 const crypto = require("crypto");
+const { initApiTracing, withTraceSpan } = require("../lib/tracing");
 const {
   jsonResponse,
   toStringSafe,
@@ -28,8 +29,14 @@ function nowIso() {
 
 
 module.exports = async function factoryRun(context, req) { 
+  initApiTracing({ serviceName: "void-verse-api" });
+
   try { 
     const requestId = generateId("factory");
+    return await withTraceSpan(
+      "api.factory-run",
+      { "app.request_id": requestId },
+      async () => {
     const projectEndpoint = getRequiredEnv("FOUNDRY_PROJECT_ENDPOINT"); 
     const assistantId = getRequiredEnv("FACTORY_AGENT_ID"); 
     const managedIdentityClientId = getRequiredEnv("AZURE_CLIENT_ID"); 
@@ -212,6 +219,8 @@ module.exports = async function factoryRun(context, req) {
       outputHash,
       draft 
     }); 
+      },
+    );
   } catch (error) { 
     context.res = jsonResponse(500, { 
       ok: false, 

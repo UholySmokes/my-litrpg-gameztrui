@@ -5,6 +5,7 @@ import {
   playerAttack,
   processEnemyTurns,
 } from "../systems/combat/CombatSystem.js";
+import { withTraceSpan } from "../observability/traceShim.js";
 
 /**
  * Executes an action and returns the result
@@ -14,30 +15,36 @@ import {
  * @returns {object} Result object with success flag, new state, and description
  */
 export function executeAction(state, action, _options = {}) {
-  void _options;
-  if (!action || !action.type) {
-    return {
-      success: false,
-      reason: "Invalid action",
-      state,
-    };
-  }
+  return withTraceSpan(
+    "core.executeAction",
+    {
+      "game.action.type": action?.type ? String(action.type) : "unknown",
+    },
+    () => {
+      void _options;
+      if (!action || !action.type) {
+        return {
+          success: false,
+          reason: "Invalid action",
+          state,
+        };
+      }
 
-  if (!state?.player) {
-    return {
-      success: false,
-      reason:
-        "Player data unavailable. Complete character setup before issuing commands.",
-      state,
-    };
-  }
+      if (!state?.player) {
+        return {
+          success: false,
+          reason:
+            "Player data unavailable. Complete character setup before issuing commands.",
+          state,
+        };
+      }
 
-  let newState = state;
-  let description = "";
-  const changes = {};
-  let incrementsTurn = true;
+      let newState = state;
+      let description = "";
+      const changes = {};
+      let incrementsTurn = true;
 
-  switch (action.type) {
+      switch (action.type) {
     case "use_item":
       // Validate item exists and is consumable
       const item = DataRegistry.getItemById(action.itemId);
@@ -46,31 +53,33 @@ export function executeAction(state, action, _options = {}) {
           success: false,
           reason: `Cannot use ${action.itemName || action.itemId}`,
           state,
-        };
-      }
+            default:
+              return {
+                success: false,
+                reason: `Unknown action type: ${action.type}`,
+                state,
+              };
+          }
 
-      const inventory = [...(state.player.inventory || [])];
-      const itemIndex = inventory.findIndex((i) => i.id === action.itemId);
-      if (itemIndex === -1) {
-        return {
-          success: false,
-          reason: `You don't have ${action.itemName || action.itemId}`,
-          state,
-        };
-      }
+          // If action succeeded and increments turn, increment turn count
+          if (newState !== state && incrementsTurn) {
+            newState = {
+              ...newState,
+              world: {
+                ...(newState.world || {}),
+                turnCount: (newState.world?.turnCount || 0) + 1,
+              },
+            };
+          }
 
-      const player = state.player;
-      let nextPlayer = { ...player };
-
-      // Apply effects with clamping
-      if (item.effect?.heal) {
-        const currentHp =
-          typeof player.hp === "object" && player.hp !== null
-            ? player.hp.current ?? 0
-            : player.hp ?? 0;
-        const maxHp =
-          typeof player.hp === "object" && player.hp !== null
-            ? player.hp.max ?? 100
+          return {
+            success: true,
+            description,
+            state: newState,
+            changes,
+          };
+        },
+      );
             : player.maxHp ?? player.maxHealth ?? 100;
         const nextHp = Math.min(maxHp, currentHp + item.effect.heal);
         nextPlayer = {

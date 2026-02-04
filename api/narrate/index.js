@@ -1,4 +1,5 @@
 const { DefaultAzureCredential } = require("@azure/identity");
+const { initApiTracing, withTraceSpan } = require("../lib/tracing");
 const {
   jsonResponse,
   toStringSafe,
@@ -15,8 +16,14 @@ const {
 } = require("../lib/azure-ai-utils");
 
 module.exports = async function narrate(context, req) {
+  initApiTracing({ serviceName: "void-verse-api" });
+
   try {
     const requestId = generateId("narrate");
+    return await withTraceSpan(
+      "api.narrate",
+      { "app.request_id": requestId },
+      async () => {
     const projectEndpoint = getRequiredEnv("FOUNDRY_PROJECT_ENDPOINT");
     const assistantId = getRequiredEnv("NARRATOR_AGENT_ID");
     const managedIdentityClientId = getRequiredEnv("AZURE_CLIENT_ID");
@@ -208,6 +215,8 @@ module.exports = async function narrate(context, req) {
       narrative: assistantText,
       outputHash,
     });
+      },
+    );
   } catch (error) {
     context.res = jsonResponse(500, {
       ok: false,

@@ -1,4 +1,5 @@
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
+import { withTraceSpan } from "../observability/traceShim.js";
 
 const listeners = new Map();
 
@@ -14,18 +15,26 @@ export function off(event, handler) {
 }
 
 export function emit(event, payload) {
-  const set = listeners.get(event);
-  if (set) {
-    for (const fn of set) {
-      try {
-        fn(payload);
-      } catch (error) {
-        console.error(`EventBus error in ${event}:`, error);
+  return withTraceSpan(
+    "core.emit",
+    {
+      "game.event": typeof event === "string" ? event : String(event),
+    },
+    () => {
+      const set = listeners.get(event);
+      if (set) {
+        for (const fn of set) {
+          try {
+            fn(payload);
+          } catch (error) {
+            console.error(`EventBus error in ${event}:`, error);
+          }
+        }
       }
-    }
-  }
 
-  logToSimulation(event, payload);
+      logToSimulation(event, payload);
+    },
+  );
 }
 
 export const EventBus = {

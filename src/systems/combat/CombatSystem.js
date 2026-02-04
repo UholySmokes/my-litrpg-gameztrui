@@ -881,6 +881,7 @@ export function startCombat(state, enemyIds) {
       skillCooldowns: {},
       classAbilityCooldowns: {},
       raceAbilityCooldowns: {},
+      playerTurnEffectsProcessed: false,
       log: combatLog,
       lanes: {
         player: 1,
@@ -928,8 +929,11 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     return { success: false, reason: "Enemy already defeated", state };
   }
 
-  // Start-of-turn effect ticks for the player (DoT/HoT, duration decay)
-  {
+  // Start-of-turn effect ticks (process once per player turn, regardless of action retries)
+  if (
+    state.combat.turn === "player" &&
+    !state.combat.playerTurnEffectsProcessed
+  ) {
     const tick = processEntityTurnEffects(state.player);
     const tickMessages = Array.isArray(tick.messages) ? tick.messages : [];
     const nextLog =
@@ -942,6 +946,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       combat: {
         ...state.combat,
         log: nextLog,
+        playerTurnEffectsProcessed: true,
       },
     };
   }
@@ -1736,8 +1741,11 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
     return { success: false, reason: "Not in combat", state };
   }
 
-  // Start-of-turn effect ticks for the player (DoT/HoT, duration decay)
-  {
+  // Start-of-turn effect ticks (process once per player turn)
+  if (
+    state.combat.turn === "player" &&
+    !state.combat.playerTurnEffectsProcessed
+  ) {
     const tick = processEntityTurnEffects(state.player);
     const tickMessages = Array.isArray(tick.messages) ? tick.messages : [];
     const nextLog =
@@ -1750,6 +1758,7 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
       combat: {
         ...state.combat,
         log: nextLog,
+        playerTurnEffectsProcessed: true,
       },
     };
   }
@@ -1806,8 +1815,11 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
     return { success: false, reason: "Not in combat", state };
   }
 
-  // Start-of-turn effect ticks for the player (DoT/HoT, duration decay)
-  {
+  // Start-of-turn effect ticks (process once per player turn)
+  if (
+    state.combat.turn === "player" &&
+    !state.combat.playerTurnEffectsProcessed
+  ) {
     const tick = processEntityTurnEffects(state.player);
     const tickMessages = Array.isArray(tick.messages) ? tick.messages : [];
     const nextLog =
@@ -1820,6 +1832,7 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
       combat: {
         ...state.combat,
         log: nextLog,
+        playerTurnEffectsProcessed: true,
       },
     };
   }
@@ -2402,6 +2415,7 @@ export function processEnemyTurns(state) {
     combat: {
       ...newState.combat,
       turn: "player",
+      playerTurnEffectsProcessed: false,
     },
   };
 }

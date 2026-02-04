@@ -55,7 +55,7 @@ const shopItems = [
   }
 ];
 
-const shopDatabase = {
+export let shopDatabase = {
   items: shopItems,
   
   skills: [
@@ -162,6 +162,19 @@ const shopDatabase = {
     }
   ]
 };
+
+export function setShopDatabase(nextDatabase) {
+  if (!nextDatabase || typeof nextDatabase !== "object" || Array.isArray(nextDatabase)) {
+    return;
+  }
+  shopDatabase = {
+    items: Array.isArray(nextDatabase.items) ? nextDatabase.items : [],
+    skills: Array.isArray(nextDatabase.skills) ? nextDatabase.skills : [],
+    upgrades: Array.isArray(nextDatabase.upgrades) ? nextDatabase.upgrades : [],
+    materials: Array.isArray(nextDatabase.materials) ? nextDatabase.materials : [],
+    services: Array.isArray(nextDatabase.services) ? nextDatabase.services : [],
+  };
+}
 
 /**
  * Get all shop items by category

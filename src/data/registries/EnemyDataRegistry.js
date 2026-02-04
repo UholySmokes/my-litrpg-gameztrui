@@ -9,7 +9,7 @@
  * Note: Full enemy creation logic remains in src/entities/Enemy.js
  * This registry only contains the base templates
  */
-export const enemies = [
+export let enemies = [
   {
     id: 'goblin',
     name: 'Goblin',
@@ -168,4 +168,10 @@ function getEnemiesByLevelRange(minLevel, maxLevel) {
  */
 function getEnemiesByType(type) {
   return enemies.filter(e => e.type === type || e.tags?.includes(type));
+}
+
+export function setEnemies(nextEnemies) {
+  if (Array.isArray(nextEnemies)) {
+    enemies = nextEnemies;
+  }
 }

@@ -97,3 +97,16 @@ BEGIN
   );
 END;
 
+-- ----------------------------------------------------------------------------
+-- Static content bundles (registries exported to DB for runtime consumption)
+-- ----------------------------------------------------------------------------
+IF OBJECT_ID(N'dbo.game_static_bundles', N'U') IS NULL
+BEGIN
+  CREATE TABLE dbo.game_static_bundles (
+    bundle_key NVARCHAR(100) NOT NULL PRIMARY KEY,
+    payload NVARCHAR(MAX) NOT NULL, -- JSON
+    created_at DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    updated_at DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT CK_game_static_bundles_payload_json CHECK (ISJSON(payload) = 1)
+  );
+END;

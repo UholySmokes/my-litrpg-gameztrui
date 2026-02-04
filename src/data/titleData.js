@@ -2,7 +2,7 @@
 // TITLE DATABASE - Titles with secondary and main bonuses
 // =================================================================
 
-export const titleDatabase = [
+export let titleDatabase = [
   {
     id: 'novice_adventurer',
     name: 'Novice Adventurer',
@@ -101,6 +101,12 @@ export const titleDatabase = [
     }
   }
 ];
+
+export function setTitleDatabase(nextTitles) {
+  if (Array.isArray(nextTitles)) {
+    titleDatabase = nextTitles;
+  }
+}
 
 /**
  * Get title by ID

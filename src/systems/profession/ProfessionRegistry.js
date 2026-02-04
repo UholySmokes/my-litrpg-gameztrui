@@ -9,7 +9,7 @@
 // PROFESSION TIERS (9 tiers × 3 sub-ranks = 27 levels)
 // =====================================================
 
-const PROFESSION_TIERS = [
+export let PROFESSION_TIERS = [
   {
     tier: 1,
     name: "Novice",
@@ -79,7 +79,7 @@ const PROFESSION_TIERS = [
 // PROFESSION CATEGORIES
 // =====================================================
 
-const PROFESSION_CATEGORIES = {
+export let PROFESSION_CATEGORIES = {
   crafting: {
     id: "crafting",
     name: "Crafting",
@@ -110,7 +110,7 @@ const PROFESSION_CATEGORIES = {
 // PROFESSIONS - Full Definitions
 // =====================================================
 
-export const PROFESSIONS = {
+export let PROFESSIONS = {
   // ==================== CRAFTING ====================
   blacksmithing: {
     id: "blacksmithing",
@@ -749,6 +749,22 @@ export const PROFESSIONS = {
     },
   },
 };
+
+export function setProfessionRegistry({
+  tiers,
+  categories,
+  professions,
+} = {}) {
+  if (Array.isArray(tiers)) {
+    PROFESSION_TIERS = tiers;
+  }
+  if (categories && typeof categories === "object" && !Array.isArray(categories)) {
+    PROFESSION_CATEGORIES = categories;
+  }
+  if (professions && typeof professions === "object" && !Array.isArray(professions)) {
+    PROFESSIONS = professions;
+  }
+}
 
 // =====================================================
 // RECIPE DATABASE (Expanded)

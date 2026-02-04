@@ -8,7 +8,7 @@
  * CLASSES - 50 RPG Classes
  * Each class can be upgraded later to advanced versions
  */
-export const classes = [
+export let classes = [
   {
     id: 'knight',
     name: 'Knight',
@@ -447,4 +447,10 @@ function getClassesByUpgradePath(upgradePath) {
 function hasClassMechanic(classId, mechanic) {
   const classData = getClassById(classId);
   return classData?.coreMechanics?.includes(mechanic) || false;
+}
+
+export function setClasses(nextClasses) {
+  if (Array.isArray(nextClasses)) {
+    classes = nextClasses;
+  }
 }

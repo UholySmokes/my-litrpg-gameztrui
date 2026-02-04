@@ -21,14 +21,15 @@ export function checkDetection(player, enemy) {
   const enemyPerception = enemy.stats?.perception || STEALTH_CONFIG.baseDetection;
   const playerAgi = player.attributes?.agi || 0;
   
-  // Racial bonus check (mocked helper)
+  // Racial bonus check
   const hasStealthBonus = player.race === 'shadow_walker' || player.race === 'assassin';
   const stealthScore = playerAgi * 2 * (hasStealthBonus ? 1.5 : 1.0);
 
-  // Random factor
+  // Random factor (0-100)
   const roll = Math.random() * 100;
   
-  // If stealth score is high enough, avoid detection
+  // If stealth score + roll is lower than perception, detected
+  // High stealth score makes detection harder
   return (stealthScore + roll) < enemyPerception;
 }
 
@@ -46,12 +47,18 @@ export function applyAmbushDamage(damage, isStealthed) {
  * Handles breaking stealth after an action.
  * @param {Object} player 
  * @param {Array} messages 
+ * @returns {Object} Updated player properties
  */
 export function breakStealth(player, messages = []) {
   if (player.isStealthed) {
-    player.isStealthed = false;
     messages.push(`${player.name} emerges from the shadows!`);
+    return { ...player, isStealthed: false };
   }
+  return player;
 }
 
-export default { checkDetection, applyAmbushDamage, breakStealth };
+export default { 
+  checkDetection, 
+  applyAmbushDamage, 
+  breakStealth 
+};

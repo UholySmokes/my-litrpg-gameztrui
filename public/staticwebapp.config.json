@@ -12,6 +12,14 @@
       "allowedRoles": ["authenticated"]
     },
     {
+      "route": "/api/runs",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/runs/*",
+      "allowedRoles": ["authenticated"]
+    },
+    {
       "route": "/api/health",
       "allowedRoles": ["authenticated"]
     },

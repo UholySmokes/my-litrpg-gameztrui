@@ -1564,6 +1564,431 @@ export const ARCHETYPE_SYSTEMS = [
     ],
     tags: ["quests", "compound", "rewards"],
   },
+  {
+    id: "martial_attribute_nexus",
+    name: "Martial Attribute Nexus",
+    category: "System",
+    summary: "Full access to all martial attributes for perfect min-maxing.",
+    description: "A system that unlocks every martial parameter, allowing for dynamic and precise control over combat attributes. It enables perfect optimization for any situation.",
+    coreLoop: [
+      "Unlock attribute dimensions through combat milestones.",
+      "Reallocate attribute points freely outside of combat.",
+      "Create and save attribute loadouts for different scenarios.",
+    ],
+    progression: [
+      "Higher mastery unlocks finer control and new derivative attributes (e.g., 'Impact Stability').",
+      "Unlock 'Attribute Weaving' to blend parameters for unique combat styles.",
+    ],
+    narrativeHooks: [
+      "Old masters are baffled by your perfect form, which adapts beyond known styles.",
+      "Rivals accuse you of cheating as you counter their techniques flawlessly.",
+    ],
+    questHooks: [
+      "Defeat a master of a specific attribute to unlock its highest tier.",
+      "Find a 'Nexus Crystal' to unlock a new dimension of attributes.",
+    ],
+    tags: ["martial", "attributes", "optimization", "min-max"],
+  },
+  {
+    id: "critical_strike_mandate",
+    name: "Critical Strike Mandate",
+    category: "Authority",
+    summary: "Guarantees critical hits, making damage output unfair.",
+    description: "An authority that rewrites the laws of probability, fixing critical strike chances to your advantage. Damage becomes a matter of when, not if.",
+    coreLoop: [
+      "Land hits to charge the 'Certainty' meter.",
+      "Expend Certainty to guarantee a critical strike.",
+      "Chain criticals to enter a 'Shatter' state, boosting critical damage.",
+    ],
+    progression: [
+      "Increase the cap of the Certainty meter.",
+      "Unlock passive abilities that automatically trigger guaranteed criticals under specific conditions.",
+    ],
+    narrativeHooks: [
+      "Enemies with high defense become trivial, shifting the balance of power.",
+      "Beings of fate and luck see you as an anomaly that must be corrected.",
+    ],
+    questHooks: [
+      "Shatter a legendary, 'unbreakable' artifact.",
+      "Win a duel where you are only allowed to deal damage via critical hits.",
+    ],
+    tags: ["critical", "damage", "fate", "authority", "rng"],
+  },
+  {
+    id: "pain_suppression_protocol",
+    name: "Pain Suppression Protocol",
+    category: "System",
+    summary: "Removes pain and prevents stamina collapse from injury.",
+    description: "A biological protocol that completely numbs pain and negates the debilitating effects of injuries, allowing for combat effectiveness even when critically wounded.",
+    coreLoop: [
+      "Suffer injuries to build 'Tolerance' stacks.",
+      "Expend Tolerance to purge secondary effects like stuns or bleeding.",
+      "Enter a 'Numb State' at high Tolerance, gaining temporary hit points.",
+    ],
+    progression: [
+      "Passively increase resistance to status effects based on injuries sustained.",
+      "Unlock 'Phantom Pain' abilities, allowing you to project suppressed pain onto enemies.",
+    ],
+    narrativeHooks: [
+      "Allies see you as an unflinching bastion; enemies see a monster that doesn't know when it's dead.",
+      "Healers are disturbed by your lack of response to grievous wounds.",
+    ],
+    questHooks: [
+      "Withstand a famous torture technique without flinching.",
+      "Protect an ally for an extended period while under continuous fire.",
+    ],
+    tags: ["survival", "tank", "pain-immunity", "endurance"],
+  },
+  {
+    id: "reputation_resonance_engine",
+    name: "Reputation Resonance Engine",
+    category: "System",
+    summary: "Reputation, whether fear or respect, becomes raw power.",
+    description: "An engine that converts social standing, such as fear, infamy, respect, or honor, into tangible combat and social buffs.",
+    coreLoop: [
+      "Perform actions that align with a chosen reputation (e.g., 'Infamous' or 'Honorable').",
+      "Gain 'Resonance' points based on how NPCs and factions perceive you.",
+      "Activate 'Aura of Reputation' to manifest buffs (e.g., fear aura, inspiring presence).",
+    ],
+    progression: [
+      "Unlock new reputation paths with unique abilities.",
+      "At high tiers, your reputation can passively alter NPC behavior and open new questlines.",
+    ],
+    narrativeHooks: [
+      "Entire towns might lock their doors as you approach, or roll out the red carpet.",
+      "Your reputation precedes you, often leading to skewed initial encounters.",
+    ],
+    questHooks: [
+      "Achieve a 'Legendary' reputation status with a major faction.",
+      "Flip your reputation from dreaded to revered (or vice-versa).",
+    ],
+    tags: ["social", "aura", "reputation", "scaling"],
+  },
+  {
+    id: "threat_escalation_protocol",
+    name: "Threat Escalation Protocol",
+    category: "System",
+    summary: "Become stronger when outnumbered; an anti-gank engine.",
+    description: "A combat protocol that grants stacking power for each additional enemy engaged. It is designed to turn overwhelming odds into an advantage.",
+    coreLoop: [
+      "Engage multiple enemies to gain 'Escalation' stacks.",
+      "Each stack provides a bonus to stats like speed, damage, and defense.",
+      "Unleash a 'Culling Wave' that deals damage proportional to the number of enemies.",
+    ],
+    progression: [
+      "Increase the stat bonuses per Escalation stack.",
+      "Unlock new abilities that are only usable when fighting a certain number of foes.",
+    ],
+    narrativeHooks: [
+      "You are seen as the perfect vanguard for breaking enemy lines.",
+      "Assassins and duelists find you surprisingly weak in one-on-one combat.",
+    ],
+    questHooks: [
+      "Single-handedly hold off an army's advance at a chokepoint.",
+      "Survive an ambush by a vastly superior force.",
+    ],
+    tags: ["scaling", "combat", "aoe", "anti-swarm"],
+  },
+  {
+    id: "battlefield_harvester",
+    name: "Battlefield Harvester",
+    category: "System",
+    summary: "Collect stat fragments like loot from fallen foes mid-battle.",
+    description: "A system that materializes the strengths of defeated enemies into tangible fragments that can be collected for temporary, stacking boosts in the midst of combat.",
+    coreLoop: [
+      "Defeat enemies to spawn 'Attribute Fragments' (e.g., 'Fragment of Strength').",
+      "Collect fragments to gain temporary, stacking stat boosts.",
+      "Combine different fragment types to unlock powerful, short-term 'Harmonized' states.",
+    ],
+    progression: [
+      "Increase the duration and potency of attribute fragments.",
+      "Unlock the ability to permanently fuse a small percentage of harvested stats after a battle.",
+    ],
+    narrativeHooks: [
+      "Battlefields you leave are eerily barren, devoid of residual energy.",
+      "Other scavengers and necromancers see you as a rival.",
+    ],
+    questHooks: [
+      "Collect a fragment from a hundred different enemy types.",
+      "Defeat a boss and harvest a 'Primal Attribute Fragment' before it dissipates.",
+    ],
+    tags: ["scaling", "combat", "looting", "temporary-buffs"],
+  },
+  {
+    id: "demonic_heritage_throne",
+    name: "Demonic Heritage Throne",
+    category: "Authority",
+    summary: "Claim a demonic lineage, granting hellish authority and powers.",
+    description: "An authority that awakens a dormant demonic bloodline, bestowing a throne of hellish power, command over lesser demons, and access to forbidden arts.",
+    coreLoop: [
+      "Embrace demonic temptations to unlock 'Infernal Seals'.",
+      "Use 'Demonic Edicts' to command, bind, or banish supernatural entities.",
+      "Consume mortal sins or chaos to fuel your demonic abilities.",
+    ],
+    progression: [
+      "Ascend the demonic hierarchy, from a minor fiend to a Duke of Hell.",
+      "Your throne gains influence over a specific domain of sin (e.g., Deceit, Wrath).",
+    ],
+    narrativeHooks: [
+      "Angelic or holy orders actively hunt you down.",
+      "Demons both challenge your authority and try to curry your favor.",
+    ],
+    questHooks: [
+      "Usurp the throne of a rival demon lord.",
+      "Corrupt a sacred site to establish a permanent gateway to your domain.",
+    ],
+    tags: ["demonic", "authority", "bloodline", "summoning", "corruption"],
+  },
+  {
+    id: "absolute_regeneration",
+    name: "Absolute Regeneration",
+    category: "System",
+    summary: "Attrition fights become unwinnable for others due to perfect healing.",
+    description: "A biological system that grants rapid, complete regeneration from any wound, as long as a single cell remains. It makes you nearly impossible to kill through conventional damage.",
+    coreLoop: [
+      "Sustain damage to trigger regeneration, converting a portion of the injury into 'Biomass'.",
+      "Expend Biomass to accelerate healing or regrow lost limbs instantly.",
+      "Enter an 'Adaptive Overgrowth' state, temporarily evolving to counter the last damage type received.",
+    ],
+    progression: [
+      "Increase the speed of regeneration and the efficiency of Biomass conversion.",
+      "Learn to store and shape excess Biomass into temporary biological weapons or armor.",
+    ],
+    narrativeHooks: [
+      "Scientists and mages wish to study you, often by dissecting you first.",
+      "Enemies must resort to exotic, non-physical attacks like soul-destruction or reality erasure.",
+    ],
+    questHooks: [
+      "Regenerate from a single drop of blood.",
+      "Survive an 'annihilation' type attack that is supposed to negate regeneration.",
+    ],
+    tags: ["regeneration", "survival", "tank", "immortality", "adaptation"],
+  },
+  {
+    id: "energy_conversion_matrix",
+    name: "Energy Conversion Matrix",
+    category: "System",
+    summary: "Convert any energy type into usable fuel for your abilities.",
+    description: "A matrix that can absorb any form of energy—kinetic, magical, elemental, spiritual—and convert it into a universal fuel source for your own skills and spells.",
+    coreLoop: [
+      "Absorb incoming energy attacks or ambient energy.",
+      "Store the converted energy in a central 'Reservoir'.",
+      "Expend Reservoir energy to power any of your abilities, regardless of their original cost type.",
+    ],
+    progression: [
+      "Improve the conversion efficiency, losing less energy during the process.",
+      "Unlock 'Harmonic Overloads' by absorbing a massive amount of a single energy type at once.",
+    ],
+    narrativeHooks: [
+      "You thrive in chaotic, energy-rich environments that are lethal to others.",
+      "Mages who rely on a single energy type find their attacks actively strengthening you.",
+    ],
+    questHooks: [
+      "Absorb the full power of a collapsing star or a massive magical storm.",
+      "Power an ancient, dead artifact by acting as its living battery.",
+    ],
+    tags: ["energy", "absorption", "conversion", "resource-management"],
+  },
+  {
+    id: "achievement_title_system",
+    name: "Achievement Title System",
+    category: "System",
+    summary: "Gain permanent passive buffs from completing noteworthy milestones.",
+    description: "A system that awards 'Titles' for completing specific, often difficult, achievements. Each equipped Title provides a unique and permanent passive bonus.",
+    coreLoop: [
+      "Complete hidden or difficult objectives to unlock Achievements.",
+      "Claim the associated Title from the system.",
+      "Equip a limited number of Titles to activate their passive buffs.",
+    ],
+    progression: [
+      "Increase the number of Title slots you can have active at once.",
+      "Unlock 'Compound Titles' by equipping a specific set of related Titles, granting a powerful extra bonus.",
+    ],
+    narrativeHooks: [
+      "Your Titles may appear visibly to others, altering your reputation.",
+      "Certain NPCs may only interact with you if you have a specific Title equipped.",
+    ],
+    questHooks: [
+      "Earn a Title that was previously thought to be impossible to achieve.",
+      "Defeat an opponent who is empowered by their own set of Titles.",
+    ],
+    tags: ["achievements", "titles", "passive-buffs", "collection"],
+  },
+  {
+    id: "instant_comprehension_grant",
+    name: "Instant Comprehension Grant",
+    category: "Privilege",
+    summary: "Learn laws, languages, and techniques instantly, skipping decades of study.",
+    description: "A privilege that allows for the instantaneous understanding of complex information, from ancient languages to the fundamental laws of reality, by merely observing or touching them.",
+    coreLoop: [
+      "Encounter a new concept, text, or technique.",
+      "Trigger the 'Comprehension Grant' to instantly absorb and understand it.",
+      "Apply the newly learned knowledge immediately.",
+    ],
+    progression: [
+      "Reduce the 'cooldown' or 'focus' required between comprehension grants.",
+      "Evolve the ability from simple understanding to 'Conceptual Assimilation', allowing you to modify the learned concept.",
+    ],
+    narrativeHooks: [
+      "You become a polymath of impossible genius, but your rapid growth isolates you.",
+      "Guardians of ancient knowledge see you as a grave threat who bypasses their sacred traditions of slow learning.",
+    ],
+    questHooks: [
+      "Instantly master a lost martial art mid-duel to defeat its last practitioner.",
+      "Decipher an entire library of alien text in seconds to avert a planetary disaster.",
+    ],
+    tags: ["learning", "knowledge", "comprehension", "privilege", "fast-growth"],
+  },
+  {
+    id: "mentor_symbiosis_link",
+    name: "Mentor Symbiosis Link",
+    category: "System",
+    summary: "Your disciples' growth feeds your own breakthroughs directly.",
+    description: "A system that establishes a symbiotic link with students or disciples. A portion of their progress, insights, and breakthroughs are channeled back to you as power.",
+    coreLoop: [
+      "Accept disciples and provide them with resources or training.",
+      "As disciples level up or have epiphanies, you receive 'Symbiotic Feedback'.",
+      "Use Symbiotic Feedback to accelerate your own cultivation or unlock unique 'Mentor' abilities.",
+    ],
+    progression: [
+      "Increase the number of disciples you can effectively link with.",
+      "Improve the 'feedback ratio', gaining a larger percentage of your disciples' growth.",
+    ],
+    narrativeHooks: [
+      "You are incentivized to find and nurture the most talented individuals.",
+      "Rival masters may try to poach your disciples or sabotage their training to weaken you.",
+    ],
+    questHooks: [
+      "Help a disciple achieve a legendary breakthrough against all odds.",
+      "Establish your own sect or academy to maximize disciple intake.",
+    ],
+    tags: ["mentor", "disciple", "scaling", "symbiosis", "teaching"],
+  },
+  {
+    id: "damage_reflection_field",
+    name: "Damage Reflection Field",
+    category: "Authority",
+    summary: "Attackers kill themselves on a field that reflects a portion of all incoming damage.",
+    description: "An authority that generates a persistent field around you, automatically reflecting a percentage of any damage taken back at the attacker, often with added effects.",
+    coreLoop: [
+      "Take damage from an enemy.",
+      "A percentage of that damage is instantly reflected back.",
+      "Charge a 'Retribution Meter' with reflected damage to unleash a full-power counter.",
+    ],
+    progression: [
+      "Increase the percentage of damage reflected.",
+      "Add secondary effects to the reflected damage, such as lifesteal, stun, or armor shred.",
+    ],
+    narrativeHooks: [
+      "Enemies with high burst damage become your greatest weapon.",
+      "You are a nightmare for assassins and glass cannons.",
+    ],
+    questHooks: [
+      "Defeat an enemy using only the damage they dealt to you.",
+      "Protect a target by having enemies defeat themselves against your reflection field.",
+    ],
+    tags: ["reflection", "damage", "tank", "counter-attack", "authority"],
+  },
+  {
+    id: "attack_absorption_converter",
+    name: "Attack Absorption Converter",
+    category: "System",
+    summary: "Absorb incoming attacks and convert them into personal stat boosts or energy.",
+    description: "A system that allows you to absorb the kinetic and magical energy of attacks, nullifying the damage and converting it into temporary or permanent attribute increases.",
+    coreLoop: [
+      "Successfully 'block' or 'parry' an attack to trigger absorption.",
+      "Convert the absorbed energy into stacking, temporary stat buffs.",
+      "At the end of combat, a small portion of the temporary buffs can be made permanent.",
+    ],
+    progression: [
+      "Increase the percentage of an attack's power you can absorb.",
+      "Unlock the ability to absorb area-of-effect spells or even environmental hazards.",
+    ],
+    narrativeHooks: [
+      "You grow stronger with every blow you endure, turning sieges into power-leveling sessions.",
+      "Foes must use subtle tactics or non-damaging abilities to have any hope of winning.",
+    ],
+    questHooks: [
+      "Absorb a 'world-ending' spell and survive.",
+      "Reach a new power level by baiting a powerful enemy into attacking you relentlessly.",
+    ],
+    tags: ["absorption", "scaling", "tank", "growth", "defense"],
+  },
+  {
+    id: "law_comprehension_codex",
+    name: "Law Comprehension Codex",
+    category: "Authority",
+    summary: "Understand and manipulate the fundamental laws of the world like tools.",
+    description: "An authority that grants you an intuitive and growing understanding of the world's underlying rules—from physics to magic. You can bend or even locally rewrite these laws.",
+    coreLoop: [
+      "Observe a natural or magical phenomenon to 'Trace' its underlying Law.",
+      "Gain 'Law Fragments' which can be slotted to grant passive immunities or abilities.",
+      "Expend massive energy to temporarily 'Overrule' a local law (e.g., 'Gravity: Off').",
+    ],
+    progression: [
+      "Combine Law Fragments to understand and manipulate more complex, 'Conceptual' laws (e.g., Law of Death, Law of Time).",
+      "Establish a 'Domain' where your understanding allows you to set the rules permanently.",
+    ],
+    narrativeHooks: [
+      "Reality seems to glitch or warp around you during intense moments.",
+      "Primordial beings and guardians of reality see you as either a potential savior or a cosmic threat.",
+    ],
+    questHooks: [
+      "Fix a 'broken' law in a corrupted region.",
+      "Win a fight by rewriting a fundamental law your opponent relies on, like the Law of Inertia.",
+    ],
+    tags: ["law", "reality-bending", "authority", "meta", "comprehension"],
+  },
+  {
+    id: "status_immunity_field",
+    name: "Status Immunity Field",
+    category: "System",
+    summary: "Poison, curses, fear, and other status effects no longer work on you.",
+    description: "A biological or magical field that automatically identifies and neutralizes hostile status effects, from common poisons and stuns to high-tier curses and mental domination.",
+    coreLoop: [
+      "Be targeted by a status effect.",
+      "The field automatically analyzes and nullifies it, granting a temporary 'Adaptive Purity' buff.",
+      "Expend Adaptive Purity stacks to reflect the next status effect back at the caster.",
+    ],
+    progression: [
+      "The field evolves from immunity to 'Assimilation', allowing you to consume status effects for energy.",
+      "Develop a 'Purge Aura' that extends your immunity to nearby allies.",
+    ],
+    narrativeHooks: [
+      "You can walk through poison swamps and cursed lands unharmed.",
+      "Assassins and debuff-focused mages find their entire toolkit rendered useless against you.",
+    ],
+    questHooks: [
+      "Enter the heart of a plague-ridden city to retrieve an artifact.",
+      "Cleanse a powerful curse from a divine being by absorbing it yourself.",
+    ],
+    tags: ["immunity", "defense", "status-effects", "purification"],
+  },
+  {
+    id: "reality_edit_interface",
+    name: "Reality Edit Interface",
+    category: "Framework",
+    summary: "Make minor, localized edits to reality that can lead to major outcomes.",
+    description: "A framework that provides a limited interface to 'edit' small details of the immediate environment or object properties, constrained by a strict energy and causality cost.",
+    coreLoop: [
+      "Identify a small, editable parameter in your vicinity (e.g., 'friction=0.1', 'sword.brittleness=0.9').",
+      "Expend 'Causality Charge' to apply the edit.",
+      "Witness and exploit the cascading consequences of the small change.",
+    ],
+    progression: [
+      "Increase your maximum Causality Charge and the number of parameters you can edit simultaneously.",
+      "Unlock 'Conceptual Edits', allowing you to alter abstract properties like 'hope' or 'luck' in a small area.",
+    ],
+    narrativeHooks: [
+      "You cause a series of improbable, 'Final Destination'-style accidents for your enemies.",
+      "Guardians of time and fate hunt you for creating paradoxes.",
+    ],
+    questHooks: [
+      "Defeat a god-like entity by editing the 'divinity' property of their artifact to 'null'.",
+      "Prevent a castle's collapse by editing the 'structural_integrity' of a single falling stone.",
+    ],
+    tags: ["reality-bending", "meta", "exploit", "causality", "subtle-power"],
+  },
 ];
 
 export function getArchetypeSystemById(id) {

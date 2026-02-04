@@ -10,6 +10,7 @@ import {
   applyCooldownOverride,
 } from "./TalentManager.js";
 import { shuffle } from "../../utils/DeterministicRandom.js";
+import { nonCombatSkills } from "./NonCombatSkillRegistry.js";
 
 /**
  * Helper function to shuffle array and select random items
@@ -10629,10 +10630,117 @@ export function getSkillsByClass(classId) {
   }
 
   return {
-    active: getRandomSkills(classSkills.active || [], 8),
-    passive: getRandomSkills(classSkills.passive || [], 12),
+    active: getRandomSkills(classSkills.active || [], 8).map(normalizeSkillTemplate),
+    passive: getRandomSkills(classSkills.passive || [], 12).map(normalizeSkillTemplate),
   };
 }
+
+const UNIVERSAL_ELEMENTAL_PREFIXES = [
+  {
+    prefix: "universal_flame_",
+    element: "fire",
+    effect: { id: "burn", target: "enemy", duration: 2, magnitude: 6 },
+  },
+  {
+    prefix: "universal_frost_",
+    element: "ice",
+    effect: { id: "frostbite", target: "enemy", duration: 2, magnitude: 6 },
+  },
+  {
+    prefix: "universal_storm_",
+    element: "lightning",
+    effect: { id: "shock", target: "enemy", duration: 2, magnitude: 0.1 },
+  },
+  {
+    prefix: "universal_venom_",
+    element: "nature",
+    effect: { id: "poison", target: "enemy", duration: 3, magnitude: 5 },
+  },
+  {
+    prefix: "universal_shadow_",
+    element: "dark",
+    effect: { id: "curse", target: "enemy", duration: 3, magnitude: 0.12 },
+  },
+  {
+    prefix: "universal_radiant_",
+    element: "holy",
+    effect: { id: "radiant_mark", target: "enemy", duration: 3, magnitude: 0.12 },
+  },
+];
+
+const UNIVERSAL_FORM_MULTIPLIERS = {
+  strike: 1.15,
+  burst: 1.2,
+  lance: 1.25,
+  wave: 1.1,
+  pulse: 1.1,
+  nova: 1.15,
+  torrent: 1.18,
+  step: 1.1,
+  cleave: 1.12,
+  spear: 1.22,
+};
+
+const normalizeSkillTemplate = (skill) => {
+  if (!skill || typeof skill !== "object") return skill;
+
+  const next = { ...skill };
+  const tags = Array.isArray(next.tags) ? [...next.tags] : [];
+  let effects = Array.isArray(next.effects) ? [...next.effects] : [];
+
+  // Normalize effect target defaults for the combat effect system.
+  if (effects.length > 0) {
+    effects = effects.map((effect) =>
+      effect && typeof effect === "object" && !Array.isArray(effect)
+        ? { target: effect.target ?? "enemy", ...effect }
+        : effect,
+    );
+  }
+
+  // Infer element + magic typing for the generated universal elemental spell families.
+  if (next.type === "active" && typeof next.id === "string") {
+    for (const rule of UNIVERSAL_ELEMENTAL_PREFIXES) {
+      if (!next.id.startsWith(rule.prefix)) continue;
+
+      if (!next.element) next.element = rule.element;
+      if (next.isMagic == null) next.isMagic = true;
+
+      // Apply a modest default multiplier if the skill didn't define damage.
+      if (next.damage == null) {
+        const form = next.id.slice(rule.prefix.length).split("_").pop();
+        const multiplier = UNIVERSAL_FORM_MULTIPLIERS[form] || 1.1;
+        next.damage = { multiplier };
+      }
+
+      // Ensure elemental spells apply a signature status to enable synergies/reactions.
+      if (effects.length === 0) {
+        effects = [rule.effect];
+      }
+      break;
+    }
+  }
+
+  const element = typeof next.element === "string" ? next.element : null;
+  const template = next.template && typeof next.template === "object" ? next.template : {};
+
+  return {
+    ...next,
+    tags,
+    effects,
+    template: {
+      category: template.category || (next.class === "universal" ? "Universal" : "Class"),
+      function: template.function || (next.type === "passive" ? "passive" : "combat"),
+      elements: Array.isArray(template.elements)
+        ? template.elements
+        : element
+          ? [element]
+          : [],
+      synergies: Array.isArray(template.synergies) ? template.synergies : [],
+      source: template.source || "SkillRegistry",
+      ...(template.meta && typeof template.meta === "object" ? { meta: template.meta } : {}),
+    },
+  };
+};
 
 /**
  * Get all skills for a class (for reference)
@@ -10647,17 +10755,24 @@ export function getAllSkills() {
   for (const classId in classSkillsDatabase) {
     const skills = classSkillsDatabase[classId];
     if (skills.active) {
-      allSkills.push(...skills.active.map((s) => ({ ...s, class: classId })));
+      allSkills.push(
+        ...skills.active.map((s) => normalizeSkillTemplate({ ...s, class: classId })),
+      );
     }
     if (skills.passive) {
-      allSkills.push(...skills.passive.map((s) => ({ ...s, class: classId })));
+      allSkills.push(
+        ...skills.passive.map((s) => normalizeSkillTemplate({ ...s, class: classId })),
+      );
     }
   }
 
   // Add universal skills
   if (universalSkillsDatabase) {
     allSkills.push(
-      ...universalSkillsDatabase.map((s) => ({ ...s, class: "universal" })),
+      ...universalSkillsDatabase.map((s) =>
+        normalizeSkillTemplate({ ...s, class: "universal" }),
+      ),
+      ...nonCombatSkills.map((s) => normalizeSkillTemplate({ ...s, class: "universal" })),
     );
   }
 
@@ -10671,12 +10786,16 @@ export function getSkillById(skillId) {
   for (const classId in classSkillsDatabase) {
     const skills = classSkillsDatabase[classId];
     const active = skills.active?.find((s) => s.id === skillId);
-    if (active) return active;
+    if (active) return normalizeSkillTemplate(active);
     const passive = skills.passive?.find((s) => s.id === skillId);
-    if (passive) return passive;
+    if (passive) return normalizeSkillTemplate(passive);
   }
   // Check universal skills
-  return universalSkillsDatabase.find((s) => s.id === skillId) || null;
+  const universal =
+    universalSkillsDatabase.find((s) => s.id === skillId) ||
+    nonCombatSkills.find((s) => s.id === skillId) ||
+    null;
+  return universal ? normalizeSkillTemplate(universal) : null;
 }
 
 /**

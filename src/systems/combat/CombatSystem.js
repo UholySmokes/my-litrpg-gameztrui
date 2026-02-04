@@ -1903,11 +1903,13 @@ function enemyAttack(state, enemyIndex) {
 
   // Simple AI: use random skill or basic attack
   const magicBlocked = hasEffectTag(enemy, "BLOCK_MAGIC");
+  const physicalBlocked = hasEffectTag(enemy, "BLOCK_PHYSICAL");
   const availableSkills = (
     magicBlocked ? [] : Array.isArray(enemy.skills) ? enemy.skills : []
   ).filter((skillId) => {
     const skill = getEnemySkillById(skillId);
     if (!skill) return false;
+    if (physicalBlocked && skill.damage) return false;
     const cooldown = enemy.skillCooldowns?.[skillId] || 0;
     return (
       cooldown <= 0 &&
@@ -1960,6 +1962,20 @@ function enemyAttack(state, enemyIndex) {
     };
   }
 
+  // Defender dodge chance from effects like Blur
+  {
+    const dodgeChance = getDodgeChance(state.player);
+    if (dodgeChance > 0 && random() < dodgeChance) {
+      return {
+        ...state,
+        combat: {
+          ...state.combat,
+          log: [...state.combat.log, `${state.player.name} dodges the attack!`],
+        },
+      };
+    }
+  }
+
   // Calculate damage using config values
   const baseAttributeValue = state.config?.baseAttributeValue || 5;
   const effectiveAttributes = getEffectiveAttributes(
@@ -1988,7 +2004,7 @@ function enemyAttack(state, enemyIndex) {
     `${enemy.name} attacks you${skillText} for ${damageResult.damage} damage${critText}!`,
   ];
 
-  return takeDamage(
+  const attackResult = takeDamage(
     {
       ...state,
       combat: {
@@ -1998,6 +2014,73 @@ function enemyAttack(state, enemyIndex) {
     },
     damageResult.damage,
   );
+
+  let nextState = attackResult.state;
+
+  // Reflect damage back to the enemy (based on damage taken after shields)
+  {
+    const reflectPercent = getReflectPercent(nextState.player);
+    const reflectDamage =
+      reflectPercent > 0 ? Math.floor(attackResult.damage * reflectPercent) : 0;
+    if (reflectDamage > 0) {
+      const enemyBefore = nextState.combat?.enemies?.[enemyIndex];
+      if (enemyBefore?.stats?.hp) {
+        let absorbedByShield = 0;
+        let dealt = reflectDamage;
+        let reflectedEnemy = enemyBefore;
+
+        if (dealt > 0) {
+          const shieldResult = applyShieldAbsorptionToEnemy(reflectedEnemy, dealt);
+          absorbedByShield = shieldResult.absorbed;
+          dealt = shieldResult.damage;
+          reflectedEnemy = shieldResult.enemy;
+        }
+
+        const nextHp = Math.max(0, reflectedEnemy.stats.hp.current - dealt);
+        const nextEnemies = [...nextState.combat.enemies];
+        nextEnemies[enemyIndex] = {
+          ...reflectedEnemy,
+          stats: {
+            ...reflectedEnemy.stats,
+            hp: { ...reflectedEnemy.stats.hp, current: nextHp },
+          },
+        };
+
+        const reflectLog = [
+          ...nextState.combat.log,
+          `${nextState.player.name} reflects ${reflectDamage} damage back!`,
+          ...(absorbedByShield > 0
+            ? [
+                `🛡️ ${reflectedEnemy.name}'s shield absorbs ${absorbedByShield} reflected damage!`,
+              ]
+            : []),
+          `${reflectedEnemy.name} takes ${dealt} reflected damage!`,
+        ];
+
+        nextState = {
+          ...nextState,
+          combat: {
+            ...nextState.combat,
+            enemies: nextEnemies,
+            log: reflectLog,
+          },
+        };
+      } else {
+        nextState = {
+          ...nextState,
+          combat: {
+            ...nextState.combat,
+            log: [
+              ...nextState.combat.log,
+              `${nextState.player.name} reflects ${reflectDamage} damage back!`,
+            ],
+          },
+        };
+      }
+    }
+  }
+
+  return { ...attackResult, state: nextState };
 }
 
 /**

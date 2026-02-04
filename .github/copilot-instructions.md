@@ -4,13 +4,16 @@
 This document provides essential guidelines for AI coding agents working within the `my-litrpg-gameztrui` codebase. It covers the architecture, workflows, conventions, and integration points critical for effective development.
 
 ## Architecture
-- **State Flow**: The architecture is designed around a state management system that governs game mechanics and player interactions. Key files include:
-  - `gamestate.js`: Central configuration for game constants.
-  - `gamelogic.js`: Contains the core logic for game mechanics.
+- **State Flow**: Most mechanics are deterministic state transforms.
+  - `src/core/gameReducer.js`: Canonical state transition reducer.
+  - `src/core/ActionDispatcher.js`: Routes user actions to system functions (e.g. combat, movement).
+  - `src/core/StateNormalizer.js`: Normalizes incoming state and provides default config values.
+  - `src/core/EventBus.js`: Emits events and logs them into simulation via `src/simulation/bridge/SimulationContext.js`.
 
 - **Component Boundaries**: Major components include:
   - **Simulation**: Handled by `sim_gamestart_fixed.js`, which manages game state during simulations.
-  - **API**: Refer to `api/README.md` for API structure and usage.
+  - **Narration**: `src/core/PromptAssembler.js` builds prompts from state + action results (systems should not generate prose).
+  - **Systems**: Modular mechanics under `src/systems/**` (combat, effects, inventory, leveling, quest, etc.).
 
 ## Developer Workflows
 - **Building**: Use the command `npm install` in the `api` directory to install dependencies.
@@ -20,6 +23,9 @@ This document provides essential guidelines for AI coding agents working within 
 ## Project-Specific Conventions
 - **Documentation**: Maintain updated documentation in `README.md`, `current_state.md`, and `.cursorrules`. Follow the coding standards outlined in `.cursorrules`.
 - **State Management**: Avoid direct state mutations. Use reducers defined in `useGameState.js` for state updates.
+
+## Copilot Agents
+- Prefer using the custom agent in `.github/agents/systems.agent.md` when adding or refactoring modules under `src/systems/**`.
 
 ## Integration Points
 - **External Dependencies**: The project relies on several external libraries. Ensure they are documented in `package.json` and installed via npm.

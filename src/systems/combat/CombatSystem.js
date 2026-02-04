@@ -989,6 +989,18 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     if (!skill) {
       return { success: false, reason: "Skill not found", state };
     }
+
+    // Silence/disarm checks (player side)
+    if (skill.isMagic && hasEffectTag(state.player, "BLOCK_MAGIC")) {
+      return { success: false, reason: "Silenced", state };
+    }
+    if (
+      !skill.isMagic &&
+      hasEffectTag(state.player, "BLOCK_PHYSICAL") &&
+      (skill.damage != null || Number.isFinite(skill.damageMultiplier))
+    ) {
+      return { success: false, reason: "Disarmed", state };
+    }
     laneAllowZero = allowsZeroDamage(skill);
 
     const skillResult = executeSkill(
@@ -1052,6 +1064,9 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       };
     }
   } else {
+    if (hasEffectTag(state.player, "BLOCK_PHYSICAL")) {
+      return { success: false, reason: "Disarmed", state };
+    }
     // Get config values (with fallbacks)
     const strToDamageMultiplier = state.config?.strToDamageMultiplier || 2;
     const baseAttributeValue = state.config?.baseAttributeValue || 5;
@@ -1103,21 +1118,35 @@ export function playerAttack(state, enemyIndex, skillId = null) {
 
   // Generic miss chance from effects like Blind/Obscured/Fear
   {
-    const missChanceRaw = getEffectTagMagnitude(resolvedState.player, "MISS_CHANCE");
-    const missChance = Math.max(0, Math.min(0.95, missChanceRaw || 0));
+    const missChance = getMissChance(resolvedState.player);
     if (missChance > 0 && random() < missChance) {
       const combatLog = [
         ...resolvedState.combat.log,
         ...damageResult.messages,
-        `Attack misses!`,
+        "Attack misses!",
       ];
+
+      let nextState = {
+        ...resolvedState,
+        combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
+      };
+
+      if (skillCooldownUpdate) {
+        nextState = {
+          ...nextState,
+          combat: {
+            ...nextState.combat,
+            skillCooldowns: {
+              ...(nextState.combat.skillCooldowns || {}),
+              [skillCooldownUpdate.skillId]: skillCooldownUpdate.cooldown,
+            },
+          },
+        };
+      }
       return {
         success: true,
         damage: 0,
-        state: {
-          ...resolvedState,
-          combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
-        },
+        state: nextState,
       };
     }
   }
@@ -1132,7 +1161,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       const combatLog = [
         ...resolvedState.combat.log,
         ...damageResult.messages,
-        `ƒ?O Confused! You attack yourself for ${selfDamage} damage!`,
+        `Confused! You attack yourself for ${selfDamage} damage!`,
       ];
       const selfDamageResult = takeDamage(
         {
@@ -1141,13 +1170,27 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         },
         selfDamage,
       );
+
+      let nextState = selfDamageResult.state;
+      if (skillCooldownUpdate) {
+        nextState = {
+          ...nextState,
+          combat: {
+            ...nextState.combat,
+            skillCooldowns: {
+              ...(nextState.combat.skillCooldowns || {}),
+              [skillCooldownUpdate.skillId]: skillCooldownUpdate.cooldown,
+            },
+          },
+        };
+      }
       return {
         success: true,
         damage: selfDamageResult.damage,
         state: {
-          ...selfDamageResult.state,
+          ...nextState,
           combat: {
-            ...selfDamageResult.state.combat,
+            ...nextState.combat,
             turn: "enemy",
           },
         },
@@ -1157,31 +1200,90 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       const combatLog = [
         ...resolvedState.combat.log,
         ...damageResult.messages,
-        `ƒ?O Confused! You attack wildly and miss!`,
+        "Confused! You attack wildly and miss!",
       ];
+
+      let nextState = {
+        ...resolvedState,
+        combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
+      };
+
+      if (skillCooldownUpdate) {
+        nextState = {
+          ...nextState,
+          combat: {
+            ...nextState.combat,
+            skillCooldowns: {
+              ...(nextState.combat.skillCooldowns || {}),
+              [skillCooldownUpdate.skillId]: skillCooldownUpdate.cooldown,
+            },
+          },
+        };
+      }
       return {
         success: true,
         damage: 0,
-        state: {
-          ...resolvedState,
-          combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
-        },
+        state: nextState,
       };
     }
   }
 
+  // Defender dodge chance from effects like Blur
+  {
+    const dodgeChance = getDodgeChance(resolvedState.combat.enemies[enemyIndex]);
+    if (dodgeChance > 0 && random() < dodgeChance) {
+      const combatLog = [
+        ...resolvedState.combat.log,
+        ...damageResult.messages,
+        `${resolvedState.combat.enemies[enemyIndex].name} dodges the attack!`,
+      ];
+
+      let nextState = {
+        ...resolvedState,
+        combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
+      };
+
+      if (skillCooldownUpdate) {
+        nextState = {
+          ...nextState,
+          combat: {
+            ...nextState.combat,
+            skillCooldowns: {
+              ...(nextState.combat.skillCooldowns || {}),
+              [skillCooldownUpdate.skillId]: skillCooldownUpdate.cooldown,
+            },
+          },
+        };
+      }
+
+      return { success: true, damage: 0, state: nextState };
+    }
+  }
+
+  // Enemy shield absorption (enemy shields use the same effect template as player shields)
+  let absorbedByShield = 0;
+  let effectiveDamage = damageResult.damage;
+  let shieldedEnemy = updatedEnemy;
+  if (effectiveDamage > 0) {
+    const shieldResult = applyShieldAbsorptionToEnemy(shieldedEnemy, effectiveDamage);
+    absorbedByShield = shieldResult.absorbed;
+    effectiveDamage = shieldResult.damage;
+    shieldedEnemy = shieldResult.enemy;
+  }
+  damageResult.damage = effectiveDamage;
+
   // Apply damage
   const newEnemyHp = Math.max(
     0,
-    updatedEnemy.stats.hp.current - damageResult.damage,
+    shieldedEnemy.stats.hp.current - effectiveDamage,
   );
   const newEnemies = resolvedState.combat.enemies.map((e, idx) =>
     idx === enemyIndex
       ? {
-          ...updatedEnemy,
+          ...shieldedEnemy,
           stats: {
-            ...updatedEnemy.stats,
-            hp: { ...updatedEnemy.stats.hp, current: newEnemyHp },
+            ...shieldedEnemy.stats,
+            hp: { ...shieldedEnemy.stats.hp, current: newEnemyHp },
           },
         }
       : e,
@@ -1189,8 +1291,11 @@ export function playerAttack(state, enemyIndex, skillId = null) {
 
   const newLog = [
     ...resolvedState.combat.log,
+    ...(absorbedByShield > 0
+      ? [`🛡️ ${shieldedEnemy.name}'s shield absorbs ${absorbedByShield} damage!`]
+      : []),
     damageResult.messages.join(" ") ||
-      `You dealt ${damageResult.damage} damage to ${updatedEnemy.name}.`,
+      `You dealt ${damageResult.damage} damage to ${shieldedEnemy.name}.`,
   ];
 
   // === RAGE GAIN ON HIT (Berserker) ===
@@ -1224,6 +1329,24 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         },
       },
     };
+  }
+
+  // Reflect damage back to the attacker (based on damage actually dealt after shields)
+  {
+    const reflectPercent = getReflectPercent(shieldedEnemy);
+    const reflectDamage =
+      reflectPercent > 0 ? Math.floor(damageResult.damage * reflectPercent) : 0;
+    if (reflectDamage > 0) {
+      const reflectLog = [
+        ...newState.combat.log,
+        `${shieldedEnemy.name} reflects ${reflectDamage} damage back!`,
+      ];
+      const reflectResult = takeDamage(
+        { ...newState, combat: { ...newState.combat, log: reflectLog } },
+        reflectDamage,
+      );
+      newState = reflectResult.state;
+    }
   }
 
   // Apply rage gain if berserker

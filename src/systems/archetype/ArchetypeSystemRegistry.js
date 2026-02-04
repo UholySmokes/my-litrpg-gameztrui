@@ -3,7 +3,30 @@
 // LitRPG framework selection (Systems / Authorities / Privileges / Paths)
 // =================================================================
 
-export const ARCHETYPE_SYSTEMS = [
+class ArchetypeSystem {
+  constructor(data) {
+    Object.assign(this, data);
+  }
+
+  /**
+   * Builds an active system instance for a character.
+   * This allows each archetype to construct its own unique system state.
+   * @param {Object} context - Character context, seed, or snapshot.
+   * @returns {Object} The initialized system instance.
+   */
+  build(context = {}) {
+    return {
+      archetypeId: this.id,
+      name: this.name,
+      category: this.category,
+      active: true,
+      state: { ...context },
+      definition: this
+    };
+  }
+}
+
+const ARCHETYPE_DEFINITIONS = [
   {
     id: "revival_archive",
     name: "Revival Archive",
@@ -4171,6 +4194,8 @@ export const ARCHETYPE_SYSTEMS = [
     ],
   },
 ];
+
+export const ARCHETYPE_SYSTEMS = ARCHETYPE_DEFINITIONS.map(def => new ArchetypeSystem(def));
 
 export function getArchetypeSystemById(id) {
   return ARCHETYPE_SYSTEMS.find((system) => system.id === id) || null;

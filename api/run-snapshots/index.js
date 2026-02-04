@@ -9,7 +9,16 @@ const isGuid = (value) => GUID_REGEX.test(String(value || ""));
 
 const normalizeJson = (value) => {
   if (value === null || value === undefined) return null;
-  if (typeof value === "string") return value;
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    try {
+      JSON.parse(trimmed);
+      return trimmed;
+    } catch {
+      return JSON.stringify(trimmed);
+    }
+  }
   try {
     return JSON.stringify(value);
   } catch {
@@ -46,52 +55,53 @@ module.exports = async function runSnapshots(context, req) {
         typeof req?.query?.latest === "string" &&
         ["1", "true", "yes"].includes(req.query.latest.trim().toLowerCase());
 
-      const result = await withConnection(async (pool) => {
+      const { owned, rows } = await withConnection(async (pool) => {
+        const checkReq = pool.request();
+        checkReq.input("runId", sql.UniqueIdentifier, runId);
+        checkReq.input("userId", sql.NVarChar, user.id);
+        const ownedResult = await checkReq.query(
+          `SELECT TOP (1) id FROM dbo.game_runs WHERE id = @runId AND user_id = @userId;`,
+        );
+        const isOwned = Boolean(ownedResult?.recordset?.[0]?.id);
+        if (!isOwned) return { owned: false, rows: [] };
+
         const request = pool.request();
         request.input("runId", sql.UniqueIdentifier, runId);
-        request.input("userId", sql.NVarChar, user.id);
-        return request.query(`
-          -- Verify run ownership
-          IF NOT EXISTS (
-            SELECT 1 FROM dbo.game_runs WHERE id = @runId AND user_id = @userId
-          )
-          BEGIN
-            SELECT CAST(0 AS INT) AS ok;
-            RETURN;
-          END
+        const result = await request.query(
+          latestOnly
+            ? `
+              SELECT TOP (1)
+                tick,
+                game_state,
+                created_at
+              FROM dbo.game_run_snapshots
+              WHERE run_id = @runId
+              ORDER BY tick DESC, created_at DESC;
+            `
+            : `
+              SELECT TOP (${MAX_SNAPSHOTS_RETURNED})
+                tick,
+                created_at
+              FROM dbo.game_run_snapshots
+              WHERE run_id = @runId
+              ORDER BY tick DESC, created_at DESC;
+            `,
+        );
 
-          ${
-            latestOnly
-              ? `
-          SELECT TOP (1)
-            tick,
-            game_state,
-            created_at
-          FROM dbo.game_run_snapshots
-          WHERE run_id = @runId
-          ORDER BY tick DESC, created_at DESC;
-          `
-              : `
-          SELECT TOP (${MAX_SNAPSHOTS_RETURNED})
-            tick,
-            created_at
-          FROM dbo.game_run_snapshots
-          WHERE run_id = @runId
-          ORDER BY tick DESC, created_at DESC;
-          `
-          }
-        `);
+        return { owned: true, rows: result?.recordset || [] };
       });
 
-      const rows = result?.recordsets?.[1] || result?.recordset || [];
-      if (!Array.isArray(rows) || rows.length === 0) {
-        // Could be "no snapshots" or "not found"; we keep response neutral.
-        context.res = jsonResponse(200, { ok: true, snapshots: [] });
+      if (!owned) {
+        context.res = jsonResponse(404, {
+          ok: false,
+          errorCode: "RUN_NOT_FOUND",
+          message: "Run not found.",
+        });
         return;
       }
 
       if (latestOnly) {
-        const row = rows[0];
+        const row = (rows || [])[0];
         context.res = jsonResponse(200, {
           ok: true,
           snapshot: {
@@ -105,7 +115,7 @@ module.exports = async function runSnapshots(context, req) {
 
       context.res = jsonResponse(200, {
         ok: true,
-        snapshots: rows.map((row) => ({
+        snapshots: (rows || []).map((row) => ({
           tick: row.tick,
           created_at: row.created_at,
         })),
@@ -203,4 +213,3 @@ module.exports = async function runSnapshots(context, req) {
     });
   }
 };
-

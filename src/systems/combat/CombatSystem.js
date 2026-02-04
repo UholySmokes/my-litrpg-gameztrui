@@ -1637,6 +1637,15 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       const laneDistance = getLaneDistance(newState.combat, targetIndex);
       damage = applyLaneModifier({ damage, messages: [] }, laneDistance).damage;
 
+      // Defender dodge chance from effects like Blur
+      {
+        const dodgeChance = getDodgeChance(updatedEnemies[targetIndex]);
+        if (dodgeChance > 0 && random() < dodgeChance) {
+          combatLog.push(`${enemy.name} dodges ${ability.name}!`);
+          continue;
+        }
+      }
+
       const reactionResult = applyElementalReactions({
         attacker: updatedPlayer,
         defender: updatedEnemies[targetIndex],
@@ -1663,6 +1672,19 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
         updatedEnemies = newState.combat.enemies;
         combatLog = newState.combat.log;
         damage = stealthResult.damage;
+      }
+
+      // Enemy shield absorption
+      if (damage > 0) {
+        const before = updatedEnemies[targetIndex];
+        const shieldResult = applyShieldAbsorptionToEnemy(before, damage);
+        if (shieldResult.absorbed > 0) {
+          combatLog.push(
+            `🛡️ ${before.name}'s shield absorbs ${shieldResult.absorbed} damage!`,
+          );
+        }
+        updatedEnemies[targetIndex] = shieldResult.enemy;
+        damage = shieldResult.damage;
       }
 
       totalDamage += damage;

@@ -20,6 +20,7 @@
     "simulate:csv": "node sim_gamestart_fixed.js --format csv",
     "simulate:full": "node sim_gamestart_fixed.js --runs 100",
     "seed:static": "node scripts/seed-static-data.cjs",
+    "validate:registries": "node scripts/validate-registries.mjs",
     "analyze:middleware": "node scripts/analyze-middleware-dependencies.cjs",
     "analyze:middleware:json": "node scripts/analyze-middleware-dependencies.cjs --format=json",
     "analyze:middleware:md": "node scripts/analyze-middleware-dependencies.cjs --format=markdown",

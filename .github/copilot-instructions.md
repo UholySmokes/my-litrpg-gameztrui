@@ -31,6 +31,13 @@ This document provides essential guidelines for AI coding agents working within 
 - **External Dependencies**: The project relies on several external libraries. Ensure they are documented in `package.json` and installed via npm.
 - **Cross-Component Communication**: Use event dispatchers for communication between components. Check `ActionDispatcher.js` for implementation details.
 
+## AI Assistants (API)
+- Azure AI Foundry assistants are wired through Functions env vars (do not hardcode IDs):
+  - `NARRATOR_AGENT_ID` → `api/narrate/index.js` (NarratorAgent)
+  - `QUEST_AGENT_ID` → `api/quest-create/index.js` (QuestGiver)
+  - `FACTORY_AGENT_ID` → `api/factory-run/index.js` (ContentSmith)
+  - Defaults/examples live in `api/local.settings.example.json`.
+
 ## Key Files/Directories
 - **Documentation**: Refer to `current_state.md` for feature tracking and `system_specs.md` for game rules.
 - **Simulation Scripts**: The main simulation script is located in `sim_gamestart_fixed.js`. Output files are generated in the format `simulation_results_*.json/csv`.

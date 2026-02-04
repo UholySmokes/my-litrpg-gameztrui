@@ -14,8 +14,25 @@ The default OTLP endpoint used by this repo is:
 
 ```powershell
 $env:TRACE_ENABLED = "1"
-node .\sim_gamestart_fixed.js
+npm test
 ```
+
+## Tracing the Azure Functions API
+
+Start the Functions host from the `api/` folder (VS Code task: `func: host start`) and set `TRACE_ENABLED=1`.
+
+```powershell
+$env:TRACE_ENABLED = "1"
+Push-Location .\api
+npm install
+func host start
+Pop-Location
+```
+
+The following endpoints are wrapped in spans when tracing is enabled:
+- `api/narrate` (`api/narrate/index.js`)
+- `api/quest/create` (`api/quest-create/index.js`)
+- `api/factory/run` (`api/factory-run/index.js`)
 
 ## Disable tracing
 

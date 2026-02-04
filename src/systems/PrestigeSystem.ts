@@ -2,6 +2,7 @@ export interface PrestigeStats {
   prestigeLevel: number;
   soulShards: number; // Currency earned on reset
   xpMultiplier: number;
+  upgrades: { [key: string]: number }; // Store upgrade levels e.g. { 'damage': 1, 'gold': 2 }
 }
 
 export class PrestigeSystem {
@@ -24,6 +25,10 @@ export class PrestigeSystem {
     player.prestige.prestigeLevel += 1;
     player.prestige.soulShards += shardsEarned;
     
+    if (!player.prestige.upgrades) {
+      player.prestige.upgrades = { damage: 0, gold: 0 };
+    }
+    
     // 2. Apply Multipliers (10% XP boost per prestige level)
     player.prestige.xpMultiplier = 1 + (player.prestige.prestigeLevel * 0.10);
 
@@ -41,5 +46,20 @@ export class PrestigeSystem {
     
     // Force recalculate stats based on new prestige multipliers
     player.recalculateStats();
+  }
+
+  // New: Spend shards to buy permanent upgrades
+  buyUpgrade(player: any, type: 'damage' | 'gold'): boolean {
+    const currentLevel = player.prestige.upgrades[type] || 0;
+    const cost = 10 * (currentLevel + 1); // Cost scales: 10, 20, 30...
+
+    if (player.prestige.soulShards >= cost) {
+      player.prestige.soulShards -= cost;
+      player.prestige.upgrades[type] = currentLevel + 1;
+      console.log(`Upgraded ${type} to level ${currentLevel + 1}`);
+      return true;
+    }
+    console.log("Not enough Soul Shards.");
+    return false;
   }
 }

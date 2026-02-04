@@ -10668,6 +10668,17 @@ const UNIVERSAL_ELEMENTAL_PREFIXES = [
   },
 ];
 
+const EFFECT_ELEMENT_INFERENCE = [
+  { effectIds: ["burn"], element: "fire", isMagic: true },
+  { effectIds: ["frostbite", "freeze"], element: "ice", isMagic: true },
+  { effectIds: ["shock"], element: "lightning", isMagic: true },
+  { effectIds: ["poison"], element: "nature", isMagic: false },
+  { effectIds: ["wet"], element: "water", isMagic: true },
+  { effectIds: ["radiant_mark"], element: "holy", isMagic: true },
+  { effectIds: ["curse"], element: "dark", isMagic: true },
+  { effectIds: ["bleed"], element: "physical", isMagic: false },
+];
+
 const UNIVERSAL_FORM_MULTIPLIERS = {
   strike: 1.15,
   burst: 1.2,
@@ -10695,6 +10706,26 @@ const normalizeSkillTemplate = (skill) => {
         ? { target: effect.target ?? "enemy", ...effect }
         : effect,
     );
+  }
+
+  // Infer element + magic typing for legacy skills that apply signature elemental statuses.
+  if (next.type === "active" && !next.element && effects.length > 0) {
+    const idSet = new Set(
+      effects
+        .map((effect) =>
+          effect && typeof effect === "object" && !Array.isArray(effect)
+            ? effect.id
+            : null,
+        )
+        .filter((id) => typeof id === "string"),
+    );
+    for (const rule of EFFECT_ELEMENT_INFERENCE) {
+      if (rule.effectIds.some((id) => idSet.has(id))) {
+        next.element = rule.element;
+        if (next.isMagic == null) next.isMagic = rule.isMagic;
+        break;
+      }
+    }
   }
 
   // Infer element + magic typing for the generated universal elemental spell families.

@@ -10,7 +10,16 @@ const isGuid = (value) => GUID_REGEX.test(String(value || ""));
 
 const normalizeJson = (value) => {
   if (value === null || value === undefined) return null;
-  if (typeof value === "string") return value;
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    try {
+      JSON.parse(trimmed);
+      return trimmed;
+    } catch {
+      return JSON.stringify(trimmed);
+    }
+  }
   try {
     return JSON.stringify(value);
   } catch {
@@ -54,22 +63,20 @@ module.exports = async function runEvents(context, req) {
         ? Math.max(1, Math.min(MAX_EVENTS_RETURNED, Math.floor(limitRaw)))
         : 500;
 
-      const result = await withConnection(async (pool) => {
+      const { owned, rows } = await withConnection(async (pool) => {
+        const checkReq = pool.request();
+        checkReq.input("runId", sql.UniqueIdentifier, runId);
+        checkReq.input("userId", sql.NVarChar, user.id);
+        const ownedResult = await checkReq.query(
+          `SELECT TOP (1) id FROM dbo.game_runs WHERE id = @runId AND user_id = @userId;`,
+        );
+        const isOwned = Boolean(ownedResult?.recordset?.[0]?.id);
+        if (!isOwned) return { owned: false, rows: [] };
+
         const request = pool.request();
         request.input("runId", sql.UniqueIdentifier, runId);
-        request.input("userId", sql.NVarChar, user.id);
         request.input("afterSeq", sql.BigInt, afterSeq);
-
-        return request.query(`
-          -- Verify run ownership
-          IF NOT EXISTS (
-            SELECT 1 FROM dbo.game_runs WHERE id = @runId AND user_id = @userId
-          )
-          BEGIN
-            SELECT CAST(0 AS INT) AS ok, CAST(NULL AS NVARCHAR(32)) AS errorCode;
-            RETURN;
-          END
-
+        const result = await request.query(`
           SELECT TOP (${limit})
             seq,
             tick,
@@ -81,17 +88,22 @@ module.exports = async function runEvents(context, req) {
             AND (@afterSeq IS NULL OR seq > @afterSeq)
           ORDER BY seq ASC;
         `);
+
+        return { owned: true, rows: result?.recordset || [] };
       });
 
-      const rows = result?.recordsets?.[1] || result?.recordset || [];
-      if (!Array.isArray(rows)) {
-        context.res = jsonResponse(200, { ok: true, events: [] });
+      if (!owned) {
+        context.res = jsonResponse(404, {
+          ok: false,
+          errorCode: "RUN_NOT_FOUND",
+          message: "Run not found.",
+        });
         return;
       }
 
       context.res = jsonResponse(200, {
         ok: true,
-        events: rows.map((row) => ({
+        events: (rows || []).map((row) => ({
           seq: Number(row.seq),
           tick: row.tick,
           event_type: row.event_type,
@@ -222,4 +234,3 @@ module.exports = async function runEvents(context, req) {
     });
   }
 };
-

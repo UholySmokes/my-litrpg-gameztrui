@@ -18,7 +18,16 @@ const normalizeRunName = (value) => {
 
 const normalizeJson = (value) => {
   if (value === null || value === undefined) return null;
-  if (typeof value === "string") return value;
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    try {
+      JSON.parse(trimmed);
+      return trimmed; // already JSON
+    } catch {
+      return JSON.stringify(trimmed); // store as JSON string literal
+    }
+  }
   try {
     return JSON.stringify(value);
   } catch {
@@ -314,4 +323,3 @@ module.exports = async function runs(context, req) {
     });
   }
 };
-

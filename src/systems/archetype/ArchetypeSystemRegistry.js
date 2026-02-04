@@ -9,208 +9,241 @@ export const ARCHETYPE_SYSTEMS = [
     name: "Revival Archive",
     category: "System",
     summary: "Death becomes data: each failure funds the next rise.",
-    description:
-      "A persistence framework that records fatal outcomes and converts them into resurrection credits and tactical insights.",
+    description: "A parasitic persistence framework that treats death not as an end, but as a data point. It records the exact cause of every fatal outcome, converting the trauma and tactical data into 'Echo Credits' and 'Trauma Signatures' that fund and inform your next revival.",
     coreLoop: [
-      "Survive, die, and catalog causes of failure.",
-      "Spend Echo Credits to revive with targeted safeguards.",
-      "Unlock new revival clauses by clearing death-linked quests.",
+      "Experience a fatal event, generating a 'Death Echo' and accumulating Echo Credits.",
+      "In the Archive vestibule, analyze the Trauma Signature to understand the attack that killed you.",
+      "Spend Echo Credits to purchase 'Counter-Grafts'—temporary immunities or resistances tailored to the cause of death.",
+      "Activate a Revival Clause ('Retry', 'Rewind', 'Anchor') to re-engage the world."
     ],
     progression: [
-      "Tiered revival clauses: retry -> rewind -> anchor.",
-      "Archive entries unlock unique anti-boss counters.",
+      "Upgrade Revival Clauses: 'Retry' becomes 'Temporal Rewind', allowing a 10-second rollback before death.",
+      "Unlock 'Echo Imprinting' to permanently etch a diluted version of a powerful Counter-Graft into your soul.",
+      "Achieve 'Archive Sovereignty', allowing you to weaponize death echoes, projecting fatal memories onto enemies."
     ],
     narrativeHooks: [
-      "Memory fragments bleed into narration after each revival.",
-      "NPCs react to deja-vu patterns and altered fate.",
+      "You retain phantom sensations of past deaths, causing momentary glitches in your perception.",
+      "Entities that exist outside of linear time (gods, demons, ancient mages) perceive your multiple timelines and may react with hostility or curiosity.",
+      "You might encounter 'Echoes' of your past selves, spectral remnants of failed attempts."
     ],
     questHooks: [
-      "Recover lost archive nodes from dangerous zones.",
-      "Defeat enemies using only revived-state bonuses.",
+      "Hunt and kill a 'Chronovore' that is feeding on your discarded timelines.",
+      "A powerful NPC is trapped in a fatal loop; enter their loop, die in their place, and use the generated Echo to craft a solution.",
+      "Find and stabilize a corrupted Archive Node that is causing you to revive with fragmented memories or incorrect Counter-Grafts."
     ],
-    tags: ["survival", "retry", "memory"],
+    tags: ["survival", "retry", "memory", "temporal", "data"],
   },
   {
     id: "fate_selection_engine",
     name: "Fate Selection Engine",
     category: "Framework",
     summary: "Choice-driven destiny rewrites with escalating stakes.",
-    description:
-      "A decision lattice that presents mutually exclusive fate routes, trading immediate power for long-term law changes.",
+    description: "A metaphysical engine that maps destiny into a decision lattice. At pivotal moments, it presents three mutually exclusive 'Fate Clauses'—each a potential future. Choosing one grants immediate, tangible power and begins subtly rewriting reality to align with that path, while the rejected futures become 'Lost Fates'.",
     coreLoop: [
-      "Choose one of three fate clauses after milestones.",
-      "Lock in one path, sealing rival futures.",
-      "Stack fate clauses to rewrite regional rules.",
+      "Reach a 'Narrative Fulcrum' (e.g., a major boss fight, a critical choice).",
+      "The Engine presents three Fate Clauses, like 'The Tyrant's Peace,' 'The Martyr's Victory,' or 'The Trickster's Escape.'",
+      "Select one Clause, instantly gaining a related buff or ability, and locking in its long-term narrative trajectory.",
+      "Witness the immediate and long-term consequences as the world warps around your choice."
     ],
     progression: [
-      "Unlock higher-tier clause pools through narrative alignment.",
-      "Fate debt accrues if paths conflict.",
+      "Accumulate enough aligned choices to trigger a 'Destiny Cascade,' a permanent, regional law change (e.g., 'Kindness is rewarded with fortune').",
+      "Learn to harness 'Lost Fates,' calling upon the ghosts of rejected futures for a powerful, one-time ability at the cost of accruing 'Fate Debt.'",
+      "Achieve 'Nexus Consciousness,' allowing you to glimpse the three choices an enemy will have, and act to force their hand."
     ],
     narrativeHooks: [
-      "System commentary reframes events around chosen fate.",
-      "Prophets and seers become hostile or allied based on clauses.",
+      "Prophets and seers either revere you as a messiah of choice or despise you as a perversion of determinism.",
+      "You may encounter 'Echoes of Regret'—manifestations of the paths you didn't choose, who may help or hinder you.",
+      "Your body and equipment slowly transform to reflect your dominant fate choices."
     ],
     questHooks: [
-      "Resolve fate anomalies that appear after a clause choice.",
-      "Defeat a rival fate-bearer to reclaim a locked clause.",
+      "A rival 'Fate-Bearer' has chosen a conflicting destiny; you must either force them to abandon their path or erase them from the timeline.",
+      "Resolve a 'Paradox Knot' where two of your chosen fates create a contradictory reality.",
+      "Hunt for a 'Seed of Choice' to unlock a fourth, hidden Fate Clause option at the next Fulcrum."
     ],
-    tags: ["choice", "destiny", "law"],
+    tags: ["choice", "destiny", "law", "narrative-control", "meta"],
   },
   {
     id: "dragon_blood_authority",
     name: "Dragon Blood Authority",
     category: "Authority",
     summary: "Primeval supremacy with flight, breath, and dominance laws.",
-    description:
-      "An authority matrix that awakens draconic lineage, granting rule-level presence over beasts and elemental pressure.",
+    description: "An ancient, dormant authority that awakens your draconic lineage. This is not merely power, but a mandate to rule. It grants an oppressive, 'rule-level' presence over lesser beings, mastery over a chosen draconic element, and the potential to achieve the terrifying form of a true dragon.",
     coreLoop: [
-      "Gather draconic relics to unlock blood seals.",
-      "Use dominance to command or intimidate high-tier creatures.",
-      "Evolve breath and scale laws through conquest.",
+      "Exert your 'Draconic Pressure' aura to terrify or subjugate creatures, with effectiveness based on your Blood Purity.",
+      "Hunt powerful elemental or magical beasts and 'Devour' their hearts to increase your Blood Purity.",
+      "Channel your chosen element (Fire, Frost, Storm, Earth) into a devastating 'Breath Weapon'.",
+      "Hoard treasure and relics in a Lair to amplify your power and regeneration."
     ],
     progression: [
-      "Blood seals unlock flight, breath variations, and aura control.",
-      "Authority expands with hoarded relic power.",
+      "Unlock progressive stages of your 'Draconic Form': from simple scales and claws, to wings, and finally the full, cataclysmic Dragon Body.",
+      "Your Breath Weapon evolves, gaining secondary effects (e.g., 'Solar Fire' melts armor, 'Rimefrost' freezes souls).",
+      "Establish 'Territorial Dominion,' where your Draconic Pressure becomes a physical law within your lair's domain, weakening intruders."
     ],
     narrativeHooks: [
-      "Dragons and ancient factions recognize the bloodline.",
-      "World reacts to the return of draconic rule.",
+      "Ancient dragons see you as either a bold usurper or a cherished descendant.",
+      "Dragon-slaying cults and knights with ancestral vows hunt you relentlessly.",
+      "Your human emotions and reasoning begin to conflict with the primal instincts of your bloodline: greed, pride, and wrath."
     ],
     questHooks: [
-      "Claim a lair to stabilize authority growth.",
-      "Recover a lost dragon covenant to unlock a new breath law.",
+      "Claim and defend a Lair worthy of your bloodline (e.g., a volcano, a frozen peak).",
+      "Challenge a rival dragon in a formal 'Duel of Supremacy' to absorb their authority.",
+      "Recover a 'Clutchstone' of your lineage to unlock forgotten memories and techniques from your ancestors."
     ],
-    tags: ["bloodline", "dominance", "elemental"],
+    tags: ["bloodline", "dominance", "elemental", "transformation", "monster"],
   },
   {
     id: "technology_sovereign",
     name: "Technology Sovereign",
     category: "System",
     summary: "Modern tech blueprints turn into battlefield supremacy.",
-    description:
-      "A fabrication and optimization system that converts materials into scalable tech, multiplying tactical options.",
+    description: "A sovereign system that grants the user an intuitive genius for fabrication and optimization. It allows for the scanning of any object or energy source to generate a 'Blueprint,' which can then be iterated upon to create technology far beyond the world's current level. You are not a craftsman; you are an industrial revolution.",
     coreLoop: [
-      "Scan environments to generate blueprints.",
-      "Craft devices that alter combat, economy, and travel.",
-      "Upgrade production nodes to accelerate output.",
+      "Use your 'Analysis Visor' to scan materials, magic, and creatures, generating Blueprints.",
+      "Establish a mobile, extra-dimensional 'Fabrication Bay' to craft items from stored materials.",
+      "Iterate on existing blueprints, adding 'Augments' (e.g., 'Arcane Infusion,' 'Self-Repair Nanites') to create superior versions.",
+      "Deploy autonomous 'Scavenger Drones' to harvest materials automatically."
     ],
     progression: [
-      "Blueprint trees unlock elite prototypes.",
-      "Automation nodes reduce crafting cost and time.",
+      "Advance through 'Tech Tiers,' from basic clockwork and steam power to plasma, grav-tech, and esoteric energy weapons.",
+      "Unlock 'Mass Production,' allowing you to outfit entire armies or settlements with your technology.",
+      "Develop a 'Personal Integrated Battlesuit,' a modular suit of power armor that serves as your ultimate weapon and tool."
     ],
     narrativeHooks: [
-      "Tech breakthroughs shift faction balance.",
-      "NPCs revere or fear the new tech order.",
+      "Artisan guilds and the god of the forge declare you a heretic for devaluing true craftsmanship.",
+      "Kingdoms go to war to either secure your services or eliminate the strategic threat you represent.",
+      "Your advanced medical technology can cure 'incurable' plagues, making you a messiah to some and disrupting the plans of death-cults."
     ],
     questHooks: [
-      "Secure rare alloys for prototype tiers.",
-      "Defend a tech hub under siege.",
+      "Find a 'First-Age' power source to unlock the highest Tech Tiers.",
+      "Defend your Fabrication Bay from a rival faction attempting a corporate espionage/sabotage mission.",
+      "Build a device that can solve a massive environmental or magical catastrophe."
     ],
-    tags: ["crafting", "industry", "innovation"],
+    tags: ["crafting", "industry", "innovation", "scifi", "builder"],
   },
   {
     id: "constellation_mandate",
     name: "Constellation Mandate",
     category: "Authority",
     summary: "Celestial laws descend through star-aligned oaths.",
-    description:
-      "A pact system that binds your growth to constellations, granting rule fragments tied to cosmic cycles.",
+    description: "A pact-bound authority that ties your soul to the silent, cosmic gods—the Constellations. By aligning with them, you can draw down their 'Law Fragments' and wield celestial power that is alien to the terrestrial world. Your power waxes and wanes with the movements of the stars themselves.",
     coreLoop: [
-      "Align with constellations to gain law fragments.",
-      "Complete stellar trials to deepen alignment.",
-      "Invoke celestial authority in key encounters.",
+      "Perform a 'Stargazing Ritual' to align with a new Constellation, accepting its Mandate (a passive buff and a restriction).",
+      "Draw 'Starlight' into your body, a resource that regenerates faster at night and under an open sky.",
+      "Invoke 'Aspects' of your aligned Constellations (e.g., 'The Guardian's Shield,' 'The Hunter's Arrow') as powerful, temporary abilities.",
+      "Complete a 'Stellar Trial'—a personal challenge from your patron Constellation—to deepen your bond."
     ],
     progression: [
-      "Constellation ranks unlock orbital domains.",
-      "Multiple constellations allow composite law effects.",
+      "Unlock the ability to align with multiple Constellations, combining their laws into 'Syzygies'—rare and powerful combo effects.",
+      "Gain a 'Star-Chart Soul,' allowing you to navigate via the stars and even teleport between 'ley-lines' of celestial power.",
+      "Achieve 'Ascendant Alignment,' allowing you to manifest a temporary, ethereal form made of pure starlight."
     ],
     narrativeHooks: [
-      "Celestial omens rewrite narrative tone and stakes.",
-      "Astral factions take interest in your mandate.",
+      "Astrologers and prophets can read your destiny in the night sky, making it impossible to hide your power.",
+      "Abyssal creatures and beings of shadow are naturally hostile to your celestial light.",
+      "Your personality may shift slightly to reflect the nature of your dominant patron Constellation (e.g., stoic like the Guardian, aggressive like the Warrior)."
     ],
     questHooks: [
-      "Complete a constellation’s trial sequence.",
-      "Protect a star shrine from void corruption.",
+      "Defend a celestial observatory from an eclipse monster that devours starlight.",
+      "Travel to a 'fallen star' impact site to commune directly with a Constellation's raw power.",
+      "Re-chart a 'lost' Constellation by finding its scattered Law Fragments across the world."
     ],
-    tags: ["celestial", "oath", "law"],
+    tags: ["celestial", "oath", "law", "astral", "magic"],
   },
   {
     id: "divinity_pathway",
     name: "Divinity Pathway",
     category: "Path",
-    summary: "Structured ascension with rites, trials, and divine tiers.",
-    description:
-      "A guided ascension path that grants formal rites, domain selection, and divine rank milestones.",
+    summary: "Structured ascension with rites, domains, and divine authority.",
+    description: "A formal path to godhood, structured around divine domains, sacred rites, and ascending tiers of authority. This pathway turns faith, deeds, and dominion into a quantifiable measure of divinity, allowing a mortal to climb the ladder of cosmic power and become a true deity.",
     coreLoop: [
-      "Perform rites to unlock divine thresholds.",
-      "Choose a domain to define authority focus.",
-      "Complete trials to ascend to higher ranks.",
+      "Select a core 'Domain' (e.g., Harvest, Justice, Secrets, Storms) that defines your divine portfolio.",
+      "Gather 'Acolytes' and convert 'Faith' from mortals by performing deeds aligned with your Domain.",
+      "Spend Faith to perform 'Sacred Rites,' unlocking minor boons and progressing towards the next Divine Tier.",
+      "Complete a 'Trial of Ascension'—a major test of your worthiness—to rise to a new Tier of Divinity (e.g., Demigod, Lesser God, True God)."
     ],
     progression: [
-      "Domain resonance grants passive boons.",
-      "Divine ranks unlock prestige abilities.",
+      "At higher Tiers, your Domain's influence becomes a passive, regional law (e.g., a God of Justice's domain naturally exposes lies).",
+      "Unlock 'Divine Manifestations,' allowing you to create avatars, bestow blessings on champions, or pronounce curses.",
+      "Gain the ability to establish your own 'Divine Realm'—a pocket dimension shaped by your will and Domain.",
+      "Absorb or merge with other minor domains to expand your divine portfolio and power."
     ],
     narrativeHooks: [
-      "Temples and clergy respond to rising divinity.",
-      "Enemies treat you as a rival deity.",
+      "Existing gods of the pantheon view you as an upstart rival, a potential ally, or a useful pawn.",
+      "Your personality and physical form begin to subtly transform, reflecting the nature of your chosen Domain.",
+      "You are plagued by the prayers of your followers, feeling their joy, suffering, and endless demands.",
+      "Philosophers and heretics may arise to challenge the legitimacy of your newfound godhood."
     ],
     questHooks: [
-      "Restore a fallen shrine to unlock a rite.",
-      "Pass a divine trial that reshapes your domain.",
+      "An older, forgotten deity of a similar Domain awakens to challenge you for supremacy.",
+      "A rival god attempts to 'poison' your domain by spreading a conflicting ideology among your followers.",
+      "Find and reclaim a 'Lost Artifact' of your Domain to unlock a powerful, forgotten aspect of your authority.",
+      "Your most devout champion is in peril, and saving them requires a direct, personal intervention that risks exposing your divine nature."
     ],
-    tags: ["divine", "ritual", "ascension"],
+    tags: ["divine", "ritual", "ascension", "faith", "domain"],
   },
   {
     id: "weapon_law_authority",
     name: "Weapon Law Authority",
     category: "Authority",
-    summary: "Rewrite combat logic through a single weapon doctrine.",
-    description:
-      "A combat-law system that binds your growth to a weapon style, granting rule overrides to that doctrine.",
+    summary: "Master a weapon so completely you rewrite the laws of combat.",
+    description: "An authority that elevates mastery of a single weapon type from mere skill into a form of localized, absolute law. Your chosen weapon ceases to be just an object; it becomes a conceptual tool that dictates the rules of engagement, reality itself bending to accommodate its supremacy.",
     coreLoop: [
-      "Declare a weapon law (sword, spear, bow, etc.).",
-      "Accumulate law points via weapon feats.",
-      "Impose combat rules within your law domain.",
+      "Declare a 'Weapon Doctrine' (e.g., 'The Unbroken Spear,' 'The All-Piercing Arrow,' 'The Final Blade').",
+      "Achieve 'Weapon Feats' (e.g., parrying a mountain-crushing blow, striking a target through a storm) to accumulate 'Law Fragments'.",
+      "Spend Law Fragments to etch 'Edicts' onto your weapon, granting it passive, reality-defying properties (e.g., 'This blade cannot be broken,' 'This arrow never misses').",
+      "Activate a 'Domain of Doctrine'—a temporary field where your weapon's law is absolute, weakening other combat styles."
     ],
     progression: [
-      "Law tiers unlock guaranteed crit windows.",
-      "Advanced tiers allow rule denial for enemies.",
+      "Your weapon becomes a 'Relic of Law,' gaining a personality and history tied to your deeds.",
+      "Unlock 'Conceptual Strikes,' which don't just damage the body but attack a target's meaning (e.g., striking their 'hope' or 'footing').",
+      "Achieve 'Law Ascension,' allowing you to become the living embodiment of your doctrine, able to manifest your weapon from pure will.",
+      "Your Domain of Doctrine can be made permanent in a specific location (e.g., a dojo, a fortress), making you unbeatable there."
     ],
     narrativeHooks: [
-      "Rival weapon disciples challenge your law claim.",
-      "Legends spread about your chosen doctrine.",
+      "Legendary blacksmiths are either terrified of your weapon or desperate to study it.",
+      "Old masters who have reached the pinnacle of conventional skill seek you out to understand the 'next step' you represent.",
+      "The gods of war and combat are disturbed by your authority, as you enforce a law that is not their own.",
+      "Your weapon may develop cravings or aversions, refusing to strike the unworthy or demanding to be tested against legendary foes."
     ],
     questHooks: [
-      "Defeat a law-keeper to steal their doctrine.",
-      "Establish a dojo to anchor your authority.",
+      "Find and defeat a rival 'Law-Bearer' to absorb the key principles of their doctrine into your own.",
+      "A legendary monster can only be defeated by a specific, conceptual attack that you must first formulate and master.",
+      "Your weapon has been 'shattered' on a conceptual level by a powerful curse; you must reforge its 'meaning' by performing a series of impossible feats.",
+      "Establish a world-renowned school for your doctrine, defending it from those who would see it destroyed."
     ],
-    tags: ["combat", "doctrine", "law"],
+    tags: ["combat", "doctrine", "law", "weapon", "mastery"],
   },
   {
     id: "territory_core_dominion",
     name: "Territory Core Dominion",
     category: "Authority",
-    summary: "Base-building authority that alters rules in its zone.",
-    description:
-      "A domain engine that turns a claimed territory into a rule-augmented stronghold with escalating bonuses.",
+    summary: "A base-building authority that transforms a location into a personal kingdom with its own laws.",
+    description: "An authority that allows you to claim a 'Territory Core,' turning a physical location—be it a fortress, a forest, or a floating island—into a sovereign domain. Within this domain, your will becomes law, allowing you to alter the environment, buff allies, and hinder enemies on a fundamental level.",
     coreLoop: [
-      "Claim a territory core and establish rules.",
-      "Upgrade core tiers to expand influence radius.",
-      "Defend the core against raids and invasions.",
+      "Plant a 'Core Seed' in a location to claim it as your Dominion.",
+      "Generate 'Sovereignty' by building structures, attracting residents, or completing 'Dominion Projects'.",
+      "Spend Sovereignty to enact 'Edicts'—localized laws that affect everyone within your borders (e.g., 'The Law of Accelerated Growth,' 'The Edict of Unwavering Loyalty').",
+      "Defend your Core from 'Incursions' by rival powers or monsters attracted to its growing power."
     ],
     progression: [
-      "Core tiers unlock regional laws and perks.",
-      "Domain upgrades create unique quest chains.",
+      "Expand your Dominion's borders, absorbing more land and resources.",
+      "Your Core evolves, unlocking new structure types and more powerful Edicts (e.g., from a 'Stone Core' to a 'Crystal Core').",
+      "Develop a 'Dominion Symbiosis,' allowing you to draw power directly from your territory, granting you immense strength while within its borders.",
+      "Project a 'Shard of Dominion,' a small, temporary zone of your authority that can be deployed on a battlefield outside your borders."
     ],
     narrativeHooks: [
-      "Settlements form around your growing domain.",
-      "Rival lords challenge your territory claim.",
+      "Refugees and pioneers flock to your domain, seeing it as a haven, creating a bustling and complex society you must manage.",
+      "Neighboring rulers see your expanding borders as an act of aggression, leading to diplomatic tension or outright war.",
+      "The very nature of the land begins to change to reflect your personality and Edicts, becoming a paradise, a grim fortress, or a surreal wonderland.",
+      "Your sense of self begins to merge with your territory; a wound to the land feels like a personal injury."
     ],
     questHooks: [
-      "Secure resources to expand the core.",
-      "Survive a siege to unlock a dominion law.",
+      "A legendary architect appears, offering to build a unique, 'Mythic' structure in your domain if you can provide the impossible materials.",
+      "A 'Core Parasite' has infested your Dominion, secretly subverting your Edicts and sowing dissent. You must find and purge it without destroying your own territory.",
+      "To upgrade your Core to the next tier, you must connect it to a ley line or other source of immense natural power, which is fiercely guarded.",
+      "Negotiate a trade agreement or mutual defense pact with another powerful Dominion-holder."
     ],
-    tags: ["territory", "dominion", "defense"],
+    tags: ["territory", "dominion", "defense", "base-building", "law", "strategy"],
   },
   {
     id: "dungeon_admin_protocol",

@@ -10826,6 +10826,17 @@ const universalSkillsDatabase = [
     class: "universal",
     description: "Identify and harvest medicinal herbs.",
     level: 1,
+    template: {
+      category: "Crafting & Creation Skills",
+      function: "crafting",
+      elements: ["nature"],
+      synergies: [
+        "Pairs with Alchemy (herbs are core potion ingredients).",
+        "Works with Cooking/survival; herb knowledge lets you enhance meals and avoid poisonous plants.",
+        "Combined with druidic magic, you can grow rare herbs faster and amplify their potency for powerful remedies or poisons.",
+      ],
+      source: "docx_non_combat_abilities_spells",
+    },
     unlockConditions: {
       level: 3,
       location: null,
@@ -10841,6 +10852,17 @@ const universalSkillsDatabase = [
     class: "universal",
     description: "Craft and repair weapons and armor.",
     level: 1,
+    template: {
+      category: "Crafting & Creation Skills",
+      function: "crafting",
+      elements: [],
+      synergies: [
+        "Pairs with Enchanting: forge high-quality gear, then enchant it for greater effect.",
+        "Works with Mining (to gather ores) and Engineering (complex items).",
+        "Well-crafted items can serve as ritual components and withstand magical strain better than crude work.",
+      ],
+      source: "docx_non_combat_abilities_spells",
+    },
     unlockConditions: {
       level: 10,
       location: "forge",

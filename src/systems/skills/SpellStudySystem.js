@@ -145,6 +145,14 @@ export const createStudiedSpell = ({ level = 1, existingIds } = {}) => {
     manaCost,
     cooldown: chosenForm.cooldown,
     description: `A studied ${chosenForm.name.toLowerCase()} of ${chosenElement.name.toLowerCase()} energy.`,
+    template: {
+      category: "Spell Study",
+      function: "spell",
+      elements: [chosenElement.id],
+      synergies: [],
+      source: "SpellStudySystem",
+      meta: { form: chosenForm.id },
+    },
     damage: {
       multiplier: Math.round(scaledMultiplier * 100) / 100,
       isMagic: true,
@@ -176,5 +184,23 @@ export const improveStudiedSpell = (skill, { existingIds } = {}) => {
     isMagic: skill.isMagic ?? true,
     element: evolved.element ?? skill.element,
     tags: Array.from(nextTags),
+    template:
+      evolved.template ||
+      skill.template ||
+      (evolved.element || skill.element
+        ? {
+            category: "Spell Study",
+            function: "spell",
+            elements: [evolved.element || skill.element],
+            synergies: [],
+            source: "SpellStudySystem",
+          }
+        : {
+            category: "Spell Study",
+            function: "spell",
+            elements: [],
+            synergies: [],
+            source: "SpellStudySystem",
+          }),
   };
 };

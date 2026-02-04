@@ -1256,16 +1256,73 @@ const CLASS_ABILITY_SETS = {
   guardian_martyr: ["sacrificial_aegis", "vow_of_endurance", "judgment"],
 };
 
+const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) => {
+  if (!ability || typeof ability !== "object") return ability;
+
+  const next = { ...ability };
+  const template =
+    next.template && typeof next.template === "object" ? next.template : {};
+  const effects = Array.isArray(next.effects)
+    ? next.effects.map((effect) =>
+        effect && typeof effect === "object" && !Array.isArray(effect)
+          ? { target: effect.target ?? (next.target === "self" ? "self" : "enemy"), ...effect }
+          : effect,
+      )
+    : [];
+
+  const element = next.damage?.element || next.element || null;
+  const defaultFunction = next.damage
+    ? next.damage.isMagic
+      ? "spell"
+      : "attack"
+    : next.heal
+      ? "heal"
+      : next.resourceGain
+        ? "resource"
+        : "utility";
+
+  return {
+    ...next,
+    effects,
+    template: {
+      category: template.category || category || "Class Ability",
+      function: template.function || defaultFunction,
+      elements: Array.isArray(template.elements)
+        ? template.elements
+        : element
+          ? [element]
+          : [],
+      synergies: Array.isArray(template.synergies) ? template.synergies : [],
+      source: template.source || source || "ClassAbilityRegistry",
+      ...(template.meta && typeof template.meta === "object"
+        ? { meta: template.meta }
+        : ownerId
+          ? { meta: { ownerId } }
+          : {}),
+    },
+  };
+};
+
 export function getClassAbilitiesFor(classId) {
   if (!classId) return null;
   const ids = CLASS_ABILITY_SETS[classId];
   if (!ids) return null;
-  return ids.map((id) => ABILITIES[id]).filter(Boolean);
+  return ids
+    .map((id) =>
+      normalizeAbilityTemplate(ABILITIES[id], {
+        category: "Class Ability",
+        ownerId: classId,
+      }),
+    )
+    .filter(Boolean);
 }
 
 export function getClassAbilityById(abilityId) {
   if (!abilityId) return null;
-  return ABILITIES[abilityId] || null;
+  return normalizeAbilityTemplate(ABILITIES[abilityId], {
+    category: "Class Ability",
+    ownerId: "unbound",
+  });
 }
 
 export function isClassAbilityAllowed(classId, abilityId) {

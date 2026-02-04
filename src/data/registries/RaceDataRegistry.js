@@ -66,7 +66,7 @@ export const EFFECT_TAGS = {
  * RACE TRAIT REGISTRY
  * Maps raceIDs to their sophisticated traits.
  */
-export const RACE_TRAITS = {
+export let RACE_TRAITS = {
   pure_human: {
     passive: {
       id: "human_potential",
@@ -1029,7 +1029,7 @@ export const RACE_TRAITS = {
 /**
  * RACES - 55 Fantasy/Cultivation themed races
  */
-export const races = [
+export let races = [
   {
     id: "pure_human",
     name: "Pure Human",
@@ -2038,6 +2038,15 @@ export const races = [
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
+
+export function setRaceRegistry({ races: nextRaces, raceTraits: nextTraits } = {}) {
+  if (Array.isArray(nextRaces)) {
+    races = nextRaces;
+  }
+  if (nextTraits && typeof nextTraits === "object" && !Array.isArray(nextTraits)) {
+    RACE_TRAITS = nextTraits;
+  }
+}
 
 export function getRaceById(id) {
   return races.find((race) => race.id === id) || null;

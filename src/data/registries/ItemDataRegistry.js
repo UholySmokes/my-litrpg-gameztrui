@@ -7,7 +7,7 @@
 /**
  * Item Database - All items in the game with their complete definitions
  */
-export const itemDatabase = {
+export let itemDatabase = {
   // Consumables
   minor_health_potion: {
     id: "minor_health_potion",
@@ -494,6 +494,14 @@ const getEquipmentBySlotCache = (slot) => {
   }
   return equipmentBySlotCache.get(slot);
 };
+
+export function setItemDatabase(nextDatabase) {
+  if (!nextDatabase || typeof nextDatabase !== "object" || Array.isArray(nextDatabase)) {
+    return;
+  }
+  itemDatabase = nextDatabase;
+  resetItemCaches();
+}
 
 /**
  * Clears cached lookup results so subsequent calls recompute from itemDatabase.

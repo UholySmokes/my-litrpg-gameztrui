@@ -17,6 +17,14 @@ CREATE TABLE dbo.game_saves (
 
 CREATE INDEX IX_game_saves_user_id ON dbo.game_saves(user_id);
 CREATE INDEX IX_game_saves_updated_at ON dbo.game_saves(updated_at DESC);
+
+CREATE TABLE dbo.game_static_bundles (
+  bundle_key NVARCHAR(100) NOT NULL PRIMARY KEY,
+  payload NVARCHAR(MAX) NOT NULL,
+  created_at DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+  updated_at DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+  CONSTRAINT CK_game_static_bundles_payload_json CHECK (ISJSON(payload) = 1)
+);
 ```
 
 ## Run Storage (Seed + Events + Snapshots)
@@ -67,3 +75,12 @@ AZURE_SQL_PASSWORD=...
 
 Otherwise, set `DEV_USER_ID` in `api/local.settings.json` for local testing and
 let the Functions runtime authenticate via managed identity in Azure.
+
+## Seeding Static Content
+
+Static registries (races/classes/items/etc.) are stored in `dbo.game_static_bundles`.
+Run the seeder to upsert the `core` bundle:
+
+```bash
+npm run seed:static
+```

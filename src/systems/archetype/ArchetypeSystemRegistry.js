@@ -47,7 +47,7 @@ class ArchetypeSystem {
   }
 }
 
-const ARCHETYPE_DEFINITIONS = [
+export let ARCHETYPE_DEFINITIONS = [
   {
     id: "revival_archive",
     name: "Revival Archive",
@@ -4216,7 +4216,13 @@ const ARCHETYPE_DEFINITIONS = [
   },
 ];
 
-export const ARCHETYPE_SYSTEMS = ARCHETYPE_DEFINITIONS.map(def => new ArchetypeSystem(def));
+export let ARCHETYPE_SYSTEMS = ARCHETYPE_DEFINITIONS.map(def => new ArchetypeSystem(def));
+
+export function setArchetypeDefinitions(nextDefinitions) {
+  if (!Array.isArray(nextDefinitions)) return;
+  ARCHETYPE_DEFINITIONS = nextDefinitions;
+  ARCHETYPE_SYSTEMS = ARCHETYPE_DEFINITIONS.map(def => new ArchetypeSystem(def));
+}
 
 export function getArchetypeSystemById(id) {
   return ARCHETYPE_SYSTEMS.find((system) => system.id === id) || null;

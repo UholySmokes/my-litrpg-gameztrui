@@ -5,7 +5,7 @@
 
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
-const MAIN_QUESTS = [
+let MAIN_QUESTS = [
   {
     id: "mq_fallen_spire",
     name: "Echoes of the Fallen Spire",
@@ -233,7 +233,7 @@ const MAIN_QUESTS = [
   },
 ];
 
-const SIDE_QUESTS = [
+let SIDE_QUESTS = [
   {
     id: "sq_cryptic_cache",
     name: "Cryptic Cache",
@@ -619,6 +619,15 @@ function generateInitialQuestPackage({
     mainQuest,
     sideQuests,
   };
+}
+
+export function setQuestCatalog({ main, side } = {}) {
+  if (Array.isArray(main)) {
+    MAIN_QUESTS = main;
+  }
+  if (Array.isArray(side)) {
+    SIDE_QUESTS = side;
+  }
 }
 
 export { MAIN_QUESTS, SIDE_QUESTS };

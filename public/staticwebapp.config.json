@@ -24,6 +24,14 @@
       "allowedRoles": ["authenticated"]
     },
     {
+      "route": "/api/static-data",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/api/static-data/*",
+      "allowedRoles": ["anonymous"]
+    },
+    {
       "route": "/runtime-config.js"
     }
   ]

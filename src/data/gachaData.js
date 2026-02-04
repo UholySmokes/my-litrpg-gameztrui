@@ -5,7 +5,7 @@
 import { random, randomChoice } from "../utils/DeterministicRandom.js";
 import { getItemData } from "../entities/ItemRegistry.js";
 
-export const gachaPools = {
+export let gachaPools = {
   equipment: {
     id: "equipment",
     name: "Equipment Gacha",
@@ -127,6 +127,12 @@ export const gachaPools = {
     },
   },
 };
+
+export function setGachaPools(nextPools) {
+  if (nextPools && typeof nextPools === "object" && !Array.isArray(nextPools)) {
+    gachaPools = nextPools;
+  }
+}
 
 /**
  * Adjust rarity rates with a title bonus.

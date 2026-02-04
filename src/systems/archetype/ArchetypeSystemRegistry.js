@@ -15,11 +15,32 @@ class ArchetypeSystem {
    * @returns {Object} The initialized system instance.
    */
   build(context = {}) {
+    let integrity = 100;
+
+    // Determine system integrity based on category stability
+    switch (this.category) {
+      case "System":
+        integrity = 100;
+        break;
+      case "Authority":
+        integrity = 95;
+        break;
+      case "Path":
+        integrity = 92;
+        break;
+      case "Framework":
+        integrity = 90;
+        break;
+      default:
+        integrity = 85;
+    }
+
     return {
       archetypeId: this.id,
       name: this.name,
       category: this.category,
       active: true,
+      systemIntegrity: integrity,
       state: { ...context },
       definition: this
     };

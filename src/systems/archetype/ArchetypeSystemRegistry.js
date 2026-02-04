@@ -2022,6 +2022,70 @@ export const ARCHETYPE_SYSTEMS = [
     ],
     tags: ["reality-bending", "meta", "exploit", "causality", "subtle-power"],
   },
+  {
+    id: "ability_generator_engine",
+    name: "Ability Generator Engine",
+    category: "System",
+    summary: "A power engine that continuously generates new, random abilities.",
+    description: "An internal engine that constructs and bestows new abilities at a steady rate. These abilities can range from trivial to reality-breaking, but are often temporary and unpredictable. Your power is not in a fixed set of skills, but in your endless, chaotic potential and adaptability.",
+    coreLoop: [
+      "The Generator produces a new 'Latent Ability' on a fixed or variable timer.",
+      "Complete a 'Resonance Trigger'—a specific, often strange, condition—to awaken the Latent Ability (e.g., 'Sing backwards for 10 seconds,' 'Take exactly 7 steps').",
+      "Wield the new, often temporary, ability to overcome challenges.",
+      "Expend or 'Shatter' an existing ability to fuel the generator, speeding up the next creation or influencing its category."
+    ],
+    progression: [
+      "Upgrade the Generator's 'Quality Control', increasing the likelihood of higher-tier abilities.",
+      "Unlock 'Harmonization Slots', allowing you to make a favorite temporary ability permanent, at the cost of slowing the generation rate.",
+      "Develop 'Catalyst Injection', allowing you to feed the generator specific concepts or materials to influence the type of ability it creates (e.g., feeding it a flame dragon's heart to generate a fire ability).",
+      "Achieve 'Generator Overdrive,' a temporary state where you rapidly generate dozens of low-power abilities at once."
+    ],
+    narrativeHooks: [
+      "Your fighting style is utterly unpredictable, making you a nightmare for tacticians.",
+      "You might suddenly generate a socially inconvenient ability at the worst possible moment (e.g., 'Ability to hear stones complaining').",
+      "Scholars of magic are desperate to study you, believing you are a key to understanding the origin of powers.",
+      "Your own sense of identity can feel fractured, as your core capabilities are always in flux."
+    ],
+    questHooks: [
+      "A specific, legendary ability is needed to solve a crisis, and you must keep generating abilities until you get it by chance.",
+      "Your generator has become 'stuck,' producing only useless or comical abilities. You must find a 'Conceptual Lubricant' to get it working again.",
+      "A powerful entity wants to harness your generator for their own ends, seeing you as a living power factory.",
+      "You have generated a 'Cursed' ability that you cannot get rid of. You must find a way to fulfill its strange, dark condition to finally release it."
+    ],
+    tags: ["rng", "ability-generation", "chaos", "adaptation", "potential"],
+  },
+  {
+    id: "incubus_charm_system",
+    name: "Incubus Charm System",
+    category: "System",
+    summary: "Gain power by converting emotional and social influence into raw energy.",
+    description: "A symbiotic system that feeds on emotional energy—such as desire, devotion, and trust—and converts it into personal power. This is not about mind control, but about becoming the focal point of others' hearts and minds. The system rewards building relationships, inspiring loyalty, and leveraging social networks.",
+    coreLoop: [
+      "Identify targets with high 'Emotional Resonance'.",
+      "Engage in social 'Maneuvers'—from simple conversations to grand gestures—to build 'Influence' over a target.",
+      "Convert Influence into 'Essence,' the fuel for your abilities, or 'Bonds,' which create permanent links to powerful individuals.",
+      "Use Essence to power charm-based abilities or directly enhance your physical and magical attributes."
+    ],
+    progression: [
+      "Unlock 'Auras of Presence' that passively influence how others perceive you (e.g., 'Aura of Alluring Mystery,' 'Aura of Unquestionable Authority').",
+      "Deepen Bonds with key individuals to unlock 'Synergy Abilities,' powerful skills that can only be used when they are near or supportive of you.",
+      "Learn to create 'Contracts of Devotion,' formal pacts where an individual willingly channels their power or loyalty to you in exchange for protection or purpose.",
+      "Achieve 'Heart Dominion,' allowing you to sense the emotional state of an entire population and subtly influence its morale."
+    ],
+    narrativeHooks: [
+      "You find yourself entangled in complex political and romantic webs, whether you intend to or not.",
+      "Powerful individuals may become obsessed with you, seeing you as either the love of their life or their ultimate rival.",
+      "Your powers are less effective against those with no emotional attachments or those whose hearts are already completely devoted to another cause.",
+      "You must constantly balance the needs and desires of your 'bonded' allies, as their conflicts can weaken your own power."
+    ],
+    questHooks: [
+      "Win the loyalty of a key political figure to prevent a war, using only your influence.",
+      "A powerful entity has 'Shackled' the heart of someone you need as an ally; you must find a way to break the shackle without destroying their will.",
+      "Someone has discovered the nature of your power and is systematically turning your allies against you, forcing you to win them back or cut them loose.",
+      "To reach the next tier of power, you must inspire true, unyielding hope in a city that has fallen to absolute despair."
+    ],
+    tags: ["social", "influence", "charm", "seduction", "diplomacy", "scaling"],
+  },
 ];
 
 export function getArchetypeSystemById(id) {

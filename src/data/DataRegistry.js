@@ -4,13 +4,19 @@
  * Implements the Facade pattern to hide the complexity of multiple registry files.
  */
 
-import { races } from "./registries/RaceRegistry.js";
-import { classes } from "./registries/ClassRegistry.js";
-import { itemDatabase } from "./registries/ItemRegistry.js";
-import { enemies } from "./registries/EnemyRegistry.js";
-import { gachaData } from "./registries/GachaRegistry.js";
-import { shopData } from "./registries/ShopRegistry.js";
-import { titleData } from "./registries/TitleRegistry.js";
+import { races } from "./registries/RaceDataRegistry.js";
+import { classes } from "./registries/ClassDataRegistry.js";
+import {
+  itemDatabase,
+  getItemsByType as getItemsByTypeFromRegistry,
+  getItemsByRarity as getItemsByRarityFromRegistry,
+  getEquipmentBySlot as getEquipmentBySlotFromRegistry,
+} from "./registries/ItemDataRegistry.js";
+import { enemies } from "./registries/EnemyDataRegistry.js";
+import { gachaPools } from "./gachaData.js";
+import { getShopItemsByCategory } from "./shopData.js";
+import { titleDatabase } from "./titleData.js";
+import { getQuestById as getQuestByIdFromCatalog } from "./QuestCatalog.js";
 
 export class DataRegistry {
   static getRaces() {
@@ -25,20 +31,32 @@ export class DataRegistry {
     return itemDatabase || {};
   }
 
+  static getItemsByType(type) {
+    return getItemsByTypeFromRegistry(type);
+  }
+
+  static getItemsByRarity(rarity) {
+    return getItemsByRarityFromRegistry(rarity);
+  }
+
+  static getEquipmentBySlot(slot) {
+    return getEquipmentBySlotFromRegistry(slot);
+  }
+
   static getEnemies() {
     return enemies || [];
   }
 
   static getGachaItems() {
-    return gachaData || [];
+    return gachaPools || {};
   }
 
   static getShopItems() {
-    return shopData || [];
+    return getShopItemsByCategory("all");
   }
 
   static getTitles() {
-    return titleData || [];
+    return titleDatabase || [];
   }
 
   static getRaceById(id) {
@@ -55,5 +73,9 @@ export class DataRegistry {
 
   static getEnemyById(id) {
     return this.getEnemies().find((e) => e.id === id);
+  }
+
+  static getQuestById(id) {
+    return getQuestByIdFromCatalog(id);
   }
 }

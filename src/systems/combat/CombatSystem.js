@@ -1736,6 +1736,37 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
     return { success: false, reason: "Not in combat", state };
   }
 
+  // Start-of-turn effect ticks for the player (DoT/HoT, duration decay)
+  {
+    const tick = processEntityTurnEffects(state.player);
+    const tickMessages = Array.isArray(tick.messages) ? tick.messages : [];
+    const nextLog =
+      tickMessages.length > 0
+        ? [...state.combat.log, ...tickMessages]
+        : state.combat.log;
+    state = {
+      ...state,
+      player: tick.entity,
+      combat: {
+        ...state.combat,
+        log: nextLog,
+      },
+    };
+  }
+
+  // Hard CC: player cannot act this turn
+  if (hasEffectTag(state.player, "SKIP_TURN")) {
+    const newLog = [...state.combat.log, `${state.player.name} is unable to act!`];
+    return {
+      success: true,
+      damage: 0,
+      state: {
+        ...state,
+        combat: { ...state.combat, log: newLog, turn: "enemy" },
+      },
+    };
+  }
+
   const player = state.player;
   const classId = player.class?.id || player.class;
   if (!isClassAbilityAllowed(classId, abilityId)) {
@@ -1745,6 +1776,14 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
   const ability = getClassAbilityById(abilityId);
   if (!ability) {
     return { success: false, reason: "Ability not found", state };
+  }
+
+  // Silence/disarm checks (player side)
+  if (ability.damage?.isMagic && hasEffectTag(player, "BLOCK_MAGIC")) {
+    return { success: false, reason: "Silenced", state };
+  }
+  if (ability.damage && !ability.damage.isMagic && hasEffectTag(player, "BLOCK_PHYSICAL")) {
+    return { success: false, reason: "Disarmed", state };
   }
 
   const currentCooldown = state.combat?.classAbilityCooldowns?.[abilityId] || 0;
@@ -1767,6 +1806,37 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
     return { success: false, reason: "Not in combat", state };
   }
 
+  // Start-of-turn effect ticks for the player (DoT/HoT, duration decay)
+  {
+    const tick = processEntityTurnEffects(state.player);
+    const tickMessages = Array.isArray(tick.messages) ? tick.messages : [];
+    const nextLog =
+      tickMessages.length > 0
+        ? [...state.combat.log, ...tickMessages]
+        : state.combat.log;
+    state = {
+      ...state,
+      player: tick.entity,
+      combat: {
+        ...state.combat,
+        log: nextLog,
+      },
+    };
+  }
+
+  // Hard CC: player cannot act this turn
+  if (hasEffectTag(state.player, "SKIP_TURN")) {
+    const newLog = [...state.combat.log, `${state.player.name} is unable to act!`];
+    return {
+      success: true,
+      damage: 0,
+      state: {
+        ...state,
+        combat: { ...state.combat, log: newLog, turn: "enemy" },
+      },
+    };
+  }
+
   const player = state.player;
   const raceId = player.race?.id || player.race;
   if (!isRaceAbilityAllowed(raceId, abilityId)) {
@@ -1776,6 +1846,14 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
   const ability = getRaceAbilityById(abilityId);
   if (!ability) {
     return { success: false, reason: "Ability not found", state };
+  }
+
+  // Silence/disarm checks (player side)
+  if (ability.damage?.isMagic && hasEffectTag(player, "BLOCK_MAGIC")) {
+    return { success: false, reason: "Silenced", state };
+  }
+  if (ability.damage && !ability.damage.isMagic && hasEffectTag(player, "BLOCK_PHYSICAL")) {
+    return { success: false, reason: "Disarmed", state };
   }
 
   const currentCooldown = state.combat?.raceAbilityCooldowns?.[abilityId] || 0;

@@ -37,12 +37,14 @@ function applyProcEffect(proc, attacker, defender, damageDealt, messages) {
 
     case 'lifesteal':
       const healAmount = Math.floor(damageDealt * (proc.multiplier || 0.2));
-      attacker.hp.current = Math.min(attacker.hp.max, attacker.hp.current + healAmount);
-      messages.push(`🩸 ${attacker.name} drains ${healAmount} life!`);
+      // Assuming attacker has hp object structure
+      if (attacker.hp) {
+        attacker.hp.current = Math.min(attacker.hp.max, attacker.hp.current + healAmount);
+        messages.push(`🩸 ${attacker.name} drains ${healAmount} life!`);
+      }
       break;
 
     case 'chain_lightning':
-      // Logic would go here to hit other enemies if we had reference to the enemy group
       result.extraDamage = 20; // Flat bonus for single target fallback
       messages.push(`⚡ Lightning arcs from the blade!`);
       break;

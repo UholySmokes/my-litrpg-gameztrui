@@ -18,7 +18,7 @@ export const MONK_CONFIG = {
 export function calculateMonkDamage(player) {
   if (player.class !== 'monk') return 0;
 
-  const levelScaling = player.level * 2;
+  const levelScaling = (player.level || 1) * 2;
   const str = player.attributes?.str || 0;
   const dex = player.attributes?.dex || 0;
   const attributeBonus = (str + dex) / 2;
@@ -42,24 +42,30 @@ export function getComboMultiplier(player) {
  * Updates combo state after an attack.
  * @param {Object} player 
  * @param {boolean} isHit - Did the attack hit?
+ * @returns {Object} Updated player properties (comboCount)
  */
 export function updateCombo(player, isHit) {
-  if (player.class !== 'monk') return;
+  if (player.class !== 'monk') return player;
+
+  let newCombo = player.comboCount || 0;
 
   if (isHit) {
-    player.comboCount = (player.comboCount || 0) + 1;
-    // Cap combo count at max multiplier index + 1
-    if (player.comboCount > MONK_CONFIG.comboMultipliers.length) {
-      player.comboCount = MONK_CONFIG.comboMultipliers.length;
+    newCombo += 1;
+    // Cap combo count at max multiplier index + 1 (length)
+    if (newCombo > MONK_CONFIG.comboMultipliers.length) {
+      newCombo = MONK_CONFIG.comboMultipliers.length;
     }
   } else {
     // Miss breaks combo
-    player.comboCount = 0;
+    newCombo = 0;
   }
+
+  return { ...player, comboCount: newCombo };
 }
 
 export default {
   calculateMonkDamage,
   getComboMultiplier,
-  updateCombo
+  updateCombo,
+  MONK_CONFIG
 };

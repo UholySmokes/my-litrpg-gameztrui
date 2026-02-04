@@ -49,7 +49,7 @@ export class PrestigeSystem {
   }
 
   // New: Spend shards to buy permanent upgrades
-  buyUpgrade(player: any, type: 'damage' | 'gold'): boolean {
+  buyUpgrade(player: any, type: 'damage' | 'gold' | 'mana' | 'health'): boolean {
     const currentLevel = player.prestige.upgrades[type] || 0;
     const cost = 10 * (currentLevel + 1); // Cost scales: 10, 20, 30...
 

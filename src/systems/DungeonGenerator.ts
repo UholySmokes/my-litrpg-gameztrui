@@ -4,7 +4,10 @@ export enum TileType {
   Enemy = 'E',
   Loot = 'L',
   Start = 'S',
-  Exit = '>'
+  Exit = '>',
+  Trap = 'T',   // New: Deals damage when stepped on
+  Shrine = 'H', // New: Heals or buffs player
+  Boss = 'B'    // New: Boss enemy
 }
 
 export class DungeonGenerator {
@@ -38,6 +41,16 @@ export class DungeonGenerator {
     // 4. Place Entities based on difficulty
     this.placeFeature(TileType.Enemy, 5 + difficulty); // More enemies on higher difficulty
     this.placeFeature(TileType.Loot, 2 + Math.floor(difficulty / 2));
+    
+    // New: Add Traps and Shrines
+    this.placeFeature(TileType.Trap, 3 + Math.floor(difficulty / 3));
+    this.placeFeature(TileType.Shrine, 1 + Math.floor(difficulty / 10));
+
+    // New: Boss every 5 levels
+    if (difficulty % 5 === 0) {
+      this.placeFeature(TileType.Boss, 1);
+    }
+
     this.placeFeature(TileType.Start, 1);
     this.placeFeature(TileType.Exit, 1);
 

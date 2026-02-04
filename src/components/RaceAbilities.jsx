@@ -10,6 +10,24 @@ function getRaceAbilities(player, cooldowns = {}) {
   return { abilities, cooldowns };
 }
 
+function formatAbilityTooltip(ability) {
+  const lines = [];
+  if (ability?.description) lines.push(ability.description);
+
+  const template = ability?.template;
+  if (template && typeof template === "object") {
+    if (template.function) lines.push(`Function: ${template.function}`);
+    if (Array.isArray(template.elements) && template.elements.length > 0) {
+      lines.push(`Elements: ${template.elements.join(", ")}`);
+    }
+    if (Array.isArray(template.synergies) && template.synergies.length > 0) {
+      lines.push(`Synergies: ${template.synergies.slice(0, 2).join(" | ")}`);
+    }
+  }
+
+  return lines.join("\n");
+}
+
 function canAfford(player, ability) {
   const resources = player.resources || {};
   const rage = resources.rage ?? player.rage ?? 0;
@@ -102,7 +120,7 @@ export default function RaceAbilities({
               className="holo-button"
               disabled={disabled ? true : false}
               onClick={() => onUseAbility(ability.id, 0)}
-              title={ability.description}
+              title={formatAbilityTooltip(ability)}
               style={{
                 fontSize: "0.8rem",
                 flex: "1 1 auto",

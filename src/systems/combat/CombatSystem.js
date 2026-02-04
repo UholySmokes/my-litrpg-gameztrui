@@ -92,10 +92,18 @@ const getLaneDistance = (combatState, enemyIndex) => {
   return Math.abs(playerLane - enemyLane);
 };
 
-const applyLaneModifier = (damageResult, laneDistance) => {
+const applyLaneModifier = (
+  damageResult,
+  laneDistance,
+  { allowZeroDamage = false } = {},
+) => {
   if (!damageResult || laneDistance <= 0) return damageResult;
   const multiplier = laneDistance === 1 ? 0.85 : 0.7;
-  const nextDamage = Math.max(1, Math.floor(damageResult.damage * multiplier));
+  const minDamage = allowZeroDamage ? 0 : 1;
+  const nextDamage = Math.max(
+    minDamage,
+    Math.floor(damageResult.damage * multiplier),
+  );
   const messages = Array.isArray(damageResult.messages)
     ? [...damageResult.messages, `Lane gap ${laneDistance}: x${multiplier}`]
     : [`Lane gap ${laneDistance}: x${multiplier}`];
@@ -203,6 +211,115 @@ const applyHealToPlayer = (player, heal) => {
       ...player.hp,
       current: nextHp,
     },
+  };
+};
+
+const processEntityTurnEffects = (entity) => {
+  const effects = Array.isArray(entity?.effects) ? entity.effects : [];
+  if (!entity?.hp || effects.length === 0) {
+    return { entity, messages: [], damageTaken: 0, healed: 0 };
+  }
+
+  let messages = [];
+  let totalDotDamage = 0;
+  let totalHealAmount = 0;
+
+  // Tick before decrement (start-of-turn behavior)
+  for (const effect of effects) {
+    if (effect.type === "DOT") {
+      const dmg = Math.max(0, Math.floor(Number(effect.magnitude) || 0));
+      if (dmg > 0) {
+        totalDotDamage += dmg;
+        messages.push(
+          `${entity.name} takes ${dmg} ${effect.element || "damage"} from ${effect.name}!`,
+        );
+      }
+    }
+
+    if (effect.type === "HOT") {
+      let healAmount = Math.max(0, Math.floor(Number(effect.magnitude) || 0));
+      if (healAmount <= 0) continue;
+
+      // Undead: healing is damage (kept consistent with EffectSystem.js)
+      if (
+        hasEffectTag(entity, "HEAL_IS_DMG") ||
+        entity.race?.id === "undead_awakened"
+      ) {
+        totalDotDamage += healAmount;
+        messages.push(
+          `${entity.name} is UNDEAD! Healing deals ${healAmount} damage instead!`,
+        );
+        continue;
+      }
+
+      if (hasEffectTag(entity, "HEAL_MALUS")) {
+        healAmount = Math.floor(healAmount * 0.5);
+        messages.push(`${entity.name} is resistant to healing!`);
+      }
+
+      if (healAmount > 0) {
+        totalHealAmount += healAmount;
+        messages.push(
+          `${entity.name} recovers ${healAmount} HP from ${effect.name}!`,
+        );
+      }
+    }
+  }
+
+  // Decrement and expire
+  const nextEffects = effects
+    .map((effect) => ({
+      ...effect,
+      remainingDuration: (effect.remainingDuration ?? effect.duration ?? 0) - 1,
+    }))
+    .filter((effect) => {
+      if ((effect.remainingDuration ?? 0) <= 0) {
+        messages.push(`${effect.name} fades from ${entity.name}.`);
+        return false;
+      }
+      return true;
+    });
+
+  const nextHp = Math.min(
+    entity.hp.max,
+    Math.max(0, entity.hp.current - totalDotDamage + totalHealAmount),
+  );
+
+  return {
+    entity: {
+      ...entity,
+      hp: { ...entity.hp, current: nextHp },
+      effects: nextEffects,
+    },
+    messages,
+    damageTaken: totalDotDamage,
+    healed: totalHealAmount,
+  };
+};
+
+const processEnemyTurnEffects = (enemy) => {
+  if (!enemy?.stats?.hp) {
+    return { enemy, messages: [], damageTaken: 0, healed: 0 };
+  }
+  const proxy = {
+    ...enemy,
+    hp: enemy.stats.hp,
+    effects: enemy.effects,
+    name: enemy.name,
+  };
+  const result = processEntityTurnEffects(proxy);
+  return {
+    enemy: {
+      ...enemy,
+      stats: {
+        ...enemy.stats,
+        hp: result.entity.hp,
+      },
+      effects: result.entity.effects,
+    },
+    messages: result.messages,
+    damageTaken: result.damageTaken,
+    healed: result.healed,
   };
 };
 
@@ -328,7 +445,30 @@ const resolveSkillDefinition = (state, skillInput) => {
   return pools.find((skill) => skill?.id === skillId) || null;
 };
 
+const allowsZeroDamage = (skill) => {
+  if (!skill || typeof skill !== "object") return false;
+  if (skill.allowZeroDamage) return true;
+  if (skill.nonDamaging) return true;
+  if (skill.damage && typeof skill.damage === "object") {
+    if (skill.damage.allowZeroDamage) return true;
+    const multiplier = Number(skill.damage.multiplier);
+    if (Number.isFinite(multiplier) && multiplier <= 0) return true;
+    const base = Number(skill.damage.base);
+    if (Number.isFinite(base) && base <= 0 && multiplier === 0) return true;
+  }
+  const tags = Array.isArray(skill.tags) ? skill.tags : [];
+  return tags.includes("non_damaging") || tags.includes("no_damage");
+};
+
 const ELEMENTAL_REACTIONS = [
+  {
+    element: "fire",
+    requires: ["wet"],
+    multiplier: 1.15,
+    remove: ["wet"],
+    addEffects: [{ id: "obscured", target: "enemy", duration: 2, magnitude: 0.25 }],
+    message: "Elemental Reaction: Steam!",
+  },
   {
     element: "fire",
     requires: ["frostbite", "freeze"],
@@ -346,6 +486,14 @@ const ELEMENTAL_REACTIONS = [
     message: "Elemental Reaction: Quench!",
   },
   {
+    element: "ice",
+    requires: ["wet"],
+    multiplier: 1.2,
+    remove: ["wet"],
+    addEffects: [{ id: "freeze", target: "enemy", duration: 1 }],
+    message: "Elemental Reaction: Flash Freeze!",
+  },
+  {
     element: "lightning",
     requires: ["frostbite", "slow"],
     multiplier: 1.2,
@@ -353,11 +501,29 @@ const ELEMENTAL_REACTIONS = [
     message: "Elemental Reaction: Conduction!",
   },
   {
+    element: "lightning",
+    requires: ["wet"],
+    multiplier: 1.25,
+    addEffects: [{ id: "shock", target: "enemy", duration: 2, magnitude: 0.1 }],
+    message: "Elemental Reaction: Electro-Charged!",
+  },
+  {
     element: "nature",
     requires: ["burn"],
     multiplier: 1.15,
     addEffects: [{ id: "poison", target: "enemy", duration: 3, magnitude: 4 }],
     message: "Elemental Reaction: Wildfire Spores!",
+  },
+  {
+    element: "water",
+    requires: ["burn"],
+    multiplier: 1.15,
+    remove: ["burn"],
+    addEffects: [
+      { id: "wet", target: "enemy", duration: 3, magnitude: 1 },
+      { id: "slow", target: "enemy", duration: 2, magnitude: -0.15 },
+    ],
+    message: "Elemental Reaction: Douse!",
   },
   {
     element: "holy",
@@ -698,10 +864,49 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     return { success: false, reason: "Enemy already defeated", state };
   }
 
+  // Start-of-turn effect ticks for the player (DoT/HoT, duration decay)
+  {
+    const tick = processEntityTurnEffects(state.player);
+    const tickMessages = Array.isArray(tick.messages) ? tick.messages : [];
+    const nextLog =
+      tickMessages.length > 0
+        ? [...state.combat.log, ...tickMessages]
+        : state.combat.log;
+    state = {
+      ...state,
+      player: tick.entity,
+      combat: {
+        ...state.combat,
+        log: nextLog,
+      },
+    };
+  }
+
+  // Hard CC: player cannot act this turn
+  if (hasEffectTag(state.player, "SKIP_TURN")) {
+    const newLog = [
+      ...state.combat.log,
+      `${state.player.name} is unable to act!`,
+    ];
+    return {
+      success: true,
+      damage: 0,
+      state: {
+        ...state,
+        combat: {
+          ...state.combat,
+          log: newLog,
+          turn: "enemy",
+        },
+      },
+    };
+  }
+
   let updatedPlayer = state.player;
   let updatedEnemy = enemy;
   let damageResult = null;
   let skillCooldownUpdate = null;
+  let laneAllowZero = false;
 
   if (skillId) {
     const skillKey = typeof skillId === "string" ? skillId : skillId?.id;
@@ -720,6 +925,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     if (!skill) {
       return { success: false, reason: "Skill not found", state };
     }
+    laneAllowZero = allowsZeroDamage(skill);
 
     const skillResult = executeSkill(
       updatedPlayer,
@@ -818,7 +1024,9 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   }
 
   const laneDistance = getLaneDistance(state.combat, enemyIndex);
-  damageResult = applyLaneModifier(damageResult, laneDistance);
+  damageResult = applyLaneModifier(damageResult, laneDistance, {
+    allowZeroDamage: laneAllowZero,
+  });
 
   // === CHECK FOR CONFUSE EFFECT ===
   const resolvedState =
@@ -828,6 +1036,27 @@ export function playerAttack(state, enemyIndex, skillId = null) {
           ...state,
           player: updatedPlayer,
         };
+
+  // Generic miss chance from effects like Blind/Obscured/Fear
+  {
+    const missChanceRaw = getEffectTagMagnitude(resolvedState.player, "MISS_CHANCE");
+    const missChance = Math.max(0, Math.min(0.95, missChanceRaw || 0));
+    if (missChance > 0 && random() < missChance) {
+      const combatLog = [
+        ...resolvedState.combat.log,
+        ...damageResult.messages,
+        `Attack misses!`,
+      ];
+      return {
+        success: true,
+        damage: 0,
+        state: {
+          ...resolvedState,
+          combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
+        },
+      };
+    }
+  }
   const confuseEffect = resolvedState.player.effects?.find(
     (effect) => effect.id === "confuse",
   );
@@ -1386,14 +1615,86 @@ function enemyAttack(state, enemyIndex) {
     return state;
   }
 
-  const enemy = state.combat.enemies[enemyIndex];
+  let enemy = state.combat.enemies[enemyIndex];
   if (enemy.stats.hp.current <= 0) {
     return state;
   }
 
+  // Start-of-turn effect ticks for this enemy (DoT/HoT, duration decay)
+  {
+    const tick = processEnemyTurnEffects(enemy);
+    const tickMessages = Array.isArray(tick.messages) ? tick.messages : [];
+
+    if (tickMessages.length > 0 || tick.enemy !== enemy) {
+      const newEnemies = [...state.combat.enemies];
+      newEnemies[enemyIndex] = tick.enemy;
+      state = {
+        ...state,
+        combat: {
+          ...state.combat,
+          enemies: newEnemies,
+          log: tickMessages.length > 0 ? [...state.combat.log, ...tickMessages] : state.combat.log,
+        },
+      };
+      enemy = tick.enemy;
+    }
+  }
+
+  // Enemy died from effects before acting
+  if (enemy.stats.hp.current <= 0) {
+    return {
+      ...state,
+      combat: {
+        ...state.combat,
+        log: [...state.combat.log, `${enemy.name} collapses from lingering effects!`],
+      },
+    };
+  }
+
   // === CHARMED ENEMY: Attacks other enemies instead ===
-  if (enemy.isCharmed) {
-    return processCharmedEnemyAction(state, enemy);
+  const hasCharmEffect = Array.isArray(enemy.effects)
+    ? enemy.effects.some((effect) => effect.id === "charm")
+    : false;
+  if (enemy.isCharmed || hasCharmEffect) {
+    const acting = enemy.isCharmed ? enemy : { ...enemy, isCharmed: true };
+    return processCharmedEnemyAction(state, acting);
+  }
+
+  // If player is currently untargetable, enemies waste the action.
+  if (hasEffectTag(state.player, "UNTARGETABLE")) {
+    return {
+      ...state,
+      combat: {
+        ...state.combat,
+        log: [...state.combat.log, `${enemy.name} cannot find a target!`],
+      },
+    };
+  }
+
+  // Hard CC: enemy cannot act
+  if (hasEffectTag(enemy, "SKIP_TURN")) {
+    return {
+      ...state,
+      combat: {
+        ...state.combat,
+        log: [...state.combat.log, `${enemy.name} is unable to act!`],
+      },
+    };
+  }
+
+  // Generic miss chance from effects like Blind/Obscured/Fear
+  {
+    const missChanceRaw = getEffectTagMagnitude(enemy, "MISS_CHANCE");
+    const missChance = Math.max(0, Math.min(0.95, missChanceRaw || 0));
+    if (missChance > 0 && random() < missChance) {
+      return {
+        ...state,
+        combat: {
+          ...state.combat,
+          log: [...state.combat.log, `${enemy.name} misses their attack!`],
+        },
+      };
+    }
   }
 
   // === CHECK ILLUSION TARGET ===
@@ -1414,8 +1715,9 @@ function enemyAttack(state, enemyIndex) {
   }
 
   // Simple AI: use random skill or basic attack
+  const magicBlocked = hasEffectTag(enemy, "BLOCK_MAGIC");
   const availableSkills = (
-    Array.isArray(enemy.skills) ? enemy.skills : []
+    magicBlocked ? [] : Array.isArray(enemy.skills) ? enemy.skills : []
   ).filter((skillId) => {
     const skill = getEnemySkillById(skillId);
     if (!skill) return false;
@@ -1456,6 +1758,17 @@ function enemyAttack(state, enemyIndex) {
       combat: {
         ...state.combat,
         enemies: newEnemies,
+      },
+    };
+  }
+
+  // If disarmed, cannot perform a basic weapon attack
+  if (!skill && hasEffectTag(enemy, "BLOCK_PHYSICAL")) {
+    return {
+      ...state,
+      combat: {
+        ...state.combat,
+        log: [...state.combat.log, `${enemy.name} fumbles, disarmed!`],
       },
     };
   }
@@ -1725,6 +2038,16 @@ export function processEnemyTurns(state) {
     };
   }
 
+  // Award defeats for enemies that died during the enemy turn (DoT ticks, charm, etc.)
+  if (Array.isArray(newState.combat?.enemies)) {
+    for (let idx = newState.combat.enemies.length - 1; idx >= 0; idx -= 1) {
+      const enemy = newState.combat.enemies[idx];
+      if (enemy?.stats?.hp?.current <= 0) {
+        newState = handleEnemyDefeat(newState, idx);
+      }
+    }
+  }
+
   // Switch back to player turn
   return {
     ...newState,
@@ -1959,6 +2282,7 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
   // --- 1. Base Damage Calculation ---
   // Physical damage scales with STR, Magical with INT
   const isMagic = skill ? skill.isMagic : false; // Assume skills define if they are magic
+  const minDamage = allowsZeroDamage(skill) ? 0 : 1;
   const scalingStat = isMagic ? stats.intelligence : stats.strength;
 
   // Base damage from stat (fallback when no explicit attack value is provided)
@@ -1980,6 +2304,11 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
         damage = Math.floor(damage * multiplier);
       }
     }
+  }
+
+  // Talent system compatibility: allow a separate damageMultiplier to scale damage
+  if (skill && Number.isFinite(skill.damageMultiplier)) {
+    damage = Math.floor(damage * skill.damageMultiplier);
   }
 
   const setBonuses = isPlayer ? getSetBonuses(attacker.equipment || {}) : {};
@@ -2148,7 +2477,7 @@ function calculateDamage(attacker, defender, skill = null, config = {}) {
   }
 
   // Calculate final damage
-  let finalDamage = Math.max(1, damage - finalDefense);
+  let finalDamage = Math.max(minDamage, damage - finalDefense);
 
   // --- 5. Racial Resistances/Weaknesses (Defender) ---
   // We need to know if defender has racial traits.
@@ -2251,6 +2580,7 @@ function calculateDamagePipeline(
 ) {
   const log = [];
   const isMagic = skill ? skill.isMagic : false;
+  const minDamage = allowsZeroDamage(skill) ? 0 : 1;
   const defenseReductionFactor = config?.defenseReductionFactor ?? 0.5;
   const strToDamageMultiplier = config?.strToDamageMultiplier ?? 2;
   const titleBonuses = getTitleBonuses(attacker);
@@ -2298,6 +2628,11 @@ function calculateDamagePipeline(
         base = Math.floor(base * multiplier);
       }
     }
+  }
+
+  // Talent system compatibility: allow a separate damageMultiplier to scale damage
+  if (skill && Number.isFinite(skill.damageMultiplier)) {
+    base = Math.floor(base * skill.damageMultiplier);
   }
   log.push({
     stage: "RAW",
@@ -2378,7 +2713,7 @@ function calculateDamagePipeline(
     defense = Math.max(0, Math.floor(defense * (1 - defenseDown)));
     defReasons.push(`Defense Down -${Math.round(defenseDown * 100)}%`);
   }
-  let afterMitigation = Math.max(1, afterAttackers - defense);
+  let afterMitigation = Math.max(minDamage, afterAttackers - defense);
   const element = skill ? skill.element : "physical";
   if (
     element === "fire" &&
@@ -2444,9 +2779,20 @@ function calculateDamagePipeline(
 }
 
 export function executeSkill(attacker, defender, skillInput, config = {}) {
-  const skill =
+  let skill =
     typeof skillInput === "string" ? getSkillById(skillInput) : skillInput;
   if (!skill) return { damage: 0, messages: ["Skill not found"] };
+
+  // If this is a registry skill, apply talent modifiers so skills and abilities
+  // follow the same template expectations (cost/cd/damage multipliers, etc.).
+  if (skill?.id && getSkillById(skill.id)) {
+    const modified = getModifiedSkill(
+      skill.id,
+      attacker.talents || [],
+      attacker.level || 1,
+    );
+    if (modified) skill = modified;
+  }
 
   const bypasses = resolveBypasses(attacker.talents || []);
   const cd = applyCooldownOverride(skill.cooldown || 0, bypasses);
@@ -2456,7 +2802,7 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
   const cost = applyCostOverride(calculatedCost, bypasses);
 
   // Validate and consume mana using the new system
-  const consumption = consumeMana(skill, attacker, {
+  const consumption = consumeMana({ ...skill, manaCost: cost }, attacker, {
     showFeedback: false, // Feedback handled by UI
     scaleWithLevel: false, // Already scaled above
   });
@@ -2478,6 +2824,20 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
     typeof updatedAttacker.mana.current === "number"
   ) {
     updatedAttacker.mana.current = consumption.remainingMana;
+  }
+
+  // Skill-side utility hooks (keep parity with class/race ability templates)
+  if (skill.cleanse?.types?.length) {
+    updatedAttacker = removeEffectsByTypes(updatedAttacker, skill.cleanse.types);
+  }
+  if (skill.heal) {
+    updatedAttacker = applyHealToPlayer(updatedAttacker, skill.heal);
+  }
+  if (skill.resourceGain) {
+    updatedAttacker = applyResourceGain(updatedAttacker, skill.resourceGain);
+  }
+  if (skill.summon) {
+    updatedAttacker = applySummonToPlayer(updatedAttacker, skill.summon);
   }
 
   let updatedDefender = defender;

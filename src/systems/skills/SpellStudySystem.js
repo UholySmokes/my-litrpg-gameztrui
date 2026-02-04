@@ -16,6 +16,13 @@ const ELEMENTS = [
     multiplier: 1.2,
   },
   {
+    id: "water",
+    name: "Water",
+    effectId: "wet",
+    effectMagnitude: 1,
+    multiplier: 1.12,
+  },
+  {
     id: "ice",
     name: "Ice",
     effectId: "frostbite",

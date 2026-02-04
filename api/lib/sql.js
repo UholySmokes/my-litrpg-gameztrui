@@ -101,4 +101,5 @@ async function query(text, params = []) {
 module.exports = {
   sql,
   query,
+  withConnection,
 };

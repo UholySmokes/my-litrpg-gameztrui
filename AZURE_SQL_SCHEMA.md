@@ -19,6 +19,22 @@ CREATE INDEX IX_game_saves_user_id ON dbo.game_saves(user_id);
 CREATE INDEX IX_game_saves_updated_at ON dbo.game_saves(updated_at DESC);
 ```
 
+## Run Storage (Seed + Events + Snapshots)
+
+If you want deterministic replay / run history (seed + event log + snapshots),
+apply `api/sql/schema.sql` which also creates:
+
+- `dbo.game_runs`
+- `dbo.game_run_events`
+- `dbo.game_run_snapshots`
+- `dbo.game_user_profiles` (optional)
+
+These are used by the additional Functions routes:
+
+- `GET|POST|PUT|DELETE /api/runs`
+- `GET|POST /api/runs/{runId}/events`
+- `GET|POST /api/runs/{runId}/snapshots`
+
 ## Managed Identity Access
 
 Run the following in Azure SQL as the Entra admin to grant the user-assigned

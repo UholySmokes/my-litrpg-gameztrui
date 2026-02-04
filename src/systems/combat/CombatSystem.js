@@ -214,6 +214,70 @@ const applyHealToPlayer = (player, heal) => {
   };
 };
 
+const clampChance = (value, max = 0.95) => {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+  return Math.max(0, Math.min(max, n));
+};
+
+const getMissChance = (entity) =>
+  clampChance(getEffectTagMagnitude(entity, "MISS_CHANCE"), 0.95);
+const getDodgeChance = (entity) =>
+  clampChance(getEffectTagMagnitude(entity, "DODGE_BOOST"), 0.75);
+const getReflectPercent = (entity) =>
+  clampChance(getEffectTagMagnitude(entity, "DAMAGE_REFLECT"), 0.75);
+
+const absorbDamageWithShields = (effects, incoming) => {
+  const list = Array.isArray(effects) ? effects : [];
+  let remaining = Math.max(0, Math.floor(Number(incoming) || 0));
+  if (remaining <= 0) return { effects: list, remaining, absorbed: 0 };
+
+  const nextEffects = [];
+  let absorbed = 0;
+
+  for (const effect of list) {
+    const isShield =
+      effect?.id === "shield" || effect?.tags?.includes("DAMAGE_ABSORB");
+    if (!isShield) {
+      nextEffects.push(effect);
+      continue;
+    }
+
+    const magnitude = Math.max(0, Math.floor(Number(effect.magnitude) || 0));
+    if (magnitude <= 0 || remaining <= 0) {
+      nextEffects.push(effect);
+      continue;
+    }
+
+    const absorb = Math.min(magnitude, remaining);
+    remaining -= absorb;
+    absorbed += absorb;
+
+    const leftover = magnitude - absorb;
+    if (leftover > 0) {
+      nextEffects.push({ ...effect, magnitude: leftover });
+    }
+    // Fully consumed shield effects are removed.
+  }
+
+  return { effects: nextEffects, remaining, absorbed };
+};
+
+const applyShieldAbsorptionToEnemy = (enemy, incomingDamage) => {
+  if (!enemy || incomingDamage <= 0) {
+    return { enemy, damage: incomingDamage, absorbed: 0 };
+  }
+  const effects = Array.isArray(enemy.effects) ? enemy.effects : [];
+  const { effects: nextEffects, remaining, absorbed } = absorbDamageWithShields(
+    effects,
+    incomingDamage,
+  );
+  if (absorbed <= 0) {
+    return { enemy, damage: incomingDamage, absorbed: 0 };
+  }
+  return { enemy: { ...enemy, effects: nextEffects }, damage: remaining, absorbed };
+};
+
 const processEntityTurnEffects = (entity) => {
   const effects = Array.isArray(entity?.effects) ? entity.effects : [];
   if (!entity?.hp || effects.length === 0) {

@@ -45,6 +45,23 @@ class ArchetypeSystem {
       definition: this
     };
   }
+
+  /**
+   * Applies stat adjustments to the player profile based on system integrity.
+   * @param {Object} profile - The player profile to adjust.
+   * @param {number} integrity - The integrity value of the system instance.
+   */
+  applyBonuses(profile, integrity) {
+    if (integrity >= 100) {
+      // Perfect system: Bonus to mental stats
+      profile.attributes.intelligence += 5;
+      profile.derivedStats.mp += 20;
+    } else if (integrity < 90) {
+      // Unstable system: High risk (Strength), high cost (Vitality)
+      profile.attributes.strength += 8;
+      profile.attributes.vitality -= 2;
+    }
+  }
 }
 
 export let ARCHETYPE_DEFINITIONS = [

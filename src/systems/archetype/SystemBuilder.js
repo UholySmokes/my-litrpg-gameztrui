@@ -50,6 +50,8 @@ export class SystemBuilder {
       this.playerProfile.attributes.strength += 8;
       this.playerProfile.attributes.vitality -= 2;
     }
+    // Adjust profile based on system integrity via the archetype class
+    archetype.applyBonuses(this.playerProfile, systemInstance.systemIntegrity);
 
     return this;
   }

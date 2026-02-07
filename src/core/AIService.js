@@ -37,7 +37,11 @@ const resolveNarrateEndpoints = () => {
   const derivedEndpoint = apiBaseUrl
     ? `${normalizeBaseUrl(apiBaseUrl)}/api/narrate`
     : undefined;
-  return [narrateEndpoint, derivedEndpoint, "/api/narrate"].filter(Boolean);
+  const endpoints = [narrateEndpoint, derivedEndpoint].filter(Boolean);
+  if (endpoints.length === 0) {
+    endpoints.push("/api/narrate");
+  }
+  return endpoints;
 };
 
 const resolveRequestTimeoutMs = () => {

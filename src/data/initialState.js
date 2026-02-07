@@ -1,6 +1,6 @@
 import { xpForNextLevel } from "../core/xpCurve.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
-import { createInitialWorldState } from "../systems/world/WorldInitializer.js";
+import { createInitialWorldState } from "../world/WorldInitializer.js";
 
 export const INITIAL_CONFIG = {
   maxLevel: 100,

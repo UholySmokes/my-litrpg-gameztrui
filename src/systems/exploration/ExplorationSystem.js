@@ -2,7 +2,7 @@ import { addXp } from '../leveling/LevelingManager.js';
 import {
   getAccessibleLocationIds,
   resolveLocationId,
-} from "../../data/registries/WorldDataRegistry.js";
+} from "../../world/WorldDataRegistry.js";
 
 /**
  * Moves the player to a new location

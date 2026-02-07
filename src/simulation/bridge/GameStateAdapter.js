@@ -1,5 +1,5 @@
 import { SimBridge } from "./SimulationContext.js";
-import { zones as canonicalZones } from "../../data/registries/WorldDataRegistry.js";
+import { zones as canonicalZones } from "../../world/WorldDataRegistry.js";
 
 /**
  * GameStateAdapter - Converts between existing game state and simulation state

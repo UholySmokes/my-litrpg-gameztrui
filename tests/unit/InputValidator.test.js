@@ -59,6 +59,19 @@ describe("InputValidator", () => {
     expect(result.valid).toBe(false);
   });
 
+  it('accepts "Starting Zone" (resolves to starting_zone) when accessible', () => {
+    const state = cloneState(initialGameState);
+    state.world.location.current = "city_neon_bazaar";
+    state.world.location.visited = ["starting_zone", "city_neon_bazaar"];
+    state.world.location.unlockedAreas = ["starting_zone", "city_neon_bazaar"];
+
+    const result = validateActionComprehensive(
+      { type: "move", targetLocation: "Starting Zone" },
+      state,
+    );
+    expect(result.valid).toBe(true);
+  });
+
   it("rejects movement when dead", () => {
     const state = cloneState(initialGameState);
     state.player.isDead = true;

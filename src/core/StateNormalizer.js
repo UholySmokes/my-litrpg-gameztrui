@@ -14,7 +14,7 @@ import {
   WORLD_META,
   MAJOR_FACTION_IDS,
   resolveLocationId,
-} from "../data/registries/WorldDataRegistry.js";
+} from "../world/WorldDataRegistry.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
 

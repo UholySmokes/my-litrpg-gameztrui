@@ -11,7 +11,7 @@ import {
   getLocationById,
   getZoneById,
   resolveLocationId,
-} from "../data/registries/WorldDataRegistry.js";
+} from "../world/WorldDataRegistry.js";
 import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import { toNumber } from "../utils/shared.js";
 

@@ -4,9 +4,6 @@
 // =================================================================
 
 import { useState, useCallback, useRef } from "react";
-import { parseAction } from "../core/InputParser.js";
-import { validateActionComprehensive } from "../core/InputValidator.js";
-import { executeAction } from "../core/ActionDispatcher.js";
 import { assemblePrompt, buildInitialPrompt } from "../core/PromptAssembler.js";
 import {
   generateNarrative,
@@ -249,6 +246,8 @@ function buildFallbackNarrative({
  * @param {function} setState - Function to update game state
  * @param {function} addSystemMessage - Function to add messages to chat log
  * @param {function} evaluateQuestProgress - Function to evaluate quest progress
+ * @param {function} dispatchSystemEvent - Function to dispatch system events
+ * @param {object} [engine] - SystemEngine instance (from useGameEngine). Falls back to direct imports if not provided.
  * @returns {object} Hook interface with submitInput function and loading state
  */
 export function useNarrative(
@@ -256,6 +255,7 @@ export function useNarrative(
   addSystemMessage,
   evaluateQuestProgress,
   dispatchSystemEvent,
+  engine,
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [isNarrating, setIsNarrating] = useState(false);
@@ -303,10 +303,19 @@ export function useNarrative(
 
       try {
         // Step 1: Parse the user input into an action
-        const action = parseAction(userInput, currentState);
+        const action = engine
+          ? engine.parseAction(userInput, currentState)
+          : (await import("../core/InputParser.js")).parseAction(
+              userInput,
+              currentState,
+            );
 
         // Step 2: Validate the action
-        const validation = validateActionComprehensive(action, currentState);
+        const validation = engine
+          ? engine.validateAction(action, currentState)
+          : (
+              await import("../core/InputValidator.js")
+            ).validateActionComprehensive(action, currentState);
 
         if (!validation.valid) {
           // Action failed validation - add error message and generate narrative about failure

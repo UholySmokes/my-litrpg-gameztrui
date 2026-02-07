@@ -1,6 +1,7 @@
 const { jsonResponse, readJsonBody } = require("../lib/azure-ai-utils");
 const { getUserFromRequest } = require("../lib/auth");
 const { withConnection, sql } = require("../lib/sql");
+const { resolveGameDbBackend, fileDb } = require("../lib/game-db");
 
 const GUID_REGEX = /^[0-9a-fA-F-]{36}$/;
 const MAX_EVENTS_PER_POST = 500;
@@ -46,12 +47,117 @@ module.exports = async function runEvents(context, req) {
 
     const method = String(req?.method || "GET").toUpperCase();
     const runId = req?.params?.runId || req?.query?.runId || "";
+    const backend = resolveGameDbBackend();
+    const nowIso = new Date().toISOString();
 
     if (!isGuid(runId)) {
       context.res = jsonResponse(400, {
         ok: false,
         errorCode: "INVALID_RUN_ID",
         message: "Invalid run id.",
+      });
+      return;
+    }
+
+    if (backend === "file") {
+      if (method === "GET") {
+        const afterSeq = toNumberOrNull(req?.query?.afterSeq ?? req?.query?.after);
+        const limitRaw = toNumberOrNull(req?.query?.limit);
+        const limit = Number.isFinite(limitRaw)
+          ? Math.max(1, Math.min(MAX_EVENTS_RETURNED, Math.floor(limitRaw)))
+          : 500;
+
+        const { owned, rows } = fileDb.listRunEvents({
+          userId: user.id,
+          runId,
+          afterSeq,
+          limit,
+        });
+
+        if (!owned) {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "RUN_NOT_FOUND",
+            message: "Run not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          events: (rows || []).map((row) => ({
+            seq: Number(row.seq),
+            tick: row.tick,
+            event_type: row.event_type,
+            payload: row.payload ? JSON.parse(row.payload) : null,
+            created_at: row.created_at,
+          })),
+        });
+        return;
+      }
+
+      if (method === "POST") {
+        const body = await readJsonBody(req);
+        const rawEvents = Array.isArray(body?.events)
+          ? body.events
+          : body?.event
+            ? [body.event]
+            : [];
+        const events = rawEvents.slice(0, MAX_EVENTS_PER_POST).filter(Boolean);
+
+        if (events.length === 0) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_EVENTS",
+            message: "events is required.",
+          });
+          return;
+        }
+
+        const normalized = [];
+        for (const ev of events) {
+          const eventType =
+            typeof ev?.event_type === "string"
+              ? ev.event_type
+              : typeof ev?.type === "string"
+                ? ev.type
+                : "";
+          const payload = normalizeJson(ev?.payload ?? ev);
+          if (!eventType || !payload) continue;
+          const tick =
+            Number.isFinite(Number(ev?.tick)) && Number(ev.tick) >= 0
+              ? Math.floor(Number(ev.tick))
+              : null;
+          normalized.push({ eventType, payload, tick });
+        }
+
+        const inserted = fileDb.addRunEvents({
+          userId: user.id,
+          runId,
+          events: normalized,
+          now: nowIso,
+        });
+
+        if (inserted?.error === "RUN_NOT_FOUND") {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "RUN_NOT_FOUND",
+            message: "Run not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          inserted: inserted?.rows || [],
+        });
+        return;
+      }
+
+      context.res = jsonResponse(405, {
+        ok: false,
+        errorCode: "METHOD_NOT_ALLOWED",
+        message: "Unsupported method.",
       });
       return;
     }

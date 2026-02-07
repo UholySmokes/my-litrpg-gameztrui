@@ -1,6 +1,7 @@
 const { jsonResponse, readJsonBody } = require("../lib/azure-ai-utils");
 const { getUserFromRequest } = require("../lib/auth");
 const { withConnection, sql } = require("../lib/sql");
+const { resolveGameDbBackend, fileDb } = require("../lib/game-db");
 
 const MAX_RUN_NAME_LENGTH = 120;
 const MAX_RUNS_RETURNED = 50;
@@ -49,6 +50,175 @@ module.exports = async function runs(context, req) {
 
     const method = String(req?.method || "GET").toUpperCase();
     const runId = req?.params?.id || req?.query?.id || "";
+    const backend = resolveGameDbBackend();
+    const nowIso = new Date().toISOString();
+
+    if (backend === "file") {
+      if (method === "GET" && !runId) {
+        context.res = jsonResponse(200, {
+          ok: true,
+          runs: fileDb.listRuns({ userId: user.id, limit: MAX_RUNS_RETURNED }),
+        });
+        return;
+      }
+
+      if (method === "GET" && runId) {
+        if (!isGuid(runId)) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_RUN_ID",
+            message: "Invalid run id.",
+          });
+          return;
+        }
+
+        const row = fileDb.getRun({ userId: user.id, runId });
+        if (!row) {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "RUN_NOT_FOUND",
+            message: "Run not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          run: {
+            id: row.id,
+            run_name: row.run_name,
+            seed: row.seed,
+            status: row.status,
+            meta: row.meta ? JSON.parse(row.meta) : null,
+            created_at: row.created_at,
+            updated_at: row.updated_at,
+          },
+        });
+        return;
+      }
+
+      if (method === "POST") {
+        const body = await readJsonBody(req);
+        const runName = normalizeRunName(body?.runName || body?.run_name);
+        const status = toStringSafe(body?.status).trim() || "active";
+        const seed =
+          body?.seed === null || body?.seed === undefined
+            ? null
+            : Number.isFinite(Number(body.seed))
+              ? Number(body.seed)
+              : null;
+        const meta = normalizeJson(body?.meta);
+        const initialState = normalizeJson(body?.initialState || body?.game_state);
+        const initialTick =
+          Number.isFinite(Number(body?.initialTick)) && Number(body.initialTick) >= 0
+            ? Number(body.initialTick)
+            : 0;
+
+        const created = fileDb.createRun({
+          userId: user.id,
+          runName,
+          seed,
+          status,
+          meta,
+          initialState,
+          initialTick,
+          now: nowIso,
+        });
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          run: created
+            ? {
+                id: created.id,
+                run_name: created.run_name,
+                seed: created.seed,
+                status: created.status,
+                created_at: created.created_at,
+                updated_at: created.updated_at,
+              }
+            : null,
+        });
+        return;
+      }
+
+      if (method === "PUT" && runId) {
+        if (!isGuid(runId)) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_RUN_ID",
+            message: "Invalid run id.",
+          });
+          return;
+        }
+
+        const body = await readJsonBody(req);
+        const runName = normalizeRunName(body?.runName || body?.run_name);
+        const status = toStringSafe(body?.status).trim();
+        const meta = normalizeJson(body?.meta);
+
+        const row = fileDb.updateRun({
+          userId: user.id,
+          runId,
+          runName,
+          status: status || null,
+          meta,
+          now: nowIso,
+        });
+
+        if (!row) {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "RUN_NOT_FOUND",
+            message: "Run not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          run: {
+            id: row.id,
+            run_name: row.run_name,
+            seed: row.seed,
+            status: row.status,
+            created_at: row.created_at,
+            updated_at: row.updated_at,
+          },
+        });
+        return;
+      }
+
+      if (method === "DELETE" && runId) {
+        if (!isGuid(runId)) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_RUN_ID",
+            message: "Invalid run id.",
+          });
+          return;
+        }
+
+        const deleted = fileDb.deleteRun({ userId: user.id, runId });
+        if (!deleted) {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "RUN_NOT_FOUND",
+            message: "Run not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, { ok: true });
+        return;
+      }
+
+      context.res = jsonResponse(405, {
+        ok: false,
+        errorCode: "METHOD_NOT_ALLOWED",
+        message: "Unsupported method.",
+      });
+      return;
+    }
 
     if (method === "GET" && !runId) {
       const result = await withConnection(async (pool) => {

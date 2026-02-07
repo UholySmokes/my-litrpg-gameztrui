@@ -21,6 +21,9 @@ reports/
 .env.production
 local.settings.json
 
+# Local file-backed DB (dev only)
+api/.data/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

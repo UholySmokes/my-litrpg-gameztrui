@@ -84,3 +84,18 @@ Run the seeder to upsert the `core` bundle:
 ```bash
 npm run seed:static
 ```
+
+## Local File DB (Dev Only)
+
+If you don't want to run Azure SQL locally, the Functions API can store saves/runs/static bundles
+in a local JSON file instead.
+
+Set these in `api/local.settings.json`:
+
+```
+GAME_DB_STORAGE=file
+# Optional (defaults to api/.data/game-db.json):
+GAME_DB_PATH=api/.data/game-db.json
+```
+
+Then run `npm run seed:static` so `/api/static-data` can serve the `core` bundle.

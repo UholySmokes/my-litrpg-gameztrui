@@ -65,6 +65,7 @@ Azure Functions local dev (for `api/`):
 - Copy `api/local.settings.example.json` to `api/local.settings.json`.
 - Fill in `FOUNDRY_PROJECT_ENDPOINT`, agent IDs, and Azure credentials.
 - Keep `api/local.settings.json` out of git (it is ignored).
+- To store game data locally (no Azure SQL), set `GAME_DB_STORAGE=file` (optional: `GAME_DB_PATH=api/.data/game-db.json`) and run `npm run seed:static` for `/api/static-data`.
 - Cloud auth uses Azure Static Web Apps / Easy Auth (`/.auth/login/<provider>`). Set `VITE_AUTH_PROVIDER` if you use a provider other than `aad`.
 
 Narrative endpoint notes:
@@ -73,7 +74,7 @@ Narrative endpoint notes:
 - For SWA auth to work with `/api/saves`, call the API on the same host (use relative `/api` or set `VITE_API_BASE_URL` to the SWA host, not the raw Function App URL).
 - Runtime config: `public/runtime-config.js` is copied to `dist/runtime-config.js` during build. Leave it empty, or set `VITE_API_BASE_URL` / `VITE_NARRATE_ENDPOINT` in CI so `scripts/generate-runtime-config.js` injects values at build time.
 - SWA routing: keep `public/staticwebapp.config.json` in the build output so `/runtime-config.js` is served as a static file.
-- Health check: `/api/health` verifies Azure SQL connectivity (requires auth in SWA).
+- Health check: `/api/health` reports which backend is active (Azure SQL or local file DB).
 
 ### Run / Build / Test
 

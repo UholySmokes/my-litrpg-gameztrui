@@ -229,8 +229,6 @@ module.exports = async function questCreate(context, req) {
     if (!parsed || typeof parsed !== "object") {
       context.res = jsonResponse(502, { ok: false, errorCode: "NON_JSON_OUTPUT", message: "QuestAgent returned non-JSON output." });
       return;
-        },
-      );
     }
 
     const normalizedQuest = ensureQuestId(parsed);
@@ -243,6 +241,8 @@ module.exports = async function questCreate(context, req) {
     context.log?.(`quest-create ${requestId} assistant=${assistantId} thread=${threadId} run=${runId} status=${currentRun?.status}`);
 
     context.res = jsonResponse(200, { ok: true, quest: normalizedQuest, outputHash });
+      },
+    );
   } catch (error) {
     context.res = jsonResponse(500, {
       ok: false,

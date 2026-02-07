@@ -157,5 +157,88 @@ export const SystemEventObserver = {
       });
     }
   },
+
+  /**
+   * Pure variant of evaluate() — returns events as data instead of dispatching.
+   * Used by SystemEngine.step() so the engine stays adapter-agnostic.
+   *
+   * @param {object} prevState
+   * @param {object} nextState
+   * @param {number} tick - current engine tick
+   * @returns {Array<{type: string, tick: number, payload?: unknown}>}
+   */
+  evaluateToEvents(prevState, nextState, tick = 0) {
+    const events = [];
+    if (!nextState) return events;
+
+    // Check quest completions
+    const activeQuests = nextState.quests?.active || [];
+    for (const quest of activeQuests) {
+      const meta = DataRegistry.getQuestById(quest.id);
+      if (!meta?.autoComplete) continue;
+
+      const existedPreviously = (prevState?.quests?.active || []).some(
+        (q) => q.id === quest.id,
+      );
+      if (!existedPreviously) continue;
+
+      const prevCompleted = SystemEventObserver.isQuestCompleted(
+        meta.autoComplete,
+        prevState,
+      );
+      const currCompleted = SystemEventObserver.isQuestCompleted(
+        meta.autoComplete,
+        nextState,
+      );
+
+      if (!prevCompleted && currCompleted) {
+        events.push({
+          type: "quest.complete",
+          tick,
+          payload: {
+            questId: quest.id,
+            reward: meta.rewards || null,
+            questMeta: meta || null,
+          },
+        });
+      }
+    }
+
+    // Check level thresholds
+    const prevXp = prevState?.player?.xp?.current ?? 0;
+    const nextXp = nextState?.player?.xp?.current ?? 0;
+    if (nextXp > prevXp) {
+      const result = checkThreshold(nextState.player, nextState.config || {});
+      if (result.leveledUp) {
+        events.push({
+          type: "player.levelUp",
+          tick,
+          payload: result.snapshot,
+        });
+      }
+    }
+
+    // Check inventory additions
+    const prevMap = SystemEventObserver.buildInventoryMap(prevState);
+    const nextMap = SystemEventObserver.buildInventoryMap(nextState);
+    const diffs = [];
+    for (const [id, nextQty] of Object.entries(nextMap)) {
+      const prevQty = prevMap[id] || 0;
+      if (nextQty > prevQty) {
+        diffs.push({ id, delta: nextQty - prevQty, type: "add" });
+      } else if (nextQty < prevQty) {
+        diffs.push({ id, delta: prevQty - nextQty, type: "remove" });
+      }
+    }
+    if (diffs.length > 0) {
+      events.push({
+        type: "inventory.changed",
+        tick,
+        payload: { diffs },
+      });
+    }
+
+    return events;
+  },
 };
 

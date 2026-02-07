@@ -59,7 +59,7 @@ ALTER ROLE db_datawriter ADD MEMBER [<identity-name>];
 Set these in the Function App configuration:
 
 ```
-AZURE_SQL_SERVER=voids.database.windows.net
+AZURE_SQL_SERVER=<your-server-name>.database.windows.net
 AZURE_SQL_DATABASE=sqlfree
 AZURE_SQL_CLIENT_ID=<user-assigned-managed-identity-client-id>
 ```

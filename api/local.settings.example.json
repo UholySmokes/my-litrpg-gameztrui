@@ -23,7 +23,7 @@
     "REQUIRE_REDIS_RATE_LIMIT": "0",
     "REQUIRE_REDIS_DRAFTS": "0",
     "REDIS_URL": "",
-    "AZURE_SQL_SERVER": "voids.database.windows.net",
+    "AZURE_SQL_SERVER": "",
     "AZURE_SQL_DATABASE": "sqlfree",
     "AZURE_SQL_CLIENT_ID": "",
     "AZURE_SQL_USER": "",

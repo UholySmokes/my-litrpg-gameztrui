@@ -15,6 +15,7 @@ import CreationAttributesPanel from "../panels/creation/CreationAttributesPanel.
 import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
 import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSystemPanel.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
+import { getRaceAbilitiesFor } from "../../systems/race/RaceAbilityRegistry.js";
 
 let audioContext = null;
 const SOUND_PROFILES = {
@@ -242,6 +243,10 @@ export default function CharacterCreationMode({ onComplete }) {
     const raceName = selectedRace?.name || "Race not selected";
     const raceDescription =
       selectedRace?.description || "Choose a race to view genetic bonuses.";
+    const racePassiveAbility = selectedRace?.passiveAbility || null;
+    const raceActiveAbility = selectedRace
+      ? getRaceAbilitiesFor(selectedRace.id)?.[0] || null
+      : null;
     const className = selectedClass?.name || "Class not selected";
     const classDescription =
       selectedClass?.description || "Choose a class to view combat protocols.";
@@ -260,6 +265,8 @@ export default function CharacterCreationMode({ onComplete }) {
     return {
       raceName,
       raceDescription,
+      racePassiveAbility,
+      raceActiveAbility,
       className,
       classDescription,
       talentName,

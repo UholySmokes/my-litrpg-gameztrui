@@ -9,6 +9,8 @@
   finalizeCharacter,
   onComplete,
 }) {
+  const racePassiveAbility = selectionSummary.racePassiveAbility;
+  const raceActiveAbility = selectionSummary.raceActiveAbility;
   return (
     <div
       style={{
@@ -60,6 +62,30 @@
             <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
               {selectionSummary.raceDescription}
             </div>
+            {(racePassiveAbility || raceActiveAbility) && (
+              <div
+                style={{
+                  fontSize: "0.75rem",
+                  color: "var(--text-dim)",
+                  marginTop: "0.4rem",
+                  display: "grid",
+                  gap: "0.2rem",
+                }}
+              >
+                {racePassiveAbility && (
+                  <div>
+                    <strong>Passive:</strong> {racePassiveAbility.name} —
+                    {" "}{racePassiveAbility.description}
+                  </div>
+                )}
+                {raceActiveAbility && (
+                  <div>
+                    <strong>Active:</strong> {raceActiveAbility.name} —
+                    {" "}{raceActiveAbility.description}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div style={{ color: "var(--holo-cyan)" }}>
             <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>

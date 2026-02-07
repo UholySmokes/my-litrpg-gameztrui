@@ -1964,7 +1964,7 @@ export let races = [
   {
     id: "ironhide",
     name: "Ironhide",
-    description: "Stone-blooded survivors with heavy endurance.",
+    description: "Iron-cored survivors with heavy endurance.",
     evolutionStage: "Mortal",
     statBonuses: {
       str: 4,

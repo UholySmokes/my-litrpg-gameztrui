@@ -355,7 +355,7 @@ System functions → EventBus.emit() → SystemEventObserver → SimulationConte
 
 ### Testing
 
-- [x] **13 unit test files** covering: DataRegistry, EffectEngine, GameSystems, InputValidator, InventorySystem, LevelingAndCombat, LocationResolution, NarrationGuards, PromptAssembler, SkillProgression, TracingShim, WorldDataRegistry, WorldInitializer
+- [x] **13 unit test files** covering: ActionDispatcher, DataRegistry, EffectEngine, GameSystems, InputValidator, InventorySystem, LevelingAndCombat, LocationResolution, NarrationGuards, PromptAssembler, SkillProgression, TracingShim, WorldDataRegistry, WorldInitializer
 - [x] **Jest** with `--experimental-vm-modules` (ESM support)
 
 ### DevOps & Tooling
@@ -371,7 +371,7 @@ System functions → EventBus.emit() → SystemEventObserver → SimulationConte
 
 ### Medium Priority
 
-- [ ] Mana doesn't regenerate outside of level-up (no passive regen)
+- [x] ~~Mana doesn't regenerate outside of level-up (no passive regen)~~ — Fixed: `processTimeEffects` now runs on all non-combat turn-advancing actions; rest restores 25% HP/mana by default
 - [ ] Skill cooldowns not visually displayed in UI
 - [ ] Quest system has structure but very limited content
 - [ ] `api/narrative/` directory exists but is empty
@@ -409,7 +409,7 @@ System functions → EventBus.emit() → SystemEventObserver → SimulationConte
 | Classes               | 20 (all complete)                      |
 | Skills                | ~1,200 (20 active + 40 passive × 20)  |
 | Azure Function endpoints | 10                                  |
-| Unit test files       | 13                                     |
+| Unit test files       | 16                                     |
 | Monorepo packages     | 2 (@voidverse/game-core, game-schemas) |
 
 ---

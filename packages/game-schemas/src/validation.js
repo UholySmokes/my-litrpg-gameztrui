@@ -133,7 +133,7 @@ export function validateAction(action) {
   }
   return {
     valid: false,
-    reason: result.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', '),
+    reason: result.error.issues.map(e => `${e.path.join('.')}: ${e.message}`).join(', '),
   };
 }
 
@@ -144,7 +144,7 @@ export function validateGameState(state) {
   }
   return {
     valid: false,
-    reason: result.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', '),
+    reason: result.error.issues.map(e => `${e.path.join('.')}: ${e.message}`).join(', '),
   };
 }
 

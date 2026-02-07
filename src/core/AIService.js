@@ -1,5 +1,5 @@
-const DEFAULT_TIMEOUT_MS = 105000;
-const DEV_DEFAULT_TIMEOUT_MS = 120000;
+const DEFAULT_TIMEOUT_MS = 135000;
+const DEV_DEFAULT_TIMEOUT_MS = 150000;
 
 const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};

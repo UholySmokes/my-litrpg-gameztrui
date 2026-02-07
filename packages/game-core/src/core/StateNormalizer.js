@@ -619,6 +619,8 @@ export function normalizeGameState(rawState) {
         ...legacyEntries.map((entry) => entry.sequence || 0),
       ),
     },
+    contentVersion: state.contentVersion ?? "core@0.1.0",
+    stateVersion: typeof state.stateVersion === "number" ? state.stateVersion : 1,
   };
 
   const autoUnlockable = getAutoUnlockableTitles(normalized);

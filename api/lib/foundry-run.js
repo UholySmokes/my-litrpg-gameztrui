@@ -120,11 +120,15 @@ async function pollFoundryRun(threadId, runId) {
     `${endpointBase}/threads/${encodeURIComponent(threadId)}/runs/${encodeURIComponent(runId)}?api-version=${apiVersion}`,
     { method: "GET", ...auth, retries: 2 },
   );
-  const status = run?.status || "unknown";
+  const statusRaw = run?.status || "unknown";
+  const status = String(statusRaw).trim().toLowerCase();
 
+  // Treat "incomplete" as terminal. Azure AI Foundry / Assistants-style APIs can
+  // report "incomplete" when the run ends early (token limit, filtering, etc).
+  // Leaving it as "in progress" causes the streaming client to poll forever.
   if (["failed", "cancelled", "expired"].includes(status)) {
     return {
-      status,
+      status: statusRaw,
       text: "",
       done: true,
       error: `Run ended with status: ${status}`,
@@ -133,20 +137,20 @@ async function pollFoundryRun(threadId, runId) {
 
   if (status === "requires_action") {
     return {
-      status,
+      status: statusRaw,
       text: "",
       done: true,
       error: "Run requires action (tool calls) not supported.",
     };
   }
 
-  if (status === "completed") {
+  if (status === "completed" || status === "incomplete") {
     const messages = await fetchJson(
       `${endpointBase}/threads/${encodeURIComponent(threadId)}/messages?api-version=${apiVersion}`,
       { method: "GET", ...auth, retries: 2 },
     );
     const text = extractAssistantText(messages);
-    return { status, text, done: true };
+    return { status: statusRaw, text, done: true };
   }
 
   // Still in progress — try to fetch partial assistant text (best-effort)
@@ -161,7 +165,7 @@ async function pollFoundryRun(threadId, runId) {
     // Partial text fetch is best-effort; swallow errors
   }
 
-  return { status, text: partialText, done: false };
+  return { status: statusRaw, text: partialText, done: false };
 }
 
 /**
@@ -192,7 +196,7 @@ async function awaitFoundryRun(threadId, runId, { timeoutMs } = {}) {
 
     const status = run?.status;
 
-    if (status === "completed") {
+    if (status === "completed" || status === "incomplete") {
       const messages = await fetchJson(
         `${endpointBase}/threads/${encodeURIComponent(threadId)}/messages?api-version=${apiVersion}`,
         { method: "GET", ...auth, retries: 2 },

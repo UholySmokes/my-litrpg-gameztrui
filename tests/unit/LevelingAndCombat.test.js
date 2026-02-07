@@ -144,6 +144,30 @@ describe("Leveling and combat invariants", () => {
     );
   });
 
+  it("STUDY_SPELL writes system messages to narrative.entries", () => {
+    const state = {
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        abilities: [],
+        activeSkills: [],
+        passiveSkills: [],
+      },
+      narrative: { entries: [], sequence: 0 },
+    };
+
+    const next = gameReducer(state, { type: "STUDY_SPELL" });
+    // If spell creation succeeded, a system message should be in narrative.entries
+    if (next.player.abilities.length > 0) {
+      expect(next.narrative.entries.length).toBeGreaterThan(0);
+      const lastEntry = next.narrative.entries[next.narrative.entries.length - 1];
+      expect(lastEntry.type).toBe("system");
+      expect(lastEntry.text).toContain("Study complete:");
+      // Verify it does NOT write to legacy chatLog
+      expect(next.chatLog?.length ?? 0).toBe(0);
+    }
+  });
+
   it("executeSkill scales physical skills with STR + weapon attack", () => {
     const attacker = {
       name: "Hero",

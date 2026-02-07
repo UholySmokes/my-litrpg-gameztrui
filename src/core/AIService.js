@@ -1,5 +1,8 @@
 const DEFAULT_TIMEOUT_MS = 135000;
 const DEV_DEFAULT_TIMEOUT_MS = 150000;
+const STREAM_POLL_INTERVAL_MS = 1500;
+const STREAM_STALL_TIMEOUT_MS = 60000;
+const STREAM_MAX_POLLS = 200;
 
 const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};

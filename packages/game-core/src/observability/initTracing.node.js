@@ -94,13 +94,6 @@ export async function initNodeTracing({
   return { enabled: true, shutdown: () => shutdownNodeTracing() };
 }
 
-  await sdk.start();
-
-  globalThis.__LITRPG_TRACER__ = trace.getTracer(serviceName);
-
-  return { enabled: true, shutdown: () => shutdownNodeTracing() };
-}
-
 export async function shutdownNodeTracing() {
   if (!sdk) return;
   const current = sdk;

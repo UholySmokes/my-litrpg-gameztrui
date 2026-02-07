@@ -475,7 +475,7 @@ export function useNarrative(
         setIsLoading(false);
       }
     },
-    [setState, addSystemMessage, evaluateQuestProgress, dispatchSystemEvent],
+    [setState, addSystemMessage, evaluateQuestProgress, dispatchSystemEvent, engine],
   );
 
   /**

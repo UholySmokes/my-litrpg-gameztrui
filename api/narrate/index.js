@@ -143,7 +143,7 @@ module.exports = async function narrate(context, req) {
 
     const timeoutMs = getTimeoutMs(
       "NARRATE_RUN_TIMEOUT_MS",
-      getTimeoutMs("AZURE_AI_RUN_TIMEOUT_MS", 25000),
+      getTimeoutMs("AZURE_AI_RUN_TIMEOUT_MS", 60000),
     );
     const startedAt = Date.now();
     let currentRun = run;

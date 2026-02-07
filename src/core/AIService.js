@@ -1,4 +1,5 @@
 const DEFAULT_TIMEOUT_MS = 25000;
+const DEV_DEFAULT_TIMEOUT_MS = 60000;
 
 const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
@@ -42,12 +43,18 @@ const resolveNarrateEndpoints = () => {
 const resolveRequestTimeoutMs = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
+  const isDev = Boolean(buildEnv.DEV);
   const value = pickEnvValue(
     runtimeEnv["VITE_NARRATE_TIMEOUT_MS"],
     buildEnv["VITE_NARRATE_TIMEOUT_MS"],
   );
+  if (!value) {
+    return isDev ? DEV_DEFAULT_TIMEOUT_MS : DEFAULT_TIMEOUT_MS;
+  }
   const parsed = Number.parseInt(value, 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_TIMEOUT_MS;
+  return Number.isFinite(parsed) && parsed > 0
+    ? parsed
+    : (isDev ? DEV_DEFAULT_TIMEOUT_MS : DEFAULT_TIMEOUT_MS);
 };
 
 const MAX_NARRATIVE_LENGTH = 1200;
@@ -103,6 +110,11 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
       return { response, data };
     } catch (error) {
       lastError = error;
+
+      if (error?.name === "AbortError") {
+        throw error;
+      }
+
       if (attempt < MAX_RETRIES) {
         await delay(300 * (attempt + 1) ** 2);
         continue;

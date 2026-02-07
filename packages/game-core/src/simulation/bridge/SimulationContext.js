@@ -1,4 +1,4 @@
-import { EventBus } from "../events/EventBus";
+import { EventBus } from "../../core/EventBus.js";
 
 class SeededPRNG {
   constructor(seed) {

@@ -25,7 +25,7 @@ jobs:
       - name: Seed static data bundle
         env:
           GAME_DB_STORAGE: file
-          GAME_DB_PATH: api/data/game-db.json
+          GAME_DB_PATH: data/game-db.json
         run: npm run seed:static
       - name: Build And Deploy
         id: builddeploy

@@ -12,9 +12,11 @@ function nowIso() {
 function resolveDbPath() {
   const configured = getOptionalEnv("GAME_DB_PATH");
   if (!configured) return DEFAULT_DB_PATH;
-  return path.isAbsolute(configured)
-    ? configured
-    : path.resolve(process.cwd(), configured);
+  if (path.isAbsolute(configured)) return configured;
+  const normalized = configured.startsWith("api/")
+    ? configured.slice(4)
+    : configured;
+  return path.resolve(__dirname, "..", normalized);
 }
 
 function createEmptyDb() {

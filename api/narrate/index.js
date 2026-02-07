@@ -218,10 +218,20 @@ module.exports = async function narrate(context, req) {
       },
     );
   } catch (error) {
-    context.res = jsonResponse(500, {
+    const parsedStatus = Number(error?.status);
+    const status = Number.isFinite(parsedStatus) ? parsedStatus : 500;
+    const errorCode =
+      status === 504 || error?.code === "FOUNDRY_REQUEST_TIMEOUT"
+        ? "UPSTREAM_TIMEOUT"
+        : "UNEXPECTED_ERROR";
+    const responseBody = {
       ok: false,
-      errorCode: "UNEXPECTED_ERROR",
+      errorCode,
       message: String(error?.message || error || "Unknown error"),
-    });
+    };
+    if (typeof error?.detail !== "undefined") {
+      responseBody.detail = error.detail;
+    }
+    context.res = jsonResponse(status, responseBody);
   }
 };

@@ -81,20 +81,58 @@ async function resolveFetch() {
   return fetchImpl;
 }
 
-async function fetchJson(url, { method, token, body, retries }) {
+function getRetryDelayMs(attempt) {
+  return Math.min(2000, 300 * (attempt + 1));
+}
+
+function createTimeoutError(timeoutMs) {
+  const error = new Error(`Foundry request timed out after ${timeoutMs}ms.`);
+  error.status = 504;
+  error.code = "FOUNDRY_REQUEST_TIMEOUT";
+  return error;
+}
+
+async function fetchJson(url, { method, token, body, retries, timeoutMs }) {
   const fetchFn = await resolveFetch();
   const maxRetries = Number.isFinite(retries) ? retries : 2;
+  const requestTimeoutMs =
+    Number.isFinite(timeoutMs) && timeoutMs > 0
+      ? timeoutMs
+      : getTimeoutMs("AZURE_AI_HTTP_TIMEOUT_MS", 30000);
+  const canAbort = typeof AbortController === "function";
   let attempt = 0;
 
   while (true) {
-    const response = await fetchFn(url, {
-      method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    });
+    let response;
+    const controller = canAbort ? new AbortController() : null;
+    const timeoutId = controller
+      ? setTimeout(() => controller.abort(), requestTimeoutMs)
+      : null;
+    try {
+      response = await fetchFn(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: body ? JSON.stringify(body) : undefined,
+        signal: controller ? controller.signal : undefined,
+      });
+    } catch (error) {
+      const normalizedError =
+        error?.name === "AbortError"
+          ? createTimeoutError(requestTimeoutMs)
+          : error;
+
+      if (attempt < maxRetries) {
+        await new Promise((r) => setTimeout(r, getRetryDelayMs(attempt)));
+        attempt += 1;
+        continue;
+      }
+      throw normalizedError;
+    } finally {
+      if (timeoutId) clearTimeout(timeoutId);
+    }
 
     const text = await response.text();
     let json = null;
@@ -114,8 +152,7 @@ async function fetchJson(url, { method, token, body, retries }) {
         [429, 500, 502, 503, 504].includes(response.status) &&
         attempt < maxRetries
       ) {
-        const delay = Math.min(2000, 300 * (attempt + 1));
-        await new Promise((r) => setTimeout(r, delay));
+        await new Promise((r) => setTimeout(r, getRetryDelayMs(attempt)));
         attempt += 1;
         continue;
       }

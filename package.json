@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:api": "cd api && func start --port 7071",
     "build": "vite build",
     "postbuild": "node scripts/generate-runtime-config.js",
     "lint": "eslint .",

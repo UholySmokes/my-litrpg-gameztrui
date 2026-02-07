@@ -50,8 +50,6 @@ export function xpForNextLevel(level, config) {
       const value = Math.floor(base * Math.pow(growth, idx - 1));
       return clampSafe(value);
     } else {
-      const count = end - start;
-      geometricSum(base, growth, count); // iterate to advance bracket boundaries
       prevEnd = end;
     }
   }

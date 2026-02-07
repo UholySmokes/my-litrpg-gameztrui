@@ -34,6 +34,7 @@ import {
 } from "../systems/skills/SpellStudySystem.js";
 import { appendNarrativeEntry } from "./narrativeLog.js";
 import { withTraceSpan } from "../observability/traceShim.js";
+import { toNumber, clamp, mergeInventoryItems } from "../utils/shared.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -42,11 +43,6 @@ const ensureCombatStructure = (state) =>
     enemies: [],
     log: [],
   };
-
-const toNumber = (value, fallback = 0) =>
-  Number.isFinite(value) ? value : fallback;
-
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 const mergeResources = (existing = {}, rewardResources = {}) => {
   const next = { ...existing };
@@ -151,26 +147,6 @@ const applyAutoTitleUnlocks = (state, { announce = false } = {}) => {
     nextState,
     newlyUnlocked.map((title) => `Unlocked title: ${title.name}`),
   );
-};
-
-const mergeInventoryItems = (inventory = [], rewardItems = []) => {
-  if (!Array.isArray(rewardItems) || rewardItems.length === 0) return inventory;
-  const next = [...inventory];
-  rewardItems.forEach((item) => {
-    if (!item?.id) return;
-    const quantity = toNumber(item.quantity, 1);
-    const index = next.findIndex((entry) => entry.id === item.id);
-    if (index >= 0) {
-      const existing = next[index];
-      next[index] = {
-        ...existing,
-        quantity: toNumber(existing?.quantity, 0) + quantity,
-      };
-    } else {
-      next.push({ ...item, quantity });
-    }
-  });
-  return next;
 };
 
 const applyQuestRewards = (state, reward) => {

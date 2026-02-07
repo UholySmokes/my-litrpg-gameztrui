@@ -201,7 +201,7 @@ export default function ShopUI({
                   <button
                     className="holo-button"
                     onClick={() => handlePurchase(item)}
-                    disabled={!affordable ? true : false}
+                    disabled={!affordable}
                     style={{
                       width: "100%",
                       opacity: affordable ? 1 : 0.5,

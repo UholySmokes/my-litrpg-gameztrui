@@ -1,11 +1,7 @@
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
+import { toNumber } from "../utils/shared.js";
 
 const DEFAULT_MAX_ENTRIES = 120;
-
-const toNumber = (value, fallback = 0) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
-};
 
 export function appendNarrativeEntry(
   narrativeState,

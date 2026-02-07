@@ -5,9 +5,7 @@ import {
 } from "../constants/attributes.js";
 import { titleDatabase } from "../data/titleData.js";
 import { getSetBonuses } from "../systems/items/SetBonusSystem.js";
-
-const toNumber = (value, fallback = 0) =>
-  Number.isFinite(value) ? value : fallback;
+import { toNumber } from "../utils/shared.js";
 
 export function getTitleById(titleId) {
   if (!titleId) return null;

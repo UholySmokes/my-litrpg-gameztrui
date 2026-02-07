@@ -1,5 +1,4 @@
-const toNumber = (value, fallback = 0) =>
-  Number.isFinite(value) ? value : fallback;
+import { toNumber } from "../../utils/shared.js";
 
 const normalizeTags = (tags) =>
   Array.isArray(tags) ? tags.filter((tag) => typeof tag === "string") : [];

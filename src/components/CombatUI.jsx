@@ -105,7 +105,7 @@ export default function CombatUI({
                   {enemy.name} (Lvl {enemy.level})
                 </span>
                 <span style={{ color: "var(--text-main)" }}>
-                  HP: {enemy.stats.hp.current}/{enemy.stats.hp.max}
+                  HP: {enemy?.stats?.hp?.current ?? 0}/{enemy?.stats?.hp?.max ?? 0}
                 </span>
               </div>
               <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>

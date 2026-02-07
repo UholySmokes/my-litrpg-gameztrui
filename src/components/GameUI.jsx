@@ -1,11 +1,12 @@
 // GameUI.jsx - Technical Cleanup & Dashboard Refactor
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useGameEngine } from "../hook/usegamestate";
 import { useNarrative } from "../hook/useNarrative";
 import AdminTools from "./AdminTools";
 import { QuestManager } from "../systems/quest/QuestManager.js";
 import { gachaPools } from "../data/gachaData.js";
 import { getTitleBonuses } from "../core/titleLogic.js";
+import { mergeInventoryItems } from "../utils/shared.js";
 import CharacterCreationMode from "../ui/modes/CharacterCreationMode.jsx";
 import GameMode from "../ui/modes/GameMode.jsx";
 
@@ -40,30 +41,9 @@ const renderTypewriterText = (text = "") => {
   });
 };
 
-const toNumber = (value, fallback = 0) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
-};
-
-const mergeInventoryItems = (inventory = [], items = []) => {
-  if (!Array.isArray(items) || items.length === 0) return [...inventory];
-  const next = [...inventory];
-  items.forEach((item) => {
-    if (!item?.id) return;
-    const quantity = toNumber(item.quantity, 1);
-    const index = next.findIndex((entry) => entry.id === item.id);
-    if (index >= 0) {
-      const existing = next[index];
-      next[index] = {
-        ...existing,
-        quantity: toNumber(existing.quantity, 0) + quantity,
-      };
-    } else {
-      next.push({ ...item, quantity });
-    }
-  });
-  return next;
-};
+const AUTOSAVE_DEBOUNCE_MS = 2000;
+const TRANSITION_DURATION_MS = 1200;
+const MAX_LOCAL_SAVES = 20;
 
 export default function GameUI({ user }) {
   // PART 1: State Sanitation - Define missing visibility states
@@ -93,9 +73,10 @@ export default function GameUI({ user }) {
   const latestNarrativeEntry = narrativeEntries[narrativeEntries.length - 1];
   const latestNarrativeRawText = latestNarrativeEntry?.text || "";
   const latestNarrativeText = latestNarrativeRawText.trim();
-  const latestEntryTypewriterContent = latestNarrativeRawText
-    ? renderTypewriterText(latestNarrativeRawText)
-    : null;
+  const latestEntryTypewriterContent = useMemo(
+    () => (latestNarrativeRawText ? renderTypewriterText(latestNarrativeRawText) : null),
+    [latestNarrativeRawText],
+  );
   const sanitizedNarrativeSummary = narrativeSummary?.trim() || "";
   const shouldShowNarrativeSummary =
     sanitizedNarrativeSummary.length > 0 &&
@@ -103,6 +84,7 @@ export default function GameUI({ user }) {
   const narrativeMemoryRef = useRef(null);
   const autosaveTimerRef = useRef(null);
   const transitionAudioRef = useRef(null);
+  const previousStateRef = useRef(null);
   useEffect(() => {
     const container = narrativeMemoryRef.current;
     if (container) {
@@ -120,6 +102,7 @@ export default function GameUI({ user }) {
 
     autosaveTimerRef.current = setTimeout(() => {
       try {
+        const { previousState, ...stateToSave } = state;
         localStorage.setItem(
           "localAutosave:v1",
           JSON.stringify({
@@ -128,13 +111,13 @@ export default function GameUI({ user }) {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             user_id: user?.id || "unknown",
-            game_state: state,
+            game_state: stateToSave,
           }),
         );
       } catch (err) {
         console.warn("Autosave failed:", err);
       }
-    }, 600);
+    }, AUTOSAVE_DEBOUNCE_MS);
 
     return () => {
       if (autosaveTimerRef.current) {
@@ -216,7 +199,7 @@ export default function GameUI({ user }) {
     transitionTimeoutRef.current = setTimeout(() => {
       setCharacterCreated(true);
       setIsTransitioning(false);
-    }, transitionDurationMs);
+    }, TRANSITION_DURATION_MS);
 
     // Generate initial narrative after character creation using seeded quests
     try {
@@ -365,7 +348,7 @@ export default function GameUI({ user }) {
     } else {
       results.forEach((result) => {
         addSystemMessage(
-          `Obtained ${result.name} [${result.rarity.toUpperCase()}]`,
+          `Obtained ${result.name} [${(result.rarity || "unknown").toUpperCase()}]`,
           "system",
         );
       });
@@ -529,17 +512,19 @@ export default function GameUI({ user }) {
     const input = userInput.trim();
     setUserInput("");
 
-    // Save state for rewind before action
-    setState((prevState) => ({
-      ...prevState,
-      previousState: JSON.parse(JSON.stringify(prevState)),
-    }));
+    // Save state for rewind before action (stored outside reducer state)
+    previousStateRef.current = state;
 
     // Add user message to chat
     addSystemMessage(`> ${input}`, "user");
 
     // Process through narrative hook
-    await submitInput(input, state);
+    try {
+      await submitInput(input, state);
+    } catch (err) {
+      console.error("Submit failed:", err);
+      addSystemMessage("Something went wrong processing your action.", "system");
+    }
 
     // Focus input again
     if (inputRef.current) {
@@ -550,11 +535,15 @@ export default function GameUI({ user }) {
   // Handle action button click
   const handleSuggestionClick = async (actionText) => {
     if (isLoading) return;
-    await submitInput(actionText, state);
+    try {
+      await submitInput(actionText, state);
+    } catch (err) {
+      console.error("Suggestion action failed:", err);
+      addSystemMessage("Something went wrong processing your action.", "system");
+    }
   };
 
 
-  const transitionDurationMs = 1200;
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionTimeoutRef = useRef(null);
   useEffect(() => {
@@ -562,6 +551,7 @@ export default function GameUI({ user }) {
       if (transitionTimeoutRef.current) {
         clearTimeout(transitionTimeoutRef.current);
       }
+      transitionAudioRef.current?.close();
     };
   }, []);
   useEffect(() => {
@@ -703,6 +693,14 @@ export default function GameUI({ user }) {
     setEquipmentSelectSlot(null);
   };
 
+  const handleCloseShop = useCallback(() => setShowShop(false), []);
+  const handleCloseGacha = useCallback(() => setShowGacha(false), []);
+  const handleCloseTitleSystem = useCallback(() => setShowTitleSystem(false), []);
+  const handleCloseProfessions = useCallback(() => setShowProfessions(false), []);
+  const handleCloseStatusOverlay = useCallback(() => setShowStatusOverlay(false), []);
+  const handleCloseSaveLoad = useCallback(() => setShowSaveLoad(false), []);
+  const handleCloseQuests = useCallback(() => setShowQuests(false), []);
+
   return (
     <div className="app-frame">
       <div className="app-container">
@@ -831,13 +829,13 @@ export default function GameUI({ user }) {
               showStatusOverlay={showStatusOverlay}
               showSaveLoad={showSaveLoad}
               showQuests={showQuests}
-              onCloseShop={() => setShowShop(false)}
-              onCloseGacha={() => setShowGacha(false)}
-              onCloseTitleSystem={() => setShowTitleSystem(false)}
-              onCloseProfessions={() => setShowProfessions(false)}
-              onCloseStatusOverlay={() => setShowStatusOverlay(false)}
-              onCloseSaveLoad={() => setShowSaveLoad(false)}
-              onCloseQuests={() => setShowQuests(false)}
+              onCloseShop={handleCloseShop}
+              onCloseGacha={handleCloseGacha}
+              onCloseTitleSystem={handleCloseTitleSystem}
+              onCloseProfessions={handleCloseProfessions}
+              onCloseStatusOverlay={handleCloseStatusOverlay}
+              onCloseSaveLoad={handleCloseSaveLoad}
+              onCloseQuests={handleCloseQuests}
               onShopPurchase={handleShopPurchase}
               onGachaPull={handleGachaPull}
               onTitleEquip={handleTitleEquip}

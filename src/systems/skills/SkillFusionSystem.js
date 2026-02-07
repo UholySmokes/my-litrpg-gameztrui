@@ -1,5 +1,4 @@
-const toNumber = (value, fallback = 0) =>
-  Number.isFinite(value) ? value : fallback;
+import { toNumber } from "../../utils/shared.js";
 
 const getSkillType = (skill) => {
   if (!skill || typeof skill !== "object") return "active";

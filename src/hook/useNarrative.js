@@ -18,6 +18,7 @@ import {
   wrapActionExecution,
 } from "../simulation/bridge/SimulationBridge.js";
 import { appendNarrativeEntry } from "../core/narrativeLog.js";
+import { toNumber } from "../utils/shared.js";
 
 const initialNarrativeCache = new Map();
 
@@ -35,11 +36,6 @@ const shouldRefreshSummary = (narrativeState = {}) => {
     ? narrativeState.entries.length
     : 0;
   return count > 0 && count % SUMMARY_REFRESH_INTERVAL === 0;
-};
-
-const toNumber = (value, fallback = 0) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
 };
 
 function buildActionSuggestions(state) {

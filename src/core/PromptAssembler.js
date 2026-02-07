@@ -8,14 +8,10 @@ import {
   getOpeningSceneById,
 } from "../data/OpeningScenes.js";
 import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
+import { toNumber } from "../utils/shared.js";
 
 const MAX_HISTORY_ENTRIES = 20;
 const MAX_HISTORY_CHARS = 4000;
-
-const toNumber = (value, fallback = 0) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
-};
 
 const sanitizeUserInput = (input) => {
   if (typeof input !== "string") return "";

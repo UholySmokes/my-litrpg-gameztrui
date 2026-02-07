@@ -96,7 +96,7 @@ const appendSystemMessages = (state, messages = []) => {
   );
   if (filtered.length === 0) return state;
 
-  let narrative = state.narrative || {};
+  let narrative = state.narrative || { entries: [], sequence: 0 };
   for (let i = 0; i < filtered.length; i++) {
     narrative = appendNarrativeEntry(narrative, {
       type: "system",

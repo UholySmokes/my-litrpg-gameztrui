@@ -104,7 +104,12 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
 
       if (RETRY_STATUS.has(response.status) && attempt < MAX_RETRIES) {
         const errorCode = data?.errorCode;
-        if (response.status === 504 && errorCode === "RUN_TIMEOUT") {
+        if (
+          response.status === 504 &&
+          (errorCode === "RUN_TIMEOUT" ||
+            errorCode === "UPSTREAM_TIMEOUT" ||
+            errorCode === "FOUNDRY_REQUEST_TIMEOUT")
+        ) {
           return { response, data };
         }
         if (response.status === 502 && errorCode === "RUN_REQUIRES_ACTION") {

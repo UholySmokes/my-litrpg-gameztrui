@@ -16,6 +16,13 @@
     "./state": {
       "types": "./src/state.d.ts",
       "default": "./src/state.js"
+    },
+    "./validation": {
+      "types": "./src/validation.d.ts",
+      "default": "./src/validation.js"
     }
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
   }
 }

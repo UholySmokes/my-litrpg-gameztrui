@@ -1,6 +1,7 @@
 const { jsonResponse, readJsonBody } = require("../lib/azure-ai-utils");
 const { getUserFromRequest } = require("../lib/auth");
 const { query, sql } = require("../lib/sql");
+const { resolveGameDbBackend, fileDb } = require("../lib/game-db");
 
 const MAX_SAVE_NAME_LENGTH = 80;
 const MAX_SAVES_RETURNED = 50;
@@ -47,6 +48,170 @@ module.exports = async function saves(context, req) {
 
     const method = String(req?.method || "GET").toUpperCase();
     const saveId = req?.params?.id || req?.query?.id || "";
+    const backend = resolveGameDbBackend();
+    const nowIso = new Date().toISOString();
+
+    if (backend === "file") {
+      if (method === "GET" && !saveId) {
+        context.res = jsonResponse(200, {
+          ok: true,
+          saves: fileDb.listSaves({ userId: user.id, limit: MAX_SAVES_RETURNED }),
+        });
+        return;
+      }
+
+      if (method === "GET" && saveId) {
+        if (!isGuid(saveId)) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_SAVE_ID",
+            message: "Invalid save id.",
+          });
+          return;
+        }
+
+        const row = fileDb.getSave({ userId: user.id, saveId });
+        if (!row) {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "SAVE_NOT_FOUND",
+            message: "Save not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          save: {
+            id: row.id,
+            save_name: row.save_name,
+            game_state: safeJsonParse(row.game_state),
+            created_at: row.created_at,
+            updated_at: row.updated_at,
+          },
+        });
+        return;
+      }
+
+      if (method === "POST") {
+        const body = await readJsonBody(req);
+        const saveName = normalizeSaveName(body?.saveName || body?.save_name);
+        const gameState = normalizeGameState(body?.gameState || body?.game_state);
+
+        if (!gameState) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_GAME_STATE",
+            message: "gameState is required.",
+          });
+          return;
+        }
+
+        const row = fileDb.createSave({
+          userId: user.id,
+          saveName,
+          gameState,
+          now: nowIso,
+        });
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          save: row
+            ? {
+                id: row.id,
+                save_name: row.save_name,
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+              }
+            : null,
+        });
+        return;
+      }
+
+      if (method === "PUT" && saveId) {
+        if (!isGuid(saveId)) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_SAVE_ID",
+            message: "Invalid save id.",
+          });
+          return;
+        }
+        const body = await readJsonBody(req);
+        const saveName = normalizeSaveName(body?.saveName || body?.save_name);
+        const gameState = normalizeGameState(body?.gameState || body?.game_state);
+
+        if (!gameState) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_GAME_STATE",
+            message: "gameState is required.",
+          });
+          return;
+        }
+
+        const row = fileDb.updateSave({
+          userId: user.id,
+          saveId,
+          saveName,
+          gameState,
+          now: nowIso,
+        });
+
+        if (!row) {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "SAVE_NOT_FOUND",
+            message: "Save not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          save: {
+            id: row.id,
+            save_name: row.save_name,
+            created_at: row.created_at,
+            updated_at: row.updated_at,
+          },
+        });
+        return;
+      }
+
+      if (method === "DELETE" && saveId) {
+        if (!isGuid(saveId)) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_SAVE_ID",
+            message: "Invalid save id.",
+          });
+          return;
+        }
+
+        const deleted = fileDb.deleteSave({ userId: user.id, saveId });
+        if (!deleted) {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "SAVE_NOT_FOUND",
+            message: "Save not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, {
+          ok: true,
+        });
+        return;
+      }
+
+      context.res = jsonResponse(405, {
+        ok: false,
+        errorCode: "METHOD_NOT_ALLOWED",
+        message: "Unsupported method.",
+      });
+      return;
+    }
 
     if (method === "GET" && !saveId) {
       const result = await query(

@@ -3,6 +3,7 @@ const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 
 const { query, sql } = require("../api/lib/sql");
+const { resolveGameDbBackend, fileDb } = require("../api/lib/game-db");
 
 const DEFAULT_BUNDLE_KEY = "core";
 
@@ -83,6 +84,11 @@ async function buildStaticBundle() {
 
 async function upsertBundle(bundleKey, bundle) {
   const payload = JSON.stringify(bundle);
+  const backend = resolveGameDbBackend();
+  if (backend === "file") {
+    fileDb.upsertStaticBundle({ bundleKey, payload });
+    return;
+  }
   await query(
     `
       MERGE dbo.game_static_bundles AS target

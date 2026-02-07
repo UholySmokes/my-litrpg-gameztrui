@@ -1,6 +1,7 @@
 const { jsonResponse, readJsonBody } = require("../lib/azure-ai-utils");
 const { getUserFromRequest } = require("../lib/auth");
 const { withConnection, sql } = require("../lib/sql");
+const { resolveGameDbBackend, fileDb } = require("../lib/game-db");
 
 const GUID_REGEX = /^[0-9a-fA-F-]{36}$/;
 const MAX_SNAPSHOTS_RETURNED = 200;
@@ -40,12 +41,105 @@ module.exports = async function runSnapshots(context, req) {
 
     const method = String(req?.method || "GET").toUpperCase();
     const runId = req?.params?.runId || req?.query?.runId || "";
+    const backend = resolveGameDbBackend();
+    const nowIso = new Date().toISOString();
 
     if (!isGuid(runId)) {
       context.res = jsonResponse(400, {
         ok: false,
         errorCode: "INVALID_RUN_ID",
         message: "Invalid run id.",
+      });
+      return;
+    }
+
+    if (backend === "file") {
+      if (method === "GET") {
+        const latestOnly =
+          typeof req?.query?.latest === "string" &&
+          ["1", "true", "yes"].includes(req.query.latest.trim().toLowerCase());
+
+        const { owned, rows } = fileDb.listRunSnapshots({
+          userId: user.id,
+          runId,
+          latestOnly,
+          limit: MAX_SNAPSHOTS_RETURNED,
+        });
+
+        if (!owned) {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "RUN_NOT_FOUND",
+            message: "Run not found.",
+          });
+          return;
+        }
+
+        if (latestOnly) {
+          const row = (rows || [])[0];
+          context.res = jsonResponse(200, {
+            ok: true,
+            snapshot: {
+              tick: row.tick,
+              game_state: row.game_state ? JSON.parse(row.game_state) : null,
+              created_at: row.created_at,
+            },
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, {
+          ok: true,
+          snapshots: (rows || []).map((row) => ({
+            tick: row.tick,
+            created_at: row.created_at,
+          })),
+        });
+        return;
+      }
+
+      if (method === "POST") {
+        const body = await readJsonBody(req);
+        const tick =
+          Number.isFinite(Number(body?.tick)) && Number(body.tick) >= 0
+            ? Math.floor(Number(body.tick))
+            : 0;
+        const gameState = normalizeJson(body?.gameState || body?.game_state);
+
+        if (!gameState) {
+          context.res = jsonResponse(400, {
+            ok: false,
+            errorCode: "INVALID_GAME_STATE",
+            message: "gameState is required.",
+          });
+          return;
+        }
+
+        const result = fileDb.upsertRunSnapshot({
+          userId: user.id,
+          runId,
+          tick,
+          gameState,
+          now: nowIso,
+        });
+
+        if (result?.error === "RUN_NOT_FOUND") {
+          context.res = jsonResponse(404, {
+            ok: false,
+            errorCode: "RUN_NOT_FOUND",
+            message: "Run not found.",
+          });
+          return;
+        }
+
+        context.res = jsonResponse(200, { ok: true, snapshot: result });
+        return;
+      }
+
+      context.res = jsonResponse(405, {
+        ok: false,
+        errorCode: "METHOD_NOT_ALLOWED",
+        message: "Unsupported method.",
       });
       return;
     }

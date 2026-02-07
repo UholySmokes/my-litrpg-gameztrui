@@ -1,4 +1,5 @@
 import { SimBridge } from "./SimulationContext.js";
+import { zones as canonicalZones } from "../../data/registries/WorldDataRegistry.js";
 
 /**
  * GameStateAdapter - Converts between existing game state and simulation state
@@ -125,13 +126,34 @@ export function gameStateToSimulation(gameState) {
     });
   }
 
+  const zones = new Map(
+    (Array.isArray(canonicalZones) ? canonicalZones : []).map((zone) => [
+      zone.id,
+      {
+        id: zone.id,
+        name: zone.name,
+        type: zone.type,
+        connections: Array.isArray(zone.connections) ? zone.connections : [],
+        defaultEntities: [],
+        environmentalEffects: [],
+      },
+    ]),
+  );
+
+  const flagEntries = Object.entries(gameState.world?.flags || {}).filter(
+    ([, value]) => typeof value === "boolean",
+  );
+  const counterEntries = Object.entries(gameState.world?.counters || {}).filter(
+    ([, value]) => Number.isFinite(value),
+  );
+
   return {
     world: {
       currentTick: gameState.world?.turnCount || 0,
       currentTime: gameState.world?.time || 0,
-      zones: new Map(),
-      globalFlags: new Map(Object.entries(gameState.world?.flags || {})),
-      globalCounters: new Map(),
+      zones,
+      globalFlags: new Map(flagEntries),
+      globalCounters: new Map(counterEntries),
       activeEntities: Array.from(entities.keys()),
     },
     entities,

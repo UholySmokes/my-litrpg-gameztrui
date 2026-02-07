@@ -1,5 +1,6 @@
 import { xpForNextLevel } from "../core/xpCurve.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
+import { createInitialWorldState } from "../systems/world/WorldInitializer.js";
 
 export const INITIAL_CONFIG = {
   maxLevel: 100,
@@ -100,14 +101,7 @@ const initialGameState = {
     completed: [],
   },
   world: {
-    location: {
-      current: "Starting Zone",
-      visited: ["Starting Zone"],
-      unlockedAreas: [],
-    },
-    flags: {},
-    time: 0,
-    turnCount: 0,
+    ...createInitialWorldState({ seed: 1 }),
   },
   chatLog: [],
   narrative: {

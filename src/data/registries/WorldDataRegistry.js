@@ -130,9 +130,529 @@ export const WORLD_META = {
 // FACTIONS / ZONES / LOCATIONS
 // =============================================================================
 
-export let factions = [];
-export let zones = [];
-export let locations = [];
+export let locations = [
+  // CITY (4)
+  {
+    id: "starting_zone",
+    zoneId: "city",
+    name: "Arrival Terminal",
+    summary:
+      "A humming arrivals concourse where the arcology pretends nothing is broken.",
+    aliases: ["starting zone", "arrival terminal", "terminal", "gate"],
+    travelPolicy: "public",
+  },
+  {
+    id: "city_neon_bazaar",
+    zoneId: "city",
+    name: "Neon Bazaar",
+    summary:
+      "Stalls of synthcloth and spiritwire under pulsing signage, where contracts change hands faster than coins.",
+    aliases: ["neon bazaar", "bazaar", "market", "exchange floor"],
+    travelPolicy: "public",
+  },
+  {
+    id: "city_sunspire_temple",
+    zoneId: "city",
+    name: "Sunspire Temple",
+    summary:
+      "A sanctuary of glass and hymn-light, tuned to leylines like a prayer you can meter.",
+    aliases: ["sunspire temple", "sunspire", "temple"],
+    travelPolicy: "public",
+  },
+  {
+    id: "city_holo_bazaar_underwalk",
+    zoneId: "city",
+    name: "Holo-Bazaar Underwalk",
+    summary:
+      "Service tunnels beneath the market where whispers become invoices and exits change places.",
+    aliases: ["underwalk", "holo bazaar underwalk", "holo-bazaar", "broker"],
+    travelPolicy: "restricted",
+  },
+
+  // RUINS (3)
+  {
+    id: "ruins_leyline_plaza",
+    zoneId: "ruins",
+    name: "Leyline Plaza",
+    summary:
+      "Cracked stone and stormlight: a plaza where leylines surface like exposed nerves.",
+    aliases: ["leyline plaza", "plaza", "fallen spire plaza"],
+    travelPolicy: "public",
+  },
+  {
+    id: "ruins_stormglass_crater",
+    zoneId: "ruins",
+    name: "Stormglass Crater",
+    summary:
+      "A bowl of fused glass where lightning remembers the shape of the Spirefall.",
+    aliases: ["stormglass crater", "crater", "stormglass"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "ruins_quarantine_barricade",
+    zoneId: "ruins",
+    name: "Quarantine Barricade",
+    summary:
+      "Runed pylons and razorwire wards marking salvage rights and quarantine lines.",
+    aliases: ["quarantine barricade", "barricade", "quarantine line"],
+    travelPolicy: "restricted",
+  },
+
+  // WILDS (3)
+  {
+    id: "wilds_rootbound_camp",
+    zoneId: "wilds",
+    name: "Rootbound Camp",
+    summary:
+      "Canvas, charm-braids, and cooking smoke: a temporary city of people who refuse to be displaced.",
+    aliases: ["rootbound camp", "camp", "rootbound"],
+    travelPolicy: "public",
+  },
+  {
+    id: "wilds_ember_bloom_ridge",
+    zoneId: "wilds",
+    name: "Ember Bloom Ridge",
+    summary:
+      "A ridgeline where ash petals fall upward and the Bloom burns without consuming.",
+    aliases: ["ember bloom ridge", "ember bloom", "bloom ridge", "bloom"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "wilds_mosslit_clearing",
+    zoneId: "wilds",
+    name: "Mosslit Clearing",
+    summary:
+      "Soft green light under old branches; the air tastes like decisions you have not made yet.",
+    aliases: ["mosslit clearing", "clearing", "mosslit"],
+    travelPolicy: "restricted",
+  },
+
+  // SKYDOCKS (3)
+  {
+    id: "skydocks_skyforge_platforms",
+    zoneId: "skydocks",
+    name: "Skyforge Platforms",
+    summary:
+      "High gantries and engine-chains above open air, where metalwork is done with altitude as a threat.",
+    aliases: ["skyforge platforms", "skydocks", "platforms", "skyforge"],
+    travelPolicy: "public",
+  },
+  {
+    id: "skydocks_gantry_row",
+    zoneId: "skydocks",
+    name: "Gantry Row",
+    summary:
+      "A maze of catwalks, cargo nets, and patrol drones that never quite fly in straight lines.",
+    aliases: ["gantry row", "gantries", "catwalks"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "skydocks_engine_quay",
+    zoneId: "skydocks",
+    name: "Engine Quay",
+    summary:
+      "Docked turbines and humming stabilizers, where leylines are bolted into compliance.",
+    aliases: ["engine quay", "quay", "engine bay"],
+    travelPolicy: "restricted",
+  },
+
+  // UNDERCITY (3)
+  {
+    id: "undercity_wet_gate",
+    zoneId: "undercity",
+    name: "Wet Gate",
+    summary:
+      "A dripping access vault where the city exhales heat and secrets into the dark.",
+    aliases: ["wet gate", "gate", "access vault"],
+    travelPolicy: "public",
+  },
+  {
+    id: "undercity_veil_archive",
+    zoneId: "undercity",
+    name: "Veil Archive",
+    summary:
+      "Ledger-stacks sealed in living ink; every whisper here has a receipt.",
+    aliases: ["veil archive", "archive", "ledger vault"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "undercity_memory_auction",
+    zoneId: "undercity",
+    name: "Memory Auction",
+    summary:
+      "A candlelit pit where recollections are bid on, bottled, and resold as alibis.",
+    aliases: ["memory auction", "auction", "memory market"],
+    travelPolicy: "restricted",
+  },
+
+  // MOUNTAIN (3)
+  {
+    id: "mountain_starforge_foundry",
+    zoneId: "mountain",
+    name: "Starforge Foundry",
+    summary:
+      "A resonant workshop carved into the ridge, where ore sings and mistakes shatter.",
+    aliases: ["starforge foundry", "starforge", "foundry", "forge"],
+    travelPolicy: "public",
+  },
+  {
+    id: "mountain_crystal_ridgeline",
+    zoneId: "mountain",
+    name: "Crystal Ridgeline",
+    summary:
+      "A knife-edge path studded with tuning crystals that amplify thoughts into noise.",
+    aliases: ["crystal ridgeline", "ridgeline", "crystal ridge"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "mountain_rune_sentinel_watch",
+    zoneId: "mountain",
+    name: "Rune Sentinel Watch",
+    summary:
+      "A watchpost where stone guardians blink awake when the leylines stutter.",
+    aliases: ["rune sentinel watch", "watchpost", "sentinel watch"],
+    travelPolicy: "restricted",
+  },
+
+  // COAST (3)
+  {
+    id: "coast_tideward_pier",
+    zoneId: "coast",
+    name: "Tideward Pier",
+    summary:
+      "Salt-stained pylons and ward-stones, a public line between the arcology and the hungry sea.",
+    aliases: ["tideward pier", "pier", "tideward", "breakwater"],
+    travelPolicy: "public",
+  },
+  {
+    id: "coast_breaker_shrine",
+    zoneId: "coast",
+    name: "Breaker Shrine",
+    summary:
+      "A shrine hammered together from shipbone and stormglass, where vows are made against tides.",
+    aliases: ["breaker shrine", "shrine", "breaker"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "coast_astral_waypoint",
+    zoneId: "coast",
+    name: "Astral Waypoint",
+    summary:
+      "A floating marker of light that keeps ships honest, until it flickers and lies.",
+    aliases: ["astral waypoint", "waypoint", "navigation node"],
+    travelPolicy: "restricted",
+  },
+
+  // DESERT (3)
+  {
+    id: "desert_mirage_caravanserai",
+    zoneId: "desert",
+    name: "Mirage Caravanserai",
+    summary:
+      "Canvas towers and dusk-coded glyphs; routes are traded here like weather predictions.",
+    aliases: ["mirage caravanserai", "caravanserai", "caravan", "mirage camp"],
+    travelPolicy: "public",
+  },
+  {
+    id: "desert_oracle_sundial",
+    zoneId: "desert",
+    name: "Oracle Sundial",
+    summary:
+      "A monumental dial half-buried in glass sand, its shadow moving wrong at noon.",
+    aliases: ["oracle sundial", "sundial", "oracle"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "desert_glassstep_dunes",
+    zoneId: "desert",
+    name: "Glassstep Dunes",
+    summary:
+      "Stormglass grit underfoot; the horizon repeats itself like a stuttered spell.",
+    aliases: ["glassstep dunes", "dunes", "glassstep"],
+    travelPolicy: "restricted",
+  },
+
+  // VOLCANIC (3)
+  {
+    id: "volcanic_smoke_warden_redoubt",
+    zoneId: "volcanic",
+    name: "Smoke Warden Redoubt",
+    summary:
+      "A soot-black fort with vent gauges and treaty seals, built to argue with a mountain.",
+    aliases: ["smoke warden redoubt", "redoubt", "smoke wardens"],
+    travelPolicy: "public",
+  },
+  {
+    id: "volcanic_ashen_caldera",
+    zoneId: "volcanic",
+    name: "Ashen Caldera",
+    summary:
+      "A ring of heat and collapsing ledges where the ground keeps trying to become a river.",
+    aliases: ["ashen caldera", "caldera", "ash ring"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "volcanic_vent_seal_chamber",
+    zoneId: "volcanic",
+    name: "Vent-Seal Chamber",
+    summary:
+      "A hollow of pressure doors and rune clamps designed to silence the earth mid-scream.",
+    aliases: ["vent-seal chamber", "vent chamber", "seal chamber", "vents"],
+    travelPolicy: "restricted",
+  },
+
+  // DREAMSCAPE (3)
+  {
+    id: "dreamscape_wisp_meadow",
+    zoneId: "dreamscape",
+    name: "Wisp Meadow",
+    summary:
+      "A field of soft light where thoughts drift loose and return wearing different names.",
+    aliases: ["wisp meadow", "meadow", "wisps"],
+    travelPolicy: "public",
+  },
+  {
+    id: "dreamscape_mnemonic_siltbank",
+    zoneId: "dreamscape",
+    name: "Mnemonic Siltbank",
+    summary:
+      "Powdered recollection gathers here like sediment; step wrong and you remember someone else's childhood.",
+    aliases: ["mnemonic siltbank", "siltbank", "mnemonic dust", "dust"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "dreamscape_mirrorpool_thin_place",
+    zoneId: "dreamscape",
+    name: "Mirrorpool Thin Place",
+    summary:
+      "A still pool that reflects possible versions of you, each one insisting it's the original.",
+    aliases: ["mirrorpool thin place", "mirrorpool", "thin place", "mirror pool"],
+    travelPolicy: "restricted",
+  },
+];
+
+export let zones = [
+  {
+    id: "ruins",
+    name: "Stormglass Ruins",
+    type: "exploration",
+    tags: [],
+    summary:
+      "The Spirefall's scar: broken plazas, exposed leylines, and salvage law written in lightning.",
+    connections: ["city", "undercity", "mountain", "coast", "dreamscape"],
+    startLocationIds: ["ruins_leyline_plaza", "ruins_quarantine_barricade"],
+    dominantFactionIds: ["arcane_wardens"],
+  },
+  {
+    id: "city",
+    name: "Meridian Arcology",
+    type: "social",
+    tags: [],
+    summary:
+      "A neon sanctuary built atop ancient bones, where commerce is a spell and safety is a clause.",
+    connections: ["ruins", "wilds", "skydocks", "undercity", "coast"],
+    startLocationIds: ["starting_zone", "city_neon_bazaar"],
+    dominantFactionIds: ["aurum_exchange", "arcane_wardens"],
+  },
+  {
+    id: "wilds",
+    name: "Wildroot Fringe",
+    type: "exploration",
+    tags: [],
+    summary:
+      "Grove networks and ash-fed growth where diplomacy is grown, not spoken, and monsters have titles.",
+    connections: ["city", "mountain", "coast", "volcanic"],
+    startLocationIds: ["wilds_rootbound_camp", "wilds_ember_bloom_ridge"],
+    dominantFactionIds: ["verdant_envoys"],
+  },
+  {
+    id: "skydocks",
+    name: "Skyforge Skydocks",
+    type: "combat",
+    tags: [],
+    summary:
+      "Platforms over open air, engine-law courts, and patrol drones that enforce altitude like a border.",
+    connections: ["city", "mountain", "coast", "dreamscape"],
+    startLocationIds: ["skydocks_skyforge_platforms"],
+    dominantFactionIds: ["skyforge_sentinels", "aurum_exchange"],
+  },
+  {
+    id: "undercity",
+    name: "Veilward Undercity",
+    type: "combat",
+    tags: [],
+    summary:
+      "Tunnels and ledger vaults where secrets burn like fuel and the dark remembers your voice.",
+    connections: ["city", "ruins", "coast", "dreamscape"],
+    startLocationIds: ["undercity_wet_gate"],
+    dominantFactionIds: ["veil_wardens"],
+  },
+  {
+    id: "mountain",
+    name: "Crystal Ridgeworks",
+    type: "exploration",
+    tags: [],
+    summary:
+      "High paths and resonant forges where crystal matrices turn ambition into fracture lines.",
+    connections: ["ruins", "wilds", "skydocks", "desert", "volcanic"],
+    startLocationIds: ["mountain_starforge_foundry"],
+    dominantFactionIds: ["skyforge_sentinels"],
+  },
+  {
+    id: "coast",
+    name: "Tideward Coast",
+    type: "exploration",
+    tags: [],
+    summary:
+      "Breakwaters and ward-stones holding back abyssal pressure and the paperwork of the sea.",
+    connections: ["city", "wilds", "skydocks", "undercity", "desert", "ruins"],
+    startLocationIds: ["coast_tideward_pier"],
+    dominantFactionIds: ["tideward_order"],
+  },
+  {
+    id: "desert",
+    name: "Glassstep Sands",
+    type: "exploration",
+    tags: [],
+    summary:
+      "Stormglass dunes and route-glyphs that only read true at dusk; mirages here are contractual.",
+    connections: ["coast", "mountain", "dreamscape"],
+    startLocationIds: ["desert_mirage_caravanserai", "desert_oracle_sundial"],
+    dominantFactionIds: ["mirage_guides"],
+  },
+  {
+    id: "volcanic",
+    name: "Emberline Caldera",
+    type: "combat",
+    tags: [],
+    summary:
+      "Living vents and ash treaties where the ground negotiates with fire every hour.",
+    connections: ["mountain", "wilds", "dreamscape"],
+    startLocationIds: ["volcanic_smoke_warden_redoubt", "volcanic_ashen_caldera"],
+    dominantFactionIds: ["smoke_wardens"],
+  },
+  {
+    id: "dreamscape",
+    name: "Mnemonic Dreamscape",
+    type: "exploration",
+    tags: [],
+    summary:
+      "Thin places and drifting recollections where the System's labels peel off and float away.",
+    connections: ["ruins", "undercity", "skydocks", "desert", "volcanic"],
+    startLocationIds: ["dreamscape_wisp_meadow", "dreamscape_mnemonic_siltbank"],
+    dominantFactionIds: ["veil_wardens", "mirage_guides"],
+  },
+];
+
+export let factions = [
+  // Major factions (8)
+  {
+    id: "arcane_wardens",
+    name: "Arcane Wardens",
+    kind: "major",
+    summary:
+      "Quarantine engineers and salvage-law enforcers who treat stability as a monopoly.",
+    hqLocationId: "ruins_quarantine_barricade",
+    goals: ["Contain leyline storms", "Monetize stabilization tech"],
+    rivals: ["veil_wardens"],
+  },
+  {
+    id: "aurum_exchange",
+    name: "Aurum Exchange",
+    kind: "major",
+    summary:
+      "Contract lords who standardize soulcoin and turn favors into interest-bearing debt.",
+    hqLocationId: "city_neon_bazaar",
+    goals: ["Control currency flows", "Broker faction accords for profit"],
+    rivals: ["arcane_wardens"],
+  },
+  {
+    id: "verdant_envoys",
+    name: "Verdant Envoys",
+    kind: "major",
+    summary:
+      "Diplomats of living groves who negotiate with roots, spores, and the people who fear them.",
+    hqLocationId: "wilds_rootbound_camp",
+    goals: ["Prevent ecological collapse", "Secure the Ember Bloom"],
+    rivals: ["smoke_wardens"],
+  },
+  {
+    id: "skyforge_sentinels",
+    name: "Skyforge Sentinels",
+    kind: "major",
+    summary:
+      "Engine-law marshals who patrol the skydocks and treat altitude as sovereign territory.",
+    hqLocationId: "skydocks_skyforge_platforms",
+    goals: ["Maintain skydock security", "Protect forge throughput"],
+    rivals: ["aurum_exchange"],
+  },
+  {
+    id: "veil_wardens",
+    name: "Veil Wardens",
+    kind: "major",
+    summary:
+      "Ledger-keepers and silence-cultists who police secrets like a civic resource.",
+    hqLocationId: "undercity_veil_archive",
+    goals: ["Own the city's hidden history", "Control memory markets"],
+    rivals: ["arcane_wardens"],
+  },
+  {
+    id: "tideward_order",
+    name: "Tideward Order",
+    kind: "major",
+    summary:
+      "Coastal wardens sworn to keep the abyssal surge out, even when the paperwork is drowning.",
+    hqLocationId: "coast_tideward_pier",
+    goals: ["Reinforce ward-stones", "Purge abyssal incursions"],
+    rivals: ["mirage_guides"],
+  },
+  {
+    id: "mirage_guides",
+    name: "Mirage Guides",
+    kind: "major",
+    summary:
+      "Route-scribes who sell paths that only exist at the right angle of light.",
+    hqLocationId: "desert_mirage_caravanserai",
+    goals: ["Monopolize safe passage", "Exploit mirage storms"],
+    rivals: ["tideward_order"],
+  },
+  {
+    id: "smoke_wardens",
+    name: "Smoke Wardens",
+    kind: "major",
+    summary:
+      "Vent-sealers and ash treaty brokers who keep the caldera from rewriting the map.",
+    hqLocationId: "volcanic_smoke_warden_redoubt",
+    goals: ["Stabilize vents", "Enforce vent treaties"],
+    rivals: ["verdant_envoys"],
+  },
+
+  // Minor factions (3)
+  {
+    id: "stormglass_nomads",
+    name: "Stormglass Nomads",
+    kind: "minor",
+    summary:
+      "Caravan scavengers who read lightning patterns like a language and live between quarantines.",
+    hqLocationId: "ruins_stormglass_crater",
+  },
+  {
+    id: "mnemonic_alchemists",
+    name: "Mnemonic Alchemists",
+    kind: "minor",
+    summary:
+      "Vial-brewers who refine dream-wisp dust into civic commodity and personal catastrophe.",
+    hqLocationId: "dreamscape_mnemonic_siltbank",
+  },
+  {
+    id: "skyfisher_guild",
+    name: "Skyfisher Guild",
+    kind: "minor",
+    summary:
+      "Net-casters and anti-grav wranglers who harvest the upper air for things that should not be caught.",
+    hqLocationId: "skydocks_engine_quay",
+  },
+];
 
 export const MAJOR_FACTION_IDS = [
   "arcane_wardens",
@@ -299,4 +819,3 @@ export function getAccessibleLocationIds(gameState) {
 
   return result;
 }
-

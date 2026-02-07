@@ -62,9 +62,8 @@ describe("InputValidator", () => {
   it("rejects movement when dead", () => {
     const state = cloneState(initialGameState);
     state.player.isDead = true;
-    state.world.location.visited.push("Village");
     const result = validateActionComprehensive(
-      { type: "move", targetLocation: "Village" },
+      { type: "move", targetLocation: "temple" },
       state,
     );
     expect(result.valid).toBe(false);

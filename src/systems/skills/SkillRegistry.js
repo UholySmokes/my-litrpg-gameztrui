@@ -11,6 +11,11 @@ import {
 } from "./TalentManager.js";
 import { shuffle } from "../../utils/DeterministicRandom.js";
 import { nonCombatSkills } from "./NonCombatSkillRegistry.js";
+import {
+  getLocationById,
+  getZoneById,
+  resolveLocationId,
+} from "../../data/registries/WorldDataRegistry.js";
 
 /**
  * Helper function to shuffle array and select random items
@@ -12852,11 +12857,36 @@ function checkSkillUnlockConditions(skill, gameState) {
   }
 
   // Check location requirement
-  if (
-    conditions.location &&
-    gameState.world.location.current !== conditions.location
-  ) {
-    return false;
+  if (conditions.location) {
+    const rawCondition = conditions.location;
+    const conditionText =
+      typeof rawCondition === "string" ? rawCondition.trim() : "";
+    if (!conditionText) {
+      return false;
+    }
+
+    const currentRaw =
+      gameState?.world?.location?.current ?? gameState?.world?.location ?? null;
+    const currentId =
+      resolveLocationId(currentRaw) ||
+      (typeof currentRaw === "string" ? currentRaw.trim() : null);
+
+    const conditionLower = conditionText.toLowerCase();
+    const requiredZone = getZoneById(conditionLower);
+    if (requiredZone) {
+      const currentLocation = currentId ? getLocationById(currentId) : null;
+      if (!currentLocation || currentLocation.zoneId !== requiredZone.id) {
+        return false;
+      }
+    } else {
+      const requiredLocationId = resolveLocationId(conditionText);
+      if (!requiredLocationId) {
+        return false;
+      }
+      if (!currentId || currentId !== requiredLocationId) {
+        return false;
+      }
+    }
   }
 
   // Check quest requirement

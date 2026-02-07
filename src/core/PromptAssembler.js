@@ -7,6 +7,11 @@ import {
   describeOpeningScene,
   getOpeningSceneById,
 } from "../data/OpeningScenes.js";
+import {
+  getLocationById,
+  getZoneById,
+  resolveLocationId,
+} from "../data/registries/WorldDataRegistry.js";
 import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import { toNumber } from "../utils/shared.js";
 
@@ -124,7 +129,7 @@ function buildContextSection(gameState) {
     world?.flags && typeof world.flags === "object" ? world.flags : {};
   const worldFlags =
     Object.entries(flags)
-      .filter(([, flagValue]) => !!flagValue)
+      .filter(([, flagValue]) => flagValue === true)
       .map(([flagKey]) => flagKey)
       .join(", ") || "None";
 
@@ -143,7 +148,17 @@ function buildContextSection(gameState) {
   const xpCurrent = toNumber(player.xp?.current ?? player.xp, 0);
   const xpMax = toNumber(player.xp?.max ?? player.xpMax, 0);
   const xpToNext = Math.max(0, xpMax - xpCurrent);
-  const location = world?.location?.current || world?.location || "Unknown";
+  const locationRaw = world?.location?.current ?? world?.location ?? null;
+  const locationId =
+    resolveLocationId(locationRaw) ||
+    (typeof locationRaw === "string" ? locationRaw.trim() : null);
+  const resolvedLocation = locationId ? getLocationById(locationId) : null;
+  const resolvedZone = resolvedLocation?.zoneId
+    ? getZoneById(resolvedLocation.zoneId)
+    : null;
+  const zoneLabel =
+    resolvedZone?.name || resolvedLocation?.zoneId || "Unknown Zone";
+  const locationLabel = resolvedLocation?.name || locationId || "Unknown";
 
   const lines = [
     "=== CURRENT GAME STATE ===",
@@ -151,7 +166,8 @@ function buildContextSection(gameState) {
     `HP: ${hpCurrent}/${hpMax}`,
     `Mana: ${manaCurrent}/${manaMax}`,
     `XP: ${xpCurrent}/${xpMax} (${xpToNext} until next level)`,
-    `Location: ${location}`,
+    `Zone: ${zoneLabel}`,
+    `Location: ${locationLabel}`,
     equippedLine,
     `Inventory: ${inventoryList}`,
     `Active Quests: ${activeQuests}`,
@@ -316,12 +332,28 @@ export function buildInitialPrompt(gameState = {}) {
   const mainQuest = activeQuests[0] || null;
   const sideQuests = activeQuests.slice(1, 3);
 
-  const sceneId = gameState?.world?.flags?.startingSceneId;
+  const sceneId =
+    gameState?.world?.vars?.startingSceneId ??
+    gameState?.world?.flags?.startingSceneId;
   const scene = getOpeningSceneById(sceneId);
+  const openingLocationRaw =
+    gameState?.world?.location?.current ?? gameState?.world?.location ?? null;
+  const openingLocationId =
+    resolveLocationId(openingLocationRaw) ||
+    (typeof openingLocationRaw === "string"
+      ? openingLocationRaw.trim()
+      : null);
+  const openingLocation = openingLocationId
+    ? getLocationById(openingLocationId)
+    : null;
+  const openingZone = openingLocation?.zoneId
+    ? getZoneById(openingLocation.zoneId)
+    : null;
   const sceneDescription = describeOpeningScene(scene, {
     mainQuestName: mainQuest?.name || "the looming mystery",
     sideHookNames: sideQuests.map((q) => q.name),
-    locationHint: scene?.biome || "dawn-swept district",
+    locationHint:
+      openingLocation?.name || openingZone?.name || scene?.biome || "district",
     factionHint: scene?.tone || "locals",
   });
 

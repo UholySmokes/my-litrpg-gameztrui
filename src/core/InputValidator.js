@@ -4,6 +4,10 @@
 // =================================================================
 
 import { getItemData } from '../entities/ItemRegistry.js';
+import {
+  getAccessibleLocationIds,
+  resolveLocationId,
+} from "../data/registries/WorldDataRegistry.js";
 
 /**
  * Validates an action before it's executed
@@ -114,35 +118,6 @@ function validateUseItem(action, gameState) {
  * Validates movement actions
  */
 function validateMove(action, gameState) {
-  const world = gameState.world || {};
-  const currentLocation = world.location?.current || "Starting Zone";
-  const visitedLocations = world.location?.visited || [];
-  const unlockedAreas = world.location?.unlockedAreas || [];
-
-  // If target location is specified
-  if (action.targetLocation) {
-    const targetLocation = action.targetLocation.toLowerCase();
-    
-    // Check if location exists in visited locations
-    const locationExists = visitedLocations.some(
-      loc => loc.toLowerCase() === targetLocation
-    );
-    
-    if (!locationExists) {
-      // Check if it's an unlocked area
-      const isUnlocked = unlockedAreas.some(
-        area => area.toLowerCase() === targetLocation
-      );
-      
-      if (!isUnlocked) {
-        return {
-          valid: false,
-          reason: `You cannot go to "${action.targetLocation}". That location is not accessible.`
-        };
-      }
-    }
-  }
-
   // Check if player is dead (can't move when dead)
   if (gameState.player.isDead) {
     return {
@@ -151,12 +126,35 @@ function validateMove(action, gameState) {
     };
   }
 
-  // Check if already at target location
-  if (action.targetLocation && currentLocation.toLowerCase() === action.targetLocation.toLowerCase()) {
-    return {
-      valid: false,
-      reason: `You are already at ${currentLocation}.`
-    };
+  const world = gameState.world || {};
+  const currentRaw =
+    world.location?.current ?? world.location ?? "starting_zone";
+
+  // If target location is specified
+  if (action.targetLocation) {
+    const allowedLocationIds = getAccessibleLocationIds(gameState);
+    const targetId = resolveLocationId(action.targetLocation, {
+      allowedLocationIds,
+    });
+
+    if (!targetId) {
+      return {
+        valid: false,
+        reason: `You cannot go to "${action.targetLocation}". That location is not accessible.`,
+      };
+    }
+
+    const currentId =
+      resolveLocationId(currentRaw) ||
+      (typeof currentRaw === "string" ? currentRaw.trim() : null);
+
+    // Check if already at target location
+    if (currentId && currentId === targetId) {
+      return {
+        valid: false,
+        reason: `You are already at ${action.targetLocation}.`,
+      };
+    }
   }
 
   return { valid: true };

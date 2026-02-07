@@ -475,8 +475,10 @@ export function useNarrative(
 
       try {
         const cacheKeyParts = [
-          currentState.world?.flags?.startingSceneId,
-          currentState.world?.flags?.current_quest_id,
+          currentState.world?.vars?.startingSceneId ??
+            currentState.world?.flags?.startingSceneId,
+          currentState.world?.vars?.current_quest_id ??
+            currentState.world?.flags?.current_quest_id,
           ...(currentState.quests?.active || []).map((q) => q?.id).sort(),
           typeof currentState.player?.race === "string"
             ? currentState.player?.race

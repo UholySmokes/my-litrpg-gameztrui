@@ -7,6 +7,7 @@ import { QuestManager } from "../systems/quest/QuestManager.js";
 import { gachaPools } from "../data/gachaData.js";
 import { getTitleBonuses } from "../core/titleLogic.js";
 import { mergeInventoryItems } from "../utils/shared.js";
+import { seedWorldAfterCharacterCreation } from "../systems/world/WorldInitializer.js";
 import CharacterCreationMode from "../ui/modes/CharacterCreationMode.jsx";
 import GameMode from "../ui/modes/GameMode.jsx";
 
@@ -184,13 +185,20 @@ export default function GameUI({ user }) {
       );
     }
 
+    const nextQuests = {
+      active: initialQuests,
+      completed: [],
+    };
+    const seededWorld = seedWorldAfterCharacterCreation(state?.world, {
+      player: characterData,
+      quests: nextQuests,
+    });
+
     setState((prevState) => ({
       ...prevState,
       player: characterData,
-      quests: {
-        active: initialQuests,
-        completed: [],
-      },
+      quests: nextQuests,
+      world: seededWorld,
     }));
     setIsTransitioning(true);
     if (transitionTimeoutRef.current) {
@@ -206,10 +214,8 @@ export default function GameUI({ user }) {
       await generateInitialNarrativeText({
         ...state,
         player: characterData,
-        quests: {
-          active: initialQuests,
-          completed: [],
-        },
+        quests: nextQuests,
+        world: seededWorld,
       });
     } catch (error) {
       console.error("Failed to generate initial narrative:", error);

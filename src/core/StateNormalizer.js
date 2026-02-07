@@ -10,6 +10,11 @@ import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeNarrativeEntries } from "./narrativeLog.js";
 import { toNumber, clamp } from "../utils/shared.js";
 import { INITIAL_CONFIG } from "../data/initialState.js";
+import {
+  WORLD_META,
+  MAJOR_FACTION_IDS,
+  resolveLocationId,
+} from "../data/registries/WorldDataRegistry.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
 
@@ -339,53 +344,194 @@ function normalizeObject(value) {
     : {};
 }
 
+const DEFAULT_WORLD_ID = WORLD_META.id;
+const DEFAULT_START_LOCATION_ID = "starting_zone";
+const DEFAULT_WORLD_COUNTERS = {
+  day: 1,
+  chapter: 0,
+  notoriety: 0,
+};
+
+function createDefaultWorldFlags() {
+  return {
+    leyline_storms_active: false,
+    market_unrest_active: false,
+    bloom_ignition_active: false,
+    skydock_lockdown_active: false,
+    veil_alert_active: false,
+    tideward_breach_active: false,
+    mirage_storm_active: false,
+    caldera_vents_unstable: false,
+    dream_wisps_active: false,
+  };
+}
+
+function canonicalizeLocationId(value) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (trimmed.toLowerCase() === "starting zone") return DEFAULT_START_LOCATION_ID;
+
+  // Prefer canonical ids when possible; preserve unknown strings for forward-compat.
+  return resolveLocationId(trimmed) || trimmed;
+}
+
+function canonicalizeLocationArray(values) {
+  if (!Array.isArray(values)) return [];
+  const out = [];
+  const seen = new Set();
+  values.forEach((value) => {
+    const id = canonicalizeLocationId(value);
+    if (!id) return;
+    if (seen.has(id)) return;
+    seen.add(id);
+    out.push(id);
+  });
+  return out;
+}
+
+function normalizeWorldVars(rawVars) {
+  const source = normalizeObject(rawVars);
+  const next = { ...source };
+
+  next.worldSeed = Number.isFinite(next.worldSeed) ? next.worldSeed : 1;
+
+  next.startingSceneId =
+    typeof next.startingSceneId === "string" && next.startingSceneId.trim()
+      ? next.startingSceneId.trim()
+      : null;
+  next.current_quest_id =
+    typeof next.current_quest_id === "string" && next.current_quest_id.trim()
+      ? next.current_quest_id.trim()
+      : null;
+
+  return next;
+}
+
+function normalizeWorldCounters(rawCounters) {
+  const source = normalizeObject(rawCounters);
+  const next = {};
+
+  Object.entries(source).forEach(([key, value]) => {
+    if (!key) return;
+    if (!Number.isFinite(value)) return;
+    next[key] = toNumber(value, 0);
+  });
+
+  Object.entries(DEFAULT_WORLD_COUNTERS).forEach(([key, fallback]) => {
+    next[key] = toNumber(next[key], fallback);
+  });
+
+  return next;
+}
+
+function normalizeFactionReputation(rawFactionReputation) {
+  const source = normalizeObject(rawFactionReputation);
+  const next = {};
+
+  MAJOR_FACTION_IDS.forEach((id) => {
+    next[id] = toNumber(source[id], 0);
+  });
+
+  Object.entries(source).forEach(([key, value]) => {
+    if (!key) return;
+    if (key in next) return;
+    if (!Number.isFinite(value)) return;
+    next[key] = toNumber(value, 0);
+  });
+
+  return next;
+}
+
+function migrateWorldFlags(rawFlags, baseVars, baseCounters) {
+  const source = normalizeObject(rawFlags);
+  const nextFlags = {};
+  const nextVars = { ...(baseVars || {}) };
+  const nextCounters = { ...(baseCounters || {}) };
+
+  Object.entries(source).forEach(([key, value]) => {
+    if (!key) return;
+
+    // Explicit legacy migrations
+    if (key === "startingSceneId" && typeof value === "string") {
+      if (value.trim()) nextVars.startingSceneId = value.trim();
+      return;
+    }
+    if (key === "current_quest_id" && typeof value === "string") {
+      if (value.trim()) nextVars.current_quest_id = value.trim();
+      return;
+    }
+
+    if (typeof value === "boolean") {
+      nextFlags[key] = value;
+      return;
+    }
+
+    if (typeof value === "number" && Number.isFinite(value)) {
+      nextCounters[key] = value;
+      return;
+    }
+
+    if (typeof value === "string") {
+      if (value.trim()) nextVars[key] = value;
+      return;
+    }
+
+    if (value !== undefined && value !== null) {
+      // Preserve unknown non-boolean data without polluting flags.
+      nextVars[key] = value;
+    }
+  });
+
+  // Ensure known flags exist and remain boolean-only.
+  const defaults = createDefaultWorldFlags();
+  Object.entries(defaults).forEach(([key, fallback]) => {
+    if (typeof nextFlags[key] !== "boolean") nextFlags[key] = fallback;
+  });
+
+  return { flags: nextFlags, vars: nextVars, counters: nextCounters };
+}
+
 function normalizeLocation(rawLocation) {
   if (
     rawLocation &&
     typeof rawLocation === "object" &&
     !Array.isArray(rawLocation)
   ) {
-    const current =
-      typeof rawLocation.current === "string" && rawLocation.current.trim()
-        ? rawLocation.current.trim()
-        : null;
-    const visited = Array.isArray(rawLocation.visited)
-      ? rawLocation.visited.filter(
-          (value) => typeof value === "string" && value.trim(),
-        )
-      : [];
-    const unlockedAreas = Array.isArray(rawLocation.unlockedAreas)
-      ? rawLocation.unlockedAreas.filter(
-          (value) => typeof value === "string" && value.trim(),
-        )
-      : [];
+    const current = canonicalizeLocationId(rawLocation.current);
+    const visited = canonicalizeLocationArray(rawLocation.visited);
+    const unlockedAreas = canonicalizeLocationArray(rawLocation.unlockedAreas);
 
-    const resolvedCurrent = current ?? visited[0] ?? "Starting Zone";
+    const resolvedCurrent =
+      current ?? visited[0] ?? DEFAULT_START_LOCATION_ID;
     const resolvedVisited = visited.includes(resolvedCurrent)
       ? visited
       : [resolvedCurrent, ...visited];
+    const resolvedUnlocked = unlockedAreas.includes(resolvedCurrent)
+      ? unlockedAreas
+      : [resolvedCurrent, ...unlockedAreas];
 
     return {
       ...rawLocation,
       current: resolvedCurrent,
       visited: resolvedVisited,
-      unlockedAreas,
+      unlockedAreas: resolvedUnlocked,
     };
   }
 
   if (typeof rawLocation === "string" && rawLocation.trim()) {
-    const current = rawLocation.trim();
+    const current = canonicalizeLocationId(rawLocation) || DEFAULT_START_LOCATION_ID;
     return {
       current,
       visited: [current],
-      unlockedAreas: [],
+      unlockedAreas: [current],
     };
   }
 
   return {
-    current: "Starting Zone",
-    visited: ["Starting Zone"],
-    unlockedAreas: [],
+    current: DEFAULT_START_LOCATION_ID,
+    visited: [DEFAULT_START_LOCATION_ID],
+    unlockedAreas: [DEFAULT_START_LOCATION_ID],
   };
 }
 
@@ -402,6 +548,24 @@ export function normalizeGameState(rawState) {
   const world = normalizeObject(state.world);
   const narrative = normalizeObject(state.narrative);
   const combat = normalizeObject(state.combat);
+
+  const baseWorldVars = normalizeObject(world.vars);
+  const baseWorldCounters = normalizeObject(world.counters);
+  const migratedWorldFlags = migrateWorldFlags(
+    world.flags,
+    baseWorldVars,
+    baseWorldCounters,
+  );
+  const normalizedWorldId =
+    typeof world.id === "string" && world.id.trim() ? world.id.trim() : DEFAULT_WORLD_ID;
+  const normalizedWorldLocation = normalizeLocation(world.location);
+  const normalizedWorldVars = normalizeWorldVars(migratedWorldFlags.vars);
+  const normalizedWorldCounters = normalizeWorldCounters(
+    migratedWorldFlags.counters,
+  );
+  const normalizedFactionReputation = normalizeFactionReputation(
+    world.factionReputation,
+  );
   const legacyNarrativeEntries = normalizeArray(narrative.chatLog);
   const legacySystemEntries = normalizeArray(state.chatLog).filter((entry) =>
     ["system", "status-update"].includes(entry?.type),
@@ -425,8 +589,12 @@ export function normalizeGameState(rawState) {
     },
     world: {
       ...world,
-      location: normalizeLocation(world.location),
-      flags: normalizeObject(world.flags),
+      id: normalizedWorldId,
+      location: normalizedWorldLocation,
+      flags: migratedWorldFlags.flags,
+      vars: normalizedWorldVars,
+      counters: normalizedWorldCounters,
+      factionReputation: normalizedFactionReputation,
       time: toNumber(world.time, 0),
       turnCount: Math.max(0, Math.floor(toNumber(world.turnCount, 0))),
     },

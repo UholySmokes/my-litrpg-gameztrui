@@ -1,4 +1,8 @@
 import { addXp } from '../leveling/LevelingManager.js';
+import {
+  getAccessibleLocationIds,
+  resolveLocationId,
+} from "../../data/registries/WorldDataRegistry.js";
 
 /**
  * Moves the player to a new location
@@ -8,39 +12,55 @@ import { addXp } from '../leveling/LevelingManager.js';
  */
 export function moveToLocation(state, locationId) {
   const world = { ...state.world };
-  const visitedLocations = [...(world.location?.visited || [])];
-  const currentLocation = world.location?.current ?? "Starting Zone";
+  const locationState =
+    world.location && typeof world.location === "object" && !Array.isArray(world.location)
+      ? world.location
+      : {
+          current: typeof world.location === "string" ? world.location : null,
+          visited: [],
+          unlockedAreas: [],
+        };
+  const visitedLocations = Array.isArray(locationState.visited)
+    ? [...locationState.visited]
+    : [];
+  const unlockedAreas = Array.isArray(locationState.unlockedAreas)
+    ? [...locationState.unlockedAreas]
+    : [];
+  const currentRaw = locationState.current ?? "starting_zone";
+  const currentId =
+    resolveLocationId(currentRaw) ||
+    (typeof currentRaw === "string" ? currentRaw.trim() : null);
 
-  const targetRaw = typeof locationId === "string" ? locationId.trim() : "";
-  const targetLocationId = targetRaw || currentLocation;
-  const targetLower = targetLocationId.toLowerCase();
-  const resolvedTarget =
-    visitedLocations.find(
-      (loc) => typeof loc === "string" && loc.toLowerCase() === targetLower,
-    ) || targetLocationId;
+  const allowedLocationIds = getAccessibleLocationIds(state);
+  const resolvedTargetId = resolveLocationId(locationId, { allowedLocationIds });
+  if (!resolvedTargetId) {
+    // Validator should have caught this; keep exploration system defensive.
+    return state;
+  }
   
   // Don't move if already at target location
-  if (typeof currentLocation === "string" && currentLocation.toLowerCase() === targetLower) {
+  if (currentId && currentId === resolvedTargetId) {
     return state;
   }
   
   // Add to visited locations if not already there
-  if (!visitedLocations.some((loc) => typeof loc === "string" && loc.toLowerCase() === targetLower)) {
-    visitedLocations.push(resolvedTarget);
+  const isFirstVisit = !visitedLocations.includes(resolvedTargetId);
+  if (isFirstVisit) {
+    visitedLocations.push(resolvedTargetId);
     // Award exploration XP for first-time visit
     const explorationXp = state.config?.explorationXpPerNewLocation ?? 0;
     if (explorationXp > 0) {
-      world.turnCount = world.turnCount + 0; // no-op, keep structure
       return addXp({
         ...state,
         world: {
           ...world,
           location: {
-            ...world.location,
-            current: resolvedTarget,
-            visited: visitedLocations
+            ...locationState,
+            current: resolvedTargetId,
+            visited: visitedLocations,
+            unlockedAreas,
           },
-          turnCount: world.turnCount + 1
+          turnCount: (world.turnCount || 0) + 1
         }
       }, explorationXp);
     }
@@ -51,11 +71,12 @@ export function moveToLocation(state, locationId) {
     world: {
       ...world,
       location: {
-        ...world.location,
-        current: resolvedTarget,
-        visited: visitedLocations
+        ...locationState,
+        current: resolvedTargetId,
+        visited: visitedLocations,
+        unlockedAreas,
       },
-      turnCount: world.turnCount + 1
+      turnCount: (world.turnCount || 0) + 1
     }
   };
 }

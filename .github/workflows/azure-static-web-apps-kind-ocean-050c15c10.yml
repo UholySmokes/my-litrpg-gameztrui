@@ -16,6 +16,17 @@ jobs:
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Seed static data bundle
+        env:
+          GAME_DB_STORAGE: file
+          GAME_DB_PATH: api/data/game-db.json
+        run: npm run seed:static
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1

@@ -53,5 +53,9 @@ export type GameState = {
   chatLog?: unknown[];
   narrative?: unknown;
   combat?: unknown;
+  /** Content pack version string, e.g. "core@2026.02.07+sha256:..." */
+  contentVersion?: string;
+  /** State schema migration key */
+  stateVersion?: number;
 };
 

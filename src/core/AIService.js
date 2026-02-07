@@ -1,5 +1,5 @@
-const DEFAULT_TIMEOUT_MS = 25000;
-const DEV_DEFAULT_TIMEOUT_MS = 60000;
+const DEFAULT_TIMEOUT_MS = 75000;
+const DEV_DEFAULT_TIMEOUT_MS = 90000;
 
 const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
@@ -244,6 +244,12 @@ export async function generateNarrative(prompt) {
 
   if (lastError?.message?.includes("rate limit")) {
     throw new Error("Rate limit exceeded. Please wait a moment and try again.");
+  }
+
+  if (lastError?.name === "AbortError") {
+    throw new Error(
+      "Narrator request timed out. Try again, or increase VITE_NARRATE_TIMEOUT_MS.",
+    );
   }
 
   if (

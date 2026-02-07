@@ -66,6 +66,7 @@ export default function GameUI({ user }) {
     evaluateQuestProgress,
     dispatchSystemEvent,
     dispatch,
+    engine,
   } = useGameEngine();
 
   const narrativeSummary = state?.narrative?.summary;
@@ -141,6 +142,7 @@ export default function GameUI({ user }) {
     addSystemMessage,
     evaluateQuestProgress,
     dispatchSystemEvent,
+    engine,
   );
 
   const handleEvolveSkill = (skillId) => {

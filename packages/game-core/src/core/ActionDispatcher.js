@@ -5,6 +5,7 @@ import {
   playerAttack,
   processEnemyTurns,
 } from "../systems/combat/CombatSystem.js";
+import { processTimeEffects } from "../systems/world/TimeSystem.js";
 import { withTraceSpan } from "../observability/traceShim.js";
 
 /**
@@ -200,10 +201,10 @@ export function executeAction(state, action, _options = {}) {
               : { current: player.mana ?? 0, max: player.maxMana ?? 100 };
 
           const config = state.config || {};
-          const hpAmount = Number.isFinite(config.restHealAmount)
+          const hpAmount = config.restHealAmount > 0
             ? config.restHealAmount
             : Math.max(5, Math.floor(hp.max * 0.25));
-          const manaAmount = Number.isFinite(config.restManaAmount)
+          const manaAmount = config.restManaAmount > 0
             ? config.restManaAmount
             : Math.max(5, Math.floor(mana.max * 0.25));
 
@@ -272,6 +273,12 @@ export function executeAction(state, action, _options = {}) {
             turnCount: nextTurnCount,
           },
         };
+
+        // Apply passive time-based effects (mana regen, race abilities)
+        // when not in active combat (combat handles this via processEnemyTurns)
+        if (newState.combat?.status !== "active") {
+          newState = processTimeEffects(newState);
+        }
       }
 
       return {

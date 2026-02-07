@@ -272,6 +272,6 @@ Goal: Make narrative flow consistent, safe, and bounded.
 Tasks:
 - ⬜ Audit narrative log flows and ordering (chatLog vs narrative.chatLog)
 - ⬜ Define unified narrative log schema + migration path
-- ⬜ Add prompt history bounds + stable ordering (PromptAssembler)
-- ⬜ Harden AIService fallbacks/timeouts + response format consistency
-- ⬜ Refresh narrative summary cadence + UI memory consistency
+- ✅ ~~Add prompt history bounds + stable ordering (PromptAssembler)~~ — `MAX_HISTORY_ENTRIES = 20`, `MAX_HISTORY_CHARS = 4000`
+- ✅ ~~Harden AIService fallbacks/timeouts + response format consistency~~ — `fetchWithTimeout`, `fetchJsonWithRetry` (MAX_RETRIES=2), `applyNarrationGuards`, tone violation filtering
+- ✅ ~~Refresh narrative summary cadence + UI memory consistency~~ — `NarrativeMemoryPanel.jsx` renders summary + entries

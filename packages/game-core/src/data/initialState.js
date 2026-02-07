@@ -109,6 +109,8 @@ const initialGameState = {
     entries: [],
     sequence: 0,
   },
+  contentVersion: "core@0.1.0",
+  stateVersion: 1,
 };
 
 export { initialGameState };

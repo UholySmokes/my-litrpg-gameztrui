@@ -91,18 +91,24 @@ const updatePlayerVitals = (player, config, attributesOverride) => {
 const appendSystemMessages = (state, messages = []) => {
   if (!Array.isArray(messages) || messages.length === 0) return state;
   const timestamp = SimBridge.now();
-  const entries = messages
-    .filter((message) => typeof message === "string" && message.trim())
-    .map((text, idx) => ({
-      type: "system",
-      text,
-      timestamp: timestamp + idx,
-    }));
+  const filtered = messages.filter(
+    (message) => typeof message === "string" && message.trim(),
+  );
+  if (filtered.length === 0) return state;
 
-  if (entries.length === 0) return state;
+  let narrative = state.narrative || { entries: [], sequence: 0 };
+  for (let i = 0; i < filtered.length; i++) {
+    narrative = appendNarrativeEntry(narrative, {
+      type: "system",
+      text: filtered[i],
+      timestamp: timestamp + i,
+      source: "system",
+    });
+  }
+
   return {
     ...state,
-    chatLog: [...(state.chatLog || []), ...entries].slice(-100),
+    narrative,
   };
 };
 
@@ -292,6 +298,27 @@ const gameReducer = (state, action) =>
         return normalizeGameState(action.payload(state));
       }
       return normalizeGameState(action.payload);
+
+    case "APPLY_ENGINE_RESULT": {
+      // Two-tier dispatch: applies a StepResult from SystemEngine.step()
+      const result = action.payload;
+      if (!result || !result.ok || !result.nextState) return state;
+      const engineState = normalizeGameState(result.nextState);
+      // Optionally append a narrative entry for the step summary
+      if (result.summary) {
+        const narrativeWithSummary = appendNarrativeEntry(
+          engineState.narrative,
+          {
+            type: "action",
+            text: result.summary,
+            timestamp: SimBridge.now(),
+            source: "engine",
+          },
+        );
+        return { ...engineState, narrative: narrativeWithSummary };
+      }
+      return engineState;
+    }
 
     case "ADD_SYSTEM_MESSAGE": {
       const { message, type = "system" } = action.payload;

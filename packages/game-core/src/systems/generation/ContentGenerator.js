@@ -9,7 +9,7 @@ export const ContentGenerator = {
   generateSkill,
   generateSkills: generateSkillSet,
   generateTitle,
-  
+
   generateCharacterOptions: (count = 3) => {
     const races = [];
     const classes = [];

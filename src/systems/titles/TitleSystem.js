@@ -1,9 +1,3 @@
-export {
-  getTitleById,
-  getTitleBonuses,
-  getEffectiveAttributes,
-  areNonPurchaseUnlockConditionsMet,
-  getAutoUnlockableTitles,
-  canPurchaseTitle,
-  getPurchasableTitles,
-} from "../../core/titleLogic.js";
+﻿// Back-compat shim: implementation lives in @voidverse/game-core.
+export * from '@voidverse/game-core/systems/titles/TitleSystem.js';
+

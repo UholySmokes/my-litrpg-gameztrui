@@ -1,6 +1,7 @@
 // =================================================================
-// CHI SYSTEM - Monk Class Mechanic
-// Implements chi resource, combo attacks, meditation, and unarmed scaling
+// CHI SYSTEM — Data-Driven Resource Mechanic
+// Any class whose resourceSystem === 'chi' is handled automatically.
+// No hardcoded class-name checks.
 // =================================================================
 
 import { emit } from "../../core/EventBus.js";
@@ -9,6 +10,7 @@ import {
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
+import { getClassById } from "../../data/registries/ClassDataRegistry.js";
 
 /**
  * CHI CONFIGURATION
@@ -27,6 +29,18 @@ const CHI_CONFIG = {
   unarmedDamagePerDex: 0.5,
 };
 
+/**
+ * Data-driven chi check — looks up the class registry.
+ * @param {object} entity
+ * @returns {boolean}
+ */
+function usesChi(entity) {
+  const classId = entity.class?.id || entity.class;
+  if (!classId) return false;
+  const classData = getClassById(classId);
+  return classData?.resourceSystem === 'chi';
+}
+
 const getChiValue = (player) => player?.resources?.chi ?? player?.chi ?? 0;
 
 const setChiValue = (player, value) => ({
@@ -39,13 +53,12 @@ const setChiValue = (player, value) => ({
 });
 
 /**
- * Initialize chi for monk
+ * Initialize chi for any chi-based class
  * @param {object} player - Player object
  * @returns {object} Updated player with chi initialized
  */
 export function initializeChi(player) {
-  const classId = player.class?.id || player.class;
-  if (classId === "monk" || classId === "grandmaster") {
+  if (usesChi(player)) {
     return {
       ...setChiValue(player, CHI_CONFIG.maxChi),
       comboCount: 0,
@@ -56,10 +69,11 @@ export function initializeChi(player) {
 }
 
 /**
- * Gain chi via dispatch (deterministic)
- * @param {function} dispatch - Redux-like dispatch function
+ * Gain chi
  * @param {object} player - Player object
  * @param {number} amount - Amount of chi to gain
+ * @param {string} reason - Reason for chi gain
+ * @returns {object} Updated player
  */
 function gainChi(player, amount, reason = "unknown") {
   if (!usesChi(player)) return player;
@@ -82,15 +96,14 @@ function gainChi(player, amount, reason = "unknown") {
 }
 
 /**
- * Consume chi via dispatch (deterministic)
- * @param {function} dispatch - Redux-like dispatch function
+ * Consume chi
  * @param {object} player - Player object
  * @param {number} amount - Amount of chi to consume
- * @returns {boolean} Success
+ * @returns {object} { success, player, consumed, reason }
  */
 function consumeChi(player, amount) {
   if (!usesChi(player)) {
-    return { success: false, player, consumed: 0, reason: "Not a monk" };
+    return { success: false, player, consumed: 0, reason: "Class does not use chi" };
   }
 
   const currentChi = getChiValue(player);
@@ -113,28 +126,9 @@ function consumeChi(player, amount) {
   };
 }
 
-/**
- * Check if entity uses chi
- * @param {object} entity - Entity to check
- * @returns {boolean} True if uses chi
- */
-function usesChi(entity) {
-  const classId = entity.class?.id || entity.class;
-  return classId === "monk" || classId === "grandmaster";
-}
-
-// Legacy functions kept for compatibility - consider removing after migration
+// Legacy functions kept for compatibility
 export function gainChiLegacy(player, amount, reason = "unknown") {
-  if (!usesChi(player)) return player;
-
-  const oldChi = getChiValue(player);
-  const newChi = Math.min(CHI_CONFIG.maxChi, oldChi + amount);
-
-  if (amount > 0) {
-    emit("chi:gain", { player: player.name, amount, reason, newChi });
-  }
-
-  return setChiValue(player, newChi);
+  return gainChi(player, amount, reason);
 }
 
 /**
@@ -145,7 +139,7 @@ export function gainChiLegacy(player, amount, reason = "unknown") {
  */
 export function consumeChiLegacy(player, amount) {
   if (!usesChi(player)) {
-    return { success: false, player, consumed: 0, reason: "Not a monk" };
+    return { success: false, player, consumed: 0, reason: "Class does not use chi" };
   }
 
   const currentChi = getChiValue(player);
@@ -172,7 +166,7 @@ export function consumeChiLegacy(player, amount) {
 }
 
 /**
- * Calculate unarmed damage for monk
+ * Calculate unarmed damage for chi-based classes
  * @param {object} player - Player object
  * @returns {number} Unarmed damage value
  */
@@ -208,7 +202,6 @@ function processComboHit(player) {
     CHI_CONFIG.comboMultipliers.length,
   );
 
-  // Get multiplier for current combo (before increment for display)
   const comboIndex = Math.min(
     newCombo - 1,
     CHI_CONFIG.comboMultipliers.length - 1,
@@ -284,7 +277,7 @@ export function meditate(state) {
   if (!usesChi(player)) {
     return {
       success: false,
-      reason: "Only monks can meditate",
+      reason: "Only chi-based classes can meditate",
       state,
       chiGained: 0,
     };
@@ -328,7 +321,7 @@ export function meditate(state) {
  */
 export function canAffordChiAbility(player, chiCost) {
   if (!usesChi(player)) {
-    return { canAfford: false, reason: "Not a monk" };
+    return { canAfford: false, reason: "Class does not use chi" };
   }
 
   const currentChi = getChiValue(player);
@@ -387,7 +380,7 @@ export function executeChiAbility(state, ability) {
 /**
  * Get chi status for UI display
  * @param {object} player - Player object
- * @returns {object} Chi status info
+ * @returns {object|null} Chi status info
  */
 export function getChiStatus(player) {
   if (!usesChi(player)) {

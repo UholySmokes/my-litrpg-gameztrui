@@ -1,12 +1,29 @@
 import { getArchetypeSystemById, ARCHETYPE_SYSTEMS } from './ArchetypeSystemRegistry.js';
 
 /**
+ * Generates a deterministic player ID using a provided random number generator.
+ * Falls back to Math.random() if no RNG is provided (for backwards compatibility).
+ * @param {Object} context - Optional context with RNG
+ * @returns {string} A unique player ID
+ */
+function generatePlayerId(context) {
+  if (context && context.rng && typeof context.rng.range === 'function') {
+    // Use deterministic RNG from context
+    const randomSuffix = context.rng.range(100000, 999999);
+    return `player_${randomSuffix}`;
+  }
+  // Fallback for backwards compatibility (non-deterministic)
+  const randomSuffix = Math.floor(Math.random() * 900000) + 100000;
+  return `player_${randomSuffix}`;
+}
+
+/**
  * Builder class for generating full player profiles with integrated Archetype Systems.
  */
 export class SystemBuilder {
-  constructor(baseProfile = {}) {
+  constructor(baseProfile = {}, context = {}) {
     this.playerProfile = {
-      id: baseProfile.id || `player_${Date.now()}`,
+      id: baseProfile.id || generatePlayerId(context),
       name: baseProfile.name || "Adventurer",
       attributes: {
         strength: 10,

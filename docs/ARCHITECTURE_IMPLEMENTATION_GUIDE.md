@@ -30,6 +30,34 @@ This guide provides practical implementation steps for improving the existing co
 6. **Documentation**: System contracts need formalization
 7. **Testing**: Cross-platform determinism tests missing
 
+## Code Review Findings & Future Enhancements
+
+### Validation Schema Improvements (Medium Priority)
+
+Based on code review feedback, the following enhancements should be made to the validation schemas:
+
+1. **Nested Object Schemas** (packages/game-schemas/src/validation.js):
+   - Extract ItemSchema for inventory items (currently inline)
+   - Extract AttributesSchema for player attributes (currently z.record)
+   - Improves maintainability and enables schema reuse
+
+2. **Skill Schemas** (packages/game-schemas/src/validation.js):
+   - Replace z.unknown() for activeSkills and passiveSkills with proper schemas
+   - Define SkillSchema matching the actual skill structure
+   - Enhances type safety and validation effectiveness
+
+3. **Quest Schemas** (packages/game-schemas/src/validation.js):
+   - Replace z.unknown() for quest arrays with proper QuestSchema
+   - Validate quest structure and data integrity
+   - Enables better error messages for quest validation
+
+4. **Audit Script Refactoring** (scripts/audit-platform-code.sh):
+   - Simplify complex grep pipeline with multiple exclusions
+   - Consider whitelist file for acceptable patterns
+   - Break into simpler, more maintainable patterns
+
+These improvements will be addressed in Phase 1, Task 1.1 continuation.
+
 ## Implementation Roadmap
 
 ### Phase 1: Strengthen Core Contracts (Week 1-2)

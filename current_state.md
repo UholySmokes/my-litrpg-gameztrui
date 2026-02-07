@@ -32,9 +32,9 @@
 | Observability          | ✅ Complete | OpenTelemetry tracing (OTLP)                        |
 | Monorepo Packages      | ✅ Complete | @voidverse/game-core, @voidverse/game-schemas       |
 | Windowed UI            | ✅ Complete | DockZone, WindowManager, layout presets             |
-| Quest System           | 🔄 Partial  | Structure exists, limited content                   |
-| Dungeon Generator      | 🔄 Partial  | TypeScript stub (`DungeonGenerator.ts`)             |
-| Prestige System        | 🔄 Partial  | TypeScript stub (`PrestigeSystem.ts`)               |
+| Quest System           | 🔄 Partial  | 21 quests defined (8 main + 13 side), needs more    |
+| Dungeon Generator      | ✅ Complete | Cellular automata, 9 tile types, difficulty scaling  |
+| Prestige System        | ✅ Complete | Soul shards, XP multipliers, 4 upgrade types         |
 
 ---
 
@@ -267,8 +267,8 @@ System functions → EventBus.emit() → SystemEventObserver → SimulationConte
 - [x] **Skills** — SkillRegistry, SkillEvolutionSystem, SkillFusionSystem, SpellStudySystem, NonCombatSkillRegistry, TalentDefinitions, TalentManager, TalentRegistry
 - [x] **Titles** — TitleSystem
 - [x] **World** — TimeSystem, WorldInitializer
-- [ ] **DungeonGenerator.ts** — TypeScript stub, not fully implemented
-- [ ] **PrestigeSystem.ts** — TypeScript stub, not fully implemented
+- [x] **DungeonGenerator.ts** — Cellular automata dungeon generation, 9 tile types, difficulty scaling
+- [x] **PrestigeSystem.ts** — Soul shards, XP multipliers, 4 upgrade types, prestige reset
 
 ### Character System
 
@@ -355,7 +355,7 @@ System functions → EventBus.emit() → SystemEventObserver → SimulationConte
 
 ### Testing
 
-- [x] **13 unit test files** covering: DataRegistry, EffectEngine, GameSystems, InputValidator, InventorySystem, LevelingAndCombat, LocationResolution, NarrationGuards, PromptAssembler, SkillProgression, TracingShim, WorldDataRegistry, WorldInitializer
+- [x] **16 unit test files** covering: ActionDispatcher, DataRegistry, EffectEngine, GameSystems, InputValidator, InventorySystem, LevelingAndCombat, LocationResolution, NarrationGuards, PromptAssembler, SchemaValidation, SkillProgression, SystemBuilderPlatformNeutrality, TracingShim, WorldDataRegistry, WorldInitializer
 - [x] **Jest** with `--experimental-vm-modules` (ESM support)
 
 ### DevOps & Tooling
@@ -371,29 +371,53 @@ System functions → EventBus.emit() → SystemEventObserver → SimulationConte
 
 ### Medium Priority
 
-- [ ] Mana doesn't regenerate outside of level-up (no passive regen)
-- [ ] Skill cooldowns not visually displayed in UI
-- [ ] Quest system has structure but very limited content
-- [ ] `api/narrative/` directory exists but is empty
+- [x] ~~Mana doesn't regenerate outside of level-up (no passive regen)~~ — Fixed: `processTimeEffects` now runs on all non-combat turn-advancing actions; rest restores 25% HP/mana by default
+- [x] ~~Skill cooldowns not visually displayed in UI~~ — Fixed: cooldowns shown in `ClassAbilities.jsx` and `CombatUI.jsx`
+- [ ] Quest system has 21 quests (8 main + 13 side) but could use more varied quest chains
 
 ### Low Priority
 
 - [ ] No sound effects or music
 - [ ] No animation on combat actions
-- [ ] ~70 `tmpclaude-*` temp directories cluttering project root
-- [ ] Multiple `simulation_results_*.json` files in root (should be in output dir)
+- [ ] Multiple `simulation_results_*.json` files in root (16 files; should be in output dir)
 
 ---
 
 ## Upcoming / Incomplete
 
-- [ ] **DungeonGenerator** — Expand from TypeScript stub to full procedural dungeon system
-- [ ] **PrestigeSystem** — Expand from TypeScript stub to full prestige/rebirth mechanics
-- [ ] **Quest content** — Expand QuestCatalog with meaningful quest chains
+### From Implementation Plan
+
+- [ ] **Stat pressure / thresholds** (P1.5) — Soft caps, threshold traits, imbalance penalties
+- [ ] **Failure as content** (P1.7) — Death traits, soul scars, echo stats, cross-run inheritance
+- [ ] **Class identity drift** (P1.8) — Hidden alignment vectors, usage-based class morphing
+- [ ] **Targeting model** (P2.1) — Deterministic target selectors
+- [ ] **Lane/slot battlefield** (P2.2) — JRPG-style tactical positioning
+- [ ] **Intent/preview system** (P2.3) — Predicted outcomes before committing
+- [ ] **Reaction system** (P2.4) — Interrupts and counters (OnHit, OnCast, etc.)
+- [ ] **Threat/aggro model** (P2.5) — AI targeting for future party play
+- [ ] **NPC AI build logic** (P2.6) — System-aware, meta-reactive NPCs
+- [ ] **AI-initiated events** (P3.3) — World moves when player is idle, main quest seeds
+- [ ] **Offline/background sim** (P3.5) — Time compression, background ticks
+- [ ] **Skill evolution tree UI** (P4.2) — Visual skill evolution/mutation paths
+- [ ] **State diff & replay tools** (P4.3) — Debug state diff viewer, replay scrubber
+- [ ] **Formation preview UI** (P4.4) — Lane/slot visualization
+- [ ] **Meta-progression** (P5.2) — Cross-run world/knowledge persistence
+- [ ] **Authoritative server** (P5.4) — Client/server boundary for multiplayer readiness
+- [ ] **Multiplayer-friendly mechanics** (P5.5) — Synergy tags, shared objectives
+- [ ] **Batch simulation runner** (P5.6) — Mass balance testing
+
+### Content & Polish
+
+- [ ] **Quest content** — Expand QuestCatalog with more varied quest chains and branching narratives
 - [ ] **Universal skills** — Thousands of learnable cross-class skills
 - [ ] **Equipment crafting** — Crafting system for gear
 - [ ] **Class advancement/evolution** — Upgrade paths implementation
-- [ ] **Advanced status effects** — Deeper effect interactions in combat
+- [ ] **Sound & animation** — Sound effects, music, and combat animations
+
+### Narrative Pipeline (Remaining)
+
+- [ ] **Narrative log audit** — Unify chatLog vs narrative.chatLog flows
+- [ ] **Narrative schema migration** — Define unified narrative log schema + migration path
 
 ---
 
@@ -409,7 +433,7 @@ System functions → EventBus.emit() → SystemEventObserver → SimulationConte
 | Classes               | 20 (all complete)                      |
 | Skills                | ~1,200 (20 active + 40 passive × 20)  |
 | Azure Function endpoints | 10                                  |
-| Unit test files       | 13                                     |
+| Unit test files       | 16                                     |
 | Monorepo packages     | 2 (@voidverse/game-core, game-schemas) |
 
 ---

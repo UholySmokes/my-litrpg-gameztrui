@@ -1,252 +1,437 @@
-# Current State - AI Save Game
+# Current State — Voidverse LitRPG
 
-This document tracks the implementation status of all game features.
-**Update this file whenever features are added, bugs are fixed, or priorities change.**
+> Last updated: **2026-02-07**
+>
+> This document tracks the implementation status of all game features.
+> **Update this file whenever features are added, bugs are fixed, or priorities change.**
 
 ---
 
 ## Quick Status
 
-| Category           | Status      | Notes                             |
-| ------------------ | ----------- | --------------------------------- |
-| Core Game Loop     | ✅ Complete | Playable                          |
-| Character Creation | ✅ Complete | Full race/class/skill selection   |
-| Combat System      | ✅ Complete | Turn-based, skills, escape        |
-| Save/Load          | ✅ Complete | Azure SQL + Functions integration |
-| Skills Database    | ✅ Complete | 20/20 classes complete            |
-| Shop System        | ✅ Complete | Basic shop UI                     |
-| Gacha System       | ✅ Complete | Working rolls                     |
-| Quest System       | 🔄 Partial  | Structure exists, limited content |
+| Category               | Status      | Notes                                              |
+| ---------------------- | ----------- | -------------------------------------------------- |
+| Core Engine            | ✅ Complete | Reducer + Dispatcher + EventBus + StateNormalizer   |
+| Character Creation     | ✅ Complete | Multi-step wizard with archetype system             |
+| Combat System          | ✅ Complete | Turn-based, skills, stealth, rage, chi, escape      |
+| Save / Load            | ✅ Complete | Azure SQL + Azure Functions                         |
+| Skills Database        | ✅ Complete | 20/20 classes, evolution, fusion, non-combat skills |
+| Effects Engine         | ✅ Complete | Status effects, charm, item procs, set bonuses      |
+| Loot / Items           | ✅ Complete | Affix tiers, set bonuses, item procs                |
+| Leveling / XP          | ✅ Complete | xpCurve, LevelingSystem + LevelingManager           |
+| Shop System            | ✅ Complete | Basic shop UI                                       |
+| Gacha System           | ✅ Complete | Working rolls                                       |
+| Profession System      | ✅ Complete | Registry + UI                                       |
+| Race System            | ✅ Complete | Registry + abilities + UI                           |
+| Title System           | ✅ Complete | Title logic + data                                  |
+| Archetype System       | ✅ Complete | SystemBuilder + ArchetypeSystemRegistry             |
+| Exploration            | ✅ Complete | ExplorationSystem                                   |
+| Magic / Mana           | ✅ Complete | ManaSystem + ManaBalance                            |
+| World / Time           | ✅ Complete | TimeSystem + WorldInitializer + WorldDataRegistry   |
+| Simulation Engine      | ✅ Complete | Kernel, validation, determinism, combat logging     |
+| Observability          | ✅ Complete | OpenTelemetry tracing (OTLP)                        |
+| Monorepo Packages      | ✅ Complete | @voidverse/game-core, @voidverse/game-schemas       |
+| Windowed UI            | ✅ Complete | DockZone, WindowManager, layout presets             |
+| Quest System           | 🔄 Partial  | Structure exists, limited content                   |
+| Dungeon Generator      | 🔄 Partial  | TypeScript stub (`DungeonGenerator.ts`)             |
+| Prestige System        | 🔄 Partial  | TypeScript stub (`PrestigeSystem.ts`)               |
+
+---
+
+## Architecture
+
+### State Flow
+
+```
+User Input → InputParser → InputValidator → ActionDispatcher → gameReducer → StateNormalizer → New State → UI
+```
+
+### AI Integration
+
+```
+User Input → PromptAssembler (state + action context) → AIService → InputParser → ActionDispatcher
+```
+
+### Event Bus
+
+```
+System functions → EventBus.emit() → SystemEventObserver → SimulationContext (bridge) → narrativeLog
+```
+
+### Codebase Layout
+
+```
+.
+├── api/                          # Azure Functions backend
+│   ├── narrate/                  #   NarratorAgent  (NARRATOR_AGENT_ID)
+│   ├── quest-create/             #   QuestGiver     (QUEST_AGENT_ID)
+│   ├── factory-run/              #   ContentSmith   (FACTORY_AGENT_ID)
+│   ├── runs/                     #   Game run management
+│   ├── run-events/               #   Run event tracking
+│   ├── run-snapshots/            #   Run state snapshots
+│   ├── saves/                    #   Cloud save/load
+│   ├── health/                   #   Health check endpoint
+│   ├── static-data/              #   Static data serving
+│   ├── VoidverseFunction/        #   Misc function endpoint
+│   ├── lib/                      #   Shared: auth, sql, azure-ai-utils, tracing, game-db
+│   └── sql/schema.sql            #   Database schema
+│
+├── packages/                     # Monorepo workspaces
+│   ├── game-core/                #   @voidverse/game-core (shared engine code)
+│   └── game-schemas/             #   @voidverse/game-schemas (action/state schemas)
+│
+├── src/
+│   ├── core/                     # Engine layer (16 files)
+│   │   ├── gameReducer.js        #   Canonical state transition reducer
+│   │   ├── ActionDispatcher.js   #   Routes actions to system functions
+│   │   ├── StateNormalizer.js    #   Normalizes state + default config
+│   │   ├── EventBus.js           #   Event emission
+│   │   ├── SystemEventObserver.js#   Event → simulation bridge
+│   │   ├── PromptAssembler.js    #   Builds AI prompts from state
+│   │   ├── AIService.js          #   LLM integration
+│   │   ├── AuthService.js        #   Authentication
+│   │   ├── CloudSaveService.js   #   Cloud persistence
+│   │   ├── InputParser.js        #   Raw input → structured action
+│   │   ├── InputValidator.js     #   Action validation
+│   │   ├── narrativeLog.js       #   Narrative log management
+│   │   ├── titleLogic.js         #   Title evaluation
+│   │   ├── xpCurve.js            #   XP curve formulas
+│   │   ├── BrowserFixes.js       #   Browser compatibility
+│   │   └── EnvCheck.js           #   Environment validation
+│   │
+│   ├── systems/                  # Modular game mechanics (20 subdirs, 40+ files)
+│   │   ├── archetype/            #   ArchetypeSystemRegistry, SystemBuilder
+│   │   ├── class/                #   ClassRegistry, ClassAbilityRegistry, RageSystem, ChiSystem
+│   │   ├── combat/               #   CombatSystem, StealthSystem
+│   │   ├── effects/              #   EffectSystem, EffectRegistry, EffectApplicationSystem, CharmSystem
+│   │   ├── exploration/          #   ExplorationSystem
+│   │   ├── generation/           #   ClassGenerator, ContentGenerator, NameGenerator, RaceGenerator, SkillGenerator
+│   │   ├── inventory/            #   InventorySystem
+│   │   ├── items/                #   ItemProcSystem, SetBonusSystem
+│   │   ├── leveling/             #   LevelingSystem, LevelingManager
+│   │   ├── loot/                 #   LootSystem, AffixTierRegistry, affixStats
+│   │   ├── magic/                #   ManaSystem, ManaBalance
+│   │   ├── profession/           #   ProfessionRegistry
+│   │   ├── quest/                #   QuestManager
+│   │   ├── race/                 #   RaceRegistry, RaceAbilityRegistry, RaceSystem
+│   │   ├── skills/               #   SkillRegistry, SkillEvolutionSystem, SkillFusionSystem,
+│   │   │                         #   SpellStudySystem, NonCombatSkillRegistry,
+│   │   │                         #   TalentDefinitions, TalentManager, TalentRegistry
+│   │   ├── titles/               #   TitleSystem
+│   │   ├── world/                #   TimeSystem, WorldInitializer
+│   │   ├── DungeonGenerator.ts   #   (stub)
+│   │   └── PrestigeSystem.ts     #   (stub)
+│   │
+│   ├── components/               # React UI components (22 .jsx files)
+│   │   ├── AdminTools.jsx
+│   │   ├── AuthUI.jsx
+│   │   ├── CharacterGenesisUI_Enhanced.jsx
+│   │   ├── ClassAbilities.jsx
+│   │   ├── ClassResourceBar.jsx
+│   │   ├── CombatUI.jsx
+│   │   ├── EquipmentSlots.jsx
+│   │   ├── ErrorBoundary.jsx
+│   │   ├── ExperienceBar.jsx
+│   │   ├── GachaUI.jsx
+│   │   ├── GameUI.jsx
+│   │   ├── HudVitals.jsx
+│   │   ├── MinionPanel.jsx
+│   │   ├── ProfessionUI.jsx
+│   │   ├── QuestTracker.jsx
+│   │   ├── RaceAbilities.jsx
+│   │   ├── SaveLoadUI.jsx
+│   │   ├── ShopUI.jsx
+│   │   ├── StatusEffects.jsx
+│   │   ├── StatusOverlay.jsx
+│   │   ├── SystemLog.jsx
+│   │   └── TitleUI.jsx
+│   │
+│   ├── ui/                       # Advanced UI layer (25 .jsx files)
+│   │   ├── modes/                #   CharacterCreationMode, GameMode
+│   │   ├── panels/               #   ActionSuggestions, CommandTerminal, Equipment,
+│   │   │                         #   EquipmentSelection, Inventory, NarrativeHub,
+│   │   │                         #   NarrativeLog, NarrativeMemory, Quest,
+│   │   │                         #   StatusEffects, Vitals, CreationNarrative
+│   │   │   └── creation/         #   8 creation step panels (Identity, Race, Class,
+│   │   │                         #   Archetype, Attributes, Skills, Talent, Summary)
+│   │   └── windowing/            #   DockZone, GameWindow, WindowManager, WindowRegistry,
+│   │                             #   layoutPresets, useWindowLayout
+│   │
+│   ├── data/                     # Data layer
+│   │   ├── DataRegistry.js       #   Central data registry
+│   │   ├── initialState.js       #   Default game state
+│   │   ├── StaticDataBootstrap.js#   Static data loader
+│   │   ├── registries/           #   ClassData, EnemyData, ItemData, RaceData, WorldData registries
+│   │   ├── gachaData.js
+│   │   ├── shopData.js
+│   │   ├── titleData.js
+│   │   ├── QuestCatalog.js
+│   │   └── OpeningScenes.js
+│   │
+│   ├── entities/                 # Entity models: Player, Enemy, ItemRegistry
+│   ├── world/                    # WorldDataRegistry, WorldInitializer
+│   ├── simulation/               # Simulation engine (TypeScript + JS)
+│   │   ├── bridge/               #   GameStateAdapter, SimulationBridge, SimulationContext
+│   │   ├── combat/               #   ActionResolver, ActionScheduler (+determinism variants)
+│   │   ├── effects/              #   EffectEngine
+│   │   ├── events/               #   EventBus (TS)
+│   │   ├── kernel/               #   SimulationKernel (+determinism variant)
+│   │   ├── logging/              #   CombatLogSerializer
+│   │   ├── types/                #   core.ts
+│   │   └── validation/           #   basic.ts, schema.ts
+│   │
+│   ├── hook/                     # React hooks
+│   │   ├── usegamestate.js       #   Central state hook
+│   │   ├── useCharacterCreationReworked.js
+│   │   ├── useNarrative.js
+│   │   └── useSimulation.js
+│   │
+│   ├── context/                  # ThemeContext.jsx
+│   ├── constants/                # attributes.js
+│   ├── observability/            # initTracing.node.js, traceShim.js
+│   ├── util/                     # numberFormat.js, statusrenderer.js
+│   └── utils/                    # AttributeMath, CombatMath, DeterministicRandom, shared
+│
+├── tests/
+│   ├── unit/                     # 13 test files
+│   │   ├── DataRegistry.test.js
+│   │   ├── EffectEngineAndLog.test.js
+│   │   ├── GameSystems.test.js
+│   │   ├── InputValidator.test.js
+│   │   ├── InventorySystem.test.js
+│   │   ├── LevelingAndCombat.test.js
+│   │   ├── LocationResolution.test.js
+│   │   ├── NarrationGuards.test.js
+│   │   ├── PromptAssembler.test.js
+│   │   ├── SkillProgression.test.js
+│   │   ├── TracingShim.test.js
+│   │   ├── WorldDataRegistry.test.js
+│   │   └── WorldInitializer.test.js
+│   └── __mocks__/
+│
+├── scripts/                      # Dev utilities
+│   ├── generate-runtime-config.js
+│   ├── seed-static-data.cjs
+│   ├── validate-registries.mjs
+│   ├── analyze-middleware-dependencies.cjs
+│   ├── generate-dependency-graph.cjs
+│   └── collect-test-errors.js
+│
+├── sim_gamestart_fixed.js        # Main simulation entry point
+├── package.json                  # Monorepo root (workspaces: packages/*)
+├── vite.config.js                # Vite build config
+├── tsconfig.json                 # TypeScript config
+├── eslint.config.js              # ESLint flat config
+├── docker-compose.yml            # Docker multi-service
+├── swa-cli.config.json           # Azure SWA CLI config
+└── docs/                         # Documentation assets
+```
 
 ---
 
 ## Completed Features
 
-### Core Systems
+### Core Engine (`src/core/`)
 
-- [x] **Game State Management** (`gamestate.js`)
-  - Centralized state object
-  - Config section for game constants
-  - Immutable state updates
-- [x] **Game Logic** (`gamelogic.js`)
-  - XP and level up system
-  - Damage calculation
-  - Item usage
-  - Location movement
-  - Action execution dispatcher
+- [x] **gameReducer.js** — Canonical state transition reducer
+- [x] **ActionDispatcher.js** — Routes user actions to system functions
+- [x] **StateNormalizer.js** — Normalizes state, provides default config values
+- [x] **EventBus.js** — Event emission; events logged into SimulationContext
+- [x] **SystemEventObserver.js** — Observes & forwards system events
+- [x] **InputParser.js** — Parses raw user input into structured actions
+- [x] **InputValidator.js** — Validates actions before dispatch
+- [x] **PromptAssembler.js** — Builds AI prompts from state + action results
+- [x] **AIService.js** — LLM integration
+- [x] **AuthService.js** — Authentication handling
+- [x] **CloudSaveService.js** — Azure SQL cloud persistence
+- [x] **narrativeLog.js** — Narrative log management
+- [x] **titleLogic.js** — Title evaluation logic
+- [x] **xpCurve.js** — XP requirements per level
 
-- [x] **Combat System**
-  - Turn-based combat
-  - Player attacks
-  - Enemy attacks with AI
-  - Skill usage with cooldowns
-  - Escape mechanics
-  - Victory/defeat handling
-  - XP and loot rewards
+### Game Systems (`src/systems/`)
+
+- [x] **Archetype** — ArchetypeSystemRegistry, SystemBuilder
+- [x] **Class** — ClassRegistry, ClassAbilityRegistry, RageSystem, ChiSystem
+- [x] **Combat** — CombatSystem, StealthSystem
+- [x] **Effects** — EffectSystem, EffectRegistry, EffectApplicationSystem, CharmSystem
+- [x] **Exploration** — ExplorationSystem
+- [x] **Generation** — ClassGenerator, ContentGenerator, NameGenerator, RaceGenerator, SkillGenerator
+- [x] **Inventory** — InventorySystem
+- [x] **Items** — ItemProcSystem, SetBonusSystem
+- [x] **Leveling** — LevelingSystem, LevelingManager
+- [x] **Loot** — LootSystem, AffixTierRegistry, affixStats
+- [x] **Magic** — ManaSystem, ManaBalance
+- [x] **Profession** — ProfessionRegistry
+- [x] **Quest** — QuestManager (limited content)
+- [x] **Race** — RaceRegistry, RaceAbilityRegistry, RaceSystem
+- [x] **Skills** — SkillRegistry, SkillEvolutionSystem, SkillFusionSystem, SpellStudySystem, NonCombatSkillRegistry, TalentDefinitions, TalentManager, TalentRegistry
+- [x] **Titles** — TitleSystem
+- [x] **World** — TimeSystem, WorldInitializer
+- [ ] **DungeonGenerator.ts** — TypeScript stub, not fully implemented
+- [ ] **PrestigeSystem.ts** — TypeScript stub, not fully implemented
 
 ### Character System
 
-- [x] **Character Creation** (`CharacterCreation.jsx`, `useCharacterCreation.js`)
-  - 20 races with stat bonuses
-  - 20 classes with descriptions
-  - Random EX-rank talent selection (3 choices from 120)
-  - Skill selection (4 active, 12 passive from class pool)
-  - Gender and name input
-
-- [x] **Races** (`characterData.js`)
-  - 20 unique races defined
-  - Stat bonuses for each race
-  - Evolution stage system (Mortal → ?)
-
-- [x] **Classes** (`characterData.js`)
-  - 20 classes defined
-  - Upgrade paths specified
-  - Class descriptions
-
-- [x] **Talents** (`characterData.js`)
-  - 120 EX-rank talents defined
-  - Overpowered abilities (LitRPG style)
-
-### Skills System
-
-- [x] **Skills Architecture** (`skills.js`)
-  - Class-based skill pools
-  - Active skills (20 per class)
-  - Passive skills (40 per class)
-  - Universal learnable skills structure
-  - Skill unlock conditions system
-
-- [x] **Completed Class Skills (All 20 Classes):**
-  - ✅ Knight (20 active, 40 passive)
-  - ✅ Mage (20 active, 40 passive)
-  - ✅ Assassin (20 active, 40 passive)
-  - ✅ Warrior (20 active, 40 passive)
-  - ✅ Rogue (20 active, 40 passive)
-  - ✅ Priest (20 active, 40 passive)
-  - ✅ Paladin (20 active, 40 passive)
-  - ✅ Ranger (20 active, 40 passive)
-  - ✅ Monk (20 active, 40 passive)
-  - ✅ Bard (20 active, 40 passive)
-  - ✅ Necromancer (20 active, 40 passive)
-  - ✅ Druid (20 active, 40 passive)
-  - ✅ Warlock (20 active, 40 passive)
-  - ✅ Shaman (20 active, 40 passive)
-  - ✅ Battlemage (20 active, 40 passive)
-  - ✅ Archer (20 active, 40 passive)
-  - ✅ Berserker (20 active, 40 passive)
-  - ✅ Summoner (20 active, 40 passive)
-  - ✅ Templar (20 active, 40 passive)
-  - ✅ Shadowblade (20 active, 40 passive)
+- [x] **Character Creation** — Multi-step wizard (`CharacterGenesisUI_Enhanced.jsx`, `useCharacterCreationReworked.js`)
+  - 8 creation panels: Identity → Race → Class → Archetype → Attributes → Skills → Talent → Summary
+  - 20 races with stat bonuses, race abilities
+  - 20 classes with abilities, resource systems (rage, chi, stealth)
+  - Archetype system integration
+  - EX-rank talent selection
+  - Skill selection from class pool
+- [x] **20 complete class skill sets** (20 active + 40 passive each = ~1,200 skills)
+- [x] **Skill evolution, fusion, spell study, and non-combat skill systems**
+- [x] **Talent system** — TalentDefinitions, TalentManager, TalentRegistry
 
 ### UI Components
 
-- [x] **Title Screen** (`TitleUI.jsx`)
-- [x] **Game UI** (`GameUI.jsx`) - Main game interface
-- [x] **Combat UI** (`CombatUI.jsx`) - Battle interface
-- [x] **Class Resource HUD** (`GameUI.jsx`, `ClassResourceBar.jsx`) - Rage/Chi/Stealth meters now visible in the System Interface panel and Combat UI
-- [x] **Character Creation** (`CharacterCreation.jsx`)
-- [x] **Quest Log** (`QuestLogUI.jsx`)
-- [x] **Shop UI** (`ShopUI.jsx`)
-- [x] **Gacha UI** (`GachaUI.jsx`)
-- [x] **Save/Load Screen** (`SaveLoadScreen.jsx`, `SaveLoadUI.jsx`)
-- [x] **Auth UI** (`AuthUI.jsx`)
-- [x] **Error Boundary** (`ErrorBoundary.jsx`)
+**Components (`src/components/`)** — 22 files:
+- [x] TitleUI, GameUI, CombatUI, CharacterGenesisUI_Enhanced
+- [x] ClassAbilities, ClassResourceBar, RaceAbilities
+- [x] EquipmentSlots, ExperienceBar, HudVitals, StatusEffects, StatusOverlay
+- [x] MinionPanel, ProfessionUI, QuestTracker
+- [x] ShopUI, GachaUI, SaveLoadUI, AuthUI
+- [x] AdminTools, SystemLog, ErrorBoundary
 
-### Data & Services
+**Advanced UI (`src/ui/`)** — 25 files:
+- [x] **Modes** — CharacterCreationMode, GameMode
+- [x] **Panels** — ActionSuggestions, CommandTerminal, Equipment, EquipmentSelection, Inventory, NarrativeHub, NarrativeLog, NarrativeMemory, Quest, StatusEffects, Vitals, CreationNarrative
+- [x] **Creation Panels** — 8 step-based panels for character creation wizard
+- [x] **Windowing** — DockZone, GameWindow, WindowManager, WindowRegistry, layoutPresets, useWindowLayout
 
-- [x] **Game Data** (`gameData.js`) - Item database
-- [x] **Enemy Data** (`enemyData.js`) - Enemy definitions
-- [x] **Shop Data** (`shopData.js`) - Shop items
-- [x] **Gacha Data** (`gachaData.js`) - Gacha pools
-- [x] **Title Data** (`titleData.js`) - Achievement titles
-- [x] **AI Service** (`aiService.js`) - LLM integration
-- [x] **Auth Service** (`authService.js`) - Authentication
-- [x] **Cloud Save Service** (`CloudSaveService.js`) - Cloud saves
-- [x] **Prompt Assembler** (`promptAssembler.js`) - AI context building
-- [x] **Action Parser** (`actionParser.js`) - Input parsing
-- [x] **Action Validator** (`actionValidator.js`) - Action validation
+### Data Layer (`src/data/`)
+
+- [x] **DataRegistry.js** — Central registry
+- [x] **StaticDataBootstrap.js** — Loads static data at boot
+- [x] **5 typed registries** — Class, Enemy, Item, Race, World
+- [x] **initialState.js** — Default game state
+- [x] **gachaData, shopData, titleData, QuestCatalog, OpeningScenes**
+
+### Entities & World
+
+- [x] **Player.js, Enemy.js, ItemRegistry.js** (`src/entities/`)
+- [x] **WorldDataRegistry.js, WorldInitializer.js** (`src/world/`)
+
+### Simulation Engine (`src/simulation/`)
+
+- [x] **SimulationKernel** (+ determinism variant) — Core simulation loop
+- [x] **ActionResolver / ActionScheduler** (+ determinism variants) — Combat action resolution
+- [x] **EffectEngine** — Status effect processing in simulation
+- [x] **EventBus (TS)** — Typed event system
+- [x] **CombatLogSerializer** — Log output formatting
+- [x] **Validation** — basic.ts, schema.ts
+- [x] **Bridge** — GameStateAdapter, SimulationBridge, SimulationContext
+
+### API / Azure Functions (`api/`)
+
+- [x] **narrate/** — NarratorAgent (env: `NARRATOR_AGENT_ID`)
+- [x] **quest-create/** — QuestGiver (env: `QUEST_AGENT_ID`)
+- [x] **factory-run/** — ContentSmith (env: `FACTORY_AGENT_ID`)
+- [x] **runs/** — Game run management
+- [x] **run-events/** — Run event tracking
+- [x] **run-snapshots/** — State snapshots per run
+- [x] **saves/** — Cloud save/load (Azure SQL)
+- [x] **health/** — Health check
+- [x] **static-data/** — Static data serving
+- [x] **VoidverseFunction/** — Misc endpoint
+- [x] **lib/** — auth, sql, azure-ai-utils, tracing, game-db, game-db-file, draft-store
 
 ### Persistence
 
-- [x] **Azure SQL Integration**
+- [x] **Azure SQL** — Schema in `api/sql/schema.sql`
   - Entra ID authentication (SWA / Easy Auth)
-  - Cloud save/load
-  - Multiple save slots
-  - Auto-save support
+  - Cloud save/load, multiple slots
+  - Run tracking, event logging, snapshots
+
+### Observability
+
+- [x] **OpenTelemetry** — `initTracing.node.js`, `traceShim.js` (OTLP exporter)
+- [x] **API tracing** — `api/lib/tracing.js`
+
+### Monorepo Packages
+
+- [x] **@voidverse/game-core** — Shared engine code (core, systems, entities, data, simulation, utils, world, observability, constants)
+- [x] **@voidverse/game-schemas** — Action + state schema definitions (TypeScript)
+
+### Testing
+
+- [x] **13 unit test files** covering: DataRegistry, EffectEngine, GameSystems, InputValidator, InventorySystem, LevelingAndCombat, LocationResolution, NarrationGuards, PromptAssembler, SkillProgression, TracingShim, WorldDataRegistry, WorldInitializer
+- [x] **Jest** with `--experimental-vm-modules` (ESM support)
+
+### DevOps & Tooling
+
+- [x] **Docker** — Dockerfile, Dockerfile.api, Dockerfile.web, docker-compose.yml
+- [x] **Azure SWA** — swa-cli.config.json, CNAME
+- [x] **Scripts** — registry validation, middleware analysis, dependency graph generation, static data seeding, runtime config generation
+- [x] **Simulation CLI** — `npm run simulate`, `simulate:quick`, `simulate:csv`, `simulate:full`
 
 ---
 
-## Known Bugs
-
-### Critical
-
-- None currently known
+## Known Issues
 
 ### Medium Priority
 
 - [ ] Mana doesn't regenerate outside of level-up (no passive regen)
 - [ ] Skill cooldowns not visually displayed in UI
-- [ ] Some hardcoded values in `gamelogic.js` should use config
+- [ ] Quest system has structure but very limited content
+- [ ] `api/narrative/` directory exists but is empty
 
 ### Low Priority
 
-- [ ] Debug logging (fetch calls) still present in `gamelogic.js`
 - [ ] No sound effects or music
 - [ ] No animation on combat actions
+- [ ] ~70 `tmpclaude-*` temp directories cluttering project root
+- [ ] Multiple `simulation_results_*.json` files in root (should be in output dir)
 
 ---
 
-## In Progress
+## Upcoming / Incomplete
 
-### Current Sprint
-
-1. ✅ **Creating anchor documentation files** (system_specs.md, current_state.md, .cursorrules) - COMPLETE
-2. ✅ **Expanding gamestate.js config** with all game constants - COMPLETE
-3. ✅ **Refactoring hardcoded values** in gamelogic.js - COMPLETE
-4. ✅ **Completing all 17 remaining class skill sets** - COMPLETE
-
-### Upcoming
-
-- Universal skills expansion (thousands of learnable skills)
-- Advanced combat mechanics (status effects)
-- Equipment crafting system
-- Class advancement/evolution
-- Skill upgrade, evolution, and fusion mechanics
-
----
-
-## Architecture Notes
-
-### State Flow
-
-```text
-User Input → ActionParser → ActionValidator → GameLogic → New State → UI Update
-
-```
-
-### AI Integration
-
-```text
-User Input → PromptAssembler (builds context) → AI Service → ActionParser → GameLogic
-
-```
-
-### File Organization
-
-```text
-src/
-├── components/     # React UI components
-├── hook/           # Custom React hooks
-├── lib/            # Game logic and data
-└── util/           # Helper utilities
-
-```
-
-### Key Patterns
-
-1. **Immutable State Updates**
-   - All game logic functions return new state objects
-   - Never mutate state directly
-   - Use spread operator for updates
-
-2. **Config-Driven Design**
-   - Game constants in `state.config`
-   - No magic numbers in logic code
-   - Easy balance adjustments
-
-3. **Separation of Concerns**
-   - Data in `/lib/*Data.js` files
-   - Logic in `gamelogic.js`
-   - UI in `/components/*.jsx`
+- [ ] **DungeonGenerator** — Expand from TypeScript stub to full procedural dungeon system
+- [ ] **PrestigeSystem** — Expand from TypeScript stub to full prestige/rebirth mechanics
+- [ ] **Quest content** — Expand QuestCatalog with meaningful quest chains
+- [ ] **Universal skills** — Thousands of learnable cross-class skills
+- [ ] **Equipment crafting** — Crafting system for gear
+- [ ] **Class advancement/evolution** — Upgrade paths implementation
+- [ ] **Advanced status effects** — Deeper effect interactions in combat
 
 ---
 
 ## Metrics
 
-- **Total Lines of Code:** ~8,000+
-- **React Components:** 12
-- **Game Systems:** 8 major
-- **Classes:** 20 (all complete)
-- **Skills:** ~1,200 complete (20 active + 40 passive per class × 20 classes)
+| Metric                | Value                                  |
+| --------------------- | -------------------------------------- |
+| Source files           | ~299                                   |
+| Total lines of code   | ~75,000                                |
+| React components      | 22 (`src/components/`)                 |
+| UI panel components   | 25 (`src/ui/`)                         |
+| Game system modules   | 20 directories, 40+ files              |
+| Classes               | 20 (all complete)                      |
+| Skills                | ~1,200 (20 active + 40 passive × 20)  |
+| Azure Function endpoints | 10                                  |
+| Unit test files       | 13                                     |
+| Monorepo packages     | 2 (@voidverse/game-core, game-schemas) |
 
 ---
 
-## Version History
+## Key Patterns
 
-| Version | Date     | Changes                                                               |
-| ------- | -------- | --------------------------------------------------------------------- |
-| 0.2.0   | Current  | Complete skill database (1,200 skills), anchor docs, config expansion |
-| 0.1.1   | Previous | Added anchor docs, config expansion                                   |
-| 0.1.0   | Initial  | Core game systems                                                     |
+1. **Deterministic State Transforms** — Most mechanics are pure state transforms through `gameReducer.js`
+2. **Immutable State** — Never mutate state directly; use reducers in `usegamestate.js`
+3. **Config-Driven Balance** — Game constants in `state.config`; no magic numbers
+4. **Systems should not generate prose** — `PromptAssembler` builds prompts from state + action results; narration goes through the narrate API
+5. **Registry Architecture** — All data goes through typed registries (`src/data/registries/`)
+6. **Event-Driven** — `EventBus` → `SystemEventObserver` → `SimulationContext` for cross-system communication
 
 ---
 
-## Notes for AI Assistant
-
-When implementing new features:
+## Notes for AI Assistants
 
 1. Check this file first to understand what exists
 2. Reference `system_specs.md` for formulas and rules
 3. Follow patterns in `.cursorrules`
 4. Update this file when adding features
 5. Use `state.config` for all game constants
+6. Do not hardcode numeric values for game balance
+7. Use the `systems` agent for work under `src/systems/**`
+8. AI agent IDs come from env vars — never hardcode them

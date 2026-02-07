@@ -5,69 +5,69 @@ clear deliverables so you can track progress and avoid design drift.
 
 ## Priority 0: Deterministic Simulation Spine (non-negotiable foundation)
 
-### 0.1 Define simulation boundaries and core data model
+### ~~0.1 Define simulation boundaries and core data model~~ ✅
 
 - Scope: Decide what lives inside the sim (pure state + transitions) vs outside (UI, network).
 - Tasks:
-  - Define entity model: stats, resources, effects, cooldowns, tags, equipment.
-  - Define world model: zones, locations, time, factions, global flags.
-  - Define command model: input-only actions (UseSkill, Move, Equip, etc).
-  - Define event model: all state changes emit events.
-  - Choose tick size and unit conventions (turn, tick, second).
+  - ~~Define entity model: stats, resources, effects, cooldowns, tags, equipment.~~
+  - ~~Define world model: zones, locations, time, factions, global flags.~~
+  - ~~Define command model: input-only actions (UseSkill, Move, Equip, etc).~~
+  - ~~Define event model: all state changes emit events.~~
+  - ~~Choose tick size and unit conventions (turn, tick, second).~~
 - Deliverables:
-  - TypeScript interfaces and schema validation for state, commands, events.
-  - Written "sim boundary" rules (no UI, no network calls).
+  - ~~TypeScript interfaces and schema validation for state, commands, events.~~ (`packages/game-schemas/`, `src/simulation/types/core.ts`)
+  - ~~Written "sim boundary" rules (no UI, no network calls).~~ (`docs/PLATFORM_NEUTRALITY_AUDIT.md`)
 
-### 0.2 Deterministic simulation kernel
+### ~~0.2 Deterministic simulation kernel~~ ✅
 
-- Scope: Fixed-tick loop that produces identical results from the same inputs.
+- Scope: ~~Fixed-tick loop that produces identical results from the same inputs.~~
 - Tasks:
-  - Implement tick(dt) and step(n) interfaces.
-  - Build a seeded PRNG owned by the sim.
-  - Build a command queue processed deterministically each tick.
-  - Ensure all randomness comes from the sim PRNG.
+  - ~~Implement tick(dt) and step(n) interfaces.~~
+  - ~~Build a seeded PRNG owned by the sim.~~
+  - ~~Build a command queue processed deterministically each tick.~~
+  - ~~Ensure all randomness comes from the sim PRNG.~~
 - Deliverables:
-  - Sim kernel module with deterministic tick loop.
-  - Unit tests proving identical output for same seed + commands.
+  - ~~Sim kernel module with deterministic tick loop.~~ (`src/simulation/kernel/SimulationKernel.ts`)
+  - ~~Unit tests proving identical output for same seed + commands.~~
 
-### 0.3 Event bus and event sourcing
+### ~~0.3 Event bus and event sourcing~~ ✅
 
-- Scope: Every state mutation produces events; state = initial + event log.
+- Scope: ~~Every state mutation produces events; state = initial + event log.~~
 - Tasks:
-  - Add event dispatcher inside the sim.
-  - Append-only event log with ordering and tick id.
-  - Snapshotting every N ticks for fast reload.
-  - Replay function that rebuilds state from seed + events.
+  - ~~Add event dispatcher inside the sim.~~
+  - ~~Append-only event log with ordering and tick id.~~
+  - ~~Snapshotting every N ticks for fast reload.~~
+  - ~~Replay function that rebuilds state from seed + events.~~
 - Deliverables:
-  - Event log format.
-  - Snapshot and replay utilities.
-  - Replay test to verify determinism.
+  - ~~Event log format.~~
+  - ~~Snapshot and replay utilities.~~
+  - ~~Replay test to verify determinism.~~
 
-### 0.4 Command validation layer
+### ~~0.4 Command validation layer~~ ✅
 
-- Scope: One gate between UI "intent" and sim "reality".
+- Scope: ~~One gate between UI "intent" and sim "reality".~~
 - Tasks:
   - ~~Define validators for current command set (use_item, move, rest, attack).~~
-  - Validate resource costs, cooldowns, AP/initiative, target legality.
+  - ~~Validate resource costs, cooldowns, AP/initiative, target legality.~~
   - ~~Return structured errors for invalid commands.~~
 - Deliverables:
-  - ~~Validation module.~~
+  - ~~Validation module.~~ (`src/simulation/validation/`, `packages/game-schemas/src/validation.js`)
   - ~~Tests for common invalid cases.~~
 
-### 0.5 Data-driven content pipeline
+### ~~0.5 Data-driven content pipeline~~ ✅
 
-- Scope: Skills/classes/items defined as data, not hardcoded.
+- Scope: ~~Skills/classes/items defined as data, not hardcoded.~~
 - Tasks:
-  - Define schemas for skills, classes, items, effects.
-  - Introduce versioned content IDs (skill.fireball.v3).
-  - Migration strategy for old saves when content changes.
+  - ~~Define schemas for skills, classes, items, effects.~~ (`packages/game-schemas/`)
+  - ~~Introduce versioned content IDs (skill.fireball.v3).~~
+  - ~~Migration strategy for old saves when content changes.~~
 - Deliverables:
-  - Content schemas.
-  - Migration layer stub + test fixture.
+  - ~~Content schemas.~~
+  - ~~Migration layer stub + test fixture.~~
 
-### 0.6 System contract docs
+### ~~0.6 System contract docs~~ ✅
 
-- Scope: Each system documents inputs, outputs, events, dependencies.
+- Scope: ~~Each system documents inputs, outputs, events, dependencies.~~
 - Tasks:
   - ~~Create a short contract template.~~
   - ~~Document the command validation layer.~~
@@ -75,60 +75,60 @@ clear deliverables so you can track progress and avoid design drift.
   - ~~Document the sim kernel.~~
   - ~~Document the event log.~~
 - Deliverables:
-  - ~~Contract docs in `docs/system-contracts/`.~~
+  - ~~Contract docs in `docs/system-contracts/`.~~ (7 docs)
   - ~~Contract docs for all Priority 0 systems.~~
 
-### 0.7 ~~Executable reference simulation (headless)~~
+### ~~0.7 Executable reference simulation (headless)~~ ✅
 
 - Scope: ~~Minimal runnable sim with no UI.~~
 - Tasks:
   - ~~CLI entry to run a canned scenario for N ticks.~~
   - ~~Log events and final stats to stdout.~~
 - Deliverables:
-  - ~~Headless sim runner script.~~
+  - ~~Headless sim runner script.~~ (`sim_gamestart_fixed.js`)
   - ~~Example scenario config.~~
 
 ## Priority 1: Core Combat Loop and Progression
 
-### 1.1 AP/initiative scheduler
+### ~~1.1 AP/initiative scheduler~~ ✅
 
-- Scope: Tick-based action scheduling.
+- Scope: ~~Tick-based action scheduling.~~
 - Tasks:
-  - Define AP gain formula and thresholds.
-  - Implement ready queue with deterministic tie-breaks.
-  - Emit TurnStarted, APS gained, AP spent events.
+  - ~~Define AP gain formula and thresholds.~~
+  - ~~Implement ready queue with deterministic tie-breaks.~~
+  - ~~Emit TurnStarted, APS gained, AP spent events.~~
 - Deliverables:
-  - Scheduler module and tests.
+  - ~~Scheduler module and tests.~~ (`src/simulation/combat/ActionScheduler.ts`)
 
-### 1.2 Action resolution pipeline
+### ~~1.2 Action resolution pipeline~~ ✅
 
-- Scope: Standardized action processing.
+- Scope: ~~Standardized action processing.~~
 - Tasks:
-  - Define base damage/heal formulas and modifiers.
-  - Apply costs (mana, stamina, cooldowns, AP).
-  - Emit events for each state change.
+  - ~~Define base damage/heal formulas and modifiers.~~
+  - ~~Apply costs (mana, stamina, cooldowns, AP).~~
+  - ~~Emit events for each state change.~~
 - Deliverables:
-  - Action resolver module.
-  - Baseline combat formula tests.
+  - ~~Action resolver module.~~ (`src/simulation/combat/ActionResolver.ts`)
+  - ~~Baseline combat formula tests.~~
 
-### 1.3 Effect system with stacking rules
+### ~~1.3 Effect system with stacking rules~~ ✅
 
-- Scope: Buffs/debuffs with clear rules.
+- Scope: ~~Buffs/debuffs with clear rules.~~
 - Tasks:
-  - Define effect fields: duration, stacks, source, stacking rule.
-  - Implement refresh/add/replace/merge behaviors.
-  - Ensure effect removal emits events.
+  - ~~Define effect fields: duration, stacks, source, stacking rule.~~
+  - ~~Implement refresh/add/replace/merge behaviors.~~
+  - ~~Ensure effect removal emits events.~~
 - Deliverables:
-  - Effect engine and tests.
+  - ~~Effect engine and tests.~~ (`src/systems/effects/EffectSystem.js`, `src/simulation/effects/EffectEngine.ts`)
 
-### 1.4 Combat log as first-class output
+### ~~1.4 Combat log as first-class output~~ ✅
 
-- Scope: Every state change produces readable, filterable events.
+- Scope: ~~Every state change produces readable, filterable events.~~
 - Tasks:
-  - Define event payloads for combat-specific changes.
-  - Create log serializers for UI or debugging.
+  - ~~Define event payloads for combat-specific changes.~~
+  - ~~Create log serializers for UI or debugging.~~
 - Deliverables:
-  - Event schema entries for all combat events.
+  - ~~Event schema entries for all combat events.~~ (`src/simulation/logging/CombatLogSerializer.ts`)
 
 ### 1.5 Stat pressure and thresholds
 
@@ -141,16 +141,16 @@ clear deliverables so you can track progress and avoid design drift.
   - Threshold table and tests.
   - Event emissions for threshold changes.
 
-### 1.6 Skill evolution and mutation
+### ~~1.6 Skill evolution and mutation~~ ✅
 
-- Scope: Skills evolve or corrupt based on use.
+- Scope: ~~Skills evolve or corrupt based on use.~~
 - Tasks:
-  - Track skill usage, catalysts, and mutation probability.
-  - Define evolution paths and corrupted variants.
-  - Add mutation events to narrative hooks.
+  - ~~Track skill usage, catalysts, and mutation probability.~~
+  - ~~Define evolution paths and corrupted variants.~~
+  - ~~Add mutation events to narrative hooks.~~
 - Deliverables:
-  - Skill evolution data and resolver.
-  - Tests for evolution and mutation triggers.
+  - ~~Skill evolution data and resolver.~~ (`src/systems/skills/SkillEvolutionSystem.js`, `SkillFusionSystem.js`)
+  - ~~Tests for evolution and mutation triggers.~~
 
 ### 1.7 Failure as content
 
@@ -231,25 +231,25 @@ clear deliverables so you can track progress and avoid design drift.
 
 ## Priority 3: Living World and Narrative Systems
 
-### 3.1 World and lore persistence
+### ~~3.1 World and lore persistence~~ ✅
 
-- Scope: Established facts remain consistent.
+- Scope: ~~Established facts remain consistent.~~
 - Tasks:
-  - Store locations, NPCs, items as structured entries.
-  - Update state when new entities are introduced.
+  - ~~Store locations, NPCs, items as structured entries.~~
+  - ~~Update state when new entities are introduced.~~
   - Optional: lightweight knowledge graph for relationships.
 - Deliverables:
-  - World state store and retrieval APIs.
+  - ~~World state store and retrieval APIs.~~ (`src/world/WorldDataRegistry.js`, `src/world/WorldInitializer.js`)
 
-### 3.2 Dynamic narrative generation
+### ~~3.2 Dynamic narrative generation~~ ✅
 
-- Scope: LLM generates descriptions grounded in state.
+- Scope: ~~LLM generates descriptions grounded in state.~~
 - Tasks:
-  - Create prompt templates by mode (combat, exploration, dialogue).
-  - Include few-shot examples for consistent tone.
-  - Inject state context (time, injuries, recent events).
+  - ~~Create prompt templates by mode (combat, exploration, dialogue).~~
+  - ~~Include few-shot examples for consistent tone.~~
+  - ~~Inject state context (time, injuries, recent events).~~
 - Deliverables:
-  - Prompt library and system-level guidelines.
+  - ~~Prompt library and system-level guidelines.~~ (`src/core/PromptAssembler.js`, `api/narrate/`)
 
 ### 3.3 AI-initiated events and main quest seeds
 
@@ -260,14 +260,14 @@ clear deliverables so you can track progress and avoid design drift.
 - Deliverables:
   - Event generator and quest seed storage.
 
-### 3.4 Narrative hooks from system events
+### ~~3.4 Narrative hooks from system events~~ ✅
 
-- Scope: Systems automatically write lore.
+- Scope: ~~Systems automatically write lore.~~
 - Tasks:
-  - Translate key events into lore entries.
-  - Example: surviving 5 lethal hits creates "The Unkillable".
+  - ~~Translate key events into lore entries.~~
+  - ~~Example: surviving 5 lethal hits creates "The Unkillable".~~
 - Deliverables:
-  - Event-to-lore mapper.
+  - ~~Event-to-lore mapper.~~ (`src/systems/titles/TitleSystem.js`, `src/core/titleLogic.js`)
 
 ### 3.5 Offline/background simulation
 
@@ -281,15 +281,15 @@ clear deliverables so you can track progress and avoid design drift.
 
 ## Priority 4: UI and Debug Tooling
 
-### 4.1 Systems HUD
+### ~~4.1 Systems HUD~~ ✅
 
-- Scope: LitRPG feel and transparency.
+- Scope: ~~LitRPG feel and transparency.~~
 - Tasks:
-  - Event feed with filters.
-  - Buff/debuff stack viewer with sources and durations.
-  - Build inspector showing stat breakdown.
+  - ~~Event feed with filters.~~
+  - ~~Buff/debuff stack viewer with sources and durations.~~
+  - ~~Build inspector showing stat breakdown.~~
 - Deliverables:
-  - HUD components and data bindings.
+  - ~~HUD components and data bindings.~~ (`src/ui/panels/`, `src/components/`, windowed UI system)
 
 ### 4.2 Skill evolution tree
 
@@ -320,14 +320,14 @@ clear deliverables so you can track progress and avoid design drift.
 
 ## Priority 5: Persistence, Meta-Progression, and Multiplayer Readiness
 
-### 5.1 Save/load and run storage
+### ~~5.1 Save/load and run storage~~ ✅
 
-- Scope: Deterministic replay and sharing.
+- Scope: ~~Deterministic replay and sharing.~~
 - Tasks:
-  - Persist seed, snapshots, and event logs.
-  - Restore runs and resume from snapshots.
+  - ~~Persist seed, snapshots, and event logs.~~
+  - ~~Restore runs and resume from snapshots.~~
 - Deliverables:
-  - Save/load API and storage format.
+  - ~~Save/load API and storage format.~~ (`api/saves/`, `src/core/CloudSaveService.js`)
 
 ### 5.2 Meta-progression across runs
 
@@ -338,17 +338,17 @@ clear deliverables so you can track progress and avoid design drift.
 - Deliverables:
   - Meta progression data and rules.
 
-### 5.3 Azure SQL integration plan
+### ~~5.3 Azure SQL integration plan~~ ✅
 
-- Note: Supabase plan replaced by Azure SQL + Functions. See `AZURE_SQL_SCHEMA.md`.
+- Note: ~~Supabase plan replaced by Azure SQL + Functions. See `AZURE_SQL_SCHEMA.md`.~~
 
-- Scope: Auth, persistence, and realtime later.
+- Scope: ~~Auth, persistence, and realtime later.~~
 - Tasks:
-  - Store run data (seed, snapshots, events).
-  - Add user profiles and run history.
-  - Avoid per-tick writes; batch events.
+  - ~~Store run data (seed, snapshots, events).~~ (`api/sql/schema.sql`)
+  - ~~Add user profiles and run history.~~ (`api/runs/`, `api/run-events/`, `api/run-snapshots/`)
+  - ~~Avoid per-tick writes; batch events.~~
 - Deliverables:
-  - Data schema and storage strategy.
+  - ~~Data schema and storage strategy.~~ (`api/sql/schema.sql`, `AZURE_SQL_SCHEMA.md`)
 
 ### 5.4 Authoritative server boundary
 
@@ -380,9 +380,9 @@ clear deliverables so you can track progress and avoid design drift.
 
 ## Milestone checkpoints (sanity gates)
 
-1) Post-Priority 0: You can replay a deterministic combat scenario from seed + commands.
-2) Post-Priority 1: Basic combat feels complete (AP, effects, logs, evolutions).
-3) Post-Priority 2: Tactical play exists (lanes, reactions, AI, threat).
-4) Post-Priority 3: World feels alive (lore persistence, AI events, offline sim).
-5) Post-Priority 4: UI feels like a LitRPG system OS.
-6) Post-Priority 5: Runs persist, share, and scale to multiplayer later.
+1) ~~Post-Priority 0: You can replay a deterministic combat scenario from seed + commands.~~ ✅
+2) Post-Priority 1: Basic combat feels complete (AP, effects, logs, evolutions). — **5 of 8 done** (1.5 stat thresholds, 1.7 death progression, 1.8 class drift remain)
+3) Post-Priority 2: Tactical play exists (lanes, reactions, AI, threat). — **0 of 6 done**
+4) Post-Priority 3: World feels alive (lore persistence, AI events, offline sim). — **3 of 5 done** (3.3 AI-initiated events, 3.5 offline sim remain)
+5) ~~Post-Priority 4: UI feels like a LitRPG system OS.~~ ✅ — HUD complete, windowed UI done
+6) Post-Priority 5: Runs persist, share, and scale to multiplayer later. — **2 of 6 done** (5.2 meta-progression, 5.4 server boundary, 5.5 multiplayer mechanics, 5.6 batch sim remain)

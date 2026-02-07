@@ -7,6 +7,7 @@ import { useState, useCallback, useRef } from "react";
 import { assemblePrompt, buildInitialPrompt } from "../core/PromptAssembler.js";
 import {
   generateNarrative,
+  generateNarrativeStream,
   generateInitialNarrative,
 } from "../core/AIService.js";
 import { renderStatusBlock } from "../util/statusrenderer.js";
@@ -268,6 +269,113 @@ export function useNarrative(
     DEFAULT_ACTION_SUGGESTIONS,
   );
   const fallbackCounterRef = useRef(0);
+  const streamAbortRef = useRef(null);
+
+  /**
+   * Helper: run streaming narrative, updating a placeholder entry live.
+   * Falls back to sync generateNarrative internally.
+   */
+  const streamNarrative = useCallback(
+    async (prompt, prevStateForFallback) => {
+      // Abort any in-flight stream
+      if (streamAbortRef.current) {
+        streamAbortRef.current.abort();
+      }
+      const controller = new AbortController();
+      streamAbortRef.current = controller;
+
+      // Insert a placeholder entry that will be updated in-place
+      const streamEntryId = `stream_${Date.now()}`;
+      setState((prev) =>
+        updateNarrativeState(prev, {
+          id: streamEntryId,
+          type: "narrative",
+          text: "",
+          timestamp: SimBridge.now(),
+          source: "ai-streaming",
+        }),
+      );
+
+      try {
+        const result = await generateNarrativeStream(prompt, {
+          signal: controller.signal,
+          onChunk: (_delta, fullText) => {
+            // Live-update the streaming entry in-place
+            setState((prev) => {
+              const entries = Array.isArray(prev.narrative?.entries)
+                ? prev.narrative.entries
+                : [];
+              const idx = entries.findIndex((e) => e.id === streamEntryId);
+              if (idx === -1) return prev;
+              const updated = [...entries];
+              updated[idx] = { ...updated[idx], text: fullText };
+              return {
+                ...prev,
+                narrative: { ...prev.narrative, entries: updated },
+              };
+            });
+          },
+        });
+
+        // Finalize: replace the streaming entry with the guarded result
+        setState((prev) => {
+          const entries = Array.isArray(prev.narrative?.entries)
+            ? prev.narrative.entries
+            : [];
+          const idx = entries.findIndex((e) => e.id === streamEntryId);
+          if (idx === -1) return prev;
+          const updated = [...entries];
+          updated[idx] = {
+            ...updated[idx],
+            text: result.narrative,
+            source: "ai",
+          };
+          return {
+            ...prev,
+            narrative: { ...prev.narrative, entries: updated },
+          };
+        });
+
+        return result;
+      } catch (error) {
+        if (error?.name === "AbortError") throw error;
+        // On stream failure, fill the placeholder with fallback
+        console.error("Stream narrative failed:", error);
+        fallbackCounterRef.current += 1;
+        const fallbackText = buildFallbackNarrative({
+          state: prevStateForFallback,
+          variantSeed: fallbackCounterRef.current,
+        });
+        setState((prev) => {
+          const entries = Array.isArray(prev.narrative?.entries)
+            ? prev.narrative.entries
+            : [];
+          const idx = entries.findIndex((e) => e.id === streamEntryId);
+          if (idx === -1) return prev;
+          const updated = [...entries];
+          updated[idx] = {
+            ...updated[idx],
+            text: fallbackText,
+            source: "fallback",
+          };
+          return {
+            ...prev,
+            narrative: { ...prev.narrative, entries: updated },
+          };
+        });
+        return {
+          narrative: fallbackText,
+          mood: "neutral",
+          suggestions: ["Look around", "Check inventory", "Continue"],
+        };
+      } finally {
+        if (streamAbortRef.current === controller) {
+          streamAbortRef.current = null;
+        }
+      }
+    },
+    [setState],
+  );
 
   const updateNarrativeState = (prevState, entry) => {
     const nextNarrative = appendNarrativeEntry(prevState.narrative, entry, {
@@ -329,32 +437,14 @@ export function useNarrative(
               description: `Attempted: ${userInput}`,
             });
 
-            const aiResponse = await generateNarrative(failurePrompt);
-            setState((prevState) => ({
-              ...updateNarrativeState(prevState, {
-                type: "narrative",
-                text: aiResponse.narrative,
-                timestamp: SimBridge.now(),
-                source: "ai",
-              }),
-            }));
+            const aiResponse = await streamNarrative(
+              failurePrompt,
+              currentState,
+            );
+            // streamNarrative already updated state via onChunk + finalize
           } catch (aiError) {
+            if (aiError?.name === "AbortError") return;
             console.error("AI narrative generation failed:", aiError);
-            fallbackCounterRef.current += 1;
-            const fallbackNarrative = buildFallbackNarrative({
-              userInput,
-              actionResult: { success: false, reason: validation.reason },
-              state: currentState,
-              variantSeed: fallbackCounterRef.current,
-            });
-            setState((prevState) => ({
-              ...updateNarrativeState(prevState, {
-                type: "narrative",
-                text: fallbackNarrative,
-                timestamp: SimBridge.now(),
-                source: "fallback",
-              }),
-            }));
           }
 
           setIsLoading(false);
@@ -420,46 +510,23 @@ export function useNarrative(
           return;
         }
 
-        // Step 6: Generate AI narrative response
+        // Step 6: Generate AI narrative response (streaming)
         setIsNarrating(true);
         try {
           const promptState = actionResult.readOnly ? currentState : newState;
           const prompt = assemblePrompt(promptState, userInput, actionResult);
-          const aiResponse = await generateNarrative(prompt);
+          const aiResponse = await streamNarrative(prompt, promptState);
 
-          // Update narrative history in state
-          const updatedState = (prevState) =>
-            updateNarrativeState(prevState, {
-              type: "narrative",
-              text: aiResponse.narrative,
-              timestamp: SimBridge.now(),
-              source: "ai",
-            });
-
+          // streamNarrative already manages the entry; just evaluate quests
           setState((prevState) => {
-            const resolved = updatedState(prevState);
             if (typeof evaluateQuestProgress === "function") {
-              evaluateQuestProgress(resolved);
+              evaluateQuestProgress(prevState);
             }
-            return resolved;
+            return prevState;
           });
         } catch (aiError) {
+          if (aiError?.name === "AbortError") return;
           console.error("AI narrative generation failed:", aiError);
-          fallbackCounterRef.current += 1;
-          const fallbackNarrative = buildFallbackNarrative({
-            userInput,
-            actionResult,
-            state: actionResult.readOnly ? currentState : newState,
-            variantSeed: fallbackCounterRef.current,
-          });
-          setState((prevState) => ({
-            ...updateNarrativeState(prevState, {
-              type: "narrative",
-              text: fallbackNarrative,
-              timestamp: SimBridge.now(),
-              source: "fallback",
-            }),
-          }));
         } finally {
           setIsNarrating(false);
         }

@@ -21,7 +21,7 @@
     },
     {
       "route": "/api/health",
-      "allowedRoles": ["authenticated"]
+      "allowedRoles": ["anonymous"]
     },
     {
       "route": "/api/static-data",

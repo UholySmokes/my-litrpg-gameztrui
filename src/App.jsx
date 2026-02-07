@@ -7,10 +7,14 @@ import "./App.css";
 const GameUI = lazy(() => import("./components/GameUI"));
 const AuthUI = lazy(() => import("./components/AuthUI"));
 
+const LOCAL_USER = { id: "local", email: "local@game.dev" };
+
 function AppContent() {
-  const [user, setUser] = useState(null);
   const [isLocalGame, setIsLocalGame] = useState(() => {
     return localStorage.getItem("localGame") === "true";
+  });
+  const [user, setUser] = useState(() => {
+    return localStorage.getItem("localGame") === "true" ? LOCAL_USER : null;
   });
   const [loading, setLoading] = useState(true);
   const loadingScreen = (
@@ -31,23 +35,33 @@ function AppContent() {
   );
 
   useEffect(() => {
-    // Check for existing session
-    getCurrentUser().then((currentUser) => {
+    let active = true;
+    let unsubscribe = null;
+
+    const start = async () => {
+      if (isLocalGame) {
+        setUser(LOCAL_USER);
+        setLoading(false);
+        return;
+      }
+
+      const currentUser = await getCurrentUser();
+      if (!active) return;
       setUser(currentUser);
       setLoading(false);
-    });
 
-    // Subscribe to auth changes
-    const unsubscribe = onAuthStateChange((currentUser) => {
-      setUser(currentUser);
-      if (!currentUser) {
-        setIsLocalGame(false);
-        localStorage.removeItem("localGame");
-      }
-    });
+      unsubscribe = onAuthStateChange((nextUser) => {
+        setUser(nextUser);
+      });
+    };
 
-    return () => unsubscribe();
-  }, []);
+    start();
+
+    return () => {
+      active = false;
+      if (typeof unsubscribe === "function") unsubscribe();
+    };
+  }, [isLocalGame]);
 
   const handleAuthChange = (currentUser) => {
     setUser(currentUser);
@@ -63,7 +77,7 @@ function AppContent() {
     localStorage.removeItem("saveLoaded");
     localStorage.setItem("localGame", "true");
     setIsLocalGame(true);
-    setUser({ id: "local", email: "local@game.dev" }); // Dummy user for local game
+    setUser(LOCAL_USER);
   };
 
   if (loading) {

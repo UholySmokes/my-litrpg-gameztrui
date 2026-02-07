@@ -408,8 +408,15 @@ export async function generateNarrativeStream(
       if (typeof onChunk === "function") onChunk(delta, currentText);
     }
 
-    // Run finished
-    if (pollData?.done) {
+    // Run finished (treat "incomplete" as terminal; some backends may not set done=true)
+    const statusRaw = pollData?.status;
+    const status = String(statusRaw || "").trim().toLowerCase();
+    const isTerminal =
+      Boolean(pollData?.done) ||
+      status === "completed" ||
+      status === "incomplete";
+
+    if (isTerminal) {
       if (pollData?.ok === false) {
         throw new Error(pollData?.message || "Narrative generation failed.");
       }

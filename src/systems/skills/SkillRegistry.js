@@ -15,7 +15,7 @@ import {
   getLocationById,
   getZoneById,
   resolveLocationId,
-} from "../../data/registries/WorldDataRegistry.js";
+} from "../../world/WorldDataRegistry.js";
 
 /**
  * Helper function to shuffle array and select random items

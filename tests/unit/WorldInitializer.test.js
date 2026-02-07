@@ -3,8 +3,8 @@ import {
   STARTING_LOCATION_ID,
   createInitialWorldState,
   seedWorldAfterCharacterCreation,
-} from "../../src/systems/world/WorldInitializer.js";
-import { getLocationById } from "../../src/data/registries/WorldDataRegistry.js";
+} from "../../src/world/WorldInitializer.js";
+import { getLocationById } from "../../src/world/WorldDataRegistry.js";
 
 describe("WorldInitializer", () => {
   it("creates initial world state with defaults", () => {
@@ -59,4 +59,3 @@ describe("WorldInitializer", () => {
     expect(seeded.flags.dream_wisps_active).toBe(false);
   });
 });
-

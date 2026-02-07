@@ -7,7 +7,7 @@ import { getItemData } from '../entities/ItemRegistry.js';
 import {
   getAccessibleLocationIds,
   resolveLocationId,
-} from "../data/registries/WorldDataRegistry.js";
+} from "../world/WorldDataRegistry.js";
 
 /**
  * Validates an action before it's executed

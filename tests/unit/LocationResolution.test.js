@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { resolveLocationId } from "../../src/data/registries/WorldDataRegistry.js";
+import { resolveLocationId } from "../../src/world/WorldDataRegistry.js";
 
 describe("Location resolution", () => {
   it("resolves temple to city_sunspire_temple when allowlisted", () => {
@@ -20,4 +20,3 @@ describe("Location resolution", () => {
     expect(resolved).toBe("mountain_starforge_foundry");
   });
 });
-

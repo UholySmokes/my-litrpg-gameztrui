@@ -5,7 +5,7 @@ import {
   zones,
   locations,
   getLocationById,
-} from "../../src/data/registries/WorldDataRegistry.js";
+} from "../../src/world/WorldDataRegistry.js";
 
 describe("WorldDataRegistry integrity", () => {
   it("zone ids are unique", () => {
@@ -48,4 +48,3 @@ describe("WorldDataRegistry integrity", () => {
     });
   });
 });
-

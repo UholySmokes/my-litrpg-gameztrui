@@ -7,7 +7,7 @@ import { QuestManager } from "../systems/quest/QuestManager.js";
 import { gachaPools } from "../data/gachaData.js";
 import { getTitleBonuses } from "../core/titleLogic.js";
 import { mergeInventoryItems } from "../utils/shared.js";
-import { seedWorldAfterCharacterCreation } from "../systems/world/WorldInitializer.js";
+import { seedWorldAfterCharacterCreation } from "../world/WorldInitializer.js";
 import CharacterCreationMode from "../ui/modes/CharacterCreationMode.jsx";
 import GameMode from "../ui/modes/GameMode.jsx";
 

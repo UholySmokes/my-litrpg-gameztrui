@@ -24,12 +24,6 @@ function clampSafe(value) {
   return Math.floor(value);
 }
 
-function geometricSum(a1, r, n) {
-  if (n <= 0) return 0;
-  if (r === 1) return a1 * n;
-  return Math.floor((a1 * (1 - Math.pow(r, n))) / (1 - r));
-}
-
 /**
  * Returns XP required to go from (level) to (level+1)
  */

@@ -102,7 +102,7 @@ export default function GameUI({ user }) {
 
     autosaveTimerRef.current = setTimeout(() => {
       try {
-        const { previousState, ...stateToSave } = state;
+        const { previousState: _prev, ...stateToSave } = state;
         localStorage.setItem(
           "localAutosave:v1",
           JSON.stringify({

@@ -63,7 +63,7 @@ VITE_AUTH_PROVIDER=aad
 Azure Functions local dev (for `api/`):
 
 - Copy `api/local.settings.example.json` to `api/local.settings.json`.
-- Fill in `FOUNDRY_PROJECT_ENDPOINT`, agent IDs, and Azure credentials.
+- Fill in `FOUNDRY_PROJECT_ENDPOINT`, agent IDs (see `.foundry/agents/*.agent.yaml`), and either `FOUNDRY_API_KEY` or Azure credentials.
 - Keep `api/local.settings.json` out of git (it is ignored).
 - To store game data locally (no Azure SQL), set `GAME_DB_STORAGE=file` (optional: `GAME_DB_PATH=api/.data/game-db.json`) and run `npm run seed:static` for `/api/static-data`.
 - Cloud auth uses Azure Static Web Apps / Easy Auth (`/.auth/login/<provider>`). Set `VITE_AUTH_PROVIDER` if you use a provider other than `aad`.

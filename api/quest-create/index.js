@@ -89,6 +89,93 @@ function validateQuestSchema(quest) {
   return "";
 }
 
+function parseOptionalNumber(value) {
+  if (typeof value === "number") return Number.isFinite(value) ? value : undefined;
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+  return undefined;
+}
+
+function unwrapQuestPayload(payload) {
+  if (!payload || typeof payload !== "object") return null;
+  if (
+    payload.ok === true &&
+    payload.quest &&
+    typeof payload.quest === "object" &&
+    !Array.isArray(payload.quest)
+  ) {
+    return payload.quest;
+  }
+  return payload;
+}
+
+function normalizeQuestAgentOutput(payload) {
+  const quest = unwrapQuestPayload(payload);
+  if (!quest || typeof quest !== "object" || Array.isArray(quest)) return null;
+
+  const normalized = { ...quest };
+
+  if (!isNonEmptyString(normalized.name) && isNonEmptyString(normalized.title)) {
+    normalized.name = normalized.title;
+  }
+  if (
+    !isNonEmptyString(normalized.description) &&
+    isNonEmptyString(normalized.summary)
+  ) {
+    normalized.description = normalized.summary;
+  }
+
+  const objectives = Array.isArray(normalized.objectives)
+    ? normalized.objectives
+    : [];
+  normalized.objectives = objectives
+    .filter((objective) => objective && typeof objective === "object" && !Array.isArray(objective))
+    .map((objective) => {
+      const mapped = { ...objective };
+      if (!isNonEmptyString(mapped.description) && isNonEmptyString(mapped.text)) {
+        mapped.description = mapped.text;
+      }
+      if (!isNonEmptyString(mapped.id) && isNonEmptyString(mapped.description)) {
+        mapped.id = `obj_${hashContent(mapped.description).slice(0, 12)}`;
+      }
+      return mapped;
+    });
+
+  if (normalized.rewards && typeof normalized.rewards === "object") {
+    const rewards = { ...normalized.rewards };
+    const xp = parseOptionalNumber(rewards.xp);
+    const gold = parseOptionalNumber(rewards.gold);
+    if (xp !== undefined) rewards.xp = xp;
+    if (gold !== undefined) rewards.gold = gold;
+
+    if (Array.isArray(rewards.items)) {
+      rewards.items = rewards.items
+        .filter((item) => item && typeof item === "object" && !Array.isArray(item))
+        .map((item) => {
+          const mapped = { ...item };
+          const qty = parseOptionalNumber(mapped.quantity);
+          const altQty = parseOptionalNumber(mapped.qty);
+          if (qty !== undefined) mapped.quantity = qty;
+          else if (altQty !== undefined) mapped.quantity = altQty;
+
+          if (!isNonEmptyString(mapped.id)) {
+            const nameForId = isNonEmptyString(mapped.name)
+              ? mapped.name
+              : JSON.stringify(mapped);
+            mapped.id = `item_${hashContent(nameForId).slice(0, 12)}`;
+          }
+          return mapped;
+        });
+    }
+
+    normalized.rewards = rewards;
+  }
+
+  return normalized;
+}
+
 module.exports = async function questCreate(context, req) {
   initApiTracing({ serviceName: "void-verse-api" });
 
@@ -261,7 +348,17 @@ module.exports = async function questCreate(context, req) {
       return;
     }
 
-    const normalizedQuest = ensureQuestId(parsed);
+    const questPayload = normalizeQuestAgentOutput(parsed);
+    if (!questPayload) {
+      context.res = jsonResponse(422, {
+        ok: false,
+        errorCode: "INVALID_SCHEMA",
+        message: "Quest response missing quest payload.",
+      });
+      return;
+    }
+
+    const normalizedQuest = ensureQuestId(questPayload);
     const schemaError = validateQuestSchema(normalizedQuest);
     if (schemaError) {
       context.res = jsonResponse(422, { ok: false, errorCode: "INVALID_SCHEMA", message: schemaError });

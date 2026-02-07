@@ -18,9 +18,9 @@
 - `xpMinMultiplier`: Minimum XP multiplier floor.
 
 ## Rest And Regen Keys
-- `restHealAmount`: Flat HP restored when resting.
-- `restManaAmount`: Flat mana restored when resting.
-- `manaRegenPerTurn`: Mana regen per turn in combat.
+- `restHealAmount`: Flat HP restored when resting. When zero or unset, defaults to 25% of max HP (minimum 5).
+- `restManaAmount`: Flat mana restored when resting. When zero or unset, defaults to 25% of max mana (minimum 5).
+- `manaRegenPerTurn`: Passive mana regen per turn (applies both in and out of combat).
 - `classEvolutionLevel`: Level required for class evolution.
 
 ## Notes

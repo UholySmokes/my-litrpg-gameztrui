@@ -374,15 +374,24 @@ export function useNarrative(
             readOnly: true,
           };
         } else {
-          // Execute state-changing action
+          // Execute state-changing action via engine or direct
+          const executeFn = engine
+            ? () => engine.executeAction(action, currentState)
+            : async () => {
+                const { executeAction } = await import(
+                  "../core/ActionDispatcher.js"
+                );
+                return executeAction(currentState, action, {
+                  dispatchSystemEvent,
+                });
+              };
+
           const execute = () =>
-            executeAction(currentState, action, {
-              dispatchSystemEvent,
-            });
+            executeFn();
 
           actionResult = READ_ONLY_ACTIONS.has(action.type)
-            ? execute()
-            : wrapActionExecution(action.type, action, execute);
+            ? await execute()
+            : wrapActionExecution(action.type, action, () => execute());
           newState = actionResult.state;
         }
 

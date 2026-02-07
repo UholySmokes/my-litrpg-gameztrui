@@ -1,9 +1,11 @@
 // =================================================================
-// RAGE SYSTEM - Berserker Class Mechanic
-// Implements rage resource, enrage state, and rage-based abilities
+// RAGE SYSTEM — Data-Driven Resource Mechanic
+// Any class whose resourceSystem === 'rage' is handled automatically.
+// No hardcoded class-name checks.
 // =================================================================
 
 import { emit } from "../../core/EventBus.js";
+import { getClassById } from "../../data/registries/ClassDataRegistry.js";
 
 /**
  * RAGE CONFIGURATION
@@ -18,9 +20,16 @@ const RAGE_CONFIG = {
   enrageDefenseMultiplier: 0.7,
 };
 
+/**
+ * Data-driven rage check — looks up the class registry.
+ * @param {object} player
+ * @returns {boolean}
+ */
 const usesRage = (player) => {
   const classId = player.class?.id || player.class;
-  return classId === "berserker" || classId === "bloodline_vanguard";
+  if (!classId) return false;
+  const classData = getClassById(classId);
+  return classData?.resourceSystem === 'rage';
 };
 
 const getRageValue = (player) =>
@@ -36,7 +45,7 @@ const setRageValue = (player, value) => ({
 });
 
 /**
- * Initialize rage for berserker
+ * Initialize rage for any rage-based class
  * @param {object} player - Player object
  * @returns {object} Updated player with rage initialized
  */

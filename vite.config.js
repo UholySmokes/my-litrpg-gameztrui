@@ -16,6 +16,14 @@ export default defineConfig(({ mode }) => {
         include: ["**/*.jsx", "**/*.js"],
       }),
     ],
+    server: {
+      proxy: {
+        "/api": {
+          target: "http://localhost:7071",
+          changeOrigin: true,
+        },
+      },
+    },
     build: {
       chunkSizeWarningLimit: 700,
       rollupOptions: {

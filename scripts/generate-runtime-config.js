@@ -75,11 +75,6 @@ async function main() {
     }
     sourceLabel = "env";
   } else if (!hasEndpoint(publicConfig) && !hasApiBase(publicConfig)) {
-    if (process.env.CI) {
-      throw new Error(
-        "VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL is missing. Set it in the build environment or in public/runtime-config.js.",
-      );
-    }
     output = ensureBase(publicConfig);
     sourceLabel = "base";
   }

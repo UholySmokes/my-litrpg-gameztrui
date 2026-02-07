@@ -37,7 +37,7 @@ export function useGameEngine() {
       }
 
       if (entityId.startsWith("enemy_")) {
-        const [_, rawIndex] = entityId.split("_");
+        const [, rawIndex] = entityId.split("_");
         const index = Number.parseInt(rawIndex, 10);
         const enemyName = currentState.combat?.enemies?.[index]?.name;
         return (

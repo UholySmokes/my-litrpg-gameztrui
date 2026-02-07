@@ -10814,19 +10814,8 @@ export function getAllSkills() {
  * Get skill by ID
  */
 export function getSkillById(skillId) {
-  for (const classId in classSkillsDatabase) {
-    const skills = classSkillsDatabase[classId];
-    const active = skills.active?.find((s) => s.id === skillId);
-    if (active) return normalizeSkillTemplate(active);
-    const passive = skills.passive?.find((s) => s.id === skillId);
-    if (passive) return normalizeSkillTemplate(passive);
-  }
-  // Check universal skills
-  const universal =
-    universalSkillsDatabase.find((s) => s.id === skillId) ||
-    nonCombatSkills.find((s) => s.id === skillId) ||
-    null;
-  return universal ? normalizeSkillTemplate(universal) : null;
+  const skill = _skillIndex.get(skillId);
+  return skill ? normalizeSkillTemplate(skill) : null;
 }
 
 /**
@@ -12832,6 +12821,22 @@ const universalSkillsDatabase = [
   },
   // Add additional universal skills here if needed
 ];
+
+// --- O(1) skill lookup index ---
+const _skillIndex = new Map();
+function _buildSkillIndex() {
+  for (const classId in classSkillsDatabase) {
+    const skills = classSkillsDatabase[classId];
+    if (skills.active) skills.active.forEach((s) => _skillIndex.set(s.id, s));
+    if (skills.passive)
+      skills.passive.forEach((s) => _skillIndex.set(s.id, s));
+  }
+  if (Array.isArray(universalSkillsDatabase))
+    universalSkillsDatabase.forEach((s) => _skillIndex.set(s.id, s));
+  if (Array.isArray(nonCombatSkills))
+    nonCombatSkills.forEach((s) => _skillIndex.set(s.id, s));
+}
+_buildSkillIndex();
 
 /**
  * Check if skill unlock conditions are met

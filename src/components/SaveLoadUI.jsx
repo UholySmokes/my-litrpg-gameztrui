@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   deleteSave,
   isCloudSaveConfigured,
@@ -75,7 +75,7 @@ export default function SaveLoadUI({
     setAutosave(readAutosave());
   }, [isOpen]);
 
-  const refreshRemote = async () => {
+  const refreshRemote = useCallback(async () => {
     if (!canUseRemote) return;
     setIsBusy(true);
     setError(null);
@@ -90,13 +90,12 @@ export default function SaveLoadUI({
     } finally {
       setIsBusy(false);
     }
-  };
+  }, [canUseRemote, user?.id]);
 
   useEffect(() => {
     if (!isOpen) return;
     refreshRemote();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, canUseRemote]);
+  }, [isOpen, canUseRemote, refreshRemote]);
 
   const handleLocalSave = () => {
     setError(null);

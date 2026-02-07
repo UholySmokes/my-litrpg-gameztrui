@@ -1,7 +1,7 @@
 import { xpForNextLevel } from "../core/xpCurve.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 
-const INITIAL_CONFIG = {
+export const INITIAL_CONFIG = {
   maxLevel: 100,
   attributePointsPerLevel: 3,
 

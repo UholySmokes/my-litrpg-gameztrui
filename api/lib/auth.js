@@ -24,6 +24,10 @@ function parseClientPrincipal(encoded) {
 }
 
 function getDevUser(req) {
+  if (process.env.NODE_ENV === "production" || process.env.AZURE_FUNCTIONS_ENVIRONMENT === "Production") {
+    return null;
+  }
+
   const envUserId = process.env.DEV_USER_ID;
   if (envUserId) {
     return {

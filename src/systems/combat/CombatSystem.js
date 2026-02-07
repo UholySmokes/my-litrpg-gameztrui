@@ -78,7 +78,7 @@ import {
   getEffectiveAttributes,
   getTitleBonuses,
 } from "../titles/TitleSystem.js";
-import { random, randomChoice } from "./DeterministicRandom.js";
+import { random, randomChoice } from "../../utils/DeterministicRandom.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 
 const DEBUG_LOGGING_ENABLED = false;
@@ -787,7 +787,11 @@ function takeDamage(state, amount) {
       playerUpdates.rageGained,
       "damage_taken",
     );
-    delete newState.player.rageGained;
+    const { rageGained, ...playerWithoutRageGained } = newState.player;
+    newState = {
+      ...newState,
+      player: playerWithoutRageGained,
+    };
   }
 
   if (newState.player.isDead) {
@@ -1368,9 +1372,16 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     newState.player = processChiOnHit(newState.player);
     const comboMult = getComboMultiplier(newState.player);
     if (comboMult > 1.0) {
-      newState.combat.log.push(
-        `☯️ Combo x${newState.player.comboCount}! (${comboMult}x damage)`,
-      );
+      newState = {
+        ...newState,
+        combat: {
+          ...newState.combat,
+          log: [
+            ...newState.combat.log,
+            `☯️ Combo x${newState.player.comboCount}! (${comboMult}x damage)`,
+          ],
+        },
+      };
     }
   }
 
@@ -1393,7 +1404,13 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       weapon,
     );
     if (procResult.procTriggered) {
-      procResult.messages.forEach((msg) => newState.combat.log.push(msg));
+      newState = {
+        ...newState,
+        combat: {
+          ...newState.combat,
+          log: [...newState.combat.log, ...procResult.messages],
+        },
+      };
 
       // Apply chain lightning if triggered
       if (procResult.chainTargets > 0) {
@@ -1408,10 +1425,19 @@ export function playerAttack(state, enemyIndex, skillId = null) {
 
       // Apply lifesteal if triggered
       if (procResult.healed > 0) {
-        newState.player.hp.current = Math.min(
-          newState.player.hp.max,
-          newState.player.hp.current + procResult.healed,
-        );
+        newState = {
+          ...newState,
+          player: {
+            ...newState.player,
+            hp: {
+              ...newState.player.hp,
+              current: Math.min(
+                newState.player.hp.max,
+                newState.player.hp.current + procResult.healed,
+              ),
+            },
+          },
+        };
       }
     }
   }
@@ -3207,7 +3233,13 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
     updatedAttacker.mana &&
     typeof updatedAttacker.mana.current === "number"
   ) {
-    updatedAttacker.mana.current = consumption.remainingMana;
+    updatedAttacker = {
+      ...updatedAttacker,
+      mana: {
+        ...updatedAttacker.mana,
+        current: consumption.remainingMana,
+      },
+    };
   }
 
   // Skill-side utility hooks (keep parity with class/race ability templates)

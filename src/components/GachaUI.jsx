@@ -141,7 +141,7 @@ export default function GachaUI({
               <button
                 className="holo-button holo-button--solid gacha-modal__pull"
                 onClick={handlePull}
-                disabled={!canAfford() ? true : false}
+                disabled={!canAfford()}
               >
                 {canAfford() ? "Pull" : "Cannot afford"}
               </button>

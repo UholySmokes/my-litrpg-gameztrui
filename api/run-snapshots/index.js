@@ -77,6 +77,10 @@ module.exports = async function runSnapshots(context, req) {
 
         if (latestOnly) {
           const row = (rows || [])[0];
+          if (!row) {
+            context.res = jsonResponse(200, { ok: true, snapshot: null });
+            return;
+          }
           context.res = jsonResponse(200, {
             ok: true,
             snapshot: {
@@ -196,6 +200,10 @@ module.exports = async function runSnapshots(context, req) {
 
       if (latestOnly) {
         const row = (rows || [])[0];
+        if (!row) {
+          context.res = jsonResponse(200, { ok: true, snapshot: null });
+          return;
+        }
         context.res = jsonResponse(200, {
           ok: true,
           snapshot: {
@@ -268,7 +276,7 @@ module.exports = async function runSnapshots(context, req) {
 
           const touchReq = new sql.Request(tx);
           touchReq.input("runId", sql.UniqueIdentifier, runId);
-          touchReq.query(`
+          await touchReq.query(`
             UPDATE dbo.game_runs SET updated_at = SYSUTCDATETIME() WHERE id = @runId;
           `);
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { DataRegistry } from "../data/DataRegistry.js";
+import { toNumber, mergeInventoryItems } from "../utils/shared.js";
 
 const styles = {
   container: {
@@ -27,31 +28,6 @@ const styles = {
     maxHeight: "300px",
     overflowY: "auto",
   },
-};
-
-const toNumber = (value, fallback = 0) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
-};
-
-const mergeInventoryItems = (inventory = [], items = []) => {
-  if (!Array.isArray(items) || items.length === 0) return [...inventory];
-  const next = [...inventory];
-  items.forEach((item) => {
-    if (!item?.id) return;
-    const quantity = toNumber(item.quantity, 1);
-    const index = next.findIndex((entry) => entry.id === item.id);
-    if (index >= 0) {
-      const existing = next[index];
-      next[index] = {
-        ...existing,
-        quantity: toNumber(existing.quantity, 0) + quantity,
-      };
-    } else {
-      next.push({ ...item, quantity });
-    }
-  });
-  return next;
 };
 
 export default function AdminTools({ dispatch, getState }) {

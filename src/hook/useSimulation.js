@@ -77,11 +77,15 @@ export function useDevSimulation() {
   const toggleSimulation = (newSeed = null) => {
     const newEnabled = !enabled;
     setEnabled(newEnabled);
-    localStorage.setItem("dev_simulation_enabled", newEnabled.toString());
+    try {
+      localStorage.setItem("dev_simulation_enabled", newEnabled.toString());
+    } catch { /* localStorage may be unavailable */ }
 
     if (newSeed !== null) {
       setSeed(newSeed);
-      localStorage.setItem("dev_simulation_seed", newSeed.toString());
+      try {
+        localStorage.setItem("dev_simulation_seed", newSeed.toString());
+      } catch { /* localStorage may be unavailable */ }
     }
   };
 

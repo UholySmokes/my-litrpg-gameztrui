@@ -8,27 +8,10 @@ import {
 } from "./titleLogic.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeNarrativeEntries } from "./narrativeLog.js";
+import { toNumber, clamp } from "../utils/shared.js";
+import { INITIAL_CONFIG } from "../data/initialState.js";
 
-const DEFAULT_CONFIG = {
-  maxLevel: 100,
-  attributePointsPerLevel: 3,
-
-  baseAttributeValue: 5,
-  strToDamageMultiplier: 2,
-  baseLuckCritChance: 0.01,
-  agilityEscapeBonus: 0.01,
-  baseEscapeChance: 0.3,
-  defenseReductionFactor: 0.5,
-
-  xpBrackets: [{ end: 1000, base: 100, growth: 1.5 }],
-  xpBonusPerLevelDiff: 0.2,
-  xpMalusPerLevelDiff: 0.1,
-  xpNoRewardBelowDelta: 10,
-  xpMinMultiplier: 0.1,
-
-  restHealAmount: 0,
-  restManaAmount: 0,
-};
+const DEFAULT_CONFIG = INITIAL_CONFIG;
 
 const DEFAULT_RESOURCES = {
   rage: 0,
@@ -49,11 +32,6 @@ const DEFAULT_PROGRESS = {
   gachaPulls: 0,
   totalGoldEarned: 0,
 };
-
-const toNumber = (value, fallback = 0) =>
-  Number.isFinite(value) ? value : fallback;
-
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 function normalizeEntityRef(value, { kind, fallback } = {}) {
   if (value && typeof value === "object" && !Array.isArray(value)) {

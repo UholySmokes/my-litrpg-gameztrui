@@ -299,7 +299,7 @@ module.exports = async function runEvents(context, req) {
           // touch run updated_at
           const touchReq = new sql.Request(tx);
           touchReq.input("runId", sql.UniqueIdentifier, runId);
-          touchReq.query(`
+          await touchReq.query(`
             UPDATE dbo.game_runs SET updated_at = SYSUTCDATETIME() WHERE id = @runId;
           `);
 

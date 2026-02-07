@@ -37,10 +37,15 @@ export function emit(event, payload) {
   );
 }
 
+export function clear() {
+  listeners.clear();
+}
+
 export const EventBus = {
   on,
   off,
   emit,
+  clear,
 };
 
 function logToSimulation(event, payload) {

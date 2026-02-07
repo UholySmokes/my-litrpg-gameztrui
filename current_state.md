@@ -385,12 +385,39 @@ System functions → EventBus.emit() → SystemEventObserver → SimulationConte
 
 ## Upcoming / Incomplete
 
+### From Implementation Plan
+
+- [ ] **Stat pressure / thresholds** (P1.5) — Soft caps, threshold traits, imbalance penalties
+- [ ] **Failure as content** (P1.7) — Death traits, soul scars, echo stats, cross-run inheritance
+- [ ] **Class identity drift** (P1.8) — Hidden alignment vectors, usage-based class morphing
+- [ ] **Targeting model** (P2.1) — Deterministic target selectors
+- [ ] **Lane/slot battlefield** (P2.2) — JRPG-style tactical positioning
+- [ ] **Intent/preview system** (P2.3) — Predicted outcomes before committing
+- [ ] **Reaction system** (P2.4) — Interrupts and counters (OnHit, OnCast, etc.)
+- [ ] **Threat/aggro model** (P2.5) — AI targeting for future party play
+- [ ] **NPC AI build logic** (P2.6) — System-aware, meta-reactive NPCs
+- [ ] **AI-initiated events** (P3.3) — World moves when player is idle, main quest seeds
+- [ ] **Offline/background sim** (P3.5) — Time compression, background ticks
+- [ ] **Skill evolution tree UI** (P4.2) — Visual skill evolution/mutation paths
+- [ ] **State diff & replay tools** (P4.3) — Debug state diff viewer, replay scrubber
+- [ ] **Formation preview UI** (P4.4) — Lane/slot visualization
+- [ ] **Meta-progression** (P5.2) — Cross-run world/knowledge persistence
+- [ ] **Authoritative server** (P5.4) — Client/server boundary for multiplayer readiness
+- [ ] **Multiplayer-friendly mechanics** (P5.5) — Synergy tags, shared objectives
+- [ ] **Batch simulation runner** (P5.6) — Mass balance testing
+
+### Content & Polish
+
 - [ ] **Quest content** — Expand QuestCatalog with more varied quest chains and branching narratives
 - [ ] **Universal skills** — Thousands of learnable cross-class skills
 - [ ] **Equipment crafting** — Crafting system for gear
 - [ ] **Class advancement/evolution** — Upgrade paths implementation
-- [ ] **Advanced status effects** — Deeper effect interactions in combat
 - [ ] **Sound & animation** — Sound effects, music, and combat animations
+
+### Narrative Pipeline (Remaining)
+
+- [ ] **Narrative log audit** — Unify chatLog vs narrative.chatLog flows
+- [ ] **Narrative schema migration** — Define unified narrative log schema + migration path
 
 ---
 

@@ -2,136 +2,61 @@
 
 ## Current State Analysis
 
-The codebase contains 1000+ files with significant fragmentation across multiple areas:
+The codebase has been significantly consolidated from the original 1000+ file state.
 
-### 1. Data Layer Fragmentation
+### 1. Data Layer Fragmentation — ✅ DONE
 
 **Problem:** 15+ separate data files scattered across `src/lib/`
 
-- `characterData.js`, `enemyData.js`, `gachaData.js`, `shopData.js`, `titleData.js`
-- Each file contains small, related datasets
-- No unified data access pattern
+**Resolution:** `src/data/DataRegistry.js` created with unified registry pattern. `src/lib/` directory removed. Data files organized under `src/data/` and `src/data/registries/` with typed registries (ClassData, EnemyData, ItemData, RaceData, WorldData).
 
-**Solution:** Create `src/lib/data/DataRegistry.js`
-
-```javascript
-// Unified data registry using Factory pattern
-export class DataRegistry {
-  static getCharacters() {
-    return characterData;
-  }
-  static getEnemies() {
-    return enemyData;
-  }
-  static getGachaItems() {
-    return gachaData;
-  }
-  static getShopItems() {
-    return shopData;
-  }
-  static getTitles() {
-    return titleData;
-  }
-}
-
-```
-
-### 2. Effect System Fragmentation
+### 2. Effect System Fragmentation — ✅ DONE
 
 **Problem:** Effect processing split across multiple files
 
-- `effectProcessor.js` - handles effect logic
-- `effectRegistry.js` - manages effect definitions
-- `EffectApplicationSystem.js` - new unified system (partially implemented)
+**Resolution:** Consolidated into `EffectApplicationSystem.js` with unified effect processing, standardized definitions in `EffectRegistry.js`, and stacking rules in `EffectSystem.js` + `EffectEngine.ts`.
 
-**Solution:** Complete consolidation into `EffectApplicationSystem.js`
-
-- Migrate all effect processing logic
-- Standardize effect definitions
-- Implement unified error handling
-
-### 3. Verification Script Bloat
+### 3. Verification Script Bloat — ✅ DONE
 
 **Problem:** 12 separate verification scripts in `scripts/`
 
-- `verify_talents.js`, `verify_skill_effects.js`, `verify_effects.js`
-- `verify_caps.js`, `verify_fusion.js`, `verify_descriptions.js`
-- Significant code duplication
+**Resolution:** Old `verify_*.js` scripts removed. Verification consolidated into `scripts/validate-registries.mjs` and Jest test suite (16 test files in `tests/unit/`).
 
-**Solution:** Create unified test suite
+### 4. Service Layer Fragmentation — ⬜ NOT DONE
 
-```javascript
-// tests/GameSystemTests.js
-export class GameSystemTests {
-  static testTalents() {
-    /* consolidated talent tests */
-  }
-  static testSkillEffects() {
-    /* consolidated skill tests */
-  }
-  static testEffects() {
-    /* consolidated effect tests */
-  }
-  static testCaps() {
-    /* consolidated cap tests */
-  }
-  static testFusion() {
-    /* consolidated fusion tests */
-  }
-  static testDescriptions() {
-    /* consolidated description tests */
-  }
-}
+**Problem:** Service files scattered across `src/core/`
 
-```
-
-### 4. Service Layer Fragmentation
-
-**Problem:** Service files scattered across `src/lib/`
-
-- `aiService.js` - AI integration
-- `authService.js` - Authentication
+- `AIService.js` - AI integration
+- `AuthService.js` - Authentication
 - `CloudSaveService.js` - Database operations
 
-**Solution:** Create `src/lib/services/` directory
-
-```javascript
-// src/lib/services/ServiceManager.js
-export class ServiceManager {
-  static ai = new AIService();
-  static auth = new AuthService();
-  static database = new CloudSaveService();
-}
-
-```
+**Status:** Services remain in `src/core/` without a unified ServiceManager pattern. This is low priority since the current location is consistent and functional.
 
 ## Implementation Priority
 
-### Phase 1: High Priority (Immediate)
+### Phase 1: High Priority (Immediate) — ✅ COMPLETE
 
-1. **Data Registry Consolidation**
-   - Merge data files into unified registry
-   - Implement factory pattern for data access
-   - Update all imports across codebase
+1. **Data Registry Consolidation** ✅
+   - Merged data files into unified registry (`src/data/DataRegistry.js`)
+   - Implemented factory pattern for data access
+   - Updated all imports across codebase
 
-2. **Effect System Completion**
-   - Finish consolidating effect processing
-   - Standardize all skill effects
-   - Implement comprehensive error handling
+2. **Effect System Completion** ✅
+   - Finished consolidating effect processing
+   - Standardized all skill effects
+   - Implemented comprehensive error handling
 
-### Phase 2: Medium Priority (Next)
+### Phase 2: Medium Priority (Next) — ✅ COMPLETE
 
-1. **Test Suite Consolidation**
-   - Create unified test framework
-   - Migrate verification scripts
-   - Implement automated test runner
+1. **Test Suite Consolidation** ✅
+   - Created unified test framework (Jest, 16 test files)
+   - Migrated verification scripts
+   - Implemented automated test runner (`npm test`)
 
-2. **Service Layer Restructuring**
-   - Create services directory structure
-   - Implement service manager pattern
-   - Consolidate service interfaces
+2. **Service Layer Restructuring** — ⬜ Deferred
+   - Services work fine in `src/core/`; no urgent need for ServiceManager pattern
 
-### Phase 3: Low Priority (Future)
+### Phase 3: Low Priority (Future) — ⬜ NOT STARTED
 
 1. **Component Consolidation**
    - Analyze React components for consolidation

@@ -224,18 +224,18 @@ useEffect(() => {
 
 ---
 
-## New Components to Create
+## New Components to Create — ✅ ALL CREATED
 
-| Component | Purpose | Priority |
-|-----------|---------|----------|
-| `ClassResourceBar.jsx` | Display class resources | High |
-| `ClassAbilities.jsx` | Class ability buttons | High |
-| `StatusEffects.jsx` | Buff/debuff icons | Medium |
-| `MinionPanel.jsx` | Pet/demon/undead display | Medium |
-| `TotemDisplay.jsx` | Shaman totems | Medium |
-| `AuraIndicator.jsx` | Paladin auras | Low |
-| `StanceIndicator.jsx` | Warrior stances | Low |
-| `ComboCounter.jsx` | Monk combo display | Low |
+| Component | Purpose | Priority | Status |
+|-----------|---------|----------|--------|
+| `ClassResourceBar.jsx` | Display class resources | High | ✅ Created |
+| `ClassAbilities.jsx` | Class ability buttons | High | ✅ Created |
+| `StatusEffects.jsx` | Buff/debuff icons | Medium | ✅ Created |
+| `MinionPanel.jsx` | Pet/demon/undead display | Medium | ✅ Created |
+| `TotemDisplay.jsx` | Shaman totems | Medium | ⬜ Not created |
+| `AuraIndicator.jsx` | Paladin auras | Low | ⬜ Not created |
+| `StanceIndicator.jsx` | Warrior stances | Low | ⬜ Not created |
+| `ComboCounter.jsx` | Monk combo display | Low | ⬜ Not created |
 
 ---
 
@@ -368,7 +368,7 @@ useEffect(() => {
 - [ ] Shaman totems display and expire
 - [ ] Templar abilities have correct cooldowns
 - [ ] All class abilities deduct correct resources
-- [ ] EventBus events trigger UI updates
+- [ ] EventBus events trigger UI updates (EventBus not yet wired into GameUI.jsx)
 
 ---
 

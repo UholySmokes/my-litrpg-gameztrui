@@ -381,8 +381,8 @@ clear deliverables so you can track progress and avoid design drift.
 ## Milestone checkpoints (sanity gates)
 
 1) ~~Post-Priority 0: You can replay a deterministic combat scenario from seed + commands.~~ ✅
-2) Post-Priority 1: Basic combat feels complete (AP, effects, logs, evolutions). — **Mostly done** (1.5, 1.7, 1.8 remain)
-3) Post-Priority 2: Tactical play exists (lanes, reactions, AI, threat). — **Not started**
-4) Post-Priority 3: World feels alive (lore persistence, AI events, offline sim). — **Partially done** (3.1, 3.2, 3.4 done; 3.3, 3.5 remain)
+2) Post-Priority 1: Basic combat feels complete (AP, effects, logs, evolutions). — **5 of 8 done** (1.5 stat thresholds, 1.7 death progression, 1.8 class drift remain)
+3) Post-Priority 2: Tactical play exists (lanes, reactions, AI, threat). — **0 of 6 done**
+4) Post-Priority 3: World feels alive (lore persistence, AI events, offline sim). — **3 of 5 done** (3.3 AI-initiated events, 3.5 offline sim remain)
 5) ~~Post-Priority 4: UI feels like a LitRPG system OS.~~ ✅ — HUD complete, windowed UI done
-6) Post-Priority 5: Runs persist, share, and scale to multiplayer later. — **Partially done** (5.1, 5.3 done; 5.2, 5.4, 5.5, 5.6 remain)
+6) Post-Priority 5: Runs persist, share, and scale to multiplayer later. — **2 of 6 done** (5.2 meta-progression, 5.4 server boundary, 5.5 multiplayer mechanics, 5.6 batch sim remain)

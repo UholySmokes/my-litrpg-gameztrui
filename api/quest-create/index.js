@@ -100,6 +100,7 @@ module.exports = async function questCreate(context, req) {
       async () => {
     const projectEndpoint = getRequiredEnv("FOUNDRY_PROJECT_ENDPOINT");
     const assistantId = getRequiredEnv("QUEST_AGENT_ID");
+    const foundryApiKey = getRequiredEnv("FOUNDRY_API_KEY");
     const managedIdentityClientId = getRequiredEnv("AZURE_CLIENT_ID");
     const rateLimitPerMin = Number.parseInt(getRequiredEnv("QUEST_RATE_LIMIT_PER_MIN") || "0", 10);
 
@@ -131,19 +132,28 @@ module.exports = async function questCreate(context, req) {
     const endpointBase = normalizeEndpoint(projectEndpoint);
     const apiVersion = getApiVersion();
 
-    const credential = managedIdentityClientId
-      ? new DefaultAzureCredential({ managedIdentityClientId })
-      : new DefaultAzureCredential();
-    const tokenResult = await credential.getToken("https://ai.azure.com/.default");
-    const token = tokenResult?.token;
-    if (!token) {
-      context.res = jsonResponse(500, { ok: false, errorCode: "TOKEN_FAILURE", message: "Token acquisition failed." });
-      return;
+    let token = "";
+    if (!foundryApiKey) {
+      const credential = managedIdentityClientId
+        ? new DefaultAzureCredential({ managedIdentityClientId })
+        : new DefaultAzureCredential();
+      const tokenResult = await credential.getToken("https://ai.azure.com/.default");
+      token = tokenResult?.token || "";
+      if (!token) {
+        context.res = jsonResponse(500, {
+          ok: false,
+          errorCode: "TOKEN_FAILURE",
+          message:
+            "Token acquisition failed. Configure FOUNDRY_API_KEY or sign in to Azure.",
+        });
+        return;
+      }
     }
 
     const thread = await fetchJson(`${endpointBase}/threads?api-version=${apiVersion}`, {
       method: "POST",
       token,
+      apiKey: foundryApiKey || undefined,
       body: {},
       retries: 2
     });
@@ -157,6 +167,7 @@ module.exports = async function questCreate(context, req) {
     await fetchJson(`${endpointBase}/threads/${encodeURIComponent(threadId)}/messages?api-version=${apiVersion}`, {
       method: "POST",
       token,
+      apiKey: foundryApiKey || undefined,
       body: { role: "user", content: instruction },
       retries: 2
     });
@@ -164,6 +175,7 @@ module.exports = async function questCreate(context, req) {
     const run = await fetchJson(`${endpointBase}/threads/${encodeURIComponent(threadId)}/runs?api-version=${apiVersion}`, {
       method: "POST",
       token,
+      apiKey: foundryApiKey || undefined,
       body: { assistant_id: assistantId },
       retries: 2
     });
@@ -219,13 +231,19 @@ module.exports = async function questCreate(context, req) {
 
       currentRun = await fetchJson(
         `${endpointBase}/threads/${encodeURIComponent(threadId)}/runs/${encodeURIComponent(runId)}?api-version=${apiVersion}`,
-        { method: "GET", token, retries: 2 }
+        {
+          method: "GET",
+          token,
+          apiKey: foundryApiKey || undefined,
+          retries: 2,
+        }
       );
     }
 
     const messages = await fetchJson(`${endpointBase}/threads/${encodeURIComponent(threadId)}/messages?api-version=${apiVersion}`, {
       method: "GET",
       token,
+      apiKey: foundryApiKey || undefined,
       retries: 2
     });
 

@@ -95,7 +95,7 @@ function createTimeoutError(timeoutMs, detail) {
   return error;
 }
 
-async function fetchJson(url, { method, token, body, retries, timeoutMs }) {
+async function fetchJson(url, { method, token, apiKey, body, retries, timeoutMs }) {
   const fetchFn = await resolveFetch();
   const maxRetries = Number.isFinite(retries) ? retries : 2;
   const requestTimeoutMs =
@@ -103,6 +103,14 @@ async function fetchJson(url, { method, token, body, retries, timeoutMs }) {
       ? timeoutMs
       : getTimeoutMs("AZURE_AI_HTTP_TIMEOUT_MS", 30000);
   const canAbort = typeof AbortController === "function";
+  if (!token && !apiKey) {
+    const error = new Error(
+      "Missing Foundry authentication. Configure FOUNDRY_API_KEY or Azure identity.",
+    );
+    error.status = 500;
+    error.code = "MISSING_FOUNDRY_AUTH";
+    throw error;
+  }
   let attempt = 0;
 
   while (true) {
@@ -111,13 +119,20 @@ async function fetchJson(url, { method, token, body, retries, timeoutMs }) {
     const timeoutId = controller
       ? setTimeout(() => controller.abort(), requestTimeoutMs)
       : null;
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    if (apiKey) {
+      headers["api-key"] = apiKey;
+    }
+
     try {
       response = await fetchFn(url, {
         method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+        headers,
         body: body ? JSON.stringify(body) : undefined,
         signal: controller ? controller.signal : undefined,
       });

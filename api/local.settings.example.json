@@ -4,6 +4,7 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "FOUNDRY_PROJECT_ENDPOINT": "https://voidverse-resource.services.ai.azure.com/api/projects/voidverse",
+    "FOUNDRY_API_KEY": "",
     "NARRATOR_AGENT_ID": "asst_U6Q1h9AOmHJohkxxHsIHPfCu",
     "QUEST_AGENT_ID": "asst_WRpD1WfUjPaDtJnlx0RuKwaZ",
     "FACTORY_AGENT_ID": "asst_YEfPvaWStWPtQPxr9SPPVbLO",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { DataRegistry } from "../data/DataRegistry.js";
-import { toNumber, mergeInventoryItems } from "../utils/shared.js";
+import { mergeInventoryItems } from "../utils/shared.js";
 
 const styles = {
   container: {

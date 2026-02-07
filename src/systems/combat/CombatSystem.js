@@ -787,7 +787,7 @@ function takeDamage(state, amount) {
       playerUpdates.rageGained,
       "damage_taken",
     );
-    const { rageGained, ...playerWithoutRageGained } = newState.player;
+    const { rageGained: _rageGained, ...playerWithoutRageGained } = newState.player;
     newState = {
       ...newState,
       player: playerWithoutRageGained,

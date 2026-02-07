@@ -299,6 +299,27 @@ const gameReducer = (state, action) =>
       }
       return normalizeGameState(action.payload);
 
+    case "APPLY_ENGINE_RESULT": {
+      // Two-tier dispatch: applies a StepResult from SystemEngine.step()
+      const result = action.payload;
+      if (!result || !result.ok || !result.nextState) return state;
+      const engineState = normalizeGameState(result.nextState);
+      // Optionally append a narrative entry for the step summary
+      if (result.summary) {
+        const narrativeWithSummary = appendNarrativeEntry(
+          engineState.narrative,
+          {
+            type: "action",
+            text: result.summary,
+            timestamp: SimBridge.now(),
+            source: "engine",
+          },
+        );
+        return { ...engineState, narrative: narrativeWithSummary };
+      }
+      return engineState;
+    }
+
     case "ADD_SYSTEM_MESSAGE": {
       const { message, type = "system" } = action.payload;
       const nextNarrative = appendNarrativeEntry(state.narrative, {

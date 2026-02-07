@@ -296,3 +296,145 @@ export async function generateNarrative(prompt) {
 export async function generateInitialNarrative(initialPrompt) {
   return generateNarrative(initialPrompt);
 }
+
+// -----------------------------------------------------------------
+// Streaming (start + poll) client
+// -----------------------------------------------------------------
+
+const resolveStreamEndpoints = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  const apiBaseUrl = pickEnvValue(
+    runtimeEnv["VITE_API_BASE_URL"],
+    buildEnv["VITE_API_BASE_URL"],
+    runtimeEnv["VITE_API_BASE"],
+    buildEnv["VITE_API_BASE"],
+  );
+  if (!apiBaseUrl) return null;
+  const base = normalizeBaseUrl(apiBaseUrl);
+  return {
+    start: `${base}/api/narrate-start`,
+    poll: `${base}/api/narrate-poll`,
+  };
+};
+
+/**
+ * Streaming narrative generation via start + poll.
+ * Kicks off a Foundry run, then polls for progress, invoking onChunk
+ * whenever new text appears. Falls back to generateNarrative on failure.
+ *
+ * @param {string} prompt - The assembled prompt
+ * @param {object} [options]
+ * @param {function} [options.onChunk] - Called with (delta, fullText) as text grows
+ * @param {function} [options.onDone]  - Called with the final guarded result
+ * @param {AbortSignal} [options.signal] - AbortController signal to cancel
+ * @returns {Promise<object>} guarded narrative result
+ */
+export async function generateNarrativeStream(
+  prompt,
+  { onChunk, onDone, signal } = {},
+) {
+  const endpoints = resolveStreamEndpoints();
+  const isDev = Boolean(getBuildEnv().DEV);
+
+  // No stream endpoints configured — transparent fallback
+  if (!endpoints) {
+    const result = await generateNarrative(prompt);
+    if (typeof onDone === "function") onDone(result);
+    return result;
+  }
+
+  // Step 1: Start the run (fast POST, returns threadId + runId)
+  let startData;
+  try {
+    const res = await fetchWithTimeout(
+      endpoints.start,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+        signal,
+      },
+      30000,
+    );
+    startData = await res.json().catch(() => null);
+    if (!res.ok || !startData?.ok) {
+      throw new Error(
+        startData?.message || `Start failed (${res.status})`,
+      );
+    }
+  } catch (error) {
+    if (error?.name === "AbortError") throw error;
+    // Fall back to synchronous narrate
+    if (isDev) console.warn("Stream start failed, falling back:", error);
+    const result = await generateNarrative(prompt);
+    if (typeof onDone === "function") onDone(result);
+    return result;
+  }
+
+  const { threadId, runId } = startData;
+
+  // Step 2: Poll for progress
+  let lastText = "";
+  let stallStart = Date.now();
+
+  for (let poll = 0; poll < STREAM_MAX_POLLS; poll++) {
+    if (signal?.aborted) {
+      throw new DOMException("Aborted", "AbortError");
+    }
+
+    await delay(STREAM_POLL_INTERVAL_MS);
+
+    let pollData;
+    try {
+      const res = await fetchWithTimeout(
+        `${endpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}`,
+        { method: "GET", signal },
+        15000,
+      );
+      pollData = await res.json().catch(() => null);
+    } catch (error) {
+      if (error?.name === "AbortError") throw error;
+      if (isDev) console.warn("Stream poll error:", error);
+      continue; // retry next poll
+    }
+
+    // Emit delta when text has grown
+    const currentText = pollData?.narrative || "";
+    if (currentText.length > lastText.length) {
+      const delta = currentText.slice(lastText.length);
+      lastText = currentText;
+      stallStart = Date.now();
+      if (typeof onChunk === "function") onChunk(delta, currentText);
+    }
+
+    // Run finished
+    if (pollData?.done) {
+      if (pollData?.ok === false) {
+        throw new Error(pollData?.message || "Narrative generation failed.");
+      }
+      const result = applyNarrationGuards({
+        narrative: currentText || "Something happened.",
+        mood: "neutral",
+        suggestions: ["Look around", "Check inventory", "Continue"],
+      });
+      if (typeof onDone === "function") onDone(result);
+      return result;
+    }
+
+    // Stall detection
+    if (Date.now() - stallStart > STREAM_STALL_TIMEOUT_MS) {
+      if (isDev)
+        console.warn("Stream stalled, falling back to sync narrate");
+      const result = await generateNarrative(prompt);
+      if (typeof onDone === "function") onDone(result);
+      return result;
+    }
+  }
+
+  // Exceeded max polls — fall back
+  if (isDev) console.warn("Stream exceeded max polls, falling back");
+  const result = await generateNarrative(prompt);
+  if (typeof onDone === "function") onDone(result);
+  return result;
+}

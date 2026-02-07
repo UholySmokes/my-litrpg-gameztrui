@@ -1,0 +1,21 @@
+{
+  "name": "@voidverse/game-schemas",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./actions": {
+      "types": "./src/actions.d.ts",
+      "default": "./src/actions.js"
+    },
+    "./state": {
+      "types": "./src/state.d.ts",
+      "default": "./src/state.js"
+    }
+  }
+}

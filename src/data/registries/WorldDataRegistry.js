@@ -1,3 +1,3 @@
-// Back-compat shim: canonical world registry lives under src/world.
-export * from "../../world/WorldDataRegistry.js";
+﻿// Back-compat shim: implementation lives in @voidverse/game-core.
+export * from '@voidverse/game-core/data/registries/WorldDataRegistry.js';
 

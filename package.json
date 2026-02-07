@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "node": ">=18.0.0"
   },
@@ -28,6 +31,8 @@
     "analyze:graph": "node scripts/generate-dependency-graph.cjs --output=docs/MIDDLEWARE_DEPENDENCY_GRAPH.md"
   },
   "dependencies": {
+    "@voidverse/game-core": "workspace:*",
+    "@voidverse/game-schemas": "workspace:*",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.52.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.52.0",

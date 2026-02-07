@@ -20,6 +20,18 @@
     "./validation": {
       "types": "./src/validation.d.ts",
       "default": "./src/validation.js"
+    },
+    "./engine": {
+      "types": "./src/engine.d.ts",
+      "default": "./src/engine.js"
+    },
+    "./sync": {
+      "types": "./src/sync.d.ts",
+      "default": "./src/sync.js"
+    },
+    "./content": {
+      "types": "./src/content.d.ts",
+      "default": "./src/content.js"
     }
   },
   "dependencies": {

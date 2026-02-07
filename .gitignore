@@ -15,6 +15,10 @@ middleware-report.json
 *-analysis-*.json
 reports/
 
+# Codex / editor temp
+tmpclaude-*
+mcp
+
 # Environment variables
 .env
 .env.local

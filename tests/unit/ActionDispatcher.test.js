@@ -26,7 +26,7 @@ describe("ActionDispatcher", () => {
       expect(result.state.player.mana.current).toBeGreaterThan(30);
     });
 
-    it("uses custom positive config values for rest", () => {
+    it("uses custom positive config values for rest without passive regen", () => {
       const state = {
         ...baseState,
         config: { ...baseState.config, restHealAmount: 10, restManaAmount: 15, manaRegenPerTurn: 0 },
@@ -34,7 +34,9 @@ describe("ActionDispatcher", () => {
 
       const result = executeAction(state, { type: "rest" });
       expect(result.success).toBe(true);
+      // HP: 50 + 10 (restHealAmount) = 60, no passive regen
       expect(result.state.player.hp.current).toBe(60);
+      // Mana: 30 + 15 (restManaAmount) = 45, no passive mana regen (manaRegenPerTurn=0)
       expect(result.state.player.mana.current).toBe(45);
     });
 

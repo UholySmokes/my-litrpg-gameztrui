@@ -169,7 +169,7 @@ async function pollFoundryRun(threadId, runId) {
  * Used by the traditional POST /api/narrate endpoint.
  * @returns {{ status: string, text: string }}
  */
-async function awaitFoundryRun(threadId, runId, { timeoutMs, logger } = {}) {
+async function awaitFoundryRun(threadId, runId, { timeoutMs } = {}) {
   const projectEndpoint = getRequiredEnv("FOUNDRY_PROJECT_ENDPOINT");
   const endpointBase = normalizeEndpoint(projectEndpoint);
   const apiVersion = getApiVersion();

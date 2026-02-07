@@ -85,10 +85,13 @@ function getRetryDelayMs(attempt) {
   return Math.min(2000, 300 * (attempt + 1));
 }
 
-function createTimeoutError(timeoutMs) {
+function createTimeoutError(timeoutMs, detail) {
   const error = new Error(`Foundry request timed out after ${timeoutMs}ms.`);
   error.status = 504;
   error.code = "FOUNDRY_REQUEST_TIMEOUT";
+  if (detail) {
+    error.detail = detail;
+  }
   return error;
 }
 
@@ -119,12 +122,18 @@ async function fetchJson(url, { method, token, body, retries, timeoutMs }) {
         signal: controller ? controller.signal : undefined,
       });
     } catch (error) {
-      const normalizedError =
-        error?.name === "AbortError"
-          ? createTimeoutError(requestTimeoutMs)
-          : error;
+      const isTimeout = error?.name === "AbortError";
+      const normalizedError = isTimeout
+        ? createTimeoutError(requestTimeoutMs, {
+            url,
+            method,
+            timeoutMs: requestTimeoutMs,
+          })
+        : error;
+      const methodUpper = String(method || "GET").toUpperCase();
+      const retryTimeouts = methodUpper === "GET" || methodUpper === "HEAD";
 
-      if (attempt < maxRetries) {
+      if (attempt < maxRetries && (!isTimeout || retryTimeouts)) {
         await new Promise((r) => setTimeout(r, getRetryDelayMs(attempt)));
         attempt += 1;
         continue;

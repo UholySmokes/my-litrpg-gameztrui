@@ -103,6 +103,13 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
       const data = await response.json().catch(() => null);
 
       if (RETRY_STATUS.has(response.status) && attempt < MAX_RETRIES) {
+        const errorCode = data?.errorCode;
+        if (response.status === 504 && errorCode === "RUN_TIMEOUT") {
+          return { response, data };
+        }
+        if (response.status === 502 && errorCode === "RUN_REQUIRES_ACTION") {
+          return { response, data };
+        }
         await delay(300 * (attempt + 1) ** 2);
         continue;
       }

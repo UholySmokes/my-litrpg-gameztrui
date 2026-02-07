@@ -153,6 +153,18 @@ module.exports = async function narrate(context, req) {
       const status = currentRun?.status;
       if (status === "completed") break;
 
+      if (status === "requires_action") {
+        context.res = jsonResponse(502, {
+          ok: false,
+          errorCode: "RUN_REQUIRES_ACTION",
+          message:
+            "Agent run requires action (tool calls) which this endpoint does not support.",
+          threadId,
+          runId,
+        });
+        return;
+      }
+
       if (
         status === "failed" ||
         status === "cancelled" ||

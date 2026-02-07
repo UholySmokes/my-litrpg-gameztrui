@@ -31,14 +31,14 @@
     "analyze:graph": "node scripts/generate-dependency-graph.cjs --output=docs/MIDDLEWARE_DEPENDENCY_GRAPH.md"
   },
   "dependencies": {
-    "@voidverse/game-core": "workspace:*",
-    "@voidverse/game-schemas": "workspace:*",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.52.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.52.0",
     "@opentelemetry/resources": "^1.25.1",
     "@opentelemetry/sdk-node": "^0.52.0",
     "@opentelemetry/semantic-conventions": "^1.25.1",
+    "@voidverse/game-core": "workspace:*",
+    "@voidverse/game-schemas": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
@@ -47,6 +47,7 @@
     "@babel/preset-typescript": "^7.26.0",
     "@eslint/js": "^9.39.1",
     "@jest/globals": "^30.2.0",
+    "@playwright/test": "^1.58.2",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",

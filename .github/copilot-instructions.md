@@ -66,14 +66,24 @@ This document provides essential guidelines for AI coding agents working within 
 - **Cross-Component Communication**: Use event dispatchers. Check `ActionDispatcher.js` for details.
 - **API calls**: Frontend uses `src/core/AIService.js` which reads `VITE_API_BASE_URL` from runtime config. Fallback URLs are only used when no base URL is configured.
 
+## Streaming Narration
+- The narrate system supports a streaming mode via start + poll:
+  - `POST /api/narrate-start` → Creates Foundry thread/run, returns `{ threadId, runId }` (HTTP 202).
+  - `GET /api/narrate-poll?threadId=X&runId=X` → Returns `{ status, narrative, done }` (HTTP 200 when done, 202 while running).
+- Client (`src/core/AIService.js`) uses `generateNarrativeStream()` with `onChunk` callbacks for live UI updates.
+- Falls back transparently to synchronous `POST /api/narrate` on failure.
+- `src/hook/useNarrative.js` inserts a placeholder narrative entry and updates it in-place as chunks arrive.
+
 ## Key Files/Directories
 - `public/runtime-config.js` — Runtime configuration injected into the frontend.
 - `api/lib/azure-ai-utils.js` — Shared Foundry HTTP utilities (fetchJson, auth).
+- `api/lib/foundry-run.js` — Shared Foundry thread/run lifecycle (start, poll, await).
 - `api/lib/game-db-file.js` — File-based DB backend.
-- `api/lib/foundry-run.js` — Shared Foundry run/poll logic.
+- `api/narrate-start/` — Streaming start endpoint (POST).
+- `api/narrate-poll/` — Streaming poll endpoint (GET).
 - `scripts/seed-static-data.cjs` — Seeds static data bundle.
 - `packages/game-core/` — Shared game logic workspace package.
-- `src/core/AIService.js` — Client-side API service (narrate, quest, etc.).
+- `src/core/AIService.js` — Client-side API service (narrate, quest, streaming).
 - `src/data/StaticDataBootstrap.js` — Fetches static data bundle on app init.
 - `.github/workflows/azure-static-web-apps-kind-ocean-050c15c10.yml` — CI/CD workflow.
 

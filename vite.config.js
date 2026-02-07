@@ -30,12 +30,13 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks(id) {
             const normalizedId = id.replace(/\\/g, "/");
+            const cleanId = normalizedId.split("?")[0];
 
             // Vendor chunking (node_modules)
-            if (normalizedId.includes("/node_modules/")) {
+            if (cleanId.includes("/node_modules/")) {
               if (
-                normalizedId.includes("/react/") ||
-                normalizedId.includes("/react-dom/")
+                cleanId.includes("/react/") ||
+                cleanId.includes("/react-dom/")
               ) {
                 return "vendor-react";
               }
@@ -45,20 +46,18 @@ export default defineConfig(({ mode }) => {
 
             // App chunking: split the biggest game-core registries/systems so the
             // lazy-loaded GameUI chunk stays under the warning limit.
-            if (normalizedId.includes("/packages/game-core/")) {
+            if (cleanId.includes("/packages/game-core/")) {
               if (
-                normalizedId.endsWith(
-                  "/systems/archetype/ArchetypeSystemRegistry.js",
-                )
+                cleanId.endsWith("/systems/archetype/ArchetypeSystemRegistry.js")
               ) {
                 return "game-core-archetypes";
               }
 
-              if (normalizedId.includes("/systems/skills/")) {
+              if (cleanId.includes("/systems/skills/")) {
                 return "game-core-skills";
               }
 
-              if (normalizedId.endsWith("/world/WorldDataRegistry.js")) {
+              if (cleanId.endsWith("/world/WorldDataRegistry.js")) {
                 return "game-core-world-data";
               }
             }

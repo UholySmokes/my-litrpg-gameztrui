@@ -1,12 +1,13 @@
 import { generateRace } from './RaceGenerator.js';
 import { generateClass } from './ClassGenerator.js';
-import { generateSkill } from './SkillGenerator.js';
+import { generateSkill, generateSkillSet } from './SkillGenerator.js';
 import { generateTitle } from './NameGenerator.js';
 
 export const ContentGenerator = {
   generateRace,
   generateClass,
   generateSkill,
+  generateSkills: generateSkillSet,
   generateTitle,
   
   generateCharacterOptions: (count = 3) => {

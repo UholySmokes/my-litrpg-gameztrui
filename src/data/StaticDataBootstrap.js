@@ -47,7 +47,11 @@ const resolveStaticEndpoints = () => {
   const derived = apiBaseUrl
     ? `${normalizeBaseUrl(apiBaseUrl)}/api/static-data`
     : undefined;
-  return [explicit, derived, "/api/static-data"].filter(Boolean);
+  const endpoints = [explicit, derived].filter(Boolean);
+  if (endpoints.length === 0) {
+    endpoints.push("/api/static-data");
+  }
+  return endpoints;
 };
 
 const resolveTimeoutMs = () => {

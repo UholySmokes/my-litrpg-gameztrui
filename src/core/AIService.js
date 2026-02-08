@@ -109,10 +109,7 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
       const response = await fetchWithTimeout(url, options, timeoutMs);
       const clone = response.clone();
       const data = await response.json().catch(() => null);
-      const text =
-        data == null
-          ? await clone.text().catch(() => "")
-          : "";
+      const rawText = await clone.text().catch(() => "");
 
       if (RETRY_STATUS.has(response.status) && attempt < MAX_RETRIES) {
         const errorCode = data?.errorCode;
@@ -122,16 +119,16 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
             errorCode === "UPSTREAM_TIMEOUT" ||
             errorCode === "FOUNDRY_REQUEST_TIMEOUT")
         ) {
-          return { response, data };
+          return { response, data, rawText };
         }
         if (response.status === 502 && errorCode === "RUN_REQUIRES_ACTION") {
-          return { response, data };
+          return { response, data, rawText };
         }
         await delay(300 * (attempt + 1) ** 2);
         continue;
       }
 
-      return { response, data };
+      return { response, data, rawText };
     } catch (error) {
       lastError = error;
 
@@ -196,7 +193,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
     attemptedEndpoints += 1;
     attemptedUrls.push(endpoint);
     try {
-      const { response, data } = await fetchJsonWithRetry(
+      const { response, data, rawText } = await fetchJsonWithRetry(
         endpoint,
         {
           method: "POST",
@@ -224,8 +221,8 @@ export async function generateNarrative(prompt, { mode } = {}) {
             ? data.message
             : typeof data?.error === "string"
               ? data.error
-            : text
-              ? `Narrative generation failed (${response.status}). ${text.slice(0, 240)}`
+            : rawText
+              ? `Narrative generation failed (${response.status}). ${rawText.slice(0, 240)}`
               : `Narrative generation failed (${response.status}).`;
         throw new Error(message);
       }

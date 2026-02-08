@@ -1,3 +1,5 @@
+import styles from './CommandTerminalPanel.module.css';
+
 export default function CommandTerminalPanel({
   userInput,
   onInputChange,
@@ -6,17 +8,17 @@ export default function CommandTerminalPanel({
   inputRef,
 }) {
   return (
-    <form onSubmit={onSubmit} className="command-deck__input">
+    <form onSubmit={onSubmit} className={styles.commandDeck}>
       <input
         ref={inputRef}
         type="text"
-        className="command-deck__input-field"
+        className={styles.inputField}
         placeholder="Enter command..."
         value={userInput}
         onChange={(event) => onInputChange(event.target.value)}
         disabled={isLoading}
       />
-      <button className="holo-button" type="submit" disabled={isLoading}>
+      <button className={styles.submitButton} type="submit" disabled={isLoading}>
         {isLoading ? "..." : "[EXECUTE]"}
       </button>
     </form>

@@ -17,6 +17,7 @@
     "DIALOGUE_AGENT_ID": "your-dialogue-assistant-id",
     "WORLD_AGENT_ID": "your-world-assistant-id",
     "SYSTEM_AGENT_ID": "your-system-assistant-id",
+    "CONTENT_SMITH_AGENT_ID": "your-content-smith-assistant-id",
 
     # Foundry/Azure AI Configuration
     "FOUNDRY_PROJECT_ENDPOINT": "https://your-foundry-project-endpoint",

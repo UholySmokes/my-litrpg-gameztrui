@@ -16,6 +16,7 @@ The AI Orchestrator manages and coordinates various AI agents to handle complex 
 | `dialogue` | Manages NPC conversations and dialogue generation | `DIALOGUE_AGENT_ID` |
 | `world` | Generates world events and lore | `WORLD_AGENT_ID` |
 | `system` | Performs system-level operations and analysis | `SYSTEM_AGENT_ID` |
+| `content_smith` | Generates bulk content drafts (items, NPCs, locations, etc.) | `CONTENT_SMITH_AGENT_ID` |
 
 ## API Endpoints
 
@@ -279,6 +280,21 @@ Execute single tasks or complex workflows.
 }
 ```
 
+### ContentSmith Agent
+
+```json
+{
+  "kind": "items|titles|npcs|locations|recipes|quests|encounters|mixed",
+  "quantity": 5,
+  "context": {
+    "location": "Dungeon",
+    "level": 10,
+    "theme": "undead"
+  },
+  "tags": ["rare", "magical", "starter"]
+}
+```
+
 ## Environment Variables
 
 | Variable | Required | Default | Description |
@@ -289,6 +305,7 @@ Execute single tasks or complex workflows.
 | `DIALOGUE_AGENT_ID` | No | - | Foundry assistant ID for dialogue |
 | `WORLD_AGENT_ID` | No | - | Foundry assistant ID for world events |
 | `SYSTEM_AGENT_ID` | No | - | Foundry assistant ID for system operations |
+| `CONTENT_SMITH_AGENT_ID` | No | - | Foundry assistant ID for content generation |
 | `ORCHESTRATOR_RATE_LIMIT_PER_MIN` | No | 10 | Rate limit per client per minute |
 | `REDIS_URL` | No | - | Redis URL for distributed task queue (production) |
 | `REQUIRE_REDIS_RATE_LIMIT` | No | false | Require Redis for rate limiting |

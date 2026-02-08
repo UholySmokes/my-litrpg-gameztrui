@@ -31,6 +31,7 @@ const AGENT_TYPES = {
   DIALOGUE: "dialogue",
   WORLD: "world",
   SYSTEM: "system",
+  CONTENT_SMITH: "content_smith",
 };
 
 // Task priorities
@@ -59,7 +60,16 @@ const taskResults = new Map();
  * Get agent ID from environment variables
  */
 function getAgentId(agentType) {
-  const envVar = `${agentType.toUpperCase()}_AGENT_ID`;
+  const envMap = {
+    narrator: "NARRATOR_AGENT_ID",
+    quest: "QUEST_AGENT_ID",
+    combat: "COMBAT_AGENT_ID",
+    dialogue: "DIALOGUE_AGENT_ID",
+    world: "WORLD_AGENT_ID",
+    system: "SYSTEM_AGENT_ID",
+    content_smith: "CONTENT_SMITH_AGENT_ID",
+  };
+  const envVar = envMap[agentType];
   return getRequiredEnv(envVar);
 }
 
@@ -154,6 +164,9 @@ async function executeTask(task, context) {
       break;
     case AGENT_TYPES.SYSTEM:
       instruction = buildSystemInstruction(task);
+      break;
+    case AGENT_TYPES.CONTENT_SMITH:
+      instruction = buildContentSmithInstruction(task);
       break;
     default:
       instruction = JSON.stringify(task.input);
@@ -276,6 +289,35 @@ ${gameState ? `Game State: ${JSON.stringify(gameState)}` : ''}
 ${parameters ? `Parameters: ${JSON.stringify(parameters)}` : ''}
 
 Provide the result in JSON format with appropriate fields for the operation type.`;
+}
+
+/**
+ * Build instruction for ContentSmith agent
+ */
+function buildContentSmithInstruction(task) {
+  const { kind, quantity, context, tags } = task.input;
+  return `Generate ${quantity || 5} ${kind || 'mixed'} content drafts.
+${context ? `Context: ${JSON.stringify(context)}` : ''}
+${tags ? `Tags: ${JSON.stringify(tags)}` : ''}
+
+Output MUST be valid JSON only. No markdown. No extra text.
+Follow this schema exactly:
+{
+  "ok": true,
+  "kind": "items|titles|npcs|locations|recipes|quests|encounters|mixed",
+  "drafts": [
+    {
+      "id": "d_<short_id>",
+      "type": "item|title|npc|location|recipe|quest|encounter",
+      "name": "string",
+      "summary": "string",
+      "details": {
+        "tags": ["string"],
+        "notes": ["string"]
+      }
+    }
+  ]
+}`;
 }
 
 /**

@@ -365,6 +365,85 @@ async function exampleSystemAnalysis() {
   return data;
 }
 
+// Example 11: ContentSmith - Generate Items
+async function exampleContentSmithItems() {
+  const response = await fetch('/api/orchestrator', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      operation: 'single',
+      type: 'content_smith',
+      input: {
+        kind: 'items',
+        quantity: 5,
+        context: {
+          location: 'Ancient Ruins',
+          level: 10,
+          theme: 'undead'
+        },
+        tags: ['rare', 'magical', 'cursed']
+      },
+      priority: 1
+    })
+  });
+
+  const data = await response.json();
+  console.log('Generated Items:', data.result.structured);
+  return data;
+}
+
+// Example 12: ContentSmith - Generate NPCs
+async function exampleContentSmithNPCs() {
+  const response = await fetch('/api/orchestrator', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      operation: 'single',
+      type: 'content_smith',
+      input: {
+        kind: 'npcs',
+        quantity: 3,
+        context: {
+          location: 'Thieves Guild',
+          role: 'quest_giver'
+        },
+        tags: ['shadowy', 'mysterious', 'rogue']
+      },
+      priority: 1
+    })
+  });
+
+  const data = await response.json();
+  console.log('Generated NPCs:', data.result.structured);
+  return data;
+}
+
+// Example 13: ContentSmith - Generate Mixed Content
+async function exampleContentSmithMixed() {
+  const response = await fetch('/api/orchestrator', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      operation: 'single',
+      type: 'content_smith',
+      input: {
+        kind: 'mixed',
+        quantity: 10,
+        context: {
+          location: 'Dark Forest',
+          level: 5
+        },
+        tags: ['starter', 'nature', 'beasts']
+      },
+      priority: 1
+    })
+  });
+
+  const data = await response.json();
+  console.log('Generated Mixed Content:', data.result.structured);
+  return data;
+}
+
 // Export examples for use in tests or other modules
 module.exports = {
   exampleGenerateNarrative,
@@ -376,7 +455,10 @@ module.exports = {
   exampleCheckTaskStatus,
   exampleCheckQueueStatus,
   exampleWorldEvent,
-  exampleSystemAnalysis
+  exampleSystemAnalysis,
+  exampleContentSmithItems,
+  exampleContentSmithNPCs,
+  exampleContentSmithMixed
 };
 
 // Run examples if executed directly
@@ -395,5 +477,8 @@ if (require.main === module) {
   console.log('8. exampleCheckQueueStatus()');
   console.log('9. exampleWorldEvent()');
   console.log('10. exampleSystemAnalysis()');
+  console.log('11. exampleContentSmithItems()');
+  console.log('12. exampleContentSmithNPCs()');
+  console.log('13. exampleContentSmithMixed()');
   console.log('\nImport and call these functions to test the orchestrator.');
 }

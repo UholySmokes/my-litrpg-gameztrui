@@ -4,7 +4,11 @@
 // =================================================================
 
 import { useState, useCallback, useRef } from "react";
-import { assemblePrompt, buildInitialPrompt } from "../core/PromptAssembler.js";
+import {
+  assemblePrompt,
+  buildInitialPrompt,
+  resolvePromptMode,
+} from "../core/PromptAssembler.js";
 import {
   generateNarrative,
   generateNarrativeStream,
@@ -427,7 +431,7 @@ export function useNarrative(
         summaryInFlightRef.current = false;
       }
     },
-    [setState],
+    [setState, maybeRefreshSummary],
   );
 
   /**
@@ -435,7 +439,7 @@ export function useNarrative(
    * Falls back to sync generateNarrative internally.
    */
   const streamNarrative = useCallback(
-    async (prompt, prevStateForFallback) => {
+    async (prompt, prevStateForFallback, { mode } = {}) => {
       // Abort any in-flight stream
       if (streamAbortRef.current) {
         streamAbortRef.current.abort();
@@ -458,6 +462,7 @@ export function useNarrative(
       try {
         const result = await generateNarrativeStream(prompt, {
           signal: controller.signal,
+          mode,
           onChunk: (_delta, fullText) => {
             // Live-update the streaming entry in-place
             setState((prev) => {
@@ -608,9 +613,15 @@ export function useNarrative(
               description: `Attempted: ${userInput}`,
             });
 
+            const mode = resolvePromptMode(currentState, {
+              success: false,
+              actionType: action?.type,
+            });
+
             const aiResponse = await streamNarrative(
               failurePrompt,
               currentState,
+              { mode },
             );
             // streamNarrative already updated state via onChunk + finalize
           } catch (aiError) {
@@ -687,8 +698,9 @@ export function useNarrative(
         setIsNarrating(true);
         try {
           const promptState = actionResult.readOnly ? currentState : newState;
+          const mode = resolvePromptMode(promptState, actionResult);
           const prompt = assemblePrompt(promptState, userInput, actionResult);
-          const aiResponse = await streamNarrative(prompt, promptState);
+          const aiResponse = await streamNarrative(prompt, promptState, { mode });
 
           // streamNarrative already manages the entry; just evaluate quests
           setState((prevState) => {

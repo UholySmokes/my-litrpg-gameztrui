@@ -9,6 +9,43 @@ const {
   rateLimit,
 } = require("../lib/azure-ai-utils");
 const { startFoundryRun, awaitFoundryRun } = require("../lib/foundry-run");
+const {
+  normalizeMode,
+  resolveAssistantId,
+  buildDefaultSuggestions,
+} = require("../lib/agent-router");
+
+const MOOD_PATTERNS = [
+  { mood: "tense", patterns: [/danger/i, /threat/i, /ambush/i, /attack/i, /enemy/i, /looming/i] },
+  { mood: "triumphant", patterns: [/victory/i, /triumph/i, /succeed/i, /conquer/i, /glory/i, /reward/i] },
+  { mood: "mysterious", patterns: [/strange/i, /mystery/i, /whisper/i, /shadow/i, /ancient/i, /secret/i, /hidden/i] },
+  { mood: "serene", patterns: [/calm/i, /peace/i, /gentle/i, /rest/i, /quiet/i, /warm/i, /soft/i] },
+  { mood: "desperate", patterns: [/flee/i, /escape/i, /wound/i, /bleed/i, /dying/i, /last/i, /barely/i] },
+];
+
+function inferMood(text) {
+  const value = typeof text === "string" ? text : "";
+  if (!value.trim()) return "neutral";
+  for (const { mood, patterns } of MOOD_PATTERNS) {
+    if (patterns.some((p) => p.test(value))) return mood;
+  }
+  return "neutral";
+}
+
+function tryParseStructured(text) {
+  const raw = typeof text === "string" ? text.trim() : "";
+  if (!raw) return null;
+  if (!raw.startsWith("{") && !raw.startsWith("[")) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+      return parsed;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
 
 module.exports = async function narrate(context, req) {
   initApiTracing({ serviceName: "void-verse-api" });
@@ -19,13 +56,13 @@ module.exports = async function narrate(context, req) {
       "api.narrate",
       { "app.request_id": requestId },
       async () => {
-        const assistantId = getRequiredEnv("NARRATOR_AGENT_ID");
+        const narratorId = getRequiredEnv("NARRATOR_AGENT_ID");
         const rateLimitPerMin = Number.parseInt(
           getRequiredEnv("NARRATE_RATE_LIMIT_PER_MIN") || "0",
           10,
         );
 
-        if (!assistantId) {
+        if (!narratorId) {
           context.res = jsonResponse(500, {
             ok: false,
             errorCode: "MISSING_ENV",
@@ -52,6 +89,8 @@ module.exports = async function narrate(context, req) {
         }
 
         const body = await readJsonBody(req);
+        const mode = normalizeMode(body?.mode);
+        const assistantId = resolveAssistantId(mode);
         const prompt =
           typeof body?.prompt === "string" ? body.prompt.trim() : "";
         const instruction =
@@ -82,12 +121,27 @@ module.exports = async function narrate(context, req) {
         }
 
         context.log?.(
-          `narrate ${requestId} assistant=${assistantId} thread=${threadId} run=${runId} status=${result.status}`,
+          `narrate ${requestId} assistant=${assistantId} mode=${mode} thread=${threadId} run=${runId} status=${result.status}`,
         );
+
+        const structured = tryParseStructured(assistantText);
+        const narrative =
+          typeof structured?.narrative === "string" && structured.narrative.trim()
+            ? structured.narrative.trim()
+            : assistantText;
+        const mood =
+          typeof structured?.mood === "string" && structured.mood.trim()
+            ? structured.mood.trim()
+            : inferMood(narrative);
+        const suggestions = Array.isArray(structured?.suggestions)
+          ? structured.suggestions
+          : buildDefaultSuggestions(mode);
 
         context.res = jsonResponse(200, {
           ok: true,
-          narrative: assistantText,
+          narrative,
+          mood,
+          suggestions,
           outputHash,
         });
       },

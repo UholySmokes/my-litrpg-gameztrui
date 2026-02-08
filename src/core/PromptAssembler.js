@@ -44,7 +44,7 @@ function resolveArchetypeSystem(player = {}) {
   return null;
 }
 
-function resolvePromptMode(gameState, actionResult) {
+export function resolvePromptMode(gameState, actionResult) {
   const actionType = actionResult?.actionType;
   const inCombat = Boolean(
     gameState?.combat?.inCombat ?? gameState?.combat?.status === "active",

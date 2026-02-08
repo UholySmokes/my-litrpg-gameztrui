@@ -5,7 +5,13 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'build', 'coverage']),
+  globalIgnores([
+    'dist',
+    'build',
+    'coverage',
+    'functions/node_modules',
+    'src/dataconnect-generated',
+  ]),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -94,6 +100,22 @@ export default defineConfig([
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+      },
+    },
+    rules: {
+      'no-undef': 'off',
+    },
+  },
+  {
+    files: ['functions/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.node,
+      },
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'script',
       },
     },
     rules: {

@@ -221,17 +221,13 @@ function ContinuousBar({ current, max, gradient, color }) {
 }
 
 /**
- * Main ClassResourceBar component
+ * Render archetype resource bar
  */
-export default function ClassResourceBar({ player }) {
-  if (!player) return null;
-  
-  const resource = getClassResource(player);
+function ArchetypeResourceDisplay({ resource }) {
   if (!resource) return null;
-  
-  const isDiscrete = resource.type === 'shards' || resource.type === 'charges' || resource.type === 'totems' || resource.type === 'undead';
-  const hasBar = resource.current !== null && resource.max !== null;
-  
+  const ratio = resource.max > 0 ? resource.current / resource.max : 0;
+  const percentage = Math.max(0, Math.min(100, ratio * 100));
+
   return (
     <div style={{
       marginBottom: '0.75rem',
@@ -244,45 +240,104 @@ export default function ClassResourceBar({ player }) {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: hasBar ? '0.25rem' : 0
+        marginBottom: '0.25rem'
       }}>
         <span style={{ color: resource.color, fontWeight: 'bold', fontSize: '0.9rem' }}>
-          {resource.icon} {resource.label}
+          ❖ {resource.name}
         </span>
-        {hasBar && (
-          <span style={{ color: 'var(--text-main)', fontSize: '0.85rem' }}>
-            {resource.current}/{resource.max}
-          </span>
-        )}
-        {resource.extra && (
-          <span style={{
-            color: resource.color,
-            fontSize: '0.8rem',
-            fontWeight: 'bold',
-            animation: resource.extra.includes('!') ? 'pulse 0.5s infinite' : 'none'
-          }}>
-            {resource.extra}
-          </span>
-        )}
+        <span style={{ color: 'var(--text-main)', fontSize: '0.85rem' }}>
+          {Math.floor(resource.current)}/{resource.max}
+        </span>
       </div>
-      
-      {hasBar && (
-        isDiscrete ? (
-          <DiscreteBar
-            current={resource.current}
-            max={resource.max}
-            color={resource.color}
-            icon={resource.icon}
-          />
-        ) : (
-          <ContinuousBar
-            current={resource.current}
-            max={resource.max}
-            gradient={resource.gradient}
-            color={resource.color}
-          />
-        )
-      )}
+      <div style={{
+        width: '100%',
+        height: '12px',
+        background: 'rgba(0,0,0,0.3)',
+        borderRadius: '6px',
+        overflow: 'hidden',
+        border: `1px solid ${resource.color}`
+      }}>
+        <div style={{
+          width: `${percentage}%`,
+          height: '100%',
+          background: `linear-gradient(90deg, ${resource.color}, #ffffff)`,
+          opacity: 0.8,
+          transition: 'width 0.3s ease-out',
+          boxShadow: `0 0 10px ${resource.color}66`
+        }} />
+      </div>
     </div>
+  );
+}
+
+/**
+ * Main ClassResourceBar component
+ */
+export default function ClassResourceBar({ player }) {
+  if (!player) return null;
+  
+  const resource = getClassResource(player);
+  const archetypeResource = player.system?.resource;
+  
+  // If neither exists, return null
+  if (!resource && !archetypeResource) return null;
+  
+  return (
+    <>
+      {archetypeResource && <ArchetypeResourceDisplay resource={archetypeResource} />}
+      {resource && (
+        <div style={{
+          marginBottom: '0.75rem',
+          padding: '0.5rem',
+          background: 'rgba(0,0,0,0.2)',
+          borderRadius: '4px',
+          border: `1px solid ${resource.color}40`
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: (resource.current !== null && resource.max !== null) ? '0.25rem' : 0
+          }}>
+            <span style={{ color: resource.color, fontWeight: 'bold', fontSize: '0.9rem' }}>
+              {resource.icon} {resource.label}
+            </span>
+            {(resource.current !== null && resource.max !== null) && (
+              <span style={{ color: 'var(--text-main)', fontSize: '0.85rem' }}>
+                {resource.current}/{resource.max}
+              </span>
+            )}
+            {resource.extra && (
+              <span style={{
+                color: resource.color,
+                fontSize: '0.8rem',
+                fontWeight: 'bold',
+                animation: resource.extra.includes('!') ? 'pulse 0.5s infinite' : 'none'
+              }}>
+                {resource.extra}
+              </span>
+            )}
+          </div>
+          
+          {(resource.current !== null && resource.max !== null) && (
+            (resource.type === 'shards' || resource.type === 'charges' || resource.type === 'totems' || resource.type === 'undead') ? (
+              <DiscreteBar
+                current={resource.current}
+                max={resource.max}
+                color={resource.color}
+                icon={resource.icon}
+              />
+            ) : (
+              <ContinuousBar
+                current={resource.current}
+                max={resource.max}
+                gradient={resource.gradient}
+                color={resource.color}
+              />
+            )
+          )}
+        </div>
+      )}
+    </>
   );
 }

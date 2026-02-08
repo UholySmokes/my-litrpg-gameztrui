@@ -28,7 +28,8 @@
     "analyze:middleware": "node scripts/analyze-middleware-dependencies.cjs",
     "analyze:middleware:json": "node scripts/analyze-middleware-dependencies.cjs --format=json",
     "analyze:middleware:md": "node scripts/analyze-middleware-dependencies.cjs --format=markdown",
-    "analyze:graph": "node scripts/generate-dependency-graph.cjs --output=docs/MIDDLEWARE_DEPENDENCY_GRAPH.md"
+    "analyze:graph": "node scripts/generate-dependency-graph.cjs --output=docs/MIDDLEWARE_DEPENDENCY_GRAPH.md",
+    "validate:archetypes": "node scripts/validate-archetypes.mjs"
   },
   "dependencies": {
     "@azure/identity": "^4.13.0",
@@ -43,7 +44,8 @@
     "dotenv": "^17.2.4",
     "js-yaml": "^4.1.1",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.0",

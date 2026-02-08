@@ -9,3 +9,4 @@
 *.dacpac binary
 *.docx binary
 *.psd filter=lfs diff=lfs merge=lfs -text
+*.html filter=lfs diff=lfs merge=lfs -text

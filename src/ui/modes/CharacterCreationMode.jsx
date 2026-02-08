@@ -567,6 +567,9 @@ export default function CharacterCreationMode({ onComplete }) {
           statusLines={statusLines}
           typewriterText={typewriterText}
           syncProgress={syncProgress}
+          selectedRace={selectedRace}
+          selectedClass={selectedClass}
+          selectedArchetypeSystem={selectedArchetypeSystem}
         />
       ),
     },

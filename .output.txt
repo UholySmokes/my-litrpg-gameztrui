@@ -1,500 +1,223 @@
-src\assets
-src\components
-src\constants
-src\context
-src\core
-src\data
-src\entities
-src\hook
-src\lib
-src\observability
-src\simulation
-src\systems
-src\types
-src\ui
-src\util
-src\utils
-src\world
-src\data\registries
-src\simulation\bridge
-src\simulation\combat
-src\simulation\effects
-src\simulation\events
-src\simulation\kernel
-src\simulation\logging
-src\simulation\types
-src\simulation\validation
-src\systems\archetype
-src\systems\class
-src\systems\combat
-src\systems\effects
-src\systems\exploration
-src\systems\generation
-src\systems\inventory
-src\systems\items
-src\systems\leveling
-src\systems\loot
-src\systems\magic
-src\systems\profession
-src\systems\quest
-src\systems\race
-src\systems\skills
-src\systems\titles
-src\systems\world
-src\ui\modes
-src\ui\panels
-src\ui\windowing
-src\ui\panels\creation
-packages\game-core
-packages\game-schemas
-packages\game-core\src
-packages\game-core\src\constants
-packages\game-core\src\core
-packages\game-core\src\data
-packages\game-core\src\engine
-packages\game-core\src\entities
-packages\game-core\src\observability
-packages\game-core\src\simulation
-packages\game-core\src\systems
-packages\game-core\src\util
-packages\game-core\src\utils
-packages\game-core\src\world
-packages\game-schemas\src
-api\.data
-api\action-submit
-api\data
-api\factory-run
-api\health
-api\lib
-api\narrate
-api\narrate-poll
-api\narrate-start
-api\narrative
-api\node_modules
-api\orchestrator
-api\quest-create
-api\run-events
-api\run-snapshots
-api\runs
-api\saves
-api\sql
-api\static-data
-api\sync-pull
-api\sync-push
-api\VoidverseFunction
-api\node_modules\.bin
-api\node_modules\@azure
-api\node_modules\@azure-rest
-api\node_modules\@grpc
-api\node_modules\@js-joda
-api\node_modules\@js-sdsl
-api\node_modules\@opentelemetry
-api\node_modules\@protobufjs
-api\node_modules\@redis
-api\node_modules\@tediousjs
-api\node_modules\@types
-api\node_modules\@typespec
-api\node_modules\@voidverse
-api\node_modules\abort-controller
-api\node_modules\acorn
-api\node_modules\acorn-import-attributes
-api\node_modules\agent-base
-api\node_modules\ansi-regex
-api\node_modules\ansi-styles
-api\node_modules\asynckit
-api\node_modules\axios
-api\node_modules\base64-js
-api\node_modules\bignumber.js
-api\node_modules\bl
-api\node_modules\buffer
-api\node_modules\buffer-equal-constant-time
-api\node_modules\bundle-name
-api\node_modules\call-bind-apply-helpers
-api\node_modules\cjs-module-lexer
-api\node_modules\cliui
-api\node_modules\cluster-key-slot
-api\node_modules\color-convert
-api\node_modules\color-name
-api\node_modules\combined-stream
-api\node_modules\commander
-api\node_modules\debug
-api\node_modules\default-browser
-api\node_modules\default-browser-id
-api\node_modules\define-lazy-prop
-api\node_modules\delayed-stream
-api\node_modules\dunder-proto
-api\node_modules\durable-functions
-api\node_modules\ecdsa-sig-formatter
-api\node_modules\emoji-regex
-api\node_modules\es-define-property
-api\node_modules\es-errors
-api\node_modules\es-object-atoms
-api\node_modules\es-set-tostringtag
-api\node_modules\escalade
-api\node_modules\event-target-shim
-api\node_modules\events
-api\node_modules\extend
-api\node_modules\follow-redirects
-api\node_modules\form-data
-api\node_modules\forwarded-parse
-api\node_modules\function-bind
-api\node_modules\gaxios
-api\node_modules\gcp-metadata
-api\node_modules\generic-pool
-api\node_modules\get-caller-file
-api\node_modules\get-intrinsic
-api\node_modules\get-proto
-api\node_modules\google-logging-utils
-api\node_modules\gopd
-api\node_modules\has-symbols
-api\node_modules\has-tostringtag
-api\node_modules\hasown
-api\node_modules\http-proxy-agent
-api\node_modules\https-proxy-agent
-api\node_modules\iconv-lite
-api\node_modules\ieee754
-api\node_modules\import-in-the-middle
-api\node_modules\inherits
-api\node_modules\is-core-module
-api\node_modules\is-docker
-api\node_modules\is-fullwidth-code-point
-api\node_modules\is-inside-container
-api\node_modules\is-stream
-api\node_modules\is-wsl
-api\node_modules\js-md4
-api\node_modules\json-bigint
-api\node_modules\jsonwebtoken
-api\node_modules\jwa
-api\node_modules\jws
-api\node_modules\lodash
-api\node_modules\lodash.camelcase
-api\node_modules\lodash.includes
-api\node_modules\lodash.isboolean
-api\node_modules\lodash.isinteger
-api\node_modules\lodash.isnumber
-api\node_modules\lodash.isplainobject
-api\node_modules\lodash.isstring
-api\node_modules\lodash.merge
-api\node_modules\lodash.once
-api\node_modules\long
-api\node_modules\math-intrinsics
-api\node_modules\mime-db
-api\node_modules\mime-types
-api\node_modules\module-details-from-path
-api\node_modules\moment
-api\node_modules\ms
-api\node_modules\mssql
-api\node_modules\native-duplexpair
-api\node_modules\node-fetch
-api\node_modules\open
-api\node_modules\path-parse
-api\node_modules\pg-int8
-api\node_modules\pg-protocol
-api\node_modules\pg-types
-api\node_modules\postgres-array
-api\node_modules\postgres-bytea
-api\node_modules\postgres-date
-api\node_modules\postgres-interval
-api\node_modules\process
-api\node_modules\protobufjs
-api\node_modules\proxy-from-env
-api\node_modules\readable-stream
-api\node_modules\redis
-api\node_modules\require-directory
-api\node_modules\require-in-the-middle
-api\node_modules\resolve
-api\node_modules\rfdc
-api\node_modules\run-applescript
-api\node_modules\safe-buffer
-api\node_modules\safer-buffer
-api\node_modules\semver
-api\node_modules\shimmer
-api\node_modules\sprintf-js
-api\node_modules\string-width
-api\node_modules\string_decoder
-api\node_modules\strip-ansi
-api\node_modules\supports-preserve-symlinks-flag
-api\node_modules\tarn
-api\node_modules\tedious
-api\node_modules\tr46
-api\node_modules\tslib
-api\node_modules\undici
-api\node_modules\undici-types
-api\node_modules\uuid
-api\node_modules\validator
-api\node_modules\webidl-conversions
-api\node_modules\whatwg-url
-api\node_modules\wrap-ansi
-api\node_modules\wsl-utils
-api\node_modules\xtend
-api\node_modules\y18n
-api\node_modules\yallist
-api\node_modules\yargs
-api\node_modules\yargs-parser
-api\node_modules\@azure\abort-controller
-api\node_modules\@azure\core-auth
-api\node_modules\@azure\core-client
-api\node_modules\@azure\core-http-compat
-api\node_modules\@azure\core-lro
-api\node_modules\@azure\core-paging
-api\node_modules\@azure\core-rest-pipeline
-api\node_modules\@azure\core-tracing
-api\node_modules\@azure\core-util
-api\node_modules\@azure\functions
-api\node_modules\@azure\identity
-api\node_modules\@azure\keyvault-common
-api\node_modules\@azure\keyvault-keys
-api\node_modules\@azure\logger
-api\node_modules\@azure\msal-browser
-api\node_modules\@azure\msal-common
-api\node_modules\@azure\msal-node
-api\node_modules\@azure-rest\core-client
-api\node_modules\@grpc\grpc-js
-api\node_modules\@grpc\proto-loader
-api\node_modules\@js-joda\core
-api\node_modules\@js-sdsl\ordered-map
-api\node_modules\@opentelemetry\api
-api\node_modules\@opentelemetry\api-logs
-api\node_modules\@opentelemetry\auto-instrumentations-node
-api\node_modules\@opentelemetry\context-async-hooks
-api\node_modules\@opentelemetry\core
-api\node_modules\@opentelemetry\exporter-logs-otlp-grpc
-api\node_modules\@opentelemetry\exporter-logs-otlp-http
-api\node_modules\@opentelemetry\exporter-logs-otlp-proto
-api\node_modules\@opentelemetry\exporter-trace-otlp-grpc
-api\node_modules\@opentelemetry\exporter-trace-otlp-http
-api\node_modules\@opentelemetry\exporter-trace-otlp-proto
-api\node_modules\@opentelemetry\exporter-zipkin
-api\node_modules\@opentelemetry\instrumentation
-api\node_modules\@opentelemetry\instrumentation-amqplib
-api\node_modules\@opentelemetry\instrumentation-aws-lambda
-api\node_modules\@opentelemetry\instrumentation-aws-sdk
-api\node_modules\@opentelemetry\instrumentation-bunyan
-api\node_modules\@opentelemetry\instrumentation-cassandra-driver
-api\node_modules\@opentelemetry\instrumentation-connect
-api\node_modules\@opentelemetry\instrumentation-cucumber
-api\node_modules\@opentelemetry\instrumentation-dataloader
-api\node_modules\@opentelemetry\instrumentation-dns
-api\node_modules\@opentelemetry\instrumentation-express
-api\node_modules\@opentelemetry\instrumentation-fastify
-api\node_modules\@opentelemetry\instrumentation-fs
-api\node_modules\@opentelemetry\instrumentation-generic-pool
-api\node_modules\@opentelemetry\instrumentation-graphql
-api\node_modules\@opentelemetry\instrumentation-grpc
-api\node_modules\@opentelemetry\instrumentation-hapi
-api\node_modules\@opentelemetry\instrumentation-http
-api\node_modules\@opentelemetry\instrumentation-ioredis
-api\node_modules\@opentelemetry\instrumentation-kafkajs
-api\node_modules\@opentelemetry\instrumentation-knex
-api\node_modules\@opentelemetry\instrumentation-koa
-api\node_modules\@opentelemetry\instrumentation-lru-memoizer
-api\node_modules\@opentelemetry\instrumentation-memcached
-api\node_modules\@opentelemetry\instrumentation-mongodb
-api\node_modules\@opentelemetry\instrumentation-mongoose
-api\node_modules\@opentelemetry\instrumentation-mysql
-api\node_modules\@opentelemetry\instrumentation-mysql2
-api\node_modules\@opentelemetry\instrumentation-nestjs-core
-api\node_modules\@opentelemetry\instrumentation-net
-api\node_modules\@opentelemetry\instrumentation-pg
-api\node_modules\@opentelemetry\instrumentation-pino
-api\node_modules\@opentelemetry\instrumentation-redis
-api\node_modules\@opentelemetry\instrumentation-redis-4
-api\node_modules\@opentelemetry\instrumentation-restify
-api\node_modules\@opentelemetry\instrumentation-router
-api\node_modules\@opentelemetry\instrumentation-socket.io
-api\node_modules\@opentelemetry\instrumentation-tedious
-api\node_modules\@opentelemetry\instrumentation-undici
-api\node_modules\@opentelemetry\instrumentation-winston
-api\node_modules\@opentelemetry\otlp-exporter-base
-api\node_modules\@opentelemetry\otlp-grpc-exporter-base
-api\node_modules\@opentelemetry\otlp-transformer
-api\node_modules\@opentelemetry\propagation-utils
-api\node_modules\@opentelemetry\propagator-b3
-api\node_modules\@opentelemetry\propagator-jaeger
-api\node_modules\@opentelemetry\redis-common
-api\node_modules\@opentelemetry\resource-detector-alibaba-cloud
-api\node_modules\@opentelemetry\resource-detector-aws
-api\node_modules\@opentelemetry\resource-detector-azure
-api\node_modules\@opentelemetry\resource-detector-container
-api\node_modules\@opentelemetry\resource-detector-gcp
-api\node_modules\@opentelemetry\resources
-api\node_modules\@opentelemetry\sdk-logs
-api\node_modules\@opentelemetry\sdk-metrics
-api\node_modules\@opentelemetry\sdk-node
-api\node_modules\@opentelemetry\sdk-trace-base
-api\node_modules\@opentelemetry\sdk-trace-node
-api\node_modules\@opentelemetry\semantic-conventions
-api\node_modules\@opentelemetry\sql-common
-api\node_modules\@protobufjs\aspromise
-api\node_modules\@protobufjs\base64
-api\node_modules\@protobufjs\codegen
-api\node_modules\@protobufjs\eventemitter
-api\node_modules\@protobufjs\fetch
-api\node_modules\@protobufjs\float
-api\node_modules\@protobufjs\inquire
-api\node_modules\@protobufjs\path
-api\node_modules\@protobufjs\pool
-api\node_modules\@protobufjs\utf8
-api\node_modules\@redis\bloom
-api\node_modules\@redis\client
-api\node_modules\@redis\graph
-api\node_modules\@redis\json
-api\node_modules\@redis\search
-api\node_modules\@redis\time-series
-api\node_modules\@tediousjs\connection-string
-api\node_modules\@types\aws-lambda
-api\node_modules\@types\bunyan
-api\node_modules\@types\connect
-api\node_modules\@types\memcached
-api\node_modules\@types\mysql
-api\node_modules\@types\node
-api\node_modules\@types\pg
-api\node_modules\@types\pg-pool
-api\node_modules\@types\readable-stream
-api\node_modules\@types\shimmer
-api\node_modules\@types\tedious
-api\node_modules\@typespec\ts-http-runtime
-api\node_modules\@voidverse\game-core
-api\node_modules\abort-controller\dist
-api\node_modules\acorn\bin
-api\node_modules\acorn\dist
-api\node_modules\acorn-import-attributes\lib
-api\node_modules\acorn-import-attributes\src
-api\node_modules\agent-base\dist
-api\node_modules\asynckit\lib
-api\node_modules\axios\dist
-api\node_modules\axios\lib
-api\node_modules\bignumber.js\doc
-api\node_modules\bl\.github
-api\node_modules\bl\test
-api\node_modules\call-bind-apply-helpers\.github
-api\node_modules\call-bind-apply-helpers\test
-api\node_modules\cjs-module-lexer\dist
-api\node_modules\cliui\build
-api\node_modules\cluster-key-slot\lib
-api\node_modules\combined-stream\lib
-api\node_modules\commander\lib
-api\node_modules\commander\typings
-api\node_modules\debug\src
-api\node_modules\delayed-stream\lib
-api\node_modules\dunder-proto\.github
-api\node_modules\dunder-proto\test
-api\node_modules\durable-functions\lib
-api\node_modules\durable-functions\node_modules
-api\node_modules\durable-functions\_manifest
-api\node_modules\ecdsa-sig-formatter\src
-api\node_modules\emoji-regex\es2015
-api\node_modules\es-define-property\.github
-api\node_modules\es-define-property\test
-api\node_modules\es-errors\.github
-api\node_modules\es-errors\test
-api\node_modules\es-object-atoms\.github
-api\node_modules\es-object-atoms\test
-api\node_modules\es-set-tostringtag\test
-api\node_modules\escalade\dist
-api\node_modules\escalade\sync
-api\node_modules\event-target-shim\dist
-api\node_modules\events\.github
-api\node_modules\events\tests
-api\node_modules\form-data\lib
-api\node_modules\forwarded-parse\lib
-api\node_modules\function-bind\.github
-api\node_modules\function-bind\test
-api\node_modules\gaxios\build
-api\node_modules\gaxios\node_modules
-api\node_modules\gcp-metadata\build
-api\node_modules\generic-pool\lib
-api\node_modules\get-intrinsic\.github
-api\node_modules\get-intrinsic\test
-api\node_modules\get-proto\.github
-api\node_modules\get-proto\test
-api\node_modules\google-logging-utils\build
-api\node_modules\gopd\.github
-api\node_modules\gopd\test
-api\node_modules\has-symbols\.github
-api\node_modules\has-symbols\test
-api\node_modules\has-tostringtag\.github
-api\node_modules\has-tostringtag\test
-api\node_modules\hasown\.github
-api\node_modules\http-proxy-agent\dist
-api\node_modules\https-proxy-agent\dist
-api\node_modules\iconv-lite\.github
-api\node_modules\iconv-lite\.idea
-api\node_modules\iconv-lite\encodings
-api\node_modules\iconv-lite\lib
-api\node_modules\import-in-the-middle\lib
-api\node_modules\import-in-the-middle\test
-api\node_modules\is-core-module\test
-api\node_modules\js-md4\build
-api\node_modules\js-md4\doc
-api\node_modules\js-md4\src
-api\node_modules\js-md4\tests
-api\node_modules\json-bigint\lib
-api\node_modules\jsonwebtoken\lib
-api\node_modules\jws\lib
-api\node_modules\lodash\fp
-api\node_modules\long\umd
-api\node_modules\math-intrinsics\.github
-api\node_modules\math-intrinsics\constants
-api\node_modules\math-intrinsics\test
-api\node_modules\moment\dist
-api\node_modules\moment\locale
-api\node_modules\moment\min
-api\node_modules\moment\src
-api\node_modules\moment\ts3.1-typings
-api\node_modules\mssql\bin
-api\node_modules\mssql\lib
-api\node_modules\native-duplexpair\test
-api\node_modules\node-fetch\lib
-api\node_modules\pg-protocol\dist
-api\node_modules\pg-protocol\esm
-api\node_modules\pg-protocol\src
-api\node_modules\pg-types\lib
-api\node_modules\pg-types\test
-api\node_modules\protobufjs\dist
-api\node_modules\protobufjs\ext
-api\node_modules\protobufjs\google
-api\node_modules\protobufjs\scripts
-api\node_modules\protobufjs\src
-api\node_modules\readable-stream\lib
-api\node_modules\redis\dist
-api\node_modules\require-in-the-middle\types
-api\node_modules\resolve\.github
-api\node_modules\resolve\bin
-api\node_modules\resolve\example
-api\node_modules\resolve\lib
-api\node_modules\resolve\test
-api\node_modules\rfdc\.github
-api\node_modules\rfdc\test
-api\node_modules\semver\bin
-api\node_modules\semver\classes
-api\node_modules\semver\functions
-api\node_modules\semver\internal
-api\node_modules\semver\ranges
-api\node_modules\shimmer\test
-api\node_modules\sprintf-js\dist
-api\node_modules\sprintf-js\src
-api\node_modules\string_decoder\lib
-api\node_modules\supports-preserve-symlinks-flag\.github
-api\node_modules\supports-preserve-symlinks-flag\test
-api\node_modules\tarn\dist
-api\node_modules\tedious\benchmarks
-api\node_modules\tedious\lib
-api\node_modules\tedious\types
-api\node_modules\tr46\lib
-api\node_modules\tslib\modules
-api\node_modules\undici\docs
-api\node_modules\undici\lib
-api\node_modules\undici\scripts
-api\node_modules\undici\types
-api\node_modules\uuid\dist
-api\node_modules\validator\es
-api\node_modules\validator\lib
-api\node_modules\webidl-conversions\lib
-api\node_modules\whatwg-url\lib
-api\node_modules\y18n\build
-api\node_modules\yargs\build
-api\node_modules\yargs\helpers
-api\node_modules\yargs\lib
-api\node_modules\yargs\locales
-api\node_modules\yargs-parser\build
+/**
+ * MonkSystem.js
+ * Handles Chi resource, Combo counters, and Unarmed damage scaling.
+ */
+export const MONK_CONFIG = {
+  maxChi: 100,
+  baseUnarmedDamage: 5,
+  comboDecayTurns: 1,
+  comboMultipliers: [1.0, 1.1, 1.25, 1.5, 2.0] // 1 to 5 hits
+};
+/**
+ * Calculates unarmed damage based on level and attributes.
+ * @param {Object} player
+ * @returns {number} Base damage
+ */
+export function calculateMonkDamage(player) {
+  if (player.class !== 'monk') return 0;
+  const levelScaling = (player.level || 1) * 2;
+  const str = player.attributes?.str || 0;
+  const dex = player.attributes?.dex || 0;
+  const attributeBonus = (str + dex) / 2;
+  return Math.floor(MONK_CONFIG.baseUnarmedDamage + levelScaling + attributeBonus);
+}
+/**
+ * Gets the current damage multiplier based on combo count.
+ * @param {Object} player
+ * @returns {number} Multiplier (e.g., 1.5)
+ */
+export function getComboMultiplier(player) {
+  if (player.class !== 'monk' || !player.comboCount) return 1.0;
+
+  const index = Math.min(player.comboCount, MONK_CONFIG.comboMultipliers.length) - 1;
+  return MONK_CONFIG.comboMultipliers[Math.max(0, index)];
+}
+/**
+ * Updates combo state after an attack.
+ * @param {Object} player
+ * @param {boolean} isHit - Did the attack hit?
+ * @returns {Object} Updated player properties (comboCount)
+ */
+export function updateCombo(player, isHit) {
+  if (player.class !== 'monk') return player;
+  let newCombo = player.comboCount || 0;
+  if (isHit) {
+    newCombo += 1;
+    // Cap combo count at max multiplier index + 1 (length)
+    if (newCombo > MONK_CONFIG.comboMultipliers.length) {
+      newCombo = MONK_CONFIG.comboMultipliers.length;
+    }
+  } else {
+    // Miss breaks combo
+    newCombo = 0;
+  }
+  return { ...player, comboCount: newCombo };
+}
+export default {
+  calculateMonkDamage,
+  getComboMultiplier,
+  updateCombo,
+  MONK_CONFIG
+};
+---
+/**
+ * RageSystem.js
+ * Manages the Berserker class's Rage resource, generation, decay, and Enrage state.
+ */
+export const RAGE_CONFIG = {
+  maxRage: 100,
+  ragePerHit: 10,       // Gained when hitting an enemy
+  ragePerDamaged: 15,   // Gained when taking damage
+  rageDecayPerTurn: 5,  // Lost at end of turn
+  enrageThreshold: 80,  // Rage required to enter Enrage
+  enrageDamageMult: 1.5,
+  enrageDefenseMult: 0.7
+};
+/**
+ * Processes turn-based rage mechanics (decay and state updates).
+ * @param {Object} player - The player entity
+ * @param {Array} messages - Combat log array to push messages to
+ * @returns {Object} Updated player object
+ */
+export function processRageTurn(player, messages = []) {
+  if (player.class !== 'berserker') return player;
+  // Initialize rage if missing
+  if (typeof player.rage === 'undefined') player.rage = 0;
+  // Apply Decay
+  const oldRage = player.rage;
+  player.rage = Math.max(0, player.rage - RAGE_CONFIG.rageDecayPerTurn);
+  // Check Enrage State
+  if (player.rage >= RAGE_CONFIG.enrageThreshold && !player.isEnraged) {
+    player.isEnraged = true;
+    messages.push(`ðŸ”¥ ${player.name} enters a BLOOD RAGE!`);
+  } else if (player.rage < RAGE_CONFIG.enrageThreshold && player.isEnraged) {
+    player.isEnraged = false;
+    messages.push(`${player.name}'s rage subsides.`);
+  }
+  return player;
+}
+/**
+ * Calculates and applies rage gain from combat actions.
+ * @param {Object} player - The player entity
+ * @param {string} source - 'hit' or 'damaged'
+ * @param {Array} messages - Combat log
+ */
+export function applyRageGain(player, source, messages = []) {
+  if (player.class !== 'berserker') return;
+  let gain = 0;
+  if (source === 'hit') gain = RAGE_CONFIG.ragePerHit;
+  if (source === 'damaged') gain = RAGE_CONFIG.ragePerDamaged;
+  const oldRage = player.rage || 0;
+  player.rage = Math.min(RAGE_CONFIG.maxRage, oldRage + gain);
+  // Immediate Enrage check upon gaining rage
+  if (player.rage >= RAGE_CONFIG.enrageThreshold && !player.isEnraged) {
+    player.isEnraged = true;
+    messages.push(`ðŸ”¥ ${player.name} enters a BLOOD RAGE!`);
+  }
+}
+export default { processRageTurn, applyRageGain, RAGE_CONFIG };
+---
+/**
+ * StealthSystem.js
+ * Manages detection logic, stealth states, and ambush bonuses.
+ */
+export const STEALTH_CONFIG = {
+  baseDetection: 10,
+  ambushMultiplier: 2.0,
+  stealthBreakOnAttack: true
+};
+/**
+ * Checks if an enemy detects the player.
+ * @param {Object} player
+ * @param {Object} enemy
+ * @returns {boolean} True if detected
+ */
+export function checkDetection(player, enemy) {
+  if (!player.isStealthed) return true;
+  const enemyPerception = enemy.stats?.perception || STEALTH_CONFIG.baseDetection;
+  const playerAgi = player.attributes?.agi || 0;
+
+  // Racial bonus check
+  const hasStealthBonus = player.race === 'shadow_walker' || player.race === 'assassin';
+  const stealthScore = playerAgi * 2 * (hasStealthBonus ? 1.5 : 1.0);
+  // Random factor (0-100)
+  const roll = Math.random() * 100;
+
+  // If stealth score + roll is lower than perception, detected
+  // High stealth score makes detection harder
+  return (stealthScore + roll) < enemyPerception;
+}
+/**
+ * Calculates damage modifier for attacks from stealth.
+ * @param {number} damage - Base damage
+ * @param {boolean} isStealthed
+ * @returns {number} Modified damage
+ */
+export function applyAmbushDamage(damage, isStealthed) {
+  return isStealthed ? Math.floor(damage * STEALTH_CONFIG.ambushMultiplier) : damage;
+}
+/**
+ * Handles breaking stealth after an action.
+ * @param {Object} player
+ * @param {Array} messages
+ * @returns {Object} Updated player properties
+ */
+export function breakStealth(player, messages = []) {
+  if (player.isStealthed) {
+    messages.push(`${player.name} emerges from the shadows!`);
+    return { ...player, isStealthed: false };
+  }
+  return player;
+}
+export default {
+  checkDetection,
+  applyAmbushDamage,
+  breakStealth
+};
+---
+/**
+ * ItemProcSystem.js
+ * Handles special effects (procs) from Legendary and Unique items.
+ */
+/**
+ * Checks and applies weapon procs on hit.
+ * @param {Object} attacker
+ * @param {Object} defender
+ * @param {number} damageDealt
+ * @param {Array} messages
+ * @returns {Object} Result containing extra damage or effects
+ */
+export function processWeaponProcs(attacker, defender, damageDealt, messages = []) {
+  const weapon = attacker.equipment?.weapon;
+  if (!weapon || !weapon.uniquePassive || !weapon.uniquePassive.proc) return {};
+  const proc = weapon.uniquePassive.proc;
+  const roll = Math.random();
+  if (roll <= proc.chance) {
+    return applyProcEffect(proc, attacker, defender, damageDealt, messages);
+  }
+  return {};
+}
+function applyProcEffect(proc, attacker, defender, damageDealt, messages) {
+  const result = { extraDamage: 0, effects: [] };
+  switch (proc.effect) {
+    case 'true_damage':
+      // Ignores defense
+      result.extraDamage = Math.floor(damageDealt * (proc.multiplier || 0.5));
+      messages.push(`âœ¨ ${attacker.name}'s weapon cuts reality! (+${result.extraDamage} True Dmg)`);
+      break;
+    case 'lifesteal':
+      const healAmount = Math.floor(damageDealt * (proc.multiplier || 0.2));
+      // Assuming attacker has hp object structure
+      if (attacker.hp) {
+        attacker.hp.current = Math.min(attacker.hp.max, attacker.hp.current + healAmount);
+        messages.push(`ðŸ©¸ ${attacker.name} drains ${healAmount} life!`);
+      }
+      break;
+    case 'chain_lightning':
+      result.extraDamage = 20; // Flat bonus for single target fallback
+      messages.push(`âš¡ Lightning arcs from the blade!`);
+      break;
+  }
+  return result;
+}
+export default { processWeaponProcs };

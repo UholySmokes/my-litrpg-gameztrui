@@ -1,5 +1,4 @@
 ﻿* text=auto eol=lf
-
 *.png binary
 *.jpg binary
 *.jpeg binary
@@ -9,3 +8,4 @@
 *.zip binary
 *.dacpac binary
 *.docx binary
+*.psd filter=lfs diff=lfs merge=lfs -text

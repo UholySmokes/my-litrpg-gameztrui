@@ -11,11 +11,15 @@ import CreationNarrativePanel from "../panels/CreationNarrativePanel.jsx";
 import CreationIdentityPanel from "../panels/creation/CreationIdentityPanel.jsx";
 import CreationRacePanel from "../panels/creation/CreationRacePanel.jsx";
 import CreationClassPanel from "../panels/creation/CreationClassPanel.jsx";
+import CreationProfessionPanel from "../panels/creation/CreationProfessionPanel.jsx";
 import CreationAttributesPanel from "../panels/creation/CreationAttributesPanel.jsx";
 import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
 import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSystemPanel.jsx";
+import CreationArchetypeRecommendations from "../panels/creation/CreationArchetypeRecommendations.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
+import CreationWizardShellPanel from "../panels/creation/CreationWizardShellPanel.jsx";
 import { getRaceAbilitiesFor } from "../../systems/race/RaceAbilityRegistry.js";
+import { recommendArchetypeSystems } from "../../utils/archetypeRecommendations.js";
 
 let audioContext = null;
 const SOUND_PROFILES = {
@@ -120,9 +124,12 @@ const playSystemSound = (sound) => {
 
 export default function CharacterCreationMode({ onComplete }) {
   const {
+    currentStep,
+    steps,
     selectedRace,
     selectedClass,
     selectedArchetypeSystem,
+    selectedProfession,
     name: characterName,
     gender,
     attributePoints,
@@ -136,6 +143,7 @@ export default function CharacterCreationMode({ onComplete }) {
     handleRaceSelect,
     handleClassSelect,
     handleArchetypeSystemSelect,
+    handleProfessionSelect,
     setName,
     setGender,
     allocateAttributePoint: handleStatIncrement,
@@ -143,7 +151,13 @@ export default function CharacterCreationMode({ onComplete }) {
     handleReroll,
     handleActiveSkillSelect,
     handlePassiveSkillToggle,
+    nextStep,
+    previousStep,
     finalizeCharacter,
+    validateCurrentStep,
+    validateReview,
+    MAX_ACTIVE_SKILLS,
+    MAX_PASSIVE_SKILLS,
   } = useCharacterCreationReworked();
 
   const allocationPoints = useMemo(
@@ -167,6 +181,7 @@ export default function CharacterCreationMode({ onComplete }) {
     "Select a race and class to generate a profile summary.",
   );
   const [syncProgress, setSyncProgress] = useState(0);
+  const [wizardError, setWizardError] = useState("");
   const derivedStats = useMemo(() => {
     const resourceSystem =
       selectedClass?.resourceSystem || selectedClass?.resource || null;
@@ -262,6 +277,13 @@ export default function CharacterCreationMode({ onComplete }) {
       selectedArchetypeSystem?.summary ||
       selectedArchetypeSystem?.description ||
       "Choose an archetype system to shape progression.";
+    const professionName = selectedProfession?.name || "Profession not selected";
+    const professionDescription =
+      selectedProfession?.description ||
+      "Choose a profession to gain tier-1 skills.";
+    const professionSkills = Array.isArray(selectedProfession?.tierUnlocks?.[1]?.skills)
+      ? selectedProfession.tierUnlocks[1].skills
+      : null;
     return {
       raceName,
       raceDescription,
@@ -271,6 +293,9 @@ export default function CharacterCreationMode({ onComplete }) {
       classDescription,
       talentName,
       talentDescription,
+      professionName,
+      professionDescription,
+      professionSkills,
       systemName,
       systemDescription,
       activeSkills: selectedActiveSkills.length > 0 ? selectedActiveSkills : null,
@@ -281,20 +306,25 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedRace,
     selectedClass,
     selectedArchetypeSystem,
+    selectedProfession,
     selectedActiveSkills,
     selectedPassiveSkills,
   ]);
 
   useEffect(() => {
-    const stepValue = 100 / 7;
+    const stepValue = 100 / 8;
     let progress = 0;
     if (characterName && characterName.trim().length > 0) progress += stepValue;
     if (gender) progress += stepValue;
     if (selectedRace) progress += stepValue;
     if (selectedClass) progress += stepValue;
+    if (selectedProfession) progress += stepValue;
     if (selectedArchetypeSystem) progress += stepValue;
     if (availablePoints === 0) progress += stepValue;
-    if (selectedActiveSkills?.length >= 3 && selectedPassiveSkills?.length >= 6)
+    if (
+      selectedActiveSkills?.length >= MAX_ACTIVE_SKILLS &&
+      selectedPassiveSkills?.length >= MAX_PASSIVE_SKILLS
+    )
       progress += stepValue;
     setSyncProgress(Math.min(100, progress));
   }, [
@@ -302,22 +332,19 @@ export default function CharacterCreationMode({ onComplete }) {
     gender,
     selectedRace,
     selectedClass,
+    selectedProfession,
     selectedArchetypeSystem,
     availablePoints,
     selectedActiveSkills,
     selectedPassiveSkills,
+    MAX_ACTIVE_SKILLS,
+    MAX_PASSIVE_SKILLS,
   ]);
 
-  const canFinalize =
-    characterName &&
-    characterName.trim().length > 0 &&
-    gender &&
-    selectedRace &&
-    selectedClass &&
-    selectedArchetypeSystem &&
-    availablePoints === 0 &&
-    selectedActiveSkills?.length >= 3 &&
-    selectedPassiveSkills?.length >= 6;
+  const canFinalize = useMemo(() => {
+    const result = validateReview?.();
+    return Boolean(result?.valid);
+  }, [validateReview]);
 
   const handleClick = useCallback((action) => {
     playSystemSound("click");
@@ -344,6 +371,10 @@ export default function CharacterCreationMode({ onComplete }) {
         active: Boolean(selectedClass),
       },
       {
+        label: `Profession: ${selectedProfession?.name || "pending"}`,
+        active: Boolean(selectedProfession),
+      },
+      {
         label: `System: ${selectedArchetypeSystem?.name || "pending"}`,
         active: Boolean(selectedArchetypeSystem),
       },
@@ -356,9 +387,10 @@ export default function CharacterCreationMode({ onComplete }) {
         active: availablePoints === 0,
       },
       {
-        label: `Skills: ${selectedActiveSkills.length}/3 active, ${selectedPassiveSkills.length}/6 passive`,
+        label: `Skills: ${selectedActiveSkills.length}/${MAX_ACTIVE_SKILLS} active, ${selectedPassiveSkills.length}/${MAX_PASSIVE_SKILLS} passive`,
         active:
-          selectedActiveSkills.length >= 3 && selectedPassiveSkills.length >= 6,
+          selectedActiveSkills.length >= MAX_ACTIVE_SKILLS &&
+          selectedPassiveSkills.length >= MAX_PASSIVE_SKILLS,
       },
     ],
     [
@@ -370,6 +402,9 @@ export default function CharacterCreationMode({ onComplete }) {
       selectedArchetypeSystem,
       selectedPassiveSkills.length,
       selectedRace,
+      selectedProfession,
+      MAX_ACTIVE_SKILLS,
+      MAX_PASSIVE_SKILLS,
     ],
   );
 
@@ -389,6 +424,12 @@ export default function CharacterCreationMode({ onComplete }) {
       entries.push({
         timestamp: "talents",
         text: `Talents queued for auto-assignment (${selectedClass.name}).`,
+      });
+    }
+    if (selectedProfession) {
+      entries.push({
+        timestamp: "profession",
+        text: `Profession chosen: ${selectedProfession.name}`,
       });
     }
     if (selectedArchetypeSystem) {
@@ -420,6 +461,7 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedArchetypeSystem,
     selectedPassiveSkills,
     selectedRace,
+    selectedProfession,
   ]);
   const latestEntry =
     creationMemoryEntries.length > 0
@@ -427,149 +469,290 @@ export default function CharacterCreationMode({ onComplete }) {
       : null;
   const narrativeMemoryRef = useRef(null);
 
-  const windows = [
-    {
-      id: "identity",
-      title: "Identity",
-      dockZone: "float",
-      position: { x: 40, y: 80 },
-      size: { w: 320, h: 240 },
-      minWidth: 260,
-      minHeight: 200,
-      content: (
+  const archetypeRecommendations = useMemo(
+    () =>
+      recommendArchetypeSystems({
+        systems: availableArchetypeSystems,
+        race: selectedRace,
+        cls: selectedClass,
+        profession: selectedProfession,
+      }),
+    [availableArchetypeSystems, selectedRace, selectedClass, selectedProfession],
+  );
+
+  const activePhase = useMemo(() => {
+    if (currentStep === steps.IDENTITY) {
+      return (
         <CreationIdentityPanel
           characterName={characterName}
-          onNameChange={setName}
+          onNameChange={(value) => {
+            setWizardError("");
+            setName(value);
+          }}
           gender={gender}
-          onGenderSelect={setGender}
+          onGenderSelect={(value) => {
+            setWizardError("");
+            setGender(value);
+          }}
           onAction={handleClick}
         />
-      ),
-    },
-    {
-      id: "race",
-      title: "Race",
-      dockZone: "float",
-      position: { x: 40, y: 340 },
-      size: { w: 320, h: 380 },
-      minWidth: 260,
-      minHeight: 260,
-      content: (
+      );
+    }
+    if (currentStep === steps.RACE) {
+      return (
         <CreationRacePanel
           selectedRace={selectedRace}
-          onRaceSelect={handleRaceSelect}
+          onRaceSelect={(race) => {
+            setWizardError("");
+            handleRaceSelect(race);
+          }}
           onAction={handleClick}
         />
-      ),
-    },
-    {
-      id: "class",
-      title: "Class",
-      dockZone: "float",
-      position: { x: 380, y: 80 },
-      size: { w: 320, h: 240 },
-      minWidth: 260,
-      minHeight: 200,
-      content: (
+      );
+    }
+    if (currentStep === steps.CLASS) {
+      return (
         <CreationClassPanel
           selectedClass={selectedClass}
-          onClassSelect={handleClassSelect}
+          onClassSelect={(cls) => {
+            setWizardError("");
+            handleClassSelect(cls);
+          }}
           onAction={handleClick}
         />
-      ),
-    },
-    {
-      id: "archetypeSystem",
-      title: "System",
-      dockZone: "float",
-      position: { x: 720, y: 80 },
-      size: { w: 320, h: 320 },
-      minWidth: 280,
-      minHeight: 240,
-      content: (
-        <CreationArchetypeSystemPanel
-          systems={availableArchetypeSystems}
-          selectedSystem={selectedArchetypeSystem}
-          onSystemSelect={handleArchetypeSystemSelect}
+      );
+    }
+    if (currentStep === steps.PROFESSION) {
+      return (
+        <CreationProfessionPanel
+          selectedProfession={selectedProfession}
+          onProfessionSelect={(profId) => {
+            setWizardError("");
+            handleProfessionSelect(profId);
+          }}
           onAction={handleClick}
         />
-      ),
-    },
-    {
-      id: "attributes",
-      title: "Attributes",
-      dockZone: "float",
-      position: { x: 380, y: 340 },
-      size: { w: 320, h: 380 },
-      minWidth: 260,
-      minHeight: 280,
-      content: (
+      );
+    }
+    if (currentStep === steps.ARCHETYPE) {
+      return (
+        <div>
+          <CreationArchetypeRecommendations
+            recommendations={archetypeRecommendations}
+            selectedSystemId={selectedArchetypeSystem?.id || null}
+            onSelect={(systemId) => {
+              setWizardError("");
+              handleArchetypeSystemSelect(systemId);
+            }}
+          />
+          <CreationArchetypeSystemPanel
+            systems={availableArchetypeSystems}
+            selectedSystem={selectedArchetypeSystem}
+            onSystemSelect={(systemId) => {
+              setWizardError("");
+              handleArchetypeSystemSelect(systemId);
+            }}
+            onAction={handleClick}
+          />
+        </div>
+      );
+    }
+    if (currentStep === steps.ATTRIBUTES) {
+      return (
         <CreationAttributesPanel
           allocationPoints={allocationPoints}
           derivedStats={derivedStats}
           availablePoints={availablePoints}
-          onStatChange={handleStatChange}
+          onStatChange={(stat, delta) => {
+            setWizardError("");
+            handleStatChange(stat, delta);
+          }}
           onAction={handleClick}
           rerollsRemaining={rerollsRemaining}
-          onReroll={handleReroll}
+          onReroll={() => {
+            setWizardError("");
+            handleReroll();
+          }}
         />
-      ),
-    },
-    {
-      id: "skills",
-      title: "Skills",
-      dockZone: "float",
-      position: { x: 720, y: 420 },
-      size: { w: 300, h: 340 },
-      minWidth: 280,
-      minHeight: 280,
-      content: (
+      );
+    }
+    if (currentStep === steps.SKILLS) {
+      return (
         <CreationSkillsPanel
           selectedClass={selectedClass}
           availableActiveSkills={availableActiveSkills}
           availablePassiveSkills={availablePassiveSkills}
           selectedActiveSkills={selectedActiveSkills}
           selectedPassiveSkills={selectedPassiveSkills}
-          onActiveSelect={handleActiveSkillSelect}
-          onPassiveToggle={handlePassiveSkillToggle}
+          onActiveSelect={(skill) => {
+            setWizardError("");
+            handleActiveSkillSelect(skill);
+          }}
+          onPassiveToggle={(skill) => {
+            setWizardError("");
+            handlePassiveSkillToggle(skill);
+          }}
           onAction={handleClick}
         />
-      ),
-    },
+      );
+    }
+    return (
+      <CreationSummaryPanel
+        asciiArt={asciiArt}
+        selectionSummary={selectionSummary}
+        selectedActiveSkills={selectedActiveSkills}
+        selectedPassiveSkills={selectedPassiveSkills}
+        typewriterText={typewriterText}
+        syncProgress={syncProgress}
+        canFinalize={canFinalize}
+        finalizeCharacter={finalizeCharacter}
+        onComplete={onComplete}
+      />
+    );
+  }, [
+    MAX_ACTIVE_SKILLS,
+    MAX_PASSIVE_SKILLS,
+    allocationPoints,
+    archetypeRecommendations,
+    asciiArt,
+    availableActiveSkills,
+    availableArchetypeSystems,
+    availablePassiveSkills,
+    availablePoints,
+    canFinalize,
+    characterName,
+    currentStep,
+    derivedStats,
+    finalizeCharacter,
+    gender,
+    handleClick,
+    handleActiveSkillSelect,
+    handleArchetypeSystemSelect,
+    handleClassSelect,
+    handleProfessionSelect,
+    handleRaceSelect,
+    handleReroll,
+    handleStatChange,
+    handlePassiveSkillToggle,
+    onComplete,
+    rerollsRemaining,
+    selectedActiveSkills,
+    selectedArchetypeSystem,
+    selectedClass,
+    selectedPassiveSkills,
+    selectedProfession,
+    selectedRace,
+    selectionSummary,
+    setGender,
+    setName,
+    steps.ARCHETYPE,
+    steps.ATTRIBUTES,
+    steps.CLASS,
+    steps.IDENTITY,
+    steps.PROFESSION,
+    steps.RACE,
+    steps.SKILLS,
+    syncProgress,
+    typewriterText,
+  ]);
+
+  const wizardSteps = useMemo(() => {
+    const stepDefs = [
+      { id: "identity", label: "Identity", ok: Boolean(characterName?.trim()) && Boolean(gender) },
+      { id: "race", label: "Race", ok: Boolean(selectedRace) },
+      { id: "class", label: "Class", ok: Boolean(selectedClass) },
+      { id: "profession", label: "Profession", ok: Boolean(selectedProfession) },
+      { id: "system", label: "System", ok: Boolean(selectedArchetypeSystem) },
+      { id: "attributes", label: "Attributes", ok: availablePoints === 0 },
+      {
+        id: "skills",
+        label: "Skills",
+        ok:
+          selectedActiveSkills.length === MAX_ACTIVE_SKILLS &&
+          selectedPassiveSkills.length === MAX_PASSIVE_SKILLS,
+      },
+      { id: "review", label: "Review", ok: canFinalize },
+    ];
+
+    const currentIndex = Math.max(0, Number(currentStep || 1) - 1);
+    return stepDefs.map((s, idx) => {
+      const done = idx < currentIndex ? true : s.ok;
+      const locked = idx > currentIndex;
+      return { id: s.id, label: s.label, status: done ? "done" : locked ? "locked" : "open" };
+    });
+  }, [
+    MAX_ACTIVE_SKILLS,
+    MAX_PASSIVE_SKILLS,
+    availablePoints,
+    canFinalize,
+    characterName,
+    currentStep,
+    gender,
+    selectedActiveSkills.length,
+    selectedArchetypeSystem,
+    selectedClass,
+    selectedPassiveSkills.length,
+    selectedProfession,
+    selectedRace,
+  ]);
+
+  const activeStepId = useMemo(() => {
+    const ids = [
+      "identity",
+      "race",
+      "class",
+      "profession",
+      "system",
+      "attributes",
+      "skills",
+      "review",
+    ];
+    const idx = Math.max(0, Math.min(ids.length - 1, Number(currentStep || 1) - 1));
+    return ids[idx];
+  }, [currentStep]);
+
+  const canBack = currentStep > steps.IDENTITY;
+  const canNext = currentStep < steps.REVIEW;
+
+  const windows = [
     {
-      id: "summary",
-      title: "Summary",
+      id: "wizard",
+      title: "Character Genesis",
       dockZone: "center",
-      minWidth: 520,
-      minHeight: 420,
+      minWidth: 720,
+      minHeight: 520,
       content: (
-        <CreationSummaryPanel
-          asciiArt={asciiArt}
-          selectionSummary={selectionSummary}
-          selectedActiveSkills={selectedActiveSkills}
-          selectedPassiveSkills={selectedPassiveSkills}
-          typewriterText={typewriterText}
-          syncProgress={syncProgress}
-          canFinalize={canFinalize}
-          finalizeCharacter={finalizeCharacter}
-          onComplete={onComplete}
-        />
-      ),
-    },
-    {
-      id: "creationNarrative",
-      title: "Creation Log",
-      dockZone: "center",
-      minWidth: 360,
-      minHeight: 220,
-      content: (
-        <CreationNarrativePanel
-          statusLines={statusLines}
-          typewriterText={typewriterText}
-          syncProgress={syncProgress}
-          selectedRace={selectedRace}
-          selectedClass={selectedClass}
-          selectedArchetypeSystem={selectedArchetypeSystem}
+        <CreationWizardShellPanel
+          title="Character Genesis"
+          steps={wizardSteps}
+          activeStepId={activeStepId}
+          error={wizardError}
+          canBack={canBack}
+          canNext={canNext}
+          onBack={() => {
+            setWizardError("");
+            previousStep();
+          }}
+          onNext={() => {
+            const validation = validateCurrentStep?.();
+            if (!validation?.valid) {
+              setWizardError(validation?.error || "Complete this phase to continue.");
+              return;
+            }
+            setWizardError("");
+            nextStep();
+          }}
+          sidebar={
+            <CreationNarrativePanel
+              statusLines={statusLines}
+              typewriterText={typewriterText}
+              syncProgress={syncProgress}
+              selectedRace={selectedRace}
+              selectedClass={selectedClass}
+              selectedArchetypeSystem={selectedArchetypeSystem}
+            />
+          }
+          content={activePhase}
         />
       ),
     },
@@ -592,5 +775,6 @@ export default function CharacterCreationMode({ onComplete }) {
       ),
     },
   ];
+
   return <WindowManager mode="creation" windows={windows} forceFloating={true} />;
 }

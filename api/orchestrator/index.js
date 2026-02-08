@@ -218,7 +218,7 @@ function buildNarratorInstruction(task) {
 ${prompt ? `Prompt: ${prompt}` : ''}
 ${context ? `Context: ${JSON.stringify(context)}` : ''}
 ${style ? `Style: ${style}` : 'Style: Immersive, descriptive'}
-${length ? `Length: ${length}` : 'Length: Medium (2-3 paragraphs)}
+${length ? `Length: ${length}` : 'Length: Medium (2-3 paragraphs)'}
 
 Provide the narrative as engaging prose. If you need to include structured data (like choices, mood, etc.), wrap it in a JSON code block.`;
 }

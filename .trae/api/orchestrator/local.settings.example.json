@@ -1,0 +1,38 @@
+# AI Orchestrator Configuration
+# Copy this file to local.settings.json or set these environment variables
+
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+
+    # Orchestrator Settings
+    "ORCHESTRATOR_RATE_LIMIT_PER_MIN": "10",
+
+    # Agent IDs - Configure these with your Foundry assistant IDs
+    "NARRATOR_AGENT_ID": "your-narrator-assistant-id",
+    "QUEST_AGENT_ID": "your-quest-assistant-id",
+    "COMBAT_AGENT_ID": "your-combat-assistant-id",
+    "DIALOGUE_AGENT_ID": "your-dialogue-assistant-id",
+    "WORLD_AGENT_ID": "your-world-assistant-id",
+    "SYSTEM_AGENT_ID": "your-system-assistant-id",
+    "CONTENT_SMITH_AGENT_ID": "your-content-smith-assistant-id",
+
+    # Foundry/Azure AI Configuration
+    "FOUNDRY_PROJECT_ENDPOINT": "https://your-foundry-project-endpoint",
+    "FOUNDRY_API_KEY": "your-api-key",
+    "FOUNDRY_API_VERSION": "2025-05-01",
+
+    # Rate Limiting
+    "REQUIRE_REDIS_RATE_LIMIT": "false",
+    "REDIS_URL": "",
+
+    # Timeouts (in milliseconds)
+    "AZURE_AI_HTTP_TIMEOUT_MS": "30000",
+
+    # Environment
+    "AZURE_FUNCTIONS_ENVIRONMENT": "Development",
+    "NODE_ENV": "development"
+  }
+}

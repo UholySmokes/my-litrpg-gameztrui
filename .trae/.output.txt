@@ -1,0 +1,223 @@
+/**
+ * MonkSystem.js
+ * Handles Chi resource, Combo counters, and Unarmed damage scaling.
+ */
+export const MONK_CONFIG = {
+  maxChi: 100,
+  baseUnarmedDamage: 5,
+  comboDecayTurns: 1,
+  comboMultipliers: [1.0, 1.1, 1.25, 1.5, 2.0] // 1 to 5 hits
+};
+/**
+ * Calculates unarmed damage based on level and attributes.
+ * @param {Object} player
+ * @returns {number} Base damage
+ */
+export function calculateMonkDamage(player) {
+  if (player.class !== 'monk') return 0;
+  const levelScaling = (player.level || 1) * 2;
+  const str = player.attributes?.str || 0;
+  const dex = player.attributes?.dex || 0;
+  const attributeBonus = (str + dex) / 2;
+  return Math.floor(MONK_CONFIG.baseUnarmedDamage + levelScaling + attributeBonus);
+}
+/**
+ * Gets the current damage multiplier based on combo count.
+ * @param {Object} player
+ * @returns {number} Multiplier (e.g., 1.5)
+ */
+export function getComboMultiplier(player) {
+  if (player.class !== 'monk' || !player.comboCount) return 1.0;
+
+  const index = Math.min(player.comboCount, MONK_CONFIG.comboMultipliers.length) - 1;
+  return MONK_CONFIG.comboMultipliers[Math.max(0, index)];
+}
+/**
+ * Updates combo state after an attack.
+ * @param {Object} player
+ * @param {boolean} isHit - Did the attack hit?
+ * @returns {Object} Updated player properties (comboCount)
+ */
+export function updateCombo(player, isHit) {
+  if (player.class !== 'monk') return player;
+  let newCombo = player.comboCount || 0;
+  if (isHit) {
+    newCombo += 1;
+    // Cap combo count at max multiplier index + 1 (length)
+    if (newCombo > MONK_CONFIG.comboMultipliers.length) {
+      newCombo = MONK_CONFIG.comboMultipliers.length;
+    }
+  } else {
+    // Miss breaks combo
+    newCombo = 0;
+  }
+  return { ...player, comboCount: newCombo };
+}
+export default {
+  calculateMonkDamage,
+  getComboMultiplier,
+  updateCombo,
+  MONK_CONFIG
+};
+---
+/**
+ * RageSystem.js
+ * Manages the Berserker class's Rage resource, generation, decay, and Enrage state.
+ */
+export const RAGE_CONFIG = {
+  maxRage: 100,
+  ragePerHit: 10,       // Gained when hitting an enemy
+  ragePerDamaged: 15,   // Gained when taking damage
+  rageDecayPerTurn: 5,  // Lost at end of turn
+  enrageThreshold: 80,  // Rage required to enter Enrage
+  enrageDamageMult: 1.5,
+  enrageDefenseMult: 0.7
+};
+/**
+ * Processes turn-based rage mechanics (decay and state updates).
+ * @param {Object} player - The player entity
+ * @param {Array} messages - Combat log array to push messages to
+ * @returns {Object} Updated player object
+ */
+export function processRageTurn(player, messages = []) {
+  if (player.class !== 'berserker') return player;
+  // Initialize rage if missing
+  if (typeof player.rage === 'undefined') player.rage = 0;
+  // Apply Decay
+  const oldRage = player.rage;
+  player.rage = Math.max(0, player.rage - RAGE_CONFIG.rageDecayPerTurn);
+  // Check Enrage State
+  if (player.rage >= RAGE_CONFIG.enrageThreshold && !player.isEnraged) {
+    player.isEnraged = true;
+    messages.push(`ðŸ”¥ ${player.name} enters a BLOOD RAGE!`);
+  } else if (player.rage < RAGE_CONFIG.enrageThreshold && player.isEnraged) {
+    player.isEnraged = false;
+    messages.push(`${player.name}'s rage subsides.`);
+  }
+  return player;
+}
+/**
+ * Calculates and applies rage gain from combat actions.
+ * @param {Object} player - The player entity
+ * @param {string} source - 'hit' or 'damaged'
+ * @param {Array} messages - Combat log
+ */
+export function applyRageGain(player, source, messages = []) {
+  if (player.class !== 'berserker') return;
+  let gain = 0;
+  if (source === 'hit') gain = RAGE_CONFIG.ragePerHit;
+  if (source === 'damaged') gain = RAGE_CONFIG.ragePerDamaged;
+  const oldRage = player.rage || 0;
+  player.rage = Math.min(RAGE_CONFIG.maxRage, oldRage + gain);
+  // Immediate Enrage check upon gaining rage
+  if (player.rage >= RAGE_CONFIG.enrageThreshold && !player.isEnraged) {
+    player.isEnraged = true;
+    messages.push(`ðŸ”¥ ${player.name} enters a BLOOD RAGE!`);
+  }
+}
+export default { processRageTurn, applyRageGain, RAGE_CONFIG };
+---
+/**
+ * StealthSystem.js
+ * Manages detection logic, stealth states, and ambush bonuses.
+ */
+export const STEALTH_CONFIG = {
+  baseDetection: 10,
+  ambushMultiplier: 2.0,
+  stealthBreakOnAttack: true
+};
+/**
+ * Checks if an enemy detects the player.
+ * @param {Object} player
+ * @param {Object} enemy
+ * @returns {boolean} True if detected
+ */
+export function checkDetection(player, enemy) {
+  if (!player.isStealthed) return true;
+  const enemyPerception = enemy.stats?.perception || STEALTH_CONFIG.baseDetection;
+  const playerAgi = player.attributes?.agi || 0;
+
+  // Racial bonus check
+  const hasStealthBonus = player.race === 'shadow_walker' || player.race === 'assassin';
+  const stealthScore = playerAgi * 2 * (hasStealthBonus ? 1.5 : 1.0);
+  // Random factor (0-100)
+  const roll = Math.random() * 100;
+
+  // If stealth score + roll is lower than perception, detected
+  // High stealth score makes detection harder
+  return (stealthScore + roll) < enemyPerception;
+}
+/**
+ * Calculates damage modifier for attacks from stealth.
+ * @param {number} damage - Base damage
+ * @param {boolean} isStealthed
+ * @returns {number} Modified damage
+ */
+export function applyAmbushDamage(damage, isStealthed) {
+  return isStealthed ? Math.floor(damage * STEALTH_CONFIG.ambushMultiplier) : damage;
+}
+/**
+ * Handles breaking stealth after an action.
+ * @param {Object} player
+ * @param {Array} messages
+ * @returns {Object} Updated player properties
+ */
+export function breakStealth(player, messages = []) {
+  if (player.isStealthed) {
+    messages.push(`${player.name} emerges from the shadows!`);
+    return { ...player, isStealthed: false };
+  }
+  return player;
+}
+export default {
+  checkDetection,
+  applyAmbushDamage,
+  breakStealth
+};
+---
+/**
+ * ItemProcSystem.js
+ * Handles special effects (procs) from Legendary and Unique items.
+ */
+/**
+ * Checks and applies weapon procs on hit.
+ * @param {Object} attacker
+ * @param {Object} defender
+ * @param {number} damageDealt
+ * @param {Array} messages
+ * @returns {Object} Result containing extra damage or effects
+ */
+export function processWeaponProcs(attacker, defender, damageDealt, messages = []) {
+  const weapon = attacker.equipment?.weapon;
+  if (!weapon || !weapon.uniquePassive || !weapon.uniquePassive.proc) return {};
+  const proc = weapon.uniquePassive.proc;
+  const roll = Math.random();
+  if (roll <= proc.chance) {
+    return applyProcEffect(proc, attacker, defender, damageDealt, messages);
+  }
+  return {};
+}
+function applyProcEffect(proc, attacker, defender, damageDealt, messages) {
+  const result = { extraDamage: 0, effects: [] };
+  switch (proc.effect) {
+    case 'true_damage':
+      // Ignores defense
+      result.extraDamage = Math.floor(damageDealt * (proc.multiplier || 0.5));
+      messages.push(`âœ¨ ${attacker.name}'s weapon cuts reality! (+${result.extraDamage} True Dmg)`);
+      break;
+    case 'lifesteal':
+      const healAmount = Math.floor(damageDealt * (proc.multiplier || 0.2));
+      // Assuming attacker has hp object structure
+      if (attacker.hp) {
+        attacker.hp.current = Math.min(attacker.hp.max, attacker.hp.current + healAmount);
+        messages.push(`ðŸ©¸ ${attacker.name} drains ${healAmount} life!`);
+      }
+      break;
+    case 'chain_lightning':
+      result.extraDamage = 20; // Flat bonus for single target fallback
+      messages.push(`âš¡ Lightning arcs from the blade!`);
+      break;
+  }
+  return result;
+}
+export default { processWeaponProcs };

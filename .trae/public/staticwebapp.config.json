@@ -1,0 +1,38 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html"
+  },
+  "routes": [
+    {
+      "route": "/api/saves",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/saves/*",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/runs",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/runs/*",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/health",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/api/static-data",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/api/static-data/*",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/runtime-config.js"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "name": "my-litrpg-game",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "cd api && func start --port 7071",
+    "build": "vite build",
+    "postbuild": "node scripts/generate-runtime-config.js",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache",
+    "test:performance": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/performanceEffects.test.js",
+    "simulate": "node sim_gamestart_fixed.js",
+    "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",
+    "simulate:csv": "node sim_gamestart_fixed.js --format csv",
+    "simulate:full": "node sim_gamestart_fixed.js --runs 100",
+    "seed:static": "node scripts/seed-static-data.cjs",
+    "validate:registries": "node scripts/validate-registries.mjs",
+    "analyze:middleware": "node scripts/analyze-middleware-dependencies.cjs",
+    "analyze:middleware:json": "node scripts/analyze-middleware-dependencies.cjs --format=json",
+    "analyze:middleware:md": "node scripts/analyze-middleware-dependencies.cjs --format=markdown",
+    "analyze:graph": "node scripts/generate-dependency-graph.cjs --output=docs/MIDDLEWARE_DEPENDENCY_GRAPH.md",
+    "validate:archetypes": "node scripts/validate-archetypes.mjs"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.13.0",
+    "@dataconnect/generated": "file:src/dataconnect-generated",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.52.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.52.0",
+    "@opentelemetry/resources": "^1.25.1",
+    "@opentelemetry/sdk-node": "^0.52.0",
+    "@opentelemetry/semantic-conventions": "^1.25.1",
+    "@voidverse/game-core": "workspace:*",
+    "@voidverse/game-schemas": "workspace:*",
+    "dotenv": "^17.2.4",
+    "js-yaml": "^4.1.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
+    "@eslint/js": "^9.39.1",
+    "@jest/globals": "^30.2.0",
+    "@playwright/test": "^1.58.2",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "babel-jest": "^30.2.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^30.2.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4"
+  },
+  "overrides": {
+    "test-exclude": "^7.0.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "<rootDir>/tests/skillEffects.test.js",
+      "<rootDir>/tests/endToEndEffects.test.js",
+      "<rootDir>/tests/magnitudeCapsFusion.test.js",
+      "/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.[tj]sx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/tests/__mocks__/fileMock.js"
+    },
+    "modulePathIgnorePatterns": [
+      "<rootDir>/backups/"
+    ]
+  }
+}

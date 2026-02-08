@@ -27,6 +27,23 @@ const DEFAULT_ACTION_SUGGESTIONS = [
   { t: "talk to nearby NPC", w: 1 },
 ];
 
+// Mood inference from narrative text - used to tag entries
+const MOOD_PATTERNS = [
+  { mood: "tense", patterns: [/danger/i, /threat/i, /ambush/i, /attack/i, /dark/i, /enemy/i, /looming/i] },
+  { mood: "triumphant", patterns: [/victory/i, /triumph/i, /succeed/i, /conquer/i, /glory/i, /reward/i] },
+  { mood: "mysterious", patterns: [/strange/i, /mystery/i, /whisper/i, /shadow/i, /ancient/i, /secret/i, /hidden/i] },
+  { mood: "serene", patterns: [/calm/i, /peace/i, /gentle/i, /rest/i, /quiet/i, /warm/i, /soft/i] },
+  { mood: "desperate", patterns: [/flee/i, /escape/i, /wound/i, /bleed/i, /dying/i, /last/i, /barely/i] },
+];
+
+function inferMood(text) {
+  if (!text || typeof text !== "string") return "neutral";
+  for (const { mood, patterns } of MOOD_PATTERNS) {
+    if (patterns.some((p) => p.test(text))) return mood;
+  }
+  return "neutral";
+}
+
 const READ_ONLY_ACTIONS = new Set(["look", "inventory", "status"]);
 const SUMMARY_REFRESH_INTERVAL = 5;
 const shouldRefreshSummary = (narrativeState = {}) => {
@@ -54,6 +71,14 @@ function buildActionSuggestions(state) {
       { t: "drink potion", w: player.inventory?.length ? 0.9 : 0.6 },
       { t: "attempt escape", w: 0.7 },
     );
+    // Add skill-specific combat suggestions
+    const activeSkills = Array.isArray(player.activeSkills) ? player.activeSkills : [];
+    if (activeSkills.length > 0) {
+      const skill = activeSkills[Math.floor(Date.now() / 10000) % activeSkills.length];
+      if (skill?.name) {
+        suggestions.push({ t: `use ${skill.name}`, w: 0.95 });
+      }
+    }
   } else {
     suggestions.push(
       { t: "explore area", w: 1 },
@@ -61,6 +86,34 @@ function buildActionSuggestions(state) {
       { t: "review quests", w: (state.quests?.active?.length ?? 0) ? 1 : 0.6 },
       { t: "train skills", w: 0.8 },
     );
+
+    // Archetype-specific exploration suggestions
+    const systemLabel = resolveArchetypeSystemLabel(player);
+    if (systemLabel) {
+      const archetypeRaw = player.archetypeSystem;
+      const category = typeof archetypeRaw === "object" ? archetypeRaw?.category : null;
+      const systemSuggestions = {
+        System: { t: "check system status", w: 0.85 },
+        Authority: { t: "exert authority", w: 0.85 },
+        Path: { t: "meditate on path", w: 0.85 },
+        Framework: { t: "analyze framework", w: 0.85 },
+        Privilege: { t: "scan for hidden paths", w: 0.85 },
+        Overlay: { t: "probe for exploits", w: 0.85 },
+      };
+      if (category && systemSuggestions[category]) {
+        suggestions.push(systemSuggestions[category]);
+      }
+    }
+
+    // Location-aware suggestions
+    const location = state.world?.location?.current || state.world?.location || "";
+    const locationStr = typeof location === "string" ? location : "";
+    if (locationStr.includes("town") || locationStr.includes("village") || locationStr.includes("city")) {
+      suggestions.push({ t: "visit shop", w: 0.8 });
+    }
+    if (locationStr.includes("dungeon") || locationStr.includes("cave") || locationStr.includes("ruin")) {
+      suggestions.push({ t: "search for treasure", w: 0.85 });
+    }
   }
 
   const hpCurrent = toNumber(
@@ -80,6 +133,15 @@ function buildActionSuggestions(state) {
 
   if (!player.profession) {
     suggestions.push({ t: "choose profession", w: 0.8 });
+  }
+
+  // Quest-specific suggestions
+  const activeQuests = Array.isArray(state.quests?.active) ? state.quests.active : [];
+  if (activeQuests.length > 0 && !inCombat) {
+    const quest = activeQuests[0];
+    if (quest?.name) {
+      suggestions.push({ t: `pursue ${quest.name}`, w: 0.9 });
+    }
   }
 
   const uniqueSuggestions = suggestions.filter(
@@ -317,7 +379,7 @@ export function useNarrative(
           },
         });
 
-        // Finalize: replace the streaming entry with the guarded result
+        // Finalize: replace the streaming entry with the guarded result + mood
         setState((prev) => {
           const entries = Array.isArray(prev.narrative?.entries)
             ? prev.narrative.entries
@@ -329,6 +391,7 @@ export function useNarrative(
             ...updated[idx],
             text: result.narrative,
             source: "ai",
+            mood: inferMood(result.narrative),
           };
           return {
             ...prev,
@@ -378,17 +441,30 @@ export function useNarrative(
   );
 
   const updateNarrativeState = (prevState, entry) => {
-    const nextNarrative = appendNarrativeEntry(prevState.narrative, entry, {
+    // Auto-tag entries with mood if not already set
+    const taggedEntry = entry.mood
+      ? entry
+      : { ...entry, mood: inferMood(entry.text) };
+    const nextNarrative = appendNarrativeEntry(prevState.narrative, taggedEntry, {
       maxEntries: 80,
     });
     const summary = shouldRefreshSummary(nextNarrative)
       ? nextNarrative.entries[nextNarrative.entries.length - 1]?.text
       : prevState.narrative?.summary;
+    // Track the current dominant mood across recent entries
+    const recentEntries = (nextNarrative.entries || []).slice(-5);
+    const moodCounts = {};
+    for (const e of recentEntries) {
+      const m = e.mood || "neutral";
+      moodCounts[m] = (moodCounts[m] || 0) + 1;
+    }
+    const dominantMood = Object.entries(moodCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "neutral";
     return {
       ...prevState,
       narrative: {
         ...nextNarrative,
         summary: summary ?? "",
+        currentMood: dominantMood,
       },
     };
   };

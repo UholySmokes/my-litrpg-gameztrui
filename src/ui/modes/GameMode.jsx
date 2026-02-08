@@ -29,6 +29,7 @@ export default function GameMode({
   onSuggestionSelect,
   inputRef,
   narrativeSummary,
+  narrativeCurrentMood = "neutral",
   narrativeEntries,
   latestEntry,
   latestEntryText,
@@ -129,6 +130,7 @@ export default function GameMode({
           latestEntry={latestEntry}
           latestEntryText={latestEntryText}
           memoryRef={narrativeMemoryRef}
+          currentMood={narrativeCurrentMood}
         />
       ),
     },

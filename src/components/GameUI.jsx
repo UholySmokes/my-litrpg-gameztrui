@@ -70,6 +70,7 @@ export default function GameUI({ user }) {
   } = useGameEngine();
 
   const narrativeSummary = state?.narrative?.summary;
+  const narrativeCurrentMood = state?.narrative?.currentMood || "neutral";
   const narrativeEntries = state?.narrative?.entries || [];
   const recentNarrativeEntries = narrativeEntries.slice(-10).reverse();
   const latestNarrativeEntry = narrativeEntries[narrativeEntries.length - 1];
@@ -812,6 +813,7 @@ export default function GameUI({ user }) {
               suggestions={actionSuggestions}
               onSuggestionSelect={handleSuggestionClick}
               narrativeSummary={shouldShowNarrativeSummary ? narrativeSummary : ""}
+              narrativeCurrentMood={narrativeCurrentMood}
               narrativeEntries={recentNarrativeEntries}
               latestEntry={latestNarrativeEntry}
               latestEntryText={latestEntryTypewriterContent}

@@ -42,3 +42,6 @@ node_modules
 
 # GitHub Pages
 .nojekyll
+
+# Error pages
+error/index.html

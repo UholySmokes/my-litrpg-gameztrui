@@ -8,7 +8,7 @@ import {
 } from "./titleLogic.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeNarrativeEntries } from "./narrativeLog.js";
-import { toNumber, clamp } from "../utils/shared.js";
+import { isPlainObject, toNumber, clamp } from "../utils/shared.js";
 import { INITIAL_CONFIG } from "../data/initialState.js";
 import {
   WORLD_META,
@@ -38,8 +38,28 @@ const DEFAULT_PROGRESS = {
   totalGoldEarned: 0,
 };
 
+function lookupEntityByKind(trimmed, kind) {
+  const registry = kind === "race"
+    ? { getById: DataRegistry.getRaceById, getAll: DataRegistry.getRaces }
+    : kind === "class"
+      ? { getById: DataRegistry.getClassById, getAll: DataRegistry.getClasses }
+      : null;
+  if (!registry) return null;
+
+  const byId = registry.getById(trimmed);
+  if (byId) return { id: byId.id, name: byId.name || byId.id };
+
+  const lowered = trimmed.toLowerCase();
+  const byName = registry.getAll().find(
+    (entry) =>
+      typeof entry?.name === "string" && entry.name.toLowerCase() === lowered,
+  );
+  if (byName) return { id: byName.id, name: byName.name || byName.id };
+  return null;
+}
+
 function normalizeEntityRef(value, { kind, fallback } = {}) {
-  if (value && typeof value === "object" && !Array.isArray(value)) {
+  if (isPlainObject(value)) {
     const id = typeof value.id === "string" && value.id ? value.id : null;
     const name = typeof value.name === "string" && value.name ? value.name : id;
     if (id) return { id, name };
@@ -48,42 +68,14 @@ function normalizeEntityRef(value, { kind, fallback } = {}) {
   if (typeof value === "string" && value) {
     const trimmed = value.trim();
     if (!trimmed) return fallback ?? null;
-
-    if (kind === "race") {
-      const byId = DataRegistry.getRaceById(trimmed);
-      if (byId) return { id: byId.id, name: byId.name || byId.id };
-      const lowered = trimmed.toLowerCase();
-      const byName = DataRegistry.getRaces().find(
-        (race) =>
-          typeof race?.name === "string" && race.name.toLowerCase() === lowered,
-      );
-      if (byName) return { id: byName.id, name: byName.name || byName.id };
-      return trimmed;
-    }
-
-    if (kind === "class") {
-      const byId = DataRegistry.getClassById(trimmed);
-      if (byId) return { id: byId.id, name: byId.name || byId.id };
-      const lowered = trimmed.toLowerCase();
-      const byName = DataRegistry.getClasses().find(
-        (cls) =>
-          typeof cls?.name === "string" && cls.name.toLowerCase() === lowered,
-      );
-      if (byName) return { id: byName.id, name: byName.name || byName.id };
-      return trimmed;
-    }
-
-    return trimmed;
+    return lookupEntityByKind(trimmed, kind) ?? trimmed;
   }
 
   return fallback ?? null;
 }
 
 function normalizeConfig(rawConfig) {
-  const source =
-    rawConfig && typeof rawConfig === "object" && !Array.isArray(rawConfig)
-      ? rawConfig
-      : {};
+  const source = isPlainObject(rawConfig) ? rawConfig : {};
 
   const xpBrackets =
     Array.isArray(source.xpBrackets) && source.xpBrackets.length > 0
@@ -98,12 +90,7 @@ function normalizeConfig(rawConfig) {
 }
 
 function normalizeAttributes(rawAttributes, baseAttributeValue) {
-  const source =
-    rawAttributes &&
-    typeof rawAttributes === "object" &&
-    !Array.isArray(rawAttributes)
-      ? rawAttributes
-      : {};
+  const source = isPlainObject(rawAttributes) ? rawAttributes : {};
 
   const normalized = ensureAttributeShape(source, baseAttributeValue);
   return {
@@ -113,7 +100,7 @@ function normalizeAttributes(rawAttributes, baseAttributeValue) {
 }
 
 function normalizeGauge(rawGauge, maxDefault) {
-  if (rawGauge && typeof rawGauge === "object" && !Array.isArray(rawGauge)) {
+  if (isPlainObject(rawGauge)) {
     const max = toNumber(rawGauge.max, maxDefault);
     const current = clamp(toNumber(rawGauge.current, max), 0, max);
     return {
@@ -132,7 +119,7 @@ function normalizeGauge(rawGauge, maxDefault) {
 
 function normalizeXp(rawXp, level, config) {
   const xpMaxDefault = xpForNextLevel(level, config);
-  if (rawXp && typeof rawXp === "object" && !Array.isArray(rawXp)) {
+  if (isPlainObject(rawXp)) {
     return {
       ...rawXp,
       current: toNumber(rawXp.current, 0),
@@ -145,8 +132,10 @@ function normalizeXp(rawXp, level, config) {
   };
 }
 
+let _freeAtStartTitleIds = null;
 function getFreeAtStartTitleIds() {
-  return titleDatabase
+  if (_freeAtStartTitleIds) return _freeAtStartTitleIds;
+  _freeAtStartTitleIds = titleDatabase
     .filter((title) => {
       const purchase = title?.unlockConditions?.purchase;
       if (!purchase) return false;
@@ -157,6 +146,7 @@ function getFreeAtStartTitleIds() {
     })
     .map((title) => title.id)
     .filter(Boolean);
+  return _freeAtStartTitleIds;
 }
 
 function normalizeTitles(player) {
@@ -182,12 +172,7 @@ function normalizeTitles(player) {
 }
 
 function normalizeCurrency(player) {
-  const currency =
-    player.currency &&
-    typeof player.currency === "object" &&
-    !Array.isArray(player.currency)
-      ? player.currency
-      : {};
+  const currency = isPlainObject(player.currency) ? player.currency : {};
 
   const goldCoins = toNumber(currency.goldCoins ?? player.gold, 0);
   const soulpoints = toNumber(currency.soulpoints ?? player.soulpoints, 0);
@@ -205,12 +190,7 @@ function normalizeCurrency(player) {
 }
 
 function normalizeResources(rawResources) {
-  const source =
-    rawResources &&
-    typeof rawResources === "object" &&
-    !Array.isArray(rawResources)
-      ? rawResources
-      : {};
+  const source = isPlainObject(rawResources) ? rawResources : {};
 
   const next = { ...DEFAULT_RESOURCES };
   Object.entries(source).forEach(([key, value]) => {
@@ -223,10 +203,7 @@ function normalizeResources(rawResources) {
 }
 
 function normalizePlayer(rawPlayer, config) {
-  const player =
-    rawPlayer && typeof rawPlayer === "object" && !Array.isArray(rawPlayer)
-      ? rawPlayer
-      : {};
+  const player = isPlainObject(rawPlayer) ? rawPlayer : {};
 
   const level = Math.max(1, Math.floor(toNumber(player.level, 1)));
   const normalizedRace = normalizeEntityRef(player.race, {
@@ -243,25 +220,14 @@ function normalizePlayer(rawPlayer, config) {
   );
 
   const { goldCoins, soulpoints, currency } = normalizeCurrency(player);
-  const archetypeSystem =
-    player.archetypeSystem &&
-    typeof player.archetypeSystem === "object" &&
-    !Array.isArray(player.archetypeSystem)
+  const archetypeSystem = isPlainObject(player.archetypeSystem)
       ? player.archetypeSystem
       : typeof player.archetypeSystem === "string"
         ? { id: player.archetypeSystem, name: player.archetypeSystem }
         : null;
   const { unlockedTitles, equippedTitle } = normalizeTitles(player);
-  const progress =
-    player.progress &&
-    typeof player.progress === "object" &&
-    !Array.isArray(player.progress)
-      ? player.progress
-      : {};
-  const killsByEnemyId =
-    progress.killsByEnemyId &&
-    typeof progress.killsByEnemyId === "object" &&
-    !Array.isArray(progress.killsByEnemyId)
+  const progress = isPlainObject(player.progress) ? player.progress : {};
+  const killsByEnemyId = isPlainObject(progress.killsByEnemyId)
       ? progress.killsByEnemyId
       : {};
 
@@ -285,9 +251,7 @@ function normalizePlayer(rawPlayer, config) {
     race: normalizedRace,
     class: normalizedClass,
     attributes,
-    attributeInvestments:
-      player.attributeInvestments &&
-      typeof player.attributeInvestments === "object"
+    attributeInvestments: isPlainObject(player.attributeInvestments)
         ? player.attributeInvestments
         : {},
     xp: normalizeXp(player.xp, level, config),
@@ -295,12 +259,7 @@ function normalizePlayer(rawPlayer, config) {
     mana: normalizeGauge(player.mana, manaMaxDefault),
     resources: normalizeResources(player.resources),
     inventory: Array.isArray(player.inventory) ? player.inventory : [],
-    equipment:
-      player.equipment &&
-      typeof player.equipment === "object" &&
-      !Array.isArray(player.equipment)
-        ? player.equipment
-        : {},
+    equipment: isPlainObject(player.equipment) ? player.equipment : {},
     abilities: Array.isArray(player.abilities) ? player.abilities : [],
     titles: unlockedTitles,
     unlockedTitles,
@@ -314,12 +273,7 @@ function normalizePlayer(rawPlayer, config) {
     currency,
     archetypeSystem,
     talents: Array.isArray(player.talents) ? player.talents : [],
-    professions:
-      player.professions &&
-      typeof player.professions === "object" &&
-      !Array.isArray(player.professions)
-        ? player.professions
-        : {},
+    professions: isPlainObject(player.professions) ? player.professions : {},
     progress: {
       ...DEFAULT_PROGRESS,
       ...progress,
@@ -339,9 +293,7 @@ function normalizeArray(value) {
 }
 
 function normalizeObject(value) {
-  return value && typeof value === "object" && !Array.isArray(value)
-    ? value
-    : {};
+  return isPlainObject(value) ? value : {};
 }
 
 const DEFAULT_WORLD_ID = WORLD_META.id;
@@ -493,11 +445,7 @@ function migrateWorldFlags(rawFlags, baseVars, baseCounters) {
 }
 
 function normalizeLocation(rawLocation) {
-  if (
-    rawLocation &&
-    typeof rawLocation === "object" &&
-    !Array.isArray(rawLocation)
-  ) {
+  if (isPlainObject(rawLocation)) {
     const current = canonicalizeLocationId(rawLocation.current);
     const visited = canonicalizeLocationArray(rawLocation.visited);
     const unlockedAreas = canonicalizeLocationArray(rawLocation.unlockedAreas);
@@ -536,10 +484,7 @@ function normalizeLocation(rawLocation) {
 }
 
 export function normalizeGameState(rawState) {
-  const state =
-    rawState && typeof rawState === "object" && !Array.isArray(rawState)
-      ? rawState
-      : {};
+  const state = isPlainObject(rawState) ? rawState : {};
 
   const config = normalizeConfig(state.config);
   const player = normalizePlayer(state.player, config);

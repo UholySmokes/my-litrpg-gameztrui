@@ -3,6 +3,13 @@
  */
 
 /**
+ * Check whether a value is a plain object (not null, not an array).
+ */
+export function isPlainObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+/**
  * Safely convert a value to a finite number, returning a fallback if conversion fails.
  */
 export function toNumber(value, fallback = 0) {

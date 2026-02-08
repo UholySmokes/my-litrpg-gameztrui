@@ -34,7 +34,7 @@ import {
 } from "../systems/skills/SpellStudySystem.js";
 import { appendNarrativeEntry } from "./narrativeLog.js";
 import { withTraceSpan } from "../observability/traceShim.js";
-import { toNumber, clamp, mergeInventoryItems } from "../utils/shared.js";
+import { isPlainObject, toNumber, clamp, mergeInventoryItems } from "../utils/shared.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -63,13 +63,11 @@ const updatePlayerVitals = (player, config, attributesOverride) => {
   const nextManaMax = calculateMaxMana(effectiveAttributes);
 
   const rawHp = player?.hp;
-  const hp =
-    rawHp && typeof rawHp === "object" && rawHp !== null
+  const hp = isPlainObject(rawHp)
       ? rawHp
       : { current: toNumber(rawHp, nextHpMax), max: nextHpMax };
   const rawMana = player?.mana;
-  const mana =
-    rawMana && typeof rawMana === "object" && rawMana !== null
+  const mana = isPlainObject(rawMana)
       ? rawMana
       : { current: toNumber(rawMana, nextManaMax), max: nextManaMax };
 
@@ -164,12 +162,7 @@ const applyQuestRewards = (state, reward) => {
   const world = { ...(state.world || {}) };
 
   if (Number.isFinite(reward.xp) && reward.xp !== 0) {
-    if (
-      player.xp &&
-      typeof player.xp === "object" &&
-      player.xp !== null &&
-      "current" in player.xp
-    ) {
+    if (isPlainObject(player.xp) && "current" in player.xp) {
       player.xp = {
         ...player.xp,
         current: toNumber(player.xp.current, 0) + reward.xp,
@@ -180,7 +173,7 @@ const applyQuestRewards = (state, reward) => {
     playerChanged = true;
   }
 
-  if (reward.resources && typeof reward.resources === "object") {
+  if (isPlainObject(reward.resources)) {
     player.resources = mergeResources(player.resources, reward.resources);
     playerChanged = true;
   }
@@ -206,10 +199,7 @@ const applyQuestRewards = (state, reward) => {
       player.soulpoints = toNumber(player.soulpoints, 0);
     }
 
-    const progress =
-      player.progress && typeof player.progress === "object"
-        ? player.progress
-        : {};
+    const progress = isPlainObject(player.progress) ? player.progress : {};
     const earnedDelta = Math.max(0, delta);
     player.progress = {
       ...progress,
@@ -257,7 +247,7 @@ const applyQuestRewards = (state, reward) => {
     playerChanged = true;
   }
 
-  if (reward.flags && typeof reward.flags === "object") {
+  if (isPlainObject(reward.flags)) {
     world.flags = {
       ...(world.flags || {}),
       ...reward.flags,
@@ -403,8 +393,7 @@ const gameReducer = (state, action) =>
         ...state,
         player: {
           ...state.player,
-          xp:
-            typeof state.player.xp === "object" && state.player.xp !== null
+          xp: isPlainObject(state.player.xp)
               ? { ...state.player.xp, current: nextXp }
               : nextXp,
         },
@@ -901,8 +890,7 @@ const gameReducer = (state, action) =>
       );
 
       const nextSoul = currentSoul - soulCost;
-      const progress =
-        state.player.progress && typeof state.player.progress === "object"
+      const progress = isPlainObject(state.player.progress)
           ? state.player.progress
           : {};
       const pullCount = Array.isArray(results) ? results.length : 0;

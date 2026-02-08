@@ -55,6 +55,7 @@ const TASK_STATUS = {
 const taskQueue = [];
 const activeTasks = new Map();
 const taskResults = new Map();
+const MAX_CACHED_RESULTS = 500;
 
 /**
  * Get agent ID from environment variables
@@ -340,6 +341,7 @@ async function processTask(task, context) {
 
       activeTasks.delete(task.id);
       taskResults.set(task.id, task);
+      evictOldResults();
 
       context.log?.(`Task ${task.id} completed successfully`);
       return task;
@@ -364,6 +366,7 @@ async function processTask(task, context) {
 
   activeTasks.delete(task.id);
   taskResults.set(task.id, task);
+  evictOldResults();
 
   context.log?.(`Task ${task.id} failed after ${task.maxRetries} retries`);
   return task;
@@ -575,6 +578,19 @@ module.exports = async function orchestrator(context, req) {
     });
   }
 };
+
+/**
+ * Evict oldest results when the cache exceeds MAX_CACHED_RESULTS.
+ */
+function evictOldResults() {
+  if (taskResults.size <= MAX_CACHED_RESULTS) return;
+  const excess = taskResults.size - MAX_CACHED_RESULTS;
+  const iter = taskResults.keys();
+  for (let i = 0; i < excess; i++) {
+    const key = iter.next().value;
+    taskResults.delete(key);
+  }
+}
 
 // Export utilities for testing and internal use
 module.exports.AGENT_TYPES = AGENT_TYPES;

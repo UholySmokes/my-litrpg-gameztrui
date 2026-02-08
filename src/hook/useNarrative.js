@@ -45,13 +45,47 @@ function inferMood(text) {
 }
 
 const READ_ONLY_ACTIONS = new Set(["look", "inventory", "status"]);
-const SUMMARY_REFRESH_INTERVAL = 5;
+const SUMMARY_REFRESH_INTERVAL = 10;
 const shouldRefreshSummary = (narrativeState = {}) => {
   const count = Array.isArray(narrativeState.entries)
     ? narrativeState.entries.length
     : 0;
   return count > 0 && count % SUMMARY_REFRESH_INTERVAL === 0;
 };
+
+function computeDominantMood(entries = []) {
+  const recentEntries = entries.slice(-5);
+  const moodCounts = {};
+  for (const e of recentEntries) {
+    const m = e.mood || inferMood(e.text) || "neutral";
+    moodCounts[m] = (moodCounts[m] || 0) + 1;
+  }
+  return (
+    Object.entries(moodCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "neutral"
+  );
+}
+
+function buildSummaryPrompt({ previousSummary, recentLines }) {
+  const summarySeed =
+    typeof previousSummary === "string" && previousSummary.trim()
+      ? previousSummary.trim()
+      : "";
+
+  return [
+    "You are a summarization engine for an interactive LitRPG game.",
+    "Write a concise memory summary of the adventure so far.",
+    "Constraints:",
+    "- Output plain text only (no JSON, no bullet lists).",
+    "- 3 to 6 sentences.",
+    "- Include: current location/zone, the main immediate goal, key threats or NPCs, and any notable system effects.",
+    "- Keep it under 650 characters.",
+    summarySeed ? `\nPrevious summary:\n${summarySeed}` : "",
+    "\nRecent events:",
+    ...recentLines.map((line) => `- ${line}`),
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
 
 function buildActionSuggestions(state) {
   if (!state) {
@@ -332,6 +366,69 @@ export function useNarrative(
   );
   const fallbackCounterRef = useRef(0);
   const streamAbortRef = useRef(null);
+  const summaryInFlightRef = useRef(false);
+
+  const maybeRefreshSummary = useCallback(
+    async ({ stateSnapshot, appendedLine }) => {
+      if (summaryInFlightRef.current) return;
+      const narrative = stateSnapshot?.narrative || {};
+      const existingEntries = Array.isArray(narrative.entries)
+        ? narrative.entries
+        : [];
+
+      const filtered = existingEntries.filter((entry) =>
+        ["narrative", "system", "status-update"].includes(entry.type),
+      );
+      const augmented = appendedLine
+        ? filtered.concat([
+            {
+              type: "narrative",
+              text: String(appendedLine || ""),
+              mood: inferMood(appendedLine),
+            },
+          ])
+        : filtered;
+
+      const total = augmented.length;
+      const lastAtCount = toNumber(narrative.summaryMeta?.atCount, 0);
+
+      const shouldRun = shouldRefreshSummary({ entries: augmented }) && total > lastAtCount;
+      if (!shouldRun) return;
+
+      const recentLines = augmented
+        .slice(-10)
+        .map((e) => {
+          const prefix = e.type === "system" ? "System" : e.type === "status-update" ? "Status" : "Narrator";
+          return `${prefix}: ${String(e.text || "").trim()}`;
+        })
+        .filter(Boolean);
+
+      const prompt = buildSummaryPrompt({
+        previousSummary: narrative.summary,
+        recentLines,
+      });
+
+      summaryInFlightRef.current = true;
+      try {
+        const result = await generateNarrative(prompt);
+        const nextSummary = result?.narrative || "";
+        if (!nextSummary) return;
+        setState((prev) => ({
+          ...prev,
+          narrative: {
+            ...prev.narrative,
+            summary: nextSummary,
+            summaryMeta: { atCount: total, updatedAt: SimBridge.now() },
+          },
+        }));
+      } catch (err) {
+        console.warn("Summary refresh failed:", err);
+      } finally {
+        summaryInFlightRef.current = false;
+      }
+    },
+    [setState],
+  );
 
   /**
    * Helper: run streaming narrative, updating a placeholder entry live.
@@ -393,10 +490,16 @@ export function useNarrative(
             source: "ai",
             mood: inferMood(result.narrative),
           };
+          const dominantMood = computeDominantMood(updated);
           return {
             ...prev,
-            narrative: { ...prev.narrative, entries: updated },
+            narrative: { ...prev.narrative, entries: updated, currentMood: dominantMood },
           };
+        });
+
+        await maybeRefreshSummary({
+          stateSnapshot: prevStateForFallback,
+          appendedLine: result.narrative,
         });
 
         return result;
@@ -448,22 +551,13 @@ export function useNarrative(
     const nextNarrative = appendNarrativeEntry(prevState.narrative, taggedEntry, {
       maxEntries: 80,
     });
-    const summary = shouldRefreshSummary(nextNarrative)
-      ? nextNarrative.entries[nextNarrative.entries.length - 1]?.text
-      : prevState.narrative?.summary;
-    // Track the current dominant mood across recent entries
-    const recentEntries = (nextNarrative.entries || []).slice(-5);
-    const moodCounts = {};
-    for (const e of recentEntries) {
-      const m = e.mood || "neutral";
-      moodCounts[m] = (moodCounts[m] || 0) + 1;
-    }
-    const dominantMood = Object.entries(moodCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "neutral";
+    const dominantMood = computeDominantMood(nextNarrative.entries || []);
     return {
       ...prevState,
       narrative: {
         ...nextNarrative,
-        summary: summary ?? "",
+        summary: prevState.narrative?.summary ?? "",
+        summaryMeta: prevState.narrative?.summaryMeta,
         currentMood: dominantMood,
       },
     };
@@ -509,6 +603,7 @@ export function useNarrative(
           try {
             const failurePrompt = assemblePrompt(currentState, userInput, {
               success: false,
+              actionType: action?.type,
               reason: validation.reason,
               description: `Attempted: ${userInput}`,
             });
@@ -535,6 +630,7 @@ export function useNarrative(
           // Read-only actions don't change state
           actionResult = {
             success: true,
+            actionType: action.type,
             description: `Player said: "${userInput}"`,
             state: currentState,
             readOnly: true,
@@ -558,6 +654,7 @@ export function useNarrative(
           actionResult = READ_ONLY_ACTIONS.has(action.type)
             ? await execute()
             : wrapActionExecution(action.type, action, () => execute());
+          actionResult = { ...actionResult, actionType: action.type };
           newState = actionResult.state;
         }
 
@@ -678,10 +775,16 @@ export function useNarrative(
                 text: aiResponse.narrative,
                 timestamp: SimBridge.now(),
                 source: "ai",
+                mood: inferMood(aiResponse.narrative),
               },
               { maxEntries: 80 },
             ),
             summary: aiResponse.narrative,
+            summaryMeta: {
+              atCount: 1,
+              updatedAt: SimBridge.now(),
+            },
+            currentMood: inferMood(aiResponse.narrative),
           },
         };
 

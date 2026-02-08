@@ -431,7 +431,7 @@ export function useNarrative(
         summaryInFlightRef.current = false;
       }
     },
-    [setState, maybeRefreshSummary],
+    [setState],
   );
 
   /**
@@ -545,7 +545,7 @@ export function useNarrative(
         }
       }
     },
-    [setState],
+    [setState, maybeRefreshSummary],
   );
 
   const updateNarrativeState = (prevState, entry) => {

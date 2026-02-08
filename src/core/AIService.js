@@ -107,7 +107,12 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
     try {
       const response = await fetchWithTimeout(url, options, timeoutMs);
+      const clone = response.clone();
       const data = await response.json().catch(() => null);
+      const text =
+        data == null
+          ? await clone.text().catch(() => "")
+          : "";
 
       if (RETRY_STATUS.has(response.status) && attempt < MAX_RETRIES) {
         const errorCode = data?.errorCode;
@@ -219,7 +224,9 @@ export async function generateNarrative(prompt, { mode } = {}) {
             ? data.message
             : typeof data?.error === "string"
               ? data.error
-            : "Narrative generation failed.";
+            : text
+              ? `Narrative generation failed (${response.status}). ${text.slice(0, 240)}`
+              : `Narrative generation failed (${response.status}).`;
         throw new Error(message);
       }
 
@@ -252,7 +259,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
 
   if (attemptedEndpoints > 0 && missingEndpointCount === attemptedEndpoints) {
     const error = new Error(
-      "Narrator endpoint not found. Configure VITE_NARRATE_ENDPOINT, VITE_API_BASE_URL, or deploy /api/narrate.",
+      "Narrator endpoint not found. For local dev, start the API with `npm run dev:api`, or configure VITE_NARRATE_ENDPOINT / VITE_API_BASE_URL.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
     if (isDev) {

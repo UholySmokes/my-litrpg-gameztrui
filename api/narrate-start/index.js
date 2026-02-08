@@ -12,6 +12,7 @@ const {
   rateLimit,
 } = require("../lib/azure-ai-utils");
 const { startFoundryRun } = require("../lib/foundry-run");
+const { normalizeMode, resolveAssistantId } = require("../lib/agent-router");
 
 module.exports = async function narrateStart(context, req) {
   initApiTracing({ serviceName: "void-verse-api" });
@@ -22,13 +23,13 @@ module.exports = async function narrateStart(context, req) {
       "api.narrate-start",
       { "app.request_id": requestId },
       async () => {
-        const assistantId = getRequiredEnv("NARRATOR_AGENT_ID");
+        const narratorId = getRequiredEnv("NARRATOR_AGENT_ID");
         const rateLimitPerMin = Number.parseInt(
           getRequiredEnv("NARRATE_RATE_LIMIT_PER_MIN") || "0",
           10,
         );
 
-        if (!assistantId) {
+        if (!narratorId) {
           context.res = jsonResponse(500, {
             ok: false,
             errorCode: "MISSING_ENV",
@@ -56,6 +57,8 @@ module.exports = async function narrateStart(context, req) {
         }
 
         const body = await readJsonBody(req);
+        const mode = normalizeMode(body?.mode);
+        const assistantId = resolveAssistantId(mode);
         const prompt =
           typeof body?.prompt === "string" ? body.prompt.trim() : "";
         const instruction =
@@ -68,7 +71,7 @@ module.exports = async function narrateStart(context, req) {
         );
 
         context.log?.(
-          `narrate-start ${requestId} assistant=${assistantId} thread=${threadId} run=${runId} status=${status}`,
+          `narrate-start ${requestId} assistant=${assistantId} mode=${mode} thread=${threadId} run=${runId} status=${status}`,
         );
 
         context.res = jsonResponse(202, {
@@ -76,6 +79,7 @@ module.exports = async function narrateStart(context, req) {
           threadId,
           runId,
           status,
+          mode,
         });
       },
     );

@@ -170,7 +170,7 @@ export function applyNarrationGuards(response) {
  * @param {string} prompt - The complete prompt string
  * @returns {Promise<object>} The parsed JSON response with narrative, mood, and suggestions
  */
-export async function generateNarrative(prompt) {
+export async function generateNarrative(prompt, { mode } = {}) {
   let lastError = null;
   let attemptedEndpoints = 0;
   let missingEndpointCount = 0;
@@ -198,7 +198,7 @@ export async function generateNarrative(prompt) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ prompt }),
+          body: JSON.stringify({ prompt, mode }),
         },
         timeoutMs,
       );
@@ -294,7 +294,7 @@ export async function generateNarrative(prompt) {
  * @returns {Promise<object>} The parsed JSON response
  */
 export async function generateInitialNarrative(initialPrompt) {
-  return generateNarrative(initialPrompt);
+  return generateNarrative(initialPrompt, { mode: "exploration" });
 }
 
 // -----------------------------------------------------------------
@@ -332,14 +332,14 @@ const resolveStreamEndpoints = () => {
  */
 export async function generateNarrativeStream(
   prompt,
-  { onChunk, onDone, signal } = {},
+  { onChunk, onDone, signal, mode } = {},
 ) {
   const endpoints = resolveStreamEndpoints();
   const isDev = Boolean(getBuildEnv().DEV);
 
   // No stream endpoints configured — transparent fallback
   if (!endpoints) {
-    const result = await generateNarrative(prompt);
+    const result = await generateNarrative(prompt, { mode });
     if (typeof onDone === "function") onDone(result);
     return result;
   }
@@ -352,7 +352,7 @@ export async function generateNarrativeStream(
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt, mode }),
         signal,
       },
       30000,
@@ -367,7 +367,7 @@ export async function generateNarrativeStream(
     if (error?.name === "AbortError") throw error;
     // Fall back to synchronous narrate
     if (isDev) console.warn("Stream start failed, falling back:", error);
-    const result = await generateNarrative(prompt);
+    const result = await generateNarrative(prompt, { mode });
     if (typeof onDone === "function") onDone(result);
     return result;
   }
@@ -388,7 +388,7 @@ export async function generateNarrativeStream(
     let pollData;
     try {
       const res = await fetchWithTimeout(
-        `${endpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}`,
+        `${endpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}${mode ? `&mode=${encodeURIComponent(mode)}` : ""}`,
         { method: "GET", signal },
         15000,
       );
@@ -433,7 +433,7 @@ export async function generateNarrativeStream(
     if (Date.now() - stallStart > STREAM_STALL_TIMEOUT_MS) {
       if (isDev)
         console.warn("Stream stalled, falling back to sync narrate");
-      const result = await generateNarrative(prompt);
+      const result = await generateNarrative(prompt, { mode });
       if (typeof onDone === "function") onDone(result);
       return result;
     }
@@ -441,7 +441,7 @@ export async function generateNarrativeStream(
 
   // Exceeded max polls — fall back
   if (isDev) console.warn("Stream exceeded max polls, falling back");
-  const result = await generateNarrative(prompt);
+  const result = await generateNarrative(prompt, { mode });
   if (typeof onDone === "function") onDone(result);
   return result;
 }

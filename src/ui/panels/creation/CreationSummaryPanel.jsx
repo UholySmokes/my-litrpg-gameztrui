@@ -11,6 +11,9 @@
 }) {
   const racePassiveAbility = selectionSummary.racePassiveAbility;
   const raceActiveAbility = selectionSummary.raceActiveAbility;
+  const professionSkills = Array.isArray(selectionSummary.professionSkills)
+    ? selectionSummary.professionSkills
+    : [];
   return (
     <div
       style={{
@@ -108,6 +111,33 @@
             <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
               {selectionSummary.talentDescription}
             </div>
+          </div>
+          <div style={{ color: "var(--holo-cyan)" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
+              PROFESSION
+            </div>
+            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
+              {selectionSummary.professionName || "Profession not selected"}
+            </div>
+            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
+              {selectionSummary.professionDescription ||
+                "Choose a profession to gain tier-1 skills."}
+            </div>
+            {professionSkills.length ? (
+              <div
+                style={{
+                  marginTop: "0.35rem",
+                  fontSize: "0.75rem",
+                  color: "var(--text-dim)",
+                  lineHeight: 1.35,
+                }}
+              >
+                <strong>Tier 1:</strong> {professionSkills
+                  .slice(0, 6)
+                  .map((s) => String(s).replace(/_/g, " "))
+                  .join(", ")}
+              </div>
+            ) : null}
           </div>
           <div style={{ color: "var(--holo-cyan)" }}>
             <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>

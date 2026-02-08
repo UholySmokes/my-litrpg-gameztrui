@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useRef, useCallback } from "react";
+import { useReducer, useEffect, useRef, useCallback, useMemo } from "react";
 import { gameReducer } from "../core/gameReducer.js";
 import { initialGameState } from "../data/initialState.js";
 import { SystemEventObserver } from "../core/SystemEventObserver.js";
@@ -12,18 +12,16 @@ export function useGameEngine() {
   const isInitialRender = useRef(true);
   const stateRef = useRef(state);
 
-  // Create engine once — singleton guard inside createSystemEngine prevents
-  // SimBridge re-initialization on re-renders.
-  const engineRef = useRef(null);
-  if (!engineRef.current) {
-    engineRef.current = createSystemEngine({
-      mode: "client",
-      seed: initialGameState.world?.seed ?? 1,
-      contentVersion: initialGameState.contentVersion ?? "core@0.1.0",
-      stateVersion: initialGameState.stateVersion ?? 1,
-    });
-  }
-  const engine = engineRef.current;
+  const engine = useMemo(
+    () =>
+      createSystemEngine({
+        mode: "client",
+        seed: initialGameState.world?.seed ?? 1,
+        contentVersion: initialGameState.contentVersion ?? "core@0.1.0",
+        stateVersion: initialGameState.stateVersion ?? 1,
+      }),
+    [],
+  );
 
   useEffect(() => {
     stateRef.current = state;

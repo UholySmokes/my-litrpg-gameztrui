@@ -141,6 +141,17 @@ export function useCharacterCreationReworked() {
   const [showBootSequence, setShowBootSequence] = useState(true);
   const [rerollsRemaining, setRerollsRemaining] = useState(INITIAL_REROLLS);
 
+  const STEPS = {
+    IDENTITY: 1,
+    RACE: 2,
+    CLASS: 3,
+    PROFESSION: 4,
+    ARCHETYPE: 5,
+    ATTRIBUTES: 6,
+    SKILLS: 7,
+    REVIEW: 8,
+  };
+
   // Generated Content State
   const [generatedRaces, setGeneratedRaces] = useState(() => {
     const options = ContentGenerator.generateCharacterOptions(5);
@@ -436,14 +447,45 @@ export function useCharacterCreationReworked() {
     });
   }, []);
 
-  // Validation
-  const validateStep1 = useCallback(() => {
+  const validateIdentity = useCallback(() => {
     if (!name.trim()) return { valid: false, error: "Name is required" };
     if (!gender) return { valid: false, error: "Gender is required" };
+    return { valid: true };
+  }, [name, gender]);
+
+  const validateRace = useCallback(() => {
     if (!selectedRace) return { valid: false, error: "Race is required" };
+    return { valid: true };
+  }, [selectedRace]);
+
+  const validateClass = useCallback(() => {
     if (!selectedClass) return { valid: false, error: "Class is required" };
+    return { valid: true };
+  }, [selectedClass]);
+
+  const validateProfession = useCallback(() => {
+    if (!selectedProfession)
+      return { valid: false, error: "Profession is required" };
+    return { valid: true };
+  }, [selectedProfession]);
+
+  const validateArchetype = useCallback(() => {
     if (!selectedArchetypeSystem)
       return { valid: false, error: "System selection is required" };
+    return { valid: true };
+  }, [selectedArchetypeSystem]);
+
+  const validateAttributes = useCallback(() => {
+    if (remainingPoints !== 0) {
+      return {
+        valid: false,
+        error: `Must allocate all ${INITIAL_FREE_POINTS} attribute points`,
+      };
+    }
+    return { valid: true };
+  }, [remainingPoints]);
+
+  const validateSkills = useCallback(() => {
     if (selectedActiveSkills.length !== MAX_ACTIVE_SKILLS) {
       return {
         valid: false,
@@ -457,53 +499,87 @@ export function useCharacterCreationReworked() {
       };
     }
     return { valid: true };
+  }, [selectedActiveSkills, selectedPassiveSkills]);
+
+  const validateReview = useCallback(() => {
+    const checks = [
+      validateIdentity,
+      validateRace,
+      validateClass,
+      validateProfession,
+      validateArchetype,
+      validateAttributes,
+      validateSkills,
+    ];
+    for (const check of checks) {
+      const result = check();
+      if (!result.valid) return result;
+    }
+    return { valid: true };
   }, [
-    name,
-    gender,
-    selectedRace,
-    selectedClass,
-    selectedArchetypeSystem,
-    selectedActiveSkills,
-    selectedPassiveSkills,
+    validateArchetype,
+    validateAttributes,
+    validateClass,
+    validateIdentity,
+    validateProfession,
+    validateRace,
+    validateSkills,
   ]);
 
-  const validateStep2 = useCallback(() => {
-    if (!selectedProfession)
-      return { valid: false, error: "Profession is required" };
-    return { valid: true };
-  }, [selectedProfession]);
-
-  const validateStep3 = useCallback(() => {
-    if (remainingPoints !== 0) {
-      return {
-        valid: false,
-        error: `Must allocate all ${INITIAL_FREE_POINTS} attribute points`,
-      };
+  const validateCurrentStep = useCallback(() => {
+    switch (currentStep) {
+      case STEPS.IDENTITY:
+        return validateIdentity();
+      case STEPS.RACE:
+        return validateRace();
+      case STEPS.CLASS:
+        return validateClass();
+      case STEPS.PROFESSION:
+        return validateProfession();
+      case STEPS.ARCHETYPE:
+        return validateArchetype();
+      case STEPS.ATTRIBUTES:
+        return validateAttributes();
+      case STEPS.SKILLS:
+        return validateSkills();
+      case STEPS.REVIEW:
+      default:
+        return validateReview();
     }
-    return { valid: true };
-  }, [remainingPoints]);
+  }, [
+    STEPS.ARCHETYPE,
+    STEPS.ATTRIBUTES,
+    STEPS.CLASS,
+    STEPS.IDENTITY,
+    STEPS.PROFESSION,
+    STEPS.RACE,
+    STEPS.REVIEW,
+    STEPS.SKILLS,
+    currentStep,
+    validateArchetype,
+    validateAttributes,
+    validateClass,
+    validateIdentity,
+    validateProfession,
+    validateRace,
+    validateReview,
+    validateSkills,
+  ]);
 
-  // Navigation
   const nextStep = useCallback(() => {
-    if (currentStep === 1) {
-      const validation = validateStep1();
-      if (!validation.valid) return validation;
-      setCurrentStep(2);
-    } else if (currentStep === 2) {
-      const validation = validateStep2();
-      if (!validation.valid) return validation;
-      setCurrentStep(3);
-    }
+    const validation = validateCurrentStep();
+    if (!validation.valid) return validation;
+    setCurrentStep((prev) => Math.min(STEPS.REVIEW, prev + 1));
     return { valid: true };
-  }, [currentStep, validateStep1, validateStep2]);
+  }, [STEPS.REVIEW, validateCurrentStep]);
 
   const previousStep = useCallback(() => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
-  }, [currentStep]);
+    setCurrentStep((prev) => Math.max(STEPS.IDENTITY, prev - 1));
+  }, [STEPS.IDENTITY]);
 
   // Finalize character
   const finalizeCharacter = useCallback(() => {
-    const validation = validateStep3();
+    const validation = validateReview();
     if (!validation.valid) return validation;
 
     // Apply race stat bonuses
@@ -634,7 +710,7 @@ export function useCharacterCreationReworked() {
 
     return { valid: true, characterData };
   }, [
-    validateStep3,
+    validateReview,
     attributePoints,
     name,
     gender,
@@ -654,6 +730,7 @@ export function useCharacterCreationReworked() {
   return {
     // State
     currentStep,
+    steps: STEPS,
     showBootSequence,
     name,
     characterName: name,
@@ -693,6 +770,9 @@ export function useCharacterCreationReworked() {
     previousStep,
     finalizeCharacter,
     skipBootSequence,
+
+    validateCurrentStep,
+    validateReview,
 
     // Helpers
     getAvailableActiveSkills,

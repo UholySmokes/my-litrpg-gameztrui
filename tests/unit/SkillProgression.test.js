@@ -76,7 +76,7 @@ describe("skill progression systems", () => {
       player: {
         ...initialGameState.player,
         level: 2,
-        class: "knight",
+        class: "cleric",
       },
     };
     const next = gameReducer(state, { type: "EVOLVE_CLASS" });

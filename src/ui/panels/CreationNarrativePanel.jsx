@@ -1,31 +1,176 @@
+import { useMemo } from "react";
+import { getCategoryConfig } from "../../systems/archetype/ArchetypeSystemRegistry.js";
+
+const STEP_DESCRIPTIONS = [
+  { step: 1, label: "Anchor your origin", icon: "\u2316" },
+  { step: 2, label: "Define combat doctrine", icon: "\u2694" },
+  { step: 3, label: "Shape progression path", icon: "\u2699" },
+  { step: 4, label: "Allocate survivability", icon: "\u2665" },
+  { step: 5, label: "Load starting skills", icon: "\u26A1" },
+  { step: 6, label: "Finalize identity", icon: "\u2714" },
+];
+
+function buildFlavorText(statusLines) {
+  // Generate dynamic flavor based on what's been selected
+  const completed = statusLines.filter((l) => l.active).length;
+  const total = statusLines.length;
+
+  if (completed === 0) {
+    return "The genesis terminal awaits your input. Every choice shapes the world you will inhabit.";
+  }
+  if (completed <= 2) {
+    return "The system calibrates. Your early choices send ripples through probability space.";
+  }
+  if (completed <= 4) {
+    return "A profile coalesces. The system binds your selections into a coherent identity.";
+  }
+  if (completed <= 6) {
+    return "Near-complete. The final parameters lock into place, forging your path forward.";
+  }
+  if (completed >= total) {
+    return "Genesis sequence ready. Your identity has crystallized. Confirm when prepared.";
+  }
+  return "Configure lineage, archetype, and attributes to complete genesis.";
+}
+
 export default function CreationNarrativePanel({
   statusLines = [],
   typewriterText,
   syncProgress,
+  selectedRace,
+  selectedClass,
+  selectedArchetypeSystem,
 }) {
+  const flavorText = useMemo(
+    () => buildFlavorText(statusLines),
+    [statusLines],
+  );
+
+  const archConfig = selectedArchetypeSystem
+    ? getCategoryConfig(selectedArchetypeSystem.category)
+    : null;
+
+  const progressColor = syncProgress >= 100
+    ? "#8CE99A"
+    : syncProgress >= 60
+      ? "var(--holo-gold)"
+      : "var(--holo-cyan)";
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-      <div style={{ color: "var(--holo-cyan)", fontFamily: "monospace" }}>
-        Genesis stream online. Configure lineage, archetype, and attributes.
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
+      {/* Header */}
+      <div style={{ color: "var(--holo-cyan)", fontFamily: "monospace", fontSize: "0.85rem", letterSpacing: "2px" }}>
+        GENESIS STREAM
       </div>
-      <div style={{ fontSize: "0.85rem", color: "var(--text-dim)" }}>
+
+      {/* Dynamic flavor text */}
+      <div style={{ fontSize: "0.8rem", color: "var(--text-dim)", lineHeight: "1.4", fontStyle: "italic" }}>
+        {flavorText}
+      </div>
+
+      {/* Typewriter description */}
+      <div style={{ fontSize: "0.8rem", color: "var(--text-main)", lineHeight: "1.4", minHeight: "2.5rem" }}>
         {typewriterText}
-        <span style={{ animation: "blink 1s infinite" }}>_</span>
+        <span style={{ animation: "blink 1s infinite", color: "var(--holo-cyan)" }}>_</span>
       </div>
-      <div style={{ fontSize: "0.8rem", color: "var(--holo-cyan)" }}>
-        SYNC {syncProgress}%
+
+      {/* Progress bar */}
+      <div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem" }}>
+          <span style={{ fontSize: "0.65rem", color: "var(--holo-cyan)", fontFamily: "monospace", letterSpacing: "1px" }}>
+            SYNC PROGRESS
+          </span>
+          <span style={{ fontSize: "0.7rem", color: progressColor, fontWeight: "bold", fontFamily: "monospace" }}>
+            {Math.round(syncProgress)}%
+          </span>
+        </div>
+        <div style={{ height: "4px", background: "rgba(255,255,255,0.08)", borderRadius: "2px", overflow: "hidden" }}>
+          <div
+            style={{
+              width: `${Math.min(100, syncProgress)}%`,
+              height: "100%",
+              background: `linear-gradient(90deg, var(--holo-cyan), ${progressColor})`,
+              borderRadius: "2px",
+              transition: "width 0.5s ease",
+            }}
+          />
+        </div>
       </div>
-      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-        <li>1. Select a race to anchor your origin.</li>
-        <li>2. Choose a class to define combat doctrine.</li>
-        <li>3. Choose an archetype system to shape progression.</li>
-        <li>4. Allocate attribute points for survivability.</li>
-        <li>5. Select skills for your starting loadout.</li>
-        <li>6. Finalize identity. Talents are assigned automatically.</li>
-      </ul>
-      <div style={{ display: "grid", gap: "0.35rem", fontSize: "0.8rem" }}>
+
+      {/* Active selections summary */}
+      {(selectedRace || selectedClass || selectedArchetypeSystem) && (
+        <div style={{
+          padding: "0.5rem",
+          background: "rgba(0, 0, 0, 0.4)",
+          borderRadius: "5px",
+          border: "1px solid rgba(0, 243, 255, 0.15)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.2rem",
+          fontSize: "0.65rem",
+        }}>
+          {selectedRace && (
+            <div>
+              <span style={{ color: "#96F2D7" }}>RACE:</span>{" "}
+              <span style={{ color: "var(--text-main)" }}>{selectedRace.name}</span>
+            </div>
+          )}
+          {selectedClass && (
+            <div>
+              <span style={{ color: "#E599F7" }}>CLASS:</span>{" "}
+              <span style={{ color: "var(--text-main)" }}>{selectedClass.name}</span>
+            </div>
+          )}
+          {selectedArchetypeSystem && (
+            <div>
+              <span style={{ color: archConfig?.color || "var(--holo-gold)" }}>SYSTEM:</span>{" "}
+              <span style={{ color: "var(--text-main)" }}>{selectedArchetypeSystem.name}</span>
+              <span style={{ color: "var(--text-dim)" }}> ({selectedArchetypeSystem.category})</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Step checklist */}
+      <div style={{ display: "grid", gap: "0.25rem" }}>
+        {STEP_DESCRIPTIONS.map(({ step, label, icon }, i) => {
+          const line = statusLines[i];
+          const isActive = line?.active || false;
+          return (
+            <div
+              key={step}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                fontSize: "0.7rem",
+                color: isActive ? "var(--holo-cyan)" : "var(--text-dim)",
+                fontFamily: "monospace",
+                transition: "color 0.3s ease",
+              }}
+            >
+              <span style={{ width: "1rem", textAlign: "center" }}>
+                {isActive ? "\u2713" : icon}
+              </span>
+              <span>{step}. {label}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Status detail lines */}
+      <div style={{ display: "grid", gap: "0.2rem", fontSize: "0.65rem" }}>
         {statusLines.map((line) => (
-          <div key={line.label} style={{ color: line.active ? "#00F3FF" : "var(--text-dim)" }}>
+          <div
+            key={line.label}
+            style={{
+              color: line.active ? "#8CE99A" : "var(--text-dim)",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.3rem",
+            }}
+          >
+            <span style={{ fontSize: "0.5rem" }}>{line.active ? "\u25CF" : "\u25CB"}</span>
             {line.label}
           </div>
         ))}

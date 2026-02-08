@@ -1,4 +1,4 @@
-import { getArchetypeSystemById, ARCHETYPE_SYSTEMS } from './ArchetypeSystemRegistry.js';
+import { getArchetypeSystemById, ARCHETYPE_SYSTEMS, getCategoryConfig } from './ArchetypeSystemRegistry.js';
 
 /**
  * Generates a deterministic player ID using a provided random number generator.
@@ -8,20 +8,22 @@ import { getArchetypeSystemById, ARCHETYPE_SYSTEMS } from './ArchetypeSystemRegi
  */
 function generatePlayerId(context) {
   if (context && context.rng && typeof context.rng.range === 'function') {
-    // Use deterministic RNG from context
     const randomSuffix = context.rng.range(100000, 999999);
     return `player_${randomSuffix}`;
   }
-  // Fallback for backwards compatibility (non-deterministic)
   const randomSuffix = Math.floor(Math.random() * 900000) + 100000;
   return `player_${randomSuffix}`;
 }
 
 /**
  * Builder class for generating full player profiles with integrated Archetype Systems.
+ * Stat bonuses are now driven entirely by the archetype's category config,
+ * eliminating the duplicated hard-coded logic that previously existed in both
+ * the builder and the ArchetypeSystem class.
  */
 export class SystemBuilder {
   constructor(baseProfile = {}, context = {}) {
+    this.context = context;
     this.playerProfile = {
       id: baseProfile.id || generatePlayerId(context),
       name: baseProfile.name || "Adventurer",
@@ -30,6 +32,9 @@ export class SystemBuilder {
         agility: 10,
         intelligence: 10,
         vitality: 10,
+        wisdom: 10,
+        charisma: 10,
+        luck: 10,
         ...baseProfile.attributes
       },
       system: null,
@@ -42,7 +47,9 @@ export class SystemBuilder {
   }
 
   /**
-   * Assigns an archetype system to the player profile and adjusts stats based on integrity.
+   * Assigns an archetype system to the player profile.
+   * Stat adjustments are delegated to the archetype's applyBonuses method,
+   * which uses CATEGORY_CONFIG for category-specific scaling.
    * @param {string} archetypeId - The ID of the archetype to assign.
    * @param {Object} context - Context data for the system build.
    * @returns {SystemBuilder}
@@ -53,24 +60,23 @@ export class SystemBuilder {
       throw new Error(`Archetype ID '${archetypeId}' not found.`);
     }
 
-    // Build the system using the archetype's logic
+    // Build the system instance using the archetype's category-aware logic
     const systemInstance = archetype.build(context);
     this.playerProfile.system = systemInstance;
 
-    // Adjust profile based on system integrity
-    if (systemInstance.systemIntegrity >= 100) {
-      // Perfect system: Bonus to mental stats
-      this.playerProfile.attributes.intelligence += 5;
-      this.playerProfile.derivedStats.mp += 20;
-    } else if (systemInstance.systemIntegrity < 90) {
-      // Unstable system: High risk (Strength), high cost (Vitality)
-      this.playerProfile.attributes.strength += 8;
-      this.playerProfile.attributes.vitality -= 2;
-    }
-    // Adjust profile based on system integrity via the archetype class
+    // Delegate all stat adjustments to the archetype - single source of truth
     archetype.applyBonuses(this.playerProfile, systemInstance.systemIntegrity);
 
     return this;
+  }
+
+  /**
+   * Returns the category config for the currently assigned system.
+   * @returns {object|null}
+   */
+  getCategoryInfo() {
+    const category = this.playerProfile.system?.category;
+    return category ? getCategoryConfig(category) : null;
   }
 
   build() {

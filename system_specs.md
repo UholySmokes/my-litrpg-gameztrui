@@ -16,6 +16,7 @@ All game logic MUST reference these specifications. Any changes to game balance 
 7. [Gacha & Drops](#gacha--drops)
 8. [Economy](#economy)
 9. [System Architecture & Audit](#system-architecture--audit)
+10. [Magic (Essence Weaving)](#magic-essence-weaving)
 
 ---
 
@@ -202,6 +203,14 @@ maxInventorySize: 20            // Maximum inventory slots
 - Stackable items (consumables) share a slot
 - Equipment takes individual slots
 - Inventory is a flat array (no categories)
+
+---
+
+## Magic (Essence Weaving)
+
+This project supports a more detailed magic model where `Mana Pool` is total **essence capacity** (hybrid model) and effects are built via SENSE/DRAW/REFINE/COMPRESS/SHAPE/WEAVE.
+
+Canonical spec: [magic_essence_weaving_spec.md](docs/magic_essence_weaving_spec.md)
 
 ---
 

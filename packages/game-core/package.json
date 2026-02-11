@@ -17,6 +17,8 @@
     "./util/*": "./src/util/*",
     "./utils/*": "./src/utils/*",
     "./world/*": "./src/world/*"
+  },
+  "dependencies": {
+    "@dataconnect/generated": "file:src/dataconnect-generated"
   }
 }
-

@@ -6,3 +6,22 @@ generate:
       packageJsonDir: ..\..
       react: true
       angular: false
+    - outputDir: ..\..\api\src\dataconnect-generated
+      package: "@dataconnect/generated"
+      packageJsonDir: ..\..\api
+      react: false
+      angular: false
+    - outputDir: ..\..\packages\game-schemas\src\dataconnect-generated
+      package: "@dataconnect/generated"
+      packageJsonDir: ..\..\packages\game-schemas
+      react: false
+      angular: false
+    - outputDir: ..\..\packages\game-core\src\dataconnect-generated
+      package: "@dataconnect/generated"
+      packageJsonDir: ..\..\packages\game-core
+      react: false
+      angular: false
+  adminNodeSdk:
+    - outputDir: ..\..\functions\src\dataconnect-admin-generated
+      package: "@dataconnect/admin-generated"
+      packageJsonDir: ..\..\functions

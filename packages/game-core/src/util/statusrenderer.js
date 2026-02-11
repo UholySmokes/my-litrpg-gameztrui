@@ -67,7 +67,44 @@ export function renderStatusBlock(player, config) {
   const hpCurrent = player.hp?.current ?? canonicalHpMax;
   const manaMax = player.mana?.max ?? canonicalManaMax;
   const manaCurrent = player.mana?.current ?? canonicalManaMax;
+  const magicManaMax = player.magic?.mana?.max;
+  const magicManaFree = player.magic?.mana?.current;
   const freePoints = player.attributes?.freePoints || 0;
+
+  const essencePrimes = [
+    "fire",
+    "water",
+    "earth",
+    "air",
+    "lightning",
+    "shadow",
+    "light",
+    "life",
+  ];
+
+  const reserves = player.magic?.reserves || {};
+  const charges = Array.isArray(player.magic?.charges) ? player.magic.charges : [];
+  const essenceTotals = essencePrimes
+    .map((e) => {
+      const reserve = Number.isFinite(reserves[e]) ? reserves[e] : 0;
+      const charge = charges
+        .filter((c) => c?.essence === e)
+        .reduce((sum, c) => sum + (Number.isFinite(c?.amount) ? c.amount : 0), 0);
+      return { essence: e, total: reserve + charge };
+    })
+    .filter((e) => e.total > 0.001);
+
+  const essencesLine = essenceTotals.length
+    ? essenceTotals
+        .slice(0, 8)
+        .map((e) => `${e.essence[0].toUpperCase()}${e.essence.slice(1)} ${e.total.toFixed(0)}`)
+        .join(" | ")
+    : null;
+
+  const stability = player.magic?.stability;
+  const stabilityLine = stability
+    ? `Body ${stability.body?.current ?? 0}/${stability.body?.max ?? 100} | Mind ${stability.mind?.current ?? 0}/${stability.mind?.max ?? 100} | Cognitive ${stability.cognitive?.current ?? 0}/${stability.cognitive?.max ?? 100}`
+    : null;
 
   const str =
     getAttributeValue(effectiveAttributes, "strength") || baseAttributeValue;
@@ -139,7 +176,14 @@ System: ${archetypeSystem}
 Talents: ${talent}
 --------------------------------------------------
 [VITALITY]
-Health: ${hpCurrent}/${hpMax}      Mana: ${manaCurrent}/${manaMax}
+Health: ${hpCurrent}/${hpMax}      Mana: ${manaCurrent}/${manaMax}${
+    Number.isFinite(magicManaFree) && Number.isFinite(magicManaMax)
+      ? `      Mana Pool: ${magicManaFree}/${magicManaMax}`
+      : ""
+  }
+${essencesLine ? `\nEssences: ${essencesLine}` : ""}${
+    stabilityLine ? `\nStability: ${stabilityLine}` : ""
+  }
 
 [ATTRIBUTES] (Free Points: ${freePoints})
 > Strength:      ${str}  (Physical power)

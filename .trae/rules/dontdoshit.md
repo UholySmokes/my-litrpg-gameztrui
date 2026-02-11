@@ -1,3 +1,6 @@
+---
+alwaysApply: false
+---
 GLOBAL MODE RULE:
 
 Use Chat (Max Mode if core system):

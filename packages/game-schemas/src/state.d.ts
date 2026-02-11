@@ -16,6 +16,10 @@ export type WorldState = {
   factionReputation: Record<string, number>;
   time: number;
   turnCount: number;
+  essence?: {
+    ambient: Record<string, number>;
+    sources?: unknown[];
+  };
 };
 
 export type PlayerState = {
@@ -40,6 +44,23 @@ export type PlayerState = {
   professions?: Record<string, unknown>;
   progress?: Record<string, unknown>;
   isDead?: boolean;
+  magic?: {
+    stability?: {
+      body: { current: number; max: number };
+      mind: { current: number; max: number };
+      cognitive: { current: number; max: number };
+    };
+    affinity?: Record<string, number>;
+    attunement?: Record<string, number>;
+    reserves?: Record<string, number>;
+    charges?: unknown[];
+    anchors?: Record<string, unknown>;
+    stance?: unknown;
+    paradigm?: unknown;
+    memoryShards?: unknown[];
+    prepared?: unknown;
+    mana?: { current: number; max: number };
+  };
 };
 
 export type GameState = {

@@ -24,6 +24,9 @@ export function parseAction(userInput, gameState) {
     )
     .trim();
 
+  const magicAction = parseMagic(cleanedInput);
+  if (magicAction) return magicAction;
+
   // Parse different action types
   const useItemAction = parseUseItem(cleanedInput, gameState);
   if (useItemAction) return useItemAction;
@@ -52,6 +55,147 @@ export function parseAction(userInput, gameState) {
     originalInput: userInput,
     description: `Player said: "${userInput}"`,
   };
+}
+
+function parseMagic(input) {
+  const essenceCap = "(fire|water|earth|air|lightning|shadow|light|life)";
+  const essence = "(?:fire|water|earth|air|lightning|shadow|light|life)";
+
+  {
+    const match = input.match(
+      new RegExp(`^(sense|meditate)(?:\\s+${essenceCap})?$`, "i"),
+    );
+    if (match) {
+      return {
+        type: "magic_sense",
+        essence: match[2]?.toLowerCase() || null,
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(
+      new RegExp(`^attune\\s+(open|guarded|focused)(?:\\s+${essenceCap})?$`, "i"),
+    );
+    if (match) {
+      return {
+        type: "magic_attune",
+        stance: match[1].toLowerCase(),
+        essence: match[2]?.toLowerCase() || null,
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(
+      new RegExp(`^draw\\s+${essenceCap}(?:\\s+(\\d+))?$`, "i"),
+    );
+    if (match) {
+      return {
+        type: "magic_draw",
+        essence: match[1].toLowerCase(),
+        amount: match[2] ? Number(match[2]) : null,
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(
+      new RegExp(
+        `^refine\\s+${essenceCap}(?:\\s+([a-z_\\-]+))?\\s+(\\d+)$`,
+        "i",
+      ),
+    );
+    if (match) {
+      return {
+        type: "magic_refine",
+        essence: match[1].toLowerCase(),
+        method: match[2]?.toLowerCase() || null,
+        amount: Number(match[3]),
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(
+      new RegExp(
+        `^compress\\s+${essenceCap}(?:\\s+([a-z_\\-]+))?\\s+(?:tier\\s*)?(0|1|2|3)$`,
+        "i",
+      ),
+    );
+    if (match) {
+      return {
+        type: "magic_compress",
+        essence: match[1].toLowerCase(),
+        method: match[2]?.toLowerCase() || null,
+        tier: Number(match[3]),
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(
+      new RegExp(
+        `^(shape|form)\\s+${essenceCap}\\s+([a-z_\\-]+)(?:\\s+(\\d+))?$`,
+        "i",
+      ),
+    );
+    if (match) {
+      return {
+        type: "magic_shape",
+        essence: match[2].toLowerCase(),
+        form: match[3].toLowerCase(),
+        amount: match[4] ? Number(match[4]) : null,
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(
+      new RegExp(
+        `^weave\\s+((?:${essence})(?:\\+(?:${essence}))+)\\s+([a-z_\\-]+)$`,
+        "i",
+      ),
+    );
+    if (match) {
+      return {
+        type: "magic_weave",
+        essences: match[1]
+          .toLowerCase()
+          .split("+")
+          .map((s) => s.trim())
+          .filter(Boolean),
+        pattern: match[2].toLowerCase(),
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(
+      /^anchor\s+(self|area|item)(?:\s+([a-z0-9_\-]+))?$/i,
+    );
+    if (match) {
+      return {
+        type: "magic_anchor",
+        kind: match[1].toLowerCase(),
+        itemId: match[2] || null,
+        originalInput: input,
+      };
+    }
+  }
+
+  if (/^(release|cast)$/i.test(input)) {
+    return { type: "magic_release", originalInput: input };
+  }
+
+  return null;
 }
 
 /**

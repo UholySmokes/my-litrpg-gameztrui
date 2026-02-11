@@ -42,6 +42,33 @@ function validateAction(action, gameState) {
     case 'narrative':
       // These actions are always valid (read-only)
       return { valid: true };
+
+    case 'magic_sense':
+      return { valid: true };
+
+    case 'magic_attune':
+      return validateMagicAttune(action);
+
+    case 'magic_draw':
+      return validateMagicDraw(action);
+
+    case 'magic_refine':
+      return validateMagicRefine(action);
+
+    case 'magic_compress':
+      return validateMagicCompress(action);
+
+    case 'magic_shape':
+      return validateMagicShape(action);
+
+    case 'magic_weave':
+      return validateMagicWeave(action);
+
+    case 'magic_anchor':
+      return validateMagicAnchor(action);
+
+    case 'magic_release':
+      return { valid: true };
     
     default:
       return {
@@ -230,13 +257,103 @@ function validateGameRules(action, gameState) {
   const combat = gameState.combat || {};
   
   // Prevent non-combat actions during active combat
-  if (combat.status === 'active' && action.type !== 'attack' && action.type !== 'look') {
+  const isMagic = typeof action.type === "string" && action.type.startsWith("magic_");
+  if (combat.status === 'active' && action.type !== 'attack' && action.type !== 'look' && !isMagic) {
     return {
       valid: false,
       reason: 'You are in combat! Focus on the enemy.'
     };
   }
 
+  return { valid: true };
+}
+
+function isEssenceId(value) {
+  return (
+    value === "fire" ||
+    value === "water" ||
+    value === "earth" ||
+    value === "air" ||
+    value === "lightning" ||
+    value === "shadow" ||
+    value === "light" ||
+    value === "life"
+  );
+}
+
+function validateMagicAttune(action) {
+  const stance = action?.stance;
+  if (stance !== "open" && stance !== "focused" && stance !== "guarded") {
+    return { valid: false, reason: "Invalid attunement stance." };
+  }
+  if (stance === "focused" && action?.essence && !isEssenceId(action.essence)) {
+    return { valid: false, reason: "Unknown essence." };
+  }
+  return { valid: true };
+}
+
+function validateMagicDraw(action) {
+  if (!isEssenceId(action?.essence)) {
+    return { valid: false, reason: "Unknown essence." };
+  }
+  if (action?.amount != null && (!Number.isFinite(action.amount) || action.amount <= 0)) {
+    return { valid: false, reason: "Invalid draw amount." };
+  }
+  return { valid: true };
+}
+
+function validateMagicRefine(action) {
+  if (!isEssenceId(action?.essence)) {
+    return { valid: false, reason: "Unknown essence." };
+  }
+  if (!Number.isFinite(action?.amount) || action.amount <= 0) {
+    return { valid: false, reason: "Invalid refine amount." };
+  }
+  return { valid: true };
+}
+
+function validateMagicCompress(action) {
+  if (!isEssenceId(action?.essence)) {
+    return { valid: false, reason: "Unknown essence." };
+  }
+  if (![0, 1, 2, 3].includes(action?.tier)) {
+    return { valid: false, reason: "Invalid compression tier." };
+  }
+  return { valid: true };
+}
+
+function validateMagicShape(action) {
+  if (!isEssenceId(action?.essence)) {
+    return { valid: false, reason: "Unknown essence." };
+  }
+  if (!action?.form || typeof action.form !== "string") {
+    return { valid: false, reason: "Missing shape form." };
+  }
+  if (action?.amount != null && (!Number.isFinite(action.amount) || action.amount <= 0)) {
+    return { valid: false, reason: "Invalid shape amount." };
+  }
+  return { valid: true };
+}
+
+function validateMagicWeave(action) {
+  const essences = Array.isArray(action?.essences) ? action.essences : [];
+  if (essences.length < 2 || !essences.every(isEssenceId)) {
+    return { valid: false, reason: "Invalid weave essences." };
+  }
+  if (!action?.pattern || typeof action.pattern !== "string") {
+    return { valid: false, reason: "Missing weave pattern." };
+  }
+  return { valid: true };
+}
+
+function validateMagicAnchor(action) {
+  const kind = action?.kind;
+  if (kind !== "self" && kind !== "area" && kind !== "item") {
+    return { valid: false, reason: "Invalid anchor kind." };
+  }
+  if (kind === "item" && action?.itemId != null && typeof action.itemId !== "string") {
+    return { valid: false, reason: "Invalid item id." };
+  }
   return { valid: true };
 }
 

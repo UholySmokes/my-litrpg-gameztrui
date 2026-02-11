@@ -67,7 +67,7 @@ export function createSystemEngine(config = {}) {
    * Returns { success, state, description?, reason?, changes? }.
    */
   function execute(action, state) {
-    return executeAction(action, state, {});
+    return executeAction(state, action, {});
   }
 
   /**
@@ -111,7 +111,7 @@ export function createSystemEngine(config = {}) {
     }
 
     // 3. Execute
-    const result = executeAction(action, state, {});
+    const result = executeAction(state, action, {});
     if (!result || !result.success) {
       return {
         ok: false,

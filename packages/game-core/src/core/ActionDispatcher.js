@@ -7,6 +7,17 @@ import {
 } from "../systems/combat/CombatSystem.js";
 import { processTimeEffects } from "../systems/world/TimeSystem.js";
 import { withTraceSpan } from "../observability/traceShim.js";
+import {
+  magicSense,
+  magicAttune,
+  magicDraw,
+  magicRefine,
+  magicCompress,
+  magicAnchor,
+  magicShape,
+  magicWeave,
+  magicRelease,
+} from "../systems/magic/EssenceWeavingSystem.js";
 
 /**
  * Executes an action and returns the result
@@ -46,6 +57,92 @@ export function executeAction(state, action, _options = {}) {
       let incrementsTurn = true;
 
       switch (action.type) {
+        case "magic_sense": {
+          const result = magicSense(state, action);
+          return {
+            success: true,
+            description: result.description || "Sensed essence",
+            state: result.state || state,
+            readOnly: true,
+          };
+        }
+
+        case "magic_attune": {
+          const result = magicAttune(state, action);
+          newState = result.state || state;
+          description = result.description || "Attuned";
+          incrementsTurn = false;
+          break;
+        }
+
+        case "magic_draw": {
+          const result = magicDraw(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Drew essence";
+          break;
+        }
+
+        case "magic_refine": {
+          const result = magicRefine(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Refined essence";
+          break;
+        }
+
+        case "magic_compress": {
+          const result = magicCompress(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Compressed essence";
+          break;
+        }
+
+        case "magic_anchor": {
+          const result = magicAnchor(state, action);
+          newState = result.state || state;
+          description = result.description || "Anchored";
+          incrementsTurn = false;
+          break;
+        }
+
+        case "magic_shape": {
+          const result = magicShape(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Shaped";
+          break;
+        }
+
+        case "magic_weave": {
+          const result = magicWeave(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Wove";
+          break;
+        }
+
+        case "magic_release": {
+          const result = magicRelease(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Released";
+          break;
+        }
+
         case "use_item": {
           // Validate item exists and is consumable
           const item = DataRegistry.getItemById(action.itemId);

@@ -68,6 +68,15 @@ describe('Game Schemas Validation', () => {
         { type: 'inventory' },
         { type: 'status' },
         { type: 'narrative' },
+        { type: 'magic_sense' },
+        { type: 'magic_attune', stance: 'open' },
+        { type: 'magic_draw', essence: 'fire', amount: 5 },
+        { type: 'magic_refine', essence: 'water', method: 'stream', amount: 6 },
+        { type: 'magic_compress', essence: 'fire', method: 'spiral', tier: 2 },
+        { type: 'magic_shape', essence: 'air', form: 'jet', amount: 4 },
+        { type: 'magic_weave', essences: ['fire', 'air'], pattern: 'vortex' },
+        { type: 'magic_anchor', kind: 'self' },
+        { type: 'magic_release' },
       ];
 
       for (const action of actionTypes) {

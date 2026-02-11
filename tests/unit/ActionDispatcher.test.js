@@ -123,4 +123,64 @@ describe("ActionDispatcher", () => {
       expect(result.state.world?.turnCount ?? 5).toBe(5);
     });
   });
+
+  describe("essence weaving actions", () => {
+    it("does not increment turn count for magic_sense", () => {
+      const state = {
+        ...baseState,
+        world: { ...baseState.world, turnCount: 5 },
+      };
+
+      const result = executeAction(state, { type: "magic_sense" });
+      expect(result.success).toBe(true);
+      expect(result.state.world.turnCount).toBe(5);
+    });
+
+    it("draws essence into reserves and consumes mana pool capacity", () => {
+      const state = {
+        ...baseState,
+        config: { ...baseState.config, manaRegenPerTurn: 0 },
+        world: { ...baseState.world, turnCount: 0, location: { ...baseState.world.location, current: "starting_zone" } },
+      };
+
+      const result = executeAction(state, { type: "magic_draw", essence: "fire", amount: 5 });
+      expect(result.success).toBe(true);
+      expect(result.state.world.turnCount).toBe(1);
+      expect(result.state.player.magic?.reserves?.fire).toBeGreaterThan(0);
+      expect(result.state.player.magic?.mana?.current).toBeLessThan(
+        result.state.player.magic?.mana?.max,
+      );
+    });
+
+    it("refines reserves into a charge", () => {
+      const state = {
+        ...baseState,
+        config: { ...baseState.config, manaRegenPerTurn: 0 },
+        world: {
+          ...baseState.world,
+          turnCount: 0,
+          location: { ...baseState.world.location, current: "starting_zone" },
+          essence: {
+            ambient: {
+              fire: 0.1,
+              water: 1.0,
+              earth: 0.1,
+              air: 0.1,
+              lightning: 0.1,
+              shadow: 0.1,
+              light: 0.1,
+              life: 0.1,
+            },
+            sources: [],
+          },
+        },
+      };
+
+      const afterDraw = executeAction(state, { type: "magic_draw", essence: "water", amount: 10 }).state;
+      const result = executeAction(afterDraw, { type: "magic_refine", essence: "water", method: "stream", amount: 1 });
+      expect(result.success).toBe(true);
+      expect(Array.isArray(result.state.player.magic?.charges)).toBe(true);
+      expect(result.state.player.magic.charges.length).toBeGreaterThan(0);
+    });
+  });
 });

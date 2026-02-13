@@ -79,6 +79,10 @@
       "^.+\\.[tj]sx?$": "babel-jest"
     },
     "moduleNameMapper": {
+      "^@voidverse/game-core$": "<rootDir>/packages/game-core/src/index.js",
+      "^@voidverse/game-core/(.*)$": "<rootDir>/packages/game-core/src/$1",
+      "^@voidverse/game-schemas$": "<rootDir>/packages/game-schemas/src/index.js",
+      "^@voidverse/game-schemas/(.*)$": "<rootDir>/packages/game-schemas/src/$1",
       "\\.(css|less|scss|sass)$": "identity-obj-proxy",
       "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/tests/__mocks__/fileMock.js"
     },

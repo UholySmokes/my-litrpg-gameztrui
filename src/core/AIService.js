@@ -415,6 +415,37 @@ export async function generateNarrativeStream(
   }
 
   const { threadId, runId } = startData;
+  const startStatus = String(startData?.status || "").trim().toLowerCase();
+  const startDone =
+    Boolean(startData?.done) ||
+    startStatus === "completed" ||
+    startStatus === "failed" ||
+    startStatus === "incomplete";
+
+  if (startDone && startData?.ok === false) {
+    throw new Error(startData?.message || "Narrative generation failed.");
+  }
+
+  if (startDone && typeof startData?.narrative === "string") {
+    const result = applyNarrationGuards({
+      narrative: startData.narrative,
+      mood: startData.mood || "neutral",
+      suggestions: Array.isArray(startData.suggestions)
+        ? startData.suggestions.slice(0, 3)
+        : ["Look around", "Check inventory", "Continue"],
+    });
+    if (typeof onDone === "function") onDone(result);
+    return result;
+  }
+
+  if (!threadId || !runId) {
+    if (isDev) {
+      console.warn("Stream start returned no run identifiers, falling back");
+    }
+    const result = await generateNarrative(prompt, { mode });
+    if (typeof onDone === "function") onDone(result);
+    return result;
+  }
 
   // Step 2: Poll for progress
   let lastText = "";

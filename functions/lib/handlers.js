@@ -6,6 +6,12 @@ const {
 	listFirebaseAgents,
 	runFirebaseAgent,
 } = require("./firebase-agents/runtime");
+const {
+	createNarrateRun,
+	updateNarrateRun,
+	getNarrateRun,
+	purgeExpiredNarrateRuns,
+} = require("./narrate-runs-store");
 
 const MOOD_PATTERNS = [
 	{ mood: "tense", patterns: [/danger/i, /threat/i, /ambush/i, /attack/i, /enemy/i, /looming/i] },
@@ -14,9 +20,6 @@ const MOOD_PATTERNS = [
 	{ mood: "serene", patterns: [/calm/i, /peace/i, /gentle/i, /rest/i, /quiet/i, /warm/i, /soft/i] },
 	{ mood: "desperate", patterns: [/flee/i, /escape/i, /wound/i, /bleed/i, /dying/i, /last/i, /barely/i] },
 ];
-
-const NARRATE_RUN_TTL_MS = 5 * 60 * 1000;
-const narrateRuns = new Map();
 
 function inferMood(text) {
 	const value = typeof text === "string" ? text : "";
@@ -58,17 +61,12 @@ function resolveNarratorAgentId(mode) {
 	return "narrator";
 }
 
-function cleanupNarrateRuns() {
-	const now = Date.now();
-	for (const [key, value] of narrateRuns.entries()) {
-		if (!value || now - (value.updatedAtMs || 0) > NARRATE_RUN_TTL_MS) {
-			narrateRuns.delete(key);
-		}
+async function cleanupNarrateRuns() {
+	try {
+		await purgeExpiredNarrateRuns();
+	} catch {
+		// Cleanup is best-effort.
 	}
-}
-
-function createRunKey(threadId, runId) {
-	return `${threadId}:${runId}`;
 }
 
 function buildNarrativePayload(rawText, mode) {
@@ -257,56 +255,83 @@ async function narrateStart(req, res) {
 		const user = await requireAuthenticatedUser(req, res);
 		if (!user) return;
 
-		cleanupNarrateRuns();
+		await cleanupNarrateRuns();
 		const body = await readJsonBody(req);
 		const mode = normalizeMode(body?.mode);
 		const threadId = crypto.randomUUID();
 		const runId = crypto.randomUUID();
-		const key = createRunKey(threadId, runId);
-		const nowMs = Date.now();
 
-		narrateRuns.set(key, {
-			status: "queued",
-			done: false,
-			mode,
+		await createNarrateRun({
+			threadId,
+			runId,
 			ownerId: user.id,
-			updatedAtMs: nowMs,
+			mode,
 		});
 
-		void runNarration(body)
-			.then((result) => {
-				narrateRuns.set(key, {
-					ok: true,
-					done: true,
-					status: "completed",
-					mode: result.mode,
-					ownerId: user.id,
-					narrative: result.narrative,
-					mood: result.mood,
-					suggestions: result.suggestions,
-					outputHash: result.outputHash,
-					updatedAtMs: Date.now(),
-				});
-			})
-			.catch((error) => {
-				narrateRuns.set(key, {
-					ok: false,
-					done: true,
+		let result;
+		try {
+			result = await runNarration(body);
+		} catch (error) {
+			const parsedStatus = Number(error?.status);
+			const status = Number.isFinite(parsedStatus) ? parsedStatus : 500;
+			const message = String(error?.message || error || "Unknown error");
+			const errorCode = error?.code || "RUN_FAILED";
+
+			await updateNarrateRun({
+				threadId,
+				runId,
+				ownerId: user.id,
+				patch: {
 					status: "failed",
+					done: true,
+					ok: false,
 					mode,
-					ownerId: user.id,
-					errorCode: error?.code || "RUN_FAILED",
-					message: String(error?.message || error || "Unknown error"),
-					updatedAtMs: Date.now(),
-				});
+					errorCode,
+					message,
+				},
 			});
 
-		return json(res, 202, {
+			return json(res, status, {
+				ok: false,
+				errorCode,
+				message,
+				threadId,
+				runId,
+				status: "failed",
+				done: true,
+				mode,
+			});
+		}
+
+		await updateNarrateRun({
+			threadId,
+			runId,
+			ownerId: user.id,
+			patch: {
+				status: "completed",
+				done: true,
+				ok: true,
+				mode: result.mode,
+				narrative: result.narrative,
+				mood: result.mood,
+				suggestions: result.suggestions,
+				outputHash: result.outputHash,
+			},
+		});
+
+		return json(res, 200, {
 			ok: true,
 			threadId,
 			runId,
-			status: "queued",
-			mode,
+			status: "completed",
+			done: true,
+			mode: result.mode,
+			narrative: result.narrative,
+			mood: result.mood,
+			suggestions: result.suggestions,
+			outputHash: result.outputHash,
+			backend: result.backend,
+			model: result.model,
 		});
 	} catch (error) {
 		const parsedStatus = Number(error?.status);
@@ -324,7 +349,7 @@ async function narratePoll(req, res) {
 		const user = await requireAuthenticatedUser(req, res);
 		if (!user) return;
 
-		cleanupNarrateRuns();
+		await cleanupNarrateRuns();
 		const threadId = req?.query?.threadId;
 		const runId = req?.query?.runId;
 		if (!threadId || !runId) {
@@ -335,9 +360,12 @@ async function narratePoll(req, res) {
 			});
 		}
 
-		const key = createRunKey(String(threadId), String(runId));
-		const run = narrateRuns.get(key);
-		if (!run || String(run.ownerId || "") !== String(user.id || "")) {
+		const run = await getNarrateRun({
+			threadId: String(threadId),
+			runId: String(runId),
+			ownerId: user.id,
+		});
+		if (!run) {
 			return json(res, 404, {
 				ok: false,
 				errorCode: "RUN_NOT_FOUND",
@@ -348,7 +376,7 @@ async function narratePoll(req, res) {
 		if (run.done && run.ok === false) {
 			return json(res, 500, {
 				ok: false,
-				errorCode: run.errorCode || "RUN_FAILED",
+				errorCode: run.error_code || "RUN_FAILED",
 				status: run.status || "failed",
 				done: true,
 				mode: run.mode || normalizeMode(req?.query?.mode),
@@ -369,7 +397,7 @@ async function narratePoll(req, res) {
 			response.suggestions = Array.isArray(run.suggestions)
 				? run.suggestions
 				: buildDefaultSuggestions(response.mode);
-			response.outputHash = run.outputHash || hashContent(run.narrative);
+			response.outputHash = run.output_hash || hashContent(run.narrative);
 		}
 
 		return json(res, run.done ? 200 : 202, response);

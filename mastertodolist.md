@@ -1,277 +1,185 @@
 # Project: my-litrpg-gameztrui (React / Vite)
+always ask if something is ambigious
 
-Goal: Replace the cramped fixed 3-column UI with a modern modular window system where panels can dock / float / resize / collapse, while the Narrative panel is always visible on the right.
+1) Lock down targets and invariants
 
-Core Requirement: Character Creation → transitions into Game UI using the same window system, with smart rearrangement.
+- ~~Define the “ambient essence model” contract: a single function that answers “given location + time + weather , what’s ambient composition, density, and quality?”~~
+  - Draft contract: `computeAmbientSnapshot({ locationId, biomeId, timePhase, weatherType, weatherIntensity, anomalyIds }) -> { compositionByEssence, global, provenance, tags }`
+  - `compositionByEssence[essence]`: `{ density, purity, taint }`
+  - `global`: `{ drawMultByEssence, refineYieldMultByEssence, stabilityCapDelta, compressRiskMultByEssence, potencyMultByEssence }`
+  - Invariant: time + weather should be nudges; biome + anomaly are primary identity.
+- ~~Define the “storage model” contract: how stored/refined/compressed/anchored essence changes over time, and what stats it exposes (potency, purity, interference, decay rate).~~
+  - Draft contract: `tickEssenceStorage(state, { turnsElapsed }) -> state`
+  - Each stored/compressed unit tracks: `{ essence, amount, potency, purity, taint, lastTouchedTurn }`
+  - Derived each turn: `{ interferenceScore, decayRate }` from fullness + opposing pairs + taint.
+- ~~Decide which effects are additive nudges vs hard gates (your intent: time/weather nudge, not dominate).~~
+  - Rule: biome/anomaly are primary identity; time/weather are nudges.
 
-Notes:
-- Keep this plan in sync with actual implementation status.
-- Mark completed items with ✅ only when delivered in code.
+Decisions locked:
+- Tick decay + anomaly drift only on turn-advancing actions (not on read-only `SENSE`).
+- Time uses coarse phases: `dawn/day/dusk/night`.
+- Weather is tracked per-biome.
+- Essence set: `fire, water, earth, air, lightning, shadow, light, life, creation, destruction, space, time`.
+- Off-biome modifier range target: `-10%` to `+20%`.
 
-## 1) High-Level UI Concept
-Implement a Window Manager + Docking Layout System that supports:
-- ✅ ~~draggable panels~~
-- ✅ ~~resizable panels~~
-- ✅ ~~collapse/minimize~~
-- ✅ ~~pin (always open)~~
-- ✅ ~~docking (snap to left / right / center areas)~~
-- ✅ ~~z-index focus (active window on top)~~
-- ✅ ~~persistent layout storage (localStorage)~~
-- ✅ ~~modes: Character Creation Mode + Game Mode~~
-- ✅ ~~Narrative always visible as a fixed right dock panel with optional minimize width toggle but never fully removed.~~
+Open questions (need your call before I cross this step):
+- ~~Should decay and anomaly drift tick only on turn-advancing actions, or also on read-only actions like `SENSE`?~~
+- ~~Do you want time as coarse phases (`dawn/day/dusk/night`) or a numeric clock (`hour 0-23`)?~~
+- ~~Should weather be global, per-biome, or per-location? Also: deterministic schedule vs RNG changes?~~
+- ~~Confirm essence set: `fire, water, earth, air, lightning, shadow, light, life, creation ,destruction, space, time` (anything missing like `ice` or `metal`)?~~
+- ~~How strong should off-biome penalties be (e.g., dominant +20%, off-biome -10%), and what clamp limits?~~
 
-## 2) UI Layout Structure
-### 2.1 Root Frame Zones
-Create a root layout with 3 zones:
+2) Extend world state to support ecology
 
-**A) Left HUD Dock Zone**
-- ✅ Fixed area aligned left, width ~ 280px to 340px
-- ✅ Contains small anchored HUD panels in stack
-- ✅ Panels here are always docked, not floating by default in Game Mode
-- ✅ HUD panels include:
-  - ✅ VitalsPanel (HP/MP/XP/resources bars)
-  - ✅ EquipmentPanel (weapon/armor slots)
-  - ✅ StatusEffectsPanel (buff/debuff icons + timer)
-  - ✅ InventoryPanel (compact list + weight + quick slots)
+- Add (or formalize) world.location.biome (or derive biome from location id).
+- Add world.time (at least: hour segment or named phase like dawn/day/dusk/night).
+- Add world.weather (at least: clear/rain/storm/drought/fog; plus intensity 0–1 if you want smoothness).
+- Add world.essence.ambient to store the current computed snapshot plus its provenance (biome/time/weather/anomaly ids) so descriptions can reference it.
+3) Implement biome dominant triads (data-first)
 
-**B) Center Command Deck Zone**
-- ✅ Main area: flexible width
-- ✅ This is your core gameplay surface
-- ✅ Contains:
-  - ✅ NarrativeLogPanel (scrollable)
-  - ✅ CommandTerminalPanel (input box + exec button)
-  - ✅ ActionSuggestionsPanel (chip buttons "Explore / Speak / Review / Train...")
-- ✅ This center area should feel like a command bridge / terminal.
+- Create a biome table: for each biome, define:
+  - dominant triad essences
+  - draw multiplier per essence (dominant up, off‑biome slightly down)
+  - refine yield multiplier
+  - stability cap modifier (small)
+  - optional purity/contamination baseline
+- Ensure mixed builds remain viable: clamp penalties so off‑biome is “less efficient” not “nonfunctional”.
+4) Add time-of-day modulation
 
-**C) Right Narrative Memory Zone**
-- ✅ Must ALWAYS EXIST and be visible.
-- ✅ Width: 340px-460px
-- ✅ Contains:
-  - ✅ NarrativeMemoryPanel (summaries, recent events, bookmarks)
-- ✅ Allowed interactions:
-  - ✅ minimize to thin rail width (like 80px)
-  - ✅ pinned state stays across modes
-  - ✅ never fully disappears
+- Choose time phases (e.g., dawn/day/dusk/night; optionally midnight as special).
+- Define per-phase modifiers:
+  - stability nudges (light/life at dawn, etc.)
+  - draw nudges (shadow/air at dusk, etc.)
+  - compression risk + potency trade at midnight
+- Make these modifiers small and multiplicative on top of biome (so they “nudge”).
+5) Add weather-driven ambient and contamination pressure
 
-## 3) Modes: Character Creation Mode vs Game Mode
-### 3.1 Character Creation Mode Layout
-When Character Creation runs:
-- ✅ Left side becomes Floating Modules
-- ✅ Instead of one huge left panel, spawn modular windows:
-- ✅ Floating creation panels:
-  - ✅ RacePanel
-  - ✅ ClassPanel
-  - ✅ AttributeAllocationPanel
-  - ✅ TalentPanel
-  - ✅ SkillSelectionPanel
-  - ✅ IdentityPanel (Name + Gender)
-  - ✅ CreationSummaryPanel
-- ✅ ALL are translucent panels
-- ✅ each can be dragged, resized, collapsed
-- ✅ user can rearrange them freely
-- ✅ default layout: panels appear distributed across center-left area
-- ✅ Narrative stays docked right
-- ✅ NarrativeMemoryPanel on right is always visible
-- ✅ Additionally, there is a Creation Narrative inside the center area:
-  - ✅ a mini log describing the creation steps / world context
-  - ✅ typewriter effect allowed
-- ✅ Finalize Button
-- ✅ One window (CreationSummaryPanel) includes Initialize Avatar
-- ✅ On finalize:
-  - ✅ transition mode -> Game Mode
-  - ✅ trigger window reconfiguration animation (smooth reposition)
+- Define weather profiles:
+  - composition shifts (storm boosts lightning/air density, etc.)
+  - refine yield nudges (rain helps water refinement)
+  - compression difficulty modifiers (rain dampens fire compression)
+  - contamination chance baseline (e.g., fog/swamp increases impurities)
+- Add an intensity scalar to avoid binary swings (even if you later keep intensity fixed at 1).
+6) Localized anomalies (hotspots that drift)
 
-### 3.2 Game Mode Layout
-When creation is completed:
+- Create an anomaly system with:
+  - anomaly definitions (id, name, affected essences, strong narrow buffs, unique drawback)
+  - spawn rules (which biomes allow which anomalies)
+  - drift rules (move or rotate between nearby locations every N turns/days)
+- Decide visibility:
+  - sometimes visible only after SENSE or after an attunement quest
+  - sometimes announced as environmental storytelling (“the air crackles…”)
+7) Wire ecology into magic actions (minimal surface area)
 
-**A) Left HUD Dock auto-build**
-- ✅ The floating creation windows transform into small dock panels:
-  - ✅ VitalsPanel dock left top
-  - ✅ EquipmentPanel dock left under vitals
-  - ✅ InventoryPanel dock left under equipment
-  - ✅ StatusEffectsPanel dock left bottom
-- ✅ Left dock becomes permanent HUD cluster.
+- Ensure DRAW , REFINE , SENSE , ATTUNE consult the ambient snapshot:
+  - DRAW : scaled by density and per-essence draw multipliers
+  - REFINE : yield scaled by refine multipliers and reduced by contamination
+  - SENSE : report biome/time/weather/anomaly influences
+  - ATTUNE : grants temporary resistance to off‑biome penalties or interference (optional)
+- Keep this as a single “ambient modifier bundle” computed once per turn/action, not scattered math.
+8) Deepen resource dynamics: potency, purity, decay
 
-**B) Center = Command Deck**
-- ✅ Center contains:
-  - ✅ NarrativeLogPanel (dominant height)
-  - ✅ CommandTerminalPanel (bottom input)
-  - ✅ ActionSuggestionsPanel (buttons row)
+- Add per-container stats for stored essence:
+  - amount (capacity usage)
+  - potency (power per unit)
+  - purity (0–1)
+  - decayRate (per turn), derived from fullness + mismatch + contamination
+- Decide decay outcomes:
+  - potency drops first, then amount bleeds away
+  - or amount drops but leaves “residue” contamination behind
+9) Contamination loop
 
-**C) Right Narrative Memory stays**
-- ✅ Right memory panel remains unchanged.
+- Add contamination sources:
+  - certain biomes/weather/anomalies add impurity on draw
+  - storing mixed/hostile essences increases impurity
+- Add resolution paths:
+  - “purge” action (or integrate into RELEASE as “controlled release”)
+  - refining can improve purity but costs yield/time
+- Make contamination matter by feeding into: refine yield, misfire odds, backlash severity.
+10) Cross-essence interference (opposition + mismatch)
 
-**D) Additional Feature Panels appear as Floating Windows**
-- ✅ Panels like:
-  - ✅ QuestPanel
-  - ✅ GachaPanel
-  - ✅ CraftingPanel
-  - ✅ TitlesPanel
-  - ✅ ShopPanel
-- ✅ should appear only when toggled from icons.
-- ✅ They open as floating windows above the Command Deck and can be moved anywhere.
+- Define an opposition matrix (fire↔water, light↔shadow, etc.) and maybe “adjacency harmony” (air+lightning synergize).
+- Compute an “interference score” for the player’s current stored/compressed mix:
+  - increases with opposing pairs present
+  - reduced by perks, attunement, or specialized storage
+- Interference impacts:
+  - stability drain per action
+  - compression risk
+  - resonance overload acceleration
+11) Progression hooks (perks as modifiers, not new subsystems)
 
-## 4) Window System Technical Requirements
-### 4.1 Window Component Definition
-Create a unified GameWindow component:
+- Add a perk framework for magic that can modify:
+  - compression risk multiplier
+  - capacity usage reduction for compressed forms
+  - stability threshold increase
+  - backlash severity reduction
+  - refine efficiency and purity improvements
+- Implement in tiers:
+  - Tier 1: quality-of-life (slightly safer, slightly faster)
+  - Tier 2: specialization (element-specific tuning, interference reduction)
+  - Tier 3: signature capability (dual-refine, stable multi-weave)
+12) Risk model: from binary fail to outcome spectrum
 
-Props:
-- ✅ id
-- ✅ title
-- ✅ icon
-- ✅ defaultPosition {x,y}
-- ✅ defaultSize {w,h}
-- ✅ dockZone: "left" | "center" | "right" | "float"
-- ✅ minWidth / minHeight
-- ✅ isResizable
-- ✅ isDraggable
-- ✅ isCollapsible
-- ✅ isPinned
-- ✅ alwaysVisible (for Narrative panel)
-- ✅ zIndex
-- ✅ children
+- Replace “success/fail” with outcome categories:
+  - clean success
+  - strained success (reduced potency, stability hit)
+  - partial misfire (pattern drift, leaks essence)
+  - backlash (tiered consequences)
+- Introduce “resonance” as a tracked meter influenced by:
+  - action intensity (compress/weave)
+  - interference score
+  - contamination
+  - environmental pressure (anomalies, storms)
+- Define overload thresholds that trigger “wild magic”-style side effects that still keep gameplay readable.
+13) Action synergy: persistent SHAPE/ANCHOR states
 
-Must include:
-- ✅ chrome header (title + icons)
-- ✅ buttons: collapse / pin / close / dock
-- ✅ fancy glow border + blur background
+- Ensure SHAPE and ANCHOR create explicit, persistent state objects:
+  - remaining essence, decay timer, stability contribution, tags (e.g., “spear”, “ward”, “focus”)
+- Define synergy rules:
+  - WEAVE can consume SHAPE for bonus potency/accuracy
+  - ANCHOR can stabilize WEAVE (lower misfire/backlash odds)
+  - Persistent states decay slowly out of combat and faster in combat (or vice versa, as desired)
+14) Combat integration: cast time + interruption
 
-### 4.2 Dragging Behavior
-- ✅ Dragging header moves window in float mode
-- ✅ When dragged near left/right edges: show snap overlay
-- ✅ Dropping window snaps/docks into that zone
-- ✅ Dock rules:
-  - ✅ left dock: stacks vertically, full dock width
-  - ✅ right dock: only narrative allowed to occupy full zone
-  - ✅ center dock: optional (Command Deck stays in center)
+- Assign cast time bands to magic actions (instant/short/long/channel).
+- Add an interruption check:
+  - if hit during cast, roll vs stability/resonance to determine: fizzles, partial, backlash
+- Add tactical levers:
+  - pre-cast setup (shape/anchor) reduces cast time or interruption vulnerability
+  - high-cost weaves trade: big payoff, big risk, bigger interruption window
+15) Discovery loop: patterns, rare sources, attunement quests
 
-### 4.3 Resizing Behavior
-- ✅ Resize handle bottom-right
-- ✅ Must not resize beyond viewport bounds
-- ✅ Must respect minWidth/minHeight
-- ✅ Resizing works in float mode
-- ✅ Docked windows may have fixed width and resizable height
+- Implement “pattern unlock” conditions:
+  - location-based (must sense/attune in zone)
+  - essence-pair experimentation (discover on first successful weave of combo)
+  - quest reward unlocks (narrative progression)
+- Add rare essence source definitions:
+  - unique ambient variants that enable branches (storm-water, ash-fire)
+- Add a lightweight quest hook:
+  - completion grants perk point, pattern, or a new anomaly that becomes accessible.
+16) Feedback overhaul (player-facing clarity)
 
-### 4.4 Collapse/Minimize
-- ✅ Collapsed window becomes:
-  - ✅ header-only bar
-  - ✅ remains in its zone
-  - ✅ can be expanded again
-- ✅ if docked left: collapsed panels stack as slim bars
+- Define a consistent vocabulary ladder for:
+  - stability states (steady → wavering → volatile → fracturing)
+  - resonance states (quiet → humming → ringing → shrieking)
+  - contamination states (clean → tainted → foul)
+- Update SENSE output to explain why :
+  - “Stormfront overhead: lightning density high; fire compression dampened; taint risk elevated.”
+- Add “meaningful change” thresholds to avoid spam:
+  - only announce ambient shifts when modifiers cross a boundary or anomaly appears/drifts.
+17) Testing & balancing plan (before tuning numbers)
 
-### 4.5 Persistent Layout Storage
-- ✅ Store per-mode layout in localStorage.
-- ✅ Example storage keys:
-  - ✅ layout_characterCreation
-  - ✅ layout_gameMode
-- ✅ Persist:
-  - ✅ each window position/size
-  - ✅ dock zone
-  - ✅ collapsed state
-  - ✅ pinned state
-- ✅ On load:
-  - ✅ restore layout if exists
-  - ✅ else use default layout config
+- Create scenario-based tests (design-level, not just unit):
+  - same action in different biomes produces expected relative outcomes
+  - time/weather nudges do not overwhelm biome identity
+  - contamination meaningfully changes refine/misfire probabilities
+  - perks reduce risk in the intended dimensions without eliminating it
+- Add a simple balancing harness (even a debug mode) to simulate 1000 casts and inspect distributions.
+18) Rollout strategy (reduce risk to existing gameplay)
 
-## 5) UI Style & Visual Language
-Theme: Ultra-modern sci-fi / glass + neon holo
-
-Look requirements:
-- ✅ translucent glass panels with blur (backdrop-filter: blur(14px))
-- ✅ soft glow borders (cyan + purple)
-- ✅ subtle scanline effect allowed
-- ✅ consistent spacing (no cramped panels)
-- ✅ rounded corners 16px-22px
-- ✅ smooth transitions 150-250ms
-- ✅ focus glow on active window
-- ✅ low contrast background with grid / particles
-
-Typography:
-- ✅ primary = modern UI font (Inter / system)
-- ✅ terminal = monospace
-
-Animations:
-- ✅ window pop-in
-- ✅ mode transition reflow animation
-- ✅ dock snapping highlight
-- ✅ subtle hover glows
-
-## 6) Navigation + Panel Spawn System
-- ✅ Add a compact icon toolbar (top or left edge of center zone) to toggle floating windows:
-
-Buttons:
-- ✅ ~~Quests~~
-- ✅ ~~Gacha~~
-- ✅ ~~Crafting~~
-- ✅ ~~Titles~~
-- ✅ ~~Shop~~
-- ✅ ~~Status~~
-
-Behavior:
-- ✅ ~~click → open floating window (if closed)~~
-- ✅ ~~click again → focus + bring to front~~
-- ✅ ~~close button hides window but remembers last position~~
-
-## 7) File Structure (Recommended)
-- ✅ Implement in clean modules:
-
-src/ui/windowing/
-  WindowManager.jsx
-  WindowRegistry.js
-  GameWindow.jsx
-  DockZone.jsx
-  useWindowLayout.js
-  layoutPresets.js
-
-src/ui/panels/
-  NarrativeMemoryPanel.jsx
-  NarrativeLogPanel.jsx
-  CommandTerminalPanel.jsx
-  ActionSuggestionsPanel.jsx
-  VitalsPanel.jsx
-  EquipmentPanel.jsx
-  InventoryPanel.jsx
-  StatusEffectsPanel.jsx
-  QuestPanel.jsx
-  GachaPanel.jsx
-  CraftingPanel.jsx
-  TitlesPanel.jsx
-
-src/ui/modes/
-  CharacterCreationMode.jsx
-  GameMode.jsx
-
-## 8) Required UX: Not cramped ever again
-Rules to enforce:
-- ✅ no panel should contain scroll within scroll unless necessary
-- ✅ in Character Creation mode, panels start medium sized and spread out
-- ✅ important panel (Race/Class) should not be forced into narrow columns
-- ✅ narrative must not overlap, must stay readable
-- ✅ implement Focus Mode: double click a window = maximize it in center temporarily
-
-## 9) Transition Between Modes (The Cool Part)
-When player clicks Initialize Avatar:
-- ✅ ~~animate floating windows smoothly into dock positions~~
-- ✅ ~~fade out creation-only panels~~
-- ✅ ~~fade in game HUD panels~~
-- ✅ ~~keep narrative continuous (no blank screen)~~
-- ✅ ~~keep memory panel unchanged~~
-
-## 10) Success Criteria Checklist
-- ✅ ~~Narrative panel always visible on right~~
-- ✅ ~~Character creation is modular, draggable, resizable~~
-- ✅ ~~Game UI uses same system with left dock HUD and center command deck~~
-- ✅ ~~Extra panels open as floating windows~~
-- ✅ ~~Layout persists between sessions~~
-- ✅ ~~No cramped fixed 3-column layout~~
-- ✅ ~~Modern high-tech vibe~~
-
-## 11) Narrative Pipeline Hardening (In Progress)
-Goal: Make narrative flow consistent, safe, and bounded.
-
-Tasks:
-- ⬜ Audit narrative log flows and ordering (chatLog vs narrative.chatLog)
-- ⬜ Define unified narrative log schema + migration path
-- ✅ ~~Add prompt history bounds + stable ordering (PromptAssembler)~~ — `MAX_HISTORY_ENTRIES = 20`, `MAX_HISTORY_CHARS = 4000`
-- ✅ ~~Harden AIService fallbacks/timeouts + response format consistency~~ — `fetchWithTimeout`, `fetchJsonWithRetry` (MAX_RETRIES=2), `applyNarrationGuards`, tone violation filtering
-- ✅ ~~Refresh narrative summary cadence + UI memory consistency~~ — `NarrativeMemoryPanel.jsx` renders summary + entries
+- Ship in layers:
+  - Layer A: ecology snapshot + SENSE feedback (no major balance impact)
+  - Layer B: decay/contamination/interference (resource depth)
+  - Layer C: risk spectrum + resonance overload (feel + drama)
+  - Layer D: perks + discovery + combat casting (progression + pacing)
+- After each layer: rebalance coefficients and adjust feedback thresholds.

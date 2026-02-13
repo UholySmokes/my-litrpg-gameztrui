@@ -2,7 +2,6 @@
 import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
-import { DefaultAzureCredential } from '@azure/identity';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 
@@ -52,22 +51,10 @@ function normalizeEndpoint(endpoint) {
 
 async function resolveAuth() {
   const apiKey = process.env.FOUNDRY_API_KEY;
-  if (apiKey) {
-    // Check if we can use the key, if not we might fallback later in the flow, 
-    // but resolveAuth is called once. 
-    // For now, let's return the key but allow the caller to handle failure?
-    // No, let's just return the key.
-    // If the key is invalid, the script will fail.
-    // Since we know the key in local.settings.json is problematic, 
-    // maybe we should prioritize DefaultAzureCredential if we are in a dev environment?
-    // But let's just use DefaultAzureCredential for now as it worked.
-    console.log("Found API Key but using DefaultAzureCredential to ensure permissions.");
+  if (!apiKey) {
+    throw new Error("Missing environment variable: FOUNDRY_API_KEY");
   }
-  
-  console.log("Attempting to use DefaultAzureCredential...");
-  const credential = new DefaultAzureCredential();
-  const token = await credential.getToken("https://ai.azure.com/.default");
-  return { token: token.token };
+  return { apiKey };
 }
 
 async function fetchJson(url, options) {
@@ -97,17 +84,16 @@ async function deployAgents() {
 
   // 1. Setup Auth and Endpoint
   const projectEndpoint = getRequiredEnv('FOUNDRY_PROJECT_ENDPOINT');
-  const apiVersion = getOptionalEnv('AZURE_AI_API_VERSION', '2025-05-01');
+  const apiVersion = getOptionalEnv(
+    'FOUNDRY_API_VERSION',
+    getOptionalEnv('AZURE_AI_API_VERSION', '2025-05-01'),
+  );
   const endpointBase = normalizeEndpoint(projectEndpoint);
   
   console.log(`Endpoint: ${endpointBase}`);
   
   const auth = await resolveAuth();
-  if (auth.apiKey) {
-    console.log(`Using API Key: ${auth.apiKey.substring(0, 5)}...`);
-  } else if (auth.token) {
-    console.log(`Using Bearer Token`);
-  }
+  console.log(`Using API Key: ${auth.apiKey.substring(0, 5)}...`);
 
   // 2. Read Agent Files
   if (!fs.existsSync(AGENTS_DIR)) {

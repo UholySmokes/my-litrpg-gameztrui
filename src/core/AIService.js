@@ -314,7 +314,12 @@ const resolveStreamEndpoints = () => {
     runtimeEnv["VITE_API_BASE"],
     buildEnv["VITE_API_BASE"],
   );
-  if (!apiBaseUrl) return null;
+  if (!apiBaseUrl) {
+    return {
+      start: "/api/narrate-start",
+      poll: "/api/narrate-poll",
+    };
+  }
   const base = normalizeBaseUrl(apiBaseUrl);
   return {
     start: `${base}/api/narrate-start`,

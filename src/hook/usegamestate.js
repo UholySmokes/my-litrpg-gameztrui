@@ -6,8 +6,15 @@ import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { serializeEvent } from "../simulation/logging/CombatLogSerializer.ts";
 import { createSystemEngine } from "../core/createSystemEngine.js";
 
+const rootReducer = (state, action) => {
+  if (action.type === 'RESET_GAME_STATE') {
+    return initialGameState;
+  }
+  return gameReducer(state, action);
+};
+
 export function useGameEngine() {
-  const [state, dispatch] = useReducer(gameReducer, initialGameState);
+  const [state, dispatch] = useReducer(rootReducer, initialGameState);
   const prevStateRef = useRef(state);
   const isInitialRender = useRef(true);
   const stateRef = useRef(state);

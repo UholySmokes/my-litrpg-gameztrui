@@ -112,7 +112,7 @@ function tryParseStructured(text) {
 }
 
 async function initializeRuntime() {
-	const [{ genkit }, { vertexAI }] = await Promise.all([
+	const [{ genkit }, { vertexAI, googleAI }] = await Promise.all([
 		import("genkit"),
 		import("@genkit-ai/google-genai"),
 	]);
@@ -121,15 +121,29 @@ async function initializeRuntime() {
 	const apiKey =
 		(process.env.GOOGLE_GENAI_API_KEY || process.env.GOOGLE_API_KEY || "").trim();
 	const projectId = resolveProjectId();
-	const pluginOptions = { location };
-	if (apiKey) pluginOptions.apiKey = apiKey;
-	if (projectId) pluginOptions.projectId = projectId;
+	const useGoogleAI = Boolean(apiKey);
+	let plugin;
+	let modelResolver;
+
+	if (useGoogleAI) {
+		plugin = googleAI({ apiKey });
+		modelResolver = (modelName) => googleAI.model(modelName);
+	} else {
+		const pluginOptions = { location };
+		if (projectId) pluginOptions.projectId = projectId;
+		plugin = vertexAI(pluginOptions);
+		modelResolver = (modelName) => vertexAI.model(modelName);
+	}
 
 	const ai = genkit({
-		plugins: [vertexAI(pluginOptions)],
+		plugins: [plugin],
 	});
 
-	return { ai, vertexAI };
+	return {
+		ai,
+		modelResolver,
+		backend: useGoogleAI ? "google-ai-studio" : "vertex-ai",
+	};
 }
 
 async function getRuntime() {
@@ -163,9 +177,9 @@ async function runFirebaseAgent({
 	const inputPrompt = buildInputPrompt(definition.id, input);
 	const fullPrompt = `${definition.instructions}\n\nINPUT\n${inputPrompt}`;
 
-	const { ai, vertexAI } = await getRuntime();
+	const { ai, modelResolver, backend } = await getRuntime();
 	const { response, stream } = ai.generateStream({
-		model: vertexAI.model(activeModel),
+		model: modelResolver(activeModel),
 		prompt: fullPrompt,
 		config: {
 			temperature: activeTemperature,
@@ -196,6 +210,7 @@ async function runFirebaseAgent({
 		agentName: definition.name,
 		model: activeModel,
 		temperature: activeTemperature,
+		backend,
 		text: finalText,
 		structured: tryParseStructured(finalText),
 	};

@@ -1,55 +1,95 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
-import { DataRegistry } from "../data/DataRegistry.js";
 import { mergeInventoryItems } from "../utils/shared.js";
 import "./AdminTools.css";
 
 export default function AdminTools({ dispatch, getState }) {
   const [isVisible, setIsVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState("Player");
+  const [activeTab, setActiveTab] = useState("player");
   const [output, setOutput] = useState("");
-  const [playerState, setPlayerState] = useState(null);
 
   // Amounts for input fields
   const [goldAmount, setGoldAmount] = useState(1000);
   const [soulpointsAmount, setSoulpointsAmount] = useState(100);
   const [xpAmount, setXpAmount] = useState(100);
 
-  useEffect(() => {
-    if (isVisible) {
-      const currentState = getState?.();
-      setPlayerState(currentState?.player);
+  const readState = () => (typeof getState === "function" ? getState() : null);
+  const currentState = readState();
+  const playerState = currentState?.player || null;
+  const playerSummary = useMemo(() => {
+    if (!playerState) {
+      return {
+        level: 0,
+        gold: 0,
+        soulpoints: 0,
+        xp: "0 / 0",
+        hp: "0 / 0",
+        mana: "0 / 0",
+      };
     }
+
+    const level = Number(playerState.level || 0);
+    const currency = playerState.currency || {};
+    const gold = Number(currency.goldCoins ?? playerState.gold ?? 0);
+    const soulpoints = Number(currency.soulpoints ?? playerState.soulpoints ?? 0);
+    const xpCurrent = Number(playerState.xp?.current ?? playerState.xp ?? 0);
+    const xpMax = Number(playerState.xp?.max ?? 0);
+    const hpCurrent = Number(playerState.hp?.current ?? 0);
+    const hpMax = Number(playerState.hp?.max ?? 0);
+    const manaCurrent = Number(playerState.mana?.current ?? 0);
+    const manaMax = Number(playerState.mana?.max ?? 0);
+
+    return {
+      level,
+      gold,
+      soulpoints,
+      xp: `${xpCurrent} / ${xpMax}`,
+      hp: `${hpCurrent} / ${hpMax}`,
+      mana: `${manaCurrent} / ${manaMax}`,
+    };
+  }, [playerState]);
+
+  useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key === '`') {
-        setIsVisible(prev => !prev);
+      if (e.repeat) return;
+      if (e.ctrlKey && e.key === "`") {
+        setIsVisible((prev) => !prev);
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isVisible, getState]);
+  }, []);
+
+  const parseAmount = (rawValue) => {
+    const value = Number.parseInt(rawValue, 10);
+    return Number.isFinite(value) ? value : null;
+  };
 
   const handleDispatch = (action) => {
+    if (typeof dispatch !== "function") {
+      setOutput("Admin action failed: dispatch is unavailable.");
+      return;
+    }
     dispatch(action);
-    // Refresh player state after dispatching an action
-    setTimeout(() => {
-        const currentState = getState?.();
-        setPlayerState(currentState?.player);
-    }, 100);
   };
 
   const addGold = (amount) => {
-    const value = parseInt(amount, 10);
-    if (isNaN(value)) return;
+    const value = parseAmount(amount);
+    const snapshot = readState();
+    if (!snapshot?.player) return;
+    if (value === null) {
+      setOutput("Invalid gold amount.");
+      return;
+    }
 
     handleDispatch({
         type: "UPDATE_STATE",
         payload: {
             player: {
-                ...getState().player,
+                ...snapshot.player,
                 currency: {
-                    ...getState().player.currency,
-                    goldCoins: (getState().player.currency.goldCoins || 0) + value,
+                    ...(snapshot.player.currency || {}),
+                    goldCoins: ((snapshot.player.currency || {}).goldCoins || 0) + value,
                 },
             },
         },
@@ -58,17 +98,22 @@ export default function AdminTools({ dispatch, getState }) {
   };
 
   const addSoulpoints = (amount) => {
-    const value = parseInt(amount, 10);
-    if (isNaN(value)) return;
+    const value = parseAmount(amount);
+    const snapshot = readState();
+    if (!snapshot?.player) return;
+    if (value === null) {
+      setOutput("Invalid soulpoints amount.");
+      return;
+    }
     
     handleDispatch({
         type: "UPDATE_STATE",
         payload: {
             player: {
-                ...getState().player,
+                ...snapshot.player,
                 currency: {
-                    ...getState().player.currency,
-                    soulpoints: (getState().player.currency.soulpoints || 0) + value,
+                    ...(snapshot.player.currency || {}),
+                    soulpoints: ((snapshot.player.currency || {}).soulpoints || 0) + value,
                 },
             },
         },
@@ -77,8 +122,11 @@ export default function AdminTools({ dispatch, getState }) {
   };
 
   const addXP = (amount) => {
-    const value = parseInt(amount, 10);
-    if (isNaN(value)) return;
+    const value = parseAmount(amount);
+    if (value === null) {
+      setOutput("Invalid XP amount.");
+      return;
+    }
     handleDispatch({ type: "ADD_XP", payload: value });
     setOutput(`Added ${value} XP`);
   };
@@ -89,13 +137,19 @@ export default function AdminTools({ dispatch, getState }) {
   };
 
   const refillVitals = () => {
+    const snapshot = readState();
+    if (!snapshot?.player?.hp || !snapshot?.player?.mana) {
+      setOutput("Cannot refill vitals: player HP/Mana data missing.");
+      return;
+    }
+
     handleDispatch({
       type: "UPDATE_STATE",
       payload: {
         player: {
-          ...getState().player,
-          hp: { ...getState().player.hp, current: getState().player.hp.max },
-          mana: { ...getState().player.mana, current: getState().player.mana.max },
+          ...snapshot.player,
+          hp: { ...snapshot.player.hp, current: snapshot.player.hp.max },
+          mana: { ...snapshot.player.mana, current: snapshot.player.mana.max },
         },
       },
     });
@@ -103,6 +157,9 @@ export default function AdminTools({ dispatch, getState }) {
   };
 
   const addCraftingMats = () => {
+    const snapshot = readState();
+    if (!snapshot?.player) return;
+
     const mats = [
       { id: "iron_ore", quantity: 10 },
       { id: "leather", quantity: 10 },
@@ -112,8 +169,8 @@ export default function AdminTools({ dispatch, getState }) {
       type: "UPDATE_STATE",
       payload: {
         player: {
-          ...getState().player,
-          inventory: mergeInventoryItems(getState().player.inventory, mats),
+          ...snapshot.player,
+          inventory: mergeInventoryItems(snapshot.player.inventory || [], mats),
         },
       },
     });
@@ -121,6 +178,9 @@ export default function AdminTools({ dispatch, getState }) {
   };
 
   const giveRandomGear = () => {
+    const snapshot = readState();
+    if (!snapshot?.player) return;
+
     const loot = [
         { id: "iron_sword", name: "Iron Sword", type: "equipment", equipSlot: "weapon", quantity: 1 },
         { id: "chain_mail", name: "Chain Mail", type: "equipment", equipSlot: "armor", quantity: 1 },
@@ -129,8 +189,8 @@ export default function AdminTools({ dispatch, getState }) {
       type: "UPDATE_STATE",
       payload: {
         player: {
-          ...getState().player,
-          inventory: mergeInventoryItems(getState().player.inventory, loot),
+          ...snapshot.player,
+          inventory: mergeInventoryItems(snapshot.player.inventory || [], loot),
         },
       },
     });
@@ -138,43 +198,74 @@ export default function AdminTools({ dispatch, getState }) {
   };
 
   const runGeneration = (type) => {
-    const start = performance.now();
-    let result;
-    switch (type) {
-      case "race": result = ContentGenerator.generateCharacterOptions(5).races; break;
-      case "class": result = ContentGenerator.generateCharacterOptions(5).classes; break;
-      case "skill": result = ContentGenerator.generateSkills(10, 5); break;
-      default: result = "Unknown generation type";
+    try {
+      const start = performance.now();
+      let result;
+      if (type === "race" || type === "class") {
+        const options = ContentGenerator.generateCharacterOptions(5);
+        result = type === "race" ? options.races : options.classes;
+      } else if (type === "skill") {
+        result = ContentGenerator.generateSkills(10, 5);
+      } else {
+        result = "Unknown generation type";
+      }
+      const end = performance.now();
+      const summary = `Generated ${Array.isArray(result) ? result.length : 1} ${type}s in ${(end - start).toFixed(2)}ms\n\n${JSON.stringify(result, null, 2)}`;
+      setOutput(summary);
+      console.log(`Generated ${type}s:`, result);
+    } catch (error) {
+      setOutput(`Generation failed for "${type}": ${String(error?.message || error)}`);
     }
-    const end = performance.now();
-    const summary = `Generated ${Array.isArray(result) ? result.length : 1} ${type}s in ${(end - start).toFixed(2)}ms\n\n` + JSON.stringify(result, null, 2);
-    setOutput(summary);
-    console.log(`Generated ${type}s:`, result);
   };
   
   const resetGame = () => {
     if (window.confirm("Are you sure you want to reset all game data? This cannot be undone.")) {
       handleDispatch({ type: "RESET_GAME_STATE" });
       setOutput("Game state has been reset.");
-      setTimeout(() => {
-        const currentState = getState?.();
-        setPlayerState(currentState?.player);
-      }, 100);
+    }
+  };
+
+  const clearOutput = () => {
+    setOutput("");
+  };
+
+  const copyOutput = async () => {
+    if (!output) return;
+    try {
+      await navigator.clipboard.writeText(output);
+      setOutput((prev) => `${prev}\n\n[Copied output to clipboard.]`);
+    } catch {
+      setOutput((prev) => `${prev}\n\n[Copy failed: clipboard not available.]`);
     }
   };
 
   const renderPlayerTab = () => (
     <div className="admin-tools-grid">
       <div className="admin-tools-input-group">
-        <input type="number" value={goldAmount} onChange={e => setGoldAmount(e.target.value)} />
+        <input
+          type="number"
+          value={goldAmount}
+          onChange={(e) => setGoldAmount(e.target.value)}
+          aria-label="Gold amount"
+        />
         <button className="admin-tools-button" onClick={() => addGold(goldAmount)}>Add Gold</button>
       </div>
       <div className="admin-tools-input-group">
-        <input type="number" value={soulpointsAmount} onChange={e => setSoulpointsAmount(e.target.value)} />
+        <input
+          type="number"
+          value={soulpointsAmount}
+          onChange={(e) => setSoulpointsAmount(e.target.value)}
+          aria-label="Soulpoints amount"
+        />
         <button className="admin-tools-button" onClick={() => addSoulpoints(soulpointsAmount)}>Add Soulpoints</button>
       </div>
       <div className="admin-tools-input-group">
-        <input type="number" value={xpAmount} onChange={e => setXpAmount(e.target.value)} />
+        <input
+          type="number"
+          value={xpAmount}
+          onChange={(e) => setXpAmount(e.target.value)}
+          aria-label="XP amount"
+        />
         <button className="admin-tools-button" onClick={() => addXP(xpAmount)}>Add XP</button>
       </div>
       <button className="admin-tools-button" onClick={addLevel}>+1 Level</button>
@@ -194,8 +285,34 @@ export default function AdminTools({ dispatch, getState }) {
 
   const renderSystemTab = () => (
     <div>
-        <div className="admin-tools-grid">
-            <button className="admin-tools-button" onClick={resetGame}>Reset Game</button>
+        <div className="admin-tools-summary-grid">
+            <div className="admin-tools-stat-card">
+              <span>Level</span>
+              <strong>{playerSummary.level}</strong>
+            </div>
+            <div className="admin-tools-stat-card">
+              <span>Gold</span>
+              <strong>{playerSummary.gold}</strong>
+            </div>
+            <div className="admin-tools-stat-card">
+              <span>Soulpoints</span>
+              <strong>{playerSummary.soulpoints}</strong>
+            </div>
+            <div className="admin-tools-stat-card">
+              <span>XP</span>
+              <strong>{playerSummary.xp}</strong>
+            </div>
+            <div className="admin-tools-stat-card">
+              <span>HP</span>
+              <strong>{playerSummary.hp}</strong>
+            </div>
+            <div className="admin-tools-stat-card">
+              <span>Mana</span>
+              <strong>{playerSummary.mana}</strong>
+            </div>
+        </div>
+        <div className="admin-tools-grid admin-tools-system-actions">
+            <button className="admin-tools-button admin-tools-danger-button" onClick={resetGame}>Reset Game</button>
         </div>
         <div className="admin-tools-section">
             <h3>Player State Inspector</h3>
@@ -216,23 +333,36 @@ export default function AdminTools({ dispatch, getState }) {
         <div className="admin-tools-container">
           <div className="admin-tools-header">
             <h2>Admin Tools</h2>
-            <button onClick={() => setIsVisible(false)} style={{background: 'none', border: 'none', color: '#f00', fontSize: '1.2em', cursor: 'pointer'}}>X</button>
+            <button
+              type="button"
+              className="admin-tools-close-button"
+              onClick={() => setIsVisible(false)}
+              aria-label="Close admin tools"
+            >
+              x
+            </button>
           </div>
           
           <div className="admin-tools-tabs">
-            <button className={`admin-tools-tab ${activeTab === 'Player' ? 'active' : ''}`} onClick={() => setActiveTab('Player')}>Player</button>
-            <button className={`admin-tools-tab ${activeTab === 'Content' ? 'active' : ''}`} onClick={() => setActiveTab('Content')}>Content</button>
-            <button className={`admin-tools-tab ${activeTab === 'System' ? 'active' : ''}`} onClick={() => setActiveTab('System')}>System</button>
+            <button className={`admin-tools-tab ${activeTab === 'player' ? 'active' : ''}`} onClick={() => setActiveTab('player')}>Player</button>
+            <button className={`admin-tools-tab ${activeTab === 'content' ? 'active' : ''}`} onClick={() => setActiveTab('content')}>Content</button>
+            <button className={`admin-tools-tab ${activeTab === 'system' ? 'active' : ''}`} onClick={() => setActiveTab('system')}>System</button>
           </div>
 
           <div className="admin-tools-content">
-            {activeTab === 'Player' && renderPlayerTab()}
-            {activeTab === 'Content' && renderContentTab()}
-            {activeTab === 'System' && renderSystemTab()}
+            {activeTab === 'player' && renderPlayerTab()}
+            {activeTab === 'content' && renderContentTab()}
+            {activeTab === 'system' && renderSystemTab()}
 
             {output && (
                 <div className="admin-tools-section">
-                    <h3>Output</h3>
+                    <div className="admin-tools-output-header">
+                      <h3>Output</h3>
+                      <div className="admin-tools-output-actions">
+                        <button className="admin-tools-button" type="button" onClick={copyOutput}>Copy</button>
+                        <button className="admin-tools-button" type="button" onClick={clearOutput}>Clear</button>
+                      </div>
+                    </div>
                     <div className="admin-tools-output">{output}</div>
                 </div>
             )}

@@ -6,15 +6,22 @@ import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { serializeEvent } from "../simulation/logging/CombatLogSerializer.ts";
 import { createSystemEngine } from "../core/createSystemEngine.js";
 
+const cloneInitialState = () => {
+  if (typeof structuredClone === "function") {
+    return structuredClone(initialGameState);
+  }
+  return JSON.parse(JSON.stringify(initialGameState));
+};
+
 const rootReducer = (state, action) => {
   if (action.type === 'RESET_GAME_STATE') {
-    return initialGameState;
+    return cloneInitialState();
   }
   return gameReducer(state, action);
 };
 
 export function useGameEngine() {
-  const [state, dispatch] = useReducer(rootReducer, initialGameState);
+  const [state, dispatch] = useReducer(rootReducer, undefined, cloneInitialState);
   const prevStateRef = useRef(state);
   const isInitialRender = useRef(true);
   const stateRef = useRef(state);

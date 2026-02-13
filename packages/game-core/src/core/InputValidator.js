@@ -277,7 +277,11 @@ function isEssenceId(value) {
     value === "lightning" ||
     value === "shadow" ||
     value === "light" ||
-    value === "life"
+    value === "life" ||
+    value === "creation" ||
+    value === "destruction" ||
+    value === "space" ||
+    value === "time"
   );
 }
 

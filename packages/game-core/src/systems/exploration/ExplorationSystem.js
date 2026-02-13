@@ -1,6 +1,7 @@
 import { addXp } from '../leveling/LevelingManager.js';
 import {
   getAccessibleLocationIds,
+  getLocationById,
   resolveLocationId,
 } from "../../world/WorldDataRegistry.js";
 
@@ -45,6 +46,7 @@ export function moveToLocation(state, locationId) {
   
   // Add to visited locations if not already there
   const isFirstVisit = !visitedLocations.includes(resolvedTargetId);
+  const nextBiome = getLocationById(resolvedTargetId)?.zoneId || locationState.biome;
   if (isFirstVisit) {
     visitedLocations.push(resolvedTargetId);
     // Award exploration XP for first-time visit
@@ -59,6 +61,7 @@ export function moveToLocation(state, locationId) {
             current: resolvedTargetId,
             visited: visitedLocations,
             unlockedAreas,
+            biome: nextBiome,
           },
           turnCount: (world.turnCount || 0) + 1
         }
@@ -75,6 +78,7 @@ export function moveToLocation(state, locationId) {
         current: resolvedTargetId,
         visited: visitedLocations,
         unlockedAreas,
+        biome: nextBiome,
       },
       turnCount: (world.turnCount || 0) + 1
     }

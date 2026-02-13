@@ -14,7 +14,10 @@ import {
   WORLD_META,
   MAJOR_FACTION_IDS,
   resolveLocationId,
+  getLocationById,
+  getBiomeEssenceProfile,
 } from "../world/WorldDataRegistry.js";
+import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
 
@@ -459,27 +462,272 @@ function normalizeLocation(rawLocation) {
       ? unlockedAreas
       : [resolvedCurrent, ...unlockedAreas];
 
+    const resolvedLoc = resolvedCurrent ? getLocationById(resolvedCurrent) : null;
+    const derivedBiome = resolvedLoc?.zoneId || null;
+    const biomeRaw = typeof rawLocation.biome === "string" ? rawLocation.biome : null;
+    const biome = biomeRaw || derivedBiome || "city";
+
     return {
       ...rawLocation,
       current: resolvedCurrent,
       visited: resolvedVisited,
       unlockedAreas: resolvedUnlocked,
+      biome,
     };
   }
 
   if (typeof rawLocation === "string" && rawLocation.trim()) {
     const current = canonicalizeLocationId(rawLocation) || DEFAULT_START_LOCATION_ID;
+    const biome = getLocationById(current)?.zoneId || "city";
     return {
       current,
       visited: [current],
       unlockedAreas: [current],
+      biome,
     };
   }
 
+  const biome = getLocationById(DEFAULT_START_LOCATION_ID)?.zoneId || "city";
   return {
     current: DEFAULT_START_LOCATION_ID,
     visited: [DEFAULT_START_LOCATION_ID],
     unlockedAreas: [DEFAULT_START_LOCATION_ID],
+    biome,
+  };
+}
+
+function getTimeOfDayFromMinutes(gameTime) {
+  const time = ((gameTime % 1440) + 1440) % 1440;
+  if (time >= 1260 || time < 360) return "night";
+  if (time >= 360 && time < 480) return "dawn";
+  if (time >= 480 && time < 1140) return "day";
+  if (time >= 1140 && time < 1260) return "dusk";
+  return "day";
+}
+
+function normalizeWorldTime(rawTime) {
+  if (isPlainObject(rawTime)) {
+    const currentTime = Math.max(0, Math.floor(toNumber(rawTime.currentTime, 480)));
+    const timeOfDayRaw = typeof rawTime.timeOfDay === "string" ? rawTime.timeOfDay : null;
+    const timeOfDay = ["dawn", "day", "dusk", "night"].includes(timeOfDayRaw)
+      ? timeOfDayRaw
+      : getTimeOfDayFromMinutes(currentTime);
+    const isOutdoors = rawTime.isOutdoors !== false;
+    const lastUpdate = toNumber(rawTime.lastUpdate, SimBridge.now());
+    return { currentTime, timeOfDay, isOutdoors, lastUpdate };
+  }
+
+  const legacyMinutes = toNumber(rawTime, 480);
+  const currentTime = Math.max(0, Math.floor(legacyMinutes));
+  return {
+    currentTime,
+    timeOfDay: getTimeOfDayFromMinutes(currentTime),
+    isOutdoors: true,
+    lastUpdate: SimBridge.now(),
+  };
+}
+
+function normalizeWorldWeather(rawWeather, biomeId, turnCount) {
+  const byBiome = isPlainObject(rawWeather?.byBiome) ? { ...rawWeather.byBiome } : {};
+  const existing = isPlainObject(byBiome[biomeId]) ? byBiome[biomeId] : null;
+  if (!existing) {
+    byBiome[biomeId] = {
+      type: "clear",
+      intensity: 0.3,
+      updatedTurn: turnCount,
+    };
+  } else {
+    const typeRaw = typeof existing.type === "string" ? existing.type : "clear";
+    const type = ["clear", "rain", "storm", "drought", "fog"].includes(typeRaw)
+      ? typeRaw
+      : "clear";
+    byBiome[biomeId] = {
+      type,
+      intensity: clamp(toNumber(existing.intensity, 0.3), 0, 1),
+      updatedTurn: Math.max(0, Math.floor(toNumber(existing.updatedTurn, turnCount))),
+    };
+  }
+
+  return { byBiome };
+}
+
+function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather } = {}) {
+  const essence = isPlainObject(rawEssence) ? rawEssence : {};
+  const sources = Array.isArray(essence.sources) ? essence.sources : [];
+  const ambient = essence.ambient;
+
+  const timeMinutes = toNumber(time?.currentTime, NaN);
+  const isMidnightWindow = Number.isFinite(timeMinutes) ? timeMinutes >= 0 && timeMinutes < 120 : false;
+  const resolvedTimeOfDay = typeof time?.timeOfDay === "string" ? time.timeOfDay : null;
+
+  const essenceIds = [
+    "fire",
+    "water",
+    "earth",
+    "air",
+    "lightning",
+    "shadow",
+    "light",
+    "life",
+    "creation",
+    "destruction",
+    "space",
+    "time",
+  ];
+
+  const baselineFromLocation = (id) => {
+    const text = String(id || "").toLowerCase();
+    const base = {
+      fire: 0.12,
+      water: 0.12,
+      earth: 0.12,
+      air: 0.12,
+      lightning: 0.08,
+      shadow: 0.06,
+      light: 0.06,
+      life: 0.08,
+      creation: 0.03,
+      destruction: 0.03,
+      space: 0.03,
+      time: 0.03,
+    };
+    if (text.includes("coast") || text.includes("pier") || text.includes("tide")) {
+      return { ...base, water: 0.35, air: 0.18, life: 0.14, fire: 0.06 };
+    }
+    if (text.includes("wilds") || text.includes("grove") || text.includes("root")) {
+      return { ...base, life: 0.28, earth: 0.16, water: 0.16, shadow: 0.08 };
+    }
+    if (text.includes("mountain") || text.includes("ridge") || text.includes("foundry")) {
+      return { ...base, earth: 0.30, air: 0.16, water: 0.06, life: 0.04 };
+    }
+    if (text.includes("ruins") || text.includes("leyline") || text.includes("plaza")) {
+      return { ...base, lightning: 0.16, earth: 0.18, air: 0.14, shadow: 0.08 };
+    }
+    if (text.includes("undercity") || text.includes("veil") || text.includes("wet_gate")) {
+      return { ...base, shadow: 0.18, water: 0.16, earth: 0.14, light: 0.04 };
+    }
+    if (text.includes("volcanic") || text.includes("caldera") || text.includes("ash")) {
+      return { ...base, fire: 0.30, earth: 0.18, destruction: 0.06, water: 0.05 };
+    }
+    if (text.includes("desert") || text.includes("sands") || text.includes("mirage")) {
+      return { ...base, air: 0.18, fire: 0.16, light: 0.10, water: 0.06, time: 0.05 };
+    }
+    if (text.includes("dream") || text.includes("mnemonic") || text.includes("mirrorpool")) {
+      return { ...base, shadow: 0.12, light: 0.12, space: 0.08, time: 0.08 };
+    }
+    if (text.includes("city") || text.includes("bazaar") || text.includes("arcology")) {
+      return { ...base, air: 0.16, light: 0.10, shadow: 0.08, earth: 0.10 };
+    }
+    return base;
+  };
+
+  const toSnapshotFromDensities = (densities) => {
+    const profile = getBiomeEssenceProfile(biomeId);
+    const dominant = new Set(Array.isArray(profile?.dominantTriad) ? profile.dominantTriad : []);
+    const drawDominant = clamp(toNumber(profile?.draw?.dominant, 1.2), 0.9, 1.2);
+    const drawOff = clamp(toNumber(profile?.draw?.off, 0.95), 0.9, 1.2);
+    const refineDominant = clamp(toNumber(profile?.refine?.dominant, 1.1), 0.9, 1.2);
+    const refineOff = clamp(toNumber(profile?.refine?.off, 0.98), 0.9, 1.2);
+    const stabilityCapDeltaBase = clamp(toNumber(profile?.stabilityCapDelta, 0), -20, 20);
+    const taintBaseline = clamp(toNumber(profile?.taintBaseline, 0), 0, 1);
+
+    const compositionByEssence = essenceIds.reduce((acc, e) => {
+      acc[e] = {
+        density: clamp(toNumber(densities?.[e], 0), 0, 1),
+        purity: clamp(1 - taintBaseline * 0.5, 0, 1),
+        taint: taintBaseline,
+      };
+      return acc;
+    }, {});
+
+    const drawMultByEssence = essenceIds.reduce((acc, e) => {
+      acc[e] = dominant.has(e) ? drawDominant : drawOff;
+      return acc;
+    }, {});
+    const refineYieldMultByEssence = essenceIds.reduce((acc, e) => {
+      acc[e] = dominant.has(e) ? refineDominant : refineOff;
+      return acc;
+    }, {});
+    const recordOnes = essenceIds.reduce((acc, e) => {
+      acc[e] = 1;
+      return acc;
+    }, {});
+
+    const applyEssenceMult = (map, updates) => {
+      Object.entries(updates || {}).forEach(([essenceId, mult]) => {
+        if (!essenceIds.includes(essenceId)) return;
+        map[essenceId] = clamp(toNumber(map[essenceId], 1) * toNumber(mult, 1), 0.9, 1.2);
+      });
+    };
+
+    let stabilityCapDelta = stabilityCapDeltaBase;
+    if (resolvedTimeOfDay === "dawn") stabilityCapDelta += 5;
+    if (resolvedTimeOfDay === "night") stabilityCapDelta -= 2;
+    stabilityCapDelta = clamp(stabilityCapDelta, -20, 20);
+
+    if (resolvedTimeOfDay === "dawn") {
+      applyEssenceMult(drawMultByEssence, { light: 1.05, life: 1.05, shadow: 0.98 });
+      applyEssenceMult(refineYieldMultByEssence, { light: 1.03, life: 1.03 });
+    } else if (resolvedTimeOfDay === "dusk") {
+      applyEssenceMult(drawMultByEssence, { shadow: 1.06, air: 1.04 });
+      applyEssenceMult(refineYieldMultByEssence, { shadow: 1.02 });
+    } else if (resolvedTimeOfDay === "night") {
+      applyEssenceMult(drawMultByEssence, { shadow: 1.03, time: 1.03, space: 1.02 });
+    }
+
+    const compressRiskMultByEssence = { ...recordOnes };
+    const potencyMultByEssence = { ...recordOnes };
+
+    if (isMidnightWindow) {
+      essenceIds.forEach((e) => {
+        compressRiskMultByEssence[e] = clamp(compressRiskMultByEssence[e] * 1.12, 0.9, 1.2);
+        potencyMultByEssence[e] = clamp(potencyMultByEssence[e] * 1.08, 0.9, 1.2);
+      });
+      applyEssenceMult(potencyMultByEssence, { time: 1.04, space: 1.03, shadow: 1.02 });
+    }
+
+    const weatherNode = isPlainObject(weather?.byBiome) ? weather.byBiome[biomeId] : null;
+
+    return {
+      compositionByEssence,
+      global: {
+        drawMultByEssence,
+        refineYieldMultByEssence,
+        stabilityCapDelta,
+        compressRiskMultByEssence,
+        potencyMultByEssence,
+      },
+      provenance: {
+        biome: biomeId || null,
+        timeOfDay: resolvedTimeOfDay || null,
+        weatherType: typeof weatherNode?.type === "string" ? weatherNode.type : null,
+        weatherIntensity: Number.isFinite(weatherNode?.intensity) ? weatherNode.intensity : null,
+        anomalyIds: [],
+        locationId: locationId || null,
+      },
+      tags: [],
+    };
+  };
+
+  const isSnapshot = isPlainObject(ambient) && isPlainObject(ambient.compositionByEssence);
+  if (isSnapshot) {
+    return {
+      ambient,
+      sources,
+    };
+  }
+
+  const isLegacyMap = isPlainObject(ambient);
+  if (isLegacyMap) {
+    return {
+      ambient: toSnapshotFromDensities(ambient),
+      sources,
+    };
+  }
+
+  return {
+    ambient: toSnapshotFromDensities(baselineFromLocation(locationId)),
+    sources,
   };
 }
 
@@ -511,6 +759,19 @@ export function normalizeGameState(rawState) {
   const normalizedFactionReputation = normalizeFactionReputation(
     world.factionReputation,
   );
+  const normalizedTurnCount = Math.max(0, Math.floor(toNumber(world.turnCount, 0)));
+  const normalizedWorldTime = normalizeWorldTime(world.time);
+  const normalizedWorldWeather = normalizeWorldWeather(
+    world.weather,
+    normalizedWorldLocation.biome || "city",
+    normalizedTurnCount,
+  );
+  const normalizedWorldEssence = normalizeWorldEssence(world.essence, {
+    locationId: normalizedWorldLocation.current,
+    biomeId: normalizedWorldLocation.biome || "city",
+    time: normalizedWorldTime,
+    weather: normalizedWorldWeather,
+  });
   const legacyNarrativeEntries = normalizeArray(narrative.chatLog);
   const legacySystemEntries = normalizeArray(state.chatLog).filter((entry) =>
     ["system", "status-update"].includes(entry?.type),
@@ -540,8 +801,10 @@ export function normalizeGameState(rawState) {
       vars: normalizedWorldVars,
       counters: normalizedWorldCounters,
       factionReputation: normalizedFactionReputation,
-      time: toNumber(world.time, 0),
-      turnCount: Math.max(0, Math.floor(toNumber(world.turnCount, 0))),
+      time: normalizedWorldTime,
+      turnCount: normalizedTurnCount,
+      weather: normalizedWorldWeather,
+      essence: normalizedWorldEssence,
     },
     combat: {
       ...combat,

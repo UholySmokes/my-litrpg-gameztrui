@@ -48,6 +48,10 @@ const EssenceIdSchema = z.enum([
   "shadow",
   "light",
   "life",
+  "creation",
+  "destruction",
+  "space",
+  "time",
 ]);
 
 const MagicSenseActionSchema = z.object({
@@ -129,6 +133,58 @@ const WorldLocationStateSchema = z.object({
   current: z.string(),
   visited: z.array(z.string()),
   unlockedAreas: z.array(z.string()),
+  biome: z.string().optional(),
+});
+
+const WorldTimeStateSchema = z.object({
+  currentTime: z.number(),
+  timeOfDay: z.enum(["dawn", "day", "dusk", "night"]),
+  isOutdoors: z.boolean().optional(),
+  lastUpdate: z.number().optional(),
+});
+
+const WeatherTypeSchema = z.enum(["clear", "rain", "storm", "drought", "fog"]);
+
+const WorldWeatherStateSchema = z
+  .object({
+    byBiome: z.record(
+      z.object({
+        type: WeatherTypeSchema,
+        intensity: z.number(),
+        updatedTurn: z.number(),
+      }),
+    ),
+  })
+  .partial();
+
+const AmbientEssenceNodeSchema = z.object({
+  density: z.number(),
+  purity: z.number(),
+  taint: z.number(),
+});
+
+const AmbientSnapshotSchema = z.object({
+  compositionByEssence: z.record(AmbientEssenceNodeSchema),
+  global: z
+    .object({
+      drawMultByEssence: z.record(z.number()),
+      refineYieldMultByEssence: z.record(z.number()),
+      stabilityCapDelta: z.number(),
+      compressRiskMultByEssence: z.record(z.number()),
+      potencyMultByEssence: z.record(z.number()),
+    })
+    .partial(),
+  provenance: z
+    .object({
+      biome: z.string().nullable().optional(),
+      timeOfDay: z.string().nullable().optional(),
+      weatherType: z.string().nullable().optional(),
+      weatherIntensity: z.number().nullable().optional(),
+      anomalyIds: z.array(z.string()).optional(),
+      locationId: z.string().nullable().optional(),
+    })
+    .partial(),
+  tags: z.array(z.string()).optional(),
 });
 
 const WorldStateSchema = z.object({
@@ -138,11 +194,12 @@ const WorldStateSchema = z.object({
   vars: z.record(z.unknown()),
   counters: z.record(z.number()),
   factionReputation: z.record(z.number()),
-  time: z.number(),
+  time: z.union([z.number(), WorldTimeStateSchema]),
   turnCount: z.number(),
+  weather: WorldWeatherStateSchema.optional(),
   essence: z
     .object({
-      ambient: z.record(z.number()),
+      ambient: z.union([z.record(z.number()), AmbientSnapshotSchema]),
       sources: z.array(z.unknown()).optional(),
     })
     .optional(),

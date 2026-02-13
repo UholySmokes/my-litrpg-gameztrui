@@ -1,4 +1,5 @@
 import { random, randomChoice } from "../../utils/DeterministicRandom.js";
+import { getBiomeEssenceProfile } from "../../world/WorldDataRegistry.js";
 
 export const ESSENCE_PRIMES = [
   "fire",
@@ -9,6 +10,10 @@ export const ESSENCE_PRIMES = [
   "shadow",
   "light",
   "life",
+  "creation",
+  "destruction",
+  "space",
+  "time",
 ];
 
 const DENSITY_BY_TIER = {
@@ -40,6 +45,10 @@ const deriveAmbientFromLocationId = (locationId) => {
     shadow: 0.06,
     light: 0.06,
     life: 0.08,
+    creation: 0.03,
+    destruction: 0.03,
+    space: 0.03,
+    time: 0.03,
   };
 
   if (id.includes("river") || id.includes("lake") || id.includes("coast")) {
@@ -58,8 +67,125 @@ const deriveAmbientFromLocationId = (locationId) => {
     return { ...base, air: 0.16, light: 0.10, shadow: 0.08, earth: 0.10 };
   }
 
+  if (id.includes("dream") || id.includes("mnemonic") || id.includes("mirrorpool")) {
+    return { ...base, shadow: 0.12, light: 0.12, space: 0.08, time: 0.08 };
+  }
+  if (id.includes("volcanic") || id.includes("caldera") || id.includes("ash")) {
+    return { ...base, fire: 0.30, earth: 0.18, destruction: 0.06, water: 0.05 };
+  }
+  if (id.includes("desert") || id.includes("sands") || id.includes("mirage")) {
+    return { ...base, air: 0.18, fire: 0.16, light: 0.10, water: 0.06, time: 0.05 };
+  }
+
   return base;
 };
+
+const isAmbientSnapshot = (ambient) =>
+  ambient && typeof ambient === "object" && !Array.isArray(ambient)
+    ? ambient.compositionByEssence && typeof ambient.compositionByEssence === "object"
+    : false;
+
+function toAmbientSnapshot(densities, { locationId, biome, time, weather } = {}) {
+  const profile = getBiomeEssenceProfile(biome);
+  const dominant = new Set(Array.isArray(profile?.dominantTriad) ? profile.dominantTriad : []);
+  const drawDominant = clamp(toNumberSafe(profile?.draw?.dominant, 1.2), 0.9, 1.2);
+  const drawOff = clamp(toNumberSafe(profile?.draw?.off, 0.95), 0.9, 1.2);
+  const refineDominant = clamp(toNumberSafe(profile?.refine?.dominant, 1.1), 0.9, 1.2);
+  const refineOff = clamp(toNumberSafe(profile?.refine?.off, 0.98), 0.9, 1.2);
+  const stabilityCapDelta = clamp(toNumberSafe(profile?.stabilityCapDelta, 0), -20, 20);
+  const taintBaseline = clamp(toNumberSafe(profile?.taintBaseline, 0), 0, 1);
+
+  const timeMinutes = toNumberSafe(time?.currentTime, NaN);
+  const resolvedTimeOfDay = typeof time?.timeOfDay === "string" ? time.timeOfDay : null;
+  const isMidnightWindow = Number.isFinite(timeMinutes) ? timeMinutes >= 0 && timeMinutes < 120 : false;
+
+  const compositionByEssence = ESSENCE_PRIMES.reduce((acc, e) => {
+    acc[e] = {
+      density: clamp(toNumberSafe(densities?.[e], 0), 0, 1),
+      purity: clamp(1 - taintBaseline * 0.5, 0, 1),
+      taint: taintBaseline,
+    };
+    return acc;
+  }, {});
+
+  const ones = ESSENCE_PRIMES.reduce((acc, e) => {
+    acc[e] = 1;
+    return acc;
+  }, {});
+
+  const drawMultByEssence = ESSENCE_PRIMES.reduce((acc, e) => {
+    acc[e] = dominant.has(e) ? drawDominant : drawOff;
+    return acc;
+  }, {});
+  const refineYieldMultByEssence = ESSENCE_PRIMES.reduce((acc, e) => {
+    acc[e] = dominant.has(e) ? refineDominant : refineOff;
+    return acc;
+  }, {});
+
+  const applyEssenceMult = (map, updates) => {
+    Object.entries(updates || {}).forEach(([essenceId, mult]) => {
+      if (!ESSENCE_PRIMES.includes(essenceId)) return;
+      map[essenceId] = clamp(toNumberSafe(map[essenceId], 1) * toNumberSafe(mult, 1), 0.9, 1.2);
+    });
+  };
+
+  let stabilityCapDeltaTimed = stabilityCapDelta;
+  if (resolvedTimeOfDay === "dawn") stabilityCapDeltaTimed += 5;
+  if (resolvedTimeOfDay === "night") stabilityCapDeltaTimed -= 2;
+  stabilityCapDeltaTimed = clamp(stabilityCapDeltaTimed, -20, 20);
+
+  if (resolvedTimeOfDay === "dawn") {
+    applyEssenceMult(drawMultByEssence, { light: 1.05, life: 1.05, shadow: 0.98 });
+    applyEssenceMult(refineYieldMultByEssence, { light: 1.03, life: 1.03 });
+  } else if (resolvedTimeOfDay === "dusk") {
+    applyEssenceMult(drawMultByEssence, { shadow: 1.06, air: 1.04 });
+    applyEssenceMult(refineYieldMultByEssence, { shadow: 1.02 });
+  } else if (resolvedTimeOfDay === "night") {
+    applyEssenceMult(drawMultByEssence, { shadow: 1.03, time: 1.03, space: 1.02 });
+  }
+
+  const weatherNode =
+    weather && typeof weather === "object" && weather.byBiome && biome
+      ? weather.byBiome[biome]
+      : null;
+
+  const compressRiskMultByEssence = { ...ones };
+  const potencyMultByEssence = { ...ones };
+  if (isMidnightWindow) {
+    ESSENCE_PRIMES.forEach((e) => {
+      compressRiskMultByEssence[e] = clamp(compressRiskMultByEssence[e] * 1.12, 0.9, 1.2);
+      potencyMultByEssence[e] = clamp(potencyMultByEssence[e] * 1.08, 0.9, 1.2);
+    });
+    applyEssenceMult(potencyMultByEssence, { time: 1.04, space: 1.03, shadow: 1.02 });
+  }
+
+  return {
+    compositionByEssence,
+    global: {
+      drawMultByEssence,
+      refineYieldMultByEssence,
+      stabilityCapDelta: stabilityCapDeltaTimed,
+      compressRiskMultByEssence,
+      potencyMultByEssence,
+    },
+    provenance: {
+      biome: biome || null,
+      timeOfDay: resolvedTimeOfDay || null,
+      weatherType: typeof weatherNode?.type === "string" ? weatherNode.type : null,
+      weatherIntensity: Number.isFinite(weatherNode?.intensity) ? weatherNode.intensity : null,
+      anomalyIds: [],
+      locationId: locationId || null,
+    },
+    tags: [],
+  };
+}
+
+function ambientDensity(ambient, essence) {
+  if (isAmbientSnapshot(ambient)) {
+    return clamp(toNumberSafe(ambient.compositionByEssence?.[essence]?.density, 0), 0, 1);
+  }
+  return clamp(toNumberSafe(ambient?.[essence], 0), 0, 1);
+}
 
 export function ensureEssenceWeavingState(state) {
   const player = state?.player;
@@ -67,17 +193,33 @@ export function ensureEssenceWeavingState(state) {
   if (!player || !world) return state;
 
   const locationId = world.location?.current || world.location || "starting_zone";
-  const existingAmbient = world.essence?.ambient;
 
-  const nextWorld = existingAmbient
-    ? world
-    : {
-        ...world,
-        essence: {
-          ambient: deriveAmbientFromLocationId(locationId),
-          sources: [],
-        },
-      };
+  const biome = world.location?.biome || null;
+  const time = world.time || null;
+  const weather = world.weather || null;
+
+  const existingAmbient = world.essence?.ambient;
+  const densities =
+    existingAmbient && typeof existingAmbient === "object" && !Array.isArray(existingAmbient)
+      ? existingAmbient
+      : null;
+  const ambient = isAmbientSnapshot(existingAmbient)
+    ? existingAmbient
+    : toAmbientSnapshot(densities || deriveAmbientFromLocationId(locationId), {
+        locationId,
+        biome,
+        time,
+        weather,
+      });
+
+  const nextWorld = {
+    ...world,
+    essence: {
+      ...(world.essence && typeof world.essence === "object" ? world.essence : {}),
+      ambient,
+      sources: Array.isArray(world.essence?.sources) ? world.essence.sources : [],
+    },
+  };
 
   const nextPlayer = ensurePlayerMagic(player);
   const hydrated = {
@@ -215,13 +357,13 @@ export function magicSense(state, action) {
 
   const entries = ESSENCE_PRIMES.map((e) => ({
     essence: e,
-    strength: clamp(toNumberSafe(ambient[e], 0), 0, 1),
+    strength: ambientDensity(ambient, e),
   }))
     .sort((a, b) => b.strength - a.strength)
     .slice(0, 4);
 
   if (requested) {
-    const strength = clamp(toNumberSafe(ambient[requested], 0), 0, 1);
+    const strength = ambientDensity(ambient, requested);
     return {
       state: hydrated,
       description:
@@ -286,7 +428,7 @@ export function magicDraw(state, action) {
   }
 
   const ambient = world?.essence?.ambient || {};
-  const env = clamp(toNumberSafe(ambient[essence], 0), 0, 1);
+  const env = ambientDensity(ambient, essence);
   if (env <= 0.01) {
     return {
       ok: false,

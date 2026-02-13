@@ -20,9 +20,13 @@ describe("WorldInitializer", () => {
     expect(world.counters.day).toBe(1);
     expect(world.counters.chapter).toBe(0);
     expect(world.counters.notoriety).toBe(0);
-    expect(world.time).toBe(0);
+    expect(world.time).toBeTruthy();
+    expect(world.time.timeOfDay).toBe("day");
+    expect(typeof world.time.currentTime).toBe("number");
     expect(world.turnCount).toBe(0);
     expect(world.factionReputation.arcane_wardens).toBe(0);
+    expect(typeof world.location.biome).toBe("string");
+    expect(world.weather?.byBiome).toBeTruthy();
   });
 
   it("seeds world after character creation into the quest biome", () => {

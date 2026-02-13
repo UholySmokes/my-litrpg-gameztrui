@@ -76,6 +76,7 @@ export function createInitialWorldState({ seed } = {}) {
       current: STARTING_LOCATION_ID,
       visited: [STARTING_LOCATION_ID],
       unlockedAreas: [STARTING_LOCATION_ID],
+      biome: getLocationById(STARTING_LOCATION_ID)?.zoneId || "city",
     },
     flags: createDefaultWorldFlags(),
     vars: {
@@ -89,8 +90,22 @@ export function createInitialWorldState({ seed } = {}) {
       notoriety: 0,
     },
     factionReputation: createDefaultFactionReputation(),
-    time: 0,
+    time: {
+      currentTime: 480,
+      timeOfDay: "day",
+      isOutdoors: true,
+      lastUpdate: SimBridge.now(),
+    },
     turnCount: 0,
+    weather: {
+      byBiome: {
+        [(getLocationById(STARTING_LOCATION_ID)?.zoneId || "city")]: {
+          type: "clear",
+          intensity: 0.3,
+          updatedTurn: 0,
+        },
+      },
+    },
   };
 }
 
@@ -169,12 +184,28 @@ export function seedWorldAfterCharacterCreation(
       current: startLocationId,
       visited: [startLocationId],
       unlockedAreas: [startLocationId],
+      biome: startZoneId,
     },
     flags: nextFlags,
     vars: {
       ...(baseWorld.vars || {}),
       startingSceneId,
       current_quest_id: mainQuest?.id || null,
+    },
+    time: {
+      currentTime: 480,
+      timeOfDay: "day",
+      isOutdoors: true,
+      lastUpdate: SimBridge.now(),
+    },
+    weather: {
+      byBiome: {
+        [startZoneId]: {
+          type: nextFlags.mirage_storm_active ? "storm" : "clear",
+          intensity: nextFlags.mirage_storm_active ? 0.75 : 0.3,
+          updatedTurn: 0,
+        },
+      },
     },
   };
 }

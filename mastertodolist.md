@@ -31,27 +31,31 @@ Open questions (need your call before I cross this step):
 
 2) Extend world state to support ecology
 
-- Add (or formalize) world.location.biome (or derive biome from location id).
-- Add world.time (at least: hour segment or named phase like dawn/day/dusk/night).
-- Add world.weather (at least: clear/rain/storm/drought/fog; plus intensity 0–1 if you want smoothness).
-- Add world.essence.ambient to store the current computed snapshot plus its provenance (biome/time/weather/anomaly ids) so descriptions can reference it.
+- ~~Add (or formalize) world.location.biome (or derive biome from location id).~~
+  - Implemented: `world.location.biome` normalized from location `zoneId` and updated on move.
+- ~~Add world.time (at least: hour segment or named phase like dawn/day/dusk/night).~~
+  - Implemented: `world.time` is now `{ currentTime, timeOfDay, isOutdoors, lastUpdate }` (with legacy number support in schema).
+- ~~Add world.weather (at least: clear/rain/storm/drought/fog; plus intensity 0–1 if you want smoothness).~~
+  - Implemented: `world.weather.byBiome[biomeId] = { type, intensity, updatedTurn }` (default `clear`, `0.3`).
+- ~~Add world.essence.ambient to store the current computed snapshot plus its provenance (biome/time/weather/anomaly ids) so descriptions can reference it.~~
+  - Implemented: `world.essence.ambient` now accepts snapshot shape (legacy record supported + auto-migrated).
 3) Implement biome dominant triads (data-first)
 
-- Create a biome table: for each biome, define:
-  - dominant triad essences
-  - draw multiplier per essence (dominant up, off‑biome slightly down)
-  - refine yield multiplier
-  - stability cap modifier (small)
-  - optional purity/contamination baseline
-- Ensure mixed builds remain viable: clamp penalties so off‑biome is “less efficient” not “nonfunctional”.
+- ~~Create a biome table: for each biome, define:~~
+  - Implemented in `WorldDataRegistry` using existing biome ids.
+  - Includes: dominant triad, draw/refine multipliers, stability cap delta, taint baseline.
+- ~~Ensure mixed builds remain viable: clamp penalties so off‑biome is “less efficient” not “nonfunctional”.~~
+  - Off-biome defaults are mild (`0.95` draw, `0.98-0.99` refine), clamped to `0.9..1.2`.
 4) Add time-of-day modulation
 
-- Choose time phases (e.g., dawn/day/dusk/night; optionally midnight as special).
-- Define per-phase modifiers:
-  - stability nudges (light/life at dawn, etc.)
-  - draw nudges (shadow/air at dusk, etc.)
-  - compression risk + potency trade at midnight
-- Make these modifiers small and multiplicative on top of biome (so they “nudge”).
+- ~~Choose time phases (e.g., dawn/day/dusk/night; optionally midnight as special).~~
+  - Using `dawn/day/dusk/night`, plus a **midnight window** when `currentTime` is `00:00–02:00`.
+- ~~Define per-phase modifiers:~~
+  - Stability cap nudge: dawn `+5`, night `-2`.
+  - Draw/refine nudges: dawn boosts `light/life`, dusk boosts `shadow/air`, night slightly boosts `shadow/time/space`.
+  - Midnight trade: `compressRiskMult` up (`~+12%`) and `potencyMult` up (`~+8%`) during `00:00–02:00`.
+- ~~Make these modifiers small and multiplicative on top of biome (so they “nudge”).~~
+  - All per-essence multipliers clamp to `0.9..1.2`.
 5) Add weather-driven ambient and contamination pressure
 
 - Define weather profiles:

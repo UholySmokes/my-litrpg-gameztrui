@@ -10,7 +10,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - **Dynamic Quest & Opening Scene Builder** – `QuestSetup.js` derives quests/scenes from character snapshots and cached seeds.
 - **AI Narrative Layer** – `useNarrative` + `PromptAssembler` craft opening prompts and story beats, with caching to keep scenes consistent.
 - **Combat + Class Resources** – turn-based combat, class abilities, and HUD widgets for Berserker Rage, Monk Chi combos, and stealth readiness.
-- **Persistence** – Azure SQL cloud saves via Functions, local autosave, and deterministic rewinds.
+- **Persistence** – Firebase-backed API routes for cloud features, local autosave, and deterministic rewinds.
 - **Support Systems** – Gacha, Shop, Title unlocks, quest log, minion panel, etc.
 
 ---
@@ -20,7 +20,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - **Frontend**: React 18 + Vite, hooks-first architecture
 - **State/Game Logic**: Custom hook `useGameEngine`, immutable reducers, config-driven balance
 - **Styling**: CSS modules + inline HUD styling for neon HUD aesthetic
-- **Backend Integrations**: Azure SQL (cloud saves) + Azure Functions, Azure Foundry narrative service
+- **Backend Integrations**: Firebase Hosting + Firebase Functions API, Foundry narrative service
 - **Tooling**: ESLint (React hooks rules), npm scripts, Node 18+
 
 ---
@@ -31,7 +31,8 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 
 - Node.js 18+
 - npm 9+ (comes with Node)
-- Azure SQL + Functions (optional; needed for cloud saves) and narrative API endpoint
+- Firebase CLI (for local hosting/functions emulators)
+- Narrative API credentials (`FOUNDRY_PROJECT_ENDPOINT` + `FOUNDRY_API_KEY`)
 
 ### Installation
 
@@ -52,29 +53,25 @@ Create `.env.local` (for local dev only):
 VITE_NARRATE_ENDPOINT=...
 
 # Cloud saves (optional; enables persistence)
-# Uses Azure Functions + Azure SQL (Managed Identity).
+# Leave empty to use same-origin /api/* via Firebase Hosting rewrites.
 VITE_API_BASE_URL=...
-VITE_AUTH_PROVIDER=aad
+VITE_AUTH_PROVIDER=...
 
-# Narrative API runs via /api/narrate (Azure Foundry + managed identity).
-# No OpenAI key is required for this setup.
+# Narrative API runs via /api/narrate (Foundry via Firebase Functions).
 ```
 
-Azure Functions local dev (for `api/`):
+Firebase local dev:
 
-- Copy `api/local.settings.example.json` to `api/local.settings.json`.
-- Fill in `FOUNDRY_PROJECT_ENDPOINT`, agent IDs (see `.foundry/agents/*.agent.yaml`), and either `FOUNDRY_API_KEY` or Azure credentials.
-- Keep `api/local.settings.json` out of git (it is ignored).
-- To store game data locally (no Azure SQL), set `GAME_DB_STORAGE=file` (optional: `GAME_DB_PATH=api/.data/game-db.json`) and run `npm run seed:static` for `/api/static-data`.
-- Cloud auth uses Azure Static Web Apps / Easy Auth (`/.auth/login/<provider>`). Set `VITE_AUTH_PROVIDER` if you use a provider other than `aad`.
+- Run `npm run dev:api` to start Firebase Hosting + Functions emulators.
+- Run `npm run dev` for Vite (the dev proxy forwards `/api` to the hosting emulator).
+- Keep `VITE_API_BASE_URL` empty for same-origin `/api/*` calls.
 
 Narrative endpoint notes:
 - Static hosting (GitHub Pages): deploy the API separately and set `VITE_NARRATE_ENDPOINT` to its full URL.
-- Azure Static Web Apps / Functions: `/api/narrate` uses Azure Foundry credentials (see `api/narrate/index.js`).
-- For SWA auth to work with `/api/saves`, call the API on the same host (use relative `/api` or set `VITE_API_BASE_URL` to the SWA host, not the raw Function App URL).
+- Firebase Hosting + Functions: `/api/narrate` is served via hosting rewrite to the `api` function (`functions/lib/api-router.js`).
+- For auth/cookies with `/api/saves`, call the API on the same host (use relative `/api` or set `VITE_API_BASE_URL` to your hosting URL).
 - Runtime config: `public/runtime-config.js` is copied to `dist/runtime-config.js` during build. Leave it empty, or set `VITE_API_BASE_URL` / `VITE_NARRATE_ENDPOINT` in CI so `scripts/generate-runtime-config.js` injects values at build time.
-- SWA routing: keep `public/staticwebapp.config.json` in the build output so `/runtime-config.js` is served as a static file.
-- Health check: `/api/health` reports which backend is active (Azure SQL or local file DB).
+- Health check: `/api/health` returns API availability.
 
 ### Run / Build / Test
 
@@ -105,7 +102,6 @@ Key documentation:
 - `IMPLEMENTATION_PLAN.md` – multi-phase roadmap
 - `CLASS_SYSTEMS_SUMMARY.md` – rage/chi/stealth design notes
 - `RPG_BLUEPRINT.md` – attribute, race, and class reference
-- `AZURE_SQL_SCHEMA.md` – Azure SQL schema for cloud saves- `docs/rollout.md` - magic rollout layers (`layerA..layerD`) and preset configs
 
 ---
 
@@ -130,3 +126,4 @@ Key documentation:
 ## 📜 License
 
 Currently internal / TBD. Contact the maintainers before distribution.
+

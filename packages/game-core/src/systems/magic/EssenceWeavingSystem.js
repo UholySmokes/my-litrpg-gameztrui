@@ -4,6 +4,7 @@ import {
   getBiomeEssenceProfile,
   getEssenceAnomalyById,
   getEssenceAnomalyIdsForBiome,
+  getRareEssenceSourceById,
 } from "../../world/WorldDataRegistry.js";
 
 export const ESSENCE_PRIMES = [
@@ -29,6 +30,11 @@ const OPPOSITION_PAIRS = [
   ["creation", "destruction"],
   ["space", "time"],
 ];
+
+const DEFAULT_UNLOCKED_PATTERNS = {
+  shape: ["pulse", "jet", "cone", "wall", "shield"],
+  weave: ["lattice", "veil", "vortex"],
+};
 
 const DENSITY_BY_TIER = {
   0: 1.0,
@@ -100,6 +106,49 @@ function resonanceStateFromValue(value) {
   if (v >= 50) return "ringing";
   if (v >= 25) return "humming";
   return "quiet";
+}
+
+function normalizePatternId(value) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim().toLowerCase();
+  return trimmed ? trimmed : null;
+}
+
+function ensureUnlockedPatterns(raw) {
+  const source = raw && typeof raw === "object" && !Array.isArray(raw) ? raw : {};
+  const shape = new Set([
+    ...DEFAULT_UNLOCKED_PATTERNS.shape,
+    ...(Array.isArray(source.shape) ? source.shape : []),
+  ].map(normalizePatternId).filter(Boolean));
+  const weave = new Set([
+    ...DEFAULT_UNLOCKED_PATTERNS.weave,
+    ...(Array.isArray(source.weave) ? source.weave : []),
+  ].map(normalizePatternId).filter(Boolean));
+  return { shape: [...shape], weave: [...weave] };
+}
+
+function isPatternUnlocked(magic, kind, id) {
+  const key = normalizePatternId(id);
+  if (!key) return true;
+  const unlocked = magic?.unlockedPatterns;
+  if (!unlocked || typeof unlocked !== "object") return true;
+  const list = Array.isArray(unlocked[kind]) ? unlocked[kind] : [];
+  return list.map(normalizePatternId).filter(Boolean).includes(key);
+}
+
+function addUnlockedPattern(magic, kind, id) {
+  const key = normalizePatternId(id);
+  if (!key) return magic;
+  const unlocked = ensureUnlockedPatterns(magic?.unlockedPatterns);
+  const list = new Set(unlocked[kind] || []);
+  list.add(key);
+  return {
+    ...magic,
+    unlockedPatterns: {
+      ...unlocked,
+      [kind]: [...list],
+    },
+  };
 }
 
 function applyResonanceDelta(magic, delta) {
@@ -245,6 +294,17 @@ function toAmbientSnapshot(densities, { locationId, biome, time, weather, anomal
     .map((id) => getEssenceAnomalyById(id))
     .filter(Boolean);
 
+  const sourceIds = [];
+  if (biome && weatherType) {
+    if (["coast", "wilds"].includes(String(biome).toLowerCase()) && weatherType === "storm") {
+      sourceIds.push("storm_water");
+    }
+    if (["volcanic", "mountain"].includes(String(biome).toLowerCase()) && weatherType === "drought") {
+      sourceIds.push("ash_fire");
+    }
+  }
+  const sourceDefs = sourceIds.map((id) => getRareEssenceSourceById(id)).filter(Boolean);
+
   anomalyDefs.forEach((def) => {
     const deltas = def?.densityDeltaByEssence;
     if (deltas && typeof deltas === "object") {
@@ -269,7 +329,11 @@ function toAmbientSnapshot(densities, { locationId, biome, time, weather, anomal
     (sum, def) => sum + clamp(toNumberSafe(def?.taintNudge, 0), -0.2, 0.2),
     0,
   );
-  const totalTaintNudge = clamp(weatherTaintNudge + anomalyTaintNudge, -0.2, 0.2);
+  const sourceTaintNudge = sourceDefs.reduce(
+    (sum, def) => sum + clamp(toNumberSafe(def?.taintNudge, 0), -0.2, 0.2),
+    0,
+  );
+  const totalTaintNudge = clamp(weatherTaintNudge + anomalyTaintNudge + sourceTaintNudge, -0.2, 0.2);
 
   const compositionByEssence = ESSENCE_PRIMES.reduce((acc, e) => {
     const density = clamp(toNumberSafe(densities?.[e], 0) + toNumberSafe(densityDeltaByEssence[e], 0), 0, 1);
@@ -329,6 +393,12 @@ function toAmbientSnapshot(densities, { locationId, biome, time, weather, anomal
     applyEssenceMult(potencyMultByEssence, def?.potencyMultByEssence);
   });
 
+  sourceDefs.forEach((def) => {
+    applyEssenceMult(refineYieldMultByEssence, def?.refineYieldMultByEssence);
+    applyEssenceMult(compressRiskMultByEssence, def?.compressRiskMultByEssence);
+    applyEssenceMult(potencyMultByEssence, def?.potencyMultByEssence);
+  });
+
   if (weatherType === "rain") {
     applyEssenceMult(drawMultByEssence, { water: 1.03, fire: 0.98 });
     applyEssenceMult(refineYieldMultByEssence, { water: 1.04, fire: 0.98 });
@@ -377,9 +447,10 @@ function toAmbientSnapshot(densities, { locationId, biome, time, weather, anomal
       weatherType: typeof weatherNode?.type === "string" ? weatherNode.type : null,
       weatherIntensity: Number.isFinite(weatherNode?.intensity) ? weatherNode.intensity : null,
       anomalyIds: resolvedAnomalyIds,
+      sourceIds,
       locationId: locationId || null,
     },
-    tags: [],
+    tags: [...sourceIds.map((id) => `source:${id}`)],
   };
 }
 
@@ -506,6 +577,9 @@ export function processEssenceEcologyTurn(state) {
   });
 
   const ambient = world?.essence?.ambient || {};
+  const sourceIds = Array.isArray(ambient?.provenance?.sourceIds)
+    ? ambient.provenance.sourceIds.map((id) => String(id).trim().toLowerCase()).filter(Boolean)
+    : [];
   const avgTaint = ESSENCE_PRIMES.reduce(
     (sum, e) => sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
     0,
@@ -579,6 +653,38 @@ export function processEssenceEcologyTurn(state) {
     essence: {
       ...essence,
       anomalies: { instances: nextInstances },
+      sources: (() => {
+        const existing = Array.isArray(essence.sources) ? essence.sources : [];
+        const normalized = existing
+          .map((s) => {
+            if (typeof s === "string") return { id: s.trim().toLowerCase() };
+            if (s && typeof s === "object" && !Array.isArray(s)) {
+              return {
+                id: typeof s.id === "string" ? s.id.trim().toLowerCase() : null,
+                locationId: typeof s.locationId === "string" ? s.locationId : null,
+                biomeId: typeof s.biomeId === "string" ? s.biomeId.trim().toLowerCase() : null,
+                discoveredTurn: toNumberSafe(s.discoveredTurn, 0),
+              };
+            }
+            return null;
+          })
+          .filter((s) => s?.id);
+        const seen = new Set(normalized.map((s) => `${s.id}:${s.locationId || ""}`));
+        const additions = sourceIds
+          .map((id) => {
+            const def = getRareEssenceSourceById(id);
+            return {
+              id,
+              name: def?.name || id,
+              locationId,
+              biomeId: biome,
+              discoveredTurn: turn,
+            };
+          })
+          .filter((s) => s?.id)
+          .filter((s) => !seen.has(`${s.id}:${s.locationId || ""}`));
+        return [...normalized, ...additions];
+      })(),
     },
   };
 
@@ -629,6 +735,7 @@ function ensurePlayerMagic(player) {
         : { current: 0, max: 100, state: "quiet" },
     perks: Array.isArray(magic?.perks) ? magic.perks : [],
     activeWorkings: Array.isArray(magic?.activeWorkings) ? magic.activeWorkings : [],
+    unlockedPatterns: ensureUnlockedPatterns(magic?.unlockedPatterns),
     paradigm: magic?.paradigm || {
       id: "conservationist",
       tenets: ["no_creation", "transform_allowed", "move_allowed"],
@@ -725,10 +832,27 @@ export function magicSense(state, action) {
   const ambient = world?.essence?.ambient || {};
   const requested = normalizeEssenceId(action?.essence);
 
+  const resonanceNode = hydrated.player?.magic?.resonance;
+  const resonanceState = typeof resonanceNode?.state === "string" ? resonanceNode.state : resonanceStateFromValue(resonanceNode?.current);
+  const resonanceValue = clamp(toNumberSafe(resonanceNode?.current, 0), 0, 100);
+  const mindPct = stabilityPct(hydrated.player?.magic?.stability?.mind);
+  const cogPct = stabilityPct(hydrated.player?.magic?.stability?.cognitive);
+  const stabilityWord = (pct) => (pct >= 0.8 ? "steady" : pct >= 0.6 ? "wavering" : pct >= 0.35 ? "volatile" : "fracturing");
+  const avgTaint = ESSENCE_PRIMES.reduce(
+    (sum, e) => sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
+    0,
+  ) / ESSENCE_PRIMES.length;
+  const contaminationWord = avgTaint >= 0.18 ? "foul" : avgTaint >= 0.07 ? "tainted" : "clean";
+
   const provenance = isAmbientSnapshot(ambient) ? ambient.provenance : null;
   const anomalyNames = Array.isArray(provenance?.anomalyIds)
     ? provenance.anomalyIds
         .map((id) => getEssenceAnomalyById(id)?.name || null)
+        .filter(Boolean)
+    : [];
+  const sourceNames = Array.isArray(provenance?.sourceIds)
+    ? provenance.sourceIds
+        .map((id) => getRareEssenceSourceById(id)?.name || null)
         .filter(Boolean)
     : [];
 
@@ -747,7 +871,7 @@ export function magicSense(state, action) {
       description:
         strength <= 0.01
           ? `You sense almost no ${requested} essence here.`
-          : `You sense ${requested} essence (strength ${(strength * 100).toFixed(0)}%, draw x${mult.toFixed(2)}).`,
+          : `You sense ${requested} essence (strength ${(strength * 100).toFixed(0)}%, draw x${mult.toFixed(2)}). Resonance: ${resonanceState} (${resonanceValue.toFixed(0)}/100).`,
       readOnly: true,
     };
   }
@@ -766,12 +890,26 @@ export function magicSense(state, action) {
     contextParts.push(`Weather: ${provenance.weatherType}${intensity}`);
   }
   if (anomalyNames.length) contextParts.push(`Anomalies: ${anomalyNames.join(", ")}`);
+  if (sourceNames.length) contextParts.push(`Sources: ${sourceNames.join(", ")}`);
+  contextParts.push(
+    `Stability: mind ${stabilityWord(mindPct)}, cognitive ${stabilityWord(cogPct)}; Resonance: ${resonanceState}; Contamination: ${contaminationWord}`,
+  );
   const contextLine = contextParts.length ? ` (${contextParts.join(" | ")})` : "";
+
+  const notable = [];
+  entries.forEach((e) => {
+    const draw = clamp(toNumberSafe(ambient?.global?.drawMultByEssence?.[e.essence], 1), 0.9, 1.2);
+    if (Math.abs(draw - 1) >= 0.04) notable.push(`draw ${e.essence} x${draw.toFixed(2)}`);
+  });
+  if (notable.length > 0) {
+    notable.splice(3);
+  }
+  const whyLine = notable.length ? ` Notable: ${notable.join("; ")}.` : "";
 
   return {
     state: hydrated,
     description: entries[0]?.strength
-      ? `Ambient essences: ${topLine}${contextLine}`
+      ? `Ambient essences: ${topLine}${contextLine}${whyLine}`
       : "You sense no notable ambient essence.",
     readOnly: true,
   };
@@ -1186,11 +1324,14 @@ export function magicShape(state, action) {
   const amount = action?.amount != null ? clamp(toNumberSafe(action.amount, 0), 1, 200) : null;
   const turn = toNumberSafe(hydrated.world?.turnCount, 0);
 
+  const unfamiliar = !isPatternUnlocked(magic, "shape", form);
+
   const prepared = {
     kind: "shape",
     essence,
     form,
     amount,
+    unfamiliar,
     createdTurn: turn,
   };
 
@@ -1209,7 +1350,7 @@ export function magicShape(state, action) {
 
   return {
     state: nextState,
-    description: `You shape ${essence} into a ${form}${amount ? ` (${amount})` : ""}.`,
+    description: `You shape ${essence} into a ${form}${amount ? ` (${amount})` : ""}${unfamiliar ? " (unfamiliar)" : ""}.`,
   };
 }
 
@@ -1226,10 +1367,13 @@ export function magicWeave(state, action) {
 
   const pattern = action?.pattern ? String(action.pattern).toLowerCase() : "lattice";
   const turn = toNumberSafe(hydrated.world?.turnCount, 0);
+
+  const unfamiliar = !isPatternUnlocked(magic, "weave", pattern);
   const prepared = {
     kind: "weave",
     essences,
     pattern,
+    unfamiliar,
     createdTurn: turn,
   };
 
@@ -1248,7 +1392,7 @@ export function magicWeave(state, action) {
 
   return {
     state: nextState,
-    description: `You weave ${essences.join("+")} into a ${pattern}.`,
+    description: `You weave ${essences.join("+")} into a ${pattern}${unfamiliar ? " (unfamiliar)" : ""}.`,
   };
 }
 
@@ -1363,7 +1507,11 @@ export function magicRelease(state) {
     const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
 
     const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
-    const outcomeTag = resonance >= 60 || stabilityPct(magic.stability?.mind) < 0.4 ? "strained_success" : "clean_success";
+    const unfamiliar = Boolean(prepared.unfamiliar);
+    const outcomeTag =
+      unfamiliar || resonance >= 60 || stabilityPct(magic.stability?.mind) < 0.4
+        ? "strained_success"
+        : "clean_success";
 
     const working = {
       id: `wrk_${turn}_${Math.floor(random() * 1e9)}`,
@@ -1375,7 +1523,7 @@ export function magicRelease(state) {
       expiresTurn: turn + 20,
     };
 
-    const nextMagic = applyResonanceDelta(
+    let nextMagic = applyResonanceDelta(
       applyStabilityDelta(
         {
           ...magic,
@@ -1394,6 +1542,10 @@ export function magicRelease(state) {
       ),
       resonanceGain * damp,
     );
+
+    if (unfamiliar) {
+      nextMagic = addUnlockedPattern(nextMagic, "shape", prepared.form);
+    }
 
     const nextState = recomputeManaFree({
       ...hydrated,
@@ -1463,8 +1615,15 @@ export function magicRelease(state) {
     const anchorCoherenceMult = anchored ? 1.05 : 1;
     const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
     const resonanceCoherenceMult = clamp(1 - 0.25 * (resonance / 100), 0.6, 1);
+    const unfamiliar = Boolean(prepared.unfamiliar);
+    const unfamiliarMult = unfamiliar ? 0.85 : 1;
     const coherence = clamp(
-      baseCoherence * stabilityFactor * (1 + 0.03 * stableWeavesRank) * anchorCoherenceMult * resonanceCoherenceMult,
+      baseCoherence *
+        stabilityFactor *
+        (1 + 0.03 * stableWeavesRank) *
+        anchorCoherenceMult *
+        resonanceCoherenceMult *
+        unfamiliarMult,
       0,
       1,
     );
@@ -1505,7 +1664,11 @@ export function magicRelease(state) {
       (6 + 0.12 * amountTotal + 10 * interferenceScore + 4 * avgTaint + 3 * pressure) *
       (anchored ? 0.9 : 1);
     const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
-    const nextMagicWithResonance = applyResonanceDelta(nextMagic, resonanceGain * damp);
+    let nextMagicWithResonance = applyResonanceDelta(nextMagic, resonanceGain * damp);
+
+    if (success && unfamiliar) {
+      nextMagicWithResonance = addUnlockedPattern(nextMagicWithResonance, "weave", prepared.pattern);
+    }
 
     const outcomeTag = backlash
       ? "backlash"

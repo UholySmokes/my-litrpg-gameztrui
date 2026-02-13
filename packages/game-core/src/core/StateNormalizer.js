@@ -554,7 +554,33 @@ function normalizeWorldWeather(rawWeather, biomeId, turnCount) {
 
 function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather } = {}) {
   const essence = isPlainObject(rawEssence) ? rawEssence : {};
-  const sources = Array.isArray(essence.sources) ? essence.sources : [];
+  const sourcesRaw = Array.isArray(essence.sources) ? essence.sources : [];
+  const sources = sourcesRaw
+    .map((s) => {
+      if (typeof s === "string") {
+        const id = s.trim().toLowerCase();
+        return id ? { id } : null;
+      }
+      if (isPlainObject(s)) {
+        const id = typeof s.id === "string" ? s.id.trim().toLowerCase() : null;
+        if (!id) return null;
+        return {
+          id,
+          name: typeof s.name === "string" ? s.name : undefined,
+          locationId:
+            typeof s.locationId === "string" && s.locationId.trim()
+              ? s.locationId.trim()
+              : null,
+          biomeId:
+            typeof s.biomeId === "string" && s.biomeId.trim()
+              ? s.biomeId.trim().toLowerCase()
+              : null,
+          discoveredTurn: Math.max(0, Math.floor(toNumber(s.discoveredTurn, 0))),
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
   const ambient = essence.ambient;
 
   const anomaliesRaw = isPlainObject(essence.anomalies) ? essence.anomalies : {};

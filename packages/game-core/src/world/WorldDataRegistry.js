@@ -821,6 +821,33 @@ export const ESSENCE_ANOMALY_DEFS = {
   },
 };
 
+export const RARE_ESSENCE_SOURCE_DEFS = {
+  storm_water: {
+    id: "storm_water",
+    name: "Storm-Water Confluence",
+    allowedBiomes: ["coast", "wilds"],
+    requiresWeather: "storm",
+    potencyMultByEssence: { water: 1.06, lightning: 1.02 },
+    refineYieldMultByEssence: { water: 1.03 },
+    taintNudge: 0.0,
+  },
+  ash_fire: {
+    id: "ash_fire",
+    name: "Ash-Fire Strata",
+    allowedBiomes: ["volcanic", "mountain"],
+    requiresWeather: "drought",
+    potencyMultByEssence: { fire: 1.06, destruction: 1.03 },
+    compressRiskMultByEssence: { fire: 1.04 },
+    taintNudge: 0.01,
+  },
+};
+
+export function getRareEssenceSourceById(id) {
+  if (!id) return null;
+  const key = typeof id === "string" ? id.trim().toLowerCase() : "";
+  return RARE_ESSENCE_SOURCE_DEFS[key] || null;
+}
+
 export function getEssenceAnomalyById(id) {
   if (!id) return null;
   const key = typeof id === "string" ? id.trim().toLowerCase() : "";

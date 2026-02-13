@@ -3,6 +3,11 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
+    "NARRATE_PROVIDER": "gemini",
+    "GOOGLE_API_KEY": "",
+    "GEMINI_MODEL": "gemini-2.5-pro",
+    "GEMINI_TEMPERATURE": "0.8",
+    "GEMINI_HTTP_TIMEOUT_MS": "30000",
     "FOUNDRY_PROJECT_ENDPOINT": "https://voidverse-resource.services.ai.azure.com/api/projects/voidverse",
     "FOUNDRY_API_KEY": "",
     "NARRATOR_AGENT_ID": "asst_U6Q1h9AOmHJohkxxHsIHPfCu",

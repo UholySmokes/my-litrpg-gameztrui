@@ -3,9 +3,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
+  width: min(92vw, 980px);
   max-width: 800px;
-  height: 70vh;
+  height: min(80vh, 820px);
   background: rgba(10, 10, 10, 0.9);
   border: 1px solid #444;
   color: #eee;
@@ -60,6 +60,34 @@
   flex-grow: 1;
 }
 
+.admin-tools-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-tools-stat-card {
+  border: 1px solid #2f2f2f;
+  background: #121212;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-tools-stat-card span {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.admin-tools-stat-card strong {
+  font-size: 0.95rem;
+  color: #f8f8f8;
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+}
+
 .admin-tools-section {
   margin-bottom: 20px;
   border: 1px solid #333;
@@ -83,6 +111,10 @@
   gap: 10px;
 }
 
+.admin-tools-system-actions {
+  margin-bottom: 10px;
+}
+
 .admin-tools-button {
   background: #333;
   color: #fff;
@@ -97,6 +129,15 @@
 
 .admin-tools-button:hover {
   background: #444;
+}
+
+.admin-tools-danger-button {
+  background: #531a1a;
+  border-color: #8a2727;
+}
+
+.admin-tools-danger-button:hover {
+  background: #682424;
 }
 
 .admin-tools-input-group {
@@ -127,6 +168,36 @@
   border-radius: 4px;
 }
 
+.admin-tools-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-tools-output-header h3 {
+  margin: 0;
+}
+
+.admin-tools-output-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-tools-close-button {
+  background: none;
+  border: 1px solid #663030;
+  color: #f06767;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.admin-tools-close-button:hover {
+  background: #2a1010;
+}
+
 .admin-toggle-button {
     position: fixed;
     top: 10px;
@@ -141,4 +212,15 @@
     font-family: monospace;
     z-index: 1001;
     border-radius: 4px;
+}
+
+@media (max-width: 820px) {
+  .admin-tools-container {
+    width: 96vw;
+    height: 88vh;
+  }
+
+  .admin-tools-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

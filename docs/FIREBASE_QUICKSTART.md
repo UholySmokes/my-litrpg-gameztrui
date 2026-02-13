@@ -14,6 +14,46 @@ In parallel, it now includes a Firebase Hosting + Cloud Functions implementation
 
 The endpoints mirror the existing Azure versions and keep the same response shape (`ok`, `narrative`, `mood`, `suggestions`).
 
+## Firebase-Native Agent Flows (Genkit + Gemini)
+
+The Firebase function now also exposes Google/Firebase-native multi-agent routes:
+
+- `GET /api/agents` (lists available agents)
+- `POST /api/agents/run` (runs one agent synchronously)
+
+Supported agents:
+
+- `narrator`
+- `quest`
+- `content_smith`
+- `combat`
+- `dialogue`
+- `world`
+- `system`
+
+Example request:
+
+```json
+{
+  "agent": "narrator",
+  "input": {
+    "game_state": {
+      "location": "Ashen Gate",
+      "playerHp": 42
+    }
+  },
+  "model": "gemini-2.5-flash",
+  "temperature": 0.9
+}
+```
+
+Runtime notes:
+
+- Uses `genkit` + `@genkit-ai/google-genai` with Vertex AI plugin.
+- Model defaults to `GEMINI_MODEL` or `gemini-2.5-flash`.
+- Vertex location defaults to `global` (`GENKIT_VERTEX_LOCATION` to override).
+- Uses `GOOGLE_GENAI_API_KEY` (or `GOOGLE_API_KEY`) when provided, otherwise falls back to Vertex ADC credentials.
+
 ## Required Environment Variables (Functions)
 
 Set these in your Firebase Functions environment (or in local emulators via `.env` in `functions/`):

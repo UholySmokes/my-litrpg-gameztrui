@@ -1,7 +1,7 @@
 # Firebase Quickstart (Hosting + Functions)
 
-This repository currently contains an Azure Functions backend under `api/`.
-In parallel, it now includes a Firebase Hosting + Cloud Functions implementation under `functions/`.
+This repository includes a Firebase Hosting + Cloud Functions implementation under `functions/`.
+Legacy Azure assets under `api/` are no longer used by the active deployment path.
 
 ## What This Enables
 
@@ -17,7 +17,7 @@ In parallel, it now includes a Firebase Hosting + Cloud Functions implementation
   - `PUT /api/saves/:id`
   - `DELETE /api/saves/:id`
 
-The endpoints mirror the existing Azure versions and keep the same response shape (`ok`, `narrative`, `mood`, `suggestions`).
+The endpoints keep the same response shape (`ok`, `narrative`, `mood`, `suggestions`).
 
 ## Firebase-Native Agent Flows (Genkit + Gemini)
 
@@ -120,23 +120,9 @@ Firebase-native agent vars:
 - `GEMINI_TEMPERATURE` (optional, per-agent defaults apply)
 - `GENKIT_VERTEX_LOCATION` (optional, default `global`)
 
-Foundry legacy vars (only needed for `/api/narrate*` in current compatibility path):
+Narration/timeouts:
 
-- `FOUNDRY_PROJECT_ENDPOINT`
-- `FOUNDRY_API_KEY`
-- `FOUNDRY_API_VERSION` (optional, default `2025-05-01`)
-
-Agent IDs (mode routing):
-
-- `NARRATOR_AGENT_ID` (required)
-- `COMBAT_AGENT_ID` (optional)
-- `DIALOGUE_AGENT_ID` (optional)
-- `SYSTEM_AGENT_ID` (optional)
-- `WORLD_AGENT_ID` (optional)
-
-Timeouts:
-
-- `FOUNDRY_HTTP_TIMEOUT_MS` (optional, default `30000`)
+- `/api/narrate*` now runs on Firebase Genkit agents.
 - `NARRATE_RUN_TIMEOUT_MS` (optional, default `120000`)
 
 Save storage and local auth:

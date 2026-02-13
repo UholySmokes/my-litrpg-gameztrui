@@ -5,6 +5,7 @@ import process from "node:process";
 const DIST_CONFIG_PATH = path.resolve(process.cwd(), "dist", "runtime-config.js");
 const PUBLIC_CONFIG_PATH = path.resolve(process.cwd(), "public", "runtime-config.js");
 const BASE_CONFIG = "globalThis.__RUNTIME_CONFIG__ = globalThis.__RUNTIME_CONFIG__ || {};\n";
+const AZURE_HOST_PATTERN = /azure/i;
 
 async function readPublicConfig() {
   try {
@@ -53,13 +54,28 @@ function hasApiBase(configText) {
   return /VITE_API_BASE_URL|VITE_API_BASE/.test(configText);
 }
 
+function sanitizeEndpoint(value, keyName) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) return "";
+  if (AZURE_HOST_PATTERN.test(trimmed)) {
+    // eslint-disable-next-line no-console
+    console.warn(`[runtime-config] ignoring ${keyName} because it points to Azure: ${trimmed}`);
+    return "";
+  }
+  return trimmed;
+}
+
 async function main() {
-  const envEndpoint = (process.env.VITE_NARRATE_ENDPOINT || "").trim();
-  const envApiBase = (
+  const envEndpoint = sanitizeEndpoint(
+    process.env.VITE_NARRATE_ENDPOINT || "",
+    "VITE_NARRATE_ENDPOINT",
+  );
+  const envApiBase = sanitizeEndpoint(
     process.env.VITE_API_BASE_URL ||
     process.env.VITE_API_BASE ||
-    ""
-  ).trim();
+    "",
+    "VITE_API_BASE_URL",
+  );
   const publicConfig = await readPublicConfig();
 
   let output = publicConfig;

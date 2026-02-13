@@ -13,30 +13,6 @@ function normalizeMode(mode) {
 		: MODES.exploration;
 }
 
-function env(name) {
-	const value = process.env[name];
-	return typeof value === "string" && value.trim() ? value.trim() : "";
-}
-
-function resolveAssistantId(mode) {
-	const normalized = normalizeMode(mode);
-	const narrator = env("NARRATOR_AGENT_ID");
-
-	if (normalized === MODES.combat) {
-		return env("COMBAT_AGENT_ID") || narrator;
-	}
-	if (normalized === MODES.dialogue) {
-		return env("DIALOGUE_AGENT_ID") || narrator;
-	}
-	if (normalized === MODES["system-event"]) {
-		return env("SYSTEM_AGENT_ID") || narrator;
-	}
-	if (normalized === MODES["scene-transition"]) {
-		return env("WORLD_AGENT_ID") || narrator;
-	}
-	return narrator;
-}
-
 function buildDefaultSuggestions(mode) {
 	const normalized = normalizeMode(mode);
 	if (normalized === MODES.combat) {
@@ -69,7 +45,6 @@ function buildDefaultSuggestions(mode) {
 
 module.exports = {
 	normalizeMode,
-	resolveAssistantId,
 	buildDefaultSuggestions,
 };
 

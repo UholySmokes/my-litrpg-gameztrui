@@ -1,13 +1,21 @@
-import { setRaceRegistry } from "./registries/RaceDataRegistry.js";
-import { setClasses } from "./registries/ClassDataRegistry.js";
-import { setItemDatabase } from "./registries/ItemDataRegistry.js";
-import { setEnemies } from "./registries/EnemyDataRegistry.js";
-import { setGachaPools } from "./gachaData.js";
-import { setShopDatabase } from "./shopData.js";
-import { setTitleDatabase } from "./titleData.js";
-import { setQuestCatalog } from "./QuestCatalog.js";
-import { setArchetypeDefinitions } from "../systems/archetype/ArchetypeSystemRegistry.js";
-import { setProfessionRegistry } from "../systems/profession/ProfessionRegistry.js";
+import { races, RACE_TRAITS, setRaceRegistry } from "./registries/RaceDataRegistry.js";
+import { classes, setClasses } from "./registries/ClassDataRegistry.js";
+import { itemDatabase, setItemDatabase } from "./registries/ItemDataRegistry.js";
+import { enemies, setEnemies } from "./registries/EnemyDataRegistry.js";
+import { gachaPools, setGachaPools } from "./gachaData.js";
+import { shopDatabase, setShopDatabase } from "./shopData.js";
+import { titleDatabase, setTitleDatabase } from "./titleData.js";
+import { MAIN_QUESTS, SIDE_QUESTS, setQuestCatalog } from "./QuestCatalog.js";
+import {
+  ARCHETYPE_DEFINITIONS,
+  setArchetypeDefinitions,
+} from "../systems/archetype/ArchetypeSystemRegistry.js";
+import {
+  PROFESSIONS,
+  PROFESSION_TIERS,
+  PROFESSION_CATEGORIES,
+  setProfessionRegistry,
+} from "../systems/profession/ProfessionRegistry.js";
 
 const DEFAULT_TIMEOUT_MS = 8000;
 
@@ -38,20 +46,7 @@ const resolveStaticEndpoints = () => {
     runtimeEnv.VITE_STATIC_DATA_ENDPOINT,
     buildEnv.VITE_STATIC_DATA_ENDPOINT,
   );
-  const apiBaseUrl = pickEnvValue(
-    runtimeEnv.VITE_API_BASE_URL,
-    buildEnv.VITE_API_BASE_URL,
-    runtimeEnv.VITE_API_BASE,
-    buildEnv.VITE_API_BASE,
-  );
-  const derived = apiBaseUrl
-    ? `${normalizeBaseUrl(apiBaseUrl)}/api/static-data`
-    : undefined;
-  const endpoints = [explicit, derived].filter(Boolean);
-  if (endpoints.length === 0) {
-    endpoints.push("/api/static-data");
-  }
-  return endpoints;
+  return explicit ? [normalizeBaseUrl(explicit)] : [];
 };
 
 const resolveTimeoutMs = () => {
@@ -99,8 +94,37 @@ function applyStaticBundle(bundle) {
   return true;
 }
 
+function buildLocalBundle() {
+  return {
+    races,
+    raceTraits: RACE_TRAITS,
+    classes,
+    items: itemDatabase,
+    enemies,
+    gachaPools,
+    shopDatabase,
+    titleDatabase,
+    quests: {
+      main: MAIN_QUESTS,
+      side: SIDE_QUESTS,
+    },
+    archetypeDefinitions: ARCHETYPE_DEFINITIONS,
+    professions: PROFESSIONS,
+    professionTiers: PROFESSION_TIERS,
+    professionCategories: PROFESSION_CATEGORIES,
+  };
+}
+
 export async function bootstrapStaticData() {
+  // Local static data is the default source to keep runtime independent from
+  // external API hosts.
+  applyStaticBundle(buildLocalBundle());
+
   const endpoints = resolveStaticEndpoints();
+  if (endpoints.length === 0) {
+    return { ok: true, source: "local" };
+  }
+
   const timeoutMs = resolveTimeoutMs();
   let lastError = null;
 
@@ -134,7 +158,7 @@ export async function bootstrapStaticData() {
 
   if (lastError) {
     // eslint-disable-next-line no-console
-    console.warn("Static data bootstrap failed:", lastError);
+    console.warn("Static data endpoint unavailable; using local bundle:", lastError);
   }
-  return { ok: false, error: lastError?.message };
+  return { ok: true, source: "local", warning: lastError?.message };
 }

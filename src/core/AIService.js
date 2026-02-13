@@ -1,3 +1,5 @@
+import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
+
 const DEFAULT_TIMEOUT_MS = 135000;
 const DEV_DEFAULT_TIMEOUT_MS = 150000;
 const STREAM_POLL_INTERVAL_MS = 1500;
@@ -86,6 +88,18 @@ function stripToneViolations(text) {
 }
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function buildApiHeaders(baseHeaders = {}) {
+  const headers = {
+    ...baseHeaders,
+    ...getDevAuthHeaders(),
+  };
+  const token = await getAuthToken();
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  return headers;
+}
 
 async function fetchWithTimeout(url, options, timeoutMs) {
   const controller = new AbortController();
@@ -179,6 +193,9 @@ export async function generateNarrative(prompt, { mode } = {}) {
   const apiEndpoints = resolveNarrateEndpoints();
   const timeoutMs = resolveRequestTimeoutMs();
   const isDev = Boolean(getBuildEnv().DEV);
+  const headers = await buildApiHeaders({
+    "Content-Type": "application/json",
+  });
 
   if (apiEndpoints.length === 0) {
     const error = new Error(
@@ -196,9 +213,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
         endpoint,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers,
           body: JSON.stringify({ prompt, mode }),
         },
         timeoutMs,
@@ -344,6 +359,10 @@ export async function generateNarrativeStream(
 ) {
   const endpoints = resolveStreamEndpoints();
   const isDev = Boolean(getBuildEnv().DEV);
+  const startHeaders = await buildApiHeaders({
+    "Content-Type": "application/json",
+  });
+  const pollHeaders = await buildApiHeaders();
 
   // No stream endpoints configured — transparent fallback
   if (!endpoints) {
@@ -359,7 +378,7 @@ export async function generateNarrativeStream(
       endpoints.start,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: startHeaders,
         body: JSON.stringify({ prompt, mode }),
         signal,
       },
@@ -397,7 +416,7 @@ export async function generateNarrativeStream(
     try {
       const res = await fetchWithTimeout(
         `${endpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}${mode ? `&mode=${encodeURIComponent(mode)}` : ""}`,
-        { method: "GET", signal },
+        { method: "GET", headers: pollHeaders, signal },
         15000,
       );
       pollData = await res.json().catch(() => null);

@@ -16,6 +16,24 @@ function parseTemperature(value, fallback) {
 	return Math.max(0, Math.min(2, parsed));
 }
 
+function parseCsvList(value) {
+	if (typeof value !== "string") return [];
+	return value
+		.split(",")
+		.map((entry) => entry.trim())
+		.filter(Boolean);
+}
+
+function resolveAllowedModels() {
+	const configured = parseCsvList(process.env.GENKIT_ALLOWED_MODELS || "");
+	if (configured.length > 0) return configured;
+
+	const fallback = new Set([DEFAULT_MODEL]);
+	const envDefault = (process.env.GEMINI_MODEL || "").trim();
+	if (envDefault) fallback.add(envDefault);
+	return Array.from(fallback);
+}
+
 function resolveProjectId() {
 	const direct =
 		(process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || process.env.FIREBASE_PROJECT_ID || "").trim();
@@ -168,7 +186,19 @@ async function runFirebaseAgent({
 		throw error;
 	}
 
-	const activeModel = (typeof model === "string" && model.trim()) || process.env.GEMINI_MODEL || DEFAULT_MODEL;
+	const requestedModel = (typeof model === "string" && model.trim()) || "";
+	const activeModel = requestedModel || process.env.GEMINI_MODEL || DEFAULT_MODEL;
+	const allowedModels = resolveAllowedModels();
+	if (!allowedModels.includes(activeModel)) {
+		const error = new Error(
+			`Model '${activeModel}' is not allowed. Configure GENKIT_ALLOWED_MODELS to permit it.`,
+		);
+		error.status = 400;
+		error.code = "MODEL_NOT_ALLOWED";
+		error.allowedModels = allowedModels;
+		throw error;
+	}
+
 	const activeTemperature = parseTemperature(
 		temperature,
 		parseTemperature(process.env.GEMINI_TEMPERATURE, definition.temperature),

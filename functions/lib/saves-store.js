@@ -9,10 +9,6 @@ function getOptionalEnv(name) {
 	return typeof value === "string" && value.trim() ? value.trim() : "";
 }
 
-function isBackendOverrideSet() {
-	return Boolean(getOptionalEnv("GAME_DB_STORAGE"));
-}
-
 function toIso(value) {
 	if (!value) return null;
 	if (typeof value === "string") return value;
@@ -56,19 +52,15 @@ function mapFirestoreSave(doc) {
 }
 
 async function fireListSaves({ userId, limit }) {
-	const sampleSize = Math.max(limit, 80);
 	const snapshot = await getFirestoreDb()
 		.collection(getCollectionName())
 		.where("user_id", "==", String(userId))
-		.limit(sampleSize)
+		.orderBy("updated_at", "desc")
+		.limit(limit)
 		.get();
 
 	return snapshot.docs
 		.map(mapFirestoreSave)
-		.sort((a, b) =>
-			String(b.updated_at || "").localeCompare(String(a.updated_at || "")),
-		)
-		.slice(0, limit)
 		.map((row) => ({
 			id: row.id,
 			save_name: row.save_name,
@@ -147,24 +139,13 @@ async function fireDeleteSave({ userId, saveId }) {
 	return true;
 }
 
-async function withBackend({ firestoreFn, fileFn, operation }) {
+async function withBackend({ firestoreFn, fileFn }) {
 	const backend = resolveGameDbBackend();
 	if (backend === "file") {
 		return fileFn();
 	}
 
-	try {
-		return await firestoreFn();
-	} catch (error) {
-		if (isBackendOverrideSet()) {
-			throw error;
-		}
-		console.warn(
-			`[saves-store] Firestore ${operation} failed, falling back to file backend:`,
-			error?.message || error,
-		);
-		return fileFn();
-	}
+	return firestoreFn();
 }
 
 async function listSaves({ userId, limit }) {
@@ -216,4 +197,3 @@ module.exports = {
 	updateSave,
 	deleteSave,
 };
-

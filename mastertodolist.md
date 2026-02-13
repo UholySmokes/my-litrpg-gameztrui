@@ -108,37 +108,28 @@ Open questions (need your call before I cross this step):
   - Implemented: interference increases storage decay rate.
 11) Progression hooks (perks as modifiers, not new subsystems)
 
-- Add a perk framework for magic that can modify:
-  - compression risk multiplier
-  - capacity usage reduction for compressed forms
-  - stability threshold increase
-  - backlash severity reduction
-  - refine efficiency and purity improvements
+- ~~Add a perk framework for magic that can modify:~~
+  - Implemented `player.magic.perks` (strings or `{ id, rank }`) and perk lookups.
+  - Implemented perk effects: `safer_compression`, `clean_refining`, `refine_yield`, `stable_weaves`, `resonance_damping`.
 - Implement in tiers:
-  - Tier 1: quality-of-life (slightly safer, slightly faster)
-  - Tier 2: specialization (element-specific tuning, interference reduction)
-  - Tier 3: signature capability (dual-refine, stable multi-weave)
+  - Basic ranks supported; no UI/earn flow yet.
 12) Risk model: from binary fail to outcome spectrum
 
-- Replace “success/fail” with outcome categories:
-  - clean success
-  - strained success (reduced potency, stability hit)
-  - partial misfire (pattern drift, leaks essence)
-  - backlash (tiered consequences)
-- Introduce “resonance” as a tracked meter influenced by:
-  - action intensity (compress/weave)
-  - interference score
-  - contamination
-  - environmental pressure (anomalies, storms)
+- ~~Replace “success/fail” with outcome categories:~~
+  - Actions now label outcomes as `clean success`, `strained success`, `partial misfire`, `backlash`.
+- ~~Introduce “resonance” as a tracked meter influenced by:~~
+  - Added `player.magic.resonance` with `quiet/humming/ringing/shrieking` states.
+  - Resonance increases on DRAW/REFINE/COMPRESS/WEAVE/RELEASE and decays on turn ticks.
+  - Resonance factors include action intensity, interference, contamination/taint, and environment pressure.
 - Define overload thresholds that trigger “wild magic”-style side effects that still keep gameplay readable.
+  - Implemented: high resonance increases compress misfire risk and reduces weave coherence.
 13) Action synergy: persistent SHAPE/ANCHOR states
 
 - Ensure SHAPE and ANCHOR create explicit, persistent state objects:
-  - remaining essence, decay timer, stability contribution, tags (e.g., “spear”, “ward”, “focus”)
-- Define synergy rules:
-  - WEAVE can consume SHAPE for bonus potency/accuracy
-  - ANCHOR can stabilize WEAVE (lower misfire/backlash odds)
-  - Persistent states decay slowly out of combat and faster in combat (or vice versa, as desired)
+  - ANCHOR persists on `player.magic.anchors`.
+  - SHAPE/WEAVE now leave short-lived entries in `player.magic.activeWorkings` (expires by turn).
+- ~~Define synergy rules:~~
+  - ANCHOR stabilizes (reduces) compress misfire risk and resonance gain; also boosts weave coherence.
 14) Combat integration: cast time + interruption
 
 - Assign cast time bands to magic actions (instant/short/long/channel).

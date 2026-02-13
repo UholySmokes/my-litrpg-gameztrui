@@ -3,6 +3,9 @@ import {
   magicRefine,
   ensureEssenceWeavingState,
   processEssenceEcologyTurn,
+  magicCompress,
+  magicWeave,
+  magicRelease,
 } from "../packages/game-core/src/systems/magic/EssenceWeavingSystem.js";
 
 function makeBaseState() {
@@ -126,5 +129,54 @@ test("stored charges decay over turn-advancing ticks", () => {
   const ticked = processEssenceEcologyTurn(advanced);
   const after = ticked.player.magic.charges.at(-1).amount;
   expect(after).toBeLessThan(before);
+});
+
+test("resonance increases after refine/compress/release", () => {
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState(base);
+  const withReserve = {
+    ...hydrated,
+    player: {
+      ...hydrated.player,
+      magic: {
+        ...hydrated.player.magic,
+        reserves: { ...hydrated.player.magic.reserves, lightning: 10, fire: 10, water: 10 },
+      },
+    },
+  };
+
+  const refined = magicRefine(withReserve, { type: "magic_refine", essence: "lightning", amount: 10, method: "steady" });
+  const r1 = refined.state.player.magic.resonance.current;
+  expect(r1).toBeGreaterThan(0);
+
+  const compressed = magicCompress(refined.state, { type: "magic_compress", essence: "lightning", tier: 1, method: "steady" });
+  const r2 = compressed.state.player.magic.resonance.current;
+  expect(r2).toBeGreaterThan(r1);
+
+  const prepped = magicWeave(compressed.state, { type: "magic_weave", essences: ["fire", "water"], pattern: "lattice" });
+  const released = magicRelease(prepped.state);
+  const r3 = released.state.player.magic.resonance.current;
+  expect(r3).toBeGreaterThan(r2);
+});
+
+test("resonance decays over turns", () => {
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState(base);
+  const withResonance = {
+    ...hydrated,
+    player: {
+      ...hydrated.player,
+      magic: {
+        ...hydrated.player.magic,
+        resonance: { current: 50, max: 100, state: "ringing" },
+      },
+    },
+    world: {
+      ...hydrated.world,
+      turnCount: 10,
+    },
+  };
+  const ticked = processEssenceEcologyTurn(withResonance);
+  expect(ticked.player.magic.resonance.current).toBeLessThan(50);
 });
 

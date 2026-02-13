@@ -1,9 +1,0 @@
-{
-  "hostedAgentDeployOptions": {
-    "dockerContextPath": ".",
-    "dockerfilePath": "Dockerfile",
-    "agentName": "foundryagent",
-    "cpu": "1.0",
-    "memory": "2.0Gi"
-  }
-}

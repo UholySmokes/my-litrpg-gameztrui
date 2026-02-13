@@ -1,6 +1,8 @@
 # Compiled JavaScript files
 lib/**/*.js
 lib/**/*.js.map
+!lib/firebase-agents/definitions.js
+!lib/firebase-agents/runtime.js
 
 # TypeScript v1 declaration files
 typings/

@@ -2,6 +2,10 @@ const crypto = require("crypto");
 const { json, readJsonBody } = require("./http");
 const { normalizeMode, resolveAssistantId, buildDefaultSuggestions } = require("./agent-router");
 const { startFoundryRun, pollFoundryRun, awaitFoundryRun } = require("./foundry");
+const {
+	listFirebaseAgents,
+	runFirebaseAgent,
+} = require("./firebase-agents/runtime");
 
 const MOOD_PATTERNS = [
 	{ mood: "tense", patterns: [/danger/i, /threat/i, /ambush/i, /attack/i, /enemy/i, /looming/i] },
@@ -47,6 +51,85 @@ async function health(_req, res) {
 		ok: true,
 		service: "void-verse-firebase-api",
 	});
+}
+
+async function agents(req, res) {
+	const method = (req?.method || "GET").toUpperCase();
+	if (method === "GET") {
+		return json(res, 200, {
+			ok: true,
+			provider: "firebase-genkit",
+			agents: listFirebaseAgents(),
+		});
+	}
+
+	return json(res, 405, {
+		ok: false,
+		errorCode: "METHOD_NOT_ALLOWED",
+		message: `Method ${method} is not supported for /api/agents.`,
+	});
+}
+
+async function runAgent(req, res) {
+	try {
+		const body = await readJsonBody(req);
+		const agent = typeof body?.agent === "string" ? body.agent.trim() : "";
+		if (!agent) {
+			return json(res, 400, {
+				ok: false,
+				errorCode: "MISSING_AGENT",
+				message: "Request body must include an 'agent' field.",
+			});
+		}
+
+		const hasInputField = Object.prototype.hasOwnProperty.call(body || {}, "input");
+		const input = hasInputField
+			? body.input
+			: {
+				...body,
+				agent: undefined,
+				model: undefined,
+				temperature: undefined,
+				topP: undefined,
+			};
+
+		const result = await runFirebaseAgent({
+			agent,
+			input,
+			model: body?.model,
+			temperature: body?.temperature,
+			topP: body?.topP,
+		});
+
+		const responseBody = {
+			ok: true,
+			provider: "firebase-genkit",
+			agent: result.agent,
+			agentName: result.agentName,
+			model: result.model,
+			temperature: result.temperature,
+			text: result.text,
+			outputHash: hashContent(result.text),
+		};
+
+		if (typeof result.structured !== "undefined") {
+			responseBody.structured = result.structured;
+		}
+
+		return json(res, 200, responseBody);
+	} catch (error) {
+		const parsedStatus = Number(error?.status);
+		const status = Number.isFinite(parsedStatus) ? parsedStatus : 500;
+		const responseBody = {
+			ok: false,
+			errorCode: error?.code || "UNEXPECTED_ERROR",
+			message: String(error?.message || error || "Unknown error"),
+		};
+		if (Array.isArray(error?.allowedAgents)) {
+			responseBody.allowedAgents = error.allowedAgents;
+		}
+		return json(res, status, responseBody);
+	}
 }
 
 async function narrate(req, res) {
@@ -210,6 +293,8 @@ async function narratePoll(req, res) {
 
 module.exports = {
 	health,
+	agents,
+	runAgent,
 	narrate,
 	narrateStart,
 	narratePoll,

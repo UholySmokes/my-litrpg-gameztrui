@@ -31,6 +31,28 @@ const OPPOSITION_PAIRS = [
   ["space", "time"],
 ];
 
+const TRAINABLE_PERK_IDS = new Set([
+  "safer_compression",
+  "clean_refining",
+  "refine_yield",
+  "stable_weaves",
+  "resonance_damping",
+]);
+
+const PERK_DISPLAY_NAMES = {
+  safer_compression: "Safer Compression",
+  clean_refining: "Clean Refining",
+  refine_yield: "Refine Yield",
+  stable_weaves: "Stable Weaves",
+  resonance_damping: "Resonance Damping",
+};
+
+const BASIC_PERK_RANK_CAP = 3;
+const PERK_XP_REQUIRED_BY_RANK = {
+  2: 30,
+  3: 90,
+};
+
 const DEFAULT_UNLOCKED_PATTERNS = {
   shape: ["pulse", "jet", "cone", "wall", "shield"],
   weave: ["lattice", "veil", "vortex"],
@@ -98,6 +120,125 @@ function getPerkRank(magic, perkId) {
     }
   });
   return clamp(rank, 0, 10);
+}
+
+function normalizePerkId(value) {
+  if (typeof value !== "string") return "";
+  return value.trim().toLowerCase();
+}
+
+function setPerkRank(perks, perkId, rank) {
+  const id = normalizePerkId(perkId);
+  if (!id) return Array.isArray(perks) ? [...perks] : [];
+  const desiredRank = Math.max(1, Math.floor(toNumberSafe(rank, 1)));
+  const source = Array.isArray(perks) ? perks : [];
+  const next = [];
+  let updated = false;
+
+  source.forEach((perk) => {
+    if (typeof perk === "string") {
+      if (normalizePerkId(perk) !== id) {
+        next.push(perk);
+        return;
+      }
+      if (updated) return;
+      next.push(desiredRank <= 1 ? id : { id, rank: desiredRank });
+      updated = true;
+      return;
+    }
+    if (perk && typeof perk === "object" && !Array.isArray(perk)) {
+      if (normalizePerkId(perk.id) !== id) {
+        next.push(perk);
+        return;
+      }
+      if (updated) return;
+      next.push({ ...perk, id, rank: desiredRank });
+      updated = true;
+      return;
+    }
+    next.push(perk);
+  });
+
+  if (!updated) {
+    next.push(desiredRank <= 1 ? id : { id, rank: desiredRank });
+  }
+  return next;
+}
+
+function applyPerkTraining(magic, grants, { turn } = {}) {
+  const queue = Array.isArray(grants) ? grants : [];
+  if (queue.length === 0) return { magic, rankUps: [] };
+
+  let nextPerks = Array.isArray(magic?.perks) ? [...magic.perks] : [];
+  const nextProgress =
+    magic?.perkProgress && typeof magic.perkProgress === "object" && !Array.isArray(magic.perkProgress)
+      ? { ...magic.perkProgress }
+      : {};
+  const rankUps = [];
+  let changed = false;
+
+  queue.forEach((entry) => {
+    const id = normalizePerkId(entry?.id);
+    const gain = clamp(toNumberSafe(entry?.xp, 0), 0, 100);
+    if (!id || gain <= 0 || !TRAINABLE_PERK_IDS.has(id)) return;
+
+    const currentRank = getPerkRank({ perks: nextPerks }, id);
+    if (currentRank <= 0) return; // no unlock flow yet; only ranked progression for owned perks
+
+    const currentNode =
+      nextProgress[id] && typeof nextProgress[id] === "object" && !Array.isArray(nextProgress[id])
+        ? nextProgress[id]
+        : {};
+    const previousXp = Math.max(0, toNumberSafe(currentNode.totalXp, 0));
+    const totalXp = previousXp + gain;
+
+    let targetRank = currentRank;
+    while (targetRank < BASIC_PERK_RANK_CAP) {
+      const threshold = toNumberSafe(PERK_XP_REQUIRED_BY_RANK[targetRank + 1], Infinity);
+      if (!Number.isFinite(threshold) || totalXp + 1e-9 < threshold) break;
+      targetRank += 1;
+    }
+
+    nextProgress[id] = {
+      ...currentNode,
+      totalXp: Number(totalXp.toFixed(2)),
+      ...(Number.isFinite(turn) ? { lastGainTurn: Math.floor(turn) } : {}),
+    };
+    changed = true;
+
+    if (targetRank > currentRank) {
+      nextPerks = setPerkRank(nextPerks, id, targetRank);
+      rankUps.push({ id, rank: targetRank });
+    }
+  });
+
+  if (!changed) return { magic, rankUps };
+  return {
+    magic: {
+      ...magic,
+      perks: nextPerks,
+      perkProgress: nextProgress,
+    },
+    rankUps,
+  };
+}
+
+function perkRankUpLine(rankUps) {
+  if (!Array.isArray(rankUps) || rankUps.length === 0) return "";
+  const phrase = rankUps
+    .map((entry) => {
+      const id = normalizePerkId(entry?.id);
+      const rank = Math.max(1, Math.floor(toNumberSafe(entry?.rank, 1)));
+      const label =
+        PERK_DISPLAY_NAMES[id] ||
+        String(id)
+          .split("_")
+          .map((part) => capitalize(part))
+          .join(" ");
+      return `${label} rank ${rank}`;
+    })
+    .join(", ");
+  return ` Mastery breakthrough: ${phrase}.`;
 }
 
 function resonanceStateFromValue(value) {
@@ -920,6 +1061,10 @@ function ensurePlayerMagic(player) {
         ? magic.overload
         : { count: 0, lastTurn: null, lastEvent: null },
     perks: Array.isArray(magic?.perks) ? magic.perks : [],
+    perkProgress:
+      magic?.perkProgress && typeof magic.perkProgress === "object" && !Array.isArray(magic.perkProgress)
+        ? magic.perkProgress
+        : {},
     activeWorkings: Array.isArray(magic?.activeWorkings) ? magic.activeWorkings : [],
     unlockedPatterns: ensureUnlockedPatterns(magic?.unlockedPatterns),
     paradigm: magic?.paradigm || {
@@ -1220,19 +1365,24 @@ export function magicDraw(state, action) {
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
   });
+  const training = applyPerkTraining(
+    overload.magic,
+    [{ id: "resonance_damping", xp: 1.2 + drawAmount * 0.05 }],
+    { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
+  );
 
 
   const nextState = recomputeManaFree({
     ...hydrated,
     player: {
       ...player,
-      magic: overload.magic,
+      magic: training.magic,
     },
   });
 
   return {
     state: nextState,
-    description: `You draw ${drawAmount.toFixed(1)} ${essence} essence into your body.${overload.line ? ` ${overload.line}` : ""}`,
+    description: `You draw ${drawAmount.toFixed(1)} ${essence} essence into your body.${overload.line ? ` ${overload.line}` : ""}${perkRankUpLine(training.rankUps)}`,
   };
 }
 
@@ -1321,15 +1471,23 @@ export function magicRefine(state, action) {
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
   });
+  const training = applyPerkTraining(
+    overload.magic,
+    [
+      { id: "clean_refining", xp: 1.8 + amount * 0.08 },
+      { id: "refine_yield", xp: 1.4 + amount * 0.06 },
+    ],
+    { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
+  );
 
   const nextState = recomputeManaFree({
     ...hydrated,
-    player: { ...player, magic: overload.magic },
+    player: { ...player, magic: training.magic },
   });
 
   return {
     state: nextState,
-    description: `You refine ${amount} ${essence} essence into a stable charge (${refinedAmount.toFixed(1)} yield, purity ${(purity * 100).toFixed(0)}%).${overload.line ? ` ${overload.line}` : ""}`,
+    description: `You refine ${amount} ${essence} essence into a stable charge (${refinedAmount.toFixed(1)} yield, purity ${(purity * 100).toFixed(0)}%).${overload.line ? ` ${overload.line}` : ""}${perkRankUpLine(training.rankUps)}`,
   };
 }
 
@@ -1484,15 +1642,20 @@ export function magicCompress(state, action) {
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
   });
+  const training = applyPerkTraining(
+    overload.magic,
+    [{ id: "safer_compression", xp: 2 + 0.7 * targetDensity + amount * 0.04 }],
+    { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
+  );
 
   const nextState = recomputeManaFree({
     ...hydrated,
-    player: { ...player, magic: overload.magic },
+    player: { ...player, magic: training.magic },
   });
 
   return {
     state: nextState,
-    description: `${resultLine} (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}`,
+    description: `${resultLine} (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}${perkRankUpLine(training.rankUps)}`,
   };
 }
 
@@ -1612,19 +1775,27 @@ export function magicPurge(state, action) {
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: requestedEssence,
   });
+  const training = applyPerkTraining(
+    overload.magic,
+    [
+      { id: "clean_refining", xp: 1.2 + removedTotal * 10 },
+      { id: "resonance_damping", xp: 0.8 + effort * 0.1 },
+    ],
+    { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
+  );
 
   const nextState = recomputeManaFree({
     ...hydrated,
     player: {
       ...player,
-      magic: overload.magic,
+      magic: training.magic,
     },
   });
 
   const targetText = requestedEssence ? requestedEssence : "all channels";
   return {
     state: nextState,
-    description: `You purge contamination from ${targetText} (taint -${removedTotal.toFixed(2)}).${overload.line ? ` ${overload.line}` : ""}`,
+    description: `You purge contamination from ${targetText} (taint -${removedTotal.toFixed(2)}).${overload.line ? ` ${overload.line}` : ""}${perkRankUpLine(training.rankUps)}`,
   };
 }
 
@@ -1877,15 +2048,20 @@ export function magicRelease(state) {
       turn,
       preferredEssence: essence,
     });
+    const training = applyPerkTraining(
+      overload.magic,
+      [{ id: "resonance_damping", xp: 1.4 + magnitude * 0.03 }],
+      { turn },
+    );
 
     const nextState = recomputeManaFree({
       ...hydrated,
-      player: { ...player, magic: overload.magic },
+      player: { ...player, magic: training.magic },
     });
 
     return {
       state: nextState,
-      description: `You release ${capitalize(essence)} ${prepared.form} (magnitude ${magnitude.toFixed(1)}). (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}`,
+      description: `You release ${capitalize(essence)} ${prepared.form} (magnitude ${magnitude.toFixed(1)}). (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}${perkRankUpLine(training.rankUps)}`,
     };
   }
 
@@ -2004,6 +2180,11 @@ export function magicRelease(state) {
       ambient,
       turn,
     });
+    const training = applyPerkTraining(
+      overload.magic,
+      [{ id: "stable_weaves", xp: 2 + 0.08 * amountTotal }],
+      { turn },
+    );
 
     const outcomeTag = backlash
       ? "backlash"
@@ -2028,10 +2209,10 @@ export function magicRelease(state) {
       player: {
           ...player,
           magic: {
-          ...overload.magic,
+          ...training.magic,
           activeWorkings: [
-            ...(Array.isArray(overload.magic.activeWorkings)
-              ? overload.magic.activeWorkings
+            ...(Array.isArray(training.magic.activeWorkings)
+              ? training.magic.activeWorkings
               : []),
             working,
           ],
@@ -2043,7 +2224,7 @@ export function magicRelease(state) {
     const backlashLine = backlash ? " Backlash bites into your body." : "";
     return {
       state: nextState,
-      description: `Your weave ${outcome} (coherence ${(coherence * 100).toFixed(0)}%).${backlashLine} (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}`,
+      description: `Your weave ${outcome} (coherence ${(coherence * 100).toFixed(0)}%).${backlashLine} (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}${perkRankUpLine(training.rankUps)}`,
     };
   }
 

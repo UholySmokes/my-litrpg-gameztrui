@@ -131,6 +131,57 @@ describe('Game Schemas Validation', () => {
       expect(result.valid).toBe(true);
     });
 
+    it('validates ranked magic perk fields in game state', () => {
+      const state = {
+        config: {},
+        player: {
+          name: 'Hero',
+          level: 1,
+          xp: { current: 0, max: 100 },
+          hp: { current: 100, max: 100 },
+          mana: { current: 50, max: 50 },
+          attributes: {},
+          inventory: [],
+          equipment: {},
+          abilities: [],
+          titles: [],
+          unlockedTitles: [],
+          equippedTitle: null,
+          activeSkills: [],
+          passiveSkills: [],
+          magic: {
+            perks: [{ id: 'stable_weaves', rank: 2 }, 'clean_refining'],
+            perkProgress: { stable_weaves: { totalXp: 44, lastGainTurn: 10 } },
+            resonance: { current: 30, max: 100, state: 'humming' },
+            overload: { count: 1, lastTurn: 10, lastEvent: { id: 'taint_bloom' } },
+            reservesTaint: { fire: 0.1 },
+            unlockedPatterns: { weave: ['vortex'], shape: ['pulse'] },
+          },
+        },
+        quests: {
+          active: [],
+          completed: [],
+        },
+        world: {
+          id: 'world1',
+          location: {
+            current: 'town',
+            visited: [],
+            unlockedAreas: [],
+          },
+          flags: {},
+          vars: {},
+          counters: {},
+          factionReputation: {},
+          time: 0,
+          turnCount: 0,
+        },
+      };
+
+      const result = validateGameState(state);
+      expect(result.valid).toBe(true);
+    });
+
     it('rejects state with missing player', () => {
       const state = {
         config: {},

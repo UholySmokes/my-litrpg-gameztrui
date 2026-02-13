@@ -245,3 +245,51 @@ test("sense reports overload risk labels", () => {
   expect(sensed.description.toLowerCase()).toContain("overload risk");
 });
 
+test("owned perks can rank up via action training", () => {
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState({
+    ...base,
+    player: {
+      ...base.player,
+      magic: {
+        ...(base.player.magic || {}),
+        perks: [{ id: "resonance_damping", rank: 1 }],
+        perkProgress: {
+          resonance_damping: { totalXp: 29 },
+        },
+      },
+    },
+  });
+
+  const result = magicDraw(hydrated, { type: "magic_draw", essence: "fire", amount: 5 });
+  const ranked = result.state.player.magic.perks.find(
+    (perk) =>
+      perk &&
+      typeof perk === "object" &&
+      !Array.isArray(perk) &&
+      perk.id === "resonance_damping",
+  );
+
+  expect(ranked?.rank).toBe(2);
+  expect(result.description).toContain("Mastery breakthrough");
+});
+
+test("training does not auto-unlock perks", () => {
+  const base = ensureEssenceWeavingState(makeBaseState());
+  const state = {
+    ...base,
+    player: {
+      ...base.player,
+      magic: {
+        ...base.player.magic,
+        perks: [],
+        perkProgress: {},
+      },
+    },
+  };
+
+  const result = magicDraw(state, { type: "magic_draw", essence: "fire", amount: 5 });
+  expect(result.state.player.magic.perks).toEqual([]);
+  expect(result.state.player.magic.perkProgress?.resonance_damping).toBeUndefined();
+});
+

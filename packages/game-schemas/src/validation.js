@@ -155,6 +155,7 @@ const WeatherTypeSchema = z.enum(["clear", "rain", "storm", "drought", "fog"]);
 const WorldWeatherStateSchema = z
   .object({
     byBiome: z.record(
+      z.string(),
       z.object({
         type: WeatherTypeSchema,
         intensity: z.number(),
@@ -171,14 +172,14 @@ const AmbientEssenceNodeSchema = z.object({
 });
 
 const AmbientSnapshotSchema = z.object({
-  compositionByEssence: z.record(AmbientEssenceNodeSchema),
+  compositionByEssence: z.record(z.string(), AmbientEssenceNodeSchema),
   global: z
     .object({
-      drawMultByEssence: z.record(z.number()),
-      refineYieldMultByEssence: z.record(z.number()),
+      drawMultByEssence: z.record(z.string(), z.number()),
+      refineYieldMultByEssence: z.record(z.string(), z.number()),
       stabilityCapDelta: z.number(),
-      compressRiskMultByEssence: z.record(z.number()),
-      potencyMultByEssence: z.record(z.number()),
+      compressRiskMultByEssence: z.record(z.string(), z.number()),
+      potencyMultByEssence: z.record(z.string(), z.number()),
     })
     .partial(),
   provenance: z
@@ -197,16 +198,16 @@ const AmbientSnapshotSchema = z.object({
 const WorldStateSchema = z.object({
   id: z.string(),
   location: WorldLocationStateSchema,
-  flags: z.record(z.boolean()),
-  vars: z.record(z.unknown()),
-  counters: z.record(z.number()),
-  factionReputation: z.record(z.number()),
+  flags: z.record(z.string(), z.boolean()),
+  vars: z.record(z.string(), z.unknown()),
+  counters: z.record(z.string(), z.number()),
+  factionReputation: z.record(z.string(), z.number()),
   time: z.union([z.number(), WorldTimeStateSchema]),
   turnCount: z.number(),
   weather: WorldWeatherStateSchema.optional(),
   essence: z
     .object({
-      ambient: z.union([z.record(z.number()), AmbientSnapshotSchema]),
+      ambient: z.union([z.record(z.string(), z.number()), AmbientSnapshotSchema]),
       sources: z.array(z.unknown()).optional(),
     })
     .optional(),
@@ -227,13 +228,13 @@ const PlayerStateSchema = z.object({
     current: z.number(),
     max: z.number(),
   }),
-  attributes: z.record(z.number()),
+  attributes: z.record(z.string(), z.number()),
   inventory: z.array(z.object({
     id: z.string(),
     quantity: z.number(),
     name: z.string().optional(),
   })),
-  equipment: z.record(z.unknown()),
+  equipment: z.record(z.string(), z.unknown()),
   abilities: z.array(z.object({
     id: z.string(),
   })),
@@ -249,8 +250,8 @@ const PlayerStateSchema = z.object({
   gold: z.number().optional(),
   soulpoints: z.number().optional(),
   profession: z.unknown().optional(),
-  professions: z.record(z.unknown()).optional(),
-  progress: z.record(z.unknown()).optional(),
+  professions: z.record(z.string(), z.unknown()).optional(),
+  progress: z.record(z.string(), z.unknown()).optional(),
   magic: z
     .object({
       stability: z
@@ -260,15 +261,59 @@ const PlayerStateSchema = z.object({
           cognitive: z.object({ current: z.number(), max: z.number() }),
         })
         .optional(),
-      affinity: z.record(z.number()).optional(),
-      attunement: z.record(z.number()).optional(),
-      reserves: z.record(z.number()).optional(),
+      affinity: z.record(z.string(), z.number()).optional(),
+      attunement: z.record(z.string(), z.number()).optional(),
+      reserves: z.record(z.string(), z.number()).optional(),
+      reservesTaint: z.record(z.string(), z.number()).optional(),
       charges: z.array(z.unknown()).optional(),
-      anchors: z.record(z.unknown()).optional(),
+      anchors: z.record(z.string(), z.unknown()).optional(),
       stance: z.unknown().optional(),
+      interference: z.object({ score: z.number().optional() }).optional(),
+      resonance: z
+        .object({
+          current: z.number().optional(),
+          max: z.number().optional(),
+          state: z.string().optional(),
+        })
+        .optional(),
+      overload: z
+        .object({
+          count: z.number().optional(),
+          lastTurn: z.number().nullable().optional(),
+          lastEvent: z.unknown().optional(),
+        })
+        .optional(),
+      perks: z
+        .array(
+          z.union([
+            z.string(),
+            z.object({
+              id: z.string(),
+              rank: z.number(),
+            }),
+          ]),
+        )
+        .optional(),
+      perkProgress: z
+        .record(
+          z.string(),
+          z.object({
+            totalXp: z.number().optional(),
+            lastGainTurn: z.number().optional(),
+          }),
+        )
+        .optional(),
+      activeWorkings: z.array(z.unknown()).optional(),
+      unlockedPatterns: z
+        .object({
+          shape: z.array(z.string()).optional(),
+          weave: z.array(z.string()).optional(),
+        })
+        .optional(),
       paradigm: z.unknown().optional(),
       memoryShards: z.array(z.unknown()).optional(),
       prepared: z.unknown().optional(),
+      casting: z.unknown().optional(),
       mana: z.object({ current: z.number(), max: z.number() }).optional(),
     })
     .optional(),
@@ -281,7 +326,7 @@ const QuestsStateSchema = z.object({
 });
 
 export const GameStateSchema = z.object({
-  config: z.record(z.unknown()),
+  config: z.record(z.string(), z.unknown()),
   player: PlayerStateSchema,
   quests: QuestsStateSchema,
   world: WorldStateSchema,

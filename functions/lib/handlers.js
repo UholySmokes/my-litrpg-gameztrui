@@ -160,8 +160,7 @@ async function agents(req, res) {
 
 async function runAgent(req, res) {
 	try {
-		const user = await requireAuthenticatedUser(req, res);
-		if (!user) return;
+		if (!(await requireAuthenticatedUser(req, res))) return;
 
 		const body = await readJsonBody(req);
 		const agent = typeof body?.agent === "string" ? body.agent.trim() : "";
@@ -226,8 +225,7 @@ async function runAgent(req, res) {
 
 async function narrate(req, res) {
 	try {
-		const user = await requireAuthenticatedUser(req, res);
-		if (!user) return;
+		if (!(await requireAuthenticatedUser(req, res))) return;
 
 		const body = await readJsonBody(req);
 		const result = await runNarration(body);

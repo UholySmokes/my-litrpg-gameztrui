@@ -54,9 +54,10 @@ Azure routes that still need parity in Firebase:
 
 Current frontend auth is Azure-specific in `src/core/AuthService.js`:
 
-- [ ] Replace `/.auth/login/<provider>` flow with Firebase Auth sign-in methods.
-- [ ] Replace `/.auth/me` lookup with Firebase `onAuthStateChanged` user state.
-- [ ] Replace logout URL redirect logic with Firebase `signOut`.
+- [x] Replace `/.auth/login/<provider>` flow with Firebase Auth sign-in methods.
+- [x] Replace `/.auth/me` lookup with Firebase `onAuthStateChanged` user state.
+- [x] Replace logout URL redirect logic with Firebase `signOut`.
+  - Legacy `/.auth/*` fallback remains in `AuthService` for transitional deployments.
 - [ ] Update API auth from trusted SWA headers to Firebase ID token verification in backend (`firebase-admin`).
   - `/api/saves` now verifies Firebase ID tokens; other protected routes still pending.
 - [ ] Enforce auth on sensitive routes (`runs/saves/action-submit/sync`).

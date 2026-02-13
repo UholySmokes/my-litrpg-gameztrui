@@ -21,21 +21,33 @@ const pickEnvValue = (...values) => {
 };
 
 const normalizeBaseUrl = (value) => value.replace(/\/+$/g, "");
+const isExternalUrl = (value) =>
+  /^[a-z][a-z0-9+.-]*:\/\//i.test(value) || value.startsWith("//");
+const sanitizeEndpointPath = (value) => {
+  const trimmed = typeof value === "string" ? value.trim() : "";
+  if (!trimmed) return undefined;
+  if (isExternalUrl(trimmed)) return undefined;
+  return trimmed;
+};
 
 const resolveSaveEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const explicit = pickEnvValue(
-    runtimeEnv.VITE_SAVES_ENDPOINT,
-    buildEnv.VITE_SAVES_ENDPOINT,
-    runtimeEnv.VITE_CLOUD_SAVES_ENDPOINT,
-    buildEnv.VITE_CLOUD_SAVES_ENDPOINT,
+  const explicit = sanitizeEndpointPath(
+    pickEnvValue(
+      runtimeEnv.VITE_SAVES_ENDPOINT,
+      buildEnv.VITE_SAVES_ENDPOINT,
+      runtimeEnv.VITE_CLOUD_SAVES_ENDPOINT,
+      buildEnv.VITE_CLOUD_SAVES_ENDPOINT,
+    ),
   );
-  const apiBaseUrl = pickEnvValue(
-    runtimeEnv.VITE_API_BASE_URL,
-    buildEnv.VITE_API_BASE_URL,
-    runtimeEnv.VITE_API_BASE,
-    buildEnv.VITE_API_BASE,
+  const apiBaseUrl = sanitizeEndpointPath(
+    pickEnvValue(
+      runtimeEnv.VITE_API_BASE_URL,
+      buildEnv.VITE_API_BASE_URL,
+      runtimeEnv.VITE_API_BASE,
+      buildEnv.VITE_API_BASE,
+    ),
   );
   const derived = apiBaseUrl
     ? `${normalizeBaseUrl(apiBaseUrl)}/api/saves`

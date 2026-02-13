@@ -5,7 +5,7 @@ import process from "node:process";
 const DIST_CONFIG_PATH = path.resolve(process.cwd(), "dist", "runtime-config.js");
 const PUBLIC_CONFIG_PATH = path.resolve(process.cwd(), "public", "runtime-config.js");
 const BASE_CONFIG = "globalThis.__RUNTIME_CONFIG__ = globalThis.__RUNTIME_CONFIG__ || {};\n";
-const AZURE_HOST_PATTERN = /azure/i;
+const EXTERNAL_URL_PATTERN = /^[a-z][a-z0-9+.-]*:\/\//i;
 
 async function readPublicConfig() {
   try {
@@ -57,9 +57,10 @@ function hasApiBase(configText) {
 function sanitizeEndpoint(value, keyName) {
   const trimmed = String(value || "").trim();
   if (!trimmed) return "";
-  if (AZURE_HOST_PATTERN.test(trimmed)) {
-    // eslint-disable-next-line no-console
-    console.warn(`[runtime-config] ignoring ${keyName} because it points to legacy host: ${trimmed}`);
+  if (EXTERNAL_URL_PATTERN.test(trimmed) || trimmed.startsWith("//")) {
+    console.warn(
+      `[runtime-config] ignoring ${keyName} because only same-origin paths are allowed: ${trimmed}`,
+    );
     return "";
   }
   return trimmed;
@@ -98,12 +99,10 @@ async function main() {
   await fs.mkdir(path.dirname(DIST_CONFIG_PATH), { recursive: true });
   await fs.writeFile(DIST_CONFIG_PATH, output, "utf8");
 
-  // eslint-disable-next-line no-console
   console.log(`[runtime-config] wrote dist/runtime-config.js from ${sourceLabel}`);
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
   console.error(err);
   process.exitCode = 1;
 });

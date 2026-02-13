@@ -25,19 +25,32 @@ const pickEnvValue = (...values) => {
 };
 
 const normalizeBaseUrl = (value) => value.replace(/\/+$/g, "");
+const isExternalUrl = (value) =>
+  /^[a-z][a-z0-9+.-]*:\/\//i.test(value) || value.startsWith("//");
+
+const sanitizeEndpointPath = (value) => {
+  const trimmed = typeof value === "string" ? value.trim() : "";
+  if (!trimmed) return undefined;
+  if (isExternalUrl(trimmed)) return undefined;
+  return trimmed;
+};
 
 const resolveNarrateEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const narrateEndpoint = pickEnvValue(
-    runtimeEnv["VITE_NARRATE_ENDPOINT"],
-    buildEnv["VITE_NARRATE_ENDPOINT"],
+  const narrateEndpoint = sanitizeEndpointPath(
+    pickEnvValue(
+      runtimeEnv["VITE_NARRATE_ENDPOINT"],
+      buildEnv["VITE_NARRATE_ENDPOINT"],
+    ),
   );
-  const apiBaseUrl = pickEnvValue(
-    runtimeEnv["VITE_API_BASE_URL"],
-    buildEnv["VITE_API_BASE_URL"],
-    runtimeEnv["VITE_API_BASE"],
-    buildEnv["VITE_API_BASE"],
+  const apiBaseUrl = sanitizeEndpointPath(
+    pickEnvValue(
+      runtimeEnv["VITE_API_BASE_URL"],
+      buildEnv["VITE_API_BASE_URL"],
+      runtimeEnv["VITE_API_BASE"],
+      buildEnv["VITE_API_BASE"],
+    ),
   );
   const derivedEndpoint = apiBaseUrl
     ? `${normalizeBaseUrl(apiBaseUrl)}/api/narrate`
@@ -322,11 +335,13 @@ export async function generateInitialNarrative(initialPrompt) {
 const resolveStreamEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const apiBaseUrl = pickEnvValue(
-    runtimeEnv["VITE_API_BASE_URL"],
-    buildEnv["VITE_API_BASE_URL"],
-    runtimeEnv["VITE_API_BASE"],
-    buildEnv["VITE_API_BASE"],
+  const apiBaseUrl = sanitizeEndpointPath(
+    pickEnvValue(
+      runtimeEnv["VITE_API_BASE_URL"],
+      buildEnv["VITE_API_BASE_URL"],
+      runtimeEnv["VITE_API_BASE"],
+      buildEnv["VITE_API_BASE"],
+    ),
   );
   if (!apiBaseUrl) {
     return {

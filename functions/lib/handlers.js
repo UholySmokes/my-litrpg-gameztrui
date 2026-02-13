@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const { json, readJsonBody } = require("./http");
 const { normalizeMode, buildDefaultSuggestions } = require("./agent-router");
+const { getUserFromRequest } = require("./auth");
 const {
 	listFirebaseAgents,
 	runFirebaseAgent,
@@ -92,6 +93,18 @@ function buildNarrativePayload(rawText, mode) {
 	};
 }
 
+async function requireAuthenticatedUser(req, res) {
+	const user = await getUserFromRequest(req);
+	if (user) return user;
+
+	json(res, 401, {
+		ok: false,
+		errorCode: "UNAUTHENTICATED",
+		message: "Sign in required.",
+	});
+	return null;
+}
+
 async function runNarration(body) {
 	const mode = normalizeMode(body?.mode);
 	const prompt = typeof body?.prompt === "string" ? body.prompt.trim() : "";
@@ -147,6 +160,9 @@ async function agents(req, res) {
 
 async function runAgent(req, res) {
 	try {
+		const user = await requireAuthenticatedUser(req, res);
+		if (!user) return;
+
 		const body = await readJsonBody(req);
 		const agent = typeof body?.agent === "string" ? body.agent.trim() : "";
 		if (!agent) {
@@ -210,6 +226,9 @@ async function runAgent(req, res) {
 
 async function narrate(req, res) {
 	try {
+		const user = await requireAuthenticatedUser(req, res);
+		if (!user) return;
+
 		const body = await readJsonBody(req);
 		const result = await runNarration(body);
 		return json(res, 200, {
@@ -234,6 +253,9 @@ async function narrate(req, res) {
 
 async function narrateStart(req, res) {
 	try {
+		const user = await requireAuthenticatedUser(req, res);
+		if (!user) return;
+
 		cleanupNarrateRuns();
 		const body = await readJsonBody(req);
 		const mode = normalizeMode(body?.mode);
@@ -246,6 +268,7 @@ async function narrateStart(req, res) {
 			status: "queued",
 			done: false,
 			mode,
+			ownerId: user.id,
 			updatedAtMs: nowMs,
 		});
 
@@ -256,6 +279,7 @@ async function narrateStart(req, res) {
 					done: true,
 					status: "completed",
 					mode: result.mode,
+					ownerId: user.id,
 					narrative: result.narrative,
 					mood: result.mood,
 					suggestions: result.suggestions,
@@ -269,6 +293,7 @@ async function narrateStart(req, res) {
 					done: true,
 					status: "failed",
 					mode,
+					ownerId: user.id,
 					errorCode: error?.code || "RUN_FAILED",
 					message: String(error?.message || error || "Unknown error"),
 					updatedAtMs: Date.now(),
@@ -295,6 +320,9 @@ async function narrateStart(req, res) {
 
 async function narratePoll(req, res) {
 	try {
+		const user = await requireAuthenticatedUser(req, res);
+		if (!user) return;
+
 		cleanupNarrateRuns();
 		const threadId = req?.query?.threadId;
 		const runId = req?.query?.runId;
@@ -308,7 +336,7 @@ async function narratePoll(req, res) {
 
 		const key = createRunKey(String(threadId), String(runId));
 		const run = narrateRuns.get(key);
-		if (!run) {
+		if (!run || String(run.ownerId || "") !== String(user.id || "")) {
 			return json(res, 404, {
 				ok: false,
 				errorCode: "RUN_NOT_FOUND",
@@ -363,4 +391,3 @@ module.exports = {
 	narrateStart,
 	narratePoll,
 };
-

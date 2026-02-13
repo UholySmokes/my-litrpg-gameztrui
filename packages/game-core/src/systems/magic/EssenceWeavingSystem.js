@@ -636,6 +636,7 @@ function ensurePlayerMagic(player) {
     },
     memoryShards: Array.isArray(magic?.memoryShards) ? magic.memoryShards : [],
     prepared: magic?.prepared ?? null,
+    casting: magic?.casting && typeof magic.casting === "object" ? magic.casting : null,
     mana: {
       max: toNumberSafe(magic?.mana?.max, toNumberSafe(player.mana?.max, 50)),
       current: toNumberSafe(

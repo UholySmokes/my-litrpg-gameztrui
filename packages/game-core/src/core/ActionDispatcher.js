@@ -135,12 +135,87 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_release": {
-          const result = magicRelease(state, action);
-          if (result && result.ok === false) {
-            return { success: false, reason: result.reason, state: result.state || state };
+          const prepared = state.player?.magic?.prepared;
+          const isInCombat = state.combat?.status === "active";
+          const casting = state.player?.magic?.casting;
+
+          if (isInCombat && prepared) {
+            const anchored = Boolean(
+              state.player?.magic?.anchors?.self ||
+                state.player?.magic?.anchors?.area ||
+                state.player?.magic?.anchors?.itemId,
+            );
+
+            if (casting && typeof casting === "object") {
+              const remaining = Math.max(0, Math.floor(Number(casting.remainingTurns || 0)) - 1);
+              if (remaining > 0) {
+                newState = {
+                  ...state,
+                  player: {
+                    ...state.player,
+                    magic: {
+                      ...state.player.magic,
+                      casting: { ...casting, remainingTurns: remaining },
+                    },
+                  },
+                };
+                description = `You continue casting... (${remaining} turns)`;
+              } else {
+                const withoutCasting = {
+                  ...state,
+                  player: {
+                    ...state.player,
+                    magic: {
+                      ...state.player.magic,
+                      casting: null,
+                    },
+                  },
+                };
+                const result = magicRelease(withoutCasting, action);
+                if (result && result.ok === false) {
+                  return { success: false, reason: result.reason, state: result.state || state };
+                }
+                newState = result.state || state;
+                description = result.description || "Released";
+              }
+            } else {
+              const baseTurns = prepared.kind === "weave" ? 2 : 1;
+              const reduced = anchored ? Math.max(0, baseTurns - 1) : baseTurns;
+              if (reduced <= 0) {
+                const result = magicRelease(state, action);
+                if (result && result.ok === false) {
+                  return { success: false, reason: result.reason, state: result.state || state };
+                }
+                newState = result.state || state;
+                description = result.description || "Released";
+              } else {
+                newState = {
+                  ...state,
+                  player: {
+                    ...state.player,
+                    magic: {
+                      ...state.player.magic,
+                      casting: {
+                        kind: "release",
+                        preparedKind: prepared.kind,
+                        remainingTurns: reduced,
+                        anchored,
+                        startedTurn: state.world?.turnCount || 0,
+                      },
+                    },
+                  },
+                };
+                description = `You begin casting... (${reduced} turns)`;
+              }
+            }
+          } else {
+            const result = magicRelease(state, action);
+            if (result && result.ok === false) {
+              return { success: false, reason: result.reason, state: result.state || state };
+            }
+            newState = result.state || state;
+            description = result.description || "Released";
           }
-          newState = result.state || state;
-          description = result.description || "Released";
           break;
         }
 
@@ -359,6 +434,23 @@ export function executeAction(state, action, _options = {}) {
             reason: `Unknown action type: ${action.type}`,
             state: state,
           };
+      }
+
+      if (
+        newState.combat?.status === "active" &&
+        newState.combat.turn === "player" &&
+        !action.readOnly &&
+        incrementsTurn &&
+        action.type !== "attack"
+      ) {
+        newState = {
+          ...newState,
+          combat: {
+            ...newState.combat,
+            turn: "enemy",
+          },
+        };
+        newState = processEnemyTurns(newState);
       }
 
       // Increment turn count for state-changing actions

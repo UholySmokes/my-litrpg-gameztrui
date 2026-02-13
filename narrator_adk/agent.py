@@ -1,4 +1,10 @@
+from pathlib import Path
+
+from dotenv import load_dotenv
 from google.adk.agents import LlmAgent
+
+ENV_PATH = Path(__file__).with_name(".env")
+load_dotenv(ENV_PATH)
 
 root_agent = LlmAgent(
     name='NarratorAgent',

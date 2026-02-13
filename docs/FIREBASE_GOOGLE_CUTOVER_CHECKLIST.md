@@ -31,14 +31,14 @@ firebase deploy --only functions,hosting
 
 Current Firebase router only handles:
 
-- [ ] `GET /api/health`
-- [ ] `POST /api/narrate`
-- [ ] `POST /api/narrate-start`
-- [ ] `GET /api/narrate-poll`
+- [x] `GET /api/health`
+- [x] `POST /api/narrate`
+- [x] `POST /api/narrate-start`
+- [x] `GET /api/narrate-poll`
+- [x] `GET/POST/PUT/DELETE /api/saves/{id?}` (implemented in `functions/lib/saves.js`)
 
 Azure routes that still need parity in Firebase:
 
-- [ ] `GET/POST/PUT/DELETE /api/saves/{id?}`
 - [ ] `GET/POST/PUT/DELETE /api/runs/{id?}`
 - [ ] `POST /api/runs/{runId}/actions/submit`
 - [ ] `GET/POST /api/runs/{runId}/events`
@@ -100,4 +100,3 @@ DNS/edge cleanup after Firebase reports domain connected:
 - [ ] Keep previous Azure edge config for immediate re-enable
 - [ ] If major failure, restore DNS records to previous Azure target
 - [ ] Announce rollback and freeze new deploys until root cause is fixed
-

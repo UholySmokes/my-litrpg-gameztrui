@@ -1,5 +1,7 @@
 const { json } = require("./http");
 const {
+	agents,
+	runAgent,
 	narrate,
 	narrateStart,
 	narratePoll,
@@ -18,6 +20,14 @@ async function handleApiRequest(req, res) {
 
 	if (path === "/api/health" && method === "GET") {
 		return health(req, res);
+	}
+
+	if (path === "/api/agents" && method === "GET") {
+		return agents(req, res);
+	}
+
+	if (path === "/api/agents/run" && method === "POST") {
+		return runAgent(req, res);
 	}
 
 	if (path === "/api/narrate" && method === "POST") {

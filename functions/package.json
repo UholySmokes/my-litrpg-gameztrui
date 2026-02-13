@@ -8,7 +8,9 @@
 	},
 	"dependencies": {
 		"@dataconnect/admin-generated": "file:src/dataconnect-admin-generated",
+		"@genkit-ai/google-genai": "^1.28.0",
 		"firebase-admin": "^12.7.0",
-		"firebase-functions": "^4.6.0"
+		"firebase-functions": "^4.6.0",
+		"genkit": "^1.28.0"
 	}
 }

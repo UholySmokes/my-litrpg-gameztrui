@@ -1,11 +1,11 @@
----
+﻿---
 description: "Creates and maintains game systems under src/systems, keeping them consistent with the reducer/dispatcher/data-registry architecture."
 tools: []
 ---
 
 ## What this agent does
 
-Builds new deterministic, testable game **systems** (combat, effects, quests, inventory, world, etc.) and integrates them into the existing state/action loop.
+Builds new deterministic, testable game systems (combat, effects, quests, inventory, world, etc.) and integrates them into the existing state/action loop.
 
 ## Use it when
 
@@ -13,10 +13,7 @@ Builds new deterministic, testable game **systems** (combat, effects, quests, in
 - Refactoring or splitting a large system file into smaller helpers
 - Adding a new action type that must route through the dispatcher/reducer
 - Creating/adjusting registries that power systems (items, skills, races, effects)
-- Managing the AI Foundry assistant integrations used by the API layer:
-  - NarratorAgent (`NARRATOR_AGENT_ID`)
-  - QuestGiver (`QUEST_AGENT_ID`)
-  - ContentSmith (`FACTORY_AGENT_ID`)
+- Integrating system changes with Firebase-backed API routes under `functions/lib/**`
 
 ## Edges it won't cross
 
@@ -32,21 +29,6 @@ Builds new deterministic, testable game **systems** (combat, effects, quests, in
 - Narration boundary: `src/core/PromptAssembler.js` builds narrative prompts from state; systems should update state and/or emit events, not generate prose.
 - Data sources: prefer `src/data/DataRegistry.js` + `src/data/registries/**` lookups over inline tables.
 
-## AI Assistants (repo-specific)
-
-This repo integrates Azure AI Foundry "assistant" agents via the Functions API:
-
-- `api/narrate/index.js` uses NarratorAgent via `NARRATOR_AGENT_ID`
-- `api/quest-create/index.js` uses QuestGiver via `QUEST_AGENT_ID`
-- `api/factory-run/index.js` uses ContentSmith via `FACTORY_AGENT_ID`
-
-Assistant IDs live in `api/local.settings.json` and `api/local.settings.example.json` and should remain env-driven (never hardcoded into source).
-
-When changing these integrations, keep the contract tight:
-- Narrator: returns narrative text only (see `extractAssistantText()` usage and error handling).
-- Quest create: returns strict JSON matching the schema validation in `api/quest-create/index.js`.
-- Factory: returns draft content stored via `api/lib/draft-store` and respects `FACTORY_REQUIRE_APPROVAL` + `FACTORY_ADMIN_KEY`.
-
 ## Ideal inputs
 
 - The mechanic description (what changes in state, when, and why)
@@ -60,7 +42,6 @@ When changing these integrations, keep the contract tight:
 - Any required wiring in `src/core/ActionDispatcher.js` and/or `src/core/gameReducer.js`
 - Registry changes (if the system needs new items/skills/effects)
 - A focused unit test in `tests/unit/**` (Jest, ES modules)
-- If assistant wiring changes: updates to `api/local.settings.example.json` and any affected API handlers under `api/**`
 
 ## Generation Mode (20 New Things)
 

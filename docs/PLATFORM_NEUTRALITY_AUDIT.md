@@ -339,6 +339,6 @@ describe('Cross-Platform Determinism', () => {
 
 ## References
 
-- Main Architecture: `docs/VOIDVERSE_ARCHITECTURE.md`
+- Main Architecture: `docs/ARCHITECTURE_IMPLEMENTATION_GUIDE.md`
 - Implementation Guide: `docs/ARCHITECTURE_IMPLEMENTATION_GUIDE.md`
 - Audit Script: `scripts/audit-platform-code.sh`

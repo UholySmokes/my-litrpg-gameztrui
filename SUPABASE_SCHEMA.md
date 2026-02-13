@@ -1,6 +1,6 @@
 # Supabase Database Schema (Legacy)
 
-> This project now uses Azure SQL for cloud saves. See `AZURE_SQL_SCHEMA.md`.
+> This document is retained for historical reference only. The active save path is Firebase-first.
 
 This document describes the database schema required for the LitRPG game persistence system.
 

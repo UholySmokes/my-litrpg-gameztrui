@@ -1,7 +1,6 @@
 # Firebase Quickstart (Hosting + Functions)
 
 This repository includes a Firebase Hosting + Cloud Functions implementation under `functions/`.
-Legacy Azure assets under `api/` are no longer used by the active deployment path.
 
 ## What This Enables
 

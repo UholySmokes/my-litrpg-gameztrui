@@ -340,7 +340,7 @@ clear deliverables so you can track progress and avoid design drift.
 
 ### ~~5.3 Azure SQL integration plan~~ ✅
 
-- Note: ~~Supabase plan replaced by Azure SQL + Functions. See `AZURE_SQL_SCHEMA.md`.~~
+- Note: ~~Supabase plan was replaced by a cloud save backend.~~
 
 - Scope: ~~Auth, persistence, and realtime later.~~
 - Tasks:
@@ -348,7 +348,7 @@ clear deliverables so you can track progress and avoid design drift.
   - ~~Add user profiles and run history.~~ (`api/runs/`, `api/run-events/`, `api/run-snapshots/`)
   - ~~Avoid per-tick writes; batch events.~~
 - Deliverables:
-  - ~~Data schema and storage strategy.~~ (`api/sql/schema.sql`, `AZURE_SQL_SCHEMA.md`)
+  - ~~Data schema and storage strategy.~~
 
 ### 5.4 Authoritative server boundary
 

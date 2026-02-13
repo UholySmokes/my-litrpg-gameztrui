@@ -37,7 +37,6 @@ Thumbs.db
 # Package manager directories
 node_modules/
 packages/
-api/node_modules/
 
 # Test results
 TestResults/
@@ -53,7 +52,6 @@ appsettings.Development.json
 .env
 .env.*
 !.env.example
-api/local.settings*.json
 mcp
 
 .venv/

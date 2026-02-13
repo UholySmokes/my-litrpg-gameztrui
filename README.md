@@ -20,7 +20,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - **Frontend**: React 18 + Vite, hooks-first architecture
 - **State/Game Logic**: Custom hook `useGameEngine`, immutable reducers, config-driven balance
 - **Styling**: CSS modules + inline HUD styling for neon HUD aesthetic
-- **Backend Integrations**: Firebase Hosting + Firebase Functions API, Foundry narrative service
+- **Backend Integrations**: Firebase Hosting + Firebase Functions API, Genkit/Gemini narrative service
 - **Tooling**: ESLint (React hooks rules), npm scripts, Node 18+
 
 ---

@@ -6,7 +6,7 @@
 
 ## Overview
 
-This guide provides practical implementation steps for improving the existing codebase to fully align with the Void-Verse SystemEngine architecture principles outlined in `VOIDVERSE_ARCHITECTURE.md`.
+This guide provides practical implementation steps for improving the existing codebase to align with the Void-Verse SystemEngine architecture principles.
 
 ## Current State Analysis
 
@@ -17,7 +17,7 @@ This guide provides practical implementation steps for improving the existing co
 3. **Game Systems**: 20+ modular systems under `src/systems/`
 4. **Deterministic PRNG**: `DeterministicRandom` utility exists
 5. **Event System**: `EventBus` and `SystemEventObserver` implemented
-6. **Azure Functions Backend**: API endpoints for persistence and AI services
+6. **Firebase Functions Backend**: API endpoints for persistence and AI services
 7. **TypeScript Schemas**: Basic type definitions in game-schemas
 
 ### What Needs Improvement 🔧
@@ -978,7 +978,7 @@ describe('Performance Benchmarks', () => {
 
 ## Resources
 
-- Main Architecture Doc: `docs/VOIDVERSE_ARCHITECTURE.md`
+- Main Architecture Doc: `docs/ARCHITECTURE_IMPLEMENTATION_GUIDE.md`
 - System Specs: `system_specs.md`
 - Current State: `current_state.md`
 - Implementation Plan: `IMPLEMENTATION_PLAN.md`

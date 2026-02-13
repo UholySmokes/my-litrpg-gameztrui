@@ -91,7 +91,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['api/**/*.js', 'vite.config.js'],
+    files: ['vite.config.js'],
     languageOptions: {
       ecmaVersion: 2022,
       globals: {

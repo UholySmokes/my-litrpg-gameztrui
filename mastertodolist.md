@@ -58,29 +58,30 @@ Open questions (need your call before I cross this step):
   - All per-essence multipliers clamp to `0.9..1.2`.
 5) Add weather-driven ambient and contamination pressure
 
-- Define weather profiles:
-  - composition shifts (storm boosts lightning/air density, etc.)
-  - refine yield nudges (rain helps water refinement)
-  - compression difficulty modifiers (rain dampens fire compression)
-  - contamination chance baseline (e.g., fog/swamp increases impurities)
-- Add an intensity scalar to avoid binary swings (even if you later keep intensity fixed at 1).
+- ~~Define weather profiles:~~
+  - Implemented in ambient snapshot builders (runtime + state normalization).
+  - Composition shifts (storm boosts lightning/air density, etc.).
+  - Refine yield nudges (rain helps water refinement).
+  - Compression difficulty modifiers (e.g., rain increases fire compression risk).
+  - Contamination pressure baseline via `contaminationRiskMultByEssence` + taint nudges.
+- ~~Add an intensity scalar to avoid binary swings (even if you later keep intensity fixed at 1).~~
 6) Localized anomalies (hotspots that drift)
 
 - Create an anomaly system with:
-  - anomaly definitions (id, name, affected essences, strong narrow buffs, unique drawback)
-  - spawn rules (which biomes allow which anomalies)
-  - drift rules (move or rotate between nearby locations every N turns/days)
+- ~~Create an anomaly system with:~~
+  - Definitions + spawn rules in the world registry.
+  - Drift rules applied on turn-advancing actions (seeds 1 anomaly for the current biome if empty).
 - Decide visibility:
-  - sometimes visible only after SENSE or after an attunement quest
-  - sometimes announced as environmental storytelling (“the air crackles…”)
-7) Wire ecology into magic actions (minimal surface area)
+  - Exposed through `SENSE` output as anomaly names.
 
 - Ensure DRAW , REFINE , SENSE , ATTUNE consult the ambient snapshot:
   - DRAW : scaled by density and per-essence draw multipliers
-  - REFINE : yield scaled by refine multipliers and reduced by contamination
-  - SENSE : report biome/time/weather/anomaly influences
-  - ATTUNE : grants temporary resistance to off‑biome penalties or interference (optional)
-- Keep this as a single “ambient modifier bundle” computed once per turn/action, not scattered math.
+- ~~Ensure DRAW , REFINE , SENSE , ATTUNE consult the ambient snapshot:~~
+  - DRAW uses `ambient.global.drawMultByEssence`.
+  - REFINE uses `ambient.global.refineYieldMultByEssence` and taint/contamination pressure.
+  - SENSE reports biome/time/weather/anomaly influences.
+  - ATTUNE unchanged (still sets stance).
+- ~~Keep this as a single “ambient modifier bundle” computed once per turn/action, not scattered math.~~
 8) Deepen resource dynamics: potency, purity, decay
 
 - Add per-container stats for stored essence:

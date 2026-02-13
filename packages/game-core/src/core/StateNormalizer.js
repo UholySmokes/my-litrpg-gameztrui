@@ -16,6 +16,7 @@ import {
   resolveLocationId,
   getLocationById,
   getBiomeEssenceProfile,
+  getEssenceAnomalyById,
 } from "../world/WorldDataRegistry.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
@@ -556,6 +557,26 @@ function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather 
   const sources = Array.isArray(essence.sources) ? essence.sources : [];
   const ambient = essence.ambient;
 
+  const anomaliesRaw = isPlainObject(essence.anomalies) ? essence.anomalies : {};
+  const instancesRaw = Array.isArray(anomaliesRaw.instances) ? anomaliesRaw.instances : [];
+  const anomalies = {
+    instances: instancesRaw
+      .filter((entry) => isPlainObject(entry))
+      .map((entry) => ({
+        id: typeof entry.id === "string" ? entry.id.trim().toLowerCase() : null,
+        locationId:
+          typeof entry.locationId === "string" && entry.locationId.trim()
+            ? entry.locationId.trim()
+            : null,
+        biomeId:
+          typeof entry.biomeId === "string" && entry.biomeId.trim()
+            ? entry.biomeId.trim().toLowerCase()
+            : null,
+        nextDriftTurn: Math.max(0, Math.floor(toNumber(entry.nextDriftTurn, 0))),
+      }))
+      .filter((entry) => entry.id),
+  };
+
   const timeMinutes = toNumber(time?.currentTime, NaN);
   const isMidnightWindow = Number.isFinite(timeMinutes) ? timeMinutes >= 0 && timeMinutes < 120 : false;
   const resolvedTimeOfDay = typeof time?.timeOfDay === "string" ? time.timeOfDay : null;
@@ -631,11 +652,74 @@ function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather 
     const stabilityCapDeltaBase = clamp(toNumber(profile?.stabilityCapDelta, 0), -20, 20);
     const taintBaseline = clamp(toNumber(profile?.taintBaseline, 0), 0, 1);
 
+    const weatherNode = isPlainObject(weather?.byBiome) ? weather.byBiome[biomeId] : null;
+    const weatherType = typeof weatherNode?.type === "string" ? weatherNode.type : null;
+    const weatherIntensity = clamp(toNumber(weatherNode?.intensity, 0), 0, 1);
+
+    const densityDeltaByEssence = essenceIds.reduce((acc, e) => {
+      acc[e] = 0;
+      return acc;
+    }, {});
+
+    if (weatherType === "rain") {
+      densityDeltaByEssence.water += 0.06 * weatherIntensity;
+      densityDeltaByEssence.air += 0.02 * weatherIntensity;
+      densityDeltaByEssence.fire -= 0.03 * weatherIntensity;
+    } else if (weatherType === "storm") {
+      densityDeltaByEssence.lightning += 0.08 * weatherIntensity;
+      densityDeltaByEssence.air += 0.05 * weatherIntensity;
+      densityDeltaByEssence.water += 0.02 * weatherIntensity;
+    } else if (weatherType === "drought") {
+      densityDeltaByEssence.fire += 0.05 * weatherIntensity;
+      densityDeltaByEssence.water -= 0.06 * weatherIntensity;
+      densityDeltaByEssence.earth += 0.02 * weatherIntensity;
+    } else if (weatherType === "fog") {
+      densityDeltaByEssence.water += 0.03 * weatherIntensity;
+      densityDeltaByEssence.shadow += 0.04 * weatherIntensity;
+      densityDeltaByEssence.light -= 0.02 * weatherIntensity;
+    }
+
+    const anomalyInstances = Array.isArray(anomalies?.instances) ? anomalies.instances : [];
+    const resolvedAnomalyIds = anomalyInstances
+      .filter((entry) => isPlainObject(entry))
+      .filter((entry) => entry.locationId && String(entry.locationId) === String(locationId))
+      .map((entry) => String(entry.id || "").trim().toLowerCase())
+      .filter(Boolean);
+    const anomalyDefs = resolvedAnomalyIds
+      .map((id) => getEssenceAnomalyById(id))
+      .filter(Boolean);
+
+    anomalyDefs.forEach((def) => {
+      const deltas = def?.densityDeltaByEssence;
+      if (deltas && typeof deltas === "object") {
+        Object.entries(deltas).forEach(([id, delta]) => {
+          if (!essenceIds.includes(id)) return;
+          densityDeltaByEssence[id] += toNumber(delta, 0);
+        });
+      }
+    });
+
+    const basePurity = clamp(1 - taintBaseline * 0.5, 0, 1);
+    const weatherTaintNudge =
+      weatherType === "fog"
+        ? 0.06 * weatherIntensity
+        : weatherType === "storm"
+          ? 0.03 * weatherIntensity
+          : weatherType === "drought"
+            ? 0.02 * weatherIntensity
+            : 0;
+
+    const anomalyTaintNudge = anomalyDefs.reduce(
+      (sum, def) => sum + clamp(toNumber(def?.taintNudge, 0), -0.2, 0.2),
+      0,
+    );
+    const totalTaintNudge = clamp(weatherTaintNudge + anomalyTaintNudge, -0.2, 0.2);
+
     const compositionByEssence = essenceIds.reduce((acc, e) => {
       acc[e] = {
-        density: clamp(toNumber(densities?.[e], 0), 0, 1),
-        purity: clamp(1 - taintBaseline * 0.5, 0, 1),
-        taint: taintBaseline,
+        density: clamp(toNumber(densities?.[e], 0) + toNumber(densityDeltaByEssence[e], 0), 0, 1),
+        purity: clamp(basePurity - totalTaintNudge * 0.5, 0, 1),
+        taint: clamp(taintBaseline + totalTaintNudge, 0, 1),
       };
       return acc;
     }, {});
@@ -677,6 +761,38 @@ function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather 
 
     const compressRiskMultByEssence = { ...recordOnes };
     const potencyMultByEssence = { ...recordOnes };
+    const contaminationRiskMultByEssence = { ...recordOnes };
+
+    anomalyDefs.forEach((def) => {
+      applyEssenceMult(drawMultByEssence, def?.drawMultByEssence);
+      applyEssenceMult(refineYieldMultByEssence, def?.refineYieldMultByEssence);
+      applyEssenceMult(compressRiskMultByEssence, def?.compressRiskMultByEssence);
+      applyEssenceMult(potencyMultByEssence, def?.potencyMultByEssence);
+    });
+
+    if (weatherType === "rain") {
+      applyEssenceMult(drawMultByEssence, { water: 1.03, fire: 0.98 });
+      applyEssenceMult(refineYieldMultByEssence, { water: 1.04, fire: 0.98 });
+      applyEssenceMult(compressRiskMultByEssence, { fire: 1.05 });
+      applyEssenceMult(contaminationRiskMultByEssence, { water: 1.03, earth: 1.02 });
+    } else if (weatherType === "storm") {
+      applyEssenceMult(drawMultByEssence, { lightning: 1.06, air: 1.04 });
+      applyEssenceMult(refineYieldMultByEssence, { lightning: 1.03, air: 1.01 });
+      applyEssenceMult(compressRiskMultByEssence, { lightning: 1.08, air: 1.04 });
+      applyEssenceMult(contaminationRiskMultByEssence, { lightning: 1.06, water: 1.03 });
+    } else if (weatherType === "drought") {
+      applyEssenceMult(drawMultByEssence, { fire: 1.04, water: 0.97 });
+      applyEssenceMult(refineYieldMultByEssence, { fire: 1.02, water: 0.96 });
+      applyEssenceMult(compressRiskMultByEssence, { fire: 1.03, earth: 1.02 });
+      applyEssenceMult(contaminationRiskMultByEssence, { earth: 1.06, air: 1.03 });
+    } else if (weatherType === "fog") {
+      applyEssenceMult(drawMultByEssence, { shadow: 1.04, light: 0.97 });
+      applyEssenceMult(refineYieldMultByEssence, { shadow: 1.02, light: 0.98 });
+      applyEssenceMult(compressRiskMultByEssence, { light: 1.04, shadow: 1.02 });
+      essenceIds.forEach((e) => {
+        contaminationRiskMultByEssence[e] = clamp(contaminationRiskMultByEssence[e] * (1 + 0.12 * weatherIntensity), 0.9, 1.2);
+      });
+    }
 
     if (isMidnightWindow) {
       essenceIds.forEach((e) => {
@@ -686,8 +802,6 @@ function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather 
       applyEssenceMult(potencyMultByEssence, { time: 1.04, space: 1.03, shadow: 1.02 });
     }
 
-    const weatherNode = isPlainObject(weather?.byBiome) ? weather.byBiome[biomeId] : null;
-
     return {
       compositionByEssence,
       global: {
@@ -696,13 +810,14 @@ function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather 
         stabilityCapDelta,
         compressRiskMultByEssence,
         potencyMultByEssence,
+        contaminationRiskMultByEssence,
       },
       provenance: {
         biome: biomeId || null,
         timeOfDay: resolvedTimeOfDay || null,
         weatherType: typeof weatherNode?.type === "string" ? weatherNode.type : null,
         weatherIntensity: Number.isFinite(weatherNode?.intensity) ? weatherNode.intensity : null,
-        anomalyIds: [],
+        anomalyIds: resolvedAnomalyIds,
         locationId: locationId || null,
       },
       tags: [],
@@ -714,6 +829,7 @@ function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather 
     return {
       ambient,
       sources,
+      anomalies,
     };
   }
 
@@ -722,12 +838,14 @@ function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather 
     return {
       ambient: toSnapshotFromDensities(ambient),
       sources,
+      anomalies,
     };
   }
 
   return {
     ambient: toSnapshotFromDensities(baselineFromLocation(locationId)),
     sources,
+    anomalies,
   };
 }
 

@@ -193,6 +193,21 @@ function parseMagic(input) {
     }
   }
 
+  {
+    const match = input.match(
+      new RegExp(`^purge\\s+(all|${essence})(?:\\s+(\\d+))?$`, "i"),
+    );
+    if (match) {
+      const target = match[1].toLowerCase();
+      return {
+        type: "magic_purge",
+        essence: target === "all" ? null : target,
+        amount: match[2] ? Number(match[2]) : null,
+        originalInput: input,
+      };
+    }
+  }
+
   if (/^(release|cast)$/i.test(input)) {
     return { type: "magic_release", originalInput: input };
   }

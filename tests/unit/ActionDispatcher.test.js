@@ -182,5 +182,30 @@ describe("ActionDispatcher", () => {
       expect(Array.isArray(result.state.player.magic?.charges)).toBe(true);
       expect(result.state.player.magic.charges.length).toBeGreaterThan(0);
     });
+
+    it("purges contamination from reserves taint", () => {
+      const state = {
+        ...baseState,
+        config: { ...baseState.config, manaRegenPerTurn: 0 },
+        world: { ...baseState.world, turnCount: 3 },
+        player: {
+          ...baseState.player,
+          magic: {
+            reservesTaint: { fire: 0.6 },
+            reserves: { fire: 5 },
+            mana: { current: 20, max: 20 },
+          },
+        },
+      };
+
+      const result = executeAction(state, {
+        type: "magic_purge",
+        essence: "fire",
+        amount: 8,
+      });
+      expect(result.success).toBe(true);
+      expect(result.state.world.turnCount).toBe(4);
+      expect(result.state.player.magic.reservesTaint.fire).toBeLessThan(0.6);
+    });
   });
 });

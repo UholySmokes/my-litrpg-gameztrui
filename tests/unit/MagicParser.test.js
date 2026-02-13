@@ -32,5 +32,19 @@ describe("Magic input parsing", () => {
     expect(action.essences).toEqual(["fire", "air"]);
     expect(action.pattern).toBe("vortex");
   });
+
+  it("parses PURGE target with amount", () => {
+    const action = parseAction("PURGE shadow 8", initialGameState);
+    expect(action.type).toBe("magic_purge");
+    expect(action.essence).toBe("shadow");
+    expect(action.amount).toBe(8);
+  });
+
+  it("parses PURGE ALL", () => {
+    const action = parseAction("PURGE all", initialGameState);
+    expect(action.type).toBe("magic_purge");
+    expect(action.essence).toBeNull();
+    expect(action.amount).toBeNull();
+  });
 });
 

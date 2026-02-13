@@ -110,4 +110,25 @@ describe("InputValidator", () => {
     const result = validateActionComprehensive({ type: "inventory" }, state);
     expect(result.valid).toBe(true);
   });
+
+  it("validates magic purge inputs", () => {
+    const state = cloneState(initialGameState);
+    const valid = validateActionComprehensive(
+      { type: "magic_purge", essence: "fire", amount: 6 },
+      state,
+    );
+    expect(valid.valid).toBe(true);
+
+    const invalidAmount = validateActionComprehensive(
+      { type: "magic_purge", essence: "fire", amount: 0 },
+      state,
+    );
+    expect(invalidAmount.valid).toBe(false);
+
+    const invalidEssence = validateActionComprehensive(
+      { type: "magic_purge", essence: "ice", amount: 4 },
+      state,
+    );
+    expect(invalidEssence.valid).toBe(false);
+  });
 });

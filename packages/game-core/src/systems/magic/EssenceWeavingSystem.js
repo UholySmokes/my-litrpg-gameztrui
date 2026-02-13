@@ -166,6 +166,188 @@ function applyResonanceDelta(magic, delta) {
   };
 }
 
+function overloadRiskLabelFromResonance(resonanceValue) {
+  const value = clamp(toNumberSafe(resonanceValue, 0), 0, 100);
+  if (value >= 95) return "critical";
+  if (value >= 85) return "extreme";
+  if (value >= 70) return "high";
+  if (value >= 50) return "elevated";
+  return "low";
+}
+
+function weightedChoice(items) {
+  const valid = Array.isArray(items)
+    ? items.filter((entry) => entry && toNumberSafe(entry.weight, 0) > 0)
+    : [];
+  if (valid.length === 0) return null;
+  const total = valid.reduce((sum, entry) => sum + toNumberSafe(entry.weight, 0), 0);
+  if (total <= 0) return null;
+  let cursor = random() * total;
+  for (const entry of valid) {
+    const weight = toNumberSafe(entry.weight, 0);
+    if (cursor <= weight) return entry;
+    cursor -= weight;
+  }
+  return valid[valid.length - 1];
+}
+
+function selectOverloadEssence(magic, preferredEssence) {
+  const preferred = normalizeEssenceId(preferredEssence);
+  const reserves = magic?.reserves && typeof magic.reserves === "object" ? magic.reserves : {};
+  if (preferred && toNumberSafe(reserves[preferred], 0) > 0.01) return preferred;
+
+  const richestReserve = ESSENCE_PRIMES.map((essence) => ({
+    essence,
+    amount: toNumberSafe(reserves[essence], 0),
+  }))
+    .sort((a, b) => b.amount - a.amount)[0];
+  if (richestReserve?.amount > 0.01) return richestReserve.essence;
+
+  const charges = Array.isArray(magic?.charges) ? magic.charges : [];
+  const richestCharge = charges
+    .map((charge) => ({
+      essence: normalizeEssenceId(charge?.essence),
+      amount: toNumberSafe(charge?.amount, 0),
+    }))
+    .filter((entry) => entry.essence)
+    .sort((a, b) => b.amount - a.amount)[0];
+  if (richestCharge?.essence) return richestCharge.essence;
+
+  return preferred || randomChoice(ESSENCE_PRIMES) || "fire";
+}
+
+function applyResonanceOverloadEvent(
+  magic,
+  { ambient, turn, preferredEssence } = {},
+) {
+  const resonanceValue = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
+  if (resonanceValue < 85) {
+    return { magic, line: "", triggered: false };
+  }
+
+  const pressure = computeEnvironmentalPressure(ambient || {});
+  const triggerChance =
+    resonanceValue >= 95
+      ? 1
+      : clamp(0.12 + (resonanceValue - 85) * 0.045 + pressure * 0.07, 0, 0.75);
+  if (random() >= triggerChance) {
+    return { magic, line: "", triggered: false };
+  }
+
+  const severity =
+    resonanceValue >= 95 ? "critical" : resonanceValue >= 90 ? "major" : "minor";
+  const severityMult =
+    severity === "critical" ? 1.75 : severity === "major" ? 1.35 : 1.0;
+  const reserves = magic?.reserves && typeof magic.reserves === "object" ? magic.reserves : {};
+  const hasReserve = ESSENCE_PRIMES.some((essence) => toNumberSafe(reserves[essence], 0) > 0.01);
+  const hasCharges = Array.isArray(magic?.charges) && magic.charges.length > 0;
+  const selected = weightedChoice([
+    { id: "stability_feedback", weight: 3 },
+    { id: "taint_bloom", weight: 3 },
+    { id: "charge_fracture", weight: hasCharges ? 2 : 0 },
+    { id: "reserve_bleed", weight: hasReserve ? 2 : 0 },
+  ]);
+  const effectId = selected?.id || "stability_feedback";
+
+  let nextMagic = { ...magic };
+  let line = "";
+  const targetEssence = selectOverloadEssence(nextMagic, preferredEssence);
+
+  if (effectId === "taint_bloom") {
+    const taintDelta = clamp(0.05 * severityMult + 0.015 * pressure, 0.03, 0.2);
+    const currentTaint = clamp(toNumberSafe(nextMagic?.reservesTaint?.[targetEssence], 0), 0, 1);
+    nextMagic = {
+      ...nextMagic,
+      reservesTaint: {
+        ...(nextMagic.reservesTaint || {}),
+        [targetEssence]: clamp(currentTaint + taintDelta, 0, 1),
+      },
+    };
+    line = `Overload surge (${severity}): ${capitalize(targetEssence)} channels foul (+${taintDelta.toFixed(2)} taint).`;
+  } else if (effectId === "charge_fracture") {
+    const charges = Array.isArray(nextMagic?.charges) ? [...nextMagic.charges] : [];
+    let targetIndex = -1;
+    let strongestAmount = -1;
+    for (let i = 0; i < charges.length; i += 1) {
+      const amount = toNumberSafe(charges[i]?.amount, 0);
+      if (amount > strongestAmount) {
+        strongestAmount = amount;
+        targetIndex = i;
+      }
+    }
+    if (targetIndex >= 0) {
+      const charge = charges[targetIndex];
+      const lossFraction = clamp(0.08 * severityMult, 0.05, 0.25);
+      const amountLoss = toNumberSafe(charge?.amount, 0) * lossFraction;
+      const purityLoss = clamp(0.04 * severityMult, 0.02, 0.2);
+      const potencyLoss = clamp(0.06 * severityMult, 0.03, 0.3);
+      charges[targetIndex] = {
+        ...charge,
+        amount: Math.max(0, toNumberSafe(charge?.amount, 0) - amountLoss),
+        purity: clamp(toNumberSafe(charge?.purity, 1) - purityLoss, 0, 1),
+        potency: clamp(toNumberSafe(charge?.potency, 1) * (1 - potencyLoss), 0, 10),
+      };
+      nextMagic = {
+        ...nextMagic,
+        charges: charges.filter((entry) => toNumberSafe(entry?.amount, 0) > 0.01),
+      };
+      line = `Overload surge (${severity}): a stored charge fractures (-${amountLoss.toFixed(1)} essence).`;
+    }
+  } else if (effectId === "reserve_bleed") {
+    const currentReserve = Math.max(0, toNumberSafe(nextMagic?.reserves?.[targetEssence], 0));
+    if (currentReserve > 0.01) {
+      const loss = clamp(
+        Math.max(1, currentReserve * (0.08 * severityMult + 0.02 * pressure)),
+        0,
+        currentReserve,
+      );
+      nextMagic = {
+        ...nextMagic,
+        reserves: {
+          ...(nextMagic.reserves || {}),
+          [targetEssence]: Math.max(0, currentReserve - loss),
+        },
+      };
+      line = `Overload surge (${severity}): ${capitalize(targetEssence)} reserves bleed (${loss.toFixed(1)} lost).`;
+    }
+  }
+
+  if (!line) {
+    const mindLoss = 1.8 * severityMult + 0.6 * pressure;
+    const bodyLoss = 1.2 * severityMult + 0.45 * pressure;
+    nextMagic = applyStabilityDelta(nextMagic, {
+      mind: -mindLoss,
+      body: -bodyLoss,
+    });
+    line = `Overload surge (${severity}): feedback lashes your channels (${mindLoss.toFixed(1)} mind, ${bodyLoss.toFixed(1)} body).`;
+  }
+
+  const ventAmount = clamp(3 + 3 * severityMult, 2, 12);
+  nextMagic = applyResonanceDelta(nextMagic, -ventAmount);
+
+  const overloadNode =
+    nextMagic?.overload && typeof nextMagic.overload === "object" ? nextMagic.overload : {};
+  nextMagic = {
+    ...nextMagic,
+    overload: {
+      ...overloadNode,
+      count: toNumberSafe(overloadNode.count, 0) + 1,
+      lastTurn: toNumberSafe(turn, 0),
+      lastEvent: {
+        id: effectId,
+        severity,
+        resonance: resonanceValue,
+      },
+    },
+  };
+
+  return {
+    magic: nextMagic,
+    line: `${line} Resonance vents by ${ventAmount.toFixed(1)}.`,
+    triggered: true,
+  };
+}
+
 function computeEnvironmentalPressure(ambient) {
   const weatherType = typeof ambient?.provenance?.weatherType === "string" ? ambient.provenance.weatherType : null;
   const intensity = clamp(toNumberSafe(ambient?.provenance?.weatherIntensity, 0), 0, 1);
@@ -733,6 +915,10 @@ function ensurePlayerMagic(player) {
       magic?.resonance && typeof magic.resonance === "object"
         ? magic.resonance
         : { current: 0, max: 100, state: "quiet" },
+    overload:
+      magic?.overload && typeof magic.overload === "object"
+        ? magic.overload
+        : { count: 0, lastTurn: null, lastEvent: null },
     perks: Array.isArray(magic?.perks) ? magic.perks : [],
     activeWorkings: Array.isArray(magic?.activeWorkings) ? magic.activeWorkings : [],
     unlockedPatterns: ensureUnlockedPatterns(magic?.unlockedPatterns),
@@ -835,6 +1021,7 @@ export function magicSense(state, action) {
   const resonanceNode = hydrated.player?.magic?.resonance;
   const resonanceState = typeof resonanceNode?.state === "string" ? resonanceNode.state : resonanceStateFromValue(resonanceNode?.current);
   const resonanceValue = clamp(toNumberSafe(resonanceNode?.current, 0), 0, 100);
+  const overloadRisk = overloadRiskLabelFromResonance(resonanceValue);
   const mindPct = stabilityPct(hydrated.player?.magic?.stability?.mind);
   const cogPct = stabilityPct(hydrated.player?.magic?.stability?.cognitive);
   const stabilityWord = (pct) => (pct >= 0.8 ? "steady" : pct >= 0.6 ? "wavering" : pct >= 0.35 ? "volatile" : "fracturing");
@@ -868,10 +1055,10 @@ export function magicSense(state, action) {
     const mult = clamp(toNumberSafe(ambient?.global?.drawMultByEssence?.[requested], 1), 0.9, 1.2);
     return {
       state: hydrated,
-      description:
-        strength <= 0.01
-          ? `You sense almost no ${requested} essence here.`
-          : `You sense ${requested} essence (strength ${(strength * 100).toFixed(0)}%, draw x${mult.toFixed(2)}). Resonance: ${resonanceState} (${resonanceValue.toFixed(0)}/100).`,
+        description:
+          strength <= 0.01
+            ? `You sense almost no ${requested} essence here.`
+            : `You sense ${requested} essence (strength ${(strength * 100).toFixed(0)}%, draw x${mult.toFixed(2)}). Resonance: ${resonanceState} (${resonanceValue.toFixed(0)}/100), overload risk ${overloadRisk}.`,
       readOnly: true,
     };
   }
@@ -892,7 +1079,7 @@ export function magicSense(state, action) {
   if (anomalyNames.length) contextParts.push(`Anomalies: ${anomalyNames.join(", ")}`);
   if (sourceNames.length) contextParts.push(`Sources: ${sourceNames.join(", ")}`);
   contextParts.push(
-    `Stability: mind ${stabilityWord(mindPct)}, cognitive ${stabilityWord(cogPct)}; Resonance: ${resonanceState}; Contamination: ${contaminationWord}`,
+    `Stability: mind ${stabilityWord(mindPct)}, cognitive ${stabilityWord(cogPct)}; Resonance: ${resonanceState}; Overload risk: ${overloadRisk}; Contamination: ${contaminationWord}`,
   );
   const contextLine = contextParts.length ? ` (${contextParts.join(" | ")})` : "";
 
@@ -1011,7 +1198,7 @@ export function magicDraw(state, action) {
   const pressure = computeEnvironmentalPressure(ambient);
   const resonanceGain = 0.6 + 0.03 * drawAmount + 4 * interferenceScore + 2.5 * avgTaint + 1.5 * pressure;
 
-  const nextMagic = applyResonanceDelta(
+  const nextMagicWithResonance = applyResonanceDelta(
     applyStabilityDelta(
       {
         ...magic,
@@ -1028,19 +1215,24 @@ export function magicDraw(state, action) {
     ),
     resonanceGain,
   );
+  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+    ambient,
+    turn: toNumberSafe(hydrated.world?.turnCount, 0),
+    preferredEssence: essence,
+  });
 
 
   const nextState = recomputeManaFree({
     ...hydrated,
     player: {
       ...player,
-      magic: nextMagic,
+      magic: overload.magic,
     },
   });
 
   return {
     state: nextState,
-    description: `You draw ${drawAmount.toFixed(1)} ${essence} essence into your body.`,
+    description: `You draw ${drawAmount.toFixed(1)} ${essence} essence into your body.${overload.line ? ` ${overload.line}` : ""}`,
   };
 }
 
@@ -1124,15 +1316,20 @@ export function magicRefine(state, action) {
   const resonanceGain = 2 + 0.06 * amount + 6 * interferenceScore + 3.5 * avgTaint + 2 * pressure;
   const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
   const nextMagicWithResonance = applyResonanceDelta(nextMagic, resonanceGain * damp);
+  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+    ambient,
+    turn: toNumberSafe(hydrated.world?.turnCount, 0),
+    preferredEssence: essence,
+  });
 
   const nextState = recomputeManaFree({
     ...hydrated,
-    player: { ...player, magic: nextMagicWithResonance },
+    player: { ...player, magic: overload.magic },
   });
 
   return {
     state: nextState,
-    description: `You refine ${amount} ${essence} essence into a stable charge (${refinedAmount.toFixed(1)} yield, purity ${(purity * 100).toFixed(0)}%).`,
+    description: `You refine ${amount} ${essence} essence into a stable charge (${refinedAmount.toFixed(1)} yield, purity ${(purity * 100).toFixed(0)}%).${overload.line ? ` ${overload.line}` : ""}`,
   };
 }
 
@@ -1281,16 +1478,21 @@ export function magicCompress(state, action) {
   const pressure = computeEnvironmentalPressure(ambient);
   const resonanceGain = 4 + 0.08 * amount * targetDensity + 8 * interferenceScore + 4 * avgTaint + 3 * pressure;
   const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
-  const nextMagic = applyResonanceDelta(nextMagicBase, resonanceGain * damp);
+  const nextMagicWithResonance = applyResonanceDelta(nextMagicBase, resonanceGain * damp);
+  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+    ambient,
+    turn: toNumberSafe(hydrated.world?.turnCount, 0),
+    preferredEssence: essence,
+  });
 
   const nextState = recomputeManaFree({
     ...hydrated,
-    player: { ...player, magic: nextMagic },
+    player: { ...player, magic: overload.magic },
   });
 
   return {
     state: nextState,
-    description: `${resultLine} (${outcomeTag.replace(/_/g, " ")})`,
+    description: `${resultLine} (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}`,
   };
 }
 
@@ -1329,6 +1531,103 @@ export function magicAnchor(state, action) {
   };
 }
 
+export function magicPurge(state, action) {
+  const hydrated = ensureEssenceWeavingState(state);
+  const player = hydrated.player;
+  const magic = player.magic;
+  const ambient = hydrated.world?.essence?.ambient || {};
+
+  const requestedEssence = normalizeEssenceId(action?.essence);
+  const targets = requestedEssence
+    ? [requestedEssence]
+    : ESSENCE_PRIMES.filter(
+        (e) => clamp(toNumberSafe(magic?.reservesTaint?.[e], 0), 0, 1) > 0.001,
+      );
+
+  if (targets.length === 0) {
+    return {
+      ok: false,
+      reason: requestedEssence
+        ? `No ${requestedEssence} contamination to purge.`
+        : "No contamination to purge.",
+      state: hydrated,
+    };
+  }
+
+  const effort = clamp(toNumberSafe(action?.amount, 6), 1, 30);
+  const cleanRefiningRank = getPerkRank(magic, "clean_refining");
+  const pressure = computeEnvironmentalPressure(ambient);
+  const avgTaint = ESSENCE_PRIMES.reduce(
+    (sum, e) =>
+      sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
+    0,
+  ) / ESSENCE_PRIMES.length;
+
+  const nextReservesTaint = { ...(magic.reservesTaint || {}) };
+  let removedTotal = 0;
+
+  targets.forEach((essence) => {
+    const current = clamp(toNumberSafe(nextReservesTaint[essence], 0), 0, 1);
+    const ambientMult = clamp(
+      toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1),
+      0.9,
+      1.2,
+    );
+    const purgeRate = clamp(
+      (0.04 + 0.01 * effort + 0.015 * cleanRefiningRank) / ambientMult,
+      0.02,
+      0.55,
+    );
+    const removed = Math.min(current, purgeRate);
+    nextReservesTaint[essence] = clamp(current - removed, 0, 1);
+    removedTotal += removed;
+  });
+
+  if (removedTotal <= 0.0001) {
+    return {
+      ok: false,
+      reason: "Your purge fails to dislodge the contamination.",
+      state: hydrated,
+    };
+  }
+
+  const resonanceDampingRank = getPerkRank(magic, "resonance_damping");
+  const damp = clamp(1 - 0.1 * resonanceDampingRank, 0.5, 1);
+  const resonanceGain = (0.8 + 6 * removedTotal + 2.2 * pressure + 1.2 * avgTaint) * damp;
+  const mindCost = 0.6 + effort * 0.14;
+  const bodyCost = 0.4 + effort * 0.08;
+
+  const nextMagicWithResonance = applyResonanceDelta(
+    applyStabilityDelta(
+      {
+        ...magic,
+        reservesTaint: nextReservesTaint,
+      },
+      { mind: -mindCost, body: -bodyCost },
+    ),
+    resonanceGain,
+  );
+  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+    ambient,
+    turn: toNumberSafe(hydrated.world?.turnCount, 0),
+    preferredEssence: requestedEssence,
+  });
+
+  const nextState = recomputeManaFree({
+    ...hydrated,
+    player: {
+      ...player,
+      magic: overload.magic,
+    },
+  });
+
+  const targetText = requestedEssence ? requestedEssence : "all channels";
+  return {
+    state: nextState,
+    description: `You purge contamination from ${targetText} (taint -${removedTotal.toFixed(2)}).${overload.line ? ` ${overload.line}` : ""}`,
+  };
+}
+
 export function magicShape(state, action) {
   const hydrated = ensureEssenceWeavingState(state);
   const player = hydrated.player;
@@ -1355,18 +1654,24 @@ export function magicShape(state, action) {
   const pressure = computeEnvironmentalPressure(ambient);
   const resonanceGain = 0.8 + 0.4 * pressure;
   const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+  const nextMagicWithResonance = applyResonanceDelta(magic, resonanceGain * damp);
+  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+    ambient,
+    turn,
+    preferredEssence: essence,
+  });
 
   const nextState = {
     ...hydrated,
     player: {
       ...player,
-      magic: { ...applyResonanceDelta(magic, resonanceGain * damp), prepared },
+      magic: { ...overload.magic, prepared },
     },
   };
 
   return {
     state: nextState,
-    description: `You shape ${essence} into a ${form}${amount ? ` (${amount})` : ""}${unfamiliar ? " (unfamiliar)" : ""}.`,
+    description: `You shape ${essence} into a ${form}${amount ? ` (${amount})` : ""}${unfamiliar ? " (unfamiliar)" : ""}.${overload.line ? ` ${overload.line}` : ""}`,
   };
 }
 
@@ -1397,18 +1702,23 @@ export function magicWeave(state, action) {
   const pressure = computeEnvironmentalPressure(ambient);
   const resonanceGain = 1.2 + 0.6 * pressure;
   const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+  const nextMagicWithResonance = applyResonanceDelta(magic, resonanceGain * damp);
+  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+    ambient,
+    turn,
+  });
 
   const nextState = {
     ...hydrated,
     player: {
       ...player,
-      magic: { ...applyResonanceDelta(magic, resonanceGain * damp), prepared },
+      magic: { ...overload.magic, prepared },
     },
   };
 
   return {
     state: nextState,
-    description: `You weave ${essences.join("+")} into a ${pattern}${unfamiliar ? " (unfamiliar)" : ""}.`,
+    description: `You weave ${essences.join("+")} into a ${pattern}${unfamiliar ? " (unfamiliar)" : ""}.${overload.line ? ` ${overload.line}` : ""}`,
   };
 }
 
@@ -1562,15 +1872,20 @@ export function magicRelease(state) {
     if (unfamiliar) {
       nextMagic = addUnlockedPattern(nextMagic, "shape", prepared.form);
     }
+    const overload = applyResonanceOverloadEvent(nextMagic, {
+      ambient,
+      turn,
+      preferredEssence: essence,
+    });
 
     const nextState = recomputeManaFree({
       ...hydrated,
-      player: { ...player, magic: nextMagic },
+      player: { ...player, magic: overload.magic },
     });
 
     return {
       state: nextState,
-      description: `You release ${capitalize(essence)} ${prepared.form} (magnitude ${magnitude.toFixed(1)}). (${outcomeTag.replace(/_/g, " ")})`,
+      description: `You release ${capitalize(essence)} ${prepared.form} (magnitude ${magnitude.toFixed(1)}). (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}`,
     };
   }
 
@@ -1685,6 +2000,10 @@ export function magicRelease(state) {
     if (success && unfamiliar) {
       nextMagicWithResonance = addUnlockedPattern(nextMagicWithResonance, "weave", prepared.pattern);
     }
+    const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+      ambient,
+      turn,
+    });
 
     const outcomeTag = backlash
       ? "backlash"
@@ -1707,12 +2026,12 @@ export function magicRelease(state) {
     const nextState = recomputeManaFree({
       ...hydrated,
       player: {
-        ...player,
-        magic: {
-          ...nextMagicWithResonance,
+          ...player,
+          magic: {
+          ...overload.magic,
           activeWorkings: [
-            ...(Array.isArray(nextMagicWithResonance.activeWorkings)
-              ? nextMagicWithResonance.activeWorkings
+            ...(Array.isArray(overload.magic.activeWorkings)
+              ? overload.magic.activeWorkings
               : []),
             working,
           ],
@@ -1724,7 +2043,7 @@ export function magicRelease(state) {
     const backlashLine = backlash ? " Backlash bites into your body." : "";
     return {
       state: nextState,
-      description: `Your weave ${outcome} (coherence ${(coherence * 100).toFixed(0)}%).${backlashLine} (${outcomeTag.replace(/_/g, " ")})`,
+      description: `Your weave ${outcome} (coherence ${(coherence * 100).toFixed(0)}%).${backlashLine} (${outcomeTag.replace(/_/g, " ")})${overload.line ? ` ${overload.line}` : ""}`,
     };
   }
 

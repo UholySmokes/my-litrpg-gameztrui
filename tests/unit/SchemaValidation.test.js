@@ -76,6 +76,7 @@ describe('Game Schemas Validation', () => {
         { type: 'magic_shape', essence: 'air', form: 'jet', amount: 4 },
         { type: 'magic_weave', essences: ['fire', 'air'], pattern: 'vortex' },
         { type: 'magic_anchor', kind: 'self' },
+        { type: 'magic_purge', essence: 'fire', amount: 5 },
         { type: 'magic_release' },
       ];
 

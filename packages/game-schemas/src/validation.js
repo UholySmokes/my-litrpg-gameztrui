@@ -104,6 +104,12 @@ const MagicAnchorActionSchema = z.object({
   itemId: z.string().nullable().optional(),
 });
 
+const MagicPurgeActionSchema = z.object({
+  type: z.literal("magic_purge"),
+  essence: EssenceIdSchema.nullable().optional(),
+  amount: z.number().nullable().optional(),
+});
+
 const MagicReleaseActionSchema = z.object({
   type: z.literal("magic_release"),
 });
@@ -125,6 +131,7 @@ export const ParsedActionSchema = z.discriminatedUnion('type', [
   MagicShapeActionSchema,
   MagicWeaveActionSchema,
   MagicAnchorActionSchema,
+  MagicPurgeActionSchema,
   MagicReleaseActionSchema,
 ]);
 
@@ -324,6 +331,7 @@ export {
   MagicShapeActionSchema,
   MagicWeaveActionSchema,
   MagicAnchorActionSchema,
+  MagicPurgeActionSchema,
   MagicReleaseActionSchema,
   WorldLocationStateSchema,
   WorldStateSchema,

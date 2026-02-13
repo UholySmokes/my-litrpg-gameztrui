@@ -18,6 +18,7 @@ export declare const LookActionSchema: z.ZodObject<any>;
 export declare const InventoryActionSchema: z.ZodObject<any>;
 export declare const StatusActionSchema: z.ZodObject<any>;
 export declare const NarrativeActionSchema: z.ZodObject<any>;
+export declare const MagicPurgeActionSchema: z.ZodObject<any>;
 export declare const QuestsStateSchema: z.ZodObject<any>;
 
 // Validation functions

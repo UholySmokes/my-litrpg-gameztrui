@@ -67,6 +67,9 @@ function validateAction(action, gameState) {
     case 'magic_anchor':
       return validateMagicAnchor(action);
 
+    case "magic_purge":
+      return validateMagicPurge(action);
+
     case 'magic_release':
       return { valid: true };
     
@@ -357,6 +360,19 @@ function validateMagicAnchor(action) {
   }
   if (kind === "item" && action?.itemId != null && typeof action.itemId !== "string") {
     return { valid: false, reason: "Invalid item id." };
+  }
+  return { valid: true };
+}
+
+function validateMagicPurge(action) {
+  if (action?.essence != null && !isEssenceId(action.essence)) {
+    return { valid: false, reason: "Unknown essence." };
+  }
+  if (
+    action?.amount != null &&
+    (!Number.isFinite(action.amount) || action.amount <= 0)
+  ) {
+    return { valid: false, reason: "Invalid purge amount." };
   }
   return { valid: true };
 }

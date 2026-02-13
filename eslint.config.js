@@ -11,6 +11,10 @@ export default defineConfig([
     'coverage',
     'functions/node_modules',
     'src/dataconnect-generated',
+    'functions/src/dataconnect-admin-generated',
+    'packages/game-core/src/dataconnect-generated',
+    'packages/game-schemas/src/dataconnect-generated',
+    '**/dataconnect-generated/**',
   ]),
   {
     files: ['**/*.{js,jsx}'],

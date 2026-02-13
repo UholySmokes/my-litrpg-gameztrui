@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:80"
 
-  agent:
+  api:
     build:
       context: .
       dockerfile: Dockerfile

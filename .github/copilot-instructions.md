@@ -17,10 +17,10 @@ This document provides essential guidelines for AI coding agents working within 
   - **Game Core**: Shared logic in `packages/game-core/` (workspace package `@voidverse/game-core`).
 
 ## Deployment Architecture
-- **Frontend**: Azure Static Web App at `https://www.void-verse.com`.
+- **Frontend**: Firebase Hosting at `https://my-litrpg-gameztrui-3416-da75c.web.app`.
   - SWA workflow builds frontend only (`api_location: ""`).
   - Runtime config injected via `public/runtime-config.js`.
-- **API**: Separate Azure Function App at `https://voidverseapisservice.azurewebsites.net`.
+- **API**: Firebase Function `api` (rewritten from `/api/**` via `firebase.json`).
   - Deployed independently from the SWA.
   - Uses managed identity (service principal) for Azure AI Foundry auth.
 - **Storage**: File-based DB (`GAME_DB_STORAGE=file`, `GAME_DB_PATH=data/game-db.json`).
@@ -50,7 +50,7 @@ This document provides essential guidelines for AI coding agents working within 
 - `AZURE_AI_HTTP_TIMEOUT_MS` — Foundry HTTP request timeout.
 
 ### Frontend (runtime-config.js)
-- `VITE_API_BASE_URL` — Base URL for API calls (e.g. `https://voidverseapisservice.azurewebsites.net`).
+- `VITE_API_BASE_URL` — Base URL for API calls (leave empty for same-origin `/api`).
 - `VITE_NARRATE_TIMEOUT_MS` — Client-side narrate request timeout (default 240000).
 - `VITE_AUTH_PROVIDER` — Auth provider (optional, e.g. `aad`).
 
@@ -97,3 +97,4 @@ This document provides essential guidelines for AI coding agents working within 
 ---
 
 This document should be updated as the project evolves. For any unclear sections or additional information needed, please provide feedback for further iterations.
+

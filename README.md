@@ -32,7 +32,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - Node.js 18+
 - npm 9+ (comes with Node)
 - Firebase CLI (for local hosting/functions emulators)
-- Narrative API credentials (`FOUNDRY_PROJECT_ENDPOINT` + `FOUNDRY_API_KEY`)
+- Firebase/Gemini credentials for Genkit agents (`GOOGLE_GENAI_API_KEY` or ADC)
 
 ### Installation
 
@@ -49,15 +49,15 @@ Create `.env.local` (for local dev only):
 
 ```bash
 # Narrative API (client-side)
-# For static hosting, set to your deployed API URL.
-VITE_NARRATE_ENDPOINT=...
+# Keep same-origin on Firebase hosting.
+VITE_NARRATE_ENDPOINT=/api/narrate
 
 # Cloud saves (optional; enables persistence)
 # Leave empty to use same-origin /api/* via Firebase Hosting rewrites.
 VITE_API_BASE_URL=...
 VITE_AUTH_PROVIDER=microsoft.com
 
-# Narrative API runs via /api/narrate (Foundry via Firebase Functions).
+# Narrative API runs via /api/narrate (Firebase Genkit via Firebase Functions).
 
 # Firebase Auth (required for cloud saves with Firebase ID tokens)
 VITE_FIREBASE_API_KEY=...

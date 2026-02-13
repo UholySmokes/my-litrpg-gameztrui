@@ -116,8 +116,7 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
         if (
           response.status === 504 &&
           (errorCode === "RUN_TIMEOUT" ||
-            errorCode === "UPSTREAM_TIMEOUT" ||
-            errorCode === "FOUNDRY_REQUEST_TIMEOUT")
+            errorCode === "UPSTREAM_TIMEOUT")
         ) {
           return { response, data, rawText };
         }
@@ -329,7 +328,7 @@ const resolveStreamEndpoints = () => {
 
 /**
  * Streaming narrative generation via start + poll.
- * Kicks off a Foundry run, then polls for progress, invoking onChunk
+ * Kicks off a run, then polls for progress, invoking onChunk
  * whenever new text appears. Falls back to generateNarrative on failure.
  *
  * @param {string} prompt - The assembled prompt

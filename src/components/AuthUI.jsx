@@ -214,7 +214,7 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
             marginBottom: "1.25rem",
           }}
         >
-          Sign in with your Microsoft account to enable cloud saves.
+          Sign in to enable cloud saves and synced progression.
         </p>
 
         {error && (
@@ -247,7 +247,7 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
             cursor: loading ? "not-allowed" : "pointer",
           }}
         >
-          {loading ? "..." : "Sign In with Microsoft"}
+          {loading ? "..." : "Sign In"}
         </button>
 
         {onLocalGame && (

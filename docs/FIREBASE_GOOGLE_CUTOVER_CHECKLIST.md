@@ -58,6 +58,7 @@ Current frontend auth is Azure-specific in `src/core/AuthService.js`:
 - [ ] Replace `/.auth/me` lookup with Firebase `onAuthStateChanged` user state.
 - [ ] Replace logout URL redirect logic with Firebase `signOut`.
 - [ ] Update API auth from trusted SWA headers to Firebase ID token verification in backend (`firebase-admin`).
+  - `/api/saves` now verifies Firebase ID tokens; other protected routes still pending.
 - [ ] Enforce auth on sensitive routes (`runs/saves/action-submit/sync`).
 
 ## 5. Environment and secrets

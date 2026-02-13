@@ -33,7 +33,108 @@ const resolveAuthProvider = () => {
   const buildEnv = getBuildEnv();
   return (
     pickEnvValue(runtimeEnv.VITE_AUTH_PROVIDER, buildEnv.VITE_AUTH_PROVIDER) ||
-    "aad"
+    "microsoft.com"
+  );
+};
+
+const normalizeProviderId = (value) => {
+  const normalized = String(value || "")
+    .trim()
+    .toLowerCase();
+  if (!normalized || normalized === "aad" || normalized === "microsoft") {
+    return "microsoft.com";
+  }
+  if (normalized === "google") return "google.com";
+  return normalized;
+};
+
+const resolveFirebaseAuthTenantId = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  return pickEnvValue(
+    runtimeEnv.VITE_FIREBASE_AUTH_TENANT_ID,
+    buildEnv.VITE_FIREBASE_AUTH_TENANT_ID,
+  );
+};
+
+const resolveFirebaseAuthEmulatorUrl = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  return pickEnvValue(
+    runtimeEnv.VITE_FIREBASE_AUTH_EMULATOR_URL,
+    buildEnv.VITE_FIREBASE_AUTH_EMULATOR_URL,
+  );
+};
+
+const resolveFirebaseConfig = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  const rawConfig = pickEnvValue(
+    runtimeEnv.VITE_FIREBASE_CONFIG,
+    buildEnv.VITE_FIREBASE_CONFIG,
+  );
+
+  let parsedConfig = {};
+  if (rawConfig) {
+    try {
+      const parsed = JSON.parse(rawConfig);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        parsedConfig = parsed;
+      }
+    } catch {
+      parsedConfig = {};
+    }
+  }
+
+  const firebaseConfig = {
+    apiKey: pickEnvValue(
+      runtimeEnv.VITE_FIREBASE_API_KEY,
+      buildEnv.VITE_FIREBASE_API_KEY,
+      parsedConfig.apiKey,
+    ),
+    authDomain: pickEnvValue(
+      runtimeEnv.VITE_FIREBASE_AUTH_DOMAIN,
+      buildEnv.VITE_FIREBASE_AUTH_DOMAIN,
+      parsedConfig.authDomain,
+    ),
+    projectId: pickEnvValue(
+      runtimeEnv.VITE_FIREBASE_PROJECT_ID,
+      buildEnv.VITE_FIREBASE_PROJECT_ID,
+      parsedConfig.projectId,
+    ),
+    appId: pickEnvValue(
+      runtimeEnv.VITE_FIREBASE_APP_ID,
+      buildEnv.VITE_FIREBASE_APP_ID,
+      parsedConfig.appId,
+    ),
+    messagingSenderId: pickEnvValue(
+      runtimeEnv.VITE_FIREBASE_MESSAGING_SENDER_ID,
+      buildEnv.VITE_FIREBASE_MESSAGING_SENDER_ID,
+      parsedConfig.messagingSenderId,
+    ),
+    storageBucket: pickEnvValue(
+      runtimeEnv.VITE_FIREBASE_STORAGE_BUCKET,
+      buildEnv.VITE_FIREBASE_STORAGE_BUCKET,
+      parsedConfig.storageBucket,
+    ),
+    measurementId: pickEnvValue(
+      runtimeEnv.VITE_FIREBASE_MEASUREMENT_ID,
+      buildEnv.VITE_FIREBASE_MEASUREMENT_ID,
+      parsedConfig.measurementId,
+    ),
+  };
+
+  if (
+    !firebaseConfig.apiKey ||
+    !firebaseConfig.authDomain ||
+    !firebaseConfig.projectId ||
+    !firebaseConfig.appId
+  ) {
+    return null;
+  }
+
+  return Object.fromEntries(
+    Object.entries(firebaseConfig).filter(([, value]) => Boolean(value)),
   );
 };
 
@@ -69,13 +170,151 @@ const mapClientPrincipal = (principal) => {
   };
 };
 
+const mapFirebaseUser = (user) => {
+  if (!user || typeof user !== "object" || !user.uid) return null;
+  const primaryProvider = Array.isArray(user.providerData)
+    ? user.providerData.find((entry) => entry?.providerId)?.providerId
+    : "";
+  return {
+    id: String(user.uid),
+    email: user.email ? String(user.email) : String(user.uid),
+    provider: primaryProvider || "firebase",
+    roles: ["authenticated"],
+  };
+};
+
 const buildAuthUrl = (path, redirectTo) => {
   const base = resolveAuthBaseUrl();
   const prefix = base ? `${base}` : "";
-  const redirect = redirectTo || window.location.href;
+  const redirect =
+    redirectTo ||
+    (typeof window !== "undefined" ? window.location.href : "about:blank");
   const encoded = encodeURIComponent(redirect);
   return `${prefix}${path}?post_login_redirect_uri=${encoded}`;
 };
+
+let firebaseSdkPromise = null;
+let firebaseApp = null;
+let firebaseAuthEmulatorConnected = false;
+
+const loadFirebaseSdk = async () => {
+  if (!firebaseSdkPromise) {
+    firebaseSdkPromise = Promise.all([
+      import("firebase/app"),
+      import("firebase/auth"),
+    ]).then(([app, auth]) => ({
+      initializeApp: app.initializeApp,
+      getApps: app.getApps,
+      getApp: app.getApp,
+      getAuth: auth.getAuth,
+      onAuthStateChanged: auth.onAuthStateChanged,
+      signInWithPopup: auth.signInWithPopup,
+      signInWithRedirect: auth.signInWithRedirect,
+      signOut: auth.signOut,
+      OAuthProvider: auth.OAuthProvider,
+      GoogleAuthProvider: auth.GoogleAuthProvider,
+      connectAuthEmulator: auth.connectAuthEmulator,
+    }));
+  }
+  return firebaseSdkPromise;
+};
+
+const getFirebaseContext = async () => {
+  const config = resolveFirebaseConfig();
+  if (!config) return null;
+
+  const sdk = await loadFirebaseSdk();
+
+  if (!firebaseApp) {
+    firebaseApp = sdk.getApps().length ? sdk.getApp() : sdk.initializeApp(config);
+  }
+
+  const auth = sdk.getAuth(firebaseApp);
+  const tenantId = resolveFirebaseAuthTenantId();
+  if (tenantId) {
+    auth.tenantId = tenantId;
+  }
+
+  const emulatorUrl = resolveFirebaseAuthEmulatorUrl();
+  if (emulatorUrl && !firebaseAuthEmulatorConnected) {
+    sdk.connectAuthEmulator(auth, emulatorUrl, { disableWarnings: true });
+    firebaseAuthEmulatorConnected = true;
+  }
+
+  return { sdk, auth };
+};
+
+const waitForFirebaseAuthReady = async ({ sdk, auth }) => {
+  if (auth && typeof auth.authStateReady === "function") {
+    await auth.authStateReady();
+    return;
+  }
+
+  await new Promise((resolve) => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      resolve();
+    };
+
+    const unsubscribe = sdk.onAuthStateChanged(
+      auth,
+      () => {
+        unsubscribe();
+        finish();
+      },
+      () => {
+        unsubscribe();
+        finish();
+      },
+    );
+
+    setTimeout(() => {
+      unsubscribe();
+      finish();
+    }, 2500);
+  });
+};
+
+const buildFirebaseProvider = (sdk, providerId) => {
+  const normalized = normalizeProviderId(providerId);
+  if (normalized === "google.com") {
+    return new sdk.GoogleAuthProvider();
+  }
+
+  const provider = new sdk.OAuthProvider(normalized);
+  if (normalized === "microsoft.com") {
+    provider.addScope("openid");
+    provider.addScope("profile");
+    provider.addScope("email");
+  }
+  return provider;
+};
+
+const isPopupRedirectFallbackError = (error) => {
+  const code = String(error?.code || "");
+  return (
+    code === "auth/popup-blocked" ||
+    code === "auth/cancelled-popup-request" ||
+    code === "auth/operation-not-supported-in-this-environment"
+  );
+};
+
+async function getLegacyCurrentUser() {
+  try {
+    const base = resolveAuthBaseUrl();
+    const response = await fetch(`${base}/.auth/me`, {
+      credentials: "include",
+    });
+    if (!response.ok) return null;
+    const data = await response.json().catch(() => null);
+    return mapClientPrincipal(data?.clientPrincipal);
+  } catch (error) {
+    console.error("Get legacy current user error:", error);
+    return null;
+  }
+}
 
 export async function signUp() {
   return signIn();
@@ -87,6 +326,33 @@ export async function signIn() {
     return { success: true, user: devUser };
   }
 
+  try {
+    const firebase = await getFirebaseContext();
+    if (firebase) {
+      const providerId = resolveAuthProvider();
+      const provider = buildFirebaseProvider(firebase.sdk, providerId);
+
+      try {
+        const result = await firebase.sdk.signInWithPopup(firebase.auth, provider);
+        return { success: true, user: mapFirebaseUser(result?.user) };
+      } catch (error) {
+        if (isPopupRedirectFallbackError(error)) {
+          await firebase.sdk.signInWithRedirect(firebase.auth, provider);
+          return { success: true };
+        }
+        return {
+          success: false,
+          error: String(error?.message || "Failed to sign in."),
+        };
+      }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: String(error?.message || "Failed to initialize Firebase Auth."),
+    };
+  }
+
   const provider = resolveAuthProvider();
   window.location.assign(buildAuthUrl(`/.auth/login/${provider}`));
   return { success: true };
@@ -96,6 +362,19 @@ export async function signOut() {
   const devUser = getDevUser();
   if (devUser) {
     return { success: true };
+  }
+
+  try {
+    const firebase = await getFirebaseContext();
+    if (firebase) {
+      await firebase.sdk.signOut(firebase.auth);
+      return { success: true };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: String(error?.message || "Failed to sign out."),
+    };
   }
 
   const base = resolveAuthBaseUrl();
@@ -110,43 +389,95 @@ export async function getCurrentUser() {
   if (devUser) return devUser;
 
   try {
-    const base = resolveAuthBaseUrl();
-    const response = await fetch(`${base}/.auth/me`, {
-      credentials: "include",
-    });
-    if (!response.ok) return null;
-    const data = await response.json().catch(() => null);
-    return mapClientPrincipal(data?.clientPrincipal);
+    const firebase = await getFirebaseContext();
+    if (firebase) {
+      await waitForFirebaseAuthReady(firebase);
+      return mapFirebaseUser(firebase.auth.currentUser);
+    }
   } catch (error) {
-    console.error("Get current user error:", error);
-    return null;
+    console.error("Get Firebase current user error:", error);
   }
+
+  return getLegacyCurrentUser();
 }
 
 export function onAuthStateChange(callback) {
   let active = true;
+  let teardown = () => {};
 
-  const notify = async () => {
-    if (!active) return;
-    const user = await getCurrentUser();
-    if (active) callback(user);
-  };
+  const devUser = getDevUser();
+  if (devUser) {
+    callback(devUser);
+    return () => {};
+  }
 
-  notify();
+  const init = async () => {
+    try {
+      const firebase = await getFirebaseContext();
+      if (!active) return;
 
-  const handleVisibility = () => {
-    if (document.visibilityState === "visible") {
-      notify();
+      if (firebase) {
+        teardown = firebase.sdk.onAuthStateChanged(firebase.auth, (user) => {
+          if (active) callback(mapFirebaseUser(user));
+        });
+        return;
+      }
+    } catch (error) {
+      console.error("Auth state listener init failed:", error);
     }
+
+    const notify = async () => {
+      if (!active) return;
+      const user = await getLegacyCurrentUser();
+      if (active) callback(user);
+    };
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        notify();
+      }
+    };
+
+    notify();
+    window.addEventListener("focus", notify);
+    document.addEventListener("visibilitychange", handleVisibility);
+    teardown = () => {
+      window.removeEventListener("focus", notify);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   };
 
-  window.addEventListener("focus", notify);
-  document.addEventListener("visibilitychange", handleVisibility);
+  init();
 
   return () => {
     active = false;
-    window.removeEventListener("focus", notify);
-    document.removeEventListener("visibilitychange", handleVisibility);
+    teardown();
+  };
+}
+
+export async function getAuthToken() {
+  const devUser = getDevUser();
+  if (devUser) return "";
+
+  try {
+    const firebase = await getFirebaseContext();
+    if (!firebase) return "";
+
+    await waitForFirebaseAuthReady(firebase);
+    const user = firebase.auth.currentUser;
+    if (!user || typeof user.getIdToken !== "function") return "";
+    return await user.getIdToken();
+  } catch {
+    return "";
+  }
+}
+
+export function getDevAuthHeaders() {
+  const devUser = getDevUser();
+  if (!devUser) return {};
+  return {
+    "x-dev-user-id": devUser.id,
+    "x-dev-user-email": devUser.email,
   };
 }
 

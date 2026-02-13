@@ -110,8 +110,9 @@ Open questions (resolved):
 - ~~Add a perk framework for magic that can modify:~~
   - Implemented `player.magic.perks` (strings or `{ id, rank }`) and perk lookups.
   - Implemented perk effects: `safer_compression`, `clean_refining`, `refine_yield`, `stable_weaves`, `resonance_damping`.
-- Implement in tiers:
-  - Basic ranks supported; no UI/earn flow yet.
+- ~~Implement in tiers:~~
+  - Basic rank tiers now progress for already-owned perks via usage XP.
+  - No UI yet; no automatic perk unlock flow yet (ranking only applies to owned perks).
 12) Risk model: from binary fail to outcome spectrum
 
 - ~~Replace “success/fail” with outcome categories:~~

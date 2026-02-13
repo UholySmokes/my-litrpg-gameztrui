@@ -68,6 +68,13 @@ export type WorldState = {
   };
 };
 
+export type RankedPerk =
+  | string
+  | {
+      id: string;
+      rank: number;
+    };
+
 export type PlayerState = {
   name: string;
   level: number;
@@ -99,12 +106,31 @@ export type PlayerState = {
     affinity?: Record<string, number>;
     attunement?: Record<string, number>;
     reserves?: Record<string, number>;
+    reservesTaint?: Record<string, number>;
     charges?: unknown[];
     anchors?: Record<string, unknown>;
     stance?: unknown;
+    interference?: { score?: number };
+    resonance?: { current?: number; max?: number; state?: string };
+    overload?: {
+      count?: number;
+      lastTurn?: number | null;
+      lastEvent?: unknown;
+    };
+    perks?: RankedPerk[];
+    perkProgress?: Record<
+      string,
+      {
+        totalXp?: number;
+        lastGainTurn?: number;
+      }
+    >;
+    activeWorkings?: unknown[];
+    unlockedPatterns?: { shape?: string[]; weave?: string[] };
     paradigm?: unknown;
     memoryShards?: unknown[];
     prepared?: unknown;
+    casting?: unknown;
     mana?: { current: number; max: number };
   };
 };

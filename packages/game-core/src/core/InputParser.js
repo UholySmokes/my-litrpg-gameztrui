@@ -312,7 +312,7 @@ function parseMove(input, gameState) {
 /**
  * Parses attack/combat actions
  */
-function parseAttack(input, gameState) {
+function parseAttack(input, _gameState) {
   const attackPatterns = [
     /^(attack|hit|strike|fight|combat|engage)\s+(.+)$/i,
     /^(attack|hit|strike|fight|combat|engage)$/i,

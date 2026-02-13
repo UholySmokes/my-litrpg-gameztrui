@@ -18,6 +18,13 @@ This repository includes a Firebase Hosting + Cloud Functions implementation und
 
 The endpoints keep the same response shape (`ok`, `narrative`, `mood`, `suggestions`).
 
+Auth requirements:
+
+- `GET /api/health` and `GET /api/agents` are public.
+- AI execution endpoints require auth (`/api/agents/run`, `/api/narrate*`, callable `agentRun`).
+- Save endpoints (`/api/saves*`) require auth.
+- In local non-production runs, `x-dev-user-id` / `DEV_USER_ID` can be used as a dev fallback.
+
 ## Firebase-Native Agent Flows (Genkit + Gemini)
 
 The Firebase function now also exposes Google/Firebase-native multi-agent routes:
@@ -82,6 +89,7 @@ npm run dev:api
 curl -X GET http://127.0.0.1:5000/api/agents
 curl -X POST http://127.0.0.1:5000/api/agents/run \
   -H "Content-Type: application/json" \
+  -H "x-dev-user-id: local-dev" \
   -d '{"agent":"narrator","input":{"game_state":{"location":"Ashen Gate","hp":42}}}'
 
 curl -X POST http://127.0.0.1:5000/api/saves \
@@ -116,6 +124,7 @@ Firebase-native agent vars:
 - `GOOGLE_GENAI_API_KEY` (recommended for Gemini API key auth)
 - `GOOGLE_API_KEY` (optional alias)
 - `GEMINI_MODEL` (optional, default `gemini-2.5-flash`)
+- `GENKIT_ALLOWED_MODELS` (optional CSV allowlist, defaults to `GEMINI_MODEL` + `gemini-2.5-flash`)
 - `GEMINI_TEMPERATURE` (optional, per-agent defaults apply)
 - `GENKIT_VERTEX_LOCATION` (optional, default `global`)
 
@@ -133,10 +142,11 @@ Save storage and local auth:
 
 ## Frontend Configuration
 
-The frontend uses:
+The frontend uses same-origin API paths only:
 
-- `VITE_API_BASE_URL` (if set) to call `/api/*` endpoints on the deployed host.
+- `VITE_API_BASE_URL` (optional path prefix such as `/`) for `/api/*`.
 - If unset, it will call same-origin `/api/*`.
+- Absolute external URLs are ignored by runtime config and client endpoint resolvers.
 
 Frontend auth config (Firebase Auth):
 

@@ -38,13 +38,23 @@ const pickEnvValue = (...values) => {
 };
 
 const normalizeBaseUrl = (value) => value.replace(/\/+$/g, "");
+const isExternalUrl = (value) =>
+  /^[a-z][a-z0-9+.-]*:\/\//i.test(value) || value.startsWith("//");
+const sanitizeEndpointPath = (value) => {
+  const trimmed = typeof value === "string" ? value.trim() : "";
+  if (!trimmed) return undefined;
+  if (isExternalUrl(trimmed)) return undefined;
+  return trimmed;
+};
 
 const resolveStaticEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const explicit = pickEnvValue(
-    runtimeEnv.VITE_STATIC_DATA_ENDPOINT,
-    buildEnv.VITE_STATIC_DATA_ENDPOINT,
+  const explicit = sanitizeEndpointPath(
+    pickEnvValue(
+      runtimeEnv.VITE_STATIC_DATA_ENDPOINT,
+      buildEnv.VITE_STATIC_DATA_ENDPOINT,
+    ),
   );
   return explicit ? [normalizeBaseUrl(explicit)] : [];
 };

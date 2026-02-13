@@ -16,6 +16,27 @@ function parseTemperature(value, fallback) {
 	return Math.max(0, Math.min(2, parsed));
 }
 
+function resolveProjectId() {
+	const direct =
+		(process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || process.env.FIREBASE_PROJECT_ID || "").trim();
+	if (direct) return direct;
+
+	const firebaseConfigRaw = (process.env.FIREBASE_CONFIG || "").trim();
+	if (!firebaseConfigRaw) return "";
+
+	try {
+		if (firebaseConfigRaw.startsWith("{")) {
+			const parsed = JSON.parse(firebaseConfigRaw);
+			const fromJson = typeof parsed?.projectId === "string" ? parsed.projectId.trim() : "";
+			if (fromJson) return fromJson;
+		}
+	} catch {
+		// Ignore invalid FIREBASE_CONFIG payload and continue with empty result.
+	}
+
+	return "";
+}
+
 function toJsonString(value) {
 	if (typeof value === "string") return value;
 	if (typeof value === "undefined") return "";
@@ -99,8 +120,10 @@ async function initializeRuntime() {
 	const location = process.env.GENKIT_VERTEX_LOCATION || DEFAULT_LOCATION;
 	const apiKey =
 		(process.env.GOOGLE_GENAI_API_KEY || process.env.GOOGLE_API_KEY || "").trim();
+	const projectId = resolveProjectId();
 	const pluginOptions = { location };
 	if (apiKey) pluginOptions.apiKey = apiKey;
+	if (projectId) pluginOptions.projectId = projectId;
 
 	const ai = genkit({
 		plugins: [vertexAI(pluginOptions)],

@@ -54,6 +54,28 @@ Runtime notes:
 - Vertex location defaults to `global` (`GENKIT_VERTEX_LOCATION` to override).
 - Uses `GOOGLE_GENAI_API_KEY` (or `GOOGLE_API_KEY`) when provided, otherwise falls back to Vertex ADC credentials.
 
+## Local setup for these agents
+
+1. A template now exists at `functions/.env.example`.
+2. Local defaults were prepared in `functions/.env.local` with your project ID and model defaults.
+3. Add one auth method in `functions/.env.local`:
+   - `GOOGLE_GENAI_API_KEY=<your-key>`
+   - or `GOOGLE_APPLICATION_CREDENTIALS=<path-to-service-account.json>`
+4. Start emulators:
+
+```bash
+npm run dev:api
+```
+
+5. Test:
+
+```bash
+curl -X GET http://127.0.0.1:5000/api/agents
+curl -X POST http://127.0.0.1:5000/api/agents/run \
+  -H "Content-Type: application/json" \
+  -d '{"agent":"narrator","input":{"game_state":{"location":"Ashen Gate","hp":42}}}'
+```
+
 ## Required Environment Variables (Functions)
 
 Set these in your Firebase Functions environment (or in local emulators via `.env` in `functions/`):

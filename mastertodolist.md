@@ -172,3 +172,16 @@ Open questions (resolved):
   - Layer D gates perk progression, discovery persistence, and combat cast-time staging.
 - ~~After each layer: rebalance coefficients and adjust feedback thresholds.~~
   - Rollout now supports per-layer toggling, so balancing can be done incrementally without code edits.
+
+19) Backend hardening + Azure decommission (audit follow-up)
+
+- [ ] Require authenticated users for AI-costly endpoints (`/api/agents/run`, `/api/narrate`, `/api/narrate-start`, `/api/narrate-poll`, callable `agentRun`).
+- [ ] Wire auth headers for narration API calls in the frontend (same pattern as cloud saves).
+- [ ] Add a strict model allowlist in Firebase agent runtime (reject arbitrary caller-provided model names).
+- [ ] Harden API route parsing for malformed save IDs (`decodeURIComponent` failures should return `400`, not `500`).
+- [ ] Fix Firestore save list query ordering (`orderBy updated_at desc`) so newest saves are consistently returned.
+- [ ] Remove silent Firestore->file fallback in production paths; fail closed unless file backend is explicitly selected.
+- [ ] Remove Azure legacy artifacts and config (`docker-compose.yml` Azurite/API stack, checked-in Azurite DB files).
+- [ ] Remove Azure-only and stale architecture docs (or rewrite them to Firebase-only architecture).
+- [ ] Fix parser stability/lint issues in `packages/game-core/src/core/InputParser.js` (`gameState` guards + lint escape fix).
+- [ ] Re-run lint, tests, and a quick API smoke pass after each risk-sensitive backend change.

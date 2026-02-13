@@ -22,7 +22,18 @@ async function handleApiRequest(req, res) {
 	const savesMatch = path.match(/^\/api\/saves(?:\/([^/]+))?$/);
 	if (savesMatch) {
 		const encodedSaveId = savesMatch[1] || "";
-		const saveId = encodedSaveId ? decodeURIComponent(encodedSaveId) : "";
+		let saveId = "";
+		if (encodedSaveId) {
+			try {
+				saveId = decodeURIComponent(encodedSaveId);
+			} catch {
+				return json(res, 400, {
+					ok: false,
+					errorCode: "INVALID_SAVE_ID",
+					message: "Malformed save id path segment.",
+				});
+			}
+		}
 		return handleSavesRequest(req, res, { saveId });
 	}
 

@@ -17,6 +17,12 @@ export const INITIAL_CONFIG = {
   restManaAmount: 0,
   manaRegenPerTurn: 2,
   classEvolutionLevel: 10,
+  magicRollout: {
+    layerA: true,
+    layerB: true,
+    layerC: true,
+    layerD: true,
+  },
 
   xpBrackets: [{ end: 1000, base: 100, growth: 1.5 }],
   xpBonusPerLevelDiff: 0.2,

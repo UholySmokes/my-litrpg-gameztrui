@@ -82,5 +82,52 @@ describe("Combat casting", () => {
     expect(next.player.magic.prepared).toBeNull();
     expect(next.combat.log.length).toBeGreaterThan(0);
   });
+
+  it("releases immediately in combat when rollout layer D is disabled", () => {
+    const base = {
+      ...initialGameState,
+      config: {
+        ...initialGameState.config,
+        magicRollout: {
+          ...(initialGameState.config?.magicRollout || {}),
+          layerD: false,
+        },
+      },
+      world: { ...initialGameState.world, turnCount: 0 },
+      player: {
+        ...initialGameState.player,
+        hp: { current: 100, max: 100 },
+        mana: { current: 50, max: 50 },
+        magic: {
+          mana: { current: 50, max: 50 },
+          reserves: { fire: 50 },
+        },
+      },
+      combat: {
+        status: "active",
+        turn: "player",
+        enemies: [],
+        skillCooldowns: {},
+        classAbilityCooldowns: {},
+        raceAbilityCooldowns: {},
+        playerTurnEffectsProcessed: false,
+        log: [],
+        lanes: { player: 1, enemies: [] },
+      },
+    };
+
+    const shaped = executeAction(base, {
+      type: "magic_shape",
+      essence: "fire",
+      form: "pulse",
+      amount: 10,
+    });
+    expect(shaped.success).toBe(true);
+
+    const released = executeAction(shaped.state, { type: "magic_release" });
+    expect(released.success).toBe(true);
+    expect(released.state.player.magic.casting).toBeFalsy();
+    expect(released.state.player.magic.prepared).toBeNull();
+  });
 });
 

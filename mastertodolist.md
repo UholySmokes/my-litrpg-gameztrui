@@ -164,9 +164,11 @@ Open questions (resolved):
   - Added `tools/magicBalanceHarness.mjs` (prints outcome distributions as JSON).
 18) Rollout strategy (reduce risk to existing gameplay)
 
-- Ship in layers:
-  - Layer A: ecology snapshot + SENSE feedback (no major balance impact)
-  - Layer B: decay/contamination/interference (resource depth)
-  - Layer C: risk spectrum + resonance overload (feel + drama)
-  - Layer D: perks + discovery + combat casting (progression + pacing)
-- After each layer: rebalance coefficients and adjust feedback thresholds.
+- ~~Ship in layers:~~
+  - Implemented rollout flags via `config.magicRollout.layerA..layerD` (default all enabled).
+  - Layer A gates ambient ecology snapshot/detail context in SENSE.
+  - Layer B gates decay/contamination/interference + PURGE availability.
+  - Layer C gates resonance pressure + overload events.
+  - Layer D gates perk progression, discovery persistence, and combat cast-time staging.
+- ~~After each layer: rebalance coefficients and adjust feedback thresholds.~~
+  - Rollout now supports per-layer toggling, so balancing can be done incrementally without code edits.

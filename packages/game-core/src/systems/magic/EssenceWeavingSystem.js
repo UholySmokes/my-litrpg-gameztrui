@@ -65,10 +65,42 @@ const DENSITY_BY_TIER = {
   3: 3.3,
 };
 
+const DEFAULT_MAGIC_ROLLOUT = Object.freeze({
+  layerA: true,
+  layerB: true,
+  layerC: true,
+  layerD: true,
+});
+
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 const toNumberSafe = (value, fallback = 0) =>
   Number.isFinite(value) ? value : fallback;
+
+function toBooleanFlag(value, fallback = true) {
+  if (typeof value === "boolean") return value;
+  if (typeof value === "number") return value !== 0;
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) return fallback;
+    if (["true", "1", "yes", "on", "enabled"].includes(normalized)) return true;
+    if (["false", "0", "no", "off", "disabled"].includes(normalized)) return false;
+  }
+  return fallback;
+}
+
+function resolveMagicRollout(config) {
+  const node =
+    config?.magicRollout && typeof config.magicRollout === "object" && !Array.isArray(config.magicRollout)
+      ? config.magicRollout
+      : {};
+  return {
+    layerA: toBooleanFlag(node.layerA, DEFAULT_MAGIC_ROLLOUT.layerA),
+    layerB: toBooleanFlag(node.layerB, DEFAULT_MAGIC_ROLLOUT.layerB),
+    layerC: toBooleanFlag(node.layerC, DEFAULT_MAGIC_ROLLOUT.layerC),
+    layerD: toBooleanFlag(node.layerD, DEFAULT_MAGIC_ROLLOUT.layerD),
+  };
+}
 
 function computeStoredEssenceTotals(magic) {
   const totals = ESSENCE_PRIMES.reduce((acc, e) => {
@@ -489,6 +521,25 @@ function applyResonanceOverloadEvent(
   };
 }
 
+function resolveOverloadResult(
+  magic,
+  {
+    enabled = true,
+    ambient,
+    turn,
+    preferredEssence,
+  } = {},
+) {
+  if (!enabled) {
+    return { magic, line: "", triggered: false };
+  }
+  return applyResonanceOverloadEvent(magic, {
+    ambient,
+    turn,
+    preferredEssence,
+  });
+}
+
 function computeEnvironmentalPressure(ambient) {
   const weatherType = typeof ambient?.provenance?.weatherType === "string" ? ambient.provenance.weatherType : null;
   const intensity = clamp(toNumberSafe(ambient?.provenance?.weatherIntensity, 0), 0, 1);
@@ -777,6 +828,43 @@ function toAmbientSnapshot(densities, { locationId, biome, time, weather, anomal
   };
 }
 
+function toNeutralAmbientSnapshot(densities, { locationId } = {}) {
+  const compositionByEssence = ESSENCE_PRIMES.reduce((acc, essence) => {
+    acc[essence] = {
+      density: clamp(toNumberSafe(densities?.[essence], 0), 0, 1),
+      purity: 1,
+      taint: 0,
+    };
+    return acc;
+  }, {});
+  const neutralMults = ESSENCE_PRIMES.reduce((acc, essence) => {
+    acc[essence] = 1;
+    return acc;
+  }, {});
+
+  return {
+    compositionByEssence,
+    global: {
+      drawMultByEssence: { ...neutralMults },
+      refineYieldMultByEssence: { ...neutralMults },
+      stabilityCapDelta: 0,
+      compressRiskMultByEssence: { ...neutralMults },
+      potencyMultByEssence: { ...neutralMults },
+      contaminationRiskMultByEssence: { ...neutralMults },
+    },
+    provenance: {
+      biome: null,
+      timeOfDay: null,
+      weatherType: null,
+      weatherIntensity: null,
+      anomalyIds: [],
+      sourceIds: [],
+      locationId: locationId || null,
+    },
+    tags: ["rollout:layerA_off"],
+  };
+}
+
 function ambientDensity(ambient, essence) {
   if (isAmbientSnapshot(ambient)) {
     return clamp(toNumberSafe(ambient.compositionByEssence?.[essence]?.density, 0), 0, 1);
@@ -788,6 +876,7 @@ export function ensureEssenceWeavingState(state) {
   const player = state?.player;
   const world = state?.world;
   if (!player || !world) return state;
+  const rollout = resolveMagicRollout(state?.config);
 
   const locationId = world.location?.current || world.location || "starting_zone";
 
@@ -812,13 +901,16 @@ export function ensureEssenceWeavingState(state) {
   const instances = Array.isArray(existingAnomalies.instances) ? existingAnomalies.instances : [];
   const normalizedAnomalies = { instances };
 
-  const ambient = toAmbientSnapshot(densities || deriveAmbientFromLocationId(locationId), {
-    locationId,
-    biome,
-    time,
-    weather,
-    anomalies: normalizedAnomalies,
-  });
+  const resolvedDensities = densities || deriveAmbientFromLocationId(locationId);
+  const ambient = rollout.layerA
+    ? toAmbientSnapshot(resolvedDensities, {
+        locationId,
+        biome,
+        time,
+        weather,
+        anomalies: normalizedAnomalies,
+      })
+    : toNeutralAmbientSnapshot(resolvedDensities, { locationId });
 
   const nextWorld = {
     ...world,
@@ -845,6 +937,7 @@ export function processEssenceEcologyTurn(state) {
   const world = hydrated?.world;
   const player = hydrated?.player;
   if (!world || !player) return hydrated;
+  const rollout = resolveMagicRollout(hydrated?.config);
 
   const locationId = world.location?.current || world.location || "starting_zone";
   const biome = world.location?.biome || null;
@@ -861,46 +954,47 @@ export function processEssenceEcologyTurn(state) {
     : [];
 
   let nextInstances = instances.map((entry) => ({ ...entry }));
-
-  if (nextInstances.length === 0 && biome) {
-    const candidates = getEssenceAnomalyIdsForBiome(biome);
-    if (candidates.length) {
-      const pickedId = randomChoice(candidates);
-      const def = getEssenceAnomalyById(pickedId);
-      const interval = Math.max(1, Math.floor(toNumberSafe(def?.driftIntervalTurns, 12)));
-      nextInstances.push({
-        id: pickedId,
-        biomeId: biome,
-        locationId,
-        nextDriftTurn: turn + interval,
-      });
+  if (rollout.layerA) {
+    if (nextInstances.length === 0 && biome) {
+      const candidates = getEssenceAnomalyIdsForBiome(biome);
+      if (candidates.length) {
+        const pickedId = randomChoice(candidates);
+        const def = getEssenceAnomalyById(pickedId);
+        const interval = Math.max(1, Math.floor(toNumberSafe(def?.driftIntervalTurns, 12)));
+        nextInstances.push({
+          id: pickedId,
+          biomeId: biome,
+          locationId,
+          nextDriftTurn: turn + interval,
+        });
+      }
     }
+
+    nextInstances = nextInstances.map((inst) => {
+      const id = typeof inst.id === "string" ? inst.id.trim().toLowerCase() : null;
+      const def = id ? getEssenceAnomalyById(id) : null;
+      if (!def) return inst;
+
+      const nextDriftTurn = toNumberSafe(inst.nextDriftTurn, turn + 1);
+      if (nextDriftTurn > turn) return { ...inst, id };
+
+      const resolvedBiome = typeof inst.biomeId === "string" && inst.biomeId ? inst.biomeId : biome;
+      const locs = resolvedBiome ? findLocationsByZone(resolvedBiome) : [];
+      const candidates = locs.map((loc) => loc?.id).filter((locId) => locId && locId !== inst.locationId);
+      const nextLoc = candidates.length ? randomChoice(candidates) : inst.locationId;
+      const interval = Math.max(1, Math.floor(toNumberSafe(def?.driftIntervalTurns, 12)));
+      return {
+        ...inst,
+        id,
+        biomeId: resolvedBiome,
+        locationId: nextLoc,
+        nextDriftTurn: turn + interval,
+      };
+    });
   }
 
-  nextInstances = nextInstances.map((inst) => {
-    const id = typeof inst.id === "string" ? inst.id.trim().toLowerCase() : null;
-    const def = id ? getEssenceAnomalyById(id) : null;
-    if (!def) return inst;
-
-    const nextDriftTurn = toNumberSafe(inst.nextDriftTurn, turn + 1);
-    if (nextDriftTurn > turn) return { ...inst, id };
-
-    const resolvedBiome = typeof inst.biomeId === "string" && inst.biomeId ? inst.biomeId : biome;
-    const locs = resolvedBiome ? findLocationsByZone(resolvedBiome) : [];
-    const candidates = locs.map((loc) => loc?.id).filter((locId) => locId && locId !== inst.locationId);
-    const nextLoc = candidates.length ? randomChoice(candidates) : inst.locationId;
-    const interval = Math.max(1, Math.floor(toNumberSafe(def?.driftIntervalTurns, 12)));
-    return {
-      ...inst,
-      id,
-      biomeId: resolvedBiome,
-      locationId: nextLoc,
-      nextDriftTurn: turn + interval,
-    };
-  });
-
   const ambient = world?.essence?.ambient || {};
-  const sourceIds = Array.isArray(ambient?.provenance?.sourceIds)
+  const sourceIds = rollout.layerA && Array.isArray(ambient?.provenance?.sourceIds)
     ? ambient.provenance.sourceIds.map((id) => String(id).trim().toLowerCase()).filter(Boolean)
     : [];
   const avgTaint = ESSENCE_PRIMES.reduce(
@@ -909,47 +1003,56 @@ export function processEssenceEcologyTurn(state) {
   ) / ESSENCE_PRIMES.length;
 
   const totals = computeStoredEssenceTotals(player.magic);
-  const interferenceScore = computeInterferenceScore(totals);
+  const interferenceScore = rollout.layerB
+    ? computeInterferenceScore(totals)
+    : clamp(toNumberSafe(player?.magic?.interference?.score, 0), 0, 1);
 
-  const resonanceDampingRank = getPerkRank(player.magic, "resonance_damping");
+  const resonanceDampingRank = rollout.layerD ? getPerkRank(player.magic, "resonance_damping") : 0;
   const resonanceDecay = 2 + 0.8 * resonanceDampingRank;
-  const nextMagicAfterResonance = applyResonanceDelta(
-    player.magic,
-    -resonanceDecay,
-  );
+  const nextMagicAfterResonance = rollout.layerC
+    ? applyResonanceDelta(
+        player.magic,
+        -resonanceDecay,
+      )
+    : { ...player.magic };
 
-  const nextCharges = (Array.isArray(nextMagicAfterResonance?.charges) ? nextMagicAfterResonance.charges : [])
-    .filter((charge) => {
-      const expires = toNumberSafe(charge?.expiresTurn, Infinity);
-      return !(Number.isFinite(expires) && expires <= turn);
-    })
-    .map((charge) => {
-      const lastTouchedTurn = toNumberSafe(charge?.lastTouchedTurn, toNumberSafe(charge?.createdTurn, turn));
-      const turnsElapsed = Math.max(0, turn - lastTouchedTurn);
-      if (turnsElapsed <= 0) return { ...charge, lastTouchedTurn: turn };
+  const baseCharges = Array.isArray(nextMagicAfterResonance?.charges) ? nextMagicAfterResonance.charges : [];
+  const nextCharges = rollout.layerB
+    ? baseCharges
+        .filter((charge) => {
+          const expires = toNumberSafe(charge?.expiresTurn, Infinity);
+          return !(Number.isFinite(expires) && expires <= turn);
+        })
+        .map((charge) => {
+          const lastTouchedTurn = toNumberSafe(charge?.lastTouchedTurn, toNumberSafe(charge?.createdTurn, turn));
+          const turnsElapsed = Math.max(0, turn - lastTouchedTurn);
+          if (turnsElapsed <= 0) return { ...charge, lastTouchedTurn: turn };
 
-      const baseDecay = 0.004;
-      const decayRate = clamp(baseDecay + 0.018 * interferenceScore + 0.012 * avgTaint, 0, 0.08);
-      const decayFactor = clamp(1 - decayRate * turnsElapsed, 0, 1);
+          const baseDecay = 0.004;
+          const decayRate = clamp(baseDecay + 0.018 * interferenceScore + 0.012 * avgTaint, 0, 0.08);
+          const decayFactor = clamp(1 - decayRate * turnsElapsed, 0, 1);
 
-      const amount = Math.max(0, toNumberSafe(charge?.amount, 0) * decayFactor);
-      const purity = clamp(toNumberSafe(charge?.purity, 1) * (0.98 + 0.02 * decayFactor), 0, 1);
-      const potency = clamp(toNumberSafe(charge?.potency, 1) * (0.97 + 0.03 * decayFactor), 0, 10);
+          const amount = Math.max(0, toNumberSafe(charge?.amount, 0) * decayFactor);
+          const purity = clamp(toNumberSafe(charge?.purity, 1) * (0.98 + 0.02 * decayFactor), 0, 1);
+          const potency = clamp(toNumberSafe(charge?.potency, 1) * (0.97 + 0.03 * decayFactor), 0, 10);
 
-      return {
-        ...charge,
-        amount,
-        purity,
-        potency,
-        lastTouchedTurn: turn,
-      };
-    })
-    .filter((charge) => toNumberSafe(charge?.amount, 0) > 0.01);
+          return {
+            ...charge,
+            amount,
+            purity,
+            potency,
+            lastTouchedTurn: turn,
+          };
+        })
+        .filter((charge) => toNumberSafe(charge?.amount, 0) > 0.01)
+    : baseCharges;
 
   const nextReservesTaint = { ...(nextMagicAfterResonance?.reservesTaint || {}) };
-  ESSENCE_PRIMES.forEach((e) => {
-    nextReservesTaint[e] = clamp(toNumberSafe(nextReservesTaint[e], 0) * 0.995, 0, 1);
-  });
+  if (rollout.layerB) {
+    ESSENCE_PRIMES.forEach((e) => {
+      nextReservesTaint[e] = clamp(toNumberSafe(nextReservesTaint[e], 0) * 0.995, 0, 1);
+    });
+  }
 
   const nextActiveWorkings = (Array.isArray(nextMagicAfterResonance?.activeWorkings)
     ? nextMagicAfterResonance.activeWorkings
@@ -976,9 +1079,9 @@ export function processEssenceEcologyTurn(state) {
     essence: {
       ...essence,
       anomalies: { instances: nextInstances },
-      sources: (() => {
-        const existing = Array.isArray(essence.sources) ? essence.sources : [];
-        const normalized = existing
+       sources: (() => {
+         const existing = Array.isArray(essence.sources) ? essence.sources : [];
+         const normalized = existing
           .map((s) => {
             if (typeof s === "string") return { id: s.trim().toLowerCase() };
             if (s && typeof s === "object" && !Array.isArray(s)) {
@@ -993,7 +1096,8 @@ export function processEssenceEcologyTurn(state) {
           })
           .filter((s) => s?.id);
         const seen = new Set(normalized.map((s) => `${s.id}:${s.locationId || ""}`));
-        const additions = sourceIds
+        const additions = rollout.layerD
+          ? sourceIds
           .map((id) => {
             const def = getRareEssenceSourceById(id);
             return {
@@ -1005,7 +1109,8 @@ export function processEssenceEcologyTurn(state) {
             };
           })
           .filter((s) => s?.id)
-          .filter((s) => !seen.has(`${s.id}:${s.locationId || ""}`));
+          .filter((s) => !seen.has(`${s.id}:${s.locationId || ""}`))
+          : [];
         return [...normalized, ...additions];
       })(),
     },
@@ -1159,6 +1264,7 @@ function applyStabilityDelta(magic, delta) {
 
 export function magicSense(state, action) {
   const hydrated = ensureEssenceWeavingState(state);
+  const rollout = resolveMagicRollout(hydrated?.config);
   const world = hydrated.world;
   const ambient = world?.essence?.ambient || {};
   const requested = normalizeEssenceId(action?.essence);
@@ -1198,12 +1304,15 @@ export function magicSense(state, action) {
   if (requested) {
     const strength = ambientDensity(ambient, requested);
     const mult = clamp(toNumberSafe(ambient?.global?.drawMultByEssence?.[requested], 1), 0.9, 1.2);
+    const resonanceClause = rollout.layerC
+      ? ` Resonance: ${resonanceState} (${resonanceValue.toFixed(0)}/100), overload risk ${overloadRisk}.`
+      : "";
     return {
       state: hydrated,
         description:
           strength <= 0.01
             ? `You sense almost no ${requested} essence here.`
-            : `You sense ${requested} essence (strength ${(strength * 100).toFixed(0)}%, draw x${mult.toFixed(2)}). Resonance: ${resonanceState} (${resonanceValue.toFixed(0)}/100), overload risk ${overloadRisk}.`,
+            : `You sense ${requested} essence (strength ${(strength * 100).toFixed(0)}%, draw x${mult.toFixed(2)}).${resonanceClause}`,
       readOnly: true,
     };
   }
@@ -1213,19 +1322,32 @@ export function magicSense(state, action) {
     .join(" | ");
 
   const contextParts = [];
-  if (provenance?.biome) contextParts.push(`Biome: ${provenance.biome}`);
-  if (provenance?.timeOfDay) contextParts.push(`Time: ${provenance.timeOfDay}`);
-  if (provenance?.weatherType) {
-    const intensity = Number.isFinite(provenance.weatherIntensity)
-      ? ` ${(provenance.weatherIntensity * 100).toFixed(0)}%`
-      : "";
-    contextParts.push(`Weather: ${provenance.weatherType}${intensity}`);
+  if (rollout.layerA) {
+    if (provenance?.biome) contextParts.push(`Biome: ${provenance.biome}`);
+    if (provenance?.timeOfDay) contextParts.push(`Time: ${provenance.timeOfDay}`);
+    if (provenance?.weatherType) {
+      const intensity = Number.isFinite(provenance.weatherIntensity)
+        ? ` ${(provenance.weatherIntensity * 100).toFixed(0)}%`
+        : "";
+      contextParts.push(`Weather: ${provenance.weatherType}${intensity}`);
+    }
+    if (anomalyNames.length) contextParts.push(`Anomalies: ${anomalyNames.join(", ")}`);
+    if (sourceNames.length) contextParts.push(`Sources: ${sourceNames.join(", ")}`);
   }
-  if (anomalyNames.length) contextParts.push(`Anomalies: ${anomalyNames.join(", ")}`);
-  if (sourceNames.length) contextParts.push(`Sources: ${sourceNames.join(", ")}`);
-  contextParts.push(
-    `Stability: mind ${stabilityWord(mindPct)}, cognitive ${stabilityWord(cogPct)}; Resonance: ${resonanceState}; Overload risk: ${overloadRisk}; Contamination: ${contaminationWord}`,
+
+  const telemetryParts = [
+    `Stability: mind ${stabilityWord(mindPct)}, cognitive ${stabilityWord(cogPct)}`,
+  ];
+  if (rollout.layerC) {
+    telemetryParts.push(`Resonance: ${resonanceState}`);
+    telemetryParts.push(`Overload risk: ${overloadRisk}`);
+  } else {
+    telemetryParts.push("Resonance: disabled");
+  }
+  telemetryParts.push(
+    rollout.layerB ? `Contamination: ${contaminationWord}` : "Contamination: disabled",
   );
+  contextParts.push(telemetryParts.join("; "));
   const contextLine = contextParts.length ? ` (${contextParts.join(" | ")})` : "";
 
   const notable = [];
@@ -1279,6 +1401,7 @@ export function magicAttune(state, action) {
 
 export function magicDraw(state, action) {
   const hydrated = ensureEssenceWeavingState(state);
+  const rollout = resolveMagicRollout(hydrated?.config);
   const player = hydrated.player;
   const magic = player.magic;
   const world = hydrated.world;
@@ -1325,14 +1448,16 @@ export function magicDraw(state, action) {
 
   const prevReserve = toNumberSafe(magic.reserves?.[essence], 0);
   const prevTaint = clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1);
-  const sampleTaint = clamp(
-    clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1) *
-      clamp(toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1), 0.9, 1.2),
-    0,
-    1,
-  );
+  const sampleTaint = rollout.layerB
+    ? clamp(
+        clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1) *
+          clamp(toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1), 0.9, 1.2),
+        0,
+        1,
+      )
+    : 0;
   const combinedTaint =
-    prevReserve + drawAmount > 0
+    rollout.layerB && prevReserve + drawAmount > 0
       ? clamp((prevTaint * prevReserve + sampleTaint * drawAmount) / (prevReserve + drawAmount), 0, 1)
       : prevTaint;
   const interferenceScore = clamp(toNumberSafe(magic?.interference?.score, 0), 0, 1);
@@ -1341,35 +1466,40 @@ export function magicDraw(state, action) {
     0,
   ) / ESSENCE_PRIMES.length;
   const pressure = computeEnvironmentalPressure(ambient);
-  const resonanceGain = 0.6 + 0.03 * drawAmount + 4 * interferenceScore + 2.5 * avgTaint + 1.5 * pressure;
+  const resonanceGain = rollout.layerC
+    ? 0.6 + 0.03 * drawAmount + 4 * interferenceScore + 2.5 * avgTaint + 1.5 * pressure
+    : 0;
 
-  const nextMagicWithResonance = applyResonanceDelta(
-    applyStabilityDelta(
-      {
-        ...magic,
-        reserves: {
-          ...magic.reserves,
-          [essence]: prevReserve + drawAmount,
-        },
-        reservesTaint: {
-          ...magic.reservesTaint,
-          [essence]: combinedTaint,
-        },
+  const nextMagicBase = applyStabilityDelta(
+    {
+      ...magic,
+      reserves: {
+        ...magic.reserves,
+        [essence]: prevReserve + drawAmount,
       },
-      { body: -bodyCost },
-    ),
-    resonanceGain,
+      reservesTaint: {
+        ...magic.reservesTaint,
+        [essence]: combinedTaint,
+      },
+    },
+    { body: -bodyCost },
   );
-  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+  const nextMagicWithResonance = rollout.layerC
+    ? applyResonanceDelta(nextMagicBase, resonanceGain)
+    : nextMagicBase;
+  const overload = resolveOverloadResult(nextMagicWithResonance, {
+    enabled: rollout.layerC,
     ambient,
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
   });
-  const training = applyPerkTraining(
-    overload.magic,
-    [{ id: "resonance_damping", xp: 1.2 + drawAmount * 0.05 }],
-    { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
-  );
+  const training = rollout.layerD
+    ? applyPerkTraining(
+        overload.magic,
+        [{ id: "resonance_damping", xp: 1.2 + drawAmount * 0.05 }],
+        { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
+      )
+    : { magic: overload.magic, rankUps: [] };
 
 
   const nextState = recomputeManaFree({
@@ -1388,6 +1518,7 @@ export function magicDraw(state, action) {
 
 export function magicRefine(state, action) {
   const hydrated = ensureEssenceWeavingState(state);
+  const rollout = resolveMagicRollout(hydrated?.config);
   const player = hydrated.player;
   const magic = player.magic;
   const essence = normalizeEssenceId(action?.essence);
@@ -1409,19 +1540,27 @@ export function magicRefine(state, action) {
 
   const ambient = hydrated.world?.essence?.ambient || {};
   const refineMult = clamp(toNumberSafe(ambient?.global?.refineYieldMultByEssence?.[essence], 1), 0.9, 1.2);
-  const contaminationMult = clamp(toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1), 0.9, 1.2);
-  const ambientTaint = clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1);
-  const reserveTaint = clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1);
+  const contaminationMult = rollout.layerB
+    ? clamp(toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1), 0.9, 1.2)
+    : 1;
+  const ambientTaint = rollout.layerB
+    ? clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1)
+    : 0;
+  const reserveTaint = rollout.layerB
+    ? clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1)
+    : 0;
   const potencyMult = clamp(toNumberSafe(ambient?.global?.potencyMultByEssence?.[essence], 1), 0.9, 1.2);
 
-  const cleanRefiningRank = getPerkRank(magic, "clean_refining");
-  const yieldRank = getPerkRank(magic, "refine_yield");
+  const cleanRefiningRank = rollout.layerD ? getPerkRank(magic, "clean_refining") : 0;
+  const yieldRank = rollout.layerD ? getPerkRank(magic, "refine_yield") : 0;
   const refineYieldMult = clamp(1 + 0.03 * yieldRank, 0.9, 1.2);
 
   const mindPct = stabilityPct(magic.stability?.mind);
   const refineSkillFactor = clamp(0.15 * toNumberSafe(magic.attunement?.[essence], 1) + 0.5 * mindPct, 0, 1);
   const blendedTaint = clamp((ambientTaint * 0.55 + reserveTaint * 0.45) * contaminationMult, 0, 1);
-  const taintPenalty = clamp(blendedTaint * (0.32 - 0.04 * cleanRefiningRank), 0, 0.35);
+  const taintPenalty = rollout.layerB
+    ? clamp(blendedTaint * (0.32 - 0.04 * cleanRefiningRank), 0, 0.35)
+    : 0;
   const purity = clamp(0.55 + 0.35 * refineSkillFactor - taintPenalty, 0, 1);
   const mindCost = amount * 0.1;
 
@@ -1463,22 +1602,29 @@ export function magicRefine(state, action) {
     0,
   ) / ESSENCE_PRIMES.length;
   const pressure = computeEnvironmentalPressure(ambient);
-  const resonanceGain = 2 + 0.06 * amount + 6 * interferenceScore + 3.5 * avgTaint + 2 * pressure;
-  const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
-  const nextMagicWithResonance = applyResonanceDelta(nextMagic, resonanceGain * damp);
-  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+  const resonanceGain = rollout.layerC
+    ? 2 + 0.06 * amount + 6 * interferenceScore + 3.5 * avgTaint + 2 * pressure
+    : 0;
+  const damp = clamp(1 - 0.1 * (rollout.layerD ? getPerkRank(magic, "resonance_damping") : 0), 0.5, 1);
+  const nextMagicWithResonance = rollout.layerC
+    ? applyResonanceDelta(nextMagic, resonanceGain * damp)
+    : nextMagic;
+  const overload = resolveOverloadResult(nextMagicWithResonance, {
+    enabled: rollout.layerC,
     ambient,
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
   });
-  const training = applyPerkTraining(
-    overload.magic,
-    [
-      { id: "clean_refining", xp: 1.8 + amount * 0.08 },
-      { id: "refine_yield", xp: 1.4 + amount * 0.06 },
-    ],
-    { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
-  );
+  const training = rollout.layerD
+    ? applyPerkTraining(
+        overload.magic,
+        [
+          { id: "clean_refining", xp: 1.8 + amount * 0.08 },
+          { id: "refine_yield", xp: 1.4 + amount * 0.06 },
+        ],
+        { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
+      )
+    : { magic: overload.magic, rankUps: [] };
 
   const nextState = recomputeManaFree({
     ...hydrated,
@@ -1493,6 +1639,7 @@ export function magicRefine(state, action) {
 
 export function magicCompress(state, action) {
   const hydrated = ensureEssenceWeavingState(state);
+  const rollout = resolveMagicRollout(hydrated?.config);
   const player = hydrated.player;
   const magic = player.magic;
   const essence = normalizeEssenceId(action?.essence);
@@ -1543,23 +1690,29 @@ export function magicCompress(state, action) {
     1.2,
   );
 
-  const contaminationMult = clamp(
-    toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1),
-    0.9,
-    1.2,
-  );
-  const ambientTaint = clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1);
-  const reserveTaint = clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1);
+  const contaminationMult = rollout.layerB
+    ? clamp(
+        toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1),
+        0.9,
+        1.2,
+      )
+    : 1;
+  const ambientTaint = rollout.layerB
+    ? clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1)
+    : 0;
+  const reserveTaint = rollout.layerB
+    ? clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1)
+    : 0;
   const chargeImpurity = clamp(1 - clamp(toNumberSafe(charge.purity, 0.6), 0, 1), 0, 1);
   const blendedTaint = clamp((ambientTaint * 0.4 + reserveTaint * 0.35 + chargeImpurity * 0.25) * contaminationMult, 0, 1);
-  const taintMisfireMult = clamp(1 + 0.65 * blendedTaint, 1, 1.65);
+  const taintMisfireMult = rollout.layerB ? clamp(1 + 0.65 * blendedTaint, 1, 1.65) : 1;
 
-  const saferCompressionRank = getPerkRank(magic, "safer_compression");
+  const saferCompressionRank = rollout.layerD ? getPerkRank(magic, "safer_compression") : 0;
   const perkMisfireMult = clamp(1 - 0.07 * saferCompressionRank, 0.55, 1);
   const anchored = Boolean(magic.anchors?.self || magic.anchors?.area || magic.anchors?.itemId);
   const anchorMisfireMult = anchored ? 0.9 : 1;
-  const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
-  const resonanceMisfireMult = clamp(1 + 0.35 * (resonance / 100), 1, 1.35);
+  const resonance = rollout.layerC ? clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100) : 0;
+  const resonanceMisfireMult = rollout.layerC ? clamp(1 + 0.35 * (resonance / 100), 1, 1.35) : 1;
   const misfireChance = clamp(
     (0.03 + risk + stabilityPenalty) *
       compressRiskMult *
@@ -1634,19 +1787,26 @@ export function magicCompress(state, action) {
     0,
   ) / ESSENCE_PRIMES.length;
   const pressure = computeEnvironmentalPressure(ambient);
-  const resonanceGain = 4 + 0.08 * amount * targetDensity + 8 * interferenceScore + 4 * avgTaint + 3 * pressure;
-  const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
-  const nextMagicWithResonance = applyResonanceDelta(nextMagicBase, resonanceGain * damp);
-  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+  const resonanceGain = rollout.layerC
+    ? 4 + 0.08 * amount * targetDensity + 8 * interferenceScore + 4 * avgTaint + 3 * pressure
+    : 0;
+  const damp = clamp(1 - 0.1 * (rollout.layerD ? getPerkRank(magic, "resonance_damping") : 0), 0.5, 1);
+  const nextMagicWithResonance = rollout.layerC
+    ? applyResonanceDelta(nextMagicBase, resonanceGain * damp)
+    : nextMagicBase;
+  const overload = resolveOverloadResult(nextMagicWithResonance, {
+    enabled: rollout.layerC,
     ambient,
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
   });
-  const training = applyPerkTraining(
-    overload.magic,
-    [{ id: "safer_compression", xp: 2 + 0.7 * targetDensity + amount * 0.04 }],
-    { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
-  );
+  const training = rollout.layerD
+    ? applyPerkTraining(
+        overload.magic,
+        [{ id: "safer_compression", xp: 2 + 0.7 * targetDensity + amount * 0.04 }],
+        { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
+      )
+    : { magic: overload.magic, rankUps: [] };
 
   const nextState = recomputeManaFree({
     ...hydrated,
@@ -1696,9 +1856,18 @@ export function magicAnchor(state, action) {
 
 export function magicPurge(state, action) {
   const hydrated = ensureEssenceWeavingState(state);
+  const rollout = resolveMagicRollout(hydrated?.config);
   const player = hydrated.player;
   const magic = player.magic;
   const ambient = hydrated.world?.essence?.ambient || {};
+
+  if (!rollout.layerB) {
+    return {
+      ok: false,
+      reason: "Purge is unavailable until rollout layer B is enabled.",
+      state: hydrated,
+    };
+  }
 
   const requestedEssence = normalizeEssenceId(action?.essence);
   const targets = requestedEssence
@@ -1718,7 +1887,7 @@ export function magicPurge(state, action) {
   }
 
   const effort = clamp(toNumberSafe(action?.amount, 6), 1, 30);
-  const cleanRefiningRank = getPerkRank(magic, "clean_refining");
+  const cleanRefiningRank = rollout.layerD ? getPerkRank(magic, "clean_refining") : 0;
   const pressure = computeEnvironmentalPressure(ambient);
   const avgTaint = ESSENCE_PRIMES.reduce(
     (sum, e) =>
@@ -1754,35 +1923,40 @@ export function magicPurge(state, action) {
     };
   }
 
-  const resonanceDampingRank = getPerkRank(magic, "resonance_damping");
+  const resonanceDampingRank = rollout.layerD ? getPerkRank(magic, "resonance_damping") : 0;
   const damp = clamp(1 - 0.1 * resonanceDampingRank, 0.5, 1);
-  const resonanceGain = (0.8 + 6 * removedTotal + 2.2 * pressure + 1.2 * avgTaint) * damp;
+  const resonanceGain = rollout.layerC
+    ? (0.8 + 6 * removedTotal + 2.2 * pressure + 1.2 * avgTaint) * damp
+    : 0;
   const mindCost = 0.6 + effort * 0.14;
   const bodyCost = 0.4 + effort * 0.08;
 
-  const nextMagicWithResonance = applyResonanceDelta(
-    applyStabilityDelta(
-      {
-        ...magic,
-        reservesTaint: nextReservesTaint,
-      },
-      { mind: -mindCost, body: -bodyCost },
-    ),
-    resonanceGain,
+  const nextMagicBase = applyStabilityDelta(
+    {
+      ...magic,
+      reservesTaint: nextReservesTaint,
+    },
+    { mind: -mindCost, body: -bodyCost },
   );
-  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+  const nextMagicWithResonance = rollout.layerC
+    ? applyResonanceDelta(nextMagicBase, resonanceGain)
+    : nextMagicBase;
+  const overload = resolveOverloadResult(nextMagicWithResonance, {
+    enabled: rollout.layerC,
     ambient,
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: requestedEssence,
   });
-  const training = applyPerkTraining(
-    overload.magic,
-    [
-      { id: "clean_refining", xp: 1.2 + removedTotal * 10 },
-      { id: "resonance_damping", xp: 0.8 + effort * 0.1 },
-    ],
-    { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
-  );
+  const training = rollout.layerD
+    ? applyPerkTraining(
+        overload.magic,
+        [
+          { id: "clean_refining", xp: 1.2 + removedTotal * 10 },
+          { id: "resonance_damping", xp: 0.8 + effort * 0.1 },
+        ],
+        { turn: toNumberSafe(hydrated.world?.turnCount, 0) },
+      )
+    : { magic: overload.magic, rankUps: [] };
 
   const nextState = recomputeManaFree({
     ...hydrated,
@@ -1801,6 +1975,7 @@ export function magicPurge(state, action) {
 
 export function magicShape(state, action) {
   const hydrated = ensureEssenceWeavingState(state);
+  const rollout = resolveMagicRollout(hydrated?.config);
   const player = hydrated.player;
   const magic = player.magic;
   const essence = normalizeEssenceId(action?.essence);
@@ -1823,10 +1998,13 @@ export function magicShape(state, action) {
 
   const ambient = hydrated.world?.essence?.ambient || {};
   const pressure = computeEnvironmentalPressure(ambient);
-  const resonanceGain = 0.8 + 0.4 * pressure;
-  const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
-  const nextMagicWithResonance = applyResonanceDelta(magic, resonanceGain * damp);
-  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+  const resonanceGain = rollout.layerC ? 0.8 + 0.4 * pressure : 0;
+  const damp = clamp(1 - 0.1 * (rollout.layerD ? getPerkRank(magic, "resonance_damping") : 0), 0.5, 1);
+  const nextMagicWithResonance = rollout.layerC
+    ? applyResonanceDelta(magic, resonanceGain * damp)
+    : magic;
+  const overload = resolveOverloadResult(nextMagicWithResonance, {
+    enabled: rollout.layerC,
     ambient,
     turn,
     preferredEssence: essence,
@@ -1848,6 +2026,7 @@ export function magicShape(state, action) {
 
 export function magicWeave(state, action) {
   const hydrated = ensureEssenceWeavingState(state);
+  const rollout = resolveMagicRollout(hydrated?.config);
   const player = hydrated.player;
   const magic = player.magic;
   const essences = Array.isArray(action?.essences)
@@ -1871,10 +2050,13 @@ export function magicWeave(state, action) {
 
   const ambient = hydrated.world?.essence?.ambient || {};
   const pressure = computeEnvironmentalPressure(ambient);
-  const resonanceGain = 1.2 + 0.6 * pressure;
-  const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
-  const nextMagicWithResonance = applyResonanceDelta(magic, resonanceGain * damp);
-  const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+  const resonanceGain = rollout.layerC ? 1.2 + 0.6 * pressure : 0;
+  const damp = clamp(1 - 0.1 * (rollout.layerD ? getPerkRank(magic, "resonance_damping") : 0), 0.5, 1);
+  const nextMagicWithResonance = rollout.layerC
+    ? applyResonanceDelta(magic, resonanceGain * damp)
+    : magic;
+  const overload = resolveOverloadResult(nextMagicWithResonance, {
+    enabled: rollout.layerC,
     ambient,
     turn,
   });
@@ -1948,6 +2130,7 @@ function capitalize(value) {
 
 export function magicRelease(state) {
   const hydrated = ensureEssenceWeavingState(state);
+  const rollout = resolveMagicRollout(hydrated?.config);
   const player = hydrated.player;
   const magic = player.magic;
   const prepared = magic.prepared;
@@ -1999,11 +2182,12 @@ export function magicRelease(state) {
     ) / ESSENCE_PRIMES.length;
     const anchored = Boolean(magic.anchors?.self || magic.anchors?.area || magic.anchors?.itemId);
     const anchorMult = anchored ? 0.9 : 1;
-    const resonanceGain =
-      (2 + 0.05 * magnitude + 4 * interferenceScore + 2.5 * avgTaint + 2 * pressure) * anchorMult;
-    const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+    const resonanceGain = rollout.layerC
+      ? (2 + 0.05 * magnitude + 4 * interferenceScore + 2.5 * avgTaint + 2 * pressure) * anchorMult
+      : 0;
+    const damp = clamp(1 - 0.1 * (rollout.layerD ? getPerkRank(magic, "resonance_damping") : 0), 0.5, 1);
 
-    const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
+    const resonance = rollout.layerC ? clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100) : 0;
     const unfamiliar = Boolean(prepared.unfamiliar);
     const outcomeTag =
       unfamiliar || resonance >= 60 || stabilityPct(magic.stability?.mind) < 0.4
@@ -2020,39 +2204,42 @@ export function magicRelease(state) {
       expiresTurn: turn + 20,
     };
 
-    let nextMagic = applyResonanceDelta(
-      applyStabilityDelta(
-        {
-          ...magic,
-          charges: nextCharges,
-          reserves: {
-            ...magic.reserves,
-            [essence]: reserveHave - reservesUsed,
-          },
-          prepared: null,
-          activeWorkings: [
-            ...(Array.isArray(magic.activeWorkings) ? magic.activeWorkings : []),
-            working,
-          ],
+    const nextMagicBase = applyStabilityDelta(
+      {
+        ...magic,
+        charges: nextCharges,
+        reserves: {
+          ...magic.reserves,
+          [essence]: reserveHave - reservesUsed,
         },
-        { mind: -mindCost, body: -bodyCost },
-      ),
-      resonanceGain * damp,
+        prepared: null,
+        activeWorkings: [
+          ...(Array.isArray(magic.activeWorkings) ? magic.activeWorkings : []),
+          working,
+        ],
+      },
+      { mind: -mindCost, body: -bodyCost },
     );
+    let nextMagic = rollout.layerC
+      ? applyResonanceDelta(nextMagicBase, resonanceGain * damp)
+      : nextMagicBase;
 
-    if (unfamiliar) {
+    if (rollout.layerD && unfamiliar) {
       nextMagic = addUnlockedPattern(nextMagic, "shape", prepared.form);
     }
-    const overload = applyResonanceOverloadEvent(nextMagic, {
+    const overload = resolveOverloadResult(nextMagic, {
+      enabled: rollout.layerC,
       ambient,
       turn,
       preferredEssence: essence,
     });
-    const training = applyPerkTraining(
-      overload.magic,
-      [{ id: "resonance_damping", xp: 1.4 + magnitude * 0.03 }],
-      { turn },
-    );
+    const training = rollout.layerD
+      ? applyPerkTraining(
+          overload.magic,
+          [{ id: "resonance_damping", xp: 1.4 + magnitude * 0.03 }],
+          { turn },
+        )
+      : { magic: overload.magic, rankUps: [] };
 
     const nextState = recomputeManaFree({
       ...hydrated,
@@ -2117,11 +2304,13 @@ export function magicRelease(state) {
       0.3 * stabilityPct(magic.stability?.mind) +
       0.3 * stabilityPct(magic.stability?.cognitive);
     const baseCoherence = purityAvg * (1 - oppositionPenalty);
-    const stableWeavesRank = getPerkRank(magic, "stable_weaves");
+    const stableWeavesRank = rollout.layerD ? getPerkRank(magic, "stable_weaves") : 0;
     const anchored = Boolean(magic.anchors?.self || magic.anchors?.area || magic.anchors?.itemId);
     const anchorCoherenceMult = anchored ? 1.05 : 1;
-    const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
-    const resonanceCoherenceMult = clamp(1 - 0.25 * (resonance / 100), 0.6, 1);
+    const resonance = rollout.layerC ? clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100) : 0;
+    const resonanceCoherenceMult = rollout.layerC
+      ? clamp(1 - 0.25 * (resonance / 100), 0.6, 1)
+      : 1;
     const unfamiliar = Boolean(prepared.unfamiliar);
     const unfamiliarMult = unfamiliar ? 0.85 : 1;
     const coherence = clamp(
@@ -2145,7 +2334,12 @@ export function magicRelease(state) {
       0,
     ) / ESSENCE_PRIMES.length;
     const backlashChance = clamp(
-      0.02 + (1 - coherence) * 0.2 + 0.0025 * resonance + 0.08 * interferenceScore + 0.06 * avgTaint + 0.06 * pressure,
+      0.02 +
+        (1 - coherence) * 0.2 +
+        (rollout.layerC ? 0.0025 * resonance : 0) +
+        0.08 * interferenceScore +
+        0.06 * avgTaint +
+        0.06 * pressure,
       0,
       1,
     );
@@ -2167,24 +2361,30 @@ export function magicRelease(state) {
       { cognitive: -cognitiveCost, mind: -mindCost, ...extra },
     );
 
-    const resonanceGain =
-      (6 + 0.12 * amountTotal + 10 * interferenceScore + 4 * avgTaint + 3 * pressure) *
-      (anchored ? 0.9 : 1);
-    const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
-    let nextMagicWithResonance = applyResonanceDelta(nextMagic, resonanceGain * damp);
+    const resonanceGain = rollout.layerC
+      ? (6 + 0.12 * amountTotal + 10 * interferenceScore + 4 * avgTaint + 3 * pressure) *
+        (anchored ? 0.9 : 1)
+      : 0;
+    const damp = clamp(1 - 0.1 * (rollout.layerD ? getPerkRank(magic, "resonance_damping") : 0), 0.5, 1);
+    let nextMagicWithResonance = rollout.layerC
+      ? applyResonanceDelta(nextMagic, resonanceGain * damp)
+      : nextMagic;
 
-    if (success && unfamiliar) {
+    if (rollout.layerD && success && unfamiliar) {
       nextMagicWithResonance = addUnlockedPattern(nextMagicWithResonance, "weave", prepared.pattern);
     }
-    const overload = applyResonanceOverloadEvent(nextMagicWithResonance, {
+    const overload = resolveOverloadResult(nextMagicWithResonance, {
+      enabled: rollout.layerC,
       ambient,
       turn,
     });
-    const training = applyPerkTraining(
-      overload.magic,
-      [{ id: "stable_weaves", xp: 2 + 0.08 * amountTotal }],
-      { turn },
-    );
+    const training = rollout.layerD
+      ? applyPerkTraining(
+          overload.magic,
+          [{ id: "stable_weaves", xp: 2 + 0.08 * amountTotal }],
+          { turn },
+        )
+      : { magic: overload.magic, rankUps: [] };
 
     const outcomeTag = backlash
       ? "backlash"

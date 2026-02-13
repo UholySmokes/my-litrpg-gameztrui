@@ -1,5 +1,8 @@
 import { describe, it, expect } from "@jest/globals";
-import { buildHistorySection } from "../../src/core/PromptAssembler.js";
+import {
+  assemblePrompt,
+  buildHistorySection,
+} from "../../src/core/PromptAssembler.js";
 
 const makeEntry = ({ id, type, text, timestamp, sequence }) => ({
   id,
@@ -77,5 +80,63 @@ describe("buildHistorySection", () => {
     expect(lines.length).toBe(15);
     expect(lines[0]).toBe("Narrator: Event 0");
     expect(lines[14]).toBe("Narrator: Event 14");
+  });
+});
+
+describe("assemblePrompt", () => {
+  it("injects magic ecology context when available", () => {
+    const gameState = {
+      player: {
+        name: "Tester",
+        level: 5,
+        hp: { current: 70, max: 100 },
+        mana: { current: 30, max: 50 },
+        xp: { current: 10, max: 100 },
+        inventory: [],
+        equipment: {},
+        magic: {
+          resonance: { current: 42, max: 100, state: "humming" },
+          reserves: { fire: 4.2 },
+          reservesTaint: { fire: 0.15 },
+          charges: [{ essence: "fire", amount: 1 }],
+          prepared: { kind: "weave", pattern: "spiral" },
+          unlockedPatterns: { weave: ["spiral"] },
+          perks: [{ id: "stable_weaves", rank: 1 }],
+        },
+      },
+      world: {
+        flags: {},
+        location: { current: "starting_zone", biome: "city" },
+        essence: {
+          ambient: {
+            compositionByEssence: { fire: { density: 0.4, purity: 0.8, taint: 0.1 } },
+            global: {
+              drawMultByEssence: { fire: 1.1 },
+            },
+            provenance: {
+              timeOfDay: "dusk",
+              weatherType: "rain",
+              weatherIntensity: 0.6,
+              anomalyIds: ["storm_node"],
+              sourceIds: ["storm_water"],
+            },
+          },
+        },
+      },
+      quests: { active: [] },
+      narrative: { entries: [], summary: "" },
+      combat: { status: "inactive" },
+    };
+
+    const prompt = assemblePrompt(gameState, "sense essence", {
+      success: true,
+      actionType: "magic_sense",
+      description: "Sensed essence",
+    });
+
+    expect(prompt).toContain("Magic Resonance:");
+    expect(prompt).toContain("Magic Reserves:");
+    expect(prompt).toContain("Ambient Context:");
+    expect(prompt).toContain("Ambient Draw Multipliers:");
   });
 });

@@ -38,6 +38,42 @@ const TIME_OF_DAY = {
   DUSK: "dusk",
 };
 
+const WEATHER_TYPES = ["clear", "rain", "storm", "drought", "fog"];
+const WEATHER_TRANSITIONS = {
+  clear: ["rain", "fog", "drought"],
+  rain: ["clear", "storm", "fog"],
+  storm: ["rain", "clear"],
+  drought: ["clear", "storm"],
+  fog: ["clear", "rain"],
+};
+const WEATHER_BASE_INTENSITY = {
+  clear: 0.25,
+  rain: 0.55,
+  storm: 0.78,
+  drought: 0.68,
+  fog: 0.45,
+};
+const DEFAULT_TURN_MINUTES = 10;
+const DEFAULT_WEATHER_UPDATE_TURNS = 6;
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function toFiniteNumber(value, fallback = 0) {
+  return Number.isFinite(value) ? Number(value) : fallback;
+}
+
+function hashString(input) {
+  const text = String(input ?? "");
+  let hash = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    hash = (hash << 5) - hash + text.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash >>> 0;
+}
+
 /**
  * Initialize time system
  * @param {object} state - Current game state
@@ -92,13 +128,15 @@ export function getTimeOfDay(gameTime) {
  * @returns {object} Updated state
  */
 export function updateTime(state, deltaMinutes) {
-  if (!state.world?.time) {
-    return initializeTime(state);
+  const initialized = state.world?.time ? state : initializeTime(state);
+  const safeDelta = Math.floor(toFiniteNumber(deltaMinutes, 0));
+  if (safeDelta === 0) {
+    return initialized;
   }
 
-  const currentTime = state.world.time.currentTime;
-  const newTime = (currentTime + deltaMinutes) % 1440;
-  const oldTimeOfDay = state.world.time.timeOfDay;
+  const currentTime = toFiniteNumber(initialized.world?.time?.currentTime, 480);
+  const newTime = ((currentTime + safeDelta) % 1440 + 1440) % 1440;
+  const oldTimeOfDay = initialized.world.time.timeOfDay;
   const newTimeOfDay = getTimeOfDay(newTime);
 
   // Emit event if time of day changed
@@ -111,17 +149,134 @@ export function updateTime(state, deltaMinutes) {
   }
 
   return {
-    ...state,
+    ...initialized,
     world: {
-      ...state.world,
+      ...initialized.world,
       time: {
-        ...state.world.time,
+        ...initialized.world.time,
         currentTime: newTime,
         timeOfDay: newTimeOfDay,
         lastUpdate: SimBridge.now(),
       },
     },
   };
+}
+
+function normalizeWeatherEntry(entry = {}) {
+  const typeRaw = typeof entry.type === "string" ? entry.type.trim().toLowerCase() : "clear";
+  const type = WEATHER_TYPES.includes(typeRaw) ? typeRaw : "clear";
+  const intensity = clamp(toFiniteNumber(entry.intensity, WEATHER_BASE_INTENSITY[type]), 0, 1);
+  const updatedTurn = Math.max(0, Math.floor(toFiniteNumber(entry.updatedTurn, 0)));
+  return { type, intensity, updatedTurn };
+}
+
+function resolveTurnMinutes(state, explicitMinutes) {
+  const candidate = toFiniteNumber(explicitMinutes, NaN);
+  if (Number.isFinite(candidate) && candidate > 0) {
+    return Math.floor(candidate);
+  }
+  const fromConfig = toFiniteNumber(state?.config?.worldMinutesPerTurn, DEFAULT_TURN_MINUTES);
+  return Math.max(1, Math.floor(fromConfig));
+}
+
+function advanceWeather(state, { turnCount, cadenceTurns } = {}) {
+  const world = state.world || {};
+  const location = world.location && typeof world.location === "object" ? world.location : {};
+  const activeBiome =
+    typeof location.biome === "string" && location.biome.trim()
+      ? location.biome.trim().toLowerCase()
+      : "city";
+
+  const weatherRoot =
+    world.weather && typeof world.weather === "object" && !Array.isArray(world.weather)
+      ? world.weather
+      : {};
+  const currentByBiome =
+    weatherRoot.byBiome && typeof weatherRoot.byBiome === "object" && !Array.isArray(weatherRoot.byBiome)
+      ? weatherRoot.byBiome
+      : {};
+
+  const nextTurn = Math.max(0, Math.floor(toFiniteNumber(turnCount, world.turnCount || 0)));
+  const cadence = Math.max(
+    1,
+    Math.floor(toFiniteNumber(cadenceTurns, state?.config?.weatherUpdateEveryTurns ?? DEFAULT_WEATHER_UPDATE_TURNS)),
+  );
+
+  const targetBiomes = new Set([...Object.keys(currentByBiome), activeBiome]);
+  const nextByBiome = {};
+  let changed = false;
+
+  targetBiomes.forEach((biomeIdRaw) => {
+    const biomeId = String(biomeIdRaw || "").trim().toLowerCase();
+    if (!biomeId) return;
+
+    const current = normalizeWeatherEntry(currentByBiome[biomeId]);
+    const turnsSince = Math.max(0, nextTurn - current.updatedTurn);
+    if (turnsSince < cadence) {
+      nextByBiome[biomeId] = current;
+      return;
+    }
+
+    const weatherHash = hashString(`${biomeId}:${nextTurn}:${current.type}`);
+    const roll = (weatherHash % 1000) / 1000;
+    const transitionPool = WEATHER_TRANSITIONS[current.type] || WEATHER_TRANSITIONS.clear;
+    const shouldTransition = roll < 0.35;
+
+    let nextType = current.type;
+    if (shouldTransition && transitionPool.length > 0) {
+      nextType = transitionPool[weatherHash % transitionPool.length] || current.type;
+    }
+
+    const drift = (((weatherHash >>> 8) % 201) - 100) / 1000; // -0.1..0.1
+    const baseIntensity = WEATHER_BASE_INTENSITY[nextType] ?? 0.3;
+    const intensitySeed = shouldTransition ? baseIntensity : current.intensity;
+    const nextIntensity = clamp(intensitySeed + drift, 0.1, 1);
+
+    nextByBiome[biomeId] = {
+      type: nextType,
+      intensity: nextIntensity,
+      updatedTurn: nextTurn,
+    };
+
+    if (
+      nextType !== current.type ||
+      Math.abs(nextIntensity - current.intensity) >= 0.01 ||
+      current.updatedTurn !== nextTurn
+    ) {
+      changed = true;
+    }
+  });
+
+  if (!changed) {
+    return state;
+  }
+
+  return {
+    ...state,
+    world: {
+      ...world,
+      weather: {
+        ...weatherRoot,
+        byBiome: nextByBiome,
+      },
+    },
+  };
+}
+
+/**
+ * Advances world clock and weather on turn-based actions.
+ * This keeps ambient magic inputs (time/weather) in sync with turn progression.
+ */
+export function advanceWorldTimeAndWeather(
+  state,
+  { turns = 1, minutesPerTurn } = {},
+) {
+  const safeTurns = Math.max(1, Math.floor(toFiniteNumber(turns, 1)));
+  const deltaMinutes = resolveTurnMinutes(state, minutesPerTurn) * safeTurns;
+  const withTime = updateTime(state, deltaMinutes);
+  return advanceWeather(withTime, {
+    turnCount: withTime.world?.turnCount || 0,
+  });
 }
 
 /**

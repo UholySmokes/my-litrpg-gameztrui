@@ -5,7 +5,10 @@ import {
   playerAttack,
   processEnemyTurns,
 } from "../systems/combat/CombatSystem.js";
-import { processTimeEffects } from "../systems/world/TimeSystem.js";
+import {
+  processTimeEffects,
+  advanceWorldTimeAndWeather,
+} from "../systems/world/TimeSystem.js";
 import { withTraceSpan } from "../observability/traceShim.js";
 import {
   magicSense,
@@ -347,9 +350,13 @@ export function executeAction(state, action, _options = {}) {
         case "move":
           if (action.targetLocation) {
             newState = moveToLocation(state, action.targetLocation);
-            description = `Moved to ${action.targetLocation}`;
-            changes.location = action.targetLocation;
-            incrementsTurn = false; // moveToLocation already increments turnCount
+            if (newState === state) {
+              description = `Already at ${action.targetLocation}`;
+              incrementsTurn = false;
+            } else {
+              description = `Moved to ${action.targetLocation}`;
+              changes.location = action.targetLocation;
+            }
           } else {
             return {
               success: false,
@@ -494,6 +501,7 @@ export function executeAction(state, action, _options = {}) {
           },
         };
 
+        newState = advanceWorldTimeAndWeather(newState, { turns: 1 });
         newState = processEssenceEcologyTurn(newState);
 
         // Apply passive time-based effects (mana regen, race abilities)

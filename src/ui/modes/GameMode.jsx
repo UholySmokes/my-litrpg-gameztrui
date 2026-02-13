@@ -315,6 +315,7 @@ export default function GameMode({
             content: (
               <StatusOverlay
                 player={player}
+                world={gameState?.world}
                 config={config}
                 isOpen={true}
                 onClose={onCloseStatusOverlay}

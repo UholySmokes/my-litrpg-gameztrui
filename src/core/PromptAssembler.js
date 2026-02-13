@@ -158,6 +158,166 @@ function buildArchetypeToneDirective(archetypeSystem) {
   return toneMap[category] || `\nThe player's archetype system is "${name}". Reference it when relevant.`;
 }
 
+function formatNumber(value, digits = 2) {
+  return Number.isFinite(value) ? Number(value).toFixed(digits) : "0.00";
+}
+
+function buildMagicContextLines(player = {}, world = {}) {
+  const magic =
+    player?.magic && typeof player.magic === "object" && !Array.isArray(player.magic)
+      ? player.magic
+      : null;
+  if (!magic) return [];
+
+  const lines = [];
+  const resonance = magic.resonance || {};
+  const resonanceCurrent = toNumber(resonance.current, 0);
+  const resonanceMax = Math.max(1, toNumber(resonance.max, 100));
+  const resonanceState =
+    typeof resonance.state === "string" && resonance.state.trim()
+      ? resonance.state
+      : "quiet";
+  lines.push(
+    `Magic Resonance: ${formatNumber(resonanceCurrent, 1)}/${formatNumber(resonanceMax, 1)} (${resonanceState})`,
+  );
+
+  const reserves =
+    magic.reserves && typeof magic.reserves === "object" && !Array.isArray(magic.reserves)
+      ? magic.reserves
+      : {};
+  const reservesTaint =
+    magic.reservesTaint &&
+    typeof magic.reservesTaint === "object" &&
+    !Array.isArray(magic.reservesTaint)
+      ? magic.reservesTaint
+      : {};
+  const reserveList = Object.entries(reserves)
+    .map(([essence, amount]) => ({
+      essence,
+      amount: toNumber(amount, 0),
+      taint: toNumber(reservesTaint?.[essence], 0),
+    }))
+    .filter((entry) => entry.amount > 0.01)
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 4);
+  if (reserveList.length > 0) {
+    lines.push(
+      `Magic Reserves: ${reserveList
+        .map(
+          (entry) =>
+            `${entry.essence} ${formatNumber(entry.amount, 2)} (taint ${Math.max(
+              0,
+              entry.taint * 100,
+            ).toFixed(1)}%)`,
+        )
+        .join("; ")}`,
+    );
+  }
+
+  const charges = Array.isArray(magic.charges) ? magic.charges : [];
+  lines.push(`Magic Charges: ${charges.length}`);
+
+  const prepared =
+    magic.prepared && typeof magic.prepared === "object" && !Array.isArray(magic.prepared)
+      ? magic.prepared
+      : null;
+  if (prepared) {
+    const preparedKind = prepared.kind || "pattern";
+    const preparedId = prepared.pattern || prepared.form || prepared.essence || "ready";
+    lines.push(`Prepared Magic: ${preparedKind}:${preparedId}`);
+  }
+
+  const unlockedPatterns =
+    magic.unlockedPatterns &&
+    typeof magic.unlockedPatterns === "object" &&
+    !Array.isArray(magic.unlockedPatterns)
+      ? magic.unlockedPatterns
+      : {};
+  const patternCounts = Object.entries(unlockedPatterns)
+    .map(([kind, list]) => ({
+      kind,
+      count: Array.isArray(list) ? list.filter(Boolean).length : 0,
+    }))
+    .filter((entry) => entry.count > 0);
+  if (patternCounts.length > 0) {
+    lines.push(
+      `Unlocked Patterns: ${patternCounts
+        .map((entry) => `${entry.kind}(${entry.count})`)
+        .join(", ")}`,
+    );
+  }
+
+  const perks = Array.isArray(magic.perks) ? magic.perks : [];
+  if (perks.length > 0) {
+    lines.push(
+      `Magic Perks: ${perks
+        .map((perk) => {
+          if (typeof perk === "string") return perk;
+          if (perk && typeof perk === "object") {
+            const id = typeof perk.id === "string" ? perk.id : null;
+            const rank = Number.isFinite(perk.rank) ? ` r${perk.rank}` : "";
+            return id ? `${id}${rank}` : null;
+          }
+          return null;
+        })
+        .filter(Boolean)
+        .slice(0, 6)
+        .join(", ")}`,
+    );
+  }
+
+  const ambient =
+    world?.essence?.ambient &&
+    typeof world.essence.ambient === "object" &&
+    !Array.isArray(world.essence.ambient)
+      ? world.essence.ambient
+      : null;
+  const ambientSnapshot =
+    ambient &&
+    ambient.global &&
+    typeof ambient.global === "object" &&
+    ambient.compositionByEssence &&
+    typeof ambient.compositionByEssence === "object"
+      ? ambient
+      : null;
+
+  if (ambientSnapshot) {
+    const provenance = ambientSnapshot.provenance || {};
+    const parts = [];
+    if (provenance.timeOfDay) parts.push(`time ${provenance.timeOfDay}`);
+    if (provenance.weatherType) {
+      const intensity = Number.isFinite(provenance.weatherIntensity)
+        ? ` ${Number(provenance.weatherIntensity).toFixed(2)}`
+        : "";
+      parts.push(`weather ${provenance.weatherType}${intensity}`);
+    }
+    if (Array.isArray(provenance.anomalyIds) && provenance.anomalyIds.length > 0) {
+      parts.push(`anomalies ${provenance.anomalyIds.join(",")}`);
+    }
+    if (Array.isArray(provenance.sourceIds) && provenance.sourceIds.length > 0) {
+      parts.push(`sources ${provenance.sourceIds.join(",")}`);
+    }
+    if (parts.length > 0) {
+      lines.push(`Ambient Context: ${parts.join(" | ")}`);
+    }
+
+    const drawNotables = Object.entries(ambientSnapshot.global?.drawMultByEssence || {})
+      .map(([essence, mult]) => ({ essence, mult: toNumber(mult, 1) }))
+      .filter((entry) => Math.abs(entry.mult - 1) >= 0.05)
+      .sort((a, b) => Math.abs(b.mult - 1) - Math.abs(a.mult - 1))
+      .slice(0, 4);
+    if (drawNotables.length > 0) {
+      lines.push(
+        `Ambient Draw Multipliers: ${drawNotables
+          .map((entry) => `${entry.essence} x${entry.mult.toFixed(2)}`)
+          .join("; ")}`,
+      );
+    }
+  }
+
+  return lines;
+}
+
 /**
  * Builds the context section from game state
  */
@@ -166,6 +326,7 @@ function buildContextSection(gameState) {
   const world = gameState?.world || {};
   const archetypeSystem = resolveArchetypeSystem(player);
   const systemLines = [];
+  const magicLines = buildMagicContextLines(player, world);
   if (archetypeSystem) {
     const systemName = archetypeSystem.name || archetypeSystem.id || "Unknown";
     const category = archetypeSystem.category
@@ -254,6 +415,7 @@ function buildContextSection(gameState) {
     equippedLine,
     `Inventory: ${inventoryList}`,
     `Active Quests: ${activeQuests}`,
+    ...magicLines,
     ...systemLines,
     `World Flags: ${worldFlags}`,
   ].filter((line) => typeof line === "string" && line.trim().length > 0);

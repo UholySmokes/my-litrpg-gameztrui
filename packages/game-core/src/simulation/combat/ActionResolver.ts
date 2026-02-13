@@ -17,6 +17,16 @@ import {
   MoveCommand,
   EquipItemCommand,
   RestCommand,
+  MagicSenseCommand,
+  MagicAttuneCommand,
+  MagicDrawCommand,
+  MagicRefineCommand,
+  MagicCompressCommand,
+  MagicShapeCommand,
+  MagicWeaveCommand,
+  MagicAnchorCommand,
+  MagicPurgeCommand,
+  MagicReleaseCommand,
 } from "../types/core";
 import { spendActionPoints } from "./ActionScheduler";
 import { applyEffect as applySimulationEffect } from "../effects/EffectEngine";
@@ -63,6 +73,36 @@ const DEFAULT_COSTS: Record<string, ActionCost> = {
     actionPoints: 1,
   },
   Rest: {
+    actionPoints: 1,
+  },
+  MagicSense: {
+    actionPoints: 0,
+  },
+  MagicAttune: {
+    actionPoints: 0,
+  },
+  MagicDraw: {
+    actionPoints: 1,
+  },
+  MagicRefine: {
+    actionPoints: 1,
+  },
+  MagicCompress: {
+    actionPoints: 1,
+  },
+  MagicShape: {
+    actionPoints: 1,
+  },
+  MagicWeave: {
+    actionPoints: 1,
+  },
+  MagicAnchor: {
+    actionPoints: 1,
+  },
+  MagicPurge: {
+    actionPoints: 1,
+  },
+  MagicRelease: {
     actionPoints: 1,
   },
 };
@@ -946,6 +986,172 @@ export function resolveRestCommand(
   };
 }
 
+function resolveMagicStateCommand(
+  command:
+    | MagicSenseCommand
+    | MagicAttuneCommand
+    | MagicDrawCommand
+    | MagicRefineCommand
+    | MagicCompressCommand
+    | MagicShapeCommand
+    | MagicWeaveCommand
+    | MagicAnchorCommand
+    | MagicPurgeCommand
+    | MagicReleaseCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+  actionType: string,
+  changes: Record<string, unknown>,
+): ActionResolutionResult {
+  const events: Event[] = [];
+  const actor = entities.get(command.entityId);
+  if (!actor) {
+    return { success: false, reason: "Missing entity", entities, events };
+  }
+
+  const cost = DEFAULT_COSTS[actionType] || { actionPoints: 0 };
+  const costCheck = checkCosts(actor, cost);
+  if (!costCheck.ok) {
+    return { success: false, reason: costCheck.reason, entities, events };
+  }
+
+  let updatedEntities = new Map(entities);
+  updatedEntities = applyActionPoints(
+    updatedEntities,
+    actor.id,
+    cost,
+    ctx.tick,
+    ctx.timestamp,
+    events,
+    String(actionType).toLowerCase(),
+  );
+
+  events.push({
+    id: createEventId("magic", ctx.tick, command.id, events.length),
+    type: "StateChanged",
+    tick: ctx.tick,
+    timestamp: ctx.timestamp,
+    entityId: actor.id,
+    actionType,
+    changes,
+    description: `${actionType} resolved`,
+  } as StateChangedEvent);
+
+  return {
+    success: true,
+    entities: updatedEntities,
+    events,
+  };
+}
+
+export function resolveMagicSenseCommand(
+  command: MagicSenseCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicSense", {
+    essence: command.essence ?? null,
+  });
+}
+
+export function resolveMagicAttuneCommand(
+  command: MagicAttuneCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicAttune", {
+    stance: command.stance ?? null,
+  });
+}
+
+export function resolveMagicDrawCommand(
+  command: MagicDrawCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicDraw", {
+    essence: command.essence,
+    amount: command.amount ?? null,
+  });
+}
+
+export function resolveMagicRefineCommand(
+  command: MagicRefineCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicRefine", {
+    essence: command.essence,
+    method: command.method ?? null,
+    amount: command.amount ?? null,
+  });
+}
+
+export function resolveMagicCompressCommand(
+  command: MagicCompressCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicCompress", {
+    essence: command.essence,
+    method: command.method ?? null,
+    tier: command.tier ?? null,
+  });
+}
+
+export function resolveMagicShapeCommand(
+  command: MagicShapeCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicShape", {
+    essence: command.essence ?? null,
+    form: command.form ?? null,
+    amount: command.amount ?? null,
+  });
+}
+
+export function resolveMagicWeaveCommand(
+  command: MagicWeaveCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicWeave", {
+    essences: Array.isArray(command.essences) ? command.essences : [],
+    pattern: command.pattern ?? null,
+  });
+}
+
+export function resolveMagicAnchorCommand(
+  command: MagicAnchorCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicAnchor", {
+    kind: command.kind ?? null,
+    itemId: command.itemId ?? null,
+  });
+}
+
+export function resolveMagicPurgeCommand(
+  command: MagicPurgeCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicPurge", {
+    essence: command.essence ?? null,
+    amount: command.amount ?? null,
+  });
+}
+
+export function resolveMagicReleaseCommand(
+  command: MagicReleaseCommand,
+  entities: Map<EntityId, Entity>,
+  ctx: ActionResolutionContext,
+): ActionResolutionResult {
+  return resolveMagicStateCommand(command, entities, ctx, "MagicRelease", {});
+}
+
 export function resolveCommand(
   command: Command,
   entities: Map<EntityId, Entity>,
@@ -966,6 +1172,66 @@ export function resolveCommand(
       return resolveUseItemCommand(command as UseItemCommand, entities, ctx);
     case "Rest":
       return resolveRestCommand(command as RestCommand, entities, ctx);
+    case "MagicSense":
+      return resolveMagicSenseCommand(
+        command as MagicSenseCommand,
+        entities,
+        ctx,
+      );
+    case "MagicAttune":
+      return resolveMagicAttuneCommand(
+        command as MagicAttuneCommand,
+        entities,
+        ctx,
+      );
+    case "MagicDraw":
+      return resolveMagicDrawCommand(
+        command as MagicDrawCommand,
+        entities,
+        ctx,
+      );
+    case "MagicRefine":
+      return resolveMagicRefineCommand(
+        command as MagicRefineCommand,
+        entities,
+        ctx,
+      );
+    case "MagicCompress":
+      return resolveMagicCompressCommand(
+        command as MagicCompressCommand,
+        entities,
+        ctx,
+      );
+    case "MagicShape":
+      return resolveMagicShapeCommand(
+        command as MagicShapeCommand,
+        entities,
+        ctx,
+      );
+    case "MagicWeave":
+      return resolveMagicWeaveCommand(
+        command as MagicWeaveCommand,
+        entities,
+        ctx,
+      );
+    case "MagicAnchor":
+      return resolveMagicAnchorCommand(
+        command as MagicAnchorCommand,
+        entities,
+        ctx,
+      );
+    case "MagicPurge":
+      return resolveMagicPurgeCommand(
+        command as MagicPurgeCommand,
+        entities,
+        ctx,
+      );
+    case "MagicRelease":
+      return resolveMagicReleaseCommand(
+        command as MagicReleaseCommand,
+        entities,
+        ctx,
+      );
     default:
       return {
         success: false,

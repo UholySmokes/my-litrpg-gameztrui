@@ -193,6 +193,7 @@ startMana: 50                   // Starting max mana
 - Skills with `manaCost: 0` are free to use
 - Mana restored to max on level up
 - Basic Attack costs 0 mana
+- In essence-weaving flows, mana is the capacity budget that constrains reserve/charge operations
 
 ### Inventory
 
@@ -211,6 +212,11 @@ maxInventorySize: 20            // Maximum inventory slots
 This project supports a more detailed magic model where `Mana Pool` is total **essence capacity** (hybrid model) and effects are built via SENSE/DRAW/REFINE/COMPRESS/SHAPE/WEAVE.
 
 Canonical spec: [magic_essence_weaving_spec.md](docs/magic_essence_weaving_spec.md)
+
+Runtime integration notes:
+- Turn-advancing actions (including movement) must advance `world.turnCount`, world time/weather, then apply ecology decay/drift.
+- Ambient context should remain biome/anomaly-first, with time/weather as nudges.
+- Spell Study uses the 12-prime essence taxonomy (`fire, water, earth, air, lightning, shadow, light, life, creation, destruction, space, time`) with legacy aliases mapped for backwards compatibility.
 
 ---
 

@@ -538,6 +538,67 @@ let SIDE_QUESTS = [
       favoredClasses: ["mage", "battlemage"],
     },
   },
+  {
+    id: "sq_source_stormwater",
+    name: "Stormwater Capture",
+    description:
+      "A conduit engineer needs proof that living stormwater can be stabilized without detonating the relay grid.",
+    objectives: [
+      {
+        id: "sq_source_stormwater_obj",
+        description: "Discover and stabilize a storm_water essence source",
+        completed: false,
+      },
+    ],
+    rewards: {
+      xp: 70,
+      magic: {
+        perks: [{ id: "clean_refining", rank: 1 }],
+      },
+      items: [{ id: "storm_capacitor", quantity: 1 }],
+    },
+    autoComplete: {
+      requiresEssenceSource: "storm_water",
+    },
+    levelRequirement: 3,
+    tags: {
+      biome: "skydocks",
+      tones: ["urgent", "mysterious"],
+      favoredClasses: ["mage", "battlemage", "shaman"],
+      favoredRaces: ["stormforged", "skybound"],
+    },
+  },
+  {
+    id: "sq_source_ashfire",
+    name: "Ashfire Taming",
+    description:
+      "Smoke Wardens report runaway ashfire vents. Bind one safely and chart its signature for future weave trials.",
+    objectives: [
+      {
+        id: "sq_source_ashfire_obj",
+        description: "Discover an ash_fire essence source in the caldera routes",
+        completed: false,
+      },
+    ],
+    rewards: {
+      xp: 75,
+      magic: {
+        perks: [{ id: "safer_compression", rank: 1 }],
+        patterns: { weave: ["lattice"] },
+      },
+      items: [{ id: "caldera_seal", quantity: 1 }],
+    },
+    autoComplete: {
+      requiresEssenceSource: "ash_fire",
+    },
+    levelRequirement: 4,
+    tags: {
+      biome: "volcanic",
+      tones: ["grim", "mystical"],
+      favoredClasses: ["warlock", "battlemage", "druid"],
+      favoredRaces: ["emberkin", "phoenix_reborn"],
+    },
+  },
 ];
 
 // ---------------------------------------------------------------------------

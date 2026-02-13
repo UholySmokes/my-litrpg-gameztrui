@@ -15,6 +15,7 @@ import { getTalentById } from "../entities/Player.js";
 
 export default function StatusOverlay({
   player,
+  world,
   config,
   isOpen,
   onClose,
@@ -87,6 +88,111 @@ export default function StatusOverlay({
   );
   const canFuseSelection = canFuseSkills(selectedSkillA, selectedSkillB);
   const professionEntries = Object.entries(player.professions || {});
+
+  const worldState =
+    world && typeof world === "object" && !Array.isArray(world) ? world : {};
+  const magicState =
+    player.magic && typeof player.magic === "object" && !Array.isArray(player.magic)
+      ? player.magic
+      : {};
+  const ambient = worldState.essence?.ambient;
+  const isAmbientSnapshot = Boolean(
+    ambient &&
+      typeof ambient === "object" &&
+      !Array.isArray(ambient) &&
+      ambient.global &&
+      typeof ambient.global === "object" &&
+      ambient.compositionByEssence &&
+      typeof ambient.compositionByEssence === "object",
+  );
+  const ambientProvenance = isAmbientSnapshot ? ambient.provenance || {} : {};
+  const anomalyNames = Array.isArray(ambientProvenance.anomalyIds)
+    ? ambientProvenance.anomalyIds.filter(Boolean)
+    : [];
+  const sourceNames = Array.isArray(ambientProvenance.sourceIds)
+    ? ambientProvenance.sourceIds.filter(Boolean)
+    : [];
+
+  const resonance = magicState.resonance || {};
+  const resonanceCurrent = Number.isFinite(resonance.current) ? resonance.current : 0;
+  const resonanceMax = Number.isFinite(resonance.max) && resonance.max > 0 ? resonance.max : 100;
+  const resonanceState =
+    typeof resonance.state === "string" && resonance.state.trim()
+      ? resonance.state
+      : "quiet";
+
+  const reserves =
+    magicState.reserves && typeof magicState.reserves === "object" && !Array.isArray(magicState.reserves)
+      ? magicState.reserves
+      : {};
+  const reservesTaint =
+    magicState.reservesTaint &&
+    typeof magicState.reservesTaint === "object" &&
+    !Array.isArray(magicState.reservesTaint)
+      ? magicState.reservesTaint
+      : {};
+  const reserveRows = Object.entries(reserves)
+    .map(([essence, amount]) => ({
+      essence,
+      amount: Number.isFinite(amount) ? Number(amount) : 0,
+      taint: Number.isFinite(reservesTaint?.[essence]) ? Number(reservesTaint[essence]) : 0,
+    }))
+    .filter((entry) => entry.amount > 0.001)
+    .sort((a, b) => b.amount - a.amount);
+  const reserveTotal = reserveRows.reduce((sum, row) => sum + row.amount, 0);
+
+  const charges = Array.isArray(magicState.charges) ? magicState.charges : [];
+  const prepared =
+    magicState.prepared && typeof magicState.prepared === "object" && !Array.isArray(magicState.prepared)
+      ? magicState.prepared
+      : null;
+  const anchors =
+    magicState.anchors && typeof magicState.anchors === "object" && !Array.isArray(magicState.anchors)
+      ? magicState.anchors
+      : {};
+
+  const unlockedPatterns =
+    magicState.unlockedPatterns &&
+    typeof magicState.unlockedPatterns === "object" &&
+    !Array.isArray(magicState.unlockedPatterns)
+      ? magicState.unlockedPatterns
+      : {};
+  const unlockedPatternRows = Object.entries(unlockedPatterns)
+    .map(([kind, patterns]) => ({
+      kind,
+      patterns: Array.isArray(patterns) ? patterns.filter(Boolean) : [],
+    }))
+    .filter((entry) => entry.patterns.length > 0);
+  const unlockedPatternCount = unlockedPatternRows.reduce(
+    (sum, row) => sum + row.patterns.length,
+    0,
+  );
+
+  const perks = Array.isArray(magicState.perks) ? magicState.perks : [];
+  const perkProgress =
+    magicState.perkProgress &&
+    typeof magicState.perkProgress === "object" &&
+    !Array.isArray(magicState.perkProgress)
+      ? magicState.perkProgress
+      : {};
+  const perkProgressRows = Object.entries(perkProgress)
+    .map(([id, value]) => ({
+      id,
+      totalXp: Number.isFinite(value?.totalXp) ? Number(value.totalXp) : 0,
+      rank: Number.isFinite(value?.rank) ? Number(value.rank) : 0,
+    }))
+    .sort((a, b) => b.totalXp - a.totalXp);
+  const drawNotables = isAmbientSnapshot
+    ? Object.entries(ambient.global?.drawMultByEssence || {})
+        .map(([essence, mult]) => ({
+          essence,
+          mult: Number.isFinite(mult) ? Number(mult) : 1,
+          delta: Math.abs((Number.isFinite(mult) ? Number(mult) : 1) - 1),
+        }))
+        .filter((entry) => entry.delta >= 0.04)
+        .sort((a, b) => b.delta - a.delta)
+        .slice(0, 4)
+    : [];
 
   const hpMaxCanonical = calculateMaxHp(effectiveAttributes);
   const manaMaxCanonical = calculateMaxMana(effectiveAttributes);
@@ -271,6 +377,186 @@ export default function StatusOverlay({
               <StatCard label="System" value={archetypeSystemLabel} />
               <StatCard label="Race" value={raceLabel} />
               <StatCard label="Talents" value={talentLabel} />
+            </div>
+          </section>
+
+          <section>
+            <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+              Magic Ecology
+            </h3>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                gap: "0.75rem",
+                marginBottom: "0.75rem",
+              }}
+            >
+              <StatCard
+                label="Resonance"
+                value={`${resonanceCurrent.toFixed(1)} / ${resonanceMax.toFixed(1)}`}
+                tooltip="Rising resonance increases instability and overload risk"
+              />
+              <StatCard
+                label="Resonance State"
+                value={resonanceState}
+              />
+              <StatCard
+                label="Reserve Total"
+                value={reserveTotal.toFixed(1)}
+              />
+              <StatCard
+                label="Stored Charges"
+                value={String(charges.length)}
+              />
+              <StatCard
+                label="Prepared"
+                value={
+                  prepared
+                    ? `${prepared.kind || "pattern"}${prepared.pattern ? `:${prepared.pattern}` : ""}`
+                    : "None"
+                }
+              />
+              <StatCard
+                label="Unlocked Patterns"
+                value={String(unlockedPatternCount)}
+              />
+              <StatCard
+                label="Magic Perks"
+                value={String(perks.length)}
+              />
+              <StatCard
+                label="Ambient Weather"
+                value={
+                  ambientProvenance.weatherType
+                    ? `${ambientProvenance.weatherType} (${Number.isFinite(ambientProvenance.weatherIntensity) ? Number(ambientProvenance.weatherIntensity).toFixed(2) : "0.00"})`
+                    : "Unknown"
+                }
+              />
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gap: "0.75rem",
+              }}
+            >
+              <div className="holo-panel" style={{ padding: "0.75rem" }}>
+                <div style={{ color: "var(--holo-cyan)", marginBottom: "0.35rem" }}>
+                  Ambient Drivers
+                </div>
+                <div style={{ fontSize: "0.85rem", color: "var(--text-main)" }}>
+                  Time: {ambientProvenance.timeOfDay || "unknown"}
+                </div>
+                <div style={{ fontSize: "0.85rem", color: "var(--text-main)" }}>
+                  Weather: {ambientProvenance.weatherType || "unknown"}
+                </div>
+                <div style={{ fontSize: "0.85rem", color: "var(--text-main)" }}>
+                  Anomalies: {anomalyNames.length ? anomalyNames.join(", ") : "none"}
+                </div>
+                <div style={{ fontSize: "0.85rem", color: "var(--text-main)" }}>
+                  Sources: {sourceNames.length ? sourceNames.join(", ") : "none"}
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-dim)", marginTop: "0.35rem" }}>
+                  Draw notables:{" "}
+                  {drawNotables.length
+                    ? drawNotables
+                        .map((entry) => `${entry.essence} x${entry.mult.toFixed(2)}`)
+                        .join(" | ")
+                    : "none"}
+                </div>
+              </div>
+
+              <div className="holo-panel" style={{ padding: "0.75rem" }}>
+                <div style={{ color: "var(--holo-cyan)", marginBottom: "0.35rem" }}>
+                  Reserve Composition
+                </div>
+                {reserveRows.length === 0 ? (
+                  <div style={{ fontSize: "0.85rem", color: "var(--text-dim)" }}>
+                    No stored reserves.
+                  </div>
+                ) : (
+                  reserveRows.slice(0, 8).map((row) => (
+                    <div
+                      key={row.essence}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: "0.82rem",
+                        color: "var(--text-main)",
+                        padding: "0.15rem 0",
+                      }}
+                    >
+                      <span>{row.essence}</span>
+                      <span>
+                        {row.amount.toFixed(2)} | taint {(row.taint * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div className="holo-panel" style={{ padding: "0.75rem" }}>
+                <div style={{ color: "var(--holo-cyan)", marginBottom: "0.35rem" }}>
+                  Pattern & Anchor State
+                </div>
+                <div style={{ fontSize: "0.85rem", color: "var(--text-main)" }}>
+                  Anchored Self: {anchors.self ? "yes" : "no"}
+                </div>
+                <div style={{ fontSize: "0.85rem", color: "var(--text-main)" }}>
+                  Anchored Area: {anchors.area ? "yes" : "no"}
+                </div>
+                <div style={{ fontSize: "0.85rem", color: "var(--text-main)" }}>
+                  Anchored Item: {anchors.itemId || "none"}
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-dim)", marginTop: "0.35rem" }}>
+                  {unlockedPatternRows.length === 0
+                    ? "No unlocked patterns yet."
+                    : unlockedPatternRows
+                        .map((row) => `${row.kind}: ${row.patterns.join(", ")}`)
+                        .join(" | ")}
+                </div>
+              </div>
+
+              <div className="holo-panel" style={{ padding: "0.75rem" }}>
+                <div style={{ color: "var(--holo-cyan)", marginBottom: "0.35rem" }}>
+                  Perk Progress
+                </div>
+                {perks.length === 0 ? (
+                  <div style={{ fontSize: "0.85rem", color: "var(--text-dim)" }}>
+                    No perks owned.
+                  </div>
+                ) : (
+                  <div style={{ fontSize: "0.82rem", color: "var(--text-main)" }}>
+                    Owned:{" "}
+                    {perks
+                      .map((perk) => (typeof perk === "string" ? perk : perk?.id))
+                      .filter(Boolean)
+                      .join(", ")}
+                  </div>
+                )}
+                {perkProgressRows.length > 0 && (
+                  <div style={{ marginTop: "0.35rem" }}>
+                    {perkProgressRows.slice(0, 6).map((row) => (
+                      <div
+                        key={row.id}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          fontSize: "0.8rem",
+                          color: "var(--text-main)",
+                        }}
+                      >
+                        <span>{row.id}</span>
+                        <span>
+                          rank {row.rank} | xp {row.totalXp}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </section>
 

@@ -7,11 +7,14 @@ const {
   jsonResponse,
   toStringSafe,
   getRequiredEnv,
+  getOptionalEnv,
   generateId,
   readJsonBody,
   rateLimit,
 } = require("../lib/azure-ai-utils");
 const { startFoundryRun } = require("../lib/foundry-run");
+const { resolveNarratorProvider } = require("../lib/gemini-narrator");
+const { createGeminiRun } = require("../lib/gemini-run-store");
 const { normalizeMode, resolveAssistantId } = require("../lib/agent-router");
 
 module.exports = async function narrateStart(context, req) {
@@ -23,13 +26,15 @@ module.exports = async function narrateStart(context, req) {
       "api.narrate-start",
       { "app.request_id": requestId },
       async () => {
-        const narratorId = getRequiredEnv("NARRATOR_AGENT_ID");
+        const provider = resolveNarratorProvider();
+        const narratorId =
+          provider === "foundry" ? getRequiredEnv("NARRATOR_AGENT_ID") : "";
         const rateLimitPerMin = Number.parseInt(
           getRequiredEnv("NARRATE_RATE_LIMIT_PER_MIN") || "0",
           10,
         );
 
-        if (!narratorId) {
+        if (provider === "foundry" && !narratorId) {
           context.res = jsonResponse(500, {
             ok: false,
             errorCode: "MISSING_ENV",
@@ -58,28 +63,51 @@ module.exports = async function narrateStart(context, req) {
 
         const body = await readJsonBody(req);
         const mode = normalizeMode(body?.mode);
-        const assistantId = resolveAssistantId(mode);
         const prompt =
           typeof body?.prompt === "string" ? body.prompt.trim() : "";
         const instruction =
           prompt ||
           `Narrate the next scene based on: ${JSON.stringify(body || {})}`;
+        const requestedTemperature =
+          typeof body?.temperature !== "undefined"
+            ? body.temperature
+            : getOptionalEnv("GEMINI_TEMPERATURE");
 
-        const { threadId, runId, status } = await startFoundryRun(
-          instruction,
-          assistantId,
-        );
-
-        context.log?.(
-          `narrate-start ${requestId} assistant=${assistantId} mode=${mode} thread=${threadId} run=${runId} status=${status}`,
-        );
+        let startResult;
+        if (provider === "gemini") {
+          const apiKey = getRequiredEnv("GOOGLE_API_KEY");
+          if (!apiKey) {
+            context.res = jsonResponse(500, {
+              ok: false,
+              errorCode: "MISSING_ENV",
+              message: "Missing environment variable: GOOGLE_API_KEY",
+            });
+            return;
+          }
+          startResult = createGeminiRun({
+            prompt: instruction,
+            mode,
+            temperature: requestedTemperature,
+            logger: context?.log?.bind(context),
+          });
+          context.log?.(
+            `narrate-start ${requestId} provider=gemini mode=${mode} thread=${startResult.threadId} run=${startResult.runId} status=${startResult.status}`,
+          );
+        } else {
+          const assistantId = resolveAssistantId(mode);
+          startResult = await startFoundryRun(instruction, assistantId);
+          context.log?.(
+            `narrate-start ${requestId} provider=foundry assistant=${assistantId} mode=${mode} thread=${startResult.threadId} run=${startResult.runId} status=${startResult.status}`,
+          );
+        }
 
         context.res = jsonResponse(202, {
           ok: true,
-          threadId,
-          runId,
-          status,
+          threadId: startResult.threadId,
+          runId: startResult.runId,
+          status: startResult.status,
           mode,
+          provider,
         });
       },
     );

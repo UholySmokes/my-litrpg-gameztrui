@@ -8,6 +8,8 @@
     "GEMINI_MODEL": "gemini-2.5-pro",
     "GEMINI_TEMPERATURE": "0.8",
     "GEMINI_HTTP_TIMEOUT_MS": "30000",
+    "NARRATE_STREAM_CHUNK_CHARS": "220",
+    "NARRATE_STREAM_RUN_TTL_MS": "1800000",
     "FOUNDRY_PROJECT_ENDPOINT": "https://voidverse-resource.services.ai.azure.com/api/projects/voidverse",
     "FOUNDRY_API_KEY": "",
     "NARRATOR_AGENT_ID": "asst_U6Q1h9AOmHJohkxxHsIHPfCu",

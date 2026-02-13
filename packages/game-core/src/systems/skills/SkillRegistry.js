@@ -16,6 +16,8 @@ import {
   getZoneById,
   resolveLocationId,
 } from "../../world/WorldDataRegistry.js";
+import { getAllClassAbilityIds, getClassAbilityById, getAbilityOwner } from "../class/ClassAbilityRegistry.js";
+import { PROFESSIONS } from "../profession/ProfessionRegistry.js";
 
 /**
  * Helper function to shuffle array and select random items
@@ -10778,6 +10780,96 @@ const normalizeSkillTemplate = (skill) => {
   };
 };
 
+// =================================================================
+// DYNAMIC SKILL GENERATION FROM EXTERNAL REGISTRIES
+// =================================================================
+
+// Profession Skills (Unlockable Traits/Actions)
+const professionSkills = [];
+try {
+  for (const profId in PROFESSIONS) {
+    const prof = PROFESSIONS[profId];
+    if (prof.tierUnlocks) {
+      for (const tierStr in prof.tierUnlocks) {
+        const tier = parseInt(tierStr, 10);
+        const unlock = prof.tierUnlocks[tier];
+        if (unlock.skills) {
+          unlock.skills.forEach((skillId) => {
+            // Only add if not already defined in professionSkills to avoid duplicates
+            if (!professionSkills.some(s => s.id === skillId)) {
+                professionSkills.push({
+                id: skillId,
+                name: skillId
+                    .split("_")
+                    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                    .join(" "),
+                type: "passive", // Default to passive trait
+                class: profId,
+                description: `Unlocked at ${prof.name} Tier ${tier}.`,
+                level: 1,
+                template: {
+                    category: "Profession Skill",
+                    function: "passive",
+                    source: "ProfessionRegistry",
+                    elements: [],
+                    synergies: [],
+                },
+                unlockConditions: {
+                    profession: profId,
+                    tier: tier,
+                    level: 1,
+                    location: null,
+                    quest: null,
+                    item: null,
+                    skillPrerequisites: [],
+                },
+                });
+            }
+          });
+        }
+      }
+    }
+  }
+} catch (err) {
+  console.warn("Failed to generate profession skills:", err);
+}
+
+// Class Abilities (Active/Passive Class Skills)
+const classAbilitySkills = [];
+try {
+  const abilityIds = getAllClassAbilityIds();
+  abilityIds.forEach((id) => {
+    const ability = getClassAbilityById(id);
+    if (ability) {
+      // Map to SkillRegistry format
+      const isPassive = !ability.cost && !ability.cooldown && !ability.damage;
+      const metaOwner = ability.template?.meta?.ownerId;
+      const resolvedClass = (metaOwner && metaOwner !== "unbound") ? metaOwner : (getAbilityOwner(ability.id) || "universal");
+      
+      classAbilitySkills.push({
+        ...ability,
+        id: ability.id, // Ensure ID is preserved
+        name: ability.name,
+        type: isPassive ? "passive" : "active",
+        class: resolvedClass,
+        description: ability.description || "Class Ability",
+        level: 1,
+        manaCost: ability.costType === "mana" ? ability.cost : 0,
+        cooldown: ability.cooldown || 0,
+        template: {
+          category: "Class Ability",
+          function: isPassive ? "passive" : "combat",
+          source: "ClassAbilityRegistry",
+          elements: ability.template?.elements || [],
+          synergies: ability.template?.synergies || [],
+        },
+      });
+    }
+  });
+} catch (err) {
+  console.warn("Failed to generate class ability skills:", err);
+}
+
 /**
  * Get all skills for a class (for reference)
  */
@@ -10811,6 +10903,12 @@ export function getAllSkills() {
       ...nonCombatSkills.map((s) => normalizeSkillTemplate({ ...s, class: "universal" })),
     );
   }
+
+  // Add dynamically generated skills
+  allSkills.push(
+    ...professionSkills.map((s) => normalizeSkillTemplate(s)),
+    ...classAbilitySkills.map((s) => normalizeSkillTemplate(s))
+  );
 
   return allSkills;
 }
@@ -12840,6 +12938,10 @@ function _buildSkillIndex() {
     universalSkillsDatabase.forEach((s) => _skillIndex.set(s.id, s));
   if (Array.isArray(nonCombatSkills))
     nonCombatSkills.forEach((s) => _skillIndex.set(s.id, s));
+  if (Array.isArray(professionSkills))
+    professionSkills.forEach((s) => _skillIndex.set(s.id, s));
+  if (Array.isArray(classAbilitySkills))
+    classAbilitySkills.forEach((s) => _skillIndex.set(s.id, s));
 }
 _buildSkillIndex();
 
@@ -12850,6 +12952,29 @@ function checkSkillUnlockConditions(skill, gameState) {
   if (!skill.unlockConditions) return true; // No conditions = always available
 
   const conditions = skill.unlockConditions;
+
+  // Check profession requirement
+  if (conditions.profession) {
+    // Expecting gameState.player.profession to be { id: "mining", level: 5, tier: 1 } or similar
+    // Or gameState.player.professions if multiple allowed
+    const playerProf = gameState.player.profession; 
+    
+    // Handle if player has no profession or mismatch
+    if (!playerProf || playerProf.id !== conditions.profession) {
+      // Also check if it's in a list of professions (if player can have multiple)
+      const profs = gameState.player.professions || [];
+      const match = profs.find(p => p.id === conditions.profession);
+      if (!match) return false;
+      
+      if (conditions.tier && (match.tier || 1) < conditions.tier) {
+        return false;
+      }
+    } else {
+       if (conditions.tier && (playerProf.tier || 1) < conditions.tier) {
+         return false;
+       }
+    }
+  }
 
   // Check level requirement
   if (conditions.level && gameState.player.level < conditions.level) {

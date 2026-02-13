@@ -926,6 +926,16 @@ export function isClassAbilityAllowed(classId, abilityId) {
   return ids.includes(abilityId);
 }
 
+export function getAbilityOwner(abilityId) {
+  for (const [classId, abilities] of Object.entries(TIER1_ABILITY_SETS)) {
+    if (abilities.includes(abilityId)) return classId;
+  }
+  for (const [classId, abilities] of Object.entries(TIER2_ABILITY_SETS)) {
+    if (abilities.includes(abilityId)) return classId;
+  }
+  return null;
+}
+
 export function getAllClassAbilityIds() {
   return Object.keys(ABILITIES);
 }

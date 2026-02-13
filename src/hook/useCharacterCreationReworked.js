@@ -11,7 +11,7 @@ import { useState, useCallback } from "react";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
 import { ARCHETYPE_SYSTEMS } from "../systems/archetype/ArchetypeSystemRegistry.js";
-import { getAllSkills } from "../systems/skills/SkillRegistry.js";
+import { getAllSkills, getSkillById } from "../systems/skills/SkillRegistry.js";
 import {
   assignTalentsForClass,
   getTalentById,
@@ -604,15 +604,19 @@ export function useCharacterCreationReworked() {
     ) {
       const tier1Skills = selectedProfession.tierUnlocks[1].skills || [];
       professionSkills.push(
-        ...tier1Skills.map((skillId) => ({
-          id: skillId,
-          name: skillId
-            .replace(/_/g, " ")
-            .replace(/\b\w/g, (l) => l.toUpperCase()),
-          type: "profession",
-          description: `${selectedProfession.name} skill`,
-          profession: selectedProfession.id,
-        })),
+        ...tier1Skills.map((skillId) => {
+          const existingSkill = getSkillById(skillId);
+          if (existingSkill) return existingSkill;
+          return {
+            id: skillId,
+            name: skillId
+              .replace(/_/g, " ")
+              .replace(/\b\w/g, (l) => l.toUpperCase()),
+            type: "profession",
+            description: `${selectedProfession.name} skill`,
+            profession: selectedProfession.id,
+          };
+        }),
       );
     }
 

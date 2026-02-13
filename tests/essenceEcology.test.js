@@ -1,4 +1,9 @@
-import { magicDraw, magicRefine, ensureEssenceWeavingState } from "../packages/game-core/src/systems/magic/EssenceWeavingSystem.js";
+import {
+  magicDraw,
+  magicRefine,
+  ensureEssenceWeavingState,
+  processEssenceEcologyTurn,
+} from "../packages/game-core/src/systems/magic/EssenceWeavingSystem.js";
 
 function makeBaseState() {
   return {
@@ -82,5 +87,44 @@ test("anomaly affects refine purity through taint", () => {
   const taintedPurity = taintedResult.state.player.magic.charges.at(-1).purity;
 
   expect(taintedPurity).toBeLessThan(cleanPurity);
+});
+
+test("drawing in tainted ambient increases reserve taint", () => {
+  const foggy = makeBaseState();
+  foggy.world.location = { current: "undercity_wet_gate", biome: "undercity" };
+  foggy.world.weather = { byBiome: { undercity: { type: "fog", intensity: 1, updatedTurn: 0 } } };
+  const result = magicDraw(foggy, { type: "magic_draw", essence: "shadow", amount: 5 });
+  const taint = result.state.player.magic.reservesTaint.shadow;
+  expect(taint).toBeGreaterThan(0);
+});
+
+test("stored charges decay over turn-advancing ticks", () => {
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState(base);
+  const withReserve = {
+    ...hydrated,
+    player: {
+      ...hydrated.player,
+      magic: {
+        ...hydrated.player.magic,
+        reserves: { ...hydrated.player.magic.reserves, lightning: 10 },
+      },
+    },
+  };
+  const refined = magicRefine(withReserve, {
+    type: "magic_refine",
+    essence: "lightning",
+    amount: 10,
+    method: "steady",
+  });
+  const before = refined.state.player.magic.charges.at(-1).amount;
+
+  const advanced = {
+    ...refined.state,
+    world: { ...refined.state.world, turnCount: (refined.state.world.turnCount || 0) + 10 },
+  };
+  const ticked = processEssenceEcologyTurn(advanced);
+  const after = ticked.player.magic.charges.at(-1).amount;
+  expect(after).toBeLessThan(before);
 });
 

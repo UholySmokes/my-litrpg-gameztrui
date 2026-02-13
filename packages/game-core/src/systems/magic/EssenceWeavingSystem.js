@@ -21,6 +21,15 @@ export const ESSENCE_PRIMES = [
   "time",
 ];
 
+const OPPOSITION_PAIRS = [
+  ["fire", "water"],
+  ["earth", "air"],
+  ["light", "shadow"],
+  ["life", "destruction"],
+  ["creation", "destruction"],
+  ["space", "time"],
+];
+
 const DENSITY_BY_TIER = {
   0: 1.0,
   1: 1.5,
@@ -32,6 +41,39 @@ const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 const toNumberSafe = (value, fallback = 0) =>
   Number.isFinite(value) ? value : fallback;
+
+function computeStoredEssenceTotals(magic) {
+  const totals = ESSENCE_PRIMES.reduce((acc, e) => {
+    acc[e] = 0;
+    return acc;
+  }, {});
+
+  const reserves = magic?.reserves && typeof magic.reserves === "object" ? magic.reserves : {};
+  ESSENCE_PRIMES.forEach((e) => {
+    totals[e] += Math.max(0, toNumberSafe(reserves[e], 0));
+  });
+
+  const charges = Array.isArray(magic?.charges) ? magic.charges : [];
+  charges.forEach((charge) => {
+    const essence = normalizeEssenceId(charge?.essence);
+    if (!essence) return;
+    totals[essence] += Math.max(0, toNumberSafe(charge?.amount, 0));
+  });
+
+  return totals;
+}
+
+function computeInterferenceScore(totals) {
+  const total = ESSENCE_PRIMES.reduce((sum, e) => sum + toNumberSafe(totals?.[e], 0), 0);
+  if (total <= 0) return 0;
+
+  const opposed = OPPOSITION_PAIRS.reduce((sum, [a, b]) => {
+    const overlap = Math.min(toNumberSafe(totals?.[a], 0), toNumberSafe(totals?.[b], 0));
+    return sum + overlap;
+  }, 0);
+
+  return clamp(opposed / total, 0, 1);
+}
 
 const normalizeEssenceId = (value) => {
   if (!value) return null;
@@ -346,8 +388,10 @@ export function ensureEssenceWeavingState(state) {
 }
 
 export function processEssenceEcologyTurn(state) {
-  const world = state?.world;
-  if (!world) return state;
+  const hydrated = ensureEssenceWeavingState(state);
+  const world = hydrated?.world;
+  const player = hydrated?.player;
+  if (!world || !player) return hydrated;
 
   const locationId = world.location?.current || world.location || "starting_zone";
   const biome = world.location?.biome || null;
@@ -402,6 +446,58 @@ export function processEssenceEcologyTurn(state) {
     };
   });
 
+  const ambient = world?.essence?.ambient || {};
+  const avgTaint = ESSENCE_PRIMES.reduce(
+    (sum, e) => sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
+    0,
+  ) / ESSENCE_PRIMES.length;
+
+  const totals = computeStoredEssenceTotals(player.magic);
+  const interferenceScore = computeInterferenceScore(totals);
+
+  const nextCharges = (Array.isArray(player.magic?.charges) ? player.magic.charges : [])
+    .filter((charge) => {
+      const expires = toNumberSafe(charge?.expiresTurn, Infinity);
+      return !(Number.isFinite(expires) && expires <= turn);
+    })
+    .map((charge) => {
+      const lastTouchedTurn = toNumberSafe(charge?.lastTouchedTurn, toNumberSafe(charge?.createdTurn, turn));
+      const turnsElapsed = Math.max(0, turn - lastTouchedTurn);
+      if (turnsElapsed <= 0) return { ...charge, lastTouchedTurn: turn };
+
+      const baseDecay = 0.004;
+      const decayRate = clamp(baseDecay + 0.018 * interferenceScore + 0.012 * avgTaint, 0, 0.08);
+      const decayFactor = clamp(1 - decayRate * turnsElapsed, 0, 1);
+
+      const amount = Math.max(0, toNumberSafe(charge?.amount, 0) * decayFactor);
+      const purity = clamp(toNumberSafe(charge?.purity, 1) * (0.98 + 0.02 * decayFactor), 0, 1);
+      const potency = clamp(toNumberSafe(charge?.potency, 1) * (0.97 + 0.03 * decayFactor), 0, 10);
+
+      return {
+        ...charge,
+        amount,
+        purity,
+        potency,
+        lastTouchedTurn: turn,
+      };
+    })
+    .filter((charge) => toNumberSafe(charge?.amount, 0) > 0.01);
+
+  const nextReservesTaint = { ...(player.magic?.reservesTaint || {}) };
+  ESSENCE_PRIMES.forEach((e) => {
+    nextReservesTaint[e] = clamp(toNumberSafe(nextReservesTaint[e], 0) * 0.995, 0, 1);
+  });
+
+  const nextPlayer = {
+    ...player,
+    magic: {
+      ...player.magic,
+      charges: nextCharges,
+      reservesTaint: nextReservesTaint,
+      interference: { score: interferenceScore },
+    },
+  };
+
   const nextWorld = {
     ...world,
     essence: {
@@ -411,7 +507,8 @@ export function processEssenceEcologyTurn(state) {
   };
 
   return ensureEssenceWeavingState({
-    ...state,
+    ...hydrated,
+    player: nextPlayer,
     world: nextWorld,
   });
 }
@@ -438,6 +535,7 @@ function ensurePlayerMagic(player) {
     affinity: ensureEssenceMap(magic?.affinity, 0),
     attunement: ensureEssenceMap(magic?.attunement, 1),
     reserves: ensureEssenceMap(magic?.reserves, 0),
+    reservesTaint: ensureEssenceMap(magic?.reservesTaint, 0),
     charges: Array.isArray(magic?.charges) ? magic.charges : [],
     anchors: {
       self: magic?.anchors?.self ?? null,
@@ -445,6 +543,10 @@ function ensurePlayerMagic(player) {
       itemId: magic?.anchors?.itemId ?? null,
     },
     stance: magic?.stance || { kind: "open", essence: null },
+    interference:
+      magic?.interference && typeof magic.interference === "object"
+        ? magic.interference
+        : { score: 0 },
     paradigm: magic?.paradigm || {
       id: "conservationist",
       tenets: ["no_creation", "transform_allowed", "move_allowed"],
@@ -667,16 +769,34 @@ export function magicDraw(state, action) {
 
   const bodyCostPerQuantum = 0.15;
   const bodyCost = drawAmount * bodyCostPerQuantum;
+
+  const prevReserve = toNumberSafe(magic.reserves?.[essence], 0);
+  const prevTaint = clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1);
+  const sampleTaint = clamp(
+    clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1) *
+      clamp(toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1), 0.9, 1.2),
+    0,
+    1,
+  );
+  const combinedTaint =
+    prevReserve + drawAmount > 0
+      ? clamp((prevTaint * prevReserve + sampleTaint * drawAmount) / (prevReserve + drawAmount), 0, 1)
+      : prevTaint;
   const nextMagic = applyStabilityDelta(
     {
       ...magic,
       reserves: {
         ...magic.reserves,
-        [essence]: toNumberSafe(magic.reserves?.[essence], 0) + drawAmount,
+        [essence]: prevReserve + drawAmount,
+      },
+      reservesTaint: {
+        ...magic.reservesTaint,
+        [essence]: combinedTaint,
       },
     },
     { body: -bodyCost },
   );
+
 
   const nextState = recomputeManaFree({
     ...hydrated,
@@ -717,10 +837,13 @@ export function magicRefine(state, action) {
   const refineMult = clamp(toNumberSafe(ambient?.global?.refineYieldMultByEssence?.[essence], 1), 0.9, 1.2);
   const contaminationMult = clamp(toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1), 0.9, 1.2);
   const ambientTaint = clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1);
+  const reserveTaint = clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1);
+  const potencyMult = clamp(toNumberSafe(ambient?.global?.potencyMultByEssence?.[essence], 1), 0.9, 1.2);
 
   const mindPct = stabilityPct(magic.stability?.mind);
   const refineSkillFactor = clamp(0.15 * toNumberSafe(magic.attunement?.[essence], 1) + 0.5 * mindPct, 0, 1);
-  const taintPenalty = clamp(ambientTaint * 0.25 * contaminationMult, 0, 0.35);
+  const blendedTaint = clamp((ambientTaint * 0.55 + reserveTaint * 0.45) * contaminationMult, 0, 1);
+  const taintPenalty = clamp(blendedTaint * 0.32, 0, 0.35);
   const purity = clamp(0.55 + 0.35 * refineSkillFactor - taintPenalty, 0, 1);
   const mindCost = amount * 0.1;
 
@@ -728,16 +851,19 @@ export function magicRefine(state, action) {
   const lifetime = 50 * (0.6 + 0.4 * purity);
   const id = `chg_${turn}_${Math.floor(random() * 1e9)}`;
   const refinedAmount = amount * refineMult;
+  const potency = clamp(potencyMult * (0.85 + 0.15 * purity), 0, 10);
   const charge = {
     id,
     essence,
     amount: refinedAmount,
     density: 1.0,
     purity,
+    potency,
     binding: method
       ? { type: "rhythm", pattern: method }
       : { type: "rhythm", pattern: "steady" },
     createdTurn: turn,
+    lastTouchedTurn: turn,
     expiresTurn: turn + Math.max(1, Math.round(lifetime)),
   };
 

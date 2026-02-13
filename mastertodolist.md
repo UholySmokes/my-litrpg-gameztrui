@@ -84,33 +84,28 @@ Open questions (need your call before I cross this step):
 - ~~Keep this as a single “ambient modifier bundle” computed once per turn/action, not scattered math.~~
 8) Deepen resource dynamics: potency, purity, decay
 
-- Add per-container stats for stored essence:
-  - amount (capacity usage)
-  - potency (power per unit)
-  - purity (0–1)
-  - decayRate (per turn), derived from fullness + mismatch + contamination
+- ~~Add per-container stats for stored essence:~~
+  - Charges now track `amount`, `purity`, `potency`, `createdTurn`, `lastTouchedTurn`, `expiresTurn`.
+  - Per-turn decay reduces potency/amount and is influenced by interference + ambient taint.
 - Decide decay outcomes:
-  - potency drops first, then amount bleeds away
-  - or amount drops but leaves “residue” contamination behind
+  - Implemented: potency and amount both decay each turn (potency slightly faster).
 9) Contamination loop
 
-- Add contamination sources:
-  - certain biomes/weather/anomalies add impurity on draw
-  - storing mixed/hostile essences increases impurity
+- ~~Add contamination sources:~~
+  - Drawing now accumulates per-essence `reservesTaint` based on ambient taint + contamination pressure.
+  - Weather/anomalies can raise ambient taint and contamination pressure.
 - Add resolution paths:
-  - “purge” action (or integrate into RELEASE as “controlled release”)
-  - refining can improve purity but costs yield/time
-- Make contamination matter by feeding into: refine yield, misfire odds, backlash severity.
+  - Passive decay slowly reduces `reservesTaint` over time.
+  - (No explicit PURGE action yet.)
+- ~~Make contamination matter by feeding into: refine yield, misfire odds, backlash severity.~~
+  - Refining purity is reduced by blended (ambient + reserve) taint.
 10) Cross-essence interference (opposition + mismatch)
 
-- Define an opposition matrix (fire↔water, light↔shadow, etc.) and maybe “adjacency harmony” (air+lightning synergize).
-- Compute an “interference score” for the player’s current stored/compressed mix:
-  - increases with opposing pairs present
-  - reduced by perks, attunement, or specialized storage
+- ~~Define an opposition matrix (fire↔water, light↔shadow, etc.) and maybe “adjacency harmony” (air+lightning synergize).~~
+- ~~Compute an “interference score” for the player’s current stored/compressed mix:~~
+  - Implemented as an overlap ratio for opposing pairs.
 - Interference impacts:
-  - stability drain per action
-  - compression risk
-  - resonance overload acceleration
+  - Implemented: interference increases storage decay rate.
 11) Progression hooks (perks as modifiers, not new subsystems)
 
 - Add a perk framework for magic that can modify:

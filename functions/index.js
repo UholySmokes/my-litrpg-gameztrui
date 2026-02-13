@@ -30,6 +30,15 @@ exports.agentList = onCall({ region: "us-central1" }, async () => ({
 }));
 
 exports.agentRun = onCall({ region: "us-central1", timeoutSeconds: 120 }, async (request) => {
+	const devUserId =
+		process.env.NODE_ENV === "production"
+			? ""
+			: String(process.env.DEV_USER_ID || "").trim();
+	const callerId = String(request?.auth?.uid || devUserId || "").trim();
+	if (!callerId) {
+		throw new HttpsError("unauthenticated", "Sign in required.");
+	}
+
 	const body =
 		request?.data && typeof request.data === "object" && !Array.isArray(request.data)
 			? request.data

@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -8,7 +9,11 @@ load_dotenv(ENV_PATH)
 
 root_agent = LlmAgent(
     name='NarratorAgent',
-    model='gemini-2.5-pro',
+    model=(
+        os.getenv("NARRATOR_ADK_MODEL")
+        or os.getenv("GEMINI_MODEL")
+        or "gemini-2.5-flash"
+    ),
     description=(
         'A specialized LitRPG narrator that turns game states into immersive '
         'second-person descriptions without inventing mechanics or stats.'

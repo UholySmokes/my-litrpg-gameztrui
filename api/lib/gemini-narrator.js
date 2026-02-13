@@ -7,7 +7,10 @@ const {
 
 const GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
 const GEMINI_DEFAULT_MODEL = "gemini-2.5-pro";
+const GEMINI_DEFAULT_FALLBACK_MODEL = "gemini-2.5-flash";
 const GEMINI_DEFAULT_TEMPERATURE = 0.8;
+const GEMINI_DEFAULT_MAX_OUTPUT_TOKENS = 1024;
+const GEMINI_RETRYABLE_STATUS = new Set([429, 500, 502, 503, 504]);
 
 function resolveNarratorProvider() {
   const explicit = getOptionalEnv("NARRATE_PROVIDER").toLowerCase();
@@ -21,6 +24,71 @@ function clampTemperature(value, fallback = GEMINI_DEFAULT_TEMPERATURE) {
   const parsed = Number.parseFloat(value);
   if (!Number.isFinite(parsed)) return fallback;
   return Math.min(2, Math.max(0, parsed));
+}
+
+function clampMaxOutputTokens(value, fallback = GEMINI_DEFAULT_MAX_OUTPUT_TOKENS) {
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(8192, Math.max(64, parsed));
+}
+
+function parsePositiveInt(value, fallback) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function parseRetryAfterMs(value) {
+  if (typeof value !== "string" || !value.trim()) return 0;
+  const seconds = Number.parseInt(value, 10);
+  if (Number.isFinite(seconds) && seconds > 0) {
+    return seconds * 1000;
+  }
+
+  const timestamp = Date.parse(value);
+  if (!Number.isFinite(timestamp)) return 0;
+  return Math.max(0, timestamp - Date.now());
+}
+
+function getRetryDelayMs(attempt, { baseDelayMs, maxDelayMs, retryAfterMs }) {
+  if (retryAfterMs > 0) {
+    return Math.min(maxDelayMs, retryAfterMs);
+  }
+  const expBackoff = Math.min(maxDelayMs, baseDelayMs * 2 ** attempt);
+  const jitter = Math.floor(Math.random() * 150);
+  return expBackoff + jitter;
+}
+
+function buildModelSequence(primaryModel) {
+  const fallbackModel = getOptionalEnv(
+    "GEMINI_FALLBACK_MODEL",
+    GEMINI_DEFAULT_FALLBACK_MODEL,
+  );
+
+  const seen = new Set();
+  return [primaryModel, fallbackModel]
+    .map((model) => String(model || "").trim())
+    .filter((model) => {
+      if (!model || seen.has(model)) return false;
+      seen.add(model);
+      return true;
+    });
+}
+
+function createGeminiHttpError(status, payload, rawText) {
+  const detail = payload || rawText || `HTTP ${status}`;
+  const error = Object.assign(
+    new Error(`Gemini request failed (${status}).`),
+    {
+      code: status === 429 ? "RATE_LIMITED" : "GEMINI_REQUEST_FAILED",
+      status,
+    },
+  );
+  error.detail = detail;
+  return error;
 }
 
 function buildGeminiSystemInstruction() {
@@ -60,7 +128,21 @@ async function runGeminiNarrator({ prompt, mode, temperature }) {
   }
 
   const model = getOptionalEnv("GEMINI_MODEL", GEMINI_DEFAULT_MODEL);
+  const models = buildModelSequence(model);
   const timeoutMs = getTimeoutMs("GEMINI_HTTP_TIMEOUT_MS", 30000);
+  const maxRetries = parsePositiveInt(getOptionalEnv("GEMINI_MAX_RETRIES", "2"), 2);
+  const baseDelayMs = parsePositiveInt(
+    getOptionalEnv("GEMINI_RETRY_BASE_DELAY_MS", "350"),
+    350,
+  );
+  const maxDelayMs = parsePositiveInt(
+    getOptionalEnv("GEMINI_RETRY_MAX_DELAY_MS", "4000"),
+    4000,
+  );
+  const maxOutputTokens = clampMaxOutputTokens(
+    getOptionalEnv("GEMINI_MAX_OUTPUT_TOKENS"),
+    GEMINI_DEFAULT_MAX_OUTPUT_TOKENS,
+  );
   const requestTemp = clampTemperature(
     temperature,
     clampTemperature(
@@ -85,83 +167,150 @@ async function runGeminiNarrator({ prompt, mode, temperature }) {
     ],
     generationConfig: {
       temperature: requestTemp,
-      maxOutputTokens: 1024,
+      maxOutputTokens,
       responseMimeType: "application/json",
     },
   };
-  const endpoint = `${GEMINI_API_BASE_URL}/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
-  let response;
-  let rawText = "";
-  let payload = null;
-  const canAbort = typeof AbortController === "function";
-  const controller = canAbort ? new AbortController() : null;
-  const timeoutId = controller
-    ? setTimeout(() => controller.abort(), timeoutMs)
-    : null;
+  let lastError = null;
 
-  try {
-    response = await fetchFn(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestBody),
-      signal: controller ? controller.signal : undefined,
-    });
-    rawText = await response.text();
-    if (rawText) {
+  for (let modelIndex = 0; modelIndex < models.length; modelIndex += 1) {
+    const activeModel = models[modelIndex];
+    const endpoint = `${GEMINI_API_BASE_URL}/models/${encodeURIComponent(activeModel)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt += 1) {
+      let response;
+      let rawText = "";
+      let payload = null;
+      const canAbort = typeof AbortController === "function";
+      const controller = canAbort ? new AbortController() : null;
+      const timeoutId = controller
+        ? setTimeout(() => controller.abort(), timeoutMs)
+        : null;
+
       try {
-        payload = JSON.parse(rawText);
-      } catch {
-        payload = null;
+        response = await fetchFn(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+          signal: controller ? controller.signal : undefined,
+        });
+        rawText = await response.text();
+        if (rawText) {
+          try {
+            payload = JSON.parse(rawText);
+          } catch {
+            payload = null;
+          }
+        }
+      } catch (error) {
+        if (timeoutId) clearTimeout(timeoutId);
+
+        if (error?.name === "AbortError") {
+          lastError = Object.assign(
+            new Error(`Gemini request timed out after ${timeoutMs}ms.`),
+            {
+              code: "GEMINI_REQUEST_TIMEOUT",
+              status: 504,
+            },
+          );
+          if (attempt < maxRetries) {
+            await sleep(
+              getRetryDelayMs(attempt, {
+                baseDelayMs,
+                maxDelayMs,
+                retryAfterMs: 0,
+              }),
+            );
+            continue;
+          }
+          break;
+        }
+
+        lastError = Object.assign(
+          new Error(`Gemini request failed: ${String(error?.message || error)}`),
+          {
+            code: "GEMINI_REQUEST_FAILED",
+            status: 502,
+          },
+        );
+        if (attempt < maxRetries) {
+          await sleep(
+            getRetryDelayMs(attempt, {
+              baseDelayMs,
+              maxDelayMs,
+              retryAfterMs: 0,
+            }),
+          );
+          continue;
+        }
+        break;
+      } finally {
+        if (timeoutId) clearTimeout(timeoutId);
       }
+
+      if (!response.ok) {
+        const error = createGeminiHttpError(response.status, payload, rawText);
+        lastError = error;
+
+        const shouldRetry =
+          GEMINI_RETRYABLE_STATUS.has(response.status) &&
+          attempt < maxRetries;
+
+        if (shouldRetry) {
+          const retryAfterMs = parseRetryAfterMs(
+            typeof response.headers?.get === "function"
+              ? response.headers.get("retry-after")
+              : "",
+          );
+          await sleep(
+            getRetryDelayMs(attempt, {
+              baseDelayMs,
+              maxDelayMs,
+              retryAfterMs,
+            }),
+          );
+          continue;
+        }
+
+        if (
+          GEMINI_RETRYABLE_STATUS.has(response.status) &&
+          modelIndex < models.length - 1
+        ) {
+          break;
+        }
+
+        throw error;
+      }
+
+      const blockReason = payload?.promptFeedback?.blockReason;
+      if (blockReason) {
+        throw Object.assign(new Error(`Gemini blocked the request: ${blockReason}`), {
+          code: "CONTENT_BLOCKED",
+          status: 502,
+          detail: payload?.promptFeedback,
+        });
+      }
+
+      const text = extractGeminiText(payload);
+      if (!text) {
+        throw Object.assign(new Error("Gemini returned empty output."), {
+          code: "NON_TEXT_OUTPUT",
+          status: 502,
+          detail: payload,
+        });
+      }
+
+      return { text, model: activeModel };
     }
-  } catch (error) {
-    if (error?.name === "AbortError") {
-      throw Object.assign(new Error(`Gemini request timed out after ${timeoutMs}ms.`), {
-        code: "GEMINI_REQUEST_TIMEOUT",
-        status: 504,
-      });
-    }
-    throw Object.assign(new Error(`Gemini request failed: ${String(error?.message || error)}`), {
-      code: "GEMINI_REQUEST_FAILED",
-      status: 502,
-    });
-  } finally {
-    if (timeoutId) clearTimeout(timeoutId);
   }
 
-  if (!response.ok) {
-    const detail = payload || rawText || response.statusText;
-    const error = Object.assign(
-      new Error(`Gemini request failed (${response.status}).`),
-      {
-        code: response.status === 429 ? "RATE_LIMITED" : "GEMINI_REQUEST_FAILED",
-        status: response.status,
-      },
-    );
-    error.detail = detail;
-    throw error;
-  }
+  if (lastError) throw lastError;
 
-  const blockReason = payload?.promptFeedback?.blockReason;
-  if (blockReason) {
-    throw Object.assign(new Error(`Gemini blocked the request: ${blockReason}`), {
-      code: "CONTENT_BLOCKED",
-      status: 502,
-      detail: payload?.promptFeedback,
-    });
-  }
-
-  const text = extractGeminiText(payload);
-  if (!text) {
-    throw Object.assign(new Error("Gemini returned empty output."), {
-      code: "NON_TEXT_OUTPUT",
-      status: 502,
-      detail: payload,
-    });
-  }
-
-  return { text, model };
+  throw Object.assign(new Error("Gemini request failed."), {
+    code: "GEMINI_REQUEST_FAILED",
+    status: 502,
+  });
 }
 
 module.exports = {

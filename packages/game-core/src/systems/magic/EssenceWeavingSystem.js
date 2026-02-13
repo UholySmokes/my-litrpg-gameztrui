@@ -75,6 +75,65 @@ function computeInterferenceScore(totals) {
   return clamp(opposed / total, 0, 1);
 }
 
+function getPerkRank(magic, perkId) {
+  const key = typeof perkId === "string" ? perkId.trim().toLowerCase() : "";
+  if (!key) return 0;
+  const perks = Array.isArray(magic?.perks) ? magic.perks : [];
+  let rank = 0;
+  perks.forEach((perk) => {
+    if (typeof perk === "string") {
+      if (perk.trim().toLowerCase() === key) rank = Math.max(rank, 1);
+      return;
+    }
+    if (perk && typeof perk === "object" && !Array.isArray(perk)) {
+      const id = typeof perk.id === "string" ? perk.id.trim().toLowerCase() : "";
+      if (id !== key) return;
+      rank = Math.max(rank, Math.max(1, Math.floor(toNumberSafe(perk.rank, 1))));
+    }
+  });
+  return clamp(rank, 0, 10);
+}
+
+function resonanceStateFromValue(value) {
+  const v = clamp(toNumberSafe(value, 0), 0, 100);
+  if (v >= 75) return "shrieking";
+  if (v >= 50) return "ringing";
+  if (v >= 25) return "humming";
+  return "quiet";
+}
+
+function applyResonanceDelta(magic, delta) {
+  const node = magic?.resonance && typeof magic.resonance === "object" ? magic.resonance : {};
+  const max = clamp(toNumberSafe(node.max, 100), 1, 1000);
+  const current = clamp(toNumberSafe(node.current, 0) + toNumberSafe(delta, 0), 0, max);
+  return {
+    ...magic,
+    resonance: {
+      ...node,
+      max,
+      current,
+      state: resonanceStateFromValue(current),
+    },
+  };
+}
+
+function computeEnvironmentalPressure(ambient) {
+  const weatherType = typeof ambient?.provenance?.weatherType === "string" ? ambient.provenance.weatherType : null;
+  const intensity = clamp(toNumberSafe(ambient?.provenance?.weatherIntensity, 0), 0, 1);
+  const anomalies = Array.isArray(ambient?.provenance?.anomalyIds) ? ambient.provenance.anomalyIds.length : 0;
+  const base =
+    weatherType === "storm"
+      ? 0.9
+      : weatherType === "fog"
+        ? 0.7
+        : weatherType === "drought"
+          ? 0.6
+          : weatherType === "rain"
+            ? 0.4
+            : 0.2;
+  return clamp(base * intensity + anomalies * 0.25, 0, 2);
+}
+
 const normalizeEssenceId = (value) => {
   if (!value) return null;
   const id = String(value).trim().toLowerCase();
@@ -455,7 +514,14 @@ export function processEssenceEcologyTurn(state) {
   const totals = computeStoredEssenceTotals(player.magic);
   const interferenceScore = computeInterferenceScore(totals);
 
-  const nextCharges = (Array.isArray(player.magic?.charges) ? player.magic.charges : [])
+  const resonanceDampingRank = getPerkRank(player.magic, "resonance_damping");
+  const resonanceDecay = 2 + 0.8 * resonanceDampingRank;
+  const nextMagicAfterResonance = applyResonanceDelta(
+    player.magic,
+    -resonanceDecay,
+  );
+
+  const nextCharges = (Array.isArray(nextMagicAfterResonance?.charges) ? nextMagicAfterResonance.charges : [])
     .filter((charge) => {
       const expires = toNumberSafe(charge?.expiresTurn, Infinity);
       return !(Number.isFinite(expires) && expires <= turn);
@@ -483,18 +549,28 @@ export function processEssenceEcologyTurn(state) {
     })
     .filter((charge) => toNumberSafe(charge?.amount, 0) > 0.01);
 
-  const nextReservesTaint = { ...(player.magic?.reservesTaint || {}) };
+  const nextReservesTaint = { ...(nextMagicAfterResonance?.reservesTaint || {}) };
   ESSENCE_PRIMES.forEach((e) => {
     nextReservesTaint[e] = clamp(toNumberSafe(nextReservesTaint[e], 0) * 0.995, 0, 1);
   });
 
+  const nextActiveWorkings = (Array.isArray(nextMagicAfterResonance?.activeWorkings)
+    ? nextMagicAfterResonance.activeWorkings
+    : [])
+    .filter((w) => w && typeof w === "object" && !Array.isArray(w))
+    .filter((w) => {
+      const expires = toNumberSafe(w.expiresTurn, Infinity);
+      return !(Number.isFinite(expires) && expires <= turn);
+    });
+
   const nextPlayer = {
     ...player,
     magic: {
-      ...player.magic,
+      ...nextMagicAfterResonance,
       charges: nextCharges,
       reservesTaint: nextReservesTaint,
       interference: { score: interferenceScore },
+      activeWorkings: nextActiveWorkings,
     },
   };
 
@@ -547,6 +623,12 @@ function ensurePlayerMagic(player) {
       magic?.interference && typeof magic.interference === "object"
         ? magic.interference
         : { score: 0 },
+    resonance:
+      magic?.resonance && typeof magic.resonance === "object"
+        ? magic.resonance
+        : { current: 0, max: 100, state: "quiet" },
+    perks: Array.isArray(magic?.perks) ? magic.perks : [],
+    activeWorkings: Array.isArray(magic?.activeWorkings) ? magic.activeWorkings : [],
     paradigm: magic?.paradigm || {
       id: "conservationist",
       tenets: ["no_creation", "transform_allowed", "move_allowed"],
@@ -782,19 +864,30 @@ export function magicDraw(state, action) {
     prevReserve + drawAmount > 0
       ? clamp((prevTaint * prevReserve + sampleTaint * drawAmount) / (prevReserve + drawAmount), 0, 1)
       : prevTaint;
-  const nextMagic = applyStabilityDelta(
-    {
-      ...magic,
-      reserves: {
-        ...magic.reserves,
-        [essence]: prevReserve + drawAmount,
+  const interferenceScore = clamp(toNumberSafe(magic?.interference?.score, 0), 0, 1);
+  const avgTaint = ESSENCE_PRIMES.reduce(
+    (sum, e) => sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
+    0,
+  ) / ESSENCE_PRIMES.length;
+  const pressure = computeEnvironmentalPressure(ambient);
+  const resonanceGain = 0.6 + 0.03 * drawAmount + 4 * interferenceScore + 2.5 * avgTaint + 1.5 * pressure;
+
+  const nextMagic = applyResonanceDelta(
+    applyStabilityDelta(
+      {
+        ...magic,
+        reserves: {
+          ...magic.reserves,
+          [essence]: prevReserve + drawAmount,
+        },
+        reservesTaint: {
+          ...magic.reservesTaint,
+          [essence]: combinedTaint,
+        },
       },
-      reservesTaint: {
-        ...magic.reservesTaint,
-        [essence]: combinedTaint,
-      },
-    },
-    { body: -bodyCost },
+      { body: -bodyCost },
+    ),
+    resonanceGain,
   );
 
 
@@ -840,17 +933,21 @@ export function magicRefine(state, action) {
   const reserveTaint = clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1);
   const potencyMult = clamp(toNumberSafe(ambient?.global?.potencyMultByEssence?.[essence], 1), 0.9, 1.2);
 
+  const cleanRefiningRank = getPerkRank(magic, "clean_refining");
+  const yieldRank = getPerkRank(magic, "refine_yield");
+  const refineYieldMult = clamp(1 + 0.03 * yieldRank, 0.9, 1.2);
+
   const mindPct = stabilityPct(magic.stability?.mind);
   const refineSkillFactor = clamp(0.15 * toNumberSafe(magic.attunement?.[essence], 1) + 0.5 * mindPct, 0, 1);
   const blendedTaint = clamp((ambientTaint * 0.55 + reserveTaint * 0.45) * contaminationMult, 0, 1);
-  const taintPenalty = clamp(blendedTaint * 0.32, 0, 0.35);
+  const taintPenalty = clamp(blendedTaint * (0.32 - 0.04 * cleanRefiningRank), 0, 0.35);
   const purity = clamp(0.55 + 0.35 * refineSkillFactor - taintPenalty, 0, 1);
   const mindCost = amount * 0.1;
 
   const turn = toNumberSafe(hydrated.world?.turnCount, 0);
   const lifetime = 50 * (0.6 + 0.4 * purity);
   const id = `chg_${turn}_${Math.floor(random() * 1e9)}`;
-  const refinedAmount = amount * refineMult;
+  const refinedAmount = amount * refineMult * refineYieldMult;
   const potency = clamp(potencyMult * (0.85 + 0.15 * purity), 0, 10);
   const charge = {
     id,
@@ -879,9 +976,19 @@ export function magicRefine(state, action) {
     { mind: -mindCost },
   );
 
+  const interferenceScore = clamp(toNumberSafe(nextMagic?.interference?.score, 0), 0, 1);
+  const avgTaint = ESSENCE_PRIMES.reduce(
+    (sum, e) => sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
+    0,
+  ) / ESSENCE_PRIMES.length;
+  const pressure = computeEnvironmentalPressure(ambient);
+  const resonanceGain = 2 + 0.06 * amount + 6 * interferenceScore + 3.5 * avgTaint + 2 * pressure;
+  const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+  const nextMagicWithResonance = applyResonanceDelta(nextMagic, resonanceGain * damp);
+
   const nextState = recomputeManaFree({
     ...hydrated,
-    player: { ...player, magic: nextMagic },
+    player: { ...player, magic: nextMagicWithResonance },
   });
 
   return {
@@ -941,15 +1048,28 @@ export function magicCompress(state, action) {
     0.9,
     1.2,
   );
-  const misfireChance = clamp((0.03 + risk + stabilityPenalty) * compressRiskMult, 0, 1);
+
+  const saferCompressionRank = getPerkRank(magic, "safer_compression");
+  const perkMisfireMult = clamp(1 - 0.07 * saferCompressionRank, 0.55, 1);
+  const anchored = Boolean(magic.anchors?.self || magic.anchors?.area || magic.anchors?.itemId);
+  const anchorMisfireMult = anchored ? 0.9 : 1;
+  const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
+  const resonanceMisfireMult = clamp(1 + 0.35 * (resonance / 100), 1, 1.35);
+  const misfireChance = clamp(
+    (0.03 + risk + stabilityPenalty) * compressRiskMult * perkMisfireMult * anchorMisfireMult * resonanceMisfireMult,
+    0,
+    1,
+  );
   const misfire = random() < misfireChance;
 
-  const bodyCost = (2 * amount * targetDensity ** 1.2) / 10;
-  const mindCost = (1 * amount * targetDensity ** 1.1) / 10;
+  const perkCostMult = clamp(1 - 0.05 * saferCompressionRank, 0.6, 1);
+  const bodyCost = ((2 * amount * targetDensity ** 1.2) / 10) * perkCostMult;
+  const mindCost = ((1 * amount * targetDensity ** 1.1) / 10) * perkCostMult;
 
   let nextCharge = { ...charge, density: targetDensity };
   let extraDelta = {};
   let resultLine = `You compress the charge to density ${targetDensity.toFixed(1)}.`;
+  let outcomeTag = "clean_success";
 
   if (method) {
     nextCharge = {
@@ -970,27 +1090,43 @@ export function magicCompress(state, action) {
       const reduced = clamp(1 + (targetDensity - 1) * 0.5, 1, targetDensity);
       nextCharge = { ...nextCharge, density: reduced };
       resultLine = `Compression misfires; density only reaches ${reduced.toFixed(1)}.`;
+      outcomeTag = "partial_misfire";
     } else if (outcome === "leak") {
       const lost = clamp(amount * 0.15, 0, amount);
       nextCharge = { ...nextCharge, amount: Math.max(0, amount - lost) };
       extraDelta = { body: -Math.max(1, lost * 0.2) };
       resultLine = `Compression leaks; the charge loses ${lost.toFixed(1)} essence.`;
+      outcomeTag = "partial_misfire";
     } else if (outcome === "flare") {
       extraDelta = { mind: -Math.max(1, amount * 0.15), body: -Math.max(1, amount * 0.1) };
       resultLine = "Compression flares out of control; your nerves burn.";
+      outcomeTag = "backlash";
     } else {
       extraDelta = { body: -Math.max(2, amount * 0.25) };
       resultLine = "Compression strains your body; your meridians ache.";
+      outcomeTag = "strained_success";
     }
+  } else if (stabilityPenalty > 0.18 || resonance >= 60) {
+    outcomeTag = "strained_success";
   }
 
   const nextCharges = [...charges];
   nextCharges[idx] = nextCharge;
 
-  const nextMagic = applyStabilityDelta(
+  const nextMagicBase = applyStabilityDelta(
     { ...magic, charges: nextCharges },
     { body: -bodyCost, mind: -mindCost, ...extraDelta },
   );
+
+  const interferenceScore = clamp(toNumberSafe(nextMagicBase?.interference?.score, 0), 0, 1);
+  const avgTaint = ESSENCE_PRIMES.reduce(
+    (sum, e) => sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
+    0,
+  ) / ESSENCE_PRIMES.length;
+  const pressure = computeEnvironmentalPressure(ambient);
+  const resonanceGain = 4 + 0.08 * amount * targetDensity + 8 * interferenceScore + 4 * avgTaint + 3 * pressure;
+  const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+  const nextMagic = applyResonanceDelta(nextMagicBase, resonanceGain * damp);
 
   const nextState = recomputeManaFree({
     ...hydrated,
@@ -999,7 +1135,7 @@ export function magicCompress(state, action) {
 
   return {
     state: nextState,
-    description: resultLine,
+    description: `${resultLine} (${outcomeTag.replace(/_/g, " ")})`,
   };
 }
 
@@ -1057,11 +1193,16 @@ export function magicShape(state, action) {
     createdTurn: turn,
   };
 
+  const ambient = hydrated.world?.essence?.ambient || {};
+  const pressure = computeEnvironmentalPressure(ambient);
+  const resonanceGain = 0.8 + 0.4 * pressure;
+  const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+
   const nextState = {
     ...hydrated,
     player: {
       ...player,
-      magic: { ...magic, prepared },
+      magic: { ...applyResonanceDelta(magic, resonanceGain * damp), prepared },
     },
   };
 
@@ -1091,11 +1232,16 @@ export function magicWeave(state, action) {
     createdTurn: turn,
   };
 
+  const ambient = hydrated.world?.essence?.ambient || {};
+  const pressure = computeEnvironmentalPressure(ambient);
+  const resonanceGain = 1.2 + 0.6 * pressure;
+  const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+
   const nextState = {
     ...hydrated,
     player: {
       ...player,
-      magic: { ...magic, prepared },
+      magic: { ...applyResonanceDelta(magic, resonanceGain * damp), prepared },
     },
   };
 
@@ -1167,6 +1313,8 @@ export function magicRelease(state) {
     return { ok: false, reason: "Nothing is prepared to release.", state: hydrated };
   }
 
+  const turn = toNumberSafe(hydrated.world?.turnCount, 0);
+
   if (prepared.kind === "shape") {
     const essence = normalizeEssenceId(prepared.essence);
     const desired = prepared.amount != null ? prepared.amount : 6;
@@ -1200,17 +1348,50 @@ export function magicRelease(state) {
     const mindCost = 1 + 0.06 * magnitude;
     const bodyCost = reservesUsed > 0 ? 0.5 + reservesUsed * 0.12 : 0;
 
-    const nextMagic = applyStabilityDelta(
-      {
-        ...magic,
-        charges: nextCharges,
-        reserves: {
-          ...magic.reserves,
-          [essence]: reserveHave - reservesUsed,
+    const ambient = hydrated.world?.essence?.ambient || {};
+    const pressure = computeEnvironmentalPressure(ambient);
+    const interferenceScore = clamp(toNumberSafe(magic?.interference?.score, 0), 0, 1);
+    const avgTaint = ESSENCE_PRIMES.reduce(
+      (sum, e) => sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
+      0,
+    ) / ESSENCE_PRIMES.length;
+    const anchored = Boolean(magic.anchors?.self || magic.anchors?.area || magic.anchors?.itemId);
+    const anchorMult = anchored ? 0.9 : 1;
+    const resonanceGain =
+      (2 + 0.05 * magnitude + 4 * interferenceScore + 2.5 * avgTaint + 2 * pressure) * anchorMult;
+    const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+
+    const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
+    const outcomeTag = resonance >= 60 || stabilityPct(magic.stability?.mind) < 0.4 ? "strained_success" : "clean_success";
+
+    const working = {
+      id: `wrk_${turn}_${Math.floor(random() * 1e9)}`,
+      kind: "shape",
+      essence,
+      form: prepared.form,
+      magnitude,
+      createdTurn: turn,
+      expiresTurn: turn + 20,
+    };
+
+    const nextMagic = applyResonanceDelta(
+      applyStabilityDelta(
+        {
+          ...magic,
+          charges: nextCharges,
+          reserves: {
+            ...magic.reserves,
+            [essence]: reserveHave - reservesUsed,
+          },
+          prepared: null,
+          activeWorkings: [
+            ...(Array.isArray(magic.activeWorkings) ? magic.activeWorkings : []),
+            working,
+          ],
         },
-        prepared: null,
-      },
-      { mind: -mindCost, body: -bodyCost },
+        { mind: -mindCost, body: -bodyCost },
+      ),
+      resonanceGain * damp,
     );
 
     const nextState = recomputeManaFree({
@@ -1220,7 +1401,7 @@ export function magicRelease(state) {
 
     return {
       state: nextState,
-      description: `You release ${capitalize(essence)} ${prepared.form} (magnitude ${magnitude.toFixed(1)}).`,
+      description: `You release ${capitalize(essence)} ${prepared.form} (magnitude ${magnitude.toFixed(1)}). (${outcomeTag.replace(/_/g, " ")})`,
     };
   }
 
@@ -1276,10 +1457,31 @@ export function magicRelease(state) {
       0.3 * stabilityPct(magic.stability?.mind) +
       0.3 * stabilityPct(magic.stability?.cognitive);
     const baseCoherence = purityAvg * (1 - oppositionPenalty);
-    const coherence = clamp(baseCoherence * stabilityFactor, 0, 1);
+    const stableWeavesRank = getPerkRank(magic, "stable_weaves");
+    const anchored = Boolean(magic.anchors?.self || magic.anchors?.area || magic.anchors?.itemId);
+    const anchorCoherenceMult = anchored ? 1.05 : 1;
+    const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
+    const resonanceCoherenceMult = clamp(1 - 0.25 * (resonance / 100), 0.6, 1);
+    const coherence = clamp(
+      baseCoherence * stabilityFactor * (1 + 0.03 * stableWeavesRank) * anchorCoherenceMult * resonanceCoherenceMult,
+      0,
+      1,
+    );
     const amountTotal = essences.length * perEssence;
     const successChance = clamp(coherence - amountTotal / 200, 0, 1);
-    const backlashChance = clamp(0.02 + (1 - coherence) * 0.2, 0, 1);
+
+    const ambient = hydrated.world?.essence?.ambient || {};
+    const pressure = computeEnvironmentalPressure(ambient);
+    const interferenceScore = clamp(toNumberSafe(magic?.interference?.score, 0), 0, 1);
+    const avgTaint = ESSENCE_PRIMES.reduce(
+      (sum, e) => sum + clamp(toNumberSafe(ambient?.compositionByEssence?.[e]?.taint, 0), 0, 1),
+      0,
+    ) / ESSENCE_PRIMES.length;
+    const backlashChance = clamp(
+      0.02 + (1 - coherence) * 0.2 + 0.0025 * resonance + 0.08 * interferenceScore + 0.06 * avgTaint + 0.06 * pressure,
+      0,
+      1,
+    );
 
     const success = random() < successChance;
     const backlash = random() < backlashChance;
@@ -1298,16 +1500,51 @@ export function magicRelease(state) {
       { cognitive: -cognitiveCost, mind: -mindCost, ...extra },
     );
 
+    const resonanceGain =
+      (6 + 0.12 * amountTotal + 10 * interferenceScore + 4 * avgTaint + 3 * pressure) *
+      (anchored ? 0.9 : 1);
+    const damp = clamp(1 - 0.1 * getPerkRank(magic, "resonance_damping"), 0.5, 1);
+    const nextMagicWithResonance = applyResonanceDelta(nextMagic, resonanceGain * damp);
+
+    const outcomeTag = backlash
+      ? "backlash"
+      : success
+        ? coherence >= 0.75
+          ? "clean_success"
+          : "strained_success"
+        : "partial_misfire";
+
+    const working = {
+      id: `wrk_${turn}_${Math.floor(random() * 1e9)}`,
+      kind: "weave",
+      essences,
+      pattern: prepared.pattern,
+      coherence,
+      createdTurn: turn,
+      expiresTurn: turn + 15,
+    };
+
     const nextState = recomputeManaFree({
       ...hydrated,
-      player: { ...player, magic: nextMagic },
+      player: {
+        ...player,
+        magic: {
+          ...nextMagicWithResonance,
+          activeWorkings: [
+            ...(Array.isArray(nextMagicWithResonance.activeWorkings)
+              ? nextMagicWithResonance.activeWorkings
+              : []),
+            working,
+          ],
+        },
+      },
     });
 
     const outcome = success ? "holds" : "fails";
     const backlashLine = backlash ? " Backlash bites into your body." : "";
     return {
       state: nextState,
-      description: `Your weave ${outcome} (coherence ${(coherence * 100).toFixed(0)}%).${backlashLine}`,
+      description: `Your weave ${outcome} (coherence ${(coherence * 100).toFixed(0)}%).${backlashLine} (${outcomeTag.replace(/_/g, " ")})`,
     };
   }
 

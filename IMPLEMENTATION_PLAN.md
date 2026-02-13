@@ -338,7 +338,7 @@ clear deliverables so you can track progress and avoid design drift.
 - Deliverables:
   - Meta progression data and rules.
 
-### ~~5.3 Azure SQL integration plan~~ ✅
+### ~~5.3 Legacy SQL integration plan~~ ✅
 
 - Note: ~~Supabase plan was replaced by a cloud save backend.~~
 

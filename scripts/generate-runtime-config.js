@@ -59,7 +59,7 @@ function sanitizeEndpoint(value, keyName) {
   if (!trimmed) return "";
   if (AZURE_HOST_PATTERN.test(trimmed)) {
     // eslint-disable-next-line no-console
-    console.warn(`[runtime-config] ignoring ${keyName} because it points to Azure: ${trimmed}`);
+    console.warn(`[runtime-config] ignoring ${keyName} because it points to legacy host: ${trimmed}`);
     return "";
   }
   return trimmed;

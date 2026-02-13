@@ -68,16 +68,14 @@ Open questions (resolved):
 - ~~Add an intensity scalar to avoid binary swings (even if you later keep intensity fixed at 1).~~
 6) Localized anomalies (hotspots that drift)
 
-- Create an anomaly system with:
 - ~~Create an anomaly system with:~~
   - Definitions + spawn rules in the world registry.
   - Drift rules applied on turn-advancing actions (seeds 1 anomaly for the current biome if empty).
-- Decide visibility:
+- ~~Decide visibility:~~
   - Exposed through `SENSE` output as anomaly names.
 
-- Ensure DRAW , REFINE , SENSE , ATTUNE consult the ambient snapshot:
-  - DRAW : scaled by density and per-essence draw multipliers
 - ~~Ensure DRAW , REFINE , SENSE , ATTUNE consult the ambient snapshot:~~
+  - DRAW : scaled by density and per-essence draw multipliers
   - DRAW uses `ambient.global.drawMultByEssence`.
   - REFINE uses `ambient.global.refineYieldMultByEssence` and taint/contamination pressure.
   - SENSE reports biome/time/weather/anomaly influences.
@@ -88,16 +86,16 @@ Open questions (resolved):
 - ~~Add per-container stats for stored essence:~~
   - Charges now track `amount`, `purity`, `potency`, `createdTurn`, `lastTouchedTurn`, `expiresTurn`.
   - Per-turn decay reduces potency/amount and is influenced by interference + ambient taint.
-- Decide decay outcomes:
+- ~~Decide decay outcomes:~~
   - Implemented: potency and amount both decay each turn (potency slightly faster).
 9) Contamination loop
 
 - ~~Add contamination sources:~~
   - Drawing now accumulates per-essence `reservesTaint` based on ambient taint + contamination pressure.
   - Weather/anomalies can raise ambient taint and contamination pressure.
-- Add resolution paths:
+- ~~Add resolution paths:~~
   - Passive decay slowly reduces `reservesTaint` over time.
-  - (No explicit PURGE action yet.)
+  - Added explicit `PURGE` action (`purge <essence|all> [amount]`) to actively scrub contamination at stability/resonance cost.
 - ~~Make contamination matter by feeding into: refine yield, misfire odds, backlash severity.~~
   - Refining purity is reduced by blended (ambient + reserve) taint.
 10) Cross-essence interference (opposition + mismatch)
@@ -105,7 +103,7 @@ Open questions (resolved):
 - ~~Define an opposition matrix (fire↔water, light↔shadow, etc.) and maybe “adjacency harmony” (air+lightning synergize).~~
 - ~~Compute an “interference score” for the player’s current stored/compressed mix:~~
   - Implemented as an overlap ratio for opposing pairs.
-- Interference impacts:
+- ~~Interference impacts:~~
   - Implemented: interference increases storage decay rate.
 11) Progression hooks (perks as modifiers, not new subsystems)
 
@@ -122,11 +120,11 @@ Open questions (resolved):
   - Added `player.magic.resonance` with `quiet/humming/ringing/shrieking` states.
   - Resonance increases on DRAW/REFINE/COMPRESS/WEAVE/RELEASE and decays on turn ticks.
   - Resonance factors include action intensity, interference, contamination/taint, and environment pressure.
-- Define overload thresholds that trigger “wild magic”-style side effects that still keep gameplay readable.
-  - Implemented: high resonance increases compress misfire risk and reduces weave coherence.
+- ~~Define overload thresholds that trigger “wild magic”-style side effects that still keep gameplay readable.~~
+  - Implemented: high resonance still affects misfire/coherence, plus explicit overload events (`stability feedback`, `taint bloom`, `charge fracture`, `reserve bleed`) at high/critical resonance with readable narration.
 13) Action synergy: persistent SHAPE/ANCHOR states
 
-- Ensure SHAPE and ANCHOR create explicit, persistent state objects:
+- ~~Ensure SHAPE and ANCHOR create explicit, persistent state objects:~~
   - ANCHOR persists on `player.magic.anchors`.
   - SHAPE/WEAVE now leave short-lived entries in `player.magic.activeWorkings` (expires by turn).
 - ~~Define synergy rules:~~
@@ -142,7 +140,7 @@ Open questions (resolved):
   - Non-attack combat actions now advance the enemy turn, so casting carries real risk.
 15) Discovery loop: patterns, rare sources, attunement quests
 
-- Implement “pattern unlock” conditions:
+- ~~Implement “pattern unlock” conditions:~~
   - Implemented: unfamiliar patterns can be attempted; successful RELEASE unlocks the pattern.
   - Implemented: quests can auto-complete on unlocked patterns; rewards can grant patterns/perks.
 - ~~Add rare essence source definitions:~~
@@ -155,11 +153,11 @@ Open questions (resolved):
   - Implemented in SENSE output.
 - ~~Update SENSE output to explain why :~~
   - SENSE now includes stability/resonance/contamination labels, plus notable draw multipliers and source/anomaly names.
-- Add “meaningful change” thresholds to avoid spam:
+- ~~Add “meaningful change” thresholds to avoid spam:~~
   - Implemented: system announces ambient shifts when weather/time/anomaly/source changes cross thresholds.
 17) Testing & balancing plan (before tuning numbers)
 
-- Create scenario-based tests (design-level, not just unit):
+- ~~Create scenario-based tests (design-level, not just unit):~~
   - Added ecology scenario tests (biome dominance vs nudges, contamination/perk effects, misfire rates).
 - ~~Add a simple balancing harness (even a debug mode) to simulate 1000 casts and inspect distributions.~~
   - Added `tools/magicBalanceHarness.mjs` (prints outcome distributions as JSON).

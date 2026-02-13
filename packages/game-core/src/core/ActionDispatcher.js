@@ -16,6 +16,7 @@ import {
   magicAnchor,
   magicShape,
   magicWeave,
+  magicPurge,
   magicRelease,
   processEssenceEcologyTurn,
 } from "../systems/magic/EssenceWeavingSystem.js";
@@ -111,6 +112,16 @@ export function executeAction(state, action, _options = {}) {
           newState = result.state || state;
           description = result.description || "Anchored";
           incrementsTurn = false;
+          break;
+        }
+
+        case "magic_purge": {
+          const result = magicPurge(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Purged contamination";
           break;
         }
 

@@ -1,12 +1,15 @@
 import {
   magicDraw,
+  magicSense,
   magicRefine,
   ensureEssenceWeavingState,
   processEssenceEcologyTurn,
   magicCompress,
   magicWeave,
+  magicPurge,
   magicRelease,
 } from "../packages/game-core/src/systems/magic/EssenceWeavingSystem.js";
+import { SimBridge } from "../packages/game-core/src/simulation/bridge/SimulationContext.js";
 
 function makeBaseState() {
   return {
@@ -178,5 +181,67 @@ test("resonance decays over turns", () => {
   };
   const ticked = processEssenceEcologyTurn(withResonance);
   expect(ticked.player.magic.resonance.current).toBeLessThan(50);
+});
+
+test("purge reduces taint on all channels", () => {
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState(base);
+  const withTaint = {
+    ...hydrated,
+    player: {
+      ...hydrated.player,
+      magic: {
+        ...hydrated.player.magic,
+        reservesTaint: {
+          ...hydrated.player.magic.reservesTaint,
+          fire: 0.5,
+          shadow: 0.4,
+        },
+      },
+    },
+  };
+
+  const purged = magicPurge(withTaint, { type: "magic_purge", essence: null, amount: 10 });
+  expect(purged.ok).not.toBe(false);
+  expect(purged.state.player.magic.reservesTaint.fire).toBeLessThan(0.5);
+  expect(purged.state.player.magic.reservesTaint.shadow).toBeLessThan(0.4);
+});
+
+test("critical resonance triggers overload side effects", () => {
+  SimBridge.initialize(1337);
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState({
+    ...base,
+    player: {
+      ...base.player,
+      magic: {
+        ...base.player.magic,
+        reserves: { fire: 20 },
+        reservesTaint: { fire: 0.2 },
+        resonance: { current: 96, max: 100, state: "shrieking" },
+      },
+    },
+  });
+
+  const result = magicDraw(hydrated, { type: "magic_draw", essence: "fire", amount: 4 });
+  expect(result.description.toLowerCase()).toContain("overload surge");
+  expect(result.state.player.magic.overload?.count || 0).toBeGreaterThan(0);
+});
+
+test("sense reports overload risk labels", () => {
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState({
+    ...base,
+    player: {
+      ...base.player,
+      magic: {
+        ...base.player.magic,
+        resonance: { current: 92, max: 100, state: "shrieking" },
+      },
+    },
+  });
+
+  const sensed = magicSense(hydrated, { type: "magic_sense", essence: "fire" });
+  expect(sensed.description.toLowerCase()).toContain("overload risk");
 });
 

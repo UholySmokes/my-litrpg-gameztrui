@@ -15,6 +15,7 @@ export type ActionType =
   | "magic_shape"
   | "magic_weave"
   | "magic_anchor"
+  | "magic_purge"
   | "magic_release";
 
 // Mirrors current in-app parsed action shape (Phase 1 extraction).
@@ -40,6 +41,7 @@ export type ParsedAction =
   | { type: "magic_shape"; essence: string; form: string; amount?: number | null }
   | { type: "magic_weave"; essences: string[]; pattern: string }
   | { type: "magic_anchor"; kind: "self" | "area" | "item"; itemId?: string | null }
+  | { type: "magic_purge"; essence?: string | null; amount?: number | null }
   | { type: "magic_release" };
 
 export type ValidationResult =

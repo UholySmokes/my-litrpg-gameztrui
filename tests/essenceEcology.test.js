@@ -293,3 +293,47 @@ test("training does not auto-unlock perks", () => {
   expect(result.state.player.magic.perkProgress?.resonance_damping).toBeUndefined();
 });
 
+test("layer B disabled blocks purge action", () => {
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState({
+    ...base,
+    config: {
+      magicRollout: { layerA: true, layerB: false, layerC: true, layerD: true },
+    },
+    player: {
+      ...base.player,
+      magic: {
+        ...(base.player.magic || {}),
+        reservesTaint: { fire: 0.5 },
+      },
+    },
+  });
+
+  const purged = magicPurge(hydrated, { type: "magic_purge", essence: "fire", amount: 8 });
+  expect(purged.ok).toBe(false);
+  expect(String(purged.reason || "").toLowerCase()).toContain("layer b");
+});
+
+test("layer C disabled prevents overload surges", () => {
+  SimBridge.initialize(1337);
+  const base = makeBaseState();
+  const hydrated = ensureEssenceWeavingState({
+    ...base,
+    config: {
+      magicRollout: { layerA: true, layerB: true, layerC: false, layerD: true },
+    },
+    player: {
+      ...base.player,
+      magic: {
+        ...(base.player.magic || {}),
+        reserves: { fire: 20 },
+        resonance: { current: 96, max: 100, state: "shrieking" },
+      },
+    },
+  });
+
+  const result = magicDraw(hydrated, { type: "magic_draw", essence: "fire", amount: 4 });
+  expect(result.description.toLowerCase()).not.toContain("overload surge");
+  expect(result.state.player.magic.overload?.count || 0).toBe(0);
+});
+

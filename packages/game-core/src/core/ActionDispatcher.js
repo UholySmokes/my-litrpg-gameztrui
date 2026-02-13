@@ -21,6 +21,24 @@ import {
   processEssenceEcologyTurn,
 } from "../systems/magic/EssenceWeavingSystem.js";
 
+const isLayerDEnabled = (state) => {
+  const rollout =
+    state?.config?.magicRollout &&
+    typeof state.config.magicRollout === "object" &&
+    !Array.isArray(state.config.magicRollout)
+      ? state.config.magicRollout
+      : null;
+  if (!rollout) return true;
+  if (typeof rollout.layerD === "boolean") return rollout.layerD;
+  if (typeof rollout.layerD === "number") return rollout.layerD !== 0;
+  if (typeof rollout.layerD === "string") {
+    const normalized = rollout.layerD.trim().toLowerCase();
+    if (["false", "0", "no", "off", "disabled"].includes(normalized)) return false;
+    if (["true", "1", "yes", "on", "enabled"].includes(normalized)) return true;
+  }
+  return true;
+};
+
 /**
  * Executes an action and returns the result
  * This is the main dispatcher that routes actions to appropriate logic functions
@@ -149,8 +167,9 @@ export function executeAction(state, action, _options = {}) {
           const prepared = state.player?.magic?.prepared;
           const isInCombat = state.combat?.status === "active";
           const casting = state.player?.magic?.casting;
+          const layerD = isLayerDEnabled(state);
 
-          if (isInCombat && prepared) {
+          if (layerD && isInCombat && prepared) {
             const anchored = Boolean(
               state.player?.magic?.anchors?.self ||
                 state.player?.magic?.anchors?.area ||

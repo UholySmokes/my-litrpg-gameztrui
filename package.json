@@ -76,6 +76,7 @@
       "<rootDir>/tests/skillEffects.test.js",
       "<rootDir>/tests/endToEndEffects.test.js",
       "<rootDir>/tests/magnitudeCapsFusion.test.js",
+      "<rootDir>/.trae/",
       "/node_modules/"
     ],
     "transform": {
@@ -86,7 +87,11 @@
       "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/tests/__mocks__/fileMock.js"
     },
     "modulePathIgnorePatterns": [
-      "<rootDir>/backups/"
+      "<rootDir>/backups/",
+      "<rootDir>/.trae/",
+      "<rootDir>/api/src/dataconnect-generated/",
+      "<rootDir>/packages/game-core/src/dataconnect-generated/",
+      "<rootDir>/packages/game-schemas/src/dataconnect-generated/"
     ]
   }
 }

@@ -11,6 +11,11 @@ In parallel, it now includes a Firebase Hosting + Cloud Functions implementation
   - `POST /api/narrate`
   - `POST /api/narrate-start`
   - `GET /api/narrate-poll`
+  - `GET /api/saves`
+  - `GET /api/saves/:id`
+  - `POST /api/saves`
+  - `PUT /api/saves/:id`
+  - `DELETE /api/saves/:id`
 
 The endpoints mirror the existing Azure versions and keep the same response shape (`ok`, `narrative`, `mood`, `suggestions`).
 
@@ -79,6 +84,14 @@ curl -X GET http://127.0.0.1:5000/api/agents
 curl -X POST http://127.0.0.1:5000/api/agents/run \
   -H "Content-Type: application/json" \
   -d '{"agent":"narrator","input":{"game_state":{"location":"Ashen Gate","hp":42}}}'
+
+curl -X POST http://127.0.0.1:5000/api/saves \
+  -H "Content-Type: application/json" \
+  -H "x-dev-user-id: local-dev" \
+  -d '{"saveName":"Auto Save","gameState":{"location":"Ashen Gate"}}'
+
+curl -X GET http://127.0.0.1:5000/api/saves \
+  -H "x-dev-user-id: local-dev"
 ```
 
 Callable usage (Web SDK):
@@ -125,6 +138,13 @@ Timeouts:
 
 - `FOUNDRY_HTTP_TIMEOUT_MS` (optional, default `30000`)
 - `NARRATE_RUN_TIMEOUT_MS` (optional, default `120000`)
+
+Save storage and local auth:
+
+- `GAME_DB_STORAGE` (optional: `firestore` or `file`)
+- `GAME_DB_PATH` (optional file path for `file` backend)
+- `GAME_SAVES_COLLECTION` (optional Firestore collection name, default `game_saves`)
+- `DEV_USER_ID` / `DEV_USER_EMAIL` (optional local dev auth fallback for `/api/saves`)
 
 ## Frontend Configuration
 

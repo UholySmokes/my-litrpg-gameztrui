@@ -7,6 +7,7 @@ const {
 	narratePoll,
 	health,
 } = require("./handlers");
+const { handleSavesRequest } = require("./saves");
 
 function normalizePath(url) {
 	const raw = typeof url === "string" ? url : "";
@@ -17,6 +18,13 @@ function normalizePath(url) {
 async function handleApiRequest(req, res) {
 	const path = normalizePath(req?.url);
 	const method = (req?.method || "GET").toUpperCase();
+
+	const savesMatch = path.match(/^\/api\/saves(?:\/([^/]+))?$/);
+	if (savesMatch) {
+		const encodedSaveId = savesMatch[1] || "";
+		const saveId = encodedSaveId ? decodeURIComponent(encodedSaveId) : "";
+		return handleSavesRequest(req, res, { saveId });
+	}
 
 	if (path === "/api/health" && method === "GET") {
 		return health(req, res);

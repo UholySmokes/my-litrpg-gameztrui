@@ -3,6 +3,11 @@ lib/**/*.js
 lib/**/*.js.map
 !lib/firebase-agents/definitions.js
 !lib/firebase-agents/runtime.js
+!lib/auth.js
+!lib/game-db-file.js
+!lib/game-db.js
+!lib/saves-store.js
+!lib/saves.js
 
 # TypeScript v1 declaration files
 typings/
@@ -13,3 +18,4 @@ node_modules/
 .env.*
 !.env.example
 *.local
+.data/

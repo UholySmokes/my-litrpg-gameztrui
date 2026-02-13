@@ -142,31 +142,26 @@ Open questions (need your call before I cross this step):
 15) Discovery loop: patterns, rare sources, attunement quests
 
 - Implement “pattern unlock” conditions:
-  - location-based (must sense/attune in zone)
-  - essence-pair experimentation (discover on first successful weave of combo)
-  - quest reward unlocks (narrative progression)
-- Add rare essence source definitions:
-  - unique ambient variants that enable branches (storm-water, ash-fire)
-- Add a lightweight quest hook:
-  - completion grants perk point, pattern, or a new anomaly that becomes accessible.
+  - Implemented: unfamiliar patterns can be attempted; successful RELEASE unlocks the pattern.
+  - Implemented: quests can auto-complete on unlocked patterns; rewards can grant patterns/perks.
+- ~~Add rare essence source definitions:~~
+  - Implemented: rare source defs (`storm_water`, `ash_fire`) contribute to ambient modifiers and are tracked in `world.essence.sources` when present.
+- ~~Add a lightweight quest hook:~~
+  - Added a side quest template that auto-completes when the player unlocks a weave pattern.
 16) Feedback overhaul (player-facing clarity)
 
-- Define a consistent vocabulary ladder for:
-  - stability states (steady → wavering → volatile → fracturing)
-  - resonance states (quiet → humming → ringing → shrieking)
-  - contamination states (clean → tainted → foul)
-- Update SENSE output to explain why :
-  - “Stormfront overhead: lightning density high; fire compression dampened; taint risk elevated.”
+- ~~Define a consistent vocabulary ladder for:~~
+  - Implemented in SENSE output.
+- ~~Update SENSE output to explain why :~~
+  - SENSE now includes stability/resonance/contamination labels, plus notable draw multipliers and source/anomaly names.
 - Add “meaningful change” thresholds to avoid spam:
-  - only announce ambient shifts when modifiers cross a boundary or anomaly appears/drifts.
+  - Implemented: system announces ambient shifts when weather/time/anomaly/source changes cross thresholds.
 17) Testing & balancing plan (before tuning numbers)
 
 - Create scenario-based tests (design-level, not just unit):
-  - same action in different biomes produces expected relative outcomes
-  - time/weather nudges do not overwhelm biome identity
-  - contamination meaningfully changes refine/misfire probabilities
-  - perks reduce risk in the intended dimensions without eliminating it
-- Add a simple balancing harness (even a debug mode) to simulate 1000 casts and inspect distributions.
+  - Added unit coverage for new quest auto-complete conditions.
+- ~~Add a simple balancing harness (even a debug mode) to simulate 1000 casts and inspect distributions.~~
+  - Added `tools/magicBalanceHarness.mjs` (prints outcome distributions as JSON).
 18) Rollout strategy (reduce risk to existing gameplay)
 
 - Ship in layers:

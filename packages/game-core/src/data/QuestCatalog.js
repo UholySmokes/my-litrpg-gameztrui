@@ -509,6 +509,35 @@ let SIDE_QUESTS = [
       favoredRaces: ["mirageborn", "sandstrider"],
     },
   },
+  {
+    id: "sq_pattern_spiral",
+    name: "Spiral Weave Trial",
+    description:
+      "A mentor challenges you to stabilize an unfamiliar spiral weave. Prove you can hold the pattern without it collapsing.",
+    objectives: [
+      {
+        id: "sq_pattern_spiral_obj",
+        description: "Successfully unlock the Spiral weave pattern",
+        completed: false,
+      },
+    ],
+    rewards: {
+      xp: 80,
+      magic: {
+        perks: [{ id: "stable_weaves", rank: 1 }],
+        patterns: { weave: ["spiral"] },
+      },
+      items: [],
+    },
+    autoComplete: {
+      requiresMagicPattern: { kind: "weave", id: "spiral" },
+    },
+    levelRequirement: 4,
+    tags: {
+      tones: ["mysterious"],
+      favoredClasses: ["mage", "battlemage"],
+    },
+  },
 ];
 
 // ---------------------------------------------------------------------------

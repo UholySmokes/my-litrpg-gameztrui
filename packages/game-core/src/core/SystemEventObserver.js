@@ -12,6 +12,137 @@ export const SystemEventObserver = {
     SystemEventObserver.checkQuestObjectives(prevState, nextState, dispatch);
     SystemEventObserver.checkLevelThresholds(prevState, nextState, dispatch);
     SystemEventObserver.checkInventoryAdditions(prevState, nextState, dispatch);
+    SystemEventObserver.checkAmbientShift(prevState, nextState, dispatch);
+  },
+
+  checkAmbientShift(prevState, nextState, dispatch) {
+    const event = SystemEventObserver.getAmbientShiftEvent(prevState, nextState, 0);
+    if (!event?.payload?.message) return;
+    SystemEventObserver.enqueueDispatch(
+      {
+        type: "ADD_SYSTEM_MESSAGE",
+        payload: { message: event.payload.message, type: "system" },
+      },
+      dispatch,
+    );
+  },
+
+  getAmbientShiftEvent(prevState, nextState, tick = 0) {
+    const prevAmbient = prevState?.world?.essence?.ambient;
+    const nextAmbient = nextState?.world?.essence?.ambient;
+
+    const isSnapshot = (a) =>
+      a &&
+      typeof a === "object" &&
+      !Array.isArray(a) &&
+      a.compositionByEssence &&
+      typeof a.compositionByEssence === "object" &&
+      a.global &&
+      typeof a.global === "object";
+
+    if (!isSnapshot(prevAmbient) || !isSnapshot(nextAmbient)) return null;
+
+    const prevProv = prevAmbient.provenance || {};
+    const nextProv = nextAmbient.provenance || {};
+
+    const normList = (v) =>
+      Array.isArray(v)
+        ? v.map((x) => String(x).trim().toLowerCase()).filter(Boolean).sort()
+        : [];
+    const sameList = (a, b) => {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i += 1) {
+        if (a[i] !== b[i]) return false;
+      }
+      return true;
+    };
+
+    const prevAnoms = normList(prevProv.anomalyIds);
+    const nextAnoms = normList(nextProv.anomalyIds);
+    const prevSources = normList(prevProv.sourceIds);
+    const nextSources = normList(nextProv.sourceIds);
+
+    const weatherChanged =
+      String(prevProv.weatherType || "") !== String(nextProv.weatherType || "") ||
+      Math.abs(Number(prevProv.weatherIntensity || 0) - Number(nextProv.weatherIntensity || 0)) >= 0.25;
+    const timeChanged = String(prevProv.timeOfDay || "") !== String(nextProv.timeOfDay || "");
+    const anomalyChanged = !sameList(prevAnoms, nextAnoms);
+    const sourcesChanged = !sameList(prevSources, nextSources);
+
+    const globalKeys = [
+      "drawMultByEssence",
+      "refineYieldMultByEssence",
+      "compressRiskMultByEssence",
+      "potencyMultByEssence",
+      "contaminationRiskMultByEssence",
+    ];
+
+    const maxAbsDelta = (mapKey) => {
+      const prevMap = prevAmbient.global?.[mapKey] || {};
+      const nextMap = nextAmbient.global?.[mapKey] || {};
+      const keys = new Set([
+        ...Object.keys(prevMap || {}),
+        ...Object.keys(nextMap || {}),
+      ]);
+      let max = 0;
+      keys.forEach((k) => {
+        const a = Number(prevMap?.[k] ?? 1);
+        const b = Number(nextMap?.[k] ?? 1);
+        if (!Number.isFinite(a) || !Number.isFinite(b)) return;
+        max = Math.max(max, Math.abs(a - b));
+      });
+      return max;
+    };
+
+    const maxDrawDelta = maxAbsDelta("drawMultByEssence");
+    const maxRefineDelta = maxAbsDelta("refineYieldMultByEssence");
+    const maxCompressDelta = maxAbsDelta("compressRiskMultByEssence");
+    const maxContamDelta = maxAbsDelta("contaminationRiskMultByEssence");
+    const maxPotencyDelta = maxAbsDelta("potencyMultByEssence");
+
+    const numericChanged =
+      maxDrawDelta >= 0.05 ||
+      maxRefineDelta >= 0.04 ||
+      maxCompressDelta >= 0.06 ||
+      maxContamDelta >= 0.06 ||
+      maxPotencyDelta >= 0.05;
+
+    if (!(weatherChanged || timeChanged || anomalyChanged || sourcesChanged || numericChanged)) {
+      return null;
+    }
+
+    const parts = [];
+    if (nextProv.timeOfDay) parts.push(`Time: ${nextProv.timeOfDay}`);
+    if (nextProv.weatherType) {
+      const intensity = Number.isFinite(nextProv.weatherIntensity)
+        ? ` (${Number(nextProv.weatherIntensity).toFixed(2)})`
+        : "";
+      parts.push(`Weather: ${nextProv.weatherType}${intensity}`);
+    }
+    if (nextAnoms.length) parts.push(`Anomalies: ${nextAnoms.join(", ")}`);
+    if (nextSources.length) parts.push(`Sources: ${nextSources.join(", ")}`);
+
+    const topNotables = [];
+    const collectNotables = (mapKey, label, threshold) => {
+      const map = nextAmbient.global?.[mapKey] || {};
+      Object.entries(map).forEach(([essence, mult]) => {
+        const m = Number(mult);
+        if (!Number.isFinite(m)) return;
+        if (Math.abs(m - 1) < threshold) return;
+        topNotables.push({ w: Math.abs(m - 1), text: `${label} ${essence} x${m.toFixed(2)}` });
+      });
+    };
+    collectNotables("drawMultByEssence", "draw", 0.05);
+    collectNotables("compressRiskMultByEssence", "compress", 0.07);
+    collectNotables("contaminationRiskMultByEssence", "taint", 0.07);
+    collectNotables("potencyMultByEssence", "potency", 0.06);
+    topNotables.sort((a, b) => b.w - a.w);
+    const notableLine = topNotables.length
+      ? ` Notable: ${topNotables.slice(0, 3).map((n) => n.text).join("; ")}.`
+      : "";
+
+    const message = `Ambient shifts. ${parts.join(" | ")}.${notableLine}`;
+    return { type: "world.ambientShift", tick, payload: { message } };
   },
 
   checkQuestObjectives(prevState, nextState, dispatch) {
@@ -87,6 +218,37 @@ export const SystemEventObserver = {
           ? autoComplete.requiresLocation
           : "";
       checks.push(current.toLowerCase() === required.toLowerCase());
+    }
+
+    if (autoComplete.requiresMagicPattern) {
+      const req = autoComplete.requiresMagicPattern;
+      const rawKind = typeof req === "object" && req ? req.kind : null;
+      const rawId = typeof req === "object" && req ? req.id : typeof req === "string" ? req : null;
+      const kind = typeof rawKind === "string" ? rawKind.trim().toLowerCase() : "weave";
+      const id = typeof rawId === "string" ? rawId.trim().toLowerCase() : "";
+      const unlocked = state.player?.magic?.unlockedPatterns;
+      const list = unlocked && typeof unlocked === "object" ? unlocked[kind] : null;
+      const has = Array.isArray(list)
+        ? list.map((p) => String(p).trim().toLowerCase()).includes(id)
+        : false;
+      checks.push(Boolean(id) && has);
+    }
+
+    if (autoComplete.requiresEssenceSource) {
+      const id = typeof autoComplete.requiresEssenceSource === "string"
+        ? autoComplete.requiresEssenceSource.trim().toLowerCase()
+        : "";
+      const sources = state.world?.essence?.sources;
+      const has = Array.isArray(sources)
+        ? sources.some((s) => {
+            if (typeof s === "string") return s.trim().toLowerCase() === id;
+            if (s && typeof s === "object" && !Array.isArray(s)) {
+              return typeof s.id === "string" && s.id.trim().toLowerCase() === id;
+            }
+            return false;
+          })
+        : false;
+      checks.push(Boolean(id) && has);
     }
 
     return checks.length > 0 && checks.every(Boolean);
@@ -236,6 +398,15 @@ export const SystemEventObserver = {
         tick,
         payload: { diffs },
       });
+    }
+
+    {
+      const ambientEvent = SystemEventObserver.getAmbientShiftEvent(
+        prevState,
+        nextState,
+        tick,
+      );
+      if (ambientEvent) events.push(ambientEvent);
     }
 
     return events;

@@ -17,6 +17,7 @@ import {
   magicShape,
   magicWeave,
   magicRelease,
+  processEssenceEcologyTurn,
 } from "../systems/magic/EssenceWeavingSystem.js";
 
 /**
@@ -370,6 +371,8 @@ export function executeAction(state, action, _options = {}) {
             turnCount: nextTurnCount,
           },
         };
+
+        newState = processEssenceEcologyTurn(newState);
 
         // Apply passive time-based effects (mana regen, race abilities)
         // when not in active combat (combat handles this via processEnemyTurns)

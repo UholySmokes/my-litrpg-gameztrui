@@ -734,6 +734,106 @@ export const BIOME_ESSENCE_PROFILES = {
   },
 };
 
+export const ESSENCE_ANOMALY_DEFS = {
+  leyline_storm: {
+    id: "leyline_storm",
+    name: "Leyline Storm",
+    allowedBiomes: ["ruins", "skydocks"],
+    densityDeltaByEssence: { lightning: 0.12, air: 0.06, earth: 0.02 },
+    drawMultByEssence: { lightning: 1.08, air: 1.03 },
+    refineYieldMultByEssence: { lightning: 1.03 },
+    compressRiskMultByEssence: { lightning: 1.10, air: 1.05 },
+    potencyMultByEssence: { lightning: 1.04 },
+    taintNudge: 0.02,
+    driftIntervalTurns: 12,
+  },
+  bloom_sporeveil: {
+    id: "bloom_sporeveil",
+    name: "Sporeveil Bloom",
+    allowedBiomes: ["wilds"],
+    densityDeltaByEssence: { life: 0.10, earth: 0.04, water: 0.04, shadow: 0.02 },
+    drawMultByEssence: { life: 1.06, earth: 1.02 },
+    refineYieldMultByEssence: { life: 1.04, water: 1.02 },
+    compressRiskMultByEssence: { life: 1.03 },
+    potencyMultByEssence: { life: 1.03 },
+    taintNudge: 0,
+    driftIntervalTurns: 16,
+  },
+  veil_sink: {
+    id: "veil_sink",
+    name: "Veil Sink",
+    allowedBiomes: ["undercity"],
+    densityDeltaByEssence: { shadow: 0.10, water: 0.04, earth: 0.03, light: -0.04 },
+    drawMultByEssence: { shadow: 1.06, light: 0.96 },
+    refineYieldMultByEssence: { shadow: 1.03, light: 0.98 },
+    compressRiskMultByEssence: { light: 1.08, shadow: 1.03 },
+    potencyMultByEssence: { shadow: 1.02 },
+    taintNudge: 0.05,
+    driftIntervalTurns: 14,
+  },
+  tide_rift: {
+    id: "tide_rift",
+    name: "Tide Rift",
+    allowedBiomes: ["coast"],
+    densityDeltaByEssence: { water: 0.11, air: 0.05, space: 0.02 },
+    drawMultByEssence: { water: 1.05, air: 1.02 },
+    refineYieldMultByEssence: { water: 1.04 },
+    compressRiskMultByEssence: { water: 1.03 },
+    potencyMultByEssence: { water: 1.02, space: 1.02 },
+    taintNudge: 0,
+    driftIntervalTurns: 18,
+  },
+  mirage_knot: {
+    id: "mirage_knot",
+    name: "Mirage Knot",
+    allowedBiomes: ["desert"],
+    densityDeltaByEssence: { air: 0.08, light: 0.04, time: 0.04, water: -0.05 },
+    drawMultByEssence: { air: 1.04, time: 1.04 },
+    refineYieldMultByEssence: { time: 1.02 },
+    compressRiskMultByEssence: { time: 1.07, light: 1.05 },
+    potencyMultByEssence: { time: 1.03 },
+    taintNudge: 0.01,
+    driftIntervalTurns: 15,
+  },
+  ash_vent: {
+    id: "ash_vent",
+    name: "Ash Vent",
+    allowedBiomes: ["volcanic", "mountain"],
+    densityDeltaByEssence: { fire: 0.10, earth: 0.05, destruction: 0.03, air: -0.02 },
+    drawMultByEssence: { fire: 1.06, destruction: 1.04 },
+    refineYieldMultByEssence: { fire: 1.03, earth: 1.01 },
+    compressRiskMultByEssence: { fire: 1.06, destruction: 1.08 },
+    potencyMultByEssence: { fire: 1.03, destruction: 1.03 },
+    taintNudge: 0.03,
+    driftIntervalTurns: 13,
+  },
+  mnemonic_breach: {
+    id: "mnemonic_breach",
+    name: "Mnemonic Breach",
+    allowedBiomes: ["dreamscape"],
+    densityDeltaByEssence: { time: 0.07, space: 0.07, shadow: 0.03, light: 0.02 },
+    drawMultByEssence: { time: 1.05, space: 1.05 },
+    refineYieldMultByEssence: { time: 1.02, space: 1.02 },
+    compressRiskMultByEssence: { time: 1.06, space: 1.06 },
+    potencyMultByEssence: { time: 1.03, space: 1.03 },
+    taintNudge: 0.02,
+    driftIntervalTurns: 11,
+  },
+};
+
+export function getEssenceAnomalyById(id) {
+  if (!id) return null;
+  const key = typeof id === "string" ? id.trim().toLowerCase() : "";
+  return ESSENCE_ANOMALY_DEFS[key] || null;
+}
+
+export function getEssenceAnomalyIdsForBiome(biomeId) {
+  const key = typeof biomeId === "string" ? biomeId.trim().toLowerCase() : "";
+  return Object.values(ESSENCE_ANOMALY_DEFS)
+    .filter((def) => Array.isArray(def.allowedBiomes) && def.allowedBiomes.includes(key))
+    .map((def) => def.id);
+}
+
 export function getBiomeEssenceProfile(biomeId) {
   const key = typeof biomeId === "string" ? biomeId.trim().toLowerCase() : "";
   return BIOME_ESSENCE_PROFILES[key] || null;

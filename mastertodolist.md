@@ -20,14 +20,15 @@ Decisions locked:
 - Time uses coarse phases: `dawn/day/dusk/night`.
 - Weather is tracked per-biome.
 - Essence set: `fire, water, earth, air, lightning, shadow, light, life, creation, destruction, space, time`.
-- Off-biome modifier range target: `-10%` to `+20%`.
+- Off-biome draw baseline: dominant `+20%` (`1.20`), off-biome `-10%` (`0.90`), clamped `0.90..1.20`.
 
-Open questions (need your call before I cross this step):
+Open questions (resolved):
 - ~~Should decay and anomaly drift tick only on turn-advancing actions, or also on read-only actions like `SENSE`?~~
 - ~~Do you want time as coarse phases (`dawn/day/dusk/night`) or a numeric clock (`hour 0-23`)?~~
 - ~~Should weather be global, per-biome, or per-location? Also: deterministic schedule vs RNG changes?~~
 - ~~Confirm essence set: `fire, water, earth, air, lightning, shadow, light, life, creation ,destruction, space, time` (anything missing like `ice` or `metal`)?~~
 - ~~How strong should off-biome penalties be (e.g., dominant +20%, off-biome -10%), and what clamp limits?~~
+  - Locked: draw dominant `1.20`, draw off-biome `0.90`; clamps `0.90..1.20` (also used for refine/potency/etc.).
 
 2) Extend world state to support ecology
 
@@ -159,7 +160,7 @@ Open questions (need your call before I cross this step):
 17) Testing & balancing plan (before tuning numbers)
 
 - Create scenario-based tests (design-level, not just unit):
-  - Added unit coverage for new quest auto-complete conditions.
+  - Added ecology scenario tests (biome dominance vs nudges, contamination/perk effects, misfire rates).
 - ~~Add a simple balancing harness (even a debug mode) to simulate 1000 casts and inspect distributions.~~
   - Added `tools/magicBalanceHarness.mjs` (prints outcome distributions as JSON).
 18) Rollout strategy (reduce risk to existing gameplay)

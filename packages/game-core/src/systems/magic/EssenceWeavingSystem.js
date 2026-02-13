@@ -1188,6 +1188,17 @@ export function magicCompress(state, action) {
     1.2,
   );
 
+  const contaminationMult = clamp(
+    toNumberSafe(ambient?.global?.contaminationRiskMultByEssence?.[essence], 1),
+    0.9,
+    1.2,
+  );
+  const ambientTaint = clamp(toNumberSafe(ambient?.compositionByEssence?.[essence]?.taint, 0), 0, 1);
+  const reserveTaint = clamp(toNumberSafe(magic.reservesTaint?.[essence], 0), 0, 1);
+  const chargeImpurity = clamp(1 - clamp(toNumberSafe(charge.purity, 0.6), 0, 1), 0, 1);
+  const blendedTaint = clamp((ambientTaint * 0.4 + reserveTaint * 0.35 + chargeImpurity * 0.25) * contaminationMult, 0, 1);
+  const taintMisfireMult = clamp(1 + 0.65 * blendedTaint, 1, 1.65);
+
   const saferCompressionRank = getPerkRank(magic, "safer_compression");
   const perkMisfireMult = clamp(1 - 0.07 * saferCompressionRank, 0.55, 1);
   const anchored = Boolean(magic.anchors?.self || magic.anchors?.area || magic.anchors?.itemId);
@@ -1195,7 +1206,12 @@ export function magicCompress(state, action) {
   const resonance = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
   const resonanceMisfireMult = clamp(1 + 0.35 * (resonance / 100), 1, 1.35);
   const misfireChance = clamp(
-    (0.03 + risk + stabilityPenalty) * compressRiskMult * perkMisfireMult * anchorMisfireMult * resonanceMisfireMult,
+    (0.03 + risk + stabilityPenalty) *
+      compressRiskMult *
+      perkMisfireMult *
+      anchorMisfireMult *
+      resonanceMisfireMult *
+      taintMisfireMult,
     0,
     1,
   );

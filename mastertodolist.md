@@ -132,12 +132,13 @@ Open questions (need your call before I cross this step):
   - ANCHOR stabilizes (reduces) compress misfire risk and resonance gain; also boosts weave coherence.
 14) Combat integration: cast time + interruption
 
-- Assign cast time bands to magic actions (instant/short/long/channel).
-- Add an interruption check:
-  - if hit during cast, roll vs stability/resonance to determine: fizzles, partial, backlash
-- Add tactical levers:
-  - pre-cast setup (shape/anchor) reduces cast time or interruption vulnerability
-  - high-cost weaves trade: big payoff, big risk, bigger interruption window
+- ~~Assign cast time bands to magic actions (instant/short/long/channel).~~
+  - Implemented cast-time turns for `magic_release` in combat: shape=short (1), weave=long (2), anchor reduces by 1.
+- ~~Add an interruption check:~~
+  - Damage during casting interrupts with outcome: fizzle / partial / backlash.
+- ~~Add tactical levers:~~
+  - ANCHOR reduces cast time and improves interruption odds.
+  - Non-attack combat actions now advance the enemy turn, so casting carries real risk.
 15) Discovery loop: patterns, rare sources, attunement quests
 
 - Implement “pattern unlock” conditions:

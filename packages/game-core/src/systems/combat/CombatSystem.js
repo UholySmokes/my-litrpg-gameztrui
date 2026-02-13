@@ -38,6 +38,106 @@ import { consumeMana } from "../magic/ManaSystem.js";
 import { calculateManaCost } from "../magic/ManaBalance.js";
 import { emit } from "../../core/EventBus.js";
 import { getSetBonuses } from "../items/SetBonusSystem.js";
+
+export function applyCastingInterruptionFromDamage(state, damageApplied) {
+  const casting = state?.player?.magic?.casting;
+  const prepared = state?.player?.magic?.prepared;
+  if (!casting || typeof casting !== "object" || !prepared) return state;
+
+  const hpMax = state.player?.hp?.max || 0;
+  const dmg = Math.max(0, Number(damageApplied) || 0);
+  if (dmg <= 0) return state;
+
+  const resonance = Math.max(0, Math.min(100, Number(state.player?.magic?.resonance?.current) || 0));
+  const mindPct = hpMax > 0
+    ? Math.max(0, Math.min(1, (Number(state.player?.magic?.stability?.mind?.current) || 0) / (Number(state.player?.magic?.stability?.mind?.max) || 100)))
+    : 0;
+  const cogPct = hpMax > 0
+    ? Math.max(0, Math.min(1, (Number(state.player?.magic?.stability?.cognitive?.current) || 0) / (Number(state.player?.magic?.stability?.cognitive?.max) || 100)))
+    : 0;
+  const control = 0.55 * mindPct + 0.45 * cogPct;
+  const damageRatio = hpMax > 0 ? Math.max(0, Math.min(1, dmg / hpMax)) : 1;
+  const anchored = Boolean(
+    state.player?.magic?.anchors?.self ||
+      state.player?.magic?.anchors?.area ||
+      state.player?.magic?.anchors?.itemId,
+  );
+
+  const guaranteed = damageRatio >= 0.2;
+  const chance = guaranteed
+    ? 1
+    : Math.max(
+        0,
+        Math.min(
+          1,
+          0.12 + 0.9 * damageRatio + 0.25 * (resonance / 100) - 0.35 * control - (anchored ? 0.1 : 0),
+        ),
+      );
+
+  if (!(random() < chance)) return state;
+
+  const outcomeRoll = random();
+  const outcome =
+    outcomeRoll < 0.55 ? "fizzle" : outcomeRoll < 0.85 ? "partial" : "backlash";
+
+  const log = state.combat?.log ? [...state.combat.log] : [];
+  if (outcome === "fizzle") {
+    log.push("⚡ Your casting is interrupted; the working fizzles.");
+  } else if (outcome === "partial") {
+    log.push("⚡ Your casting is interrupted; the working spills out prematurely.");
+  } else {
+    log.push("⚡ Your casting is interrupted; backlash tears through you.");
+  }
+
+  const mindMax = Number(state.player?.magic?.stability?.mind?.max) || 100;
+  const cogMax = Number(state.player?.magic?.stability?.cognitive?.max) || 100;
+  const bodyMax = Number(state.player?.magic?.stability?.body?.max) || 100;
+
+  const mindLoss = outcome === "backlash" ? Math.max(2, Math.floor(dmg * 0.6)) : Math.max(1, Math.floor(dmg * 0.2));
+  const cogLoss = outcome === "partial" ? Math.max(1, Math.floor(dmg * 0.25)) : outcome === "backlash" ? Math.max(2, Math.floor(dmg * 0.5)) : Math.max(0, Math.floor(dmg * 0.1));
+  const bodyLoss = outcome === "backlash" ? Math.max(2, Math.floor(dmg * 0.4)) : outcome === "partial" ? Math.max(1, Math.floor(dmg * 0.15)) : 0;
+
+  const nextResonance = Math.max(0, Math.min(100, resonance + (outcome === "backlash" ? 12 : outcome === "partial" ? 8 : 5)));
+  const resonanceState = nextResonance >= 75 ? "shrieking" : nextResonance >= 50 ? "ringing" : nextResonance >= 25 ? "humming" : "quiet";
+
+  return {
+    ...state,
+    player: {
+      ...state.player,
+      magic: {
+        ...state.player.magic,
+        casting: null,
+        prepared: null,
+        resonance: {
+          ...(state.player.magic.resonance || {}),
+          current: nextResonance,
+          state: resonanceState,
+        },
+        stability: {
+          ...state.player.magic.stability,
+          mind: {
+            ...state.player.magic.stability.mind,
+            current: Math.max(0, Math.min(mindMax, (state.player.magic.stability.mind.current || 0) - mindLoss)),
+          },
+          cognitive: {
+            ...state.player.magic.stability.cognitive,
+            current: Math.max(0, Math.min(cogMax, (state.player.magic.stability.cognitive.current || 0) - cogLoss)),
+          },
+          body: {
+            ...state.player.magic.stability.body,
+            current: Math.max(0, Math.min(bodyMax, (state.player.magic.stability.body.current || 0) - bodyLoss)),
+          },
+        },
+      },
+    },
+    combat: state.combat
+      ? {
+          ...state.combat,
+          log,
+        }
+      : state.combat,
+  };
+}
 import {
   gainRage,
   processRageDecay,
@@ -799,6 +899,8 @@ function takeDamage(state, amount) {
   }
 
   const damageApplied = Math.max(0, initialHp - newHp);
+
+  newState = applyCastingInterruptionFromDamage(newState, damageApplied);
 
   return {
     success: true,

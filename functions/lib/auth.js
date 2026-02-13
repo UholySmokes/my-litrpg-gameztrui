@@ -7,29 +7,6 @@ function getHeader(req, name) {
 	return req.headers[lower] || req.headers[name] || "";
 }
 
-function parseClientPrincipal(encoded) {
-	if (!encoded) return null;
-	try {
-		const json = Buffer.from(encoded, "base64").toString("utf8");
-		const principal = JSON.parse(json);
-		if (!principal || typeof principal !== "object") return null;
-		const userId = principal.userId || principal.userDetails;
-		if (!userId) return null;
-		return {
-			id: String(userId),
-			email: principal.userDetails
-				? String(principal.userDetails)
-				: String(userId),
-			provider: principal.identityProvider
-				? String(principal.identityProvider)
-				: "",
-			roles: Array.isArray(principal.userRoles) ? principal.userRoles : [],
-		};
-	} catch {
-		return null;
-	}
-}
-
 function getDevUser(req) {
 	if (process.env.NODE_ENV === "production") {
 		return null;
@@ -103,26 +80,9 @@ async function getUserFromRequest(req) {
 	const firebaseUser = await getFirebaseUser(req);
 	if (firebaseUser) return firebaseUser;
 
-	const principalHeader = getHeader(req, "x-ms-client-principal");
-	const parsed = parseClientPrincipal(principalHeader);
-	if (parsed) return parsed;
-
-	const principalId = getHeader(req, "x-ms-client-principal-id");
-	const principalName = getHeader(req, "x-ms-client-principal-name");
-	if (principalId || principalName) {
-		const id = principalId || principalName;
-		return {
-			id: String(id),
-			email: String(principalName || principalId || id),
-			provider: String(getHeader(req, "x-ms-client-principal-idp") || ""),
-			roles: ["authenticated"],
-		};
-	}
-
 	return null;
 }
 
 module.exports = {
 	getUserFromRequest,
 };
-

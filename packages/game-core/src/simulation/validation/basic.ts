@@ -31,7 +31,23 @@ export function isValidCommand(command: any): command is Command {
     typeof command.type === "string" &&
     typeof command.entityId === "string" &&
     typeof command.timestamp === "number" &&
-    ["UseSkill", "Move", "EquipItem", "UseItem", "Rest"].includes(command.type)
+    [
+      "UseSkill",
+      "Move",
+      "EquipItem",
+      "UseItem",
+      "Rest",
+      "MagicSense",
+      "MagicAttune",
+      "MagicDraw",
+      "MagicRefine",
+      "MagicCompress",
+      "MagicShape",
+      "MagicWeave",
+      "MagicAnchor",
+      "MagicPurge",
+      "MagicRelease",
+    ].includes(command.type)
   );
 }
 

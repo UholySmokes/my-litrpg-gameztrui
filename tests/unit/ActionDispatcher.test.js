@@ -122,6 +122,73 @@ describe("ActionDispatcher", () => {
       expect(result.success).toBe(true);
       expect(result.state.world?.turnCount ?? 5).toBe(5);
     });
+
+    it("advances turn, time, and ecology on movement actions", () => {
+      const state = {
+        ...baseState,
+        config: {
+          ...baseState.config,
+          manaRegenPerTurn: 0,
+          worldMinutesPerTurn: 15,
+        },
+        world: {
+          ...baseState.world,
+          turnCount: 0,
+          location: {
+            ...baseState.world.location,
+            current: "starting_zone",
+            visited: ["starting_zone"],
+            unlockedAreas: ["starting_zone", "city_neon_bazaar"],
+            biome: "city",
+          },
+          time: {
+            ...(baseState.world.time || {}),
+            currentTime: 480,
+            timeOfDay: "day",
+            isOutdoors: true,
+            lastUpdate: 0,
+          },
+        },
+        player: {
+          ...baseState.player,
+          magic: {
+            resonance: { current: 50, max: 100, state: "ringing" },
+          },
+        },
+      };
+
+      const result = executeAction(state, {
+        type: "move",
+        targetLocation: "city_neon_bazaar",
+      });
+      expect(result.success).toBe(true);
+      expect(result.state.world.turnCount).toBe(1);
+      expect(result.state.world.location.current).toBe("city_neon_bazaar");
+      expect(result.state.world.time.currentTime).toBe(495);
+      expect(result.state.player.magic.resonance.current).toBeLessThan(50);
+    });
+
+    it("does not advance turn when moving to the current location", () => {
+      const state = {
+        ...baseState,
+        world: {
+          ...baseState.world,
+          turnCount: 3,
+          location: {
+            ...baseState.world.location,
+            current: "starting_zone",
+            unlockedAreas: ["starting_zone"],
+          },
+        },
+      };
+
+      const result = executeAction(state, {
+        type: "move",
+        targetLocation: "starting_zone",
+      });
+      expect(result.success).toBe(true);
+      expect(result.state.world.turnCount).toBe(3);
+    });
   });
 
   describe("essence weaving actions", () => {

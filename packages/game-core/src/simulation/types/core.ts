@@ -173,12 +173,81 @@ export type RestCommand = BaseCommand & {
   duration: Tick;
 };
 
+export type MagicSenseCommand = BaseCommand & {
+  type: "MagicSense";
+  essence?: string;
+};
+
+export type MagicAttuneCommand = BaseCommand & {
+  type: "MagicAttune";
+  stance?: string;
+};
+
+export type MagicDrawCommand = BaseCommand & {
+  type: "MagicDraw";
+  essence: string;
+  amount?: number;
+};
+
+export type MagicRefineCommand = BaseCommand & {
+  type: "MagicRefine";
+  essence: string;
+  method?: string;
+  amount?: number;
+};
+
+export type MagicCompressCommand = BaseCommand & {
+  type: "MagicCompress";
+  essence: string;
+  method?: string;
+  tier?: number;
+};
+
+export type MagicShapeCommand = BaseCommand & {
+  type: "MagicShape";
+  essence?: string;
+  form?: string;
+  amount?: number;
+};
+
+export type MagicWeaveCommand = BaseCommand & {
+  type: "MagicWeave";
+  essences?: string[];
+  pattern?: string;
+};
+
+export type MagicAnchorCommand = BaseCommand & {
+  type: "MagicAnchor";
+  kind?: string;
+  itemId?: string;
+};
+
+export type MagicPurgeCommand = BaseCommand & {
+  type: "MagicPurge";
+  essence?: string | null;
+  amount?: number;
+};
+
+export type MagicReleaseCommand = BaseCommand & {
+  type: "MagicRelease";
+};
+
 export type Command =
   | UseSkillCommand
   | MoveCommand
   | EquipItemCommand
   | UseItemCommand
-  | RestCommand;
+  | RestCommand
+  | MagicSenseCommand
+  | MagicAttuneCommand
+  | MagicDrawCommand
+  | MagicRefineCommand
+  | MagicCompressCommand
+  | MagicShapeCommand
+  | MagicWeaveCommand
+  | MagicAnchorCommand
+  | MagicPurgeCommand
+  | MagicReleaseCommand;
 
 // ============================================================================
 // EVENT MODEL

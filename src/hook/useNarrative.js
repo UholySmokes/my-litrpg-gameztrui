@@ -98,6 +98,51 @@ function buildActionSuggestions(state) {
 
   const suggestions = [];
   const player = state.player || {};
+  const magic =
+    player.magic && typeof player.magic === "object" && !Array.isArray(player.magic)
+      ? player.magic
+      : {};
+  const reserves =
+    magic.reserves && typeof magic.reserves === "object" && !Array.isArray(magic.reserves)
+      ? magic.reserves
+      : {};
+  const reservesTaint =
+    magic.reservesTaint &&
+    typeof magic.reservesTaint === "object" &&
+    !Array.isArray(magic.reservesTaint)
+      ? magic.reservesTaint
+      : {};
+  const reserveRows = Object.entries(reserves)
+    .map(([essence, amount]) => ({
+      essence,
+      amount: toNumber(amount, 0),
+      taint: toNumber(reservesTaint?.[essence], 0),
+    }))
+    .filter((entry) => entry.amount > 0.01)
+    .sort((a, b) => b.amount - a.amount);
+  const highestReserve = reserveRows[0] || null;
+  const avgReserveTaint = reserveRows.length
+    ? reserveRows.reduce((sum, row) => sum + row.taint, 0) / reserveRows.length
+    : 0;
+  const resonanceCurrent = toNumber(magic.resonance?.current, 0);
+  const prepared =
+    magic.prepared && typeof magic.prepared === "object" && !Array.isArray(magic.prepared)
+      ? magic.prepared
+      : null;
+  const charges = Array.isArray(magic.charges) ? magic.charges : [];
+  const ambient =
+    state.world?.essence?.ambient &&
+    typeof state.world.essence.ambient === "object" &&
+    !Array.isArray(state.world.essence.ambient)
+      ? state.world.essence.ambient
+      : null;
+  const hasAmbientSnapshot = Boolean(
+    ambient &&
+      ambient.global &&
+      typeof ambient.global === "object" &&
+      ambient.compositionByEssence &&
+      typeof ambient.compositionByEssence === "object",
+  );
   const inCombat = Boolean(
     state.combat?.inCombat ?? state.combat?.status === "active",
   );
@@ -117,6 +162,17 @@ function buildActionSuggestions(state) {
         suggestions.push({ t: `use ${skill.name}`, w: 0.95 });
       }
     }
+    if (prepared) {
+      suggestions.push({ t: "release prepared weave", w: 0.98 });
+    } else if (charges.length > 0) {
+      suggestions.push({ t: "shape a quick weave", w: 0.9 });
+    }
+    if (resonanceCurrent >= 70) {
+      suggestions.push({ t: "anchor to stabilize resonance", w: 0.94 });
+    }
+    if (avgReserveTaint >= 0.25) {
+      suggestions.push({ t: "purge contamination", w: 0.92 });
+    }
   } else {
     suggestions.push(
       { t: "explore area", w: 1 },
@@ -124,6 +180,28 @@ function buildActionSuggestions(state) {
       { t: "review quests", w: (state.quests?.active?.length ?? 0) ? 1 : 0.6 },
       { t: "train skills", w: 0.8 },
     );
+
+    if (!hasAmbientSnapshot) {
+      suggestions.push({ t: "sense ambient essence", w: 0.92 });
+    } else if (reserveRows.length === 0) {
+      suggestions.push({ t: "draw essence from the ambient field", w: 0.95 });
+    }
+    if (reserveRows.length > 0 && charges.length === 0) {
+      const target = highestReserve?.essence || "fire";
+      suggestions.push({ t: `refine ${target} essence`, w: 0.95 });
+    }
+    if (charges.length > 0 && !prepared) {
+      suggestions.push({ t: "shape and weave a pattern", w: 0.93 });
+    }
+    if (prepared) {
+      suggestions.push({ t: "release prepared magic", w: 0.9 });
+    }
+    if (avgReserveTaint >= 0.2) {
+      suggestions.push({ t: "purge tainted reserves", w: 0.9 });
+    }
+    if (resonanceCurrent >= 60) {
+      suggestions.push({ t: "anchor and calm resonance", w: 0.9 });
+    }
 
     // Archetype-specific exploration suggestions
     const systemLabel = resolveArchetypeSystemLabel(player);

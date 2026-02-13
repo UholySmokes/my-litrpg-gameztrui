@@ -63,8 +63,7 @@ export function moveToLocation(state, locationId) {
             unlockedAreas,
             biome: nextBiome,
           },
-          turnCount: (world.turnCount || 0) + 1
-        }
+        },
       }, explorationXp);
     }
   }
@@ -80,7 +79,6 @@ export function moveToLocation(state, locationId) {
         unlockedAreas,
         biome: nextBiome,
       },
-      turnCount: (world.turnCount || 0) + 1
-    }
+    },
   };
 }

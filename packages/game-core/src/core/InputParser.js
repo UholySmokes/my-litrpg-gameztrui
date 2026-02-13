@@ -58,8 +58,10 @@ export function parseAction(userInput, gameState) {
 }
 
 function parseMagic(input) {
-  const essenceCap = "(fire|water|earth|air|lightning|shadow|light|life)";
-  const essence = "(?:fire|water|earth|air|lightning|shadow|light|life)";
+  const essenceCap =
+    "(fire|water|earth|air|lightning|shadow|light|life|creation|destruction|space|time)";
+  const essence =
+    "(?:fire|water|earth|air|lightning|shadow|light|life|creation|destruction|space|time)";
 
   {
     const match = input.match(

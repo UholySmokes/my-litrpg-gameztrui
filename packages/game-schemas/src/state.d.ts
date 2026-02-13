@@ -5,6 +5,51 @@ export type WorldLocationState = {
   current: string;
   visited: string[];
   unlockedAreas: string[];
+  biome?: string;
+};
+
+export type WorldTimeState = {
+  currentTime: number;
+  timeOfDay: "dawn" | "day" | "dusk" | "night";
+  isOutdoors?: boolean;
+  lastUpdate?: number;
+};
+
+export type WorldWeatherState = {
+  byBiome?: Record<
+    string,
+    {
+      type: "clear" | "rain" | "storm" | "drought" | "fog";
+      intensity: number;
+      updatedTurn: number;
+    }
+  >;
+};
+
+export type AmbientEssenceNode = {
+  density: number;
+  purity: number;
+  taint: number;
+};
+
+export type AmbientSnapshot = {
+  compositionByEssence: Record<string, AmbientEssenceNode>;
+  global?: {
+    drawMultByEssence?: Record<string, number>;
+    refineYieldMultByEssence?: Record<string, number>;
+    stabilityCapDelta?: number;
+    compressRiskMultByEssence?: Record<string, number>;
+    potencyMultByEssence?: Record<string, number>;
+  };
+  provenance?: {
+    biome?: string | null;
+    timeOfDay?: string | null;
+    weatherType?: string | null;
+    weatherIntensity?: number | null;
+    anomalyIds?: string[];
+    locationId?: string | null;
+  };
+  tags?: string[];
 };
 
 export type WorldState = {
@@ -14,10 +59,11 @@ export type WorldState = {
   vars: Record<string, unknown>;
   counters: Record<string, number>;
   factionReputation: Record<string, number>;
-  time: number;
+  time: number | WorldTimeState;
   turnCount: number;
+  weather?: WorldWeatherState;
   essence?: {
-    ambient: Record<string, number>;
+    ambient: Record<string, number> | AmbientSnapshot;
     sources?: unknown[];
   };
 };

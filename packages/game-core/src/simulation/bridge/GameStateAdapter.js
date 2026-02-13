@@ -150,7 +150,9 @@ export function gameStateToSimulation(gameState) {
   return {
     world: {
       currentTick: gameState.world?.turnCount || 0,
-      currentTime: gameState.world?.time || 0,
+      currentTime: Number.isFinite(gameState.world?.time?.currentTime)
+        ? gameState.world.time.currentTime
+        : gameState.world?.time || 0,
       zones,
       globalFlags: new Map(flagEntries),
       globalCounters: new Map(counterEntries),

@@ -661,6 +661,84 @@ export const MAJOR_FACTION_IDS = [
   "smoke_wardens",
 ];
 
+export const BIOME_ESSENCE_PROFILES = {
+  ruins: {
+    dominantTriad: ["lightning", "earth", "air"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.1, off: 0.98 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.02,
+  },
+  city: {
+    dominantTriad: ["air", "light", "creation"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.08, off: 0.99 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.01,
+  },
+  wilds: {
+    dominantTriad: ["life", "earth", "water"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.12, off: 0.98 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.0,
+  },
+  skydocks: {
+    dominantTriad: ["air", "lightning", "light"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.1, off: 0.98 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.0,
+  },
+  undercity: {
+    dominantTriad: ["shadow", "water", "earth"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.08, off: 0.98 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.05,
+  },
+  mountain: {
+    dominantTriad: ["earth", "air", "lightning"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.1, off: 0.98 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.0,
+  },
+  coast: {
+    dominantTriad: ["water", "air", "life"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.12, off: 0.98 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.0,
+  },
+  desert: {
+    dominantTriad: ["air", "fire", "time"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.08, off: 0.98 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.01,
+  },
+  volcanic: {
+    dominantTriad: ["fire", "earth", "destruction"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.1, off: 0.98 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.03,
+  },
+  dreamscape: {
+    dominantTriad: ["space", "time", "shadow"],
+    draw: { dominant: 1.2, off: 0.95 },
+    refine: { dominant: 1.08, off: 0.99 },
+    stabilityCapDelta: 0,
+    taintBaseline: 0.04,
+  },
+};
+
+export function getBiomeEssenceProfile(biomeId) {
+  const key = typeof biomeId === "string" ? biomeId.trim().toLowerCase() : "";
+  return BIOME_ESSENCE_PROFILES[key] || null;
+}
+
 // =============================================================================
 // MUTATORS / LOOKUPS
 // =============================================================================

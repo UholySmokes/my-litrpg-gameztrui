@@ -219,6 +219,9 @@ async function runAgent(req, res) {
 		if (Array.isArray(error?.allowedAgents)) {
 			responseBody.allowedAgents = error.allowedAgents;
 		}
+		if (Array.isArray(error?.allowedModels)) {
+			responseBody.allowedModels = error.allowedModels;
+		}
 		return json(res, status, responseBody);
 	}
 }

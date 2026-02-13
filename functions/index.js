@@ -102,6 +102,18 @@ exports.agentRun = onCall({ region: "us-central1", timeoutSeconds: 120 }, async 
 			throw new HttpsError("internal", String(error?.message || "Model returned empty output."));
 		}
 
+		if (error?.code === "MODEL_NOT_ALLOWED") {
+			throw new HttpsError(
+				"invalid-argument",
+				String(error?.message || "Requested model is not allowed."),
+				{
+					allowedModels: Array.isArray(error?.allowedModels)
+						? error.allowedModels
+						: undefined,
+				},
+			);
+		}
+
 		throw new HttpsError("internal", String(error?.message || "Agent execution failed."));
 	}
 });

@@ -107,7 +107,7 @@ function parseMagic(input) {
   {
     const match = input.match(
       new RegExp(
-        `^refine\\s+${essenceCap}(?:\\s+([a-z_\\-]+))?\\s+(\\d+)$`,
+        `^refine\\s+${essenceCap}(?:\\s+([a-z_-]+))?\\s+(\\d+)$`,
         "i",
       ),
     );
@@ -125,7 +125,7 @@ function parseMagic(input) {
   {
     const match = input.match(
       new RegExp(
-        `^compress\\s+${essenceCap}(?:\\s+([a-z_\\-]+))?\\s+(?:tier\\s*)?(0|1|2|3)$`,
+        `^compress\\s+${essenceCap}(?:\\s+([a-z_-]+))?\\s+(?:tier\\s*)?(0|1|2|3)$`,
         "i",
       ),
     );
@@ -143,7 +143,7 @@ function parseMagic(input) {
   {
     const match = input.match(
       new RegExp(
-        `^(shape|form)\\s+${essenceCap}\\s+([a-z_\\-]+)(?:\\s+(\\d+))?$`,
+        `^(shape|form)\\s+${essenceCap}\\s+([a-z_-]+)(?:\\s+(\\d+))?$`,
         "i",
       ),
     );
@@ -161,7 +161,7 @@ function parseMagic(input) {
   {
     const match = input.match(
       new RegExp(
-        `^weave\\s+((?:${essence})(?:\\+(?:${essence}))+)\\s+([a-z_\\-]+)$`,
+        `^weave\\s+((?:${essence})(?:\\+(?:${essence}))+)\\s+([a-z_-]+)$`,
         "i",
       ),
     );
@@ -181,7 +181,7 @@ function parseMagic(input) {
 
   {
     const match = input.match(
-      /^anchor\s+(self|area|item)(?:\s+([a-z0-9_\-]+))?$/i,
+      /^anchor\s+(self|area|item)(?:\s+([a-z0-9_-]+))?$/i,
     );
     if (match) {
       return {
@@ -290,7 +290,7 @@ function parseMove(input, gameState) {
   }
 
   // Check for location names in world
-  const world = gameState.world || {};
+  const world = gameState?.world || {};
   const visitedLocations = world.location?.visited || [];
 
   for (const location of visitedLocations) {

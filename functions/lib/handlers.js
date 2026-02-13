@@ -104,6 +104,7 @@ async function runAgent(req, res) {
 		const responseBody = {
 			ok: true,
 			provider: "firebase-genkit",
+			backend: result.backend,
 			agent: result.agent,
 			agentName: result.agentName,
 			model: result.model,

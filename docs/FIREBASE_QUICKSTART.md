@@ -20,6 +20,9 @@ The Firebase function now also exposes Google/Firebase-native multi-agent routes
 
 - `GET /api/agents` (lists available agents)
 - `POST /api/agents/run` (runs one agent synchronously)
+- Callable functions:
+  - `agentList`
+  - `agentRun`
 
 Supported agents:
 
@@ -49,7 +52,9 @@ Example request:
 
 Runtime notes:
 
-- Uses `genkit` + `@genkit-ai/google-genai` with Vertex AI plugin.
+- Uses `genkit` + `@genkit-ai/google-genai`.
+- If `GOOGLE_GENAI_API_KEY` is set, it uses Gemini Developer API (`googleAI`) and does not require Vertex API enablement.
+- If no API key is set, it uses Vertex AI (`vertexAI`) with ADC credentials.
 - Model defaults to `GEMINI_MODEL` or `gemini-2.5-flash`.
 - Vertex location defaults to `global` (`GENKIT_VERTEX_LOCATION` to override).
 - Uses `GOOGLE_GENAI_API_KEY` (or `GOOGLE_API_KEY`) when provided, otherwise falls back to Vertex ADC credentials.
@@ -57,7 +62,7 @@ Runtime notes:
 ## Local setup for these agents
 
 1. A template now exists at `functions/.env.example`.
-2. Local defaults were prepared in `functions/.env.local` with your project ID and model defaults.
+2. Create `functions/.env.local` from that template.
 3. Add one auth method in `functions/.env.local`:
    - `GOOGLE_GENAI_API_KEY=<your-key>`
    - or `GOOGLE_APPLICATION_CREDENTIALS=<path-to-service-account.json>`
@@ -76,9 +81,33 @@ curl -X POST http://127.0.0.1:5000/api/agents/run \
   -d '{"agent":"narrator","input":{"game_state":{"location":"Ashen Gate","hp":42}}}'
 ```
 
+Callable usage (Web SDK):
+
+```js
+import { getFunctions, httpsCallable } from "firebase/functions";
+
+const functions = getFunctions(undefined, "us-central1");
+const agentRun = httpsCallable(functions, "agentRun");
+const agentList = httpsCallable(functions, "agentList");
+
+const listResult = await agentList();
+const runResult = await agentRun({
+  agent: "narrator",
+  input: { game_state: { location: "Ashen Gate", hp: 42 } }
+});
+```
+
 ## Required Environment Variables (Functions)
 
-Set these in your Firebase Functions environment (or in local emulators via `.env` in `functions/`):
+Firebase-native agent vars:
+
+- `GOOGLE_GENAI_API_KEY` (recommended for Gemini API key auth)
+- `GOOGLE_API_KEY` (optional alias)
+- `GEMINI_MODEL` (optional, default `gemini-2.5-flash`)
+- `GEMINI_TEMPERATURE` (optional, per-agent defaults apply)
+- `GENKIT_VERTEX_LOCATION` (optional, default `global`)
+
+Foundry legacy vars (only needed for `/api/narrate*` in current compatibility path):
 
 - `FOUNDRY_PROJECT_ENDPOINT`
 - `FOUNDRY_API_KEY`

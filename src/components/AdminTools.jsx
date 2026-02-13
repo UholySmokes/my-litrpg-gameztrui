@@ -1,143 +1,101 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { DataRegistry } from "../data/DataRegistry.js";
 import { mergeInventoryItems } from "../utils/shared.js";
-
-const styles = {
-  container: {
-    padding: "1rem",
-    background: "#111",
-    color: "#0f0",
-    fontFamily: "monospace",
-    border: "1px solid #0f0",
-    margin: "1rem",
-  },
-  button: {
-    background: "#333",
-    color: "#fff",
-    border: "1px solid #fff",
-    padding: "0.5rem",
-    cursor: "pointer",
-    marginRight: "0.5rem",
-  },
-  output: {
-    marginTop: "1rem",
-    whiteSpace: "pre-wrap",
-    background: "#000",
-    padding: "0.5rem",
-    maxHeight: "300px",
-    overflowY: "auto",
-  },
-};
+import "./AdminTools.css";
 
 export default function AdminTools({ dispatch, getState }) {
-  const [output, setOutput] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState("Player");
+  const [output, setOutput] = useState("");
+  const [playerState, setPlayerState] = useState(null);
+
+  // Amounts for input fields
+  const [goldAmount, setGoldAmount] = useState(1000);
+  const [soulpointsAmount, setSoulpointsAmount] = useState(100);
+  const [xpAmount, setXpAmount] = useState(100);
+
+  useEffect(() => {
+    if (isVisible) {
+      const currentState = getState?.();
+      setPlayerState(currentState?.player);
+    }
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === '`') {
+        setIsVisible(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isVisible, getState]);
+
+  const handleDispatch = (action) => {
+    dispatch(action);
+    // Refresh player state after dispatching an action
+    setTimeout(() => {
+        const currentState = getState?.();
+        setPlayerState(currentState?.player);
+    }, 100);
+  };
 
   const addGold = (amount) => {
-    const currentState = getState?.();
-    if (!currentState) {
-      setOutput("Cannot get current state");
-      return;
-    }
+    const value = parseInt(amount, 10);
+    if (isNaN(value)) return;
 
-    // Add gold directly to player state
-    const existingCurrency = currentState.player?.currency || {};
-    const currentGold = existingCurrency.goldCoins ?? currentState.player?.gold ?? 0;
-    const newGold = currentGold + amount;
-
-    dispatch({
-      type: "UPDATE_STATE",
-      payload: {
-        player: {
-          ...currentState.player,
-          gold: newGold,
-          currency: {
-            ...existingCurrency,
-            goldCoins: newGold,
-          },
+    handleDispatch({
+        type: "UPDATE_STATE",
+        payload: {
+            player: {
+                ...getState().player,
+                currency: {
+                    ...getState().player.currency,
+                    goldCoins: (getState().player.currency.goldCoins || 0) + value,
+                },
+            },
         },
-      },
     });
-    setOutput(`Added ${amount} gold (total: ${newGold})`);
-  };
-
-  const addLevel = () => {
-    const currentState = getState?.();
-    if (!currentState) {
-      setOutput("Cannot get current state");
-      return;
-    }
-
-    // Use existing LEVEL_UP action
-    dispatch({ type: "LEVEL_UP" });
-    setOutput(`Added 1 level`);
-  };
-
-  const addXP = (amount) => {
-    // Use existing ADD_XP action
-    dispatch({ type: "ADD_XP", payload: amount });
-    setOutput(`Added ${amount} XP`);
+    setOutput(`Added ${value} gold.`);
   };
 
   const addSoulpoints = (amount) => {
-    const currentState = getState?.();
-    if (!currentState) {
-      setOutput("Cannot get current state");
-      return;
-    }
-
-    const existingCurrency = currentState.player?.currency || {};
-    const currentSoulpoints = existingCurrency.soulpoints || 0;
-    const newSoul = currentSoulpoints + amount;
-
-    dispatch({
-      type: "UPDATE_STATE",
-      payload: {
-        player: {
-          ...currentState.player,
-          soulpoints:
-            currentState.player?.soulpoints !== undefined
-              ? (currentState.player?.soulpoints || 0) + amount
-              : currentState.player?.soulpoints,
-          currency: {
-            ...existingCurrency,
-            goldCoins:
-              existingCurrency.goldCoins || currentState.player?.gold || 0,
-            soulpoints: newSoul,
-          },
+    const value = parseInt(amount, 10);
+    if (isNaN(value)) return;
+    
+    handleDispatch({
+        type: "UPDATE_STATE",
+        payload: {
+            player: {
+                ...getState().player,
+                currency: {
+                    ...getState().player.currency,
+                    soulpoints: (getState().player.currency.soulpoints || 0) + value,
+                },
+            },
         },
-      },
     });
-    setOutput(`Added ${amount} soulpoints (total: ${newSoul})`);
+    setOutput(`Added ${value} soulpoints.`);
+  };
+
+  const addXP = (amount) => {
+    const value = parseInt(amount, 10);
+    if (isNaN(value)) return;
+    handleDispatch({ type: "ADD_XP", payload: value });
+    setOutput(`Added ${value} XP`);
+  };
+
+  const addLevel = () => {
+    handleDispatch({ type: "LEVEL_UP" });
+    setOutput(`Added 1 level`);
   };
 
   const refillVitals = () => {
-    const currentState = getState?.();
-    if (!currentState) {
-      setOutput("Cannot get current state");
-      return;
-    }
-
-    dispatch({
+    handleDispatch({
       type: "UPDATE_STATE",
       payload: {
         player: {
-          ...currentState.player,
-          hp: {
-            ...(currentState.player.hp || {}),
-            current:
-              currentState.player.hp?.max ||
-              currentState.player.hp?.current ||
-              100,
-          },
-          mana: {
-            ...(currentState.player.mana || {}),
-            current:
-              currentState.player.mana?.max ||
-              currentState.player.mana?.current ||
-              50,
-          },
+          ...getState().player,
+          hp: { ...getState().player.hp, current: getState().player.hp.max },
+          mana: { ...getState().player.mana, current: getState().player.mana.max },
         },
       },
     });
@@ -146,215 +104,139 @@ export default function AdminTools({ dispatch, getState }) {
 
   const addCraftingMats = () => {
     const mats = [
-      { id: "iron_ore", quantity: 5 },
-      { id: "leather", quantity: 5 },
-      { id: "magic_essence", quantity: 3 },
+      { id: "iron_ore", quantity: 10 },
+      { id: "leather", quantity: 10 },
+      { id: "magic_essence", quantity: 5 },
     ];
-    dispatch({
+    handleDispatch({
       type: "UPDATE_STATE",
       payload: {
         player: {
-          ...(getState?.().player || {}),
-          inventory: mergeInventoryItems(
-            (getState?.().player?.inventory || []).map((item) => ({ ...item })),
-            mats,
-          ),
+          ...getState().player,
+          inventory: mergeInventoryItems(getState().player.inventory, mats),
         },
       },
     });
-    setOutput("Added crafting materials bundle");
+    setOutput("Added crafting materials bundle.");
   };
 
   const giveRandomGear = () => {
     const loot = [
-      {
-        id: "iron_sword",
-        name: "Iron Sword",
-        type: "equipment",
-        equipSlot: "weapon",
-      },
-      {
-        id: "chain_mail",
-        name: "Chain Mail",
-        type: "equipment",
-        equipSlot: "armor",
-      },
+        { id: "iron_sword", name: "Iron Sword", type: "equipment", equipSlot: "weapon", quantity: 1 },
+        { id: "chain_mail", name: "Chain Mail", type: "equipment", equipSlot: "armor", quantity: 1 },
     ];
-    dispatch({
+    handleDispatch({
       type: "UPDATE_STATE",
       payload: {
         player: {
-          ...(getState?.().player || {}),
-          inventory: mergeInventoryItems(
-            (getState?.().player?.inventory || []).map((item) => ({ ...item })),
-            loot,
-          ),
+          ...getState().player,
+          inventory: mergeInventoryItems(getState().player.inventory, loot),
         },
       },
     });
-    setOutput("Added iron sword and chain mail to inventory");
+    setOutput("Added iron sword and chain mail to inventory.");
   };
 
   const runGeneration = (type) => {
-    let result;
     const start = performance.now();
+    let result;
     switch (type) {
-      case "race":
-        result = ContentGenerator.generateCharacterOptions(10).races;
-        break;
-      case "class":
-        result = ContentGenerator.generateCharacterOptions(10).classes;
-        break;
-      case "skill":
-        result = ContentGenerator.generateSkills(10, 5);
-        break;
-      default:
-        result = "Unknown generation type";
+      case "race": result = ContentGenerator.generateCharacterOptions(5).races; break;
+      case "class": result = ContentGenerator.generateCharacterOptions(5).classes; break;
+      case "skill": result = ContentGenerator.generateSkills(10, 5); break;
+      default: result = "Unknown generation type";
     }
     const end = performance.now();
-
-    const summary =
-      `Generated ${Array.isArray(result) ? result.length : 1} items in ${(end - start).toFixed(2)}ms\n\n` +
-      JSON.stringify(result, null, 2);
+    const summary = `Generated ${Array.isArray(result) ? result.length : 1} ${type}s in ${(end - start).toFixed(2)}ms\n\n` + JSON.stringify(result, null, 2);
     setOutput(summary);
-
-    // Log to console for debugging
     console.log(`Generated ${type}s:`, result);
   };
+  
+  const resetGame = () => {
+    if (window.confirm("Are you sure you want to reset all game data? This cannot be undone.")) {
+      handleDispatch({ type: "RESET_GAME_STATE" });
+      setOutput("Game state has been reset.");
+      setTimeout(() => {
+        const currentState = getState?.();
+        setPlayerState(currentState?.player);
+      }, 100);
+    }
+  };
+
+  const renderPlayerTab = () => (
+    <div className="admin-tools-grid">
+      <div className="admin-tools-input-group">
+        <input type="number" value={goldAmount} onChange={e => setGoldAmount(e.target.value)} />
+        <button className="admin-tools-button" onClick={() => addGold(goldAmount)}>Add Gold</button>
+      </div>
+      <div className="admin-tools-input-group">
+        <input type="number" value={soulpointsAmount} onChange={e => setSoulpointsAmount(e.target.value)} />
+        <button className="admin-tools-button" onClick={() => addSoulpoints(soulpointsAmount)}>Add Soulpoints</button>
+      </div>
+      <div className="admin-tools-input-group">
+        <input type="number" value={xpAmount} onChange={e => setXpAmount(e.target.value)} />
+        <button className="admin-tools-button" onClick={() => addXP(xpAmount)}>Add XP</button>
+      </div>
+      <button className="admin-tools-button" onClick={addLevel}>+1 Level</button>
+      <button className="admin-tools-button" onClick={refillVitals}>Refill Vitals</button>
+    </div>
+  );
+
+  const renderContentTab = () => (
+    <div className="admin-tools-grid">
+      <button className="admin-tools-button" onClick={() => runGeneration('race')}>Gen Races</button>
+      <button className="admin-tools-button" onClick={() => runGeneration('class')}>Gen Classes</button>
+      <button className="admin-tools-button" onClick={() => runGeneration('skill')}>Gen Skills</button>
+      <button className="admin-tools-button" onClick={giveRandomGear}>Gear Drop</button>
+      <button className="admin-tools-button" onClick={addCraftingMats}>Crafting Mats</button>
+    </div>
+  );
+
+  const renderSystemTab = () => (
+    <div>
+        <div className="admin-tools-grid">
+            <button className="admin-tools-button" onClick={resetGame}>Reset Game</button>
+        </div>
+        <div className="admin-tools-section">
+            <h3>Player State Inspector</h3>
+            <div className="admin-tools-output" style={{ maxHeight: '300px' }}>
+                <pre>{JSON.stringify(playerState, null, 2)}</pre>
+            </div>
+        </div>
+    </div>
+  );
 
   return (
     <div>
-      {/* Small Admin Button - Top Center */}
-      <button
-        onClick={() => setIsVisible(!isVisible)}
-        style={{
-          position: "fixed",
-          top: "10px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          background: "rgba(51, 51, 51, 0.8)",
-          color: "#fff",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
-          padding: "0.25rem 0.5rem",
-          cursor: "pointer",
-          fontSize: "0.7rem",
-          fontFamily: "monospace",
-          zIndex: 1000,
-          borderRadius: "4px",
-        }}
-      >
-        {isVisible ? "Hide" : "Admin"}
+      <button className="admin-toggle-button" onClick={() => setIsVisible(!isVisible)}>
+        {isVisible ? "Hide Admin" : "Show Admin"} (Ctrl+`)
       </button>
 
-      {/* Admin Panel - Only show when visible */}
       {isVisible && (
-        <div
-          style={{
-            position: "fixed",
-            top: "50px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "rgba(17, 17, 17, 0.95)",
-            color: "#0f0",
-            fontFamily: "monospace",
-            border: "1px solid #0f0",
-            padding: "1rem",
-            borderRadius: "4px",
-            zIndex: 999,
-            minWidth: "300px",
-          }}
-        >
-          <div style={{ marginBottom: "0.5rem", fontSize: "0.8rem" }}>
-            <strong>Admin Tools</strong>
+        <div className="admin-tools-container">
+          <div className="admin-tools-header">
+            <h2>Admin Tools</h2>
+            <button onClick={() => setIsVisible(false)} style={{background: 'none', border: 'none', color: '#f00', fontSize: '1.2em', cursor: 'pointer'}}>X</button>
+          </div>
+          
+          <div className="admin-tools-tabs">
+            <button className={`admin-tools-tab ${activeTab === 'Player' ? 'active' : ''}`} onClick={() => setActiveTab('Player')}>Player</button>
+            <button className={`admin-tools-tab ${activeTab === 'Content' ? 'active' : ''}`} onClick={() => setActiveTab('Content')}>Content</button>
+            <button className={`admin-tools-tab ${activeTab === 'System' ? 'active' : ''}`} onClick={() => setActiveTab('System')}>System</button>
           </div>
 
-          <div style={{ marginBottom: "0.5rem", fontSize: "0.7rem" }}>
-            <strong>Player Stats:</strong>
-            <div
-              style={{
-                marginTop: "0.25rem",
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "0.25rem",
-              }}
-            >
-              <button onClick={() => addGold(1000)} style={styles.button}>
-                +1k Gold
-              </button>
-              <button onClick={() => addSoulpoints(1000)} style={styles.button}>
-                +1k Soulpoints
-              </button>
-              <button onClick={() => addLevel()} style={styles.button}>
-                +1 Level
-              </button>
-              <button onClick={() => addXP(100)} style={styles.button}>
-                +100 XP
-              </button>
-              <button onClick={() => addXP(1000)} style={styles.button}>
-                +1k XP
-              </button>
-              <button onClick={refillVitals} style={styles.button}>
-                Refill HP/Mana
-              </button>
-            </div>
-          </div>
+          <div className="admin-tools-content">
+            {activeTab === 'Player' && renderPlayerTab()}
+            {activeTab === 'Content' && renderContentTab()}
+            {activeTab === 'System' && renderSystemTab()}
 
-          <div style={{ marginBottom: "0.5rem", fontSize: "0.7rem" }}>
-            <strong>Content:</strong>
-            <div
-              style={{
-                marginTop: "0.25rem",
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "0.25rem",
-              }}
-            >
-              <button
-                onClick={() => runGeneration("race")}
-                style={styles.button}
-              >
-                Races
-              </button>
-              <button
-                onClick={() => runGeneration("class")}
-                style={styles.button}
-              >
-                Classes
-              </button>
-              <button
-                onClick={() => runGeneration("skill")}
-                style={styles.button}
-              >
-                Skills
-              </button>
-              <button onClick={giveRandomGear} style={styles.button}>
-                Gear Drop
-              </button>
-              <button onClick={addCraftingMats} style={styles.button}>
-                Craft Mats
-              </button>
-            </div>
+            {output && (
+                <div className="admin-tools-section">
+                    <h3>Output</h3>
+                    <div className="admin-tools-output">{output}</div>
+                </div>
+            )}
           </div>
-
-          {output && (
-            <div style={{ marginTop: "0.5rem" }}>
-              <div style={{ fontSize: "0.7rem", marginBottom: "0.25rem" }}>
-                <strong>Output:</strong>
-              </div>
-              <div
-                style={{
-                  background: "#000",
-                  padding: "0.25rem",
-                  fontSize: "0.6rem",
-                  maxHeight: "150px",
-                  overflowY: "auto",
-                  borderRadius: "2px",
-                }}
-              >
-                {output}
-              </div>
-            </div>
-          )}
         </div>
       )}
     </div>

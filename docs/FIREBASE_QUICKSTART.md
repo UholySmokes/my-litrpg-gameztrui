@@ -153,6 +153,22 @@ The frontend uses:
 - `VITE_API_BASE_URL` (if set) to call `/api/*` endpoints on the deployed host.
 - If unset, it will call same-origin `/api/*`.
 
+Frontend auth config (Firebase Auth):
+
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_APP_ID`
+- Optional: `VITE_FIREBASE_MESSAGING_SENDER_ID`, `VITE_FIREBASE_STORAGE_BUCKET`, `VITE_FIREBASE_MEASUREMENT_ID`
+- Optional: `VITE_FIREBASE_AUTH_TENANT_ID`
+- Optional for local auth emulator: `VITE_FIREBASE_AUTH_EMULATOR_URL`
+- Provider selector: `VITE_AUTH_PROVIDER` (default `microsoft.com`; `aad` alias also maps to `microsoft.com`)
+
+Local dev fallback (optional):
+
+- `VITE_DEV_USER_ID`
+- `VITE_DEV_USER_EMAIL`
+
 For Firebase Hosting, prefer **same-origin** (do not set `VITE_API_BASE_URL`) and rely on hosting rewrites.
 
 ## Files Added

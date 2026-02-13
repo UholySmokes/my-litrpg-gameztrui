@@ -1,3 +1,5 @@
+import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
+
 const DEFAULT_TIMEOUT_MS = 10000;
 
 const getBuildEnv = () =>
@@ -83,7 +85,14 @@ async function fetchWithTimeout(url, options, timeoutMs) {
 async function requestJson(path, { method, body } = {}) {
   const endpoints = resolveSaveEndpoints();
   const timeoutMs = resolveTimeoutMs();
-  const headers = { "Content-Type": "application/json" };
+  const token = await getAuthToken();
+  const headers = {
+    "Content-Type": "application/json",
+    ...getDevAuthHeaders(),
+  };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
   const normalizedPath = path ? `/${String(path).replace(/^\/+/, "")}` : "";
   let lastError = null;
 

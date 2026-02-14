@@ -261,3 +261,4 @@ functions[us-central1-api] initialized ...
 - [ ] **Needs verification (Hypothesis):** Confirm whether `PrestigeSystem` and `DungeonGenerator` are planned for near-term runtime integration. Next check: search roadmap/issues and decide wire vs archive.
 - [ ] **Needs verification (Hypothesis):** Quantify runtime/simulation parity. Next check: add one parity test comparing same combat command through `createSystemEngine.step` vs `DefaultSimulationKernel` command resolution outputs.
 - [ ] **Needs verification (Hypothesis):** Decide whether `CreationTalentPanel` is deprecated or pending. Next check: review UX spec for character-creation phase list and align component set.
+- [ ] **Needs verification:** Open any view containing `SystemLog` and confirm chat/system actions append entries via `system:log` in real time.

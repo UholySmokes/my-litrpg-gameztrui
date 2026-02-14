@@ -60,3 +60,27 @@ export function normalizeNarrativeEntries(entries = []) {
       };
     });
 }
+
+export const appendSystemMessages = (state, messages = []) => {
+  if (!Array.isArray(messages) || messages.length === 0) return state;
+  const timestamp = SimBridge.now();
+  const filtered = messages.filter(
+    (message) => typeof message === "string" && message.trim(),
+  );
+  if (filtered.length === 0) return state;
+
+  let narrative = state.narrative || { entries: [], sequence: 0 };
+  for (let i = 0; i < filtered.length; i++) {
+    narrative = appendNarrativeEntry(narrative, {
+      type: "system",
+      text: filtered[i],
+      timestamp: timestamp + i,
+      source: "system",
+    });
+  }
+
+  return {
+    ...state,
+    narrative,
+  };
+};

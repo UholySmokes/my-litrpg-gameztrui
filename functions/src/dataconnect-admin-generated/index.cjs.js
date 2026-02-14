@@ -7,66 +7,52 @@ const connectorConfig = {
 };
 exports.connectorConfig = connectorConfig;
 
-function createMovie(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateMovie', inputVars, inputOpts);
-}
-exports.createMovie = createMovie;
-
-function upsertUser(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('UpsertUser', inputVars, inputOpts);
-}
-exports.upsertUser = upsertUser;
-
-function addReview(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('AddReview', inputVars, inputOpts);
-}
-exports.addReview = addReview;
-
-function deleteReview(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('DeleteReview', inputVars, inputOpts);
-}
-exports.deleteReview = deleteReview;
-
-function listMovies(dcOrOptions, options) {
+function listMySaveSlots(dcOrOptions, options) {
   const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListMovies', undefined, inputOpts);
+  return dcInstance.executeQuery('ListMySaveSlots', undefined, inputOpts);
 }
-exports.listMovies = listMovies;
+exports.listMySaveSlots = listMySaveSlots;
 
-function listUsers(dcOrOptions, options) {
-  const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);
-  dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListUsers', undefined, inputOpts);
-}
-exports.listUsers = listUsers;
-
-function listUserReviews(dcOrOptions, options) {
-  const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);
-  dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListUserReviews', undefined, inputOpts);
-}
-exports.listUserReviews = listUserReviews;
-
-function getMovieById(dcOrVarsOrOptions, varsOrOptions, options) {
+function getMySaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('GetMovieById', inputVars, inputOpts);
+  return dcInstance.executeQuery('GetMySaveSlot', inputVars, inputOpts);
 }
-exports.getMovieById = getMovieById;
+exports.getMySaveSlot = getMySaveSlot;
 
-function searchMovie(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, false);
+function listMyRunSnapshots(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('SearchMovie', inputVars, inputOpts);
+  return dcInstance.executeQuery('ListMyRunSnapshots', inputVars, inputOpts);
 }
-exports.searchMovie = searchMovie;
+exports.listMyRunSnapshots = listMyRunSnapshots;
+
+function upsertMyProfile(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpsertMyProfile', inputVars, inputOpts);
+}
+exports.upsertMyProfile = upsertMyProfile;
+
+function createSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateSaveSlot', inputVars, inputOpts);
+}
+exports.createSaveSlot = createSaveSlot;
+
+function upsertSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpsertSaveSlot', inputVars, inputOpts);
+}
+exports.upsertSaveSlot = upsertSaveSlot;
+
+function deleteSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteSaveSlot', inputVars, inputOpts);
+}
+exports.deleteSaveSlot = deleteSaveSlot;
 

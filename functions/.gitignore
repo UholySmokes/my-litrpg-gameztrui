@@ -8,6 +8,7 @@ lib/**/*.js.map
 !lib/game-db.js
 !lib/saves-store.js
 !lib/saves.js
+!lib/narrate-runs-store.js
 
 # TypeScript v1 declaration files
 typings/

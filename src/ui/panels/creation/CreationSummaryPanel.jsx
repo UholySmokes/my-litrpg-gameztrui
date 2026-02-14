@@ -33,9 +33,13 @@ export default function CreationSummaryPanel({
           fontSize: "0.6rem",
           lineHeight: "1.2",
           whiteSpace: "pre",
+          maxWidth: "100%",
+          overflowX: "auto",
         }}
       >
-        <pre style={{ color: "var(--holo-cyan)", margin: 0 }}>{asciiArt}</pre>
+        <pre style={{ color: "var(--holo-cyan)", margin: 0, minWidth: "max-content" }}>
+          {asciiArt}
+        </pre>
       </div>
       <div
         style={{

@@ -10,241 +10,227 @@ export type DateString = string;
 
 
 
-export interface AddReviewData {
-  review_upsert: Review_Key;
+export interface CreateSaveSlotData {
+  saveSlot_insert: SaveSlot_Key;
 }
 
-export interface AddReviewVariables {
-  movieId: UUIDString;
-  rating: number;
-  reviewText: string;
+export interface CreateSaveSlotVariables {
+  saveName: string;
+  gameStateJson: string;
+  playerName: string;
+  playerLevel: number;
+  worldId: string;
+  locationId: string;
+  turnCount: number;
+  contentVersion?: string | null;
+  stateVersion?: number | null;
+  runId?: string | null;
+  seq?: number | null;
+  tick?: number | null;
+  stateHash?: string | null;
 }
 
-export interface CreateMovieData {
-  movie_insert: Movie_Key;
+export interface DeleteSaveSlotData {
+  saveSlot_delete?: SaveSlot_Key | null;
 }
 
-export interface CreateMovieVariables {
-  title: string;
-  genre: string;
-  imageUrl: string;
-}
-
-export interface DeleteReviewData {
-  review_delete?: Review_Key | null;
-}
-
-export interface DeleteReviewVariables {
-  movieId: UUIDString;
-}
-
-export interface GetMovieByIdData {
-  movie?: {
-    id: UUIDString;
-    title: string;
-    imageUrl: string;
-    genre?: string | null;
-    metadata?: {
-      rating?: number | null;
-      releaseYear?: number | null;
-      description?: string | null;
-    };
-      reviews: ({
-        reviewText?: string | null;
-        reviewDate: DateString;
-        rating?: number | null;
-        user: {
-          id: string;
-          username: string;
-        } & User_Key;
-      })[];
-  } & Movie_Key;
-}
-
-export interface GetMovieByIdVariables {
+export interface DeleteSaveSlotVariables {
   id: UUIDString;
 }
 
-export interface ListMoviesData {
-  movies: ({
+export interface GetMySaveSlotData {
+  saveSlot?: {
     id: UUIDString;
-    title: string;
-    imageUrl: string;
-    genre?: string | null;
-  } & Movie_Key)[];
+    saveName: string;
+    gameStateJson: string;
+    playerName: string;
+    playerLevel: number;
+    worldId: string;
+    locationId: string;
+    turnCount: number;
+    contentVersion?: string | null;
+    stateVersion?: number | null;
+    runId?: string | null;
+    seq?: number | null;
+    tick?: number | null;
+    stateHash?: string | null;
+    createdAt: DateString;
+    updatedAt: DateString;
+  };
 }
 
-export interface ListUserReviewsData {
-  user?: {
+export interface GetMySaveSlotVariables {
+  id: UUIDString;
+}
+
+export interface ListMyRunSnapshotsData {
+  userProfile?: {
     id: string;
-    username: string;
-    reviews: ({
-      rating?: number | null;
-      reviewDate: DateString;
-      reviewText?: string | null;
-      movie: {
-        id: UUIDString;
-        title: string;
-      } & Movie_Key;
+    snapshots: ({
+      id: UUIDString;
+      saveName: string;
+      playerName: string;
+      playerLevel: number;
+      worldId: string;
+      locationId: string;
+      turnCount: number;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      updatedAt: DateString;
     })[];
-  } & User_Key;
+  } & UserProfile_Key;
 }
 
-export interface ListUsersData {
-  users: ({
+export interface ListMyRunSnapshotsVariables {
+  runId: string;
+}
+
+export interface ListMySaveSlotsData {
+  userProfile?: {
     id: string;
-    username: string;
-  } & User_Key)[];
+    displayName?: string | null;
+    saveSlots: ({
+      id: UUIDString;
+      saveName: string;
+      playerName: string;
+      playerLevel: number;
+      worldId: string;
+      locationId: string;
+      turnCount: number;
+      contentVersion?: string | null;
+      stateVersion?: number | null;
+      runId?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    })[];
+  } & UserProfile_Key;
 }
 
-export interface MovieMetadata_Key {
+export interface SaveSlot_Key {
   id: UUIDString;
-  __typename?: 'MovieMetadata_Key';
-}
-
-export interface Movie_Key {
-  id: UUIDString;
-  __typename?: 'Movie_Key';
-}
-
-export interface Review_Key {
   userId: string;
-  movieId: UUIDString;
-  __typename?: 'Review_Key';
+  __typename?: 'SaveSlot_Key';
 }
 
-export interface SearchMovieData {
-  movies: ({
-    id: UUIDString;
-    title: string;
-    genre?: string | null;
-    imageUrl: string;
-  } & Movie_Key)[];
+export interface UpsertMyProfileData {
+  userProfile_upsert: UserProfile_Key;
 }
 
-export interface SearchMovieVariables {
-  titleInput?: string | null;
-  genre?: string | null;
+export interface UpsertMyProfileVariables {
+  displayName: string;
 }
 
-export interface UpsertUserData {
-  user_upsert: User_Key;
+export interface UpsertSaveSlotData {
+  saveSlot_upsert: SaveSlot_Key;
 }
 
-export interface UpsertUserVariables {
-  username: string;
+export interface UpsertSaveSlotVariables {
+  id: UUIDString;
+  saveName: string;
+  gameStateJson: string;
+  playerName: string;
+  playerLevel: number;
+  worldId: string;
+  locationId: string;
+  turnCount: number;
+  contentVersion?: string | null;
+  stateVersion?: number | null;
+  runId?: string | null;
+  seq?: number | null;
+  tick?: number | null;
+  stateHash?: string | null;
 }
 
-export interface User_Key {
+export interface UserProfile_Key {
   id: string;
-  __typename?: 'User_Key';
+  __typename?: 'UserProfile_Key';
 }
 
-interface CreateMovieRef {
+interface ListMySaveSlotsRef {
   /* Allow users to create refs without passing in DataConnect */
-  (vars: CreateMovieVariables): MutationRef<CreateMovieData, CreateMovieVariables>;
+  (): QueryRef<ListMySaveSlotsData, undefined>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: CreateMovieVariables): MutationRef<CreateMovieData, CreateMovieVariables>;
+  (dc: DataConnect): QueryRef<ListMySaveSlotsData, undefined>;
   operationName: string;
 }
-export const createMovieRef: CreateMovieRef;
+export const listMySaveSlotsRef: ListMySaveSlotsRef;
 
-export function createMovie(vars: CreateMovieVariables): MutationPromise<CreateMovieData, CreateMovieVariables>;
-export function createMovie(dc: DataConnect, vars: CreateMovieVariables): MutationPromise<CreateMovieData, CreateMovieVariables>;
+export function listMySaveSlots(): QueryPromise<ListMySaveSlotsData, undefined>;
+export function listMySaveSlots(dc: DataConnect): QueryPromise<ListMySaveSlotsData, undefined>;
 
-interface UpsertUserRef {
+interface GetMySaveSlotRef {
   /* Allow users to create refs without passing in DataConnect */
-  (vars: UpsertUserVariables): MutationRef<UpsertUserData, UpsertUserVariables>;
+  (vars: GetMySaveSlotVariables): QueryRef<GetMySaveSlotData, GetMySaveSlotVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: UpsertUserVariables): MutationRef<UpsertUserData, UpsertUserVariables>;
+  (dc: DataConnect, vars: GetMySaveSlotVariables): QueryRef<GetMySaveSlotData, GetMySaveSlotVariables>;
   operationName: string;
 }
-export const upsertUserRef: UpsertUserRef;
+export const getMySaveSlotRef: GetMySaveSlotRef;
 
-export function upsertUser(vars: UpsertUserVariables): MutationPromise<UpsertUserData, UpsertUserVariables>;
-export function upsertUser(dc: DataConnect, vars: UpsertUserVariables): MutationPromise<UpsertUserData, UpsertUserVariables>;
+export function getMySaveSlot(vars: GetMySaveSlotVariables): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
+export function getMySaveSlot(dc: DataConnect, vars: GetMySaveSlotVariables): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
 
-interface AddReviewRef {
+interface ListMyRunSnapshotsRef {
   /* Allow users to create refs without passing in DataConnect */
-  (vars: AddReviewVariables): MutationRef<AddReviewData, AddReviewVariables>;
+  (vars: ListMyRunSnapshotsVariables): QueryRef<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: AddReviewVariables): MutationRef<AddReviewData, AddReviewVariables>;
+  (dc: DataConnect, vars: ListMyRunSnapshotsVariables): QueryRef<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
   operationName: string;
 }
-export const addReviewRef: AddReviewRef;
+export const listMyRunSnapshotsRef: ListMyRunSnapshotsRef;
 
-export function addReview(vars: AddReviewVariables): MutationPromise<AddReviewData, AddReviewVariables>;
-export function addReview(dc: DataConnect, vars: AddReviewVariables): MutationPromise<AddReviewData, AddReviewVariables>;
+export function listMyRunSnapshots(vars: ListMyRunSnapshotsVariables): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
+export function listMyRunSnapshots(dc: DataConnect, vars: ListMyRunSnapshotsVariables): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
 
-interface DeleteReviewRef {
+interface UpsertMyProfileRef {
   /* Allow users to create refs without passing in DataConnect */
-  (vars: DeleteReviewVariables): MutationRef<DeleteReviewData, DeleteReviewVariables>;
+  (vars: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: DeleteReviewVariables): MutationRef<DeleteReviewData, DeleteReviewVariables>;
+  (dc: DataConnect, vars: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
   operationName: string;
 }
-export const deleteReviewRef: DeleteReviewRef;
+export const upsertMyProfileRef: UpsertMyProfileRef;
 
-export function deleteReview(vars: DeleteReviewVariables): MutationPromise<DeleteReviewData, DeleteReviewVariables>;
-export function deleteReview(dc: DataConnect, vars: DeleteReviewVariables): MutationPromise<DeleteReviewData, DeleteReviewVariables>;
+export function upsertMyProfile(vars: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
+export function upsertMyProfile(dc: DataConnect, vars: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
 
-interface ListMoviesRef {
+interface CreateSaveSlotRef {
   /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListMoviesData, undefined>;
+  (vars: CreateSaveSlotVariables): MutationRef<CreateSaveSlotData, CreateSaveSlotVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListMoviesData, undefined>;
+  (dc: DataConnect, vars: CreateSaveSlotVariables): MutationRef<CreateSaveSlotData, CreateSaveSlotVariables>;
   operationName: string;
 }
-export const listMoviesRef: ListMoviesRef;
+export const createSaveSlotRef: CreateSaveSlotRef;
 
-export function listMovies(): QueryPromise<ListMoviesData, undefined>;
-export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData, undefined>;
+export function createSaveSlot(vars: CreateSaveSlotVariables): MutationPromise<CreateSaveSlotData, CreateSaveSlotVariables>;
+export function createSaveSlot(dc: DataConnect, vars: CreateSaveSlotVariables): MutationPromise<CreateSaveSlotData, CreateSaveSlotVariables>;
 
-interface ListUsersRef {
+interface UpsertSaveSlotRef {
   /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListUsersData, undefined>;
+  (vars: UpsertSaveSlotVariables): MutationRef<UpsertSaveSlotData, UpsertSaveSlotVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListUsersData, undefined>;
+  (dc: DataConnect, vars: UpsertSaveSlotVariables): MutationRef<UpsertSaveSlotData, UpsertSaveSlotVariables>;
   operationName: string;
 }
-export const listUsersRef: ListUsersRef;
+export const upsertSaveSlotRef: UpsertSaveSlotRef;
 
-export function listUsers(): QueryPromise<ListUsersData, undefined>;
-export function listUsers(dc: DataConnect): QueryPromise<ListUsersData, undefined>;
+export function upsertSaveSlot(vars: UpsertSaveSlotVariables): MutationPromise<UpsertSaveSlotData, UpsertSaveSlotVariables>;
+export function upsertSaveSlot(dc: DataConnect, vars: UpsertSaveSlotVariables): MutationPromise<UpsertSaveSlotData, UpsertSaveSlotVariables>;
 
-interface ListUserReviewsRef {
+interface DeleteSaveSlotRef {
   /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListUserReviewsData, undefined>;
+  (vars: DeleteSaveSlotVariables): MutationRef<DeleteSaveSlotData, DeleteSaveSlotVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListUserReviewsData, undefined>;
+  (dc: DataConnect, vars: DeleteSaveSlotVariables): MutationRef<DeleteSaveSlotData, DeleteSaveSlotVariables>;
   operationName: string;
 }
-export const listUserReviewsRef: ListUserReviewsRef;
+export const deleteSaveSlotRef: DeleteSaveSlotRef;
 
-export function listUserReviews(): QueryPromise<ListUserReviewsData, undefined>;
-export function listUserReviews(dc: DataConnect): QueryPromise<ListUserReviewsData, undefined>;
-
-interface GetMovieByIdRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
-  operationName: string;
-}
-export const getMovieByIdRef: GetMovieByIdRef;
-
-export function getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
-export function getMovieById(dc: DataConnect, vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
-
-interface SearchMovieRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars?: SearchMovieVariables): QueryRef<SearchMovieData, SearchMovieVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars?: SearchMovieVariables): QueryRef<SearchMovieData, SearchMovieVariables>;
-  operationName: string;
-}
-export const searchMovieRef: SearchMovieRef;
-
-export function searchMovie(vars?: SearchMovieVariables): QueryPromise<SearchMovieData, SearchMovieVariables>;
-export function searchMovie(dc: DataConnect, vars?: SearchMovieVariables): QueryPromise<SearchMovieData, SearchMovieVariables>;
+export function deleteSaveSlot(vars: DeleteSaveSlotVariables): MutationPromise<DeleteSaveSlotData, DeleteSaveSlotVariables>;
+export function deleteSaveSlot(dc: DataConnect, vars: DeleteSaveSlotVariables): MutationPromise<DeleteSaveSlotData, DeleteSaveSlotVariables>;
 

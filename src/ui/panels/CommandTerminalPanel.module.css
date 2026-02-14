@@ -4,6 +4,17 @@
   gap: var(--spacing-sm);
 }
 
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .commandDeck {
   display: flex;
   gap: var(--spacing-sm);
@@ -69,4 +80,14 @@
 .submitButton:disabled {
   opacity: var(--opacity-dim);
   cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .commandDeck {
+    flex-direction: column;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
 }

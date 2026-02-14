@@ -102,7 +102,6 @@ async function runNarration(body) {
 		prompt ||
 		`Narrate the next scene based on: ${JSON.stringify(body || {})}`;
 
-	const result = await runFirebaseAgent({
 	const result = await runtime.runFirebaseAgent({
 		agent: resolveNarratorAgentId(mode),
 		input: {

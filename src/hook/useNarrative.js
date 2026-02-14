@@ -15,10 +15,7 @@ import {
   generateInitialNarrative,
 } from "../core/AIService.js";
 import { renderStatusBlock } from "../util/statusrenderer.js";
-import {
-  SimBridge,
-  wrapActionExecution,
-} from "../simulation/bridge/SimulationBridge.js";
+import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
 import { appendNarrativeEntry } from "../core/narrativeLog.js";
 import { toNumber } from "../utils/shared.js";
 
@@ -48,7 +45,6 @@ function inferMood(text) {
   return "neutral";
 }
 
-const READ_ONLY_ACTIONS = new Set(["look", "inventory", "status"]);
 const SUMMARY_REFRESH_INTERVAL = 10;
 const shouldRefreshSummary = (narrativeState = {}) => {
   const count = Array.isArray(narrativeState.entries)
@@ -425,16 +421,14 @@ function buildFallbackNarrative({
  * @param {function} setState - Function to update game state
  * @param {function} addSystemMessage - Function to add messages to chat log
  * @param {function} evaluateQuestProgress - Function to evaluate quest progress
- * @param {function} dispatchSystemEvent - Function to dispatch system events
- * @param {object} [engine] - SystemEngine instance (from useGameEngine). Falls back to direct imports if not provided.
+ * @param {function} submitAction - Canonical gameplay submitter (`engine.step` path)
  * @returns {object} Hook interface with submitInput function and loading state
  */
 export function useNarrative(
   setState,
   addSystemMessage,
   evaluateQuestProgress,
-  dispatchSystemEvent,
-  engine,
+  submitAction,
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [isNarrating, setIsNarrating] = useState(false);
@@ -663,31 +657,21 @@ export function useNarrative(
       setError(null);
 
       try {
-        // Step 1: Parse the user input into an action
-        const action = engine
-          ? engine.parseAction(userInput, currentState)
-          : (await import("../core/InputParser.js")).parseAction(
-              userInput,
-              currentState,
-            );
+        // Canonical action path: engine.step via useGameEngine.submitAction.
+        const stepResult = submitAction?.({ kind: "text", text: userInput });
+        const action = stepResult?.action;
 
-        // Step 2: Validate the action
-        const validation = engine
-          ? engine.validateAction(action, currentState)
-          : (
-              await import("../core/InputValidator.js")
-            ).validateActionComprehensive(action, currentState);
-
-        if (!validation.valid) {
-          // Action failed validation - add error message and generate narrative about failure
-          addSystemMessage(`Action failed: ${validation.reason}`, "system");
+        if (!stepResult?.ok) {
+          const reason =
+            stepResult?.reason || "Could not process input into a valid action.";
+          addSystemMessage(`Action failed: ${reason}`, "system");
 
           // Generate AI narrative about the failure
           try {
             const failurePrompt = assemblePrompt(currentState, userInput, {
               success: false,
               actionType: action?.type,
-              reason: validation.reason,
+              reason,
               description: `Attempted: ${userInput}`,
             });
 
@@ -711,58 +695,24 @@ export function useNarrative(
           return;
         }
 
-        // Step 3: Execute the action (if it changes state)
-        let actionResult;
-        let newState = currentState;
-
-        if (action.type === "narrative" || action.readOnly) {
-          // Read-only actions don't change state
-          actionResult = {
-            success: true,
-            actionType: action.type,
-            description: `Player said: "${userInput}"`,
-            state: currentState,
-            readOnly: true,
-          };
-        } else {
-          // Execute state-changing action via engine or direct
-          const executeFn = engine
-            ? () => engine.executeAction(action, currentState)
-            : async () => {
-                const { executeAction } = await import(
-                  "../core/ActionDispatcher.js"
-                );
-                return executeAction(currentState, action, {
-                  dispatchSystemEvent,
-                });
-              };
-
-          const execute = () =>
-            executeFn();
-
-          actionResult = READ_ONLY_ACTIONS.has(action.type)
-            ? await execute()
-            : wrapActionExecution(action.type, action, () => execute());
-          actionResult = { ...actionResult, actionType: action.type };
-          newState = actionResult.state;
-        }
-
-        // Step 4: Update game state if action succeeded
-        if (actionResult.success && !actionResult.readOnly) {
-          setState(newState);
-          if (typeof evaluateQuestProgress === "function") {
-            evaluateQuestProgress(newState);
-          }
-          SimBridge.advanceTick();
-        }
+        // State already updated by submitAction -> APPLY_ENGINE_RESULT in useGameEngine.
+        const newState = stepResult.nextState ?? currentState;
+        const readOnly = newState === currentState;
+        const actionResult = {
+          success: true,
+          actionType: action?.type,
+          description: stepResult.summary || `Player said: "${userInput}"`,
+          state: newState,
+          readOnly,
+        };
 
         const suggestionSource = actionResult.readOnly
           ? currentState
           : newState;
         setActionSuggestions(buildActionSuggestions(suggestionSource));
 
-        // Step 5: Handle special actions (like status display)
-        if (actionResult.showStatus) {
+        // Handle status display action explicitly.
+        if (action?.type === "status") {
           const statusString = renderStatusBlock(
             newState.player,
             newState.config,
@@ -772,7 +722,7 @@ export function useNarrative(
           return;
         }
 
-        // Step 6: Generate AI narrative response (streaming)
+        // Generate AI narrative response (streaming)
         setIsNarrating(true);
         try {
           const promptState = actionResult.readOnly ? currentState : newState;
@@ -805,7 +755,7 @@ export function useNarrative(
         setIsLoading(false);
       }
     },
-    [setState, addSystemMessage, evaluateQuestProgress, dispatchSystemEvent, engine],
+    [setState, addSystemMessage, evaluateQuestProgress, submitAction],
   );
 
   /**

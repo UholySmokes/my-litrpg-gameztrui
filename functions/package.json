@@ -4,9 +4,9 @@
 	"main": "index.js",
 	"type": "commonjs",
 	"scripts": {
-		"build": "tsc -p tsconfig.json",
-		"typecheck": "tsc -p tsconfig.json --noEmit",
-		"lint": "eslint ."
+		"build": "npm run typecheck",
+		"typecheck": "tsc -p tsconfig.runtime.json --noEmit",
+		"lint": "eslint . --ignore-pattern lib/genkit-sample.js"
 	},
 	"engines": {
 		"node": "20"

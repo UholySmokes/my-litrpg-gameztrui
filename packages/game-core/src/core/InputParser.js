@@ -28,8 +28,14 @@ export function parseAction(userInput, gameState) {
   if (magicAction) return magicAction;
 
   // Parse different action types
+  const useSkillAction = parseUseSkill(cleanedInput, gameState);
+  if (useSkillAction) return useSkillAction;
+
   const useItemAction = parseUseItem(cleanedInput, gameState);
   if (useItemAction) return useItemAction;
+
+  const escapeAction = parseEscape(cleanedInput);
+  if (escapeAction) return escapeAction;
 
   const moveAction = parseMove(cleanedInput, gameState);
   if (moveAction) return moveAction;
@@ -208,10 +214,119 @@ function parseMagic(input) {
     }
   }
 
-  if (/^(release|cast)$/i.test(input)) {
+  if (/^anchor(?:\s+(?:to\s+)?(?:stabilize|calm)\s+resonance)?$/i.test(input)) {
+    return {
+      type: "magic_anchor",
+      kind: "self",
+      itemId: null,
+      originalInput: input,
+    };
+  }
+
+  if (/^sense(?:\s+ambient(?:\s+essence)?)?$/i.test(input)) {
+    return {
+      type: "magic_sense",
+      essence: null,
+      originalInput: input,
+    };
+  }
+
+  if (/^purge(?:\s+(?:contamination|tainted reserves))$/i.test(input)) {
+    return {
+      type: "magic_purge",
+      essence: null,
+      amount: null,
+      originalInput: input,
+    };
+  }
+
+  if (/^(release|cast)(?:\s+prepared(?:\s+(?:magic|weave))?)?$/i.test(input)) {
     return { type: "magic_release", originalInput: input };
   }
 
+  return null;
+}
+
+function parseUseSkill(input, gameState) {
+  const combat = gameState?.combat || {};
+  const inCombat = combat.status === "active" || combat.inCombat === true;
+  if (!inCombat) return null;
+
+  const rawPlayerSkills = [];
+  if (Array.isArray(gameState?.player?.activeSkills)) {
+    rawPlayerSkills.push(...gameState.player.activeSkills);
+  }
+  if (Array.isArray(gameState?.player?.skills?.active)) {
+    rawPlayerSkills.push(...gameState.player.skills.active);
+  }
+
+  const playerSkills = rawPlayerSkills
+    .map((entry) => {
+      if (!entry) return null;
+      if (typeof entry === "string") {
+        return { id: entry, name: entry };
+      }
+      if (typeof entry === "object") {
+        const id =
+          typeof entry.id === "string" && entry.id
+            ? entry.id
+            : typeof entry.skillId === "string" && entry.skillId
+              ? entry.skillId
+              : null;
+        const name =
+          typeof entry.name === "string" && entry.name
+            ? entry.name
+            : typeof entry.label === "string" && entry.label
+              ? entry.label
+              : id;
+        return id ? { id, name } : null;
+      }
+      return null;
+    })
+    .filter(Boolean);
+
+  if (/^(use|cast)\s+skill$/i.test(input)) {
+    const defaultSkill = playerSkills[0];
+    if (!defaultSkill?.id) return null;
+    return {
+      type: "attack",
+      skillId: defaultSkill.id,
+      target: "nearest enemy",
+      originalInput: input,
+    };
+  }
+
+  const namedSkillMatch = input.match(/^(use|cast)\s+(.+)$/i);
+  if (!namedSkillMatch) return null;
+
+  const requested = String(namedSkillMatch[2] || "").trim().toLowerCase();
+  if (!requested || requested === "item" || requested === "potion") {
+    return null;
+  }
+
+  const matchedSkill = playerSkills.find((skill) => {
+    const id = String(skill.id || "").toLowerCase();
+    const name = String(skill.name || "").toLowerCase();
+    return requested === id || requested === name || name.includes(requested);
+  });
+
+  if (!matchedSkill?.id) return null;
+
+  return {
+    type: "attack",
+    skillId: matchedSkill.id,
+    target: "nearest enemy",
+    originalInput: input,
+  };
+}
+
+function parseEscape(input) {
+  if (/^(escape|attempt escape|flee|retreat)$/i.test(input)) {
+    return {
+      type: "escape",
+      originalInput: input,
+    };
+  }
   return null;
 }
 

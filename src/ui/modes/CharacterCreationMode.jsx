@@ -641,8 +641,6 @@ export default function CharacterCreationMode({ onComplete }) {
       />
     );
   }, [
-    MAX_ACTIVE_SKILLS,
-    MAX_PASSIVE_SKILLS,
     allocationPoints,
     archetypeRecommendations,
     asciiArt,

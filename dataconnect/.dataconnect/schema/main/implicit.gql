@@ -1,6 +1,0 @@
-extend type SaveSlot {
-  """
-  ✨ Implicit foreign key field based on `SaveSlot`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
-  """
-  userId: String! @fdc_generated(from: "SaveSlot.user", purpose: IMPLICIT_REF_FIELD)
-}

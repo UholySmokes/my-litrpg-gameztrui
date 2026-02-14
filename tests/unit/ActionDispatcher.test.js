@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import { executeAction } from "../../packages/game-core/src/core/ActionDispatcher.js";
 import { initialGameState } from "../../packages/game-core/src/data/initialState.js";
+import { startCombat } from "../../packages/game-core/src/systems/combat/CombatSystem.js";
 
 describe("ActionDispatcher", () => {
   const baseState = {
@@ -188,6 +189,23 @@ describe("ActionDispatcher", () => {
       });
       expect(result.success).toBe(true);
       expect(result.state.world.turnCount).toBe(3);
+    });
+  });
+
+  describe("escape action", () => {
+    it("resolves escape attempts through the dispatcher", () => {
+      const state = {
+        ...baseState,
+        config: {
+          ...baseState.config,
+          baseEscapeChance: 1,
+          agilityEscapeBonus: 0,
+        },
+      };
+      const combatState = startCombat(state, ["goblin"]);
+      const result = executeAction(combatState, { type: "escape" });
+      expect(result.success).toBe(true);
+      expect(result.state.combat.status).toBe("inactive");
     });
   });
 

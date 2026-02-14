@@ -1,6 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
 .commandDeck {
   display: flex;
   gap: var(--spacing-sm);
+}
+
+.errorBanner {
+  border: 1px solid rgba(255, 99, 99, 0.5);
+  background: rgba(255, 99, 99, 0.12);
+  border-radius: var(--radius-md);
+  color: #ffb0b0;
+  font-size: var(--text-sm);
+  font-family: var(--font-code);
+  padding: var(--spacing-sm) var(--spacing-md);
 }
 
 .inputField {

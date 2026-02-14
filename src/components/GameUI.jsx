@@ -133,6 +133,7 @@ export default function GameUI({ user }) {
   const {
     submitInput,
     isLoading,
+    error: narrativeError,
     userInput,
     setUserInput,
     inputRef,
@@ -808,6 +809,7 @@ export default function GameUI({ user }) {
               onInputChange={setUserInput}
               onSubmit={handleSubmit}
               isLoading={isLoading}
+              error={narrativeError}
               inputRef={inputRef}
               suggestions={actionSuggestions}
               onSuggestionSelect={handleSuggestionClick}

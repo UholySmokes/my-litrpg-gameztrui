@@ -35,6 +35,9 @@ function validateAction(action, gameState) {
     
     case 'attack':
       return validateAttack(action, gameState);
+
+    case "escape":
+      return validateEscape(action, gameState);
     
     case 'look':
     case 'inventory':
@@ -261,7 +264,13 @@ function validateGameRules(action, gameState) {
   
   // Prevent non-combat actions during active combat
   const isMagic = typeof action.type === "string" && action.type.startsWith("magic_");
-  if (combat.status === 'active' && action.type !== 'attack' && action.type !== 'look' && !isMagic) {
+  if (
+    combat.status === "active" &&
+    action.type !== "attack" &&
+    action.type !== "escape" &&
+    action.type !== "look" &&
+    !isMagic
+  ) {
     return {
       valid: false,
       reason: 'You are in combat! Focus on the enemy.'
@@ -361,6 +370,25 @@ function validateMagicAnchor(action) {
   if (kind === "item" && action?.itemId != null && typeof action.itemId !== "string") {
     return { valid: false, reason: "Invalid item id." };
   }
+  return { valid: true };
+}
+
+function validateEscape(action, gameState) {
+  void action;
+  if (gameState.player.isDead) {
+    return {
+      valid: false,
+      reason: "You cannot escape while dead.",
+    };
+  }
+
+  if (gameState.combat?.status !== "active") {
+    return {
+      valid: false,
+      reason: "You are not in combat.",
+    };
+  }
+
   return { valid: true };
 }
 

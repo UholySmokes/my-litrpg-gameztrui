@@ -46,5 +46,54 @@ describe("Magic input parsing", () => {
     expect(action.essence).toBeNull();
     expect(action.amount).toBeNull();
   });
+
+  it("parses release prepared weave shorthand", () => {
+    const action = parseAction("release prepared weave", initialGameState);
+    expect(action.type).toBe("magic_release");
+  });
+
+  it("parses resonance anchor shorthand", () => {
+    const action = parseAction(
+      "anchor to stabilize resonance",
+      initialGameState,
+    );
+    expect(action.type).toBe("magic_anchor");
+    expect(action.kind).toBe("self");
+  });
+
+  it("parses contamination purge shorthand", () => {
+    const action = parseAction("purge contamination", initialGameState);
+    expect(action.type).toBe("magic_purge");
+    expect(action.essence).toBeNull();
+  });
+
+  it("parses combat skill command to attack with skill id", () => {
+    const state = {
+      ...initialGameState,
+      combat: {
+        ...initialGameState.combat,
+        status: "active",
+      },
+      player: {
+        ...initialGameState.player,
+        activeSkills: [{ id: "firebolt", name: "Firebolt" }],
+      },
+    };
+    const action = parseAction("use skill", state);
+    expect(action.type).toBe("attack");
+    expect(action.skillId).toBe("firebolt");
+  });
+
+  it("parses escape command in combat", () => {
+    const state = {
+      ...initialGameState,
+      combat: {
+        ...initialGameState.combat,
+        status: "active",
+      },
+    };
+    const action = parseAction("attempt escape", state);
+    expect(action.type).toBe("escape");
+  });
 });
 

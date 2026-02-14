@@ -692,7 +692,7 @@ function getRandomSideQuests(count, seedInput, character) {
   return { quests: selections, seed };
 }
 
-function generateInitialQuestPackage({
+export function generateInitialQuestPackage({
   seed,
   character,
   sideQuestCount = 2,

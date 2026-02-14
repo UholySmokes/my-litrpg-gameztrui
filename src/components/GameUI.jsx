@@ -88,6 +88,31 @@ export default function GameUI({ user }) {
   const autosaveTimerRef = useRef(null);
   const transitionAudioRef = useRef(null);
   const previousStateRef = useRef(null);
+
+  const persistLocalAutosave = useCallback(
+    (snapshotState, saveName = "Autosave") => {
+      if (!snapshotState) return;
+      try {
+        const { previousState: _prev, ...stateToSave } = snapshotState;
+        const timestamp = new Date().toISOString();
+        localStorage.setItem(
+          "localAutosave:v1",
+          JSON.stringify({
+            id: "autosave",
+            save_name: saveName,
+            created_at: timestamp,
+            updated_at: timestamp,
+            user_id: user?.id || "unknown",
+            game_state: stateToSave,
+          }),
+        );
+      } catch (err) {
+        console.warn(`${saveName} failed:`, err);
+      }
+    },
+    [user?.id],
+  );
+
   useEffect(() => {
     const container = narrativeMemoryRef.current;
     if (container) {
@@ -104,22 +129,7 @@ export default function GameUI({ user }) {
     }
 
     autosaveTimerRef.current = setTimeout(() => {
-      try {
-        const { previousState: _prev, ...stateToSave } = state;
-        localStorage.setItem(
-          "localAutosave:v1",
-          JSON.stringify({
-            id: "autosave",
-            save_name: "Autosave",
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            user_id: user?.id || "unknown",
-            game_state: stateToSave,
-          }),
-        );
-      } catch (err) {
-        console.warn("Autosave failed:", err);
-      }
+      persistLocalAutosave(state, "Autosave");
     }, AUTOSAVE_DEBOUNCE_MS);
 
     return () => {
@@ -128,7 +138,7 @@ export default function GameUI({ user }) {
         autosaveTimerRef.current = null;
       }
     };
-  }, [state, user?.id]);
+  }, [persistLocalAutosave, state]);
 
   const {
     submitInput,
@@ -197,12 +207,16 @@ export default function GameUI({ user }) {
       quests: nextQuests,
     });
 
-    setState((prevState) => ({
-      ...prevState,
+    const nextState = {
+      ...state,
       player: characterData,
       quests: nextQuests,
       world: seededWorld,
-    }));
+    };
+
+    setState(nextState);
+    persistLocalAutosave(nextState, "Character Creation Checkpoint");
+
     setIsTransitioning(true);
     if (transitionTimeoutRef.current) {
       clearTimeout(transitionTimeoutRef.current);
@@ -214,12 +228,7 @@ export default function GameUI({ user }) {
 
     // Generate initial narrative after character creation using seeded quests
     try {
-      await generateInitialNarrativeText({
-        ...state,
-        player: characterData,
-        quests: nextQuests,
-        world: seededWorld,
-      });
+      await generateInitialNarrativeText(nextState);
     } catch (error) {
       console.error("Failed to generate initial narrative:", error);
       addSystemMessage(

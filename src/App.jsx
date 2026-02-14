@@ -72,9 +72,6 @@ function AppContent() {
   };
 
   const handleLocalGame = () => {
-    // Clear any existing character/save data when starting local game
-    localStorage.removeItem("characterCreated");
-    localStorage.removeItem("saveLoaded");
     localStorage.setItem("localGame", "true");
     setIsLocalGame(true);
     setUser(LOCAL_USER);

@@ -4,11 +4,8 @@ import { executeAction } from "../core/ActionDispatcher.js";
 import { normalizeGameState } from "../core/StateNormalizer.js";
 import { SystemEventObserver } from "../core/SystemEventObserver.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
-import {
-  replaySimulation,
-  exportReplay as exportReplayData,
-} from "../simulation/bridge/SimulationBridge.js";
-import { hashState, normalizeForHash, hashString } from "../utils/stateHash.js";
+import { replaySimulation } from "../simulation/bridge/SimulationBridge.js";
+import { hashState } from "../utils/stateHash.js";
 
 /**
  * SystemEngine facade — the single entry point for all platform adapters.

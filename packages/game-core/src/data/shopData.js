@@ -208,7 +208,7 @@ export function getShopItemsByCategory(category) {
 /**
  * Get shop item by ID
  */
-function getShopItemById(itemId) {
+export function getShopItemById(itemId) {
   const allItems = getShopItemsByCategory('items');
   return allItems.find(item => item.id === itemId) || null;
 }

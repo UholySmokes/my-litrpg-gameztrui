@@ -111,7 +111,7 @@ export function setTitleDatabase(nextTitles) {
 /**
  * Get title by ID
  */
-function getTitleById(titleId) {
+export function getTitleById(titleId) {
   return titleDatabase.find(t => t.id === titleId) || null;
 }
 
@@ -184,7 +184,7 @@ function checkTitleUnlockConditions(title, gameState) {
 /**
  * Get available titles (unlock conditions met)
  */
-function getAvailableTitles(gameState) {
+export function getAvailableTitles(gameState) {
   const unlockedIds = gameState.player.unlockedTitles || [];
   return titleDatabase.filter(title => {
     if (unlockedIds.includes(title.id)) return false; // Already unlocked

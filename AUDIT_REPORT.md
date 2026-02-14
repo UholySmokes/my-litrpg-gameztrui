@@ -1,303 +1,235 @@
 # AUDIT_REPORT
 
 ## Executive Summary
-This repository is structurally healthy for frontend runtime and tests (frontend build passes, all 25 Jest suites pass), but it has fix-ready wiring risks: the UI action pipeline bypasses the canonical `SystemEngine.step()` path, action suggestions include phrases not parsable into gameplay actions, backend Functions lack a build script and fail TypeScript checks, and some UI/system artifacts are orphaned or partially wired. Character creation works end-to-end in-session, but persistence/resume and accessibility basics still need a targeted pass.
+Frontend runtime and tests are stable (`npm run build`, `npm test -- --runInBand` pass), but the repository has multiple fix-ready wiring and completeness gaps: the UI command path bypasses the canonical `SystemEngine.step()` pipeline, some defined systems/components/routes are unreachable from product flow, backend Functions checks are incomplete (`functions/package.json` has no `build`/`lint` scripts and `tsc` fails), and character-creation persistence/accessibility still has gaps (stale resume keys, delayed autosave-only checkpoint, modal semantics/error annunciation). Priority should be P0 engine-wiring unification, then backend checkability and character-creation MVP completion.
 
 ## How to Verify
-Run these from repo root unless noted.
+Run from repo root unless noted.
 
 ```bash
-npm install
-npm --prefix functions install
+npm install --no-audit --no-fund
+npm --prefix functions install --no-audit --no-fund
+
 npm run build
+npm --prefix functions run build
+
 npm run lint
 npm run typecheck
+npm --prefix functions exec tsc -p tsconfig.json --noEmit
+
 npm test -- --runInBand
-npm --prefix functions run build
-npm --prefix functions exec tsc --noEmit
-npm run dev -- --host 127.0.0.1 --port 4173
+
+npm run dev -- --host 127.0.0.1 --port 4173 --strictPort
 npm run dev:api
+```
+
+PowerShell API smoke check (while `dev:api` is running):
+
+```powershell
+Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/health" -UseBasicParsing
 ```
 
 ## Phase 0 - Repo Map
 
-### Entrypoints and architecture
-- Frontend boot: `src/main.jsx:10` (`startApp`) -> renders `App` at `src/main.jsx:15`.
-- Frontend app shell/auth gate: `src/App.jsx` (`AppContent`, local mode + auth mode).
-- Primary game container: `src/components/GameUI.jsx` (creation mode + game mode, state mutation handlers).
-- Local state engine hook: `src/hook/usegamestate.js` (`useGameEngine`, reducer + engine instance).
-- Narrative/action hook: `src/hook/useNarrative.js` (`submitInput`, AI narrative + action execution).
-- Canonical engine facade: `packages/game-core/src/engine/createSystemEngine.js`.
-- Reducer/action logic: `packages/game-core/src/core/gameReducer.js`, `packages/game-core/src/core/ActionDispatcher.js`.
-- Backend functions entrypoint: `functions/index.js` (`exports.api`, `exports.agentList`, `exports.agentRun`).
-- Backend API router: `functions/lib/api-router.js`.
-- Hosting/API rewrites: `firebase.json:41` and `firebase.json:43` (`/api/**` -> function `api`).
+### Entrypoints
+- Frontend bootstrap: `src/main.jsx:10` symbol `startApp`; render at `src/main.jsx:15`.
+- App shell/auth gate: `src/App.jsx:12` symbol `AppContent`.
+- Main game container: `src/components/GameUI.jsx:49` symbol `GameUI`.
+- Engine hook/state root: `src/hook/usegamestate.js:20` symbol `useGameEngine`.
+- Narrative/action flow: `src/hook/useNarrative.js:652` symbol `submitInput`.
+- Canonical engine facade: `packages/game-core/src/engine/createSystemEngine.js:27` symbol `createSystemEngine`.
+- Backend function runtime entrypoint: `functions/index.js:17` symbol `exports.api`.
+- Backend router: `functions/lib/api-router.js:18` symbol `handleApiRequest`.
+- Hosting rewrite to API: `firebase.json:43` source `/api/**` to function `api`.
 
-### Routing and navigation
-- No client router package is used (single app shell + internal mode switching).
-- UI navigation is mode and window toggles (`src/components/GameUI.jsx:680`, `src/components/GameUI.jsx:754`).
-- API routing is function-router based (`functions/lib/api-router.js:40` onward).
+### Routing and Navigation
+- No client router package usage detected in `src/` (no `react-router` imports).
+- Frontend navigation is mode/window state in `GameUI` (`src/components/GameUI.jsx:680` symbols `showCreationMode`/`showGameMode`).
+- API routing is path dispatch in `functions/lib/api-router.js:40-62`.
 
-### State management
-- React `useReducer` root state in `src/hook/usegamestate.js:24`.
-- Reducer is shimmed to package core: `src/core/gameReducer.js` -> `@voidverse/game-core/core/gameReducer.js`.
-- Engine instance created in `src/hook/usegamestate.js:31` with `createSystemEngine`.
+### State Management
+- App/game state uses React reducer via `useGameEngine` (`src/hook/usegamestate.js:24` symbol `useReducer`).
+- Reducer implementation is package-core (`packages/game-core/src/core/gameReducer.js:330` symbol `gameReducer`).
+- Canonical reducer path for engine results exists (`packages/game-core/src/core/gameReducer.js:353` action `APPLY_ENGINE_RESULT`).
 
-### Data models/schemas
-- Initial runtime game state: `packages/game-core/src/data/initialState.js`.
-- Character creation data assembly: `src/hook/useCharacterCreationReworked.js:581` (`finalizeCharacter`).
-- Save schema constraints (GUID, save name length, serialized game_state): `functions/lib/saves.js`.
-- `@voidverse/game-schemas` runtime files are no-op wrappers (`packages/game-schemas/src/index.js:1`, `packages/game-schemas/src/state.js:1`, `packages/game-schemas/src/actions.js:1`).
+### Data Models / Schemas
+- Runtime initial state: `packages/game-core/src/data/initialState.js:53` symbol `initialGameState`.
+- Character creation finalized payload: `src/hook/useCharacterCreationReworked.js:657` symbol `characterData` inside `finalizeCharacter`.
+- Save API constraints: `functions/lib/saves.js:12` (`MAX_SAVE_NAME_LENGTH`), `functions/lib/saves.js:14` (`GUID_REGEX`), `functions/lib/saves.js:31` (`normalizeGameState`).
+- Archetype schema validator exists for validation scripts: `packages/game-core/src/systems/archetype/archetypeSchema.js:144` symbol `validateArchetypes`; invoked by `scripts/validate-archetypes.mjs:3`.
 
-### Build/test command surface
-- Root scripts: `package.json:12` onward (`dev`, `dev:api`, `build`, `lint`, `typecheck`, `test`).
-- Functions package has no scripts block (`functions/package.json:1-18`).
+### Build / Test Commands
+- Root scripts: `package.json` `scripts` block (contains `dev`, `dev:api`, `build`, `lint`, `typecheck`, `test`).
+- Functions package currently has no `scripts` block: `functions/package.json:1-18`.
 
-### Main user journeys (current)
-- User opens app, auth/local mode resolved in `src/App.jsx`.
-- User completes character creation in `CharacterCreationMode` (hook-backed step validation).
-- On finalize, `GameUI` seeds quests/world and starts initial narrative (`src/components/GameUI.jsx:175`).
-- User plays via text commands (`useNarrative.submitInput`) and windowed game panels.
-- Combat UI uses explicit action handlers (`src/components/CombatUI.jsx:136`, `src/components/CombatUI.jsx:216`) -> reducer events.
-- State autosaves locally every debounce cycle (`src/components/GameUI.jsx:110` effect block).
-- Save/Load panel persists to local storage and optional `/api/saves` backend (`src/components/SaveLoadUI.jsx`, `src/core/CloudSaveService.js`).
+### Main User Journeys (Observed)
+- User enters app through auth/local mode gate (`src/App.jsx:87-116`).
+- Character creation wizard flows through step panels then summary finalize (`src/ui/modes/CharacterCreationMode.jsx:484-609`).
+- Finalize callback seeds quests/world and switches to game mode (`src/components/GameUI.jsx:175-213`).
+- Initial narrative is generated after creation (`src/components/GameUI.jsx:215-221`, `src/hook/useNarrative.js:814`).
+- Player submits text commands via terminal (`src/components/GameUI.jsx:517-533`) and suggestions (`src/components/GameUI.jsx:545-552`).
+- Combat actions dispatch reducer/system events (`src/components/GameUI.jsx:476-514`, `packages/game-core/src/core/gameReducer.js` combat actions).
+- Local autosave persists debounced snapshots (`src/components/GameUI.jsx:45`, `src/components/GameUI.jsx:106-123`).
+- Manual local/cloud save-load uses SaveLoad UI and `/api/saves` (`src/components/SaveLoadUI.jsx`, `src/core/CloudSaveService.js:55`).
 
 ## Phase 1 - Connection Integrity Sweep
 
 | Item | Defined at | Expected caller | Actual callers | Status | Impact | Fix |
 |---|---|---|---|---|---|---|
-| `submitAction` canonical engine path | `src/hook/usegamestate.js:119` (`submitAction`), `packages/game-core/src/engine/createSystemEngine.js:80` (`step`) | `useNarrative.submitInput` should call one canonical `engine.step` flow | No repo callsites for `submitAction` (`rg -n "submitAction"` only definitions) | [ ] P0 Defect | Engine event collection (`evaluateToEvents`) and canonical step semantics are bypassed in UI command flow | Route narrative input through `submitAction`/`APPLY_ENGINE_RESULT` and remove duplicate execution path |
-| Suggestion strings not parsable to gameplay actions (`"use skill"`, `"attempt escape"`) | `src/hook/useNarrative.js:153`, `src/hook/useNarrative.js:155` | `InputParser.parseAction` should produce actionable type | `packages/game-core/src/core/InputParser.js:14-414` has no `skill`/`escape` parser tokens; suggestion click passes raw label (`src/ui/panels/ActionSuggestionsPanel.jsx:28`, `src/components/GameUI.jsx:548`) | [ ] P1 Defect | User sees high-confidence actions that silently degrade to narrative/no-op state mutation | Add parser intents for skill/escape OR change suggestion generation to parser-supported commands |
-| EventBus listener with no producer (`system:log`) | `src/components/SystemLog.jsx:67` | Some system should emit `EventBus.emit("system:log", ...)` | No emit sites (`rg -n "system:log"` only in `SystemLog.jsx`) | [ ] P2 Defect | Dead UI log pipeline; misleading maintenance surface | Either wire emitters or remove component and replace with existing narrative/combat logs |
-| Orphan legacy character creation component | `src/components/CharacterGenesisUI_Enhanced.jsx:127` | App/game shell import or route | No imports outside file (`rg -n "CharacterGenesisUI_Enhanced" src` returns only definition) | [ ] P2 Refactor/Quality | Duplicate maintenance burden and stale behavior drift risk | Remove file or reintroduce intentionally behind explicit feature flag |
-| Stale local-storage flags (`characterCreated`, `saveLoaded`) | `src/App.jsx:76-77` | Read/write logic in startup flow | No other references in repo | [ ] P1 Missing Feature | Persistence resume gating is partially wired and currently ineffective | Either remove dead keys or implement startup resume logic that uses them |
-| Backend agent routes have no frontend consumer | `functions/lib/api-router.js:44`, `functions/lib/api-router.js:48`; callable exports in `functions/index.js` | Admin/ops UI or explicit client | No `/api/agents` or callable agent usage in `src/` | [ ] P2 Missing Feature - Needs verification (Hypothesis) | Potentially unreachable functionality if no external client exists | Confirm intended external caller; if internal, add minimal UI/CLI integration or document ownership |
-| Archetype schema module appears unregistered | `packages/game-core/src/systems/archetype/archetypeSchema.js` | Validation pipeline/system builder import | No external refs detected by repo scan | [ ] P2 Refactor/Quality - Needs verification (Hypothesis) | Dead schema can drift from runtime reality | Either wire into build-time validation or remove |
+| Canonical engine `submitAction` path is unused by narrative input | `src/hook/usegamestate.js:119` `submitAction`; `packages/game-core/src/engine/createSystemEngine.js:80` `step` | `src/hook/useNarrative.js:652` `submitInput` should use single engine-step path | `submitAction` appears only in `src/hook/usegamestate.js:119` and return object (`src/hook/usegamestate.js:141`) | [ ] P0 Defect | Divergent action semantics and skipped `SystemEventObserver.evaluateToEvents` path | Route text/suggestion input to `submitAction({ kind: "text", text })`; reduce duplicate parse/validate/execute logic |
+| Suggestion labels include unsupported parser intents | `src/hook/useNarrative.js:153` `"use skill"` and `src/hook/useNarrative.js:155` `"attempt escape"` | `packages/game-core/src/core/InputParser.js:12` `parseAction` should map suggestion text to concrete action | Suggestion click forwards raw label (`src/ui/panels/ActionSuggestionsPanel.jsx:28`, `src/components/GameUI.jsx:545-549`); parser has no `parseSkill`/`parseEscape` branch (`packages/game-core/src/core/InputParser.js:30-57`) | [ ] P1 Defect | User-visible no-op/soft-fail commands | Add parser intents + dispatcher support or remove unsupported labels from suggestion builder |
+| Narrative error state is produced but not surfaced in game UI | `src/hook/useNarrative.js:441` state `error`; returned at `src/hook/useNarrative.js:928` | `GameUI`/`GameMode` should render error feedback | `GameUI` destructures no `error` from hook (`src/components/GameUI.jsx:133-141`); `GameMode` props have no `error` (`src/ui/modes/GameMode.jsx:19-81`) | [ ] P1 Defect | Hidden runtime failures; user loses actionable feedback | Thread `error` prop into `GameMode` and add visible, accessible error banner |
+| Event log listener contract is broken (`system:log`) | `src/components/SystemLog.jsx:67` `EventBus.on("system:log")` | Event emitters should produce `system:log` events | No `emit("system:log", ...)` found; only listener site in `SystemLog.jsx` | [ ] P2 Defect | Dead event-log UI path and misleading observability surface | Either emit `system:log` events from reducer/systems or remove/deprecate `SystemLog` |
+| Orphan legacy character creation component | `src/components/CharacterGenesisUI_Enhanced.jsx:127` default export | App mode/render path should import/use | No imports in `src/` | [ ] P2 Refactor/Quality | Duplicate maintenance surface and drift risk | Remove file or intentionally gate it behind explicit feature flag |
+| Orphan creation panel | `src/ui/panels/creation/CreationTalentPanel.jsx:1` default export | Wizard step composition should import/use | No imports in `src/` | [ ] P2 Missing Feature (Hypothesis) | Likely incomplete or abandoned wizard step | Confirm product intent; either rewire panel into `CharacterCreationMode` or delete |
+| API routes exposed with no frontend consumer (`/api/agents`, `/api/agents/run`) | `functions/lib/api-router.js:44` and `functions/lib/api-router.js:48` | Internal admin UI/tooling should call routes | No `/api/agents` references in `src/` | [ ] P2 Missing Feature (Hypothesis) | Unreachable feature surface from product UI | Confirm ownership (external client vs in-app); add minimal internal caller or document external-only contract |
+| Callable exports exposed with no frontend consumer (`agentList`, `agentRun`) | `functions/index.js:26` and `functions/index.js:32` | Firebase callable client should invoke | No `agentList`, `agentRun`, or `httpsCallable` usage in `src/` | [ ] P2 Missing Feature (Hypothesis) | Duplicate API surface could drift from HTTP router behavior | Standardize on one API shape (HTTP or callable) and remove/bridge the other |
+| Systems implemented but not wired into runtime paths (`PrestigeSystem`, `DungeonGenerator`) | `packages/game-core/src/systems/PrestigeSystem.ts:8` class `PrestigeSystem`; `packages/game-core/src/systems/DungeonGenerator.ts:49` class `DungeonGenerator` | Runtime reducer/engine/world systems should instantiate or dispatch through them if intended features | No runtime callsites found beyond export shims (`src/systems/PrestigeSystem.ts:2`, `src/systems/DungeonGenerator.ts:2`) | [ ] P1 Missing Feature (Hypothesis) | Feature debt hidden as implemented code | Confirm intended gameplay scope; either wire feature entrypoints or move to explicit backlog/archive |
+| Simulation kernel path is decoupled from live UI runtime | `packages/game-core/src/simulation/kernel/SimulationKernel.ts:168` class `DefaultSimulationKernel`; `packages/game-core/src/simulation/combat/ActionResolver.ts:1155` `resolveCommand` | Canonical runtime path should align with deterministic simulation path | Runtime path uses `ActionDispatcher` via `createSystemEngine` (`packages/game-core/src/engine/createSystemEngine.js:3`, `:114`); kernel path appears in determinism/docs only | [ ] P1 Defect (Hypothesis) | Runtime/simulation divergence risk | Define one canonical action pipeline and add parity tests for same input/state |
 
-## Defects (Actionable)
+## Defect Items
 
-- [ ] **P0 Defect** Unify canonical engine execution path.
-  - Rationale: Current UI bypasses `engine.step()`.
-  - Impact: Divergent runtime behavior vs intended engine loop/events.
-  - Repro/verification: Compare `src/hook/usegamestate.js:119` (`engine.step`) with `src/hook/useNarrative.js:668`, `src/hook/useNarrative.js:676`, `src/hook/useNarrative.js:730` (parse/validate/execute directly).
-  - Proposed fix scope: 1 hook (`useNarrative`), 1 hook interface (`useGameEngine`), reducer action path (`APPLY_ENGINE_RESULT`).
+- [ ] **P0 Defect - Canonical engine bypass in narrative flow.** Rationale: two execution paths (`engine.step` vs direct parse/validate/execute). Impact: inconsistent events/tick semantics. Repro: compare `src/hook/usegamestate.js:119-124` with `src/hook/useNarrative.js:667-747`. Proposed fix scope: `src/hook/useNarrative.js`, `src/hook/usegamestate.js`, `packages/game-core/src/core/gameReducer.js`.
+- [ ] **P1 Defect - Unsupported suggestion commands.** Rationale: UI emits text that parser does not map. Impact: degraded UX and silent no-op behavior. Repro: inspect suggestion literals at `src/hook/useNarrative.js:153-155` versus parser branches in `packages/game-core/src/core/InputParser.js:30-57`. Proposed fix scope: parser intents and/or suggestion dictionary.
+- [ ] **P1 Defect - Narrative errors not visible in GameMode.** Rationale: hook exposes `error` but view drops it. Impact: failures become opaque. Repro: `src/hook/useNarrative.js:928` vs `src/components/GameUI.jsx:133-141` and `src/ui/modes/GameMode.jsx:19-81`. Proposed fix scope: pass-through prop + UI alert block.
+- [ ] **P1 Defect - Backend check pipeline incomplete.** Rationale: missing `build`/`lint` scripts and failing `tsc` in functions package. Impact: backend regressions can ship undetected. Repro: Phase 4 logs and `functions/package.json:1-18`. Proposed fix scope: `functions/package.json`, `functions/tsconfig.json`, dependency/type alignment.
+- [ ] **P2 Defect - `SystemLog` listener has no emitter contract.** Rationale: event channel is never produced. Impact: dead logging behavior. Repro: `src/components/SystemLog.jsx:67` and no `emit("system:log")` in repo. Proposed fix scope: remove or wire event channel.
 
-- [ ] **P1 Defect** Suggestions emit unsupported commands.
-  - Rationale: High-probability suggestions include unsupported parser intents.
-  - Impact: User command taps can fail to mutate game state unexpectedly.
-  - Repro/verification: Click suggestion `"attempt escape"` or `"use skill"`; parser action list in `packages/game-core/src/core/InputParser.js:14-414` lacks matching action type.
-  - Proposed fix scope: parser intents + validator + dispatcher mapping OR suggestion dictionary cleanup.
+## Missing Feature Items
 
-- [ ] **P2 Defect** `SystemLog` event contract broken.
-  - Rationale: listener has no emitting counterpart.
-  - Impact: Invisible functionality and dead code path.
-  - Repro/verification: Search `system:log` usage; only in `src/components/SystemLog.jsx:67-68`.
-  - Proposed fix scope: either remove component or wire emits in reducer/systems.
+- [ ] **P1 Missing Feature - Immediate post-creation checkpoint save.** Rationale: only debounced autosave (`AUTOSAVE_DEBOUNCE_MS=2000`) exists after character finalize. Impact: data loss window on abrupt close. Repro: `src/components/GameUI.jsx:45`, `src/components/GameUI.jsx:106-123`, finalize path at `src/components/GameUI.jsx:175-205`. Proposed fix scope: synchronous local checkpoint write in finalize callback.
+- [ ] **P1 Missing Feature - Resume flags lifecycle is incomplete.** Rationale: keys are cleared but never consumed. Impact: confusing/unimplemented resume semantics. Repro: `src/App.jsx:76-77` and no other `characterCreated`/`saveLoaded` localStorage usage. Proposed fix scope: implement read/write resume flow or remove keys.
+- [ ] **P1 Missing Feature (Hypothesis) - Prestige/Dungeon systems not integrated.** Rationale: classes exist without runtime caller. Impact: promised systems unavailable in gameplay. Repro: `packages/game-core/src/systems/PrestigeSystem.ts:8`, `packages/game-core/src/systems/DungeonGenerator.ts:49`, no `new PrestigeSystem`/`new DungeonGenerator` callsites. Proposed fix scope: minimal reducer/events for one feature or archive modules.
+- [ ] **P2 Missing Feature (Hypothesis) - `/api/agents*` lacks product entrypoint.** Rationale: routes/callables exist but no `src/` usage. Impact: maintenance burden for unreachable features. Repro: `functions/lib/api-router.js:44-49`, `functions/index.js:26-32`, no client refs in `src/`. Proposed fix scope: add tiny admin client or de-scope endpoints.
+- [ ] **P2 Missing Feature (Hypothesis) - `CreationTalentPanel` step not wired.** Rationale: panel exported but never consumed. Impact: likely dropped UX step. Repro: `src/ui/panels/creation/CreationTalentPanel.jsx:1` only. Proposed fix scope: either insert a dedicated wizard step or remove panel.
 
-## Missing Features (Actionable)
+## Refactor / Quality Items
 
-- [ ] **P1 Missing Feature** Persistence resume gating for character creation.
-  - Rationale: startup clears flags (`src/App.jsx:76-77`) but no logic consumes them.
-  - Impact: Incomplete resume flow semantics.
-  - Repro/verification: repo search for `characterCreated` and `saveLoaded` shows no readers/writers beyond removeItem.
-  - Proposed fix scope: either fully implement startup resume read-path or remove flags entirely.
-
-- [ ] **P2 Missing Feature - Needs verification (Hypothesis)** Agent endpoints integration.
-  - Rationale: API exposes `/api/agents` and `/api/agents/run`; frontend has no caller.
-  - Impact: Feature may be unreachable from product UI.
-  - Repro/verification: route definitions at `functions/lib/api-router.js:44-49`; no `src` references.
-  - Proposed fix scope: docs-only if external consumer exists; otherwise add internal admin trigger surface.
-
-## Refactor/Quality (Actionable)
-
-- [ ] **P2 Refactor/Quality** Remove or rewire orphan `CharacterGenesisUI_Enhanced`.
-  - Rationale: duplicate creation UI not used.
-  - Impact: stale code drift and duplicated bug surface.
-  - Repro/verification: `src/components/CharacterGenesisUI_Enhanced.jsx:127` only reference.
-  - Proposed fix scope: delete + snapshot tests update, or explicitly gate/route it.
-
-- [ ] **P2 Refactor/Quality - Needs verification (Hypothesis)** `archetypeSchema.js` is unreferenced.
-  - Rationale: no import callsites found.
-  - Impact: schema may not enforce anything.
-  - Repro/verification: repo grep for `archetypeSchema` yields no usage.
-  - Proposed fix scope: either import in validation scripts or remove.
-
-- [ ] **P2 Refactor/Quality** Modal accessibility baseline pass.
-  - Rationale: modal overlays rely on click-close but lack dialog semantics and keyboard handling.
-  - Impact: keyboard/screen-reader accessibility gap.
-  - Repro/verification: modal overlays at `src/components/SaveLoadUI.jsx:398`, `src/components/ShopUI.jsx:225`, `src/components/GachaUI.jsx:183`, `src/components/TitleUI.jsx:296`, `src/components/ProfessionUI.jsx:289`, `src/components/StatusOverlay.jsx:1099`; no `role="dialog"`/`aria-modal` or Escape handler in these files.
-  - Proposed fix scope: shared modal wrapper with focus trap + Escape + ARIA.
+- [ ] **P2 Refactor/Quality - Remove legacy `CharacterGenesisUI_Enhanced` path.** Rationale: orphan component. Impact: code drift and false navigation surface. Repro: `src/components/CharacterGenesisUI_Enhanced.jsx:127` only. Proposed fix scope: delete file and related CSS/tests, or feature-flag explicitly.
+- [ ] **P2 Refactor/Quality - Functions TS template/source drift.** Rationale: `functions/src/index.ts` and `functions/src/genkit-sample.ts` are template-style sources not aligned with runtime `functions/index.js`. Impact: typecheck noise and onboarding confusion. Repro: `functions/src/index.ts:10-12`, `functions/index.js:17-32`, `functions/tsconfig.json:14-16`. Proposed fix scope: remove/ignore templates or adopt TS build pipeline.
+- [ ] **P2 Refactor/Quality - Modal accessibility baseline missing in major overlays.** Rationale: modal wrappers close on backdrop click but no `role="dialog"`/`aria-modal`/Escape handling. Impact: keyboard and screen-reader gaps. Repro: `src/components/SaveLoadUI.jsx:398-401`, `src/components/ShopUI.jsx:225-228`, `src/components/GachaUI.jsx:183-186`, `src/components/TitleUI.jsx:296-299`, `src/components/ProfessionUI.jsx:289-292`, `src/components/StatusOverlay.jsx:1099-1102`. Proposed fix scope: shared modal shell with ARIA + focus trap + Escape close.
+- [ ] **P2 Refactor/Quality - Runtime no-op schema package clarity.** Rationale: runtime files are intentionally empty. Impact: easy misread that runtime validation exists. Repro: `packages/game-schemas/src/index.js:1`, `packages/game-schemas/src/state.js:1`, `packages/game-schemas/src/actions.js:1`. Proposed fix scope: docs plus optional dev runtime guard import.
 
 ## Phase 2 - Stubs / Missing Content
 
-- [ ] **P1 Missing Feature** `SimulationKernel` world update TODO.
-  - Rationale: explicit TODO in deterministic kernel.
-  - Evidence: `packages/game-core/src/simulation/kernel/SimulationKernel.ts:382` (`TODO: Implement world state updates`).
-  - Impact: simulation fidelity incomplete.
-  - Repro/verification: inspect kernel command execution path around world progression.
-  - Proposed fix scope: implement world-state mutation stage + regression tests.
-
-- [ ] **P1 Missing Feature** `GameStateAdapter` stamina/cooldowns TODOs.
-  - Evidence: `packages/game-core/src/simulation/bridge/GameStateAdapter.js:43`, `packages/game-core/src/simulation/bridge/GameStateAdapter.js:58`.
-  - Impact: adapter omits combat-relevant fields, risking runtime/simulation drift.
-  - Repro/verification: compare live player shape vs adapter output.
-  - Proposed fix scope: map stamina/cooldowns in adapter + serialization tests.
-
-- [ ] **P2 Refactor/Quality** Runtime no-op schema package usage clarity.
-  - Evidence: `packages/game-schemas/src/index.js:1`, `packages/game-schemas/src/state.js:1`, `packages/game-schemas/src/actions.js:1`.
-  - Impact: easy to assume runtime validation exists when it is type-only.
-  - Repro/verification: import package at runtime and inspect outputs (no-op).
-  - Proposed fix scope: docs + optional runtime guards in dev mode.
+- [ ] **P1 Missing Feature - Simulation world updates TODO.** Rationale: deterministic kernel does not update world state layer. Evidence: `packages/game-core/src/simulation/kernel/SimulationKernel.ts:382` comment `TODO: Implement world state updates`. Impact: incomplete simulation fidelity. Repro/verification: inspect `DefaultSimulationKernel.tick` flow (`:212-214`). Proposed fix scope: implement `updateWorld()` + tests.
+- [ ] **P1 Missing Feature - Adapter TODOs for stamina/cooldowns.** Rationale: bridge hardcodes values instead of mapping actual player state. Evidence: `packages/game-core/src/simulation/bridge/GameStateAdapter.js:43`, `packages/game-core/src/simulation/bridge/GameStateAdapter.js:58`. Impact: runtime/simulation drift. Repro/verification: compare `player` runtime shape with adapter output. Proposed fix scope: map real stamina/cooldowns and round-trip tests.
+- [ ] **P2 Refactor/Quality - Template/sample TS sources trigger avoidable compile failures.** Rationale: `functions/src/genkit-sample.ts` imports unsupported path and unused symbols. Evidence: file import at `functions/src/genkit-sample.ts:8`; tsc failures listed in Phase 4. Impact: noisy CI and false-negative backend health. Repro/verification: run `npx tsc -p functions/tsconfig.json --noEmit`. Proposed fix scope: prune or isolate sample files from production compile target.
 
 ## Phase 3 - Character Creation Report
 
 ### Works
-- UI flow is complete from wizard to finalization callback:
-  - `src/ui/modes/CharacterCreationMode.jsx:125` (`CharacterCreationMode`) -> `CreationSummaryPanel` finalize (`src/ui/modes/CharacterCreationMode.jsx:600-609`).
-- Validation gates all key steps before finalize:
-  - `src/hook/useCharacterCreationReworked.js:504` (`validateReview`) and `src/hook/useCharacterCreationReworked.js:581` (`finalizeCharacter`).
-- Character object includes core gameplay fields (`attributes`, `skills`, `profession`, `archetypeSystem`, resources, hp/mana/xp):
-  - `src/hook/useCharacterCreationReworked.js:657-715`.
-- Created character is consumed by gameplay initialization:
-  - Quest seeding: `src/components/GameUI.jsx:175` + `packages/game-core/src/systems/quest/QuestManager.js:11`.
-  - World seeding: `src/components/GameUI.jsx:194` + `packages/game-core/src/world/WorldInitializer.js:112`.
-  - Initial narrative prompt consumption of race/class/profession/system/skills: `src/core/PromptAssembler.js:548-633`.
+- Wizard screen flow is fully connected from identity -> review panels in `src/ui/modes/CharacterCreationMode.jsx:484-609`.
+- Validation gates all steps and final review in `src/hook/useCharacterCreationReworked.js:504-548` (`validateReview`, `validateCurrentStep`).
+- Final payload creation is comprehensive in `src/hook/useCharacterCreationReworked.js:657-715` (`characterData` includes attributes, skills, profession, talents, resources).
+- Finalized character is consumed by gameplay seeding in `src/components/GameUI.jsx:175-205` (`QuestManager.generateInitialQuests`, `seedWorldAfterCharacterCreation`).
+- Initial narrative prompt consumes created character fields in `src/core/PromptAssembler.js:548-634` (`race`, `class`, `profession`, `archetypeSystem`, `activeSkills`).
 
 ### Breaks
-- [ ] **P0 Defect** Canonical engine path not used for text command execution (`submitAction` unused).
-- [ ] **P1 Defect** Suggestion labels include unsupported parser intents (`use skill`, `attempt escape`).
-- [ ] **P1 Missing Feature** Startup persistence flags are stale (`characterCreated`/`saveLoaded`).
+- [ ] **P0 Defect - Command execution after creation still bypasses canonical `engine.step`.** Impact: post-creation gameplay may diverge from engine contract. Repro: `src/hook/useNarrative.js:667-747` vs `src/hook/usegamestate.js:119-124`. Proposed fix scope: unify path through `submitAction`.
+- [ ] **P1 Defect - Review finalize UX uses blocking `alert()` calls.** Impact: poor UX/a11y and no structured error reporting. Repro: `src/ui/panels/creation/CreationSummaryPanel.jsx:293-299`. Proposed fix scope: replace alerts with wizard-shell error/status channel.
+- [ ] **P1 Missing Feature - Immediate persistence not guaranteed at finalize boundary.** Impact: early-session loss if tab closes before debounce. Repro: finalize path `src/components/GameUI.jsx:175-205` with autosave debounce `src/components/GameUI.jsx:45`, `:106-123`. Proposed fix scope: write one immediate checkpoint on finalize success.
 
 ### Missing
-- [ ] **P1 Missing Feature** Explicit post-finalize persistence checkpoint (currently relies on debounce autosave in `src/components/GameUI.jsx:110`).
-  - Risk: abrupt close before debounce may lose session start.
-- [ ] **P2 Missing Feature** Character schema validation at persistence boundary (backend stores generic serialized `game_state`, see `functions/lib/saves.js`).
+- [ ] **P1 Missing Feature - Startup resume strategy is incomplete.** Impact: user intent around resumed character/save is ambiguous. Repro: `src/App.jsx:76-77` only localStorage key interactions for `characterCreated`/`saveLoaded`. Proposed fix scope: implement deterministic resume read path or remove flags.
+- [ ] **P1 Missing Feature - Persisted character schema guard at API boundary.** Impact: malformed game_state payloads can persist unchecked beyond generic JSON constraints. Repro: `functions/lib/saves.js:31-38` accepts serialized payload without domain schema validation. Proposed fix scope: validate minimal required player/world keys before store.
 
-### Next minimal implementation
-- [ ] Wire `useNarrative.submitInput` to `useGameEngine.submitAction` and keep one mutation path.
-- [ ] Add parser intents for skill and escape commands (or remove those suggestions).
-- [ ] On successful finalize, write a deterministic local checkpoint immediately (before debounce).
-- [ ] Replace legacy `characterCreated/saveLoaded` key handling with an explicit resume strategy.
+### Next Minimal Implementation
+- [ ] Wire `submitInput` to `submitAction` so text and button actions share one engine path.
+- [ ] Add parser intents for escape/skill commands or remove those suggestions from `buildActionSuggestions`.
+- [ ] Commit an immediate local autosave snapshot inside `handleCharacterCreationComplete`.
+- [ ] Replace creation finalize `alert()` calls with inline wizard-shell feedback.
+- [ ] Implement or remove stale resume localStorage keys (`characterCreated`, `saveLoaded`).
 
-## Special Focus - Void-Verse Engine Checks
+## Special Focus - Void-Verse Engine
 
-- [ ] **P0 Defect** UI bypasses canonical engine entrypoint.
-  - Evidence: canonical path exists (`src/hook/usegamestate.js:119`), but narrative flow calls parse/validate/execute directly (`src/hook/useNarrative.js:668`, `src/hook/useNarrative.js:676`, `src/hook/useNarrative.js:730`).
-
-- [ ] **P1 Defect** Runtime vs simulation divergence risk from dual mutation paths.
-  - Evidence: text actions go through `ActionDispatcher` (`packages/game-core/src/core/ActionDispatcher.js`); combat buttons dispatch reducer events (`packages/game-core/src/core/gameReducer.js:576-651`, `src/components/GameUI.jsx:476-513`).
-  - Needs verification: compare equivalent scenarios (e.g., combat attack/escape) across both paths for identical state/event outputs.
-
-- [ ] **P1 Defect** EventBus drift/partial bridge.
-  - Evidence: many systems emit events (`packages/game-core/src/systems/combat/CombatSystem.js:3078`, `packages/game-core/src/systems/class/ChiSystem.js:87`, `packages/game-core/src/systems/world/TimeSystem.js:144`), but core-to-simulation bridge in `packages/game-core/src/core/EventBus.js:51-88` has narrow explicit mappings plus generic events; listener coverage is minimal.
-
-- [ ] **P1 Missing Feature** Systems implemented but not clearly registered in runtime validation path.
-  - Evidence: `packages/game-core/src/systems/archetype/archetypeSchema.js` has no detected imports.
-  - Needs verification: confirm whether build-time tooling loads this schema out-of-band.
+- [ ] **P0 Defect - UI bypasses canonical engine entrypoint.** Evidence: canonical path `src/hook/usegamestate.js:119-124`; bypass path `src/hook/useNarrative.js:667-747`.
+- [ ] **P1 Defect (Hypothesis) - Runtime vs simulation divergence.** Evidence: runtime executes `ActionDispatcher` (`packages/game-core/src/engine/createSystemEngine.js:3`, `:114`) while deterministic kernel resolves commands via `ActionResolver` (`packages/game-core/src/simulation/kernel/SimulationKernel.ts:268`) and is not called by live `src/` flow.
+- [ ] **P1 Defect (Hypothesis) - EventBus duplication/drift risk.** Evidence: core bus `packages/game-core/src/core/EventBus.js:44`, simulation buses `packages/game-core/src/simulation/events/EventBus.ts:28` and `packages/game-core/src/simulation/events/EventBus.js:3`; UI listener expects `system:log` only (`src/components/SystemLog.jsx:67`) with no emitter.
+- [ ] **P1 Missing Feature (Hypothesis) - Implemented systems not registered in engine loop.** Evidence: `PrestigeSystem` and `DungeonGenerator` class definitions have no runtime callsites (`packages/game-core/src/systems/PrestigeSystem.ts:8`, `packages/game-core/src/systems/DungeonGenerator.ts:49`).
 
 ## Phase 4 - Build/Test/Runtime Failures
 
 ### 1) Install deps
-- Root: `npm install` -> success.
-- Functions: `npm install` -> success with warnings.
-  - Log excerpt:
-    - `npm warn EBADENGINE ... required: { node: '20' } current: { node: 'v24.13.0' }`
-    - `peer firebase-admin@"^13.4.0" from @dataconnect/admin-generated@0.0.1` (installed `firebase-admin@12.7.0`).
-- [ ] **P2 Refactor/Quality** Normalize backend Node/toolchain + peer dependency alignment.
+- Root install: `npm install --no-audit --no-fund` passed.
+- Functions install: passed with warnings.
+- Log excerpt:
+
+```text
+npm warn peer firebase-admin@"^13.4.0" from @dataconnect/admin-generated@0.0.1
+npm warn EBADENGINE ... required: { node: '20' } current: { node: 'v24.13.0' }
+```
+
+- [ ] **P2 Refactor/Quality - Align functions engine/dependency versions.** Root cause: Node 20 requirement and firebase-admin peer mismatch in `functions/package.json`. Fix scope: version alignment in `functions/package.json`.
 
 ### 2) Build frontend + backend
-- Frontend: `npm run build` -> success.
-- Backend: `npm --prefix functions run build` -> failure.
-  - Log excerpt: `npm error Missing script: "build"`.
-- Root cause: `functions/package.json` defines no scripts block (`functions/package.json:1-18`).
-- [ ] **P1 Defect** Add explicit backend build/check scripts (even if runtime currently ships prebuilt `lib`).
+- Frontend build: `npm run build` passed.
+- Backend build (functions): failed.
+- Log excerpt:
 
-### 3) Lint/typecheck
-- Lint: `npm run lint` -> passes with warnings (29 warnings).
-  - Includes hook dependency warnings (`src/hook/useNarrative.js:808`, `src/hook/useNarrative.js:920`) and unused vars.
-- Root typecheck: `npm run typecheck` -> success.
-- Functions typecheck: `npm --prefix functions exec tsc --noEmit` -> failure.
-  - Log excerpt:
-    - `Cannot find namespace 'Handlebars'`
-    - `Cannot find module 'firebase-functions/https'`
-    - `Module 'firebase-functions' has no exported member 'setGlobalOptions'`
-    - `src/dataconnect-admin-generated/index.d.ts ... no exported member 'OperationOptions'`
-- [ ] **P1 Defect** Repair functions TypeScript compile path and dependency/types versions.
+```text
+npm error Missing script: "build"
+```
+
+- [ ] **P1 Defect - Add backend build script.** Root cause: no `scripts` block in `functions/package.json:1-18`. Fix scope: add `build` (and likely `clean`) script or intentionally document prebuilt `lib` strategy.
+
+### 3) Lint / Typecheck
+- Root lint: passed with 29 warnings (`npm run lint`).
+- Root typecheck: passed (`npm run typecheck`).
+- Functions lint: failed (missing script).
+- Functions tsc: failed.
+- Log excerpt:
+
+```text
+npm error Missing script: "lint"
+error TS2503: Cannot find namespace 'Handlebars'.
+error TS2305: Module '"firebase-functions"' has no exported member 'setGlobalOptions'.
+error TS2307: Cannot find module 'firebase-functions/https'...
+```
+
+- [ ] **P1 Defect - Repair functions compile/lint path.** Root cause: unaligned template TS sources and dependency/type versions. Fix scope: `functions/package.json`, `functions/src/index.ts`, `functions/src/genkit-sample.ts`, dependency versions/types.
 
 ### 4) Tests
-- `npm test -- --runInBand` -> success (25/25 suites, 141/141 tests).
-- [x] Verified fixed (from pre-audit reconciliation): duplicate staged Data Connect package collision no longer present; tests run cleanly.
+- `npm test -- --runInBand` passed.
+- [x] Verified passing check - 25 suites, 141 tests passed.
 
 ### 5) Dev run smoke test
-- Frontend smoke: launched `npm run dev -- --host 127.0.0.1 --port 4173` and confirmed listener on `127.0.0.1:4173`.
-- API smoke: launched `npm run dev:api` and confirmed emulator listeners on `127.0.0.1:5000` and `127.0.0.1:5001`.
-- [x] Verified fixed: staged duplicate SDK additions were reconciled before this audit.
+- Frontend smoke passed (`FRONTEND_SMOKE_OK status=200` for `http://127.0.0.1:4173`).
+- API emulator smoke passed (`API_SMOKE_OK status=200` for `http://127.0.0.1:5000/api/health`).
+- Emulator startup excerpt:
+
+```text
+Loaded functions definitions from source: api, agentList, agentRun.
+functions[us-central1-api] initialized ...
+```
+
+- [ ] **P2 Refactor/Quality - Update firebase-functions runtime versioning.** Root cause: emulator warns about outdated SDK and Node version mismatch. Fix scope: `functions/package.json` dependency/engine updates and retest.
 
 ## Phase 5 - Patch Plan (PR-sized chunks)
 
 ### PR 1 - P0 wiring fixes
-- Goal: one canonical action execution path through `engine.step`.
-- Files touched:
-  - `src/hook/usegamestate.js`
-  - `src/hook/useNarrative.js`
-  - `src/components/GameUI.jsx`
-  - `packages/game-core/src/engine/createSystemEngine.js` (only if interface adjustment needed)
-- Changes:
-  - Replace direct parse/validate/execute in narrative flow with `submitAction` from engine hook.
-  - Preserve AI narrative generation while using `APPLY_ENGINE_RESULT` updates.
-- Verify:
-  - `npm test -- --runInBand`
-  - Manual: execute text command, confirm state mutation + narrative + event log continuity.
+- Files touched: `src/hook/useNarrative.js`, `src/hook/usegamestate.js`, `src/components/GameUI.jsx`, `packages/game-core/src/core/gameReducer.js`.
+- Changes: move narrative action handling to `submitAction`/`engine.step`; keep narrative generation as side-effect around canonical engine result.
+- Verify: `npm test -- --runInBand`; manual text action and suggestion click both mutate state and narrative consistently.
 
 ### PR 2 - Character creation MVP completion
-- Goal: tighten creation persistence/resume and parser command usability.
-- Files touched:
-  - `src/hook/useCharacterCreationReworked.js`
-  - `src/components/GameUI.jsx`
-  - `src/App.jsx`
-  - `packages/game-core/src/core/InputParser.js`
-- Changes:
-  - Immediate checkpoint save on successful finalize.
-  - Remove or properly wire `characterCreated/saveLoaded` startup logic.
-  - Add parser intents for `use skill` / `escape` text flow.
-- Verify:
-  - Manual creation flow from fresh load -> finalize -> reload -> resume behavior.
-  - Combat suggestion click for `escape` and `use skill` mutates state as expected.
+- Files touched: `src/ui/panels/creation/CreationSummaryPanel.jsx`, `src/components/GameUI.jsx`, `src/App.jsx`, `src/hook/useCharacterCreationReworked.js`, `packages/game-core/src/core/InputParser.js`.
+- Changes: replace `alert()` finalize UX; immediate finalize checkpoint save; either wire or remove stale resume keys; align suggestions with parseable commands.
+- Verify: complete creation flow, reload immediately after finalize, confirm resume and first-turn command behavior.
 
 ### PR 3 - UI state/error/accessibility pass
-- Goal: modal/dialog baseline and error visibility consistency.
-- Files touched:
-  - `src/components/SaveLoadUI.jsx`
-  - `src/components/ShopUI.jsx`
-  - `src/components/GachaUI.jsx`
-  - `src/components/TitleUI.jsx`
-  - `src/components/ProfessionUI.jsx`
-  - `src/components/StatusOverlay.jsx`
-  - (optional shared utility) `src/components/common/ModalShell.jsx`
-- Changes:
-  - Add dialog roles/aria metadata, Escape handling, focus trap, and close button semantics.
-  - Ensure async errors are announced consistently.
-- Verify:
-  - Keyboard-only modal interaction test.
-  - Screen reader basic pass on modal open/close.
+- Files touched: `src/components/SaveLoadUI.jsx`, `src/components/ShopUI.jsx`, `src/components/GachaUI.jsx`, `src/components/TitleUI.jsx`, `src/components/ProfessionUI.jsx`, `src/components/StatusOverlay.jsx`, `src/ui/modes/GameMode.jsx`, optional `src/components/common/ModalShell.jsx`.
+- Changes: shared modal semantics (`role="dialog"`, `aria-modal`, Escape close, focus management); surface narrative error state in `GameMode`.
+- Verify: keyboard-only modal navigation, screen-reader announcement checks, forced narrative failure path shows visible error.
 
 ### PR 4 - Refactors/cleanup
-- Goal: reduce drift and dead surface.
-- Files touched:
-  - `src/components/CharacterGenesisUI_Enhanced.jsx` (remove or gate)
-  - `src/components/SystemLog.jsx` (remove or wire)
-  - `packages/game-core/src/systems/archetype/archetypeSchema.js` (wire/remove)
-  - `functions/package.json` + `functions/tsconfig.json` + type/dependency adjustments
-- Changes:
-  - Remove or wire orphan components/modules.
-  - Add backend scripts (`build`, `typecheck`, `lint` where appropriate).
-  - Resolve functions TS compile errors.
-- Verify:
-  - `npm --prefix functions run build`
-  - `npm --prefix functions exec tsc --noEmit`
-  - Repo-wide lint/test smoke.
+- Files touched: `functions/package.json`, `functions/tsconfig.json`, `functions/src/index.ts`, `functions/src/genkit-sample.ts`, `src/components/CharacterGenesisUI_Enhanced.jsx`, `src/ui/panels/creation/CreationTalentPanel.jsx`, optional docs.
+- Changes: make functions checks executable (`build`/`lint` scripts + clean compile target), remove/archive orphan UI modules or explicitly gate them.
+- Verify: `npm --prefix functions run build`, `npm --prefix functions run lint` (after added), `npm --prefix functions exec tsc -p tsconfig.json --noEmit`, full root build/lint/test.
 
 ## Needs Verification Queue
-- [ ] Needs verification: confirm whether `/api/agents*` is intentionally external-only.
-- [ ] Needs verification: confirm whether `archetypeSchema.js` is consumed by out-of-band tooling.
-- [ ] Needs verification: compare state/event parity between text command path and combat button path for equivalent actions.
+
+- [ ] **Needs verification (Hypothesis):** Confirm whether `/api/agents` and callable `agentList/agentRun` are intentionally external-only. Next check: inspect product docs/deployment consumers and any non-repo clients.
+- [ ] **Needs verification (Hypothesis):** Confirm whether `PrestigeSystem` and `DungeonGenerator` are planned for near-term runtime integration. Next check: search roadmap/issues and decide wire vs archive.
+- [ ] **Needs verification (Hypothesis):** Quantify runtime/simulation parity. Next check: add one parity test comparing same combat command through `createSystemEngine.step` vs `DefaultSimulationKernel` command resolution outputs.
+- [ ] **Needs verification (Hypothesis):** Decide whether `CreationTalentPanel` is deprecated or pending. Next check: review UX spec for character-creation phase list and align component set.

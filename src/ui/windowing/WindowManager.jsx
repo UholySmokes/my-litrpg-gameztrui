@@ -250,6 +250,7 @@ export default function WindowManager({
         isActive={isActive}
         isDragging={draggingId === windowConfig.id}
         freeDrag={shouldForceFloating}
+        compactLayout={isCompactViewport}
         isDraggable={isDraggable}
         isResizable={isResizable}
         isCollapsible={isCollapsible}

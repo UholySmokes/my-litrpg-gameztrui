@@ -11,8 +11,12 @@
   --holo-alert: #ff2a6d;
   --holo-gold: #ffd700;
   --holo-blue: #4361ee;
+  --holo-green: #34d399;
   --holo-gray: #7b7bad;
   --holo-dark: #05080c;
+  --holo-primary: var(--holo-cyan);
+  --holo-secondary: #0f6a74;
+  --holo-accent: #7aebff;
 
   /* Effects */
   --glow-strong: 0 0 18px rgba(0, 243, 255, 0.35);
@@ -29,6 +33,7 @@
   /* Text */
   --text-main: #e0e6ed;
   --text-dim: rgba(224, 230, 237, 0.65);
+  --text-muted: var(--text-dim);
   --button-bg: rgba(0, 243, 255, 0.08);
   --button-selected: rgba(255, 215, 0, 0.18);
   --border-radius: 14px;
@@ -64,6 +69,7 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  color-scheme: dark;
   /* -moz-osx-font-smoothing: grayscale; */
 }
 
@@ -81,6 +87,19 @@ body {
   font-family: var(--font-text);
   overflow: hidden;
   position: relative;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--holo-gold);
+  outline-offset: 2px;
 }
 
 #root {
@@ -138,5 +157,16 @@ body {
   100% {
     filter: hue-rotate(0deg);
     transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

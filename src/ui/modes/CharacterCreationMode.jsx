@@ -346,6 +346,38 @@ export default function CharacterCreationMode({ onComplete }) {
     return Boolean(result?.valid);
   }, [validateReview]);
 
+  const handleFinalize = useCallback(async () => {
+    setWizardError("");
+
+    let result;
+    try {
+      result = finalizeCharacter();
+    } catch (error) {
+      setWizardError(error?.message || "Character finalization failed.");
+      return;
+    }
+
+    if (!result?.valid || !result?.characterData) {
+      const validationMessage =
+        (Array.isArray(result?.errors) && result.errors.join(" ")) ||
+        result?.error ||
+        "Character finalization failed. Review your selections.";
+      setWizardError(validationMessage);
+      return;
+    }
+
+    if (typeof onComplete !== "function") {
+      setWizardError("Character initialization callback is unavailable.");
+      return;
+    }
+
+    try {
+      await onComplete(result.characterData);
+    } catch (error) {
+      setWizardError(error?.message || "Character initialization failed.");
+    }
+  }, [finalizeCharacter, onComplete]);
+
   const handleClick = useCallback((action) => {
     playSystemSound("click");
     action();
@@ -605,8 +637,7 @@ export default function CharacterCreationMode({ onComplete }) {
         typewriterText={typewriterText}
         syncProgress={syncProgress}
         canFinalize={canFinalize}
-        finalizeCharacter={finalizeCharacter}
-        onComplete={onComplete}
+        onFinalize={handleFinalize}
       />
     );
   }, [
@@ -623,9 +654,9 @@ export default function CharacterCreationMode({ onComplete }) {
     characterName,
     currentStep,
     derivedStats,
-    finalizeCharacter,
     gender,
     handleClick,
+    handleFinalize,
     handleActiveSkillSelect,
     handleArchetypeSystemSelect,
     handleClassSelect,
@@ -634,7 +665,6 @@ export default function CharacterCreationMode({ onComplete }) {
     handleReroll,
     handleStatChange,
     handlePassiveSkillToggle,
-    onComplete,
     rerollsRemaining,
     selectedActiveSkills,
     selectedArchetypeSystem,

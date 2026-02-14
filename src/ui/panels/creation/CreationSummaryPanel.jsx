@@ -1,4 +1,6 @@
-﻿export default function CreationSummaryPanel({
+import { useState } from "react";
+
+export default function CreationSummaryPanel({
   asciiArt,
   selectionSummary,
   selectedActiveSkills,
@@ -6,9 +8,9 @@
   typewriterText,
   syncProgress,
   canFinalize,
-  finalizeCharacter,
-  onComplete,
+  onFinalize,
 }) {
+  const [isInitializing, setIsInitializing] = useState(false);
   const racePassiveAbility = selectionSummary.racePassiveAbility;
   const raceActiveAbility = selectionSummary.raceActiveAbility;
   const professionSkills = Array.isArray(selectionSummary.professionSkills)
@@ -284,20 +286,19 @@
         {canFinalize && (
           <button
             type="button"
-            onClick={() => {
+            onClick={async () => {
+              if (isInitializing || typeof onFinalize !== "function") {
+                return;
+              }
+              setIsInitializing(true);
               try {
-                const result = finalizeCharacter();
-                if (onComplete && result.valid && result.characterData) {
-                  onComplete(result.characterData);
-                } else {
-                  alert("Character finalization failed!");
-                  return;
-                }
-                alert("Initialization complete!");
-              } catch (error) {
-                alert("Error: " + error.message);
+                await onFinalize();
+              } finally {
+                setIsInitializing(false);
               }
             }}
+            disabled={isInitializing}
+            aria-busy={isInitializing}
             style={{
               width: "100%",
               padding: "1.5rem",
@@ -306,10 +307,12 @@
               color: "#000",
               fontSize: "1.1rem",
               fontWeight: "bold",
-              cursor: "pointer",
+              cursor: isInitializing ? "not-allowed" : "pointer",
+              opacity: isInitializing ? 0.75 : 1,
               transition: "all 0.3s ease",
             }}
             onMouseEnter={(event) => {
+              if (isInitializing) return;
               event.target.style.transform = "scale(1.02)";
               event.target.style.boxShadow = "0 0 20px rgba(255, 215, 0, 0.5)";
             }}
@@ -318,7 +321,7 @@
               event.target.style.boxShadow = "none";
             }}
           >
-            INITIALIZE AVATAR
+            {isInitializing ? "INITIALIZING..." : "INITIALIZE AVATAR"}
           </button>
         )}
       </div>

@@ -106,6 +106,7 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
           Connect Cloud Account
         </p>
         <button
+          type="button"
           className="holo-button"
           onClick={() => setShowModal(true)}
           style={{ width: "100%", fontSize: "0.9rem", padding: "0.5rem" }}
@@ -132,16 +133,12 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
           zIndex: 2000,
         }
       : {
-          position: "fixed",
-          bottom: "20px",
-          left: "20px",
-          right: "20px",
-          margin: "0 auto",
-          maxWidth: "420px",
-          zIndex: 1000,
+          width: "100%",
           padding: "1.5rem",
           backgroundColor: "rgba(10, 15, 30, 0.95)",
           backdropFilter: "blur(5px)",
+          border: "1px solid rgba(0, 243, 255, 0.3)",
+          borderRadius: "8px",
           boxShadow: "0 0 20px rgba(0, 243, 255, 0.2)",
         };
 
@@ -162,6 +159,8 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
     <section
       className={mode === "sidebar" ? "" : "holo-panel"}
       style={containerStyle}
+      role={mode === "sidebar" ? "dialog" : undefined}
+      aria-modal={mode === "sidebar" ? "true" : undefined}
       aria-labelledby="auth-heading"
       onClick={(e) =>
         mode === "sidebar" &&
@@ -179,7 +178,9 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
             }}
           >
             <button
+              type="button"
               onClick={() => setShowModal(false)}
+              aria-label="Close sign-in dialog"
               style={{
                 background: "transparent",
                 border: "none",
@@ -189,7 +190,7 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
                 lineHeight: 1,
               }}
             >
-              x
+              ×
             </button>
           </div>
         )}

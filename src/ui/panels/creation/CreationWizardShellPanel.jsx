@@ -26,6 +26,7 @@ export default function CreationWizardShellPanel({
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "space-between",
+          flexWrap: "wrap",
           gap: "0.8rem",
         }}
       >
@@ -46,7 +47,7 @@ export default function CreationWizardShellPanel({
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
           <button
             type="button"
             disabled={!canBack}
@@ -174,7 +175,7 @@ export default function CreationWizardShellPanel({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "minmax(240px, 0.72fr) minmax(320px, 1.28fr)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
           gap: "0.9rem",
           alignItems: "start",
         }}
@@ -185,7 +186,7 @@ export default function CreationWizardShellPanel({
             border: "1px solid rgba(0, 243, 255, 0.18)",
             borderRadius: "10px",
             padding: "0.85rem",
-            minHeight: "420px",
+            minHeight: "300px",
           }}
         >
           {sidebar}
@@ -197,7 +198,7 @@ export default function CreationWizardShellPanel({
             border: "1px solid rgba(0, 243, 255, 0.18)",
             borderRadius: "10px",
             padding: "0.85rem",
-            minHeight: "420px",
+            minHeight: "300px",
           }}
         >
           {content}

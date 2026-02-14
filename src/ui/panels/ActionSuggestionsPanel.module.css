@@ -21,7 +21,9 @@
   padding: var(--spacing-xs) var(--spacing-md);
   cursor: pointer;
   transition: all 0.2s;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: left;
+  word-break: break-word;
 }
 
 .suggestionButton:hover {

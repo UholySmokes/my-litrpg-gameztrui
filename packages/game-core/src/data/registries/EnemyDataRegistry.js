@@ -147,7 +147,7 @@ export let enemies = [
  * @param {string} enemyId - The enemy ID
  * @returns {object|null} Enemy template or null
  */
-function getEnemyTemplate(enemyId) {
+export function getEnemyTemplate(enemyId) {
   return enemies.find(e => e.id === enemyId) || null;
 }
 
@@ -157,7 +157,7 @@ function getEnemyTemplate(enemyId) {
  * @param {number} maxLevel - Maximum level
  * @returns {Array} Enemies in level range
  */
-function getEnemiesByLevelRange(minLevel, maxLevel) {
+export function getEnemiesByLevelRange(minLevel, maxLevel) {
   return enemies.filter(e => e.level >= minLevel && e.level <= maxLevel);
 }
 
@@ -166,7 +166,7 @@ function getEnemiesByLevelRange(minLevel, maxLevel) {
  * @param {string} type - Enemy type
  * @returns {Array} Enemies of specified type
  */
-function getEnemiesByType(type) {
+export function getEnemiesByType(type) {
   return enemies.filter(e => e.type === type || e.tags?.includes(type));
 }
 

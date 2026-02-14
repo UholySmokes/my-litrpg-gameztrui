@@ -240,7 +240,7 @@ functions[us-central1-api] initialized ...
 
 ### PR 4 - Refactors/cleanup
 - [ ] Status: in progress (functions scripts/check path landed; orphan-module cleanup still open).
-- Files touched: `functions/package.json`, `functions/tsconfig.json`, `functions/src/index.ts`, `functions/src/genkit-sample.ts`, `src/components/CharacterGenesisUI_Enhanced.jsx`, `src/ui/panels/creation/CreationTalentPanel.jsx`, optional docs.
+- Files touched: `functions/package.json`, `functions/tsconfig.runtime.json`, `functions/.eslintrc.js`, `functions/src/index.ts`, `functions/src/genkit-sample.ts`, `src/components/CharacterGenesisUI_Enhanced.jsx`, `src/ui/panels/creation/CreationTalentPanel.jsx`, optional docs.
 - Changes: make functions checks executable (`build`/`lint` scripts + clean compile target), remove/archive orphan UI modules or explicitly gate them.
 - Verify: `npm --prefix functions run build`, `npm --prefix functions run lint` (after added), `npm --prefix functions exec tsc -p tsconfig.json --noEmit`, full root build/lint/test.
 

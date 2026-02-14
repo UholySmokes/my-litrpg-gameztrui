@@ -1,17 +1,9 @@
 const crypto = require("crypto");
 const { json, readJsonBody } = require("./http");
 const { normalizeMode, buildDefaultSuggestions } = require("./agent-router");
-const { getUserFromRequest } = require("./auth");
-const {
-	listFirebaseAgents,
-	runFirebaseAgent,
-} = require("./firebase-agents/runtime");
-const {
-	createNarrateRun,
-	updateNarrateRun,
-	getNarrateRun,
-	purgeExpiredNarrateRuns,
-} = require("./narrate-runs-store");
+const auth = require("./auth");
+const runtime = require("./firebase-agents/runtime");
+const narrateRunsStore = require("./narrate-runs-store");
 
 const MOOD_PATTERNS = [
 	{ mood: "tense", patterns: [/danger/i, /threat/i, /ambush/i, /attack/i, /enemy/i, /looming/i] },
@@ -63,7 +55,7 @@ function resolveNarratorAgentId(mode) {
 
 async function cleanupNarrateRuns() {
 	try {
-		await purgeExpiredNarrateRuns();
+		await narrateRunsStore.purgeExpiredNarrateRuns();
 	} catch {
 		// Cleanup is best-effort.
 	}
@@ -92,7 +84,7 @@ function buildNarrativePayload(rawText, mode) {
 }
 
 async function requireAuthenticatedUser(req, res) {
-	const user = await getUserFromRequest(req);
+	const user = await auth.getUserFromRequest(req);
 	if (user) return user;
 
 	json(res, 401, {
@@ -111,6 +103,7 @@ async function runNarration(body) {
 		`Narrate the next scene based on: ${JSON.stringify(body || {})}`;
 
 	const result = await runFirebaseAgent({
+	const result = await runtime.runFirebaseAgent({
 		agent: resolveNarratorAgentId(mode),
 		input: {
 			prompt: input,
@@ -145,7 +138,7 @@ async function agents(req, res) {
 		return json(res, 200, {
 			ok: true,
 			provider: "firebase-genkit",
-			agents: listFirebaseAgents(),
+			agents: runtime.listFirebaseAgents(),
 		});
 	}
 
@@ -181,7 +174,7 @@ async function runAgent(req, res) {
 				topP: undefined,
 			};
 
-		const result = await runFirebaseAgent({
+		const result = await runtime.runFirebaseAgent({
 			agent,
 			input,
 			model: body?.model,
@@ -261,7 +254,7 @@ async function narrateStart(req, res) {
 		const threadId = crypto.randomUUID();
 		const runId = crypto.randomUUID();
 
-		await createNarrateRun({
+		await narrateRunsStore.createNarrateRun({
 			threadId,
 			runId,
 			ownerId: user.id,
@@ -277,7 +270,7 @@ async function narrateStart(req, res) {
 			const message = String(error?.message || error || "Unknown error");
 			const errorCode = error?.code || "RUN_FAILED";
 
-			await updateNarrateRun({
+			await narrateRunsStore.updateNarrateRun({
 				threadId,
 				runId,
 				ownerId: user.id,
@@ -303,7 +296,7 @@ async function narrateStart(req, res) {
 			});
 		}
 
-		await updateNarrateRun({
+		await narrateRunsStore.updateNarrateRun({
 			threadId,
 			runId,
 			ownerId: user.id,
@@ -360,7 +353,7 @@ async function narratePoll(req, res) {
 			});
 		}
 
-		const run = await getNarrateRun({
+		const run = await narrateRunsStore.getNarrateRun({
 			threadId: String(threadId),
 			runId: String(runId),
 			ownerId: user.id,

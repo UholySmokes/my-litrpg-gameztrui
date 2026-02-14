@@ -1,5 +1,5 @@
 // ShopUI.jsx
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getShopItemsByCategory } from "../data/shopData.js";
 import { getTitleBonuses } from "../core/titleLogic.js";
 
@@ -11,8 +11,36 @@ export default function ShopUI({
   variant = "modal",
 }) {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const dialogRef = useRef(null);
+  const lastFocusedElementRef = useRef(null);
 
   const isModal = variant !== "window";
+  useEffect(() => {
+    if (!isModal || !isOpen) return;
+    lastFocusedElementRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const frame = requestAnimationFrame(() => {
+      dialogRef.current?.focus();
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      lastFocusedElementRef.current?.focus?.();
+    };
+  }, [isModal, isOpen]);
+
+  useEffect(() => {
+    if (!isModal || !isOpen || typeof onClose !== "function") return;
+    const onKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isModal, isOpen, onClose]);
+
   if (isModal && !isOpen) return null;
 
   if (!gameState || !gameState.player) {
@@ -73,7 +101,9 @@ export default function ShopUI({
           marginBottom: "1rem",
         }}
       >
-        <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>[SHOP]</h2>
+        <h2 id="shop-dialog-title" style={{ color: "var(--holo-cyan)", margin: 0 }}>
+          [SHOP]
+        </h2>
         {onClose && (
           <button
             className="holo-button"
@@ -225,6 +255,11 @@ export default function ShopUI({
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="modal-content"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shop-dialog-title"
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         style={{ maxWidth: "800px", maxHeight: "90vh", overflow: "auto" }}
       >

@@ -1,5 +1,5 @@
 // GachaUI.jsx
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   gachaPools,
   calculateGachaResult,
@@ -24,8 +24,36 @@ export default function GachaUI({
 }) {
   const [selectedPool, setSelectedPool] = useState("equipment");
   const [lastResults, setLastResults] = useState([]);
+  const dialogRef = useRef(null);
+  const lastFocusedElementRef = useRef(null);
 
   const isModal = variant !== "window";
+  useEffect(() => {
+    if (!isModal || !isOpen) return;
+    lastFocusedElementRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const frame = requestAnimationFrame(() => {
+      dialogRef.current?.focus();
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      lastFocusedElementRef.current?.focus?.();
+    };
+  }, [isModal, isOpen]);
+
+  useEffect(() => {
+    if (!isModal || !isOpen || typeof onClose !== "function") return;
+    const onKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isModal, isOpen, onClose]);
+
   if (isModal && !isOpen) return null;
 
   if (!gameState || !gameState.player) {
@@ -77,7 +105,9 @@ export default function GachaUI({
     <div className="gacha-modal__frame">
       <header className="gacha-modal__header">
         <div className="gacha-modal__title-group">
-          <div className="gacha-modal__title">Gacha terminal</div>
+          <div id="gacha-dialog-title" className="gacha-modal__title">
+            Gacha terminal
+          </div>
           <div className="gacha-modal__subtitle">Fortune engine online</div>
         </div>
         {onClose && (
@@ -183,6 +213,11 @@ export default function GachaUI({
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="modal-content gacha-modal"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="gacha-dialog-title"
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
       >
         {panel}

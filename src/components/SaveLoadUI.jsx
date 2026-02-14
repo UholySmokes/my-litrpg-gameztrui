@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   deleteSave,
   isCloudSaveConfigured,
@@ -49,6 +49,9 @@ export default function SaveLoadUI({
   const [isBusy, setIsBusy] = useState(false);
   const [error, setError] = useState(null);
   const [saveName, setSaveName] = useState("Auto Save");
+  const dialogRef = useRef(null);
+  const lastFocusedElementRef = useRef(null);
+  const isModal = variant !== "window";
 
   const cloudConfigEnabled = useMemo(() => isCloudSaveConfigured(), []);
   const canUseRemote = useMemo(() => {
@@ -96,6 +99,32 @@ export default function SaveLoadUI({
     if (!isOpen) return;
     refreshRemote();
   }, [isOpen, canUseRemote, refreshRemote]);
+
+  useEffect(() => {
+    if (!isModal || !isOpen) return;
+    lastFocusedElementRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const frame = requestAnimationFrame(() => {
+      dialogRef.current?.focus();
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      lastFocusedElementRef.current?.focus?.();
+    };
+  }, [isModal, isOpen]);
+
+  useEffect(() => {
+    if (!isModal || !isOpen || typeof onClose !== "function") return;
+    const onKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isModal, isOpen, onClose]);
 
   const handleLocalSave = () => {
     setError(null);
@@ -180,7 +209,6 @@ export default function SaveLoadUI({
     }
   };
 
-  const isModal = variant !== "window";
   if (isModal && !isOpen) return null;
 
   const panel = (
@@ -195,7 +223,9 @@ export default function SaveLoadUI({
         }}
       >
         <div>
-          <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>[SAVE/LOAD]</h2>
+          <h2 id="save-load-title" style={{ color: "var(--holo-cyan)", margin: 0 }}>
+            [SAVE/LOAD]
+          </h2>
           <div style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
             Local saves always available. Cloud saves require cloud login.
           </div>
@@ -398,6 +428,11 @@ export default function SaveLoadUI({
     <div className="modal-overlay" onClick={onClose} style={{ zIndex: 1300 }}>
       <div
         className="modal-content"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="save-load-title"
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         style={{
           maxWidth: "820px",

@@ -1,5 +1,5 @@
 // TitleUI.jsx
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { titleDatabase } from "../data/titleData.js";
 import { getPurchasableTitles } from "../core/titleLogic.js";
 
@@ -13,8 +13,36 @@ export default function TitleUI({
   variant = "modal",
 }) {
   const [activeTab, setActiveTab] = useState("unlocked");
+  const dialogRef = useRef(null);
+  const lastFocusedElementRef = useRef(null);
 
   const isModal = variant !== "window";
+  useEffect(() => {
+    if (!isModal || !isOpen) return;
+    lastFocusedElementRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const frame = requestAnimationFrame(() => {
+      dialogRef.current?.focus();
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      lastFocusedElementRef.current?.focus?.();
+    };
+  }, [isModal, isOpen]);
+
+  useEffect(() => {
+    if (!isModal || !isOpen || typeof onClose !== "function") return;
+    const onKeyDown = (event) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isModal, isOpen, onClose]);
+
   if (isModal && !isOpen) return null;
 
   const unlockedTitles = (gameState.player.unlockedTitles || [])
@@ -53,7 +81,7 @@ export default function TitleUI({
           marginBottom: "1rem",
         }}
       >
-        <h2 style={{ color: "var(--holo-cyan)", margin: 0 }}>
+        <h2 id="title-dialog-title" style={{ color: "var(--holo-cyan)", margin: 0 }}>
           [TITLE SYSTEM]
         </h2>
         {onClose && (
@@ -296,6 +324,11 @@ export default function TitleUI({
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="modal-content"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="title-dialog-title"
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         style={{ maxWidth: "700px", maxHeight: "90vh", overflow: "auto" }}
       >

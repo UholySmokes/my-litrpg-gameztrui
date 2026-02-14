@@ -1,7 +1,7 @@
 # AUDIT_REPORT
 
 ## Executive Summary
-Frontend runtime and focused checks are stable (`npm run typecheck`, focused unit tests, targeted eslint pass), and core character-creation wiring gaps are now fixed (non-blocking finalize flow, immediate checkpoint save, stale local resume-key cleanup). The remaining high-impact issues are backend Functions checkability (`functions/package.json` still lacks `build`/`lint`, `tsc` fails) plus unresolved runtime/simulation/EventBus drift hypotheses and orphan feature surfaces.
+Frontend runtime and focused checks are stable (`npm run typecheck`, focused unit tests, targeted eslint pass), and core character-creation wiring gaps are now fixed (non-blocking finalize flow, immediate checkpoint save, stale local resume-key cleanup). Backend checkability is now wired (`functions` has runnable `build`/`lint`/`typecheck`), while remaining high-impact issues are dependency/version drift in Functions plus unresolved runtime/simulation/EventBus hypotheses and orphan feature surfaces.
 
 Last refreshed: `2026-02-14`.
 
@@ -17,7 +17,8 @@ npm --prefix functions run build
 
 npm run lint
 npm run typecheck
-npm --prefix functions exec tsc -p tsconfig.json --noEmit
+npm --prefix functions run lint
+npm --prefix functions run typecheck
 
 npm test -- --runInBand
 
@@ -62,7 +63,7 @@ Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/health" -UseBasicParsing
 
 ### Build / Test Commands
 - Root scripts: `package.json` `scripts` block (contains `dev`, `dev:api`, `build`, `lint`, `typecheck`, `test`).
-- Functions package currently has no `scripts` block: `functions/package.json:1-18`.
+- Functions scripts now present: `functions/package.json:6-10` (`build`, `lint`, `typecheck`).
 
 ### Main User Journeys (Observed)
 - User enters app through auth/local mode gate (`src/App.jsx:87-116`).
@@ -98,7 +99,7 @@ Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/health" -UseBasicParsing
 - [x] **P1 Defect - Combat suggestion commands (`use skill`, `attempt escape`) now executable (partial fix).** Rationale: parser/validator/dispatcher now support these intents (`packages/game-core/src/core/InputParser.js:250`, `:323`; `packages/game-core/src/core/InputValidator.js:40`; `packages/game-core/src/core/ActionDispatcher.js:408`). Verification: `npm test -- --runInBand tests/unit/MagicParser.test.js tests/unit/InputValidator.test.js tests/unit/ActionDispatcher.test.js`.
 - [x] **P1 Defect - Narrative errors now visible in command terminal UI (fixed).** Evidence: `src/components/GameUI.jsx:136`, `src/ui/modes/GameMode.jsx:28`, `src/ui/panels/CommandTerminalPanel.jsx:13`. Verification: lint + focused tests passed.
 - [x] **P1 Defect - Character finalize UI now avoids `alert()` and routes through wizard error channel (fixed).** Evidence: `src/ui/panels/creation/CreationSummaryPanel.jsx:289-301` async finalize button + `src/ui/modes/CharacterCreationMode.jsx:349-379` `handleFinalize` with `setWizardError`. Verification: `npm run typecheck` and targeted eslint.
-- [ ] **P1 Defect - Backend check pipeline incomplete.** Rationale: missing `build`/`lint` scripts and failing `tsc` in functions package. Impact: backend regressions can ship undetected. Repro: Phase 4 logs and `functions/package.json:1-18`. Proposed fix scope: `functions/package.json`, `functions/tsconfig.json`, dependency/type alignment.
+- [x] **P1 Defect - Backend check pipeline runnable (fixed).** Rationale: `functions` now exposes executable scripts and runtime typecheck config. Evidence: `functions/package.json:6-10`, `functions/tsconfig.runtime.json:1-15`. Verification: `npm --prefix functions run build`, `npm --prefix functions run lint`, `npm --prefix functions run typecheck`.
 - [ ] **P2 Defect - `SystemLog` listener has no emitter contract.** Rationale: event channel is never produced. Impact: dead logging behavior. Repro: `src/components/SystemLog.jsx:67` and no `emit("system:log")` in repo. Proposed fix scope: remove or wire event channel.
 
 ## Missing Feature Items
@@ -112,7 +113,7 @@ Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/health" -UseBasicParsing
 ## Refactor / Quality Items
 
 - [ ] **P2 Refactor/Quality - Remove legacy `CharacterGenesisUI_Enhanced` path.** Rationale: orphan component. Impact: code drift and false navigation surface. Repro: `src/components/CharacterGenesisUI_Enhanced.jsx:127` only. Proposed fix scope: delete file and related CSS/tests, or feature-flag explicitly.
-- [ ] **P2 Refactor/Quality - Functions TS template/source drift.** Rationale: `functions/src/index.ts` and `functions/src/genkit-sample.ts` are template-style sources not aligned with runtime `functions/index.js`. Impact: typecheck noise and onboarding confusion. Repro: `functions/src/index.ts:10-12`, `functions/index.js:17-32`, `functions/tsconfig.json:14-16`. Proposed fix scope: remove/ignore templates or adopt TS build pipeline.
+- [ ] **P2 Refactor/Quality - Functions TS template/source drift.** Rationale: `functions/src/index.ts` and `functions/src/genkit-sample.ts` remain template-style sources not aligned with runtime `functions/index.js`; runtime checks now use `functions/tsconfig.runtime.json`. Impact: parallel source trees increase onboarding and maintenance confusion. Repro: `functions/src/index.ts:10-12`, `functions/index.js:17-32`, `functions/tsconfig.runtime.json:11-14`. Proposed fix scope: remove/archive templates or fully adopt TS runtime entrypoint.
 - [ ] **P2 Refactor/Quality - Modal accessibility baseline missing in major overlays.** Rationale: modal wrappers close on backdrop click but no `role="dialog"`/`aria-modal`/Escape handling. Impact: keyboard and screen-reader gaps. Repro: `src/components/SaveLoadUI.jsx:398-401`, `src/components/ShopUI.jsx:225-228`, `src/components/GachaUI.jsx:183-186`, `src/components/TitleUI.jsx:296-299`, `src/components/ProfessionUI.jsx:289-292`, `src/components/StatusOverlay.jsx:1099-1102`. Proposed fix scope: shared modal shell with ARIA + focus trap + Escape close.
 - [ ] **P2 Refactor/Quality - Runtime no-op schema package clarity.** Rationale: runtime files are intentionally empty. Impact: easy misread that runtime validation exists. Repro: `packages/game-schemas/src/index.js:1`, `packages/game-schemas/src/state.js:1`, `packages/game-schemas/src/actions.js:1`. Proposed fix scope: docs plus optional dev runtime guard import.
 
@@ -120,7 +121,7 @@ Invoke-WebRequest -Uri "http://127.0.0.1:5000/api/health" -UseBasicParsing
 
 - [ ] **P1 Missing Feature - Simulation world updates TODO.** Rationale: deterministic kernel does not update world state layer. Evidence: `packages/game-core/src/simulation/kernel/SimulationKernel.ts:382` comment `TODO: Implement world state updates`. Impact: incomplete simulation fidelity. Repro/verification: inspect `DefaultSimulationKernel.tick` flow (`:212-214`). Proposed fix scope: implement `updateWorld()` + tests.
 - [ ] **P1 Missing Feature - Adapter TODOs for stamina/cooldowns.** Rationale: bridge hardcodes values instead of mapping actual player state. Evidence: `packages/game-core/src/simulation/bridge/GameStateAdapter.js:43`, `packages/game-core/src/simulation/bridge/GameStateAdapter.js:58`. Impact: runtime/simulation drift. Repro/verification: compare `player` runtime shape with adapter output. Proposed fix scope: map real stamina/cooldowns and round-trip tests.
-- [ ] **P2 Refactor/Quality - Template/sample TS sources trigger avoidable compile failures.** Rationale: `functions/src/genkit-sample.ts` imports unsupported path and unused symbols. Evidence: file import at `functions/src/genkit-sample.ts:8`; tsc failures listed in Phase 4. Impact: noisy CI and false-negative backend health. Repro/verification: run `npx tsc -p functions/tsconfig.json --noEmit`. Proposed fix scope: prune or isolate sample files from production compile target.
+- [ ] **P2 Refactor/Quality - Template/sample TS sources still create duplicate maintenance surface.** Rationale: `functions/src/index.ts` and `functions/src/genkit-sample.ts` are not runtime entrypoints (`functions/index.js` is). Evidence: `functions/src/index.ts:10-12`, `functions/src/genkit-sample.ts:8`, `functions/index.js:17-32`. Impact: confusion about canonical backend source of truth. Repro/verification: compare runtime entrypoint import path in `firebase.json` (`functions` source) and `functions/package.json` main field (`index.js`). Proposed fix scope: archive sample TS files or migrate runtime to TS completely.
 
 ## Phase 3 - Character Creation Report
 
@@ -171,31 +172,34 @@ npm warn EBADENGINE ... required: { node: '20' } current: { node: 'v24.13.0' }
 
 ### 2) Build frontend + backend
 - Frontend build: `npm run build` passed.
-- Backend build (functions): failed.
-- Log excerpt:
+- Backend build (functions): passed via runtime typecheck build script.
+- Verification command:
 
 ```text
-npm error Missing script: "build"
+npm --prefix functions run build
+> build
+> npm run typecheck
 ```
 
-- [ ] **P1 Defect - Add backend build script.** Root cause: no `scripts` block in `functions/package.json:1-18`. Fix scope: add `build` (and likely `clean`) script or intentionally document prebuilt `lib` strategy.
+- [x] **P1 Defect - Add backend build script (fixed).** Evidence: `functions/package.json:6-10`.
 
 ### 3) Lint / Typecheck
 - Root lint: passed with 29 warnings (`npm run lint`).
 - Root typecheck: passed (`npm run typecheck`).
 - Targeted lint for touched creation/runtime files passed clean: `npx eslint src/ui/panels/creation/CreationSummaryPanel.jsx src/ui/modes/CharacterCreationMode.jsx src/components/GameUI.jsx src/App.jsx`.
-- Functions lint: failed (missing script).
-- Functions tsc: failed.
-- Log excerpt:
+- Functions lint: passed (`npm --prefix functions run lint`).
+- Functions typecheck: passed (`npm --prefix functions run typecheck` using `functions/tsconfig.runtime.json`).
+- Verification excerpt:
 
 ```text
-npm error Missing script: "lint"
-error TS2503: Cannot find namespace 'Handlebars'.
-error TS2305: Module '"firebase-functions"' has no exported member 'setGlobalOptions'.
-error TS2307: Cannot find module 'firebase-functions/https'...
+> lint
+> eslint . --ignore-pattern lib/genkit-sample.js
+
+> typecheck
+> tsc -p tsconfig.runtime.json --noEmit
 ```
 
-- [ ] **P1 Defect - Repair functions compile/lint path.** Root cause: unaligned template TS sources and dependency/type versions. Fix scope: `functions/package.json`, `functions/src/index.ts`, `functions/src/genkit-sample.ts`, dependency versions/types.
+- [x] **P1 Defect - Repair functions compile/lint path (fixed for runtime checks).** Evidence: `functions/package.json:6-10`, `functions/tsconfig.runtime.json:1-15`.
 
 ### 4) Tests
 - `npm test -- --runInBand` passed.
@@ -235,7 +239,7 @@ functions[us-central1-api] initialized ...
 - Verify: keyboard-only modal navigation, screen-reader announcement checks, forced narrative failure path shows visible error.
 
 ### PR 4 - Refactors/cleanup
-- [ ] Status: open.
+- [ ] Status: in progress (functions scripts/check path landed; orphan-module cleanup still open).
 - Files touched: `functions/package.json`, `functions/tsconfig.json`, `functions/src/index.ts`, `functions/src/genkit-sample.ts`, `src/components/CharacterGenesisUI_Enhanced.jsx`, `src/ui/panels/creation/CreationTalentPanel.jsx`, optional docs.
 - Changes: make functions checks executable (`build`/`lint` scripts + clean compile target), remove/archive orphan UI modules or explicitly gate them.
 - Verify: `npm --prefix functions run build`, `npm --prefix functions run lint` (after added), `npm --prefix functions exec tsc -p tsconfig.json --noEmit`, full root build/lint/test.

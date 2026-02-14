@@ -1,33 +1,27 @@
-import { CreateMovieData, CreateMovieVariables, UpsertUserData, UpsertUserVariables, AddReviewData, AddReviewVariables, DeleteReviewData, DeleteReviewVariables, ListMoviesData, ListUsersData, ListUserReviewsData, GetMovieByIdData, GetMovieByIdVariables, SearchMovieData, SearchMovieVariables } from '../';
+import { ListMySaveSlotsData, GetMySaveSlotData, GetMySaveSlotVariables, ListMyRunSnapshotsData, ListMyRunSnapshotsVariables, UpsertMyProfileData, UpsertMyProfileVariables, CreateSaveSlotData, CreateSaveSlotVariables, UpsertSaveSlotData, UpsertSaveSlotVariables, DeleteSaveSlotData, DeleteSaveSlotVariables } from '../';
 import { UseDataConnectQueryResult, useDataConnectQueryOptions, UseDataConnectMutationResult, useDataConnectMutationOptions} from '@tanstack-query-firebase/react/data-connect';
 import { UseQueryResult, UseMutationResult} from '@tanstack/react-query';
 import { DataConnect } from 'firebase/data-connect';
 import { FirebaseError } from 'firebase/app';
 
 
-export function useCreateMovie(options?: useDataConnectMutationOptions<CreateMovieData, FirebaseError, CreateMovieVariables>): UseDataConnectMutationResult<CreateMovieData, CreateMovieVariables>;
-export function useCreateMovie(dc: DataConnect, options?: useDataConnectMutationOptions<CreateMovieData, FirebaseError, CreateMovieVariables>): UseDataConnectMutationResult<CreateMovieData, CreateMovieVariables>;
+export function useListMySaveSlots(options?: useDataConnectQueryOptions<ListMySaveSlotsData>): UseDataConnectQueryResult<ListMySaveSlotsData, undefined>;
+export function useListMySaveSlots(dc: DataConnect, options?: useDataConnectQueryOptions<ListMySaveSlotsData>): UseDataConnectQueryResult<ListMySaveSlotsData, undefined>;
 
-export function useUpsertUser(options?: useDataConnectMutationOptions<UpsertUserData, FirebaseError, UpsertUserVariables>): UseDataConnectMutationResult<UpsertUserData, UpsertUserVariables>;
-export function useUpsertUser(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertUserData, FirebaseError, UpsertUserVariables>): UseDataConnectMutationResult<UpsertUserData, UpsertUserVariables>;
+export function useGetMySaveSlot(vars: GetMySaveSlotVariables, options?: useDataConnectQueryOptions<GetMySaveSlotData>): UseDataConnectQueryResult<GetMySaveSlotData, GetMySaveSlotVariables>;
+export function useGetMySaveSlot(dc: DataConnect, vars: GetMySaveSlotVariables, options?: useDataConnectQueryOptions<GetMySaveSlotData>): UseDataConnectQueryResult<GetMySaveSlotData, GetMySaveSlotVariables>;
 
-export function useAddReview(options?: useDataConnectMutationOptions<AddReviewData, FirebaseError, AddReviewVariables>): UseDataConnectMutationResult<AddReviewData, AddReviewVariables>;
-export function useAddReview(dc: DataConnect, options?: useDataConnectMutationOptions<AddReviewData, FirebaseError, AddReviewVariables>): UseDataConnectMutationResult<AddReviewData, AddReviewVariables>;
+export function useListMyRunSnapshots(vars: ListMyRunSnapshotsVariables, options?: useDataConnectQueryOptions<ListMyRunSnapshotsData>): UseDataConnectQueryResult<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
+export function useListMyRunSnapshots(dc: DataConnect, vars: ListMyRunSnapshotsVariables, options?: useDataConnectQueryOptions<ListMyRunSnapshotsData>): UseDataConnectQueryResult<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
 
-export function useDeleteReview(options?: useDataConnectMutationOptions<DeleteReviewData, FirebaseError, DeleteReviewVariables>): UseDataConnectMutationResult<DeleteReviewData, DeleteReviewVariables>;
-export function useDeleteReview(dc: DataConnect, options?: useDataConnectMutationOptions<DeleteReviewData, FirebaseError, DeleteReviewVariables>): UseDataConnectMutationResult<DeleteReviewData, DeleteReviewVariables>;
+export function useUpsertMyProfile(options?: useDataConnectMutationOptions<UpsertMyProfileData, FirebaseError, UpsertMyProfileVariables>): UseDataConnectMutationResult<UpsertMyProfileData, UpsertMyProfileVariables>;
+export function useUpsertMyProfile(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertMyProfileData, FirebaseError, UpsertMyProfileVariables>): UseDataConnectMutationResult<UpsertMyProfileData, UpsertMyProfileVariables>;
 
-export function useListMovies(options?: useDataConnectQueryOptions<ListMoviesData>): UseDataConnectQueryResult<ListMoviesData, undefined>;
-export function useListMovies(dc: DataConnect, options?: useDataConnectQueryOptions<ListMoviesData>): UseDataConnectQueryResult<ListMoviesData, undefined>;
+export function useCreateSaveSlot(options?: useDataConnectMutationOptions<CreateSaveSlotData, FirebaseError, CreateSaveSlotVariables>): UseDataConnectMutationResult<CreateSaveSlotData, CreateSaveSlotVariables>;
+export function useCreateSaveSlot(dc: DataConnect, options?: useDataConnectMutationOptions<CreateSaveSlotData, FirebaseError, CreateSaveSlotVariables>): UseDataConnectMutationResult<CreateSaveSlotData, CreateSaveSlotVariables>;
 
-export function useListUsers(options?: useDataConnectQueryOptions<ListUsersData>): UseDataConnectQueryResult<ListUsersData, undefined>;
-export function useListUsers(dc: DataConnect, options?: useDataConnectQueryOptions<ListUsersData>): UseDataConnectQueryResult<ListUsersData, undefined>;
+export function useUpsertSaveSlot(options?: useDataConnectMutationOptions<UpsertSaveSlotData, FirebaseError, UpsertSaveSlotVariables>): UseDataConnectMutationResult<UpsertSaveSlotData, UpsertSaveSlotVariables>;
+export function useUpsertSaveSlot(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertSaveSlotData, FirebaseError, UpsertSaveSlotVariables>): UseDataConnectMutationResult<UpsertSaveSlotData, UpsertSaveSlotVariables>;
 
-export function useListUserReviews(options?: useDataConnectQueryOptions<ListUserReviewsData>): UseDataConnectQueryResult<ListUserReviewsData, undefined>;
-export function useListUserReviews(dc: DataConnect, options?: useDataConnectQueryOptions<ListUserReviewsData>): UseDataConnectQueryResult<ListUserReviewsData, undefined>;
-
-export function useGetMovieById(vars: GetMovieByIdVariables, options?: useDataConnectQueryOptions<GetMovieByIdData>): UseDataConnectQueryResult<GetMovieByIdData, GetMovieByIdVariables>;
-export function useGetMovieById(dc: DataConnect, vars: GetMovieByIdVariables, options?: useDataConnectQueryOptions<GetMovieByIdData>): UseDataConnectQueryResult<GetMovieByIdData, GetMovieByIdVariables>;
-
-export function useSearchMovie(vars?: SearchMovieVariables, options?: useDataConnectQueryOptions<SearchMovieData>): UseDataConnectQueryResult<SearchMovieData, SearchMovieVariables>;
-export function useSearchMovie(dc: DataConnect, vars?: SearchMovieVariables, options?: useDataConnectQueryOptions<SearchMovieData>): UseDataConnectQueryResult<SearchMovieData, SearchMovieVariables>;
+export function useDeleteSaveSlot(options?: useDataConnectMutationOptions<DeleteSaveSlotData, FirebaseError, DeleteSaveSlotVariables>): UseDataConnectMutationResult<DeleteSaveSlotData, DeleteSaveSlotVariables>;
+export function useDeleteSaveSlot(dc: DataConnect, options?: useDataConnectMutationOptions<DeleteSaveSlotData, FirebaseError, DeleteSaveSlotVariables>): UseDataConnectMutationResult<DeleteSaveSlotData, DeleteSaveSlotVariables>;

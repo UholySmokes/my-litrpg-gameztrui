@@ -775,6 +775,8 @@ export default function GameUI({ user }) {
 
   const showCreationMode = !characterCreated;
   const showGameMode = characterCreated || isTransitioning;
+  const shouldRenderCreationShell = showCreationMode || isTransitioning;
+  const shouldRenderGameShell = showGameMode || isTransitioning;
   const [focusWindowRequest, setFocusWindowRequest] = useState(null);
   const requestWindowFocus = (id) => {
     setFocusWindowRequest({ id, nonce: Date.now() });
@@ -822,48 +824,55 @@ export default function GameUI({ user }) {
               </div>
             </div>
           )}
-          <div
-            className={[
-              "mode-shell",
-              "mode-shell--creation",
-              showCreationMode ? "mode-shell--active" : "",
-              isTransitioning ? "mode-shell--fade-out" : "",
-            ]
-              .filter(Boolean)
-              .join(" ")}
-          >
-            <CharacterCreationMode onComplete={handleCharacterCreationComplete} />
-          </div>
-          <div
-            className={[
-              "mode-shell",
-              "mode-shell--game",
-              showGameMode ? "mode-shell--active" : "",
-              isTransitioning ? "mode-shell--fade-in" : "",
-            ]
-              .filter(Boolean)
-              .join(" ")}
-          >
+          {shouldRenderCreationShell && (
+            <div
+              className={[
+                "mode-shell",
+                "mode-shell--creation",
+                showCreationMode ? "mode-shell--active" : "",
+                isTransitioning ? "mode-shell--fade-out" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              <CharacterCreationMode onComplete={handleCharacterCreationComplete} />
+            </div>
+          )}
+          {shouldRenderGameShell && (
+            <div
+              className={[
+                "mode-shell",
+                "mode-shell--game",
+                showGameMode ? "mode-shell--active" : "",
+                isTransitioning ? "mode-shell--fade-in" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
             <div className="command-deck__quick-actions">
               <button
+                type="button"
                 className="holo-button"
                 onClick={() => toggleWindow("quests", showQuests, setShowQuests)}
               >
                 [QUESTS]
               </button>
               <button
+                type="button"
                 className="holo-button"
                 onClick={() => toggleWindow("shop", showShop, setShowShop)}
               >
                 [SHOP]
               </button>
               <button
+                type="button"
                 className="holo-button"
                 onClick={() => toggleWindow("gacha", showGacha, setShowGacha)}
               >
                 [GACHA]
               </button>
               <button
+                type="button"
                 className="holo-button"
                 onClick={() =>
                   toggleWindow("craft", showProfessions, setShowProfessions)
@@ -872,6 +881,7 @@ export default function GameUI({ user }) {
                 [CRAFT]
               </button>
               <button
+                type="button"
                 className="holo-button"
                 onClick={() =>
                   toggleWindow("status", showStatusOverlay, setShowStatusOverlay)
@@ -880,6 +890,7 @@ export default function GameUI({ user }) {
                 [STATUS]
               </button>
               <button
+                type="button"
                 className="holo-button"
                 onClick={() =>
                   toggleWindow("titles", showTitleSystem, setShowTitleSystem)
@@ -888,6 +899,7 @@ export default function GameUI({ user }) {
                 [TITLES]
               </button>
               <button
+                type="button"
                 className="holo-button"
                 onClick={() =>
                   toggleWindow("saveLoad", showSaveLoad, setShowSaveLoad)
@@ -960,7 +972,8 @@ export default function GameUI({ user }) {
               user={user}
               focusWindowRequest={focusWindowRequest}
             />
-          </div>
+            </div>
+          )}
         </div>
       </div>
 

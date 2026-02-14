@@ -8,6 +8,7 @@ const DEFAULT_DOCK_METRICS = {
   right: { min: 340, max: 460, width: 380, compactWidth: 80 },
   snap: 80,
 };
+const COMPACT_VIEWPORT_WIDTH = 1100;
 
 export default function WindowManager({
   mode = "game",
@@ -25,6 +26,9 @@ export default function WindowManager({
   const [draggingId, setDraggingId] = useState(null);
   const [snapZone, setSnapZone] = useState(null);
   const [focusState, setFocusState] = useState({ id: null, snapshot: null });
+  const isCompactViewport =
+    bounds.width > 0 && bounds.width <= COMPACT_VIEWPORT_WIDTH;
+  const shouldForceFloating = forceFloating && !isCompactViewport;
   const dockMetrics = useMemo(() => {
     const rightWidth = rightDockCompact
       ? DEFAULT_DOCK_METRICS.right.compactWidth
@@ -60,6 +64,7 @@ export default function WindowManager({
   }, [bringToFront, focusWindowRequest]);
 
   useEffect(() => {
+    if (!shouldForceFloating) return;
     if (!bounds.width || !bounds.height) return;
     windows.forEach((windowConfig) => {
       if (!windowConfig?.openFullscreenOnce) return;
@@ -89,18 +94,32 @@ export default function WindowManager({
         return;
       }
     });
-  }, [bounds.height, bounds.width, mode, setWindowState, windows]);
+  }, [bounds.height, bounds.width, mode, setWindowState, shouldForceFloating, windows]);
 
-  useEffect(() => {
-    if (!bounds.width || !bounds.height) return;
-    windows.forEach((windowConfig) => {
-      const state = windowMap[windowConfig.id];
-      const resolvedDockZone = forceFloating
+  const resolveWindowDockZone = useCallback(
+    (windowConfig, state = windowMap[windowConfig.id] || windowConfig) => {
+      let zone = shouldForceFloating
         ? "float"
         : windowConfig.lockDockZone ||
           state?.dockZone ||
           windowConfig.dockZone ||
           "float";
+
+      // On compact screens, treat floating windows as center-stacked for reachability.
+      if (!shouldForceFloating && isCompactViewport && zone === "float") {
+        zone = "center";
+      }
+
+      return zone;
+    },
+    [isCompactViewport, shouldForceFloating, windowMap],
+  );
+
+  useEffect(() => {
+    if (!bounds.width || !bounds.height) return;
+    windows.forEach((windowConfig) => {
+      const state = windowMap[windowConfig.id];
+      const resolvedDockZone = resolveWindowDockZone(windowConfig, state);
       if (resolvedDockZone !== "float") return;
       const resolvedSize = state?.size || windowConfig.size || { w: 300, h: 200 };
       const resolvedPosition =
@@ -115,11 +134,18 @@ export default function WindowManager({
         });
       }
     });
-  }, [bounds.height, bounds.width, forceFloating, setWindowState, windowMap, windows]);
+  }, [
+    bounds.height,
+    bounds.width,
+    resolveWindowDockZone,
+    setWindowState,
+    windowMap,
+    windows,
+  ]);
 
   const resolveSnapZone = useMemo(() => {
     return (position, size, windowConfig) => {
-      if (forceFloating) return "float";
+      if (shouldForceFloating || isCompactViewport) return "float";
       if (!bounds.width || !bounds.height) return "float";
       const width = size?.w || 300;
       const leftEdge = position.x;
@@ -138,7 +164,7 @@ export default function WindowManager({
       if (centerSnap) return "center";
       return "float";
     };
-  }, [bounds.height, bounds.width, dockMetrics, forceFloating]);
+  }, [bounds.height, bounds.width, dockMetrics, isCompactViewport, shouldForceFloating]);
 
   const applyFocus = useCallback(
     (id, snapshot) => {
@@ -174,21 +200,17 @@ export default function WindowManager({
 
   const renderWindow = (windowConfig) => {
     const state = windowMap[windowConfig.id] || windowConfig;
-    const resolvedDockZone = forceFloating
-      ? "float"
-      : windowConfig.lockDockZone ||
-        state.dockZone ||
-        windowConfig.dockZone ||
-        "float";
+    const resolvedDockZone = resolveWindowDockZone(windowConfig, state);
     const resolvedPosition = state.position || windowConfig.position || { x: 0, y: 0 };
     const resolvedSize = state.size || windowConfig.size || { w: 300, h: 200 };
     const isLocked = Boolean(windowConfig.lockDockZone);
     const moveOnly = Boolean(windowConfig.moveOnly);
-    const isDockable = forceFloating
+    const isDockable = shouldForceFloating
       ? false
       : windowConfig.isDockable ?? !isLocked;
+    const isDraggable = windowConfig.isDraggable ?? !isCompactViewport;
     const isResizable =
-      windowConfig.isResizable ?? (moveOnly ? false : true);
+      windowConfig.isResizable ?? (moveOnly ? false : !isCompactViewport);
     const isCollapsible =
       windowConfig.isCollapsible ?? (moveOnly ? false : true);
     const isPinnable = windowConfig.isPinnable ?? (moveOnly ? false : true);
@@ -227,31 +249,36 @@ export default function WindowManager({
         zIndex={state.zIndex}
         isActive={isActive}
         isDragging={draggingId === windowConfig.id}
-        freeDrag={forceFloating}
-        isDraggable={windowConfig.isDraggable ?? true}
+        freeDrag={shouldForceFloating}
+        compactLayout={isCompactViewport}
+        isDraggable={isDraggable}
         isResizable={isResizable}
         isCollapsible={isCollapsible}
         isPinnable={isPinnable}
         isDockable={isDockable}
-        onToggleFocus={() => {
-          const snapshot = {
-            dockZone: resolvedDockZone,
-            position: resolvedPosition,
-            size: resolvedSize,
-            collapsed: resolvedCollapsed,
-            zIndex: state.zIndex,
-          };
-          if (focusState.id && focusState.id !== windowConfig.id) {
-            clearFocus();
-          }
-          if (focusState.id === windowConfig.id) {
-            clearFocus();
-          } else {
-            applyFocus(windowConfig.id, snapshot);
-          }
-        }}
+        onToggleFocus={
+          shouldForceFloating
+            ? () => {
+                const snapshot = {
+                  dockZone: resolvedDockZone,
+                  position: resolvedPosition,
+                  size: resolvedSize,
+                  collapsed: resolvedCollapsed,
+                  zIndex: state.zIndex,
+                };
+                if (focusState.id && focusState.id !== windowConfig.id) {
+                  clearFocus();
+                }
+                if (focusState.id === windowConfig.id) {
+                  clearFocus();
+                } else {
+                  applyFocus(windowConfig.id, snapshot);
+                }
+              }
+            : undefined
+        }
         onDock={
-          isLocked || forceFloating
+          isLocked || shouldForceFloating
             ? undefined
             : () => {
                 if (!allowedDockOrder.length) return;
@@ -276,6 +303,7 @@ export default function WindowManager({
         }
         onDragStart={(payload) => {
           if (isLocked) return;
+          if (!isDraggable) return;
           if (focusState.id === windowConfig.id) {
             clearFocus();
           }
@@ -295,6 +323,7 @@ export default function WindowManager({
         }}
         onDragMove={(nextPosition) => {
           if (isLocked) return;
+          if (!isDraggable) return;
           const zone = resolveSnapZone(nextPosition, resolvedSize, windowConfig);
           setSnapZone(zone);
           setWindowState(windowConfig.id, {
@@ -325,6 +354,7 @@ export default function WindowManager({
         }
         onDragEnd={(nextPosition) => {
           if (isLocked) return;
+          if (!isDraggable) return;
           const zone = resolveSnapZone(nextPosition, resolvedSize, windowConfig);
           if (zone === "float") {
             setWindowState(windowConfig.id, {
@@ -350,44 +380,32 @@ export default function WindowManager({
     );
   };
 
-  const leftWindows = forceFloating
+  const leftWindows = shouldForceFloating
     ? []
     : windows
         .filter(
-          (windowConfig) =>
-            (windowConfig.lockDockZone ||
-              windowMap[windowConfig.id]?.dockZone ||
-              windowConfig.dockZone) === "left",
+          (windowConfig) => resolveWindowDockZone(windowConfig) === "left",
         )
         .map(renderWindow);
-  const centerWindows = forceFloating
+  const centerWindows = shouldForceFloating
     ? []
     : windows
         .filter(
-          (windowConfig) =>
-            (windowConfig.lockDockZone ||
-              windowMap[windowConfig.id]?.dockZone ||
-              windowConfig.dockZone) === "center",
+          (windowConfig) => resolveWindowDockZone(windowConfig) === "center",
         )
         .map(renderWindow);
-  const rightWindows = forceFloating
+  const rightWindows = shouldForceFloating
     ? []
     : windows
         .filter(
-          (windowConfig) =>
-            (windowConfig.lockDockZone ||
-              windowMap[windowConfig.id]?.dockZone ||
-              windowConfig.dockZone) === "right",
+          (windowConfig) => resolveWindowDockZone(windowConfig) === "right",
         )
         .map(renderWindow);
-  const floatWindows = forceFloating
+  const floatWindows = shouldForceFloating
     ? windows.map(renderWindow)
     : windows
         .filter(
-          (windowConfig) =>
-            (windowConfig.lockDockZone ||
-              windowMap[windowConfig.id]?.dockZone ||
-              windowConfig.dockZone) === "float",
+          (windowConfig) => resolveWindowDockZone(windowConfig) === "float",
         )
         .map(renderWindow);
 
@@ -420,7 +438,7 @@ export default function WindowManager({
     return null;
   }, [dockMetrics.left.width, dockMetrics.right.width, snapZone]);
 
-  if (forceFloating) {
+  if (shouldForceFloating) {
     return (
       <div
         ref={containerRef}
@@ -439,12 +457,14 @@ export default function WindowManager({
     <div
       ref={containerRef}
       style={{
-        display: "grid",
-        gridTemplateColumns: "auto 1fr auto",
+        display: isCompactViewport ? "flex" : "grid",
+        flexDirection: isCompactViewport ? "column" : undefined,
+        gridTemplateColumns: isCompactViewport ? undefined : "auto 1fr auto",
         gap: "0.5rem",
         width: "100%",
         height: "100%",
         position: "relative",
+        overflowY: isCompactViewport ? "auto" : "hidden",
       }}
     >
       <DockZone
@@ -453,17 +473,19 @@ export default function WindowManager({
         minWidth={dockMetrics.left.min}
         maxWidth={dockMetrics.left.max}
         width={dockMetrics.left.width}
+        compact={isCompactViewport}
       />
-      <DockZone zone="center" windows={centerWindows} />
+      <DockZone zone="center" windows={centerWindows} compact={isCompactViewport} />
       <DockZone
         zone="right"
         windows={rightWindows}
         minWidth={dockMetrics.right.min}
         maxWidth={dockMetrics.right.max}
         width={dockMetrics.right.width}
+        compact={isCompactViewport}
       />
       {floatWindows}
-      {draggingId && overlayStyle && (
+      {!isCompactViewport && draggingId && overlayStyle && (
         <div
           style={{
             position: "absolute",

@@ -1,7 +1,7 @@
 # AUDIT_REPORT
 
 ## Executive Summary
-Frontend runtime and focused checks are stable (`npm run typecheck`, targeted eslint, `functions` build/lint/typecheck), and key flow gaps are now fixed: character finalize no longer blocks on alerts, immediate checkpoint save exists, stale resume keys were removed, startup now offers autosave resume, and the save API rejects malformed `gameState` payloads without `player`/`world`. Remaining high-impact issues are dependency/version drift in Functions plus unresolved runtime/simulation/EventBus hypotheses and orphan feature surfaces.
+Frontend runtime and focused checks are stable (`npm run typecheck`, targeted eslint, `functions` build/lint/typecheck), and key flow gaps are now fixed: character finalize no longer blocks on alerts, immediate checkpoint save exists, stale resume keys were removed, startup now offers autosave resume, save API rejects malformed `gameState` payloads without `player`/`world`, and modal overlays now expose baseline dialog semantics with Escape-close. Remaining high-impact issues are dependency/version drift in Functions plus unresolved runtime/simulation/EventBus hypotheses and orphan feature surfaces.
 
 Last refreshed: `2026-02-14`.
 
@@ -36,6 +36,7 @@ Manual checks:
 1. Start app, ensure `localStorage.localAutosave:v1` exists, reload page, and verify the `RESUME AUTOSAVE?` dialog appears.
 2. Click `Continue Autosave` and verify game mode loads without reopening character creation.
 3. POST `/api/saves` with invalid payload missing `player` or `world` and verify `INVALID_GAME_STATE`.
+4. Open each modal (`SAVE/LOAD`, `SHOP`, `GACHA`, `TITLES`, `CRAFT`, `STATUS`) and verify `Escape` closes it and focus returns to the previously focused control.
 
 ## Phase 0 - Repo Map
 

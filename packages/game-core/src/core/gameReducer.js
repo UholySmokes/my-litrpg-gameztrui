@@ -31,8 +31,10 @@ import {
   improveStudiedSpell,
   isSpellSkill,
 } from "../systems/skills/SpellStudySystem.js";
-import { appendNarrativeEntry } from "./narrativeLog.js";
-import { applyQuestRewards } from "./reducers/rewardSystem.js";
+import { appendNarrativeEntry, appendSystemMessages } from "./narrativeLog.js";
+import { applyQuestRewards } from "../systems/quest/QuestRewards.js";
+import { updatePlayerVitals } from "./PlayerVitals.js";
+import { applyAutoTitleUnlocks } from "../systems/titles/TitleApplication.js";
 import { withTraceSpan } from "../observability/traceShim.js";
 import { isPlainObject, toNumber, clamp, mergeInventoryItems } from "../utils/shared.js";
 
@@ -43,106 +45,6 @@ const ensureCombatStructure = (state) =>
     enemies: [],
     log: [],
   };
-
-const updatePlayerVitals = (player, config, attributesOverride) => {
-  const effectiveAttributes = getEffectiveAttributes(
-    player,
-    config,
-    attributesOverride,
-  );
-  const nextHpMax = calculateMaxHp(effectiveAttributes);
-  const nextManaMax = calculateMaxMana(effectiveAttributes);
-
-  const rawHp = player?.hp;
-  const hp = isPlainObject(rawHp)
-      ? rawHp
-      : { current: toNumber(rawHp, nextHpMax), max: nextHpMax };
-  const rawMana = player?.mana;
-  const mana = isPlainObject(rawMana)
-      ? rawMana
-      : { current: toNumber(rawMana, nextManaMax), max: nextManaMax };
-
-  return {
-    ...player,
-    hp: {
-      ...hp,
-      max: nextHpMax,
-      current: clamp(toNumber(hp.current, nextHpMax), 0, nextHpMax),
-    },
-    mana: {
-      ...mana,
-      max: nextManaMax,
-      current: clamp(toNumber(mana.current, nextManaMax), 0, nextManaMax),
-    },
-  };
-};
-
-const appendSystemMessages = (state, messages = []) => {
-  if (!Array.isArray(messages) || messages.length === 0) return state;
-  const timestamp = SimBridge.now();
-  const filtered = messages.filter(
-    (message) => typeof message === "string" && message.trim(),
-  );
-  if (filtered.length === 0) return state;
-
-  let narrative = state.narrative || { entries: [], sequence: 0 };
-  for (let i = 0; i < filtered.length; i++) {
-    narrative = appendNarrativeEntry(narrative, {
-      type: "system",
-      text: filtered[i],
-      timestamp: timestamp + i,
-      source: "system",
-    });
-  }
-
-  return {
-    ...state,
-    narrative,
-  };
-};
-
-const applyAutoTitleUnlocks = (state, { announce = false } = {}) => {
-  if (!state?.player) return state;
-  const unlockable = getAutoUnlockableTitles(state);
-  if (!Array.isArray(unlockable) || unlockable.length === 0) return state;
-
-  const unlocked = new Set(
-    (state.player.unlockedTitles || state.player.titles || []).filter(
-      (id) => typeof id === "string" && id,
-    ),
-  );
-
-  const newlyUnlocked = [];
-  unlockable.forEach((title) => {
-    if (!title?.id) return;
-    if (unlocked.has(title.id)) return;
-    unlocked.add(title.id);
-    newlyUnlocked.push(title);
-  });
-
-  if (newlyUnlocked.length === 0) return state;
-
-  const unlockedTitles = Array.from(unlocked);
-  const player = updatePlayerVitals(
-    {
-      ...state.player,
-      unlockedTitles,
-      titles: unlockedTitles,
-    },
-    state.config,
-  );
-
-  const nextState = {
-    ...state,
-    player,
-  };
-
-  if (!announce) return nextState;
-  return appendSystemMessages(
-    nextState,
-    newlyUnlocked.map((title) => `Unlocked title: ${title.name}`),
-  );
-};
 
 const gameReducer = (state, action) =>
   withTraceSpan(
@@ -299,7 +201,7 @@ const gameReducer = (state, action) =>
         },
       };
       return applyAutoTitleUnlocks(
-        applyQuestRewards(nextState, reward, { updatePlayerVitals }),
+        applyQuestRewards(nextState, reward),
         {
           announce: true,
         },

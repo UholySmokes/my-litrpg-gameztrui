@@ -110,7 +110,7 @@ export default function GameUI({ user }) {
         console.warn(`${saveName} failed:`, err);
       }
     },
-    [user?.id],
+    [user],
   );
 
   useEffect(() => {

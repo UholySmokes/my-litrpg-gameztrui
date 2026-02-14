@@ -28,11 +28,21 @@ function normalizeSaveName(value) {
 	return base.slice(0, MAX_SAVE_NAME_LENGTH);
 }
 
+function isRecord(value) {
+	return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function hasRequiredGameStateShape(gameState) {
+	if (!isRecord(gameState)) return false;
+	return isRecord(gameState.player) && isRecord(gameState.world);
+}
+
 function normalizeGameState(value) {
 	if (value === null || value === undefined) return null;
-	if (typeof value === "string") return value;
+	const parsed = safeJsonParse(value);
+	if (!hasRequiredGameStateShape(parsed)) return null;
 	try {
-		return JSON.stringify(value);
+		return JSON.stringify(parsed);
 	} catch {
 		return null;
 	}
@@ -110,7 +120,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 				return json(res, 400, {
 					ok: false,
 					errorCode: "INVALID_GAME_STATE",
-					message: "gameState is required.",
+					message: "gameState must include player and world objects.",
 				});
 			}
 
@@ -153,7 +163,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 				return json(res, 400, {
 					ok: false,
 					errorCode: "INVALID_GAME_STATE",
-					message: "gameState is required.",
+					message: "gameState must include player and world objects.",
 				});
 			}
 
@@ -227,4 +237,3 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 module.exports = {
 	handleSavesRequest,
 };
-

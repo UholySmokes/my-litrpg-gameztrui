@@ -1,40 +1,35 @@
-# LitRPG persistence schema.
-# Canonical game state/action contracts live in packages/game-schemas/src.
-# Save snapshots are stored as serialized JSON plus summary metadata for query speed.
+# Void-Verse Game Data Schema
 
-type UserProfile @table(name: "UserProfiles") {
-  # Firebase Auth UID.
+# User table keyed by Firebase Auth UID
+type User @table {
   id: String! @default(expr: "auth.uid")
-  displayName: String @col(dataType: "varchar(80)")
+  username: String @col(dataType: "varchar(50)")
   createdAt: Date! @default(expr: "request.time")
   updatedAt: Date! @default(expr: "request.time")
 }
 
-type SaveSlot @table(name: "SaveSlots", key: ["id", "user"]) {
+# GameState stores the complete save data for a run
+type GameState @table {
   id: UUID! @default(expr: "uuidV4()")
-  user: UserProfile!
-
-  saveName: String! @col(dataType: "varchar(80)")
-  # Canonical serialized GameState payload.
-  gameStateJson: String! @col(dataType: "text")
-
-  # Denormalized summary fields for fast listing.
-  playerName: String! @col(dataType: "varchar(120)")
-  playerLevel: Int!
-  worldId: String! @col(dataType: "varchar(120)")
-  locationId: String! @col(dataType: "varchar(120)")
-  turnCount: Int!
-
-  # Version metadata from game-schemas.
-  contentVersion: String @col(dataType: "varchar(120)")
+  user: User!
+  
+  # We store complex sub-states as JSON objects to allow flexible evolution
+  # without constant schema migrations for gameplay mechanics.
+  # These map to the Types defined in @voidverse/game-schemas/state.d.ts
+  player: JSON! 
+  world: JSON!
+  quests: JSON!
+  config: JSON!
+  
+  # Optional logs and transient state
+  chatLog: JSON
+  narrative: JSON
+  combat: JSON
+  
+  # Versioning for migration support
+  contentVersion: String
   stateVersion: Int
-
-  # Sync metadata from packages/game-schemas/src/sync.d.ts.
-  runId: String @col(dataType: "varchar(120)")
-  seq: Int
-  tick: Int
-  stateHash: String @col(dataType: "varchar(160)")
-
+  
   createdAt: Date! @default(expr: "request.time")
   updatedAt: Date! @default(expr: "request.time")
 }

@@ -12,6 +12,7 @@ export default defineConfig([
     'functions/node_modules',
     'src/dataconnect-generated',
     'functions/src/dataconnect-admin-generated',
+    'functions/lib/genkit-sample.js',
     'packages/game-core/src/dataconnect-generated',
     'packages/game-schemas/src/dataconnect-generated',
     '**/dataconnect-generated/**',

@@ -126,7 +126,8 @@ Manual checks:
 
 - [ ] **P2 Refactor/Quality - Remove legacy `CharacterGenesisUI_Enhanced` path.** Rationale: orphan component. Impact: code drift and false navigation surface. Repro: `src/components/CharacterGenesisUI_Enhanced.jsx:127` only. Proposed fix scope: delete file and related CSS/tests, or feature-flag explicitly.
 - [ ] **P2 Refactor/Quality - Functions TS template/source drift.** Rationale: `functions/src/index.ts` and `functions/src/genkit-sample.ts` remain template-style sources not aligned with runtime `functions/index.js`; runtime checks now use `functions/tsconfig.runtime.json`. Impact: parallel source trees increase onboarding and maintenance confusion. Repro: `functions/src/index.ts:10-12`, `functions/index.js:17-32`, `functions/tsconfig.runtime.json:11-14`. Proposed fix scope: remove/archive templates or fully adopt TS runtime entrypoint.
-- [ ] **P2 Refactor/Quality - Modal accessibility baseline missing in major overlays.** Rationale: modal wrappers close on backdrop click but no `role="dialog"`/`aria-modal`/Escape handling. Impact: keyboard and screen-reader gaps. Repro: `src/components/SaveLoadUI.jsx:398-401`, `src/components/ShopUI.jsx:225-228`, `src/components/GachaUI.jsx:183-186`, `src/components/TitleUI.jsx:296-299`, `src/components/ProfessionUI.jsx:289-292`, `src/components/StatusOverlay.jsx:1099-1102`. Proposed fix scope: shared modal shell with ARIA + focus trap + Escape close.
+- [x] **P2 Refactor/Quality - Modal accessibility baseline implemented in major overlays (fixed).** Rationale: overlays now expose `role="dialog"`, `aria-modal`, Escape handlers, and open-focus behavior. Evidence: `src/components/SaveLoadUI.jsx:123`, `src/components/SaveLoadUI.jsx:432-435`; `src/components/ShopUI.jsx:38`, `src/components/ShopUI.jsx:259-262`; `src/components/GachaUI.jsx:51`, `src/components/GachaUI.jsx:217-220`; `src/components/TitleUI.jsx:40`, `src/components/TitleUI.jsx:328-331`; `src/components/ProfessionUI.jsx:42`, `src/components/ProfessionUI.jsx:321-324`; `src/components/StatusOverlay.jsx:57`, `src/components/StatusOverlay.jsx:1131-1134`. Verification: `npx eslint src/components/SaveLoadUI.jsx src/components/ShopUI.jsx src/components/GachaUI.jsx src/components/TitleUI.jsx src/components/ProfessionUI.jsx src/components/StatusOverlay.jsx`.
+- [ ] **P2 Refactor/Quality - Optional follow-up: shared modal shell + full focus trap.** Rationale: baseline semantics are now present, but focus-trap behavior is duplicated across files. Impact: higher maintenance and possible drift. Proposed fix scope: extract shared modal wrapper/hook.
 - [ ] **P2 Refactor/Quality - Runtime no-op schema package clarity.** Rationale: runtime files are intentionally empty. Impact: easy misread that runtime validation exists. Repro: `packages/game-schemas/src/index.js:1`, `packages/game-schemas/src/state.js:1`, `packages/game-schemas/src/actions.js:1`. Proposed fix scope: docs plus optional dev runtime guard import.
 
 ## Phase 2 - Stubs / Missing Content
@@ -199,6 +200,7 @@ npm --prefix functions run build
 - Root lint: passed with 29 warnings (`npm run lint`).
 - Root typecheck: passed (`npm run typecheck`).
 - Targeted lint for touched runtime/save/log files passed clean: `npx eslint src/components/GameUI.jsx src/hook/usegamestate.js src/components/SystemLog.jsx functions/lib/saves.js`.
+- Targeted lint for modal accessibility pass files passed clean: `npx eslint src/components/SaveLoadUI.jsx src/components/ShopUI.jsx src/components/GachaUI.jsx src/components/TitleUI.jsx src/components/ProfessionUI.jsx src/components/StatusOverlay.jsx`.
 - Functions lint: passed (`npm --prefix functions run lint`).
 - Functions typecheck: passed (`npm --prefix functions run typecheck` using `functions/tsconfig.runtime.json`).
 - Verification excerpt:
@@ -246,9 +248,9 @@ functions[us-central1-api] initialized ...
 - Verify: complete creation flow, reload immediately after finalize, confirm resume and first-turn command behavior.
 
 ### PR 3 - UI state/error/accessibility pass
-- [ ] Status: open.
+- [ ] Status: in progress (modal semantics + Escape handling landed; shared modal shell/focus-trap refactor pending).
 - Files touched: `src/components/SaveLoadUI.jsx`, `src/components/ShopUI.jsx`, `src/components/GachaUI.jsx`, `src/components/TitleUI.jsx`, `src/components/ProfessionUI.jsx`, `src/components/StatusOverlay.jsx`, `src/ui/modes/GameMode.jsx`, optional `src/components/common/ModalShell.jsx`.
-- Changes: shared modal semantics (`role="dialog"`, `aria-modal`, Escape close, focus management); surface narrative error state in `GameMode`.
+- Changes: baseline modal semantics (`role="dialog"`, `aria-modal`, Escape close, initial focus + focus restore) are implemented; next step is consolidating shared shell/focus trap and any remaining interaction polish.
 - Verify: keyboard-only modal navigation, screen-reader announcement checks, forced narrative failure path shows visible error.
 
 ### PR 4 - Refactors/cleanup
@@ -264,3 +266,4 @@ functions[us-central1-api] initialized ...
 - [ ] **Needs verification (Hypothesis):** Quantify runtime/simulation parity. Next check: add one parity test comparing same combat command through `createSystemEngine.step` vs `DefaultSimulationKernel` command resolution outputs.
 - [ ] **Needs verification (Hypothesis):** Decide whether `CreationTalentPanel` is deprecated or pending. Next check: review UX spec for character-creation phase list and align component set.
 - [ ] **Needs verification:** Open any view containing `SystemLog` and confirm chat/system actions append entries via `system:log` in real time.
+- [ ] **Needs verification:** Exercise all six modal overlays via keyboard-only navigation and confirm Escape-close + focus restore behavior in each.

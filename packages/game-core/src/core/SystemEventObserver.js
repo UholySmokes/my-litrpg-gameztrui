@@ -69,14 +69,6 @@ export const SystemEventObserver = {
     const anomalyChanged = !sameList(prevAnoms, nextAnoms);
     const sourcesChanged = !sameList(prevSources, nextSources);
 
-    const globalKeys = [
-      "drawMultByEssence",
-      "refineYieldMultByEssence",
-      "compressRiskMultByEssence",
-      "potencyMultByEssence",
-      "contaminationRiskMultByEssence",
-    ];
-
     const maxAbsDelta = (mapKey) => {
       const prevMap = prevAmbient.global?.[mapKey] || {};
       const nextMap = nextAmbient.global?.[mapKey] || {};

@@ -40,7 +40,7 @@ export function parseAction(userInput, gameState) {
   const moveAction = parseMove(cleanedInput, gameState);
   if (moveAction) return moveAction;
 
-  const attackAction = parseAttack(cleanedInput, gameState);
+  const attackAction = parseAttack(cleanedInput);
   if (attackAction) return attackAction;
 
   const lookAction = parseLook(cleanedInput);
@@ -427,7 +427,7 @@ function parseMove(input, gameState) {
 /**
  * Parses attack/combat actions
  */
-function parseAttack(input, _gameState) {
+function parseAttack(input) {
   const attackPatterns = [
     /^(attack|hit|strike|fight|combat|engage)\s+(.+)$/i,
     /^(attack|hit|strike|fight|combat|engage)$/i,

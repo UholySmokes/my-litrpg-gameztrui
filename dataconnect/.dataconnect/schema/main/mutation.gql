@@ -1,219 +1,99 @@
 extend type Mutation {
   """
-  ✨ Insert a single `Movie` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  ✨ Insert a single `SaveSlot` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
   """
-  movie_insert(
+  saveSlot_insert(
     """
     Data object to insert into the table.
     """
-    data: Movie_Data!
-  ): Movie_KeyOutput! @fdc_generated(from: "Movie", purpose: INSERT_SINGLE)
+    data: SaveSlot_Data!
+  ): SaveSlot_KeyOutput! @fdc_generated(from: "SaveSlot", purpose: INSERT_SINGLE)
   """
-  ✨ Insert a single `MovieMetadata` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  ✨ Insert a single `UserProfile` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
   """
-  movieMetadata_insert(
+  userProfile_insert(
     """
     Data object to insert into the table.
     """
-    data: MovieMetadata_Data!
-  ): MovieMetadata_KeyOutput! @fdc_generated(from: "MovieMetadata", purpose: INSERT_SINGLE)
+    data: UserProfile_Data!
+  ): UserProfile_KeyOutput! @fdc_generated(from: "UserProfile", purpose: INSERT_SINGLE)
   """
-  ✨ Insert a single `Review` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  ✨ Insert `SaveSlot` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
   """
-  review_insert(
-    """
-    Data object to insert into the table.
-    """
-    data: Review_Data!
-  ): Review_KeyOutput! @fdc_generated(from: "Review", purpose: INSERT_SINGLE)
-  """
-  ✨ Insert a single `User` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
-  """
-  user_insert(
-    """
-    Data object to insert into the table.
-    """
-    data: User_Data!
-  ): User_KeyOutput! @fdc_generated(from: "User", purpose: INSERT_SINGLE)
-  """
-  ✨ Insert `Movie` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
-  """
-  movie_insertMany(
+  saveSlot_insertMany(
     """
     List of data objects to insert into the table.
     """
-    data: [Movie_Data!]!
-  ): [Movie_KeyOutput!]! @fdc_generated(from: "Movie", purpose: INSERT_MULTIPLE)
+    data: [SaveSlot_Data!]!
+  ): [SaveSlot_KeyOutput!]! @fdc_generated(from: "SaveSlot", purpose: INSERT_MULTIPLE)
   """
-  ✨ Insert `MovieMetadata` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  ✨ Insert `UserProfile` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
   """
-  movieMetadata_insertMany(
+  userProfile_insertMany(
     """
     List of data objects to insert into the table.
     """
-    data: [MovieMetadata_Data!]!
-  ): [MovieMetadata_KeyOutput!]! @fdc_generated(from: "MovieMetadata", purpose: INSERT_MULTIPLE)
+    data: [UserProfile_Data!]!
+  ): [UserProfile_KeyOutput!]! @fdc_generated(from: "UserProfile", purpose: INSERT_MULTIPLE)
   """
-  ✨ Insert `Review` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  ✨ Insert or update a single `SaveSlot` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `SaveSlot`.
   """
-  review_insertMany(
-    """
-    List of data objects to insert into the table.
-    """
-    data: [Review_Data!]!
-  ): [Review_KeyOutput!]! @fdc_generated(from: "Review", purpose: INSERT_MULTIPLE)
-  """
-  ✨ Insert `User` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
-  """
-  user_insertMany(
-    """
-    List of data objects to insert into the table.
-    """
-    data: [User_Data!]!
-  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: INSERT_MULTIPLE)
-  """
-  ✨ Insert or update a single `Movie` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Movie`.
-  """
-  movie_upsert(
+  saveSlot_upsert(
     """
     Data object to insert or update if it already exists.
     """
-    data: Movie_Data!
-  ): Movie_KeyOutput! @fdc_generated(from: "Movie", purpose: UPSERT_SINGLE)
+    data: SaveSlot_Data!
+  ): SaveSlot_KeyOutput! @fdc_generated(from: "SaveSlot", purpose: UPSERT_SINGLE)
   """
-  ✨ Insert or update a single `MovieMetadata` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `MovieMetadata`.
+  ✨ Insert or update a single `UserProfile` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserProfile`.
   """
-  movieMetadata_upsert(
+  userProfile_upsert(
     """
     Data object to insert or update if it already exists.
     """
-    data: MovieMetadata_Data!
-  ): MovieMetadata_KeyOutput! @fdc_generated(from: "MovieMetadata", purpose: UPSERT_SINGLE)
+    data: UserProfile_Data!
+  ): UserProfile_KeyOutput! @fdc_generated(from: "UserProfile", purpose: UPSERT_SINGLE)
   """
-  ✨ Insert or update a single `Review` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Review`.
+  ✨ Insert or update `SaveSlot` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `SaveSlot`.
   """
-  review_upsert(
-    """
-    Data object to insert or update if it already exists.
-    """
-    data: Review_Data!
-  ): Review_KeyOutput! @fdc_generated(from: "Review", purpose: UPSERT_SINGLE)
-  """
-  ✨ Insert or update a single `User` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
-  """
-  user_upsert(
-    """
-    Data object to insert or update if it already exists.
-    """
-    data: User_Data!
-  ): User_KeyOutput! @fdc_generated(from: "User", purpose: UPSERT_SINGLE)
-  """
-  ✨ Insert or update `Movie` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Movie`.
-  """
-  movie_upsertMany(
+  saveSlot_upsertMany(
     """
     List of data objects to insert or update if it already exists.
     """
-    data: [Movie_Data!]!
-  ): [Movie_KeyOutput!]! @fdc_generated(from: "Movie", purpose: UPSERT_MULTIPLE)
+    data: [SaveSlot_Data!]!
+  ): [SaveSlot_KeyOutput!]! @fdc_generated(from: "SaveSlot", purpose: UPSERT_MULTIPLE)
   """
-  ✨ Insert or update `MovieMetadata` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `MovieMetadata`.
+  ✨ Insert or update `UserProfile` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserProfile`.
   """
-  movieMetadata_upsertMany(
+  userProfile_upsertMany(
     """
     List of data objects to insert or update if it already exists.
     """
-    data: [MovieMetadata_Data!]!
-  ): [MovieMetadata_KeyOutput!]! @fdc_generated(from: "MovieMetadata", purpose: UPSERT_MULTIPLE)
+    data: [UserProfile_Data!]!
+  ): [UserProfile_KeyOutput!]! @fdc_generated(from: "UserProfile", purpose: UPSERT_MULTIPLE)
   """
-  ✨ Insert or update `Review` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Review`.
+  ✨ Update a single `SaveSlot` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `SaveSlot` or `null` if not found.
   """
-  review_upsertMany(
-    """
-    List of data objects to insert or update if it already exists.
-    """
-    data: [Review_Data!]!
-  ): [Review_KeyOutput!]! @fdc_generated(from: "Review", purpose: UPSERT_MULTIPLE)
-  """
-  ✨ Insert or update `User` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
-  """
-  user_upsertMany(
-    """
-    List of data objects to insert or update if it already exists.
-    """
-    data: [User_Data!]!
-  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: UPSERT_MULTIPLE)
-  """
-  ✨ Update a single `Movie` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Movie` or `null` if not found.
-  """
-  movie_update(
-    """
-    The unique ID of the object.
-    """
-    id: UUID
-
+  saveSlot_update(
     """
     The key used to identify the object.
     """
-    key: Movie_Key
+    key: SaveSlot_Key
 
     """
     Fetch the first row based on the filters and ordering.
     """
-    first: Movie_FirstRow
+    first: SaveSlot_FirstRow
 
     """
     Data object containing fields to be updated.
     """
-    data: Movie_Data!
-  ): Movie_KeyOutput @fdc_generated(from: "Movie", purpose: UPDATE_SINGLE)
+    data: SaveSlot_Data!
+  ): SaveSlot_KeyOutput @fdc_generated(from: "SaveSlot", purpose: UPDATE_SINGLE)
   """
-  ✨ Update a single `MovieMetadata` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `MovieMetadata` or `null` if not found.
+  ✨ Update a single `UserProfile` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `UserProfile` or `null` if not found.
   """
-  movieMetadata_update(
-    """
-    The unique ID of the object.
-    """
-    id: UUID
-
-    """
-    The key used to identify the object.
-    """
-    key: MovieMetadata_Key
-
-    """
-    Fetch the first row based on the filters and ordering.
-    """
-    first: MovieMetadata_FirstRow
-
-    """
-    Data object containing fields to be updated.
-    """
-    data: MovieMetadata_Data!
-  ): MovieMetadata_KeyOutput @fdc_generated(from: "MovieMetadata", purpose: UPDATE_SINGLE)
-  """
-  ✨ Update a single `Review` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Review` or `null` if not found.
-  """
-  review_update(
-    """
-    The key used to identify the object.
-    """
-    key: Review_Key
-
-    """
-    Fetch the first row based on the filters and ordering.
-    """
-    first: Review_FirstRow
-
-    """
-    Data object containing fields to be updated.
-    """
-    data: Review_Data!
-  ): Review_KeyOutput @fdc_generated(from: "Review", purpose: UPDATE_SINGLE)
-  """
-  ✨ Update a single `User` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `User` or `null` if not found.
-  """
-  user_update(
+  userProfile_update(
     """
     The unique ID of the object.
     """
@@ -227,26 +107,26 @@ extend type Mutation {
     """
     The key used to identify the object.
     """
-    key: User_Key
+    key: UserProfile_Key
 
     """
     Fetch the first row based on the filters and ordering.
     """
-    first: User_FirstRow
+    first: UserProfile_FirstRow
 
     """
     Data object containing fields to be updated.
     """
-    data: User_Data!
-  ): User_KeyOutput @fdc_generated(from: "User", purpose: UPDATE_SINGLE)
+    data: UserProfile_Data!
+  ): UserProfile_KeyOutput @fdc_generated(from: "UserProfile", purpose: UPDATE_SINGLE)
   """
-  ✨ Update `Movie` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  ✨ Update `SaveSlot` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
   """
-  movie_updateMany(
+  saveSlot_updateMany(
     """
     Filter condition to specify which rows to update.
     """
-    where: Movie_Filter
+    where: SaveSlot_Filter
 
     """
     Set to true to update all rows.
@@ -256,16 +136,16 @@ extend type Mutation {
     """
     Data object containing fields to update.
     """
-    data: Movie_Data!
-  ): Int! @fdc_generated(from: "Movie", purpose: UPDATE_MULTIPLE)
+    data: SaveSlot_Data!
+  ): Int! @fdc_generated(from: "SaveSlot", purpose: UPDATE_MULTIPLE)
   """
-  ✨ Update `MovieMetadata` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  ✨ Update `UserProfile` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
   """
-  movieMetadata_updateMany(
+  userProfile_updateMany(
     """
     Filter condition to specify which rows to update.
     """
-    where: MovieMetadata_Filter
+    where: UserProfile_Filter
 
     """
     Set to true to update all rows.
@@ -275,102 +155,26 @@ extend type Mutation {
     """
     Data object containing fields to update.
     """
-    data: MovieMetadata_Data!
-  ): Int! @fdc_generated(from: "MovieMetadata", purpose: UPDATE_MULTIPLE)
+    data: UserProfile_Data!
+  ): Int! @fdc_generated(from: "UserProfile", purpose: UPDATE_MULTIPLE)
   """
-  ✨ Update `Review` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  ✨ Delete a single `SaveSlot` based on `id`, `key` or `first` and return its key (or `null` if not found).
   """
-  review_updateMany(
-    """
-    Filter condition to specify which rows to update.
-    """
-    where: Review_Filter
-
-    """
-    Set to true to update all rows.
-    """
-    all: Boolean = false
-
-    """
-    Data object containing fields to update.
-    """
-    data: Review_Data!
-  ): Int! @fdc_generated(from: "Review", purpose: UPDATE_MULTIPLE)
-  """
-  ✨ Update `User` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
-  """
-  user_updateMany(
-    """
-    Filter condition to specify which rows to update.
-    """
-    where: User_Filter
-
-    """
-    Set to true to update all rows.
-    """
-    all: Boolean = false
-
-    """
-    Data object containing fields to update.
-    """
-    data: User_Data!
-  ): Int! @fdc_generated(from: "User", purpose: UPDATE_MULTIPLE)
-  """
-  ✨ Delete a single `Movie` based on `id`, `key` or `first` and return its key (or `null` if not found).
-  """
-  movie_delete(
-    """
-    The unique ID of the object.
-    """
-    id: UUID
-
+  saveSlot_delete(
     """
     The key used to identify the object.
     """
-    key: Movie_Key
+    key: SaveSlot_Key
 
     """
     Fetch the first row based on the filters and ordering.
     """
-    first: Movie_FirstRow
-  ): Movie_KeyOutput @fdc_generated(from: "Movie", purpose: DELETE_SINGLE)
+    first: SaveSlot_FirstRow
+  ): SaveSlot_KeyOutput @fdc_generated(from: "SaveSlot", purpose: DELETE_SINGLE)
   """
-  ✨ Delete a single `MovieMetadata` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  ✨ Delete a single `UserProfile` based on `id`, `key` or `first` and return its key (or `null` if not found).
   """
-  movieMetadata_delete(
-    """
-    The unique ID of the object.
-    """
-    id: UUID
-
-    """
-    The key used to identify the object.
-    """
-    key: MovieMetadata_Key
-
-    """
-    Fetch the first row based on the filters and ordering.
-    """
-    first: MovieMetadata_FirstRow
-  ): MovieMetadata_KeyOutput @fdc_generated(from: "MovieMetadata", purpose: DELETE_SINGLE)
-  """
-  ✨ Delete a single `Review` based on `id`, `key` or `first` and return its key (or `null` if not found).
-  """
-  review_delete(
-    """
-    The key used to identify the object.
-    """
-    key: Review_Key
-
-    """
-    Fetch the first row based on the filters and ordering.
-    """
-    first: Review_FirstRow
-  ): Review_KeyOutput @fdc_generated(from: "Review", purpose: DELETE_SINGLE)
-  """
-  ✨ Delete a single `User` based on `id`, `key` or `first` and return its key (or `null` if not found).
-  """
-  user_delete(
+  userProfile_delete(
     """
     The unique ID of the object.
     """
@@ -384,67 +188,39 @@ extend type Mutation {
     """
     The key used to identify the object.
     """
-    key: User_Key
+    key: UserProfile_Key
 
     """
     Fetch the first row based on the filters and ordering.
     """
-    first: User_FirstRow
-  ): User_KeyOutput @fdc_generated(from: "User", purpose: DELETE_SINGLE)
+    first: UserProfile_FirstRow
+  ): UserProfile_KeyOutput @fdc_generated(from: "UserProfile", purpose: DELETE_SINGLE)
   """
-  ✨ Delete `Movie` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  ✨ Delete `SaveSlot` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
   """
-  movie_deleteMany(
+  saveSlot_deleteMany(
     """
     Filter condition to specify which rows to delete.
     """
-    where: Movie_Filter
+    where: SaveSlot_Filter
 
     """
     Set to true to delete all rows.
     """
     all: Boolean = false
-  ): Int! @fdc_generated(from: "Movie", purpose: DELETE_MULTIPLE)
+  ): Int! @fdc_generated(from: "SaveSlot", purpose: DELETE_MULTIPLE)
   """
-  ✨ Delete `MovieMetadata` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  ✨ Delete `UserProfile` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
   """
-  movieMetadata_deleteMany(
+  userProfile_deleteMany(
     """
     Filter condition to specify which rows to delete.
     """
-    where: MovieMetadata_Filter
+    where: UserProfile_Filter
 
     """
     Set to true to delete all rows.
     """
     all: Boolean = false
-  ): Int! @fdc_generated(from: "MovieMetadata", purpose: DELETE_MULTIPLE)
-  """
-  ✨ Delete `Review` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
-  """
-  review_deleteMany(
-    """
-    Filter condition to specify which rows to delete.
-    """
-    where: Review_Filter
-
-    """
-    Set to true to delete all rows.
-    """
-    all: Boolean = false
-  ): Int! @fdc_generated(from: "Review", purpose: DELETE_MULTIPLE)
-  """
-  ✨ Delete `User` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
-  """
-  user_deleteMany(
-    """
-    Filter condition to specify which rows to delete.
-    """
-    where: User_Filter
-
-    """
-    Set to true to delete all rows.
-    """
-    all: Boolean = false
-  ): Int! @fdc_generated(from: "User", purpose: DELETE_MULTIPLE)
+  ): Int! @fdc_generated(from: "UserProfile", purpose: DELETE_MULTIPLE)
 }

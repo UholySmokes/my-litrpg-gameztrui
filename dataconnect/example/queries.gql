@@ -1,78 +1,65 @@
-# Example queries for a simple movie app.
+# LitRPG persistence queries.
 
-# @auth() directives control who can call each operation.
-# Anyone should be able to list all movies, so the auth level is set to PUBLIC
-query ListMovies @auth(level: PUBLIC, insecureReason: "Anyone can list all movies.") {
-  movies {
+query ListMySaveSlots @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
     id
-    title
-    imageUrl
-    genre
-  }
-}
-
-# List all users, only admins should be able to list all users, so we use NO_ACCESS
-query ListUsers @auth(level: NO_ACCESS) {
-  users {
-    id
-    username
-  }
-}
-
-# Logged in users can list all their reviews and movie titles associated with the review
-# Since the query uses the uid of the current authenticated user, we set auth level to USER
-query ListUserReviews @auth(level: USER) {
-  user(key: { id_expr: "auth.uid" }) {
-    id
-    username
-    # <field>_on_<foreign_key_field> makes it easy to grab info from another table
-    # Here, we use it to grab all the reviews written by the user.
-    reviews: reviews_on_user {
-      rating
-      reviewDate
-      reviewText
-      movie {
-        id
-        title
-      }
+    displayName
+    saveSlots: saveSlots_on_user {
+      id
+      saveName
+      playerName
+      playerLevel
+      worldId
+      locationId
+      turnCount
+      contentVersion
+      stateVersion
+      runId
+      seq
+      tick
+      stateHash
+      createdAt
+      updatedAt
     }
   }
 }
 
-# Get movie by id
-query GetMovieById($id: UUID!) @auth(level: PUBLIC, insecureReason: "Anyone can get a movie by id.") {
-  movie(id: $id) {
+query GetMySaveSlot($id: UUID!) @auth(level: USER) {
+  saveSlot(key: { id: $id, userId_expr: "auth.uid" }) {
     id
-    title
-    imageUrl
-    genre
-    metadata: movieMetadata_on_movie {
-      rating
-      releaseYear
-      description
-    }
-    reviews: reviews_on_movie {
-      reviewText
-      reviewDate
-      rating
-      user {
-        id
-        username
-      }
-    }
+    saveName
+    gameStateJson
+    playerName
+    playerLevel
+    worldId
+    locationId
+    turnCount
+    contentVersion
+    stateVersion
+    runId
+    seq
+    tick
+    stateHash
+    createdAt
+    updatedAt
   }
 }
 
-# Search for movies, actors, and reviews
-query SearchMovie($titleInput: String, $genre: String) @auth(level: PUBLIC, insecureReason: "Anyone can search for movies.") {
-  movies(
-    where: {
-      _and: [{ genre: { eq: $genre } }, { title: { contains: $titleInput } }]
-    }
-  ) {
+query ListMyRunSnapshots($runId: String!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
     id
-    title
-    genre
-    imageUrl
+    snapshots: saveSlots_on_user(where: { runId: { eq: $runId } }) {
+      id
+      saveName
+      playerName
+      playerLevel
+      worldId
+      locationId
+      turnCount
+      seq
+      tick
+      stateHash
+      updatedAt
+    }
   }
 }

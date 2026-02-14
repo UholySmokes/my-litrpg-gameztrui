@@ -8,178 +8,178 @@ export type Int64String = string;
 export type DateString = string;
 
 
-export interface AddReviewData {
-  review_upsert: Review_Key;
+export interface CreateSaveSlotData {
+  saveSlot_insert: SaveSlot_Key;
 }
 
-export interface AddReviewVariables {
-  movieId: UUIDString;
-  rating: number;
-  reviewText: string;
+export interface CreateSaveSlotVariables {
+  saveName: string;
+  gameStateJson: string;
+  playerName: string;
+  playerLevel: number;
+  worldId: string;
+  locationId: string;
+  turnCount: number;
+  contentVersion?: string | null;
+  stateVersion?: number | null;
+  runId?: string | null;
+  seq?: number | null;
+  tick?: number | null;
+  stateHash?: string | null;
 }
 
-export interface CreateMovieData {
-  movie_insert: Movie_Key;
+export interface DeleteSaveSlotData {
+  saveSlot_delete?: SaveSlot_Key | null;
 }
 
-export interface CreateMovieVariables {
-  title: string;
-  genre: string;
-  imageUrl: string;
-}
-
-export interface DeleteReviewData {
-  review_delete?: Review_Key | null;
-}
-
-export interface DeleteReviewVariables {
-  movieId: UUIDString;
-}
-
-export interface GetMovieByIdData {
-  movie?: {
-    id: UUIDString;
-    title: string;
-    imageUrl: string;
-    genre?: string | null;
-    metadata?: {
-      rating?: number | null;
-      releaseYear?: number | null;
-      description?: string | null;
-    };
-      reviews: ({
-        reviewText?: string | null;
-        reviewDate: DateString;
-        rating?: number | null;
-        user: {
-          id: string;
-          username: string;
-        } & User_Key;
-      })[];
-  } & Movie_Key;
-}
-
-export interface GetMovieByIdVariables {
+export interface DeleteSaveSlotVariables {
   id: UUIDString;
 }
 
-export interface ListMoviesData {
-  movies: ({
+export interface GetMySaveSlotData {
+  saveSlot?: {
     id: UUIDString;
-    title: string;
-    imageUrl: string;
-    genre?: string | null;
-  } & Movie_Key)[];
+    saveName: string;
+    gameStateJson: string;
+    playerName: string;
+    playerLevel: number;
+    worldId: string;
+    locationId: string;
+    turnCount: number;
+    contentVersion?: string | null;
+    stateVersion?: number | null;
+    runId?: string | null;
+    seq?: number | null;
+    tick?: number | null;
+    stateHash?: string | null;
+    createdAt: DateString;
+    updatedAt: DateString;
+  };
 }
 
-export interface ListUserReviewsData {
-  user?: {
+export interface GetMySaveSlotVariables {
+  id: UUIDString;
+}
+
+export interface ListMyRunSnapshotsData {
+  userProfile?: {
     id: string;
-    username: string;
-    reviews: ({
-      rating?: number | null;
-      reviewDate: DateString;
-      reviewText?: string | null;
-      movie: {
-        id: UUIDString;
-        title: string;
-      } & Movie_Key;
+    snapshots: ({
+      id: UUIDString;
+      saveName: string;
+      playerName: string;
+      playerLevel: number;
+      worldId: string;
+      locationId: string;
+      turnCount: number;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      updatedAt: DateString;
     })[];
-  } & User_Key;
+  } & UserProfile_Key;
 }
 
-export interface ListUsersData {
-  users: ({
+export interface ListMyRunSnapshotsVariables {
+  runId: string;
+}
+
+export interface ListMySaveSlotsData {
+  userProfile?: {
     id: string;
-    username: string;
-  } & User_Key)[];
+    displayName?: string | null;
+    saveSlots: ({
+      id: UUIDString;
+      saveName: string;
+      playerName: string;
+      playerLevel: number;
+      worldId: string;
+      locationId: string;
+      turnCount: number;
+      contentVersion?: string | null;
+      stateVersion?: number | null;
+      runId?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    })[];
+  } & UserProfile_Key;
 }
 
-export interface MovieMetadata_Key {
+export interface SaveSlot_Key {
   id: UUIDString;
-  __typename?: 'MovieMetadata_Key';
-}
-
-export interface Movie_Key {
-  id: UUIDString;
-  __typename?: 'Movie_Key';
-}
-
-export interface Review_Key {
   userId: string;
-  movieId: UUIDString;
-  __typename?: 'Review_Key';
+  __typename?: 'SaveSlot_Key';
 }
 
-export interface SearchMovieData {
-  movies: ({
-    id: UUIDString;
-    title: string;
-    genre?: string | null;
-    imageUrl: string;
-  } & Movie_Key)[];
+export interface UpsertMyProfileData {
+  userProfile_upsert: UserProfile_Key;
 }
 
-export interface SearchMovieVariables {
-  titleInput?: string | null;
-  genre?: string | null;
+export interface UpsertMyProfileVariables {
+  displayName: string;
 }
 
-export interface UpsertUserData {
-  user_upsert: User_Key;
+export interface UpsertSaveSlotData {
+  saveSlot_upsert: SaveSlot_Key;
 }
 
-export interface UpsertUserVariables {
-  username: string;
+export interface UpsertSaveSlotVariables {
+  id: UUIDString;
+  saveName: string;
+  gameStateJson: string;
+  playerName: string;
+  playerLevel: number;
+  worldId: string;
+  locationId: string;
+  turnCount: number;
+  contentVersion?: string | null;
+  stateVersion?: number | null;
+  runId?: string | null;
+  seq?: number | null;
+  tick?: number | null;
+  stateHash?: string | null;
 }
 
-export interface User_Key {
+export interface UserProfile_Key {
   id: string;
-  __typename?: 'User_Key';
+  __typename?: 'UserProfile_Key';
 }
 
-/** Generated Node Admin SDK operation action function for the 'CreateMovie' Mutation. Allow users to execute without passing in DataConnect. */
-export function createMovie(dc: DataConnect, vars: CreateMovieVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateMovieData>>;
-/** Generated Node Admin SDK operation action function for the 'CreateMovie' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createMovie(vars: CreateMovieVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateMovieData>>;
+/** Generated Node Admin SDK operation action function for the 'ListMySaveSlots' Query. Allow users to execute without passing in DataConnect. */
+export function listMySaveSlots(dc: DataConnect, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMySaveSlotsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListMySaveSlots' Query. Allow users to pass in custom DataConnect instances. */
+export function listMySaveSlots(options?: OperationOptions): Promise<ExecuteOperationResponse<ListMySaveSlotsData>>;
 
-/** Generated Node Admin SDK operation action function for the 'UpsertUser' Mutation. Allow users to execute without passing in DataConnect. */
-export function upsertUser(dc: DataConnect, vars: UpsertUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertUserData>>;
-/** Generated Node Admin SDK operation action function for the 'UpsertUser' Mutation. Allow users to pass in custom DataConnect instances. */
-export function upsertUser(vars: UpsertUserVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertUserData>>;
+/** Generated Node Admin SDK operation action function for the 'GetMySaveSlot' Query. Allow users to execute without passing in DataConnect. */
+export function getMySaveSlot(dc: DataConnect, vars: GetMySaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMySaveSlotData>>;
+/** Generated Node Admin SDK operation action function for the 'GetMySaveSlot' Query. Allow users to pass in custom DataConnect instances. */
+export function getMySaveSlot(vars: GetMySaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMySaveSlotData>>;
 
-/** Generated Node Admin SDK operation action function for the 'AddReview' Mutation. Allow users to execute without passing in DataConnect. */
-export function addReview(dc: DataConnect, vars: AddReviewVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddReviewData>>;
-/** Generated Node Admin SDK operation action function for the 'AddReview' Mutation. Allow users to pass in custom DataConnect instances. */
-export function addReview(vars: AddReviewVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<AddReviewData>>;
+/** Generated Node Admin SDK operation action function for the 'ListMyRunSnapshots' Query. Allow users to execute without passing in DataConnect. */
+export function listMyRunSnapshots(dc: DataConnect, vars: ListMyRunSnapshotsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMyRunSnapshotsData>>;
+/** Generated Node Admin SDK operation action function for the 'ListMyRunSnapshots' Query. Allow users to pass in custom DataConnect instances. */
+export function listMyRunSnapshots(vars: ListMyRunSnapshotsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMyRunSnapshotsData>>;
 
-/** Generated Node Admin SDK operation action function for the 'DeleteReview' Mutation. Allow users to execute without passing in DataConnect. */
-export function deleteReview(dc: DataConnect, vars: DeleteReviewVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteReviewData>>;
-/** Generated Node Admin SDK operation action function for the 'DeleteReview' Mutation. Allow users to pass in custom DataConnect instances. */
-export function deleteReview(vars: DeleteReviewVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteReviewData>>;
+/** Generated Node Admin SDK operation action function for the 'UpsertMyProfile' Mutation. Allow users to execute without passing in DataConnect. */
+export function upsertMyProfile(dc: DataConnect, vars: UpsertMyProfileVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertMyProfileData>>;
+/** Generated Node Admin SDK operation action function for the 'UpsertMyProfile' Mutation. Allow users to pass in custom DataConnect instances. */
+export function upsertMyProfile(vars: UpsertMyProfileVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertMyProfileData>>;
 
-/** Generated Node Admin SDK operation action function for the 'ListMovies' Query. Allow users to execute without passing in DataConnect. */
-export function listMovies(dc: DataConnect, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMoviesData>>;
-/** Generated Node Admin SDK operation action function for the 'ListMovies' Query. Allow users to pass in custom DataConnect instances. */
-export function listMovies(options?: OperationOptions): Promise<ExecuteOperationResponse<ListMoviesData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
+export function createSaveSlot(dc: DataConnect, vars: CreateSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSaveSlotData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createSaveSlot(vars: CreateSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSaveSlotData>>;
 
-/** Generated Node Admin SDK operation action function for the 'ListUsers' Query. Allow users to execute without passing in DataConnect. */
-export function listUsers(dc: DataConnect, options?: OperationOptions): Promise<ExecuteOperationResponse<ListUsersData>>;
-/** Generated Node Admin SDK operation action function for the 'ListUsers' Query. Allow users to pass in custom DataConnect instances. */
-export function listUsers(options?: OperationOptions): Promise<ExecuteOperationResponse<ListUsersData>>;
+/** Generated Node Admin SDK operation action function for the 'UpsertSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
+export function upsertSaveSlot(dc: DataConnect, vars: UpsertSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertSaveSlotData>>;
+/** Generated Node Admin SDK operation action function for the 'UpsertSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
+export function upsertSaveSlot(vars: UpsertSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertSaveSlotData>>;
 
-/** Generated Node Admin SDK operation action function for the 'ListUserReviews' Query. Allow users to execute without passing in DataConnect. */
-export function listUserReviews(dc: DataConnect, options?: OperationOptions): Promise<ExecuteOperationResponse<ListUserReviewsData>>;
-/** Generated Node Admin SDK operation action function for the 'ListUserReviews' Query. Allow users to pass in custom DataConnect instances. */
-export function listUserReviews(options?: OperationOptions): Promise<ExecuteOperationResponse<ListUserReviewsData>>;
-
-/** Generated Node Admin SDK operation action function for the 'GetMovieById' Query. Allow users to execute without passing in DataConnect. */
-export function getMovieById(dc: DataConnect, vars: GetMovieByIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMovieByIdData>>;
-/** Generated Node Admin SDK operation action function for the 'GetMovieById' Query. Allow users to pass in custom DataConnect instances. */
-export function getMovieById(vars: GetMovieByIdVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMovieByIdData>>;
-
-/** Generated Node Admin SDK operation action function for the 'SearchMovie' Query. Allow users to execute without passing in DataConnect. */
-export function searchMovie(dc: DataConnect, vars?: SearchMovieVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SearchMovieData>>;
-/** Generated Node Admin SDK operation action function for the 'SearchMovie' Query. Allow users to pass in custom DataConnect instances. */
-export function searchMovie(vars?: SearchMovieVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<SearchMovieData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteSaveSlot(dc: DataConnect, vars: DeleteSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteSaveSlotData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteSaveSlot(vars: DeleteSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteSaveSlotData>>;
 

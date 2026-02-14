@@ -1,60 +1,22 @@
 extend type Query {
   """
-  ✨ Look up a single `Movie` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  ✨ Look up a single `SaveSlot` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
   """
-  movie(
-    """
-    The unique ID of the object.
-    """
-    id: UUID
-
+  saveSlot(
     """
     The key used to identify the object.
     """
-    key: Movie_Key
+    key: SaveSlot_Key
 
     """
     Fetch the first row based on the filters and ordering.
     """
-    first: Movie_FirstRow
-  ): Movie @fdc_generated(from: "Movie", purpose: QUERY_SINGLE)
+    first: SaveSlot_FirstRow
+  ): SaveSlot @fdc_generated(from: "SaveSlot", purpose: QUERY_SINGLE)
   """
-  ✨ Look up a single `MovieMetadata` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  ✨ Look up a single `UserProfile` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
   """
-  movieMetadata(
-    """
-    The unique ID of the object.
-    """
-    id: UUID
-
-    """
-    The key used to identify the object.
-    """
-    key: MovieMetadata_Key
-
-    """
-    Fetch the first row based on the filters and ordering.
-    """
-    first: MovieMetadata_FirstRow
-  ): MovieMetadata @fdc_generated(from: "MovieMetadata", purpose: QUERY_SINGLE)
-  """
-  ✨ Look up a single `Review` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
-  """
-  review(
-    """
-    The key used to identify the object.
-    """
-    key: Review_Key
-
-    """
-    Fetch the first row based on the filters and ordering.
-    """
-    first: Review_FirstRow
-  ): Review @fdc_generated(from: "Review", purpose: QUERY_SINGLE)
-  """
-  ✨ Look up a single `User` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
-  """
-  user(
+  userProfile(
     """
     The unique ID of the object.
     """
@@ -68,26 +30,26 @@ extend type Query {
     """
     The key used to identify the object.
     """
-    key: User_Key
+    key: UserProfile_Key
 
     """
     Fetch the first row based on the filters and ordering.
     """
-    first: User_FirstRow
-  ): User @fdc_generated(from: "User", purpose: QUERY_SINGLE)
+    first: UserProfile_FirstRow
+  ): UserProfile @fdc_generated(from: "UserProfile", purpose: QUERY_SINGLE)
   """
-  ✨ List `Movie` objects in the table and return selected fields, optionally filtered by `where` conditions
+  ✨ List `SaveSlot` objects in the table and return selected fields, optionally filtered by `where` conditions
   """
-  movies(
+  saveSlots(
     """
     Filter condition to narrow down the query results.
     """
-    where: Movie_Filter
+    where: SaveSlot_Filter
 
     """
     Order the query results by specific fields.
     """
-    orderBy: [Movie_Order!]
+    orderBy: [SaveSlot_Order!]
 
     """
     Number of rows to skip before starting to return the results.
@@ -107,21 +69,21 @@ extend type Query {
     """
     Filter condition to apply to the groups of aggregate queries.
     """
-    having: Movie_Having
-  ): [Movie!]! @fdc_generated(from: "Movie", purpose: QUERY_MULTIPLE)
+    having: SaveSlot_Having
+  ): [SaveSlot!]! @fdc_generated(from: "SaveSlot", purpose: QUERY_MULTIPLE)
   """
-  ✨ List `MovieMetadata` objects in the table and return selected fields, optionally filtered by `where` conditions
+  ✨ List `UserProfile` objects in the table and return selected fields, optionally filtered by `where` conditions
   """
-  movieMetadatas(
+  userProfiles(
     """
     Filter condition to narrow down the query results.
     """
-    where: MovieMetadata_Filter
+    where: UserProfile_Filter
 
     """
     Order the query results by specific fields.
     """
-    orderBy: [MovieMetadata_Order!]
+    orderBy: [UserProfile_Order!]
 
     """
     Number of rows to skip before starting to return the results.
@@ -141,74 +103,6 @@ extend type Query {
     """
     Filter condition to apply to the groups of aggregate queries.
     """
-    having: MovieMetadata_Having
-  ): [MovieMetadata!]! @fdc_generated(from: "MovieMetadata", purpose: QUERY_MULTIPLE)
-  """
-  ✨ List `Review` objects in the table and return selected fields, optionally filtered by `where` conditions
-  """
-  reviews(
-    """
-    Filter condition to narrow down the query results.
-    """
-    where: Review_Filter
-
-    """
-    Order the query results by specific fields.
-    """
-    orderBy: [Review_Order!]
-
-    """
-    Number of rows to skip before starting to return the results.
-    """
-    offset: Int
-
-    """
-    Maximum number of rows to return (defaults to 100 rows).
-    """
-    limit: Int = 100
-
-    """
-    Set to true to return distinct results.
-    """
-    distinct: Boolean = false
-
-    """
-    Filter condition to apply to the groups of aggregate queries.
-    """
-    having: Review_Having
-  ): [Review!]! @fdc_generated(from: "Review", purpose: QUERY_MULTIPLE)
-  """
-  ✨ List `User` objects in the table and return selected fields, optionally filtered by `where` conditions
-  """
-  users(
-    """
-    Filter condition to narrow down the query results.
-    """
-    where: User_Filter
-
-    """
-    Order the query results by specific fields.
-    """
-    orderBy: [User_Order!]
-
-    """
-    Number of rows to skip before starting to return the results.
-    """
-    offset: Int
-
-    """
-    Maximum number of rows to return (defaults to 100 rows).
-    """
-    limit: Int = 100
-
-    """
-    Set to true to return distinct results.
-    """
-    distinct: Boolean = false
-
-    """
-    Filter condition to apply to the groups of aggregate queries.
-    """
-    having: User_Having
-  ): [User!]! @fdc_generated(from: "User", purpose: QUERY_MULTIPLE)
+    having: UserProfile_Having
+  ): [UserProfile!]! @fdc_generated(from: "UserProfile", purpose: QUERY_MULTIPLE)
 }

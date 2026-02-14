@@ -1,660 +1,306 @@
 """
-✨ `Movie_KeyOutput` returns the primary key fields of table type `Movie`.
+✨ `SaveSlot_KeyOutput` returns the primary key fields of table type `SaveSlot`.
 
-It has the same format as `Movie_Key`, but is only used as mutation return value.
+It has the same format as `SaveSlot_Key`, but is only used as mutation return value.
 """
-scalar Movie_KeyOutput
+scalar SaveSlot_KeyOutput
 """
-✨ `MovieMetadata_KeyOutput` returns the primary key fields of table type `MovieMetadata`.
+✨ `UserProfile_KeyOutput` returns the primary key fields of table type `UserProfile`.
 
-It has the same format as `MovieMetadata_Key`, but is only used as mutation return value.
+It has the same format as `UserProfile_Key`, but is only used as mutation return value.
 """
-scalar MovieMetadata_KeyOutput
+scalar UserProfile_KeyOutput
 """
-✨ `Review_KeyOutput` returns the primary key fields of table type `Review`.
-
-It has the same format as `Review_Key`, but is only used as mutation return value.
+✨ Generated data input type for table 'SaveSlot'. It includes all necessary fields for creating or upserting rows into table.
 """
-scalar Review_KeyOutput
-"""
-✨ `User_KeyOutput` returns the primary key fields of table type `User`.
-
-It has the same format as `User_Key`, but is only used as mutation return value.
-"""
-scalar User_KeyOutput
-"""
-✨ Generated data input type for table 'Movie'. It includes all necessary fields for creating or upserting rows into table.
-"""
-input Movie_Data {
+input SaveSlot_Data {
   """
-  ✨ Generated from Field `Movie`.`id` of type `UUID!`
+  ✨ Generated from Field `SaveSlot`.`id` of type `UUID!`
   """
   id: UUID
   """
-  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Movie`.`id` of type `UUID!`)
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `SaveSlot`.`id` of type `UUID!`)
   """
   id_expr: UUID_Expr
   """
-  ✨ Generated from Field `Movie`.`genre` of type `String`
-  """
-  genre: String
-  """
-  ✨ `_expr` server value variant of `genre` (✨ Generated from Field `Movie`.`genre` of type `String`)
-  """
-  genre_expr: String_Expr
-  """
-  ✨ Generated from Field `Movie`.`imageUrl` of type `String!`
-  """
-  imageUrl: String
-  """
-  ✨ `_expr` server value variant of `imageUrl` (✨ Generated from Field `Movie`.`imageUrl` of type `String!`)
-  """
-  imageUrl_expr: String_Expr
-  """
-  ✨ Generated from Field `Movie`.`title` of type `String!`
-  """
-  title: String
-  """
-  ✨ `_expr` server value variant of `title` (✨ Generated from Field `Movie`.`title` of type `String!`)
-  """
-  title_expr: String_Expr
-}
-"""
-✨ Generated filter input type for table 'Movie'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
-"""
-input Movie_Filter {
-  """
-  Apply multiple filter conditions using `AND` logic.
-  """
-  _and: [Movie_Filter!]
-  """
-  Negate the result of the provided filter condition.
-  """
-  _not: Movie_Filter
-  """
-  Apply multiple filter conditions using `OR` logic.
-  """
-  _or: [Movie_Filter!]
-  """
-  ✨ Generated from Field `Movie`.`id` of type `UUID!`
-  """
-  id: UUID_Filter
-  """
-  ✨ Generated from Field `Movie`.`genre` of type `String`
-  """
-  genre: String_Filter
-  """
-  ✨ Generated from Field `Movie`.`imageUrl` of type `String!`
-  """
-  imageUrl: String_Filter
-  """
-  ✨ Generated from Field `Movie`.`title` of type `String!`
-  """
-  title: String_Filter
-  """
-  ✨ Generated from Field `Movie`.`reviews_on_movie` of type `[Review!]!`
-  """
-  reviews_on_movie: Review_ListFilter
-  """
-  ✨ Generated from Field `Movie`.`movieMetadata_on_movie` of type `MovieMetadata`
-  """
-  movieMetadata_on_movie: MovieMetadata_Filter
-  """
-  ✨ Generated from Field `Movie`.`users_via_Review` of type `[User!]!`
-  """
-  users_via_Review: User_ListFilter
-}
-"""
-✨ Generated first-row input type for table 'Movie'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
-"""
-input Movie_FirstRow {
-  """
-  Order the result by the specified fields.
-  """
-  orderBy: [Movie_Order!]
-  """
-  Filters rows based on the specified conditions.
-  """
-  where: Movie_Filter
-}
-"""
-✨ Generated having input type for table 'Movie'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
-"""
-input Movie_Having {
-  """
-  Apply multiple Having conditions using `AND` logic.
-  """
-  _and: [Movie_Having!]
-  """
-  Whether to apply DISTINCT to the aggregate function.
-  """
-  _distinct: Boolean
-  """
-  Negate the result of the provided Having condition.
-  """
-  _not: Movie_Having
-  """
-  Apply multiple Having conditions using `OR` logic.
-  """
-  _or: [Movie_Having!]
-  """
-  ✨ Generated from Field `Movie`.`_count` of type `Int!`
-  """
-  _count: Int_Filter
-  """
-  ✨ Generated from Field `Movie`.`genre_count` of type `Int!`
-  """
-  genre_count: Int_Filter
-  """
-  ✨ Generated from Field `Movie`.`id_count` of type `Int!`
-  """
-  id_count: Int_Filter
-  """
-  ✨ Generated from Field `Movie`.`imageUrl_count` of type `Int!`
-  """
-  imageUrl_count: Int_Filter
-  """
-  ✨ Generated from Field `Movie`.`title_count` of type `Int!`
-  """
-  title_count: Int_Filter
-}
-"""
-✨ Generated key input type for table 'Movie'. It represents the primary key fields used to uniquely identify a row in the table.
-"""
-input Movie_Key {
-  """
-  ✨ Generated from Field `Movie`.`id` of type `UUID!`
-  """
-  id: UUID
-  """
-  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Movie`.`id` of type `UUID!`)
-  """
-  id_expr: UUID_Expr
-}
-"""
-✨ Generated list filter input type for table 'Movie'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
-"""
-input Movie_ListFilter {
-  """
-  The desired number of objects that match the condition (defaults to at least one).
-  """
-  count: Int_Filter = {gt:0}
-  """
-  Condition of the related objects to filter for.
-  """
-  exist: Movie_Filter
-}
-"""
-✨ Generated order input type for table 'Movie'. This input defines the sorting order of rows in query results based on one or more fields.
-"""
-input Movie_Order {
-  """
-  ✨ Generated from Field `Movie`.`id` of type `UUID!`
-  """
-  id: OrderDirection
-  """
-  ✨ Generated from Field `Movie`.`genre` of type `String`
-  """
-  genre: OrderDirection
-  """
-  ✨ Generated from Field `Movie`.`imageUrl` of type `String!`
-  """
-  imageUrl: OrderDirection
-  """
-  ✨ Generated from Field `Movie`.`title` of type `String!`
-  """
-  title: OrderDirection
-  """
-  ✨ Generated from Field `Movie`.`_count` of type `Int!`
-  """
-  _count: OrderDirection
-  """
-  ✨ Generated from Field `Movie`.`genre_count` of type `Int!`
-  """
-  genre_count: OrderDirection
-  """
-  ✨ Generated from Field `Movie`.`id_count` of type `Int!`
-  """
-  id_count: OrderDirection
-  """
-  ✨ Generated from Field `Movie`.`imageUrl_count` of type `Int!`
-  """
-  imageUrl_count: OrderDirection
-  """
-  ✨ Generated from Field `Movie`.`title_count` of type `Int!`
-  """
-  title_count: OrderDirection
-}
-"""
-✨ Generated data input type for table 'MovieMetadata'. It includes all necessary fields for creating or upserting rows into table.
-"""
-input MovieMetadata_Data {
-  """
-  ✨ Generated from Field `MovieMetadata`.`id` of type `UUID!`
-  """
-  id: UUID
-  """
-  ✨ `_expr` server value variant of `id` (✨ Generated from Field `MovieMetadata`.`id` of type `UUID!`)
-  """
-  id_expr: UUID_Expr
-  """
-  ✨ Generated from Field `MovieMetadata`.`movieId` of type `UUID!`
-  """
-  movieId: UUID
-  """
-  ✨ `_expr` server value variant of `movieId` (✨ Generated from Field `MovieMetadata`.`movieId` of type `UUID!`)
-  """
-  movieId_expr: UUID_Expr
-  """
-  ✨ Generated from Field `MovieMetadata`.`movie` of type `Movie!`
-  """
-  movie: Movie_Key
-  """
-  ✨ Generated from Field `MovieMetadata`.`description` of type `String`
-  """
-  description: String
-  """
-  ✨ `_expr` server value variant of `description` (✨ Generated from Field `MovieMetadata`.`description` of type `String`)
-  """
-  description_expr: String_Expr
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating` of type `Float`
-  """
-  rating: Float
-  """
-  ✨ `_expr` server value variant of `rating` (✨ Generated from Field `MovieMetadata`.`rating` of type `Float`)
-  """
-  rating_expr: Float_Expr
-  """
-  ✨ `_update` server value variant of `rating` (✨ Generated from Field `MovieMetadata`.`rating` of type `Float`)
-  """
-  rating_update: [Float_Update!]
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear` of type `Int`
-  """
-  releaseYear: Int
-  """
-  ✨ `_expr` server value variant of `releaseYear` (✨ Generated from Field `MovieMetadata`.`releaseYear` of type `Int`)
-  """
-  releaseYear_expr: Int_Expr
-  """
-  ✨ `_update` server value variant of `releaseYear` (✨ Generated from Field `MovieMetadata`.`releaseYear` of type `Int`)
-  """
-  releaseYear_update: [Int_Update!]
-}
-"""
-✨ Generated filter input type for table 'MovieMetadata'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
-"""
-input MovieMetadata_Filter {
-  """
-  Apply multiple filter conditions using `AND` logic.
-  """
-  _and: [MovieMetadata_Filter!]
-  """
-  Negate the result of the provided filter condition.
-  """
-  _not: MovieMetadata_Filter
-  """
-  Apply multiple filter conditions using `OR` logic.
-  """
-  _or: [MovieMetadata_Filter!]
-  """
-  ✨ Generated from Field `MovieMetadata`.`id` of type `UUID!`
-  """
-  id: UUID_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`movieId` of type `UUID!`
-  """
-  movieId: UUID_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`movie` of type `Movie!`
-  """
-  movie: Movie_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`description` of type `String`
-  """
-  description: String_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating` of type `Float`
-  """
-  rating: Float_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear` of type `Int`
-  """
-  releaseYear: Int_Filter
-}
-"""
-✨ Generated first-row input type for table 'MovieMetadata'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
-"""
-input MovieMetadata_FirstRow {
-  """
-  Order the result by the specified fields.
-  """
-  orderBy: [MovieMetadata_Order!]
-  """
-  Filters rows based on the specified conditions.
-  """
-  where: MovieMetadata_Filter
-}
-"""
-✨ Generated having input type for table 'MovieMetadata'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
-"""
-input MovieMetadata_Having {
-  """
-  Apply multiple Having conditions using `AND` logic.
-  """
-  _and: [MovieMetadata_Having!]
-  """
-  Whether to apply DISTINCT to the aggregate function.
-  """
-  _distinct: Boolean
-  """
-  Negate the result of the provided Having condition.
-  """
-  _not: MovieMetadata_Having
-  """
-  Apply multiple Having conditions using `OR` logic.
-  """
-  _or: [MovieMetadata_Having!]
-  """
-  ✨ Generated from Field `MovieMetadata`.`_count` of type `Int!`
-  """
-  _count: Int_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`description_count` of type `Int!`
-  """
-  description_count: Int_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`id_count` of type `Int!`
-  """
-  id_count: Int_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`movieId_count` of type `Int!`
-  """
-  movieId_count: Int_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_count` of type `Int!`
-  """
-  rating_count: Int_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_count` of type `Int!`
-  """
-  releaseYear_count: Int_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_sum` of type `Float`
-  """
-  rating_sum: Float_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_sum` of type `Int`
-  """
-  releaseYear_sum: Int_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_avg` of type `Float`
-  """
-  rating_avg: Float_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_avg` of type `Float`
-  """
-  releaseYear_avg: Float_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_min` of type `Float`
-  """
-  rating_min: Float_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_min` of type `Int`
-  """
-  releaseYear_min: Int_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_max` of type `Float`
-  """
-  rating_max: Float_Filter
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_max` of type `Int`
-  """
-  releaseYear_max: Int_Filter
-}
-"""
-✨ Generated key input type for table 'MovieMetadata'. It represents the primary key fields used to uniquely identify a row in the table.
-"""
-input MovieMetadata_Key {
-  """
-  ✨ Generated from Field `MovieMetadata`.`id` of type `UUID!`
-  """
-  id: UUID
-  """
-  ✨ `_expr` server value variant of `id` (✨ Generated from Field `MovieMetadata`.`id` of type `UUID!`)
-  """
-  id_expr: UUID_Expr
-}
-"""
-✨ Generated list filter input type for table 'MovieMetadata'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
-"""
-input MovieMetadata_ListFilter {
-  """
-  The desired number of objects that match the condition (defaults to at least one).
-  """
-  count: Int_Filter = {gt:0}
-  """
-  Condition of the related objects to filter for.
-  """
-  exist: MovieMetadata_Filter
-}
-"""
-✨ Generated order input type for table 'MovieMetadata'. This input defines the sorting order of rows in query results based on one or more fields.
-"""
-input MovieMetadata_Order {
-  """
-  ✨ Generated from Field `MovieMetadata`.`id` of type `UUID!`
-  """
-  id: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`movieId` of type `UUID!`
-  """
-  movieId: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`movie` of type `Movie!`
-  """
-  movie: Movie_Order
-  """
-  ✨ Generated from Field `MovieMetadata`.`description` of type `String`
-  """
-  description: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating` of type `Float`
-  """
-  rating: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear` of type `Int`
-  """
-  releaseYear: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`_count` of type `Int!`
-  """
-  _count: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`description_count` of type `Int!`
-  """
-  description_count: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`id_count` of type `Int!`
-  """
-  id_count: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`movieId_count` of type `Int!`
-  """
-  movieId_count: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_count` of type `Int!`
-  """
-  rating_count: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_count` of type `Int!`
-  """
-  releaseYear_count: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_sum` of type `Float`
-  """
-  rating_sum: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_sum` of type `Int`
-  """
-  releaseYear_sum: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_avg` of type `Float`
-  """
-  rating_avg: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_avg` of type `Float`
-  """
-  releaseYear_avg: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_min` of type `Float`
-  """
-  rating_min: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_min` of type `Int`
-  """
-  releaseYear_min: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`rating_max` of type `Float`
-  """
-  rating_max: OrderDirection
-  """
-  ✨ Generated from Field `MovieMetadata`.`releaseYear_max` of type `Int`
-  """
-  releaseYear_max: OrderDirection
-}
-"""
-✨ Generated data input type for table 'Review'. It includes all necessary fields for creating or upserting rows into table.
-"""
-input Review_Data {
-  """
-  ✨ Generated from Field `Review`.`movieId` of type `UUID!`
-  """
-  movieId: UUID
-  """
-  ✨ `_expr` server value variant of `movieId` (✨ Generated from Field `Review`.`movieId` of type `UUID!`)
-  """
-  movieId_expr: UUID_Expr
-  """
-  ✨ Generated from Field `Review`.`userId` of type `String!`
+  ✨ Generated from Field `SaveSlot`.`userId` of type `String!`
   """
   userId: String
   """
-  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Review`.`userId` of type `String!`)
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `SaveSlot`.`userId` of type `String!`)
   """
   userId_expr: String_Expr
   """
-  ✨ Generated from Field `Review`.`movie` of type `Movie!`
+  ✨ Generated from Field `SaveSlot`.`user` of type `UserProfile!`
   """
-  movie: Movie_Key
+  user: UserProfile_Key
   """
-  ✨ Generated from Field `Review`.`user` of type `User!`
+  ✨ Generated from Field `SaveSlot`.`contentVersion` of type `String`
   """
-  user: User_Key
+  contentVersion: String
   """
-  ✨ Generated from Field `Review`.`rating` of type `Int`
+  ✨ `_expr` server value variant of `contentVersion` (✨ Generated from Field `SaveSlot`.`contentVersion` of type `String`)
   """
-  rating: Int
+  contentVersion_expr: String_Expr
   """
-  ✨ `_expr` server value variant of `rating` (✨ Generated from Field `Review`.`rating` of type `Int`)
+  ✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`
   """
-  rating_expr: Int_Expr
+  createdAt: Date
   """
-  ✨ `_update` server value variant of `rating` (✨ Generated from Field `Review`.`rating` of type `Int`)
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`)
   """
-  rating_update: [Int_Update!]
+  createdAt_date: Date_Relative
   """
-  ✨ Generated from Field `Review`.`reviewDate` of type `Date!`
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`)
   """
-  reviewDate: Date
+  createdAt_expr: Date_Expr
   """
-  ✨ `_date` server value variant of `reviewDate` (✨ Generated from Field `Review`.`reviewDate` of type `Date!`)
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`)
   """
-  reviewDate_date: Date_Relative
+  createdAt_update: [Date_Update!]
   """
-  ✨ `_expr` server value variant of `reviewDate` (✨ Generated from Field `Review`.`reviewDate` of type `Date!`)
+  ✨ Generated from Field `SaveSlot`.`gameStateJson` of type `String!`
   """
-  reviewDate_expr: Date_Expr
+  gameStateJson: String
   """
-  ✨ `_update` server value variant of `reviewDate` (✨ Generated from Field `Review`.`reviewDate` of type `Date!`)
+  ✨ `_expr` server value variant of `gameStateJson` (✨ Generated from Field `SaveSlot`.`gameStateJson` of type `String!`)
   """
-  reviewDate_update: [Date_Update!]
+  gameStateJson_expr: String_Expr
   """
-  ✨ Generated from Field `Review`.`reviewText` of type `String`
+  ✨ Generated from Field `SaveSlot`.`locationId` of type `String!`
   """
-  reviewText: String
+  locationId: String
   """
-  ✨ `_expr` server value variant of `reviewText` (✨ Generated from Field `Review`.`reviewText` of type `String`)
+  ✨ `_expr` server value variant of `locationId` (✨ Generated from Field `SaveSlot`.`locationId` of type `String!`)
   """
-  reviewText_expr: String_Expr
+  locationId_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`
+  """
+  playerLevel: Int
+  """
+  ✨ `_expr` server value variant of `playerLevel` (✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`)
+  """
+  playerLevel_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `playerLevel` (✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`)
+  """
+  playerLevel_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName` of type `String!`
+  """
+  playerName: String
+  """
+  ✨ `_expr` server value variant of `playerName` (✨ Generated from Field `SaveSlot`.`playerName` of type `String!`)
+  """
+  playerName_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`runId` of type `String`
+  """
+  runId: String
+  """
+  ✨ `_expr` server value variant of `runId` (✨ Generated from Field `SaveSlot`.`runId` of type `String`)
+  """
+  runId_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName` of type `String!`
+  """
+  saveName: String
+  """
+  ✨ `_expr` server value variant of `saveName` (✨ Generated from Field `SaveSlot`.`saveName` of type `String!`)
+  """
+  saveName_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`seq` of type `Int`
+  """
+  seq: Int
+  """
+  ✨ `_expr` server value variant of `seq` (✨ Generated from Field `SaveSlot`.`seq` of type `Int`)
+  """
+  seq_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `seq` (✨ Generated from Field `SaveSlot`.`seq` of type `Int`)
+  """
+  seq_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash` of type `String`
+  """
+  stateHash: String
+  """
+  ✨ `_expr` server value variant of `stateHash` (✨ Generated from Field `SaveSlot`.`stateHash` of type `String`)
+  """
+  stateHash_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`
+  """
+  stateVersion: Int
+  """
+  ✨ `_expr` server value variant of `stateVersion` (✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`)
+  """
+  stateVersion_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `stateVersion` (✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`)
+  """
+  stateVersion_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`tick` of type `Int`
+  """
+  tick: Int
+  """
+  ✨ `_expr` server value variant of `tick` (✨ Generated from Field `SaveSlot`.`tick` of type `Int`)
+  """
+  tick_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `tick` (✨ Generated from Field `SaveSlot`.`tick` of type `Int`)
+  """
+  tick_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`
+  """
+  turnCount: Int
+  """
+  ✨ `_expr` server value variant of `turnCount` (✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`)
+  """
+  turnCount_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `turnCount` (✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`)
+  """
+  turnCount_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`worldId` of type `String!`
+  """
+  worldId: String
+  """
+  ✨ `_expr` server value variant of `worldId` (✨ Generated from Field `SaveSlot`.`worldId` of type `String!`)
+  """
+  worldId_expr: String_Expr
 }
 """
-✨ Generated filter input type for table 'Review'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+✨ Generated filter input type for table 'SaveSlot'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
 """
-input Review_Filter {
+input SaveSlot_Filter {
   """
   Apply multiple filter conditions using `AND` logic.
   """
-  _and: [Review_Filter!]
+  _and: [SaveSlot_Filter!]
   """
   Negate the result of the provided filter condition.
   """
-  _not: Review_Filter
+  _not: SaveSlot_Filter
   """
   Apply multiple filter conditions using `OR` logic.
   """
-  _or: [Review_Filter!]
+  _or: [SaveSlot_Filter!]
   """
-  ✨ Generated from Field `Review`.`movieId` of type `UUID!`
+  ✨ Generated from Field `SaveSlot`.`id` of type `UUID!`
   """
-  movieId: UUID_Filter
+  id: UUID_Filter
   """
-  ✨ Generated from Field `Review`.`userId` of type `String!`
+  ✨ Generated from Field `SaveSlot`.`userId` of type `String!`
   """
   userId: String_Filter
   """
-  ✨ Generated from Field `Review`.`movie` of type `Movie!`
+  ✨ Generated from Field `SaveSlot`.`user` of type `UserProfile!`
   """
-  movie: Movie_Filter
+  user: UserProfile_Filter
   """
-  ✨ Generated from Field `Review`.`user` of type `User!`
+  ✨ Generated from Field `SaveSlot`.`contentVersion` of type `String`
   """
-  user: User_Filter
+  contentVersion: String_Filter
   """
-  ✨ Generated from Field `Review`.`rating` of type `Int`
+  ✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`
   """
-  rating: Int_Filter
+  createdAt: Date_Filter
   """
-  ✨ Generated from Field `Review`.`reviewDate` of type `Date!`
+  ✨ Generated from Field `SaveSlot`.`gameStateJson` of type `String!`
   """
-  reviewDate: Date_Filter
+  gameStateJson: String_Filter
   """
-  ✨ Generated from Field `Review`.`reviewText` of type `String`
+  ✨ Generated from Field `SaveSlot`.`locationId` of type `String!`
   """
-  reviewText: String_Filter
+  locationId: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`
+  """
+  playerLevel: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName` of type `String!`
+  """
+  playerName: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`runId` of type `String`
+  """
+  runId: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName` of type `String!`
+  """
+  saveName: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq` of type `Int`
+  """
+  seq: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash` of type `String`
+  """
+  stateHash: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`
+  """
+  stateVersion: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick` of type `Int`
+  """
+  tick: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`
+  """
+  turnCount: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`worldId` of type `String!`
+  """
+  worldId: String_Filter
 }
 """
-✨ Generated first-row input type for table 'Review'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+✨ Generated first-row input type for table 'SaveSlot'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
 """
-input Review_FirstRow {
+input SaveSlot_FirstRow {
   """
   Order the result by the specified fields.
   """
-  orderBy: [Review_Order!]
+  orderBy: [SaveSlot_Order!]
   """
   Filters rows based on the specified conditions.
   """
-  where: Review_Filter
+  where: SaveSlot_Filter
 }
 """
-✨ Generated having input type for table 'Review'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+✨ Generated having input type for table 'SaveSlot'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
 """
-input Review_Having {
+input SaveSlot_Having {
   """
   Apply multiple Having conditions using `AND` logic.
   """
-  _and: [Review_Having!]
+  _and: [SaveSlot_Having!]
   """
   Whether to apply DISTINCT to the aggregate function.
   """
@@ -662,85 +308,205 @@ input Review_Having {
   """
   Negate the result of the provided Having condition.
   """
-  _not: Review_Having
+  _not: SaveSlot_Having
   """
   Apply multiple Having conditions using `OR` logic.
   """
-  _or: [Review_Having!]
+  _or: [SaveSlot_Having!]
   """
-  ✨ Generated from Field `Review`.`_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`_count` of type `Int!`
   """
   _count: Int_Filter
   """
-  ✨ Generated from Field `Review`.`movieId_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`contentVersion_count` of type `Int!`
   """
-  movieId_count: Int_Filter
+  contentVersion_count: Int_Filter
   """
-  ✨ Generated from Field `Review`.`rating_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`createdAt_count` of type `Int!`
   """
-  rating_count: Int_Filter
+  createdAt_count: Int_Filter
   """
-  ✨ Generated from Field `Review`.`reviewDate_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`gameStateJson_count` of type `Int!`
   """
-  reviewDate_count: Int_Filter
+  gameStateJson_count: Int_Filter
   """
-  ✨ Generated from Field `Review`.`reviewText_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`id_count` of type `Int!`
   """
-  reviewText_count: Int_Filter
+  id_count: Int_Filter
   """
-  ✨ Generated from Field `Review`.`userId_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`locationId_count` of type `Int!`
+  """
+  locationId_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_count` of type `Int!`
+  """
+  playerLevel_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName_count` of type `Int!`
+  """
+  playerName_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`runId_count` of type `Int!`
+  """
+  runId_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName_count` of type `Int!`
+  """
+  saveName_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_count` of type `Int!`
+  """
+  seq_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash_count` of type `Int!`
+  """
+  stateHash_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_count` of type `Int!`
+  """
+  stateVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_count` of type `Int!`
+  """
+  tick_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_count` of type `Int!`
+  """
+  turnCount_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`userId_count` of type `Int!`
   """
   userId_count: Int_Filter
   """
-  ✨ Generated from Field `Review`.`rating_sum` of type `Int`
+  ✨ Generated from Field `SaveSlot`.`worldId_count` of type `Int!`
   """
-  rating_sum: Int_Filter
+  worldId_count: Int_Filter
   """
-  ✨ Generated from Field `Review`.`rating_avg` of type `Float`
+  ✨ Generated from Field `SaveSlot`.`playerLevel_sum` of type `Int`
   """
-  rating_avg: Float_Filter
+  playerLevel_sum: Int_Filter
   """
-  ✨ Generated from Field `Review`.`rating_min` of type `Int`
+  ✨ Generated from Field `SaveSlot`.`seq_sum` of type `Int`
   """
-  rating_min: Int_Filter
+  seq_sum: Int_Filter
   """
-  ✨ Generated from Field `Review`.`reviewDate_min` of type `Date`
+  ✨ Generated from Field `SaveSlot`.`stateVersion_sum` of type `Int`
   """
-  reviewDate_min: Date_Filter
+  stateVersion_sum: Int_Filter
   """
-  ✨ Generated from Field `Review`.`rating_max` of type `Int`
+  ✨ Generated from Field `SaveSlot`.`tick_sum` of type `Int`
   """
-  rating_max: Int_Filter
+  tick_sum: Int_Filter
   """
-  ✨ Generated from Field `Review`.`reviewDate_max` of type `Date`
+  ✨ Generated from Field `SaveSlot`.`turnCount_sum` of type `Int`
   """
-  reviewDate_max: Date_Filter
+  turnCount_sum: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_avg` of type `Float`
+  """
+  playerLevel_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_avg` of type `Float`
+  """
+  seq_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_avg` of type `Float`
+  """
+  stateVersion_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_avg` of type `Float`
+  """
+  tick_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_avg` of type `Float`
+  """
+  turnCount_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_min` of type `Int`
+  """
+  playerLevel_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_min` of type `Int`
+  """
+  seq_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_min` of type `Int`
+  """
+  stateVersion_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_min` of type `Int`
+  """
+  tick_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_min` of type `Int`
+  """
+  turnCount_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_max` of type `Int`
+  """
+  playerLevel_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_max` of type `Int`
+  """
+  seq_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_max` of type `Int`
+  """
+  stateVersion_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_max` of type `Int`
+  """
+  tick_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_max` of type `Int`
+  """
+  turnCount_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
 }
 """
-✨ Generated key input type for table 'Review'. It represents the primary key fields used to uniquely identify a row in the table.
+✨ Generated key input type for table 'SaveSlot'. It represents the primary key fields used to uniquely identify a row in the table.
 """
-input Review_Key {
+input SaveSlot_Key {
   """
-  ✨ Generated from Field `Review`.`movieId` of type `UUID!`
+  ✨ Generated from Field `SaveSlot`.`id` of type `UUID!`
   """
-  movieId: UUID
+  id: UUID
   """
-  ✨ `_expr` server value variant of `movieId` (✨ Generated from Field `Review`.`movieId` of type `UUID!`)
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `SaveSlot`.`id` of type `UUID!`)
   """
-  movieId_expr: UUID_Expr
+  id_expr: UUID_Expr
   """
-  ✨ Generated from Field `Review`.`userId` of type `String!`
+  ✨ Generated from Field `SaveSlot`.`userId` of type `String!`
   """
   userId: String
   """
-  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Review`.`userId` of type `String!`)
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `SaveSlot`.`userId` of type `String!`)
   """
   userId_expr: String_Expr
 }
 """
-✨ Generated list filter input type for table 'Review'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+✨ Generated list filter input type for table 'SaveSlot'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
 """
-input Review_ListFilter {
+input SaveSlot_ListFilter {
   """
   The desired number of objects that match the condition (defaults to at least one).
   """
@@ -748,164 +514,364 @@ input Review_ListFilter {
   """
   Condition of the related objects to filter for.
   """
-  exist: Review_Filter
+  exist: SaveSlot_Filter
 }
 """
-✨ Generated order input type for table 'Review'. This input defines the sorting order of rows in query results based on one or more fields.
+✨ Generated order input type for table 'SaveSlot'. This input defines the sorting order of rows in query results based on one or more fields.
 """
-input Review_Order {
+input SaveSlot_Order {
   """
-  ✨ Generated from Field `Review`.`movieId` of type `UUID!`
+  ✨ Generated from Field `SaveSlot`.`id` of type `UUID!`
   """
-  movieId: OrderDirection
+  id: OrderDirection
   """
-  ✨ Generated from Field `Review`.`userId` of type `String!`
+  ✨ Generated from Field `SaveSlot`.`userId` of type `String!`
   """
   userId: OrderDirection
   """
-  ✨ Generated from Field `Review`.`movie` of type `Movie!`
+  ✨ Generated from Field `SaveSlot`.`user` of type `UserProfile!`
   """
-  movie: Movie_Order
+  user: UserProfile_Order
   """
-  ✨ Generated from Field `Review`.`user` of type `User!`
+  ✨ Generated from Field `SaveSlot`.`contentVersion` of type `String`
   """
-  user: User_Order
+  contentVersion: OrderDirection
   """
-  ✨ Generated from Field `Review`.`rating` of type `Int`
+  ✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`
   """
-  rating: OrderDirection
+  createdAt: OrderDirection
   """
-  ✨ Generated from Field `Review`.`reviewDate` of type `Date!`
+  ✨ Generated from Field `SaveSlot`.`gameStateJson` of type `String!`
   """
-  reviewDate: OrderDirection
+  gameStateJson: OrderDirection
   """
-  ✨ Generated from Field `Review`.`reviewText` of type `String`
+  ✨ Generated from Field `SaveSlot`.`locationId` of type `String!`
   """
-  reviewText: OrderDirection
+  locationId: OrderDirection
   """
-  ✨ Generated from Field `Review`.`_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`
+  """
+  playerLevel: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName` of type `String!`
+  """
+  playerName: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`runId` of type `String`
+  """
+  runId: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName` of type `String!`
+  """
+  saveName: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq` of type `Int`
+  """
+  seq: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash` of type `String`
+  """
+  stateHash: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`
+  """
+  stateVersion: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick` of type `Int`
+  """
+  tick: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`
+  """
+  turnCount: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`worldId` of type `String!`
+  """
+  worldId: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`_count` of type `Int!`
   """
   _count: OrderDirection
   """
-  ✨ Generated from Field `Review`.`movieId_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`contentVersion_count` of type `Int!`
   """
-  movieId_count: OrderDirection
+  contentVersion_count: OrderDirection
   """
-  ✨ Generated from Field `Review`.`rating_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`createdAt_count` of type `Int!`
   """
-  rating_count: OrderDirection
+  createdAt_count: OrderDirection
   """
-  ✨ Generated from Field `Review`.`reviewDate_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`gameStateJson_count` of type `Int!`
   """
-  reviewDate_count: OrderDirection
+  gameStateJson_count: OrderDirection
   """
-  ✨ Generated from Field `Review`.`reviewText_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`id_count` of type `Int!`
   """
-  reviewText_count: OrderDirection
+  id_count: OrderDirection
   """
-  ✨ Generated from Field `Review`.`userId_count` of type `Int!`
+  ✨ Generated from Field `SaveSlot`.`locationId_count` of type `Int!`
+  """
+  locationId_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_count` of type `Int!`
+  """
+  playerLevel_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName_count` of type `Int!`
+  """
+  playerName_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`runId_count` of type `Int!`
+  """
+  runId_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName_count` of type `Int!`
+  """
+  saveName_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_count` of type `Int!`
+  """
+  seq_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash_count` of type `Int!`
+  """
+  stateHash_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_count` of type `Int!`
+  """
+  stateVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_count` of type `Int!`
+  """
+  tick_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_count` of type `Int!`
+  """
+  turnCount_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`userId_count` of type `Int!`
   """
   userId_count: OrderDirection
   """
-  ✨ Generated from Field `Review`.`rating_sum` of type `Int`
+  ✨ Generated from Field `SaveSlot`.`worldId_count` of type `Int!`
   """
-  rating_sum: OrderDirection
+  worldId_count: OrderDirection
   """
-  ✨ Generated from Field `Review`.`rating_avg` of type `Float`
+  ✨ Generated from Field `SaveSlot`.`playerLevel_sum` of type `Int`
   """
-  rating_avg: OrderDirection
+  playerLevel_sum: OrderDirection
   """
-  ✨ Generated from Field `Review`.`rating_min` of type `Int`
+  ✨ Generated from Field `SaveSlot`.`seq_sum` of type `Int`
   """
-  rating_min: OrderDirection
+  seq_sum: OrderDirection
   """
-  ✨ Generated from Field `Review`.`reviewDate_min` of type `Date`
+  ✨ Generated from Field `SaveSlot`.`stateVersion_sum` of type `Int`
   """
-  reviewDate_min: OrderDirection
+  stateVersion_sum: OrderDirection
   """
-  ✨ Generated from Field `Review`.`rating_max` of type `Int`
+  ✨ Generated from Field `SaveSlot`.`tick_sum` of type `Int`
   """
-  rating_max: OrderDirection
+  tick_sum: OrderDirection
   """
-  ✨ Generated from Field `Review`.`reviewDate_max` of type `Date`
+  ✨ Generated from Field `SaveSlot`.`turnCount_sum` of type `Int`
   """
-  reviewDate_max: OrderDirection
+  turnCount_sum: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_avg` of type `Float`
+  """
+  playerLevel_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_avg` of type `Float`
+  """
+  seq_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_avg` of type `Float`
+  """
+  stateVersion_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_avg` of type `Float`
+  """
+  tick_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_avg` of type `Float`
+  """
+  turnCount_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_min` of type `Int`
+  """
+  playerLevel_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_min` of type `Int`
+  """
+  seq_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_min` of type `Int`
+  """
+  stateVersion_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_min` of type `Int`
+  """
+  tick_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_min` of type `Int`
+  """
+  turnCount_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_max` of type `Int`
+  """
+  playerLevel_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_max` of type `Int`
+  """
+  seq_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_max` of type `Int`
+  """
+  stateVersion_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_max` of type `Int`
+  """
+  tick_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_max` of type `Int`
+  """
+  turnCount_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
 }
 """
-✨ Generated data input type for table 'User'. It includes all necessary fields for creating or upserting rows into table.
+✨ Generated data input type for table 'UserProfile'. It includes all necessary fields for creating or upserting rows into table.
 """
-input User_Data {
+input UserProfile_Data {
   """
-  ✨ Generated from Field `User`.`id` of type `String!`
+  ✨ Generated from Field `UserProfile`.`id` of type `String!`
   """
   id: String
   """
-  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `String!`)
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `UserProfile`.`id` of type `String!`)
   """
   id_expr: String_Expr
   """
-  ✨ Generated from Field `User`.`username` of type `String!`
+  ✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`
   """
-  username: String
+  createdAt: Date
   """
-  ✨ `_expr` server value variant of `username` (✨ Generated from Field `User`.`username` of type `String!`)
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`)
   """
-  username_expr: String_Expr
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `UserProfile`.`displayName` of type `String`
+  """
+  displayName: String
+  """
+  ✨ `_expr` server value variant of `displayName` (✨ Generated from Field `UserProfile`.`displayName` of type `String`)
+  """
+  displayName_expr: String_Expr
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
 }
 """
-✨ Generated filter input type for table 'User'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+✨ Generated filter input type for table 'UserProfile'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
 """
-input User_Filter {
+input UserProfile_Filter {
   """
   Apply multiple filter conditions using `AND` logic.
   """
-  _and: [User_Filter!]
+  _and: [UserProfile_Filter!]
   """
   Negate the result of the provided filter condition.
   """
-  _not: User_Filter
+  _not: UserProfile_Filter
   """
   Apply multiple filter conditions using `OR` logic.
   """
-  _or: [User_Filter!]
+  _or: [UserProfile_Filter!]
   """
-  ✨ Generated from Field `User`.`id` of type `String!`
+  ✨ Generated from Field `UserProfile`.`id` of type `String!`
   """
   id: String_Filter
   """
-  ✨ Generated from Field `User`.`username` of type `String!`
+  ✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`
   """
-  username: String_Filter
+  createdAt: Date_Filter
   """
-  ✨ Generated from Field `User`.`reviews_on_user` of type `[Review!]!`
+  ✨ Generated from Field `UserProfile`.`displayName` of type `String`
   """
-  reviews_on_user: Review_ListFilter
+  displayName: String_Filter
   """
-  ✨ Generated from Field `User`.`movies_via_Review` of type `[Movie!]!`
+  ✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`
   """
-  movies_via_Review: Movie_ListFilter
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`saveSlots_on_user` of type `[SaveSlot!]!`
+  """
+  saveSlots_on_user: SaveSlot_ListFilter
 }
 """
-✨ Generated first-row input type for table 'User'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+✨ Generated first-row input type for table 'UserProfile'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
 """
-input User_FirstRow {
+input UserProfile_FirstRow {
   """
   Order the result by the specified fields.
   """
-  orderBy: [User_Order!]
+  orderBy: [UserProfile_Order!]
   """
   Filters rows based on the specified conditions.
   """
-  where: User_Filter
+  where: UserProfile_Filter
 }
 """
-✨ Generated having input type for table 'User'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+✨ Generated having input type for table 'UserProfile'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
 """
-input User_Having {
+input UserProfile_Having {
   """
   Apply multiple Having conditions using `AND` logic.
   """
-  _and: [User_Having!]
+  _and: [UserProfile_Having!]
   """
   Whether to apply DISTINCT to the aggregate function.
   """
@@ -913,41 +879,65 @@ input User_Having {
   """
   Negate the result of the provided Having condition.
   """
-  _not: User_Having
+  _not: UserProfile_Having
   """
   Apply multiple Having conditions using `OR` logic.
   """
-  _or: [User_Having!]
+  _or: [UserProfile_Having!]
   """
-  ✨ Generated from Field `User`.`_count` of type `Int!`
+  ✨ Generated from Field `UserProfile`.`_count` of type `Int!`
   """
   _count: Int_Filter
   """
-  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  ✨ Generated from Field `UserProfile`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`displayName_count` of type `Int!`
+  """
+  displayName_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`id_count` of type `Int!`
   """
   id_count: Int_Filter
   """
-  ✨ Generated from Field `User`.`username_count` of type `Int!`
+  ✨ Generated from Field `UserProfile`.`updatedAt_count` of type `Int!`
   """
-  username_count: Int_Filter
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
 }
 """
-✨ Generated key input type for table 'User'. It represents the primary key fields used to uniquely identify a row in the table.
+✨ Generated key input type for table 'UserProfile'. It represents the primary key fields used to uniquely identify a row in the table.
 """
-input User_Key {
+input UserProfile_Key {
   """
-  ✨ Generated from Field `User`.`id` of type `String!`
+  ✨ Generated from Field `UserProfile`.`id` of type `String!`
   """
   id: String
   """
-  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `String!`)
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `UserProfile`.`id` of type `String!`)
   """
   id_expr: String_Expr
 }
 """
-✨ Generated list filter input type for table 'User'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+✨ Generated list filter input type for table 'UserProfile'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
 """
-input User_ListFilter {
+input UserProfile_ListFilter {
   """
   The desired number of objects that match the condition (defaults to at least one).
   """
@@ -955,30 +945,62 @@ input User_ListFilter {
   """
   Condition of the related objects to filter for.
   """
-  exist: User_Filter
+  exist: UserProfile_Filter
 }
 """
-✨ Generated order input type for table 'User'. This input defines the sorting order of rows in query results based on one or more fields.
+✨ Generated order input type for table 'UserProfile'. This input defines the sorting order of rows in query results based on one or more fields.
 """
-input User_Order {
+input UserProfile_Order {
   """
-  ✨ Generated from Field `User`.`id` of type `String!`
+  ✨ Generated from Field `UserProfile`.`id` of type `String!`
   """
   id: OrderDirection
   """
-  ✨ Generated from Field `User`.`username` of type `String!`
+  ✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`
   """
-  username: OrderDirection
+  createdAt: OrderDirection
   """
-  ✨ Generated from Field `User`.`_count` of type `Int!`
+  ✨ Generated from Field `UserProfile`.`displayName` of type `String`
+  """
+  displayName: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`_count` of type `Int!`
   """
   _count: OrderDirection
   """
-  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  ✨ Generated from Field `UserProfile`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`displayName_count` of type `Int!`
+  """
+  displayName_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`id_count` of type `Int!`
   """
   id_count: OrderDirection
   """
-  ✨ Generated from Field `User`.`username_count` of type `Int!`
+  ✨ Generated from Field `UserProfile`.`updatedAt_count` of type `Int!`
   """
-  username_count: OrderDirection
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
 }

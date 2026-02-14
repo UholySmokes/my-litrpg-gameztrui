@@ -8,15 +8,26 @@ export default function CommandTerminalPanel({
   error,
   inputRef,
 }) {
+  const errorId = error ? "command-terminal-error" : undefined;
+
   return (
     <div className={styles.container}>
       {error ? (
-        <div className={styles.errorBanner} role="alert" aria-live="assertive">
+        <div
+          id={errorId}
+          className={styles.errorBanner}
+          role="alert"
+          aria-live="assertive"
+        >
           {error}
         </div>
       ) : null}
-      <form onSubmit={onSubmit} className={styles.commandDeck}>
+      <form onSubmit={onSubmit} className={styles.commandDeck} aria-label="Command terminal">
+        <label className={styles.srOnly} htmlFor="command-terminal-input">
+          Command input
+        </label>
         <input
+          id="command-terminal-input"
           ref={inputRef}
           type="text"
           className={styles.inputField}
@@ -24,6 +35,10 @@ export default function CommandTerminalPanel({
           value={userInput}
           onChange={(event) => onInputChange(event.target.value)}
           disabled={isLoading}
+          autoComplete="off"
+          spellCheck={false}
+          aria-describedby={errorId}
+          aria-invalid={Boolean(error)}
         />
         <button className={styles.submitButton} type="submit" disabled={isLoading}>
           {isLoading ? "..." : "[EXECUTE]"}

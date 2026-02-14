@@ -1,7 +1,18 @@
 import styles from './ActionSuggestionsPanel.module.css';
 
 export default function ActionSuggestionsPanel({ suggestions = [], onSelect }) {
-  if (!suggestions.length) {
+  const normalizedSuggestions = suggestions
+    .map((suggestion) => {
+      const label =
+        typeof suggestion === "string"
+          ? suggestion
+          : suggestion?.t || suggestion?.text || "";
+      const weight = typeof suggestion === "object" ? suggestion?.w : 1;
+      return { label: String(label || "").trim(), weight };
+    })
+    .filter((suggestion) => suggestion.label.length > 0);
+
+  if (!normalizedSuggestions.length) {
     return <div className={styles.emptyState}>No suggestions yet.</div>;
   }
 
@@ -13,12 +24,10 @@ export default function ActionSuggestionsPanel({ suggestions = [], onSelect }) {
 
   return (
     <div className={styles.container}>
-      {suggestions.map((suggestion, index) => {
-        const label =
-          typeof suggestion === 'string'
-            ? suggestion
-            : suggestion?.t || suggestion?.text || '';
-        const weight = typeof suggestion === 'object' ? suggestion?.w : 1;
+      {normalizedSuggestions.map(({ label, weight }, index) => {
+        const normalizedWeight = Number.isFinite(weight)
+          ? Math.min(1, Math.max(0.35, weight))
+          : undefined;
 
         return (
           <button
@@ -27,9 +36,15 @@ export default function ActionSuggestionsPanel({ suggestions = [], onSelect }) {
             type="button"
             onClick={() => onSelect?.(label)}
             data-weight={getWeightLevel(weight)}
-            style={Number.isFinite(weight) ? { opacity: weight } : undefined}
+            style={
+              Number.isFinite(normalizedWeight)
+                ? { opacity: normalizedWeight }
+                : undefined
+            }
+            aria-label={`Suggestion: ${label}`}
+            title={label}
           >
-            {label || 'Action'}
+            {label}
           </button>
         );
       })}

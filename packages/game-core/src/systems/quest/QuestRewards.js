@@ -1,9 +1,6 @@
-import { getTitleBonuses } from "../titleLogic.js";
-import {
-  isPlainObject,
-  mergeInventoryItems,
-  toNumber,
-} from "../../utils/shared.js";
+import { toNumber, isPlainObject, mergeInventoryItems } from "../../utils/shared.js";
+import { getTitleBonuses } from "../../core/titleLogic.js";
+import { updatePlayerVitals } from "../../core/PlayerVitals.js";
 
 const mergeResources = (existing = {}, rewardResources = {}) => {
   const next = { ...existing };
@@ -14,16 +11,7 @@ const mergeResources = (existing = {}, rewardResources = {}) => {
   return next;
 };
 
-const normalizePerkId = (value) => {
-  if (typeof value !== "string") return "";
-  return value.trim().toLowerCase();
-};
-
-export const applyQuestRewards = (
-  state,
-  reward,
-  { updatePlayerVitals } = {},
-) => {
+export const applyQuestRewards = (state, reward) => {
   if (!reward || typeof reward !== "object") return state;
 
   let playerChanged = false;
@@ -113,9 +101,7 @@ export const applyQuestRewards = (
     const unlockedTitles = Array.from(titleSet);
     player.unlockedTitles = unlockedTitles;
     player.titles = unlockedTitles;
-    if (typeof updatePlayerVitals === "function") {
-      Object.assign(player, updatePlayerVitals(player, state.config));
-    }
+    Object.assign(player, updatePlayerVitals(player, state.config));
     playerChanged = true;
   }
 
@@ -133,76 +119,54 @@ export const applyQuestRewards = (
     if (Array.isArray(reward.magic.perks) && reward.magic.perks.length > 0) {
       const perkSet = new Set(
         (Array.isArray(magic.perks) ? magic.perks : [])
-          .map((perk) =>
-            typeof perk === "string"
-              ? normalizePerkId(perk)
-              : normalizePerkId(perk?.id),
-          )
-          .filter(Boolean),
+          .map((p) => (typeof p === "string" ? p : p && typeof p.id === "string" ? p.id : null))
+          .filter(Boolean)
+          .map((p) => String(p).trim().toLowerCase()),
       );
       const nextPerks = Array.isArray(magic.perks) ? [...magic.perks] : [];
-
       reward.magic.perks.forEach((perk) => {
         if (typeof perk === "string") {
-          const id = normalizePerkId(perk);
+          const id = perk.trim().toLowerCase();
           if (!id || perkSet.has(id)) return;
           perkSet.add(id);
           nextPerks.push(id);
           return;
         }
-
-        if (!perk || typeof perk !== "object" || Array.isArray(perk)) {
-          return;
+        if (perk && typeof perk === "object" && !Array.isArray(perk)) {
+          const id = typeof perk.id === "string" ? perk.id.trim().toLowerCase() : "";
+          if (!id) return;
+          const rank = Math.max(1, Math.floor(toNumber(perk.rank, 1)));
+          const existingIndex = nextPerks.findIndex((p) => p && typeof p === "object" && p.id === id);
+          if (existingIndex >= 0) {
+            const existing = nextPerks[existingIndex];
+            nextPerks[existingIndex] = { ...existing, id, rank: Math.max(rank, existing.rank || 1) };
+          } else if (!perkSet.has(id)) {
+            nextPerks.push({ id, rank });
+            perkSet.add(id);
+          }
         }
-
-        const id = normalizePerkId(perk.id);
-        if (!id) return;
-
-        const rank = Math.max(1, Math.floor(toNumber(perk.rank, 1)));
-        const existingIndex = nextPerks.findIndex(
-          (entry) => entry && typeof entry === "object" && entry.id === id,
-        );
-
-        if (existingIndex >= 0) {
-          const existing = nextPerks[existingIndex];
-          nextPerks[existingIndex] = {
-            ...existing,
-            id,
-            rank: Math.max(rank, existing.rank || 1),
-          };
-          return;
-        }
-
-        if (perkSet.has(id)) return;
-        nextPerks.push({ id, rank });
-        perkSet.add(id);
       });
-
       magic.perks = nextPerks;
     }
 
     if (isPlainObject(reward.magic.patterns)) {
-      const unlocked = isPlainObject(magic.unlockedPatterns)
-        ? { ...magic.unlockedPatterns }
-        : {};
-
+      const unlocked = isPlainObject(magic.unlockedPatterns) ? { ...magic.unlockedPatterns } : {};
       ["shape", "weave"].forEach((kind) => {
         const incoming = reward.magic.patterns[kind];
         if (!Array.isArray(incoming) || incoming.length === 0) return;
         const set = new Set(
           (Array.isArray(unlocked[kind]) ? unlocked[kind] : [])
-            .map((pattern) => String(pattern).trim().toLowerCase())
+            .map((p) => String(p).trim().toLowerCase())
             .filter(Boolean),
         );
-        incoming.forEach((pattern) => {
-          if (typeof pattern !== "string") return;
-          const id = pattern.trim().toLowerCase();
+        incoming.forEach((p) => {
+          if (typeof p !== "string") return;
+          const id = p.trim().toLowerCase();
           if (!id) return;
           set.add(id);
         });
         unlocked[kind] = Array.from(set);
       });
-
       magic.unlockedPatterns = unlocked;
     }
 

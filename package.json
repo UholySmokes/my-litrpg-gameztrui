@@ -89,6 +89,8 @@
     "modulePathIgnorePatterns": [
       "<rootDir>/backups/",
       "<rootDir>/.trae/",
+      "<rootDir>/src/dataconnect-generated/",
+      "<rootDir>/api/src/dataconnect-generated/",
       "<rootDir>/packages/game-core/src/dataconnect-generated/",
       "<rootDir>/packages/game-schemas/src/dataconnect-generated/"
     ]

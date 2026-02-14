@@ -3,6 +3,7 @@ import { moveToLocation } from "../systems/exploration/ExplorationSystem.js";
 import {
   startCombat,
   playerAttack,
+  escapeCombat,
   processEnemyTurns,
 } from "../systems/combat/CombatSystem.js";
 import {
@@ -394,6 +395,37 @@ export function executeAction(state, action, _options = {}) {
             changes.damage = result.damage;
           }
           break;
+
+        case "escape": {
+          if (!state.combat || state.combat.status !== "active") {
+            return {
+              success: false,
+              reason: "Not in combat",
+              state,
+            };
+          }
+
+          const result = escapeCombat(state);
+          if (result.success) {
+            newState = result.state || state;
+            description = "Escaped from combat.";
+            changes.escaped = true;
+          } else if (result.state && result.state !== state) {
+            // Preserve failed-escape side effects (combat log + enemy turn).
+            newState = result.state;
+            description = result.reason || "Escape attempt failed.";
+            changes.escapeFailed = true;
+          } else {
+            return {
+              success: false,
+              reason: result.reason || "Escape failed",
+              state,
+            };
+          }
+
+          incrementsTurn = false;
+          break;
+        }
 
         case "rest": {
           if (state.combat?.status === "active") {

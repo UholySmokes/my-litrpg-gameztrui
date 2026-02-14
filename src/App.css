@@ -129,6 +129,7 @@
 
 .game-window {
   animation: windowPop 0.25s ease;
+  max-width: 100%;
 }
 
 .game-window__body {
@@ -1254,6 +1255,11 @@
   box-shadow: 0 0 6px rgba(0, 243, 255, 0.2);
 }
 
+.holo-button:focus-visible {
+  outline: 2px solid var(--holo-gold);
+  outline-offset: 2px;
+}
+
 .holo-button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -1800,5 +1806,28 @@
 
   .gacha-modal__pool-button {
     flex: 1 1 140px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .app-frame {
+    padding: 0.75rem;
+  }
+
+  .app-container {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .mode-shell {
+    gap: 0.75rem;
+  }
+
+  .game-window__body {
+    padding: 0.6rem;
+  }
+
+  .holo-button {
+    min-width: 120px;
   }
 }

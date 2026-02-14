@@ -9,7 +9,7 @@
 		"lint": "eslint . --ignore-pattern lib/genkit-sample.js"
 	},
 	"engines": {
-		"node": ">=20"
+		"node": "20"
 	},
 	"dependencies": {
 		"@dataconnect/admin-generated": "file:src/dataconnect-admin-generated",

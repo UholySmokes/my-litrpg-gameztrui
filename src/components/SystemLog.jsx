@@ -54,8 +54,12 @@ export default function SystemLog() {
           entry.type = "xp";
           break;
         case "level:up":
-          entry.text = `⬆️ LEVEL UP! Now level ${event.level}`;
+          entry.text = `LEVEL UP! Now level ${event.level}`;
           entry.type = "level";
+          break;
+        case "system:message":
+          entry.text = `> ${event.data?.message || "System message"}`;
+          entry.type = "default";
           break;
         default:
           entry.text = `📡 ${event.type}: ${JSON.stringify(event.data)}`;

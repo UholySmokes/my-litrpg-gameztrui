@@ -2,6 +2,7 @@ import { useReducer, useEffect, useRef, useCallback, useMemo } from "react";
 import { gameReducer } from "../core/gameReducer.js";
 import { initialGameState } from "../data/initialState.js";
 import { SystemEventObserver } from "../core/SystemEventObserver.js";
+import { emit } from "../core/EventBus.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { serializeEvent } from "../simulation/logging/CombatLogSerializer.ts";
 import { createSystemEngine } from "../core/createSystemEngine.js";
@@ -95,6 +96,13 @@ export function useGameEngine() {
     dispatch({
       type: "ADD_SYSTEM_MESSAGE",
       payload: { message, type },
+    });
+    emit("system:log", {
+      type: "system:message",
+      data: {
+        message,
+        messageType: type,
+      },
     });
   };
 

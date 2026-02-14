@@ -18,8 +18,9 @@ module.exports = {
     sourceType: "module",
   },
   ignorePatterns: [
-    "/lib/**/*", // Ignore built files.
-    "/generated/**/*", // Ignore generated files.
+    "generated/**/*", // Ignore generated files.
+    "**/lib/genkit-sample.js", // Ignore template sample output.
+    "*.map",
   ],
   plugins: [
     "@typescript-eslint",

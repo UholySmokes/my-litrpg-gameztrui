@@ -21,6 +21,7 @@ export default function GameWindow({
   isActive,
   isDragging = false,
   freeDrag = false,
+  compactLayout = false,
   isDraggable = true,
   isResizable = true,
   isCollapsible = true,
@@ -44,6 +45,7 @@ export default function GameWindow({
   const lastPositionRef = useRef(position || { x: 0, y: 0 });
   const isCompact = Boolean(dockCompact);
   const isCollapsed = Boolean(collapsed || isCompact);
+  const useAutoHeight = compactLayout && dockZone !== "float";
   const compactContent =
     compactLabel ??
     icon ??
@@ -152,7 +154,7 @@ export default function GameWindow({
     left: dockZone === "float" ? `${position?.x || 0}px` : "auto",
     top: dockZone === "float" ? `${position?.y || 0}px` : "auto",
     width: dockZone === "float" ? `${size?.w || 300}px` : "100%",
-    height: isCollapsed ? "auto" : `${size?.h || 200}px`,
+    height: isCollapsed ? "auto" : useAutoHeight ? "auto" : `${size?.h || 200}px`,
     zIndex: zIndex || 1,
     backdropFilter: "blur(14px)",
     background: "rgba(10, 12, 18, 0.78)",

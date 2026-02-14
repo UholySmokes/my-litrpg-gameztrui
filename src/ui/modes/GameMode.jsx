@@ -25,6 +25,7 @@ export default function GameMode({
   onInputChange,
   onSubmit,
   isLoading,
+  error = null,
   suggestions,
   onSuggestionSelect,
   inputRef,
@@ -146,6 +147,7 @@ export default function GameMode({
           onInputChange={onInputChange}
           onSubmit={onSubmit}
           isLoading={isLoading}
+          error={error}
           inputRef={inputRef}
         />
       ),

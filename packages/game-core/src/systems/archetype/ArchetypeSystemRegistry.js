@@ -207,7 +207,8 @@ const IMPACT_BASE = {
 };
 
 function toNumber(value, fallback = 0) {
-  return Number.isFinite(value) ? value : fallback;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 function clamp(value, min, max) {
@@ -699,7 +700,7 @@ class ArchetypeSystem {
     const integrity = catConfig.integrity;
 
     let tone = this.narrativeTone;
-    if (!tone || typeof tone === "string") {
+    if (!tone || typeof tone !== "object") {
       tone = {
         voice: catConfig.narrativeTone || "neutral",
         vocabulary: [],

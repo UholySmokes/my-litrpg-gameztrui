@@ -46,6 +46,7 @@ function inferMood(text) {
 }
 
 const SUMMARY_REFRESH_INTERVAL = 10;
+const STREAM_PLACEHOLDER_TEXT = "...";
 const shouldRefreshSummary = (narrativeState = {}) => {
   const count = Array.isArray(narrativeState.entries)
     ? narrativeState.entries.length
@@ -525,7 +526,8 @@ export function useNarrative(
         updateNarrativeState(prev, {
           id: streamEntryId,
           type: "narrative",
-          text: "",
+          // Keep placeholder non-empty so core narrative normalization doesn't drop it.
+          text: STREAM_PLACEHOLDER_TEXT,
           timestamp: SimBridge.now(),
           source: "ai-streaming",
         }),

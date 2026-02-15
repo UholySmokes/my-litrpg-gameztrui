@@ -5,7 +5,7 @@ const DEFAULT_MAX_ENTRIES = 120;
 
 export function appendNarrativeEntry(
   narrativeState,
-  { type, text, timestamp, source, meta },
+  { id, type, text, timestamp, source, meta },
   { maxEntries = DEFAULT_MAX_ENTRIES } = {},
 ) {
   if (!text || typeof text !== "string") {
@@ -16,8 +16,12 @@ export function appendNarrativeEntry(
     ? timestamp
     : SimBridge.now();
   const nextSequence = toNumber(narrativeState?.sequence, 0) + 1;
+  const resolvedId =
+    typeof id === "string" && id.trim()
+      ? id.trim()
+      : `${resolvedTimestamp}_${nextSequence}`;
   const entry = {
-    id: `${resolvedTimestamp}_${nextSequence}`,
+    id: resolvedId,
     type,
     text: text.trim(),
     timestamp: resolvedTimestamp,

@@ -46,6 +46,13 @@ const ensureCombatStructure = (state) =>
     log: [],
   };
 
+const resolveRequiredClassEvolutionLevel = (config, evolutionCount) => {
+  const baseLevel = Math.max(1, toNumber(config?.classEvolutionLevel, 10));
+  const step = Math.max(0, toNumber(config?.classEvolutionLevelStep, 5));
+  const safeCount = Math.max(0, toNumber(evolutionCount, 0));
+  return baseLevel + safeCount * step;
+};
+
 const gameReducer = (state, action) =>
   withTraceSpan(
     "core.gameReducer",
@@ -593,7 +600,12 @@ const gameReducer = (state, action) =>
       if (!classId) return state;
       const classData = DataRegistry.getClassById(classId);
       if (!classData?.upgradePath) return state;
-      const requiredLevel = state.config?.classEvolutionLevel ?? 10;
+      const progress = isPlainObject(player.progress) ? player.progress : {};
+      const evolutionCount = toNumber(progress.classEvolutions, 0);
+      const requiredLevel = resolveRequiredClassEvolutionLevel(
+        state.config,
+        evolutionCount,
+      );
       if ((player.level || 1) < requiredLevel) return state;
       const nextClass = DataRegistry.getClassById(classData.upgradePath);
       if (!nextClass) return state;
@@ -602,6 +614,13 @@ const gameReducer = (state, action) =>
         player: {
           ...player,
           class: nextClass,
+          progress: {
+            ...progress,
+            classEvolutions: evolutionCount + 1,
+            lastClassEvolutionFrom: classId,
+            lastClassEvolutionTo: nextClass.id,
+            lastClassEvolutionAtLevel: player.level || 1,
+          },
         },
       };
     }

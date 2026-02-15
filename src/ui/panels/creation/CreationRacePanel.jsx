@@ -79,8 +79,16 @@ export default function CreationRacePanel({
       >
         {races.map((race) => {
           const isSelected = selectedRace?.id === race.id;
-          const activeAbility = getRaceAbilitiesFor(race.id)?.[0] || null;
+          const raceAbilities = getRaceAbilitiesFor(race.id) || [];
+          const activeAbility = raceAbilities[0] || null;
           const passiveAbility = race.passiveAbility;
+          const raceSkillNames = Array.from(
+            new Set(
+              [passiveAbility, ...raceAbilities]
+                .map((entry) => entry?.name || entry?.id)
+                .filter(Boolean),
+            ),
+          );
           const modifiers = race.modifiers || race.statBonuses || race.baseStats || {};
 
           // Extract stat modifiers for the canonical attributes
@@ -151,6 +159,20 @@ export default function CreationRacePanel({
                       color="#E599F7"
                     />
                   )}
+                </div>
+              )}
+              {raceSkillNames.length > 0 && (
+                <div
+                  style={{
+                    fontSize: "0.58rem",
+                    color: "var(--text-dim)",
+                    marginTop: "0.1rem",
+                    lineHeight: "1.35",
+                  }}
+                >
+                  <span style={{ color: "var(--holo-gold)" }}>Skill List:</span>{" "}
+                  {raceSkillNames.slice(0, 6).join(", ")}
+                  {raceSkillNames.length > 6 ? ", ..." : ""}
                 </div>
               )}
             </button>

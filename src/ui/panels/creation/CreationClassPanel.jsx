@@ -1,4 +1,5 @@
 import { DataRegistry } from "../../../data/DataRegistry.js";
+import { getClassAbilitiesFor } from "../../../systems/class/ClassAbilityRegistry.js";
 
 const RESOURCE_COLORS = {
   rage: "#FF6B6B",
@@ -89,7 +90,18 @@ export default function CreationClassPanel({
           const isSelected = selectedClass?.id === cls.id;
           const resource = cls.resourceSystem || cls.resource || null;
           const archetype = cls.archetype || null;
-          const skillCount = Array.isArray(cls.skills) ? cls.skills.length : 0;
+          const classSkills = Array.isArray(cls.skills) ? cls.skills : [];
+          const classAbilities = getClassAbilitiesFor(cls.id) || [];
+          const mergedSkillNames = Array.from(
+            new Set(
+              [...classSkills, ...classAbilities]
+                .map((entry) =>
+                  typeof entry === "string" ? entry : entry?.name || entry?.id,
+                )
+                .filter(Boolean),
+            ),
+          );
+          const skillCount = mergedSkillNames.length;
 
           return (
             <button
@@ -129,6 +141,24 @@ export default function CreationClassPanel({
               <div style={{ fontSize: "0.7rem", opacity: 0.8, lineHeight: "1.35" }}>
                 {cls.description}
               </div>
+
+              {skillCount > 0 && (
+                <div
+                  style={{
+                    display: "grid",
+                    gap: "0.2rem",
+                    marginTop: "0.1rem",
+                    fontSize: "0.58rem",
+                    color: "var(--text-dim)",
+                  }}
+                >
+                  <span style={{ color: "var(--holo-gold)" }}>Skill List</span>
+                  <span>
+                    {mergedSkillNames.slice(0, 6).join(", ")}
+                    {mergedSkillNames.length > 6 ? ", ..." : ""}
+                  </span>
+                </div>
+              )}
 
               {/* Class metadata row */}
               <div style={{ display: "flex", gap: "0.4rem", alignItems: "center", flexWrap: "wrap" }}>

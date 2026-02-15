@@ -17,6 +17,7 @@ export const INITIAL_CONFIG = {
   restManaAmount: 0,
   manaRegenPerTurn: 2,
   classEvolutionLevel: 10,
+  classEvolutionLevelStep: 5,
   magicRollout: {
     layerA: true,
     layerB: true,
@@ -100,6 +101,7 @@ const initialGameState = {
       killsByEnemyId: {},
       gachaPulls: 0,
       totalGoldEarned: 0,
+      classEvolutions: 0,
     },
   },
   quests: {

@@ -72,6 +72,7 @@ describe("skill progression systems", () => {
       config: {
         ...initialGameState.config,
         classEvolutionLevel: 2,
+        classEvolutionLevelStep: 3,
       },
       player: {
         ...initialGameState.player,
@@ -82,5 +83,43 @@ describe("skill progression systems", () => {
     const next = gameReducer(state, { type: "EVOLVE_CLASS" });
     const nextClassId = next.player.class?.id || next.player.class;
     expect(nextClassId).toBe("paladin");
+    expect(next.player.progress.classEvolutions).toBe(1);
+  });
+
+  it("requires a higher level after each class evolution", () => {
+    const state = {
+      ...initialGameState,
+      config: {
+        ...initialGameState.config,
+        classEvolutionLevel: 2,
+        classEvolutionLevelStep: 2,
+      },
+      player: {
+        ...initialGameState.player,
+        level: 3,
+        class: "cleric",
+        progress: {
+          ...(initialGameState.player.progress || {}),
+          classEvolutions: 1,
+        },
+      },
+    };
+
+    const blocked = gameReducer(state, { type: "EVOLVE_CLASS" });
+    expect(blocked.player.class).toBe("cleric");
+
+    const unlocked = gameReducer(
+      {
+        ...state,
+        player: {
+          ...state.player,
+          level: 4,
+        },
+      },
+      { type: "EVOLVE_CLASS" },
+    );
+    const nextClassId = unlocked.player.class?.id || unlocked.player.class;
+    expect(nextClassId).toBe("paladin");
+    expect(unlocked.player.progress.classEvolutions).toBe(2);
   });
 });

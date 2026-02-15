@@ -12,6 +12,8 @@ import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
 import { ARCHETYPE_SYSTEMS } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import { getAllSkills, getSkillById } from "../systems/skills/SkillRegistry.js";
+import { getClassAbilitiesFor } from "../systems/class/ClassAbilityRegistry.js";
+import { getRaceAbilitiesFor } from "../systems/race/RaceAbilityRegistry.js";
 import {
   assignTalentsForClass,
   getTalentById,
@@ -33,6 +35,13 @@ const INITIAL_REROLLS = 3;
 const MAX_ACTIVE_SKILLS = 3;
 const MAX_PASSIVE_SKILLS = 6;
 const BASE_CREATION_LEVEL = 1;
+
+function humanizeSkillId(value) {
+  return String(value || "")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
+    .trim();
+}
 
 function normalizeEntityRef(value, fallback) {
   if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -75,13 +84,27 @@ function normalizeSkillEntry(entry, fallbackType, skillIndex) {
   return null;
 }
 
-function collectSkillEntries(entries, fallbackType, skillIndex) {
+function collectSkillEntries(entries, fallbackType, skillIndex, source) {
   if (!Array.isArray(entries)) return [];
   const results = [];
   for (const entry of entries) {
     const normalized = normalizeSkillEntry(entry, fallbackType, skillIndex);
     if (normalized?.id) {
-      results.push(normalized);
+      const id = String(normalized.id).trim();
+      if (!id) continue;
+      results.push({
+        ...normalized,
+        id,
+        name: normalized.name || humanizeSkillId(id),
+        description:
+          normalized.description || "No description available.",
+        source:
+          normalized.source ||
+          source ||
+          normalized.class ||
+          normalized.race ||
+          "general",
+      });
     }
   }
   return results;
@@ -101,8 +124,59 @@ function splitSkillsByType(skills = []) {
   return { active, passive };
 }
 
+function isSkillUnlockedAtCreation(skill) {
+  if (!skill) return false;
+  const conditions = skill.unlockConditions;
+  if (!conditions) return true;
+  if (conditions.level && conditions.level > BASE_CREATION_LEVEL) return false;
+  if (conditions.quest || conditions.item) return false;
+  if (conditions.location) return false;
+  if (
+    Array.isArray(conditions.skillPrerequisites) &&
+    conditions.skillPrerequisites.length > 0
+  ) {
+    return false;
+  }
+  return true;
+}
+
+function normalizeAbilityEntries(
+  entries = [],
+  { source, defaultType = "active", fallbackName, fallbackDescription } = {},
+) {
+  if (!Array.isArray(entries)) return [];
+  const normalized = [];
+  for (const ability of entries) {
+    if (!ability || typeof ability !== "object") continue;
+    const rawId = ability.id || fallbackName;
+    const id = String(rawId || "").trim();
+    if (!id) continue;
+    normalized.push({
+      ...ability,
+      id,
+      name: ability.name || humanizeSkillId(id),
+      description:
+        ability.description ||
+        fallbackDescription ||
+        "No description available.",
+      type: ability.type || defaultType,
+      source: ability.source || source || "general",
+      stats:
+        ability.stats && typeof ability.stats === "object"
+          ? ability.stats
+          : {
+              damage: ability.damage?.multiplier ?? null,
+              manaCost: ability.cost ?? null,
+              costType: ability.costType || null,
+            },
+    });
+  }
+  return normalized;
+}
+
 function isGeneralSkillCompatible(skill, classId, raceId) {
   if (!skill) return false;
+  if (!isSkillUnlockedAtCreation(skill)) return false;
   if (Array.isArray(skill.allowedClasses) && skill.allowedClasses.length) {
     if (!classId || !skill.allowedClasses.includes(classId)) return false;
   }
@@ -122,18 +196,158 @@ function isGeneralSkillCompatible(skill, classId, raceId) {
     if (!raceId || skill.requiredRace !== raceId) return false;
   }
 
-  const conditions = skill.unlockConditions;
-  if (!conditions) return true;
-  if (conditions.level && conditions.level > BASE_CREATION_LEVEL) return false;
-  if (conditions.quest || conditions.item) return false;
-  if (conditions.location) return false;
-  if (
-    Array.isArray(conditions.skillPrerequisites) &&
-    conditions.skillPrerequisites.length > 0
-  ) {
-    return false;
-  }
   return true;
+}
+
+export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) {
+  if (!cls) return { active: [], passive: [] };
+
+  let skillCatalog = Array.isArray(allSkills) ? allSkills : [];
+  if (!Array.isArray(allSkills)) {
+    try {
+      skillCatalog = getAllSkills();
+    } catch {
+      skillCatalog = [];
+    }
+  }
+
+  const skillIndex = new Map(
+    skillCatalog
+      .filter((skill) => skill?.id)
+      .map((skill) => [skill.id, skill]),
+  );
+
+  const classSkillEntries = Array.isArray(cls.skills)
+    ? collectSkillEntries(cls.skills, null, skillIndex, "class")
+    : skillCatalog
+        .filter(
+          (skill) =>
+            skill?.class === cls.id && isSkillUnlockedAtCreation(skill),
+        )
+        .map((skill) =>
+          collectSkillEntries([skill], skill.type || null, skillIndex, "class")[0],
+        )
+        .filter(Boolean);
+
+  const classAbilityEntries = normalizeAbilityEntries(
+    getClassAbilitiesFor(cls.id) || [],
+    { source: "class", defaultType: "active" },
+  );
+  const classPools = splitSkillsByType([
+    ...classSkillEntries,
+    ...classAbilityEntries,
+  ]);
+
+  const raceSkillEntries = [];
+  if (race) {
+    const raceTaggedSkills = skillCatalog
+      .filter((skill) => {
+        if (!isSkillUnlockedAtCreation(skill)) return false;
+        if (skill?.race === race.id) return true;
+        if (skill?.requiredRace === race.id) return true;
+        if (
+          Array.isArray(skill?.requiredRaces) &&
+          skill.requiredRaces.includes(race.id)
+        ) {
+          return true;
+        }
+        if (
+          Array.isArray(skill?.allowedRaces) &&
+          skill.allowedRaces.includes(race.id)
+        ) {
+          return true;
+        }
+        return false;
+      })
+      .map((skill) =>
+        collectSkillEntries([skill], skill.type || null, skillIndex, "race")[0],
+      )
+      .filter(Boolean);
+
+    raceSkillEntries.push(...raceTaggedSkills);
+    raceSkillEntries.push(
+      ...collectSkillEntries(race.skills, null, skillIndex, "race"),
+    );
+    raceSkillEntries.push(
+      ...collectSkillEntries(race.activeSkills, "active", skillIndex, "race"),
+    );
+    raceSkillEntries.push(
+      ...collectSkillEntries(race.passiveSkills, "passive", skillIndex, "race"),
+    );
+
+    if (race.passiveAbility) {
+      const passiveTraitId =
+        race.passiveAbility.id || `${race.id || "race"}_passive_trait`;
+      raceSkillEntries.push(
+        ...normalizeAbilityEntries(
+          [
+            {
+              ...race.passiveAbility,
+              id: passiveTraitId,
+            },
+          ],
+          {
+            source: "race",
+            defaultType: "passive",
+            fallbackDescription: "Innate racial trait.",
+          },
+        ),
+      );
+    }
+
+    if (race.activeAbility) {
+      const activeTraitId =
+        race.activeAbility.id || `${race.id || "race"}_active_trait`;
+      raceSkillEntries.push(
+        ...normalizeAbilityEntries(
+          [
+            {
+              ...race.activeAbility,
+              id: activeTraitId,
+            },
+          ],
+          {
+            source: "race",
+            defaultType: "active",
+            fallbackDescription: "Innate racial technique.",
+          },
+        ),
+      );
+    }
+
+    raceSkillEntries.push(
+      ...normalizeAbilityEntries(getRaceAbilitiesFor(race.id) || [], {
+        source: "race",
+        defaultType: "active",
+      }),
+    );
+  }
+  const racePools = splitSkillsByType(raceSkillEntries);
+
+  const generalEntries = skillCatalog.filter(
+    (skill) => skill.class === "universal" || skill.class === "general",
+  );
+  const generalPools = splitSkillsByType(
+    generalEntries
+      .filter((skill) => isGeneralSkillCompatible(skill, cls?.id, race?.id))
+      .map((skill) =>
+        collectSkillEntries([skill], skill.type || null, skillIndex, "general")[0],
+      )
+      .filter(Boolean),
+  );
+
+  return {
+    active: dedupeSkills([
+      ...classPools.active,
+      ...racePools.active,
+      ...generalPools.active,
+    ]),
+    passive: dedupeSkills([
+      ...classPools.passive,
+      ...racePools.passive,
+      ...generalPools.passive,
+    ]),
+  };
 }
 
 export function useCharacterCreationReworked() {
@@ -188,83 +402,7 @@ export function useCharacterCreationReworked() {
   // Initial content seeded via lazy state initializers to avoid cascading renders
 
   const buildSkillPools = useCallback((cls, race) => {
-    if (!cls) return { active: [], passive: [] };
-
-    let allSkills = [];
-    try {
-      allSkills = getAllSkills();
-    } catch {
-      allSkills = [];
-    }
-
-    const skillIndex = new Map(
-      allSkills.filter((skill) => skill?.id).map((skill) => [skill.id, skill]),
-    );
-
-    const classEntries = Array.isArray(cls.skills)
-      ? collectSkillEntries(cls.skills, null, skillIndex)
-      : allSkills.filter((skill) => skill.class === cls.id);
-    const classPools = splitSkillsByType(classEntries);
-
-    const raceEntries = [];
-    if (race) {
-      raceEntries.push(...collectSkillEntries(race.skills, null, skillIndex));
-      raceEntries.push(
-        ...collectSkillEntries(race.activeSkills, "active", skillIndex),
-      );
-      raceEntries.push(
-        ...collectSkillEntries(race.passiveSkills, "passive", skillIndex),
-      );
-      if (race.passiveAbility) {
-        const passiveTraitId =
-          race.passiveAbility.id || `${race.id || "race"}_passive_trait`;
-        raceEntries.push({
-          ...race.passiveAbility,
-          id: passiveTraitId,
-          name: race.passiveAbility.name || "Racial Trait",
-          description:
-            race.passiveAbility.description || "Innate racial trait.",
-          type: "passive",
-          source: "race",
-        });
-      }
-      if (race.activeAbility) {
-        const activeTraitId =
-          race.activeAbility.id || `${race.id || "race"}_active_trait`;
-        raceEntries.push({
-          ...race.activeAbility,
-          id: activeTraitId,
-          name: race.activeAbility.name || "Racial Technique",
-          description:
-            race.activeAbility.description || "Innate racial technique.",
-          type: "active",
-          source: "race",
-        });
-      }
-    }
-    const racePools = splitSkillsByType(raceEntries);
-
-    const generalEntries = allSkills.filter(
-      (skill) => skill.class === "universal" || skill.class === "general",
-    );
-    const generalPools = splitSkillsByType(
-      generalEntries.filter((skill) =>
-        isGeneralSkillCompatible(skill, cls?.id, race?.id),
-      ),
-    );
-
-    return {
-      active: dedupeSkills([
-        ...classPools.active,
-        ...racePools.active,
-        ...generalPools.active,
-      ]),
-      passive: dedupeSkills([
-        ...classPools.passive,
-        ...racePools.passive,
-        ...generalPools.passive,
-      ]),
-    };
+    return buildCharacterCreationSkillPools(cls, race);
   }, []);
 
   // Generate skill pools for the selected class + race

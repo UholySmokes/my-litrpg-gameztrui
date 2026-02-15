@@ -23,6 +23,7 @@ const createEvolutionId = (skill, existingIds = new Set()) => {
 export const canEvolveSkill = (skill) => {
   if (!skill) return false;
   if (skill.canEvolve === false) return false;
+  if (toNumber(skill.level, 1) < 10) return false;
   return true;
 };
 

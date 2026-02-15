@@ -5,6 +5,118 @@
 
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
+let BEGINNER_QUESTS = [
+  {
+    id: "bq_first_stride",
+    name: "First Stride",
+    description:
+      "Take your first calm steps in the region and learn how movement and leveling feel.",
+    objectives: [
+      {
+        id: "bq_first_stride_obj_1",
+        description: "Visit one nearby location",
+        completed: false,
+        criteria: {
+          minVisitedLocations: 2,
+        },
+      },
+      {
+        id: "bq_first_stride_obj_2",
+        description: "Reach level 2",
+        completed: false,
+        criteria: {
+          minLevel: 2,
+        },
+      },
+    ],
+    rewards: { xp: 35, items: [{ id: "ration_pack", quantity: 1 }] },
+    tags: {
+      starter: true,
+      tones: ["serene"],
+    },
+  },
+  {
+    id: "bq_system_basics",
+    name: "System Basics",
+    description:
+      "Familiarize yourself with your interface and personal resources before taking bigger risks.",
+    objectives: [
+      {
+        id: "bq_system_basics_obj_1",
+        description: "Check your status once",
+        completed: false,
+        criteria: {
+          actionType: "status",
+        },
+      },
+      {
+        id: "bq_system_basics_obj_2",
+        description: "Open your inventory once",
+        completed: false,
+        criteria: {
+          actionType: "inventory",
+        },
+      },
+    ],
+    rewards: { xp: 30, items: [{ id: "minor_health_potion", quantity: 1 }] },
+    tags: {
+      starter: true,
+      tones: ["neutral"],
+    },
+  },
+  {
+    id: "bq_first_conflict",
+    name: "First Conflict",
+    description:
+      "Handle one small threat to prove you can survive a basic encounter.",
+    objectives: [
+      {
+        id: "bq_first_conflict_obj_1",
+        description: "Defeat one enemy",
+        completed: false,
+        criteria: {
+          minTotalKills: 1,
+        },
+      },
+    ],
+    rewards: { xp: 40, items: [{ id: "bandage_roll", quantity: 2 }] },
+    tags: {
+      starter: true,
+      tones: ["tense"],
+    },
+  },
+  {
+    id: "bq_arcane_awareness",
+    name: "Arcane Awareness",
+    description:
+      "Practice sensing local essence so you can read magical conditions before acting.",
+    objectives: [
+      {
+        id: "bq_arcane_awareness_obj_1",
+        description: "Use essence sensing once",
+        completed: false,
+        criteria: {
+          actionType: "magic_sense",
+        },
+      },
+      {
+        id: "bq_arcane_awareness_obj_2",
+        description: "Take a short rest after practice",
+        completed: false,
+        criteria: {
+          actionType: "rest",
+        },
+      },
+    ],
+    rewards: { xp: 35, items: [{ id: "mana_leaf", quantity: 1 }] },
+    tags: {
+      starter: true,
+      tones: ["mysterious"],
+      favoredClasses: ["mage", "battlemage", "cleric"],
+    },
+  },
+];
+
 let MAIN_QUESTS = [
   {
     id: "mq_fallen_spire",
@@ -664,6 +776,7 @@ function cloneQuest(quest) {
 export function getQuestById(questId) {
   if (!questId) return null;
   return (
+    BEGINNER_QUESTS.find((quest) => quest.id === questId) ||
     MAIN_QUESTS.find((quest) => quest.id === questId) ||
     SIDE_QUESTS.find((quest) => quest.id === questId) ||
     null
@@ -711,7 +824,10 @@ export function generateInitialQuestPackage({
   };
 }
 
-export function setQuestCatalog({ main, side } = {}) {
+export function setQuestCatalog({ beginner, main, side } = {}) {
+  if (Array.isArray(beginner)) {
+    BEGINNER_QUESTS = beginner;
+  }
   if (Array.isArray(main)) {
     MAIN_QUESTS = main;
   }
@@ -720,9 +836,10 @@ export function setQuestCatalog({ main, side } = {}) {
   }
 }
 
-export { MAIN_QUESTS, SIDE_QUESTS };
+export { BEGINNER_QUESTS, MAIN_QUESTS, SIDE_QUESTS };
 
 const __internal = {
+  BEGINNER_QUESTS,
   MAIN_QUESTS,
   SIDE_QUESTS,
   hashSeed,

@@ -31,7 +31,6 @@ export default function CommandTerminalPanel({
           ref={inputRef}
           type="text"
           className={styles.inputField}
-          placeholder="Enter command..."
           value={userInput}
           onChange={(event) => onInputChange(event.target.value)}
           disabled={isLoading}

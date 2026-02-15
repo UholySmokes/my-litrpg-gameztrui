@@ -111,6 +111,20 @@ function stripToneViolations(text) {
   return kept.join(" ").replace(/\s+/g, " ").trim();
 }
 
+function stripMarkdownFormatting(text) {
+  return String(text || "")
+    .replace(/`{1,3}([^`]+?)`{1,3}/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/__([^_]+)__/g, "$1")
+    .replace(/\*([^*\n]+)\*/g, "$1")
+    .replace(/_([^_\n]+)_/g, "$1")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+    .replace(/^\s{0,3}(?:#{1,6}|[-*+]|\d+\.)\s+/gm, "")
+    .replace(/^\s*>\s?/gm, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function buildApiHeaders(baseHeaders = {}) {
@@ -193,6 +207,7 @@ export function applyNarrationGuards(response) {
   }
 
   narrative = stripToneViolations(narrative);
+  narrative = stripMarkdownFormatting(narrative);
   if (!narrative) {
     return { ...response, narrative: NARRATION_GUARD_FALLBACK };
   }

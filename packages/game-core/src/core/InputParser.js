@@ -43,9 +43,6 @@ export function parseAction(userInput, gameState) {
   const attackAction = parseAttack(cleanedInput);
   if (attackAction) return attackAction;
 
-  const lookAction = parseLook(cleanedInput);
-  if (lookAction) return lookAction;
-
   const inventoryAction = parseInventory(cleanedInput);
   if (inventoryAction) return inventoryAction;
 
@@ -54,6 +51,9 @@ export function parseAction(userInput, gameState) {
 
   const restAction = parseRest(cleanedInput);
   if (restAction) return restAction;
+
+  const lookAction = parseLook(cleanedInput);
+  if (lookAction) return lookAction;
 
   // Default: treat as narrative/exploration
   return {

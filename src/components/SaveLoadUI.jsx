@@ -224,7 +224,7 @@ export default function SaveLoadUI({
       >
         <div>
           <h2 id="save-load-title" style={{ color: "var(--holo-cyan)", margin: 0 }}>
-            [SAVE/LOAD]
+            Save and Load
           </h2>
           <div style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
             Local saves always available. Cloud saves require cloud login.
@@ -251,7 +251,7 @@ export default function SaveLoadUI({
             <input
               value={saveName}
               onChange={(e) => setSaveName(e.target.value)}
-              placeholder="Save name"
+              aria-label="Save name"
               style={{
                 flex: 1,
                 padding: "0.55rem 0.75rem",

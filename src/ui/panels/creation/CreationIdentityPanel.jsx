@@ -34,7 +34,7 @@ export default function CreationIdentityPanel({
           type="text"
           value={characterName || ""}
           onChange={(event) => onNameChange(event.target.value)}
-          placeholder="Enter designation..."
+          aria-label="Character designation"
           style={{
             width: "100%",
             background: "rgba(0, 0, 0, 0.8)",

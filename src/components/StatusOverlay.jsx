@@ -882,7 +882,7 @@ export default function StatusOverlay({
                       padding: "0.35rem 0",
                       fontSize: "0.9rem",
                     }}
-                    title={ability.description || "No description provided."}
+                    title={ability.description || "No details available."}
                   >
                     <div
                       style={{
@@ -1215,7 +1215,7 @@ export default function StatusOverlay({
                           fontSize: "0.85rem",
                         }}
                       >
-                        [EMPTY]
+                        No item equipped
                       </div>
                     </div>
                   );
@@ -1286,7 +1286,7 @@ export default function StatusOverlay({
                     key={`${item.id}-${idx}`}
                     className="holo-panel"
                     style={{ padding: "0.5rem" }}
-                    title={item.description || "No description provided."}
+                    title={item.description || "No details available."}
                   >
                     <div
                       style={{ color: "var(--holo-cyan)", fontWeight: "bold" }}

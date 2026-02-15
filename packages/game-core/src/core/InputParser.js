@@ -499,7 +499,7 @@ function parseInventory(input) {
 function parseStatus(input) {
   const statusPatterns = [
     /^(status|stats|stat|character|char|info|information)$/i,
-    /^(show|check|view|display)\s+(status|stats|stat|character|char|info|information)$/i,
+    /^(show|check|view|display)\s+((?:system\s+)?status|stats|stat|character|char|info|information)$/i,
   ];
 
   for (const pattern of statusPatterns) {

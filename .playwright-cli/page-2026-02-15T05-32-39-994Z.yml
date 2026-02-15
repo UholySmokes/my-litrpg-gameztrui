@@ -1,0 +1,136 @@
+- generic [ref=e3]:
+  - generic [ref=e7]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e13]: Character Genesis
+        - generic [ref=e14]:
+          - button "✕" [ref=e15] [cursor=pointer]
+          - button "⇄" [ref=e16] [cursor=pointer]
+          - button "–" [ref=e17] [cursor=pointer]
+          - button "📍" [ref=e18] [cursor=pointer]
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]:
+            - generic [ref=e23]: Character Genesis
+            - generic [ref=e24]: Guided phases with full compatibility to existing panels and game state.
+          - generic [ref=e25]:
+            - button "Back" [disabled] [ref=e26]
+            - button "Next" [ref=e27] [cursor=pointer]
+        - generic [ref=e28]:
+          - button "Phase 1 Identity NOW" [disabled] [ref=e29]:
+            - generic [ref=e30]:
+              - generic [ref=e31]: Phase 1
+              - generic [ref=e32]: Identity
+            - generic [ref=e33]: NOW
+          - button "Phase 2 Race LOCK" [disabled] [ref=e34]:
+            - generic [ref=e35]:
+              - generic [ref=e36]: Phase 2
+              - generic [ref=e37]: Race
+            - generic [ref=e38]: LOCK
+          - button "Phase 3 Class LOCK" [disabled] [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: Phase 3
+              - generic [ref=e42]: Class
+            - generic [ref=e43]: LOCK
+          - button "Phase 4 Profession LOCK" [disabled] [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: Phase 4
+              - generic [ref=e47]: Profession
+            - generic [ref=e48]: LOCK
+          - button "Phase 5 System LOCK" [disabled] [ref=e49]:
+            - generic [ref=e50]:
+              - generic [ref=e51]: Phase 5
+              - generic [ref=e52]: System
+            - generic [ref=e53]: LOCK
+          - button "Phase 6 Attributes LOCK" [disabled] [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e56]: Phase 6
+              - generic [ref=e57]: Attributes
+            - generic [ref=e58]: LOCK
+          - button "Phase 7 Skills LOCK" [disabled] [ref=e59]:
+            - generic [ref=e60]:
+              - generic [ref=e61]: Phase 7
+              - generic [ref=e62]: Skills
+            - generic [ref=e63]: LOCK
+          - button "Phase 8 Review LOCK" [disabled] [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: Phase 8
+              - generic [ref=e67]: Review
+            - generic [ref=e68]: LOCK
+        - generic [ref=e69]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: GENESIS STREAM
+            - generic [ref=e73]: The genesis terminal awaits your input. Every choice shapes the world you will inhabit.
+            - generic [ref=e74]: Select a race and class to generate a profile summary._
+            - generic [ref=e76]:
+              - generic [ref=e77]: SYNC PROGRESS
+              - generic [ref=e78]: 0%
+            - generic [ref=e80]:
+              - generic [ref=e81]:
+                - generic [ref=e82]: ⌖
+                - generic [ref=e83]: 1. Anchor your origin
+              - generic [ref=e84]:
+                - generic [ref=e85]: ⚔
+                - generic [ref=e86]: 2. Define combat doctrine
+              - generic [ref=e87]:
+                - generic [ref=e88]: ⚙
+                - generic [ref=e89]: 3. Shape progression path
+              - generic [ref=e90]:
+                - generic [ref=e91]: ♥
+                - generic [ref=e92]: 4. Allocate survivability
+              - generic [ref=e93]:
+                - generic [ref=e94]: ⚡
+                - generic [ref=e95]: 5. Load starting skills
+              - generic [ref=e96]:
+                - generic [ref=e97]: ✔
+                - generic [ref=e98]: 6. Finalize identity
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - generic [ref=e101]: ○
+                - text: "Designation: pending"
+              - generic [ref=e102]:
+                - generic [ref=e103]: ○
+                - text: "Gender: pending"
+              - generic [ref=e104]:
+                - generic [ref=e105]: ○
+                - text: "Race: pending"
+              - generic [ref=e106]:
+                - generic [ref=e107]: ○
+                - text: "Class: pending"
+              - generic [ref=e108]:
+                - generic [ref=e109]: ○
+                - text: "Profession: pending"
+              - generic [ref=e110]:
+                - generic [ref=e111]: ○
+                - text: "System: pending"
+              - generic [ref=e112]:
+                - generic [ref=e113]: ○
+                - text: "Talents: auto-assigned after creation"
+              - generic [ref=e114]:
+                - generic [ref=e115]: ○
+                - text: "Attribute points: open"
+              - generic [ref=e116]:
+                - generic [ref=e117]: ○
+                - text: "Skills: 0/3 active, 0/6 passive"
+          - generic [ref=e119]:
+            - generic [ref=e120]: Genesis Terminal
+            - generic [ref=e121]:
+              - generic [ref=e122]: DESIGNATION
+              - textbox "Enter designation..." [ref=e123]
+            - generic [ref=e124]:
+              - generic [ref=e125]: GENDER
+              - generic [ref=e126]:
+                - button "MALE" [ref=e127] [cursor=pointer]:
+                  - generic [ref=e128]: MALE
+                - button "FEMALE" [ref=e129] [cursor=pointer]:
+                  - generic [ref=e130]: FEMALE
+                - button "OTHER" [ref=e131] [cursor=pointer]:
+                  - generic [ref=e132]: OTHER
+    - generic [ref=e135]:
+      - generic [ref=e137]: Narrative Memory
+      - generic [ref=e138]:
+        - button "⇄" [ref=e139] [cursor=pointer]
+        - button "+" [ref=e140] [cursor=pointer]
+        - button "📌" [ref=e141] [cursor=pointer]
+        - button "<<" [ref=e142] [cursor=pointer]
+  - 'button "Show Admin (Ctrl+`)" [ref=e143] [cursor=pointer]'

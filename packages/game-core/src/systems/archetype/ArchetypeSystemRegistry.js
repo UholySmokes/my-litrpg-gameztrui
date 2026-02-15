@@ -228,7 +228,7 @@ function normalizeTag(tag) {
 }
 
 function truncateText(value, limit) {
-  const normalized = normalizeWhitespace(value).replace(/[“”]/g, "\"");
+  const normalized = normalizeWhitespace(value).replace(/[��“”]/g, "\"");
   if (!normalized) return "";
   if (normalized.length <= limit) return normalized;
   const clipped = normalized.slice(0, Math.max(0, limit - 1)).trimEnd();

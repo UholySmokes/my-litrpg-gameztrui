@@ -36,7 +36,14 @@ import { applyQuestRewards } from "../systems/quest/QuestRewards.js";
 import { updatePlayerVitals } from "./PlayerVitals.js";
 import { applyAutoTitleUnlocks } from "../systems/titles/TitleApplication.js";
 import { withTraceSpan } from "../observability/traceShim.js";
-import { isPlainObject, toNumber, clamp, mergeInventoryItems } from "../utils/shared.js";
+import {
+  isPlainObject,
+  toNumber,
+  clamp,
+  mergeInventoryItems,
+  getProgressionModifiers,
+  resolveClassEvolutionRequirement,
+} from "../utils/shared.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -45,13 +52,6 @@ const ensureCombatStructure = (state) =>
     enemies: [],
     log: [],
   };
-
-const resolveRequiredClassEvolutionLevel = (config, evolutionCount) => {
-  const baseLevel = Math.max(1, toNumber(config?.classEvolutionLevel, 10));
-  const step = Math.max(0, toNumber(config?.classEvolutionLevelStep, 5));
-  const safeCount = Math.max(0, toNumber(evolutionCount, 0));
-  return baseLevel + safeCount * step;
-};
 
 const gameReducer = (state, action) =>
   withTraceSpan(
@@ -602,9 +602,11 @@ const gameReducer = (state, action) =>
       if (!classData?.upgradePath) return state;
       const progress = isPlainObject(player.progress) ? player.progress : {};
       const evolutionCount = toNumber(progress.classEvolutions, 0);
-      const requiredLevel = resolveRequiredClassEvolutionLevel(
+      const progressionModifiers = getProgressionModifiers(player);
+      const requiredLevel = resolveClassEvolutionRequirement(
         state.config,
         evolutionCount,
+        progressionModifiers,
       );
       if ((player.level || 1) < requiredLevel) return state;
       const nextClass = DataRegistry.getClassById(classData.upgradePath);

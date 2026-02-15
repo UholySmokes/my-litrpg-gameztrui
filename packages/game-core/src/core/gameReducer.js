@@ -83,7 +83,26 @@ const getPlayerAttribute = (player, attributeKey) => {
   if (!attributeKey) return 0;
   const canonical = toCanonicalAttributeKey(attributeKey);
   if (!canonical) return 0;
-  return toNumber(player?.attributes?.[canonical], 0);
+  const attributes = isPlainObject(player?.attributes) ? player.attributes : {};
+  const candidates = [];
+  if (Object.prototype.hasOwnProperty.call(attributes, canonical)) {
+    candidates.push(toNumber(attributes[canonical], NaN));
+  }
+
+  const rawKey = String(attributeKey);
+  if (Object.prototype.hasOwnProperty.call(attributes, rawKey)) {
+    candidates.push(toNumber(attributes[rawKey], NaN));
+  }
+
+  for (const [candidateKey, value] of Object.entries(attributes)) {
+    if (toCanonicalAttributeKey(candidateKey) === canonical) {
+      candidates.push(toNumber(value, NaN));
+    }
+  }
+
+  const numericCandidates = candidates.filter((value) => Number.isFinite(value));
+  if (numericCandidates.length === 0) return 0;
+  return Math.max(...numericCandidates);
 };
 
 const hasInventoryItem = (state, itemId, minQuantity = 1) => {

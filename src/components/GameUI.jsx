@@ -865,21 +865,21 @@ export default function GameUI({ user }) {
                 className="holo-button"
                 onClick={() => toggleWindow("quests", showQuests, setShowQuests)}
               >
-                [QUESTS]
+                Quests
               </button>
               <button
                 type="button"
                 className="holo-button"
                 onClick={() => toggleWindow("shop", showShop, setShowShop)}
               >
-                [SHOP]
+                Shop
               </button>
               <button
                 type="button"
                 className="holo-button"
                 onClick={() => toggleWindow("gacha", showGacha, setShowGacha)}
               >
-                [GACHA]
+                Gacha
               </button>
               <button
                 type="button"
@@ -888,7 +888,7 @@ export default function GameUI({ user }) {
                   toggleWindow("craft", showProfessions, setShowProfessions)
                 }
               >
-                [CRAFT]
+                Craft
               </button>
               <button
                 type="button"
@@ -897,7 +897,7 @@ export default function GameUI({ user }) {
                   toggleWindow("status", showStatusOverlay, setShowStatusOverlay)
                 }
               >
-                [STATUS]
+                Status
               </button>
               <button
                 type="button"
@@ -906,7 +906,7 @@ export default function GameUI({ user }) {
                   toggleWindow("titles", showTitleSystem, setShowTitleSystem)
                 }
               >
-                [TITLES]
+                Titles
               </button>
               <button
                 type="button"
@@ -915,7 +915,7 @@ export default function GameUI({ user }) {
                   toggleWindow("saveLoad", showSaveLoad, setShowSaveLoad)
                 }
               >
-                [SAVE/LOAD]
+                Save and Load
               </button>
             </div>
             <GameMode

@@ -116,13 +116,13 @@ export default function EquipmentSlots({
                   {Object.entries(slot.item.stats)
                     .slice(0, 2)
                     .map(([stat, value]) => `${stat}+${value}`)
-                    .join(" · ")}
+                    .join(" | ")}
                 </div>
               )}
             </div>
           ) : (
             <div style={styles.emptyText}>
-              [EMPTY {slot.label.toUpperCase()}]
+              {`No ${slot.label.toLowerCase()} equipped`}
             </div>
           )}
         </div>

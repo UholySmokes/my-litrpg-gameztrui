@@ -40,7 +40,7 @@ export default function CommandTerminalPanel({
           aria-invalid={Boolean(error)}
         />
         <button className={styles.submitButton} type="submit" disabled={isLoading}>
-          {isLoading ? "..." : "[EXECUTE]"}
+          {isLoading ? "Sending..." : "Execute"}
         </button>
       </form>
     </div>

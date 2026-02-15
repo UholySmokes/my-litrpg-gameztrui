@@ -107,8 +107,9 @@
 
 .admin-tools-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 10px;
+  align-items: start;
 }
 
 .admin-tools-system-actions {
@@ -141,18 +142,27 @@
 }
 
 .admin-tools-input-group {
-  display: flex;
-  gap: 5px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
   align-items: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .admin-tools-input-group input {
   flex-grow: 1;
+  min-width: 0;
+  width: 100%;
   padding: 5px;
   background: #222;
   border: 1px solid #444;
   color: #eee;
   border-radius: 4px;
+}
+
+.admin-tools-input-group .admin-tools-button {
+  white-space: nowrap;
 }
 
 .admin-tools-output {

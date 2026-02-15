@@ -1,0 +1,683 @@
+- generic [ref=e14]:
+  - generic [ref=e18]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e24]: Character Genesis
+        - generic [ref=e25]:
+          - button "✕" [ref=e26] [cursor=pointer]
+          - button "⇄" [ref=e27] [cursor=pointer]
+          - button "–" [ref=e28] [cursor=pointer]
+          - button "📍" [ref=e29] [cursor=pointer]
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]: Character Genesis
+            - generic [ref=e35]: Guided phases with full compatibility to existing panels and game state.
+          - generic [ref=e36]:
+            - button "Back" [ref=e37] [cursor=pointer]
+            - button "Next" [active] [ref=e38] [cursor=pointer]
+        - generic [ref=e39]:
+          - button "Phase 1 Identity DONE" [disabled] [ref=e158]:
+            - generic [ref=e41]:
+              - generic [ref=e42]: Phase 1
+              - generic [ref=e43]: Identity
+            - generic [ref=e44]: DONE
+          - button "Phase 2 Race DONE" [disabled] [ref=e1385]:
+            - generic [ref=e46]:
+              - generic [ref=e47]: Phase 2
+              - generic [ref=e48]: Race
+            - generic [ref=e49]: DONE
+          - button "Phase 3 Class DONE" [disabled] [ref=e1595]:
+            - generic [ref=e51]:
+              - generic [ref=e52]: Phase 3
+              - generic [ref=e53]: Class
+            - generic [ref=e54]: DONE
+          - button "Phase 4 Profession DONE" [disabled] [ref=e1836]:
+            - generic [ref=e56]:
+              - generic [ref=e57]: Phase 4
+              - generic [ref=e58]: Profession
+            - generic [ref=e59]: DONE
+          - button "Phase 5 System NOW" [disabled] [ref=e1841]:
+            - generic [ref=e61]:
+              - generic [ref=e62]: Phase 5
+              - generic [ref=e63]: System
+            - generic [ref=e64]: NOW
+          - button "Phase 6 Attributes LOCK" [disabled] [ref=e65]:
+            - generic [ref=e66]:
+              - generic [ref=e67]: Phase 6
+              - generic [ref=e68]: Attributes
+            - generic [ref=e69]: LOCK
+          - button "Phase 7 Skills LOCK" [disabled] [ref=e70]:
+            - generic [ref=e71]:
+              - generic [ref=e72]: Phase 7
+              - generic [ref=e73]: Skills
+            - generic [ref=e74]: LOCK
+          - button "Phase 8 Review LOCK" [disabled] [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]: Phase 8
+              - generic [ref=e78]: Review
+            - generic [ref=e79]: LOCK
+        - generic [ref=e80]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: GENESIS STREAM
+            - generic [ref=e84]: Near-complete. The final parameters lock into place, forging your path forward.
+            - generic [ref=e85]: ierce melee fighter fueled by rage. Masters of stances, blocking, and raw physical power. A standard human with no special bloodline. Versatile and adaptable.undefined_
+            - generic [ref=e87]:
+              - generic [ref=e88]: SYNC PROGRESS
+              - generic [ref=e89]: 63%
+            - generic [ref=e1386]:
+              - generic [ref=e1387]: "RACE: Pure Human"
+              - generic [ref=e1596]: "CLASS: Warrior"
+            - generic [ref=e91]:
+              - generic [ref=e92]:
+                - generic [ref=e93]: ✓
+                - generic [ref=e94]: 1. Anchor your origin
+              - generic [ref=e95]:
+                - generic [ref=e96]: ✓
+                - generic [ref=e97]: 2. Define combat doctrine
+              - generic [ref=e98]:
+                - generic [ref=e99]: ✓
+                - generic [ref=e100]: 3. Shape progression path
+              - generic [ref=e101]:
+                - generic [ref=e102]: ✓
+                - generic [ref=e103]: 4. Allocate survivability
+              - generic [ref=e104]:
+                - generic [ref=e105]: ✓
+                - generic [ref=e106]: 5. Load starting skills
+              - generic [ref=e107]:
+                - generic [ref=e108]: ✔
+                - generic [ref=e109]: 6. Finalize identity
+            - generic [ref=e110]:
+              - generic [ref=e156]:
+                - generic [ref=e157]: ●
+                - text: "Designation: set"
+              - generic [ref=e159]:
+                - generic [ref=e160]: ●
+                - text: "Gender: male"
+              - generic [ref=e1388]:
+                - generic [ref=e1389]: ●
+                - text: "Race: Pure Human"
+              - generic [ref=e1597]:
+                - generic [ref=e1598]: ●
+                - text: "Class: Warrior"
+              - generic [ref=e1837]:
+                - generic [ref=e1838]: ●
+                - text: "Profession: Alchemy"
+              - generic [ref=e121]:
+                - generic [ref=e122]: ○
+                - text: "System: pending"
+              - generic [ref=e123]:
+                - generic [ref=e124]: ●
+                - text: "Talents: auto-assigned after creation"
+              - generic [ref=e125]:
+                - generic [ref=e126]: ○
+                - text: "Attribute points: open"
+              - generic [ref=e127]:
+                - generic [ref=e128]: ○
+                - text: "Skills: 0/3 active, 0/6 passive"
+          - generic [ref=e1842]:
+            - generic [ref=e1843]:
+              - generic [ref=e1844]:
+                - generic [ref=e1845]: Recommended Systems
+                - generic [ref=e1846]: You can still choose any system below.
+              - generic [ref=e1847]:
+                - generic [ref=e1848]:
+                  - generic [ref=e1849]:
+                    - generic [ref=e1850]:
+                      - generic [ref=e1851]: TOP MATCH
+                      - generic [ref=e1852]: Elemental Throne
+                      - generic [ref=e1853]: Authority
+                    - button "Select" [ref=e1854] [cursor=pointer]
+                  - generic [ref=e1855]:
+                    - generic [ref=e1856]: STRENGTH synergy
+                    - generic [ref=e1857]: VITALITY synergy
+                    - generic [ref=e1858]: Fits rage play
+                - generic [ref=e1859]:
+                  - generic [ref=e1860]:
+                    - generic [ref=e1861]:
+                      - generic [ref=e1862]: RECOMMENDED
+                      - generic [ref=e1863]: Bloodline Unlock Prism
+                      - generic [ref=e1864]: Authority
+                    - button "Select" [ref=e1865] [cursor=pointer]
+                  - generic [ref=e1866]:
+                    - generic [ref=e1867]: STRENGTH synergy
+                    - generic [ref=e1868]: VITALITY synergy
+                    - generic [ref=e1869]: Fits rage play
+                - generic [ref=e1870]:
+                  - generic [ref=e1871]:
+                    - generic [ref=e1872]:
+                      - generic [ref=e1873]: RECOMMENDED
+                      - generic [ref=e1874]: Domain Expansion Protocol
+                      - generic [ref=e1875]: Authority
+                    - button "Select" [ref=e1876] [cursor=pointer]
+                  - generic [ref=e1877]:
+                    - generic [ref=e1878]: STRENGTH synergy
+                    - generic [ref=e1879]: VITALITY synergy
+                    - generic [ref=e1880]: Fits rage play
+            - generic [ref=e1881]:
+              - generic [ref=e1882]: Archetype System
+              - generic [ref=e1883]: Choose one system, authority, privilege, framework, or path.
+              - generic [ref=e1884]:
+                - button "Exchange Shop Core System Convert points into items, skills, and rare bloodlines." [ref=e1885] [cursor=pointer]:
+                  - generic [ref=e1886]:
+                    - generic [ref=e1887]: Exchange Shop Core
+                    - generic [ref=e1888]: System
+                  - generic [ref=e1889]: Convert points into items, skills, and rare bloodlines.
+                - button "Gacha Reliquary System RNG relic pulls that scale into artifact-grade rewards." [ref=e1890] [cursor=pointer]:
+                  - generic [ref=e1891]:
+                    - generic [ref=e1892]: Gacha Reliquary
+                    - generic [ref=e1893]: System
+                  - generic [ref=e1894]: RNG relic pulls that scale into artifact-grade rewards.
+                - button "Skill Synthesis Lattice System Fuse abilities into rarer, stronger variants." [ref=e1895] [cursor=pointer]:
+                  - generic [ref=e1896]:
+                    - generic [ref=e1897]: Skill Synthesis Lattice
+                    - generic [ref=e1898]: System
+                  - generic [ref=e1899]: Fuse abilities into rarer, stronger variants.
+                - button "Class Fusion Nexus System Hybridize class trees into unique doctrines." [ref=e1900] [cursor=pointer]:
+                  - generic [ref=e1901]:
+                    - generic [ref=e1902]: Class Fusion Nexus
+                    - generic [ref=e1903]: System
+                  - generic [ref=e1904]: Hybridize class trees into unique doctrines.
+                - button "Devourer Core System Consume monsters and skills to convert into growth." [ref=e1905] [cursor=pointer]:
+                  - generic [ref=e1906]:
+                    - generic [ref=e1907]: Devourer Core
+                    - generic [ref=e1908]: System
+                  - generic [ref=e1909]: Consume monsters and skills to convert into growth.
+                - button "EXP Multiplier Matrix System Experience gains compound into runaway growth." [ref=e1910] [cursor=pointer]:
+                  - generic [ref=e1911]:
+                    - generic [ref=e1912]: EXP Multiplier Matrix
+                    - generic [ref=e1913]: System
+                  - generic [ref=e1914]: Experience gains compound into runaway growth.
+                - button "Loot Guarantee Protocol System Every victory yields guaranteed drops and upgrade lines." [ref=e1915] [cursor=pointer]:
+                  - generic [ref=e1916]:
+                    - generic [ref=e1917]: Loot Guarantee Protocol
+                    - generic [ref=e1918]: System
+                  - generic [ref=e1919]: Every victory yields guaranteed drops and upgrade lines.
+                - button "Skill Copy Interface System Observe, copy, and slot enemy abilities instantly." [ref=e1920] [cursor=pointer]:
+                  - generic [ref=e1921]:
+                    - generic [ref=e1922]: Skill Copy Interface
+                    - generic [ref=e1923]: System
+                  - generic [ref=e1924]: Observe, copy, and slot enemy abilities instantly.
+                - button "Skill Steal Graft System Steal powers and strip foes of their edge." [ref=e1925] [cursor=pointer]:
+                  - generic [ref=e1926]:
+                    - generic [ref=e1927]: Skill Steal Graft
+                    - generic [ref=e1928]: System
+                  - generic [ref=e1929]: Steal powers and strip foes of their edge.
+                - button "Talent Evolution Engine System Talents mutate into superior ranks over time." [ref=e1930] [cursor=pointer]:
+                  - generic [ref=e1931]:
+                    - generic [ref=e1932]: Talent Evolution Engine
+                    - generic [ref=e1933]: System
+                  - generic [ref=e1934]: Talents mutate into superior ranks over time.
+                - button "Shadow Companion Core System An autonomous shadow hunts, eats, and evolves." [ref=e1935] [cursor=pointer]:
+                  - generic [ref=e1936]:
+                    - generic [ref=e1937]: Shadow Companion Core
+                    - generic [ref=e1938]: System
+                  - generic [ref=e1939]: An autonomous shadow hunts, eats, and evolves.
+                - button "Stat Purchase Contract System Purchase raw attributes and talents with contract points." [ref=e1940] [cursor=pointer]:
+                  - generic [ref=e1941]:
+                    - generic [ref=e1942]: Stat Purchase Contract
+                    - generic [ref=e1943]: System
+                  - generic [ref=e1944]: Purchase raw attributes and talents with contract points.
+                - button "Check-In Rewards Ledger System Daily check-ins stack into absurd milestones." [ref=e1945] [cursor=pointer]:
+                  - generic [ref=e1946]:
+                    - generic [ref=e1947]: Check-In Rewards Ledger
+                    - generic [ref=e1948]: System
+                  - generic [ref=e1949]: Daily check-ins stack into absurd milestones.
+                - button "AFK Growth Reactor System Offline time converts into levels and resources." [ref=e1950] [cursor=pointer]:
+                  - generic [ref=e1951]:
+                    - generic [ref=e1952]: AFK Growth Reactor
+                    - generic [ref=e1953]: System
+                  - generic [ref=e1954]: Offline time converts into levels and resources.
+                - button "Beast Contract Battery System Beast contracts turn into scaling batteries." [ref=e1955] [cursor=pointer]:
+                  - generic [ref=e1956]:
+                    - generic [ref=e1957]: Beast Contract Battery
+                    - generic [ref=e1958]: System
+                  - generic [ref=e1959]: Beast contracts turn into scaling batteries.
+                - button "Alchemy Compound Loop System Alchemy outputs compound faster than costs." [ref=e1960] [cursor=pointer]:
+                  - generic [ref=e1961]:
+                    - generic [ref=e1962]: Alchemy Compound Loop
+                    - generic [ref=e1963]: System
+                  - generic [ref=e1964]: Alchemy outputs compound faster than costs.
+                - button "Genetic Editing Suite System Rewrite your biology with modular upgrades." [ref=e1965] [cursor=pointer]:
+                  - generic [ref=e1966]:
+                    - generic [ref=e1967]: Genetic Editing Suite
+                    - generic [ref=e1968]: System
+                  - generic [ref=e1969]: Rewrite your biology with modular upgrades.
+                - button "Clone Production Vault System Produce multiple bodies with shared growth." [ref=e1970] [cursor=pointer]:
+                  - generic [ref=e1971]:
+                    - generic [ref=e1972]: Clone Production Vault
+                    - generic [ref=e1973]: System
+                  - generic [ref=e1974]: Produce multiple bodies with shared growth.
+                - button "Soul Fragment Library System Absorb souls to gain memories and techniques." [ref=e1975] [cursor=pointer]:
+                  - generic [ref=e1976]:
+                    - generic [ref=e1977]: Soul Fragment Library
+                    - generic [ref=e1978]: System
+                  - generic [ref=e1979]: Absorb souls to gain memories and techniques.
+                - button "World-Tree Resource Farm System World-tree growth yields infinite materials." [ref=e1980] [cursor=pointer]:
+                  - generic [ref=e1981]:
+                    - generic [ref=e1982]: World-Tree Resource Farm
+                    - generic [ref=e1983]: System
+                  - generic [ref=e1984]: World-tree growth yields infinite materials.
+                - button "Technology Accelerator System Modern knowledge accelerates tech dominance." [ref=e1985] [cursor=pointer]:
+                  - generic [ref=e1986]:
+                    - generic [ref=e1987]: Technology Accelerator
+                    - generic [ref=e1988]: System
+                  - generic [ref=e1989]: Modern knowledge accelerates tech dominance.
+                - button "Card Deck Mastery System Build decks of modular skills and summons." [ref=e1990] [cursor=pointer]:
+                  - generic [ref=e1991]:
+                    - generic [ref=e1992]: Card Deck Mastery
+                    - generic [ref=e1993]: System
+                  - generic [ref=e1994]: Build decks of modular skills and summons.
+                - button "Luck Monetization Engine System Convert luck into drops, gold, and fate events." [ref=e1995] [cursor=pointer]:
+                  - generic [ref=e1996]:
+                    - generic [ref=e1997]: Luck Monetization Engine
+                    - generic [ref=e1998]: System
+                  - generic [ref=e1999]: Convert luck into drops, gold, and fate events.
+                - button "Past Life Sage (Reincarnated Knowledge) System The character is reborn into a new world retaining extensive knowledge or skills from a previous life." [ref=e2000] [cursor=pointer]:
+                  - generic [ref=e2001]:
+                    - generic [ref=e2002]: Past Life Sage (Reincarnated Knowledge)
+                    - generic [ref=e2003]: System
+                  - generic [ref=e2004]: The character is reborn into a new world retaining extensive knowledge or skills from a previous life.
+                - button "Time-Loop Regressor (Return by Death) System This archetype lets a character \"save scum\" reality via temporal resets." [ref=e2005] [cursor=pointer]:
+                  - generic [ref=e2006]:
+                    - generic [ref=e2007]: Time-Loop Regressor (Return by Death)
+                    - generic [ref=e2008]: System
+                  - generic [ref=e2009]: This archetype lets a character "save scum" reality via temporal resets.
+                - 'button "Future Vision Regressor (Reverse Timeline) System Unlike a looping reset, this archetype is a one- time big rewind: the character returns years into the past (often in..." [ref=e2010] [cursor=pointer]':
+                  - generic [ref=e2011]:
+                    - generic [ref=e2012]: Future Vision Regressor (Reverse Timeline)
+                    - generic [ref=e2013]: System
+                  - generic [ref=e2014]: "Unlike a looping reset, this archetype is a one- time big rewind: the character returns years into the past (often in..."
+                - button "Save Point System (Checkpoint Revival) System Here the system itself gives \"save/load\" points like a video game." [ref=e2015] [cursor=pointer]:
+                  - generic [ref=e2016]:
+                    - generic [ref=e2017]: Save Point System (Checkpoint Revival)
+                    - generic [ref=e2018]: System
+                  - generic [ref=e2019]: Here the system itself gives "save/load" points like a video game.
+                - button "World-Hopper Agent (Transmigration Missions) System In this archetype, the character is bound to a transmigration system that sends them across multiple worlds or realms..." [ref=e2020] [cursor=pointer]:
+                  - generic [ref=e2021]:
+                    - generic [ref=e2022]: World-Hopper Agent (Transmigration Missions)
+                    - generic [ref=e2023]: System
+                  - generic [ref=e2024]: In this archetype, the character is bound to a transmigration system that sends them across multiple worlds or realms...
+                - button "Eternal Samsara Accumulator System A rare reincarnation variant where the individual has undergone multiple reincarnations, not just one, and..." [ref=e2025] [cursor=pointer]:
+                  - generic [ref=e2026]:
+                    - generic [ref=e2027]: Eternal Samsara Accumulator
+                    - generic [ref=e2028]: System
+                  - generic [ref=e2029]: A rare reincarnation variant where the individual has undergone multiple reincarnations, not just one, and...
+                - button "Demon Lord Incarnate (Antagonist Class Override) System In worlds with a balance of light and dark, one might unexpectedly land the role of Demon Lord or other \"big bad\" cla..." [ref=e2030] [cursor=pointer]:
+                  - generic [ref=e2031]:
+                    - generic [ref=e2032]: Demon Lord Incarnate (Antagonist Class Override)
+                    - generic [ref=e2033]: System
+                  - generic [ref=e2034]: In worlds with a balance of light and dark, one might unexpectedly land the role of Demon Lord or other "big bad" cla...
+                - button "Villain System (Antagonist's Toolkit) System Instead of a specific title like Demon Lord, this archetype is when the system itself sponsors villainy for the..." [ref=e2035] [cursor=pointer]:
+                  - generic [ref=e2036]:
+                    - generic [ref=e2037]: Villain System (Antagonist's Toolkit)
+                    - generic [ref=e2038]: System
+                  - generic [ref=e2039]: Instead of a specific title like Demon Lord, this archetype is when the system itself sponsors villainy for the...
+                - button "Questbound Emissary (System's Errand Knight) System A character with this archetype is effectively enslaved to the System's quests." [ref=e2040] [cursor=pointer]:
+                  - generic [ref=e2041]:
+                    - generic [ref=e2042]: Questbound Emissary (System's Errand Knight)
+                    - generic [ref=e2043]: System
+                  - generic [ref=e2044]: A character with this archetype is effectively enslaved to the System's quests.
+                - button "Unique SSS-Class Holder System In many RPG worlds, classes have ranks (common, rare, etc.)." [ref=e2045] [cursor=pointer]:
+                  - generic [ref=e2046]:
+                    - generic [ref=e2047]: Unique SSS-Class Holder
+                    - generic [ref=e2048]: System
+                  - generic [ref=e2049]: In many RPG worlds, classes have ranks (common, rare, etc.).
+                - button "System Glitch (Monster Player Anomaly) System This archetype covers scenarios where a system error or exploit assigns the character a role or privileges outside th..." [ref=e2050] [cursor=pointer]:
+                  - generic [ref=e2051]:
+                    - generic [ref=e2052]: System Glitch (Monster Player Anomaly)
+                    - generic [ref=e2053]: System
+                  - generic [ref=e2054]: This archetype covers scenarios where a system error or exploit assigns the character a role or privileges outside th...
+                - button "Tower Challenger (World Trial System) System Many fantasy worlds have a Tower of Trials or similar world-integrated dungeon that no one has fully conquered." [ref=e2055] [cursor=pointer]:
+                  - generic [ref=e2056]:
+                    - generic [ref=e2057]: Tower Challenger (World Trial System)
+                    - generic [ref=e2058]: System
+                  - generic [ref=e2059]: Many fantasy worlds have a Tower of Trials or similar world-integrated dungeon that no one has fully conquered.
+                - button "Cursed Bloodline (Powerful Curse Vessel) System This archetype centers on a character who carries a mighty curse in their blood that, while debilitating to most,..." [ref=e2060] [cursor=pointer]:
+                  - generic [ref=e2061]:
+                    - generic [ref=e2062]: Cursed Bloodline (Powerful Curse Vessel)
+                    - generic [ref=e2063]: System
+                  - generic [ref=e2064]: This archetype centers on a character who carries a mighty curse in their blood that, while debilitating to most,...
+                - button "Soulbound Partner (Symbiotic Companion) System The character is bonded to a powerful entity or companion through their soul, creating a shared power system." [ref=e2065] [cursor=pointer]:
+                  - generic [ref=e2066]:
+                    - generic [ref=e2067]: Soulbound Partner (Symbiotic Companion)
+                    - generic [ref=e2068]: System
+                  - generic [ref=e2069]: The character is bonded to a powerful entity or companion through their soul, creating a shared power system.
+                - button "Sealed Demon Inside (Jinchuriki Archetype) System The character has an ancient entity sealed within their body or soul, such as a demon, evil god, or mythical beast." [ref=e2070] [cursor=pointer]:
+                  - generic [ref=e2071]:
+                    - generic [ref=e2072]: Sealed Demon Inside (Jinchuriki Archetype)
+                    - generic [ref=e2073]: System
+                  - generic [ref=e2074]: The character has an ancient entity sealed within their body or soul, such as a demon, evil god, or mythical beast.
+                - button "Cursed Artifact Wielder (Soul-Bound Relic) System In this archetype, the character wields a uniquely cursed weapon or artifact that bestows immense power at a cost." [ref=e2075] [cursor=pointer]:
+                  - generic [ref=e2076]:
+                    - generic [ref=e2077]: Cursed Artifact Wielder (Soul-Bound Relic)
+                    - generic [ref=e2078]: System
+                  - generic [ref=e2079]: In this archetype, the character wields a uniquely cursed weapon or artifact that bestows immense power at a cost.
+                - button "Memory-Fueled Growth (Trauma Unlock System) System A narrative-driven archetype where the character's powers unlock in response to personal memories or story milestones." [ref=e2080] [cursor=pointer]:
+                  - generic [ref=e2081]:
+                    - generic [ref=e2082]: Memory-Fueled Growth (Trauma Unlock System)
+                    - generic [ref=e2083]: System
+                  - generic [ref=e2084]: A narrative-driven archetype where the character's powers unlock in response to personal memories or story milestones.
+                - button "Emotion Evolution (Heart-Powered System) System In this archetype, a character's emotional state directly fuels skill evolution or transformations." [ref=e2085] [cursor=pointer]:
+                  - generic [ref=e2086]:
+                    - generic [ref=e2087]: Emotion Evolution (Heart-Powered System)
+                    - generic [ref=e2088]: System
+                  - generic [ref=e2089]: In this archetype, a character's emotional state directly fuels skill evolution or transformations.
+                - button "Adaptive Evolution Class (Branching Job) System This archetype is a class or race that doesn't stay fixed; it evolves based on the character's actions and choices,..." [ref=e2090] [cursor=pointer]:
+                  - generic [ref=e2091]:
+                    - generic [ref=e2092]: Adaptive Evolution Class (Branching Job)
+                    - generic [ref=e2093]: System
+                  - generic [ref=e2094]: This archetype is a class or race that doesn't stay fixed; it evolves based on the character's actions and choices,...
+                - button "Skill Fusion Prodigy (Ability Merger) System A character with this archetype can combine two or more skills to create stronger, hybrid skills, effectively inventi..." [ref=e2095] [cursor=pointer]:
+                  - generic [ref=e2096]:
+                    - generic [ref=e2097]: Skill Fusion Prodigy (Ability Merger)
+                    - generic [ref=e2098]: System
+                  - generic [ref=e2099]: A character with this archetype can combine two or more skills to create stronger, hybrid skills, effectively inventi...
+                - button "Madness Manifestation (Insanity Power) System Here, tapping into madness or chaotic mind states unlocks new powers." [ref=e2100] [cursor=pointer]:
+                  - generic [ref=e2101]:
+                    - generic [ref=e2102]: Madness Manifestation (Insanity Power)
+                    - generic [ref=e2103]: System
+                  - generic [ref=e2104]: Here, tapping into madness or chaotic mind states unlocks new powers.
+                - button "Dual Alignment Mastery (Twilight Balance) System Instead of purely walking the path of light or darkness, this archetype is about harnessing both sides by maintaining..." [ref=e2105] [cursor=pointer]:
+                  - generic [ref=e2106]:
+                    - generic [ref=e2107]: Dual Alignment Mastery (Twilight Balance)
+                    - generic [ref=e2108]: System
+                  - generic [ref=e2109]: Instead of purely walking the path of light or darkness, this archetype is about harnessing both sides by maintaining...
+                - button "Sin System (Seven Sins Progression) System A specialized trait-based path where the character's growth is tied to the Seven Deadly Sins (or a similar set of..." [ref=e2110] [cursor=pointer]:
+                  - generic [ref=e2111]:
+                    - generic [ref=e2112]: Sin System (Seven Sins Progression)
+                    - generic [ref=e2113]: System
+                  - generic [ref=e2114]: A specialized trait-based path where the character's growth is tied to the Seven Deadly Sins (or a similar set of...
+                - button "Devourer System (Consume to Grow) System The character can absorb enemies or materials to gain strength or skills, much like a RPG boss that eats others to..." [ref=e2115] [cursor=pointer]:
+                  - generic [ref=e2116]:
+                    - generic [ref=e2117]: Devourer System (Consume to Grow)
+                    - generic [ref=e2118]: System
+                  - generic [ref=e2119]: The character can absorb enemies or materials to gain strength or skills, much like a RPG boss that eats others to...
+                - button "Skill Copycat (Mimic & Learn) System The character can imitate other people's skills or magic after seeing them." [ref=e2120] [cursor=pointer]:
+                  - generic [ref=e2121]:
+                    - generic [ref=e2122]: Skill Copycat (Mimic & Learn)
+                    - generic [ref=e2123]: System
+                  - generic [ref=e2124]: The character can imitate other people's skills or magic after seeing them.
+                - 'button "Skill Thief (Permanent Looting) System Similar to the copycat but more sinister: this archetype can steal abilities from others, often removing it from the..." [ref=e2125] [cursor=pointer]':
+                  - generic [ref=e2126]:
+                    - generic [ref=e2127]: Skill Thief (Permanent Looting)
+                    - generic [ref=e2128]: System
+                  - generic [ref=e2129]: "Similar to the copycat but more sinister: this archetype can steal abilities from others, often removing it from the..."
+                - 'button "Talent Evolver (Copy & Improve) System A twist on copying: not only can the character imitate or take others'' abilities, they have a gift for improving any..." [ref=e2130] [cursor=pointer]':
+                  - generic [ref=e2131]:
+                    - generic [ref=e2132]: Talent Evolver (Copy & Improve)
+                    - generic [ref=e2133]: System
+                  - generic [ref=e2134]: "A twist on copying: not only can the character imitate or take others' abilities, they have a gift for improving any..."
+                - button "Bloodline Stealer (Gene Assimilation) System The character can steal or assimilate bloodlines and inherent traits from other beings, effectively adding those..." [ref=e2135] [cursor=pointer]:
+                  - generic [ref=e2136]:
+                    - generic [ref=e2137]: Bloodline Stealer (Gene Assimilation)
+                    - generic [ref=e2138]: System
+                  - generic [ref=e2139]: The character can steal or assimilate bloodlines and inherent traits from other beings, effectively adding those...
+                - button "Living Shadow (Autonomous Devourer Familiar) System The character has a sentient shadow or companion that can consume and integrate powers on their behalf." [ref=e2140] [cursor=pointer]:
+                  - generic [ref=e2141]:
+                    - generic [ref=e2142]: Living Shadow (Autonomous Devourer Familiar)
+                    - generic [ref=e2143]: System
+                  - generic [ref=e2144]: The character has a sentient shadow or companion that can consume and integrate powers on their behalf.
+                - button "Jack-of-All-Trades Master (All-Class Access) System The character isn't limited to a single class; they have the unique ability to learn and use skills from every class ..." [ref=e2145] [cursor=pointer]:
+                  - generic [ref=e2146]:
+                    - generic [ref=e2147]: Jack-of-All-Trades Master (All-Class Access)
+                    - generic [ref=e2148]: System
+                  - generic [ref=e2149]: The character isn't limited to a single class; they have the unique ability to learn and use skills from every class ...
+                - button "Class Fusion Master (Hybrid Class Creation) System Rather than having all classes separate, this archetype can merge two or more classes into a new, hybrid class that..." [ref=e2150] [cursor=pointer]:
+                  - generic [ref=e2151]:
+                    - generic [ref=e2152]: Class Fusion Master (Hybrid Class Creation)
+                    - generic [ref=e2153]: System
+                  - generic [ref=e2154]: Rather than having all classes separate, this archetype can merge two or more classes into a new, hybrid class that...
+                - 'button "Limitless Leveler (No Level Cap) System This archetype simply removes the safety net: the character has no maximum level or stat cap, whereas the world''s..." [ref=e2155] [cursor=pointer]':
+                  - generic [ref=e2156]:
+                    - generic [ref=e2157]: Limitless Leveler (No Level Cap)
+                    - generic [ref=e2158]: System
+                  - generic [ref=e2159]: "This archetype simply removes the safety net: the character has no maximum level or stat cap, whereas the world's..."
+                - button "Infinite Skill Points System Skill points never run out; mastery becomes inevitable." [ref=e2160] [cursor=pointer]:
+                  - generic [ref=e2161]:
+                    - generic [ref=e2162]: Infinite Skill Points
+                    - generic [ref=e2163]: System
+                  - generic [ref=e2164]: Skill points never run out; mastery becomes inevitable.
+                - 'button "Omni-Mage (All-Elements & Schools) System A subtype of multi-class focused on magic: the character has affinity for all elements or magic types, whereas most..." [ref=e2165] [cursor=pointer]':
+                  - generic [ref=e2166]:
+                    - generic [ref=e2167]: Omni-Mage (All-Elements & Schools)
+                    - generic [ref=e2168]: System
+                  - generic [ref=e2169]: "A subtype of multi-class focused on magic: the character has affinity for all elements or magic types, whereas most..."
+                - button "Stat Redistribution (Unlimited Respec) System The character has the power to reallocate their stat points or skill points at will, effectively changing their build..." [ref=e2170] [cursor=pointer]:
+                  - generic [ref=e2171]:
+                    - generic [ref=e2172]: Stat Redistribution (Unlimited Respec)
+                    - generic [ref=e2173]: System
+                  - generic [ref=e2174]: The character has the power to reallocate their stat points or skill points at will, effectively changing their build...
+                - button "Undead Overlord (Evolving Undead Legion) System The character has a special necromancy system that not only lets them raise undead, but their undead grow stronger..." [ref=e2175] [cursor=pointer]:
+                  - generic [ref=e2176]:
+                    - generic [ref=e2177]: Undead Overlord (Evolving Undead Legion)
+                    - generic [ref=e2178]: System
+                  - generic [ref=e2179]: The character has a special necromancy system that not only lets them raise undead, but their undead grow stronger...
+                - button "Beast King Bond (Empathic Beast Master) System The character has a beast-taming system that forms a special bond with monsters or animals, granting mutual growth an..." [ref=e2180] [cursor=pointer]:
+                  - generic [ref=e2181]:
+                    - generic [ref=e2182]: Beast King Bond (Empathic Beast Master)
+                    - generic [ref=e2183]: System
+                  - generic [ref=e2184]: The character has a beast-taming system that forms a special bond with monsters or animals, granting mutual growth an...
+                - 'button "Summoner Supreme (Permanent Summons & Control) System The character''s summoning system is amped to cheat level: any creature they summon can be made permanent (doesn''t tim..." [ref=e2185] [cursor=pointer]':
+                  - generic [ref=e2186]:
+                    - generic [ref=e2187]: Summoner Supreme (Permanent Summons & Control)
+                    - generic [ref=e2188]: System
+                  - generic [ref=e2189]: "The character's summoning system is amped to cheat level: any creature they summon can be made permanent (doesn't tim..."
+                - button "Puppeteer (Animated Constructs Control) System The character can create or control multiple puppets/golems with high precision, functioning almost like extra bodies." [ref=e2190] [cursor=pointer]:
+                  - generic [ref=e2191]:
+                    - generic [ref=e2192]: Puppeteer (Animated Constructs Control)
+                    - generic [ref=e2193]: System
+                  - generic [ref=e2194]: The character can create or control multiple puppets/golems with high precision, functioning almost like extra bodies.
+                - button "Clone Legion (Self-Duplication) System The character can create clones or copies of themselves, each fully capable and contributing to growth." [ref=e2195] [cursor=pointer]:
+                  - generic [ref=e2196]:
+                    - generic [ref=e2197]: Clone Legion (Self-Duplication)
+                    - generic [ref=e2198]: System
+                  - generic [ref=e2199]: The character can create clones or copies of themselves, each fully capable and contributing to growth.
+                - button "Divine Blacksmith (Legendary Forging on Demand) System The character has a smithing/crafting system so advanced they can create powerful artifacts with ease, effectively..." [ref=e2200] [cursor=pointer]:
+                  - generic [ref=e2201]:
+                    - generic [ref=e2202]: Divine Blacksmith (Legendary Forging on Demand)
+                    - generic [ref=e2203]: System
+                  - generic [ref=e2204]: The character has a smithing/crafting system so advanced they can create powerful artifacts with ease, effectively...
+                - button "Alchemical Savant (Resource Multiplication) System The character's alchemy/crafting has a cheat where they can multiply outputs or create high-grade potions and materia..." [ref=e2205] [cursor=pointer]:
+                  - generic [ref=e2206]:
+                    - generic [ref=e2207]: Alchemical Savant (Resource Multiplication)
+                    - generic [ref=e2208]: System
+                  - generic [ref=e2209]: The character's alchemy/crafting has a cheat where they can multiply outputs or create high-grade potions and materia...
+                - button "Tech Savant (Modern Inventions in Fantasy) System The character leverages knowledge of science/ engineering in a less advanced world, essentially having a technology..." [ref=e2210] [cursor=pointer]:
+                  - generic [ref=e2211]:
+                    - generic [ref=e2212]: Tech Savant (Modern Inventions in Fantasy)
+                    - generic [ref=e2213]: System
+                  - generic [ref=e2214]: The character leverages knowledge of science/ engineering in a less advanced world, essentially having a technology...
+                - button "Omniscient Archive (All-Knowledge Library) System The character possesses or can access a vast repository of knowledge (books, scrolls, an AI database) that gives them..." [ref=e2215] [cursor=pointer]:
+                  - generic [ref=e2216]:
+                    - generic [ref=e2217]: Omniscient Archive (All-Knowledge Library)
+                    - generic [ref=e2218]: System
+                  - generic [ref=e2219]: The character possesses or can access a vast repository of knowledge (books, scrolls, an AI database) that gives them...
+                - button "Instant Comprehension (Learning Accelerator) System The character can instantly or rapidly understand and master new skills or complex concepts, skipping the usual..." [ref=e2220] [cursor=pointer]:
+                  - generic [ref=e2221]:
+                    - generic [ref=e2222]: Instant Comprehension (Learning Accelerator)
+                    - generic [ref=e2223]: System
+                  - generic [ref=e2224]: The character can instantly or rapidly understand and master new skills or complex concepts, skipping the usual...
+                - button "Elemental Throne Authority Rule-level elemental control with a chosen element." [ref=e2225] [cursor=pointer]:
+                  - generic [ref=e2226]:
+                    - generic [ref=e2227]: Elemental Throne
+                    - generic [ref=e2228]: Authority
+                  - generic [ref=e2229]: Rule-level elemental control with a chosen element.
+                - button "Bloodline Unlock Prism Authority Sealed lineage awakens into divine inheritance." [ref=e2230] [cursor=pointer]:
+                  - generic [ref=e2231]:
+                    - generic [ref=e2232]: Bloodline Unlock Prism
+                    - generic [ref=e2233]: Authority
+                  - generic [ref=e2234]: Sealed lineage awakens into divine inheritance.
+                - button "Domain Expansion Protocol Authority Project a personal domain that overwrites enemy rules." [ref=e2235] [cursor=pointer]:
+                  - generic [ref=e2236]:
+                    - generic [ref=e2237]: Domain Expansion Protocol
+                    - generic [ref=e2238]: Authority
+                  - generic [ref=e2239]: Project a personal domain that overwrites enemy rules.
+                - button "Summon Dominion Seal Authority Summoned beings become permanent subjects." [ref=e2240] [cursor=pointer]:
+                  - generic [ref=e2241]:
+                    - generic [ref=e2242]: Summon Dominion Seal
+                    - generic [ref=e2243]: Authority
+                  - generic [ref=e2244]: Summoned beings become permanent subjects.
+                - button "True Damage Override Authority Bypass defenses with absolute damage laws." [ref=e2245] [cursor=pointer]:
+                  - generic [ref=e2246]:
+                    - generic [ref=e2247]: True Damage Override
+                    - generic [ref=e2248]: Authority
+                  - generic [ref=e2249]: Bypass defenses with absolute damage laws.
+                - button "Absolute Defense Citadel Authority Nullify damage below a set threshold." [ref=e2250] [cursor=pointer]:
+                  - generic [ref=e2251]:
+                    - generic [ref=e2252]: Absolute Defense Citadel
+                    - generic [ref=e2253]: Authority
+                  - generic [ref=e2254]: Nullify damage below a set threshold.
+                - button "Divine Artifact Bond Authority A single artifact grows with you forever." [ref=e2255] [cursor=pointer]:
+                  - generic [ref=e2256]:
+                    - generic [ref=e2257]: Divine Artifact Bond
+                    - generic [ref=e2258]: Authority
+                  - generic [ref=e2259]: A single artifact grows with you forever.
+                - button "Dragon Obedience Aura Authority High-tier creatures submit to your aura." [ref=e2260] [cursor=pointer]:
+                  - generic [ref=e2261]:
+                    - generic [ref=e2262]: Dragon Obedience Aura
+                    - generic [ref=e2263]: Authority
+                  - generic [ref=e2264]: High-tier creatures submit to your aura.
+                - button "Dark Covenant (Accursed Blessing) Authority Not all blessings come from benevolent sources; this archetype is a pact or blessing from a dark or chaotic god." [ref=e2265] [cursor=pointer]:
+                  - generic [ref=e2266]:
+                    - generic [ref=e2267]: Dark Covenant (Accursed Blessing)
+                    - generic [ref=e2268]: Authority
+                  - generic [ref=e2269]: Not all blessings come from benevolent sources; this archetype is a pact or blessing from a dark or chaotic god.
+                - button "Star-Scion Matrix (Constellation Bond) Authority In some worlds, power is drawn from celestial bodies or concepts." [ref=e2270] [cursor=pointer]:
+                  - generic [ref=e2271]:
+                    - generic [ref=e2272]: Star-Scion Matrix (Constellation Bond)
+                    - generic [ref=e2273]: Authority
+                  - generic [ref=e2274]: In some worlds, power is drawn from celestial bodies or concepts.
+                - button "Nature's Avatar (World Elemental Integration) Authority This archetype merges the character's being with a fundamental element or spirit of the world, essentially making the..." [ref=e2275] [cursor=pointer]:
+                  - generic [ref=e2276]:
+                    - generic [ref=e2277]: Nature's Avatar (World Elemental Integration)
+                    - generic [ref=e2278]: Authority
+                  - generic [ref=e2279]: This archetype merges the character's being with a fundamental element or spirit of the world, essentially making the...
+                - button "Blood Pact Warlock (Contracted Power) Authority This archetype involves entering a blood pact or contract with a powerful being - such as a demon, eldritch being, or..." [ref=e2280] [cursor=pointer]:
+                  - generic [ref=e2281]:
+                    - generic [ref=e2282]: Blood Pact Warlock (Contracted Power)
+                    - generic [ref=e2283]: Authority
+                  - generic [ref=e2284]: This archetype involves entering a blood pact or contract with a powerful being - such as a demon, eldritch being, or...
+                - button "Monster Evolution Path (Beast Progression) Path Here the character either starts as a monster or gains the ability to evolve in stages like a monster (common in isek..." [ref=e2285] [cursor=pointer]:
+                  - generic [ref=e2286]:
+                    - generic [ref=e2287]: Monster Evolution Path (Beast Progression)
+                    - generic [ref=e2288]: Path
+                  - generic [ref=e2289]: Here the character either starts as a monster or gains the ability to evolve in stages like a monster (common in isek...
+                - 'button "Cultivation Ascension Path (Realm Breaker) Path This archetype adopts the style of xianxia/ cultivation novels: the character has a personal cultivation system with..." [ref=e2290] [cursor=pointer]':
+                  - generic [ref=e2291]:
+                    - generic [ref=e2292]: Cultivation Ascension Path (Realm Breaker)
+                    - generic [ref=e2293]: Path
+                  - generic [ref=e2294]: "This archetype adopts the style of xianxia/ cultivation novels: the character has a personal cultivation system with..."
+                - button "Corruption Empowerment (Dark Alignment Path) Path The character grows stronger the more they embrace darkness or corruption." [ref=e2295] [cursor=pointer]:
+                  - generic [ref=e2296]:
+                    - generic [ref=e2297]: Corruption Empowerment (Dark Alignment Path)
+                    - generic [ref=e2298]: Path
+                  - generic [ref=e2299]: The character grows stronger the more they embrace darkness or corruption.
+                - button "Dungeon Admin Protocol Framework Rule-setting access inside a controllable dungeon space." [ref=e2300] [cursor=pointer]:
+                  - generic [ref=e2301]:
+                    - generic [ref=e2302]: Dungeon Admin Protocol
+                    - generic [ref=e2303]: Framework
+                  - generic [ref=e2304]: Rule-setting access inside a controllable dungeon space.
+                - button "Heirline Reward Protocol Framework Legacy growth tied to family, clan, or lineage success." [ref=e2305] [cursor=pointer]:
+                  - generic [ref=e2306]:
+                    - generic [ref=e2307]: Heirline Reward Protocol
+                    - generic [ref=e2308]: Framework
+                  - generic [ref=e2309]: Legacy growth tied to family, clan, or lineage success.
+                - button "Underworld Save File Framework Carry past-life power into a new round." [ref=e2310] [cursor=pointer]:
+                  - generic [ref=e2311]:
+                    - generic [ref=e2312]: Underworld Save File
+                    - generic [ref=e2313]: Framework
+                  - generic [ref=e2314]: Carry past-life power into a new round.
+                - button "System Architect Framework Build systems that patch reality like software." [ref=e2315] [cursor=pointer]:
+                  - generic [ref=e2316]:
+                    - generic [ref=e2317]: System Architect
+                    - generic [ref=e2318]: Framework
+                  - generic [ref=e2319]: Build systems that patch reality like software.
+                - button "Undead Legion Evolution Framework An undead army that levels like a roster." [ref=e2320] [cursor=pointer]:
+                  - generic [ref=e2321]:
+                    - generic [ref=e2322]: Undead Legion Evolution
+                    - generic [ref=e2323]: Framework
+                  - generic [ref=e2324]: An undead army that levels like a roster.
+                - button "Revival Bounty Exchange Framework Death funds power through revival bounties." [ref=e2325] [cursor=pointer]:
+                  - generic [ref=e2326]:
+                    - generic [ref=e2327]: Revival Bounty Exchange
+                    - generic [ref=e2328]: Framework
+                  - generic [ref=e2329]: Death funds power through revival bounties.
+                - button "Dungeon Farming Loop Framework Infinite spawns turn dungeons into leveling engines." [ref=e2330] [cursor=pointer]:
+                  - generic [ref=e2331]:
+                    - generic [ref=e2332]: Dungeon Farming Loop
+                    - generic [ref=e2333]: Framework
+                  - generic [ref=e2334]: Infinite spawns turn dungeons into leveling engines.
+                - button "Blueprint Forge Library Framework Blueprints accumulate into a manufacturable arsenal." [ref=e2335] [cursor=pointer]:
+                  - generic [ref=e2336]:
+                    - generic [ref=e2337]: Blueprint Forge Library
+                    - generic [ref=e2338]: Framework
+                  - generic [ref=e2339]: Blueprints accumulate into a manufacturable arsenal.
+                - button "Regression Memory Cache Framework Memories from failed timelines fuel a new run." [ref=e2340] [cursor=pointer]:
+                  - generic [ref=e2341]:
+                    - generic [ref=e2342]: Regression Memory Cache
+                    - generic [ref=e2343]: Framework
+                  - generic [ref=e2344]: Memories from failed timelines fuel a new run.
+                - button "Meta Reincarnation Map Framework Reincarnate with a full meta map of the world." [ref=e2345] [cursor=pointer]:
+                  - generic [ref=e2346]:
+                    - generic [ref=e2347]: Meta Reincarnation Map
+                    - generic [ref=e2348]: Framework
+                  - generic [ref=e2349]: Reincarnate with a full meta map of the world.
+                - button "Time Dilation Training Framework Train for years in minutes." [ref=e2350] [cursor=pointer]:
+                  - generic [ref=e2351]:
+                    - generic [ref=e2352]: Time Dilation Training
+                    - generic [ref=e2353]: Framework
+                  - generic [ref=e2354]: Train for years in minutes.
+                - button "Inner World Reliquary Framework A pocket realm to store armies and resources." [ref=e2355] [cursor=pointer]:
+                  - generic [ref=e2356]:
+                    - generic [ref=e2357]: Inner World Reliquary
+                    - generic [ref=e2358]: Framework
+                  - generic [ref=e2359]: A pocket realm to store armies and resources.
+                - button "Quest Chain Compounding Framework Quest chains compound rewards faster than difficulty." [ref=e2360] [cursor=pointer]:
+                  - generic [ref=e2361]:
+                    - generic [ref=e2362]: Quest Chain Compounding
+                    - generic [ref=e2363]: Framework
+                  - generic [ref=e2364]: Quest chains compound rewards faster than difficulty.
+                - button "Extra Privilege Privilege Low-profile meta knowledge and hidden-route access." [ref=e2365] [cursor=pointer]:
+                  - generic [ref=e2366]:
+                    - generic [ref=e2367]: Extra Privilege
+                    - generic [ref=e2368]: Privilege
+                  - generic [ref=e2369]: Low-profile meta knowledge and hidden-route access.
+                - button "Class Unique Covenant Privilege Only you can wield a unique class path." [ref=e2370] [cursor=pointer]:
+                  - generic [ref=e2371]:
+                    - generic [ref=e2372]: Class Unique Covenant
+                    - generic [ref=e2373]: Privilege
+                  - generic [ref=e2374]: Only you can wield a unique class path.
+                - button "Information Vision Array Privilege See stats, weaknesses, and hidden routes." [ref=e2375] [cursor=pointer]:
+                  - generic [ref=e2376]:
+                    - generic [ref=e2377]: Information Vision Array
+                    - generic [ref=e2378]: Privilege
+                  - generic [ref=e2379]: See stats, weaknesses, and hidden routes.
+                - button "Mind-Reading Exploit Privilege Surface thoughts into tactical advantage." [ref=e2380] [cursor=pointer]:
+                  - generic [ref=e2381]:
+                    - generic [ref=e2382]: Mind-Reading Exploit
+                    - generic [ref=e2383]: Privilege
+                  - generic [ref=e2384]: Surface thoughts into tactical advantage.
+                - button "Villain POV Advantage Privilege Antagonist toolkit grants ruthless advantages." [ref=e2385] [cursor=pointer]:
+                  - generic [ref=e2386]:
+                    - generic [ref=e2387]: Villain POV Advantage
+                    - generic [ref=e2388]: Privilege
+                  - generic [ref=e2389]: Antagonist toolkit grants ruthless advantages.
+                - button "Danger Sense Array Privilege Auto-detect lethal threats before they land." [ref=e2390] [cursor=pointer]:
+                  - generic [ref=e2391]:
+                    - generic [ref=e2392]: Danger Sense Array
+                    - generic [ref=e2393]: Privilege
+                  - generic [ref=e2394]: Auto-detect lethal threats before they land.
+                - button "Glitch Exploit Overlay Overlay Speedrunner-style rule exploits with growing risk." [ref=e2395] [cursor=pointer]:
+                  - generic [ref=e2396]:
+                    - generic [ref=e2397]: Glitch Exploit Overlay
+                    - generic [ref=e2398]: Overlay
+                  - generic [ref=e2399]: Speedrunner-style rule exploits with growing risk.
+    - generic [ref=e146]:
+      - generic [ref=e148]: Narrative Memory
+      - generic [ref=e149]:
+        - button "⇄" [ref=e150] [cursor=pointer]
+        - button "+" [ref=e151] [cursor=pointer]
+        - button "📌" [ref=e152] [cursor=pointer]
+        - button "<<" [ref=e153] [cursor=pointer]
+  - 'button "Show Admin (Ctrl+`)" [ref=e154] [cursor=pointer]'

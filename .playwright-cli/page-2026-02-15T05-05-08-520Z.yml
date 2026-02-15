@@ -1,0 +1,338 @@
+- generic [ref=e14]:
+  - generic [ref=e18]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e24]: Character Genesis
+        - generic [ref=e25]:
+          - button "✕" [ref=e26] [cursor=pointer]
+          - button "⇄" [ref=e27] [cursor=pointer]
+          - button "–" [ref=e28] [cursor=pointer]
+          - button "📍" [ref=e29] [cursor=pointer]
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]: Character Genesis
+            - generic [ref=e35]: Guided phases with full compatibility to existing panels and game state.
+          - generic [ref=e36]:
+            - button "Back" [ref=e37] [cursor=pointer]
+            - button "Next" [active] [ref=e38] [cursor=pointer]
+        - generic [ref=e39]:
+          - button "Phase 1 Identity DONE" [disabled] [ref=e158]:
+            - generic [ref=e41]:
+              - generic [ref=e42]: Phase 1
+              - generic [ref=e43]: Identity
+            - generic [ref=e44]: DONE
+          - button "Phase 2 Race DONE" [disabled] [ref=e1385]:
+            - generic [ref=e46]:
+              - generic [ref=e47]: Phase 2
+              - generic [ref=e48]: Race
+            - generic [ref=e49]: DONE
+          - button "Phase 3 Class DONE" [disabled] [ref=e1595]:
+            - generic [ref=e51]:
+              - generic [ref=e52]: Phase 3
+              - generic [ref=e53]: Class
+            - generic [ref=e54]: DONE
+          - button "Phase 4 Profession NOW" [disabled] [ref=e1601]:
+            - generic [ref=e56]:
+              - generic [ref=e57]: Phase 4
+              - generic [ref=e58]: Profession
+            - generic [ref=e59]: NOW
+          - button "Phase 5 System LOCK" [disabled] [ref=e60]:
+            - generic [ref=e61]:
+              - generic [ref=e62]: Phase 5
+              - generic [ref=e63]: System
+            - generic [ref=e64]: LOCK
+          - button "Phase 6 Attributes LOCK" [disabled] [ref=e65]:
+            - generic [ref=e66]:
+              - generic [ref=e67]: Phase 6
+              - generic [ref=e68]: Attributes
+            - generic [ref=e69]: LOCK
+          - button "Phase 7 Skills LOCK" [disabled] [ref=e70]:
+            - generic [ref=e71]:
+              - generic [ref=e72]: Phase 7
+              - generic [ref=e73]: Skills
+            - generic [ref=e74]: LOCK
+          - button "Phase 8 Review LOCK" [disabled] [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]: Phase 8
+              - generic [ref=e78]: Review
+            - generic [ref=e79]: LOCK
+        - generic [ref=e80]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: GENESIS STREAM
+            - generic [ref=e84]: Near-complete. The final parameters lock into place, forging your path forward.
+            - generic [ref=e85]: ierce melee fighter fueled by rage. Masters of stances, blocking, and raw physical power. A standard human with no special bloodline. Versatile and adaptable.undefined_
+            - generic [ref=e87]:
+              - generic [ref=e88]: SYNC PROGRESS
+              - generic [ref=e89]: 50%
+            - generic [ref=e1386]:
+              - generic [ref=e1387]: "RACE: Pure Human"
+              - generic [ref=e1596]: "CLASS: Warrior"
+            - generic [ref=e91]:
+              - generic [ref=e92]:
+                - generic [ref=e93]: ✓
+                - generic [ref=e94]: 1. Anchor your origin
+              - generic [ref=e95]:
+                - generic [ref=e96]: ✓
+                - generic [ref=e97]: 2. Define combat doctrine
+              - generic [ref=e98]:
+                - generic [ref=e99]: ✓
+                - generic [ref=e100]: 3. Shape progression path
+              - generic [ref=e101]:
+                - generic [ref=e102]: ✓
+                - generic [ref=e103]: 4. Allocate survivability
+              - generic [ref=e104]:
+                - generic [ref=e105]: ⚡
+                - generic [ref=e106]: 5. Load starting skills
+              - generic [ref=e107]:
+                - generic [ref=e108]: ✔
+                - generic [ref=e109]: 6. Finalize identity
+            - generic [ref=e110]:
+              - generic [ref=e156]:
+                - generic [ref=e157]: ●
+                - text: "Designation: set"
+              - generic [ref=e159]:
+                - generic [ref=e160]: ●
+                - text: "Gender: male"
+              - generic [ref=e1388]:
+                - generic [ref=e1389]: ●
+                - text: "Race: Pure Human"
+              - generic [ref=e1597]:
+                - generic [ref=e1598]: ●
+                - text: "Class: Warrior"
+              - generic [ref=e119]:
+                - generic [ref=e120]: ○
+                - text: "Profession: pending"
+              - generic [ref=e121]:
+                - generic [ref=e122]: ○
+                - text: "System: pending"
+              - generic [ref=e123]:
+                - generic [ref=e124]: ●
+                - text: "Talents: auto-assigned after creation"
+              - generic [ref=e125]:
+                - generic [ref=e126]: ○
+                - text: "Attribute points: open"
+              - generic [ref=e127]:
+                - generic [ref=e128]: ○
+                - text: "Skills: 0/3 active, 0/6 passive"
+          - generic [ref=e1602]:
+            - generic [ref=e1603]: Profession
+            - generic [ref=e1604]: Pick one craft or calling. You start with tier-1 skills from this profession.
+            - generic [ref=e1605]:
+              - generic [ref=e1606]:
+                - generic [ref=e1607]:
+                  - generic [ref=e1608]: 🔨 CRAFTING
+                  - generic [ref=e1609]: Transform raw materials into finished items.
+                - generic [ref=e1610]:
+                  - button "⚗️ ALCHEMY INT WISDOM Brew potions, elixirs, and flasks with magical effects. TIER 1 SKILLS basic brewing" [ref=e1611] [cursor=pointer]:
+                    - generic [ref=e1613]:
+                      - generic [ref=e1614]: ⚗️ ALCHEMY
+                      - generic [ref=e1615]: INT
+                      - generic [ref=e1616]: WISDOM
+                    - generic [ref=e1617]: Brew potions, elixirs, and flasks with magical effects.
+                    - generic [ref=e1618]:
+                      - generic [ref=e1619]: TIER 1 SKILLS
+                      - generic [ref=e1620]: basic brewing
+                  - button "⚔️ BLACKSMITHING STR DEX Forge weapons, armor, and tools from raw metals. TIER 1 SKILLS basic smithing" [ref=e1621] [cursor=pointer]:
+                    - generic [ref=e1623]:
+                      - generic [ref=e1624]: ⚔️ BLACKSMITHING
+                      - generic [ref=e1625]: STR
+                      - generic [ref=e1626]: DEX
+                    - generic [ref=e1627]: Forge weapons, armor, and tools from raw metals.
+                    - generic [ref=e1628]:
+                      - generic [ref=e1629]: TIER 1 SKILLS
+                      - generic [ref=e1630]: basic smithing
+                  - button "🏗️ CONSTRUCTION STR INT Build structures, fortifications, and housing. TIER 1 SKILLS basic construction" [ref=e1631] [cursor=pointer]:
+                    - generic [ref=e1633]:
+                      - generic [ref=e1634]: 🏗️ CONSTRUCTION
+                      - generic [ref=e1635]: STR
+                      - generic [ref=e1636]: INT
+                    - generic [ref=e1637]: Build structures, fortifications, and housing.
+                    - generic [ref=e1638]:
+                      - generic [ref=e1639]: TIER 1 SKILLS
+                      - generic [ref=e1640]: basic construction
+                  - button "✨ ENCHANTING INT SOUL Apply magical effects to existing gear. TIER 1 SKILLS basic enchanting" [ref=e1641] [cursor=pointer]:
+                    - generic [ref=e1643]:
+                      - generic [ref=e1644]: ✨ ENCHANTING
+                      - generic [ref=e1645]: INT
+                      - generic [ref=e1646]: SOUL
+                    - generic [ref=e1647]: Apply magical effects to existing gear.
+                    - generic [ref=e1648]:
+                      - generic [ref=e1649]: TIER 1 SKILLS
+                      - generic [ref=e1650]: basic enchanting
+                  - button "⚙️ ENGINEERING INT DEX Build gadgets, bombs, and mechanical mounts. TIER 1 SKILLS basic engineering" [ref=e1651] [cursor=pointer]:
+                    - generic [ref=e1653]:
+                      - generic [ref=e1654]: ⚙️ ENGINEERING
+                      - generic [ref=e1655]: INT
+                      - generic [ref=e1656]: DEX
+                    - generic [ref=e1657]: Build gadgets, bombs, and mechanical mounts.
+                    - generic [ref=e1658]:
+                      - generic [ref=e1659]: TIER 1 SKILLS
+                      - generic [ref=e1660]: basic engineering
+                  - button "💎 JEWELCRAFTING DEX INT Create rings, necklaces, and gem sockets. TIER 1 SKILLS basic cutting" [ref=e1661] [cursor=pointer]:
+                    - generic [ref=e1663]:
+                      - generic [ref=e1664]: 💎 JEWELCRAFTING
+                      - generic [ref=e1665]: DEX
+                      - generic [ref=e1666]: INT
+                    - generic [ref=e1667]: Create rings, necklaces, and gem sockets.
+                    - generic [ref=e1668]:
+                      - generic [ref=e1669]: TIER 1 SKILLS
+                      - generic [ref=e1670]: basic cutting
+                  - button "🧵 TAILORING DEX CHA Create cloth armor, bags, and banners. TIER 1 SKILLS basic sewing" [ref=e1671] [cursor=pointer]:
+                    - generic [ref=e1673]:
+                      - generic [ref=e1674]: 🧵 TAILORING
+                      - generic [ref=e1675]: DEX
+                      - generic [ref=e1676]: CHA
+                    - generic [ref=e1677]: Create cloth armor, bags, and banners.
+                    - generic [ref=e1678]:
+                      - generic [ref=e1679]: TIER 1 SKILLS
+                      - generic [ref=e1680]: basic sewing
+              - generic [ref=e1681]:
+                - generic [ref=e1682]:
+                  - generic [ref=e1683]: 🌿 GATHERING
+                  - generic [ref=e1684]: Collect raw materials from the environment.
+                - generic [ref=e1685]:
+                  - button "🌾 FARMING & AGRICULTURE WISDOM STR Grow crops, produce, and raise animals. TIER 1 SKILLS basic farming" [ref=e1686] [cursor=pointer]:
+                    - generic [ref=e1688]:
+                      - generic [ref=e1689]: 🌾 FARMING & AGRICULTURE
+                      - generic [ref=e1690]: WISDOM
+                      - generic [ref=e1691]: STR
+                    - generic [ref=e1692]: Grow crops, produce, and raise animals.
+                    - generic [ref=e1693]:
+                      - generic [ref=e1694]: TIER 1 SKILLS
+                      - generic [ref=e1695]: basic farming
+                  - button "🎣 FISHING DEX LUCK Catch fish, aquatic reagents, and treasure. TIER 1 SKILLS basic fishing" [ref=e1696] [cursor=pointer]:
+                    - generic [ref=e1698]:
+                      - generic [ref=e1699]: 🎣 FISHING
+                      - generic [ref=e1700]: DEX
+                      - generic [ref=e1701]: LUCK
+                    - generic [ref=e1702]: Catch fish, aquatic reagents, and treasure.
+                    - generic [ref=e1703]:
+                      - generic [ref=e1704]: TIER 1 SKILLS
+                      - generic [ref=e1705]: basic fishing
+                  - button "🌿 HERBALISM WISDOM LUCK Gather plants, flowers, and fungi. TIER 1 SKILLS basic herbalism" [ref=e1706] [cursor=pointer]:
+                    - generic [ref=e1708]:
+                      - generic [ref=e1709]: 🌿 HERBALISM
+                      - generic [ref=e1710]: WISDOM
+                      - generic [ref=e1711]: LUCK
+                    - generic [ref=e1712]: Gather plants, flowers, and fungi.
+                    - generic [ref=e1713]:
+                      - generic [ref=e1714]: TIER 1 SKILLS
+                      - generic [ref=e1715]: basic herbalism
+                  - button "🪓 LOGGING & WOODCUTTING STR DEX Harvest timber, firewood, and specialty woods. TIER 1 SKILLS basic logging" [ref=e1716] [cursor=pointer]:
+                    - generic [ref=e1718]:
+                      - generic [ref=e1719]: 🪓 LOGGING & WOODCUTTING
+                      - generic [ref=e1720]: STR
+                      - generic [ref=e1721]: DEX
+                    - generic [ref=e1722]: Harvest timber, firewood, and specialty woods.
+                    - generic [ref=e1723]:
+                      - generic [ref=e1724]: TIER 1 SKILLS
+                      - generic [ref=e1725]: basic logging
+                  - button "⛏️ MINING STR LUCK Extract ores, stones, and rare minerals. TIER 1 SKILLS basic mining" [ref=e1726] [cursor=pointer]:
+                    - generic [ref=e1728]:
+                      - generic [ref=e1729]: ⛏️ MINING
+                      - generic [ref=e1730]: STR
+                      - generic [ref=e1731]: LUCK
+                    - generic [ref=e1732]: Extract ores, stones, and rare minerals.
+                    - generic [ref=e1733]:
+                      - generic [ref=e1734]: TIER 1 SKILLS
+                      - generic [ref=e1735]: basic mining
+                  - button "🦊 SKINNING & TRACKING DEX WISDOM Harvest hides, pelts, and meats from creatures. TIER 1 SKILLS basic skinning" [ref=e1736] [cursor=pointer]:
+                    - generic [ref=e1738]:
+                      - generic [ref=e1739]: 🦊 SKINNING & TRACKING
+                      - generic [ref=e1740]: DEX
+                      - generic [ref=e1741]: WISDOM
+                    - generic [ref=e1742]: Harvest hides, pelts, and meats from creatures.
+                    - generic [ref=e1743]:
+                      - generic [ref=e1744]: TIER 1 SKILLS
+                      - generic [ref=e1745]: basic skinning
+              - generic [ref=e1746]:
+                - generic [ref=e1747]:
+                  - generic [ref=e1748]: 🍽️ COOKING & PROVISIONING
+                  - generic [ref=e1749]: Create consumables that provide temporary buffs.
+                - generic [ref=e1750]:
+                  - button "🍺 BREWING & VINTING INT CHA Create drinks for mana regeneration and spirit buffs. TIER 1 SKILLS basic brewing drinks" [ref=e1751] [cursor=pointer]:
+                    - generic [ref=e1753]:
+                      - generic [ref=e1754]: 🍺 BREWING & VINTING
+                      - generic [ref=e1755]: INT
+                      - generic [ref=e1756]: CHA
+                    - generic [ref=e1757]: Create drinks for mana regeneration and spirit buffs.
+                    - generic [ref=e1758]:
+                      - generic [ref=e1759]: TIER 1 SKILLS
+                      - generic [ref=e1760]: basic brewing drinks
+                  - button "🥩 BUTCHERY STR DEX Process raw meat into cooking components. TIER 1 SKILLS basic butchery" [ref=e1761] [cursor=pointer]:
+                    - generic [ref=e1763]:
+                      - generic [ref=e1764]: 🥩 BUTCHERY
+                      - generic [ref=e1765]: STR
+                      - generic [ref=e1766]: DEX
+                    - generic [ref=e1767]: Process raw meat into cooking components.
+                    - generic [ref=e1768]:
+                      - generic [ref=e1769]: TIER 1 SKILLS
+                      - generic [ref=e1770]: basic butchery
+                  - button "🍳 COOKING DEX INT Prepare food that grants stat buffs and regeneration. TIER 1 SKILLS basic cooking" [ref=e1771] [cursor=pointer]:
+                    - generic [ref=e1773]:
+                      - generic [ref=e1774]: 🍳 COOKING
+                      - generic [ref=e1775]: DEX
+                      - generic [ref=e1776]: INT
+                    - generic [ref=e1777]: Prepare food that grants stat buffs and regeneration.
+                    - generic [ref=e1778]:
+                      - generic [ref=e1779]: TIER 1 SKILLS
+                      - generic [ref=e1780]: basic cooking
+              - generic [ref=e1781]:
+                - generic [ref=e1782]:
+                  - generic [ref=e1783]: 📜 SERVICE & SUPPORT
+                  - generic [ref=e1784]: Provide unique services and create special items.
+                - generic [ref=e1785]:
+                  - button "🎨 DYEING & CUSTOMIZATION CHA DEX Change the appearance of armor and items. TIER 1 SKILLS basic dyeing" [ref=e1786] [cursor=pointer]:
+                    - generic [ref=e1788]:
+                      - generic [ref=e1789]: 🎨 DYEING & CUSTOMIZATION
+                      - generic [ref=e1790]: CHA
+                      - generic [ref=e1791]: DEX
+                    - generic [ref=e1792]: Change the appearance of armor and items.
+                    - generic [ref=e1793]:
+                      - generic [ref=e1794]: TIER 1 SKILLS
+                      - generic [ref=e1795]: basic dyeing
+                  - button "🩹 FIRST AID & MEDICINE WISDOM DEX Create bandages, healing kits, and cure status effects. TIER 1 SKILLS basic first aid" [ref=e1796] [cursor=pointer]:
+                    - generic [ref=e1798]:
+                      - generic [ref=e1799]: 🩹 FIRST AID & MEDICINE
+                      - generic [ref=e1800]: WISDOM
+                      - generic [ref=e1801]: DEX
+                    - generic [ref=e1802]: Create bandages, healing kits, and cure status effects.
+                    - generic [ref=e1803]:
+                      - generic [ref=e1804]: TIER 1 SKILLS
+                      - generic [ref=e1805]: basic first aid
+                  - button "📜 INSCRIPTION & SCRIBING INT WISDOM Create scrolls, glyphs, runes, and contracts. TIER 1 SKILLS basic inscription" [ref=e1806] [cursor=pointer]:
+                    - generic [ref=e1808]:
+                      - generic [ref=e1809]: 📜 INSCRIPTION & SCRIBING
+                      - generic [ref=e1810]: INT
+                      - generic [ref=e1811]: WISDOM
+                    - generic [ref=e1812]: Create scrolls, glyphs, runes, and contracts.
+                    - generic [ref=e1813]:
+                      - generic [ref=e1814]: TIER 1 SKILLS
+                      - generic [ref=e1815]: basic inscription
+                  - button "🌀 PORTAL CREATION INT SOUL Provide quick travel services through portals. TIER 1 SKILLS basic teleportation" [ref=e1816] [cursor=pointer]:
+                    - generic [ref=e1818]:
+                      - generic [ref=e1819]: 🌀 PORTAL CREATION
+                      - generic [ref=e1820]: INT
+                      - generic [ref=e1821]: SOUL
+                    - generic [ref=e1822]: Provide quick travel services through portals.
+                    - generic [ref=e1823]:
+                      - generic [ref=e1824]: TIER 1 SKILLS
+                      - generic [ref=e1825]: basic teleportation
+                  - button "🔧 REPAIR & MAINTENANCE DEX INT Fix damaged gear and maintain equipment. TIER 1 SKILLS basic maintenance" [ref=e1826] [cursor=pointer]:
+                    - generic [ref=e1828]:
+                      - generic [ref=e1829]: 🔧 REPAIR & MAINTENANCE
+                      - generic [ref=e1830]: DEX
+                      - generic [ref=e1831]: INT
+                    - generic [ref=e1832]: Fix damaged gear and maintain equipment.
+                    - generic [ref=e1833]:
+                      - generic [ref=e1834]: TIER 1 SKILLS
+                      - generic [ref=e1835]: basic maintenance
+    - generic [ref=e146]:
+      - generic [ref=e148]: Narrative Memory
+      - generic [ref=e149]:
+        - button "⇄" [ref=e150] [cursor=pointer]
+        - button "+" [ref=e151] [cursor=pointer]
+        - button "📌" [ref=e152] [cursor=pointer]
+        - button "<<" [ref=e153] [cursor=pointer]
+  - 'button "Show Admin (Ctrl+`)" [ref=e154] [cursor=pointer]'

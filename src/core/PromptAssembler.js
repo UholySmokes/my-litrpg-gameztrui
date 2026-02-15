@@ -22,6 +22,33 @@ import {
 
 const MAX_HISTORY_ENTRIES = 20;
 const MAX_HISTORY_CHARS = 4000;
+const REPETITION_WINDOW = 6;
+const REPETITION_MIN_TERM_LENGTH = 5;
+const REPETITION_MIN_COUNT = 3;
+const REPETITION_STOPWORDS = new Set([
+  "their",
+  "there",
+  "where",
+  "which",
+  "while",
+  "through",
+  "about",
+  "after",
+  "before",
+  "under",
+  "until",
+  "still",
+  "again",
+  "around",
+  "across",
+  "every",
+  "toward",
+  "towards",
+  "within",
+  "without",
+  "player",
+  "system",
+]);
 
 const sanitizeUserInput = (input) => {
   if (typeof input !== "string") return "";
@@ -29,6 +56,62 @@ const sanitizeUserInput = (input) => {
   const collapsed = noNewlines.replace(/\s{2,}/g, " ").trim();
   return collapsed.slice(0, 400);
 };
+
+function tokenizeForRepetition(text = "") {
+  if (typeof text !== "string" || !text) return [];
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s']/g, " ")
+    .split(/\s+/)
+    .map((token) => token.replace(/^'+|'+$/g, ""))
+    .filter(
+      (token) =>
+        token.length >= REPETITION_MIN_TERM_LENGTH &&
+        !REPETITION_STOPWORDS.has(token),
+    );
+}
+
+function getRecentNarrativeTexts(gameState = {}) {
+  const entries = Array.isArray(gameState?.narrative?.entries)
+    ? gameState.narrative.entries
+    : [];
+  const ordered = entries
+    .filter((entry) => entry?.type === "narrative" && typeof entry?.text === "string")
+    .sort((a, b) => {
+      const timestampDelta = (a.timestamp || 0) - (b.timestamp || 0);
+      if (timestampDelta !== 0) return timestampDelta;
+      const sequenceDelta = (a.sequence || 0) - (b.sequence || 0);
+      if (sequenceDelta !== 0) return sequenceDelta;
+      return String(a.id || "").localeCompare(String(b.id || ""));
+    });
+  return ordered.slice(-REPETITION_WINDOW).map((entry) => entry.text);
+}
+
+function buildRepetitionDirective(gameState = {}) {
+  const recentTexts = getRecentNarrativeTexts(gameState);
+  if (recentTexts.length < 2) {
+    return "Recent repetition watchlist: none.";
+  }
+
+  const counts = new Map();
+  recentTexts.forEach((text) => {
+    tokenizeForRepetition(text).forEach((token) => {
+      counts.set(token, (counts.get(token) || 0) + 1);
+    });
+  });
+
+  const repeatedTerms = Array.from(counts.entries())
+    .filter(([, count]) => count >= REPETITION_MIN_COUNT)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 6)
+    .map(([token]) => token);
+
+  if (repeatedTerms.length === 0) {
+    return "Recent repetition watchlist: none.";
+  }
+
+  return `Recent repetition watchlist: avoid reusing ${repeatedTerms.join(", ")} unless essential for continuity.`;
+}
 
 function resolveArchetypeSystem(player = {}) {
   const raw = player.system ?? player.archetypeSystem;
@@ -75,7 +158,13 @@ export function assemblePrompt(gameState, userInput, actionResult) {
     typeof gameState?.narrative?.currentMood === "string"
       ? gameState.narrative.currentMood
       : "neutral";
-  const systemPrompt = buildSystemPrompt({ archetypeSystem, mode, currentMood });
+  const repetitionDirective = buildRepetitionDirective(gameState);
+  const systemPrompt = buildSystemPrompt({
+    archetypeSystem,
+    mode,
+    currentMood,
+    repetitionDirective,
+  });
   const contextSection = buildContextSection(gameState);
   const historySection = buildHistorySection(gameState);
   const actionSection = buildActionSection(userInput, actionResult);
@@ -92,7 +181,12 @@ ${actionSection}`;
 /**
  * Builds the system prompt that defines the AI's role and output format
  */
-function buildSystemPrompt({ archetypeSystem, mode, currentMood }) {
+function buildSystemPrompt({
+  archetypeSystem,
+  mode,
+  currentMood,
+  repetitionDirective,
+}) {
   const toneDirective = buildArchetypeToneDirective(archetypeSystem);
   const moodDirective =
     currentMood && currentMood !== "neutral"
@@ -114,6 +208,7 @@ function buildSystemPrompt({ archetypeSystem, mode, currentMood }) {
 10. Advance the scene each turn with at least one new concrete detail or consequence
 ${modeDirective}
 ${moodDirective}
+${repetitionDirective}
 ${toneDirective}
 ${safetyDirective}`;
 }
@@ -151,7 +246,7 @@ function buildArchetypeToneDirective(archetypeSystem) {
 
   const toneMap = {
     System: `\nNarrative tone: analytical and system-aware. The player has a "${name}" system. Weave in subtle system notifications, data fragments, or interface glitches. Use precise, measured language mixed with wonder.`,
-    Authority: `\nNarrative tone: commanding and regal. The player wields the "${name}" authority. Convey weight, dominion, and the burden of power. Let descriptions carry gravity and sovereignty.`,
+    Authority: `\nNarrative tone: commanding and weighty. The player wields the "${name}" authority. Emphasize responsibility, leverage, and consequence. Vary vocabulary; avoid repeating throne/sovereign/dominion motifs across consecutive turns.`,
     Path: `\nNarrative tone: mystical and transformative. The player walks the "${name}" path. Emphasize ritual, ascension, and the sense of becoming something greater. Use evocative, almost reverent language.`,
     Framework: `\nNarrative tone: cerebral and meta-aware. The player operates within the "${name}" framework. Hint at the underlying rules being bent or rewritten. Use clever, layered descriptions.`,
     Privilege: `\nNarrative tone: conspiratorial and knowing. The player holds the "${name}" privilege. Weave in hidden knowledge, subtle advantages, and the feeling of seeing what others cannot.`,
@@ -497,6 +592,14 @@ ${historyText}`;
  */
 function buildActionSection(userInput, actionResult) {
   const safeUserInput = sanitizeUserInput(userInput);
+  const dialogueIntent = /(^["'])|\b(say|ask|tell|speak|talk|shout|whisper|yell|reply|negotiate|question)\b/i.test(
+    safeUserInput,
+  );
+  const actionType =
+    actionResult && typeof actionResult.actionType === "string"
+      ? actionResult.actionType
+      : "";
+  const shouldFavorDialogue = dialogueIntent || actionType === "narrative";
   const result =
     actionResult && typeof actionResult === "object"
       ? actionResult
@@ -542,7 +645,7 @@ The action failed. ${result.reason || "Action could not be completed."}`;
 ${actionDescription}
 
 === YOUR TASK ===
-Generate a narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. Hard limit: keep the response under 1200 characters.`;
+Generate a narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. ${shouldFavorDialogue ? "Dialogue can appear when it directly matches the player's intent, but keep it brief and purposeful." : "Do not open with quoted dialogue; begin with immediate scene action or sensory detail."} Hard limit: keep the response under 1200 characters.`;
 }
 
 /**

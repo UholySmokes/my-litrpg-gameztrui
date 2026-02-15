@@ -1,0 +1,329 @@
+extend type GameState {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "GameState", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `GameState` table.
+  """
+  _count: Int! @fdc_generated(from: "GameState.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `chatLog` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  chatLog_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.chatLog", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `combat` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  combat_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.combat", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `config` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  config_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.config", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `contentVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  contentVersion_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.contentVersion", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `narrative` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  narrative_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.narrative", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `player` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  player_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.player", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `quests` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  quests_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.quests", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `stateVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  stateVersion_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameState` table where the `world` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  world_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameState.world", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `stateVersion` field in the `GameState` table.
+  """
+  stateVersion_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_SUM)
+  """
+  ✨ Average the `stateVersion` field in the `GameState` table.
+  """
+  stateVersion_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `chatLog` field in the `GameState` table.
+  """
+  chatLog_min: Any @fdc_generated(from: "GameState.chatLog", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `combat` field in the `GameState` table.
+  """
+  combat_min: Any @fdc_generated(from: "GameState.combat", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `config` field in the `GameState` table.
+  """
+  config_min: Any @fdc_generated(from: "GameState.config", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `createdAt` field in the `GameState` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "GameState.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `narrative` field in the `GameState` table.
+  """
+  narrative_min: Any @fdc_generated(from: "GameState.narrative", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `player` field in the `GameState` table.
+  """
+  player_min: Any @fdc_generated(from: "GameState.player", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `quests` field in the `GameState` table.
+  """
+  quests_min: Any @fdc_generated(from: "GameState.quests", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `stateVersion` field in the `GameState` table.
+  """
+  stateVersion_min: Int @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `GameState` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "GameState.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `world` field in the `GameState` table.
+  """
+  world_min: Any @fdc_generated(from: "GameState.world", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `chatLog` field in the `GameState` table.
+  """
+  chatLog_max: Any @fdc_generated(from: "GameState.chatLog", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `combat` field in the `GameState` table.
+  """
+  combat_max: Any @fdc_generated(from: "GameState.combat", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `config` field in the `GameState` table.
+  """
+  config_max: Any @fdc_generated(from: "GameState.config", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `createdAt` field in the `GameState` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "GameState.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `narrative` field in the `GameState` table.
+  """
+  narrative_max: Any @fdc_generated(from: "GameState.narrative", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `player` field in the `GameState` table.
+  """
+  player_max: Any @fdc_generated(from: "GameState.player", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `quests` field in the `GameState` table.
+  """
+  quests_max: Any @fdc_generated(from: "GameState.quests", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `stateVersion` field in the `GameState` table.
+  """
+  stateVersion_max: Int @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `GameState` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "GameState.updatedAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `world` field in the `GameState` table.
+  """
+  world_max: Any @fdc_generated(from: "GameState.world", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "GameState.id", purpose: GLOBAL_ID)
+}
+extend type User {
+  """
+  ✨ List `GameState` objects in a one-to-many relationship (where `GameState`.`user` is this object).
+  """
+  gameStates_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: GameState_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [GameState_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: GameState_Having
+  ): [GameState!]! @fdc_generated(from: "GameState.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "User", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `User` table.
+  """
+  _count: Int! @fdc_generated(from: "User.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `username` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  username_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.username", purpose: QUERY_COUNT)
+  """
+  ✨ Minimum of the `createdAt` field in the `User` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "User.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `User` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "User.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `User` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "User.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `User` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "User.updatedAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "User.id", purpose: GLOBAL_ID)
+}

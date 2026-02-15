@@ -13,18 +13,18 @@ type GameState @table {
   id: UUID! @default(expr: "uuidV4()")
   user: User!
   
-  # We store complex sub-states as JSON objects to allow flexible evolution
+  # We store complex sub-states as Any (JSON-backed) to allow flexible evolution
   # without constant schema migrations for gameplay mechanics.
   # These map to the Types defined in @voidverse/game-schemas/state.d.ts
-  player: JSON! 
-  world: JSON!
-  quests: JSON!
-  config: JSON!
+  player: Any!
+  world: Any!
+  quests: Any!
+  config: Any!
   
   # Optional logs and transient state
-  chatLog: JSON
-  narrative: JSON
-  combat: JSON
+  chatLog: Any
+  narrative: Any
+  combat: Any
   
   # Versioning for migration support
   contentVersion: String

@@ -1,0 +1,870 @@
+"""
+✨ `GameState_KeyOutput` returns the primary key fields of table type `GameState`.
+
+It has the same format as `GameState_Key`, but is only used as mutation return value.
+"""
+scalar GameState_KeyOutput
+"""
+✨ `User_KeyOutput` returns the primary key fields of table type `User`.
+
+It has the same format as `User_Key`, but is only used as mutation return value.
+"""
+scalar User_KeyOutput
+"""
+✨ Generated data input type for table 'GameState'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input GameState_Data {
+  """
+  ✨ Generated from Field `GameState`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `GameState`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `GameState`.`userId` of type `String!`
+  """
+  userId: String
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `GameState`.`userId` of type `String!`)
+  """
+  userId_expr: String_Expr
+  """
+  ✨ Generated from Field `GameState`.`user` of type `User!`
+  """
+  user: User_Key
+  """
+  ✨ Generated from Field `GameState`.`chatLog` of type `Any`
+  """
+  chatLog: Any
+  """
+  ✨ `_expr` server value variant of `chatLog` (✨ Generated from Field `GameState`.`chatLog` of type `Any`)
+  """
+  chatLog_expr: Any_Expr
+  """
+  ✨ Generated from Field `GameState`.`combat` of type `Any`
+  """
+  combat: Any
+  """
+  ✨ `_expr` server value variant of `combat` (✨ Generated from Field `GameState`.`combat` of type `Any`)
+  """
+  combat_expr: Any_Expr
+  """
+  ✨ Generated from Field `GameState`.`config` of type `Any!`
+  """
+  config: Any
+  """
+  ✨ `_expr` server value variant of `config` (✨ Generated from Field `GameState`.`config` of type `Any!`)
+  """
+  config_expr: Any_Expr
+  """
+  ✨ Generated from Field `GameState`.`contentVersion` of type `String`
+  """
+  contentVersion: String
+  """
+  ✨ `_expr` server value variant of `contentVersion` (✨ Generated from Field `GameState`.`contentVersion` of type `String`)
+  """
+  contentVersion_expr: String_Expr
+  """
+  ✨ Generated from Field `GameState`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `GameState`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `GameState`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `GameState`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `GameState`.`narrative` of type `Any`
+  """
+  narrative: Any
+  """
+  ✨ `_expr` server value variant of `narrative` (✨ Generated from Field `GameState`.`narrative` of type `Any`)
+  """
+  narrative_expr: Any_Expr
+  """
+  ✨ Generated from Field `GameState`.`player` of type `Any!`
+  """
+  player: Any
+  """
+  ✨ `_expr` server value variant of `player` (✨ Generated from Field `GameState`.`player` of type `Any!`)
+  """
+  player_expr: Any_Expr
+  """
+  ✨ Generated from Field `GameState`.`quests` of type `Any!`
+  """
+  quests: Any
+  """
+  ✨ `_expr` server value variant of `quests` (✨ Generated from Field `GameState`.`quests` of type `Any!`)
+  """
+  quests_expr: Any_Expr
+  """
+  ✨ Generated from Field `GameState`.`stateVersion` of type `Int`
+  """
+  stateVersion: Int
+  """
+  ✨ `_expr` server value variant of `stateVersion` (✨ Generated from Field `GameState`.`stateVersion` of type `Int`)
+  """
+  stateVersion_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `stateVersion` (✨ Generated from Field `GameState`.`stateVersion` of type `Int`)
+  """
+  stateVersion_update: [Int_Update!]
+  """
+  ✨ Generated from Field `GameState`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `GameState`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `GameState`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `GameState`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `GameState`.`world` of type `Any!`
+  """
+  world: Any
+  """
+  ✨ `_expr` server value variant of `world` (✨ Generated from Field `GameState`.`world` of type `Any!`)
+  """
+  world_expr: Any_Expr
+}
+"""
+✨ Generated filter input type for table 'GameState'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input GameState_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [GameState_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: GameState_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [GameState_Filter!]
+  """
+  ✨ Generated from Field `GameState`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `GameState`.`userId` of type `String!`
+  """
+  userId: String_Filter
+  """
+  ✨ Generated from Field `GameState`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `GameState`.`chatLog` of type `Any`
+  """
+  chatLog: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`combat` of type `Any`
+  """
+  combat: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`config` of type `Any!`
+  """
+  config: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`contentVersion` of type `String`
+  """
+  contentVersion: String_Filter
+  """
+  ✨ Generated from Field `GameState`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `GameState`.`narrative` of type `Any`
+  """
+  narrative: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`player` of type `Any!`
+  """
+  player: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`quests` of type `Any!`
+  """
+  quests: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`stateVersion` of type `Int`
+  """
+  stateVersion: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `GameState`.`world` of type `Any!`
+  """
+  world: Any_Filter
+}
+"""
+✨ Generated first-row input type for table 'GameState'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input GameState_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [GameState_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: GameState_Filter
+}
+"""
+✨ Generated having input type for table 'GameState'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input GameState_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [GameState_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: GameState_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [GameState_Having!]
+  """
+  ✨ Generated from Field `GameState`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`chatLog_count` of type `Int!`
+  """
+  chatLog_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`combat_count` of type `Int!`
+  """
+  combat_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`config_count` of type `Int!`
+  """
+  config_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`contentVersion_count` of type `Int!`
+  """
+  contentVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`narrative_count` of type `Int!`
+  """
+  narrative_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`player_count` of type `Int!`
+  """
+  player_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`quests_count` of type `Int!`
+  """
+  quests_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_count` of type `Int!`
+  """
+  stateVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`world_count` of type `Int!`
+  """
+  world_count: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_sum` of type `Int`
+  """
+  stateVersion_sum: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_avg` of type `Float`
+  """
+  stateVersion_avg: Float_Filter
+  """
+  ✨ Generated from Field `GameState`.`chatLog_min` of type `Any`
+  """
+  chatLog_min: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`combat_min` of type `Any`
+  """
+  combat_min: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`config_min` of type `Any`
+  """
+  config_min: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `GameState`.`narrative_min` of type `Any`
+  """
+  narrative_min: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`player_min` of type `Any`
+  """
+  player_min: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`quests_min` of type `Any`
+  """
+  quests_min: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_min` of type `Int`
+  """
+  stateVersion_min: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `GameState`.`world_min` of type `Any`
+  """
+  world_min: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`chatLog_max` of type `Any`
+  """
+  chatLog_max: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`combat_max` of type `Any`
+  """
+  combat_max: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`config_max` of type `Any`
+  """
+  config_max: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `GameState`.`narrative_max` of type `Any`
+  """
+  narrative_max: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`player_max` of type `Any`
+  """
+  player_max: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`quests_max` of type `Any`
+  """
+  quests_max: Any_Filter
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_max` of type `Int`
+  """
+  stateVersion_max: Int_Filter
+  """
+  ✨ Generated from Field `GameState`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+  """
+  ✨ Generated from Field `GameState`.`world_max` of type `Any`
+  """
+  world_max: Any_Filter
+}
+"""
+✨ Generated key input type for table 'GameState'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input GameState_Key {
+  """
+  ✨ Generated from Field `GameState`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `GameState`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'GameState'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input GameState_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: GameState_Filter
+}
+"""
+✨ Generated order input type for table 'GameState'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input GameState_Order {
+  """
+  ✨ Generated from Field `GameState`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`userId` of type `String!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `GameState`.`chatLog` of type `Any`
+  """
+  chatLog: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`combat` of type `Any`
+  """
+  combat: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`config` of type `Any!`
+  """
+  config: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`contentVersion` of type `String`
+  """
+  contentVersion: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`narrative` of type `Any`
+  """
+  narrative: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`player` of type `Any!`
+  """
+  player: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`quests` of type `Any!`
+  """
+  quests: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`stateVersion` of type `Int`
+  """
+  stateVersion: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`world` of type `Any!`
+  """
+  world: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`chatLog_count` of type `Int!`
+  """
+  chatLog_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`combat_count` of type `Int!`
+  """
+  combat_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`config_count` of type `Int!`
+  """
+  config_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`contentVersion_count` of type `Int!`
+  """
+  contentVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`narrative_count` of type `Int!`
+  """
+  narrative_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`player_count` of type `Int!`
+  """
+  player_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`quests_count` of type `Int!`
+  """
+  quests_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_count` of type `Int!`
+  """
+  stateVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`world_count` of type `Int!`
+  """
+  world_count: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_sum` of type `Int`
+  """
+  stateVersion_sum: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_avg` of type `Float`
+  """
+  stateVersion_avg: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`chatLog_min` of type `Any`
+  """
+  chatLog_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`combat_min` of type `Any`
+  """
+  combat_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`config_min` of type `Any`
+  """
+  config_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`narrative_min` of type `Any`
+  """
+  narrative_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`player_min` of type `Any`
+  """
+  player_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`quests_min` of type `Any`
+  """
+  quests_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_min` of type `Int`
+  """
+  stateVersion_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`world_min` of type `Any`
+  """
+  world_min: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`chatLog_max` of type `Any`
+  """
+  chatLog_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`combat_max` of type `Any`
+  """
+  combat_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`config_max` of type `Any`
+  """
+  config_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`narrative_max` of type `Any`
+  """
+  narrative_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`player_max` of type `Any`
+  """
+  player_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`quests_max` of type `Any`
+  """
+  quests_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`stateVersion_max` of type `Int`
+  """
+  stateVersion_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+  """
+  ✨ Generated from Field `GameState`.`world_max` of type `Any`
+  """
+  world_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'User'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input User_Data {
+  """
+  ✨ Generated from Field `User`.`id` of type `String!`
+  """
+  id: String
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `String!`)
+  """
+  id_expr: String_Expr
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `User`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `User`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `User`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `User`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `User`.`username` of type `String`
+  """
+  username: String
+  """
+  ✨ `_expr` server value variant of `username` (✨ Generated from Field `User`.`username` of type `String`)
+  """
+  username_expr: String_Expr
+}
+"""
+✨ Generated filter input type for table 'User'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [User_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: User_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [User_Filter!]
+  """
+  ✨ Generated from Field `User`.`id` of type `String!`
+  """
+  id: String_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `User`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `User`.`username` of type `String`
+  """
+  username: String_Filter
+  """
+  ✨ Generated from Field `User`.`gameStates_on_user` of type `[GameState!]!`
+  """
+  gameStates_on_user: GameState_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'User'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input User_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [User_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: User_Filter
+}
+"""
+✨ Generated having input type for table 'User'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [User_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: User_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [User_Having!]
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`username_count` of type `Int!`
+  """
+  username_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `User`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `User`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'User'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input User_Key {
+  """
+  ✨ Generated from Field `User`.`id` of type `String!`
+  """
+  id: String
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `String!`)
+  """
+  id_expr: String_Expr
+}
+"""
+✨ Generated list filter input type for table 'User'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input User_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: User_Filter
+}
+"""
+✨ Generated order input type for table 'User'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input User_Order {
+  """
+  ✨ Generated from Field `User`.`id` of type `String!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `User`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `User`.`username` of type `String`
+  """
+  username: OrderDirection
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`username_count` of type `Int!`
+  """
+  username_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `User`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `User`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}

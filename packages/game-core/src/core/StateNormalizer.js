@@ -50,9 +50,15 @@ const DEFAULT_PROGRESS = {
 
 function lookupEntityByKind(trimmed, kind) {
   const registry = kind === "race"
-    ? { getById: DataRegistry.getRaceById, getAll: DataRegistry.getRaces }
+    ? {
+        getById: (id) => DataRegistry.getRaceById(id),
+        getAll: () => DataRegistry.getRaces(),
+      }
     : kind === "class"
-      ? { getById: DataRegistry.getClassById, getAll: DataRegistry.getClasses }
+      ? {
+          getById: (id) => DataRegistry.getClassById(id),
+          getAll: () => DataRegistry.getClasses(),
+        }
       : null;
   if (!registry) return null;
 

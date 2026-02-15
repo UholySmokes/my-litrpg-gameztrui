@@ -109,6 +109,9 @@ function buildSystemPrompt({ archetypeSystem, mode, currentMood }) {
 5. Use an inclusive, human tone: allow darkness, resilience, hope, and quiet moments depending on context
 6. Reference the player's archetype system naturally when relevant (not every response)
 7. Hard limit: keep the response under 1200 characters
+8. Avoid markdown formatting entirely (no **bold**, *italic*, backticks, headings, or lists)
+9. Avoid repetitive keyword loops; do not reuse signature archetype terms more than once unless strictly necessary
+10. Advance the scene each turn with at least one new concrete detail or consequence
 ${modeDirective}
 ${moodDirective}
 ${toneDirective}
@@ -133,7 +136,7 @@ function buildArchetypeToneDirective(archetypeSystem) {
       ? tone.vocabulary.filter(Boolean).slice(0, 8)
       : [];
     const vocabLine = vocabulary.length
-      ? `Weave these terms naturally when relevant: ${vocabulary.join(", ")}.`
+      ? `Optional vocabulary (use sparingly, no repetition): ${vocabulary.join(", ")}.`
       : "";
     return [
       "",

@@ -1,14 +1,36 @@
-import { toNumber, isPlainObject, mergeInventoryItems } from "../../utils/shared.js";
+import {
+  toNumber,
+  isPlainObject,
+  mergeInventoryItems,
+  getProgressionModifiers,
+  scalePositiveReward,
+} from "../../utils/shared.js";
 import { getTitleBonuses } from "../../core/titleLogic.js";
 import { updatePlayerVitals } from "../../core/PlayerVitals.js";
 
-const mergeResources = (existing = {}, rewardResources = {}) => {
+const mergeResources = (existing = {}, rewardResources = {}, multiplier = 1) => {
   const next = { ...existing };
   Object.entries(rewardResources).forEach(([key, delta]) => {
     if (!Number.isFinite(delta)) return;
-    next[key] = toNumber(next[key], 0) + delta;
+    const scaledDelta = scalePositiveReward(delta, multiplier, "ceil");
+    next[key] = toNumber(next[key], 0) + scaledDelta;
   });
   return next;
+};
+
+const scaleQuestItemRewards = (items = [], multiplier = 1, lootQualityBonus = 0) => {
+  if (!Array.isArray(items) || items.length === 0) return [];
+  const rewardFactor = Math.max(0, multiplier * (1 + Math.max(0, toNumber(lootQualityBonus, 0))));
+
+  return items.map((item) => {
+    if (!item || typeof item !== "object") return item;
+    const quantity = Math.max(1, Math.floor(toNumber(item.quantity, 1)));
+    if (quantity <= 0 || rewardFactor <= 1) {
+      return { ...item, quantity };
+    }
+    const scaled = Math.max(1, Math.floor(quantity * rewardFactor));
+    return { ...item, quantity: scaled };
+  });
 };
 
 export const applyQuestRewards = (state, reward) => {
@@ -18,21 +40,35 @@ export const applyQuestRewards = (state, reward) => {
   let worldChanged = false;
   const player = { ...(state.player || {}) };
   const world = { ...(state.world || {}) };
+  const progression = getProgressionModifiers(player);
+  const xpRewardFactor =
+    progression.xpGainMultiplier * progression.questRewardMultiplier;
+  const goldRewardFactor =
+    progression.goldGainMultiplier * progression.questRewardMultiplier;
+  const resourceRewardFactor =
+    progression.resourceGainMultiplier * progression.questRewardMultiplier;
+  const soulRewardFactor = progression.questRewardMultiplier;
+  const itemRewardFactor = progression.questRewardMultiplier;
 
   if (Number.isFinite(reward.xp) && reward.xp !== 0) {
+    const adjustedXp = scalePositiveReward(reward.xp, xpRewardFactor, "ceil");
     if (isPlainObject(player.xp) && "current" in player.xp) {
       player.xp = {
         ...player.xp,
-        current: toNumber(player.xp.current, 0) + reward.xp,
+        current: toNumber(player.xp.current, 0) + adjustedXp,
       };
     } else {
-      player.xp = toNumber(player.xp, 0) + reward.xp;
+      player.xp = toNumber(player.xp, 0) + adjustedXp;
     }
     playerChanged = true;
   }
 
   if (isPlainObject(reward.resources)) {
-    player.resources = mergeResources(player.resources, reward.resources);
+    player.resources = mergeResources(
+      player.resources,
+      reward.resources,
+      resourceRewardFactor,
+    );
     playerChanged = true;
   }
 
@@ -42,8 +78,9 @@ export const applyQuestRewards = (state, reward) => {
     const goldGain = Number.isFinite(titleBonuses.goldGain)
       ? titleBonuses.goldGain
       : 0;
-    const delta =
+    const titleAdjusted =
       rawDelta > 0 ? Math.ceil(rawDelta * (1 + goldGain)) : rawDelta;
+    const delta = scalePositiveReward(titleAdjusted, goldRewardFactor, "ceil");
     const currentGold = toNumber(player.currency?.goldCoins ?? player.gold, 0);
     const nextGold = currentGold + delta;
 
@@ -68,7 +105,7 @@ export const applyQuestRewards = (state, reward) => {
   }
 
   if (Number.isFinite(reward.soulpoints) && reward.soulpoints !== 0) {
-    const delta = toNumber(reward.soulpoints, 0);
+    const delta = scalePositiveReward(toNumber(reward.soulpoints, 0), soulRewardFactor, "ceil");
     const currentSoul = toNumber(
       player.currency?.soulpoints ?? player.soulpoints,
       0,
@@ -86,7 +123,12 @@ export const applyQuestRewards = (state, reward) => {
   }
 
   if (Array.isArray(reward.items) && reward.items.length > 0) {
-    player.inventory = mergeInventoryItems(player.inventory, reward.items);
+    const scaledItems = scaleQuestItemRewards(
+      reward.items,
+      itemRewardFactor,
+      progression.lootQualityBonus,
+    );
+    player.inventory = mergeInventoryItems(player.inventory, scaledItems);
     playerChanged = true;
   }
 

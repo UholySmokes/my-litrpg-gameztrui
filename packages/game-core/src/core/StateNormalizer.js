@@ -8,8 +8,14 @@ import {
 } from "./titleLogic.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeNarrativeEntries } from "./narrativeLog.js";
-import { isPlainObject, toNumber, clamp } from "../utils/shared.js";
+import {
+  isPlainObject,
+  toNumber,
+  clamp,
+  normalizeProgressionModifiers,
+} from "../utils/shared.js";
 import { INITIAL_CONFIG } from "../data/initialState.js";
+import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import {
   WORLD_META,
   MAJOR_FACTION_IDS,
@@ -224,11 +230,30 @@ function normalizePlayer(rawPlayer, config) {
   );
 
   const { goldCoins, soulpoints, currency } = normalizeCurrency(player);
-  const archetypeSystem = isPlainObject(player.archetypeSystem)
-      ? player.archetypeSystem
-      : typeof player.archetypeSystem === "string"
-        ? { id: player.archetypeSystem, name: player.archetypeSystem }
-        : null;
+  const rawArchetypeSystem = isPlainObject(player.archetypeSystem)
+    ? player.archetypeSystem
+    : typeof player.archetypeSystem === "string"
+      ? { id: player.archetypeSystem, name: player.archetypeSystem }
+      : null;
+  const resolvedArchetype = rawArchetypeSystem?.id
+    ? getArchetypeSystemById(rawArchetypeSystem.id)
+    : null;
+  const archetypeSystem = resolvedArchetype
+    ? {
+        ...resolvedArchetype,
+        ...(rawArchetypeSystem || {}),
+        id: rawArchetypeSystem?.id || resolvedArchetype.id,
+        name: rawArchetypeSystem?.name || resolvedArchetype.name,
+        category: rawArchetypeSystem?.category || resolvedArchetype.category,
+        progressionImpact: resolvedArchetype.progressionImpact,
+        quality: resolvedArchetype.quality,
+        implementationProfile: resolvedArchetype.implementationProfile,
+      }
+    : rawArchetypeSystem;
+  const progressionModifiers = normalizeProgressionModifiers(
+    player.progressionModifiers,
+    archetypeSystem?.progressionImpact,
+  );
   const { unlockedTitles, equippedTitle } = normalizeTitles(player);
   const progress = isPlainObject(player.progress) ? player.progress : {};
   const killsByEnemyId = isPlainObject(progress.killsByEnemyId)
@@ -276,6 +301,7 @@ function normalizePlayer(rawPlayer, config) {
     soulpoints,
     currency,
     archetypeSystem,
+    progressionModifiers,
     talents: Array.isArray(player.talents) ? player.talents : [],
     professions: isPlainObject(player.professions) ? player.professions : {},
     progress: {

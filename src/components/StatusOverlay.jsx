@@ -12,6 +12,10 @@ import { canEvolveSkill } from "../systems/skills/SkillEvolutionSystem.js";
 import { canFuseSkills } from "../systems/skills/SkillFusionSystem.js";
 import { isSpellSkill } from "../systems/skills/SpellStudySystem.js";
 import { getTalentById } from "../entities/Player.js";
+import {
+  getProgressionModifiers,
+  resolveClassEvolutionRequirement,
+} from "../utils/shared.js";
 
 export default function StatusOverlay({
   player,
@@ -278,9 +282,27 @@ export default function StatusOverlay({
   const nextClass = classData?.upgradePath
     ? DataRegistry.getClassById(classData.upgradePath)
     : null;
+  const classEvolutionCount = Math.max(
+    0,
+    Math.floor(
+      Number(
+        player.progress &&
+        typeof player.progress === "object" &&
+        !Array.isArray(player.progress)
+          ? player.progress.classEvolutions
+          : 0,
+      ) || 0,
+    ),
+  );
+  const progressionModifiers = getProgressionModifiers(player);
+  const requiredClassEvolutionLevel = resolveClassEvolutionRequirement(
+    resolvedConfig,
+    classEvolutionCount,
+    progressionModifiers,
+  );
   const canEvolveClass =
     !!nextClass &&
-    (player.level || 1) >= (resolvedConfig.classEvolutionLevel ?? 10);
+    (player.level || 1) >= requiredClassEvolutionLevel;
 
   const derivedCombatStats = [
     {
@@ -804,7 +826,7 @@ export default function StatusOverlay({
                 </span>
               </div>
               <div style={{ color: "var(--text-dim)", marginTop: "0.25rem" }}>
-                Requires Level {resolvedConfig.classEvolutionLevel ?? 10}
+                Requires Level {requiredClassEvolutionLevel}
               </div>
               <button
                 className="holo-button"

@@ -175,6 +175,11 @@ import {
   getAttributeValue,
 } from "../../utils/AttributeMath.js";
 import {
+  getProgressionModifiers,
+  scalePositiveReward,
+  toNumber,
+} from "../../utils/shared.js";
+import {
   getEffectiveAttributes,
   getTitleBonuses,
 } from "../titles/TitleSystem.js";
@@ -2576,12 +2581,35 @@ export function processEnemyTurns(state) {
 function handleEnemyDefeat(state, enemyIndex) {
   const enemy = state.combat.enemies[enemyIndex];
   const drops = calculateEnemyDrops(enemy);
+  const progression = getProgressionModifiers(state.player);
   const titleBonuses = getTitleBonuses(state.player);
   const goldGain = Number.isFinite(titleBonuses.goldGain)
     ? titleBonuses.goldGain
     : 0;
-  const goldEarned =
+  const titleAdjustedGold =
     drops.gold > 0 ? Math.max(0, Math.ceil(drops.gold * (1 + goldGain))) : 0;
+  const goldEarned = scalePositiveReward(
+    titleAdjustedGold,
+    progression.goldGainMultiplier,
+    "ceil",
+  );
+
+  const lootFactor = Math.max(
+    1,
+    1 + Math.max(0, toNumber(progression.lootQualityBonus, 0)),
+  );
+  const adjustedItems = Array.isArray(drops.items)
+    ? drops.items.map((item) => {
+        if (!item || typeof item !== "object") return item;
+        const baseQuantity = Math.max(1, Math.floor(toNumber(item.quantity, 1)));
+        if (lootFactor <= 1) return { ...item, quantity: baseQuantity };
+        const scaled = baseQuantity * lootFactor;
+        const guaranteed = Math.max(1, Math.floor(scaled));
+        const fractional = scaled - guaranteed;
+        const bonus = fractional > 0 && random() < fractional ? 1 : 0;
+        return { ...item, quantity: guaranteed + bonus };
+      })
+    : [];
 
   // Add drops to player
   let newState = state;
@@ -2635,19 +2663,29 @@ function handleEnemyDefeat(state, enemyIndex) {
   }
 
   // Add items
-  drops.items.forEach((item) => {
+  adjustedItems.forEach((item) => {
     newState = addItem(newState, item);
   });
 
   // Add XP
   // Use Level-Delta logic to calculate actual XP gained
-  const xpGained = calculateGainedXP(
+  const baseXp = calculateGainedXP(
     state.player.level,
     enemy.level,
     drops.xp,
     state.config,
   );
+  const xpGained = scalePositiveReward(
+    baseXp,
+    progression.xpGainMultiplier,
+    "ceil",
+  );
   newState = addXp(newState, xpGained);
+
+  const itemCount = adjustedItems.reduce(
+    (sum, item) => sum + Math.max(1, Math.floor(toNumber(item?.quantity, 1))),
+    0,
+  );
 
   // Remove enemy from combat
   const newEnemies = newState.combat.enemies.filter(
@@ -2656,7 +2694,7 @@ function handleEnemyDefeat(state, enemyIndex) {
 
   const newLog = [
     ...newState.combat.log,
-    `${enemy.name} defeated! Gained ${xpGained} XP (Base: ${drops.xp}), ${goldEarned} gold, and ${drops.items.length} item(s).`,
+    `${enemy.name} defeated! Gained ${xpGained} XP (Base: ${drops.xp}), ${goldEarned} gold, and ${itemCount} item(s).`,
   ];
 
   newState = {

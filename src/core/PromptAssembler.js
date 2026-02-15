@@ -57,6 +57,12 @@ const sanitizeUserInput = (input) => {
   return collapsed.slice(0, 400);
 };
 
+function detectDialogueIntent(input = "") {
+  return /(^["'])|\b(say|ask|tell|speak|talk|shout|whisper|yell|reply|negotiate|question)\b/i.test(
+    String(input || ""),
+  );
+}
+
 function tokenizeForRepetition(text = "") {
   if (typeof text !== "string" || !text) return [];
   return text
@@ -138,7 +144,7 @@ export function resolvePromptMode(gameState, actionResult) {
   if (actionResult?.changes?.location) {
     return PROMPT_MODES.SCENE_TRANSITION;
   }
-  if (actionType === "narrative") {
+  if (actionType === "narrative" && actionResult?.dialogueIntent) {
     return PROMPT_MODES.DIALOGUE;
   }
   return PROMPT_MODES.EXPLORATION;
@@ -153,7 +159,12 @@ export function resolvePromptMode(gameState, actionResult) {
  */
 export function assemblePrompt(gameState, userInput, actionResult) {
   const archetypeSystem = resolveArchetypeSystem(gameState?.player);
-  const mode = resolvePromptMode(gameState, actionResult);
+  const dialogueIntent = detectDialogueIntent(userInput);
+  const resolvedActionResult =
+    actionResult && typeof actionResult === "object"
+      ? { ...actionResult, dialogueIntent }
+      : { dialogueIntent };
+  const mode = resolvePromptMode(gameState, resolvedActionResult);
   const currentMood =
     typeof gameState?.narrative?.currentMood === "string"
       ? gameState.narrative.currentMood
@@ -167,7 +178,7 @@ export function assemblePrompt(gameState, userInput, actionResult) {
   });
   const contextSection = buildContextSection(gameState);
   const historySection = buildHistorySection(gameState);
-  const actionSection = buildActionSection(userInput, actionResult);
+  const actionSection = buildActionSection(userInput, resolvedActionResult);
 
   return `${systemPrompt}
 
@@ -592,14 +603,7 @@ ${historyText}`;
  */
 function buildActionSection(userInput, actionResult) {
   const safeUserInput = sanitizeUserInput(userInput);
-  const dialogueIntent = /(^["'])|\b(say|ask|tell|speak|talk|shout|whisper|yell|reply|negotiate|question)\b/i.test(
-    safeUserInput,
-  );
-  const actionType =
-    actionResult && typeof actionResult.actionType === "string"
-      ? actionResult.actionType
-      : "";
-  const shouldFavorDialogue = dialogueIntent || actionType === "narrative";
+  const shouldFavorDialogue = detectDialogueIntent(safeUserInput);
   const result =
     actionResult && typeof actionResult === "object"
       ? actionResult

@@ -1,0 +1,201 @@
+- generic [ref=e13]:
+  - generic [ref=e17]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e23]: Character Genesis
+        - generic [ref=e24]:
+          - button "✕" [ref=e25] [cursor=pointer]
+          - button "⇄" [ref=e26] [cursor=pointer]
+          - button "–" [ref=e27] [cursor=pointer]
+          - button "📍" [ref=e28] [cursor=pointer]
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]: Character Genesis
+            - generic [ref=e34]: Guided phases with full compatibility to existing panels and game state.
+          - generic [ref=e35]:
+            - button "Back" [ref=e36] [cursor=pointer]
+            - button "Next" [disabled] [ref=e37]
+        - generic [ref=e38]:
+          - button "Phase 1 Identity DONE" [disabled] [ref=e154]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: Phase 1
+              - generic [ref=e42]: Identity
+            - generic [ref=e43]: DONE
+          - button "Phase 2 Race DONE" [disabled] [ref=e155]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: Phase 2
+              - generic [ref=e47]: Race
+            - generic [ref=e48]: DONE
+          - button "Phase 3 Class DONE" [disabled] [ref=e156]:
+            - generic [ref=e50]:
+              - generic [ref=e51]: Phase 3
+              - generic [ref=e52]: Class
+            - generic [ref=e53]: DONE
+          - button "Phase 4 Profession DONE" [disabled] [ref=e157]:
+            - generic [ref=e55]:
+              - generic [ref=e56]: Phase 4
+              - generic [ref=e57]: Profession
+            - generic [ref=e58]: DONE
+          - button "Phase 5 System DONE" [disabled] [ref=e158]:
+            - generic [ref=e60]:
+              - generic [ref=e61]: Phase 5
+              - generic [ref=e62]: System
+            - generic [ref=e63]: DONE
+          - button "Phase 6 Attributes DONE" [disabled] [ref=e159]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: Phase 6
+              - generic [ref=e67]: Attributes
+            - generic [ref=e68]: DONE
+          - button "Phase 7 Skills DONE" [disabled] [ref=e2194]:
+            - generic [ref=e70]:
+              - generic [ref=e71]: Phase 7
+              - generic [ref=e72]: Skills
+            - generic [ref=e73]: DONE
+          - button "Phase 8 Review DONE" [disabled] [ref=e2195]:
+            - generic [ref=e75]:
+              - generic [ref=e76]: Phase 8
+              - generic [ref=e77]: Review
+            - generic [ref=e78]: DONE
+        - generic [ref=e79]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: GENESIS STREAM
+            - generic [ref=e83]: Genesis sequence ready. Your identity has crystallized. Confirm when prepared.
+            - generic [ref=e84]: ierce melee fighter fueled by rage. Masters of stances, blocking, and raw physical power. A standard human with no special bloodline. Versatile and adaptable.undefined_
+            - generic [ref=e86]:
+              - generic [ref=e87]: SYNC PROGRESS
+              - generic [ref=e88]: 100%
+            - generic [ref=e163]:
+              - generic [ref=e164]: "RACE: Pure Human"
+              - generic [ref=e165]: "CLASS: Warrior"
+              - generic [ref=e166]:
+                - text: "SYSTEM: Exchange Shop Core"
+                - generic [ref=e167]: (System)
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: ✓
+                - generic [ref=e93]: 1. Anchor your origin
+              - generic [ref=e94]:
+                - generic [ref=e95]: ✓
+                - generic [ref=e96]: 2. Define combat doctrine
+              - generic [ref=e97]:
+                - generic [ref=e98]: ✓
+                - generic [ref=e99]: 3. Shape progression path
+              - generic [ref=e100]:
+                - generic [ref=e101]: ✓
+                - generic [ref=e102]: 4. Allocate survivability
+              - generic [ref=e103]:
+                - generic [ref=e104]: ✓
+                - generic [ref=e105]: 5. Load starting skills
+              - generic [ref=e106]:
+                - generic [ref=e107]: ✓
+                - generic [ref=e108]: 6. Finalize identity
+            - generic [ref=e109]:
+              - generic [ref=e168]:
+                - generic [ref=e169]: ●
+                - text: "Designation: set"
+              - generic [ref=e170]:
+                - generic [ref=e171]: ●
+                - text: "Gender: male"
+              - generic [ref=e172]:
+                - generic [ref=e173]: ●
+                - text: "Race: Pure Human"
+              - generic [ref=e174]:
+                - generic [ref=e175]: ●
+                - text: "Class: Warrior"
+              - generic [ref=e176]:
+                - generic [ref=e177]: ●
+                - text: "Profession: Alchemy"
+              - generic [ref=e178]:
+                - generic [ref=e179]: ●
+                - text: "System: Exchange Shop Core"
+              - generic [ref=e122]:
+                - generic [ref=e123]: ●
+                - text: "Talents: auto-assigned after creation"
+              - generic [ref=e180]:
+                - generic [ref=e181]: ●
+                - text: "Attribute points: locked"
+              - generic [ref=e2196]:
+                - generic [ref=e2197]: ●
+                - text: "Skills: 3/3 active, 6/6 passive"
+          - generic [ref=e2198]:
+            - generic [ref=e2200]: +-----------+ | ADVENTURER| | _____ | | / o o \ | | | ^ | | | | ___ | | | \_____/ | +-----------+
+            - generic [ref=e2201]:
+              - generic [ref=e2202]:
+                - generic [ref=e2203]:
+                  - generic [ref=e2204]: RACE
+                  - generic [ref=e2205]: Pure Human
+                  - generic [ref=e2206]: A standard human with no special bloodline. Versatile and adaptable.
+                  - generic [ref=e2207]:
+                    - generic [ref=e2208]:
+                      - strong [ref=e2209]: "Passive:"
+                      - text: Unlimited Potential — Gain +10% Experience from all sources.
+                    - generic [ref=e2210]:
+                      - strong [ref=e2211]: "Active:"
+                      - text: Adaptive Surge — Sharpen instincts to boost might and speed.
+                - generic [ref=e2212]:
+                  - generic [ref=e2213]: CLASS
+                  - generic [ref=e2214]: Warrior
+                  - generic [ref=e2215]: Fierce melee fighter fueled by rage. Masters of stances, blocking, and raw physical power.
+                - generic [ref=e2216]:
+                  - generic [ref=e2217]: TALENTS
+                  - generic [ref=e2218]: Auto-assigned after creation
+                  - generic [ref=e2219]: Talents will be assigned based on the Warrior class.
+                - generic [ref=e2220]:
+                  - generic [ref=e2221]: PROFESSION
+                  - generic [ref=e2222]: Alchemy
+                  - generic [ref=e2223]: Brew potions, elixirs, and flasks with magical effects.
+                  - generic [ref=e2224]:
+                    - strong [ref=e2225]: "Tier 1:"
+                    - text: basic brewing
+                - generic [ref=e2226]:
+                  - generic [ref=e2227]: SYSTEM
+                  - generic [ref=e2228]: Exchange Shop Core
+                  - generic [ref=e2229]: Convert points into items, skills, and rare bloodlines.
+              - generic [ref=e2230]:
+                - generic [ref=e2231]:
+                  - generic [ref=e2232]: ACTIVE SKILLS (3/3)
+                  - list [ref=e2233]:
+                    - listitem [ref=e2234]:
+                      - strong [ref=e2235]: Execute
+                      - text: "- A devastating blow that deals massive damage to low health enemies. (Rank 1)"
+                    - listitem [ref=e2236]:
+                      - strong [ref=e2237]: Battle Cry
+                      - text: "- Let loose a fierce cry that increases your damage for a short time. (Rank 1)"
+                    - listitem [ref=e2238]:
+                      - strong [ref=e2239]: Slam
+                      - text: "- Slam your weapon into the ground, damaging all nearby enemies. (Rank 1)"
+                - generic [ref=e2240]:
+                  - generic [ref=e2241]: PASSIVE SKILLS (6/6)
+                  - list [ref=e2242]:
+                    - listitem [ref=e2243]:
+                      - strong [ref=e2244]: Weapon Mastery
+                      - text: "- Increased damage with all melee weapons. (Rank 1)"
+                    - listitem [ref=e2245]:
+                      - strong [ref=e2246]: Armor Specialization
+                      - text: "- Gain bonus armor from all equipped armor pieces. (Rank 1)"
+                    - listitem [ref=e2247]:
+                      - strong [ref=e2248]: Critical Block
+                      - text: "- Your blocks can now critically block for double reduction. (Rank 1)"
+                    - listitem [ref=e2249]:
+                      - strong [ref=e2250]: Deep Wounds
+                      - text: "- Your critical strikes cause the enemy to bleed. (Rank 1)"
+                    - listitem [ref=e2251]:
+                      - strong [ref=e2252]: Blood and Thunder
+                      - text: "- Thunder Clap also applies Rend to affected enemies. (Rank 1)"
+                    - listitem [ref=e2253]:
+                      - strong [ref=e2254]: Taste for Blood
+                      - text: "- Dealing damage has a chance to make your next attack free. (Rank 1)"
+              - generic [ref=e2255]: ierce melee fighter fueled by rage. Masters of stances, blocking, and raw physical power. A standard human with no special bloodline. Versatile and adaptable.undefined_
+            - generic [ref=e2257]: "SYSTEM SYNC: 100%"
+            - generic [ref=e2260]:
+              - generic [ref=e2261]: Ready to initialize!
+              - button "INITIALIZE AVATAR" [ref=e2262] [cursor=pointer]
+    - generic [ref=e145]:
+      - generic [ref=e147]: Narrative Memory
+      - generic [ref=e148]:
+        - button "⇄" [ref=e149] [cursor=pointer]
+        - button "+" [ref=e150] [cursor=pointer]
+        - button "📌" [ref=e151] [cursor=pointer]
+        - button "<<" [ref=e152] [cursor=pointer]
+  - 'button "Show Admin (Ctrl+`)" [ref=e153] [cursor=pointer]'

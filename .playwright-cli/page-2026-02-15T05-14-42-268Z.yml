@@ -1,0 +1,1923 @@
+- generic [ref=e13]:
+  - generic [ref=e17]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e23]: Character Genesis
+        - generic [ref=e24]:
+          - button "✕" [ref=e25] [cursor=pointer]
+          - button "⇄" [ref=e26] [cursor=pointer]
+          - button "–" [ref=e27] [cursor=pointer]
+          - button "📍" [ref=e28] [cursor=pointer]
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]: Character Genesis
+            - generic [ref=e34]: Guided phases with full compatibility to existing panels and game state.
+          - generic [ref=e35]:
+            - button "Back" [ref=e36] [cursor=pointer]
+            - button "Next" [active] [ref=e37] [cursor=pointer]
+        - generic [ref=e38]:
+          - button "Phase 1 Identity DONE" [disabled] [ref=e154]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: Phase 1
+              - generic [ref=e42]: Identity
+            - generic [ref=e43]: DONE
+          - button "Phase 2 Race DONE" [disabled] [ref=e155]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: Phase 2
+              - generic [ref=e47]: Race
+            - generic [ref=e48]: DONE
+          - button "Phase 3 Class DONE" [disabled] [ref=e156]:
+            - generic [ref=e50]:
+              - generic [ref=e51]: Phase 3
+              - generic [ref=e52]: Class
+            - generic [ref=e53]: DONE
+          - button "Phase 4 Profession DONE" [disabled] [ref=e157]:
+            - generic [ref=e55]:
+              - generic [ref=e56]: Phase 4
+              - generic [ref=e57]: Profession
+            - generic [ref=e58]: DONE
+          - button "Phase 5 System DONE" [disabled] [ref=e158]:
+            - generic [ref=e60]:
+              - generic [ref=e61]: Phase 5
+              - generic [ref=e62]: System
+            - generic [ref=e63]: DONE
+          - button "Phase 6 Attributes DONE" [disabled] [ref=e159]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: Phase 6
+              - generic [ref=e67]: Attributes
+            - generic [ref=e68]: DONE
+          - button "Phase 7 Skills NOW" [disabled] [ref=e160]:
+            - generic [ref=e70]:
+              - generic [ref=e71]: Phase 7
+              - generic [ref=e72]: Skills
+            - generic [ref=e73]: NOW
+          - button "Phase 8 Review LOCK" [disabled] [ref=e74]:
+            - generic [ref=e75]:
+              - generic [ref=e76]: Phase 8
+              - generic [ref=e77]: Review
+            - generic [ref=e78]: LOCK
+        - generic [ref=e161]: Must select exactly 3 active skills
+        - generic [ref=e79]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: GENESIS STREAM
+            - generic [ref=e83]: Configure lineage, archetype, and attributes to complete genesis.
+            - generic [ref=e84]: ierce melee fighter fueled by rage. Masters of stances, blocking, and raw physical power. A standard human with no special bloodline. Versatile and adaptable.undefined_
+            - generic [ref=e86]:
+              - generic [ref=e87]: SYNC PROGRESS
+              - generic [ref=e88]: 88%
+            - generic [ref=e163]:
+              - generic [ref=e164]: "RACE: Pure Human"
+              - generic [ref=e165]: "CLASS: Warrior"
+              - generic [ref=e166]:
+                - text: "SYSTEM: Exchange Shop Core"
+                - generic [ref=e167]: (System)
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: ✓
+                - generic [ref=e93]: 1. Anchor your origin
+              - generic [ref=e94]:
+                - generic [ref=e95]: ✓
+                - generic [ref=e96]: 2. Define combat doctrine
+              - generic [ref=e97]:
+                - generic [ref=e98]: ✓
+                - generic [ref=e99]: 3. Shape progression path
+              - generic [ref=e100]:
+                - generic [ref=e101]: ✓
+                - generic [ref=e102]: 4. Allocate survivability
+              - generic [ref=e103]:
+                - generic [ref=e104]: ✓
+                - generic [ref=e105]: 5. Load starting skills
+              - generic [ref=e106]:
+                - generic [ref=e107]: ✓
+                - generic [ref=e108]: 6. Finalize identity
+            - generic [ref=e109]:
+              - generic [ref=e168]:
+                - generic [ref=e169]: ●
+                - text: "Designation: set"
+              - generic [ref=e170]:
+                - generic [ref=e171]: ●
+                - text: "Gender: male"
+              - generic [ref=e172]:
+                - generic [ref=e173]: ●
+                - text: "Race: Pure Human"
+              - generic [ref=e174]:
+                - generic [ref=e175]: ●
+                - text: "Class: Warrior"
+              - generic [ref=e176]:
+                - generic [ref=e177]: ●
+                - text: "Profession: Alchemy"
+              - generic [ref=e178]:
+                - generic [ref=e179]: ●
+                - text: "System: Exchange Shop Core"
+              - generic [ref=e122]:
+                - generic [ref=e123]: ●
+                - text: "Talents: auto-assigned after creation"
+              - generic [ref=e180]:
+                - generic [ref=e181]: ●
+                - text: "Attribute points: locked"
+              - generic [ref=e182]:
+                - generic [ref=e183]: ○
+                - text: "Skills: 0/3 active, 0/6 passive"
+          - generic [ref=e184]:
+            - generic [ref=e185]: Skill Selection
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188]:
+                  - generic [ref=e189]: ACTIVE SKILLS
+                  - generic [ref=e190]: 0/3
+                - generic [ref=e191]: Combat abilities triggered during encounters. Select 3.
+                - generic [ref=e192]:
+                  - button "Execute class A devastating blow that deals massive damage to low health enemies." [ref=e193] [cursor=pointer]:
+                    - generic [ref=e194]:
+                      - generic [ref=e195]: Execute
+                      - generic [ref=e197]: class
+                    - generic [ref=e198]: A devastating blow that deals massive damage to low health enemies.
+                  - button "Battle Cry class Let loose a fierce cry that increases your damage for a short time." [ref=e199] [cursor=pointer]:
+                    - generic [ref=e200]:
+                      - generic [ref=e201]: Battle Cry
+                      - generic [ref=e203]: class
+                    - generic [ref=e204]: Let loose a fierce cry that increases your damage for a short time.
+                  - button "Slam class Slam your weapon into the ground, damaging all nearby enemies." [ref=e205] [cursor=pointer]:
+                    - generic [ref=e206]:
+                      - generic [ref=e207]: Slam
+                      - generic [ref=e209]: class
+                    - generic [ref=e210]: Slam your weapon into the ground, damaging all nearby enemies.
+                  - button "Heroic Strike class A powerful strike infused with combat experience." [ref=e211] [cursor=pointer]:
+                    - generic [ref=e212]:
+                      - generic [ref=e213]: Heroic Strike
+                      - generic [ref=e215]: class
+                    - generic [ref=e216]: A powerful strike infused with combat experience.
+                  - button "Rend physical class Tear into the enemy causing them to bleed over time." [ref=e217] [cursor=pointer]:
+                    - generic [ref=e218]:
+                      - generic [ref=e219]: Rend
+                      - generic [ref=e220]:
+                        - generic [ref=e221]: physical
+                        - generic [ref=e222]: class
+                    - generic [ref=e223]: Tear into the enemy causing them to bleed over time.
+                  - button "Overpower class Exploit an opening to deal increased damage that cannot be blocked." [ref=e224] [cursor=pointer]:
+                    - generic [ref=e225]:
+                      - generic [ref=e226]: Overpower
+                      - generic [ref=e228]: class
+                    - generic [ref=e229]: Exploit an opening to deal increased damage that cannot be blocked.
+                  - button "Mortal Strike class A vicious strike that reduces healing received by the target." [ref=e230] [cursor=pointer]:
+                    - generic [ref=e231]:
+                      - generic [ref=e232]: Mortal Strike
+                      - generic [ref=e234]: class
+                    - generic [ref=e235]: A vicious strike that reduces healing received by the target.
+                  - button "Thunder Clap class Slam the ground creating a shockwave that damages and slows enemies." [ref=e236] [cursor=pointer]:
+                    - generic [ref=e237]:
+                      - generic [ref=e238]: Thunder Clap
+                      - generic [ref=e240]: class
+                    - generic [ref=e241]: Slam the ground creating a shockwave that damages and slows enemies.
+                  - button "Hamstring class Maim the enemy, significantly reducing their movement speed." [ref=e242] [cursor=pointer]:
+                    - generic [ref=e243]:
+                      - generic [ref=e244]: Hamstring
+                      - generic [ref=e246]: class
+                    - generic [ref=e247]: Maim the enemy, significantly reducing their movement speed.
+                  - button "Sweeping Strikes class Your attacks hit an additional nearby enemy for a duration." [ref=e248] [cursor=pointer]:
+                    - generic [ref=e249]:
+                      - generic [ref=e250]: Sweeping Strikes
+                      - generic [ref=e252]: class
+                    - generic [ref=e253]: Your attacks hit an additional nearby enemy for a duration.
+                  - button "Pummel class Interrupt an enemy spellcast and lock them out of that school." [ref=e254] [cursor=pointer]:
+                    - generic [ref=e255]:
+                      - generic [ref=e256]: Pummel
+                      - generic [ref=e258]: class
+                    - generic [ref=e259]: Interrupt an enemy spellcast and lock them out of that school.
+                  - button "Intimidating Shout class Cause enemies to flee in fear for a short duration." [ref=e260] [cursor=pointer]:
+                    - generic [ref=e261]:
+                      - generic [ref=e262]: Intimidating Shout
+                      - generic [ref=e264]: class
+                    - generic [ref=e265]: Cause enemies to flee in fear for a short duration.
+                  - button "Recklessness class Enter a reckless state where all attacks critically strike." [ref=e266] [cursor=pointer]:
+                    - generic [ref=e267]:
+                      - generic [ref=e268]: Recklessness
+                      - generic [ref=e270]: class
+                    - generic [ref=e271]: Enter a reckless state where all attacks critically strike.
+                  - button "Colossus Smash class Smash through enemy armor, making them vulnerable to damage." [ref=e272] [cursor=pointer]:
+                    - generic [ref=e273]:
+                      - generic [ref=e274]: Colossus Smash
+                      - generic [ref=e276]: class
+                    - generic [ref=e277]: Smash through enemy armor, making them vulnerable to damage.
+                  - button "Bladestorm class Become a whirlwind of blades, hitting all enemies around you." [ref=e278] [cursor=pointer]:
+                    - generic [ref=e279]:
+                      - generic [ref=e280]: Bladestorm
+                      - generic [ref=e282]: class
+                    - generic [ref=e283]: Become a whirlwind of blades, hitting all enemies around you.
+                  - button "Rallying Cry class Rally your allies, temporarily increasing everyones maximum health." [ref=e284] [cursor=pointer]:
+                    - generic [ref=e285]:
+                      - generic [ref=e286]: Rallying Cry
+                      - generic [ref=e288]: class
+                    - generic [ref=e289]: Rally your allies, temporarily increasing everyones maximum health.
+                  - button "Commanding Shout class Shout commands that increase your party attack power." [ref=e290] [cursor=pointer]:
+                    - generic [ref=e291]:
+                      - generic [ref=e292]: Commanding Shout
+                      - generic [ref=e294]: class
+                    - generic [ref=e295]: Shout commands that increase your party attack power.
+                  - button "Shattering Throw class Throw your weapon to shatter enemy magical shields." [ref=e296] [cursor=pointer]:
+                    - generic [ref=e297]:
+                      - generic [ref=e298]: Shattering Throw
+                      - generic [ref=e300]: class
+                    - generic [ref=e301]: Throw your weapon to shatter enemy magical shields.
+                  - button "Avatar class Transform into an unstoppable force, immune to movement impairing effects." [ref=e302] [cursor=pointer]:
+                    - generic [ref=e303]:
+                      - generic [ref=e304]: Avatar
+                      - generic [ref=e306]: class
+                    - generic [ref=e307]: Transform into an unstoppable force, immune to movement impairing effects.
+                  - button "Deadly Calm class Enter a state of focus where abilities cost no rage for a duration." [ref=e308] [cursor=pointer]:
+                    - generic [ref=e309]:
+                      - generic [ref=e310]: Deadly Calm
+                      - generic [ref=e312]: class
+                    - generic [ref=e313]: Enter a state of focus where abilities cost no rage for a duration.
+                  - button "War Cry class A rallying shout that generates rage and boosts damage." [ref=e314] [cursor=pointer]:
+                    - generic [ref=e315]:
+                      - generic [ref=e316]: War Cry
+                      - generic [ref=e318]: class
+                    - generic [ref=e319]: A rallying shout that generates rage and boosts damage.
+                  - button "Shield Block class Raise your shield to absorb incoming damage." [ref=e320] [cursor=pointer]:
+                    - generic [ref=e321]:
+                      - generic [ref=e322]: Shield Block
+                      - generic [ref=e324]: class
+                    - generic [ref=e325]: Raise your shield to absorb incoming damage.
+                  - button "Offensive Stance class Adopt an aggressive stance, trading defense for damage." [ref=e326] [cursor=pointer]:
+                    - generic [ref=e327]:
+                      - generic [ref=e328]: Offensive Stance
+                      - generic [ref=e330]: class
+                    - generic [ref=e331]: Adopt an aggressive stance, trading defense for damage.
+                  - button "Defensive Stance class Adopt a defensive stance for added protection." [ref=e332] [cursor=pointer]:
+                    - generic [ref=e333]:
+                      - generic [ref=e334]: Defensive Stance
+                      - generic [ref=e336]: class
+                    - generic [ref=e337]: Adopt a defensive stance for added protection.
+                  - 'button "Adaptive Surge race Sharpen instincts to boost might and speed. COST: 20" [ref=e338] [cursor=pointer]':
+                    - generic [ref=e339]:
+                      - generic [ref=e340]: Adaptive Surge
+                      - generic [ref=e342]: race
+                    - generic [ref=e343]: Sharpen instincts to boost might and speed.
+                    - generic [ref=e345]: "COST: 20"
+                  - button "Flame Strike fire general Flame Strike delivers a focused hit. It scorches targets with fire." [ref=e346] [cursor=pointer]:
+                    - generic [ref=e347]:
+                      - generic [ref=e348]: Flame Strike
+                      - generic [ref=e349]:
+                        - generic [ref=e350]: fire
+                        - generic [ref=e351]: general
+                    - generic [ref=e352]: Flame Strike delivers a focused hit. It scorches targets with fire.
+                  - button "Flame Burst fire general Flame Burst erupts in a short-range blast. It scorches targets with fire." [ref=e353] [cursor=pointer]:
+                    - generic [ref=e354]:
+                      - generic [ref=e355]: Flame Burst
+                      - generic [ref=e356]:
+                        - generic [ref=e357]: fire
+                        - generic [ref=e358]: general
+                    - generic [ref=e359]: Flame Burst erupts in a short-range blast. It scorches targets with fire.
+                  - button "Flame Lance fire general Flame Lance fires a piercing line attack. It scorches targets with fire." [ref=e360] [cursor=pointer]:
+                    - generic [ref=e361]:
+                      - generic [ref=e362]: Flame Lance
+                      - generic [ref=e363]:
+                        - generic [ref=e364]: fire
+                        - generic [ref=e365]: general
+                    - generic [ref=e366]: Flame Lance fires a piercing line attack. It scorches targets with fire.
+                  - button "Flame Wave fire general Flame Wave sweeps outward in a wide arc. It scorches targets with fire." [ref=e367] [cursor=pointer]:
+                    - generic [ref=e368]:
+                      - generic [ref=e369]: Flame Wave
+                      - generic [ref=e370]:
+                        - generic [ref=e371]: fire
+                        - generic [ref=e372]: general
+                    - generic [ref=e373]: Flame Wave sweeps outward in a wide arc. It scorches targets with fire.
+                  - button "Flame Pulse fire general Flame Pulse emits a rhythmic shock. It scorches targets with fire." [ref=e374] [cursor=pointer]:
+                    - generic [ref=e375]:
+                      - generic [ref=e376]: Flame Pulse
+                      - generic [ref=e377]:
+                        - generic [ref=e378]: fire
+                        - generic [ref=e379]: general
+                    - generic [ref=e380]: Flame Pulse emits a rhythmic shock. It scorches targets with fire.
+                  - button "Flame Nova fire general Flame Nova detonates in an expanding ring. It scorches targets with fire." [ref=e381] [cursor=pointer]:
+                    - generic [ref=e382]:
+                      - generic [ref=e383]: Flame Nova
+                      - generic [ref=e384]:
+                        - generic [ref=e385]: fire
+                        - generic [ref=e386]: general
+                    - generic [ref=e387]: Flame Nova detonates in an expanding ring. It scorches targets with fire.
+                  - button "Flame Torrent fire general Flame Torrent unleashes a sustained stream. It scorches targets with fire." [ref=e388] [cursor=pointer]:
+                    - generic [ref=e389]:
+                      - generic [ref=e390]: Flame Torrent
+                      - generic [ref=e391]:
+                        - generic [ref=e392]: fire
+                        - generic [ref=e393]: general
+                    - generic [ref=e394]: Flame Torrent unleashes a sustained stream. It scorches targets with fire.
+                  - button "Flame Step fire general Flame Step blinks forward into an attack. It scorches targets with fire." [ref=e395] [cursor=pointer]:
+                    - generic [ref=e396]:
+                      - generic [ref=e397]: Flame Step
+                      - generic [ref=e398]:
+                        - generic [ref=e399]: fire
+                        - generic [ref=e400]: general
+                    - generic [ref=e401]: Flame Step blinks forward into an attack. It scorches targets with fire.
+                  - button "Flame Cleave fire general Flame Cleave cuts through multiple foes. It scorches targets with fire." [ref=e402] [cursor=pointer]:
+                    - generic [ref=e403]:
+                      - generic [ref=e404]: Flame Cleave
+                      - generic [ref=e405]:
+                        - generic [ref=e406]: fire
+                        - generic [ref=e407]: general
+                    - generic [ref=e408]: Flame Cleave cuts through multiple foes. It scorches targets with fire.
+                  - button "Flame Spear fire general Flame Spear launches a long-range thrust. It scorches targets with fire." [ref=e409] [cursor=pointer]:
+                    - generic [ref=e410]:
+                      - generic [ref=e411]: Flame Spear
+                      - generic [ref=e412]:
+                        - generic [ref=e413]: fire
+                        - generic [ref=e414]: general
+                    - generic [ref=e415]: Flame Spear launches a long-range thrust. It scorches targets with fire.
+                  - button "Frost Strike ice general Frost Strike delivers a focused hit. It chills targets and slows them." [ref=e416] [cursor=pointer]:
+                    - generic [ref=e417]:
+                      - generic [ref=e418]: Frost Strike
+                      - generic [ref=e419]:
+                        - generic [ref=e420]: ice
+                        - generic [ref=e421]: general
+                    - generic [ref=e422]: Frost Strike delivers a focused hit. It chills targets and slows them.
+                  - button "Frost Burst ice general Frost Burst erupts in a short-range blast. It chills targets and slows them." [ref=e423] [cursor=pointer]:
+                    - generic [ref=e424]:
+                      - generic [ref=e425]: Frost Burst
+                      - generic [ref=e426]:
+                        - generic [ref=e427]: ice
+                        - generic [ref=e428]: general
+                    - generic [ref=e429]: Frost Burst erupts in a short-range blast. It chills targets and slows them.
+                  - button "Frost Lance ice general Frost Lance fires a piercing line attack. It chills targets and slows them." [ref=e430] [cursor=pointer]:
+                    - generic [ref=e431]:
+                      - generic [ref=e432]: Frost Lance
+                      - generic [ref=e433]:
+                        - generic [ref=e434]: ice
+                        - generic [ref=e435]: general
+                    - generic [ref=e436]: Frost Lance fires a piercing line attack. It chills targets and slows them.
+                  - button "Frost Wave ice general Frost Wave sweeps outward in a wide arc. It chills targets and slows them." [ref=e437] [cursor=pointer]:
+                    - generic [ref=e438]:
+                      - generic [ref=e439]: Frost Wave
+                      - generic [ref=e440]:
+                        - generic [ref=e441]: ice
+                        - generic [ref=e442]: general
+                    - generic [ref=e443]: Frost Wave sweeps outward in a wide arc. It chills targets and slows them.
+                  - button "Frost Pulse ice general Frost Pulse emits a rhythmic shock. It chills targets and slows them." [ref=e444] [cursor=pointer]:
+                    - generic [ref=e445]:
+                      - generic [ref=e446]: Frost Pulse
+                      - generic [ref=e447]:
+                        - generic [ref=e448]: ice
+                        - generic [ref=e449]: general
+                    - generic [ref=e450]: Frost Pulse emits a rhythmic shock. It chills targets and slows them.
+                  - button "Frost Nova ice general Frost Nova detonates in an expanding ring. It chills targets and slows them." [ref=e451] [cursor=pointer]:
+                    - generic [ref=e452]:
+                      - generic [ref=e453]: Frost Nova
+                      - generic [ref=e454]:
+                        - generic [ref=e455]: ice
+                        - generic [ref=e456]: general
+                    - generic [ref=e457]: Frost Nova detonates in an expanding ring. It chills targets and slows them.
+                  - button "Frost Torrent ice general Frost Torrent unleashes a sustained stream. It chills targets and slows them." [ref=e458] [cursor=pointer]:
+                    - generic [ref=e459]:
+                      - generic [ref=e460]: Frost Torrent
+                      - generic [ref=e461]:
+                        - generic [ref=e462]: ice
+                        - generic [ref=e463]: general
+                    - generic [ref=e464]: Frost Torrent unleashes a sustained stream. It chills targets and slows them.
+                  - button "Frost Step ice general Frost Step blinks forward into an attack. It chills targets and slows them." [ref=e465] [cursor=pointer]:
+                    - generic [ref=e466]:
+                      - generic [ref=e467]: Frost Step
+                      - generic [ref=e468]:
+                        - generic [ref=e469]: ice
+                        - generic [ref=e470]: general
+                    - generic [ref=e471]: Frost Step blinks forward into an attack. It chills targets and slows them.
+                  - button "Frost Cleave ice general Frost Cleave cuts through multiple foes. It chills targets and slows them." [ref=e472] [cursor=pointer]:
+                    - generic [ref=e473]:
+                      - generic [ref=e474]: Frost Cleave
+                      - generic [ref=e475]:
+                        - generic [ref=e476]: ice
+                        - generic [ref=e477]: general
+                    - generic [ref=e478]: Frost Cleave cuts through multiple foes. It chills targets and slows them.
+                  - button "Frost Spear ice general Frost Spear launches a long-range thrust. It chills targets and slows them." [ref=e479] [cursor=pointer]:
+                    - generic [ref=e480]:
+                      - generic [ref=e481]: Frost Spear
+                      - generic [ref=e482]:
+                        - generic [ref=e483]: ice
+                        - generic [ref=e484]: general
+                    - generic [ref=e485]: Frost Spear launches a long-range thrust. It chills targets and slows them.
+                  - button "Storm Strike lightning general Storm Strike delivers a focused hit. It crackles with lightning and staggers foes." [ref=e486] [cursor=pointer]:
+                    - generic [ref=e487]:
+                      - generic [ref=e488]: Storm Strike
+                      - generic [ref=e489]:
+                        - generic [ref=e490]: lightning
+                        - generic [ref=e491]: general
+                    - generic [ref=e492]: Storm Strike delivers a focused hit. It crackles with lightning and staggers foes.
+                  - button "Storm Burst lightning general Storm Burst erupts in a short-range blast. It crackles with lightning and staggers foes." [ref=e493] [cursor=pointer]:
+                    - generic [ref=e494]:
+                      - generic [ref=e495]: Storm Burst
+                      - generic [ref=e496]:
+                        - generic [ref=e497]: lightning
+                        - generic [ref=e498]: general
+                    - generic [ref=e499]: Storm Burst erupts in a short-range blast. It crackles with lightning and staggers foes.
+                  - button "Storm Lance lightning general Storm Lance fires a piercing line attack. It crackles with lightning and staggers foes." [ref=e500] [cursor=pointer]:
+                    - generic [ref=e501]:
+                      - generic [ref=e502]: Storm Lance
+                      - generic [ref=e503]:
+                        - generic [ref=e504]: lightning
+                        - generic [ref=e505]: general
+                    - generic [ref=e506]: Storm Lance fires a piercing line attack. It crackles with lightning and staggers foes.
+                  - button "Storm Wave lightning general Storm Wave sweeps outward in a wide arc. It crackles with lightning and staggers foes." [ref=e507] [cursor=pointer]:
+                    - generic [ref=e508]:
+                      - generic [ref=e509]: Storm Wave
+                      - generic [ref=e510]:
+                        - generic [ref=e511]: lightning
+                        - generic [ref=e512]: general
+                    - generic [ref=e513]: Storm Wave sweeps outward in a wide arc. It crackles with lightning and staggers foes.
+                  - button "Storm Pulse lightning general Storm Pulse emits a rhythmic shock. It crackles with lightning and staggers foes." [ref=e514] [cursor=pointer]:
+                    - generic [ref=e515]:
+                      - generic [ref=e516]: Storm Pulse
+                      - generic [ref=e517]:
+                        - generic [ref=e518]: lightning
+                        - generic [ref=e519]: general
+                    - generic [ref=e520]: Storm Pulse emits a rhythmic shock. It crackles with lightning and staggers foes.
+                  - button "Storm Nova lightning general Storm Nova detonates in an expanding ring. It crackles with lightning and staggers foes." [ref=e521] [cursor=pointer]:
+                    - generic [ref=e522]:
+                      - generic [ref=e523]: Storm Nova
+                      - generic [ref=e524]:
+                        - generic [ref=e525]: lightning
+                        - generic [ref=e526]: general
+                    - generic [ref=e527]: Storm Nova detonates in an expanding ring. It crackles with lightning and staggers foes.
+                  - button "Storm Torrent lightning general Storm Torrent unleashes a sustained stream. It crackles with lightning and staggers foes." [ref=e528] [cursor=pointer]:
+                    - generic [ref=e529]:
+                      - generic [ref=e530]: Storm Torrent
+                      - generic [ref=e531]:
+                        - generic [ref=e532]: lightning
+                        - generic [ref=e533]: general
+                    - generic [ref=e534]: Storm Torrent unleashes a sustained stream. It crackles with lightning and staggers foes.
+                  - button "Storm Step lightning general Storm Step blinks forward into an attack. It crackles with lightning and staggers foes." [ref=e535] [cursor=pointer]:
+                    - generic [ref=e536]:
+                      - generic [ref=e537]: Storm Step
+                      - generic [ref=e538]:
+                        - generic [ref=e539]: lightning
+                        - generic [ref=e540]: general
+                    - generic [ref=e541]: Storm Step blinks forward into an attack. It crackles with lightning and staggers foes.
+                  - button "Storm Cleave lightning general Storm Cleave cuts through multiple foes. It crackles with lightning and staggers foes." [ref=e542] [cursor=pointer]:
+                    - generic [ref=e543]:
+                      - generic [ref=e544]: Storm Cleave
+                      - generic [ref=e545]:
+                        - generic [ref=e546]: lightning
+                        - generic [ref=e547]: general
+                    - generic [ref=e548]: Storm Cleave cuts through multiple foes. It crackles with lightning and staggers foes.
+                  - button "Storm Spear lightning general Storm Spear launches a long-range thrust. It crackles with lightning and staggers foes." [ref=e549] [cursor=pointer]:
+                    - generic [ref=e550]:
+                      - generic [ref=e551]: Storm Spear
+                      - generic [ref=e552]:
+                        - generic [ref=e553]: lightning
+                        - generic [ref=e554]: general
+                    - generic [ref=e555]: Storm Spear launches a long-range thrust. It crackles with lightning and staggers foes.
+                  - button "Stone Strike general Stone Strike delivers a focused hit. It crushes foes with heavy force." [ref=e556] [cursor=pointer]:
+                    - generic [ref=e557]:
+                      - generic [ref=e558]: Stone Strike
+                      - generic [ref=e560]: general
+                    - generic [ref=e561]: Stone Strike delivers a focused hit. It crushes foes with heavy force.
+                  - button "Stone Burst general Stone Burst erupts in a short-range blast. It crushes foes with heavy force." [ref=e562] [cursor=pointer]:
+                    - generic [ref=e563]:
+                      - generic [ref=e564]: Stone Burst
+                      - generic [ref=e566]: general
+                    - generic [ref=e567]: Stone Burst erupts in a short-range blast. It crushes foes with heavy force.
+                  - button "Stone Lance general Stone Lance fires a piercing line attack. It crushes foes with heavy force." [ref=e568] [cursor=pointer]:
+                    - generic [ref=e569]:
+                      - generic [ref=e570]: Stone Lance
+                      - generic [ref=e572]: general
+                    - generic [ref=e573]: Stone Lance fires a piercing line attack. It crushes foes with heavy force.
+                  - button "Stone Wave general Stone Wave sweeps outward in a wide arc. It crushes foes with heavy force." [ref=e574] [cursor=pointer]:
+                    - generic [ref=e575]:
+                      - generic [ref=e576]: Stone Wave
+                      - generic [ref=e578]: general
+                    - generic [ref=e579]: Stone Wave sweeps outward in a wide arc. It crushes foes with heavy force.
+                  - button "Stone Pulse general Stone Pulse emits a rhythmic shock. It crushes foes with heavy force." [ref=e580] [cursor=pointer]:
+                    - generic [ref=e581]:
+                      - generic [ref=e582]: Stone Pulse
+                      - generic [ref=e584]: general
+                    - generic [ref=e585]: Stone Pulse emits a rhythmic shock. It crushes foes with heavy force.
+                  - button "Stone Nova general Stone Nova detonates in an expanding ring. It crushes foes with heavy force." [ref=e586] [cursor=pointer]:
+                    - generic [ref=e587]:
+                      - generic [ref=e588]: Stone Nova
+                      - generic [ref=e590]: general
+                    - generic [ref=e591]: Stone Nova detonates in an expanding ring. It crushes foes with heavy force.
+                  - button "Stone Torrent general Stone Torrent unleashes a sustained stream. It crushes foes with heavy force." [ref=e592] [cursor=pointer]:
+                    - generic [ref=e593]:
+                      - generic [ref=e594]: Stone Torrent
+                      - generic [ref=e596]: general
+                    - generic [ref=e597]: Stone Torrent unleashes a sustained stream. It crushes foes with heavy force.
+                  - button "Stone Step general Stone Step blinks forward into an attack. It crushes foes with heavy force." [ref=e598] [cursor=pointer]:
+                    - generic [ref=e599]:
+                      - generic [ref=e600]: Stone Step
+                      - generic [ref=e602]: general
+                    - generic [ref=e603]: Stone Step blinks forward into an attack. It crushes foes with heavy force.
+                  - button "Stone Cleave general Stone Cleave cuts through multiple foes. It crushes foes with heavy force." [ref=e604] [cursor=pointer]:
+                    - generic [ref=e605]:
+                      - generic [ref=e606]: Stone Cleave
+                      - generic [ref=e608]: general
+                    - generic [ref=e609]: Stone Cleave cuts through multiple foes. It crushes foes with heavy force.
+                  - button "Stone Spear general Stone Spear launches a long-range thrust. It crushes foes with heavy force." [ref=e610] [cursor=pointer]:
+                    - generic [ref=e611]:
+                      - generic [ref=e612]: Stone Spear
+                      - generic [ref=e614]: general
+                    - generic [ref=e615]: Stone Spear launches a long-range thrust. It crushes foes with heavy force.
+                  - button "Gale Strike general Gale Strike delivers a focused hit. It drives a wind gust that pushes back." [ref=e616] [cursor=pointer]:
+                    - generic [ref=e617]:
+                      - generic [ref=e618]: Gale Strike
+                      - generic [ref=e620]: general
+                    - generic [ref=e621]: Gale Strike delivers a focused hit. It drives a wind gust that pushes back.
+                  - button "Gale Burst general Gale Burst erupts in a short-range blast. It drives a wind gust that pushes back." [ref=e622] [cursor=pointer]:
+                    - generic [ref=e623]:
+                      - generic [ref=e624]: Gale Burst
+                      - generic [ref=e626]: general
+                    - generic [ref=e627]: Gale Burst erupts in a short-range blast. It drives a wind gust that pushes back.
+                  - button "Gale Lance general Gale Lance fires a piercing line attack. It drives a wind gust that pushes back." [ref=e628] [cursor=pointer]:
+                    - generic [ref=e629]:
+                      - generic [ref=e630]: Gale Lance
+                      - generic [ref=e632]: general
+                    - generic [ref=e633]: Gale Lance fires a piercing line attack. It drives a wind gust that pushes back.
+                  - button "Gale Wave general Gale Wave sweeps outward in a wide arc. It drives a wind gust that pushes back." [ref=e634] [cursor=pointer]:
+                    - generic [ref=e635]:
+                      - generic [ref=e636]: Gale Wave
+                      - generic [ref=e638]: general
+                    - generic [ref=e639]: Gale Wave sweeps outward in a wide arc. It drives a wind gust that pushes back.
+                  - button "Gale Pulse general Gale Pulse emits a rhythmic shock. It drives a wind gust that pushes back." [ref=e640] [cursor=pointer]:
+                    - generic [ref=e641]:
+                      - generic [ref=e642]: Gale Pulse
+                      - generic [ref=e644]: general
+                    - generic [ref=e645]: Gale Pulse emits a rhythmic shock. It drives a wind gust that pushes back.
+                  - button "Gale Nova general Gale Nova detonates in an expanding ring. It drives a wind gust that pushes back." [ref=e646] [cursor=pointer]:
+                    - generic [ref=e647]:
+                      - generic [ref=e648]: Gale Nova
+                      - generic [ref=e650]: general
+                    - generic [ref=e651]: Gale Nova detonates in an expanding ring. It drives a wind gust that pushes back.
+                  - button "Gale Torrent general Gale Torrent unleashes a sustained stream. It drives a wind gust that pushes back." [ref=e652] [cursor=pointer]:
+                    - generic [ref=e653]:
+                      - generic [ref=e654]: Gale Torrent
+                      - generic [ref=e656]: general
+                    - generic [ref=e657]: Gale Torrent unleashes a sustained stream. It drives a wind gust that pushes back.
+                  - button "Gale Step general Gale Step blinks forward into an attack. It drives a wind gust that pushes back." [ref=e658] [cursor=pointer]:
+                    - generic [ref=e659]:
+                      - generic [ref=e660]: Gale Step
+                      - generic [ref=e662]: general
+                    - generic [ref=e663]: Gale Step blinks forward into an attack. It drives a wind gust that pushes back.
+                  - button "Gale Cleave general Gale Cleave cuts through multiple foes. It drives a wind gust that pushes back." [ref=e664] [cursor=pointer]:
+                    - generic [ref=e665]:
+                      - generic [ref=e666]: Gale Cleave
+                      - generic [ref=e668]: general
+                    - generic [ref=e669]: Gale Cleave cuts through multiple foes. It drives a wind gust that pushes back.
+                  - button "Gale Spear general Gale Spear launches a long-range thrust. It drives a wind gust that pushes back." [ref=e670] [cursor=pointer]:
+                    - generic [ref=e671]:
+                      - generic [ref=e672]: Gale Spear
+                      - generic [ref=e674]: general
+                    - generic [ref=e675]: Gale Spear launches a long-range thrust. It drives a wind gust that pushes back.
+                  - button "Shadow Strike dark general Shadow Strike delivers a focused hit. It drains light and weakens defenses." [ref=e676] [cursor=pointer]:
+                    - generic [ref=e677]:
+                      - generic [ref=e678]: Shadow Strike
+                      - generic [ref=e679]:
+                        - generic [ref=e680]: dark
+                        - generic [ref=e681]: general
+                    - generic [ref=e682]: Shadow Strike delivers a focused hit. It drains light and weakens defenses.
+                  - button "Shadow Burst dark general Shadow Burst erupts in a short-range blast. It drains light and weakens defenses." [ref=e683] [cursor=pointer]:
+                    - generic [ref=e684]:
+                      - generic [ref=e685]: Shadow Burst
+                      - generic [ref=e686]:
+                        - generic [ref=e687]: dark
+                        - generic [ref=e688]: general
+                    - generic [ref=e689]: Shadow Burst erupts in a short-range blast. It drains light and weakens defenses.
+                  - button "Shadow Lance dark general Shadow Lance fires a piercing line attack. It drains light and weakens defenses." [ref=e690] [cursor=pointer]:
+                    - generic [ref=e691]:
+                      - generic [ref=e692]: Shadow Lance
+                      - generic [ref=e693]:
+                        - generic [ref=e694]: dark
+                        - generic [ref=e695]: general
+                    - generic [ref=e696]: Shadow Lance fires a piercing line attack. It drains light and weakens defenses.
+                  - button "Shadow Wave dark general Shadow Wave sweeps outward in a wide arc. It drains light and weakens defenses." [ref=e697] [cursor=pointer]:
+                    - generic [ref=e698]:
+                      - generic [ref=e699]: Shadow Wave
+                      - generic [ref=e700]:
+                        - generic [ref=e701]: dark
+                        - generic [ref=e702]: general
+                    - generic [ref=e703]: Shadow Wave sweeps outward in a wide arc. It drains light and weakens defenses.
+                  - button "Shadow Pulse dark general Shadow Pulse emits a rhythmic shock. It drains light and weakens defenses." [ref=e704] [cursor=pointer]:
+                    - generic [ref=e705]:
+                      - generic [ref=e706]: Shadow Pulse
+                      - generic [ref=e707]:
+                        - generic [ref=e708]: dark
+                        - generic [ref=e709]: general
+                    - generic [ref=e710]: Shadow Pulse emits a rhythmic shock. It drains light and weakens defenses.
+                  - button "Shadow Nova dark general Shadow Nova detonates in an expanding ring. It drains light and weakens defenses." [ref=e711] [cursor=pointer]:
+                    - generic [ref=e712]:
+                      - generic [ref=e713]: Shadow Nova
+                      - generic [ref=e714]:
+                        - generic [ref=e715]: dark
+                        - generic [ref=e716]: general
+                    - generic [ref=e717]: Shadow Nova detonates in an expanding ring. It drains light and weakens defenses.
+                  - button "Shadow Torrent dark general Shadow Torrent unleashes a sustained stream. It drains light and weakens defenses." [ref=e718] [cursor=pointer]:
+                    - generic [ref=e719]:
+                      - generic [ref=e720]: Shadow Torrent
+                      - generic [ref=e721]:
+                        - generic [ref=e722]: dark
+                        - generic [ref=e723]: general
+                    - generic [ref=e724]: Shadow Torrent unleashes a sustained stream. It drains light and weakens defenses.
+                  - button "Shadow Step dark general Shadow Step blinks forward into an attack. It drains light and weakens defenses." [ref=e725] [cursor=pointer]:
+                    - generic [ref=e726]:
+                      - generic [ref=e727]: Shadow Step
+                      - generic [ref=e728]:
+                        - generic [ref=e729]: dark
+                        - generic [ref=e730]: general
+                    - generic [ref=e731]: Shadow Step blinks forward into an attack. It drains light and weakens defenses.
+                  - button "Shadow Cleave dark general Shadow Cleave cuts through multiple foes. It drains light and weakens defenses." [ref=e732] [cursor=pointer]:
+                    - generic [ref=e733]:
+                      - generic [ref=e734]: Shadow Cleave
+                      - generic [ref=e735]:
+                        - generic [ref=e736]: dark
+                        - generic [ref=e737]: general
+                    - generic [ref=e738]: Shadow Cleave cuts through multiple foes. It drains light and weakens defenses.
+                  - button "Shadow Spear dark general Shadow Spear launches a long-range thrust. It drains light and weakens defenses." [ref=e739] [cursor=pointer]:
+                    - generic [ref=e740]:
+                      - generic [ref=e741]: Shadow Spear
+                      - generic [ref=e742]:
+                        - generic [ref=e743]: dark
+                        - generic [ref=e744]: general
+                    - generic [ref=e745]: Shadow Spear launches a long-range thrust. It drains light and weakens defenses.
+                  - button "Radiant Strike holy general Radiant Strike delivers a focused hit. It burns with holy light and cleanses." [ref=e746] [cursor=pointer]:
+                    - generic [ref=e747]:
+                      - generic [ref=e748]: Radiant Strike
+                      - generic [ref=e749]:
+                        - generic [ref=e750]: holy
+                        - generic [ref=e751]: general
+                    - generic [ref=e752]: Radiant Strike delivers a focused hit. It burns with holy light and cleanses.
+                  - button "Radiant Burst holy general Radiant Burst erupts in a short-range blast. It burns with holy light and cleanses." [ref=e753] [cursor=pointer]:
+                    - generic [ref=e754]:
+                      - generic [ref=e755]: Radiant Burst
+                      - generic [ref=e756]:
+                        - generic [ref=e757]: holy
+                        - generic [ref=e758]: general
+                    - generic [ref=e759]: Radiant Burst erupts in a short-range blast. It burns with holy light and cleanses.
+                  - button "Radiant Lance holy general Radiant Lance fires a piercing line attack. It burns with holy light and cleanses." [ref=e760] [cursor=pointer]:
+                    - generic [ref=e761]:
+                      - generic [ref=e762]: Radiant Lance
+                      - generic [ref=e763]:
+                        - generic [ref=e764]: holy
+                        - generic [ref=e765]: general
+                    - generic [ref=e766]: Radiant Lance fires a piercing line attack. It burns with holy light and cleanses.
+                  - button "Radiant Wave holy general Radiant Wave sweeps outward in a wide arc. It burns with holy light and cleanses." [ref=e767] [cursor=pointer]:
+                    - generic [ref=e768]:
+                      - generic [ref=e769]: Radiant Wave
+                      - generic [ref=e770]:
+                        - generic [ref=e771]: holy
+                        - generic [ref=e772]: general
+                    - generic [ref=e773]: Radiant Wave sweeps outward in a wide arc. It burns with holy light and cleanses.
+                  - button "Radiant Pulse holy general Radiant Pulse emits a rhythmic shock. It burns with holy light and cleanses." [ref=e774] [cursor=pointer]:
+                    - generic [ref=e775]:
+                      - generic [ref=e776]: Radiant Pulse
+                      - generic [ref=e777]:
+                        - generic [ref=e778]: holy
+                        - generic [ref=e779]: general
+                    - generic [ref=e780]: Radiant Pulse emits a rhythmic shock. It burns with holy light and cleanses.
+                  - button "Radiant Nova holy general Radiant Nova detonates in an expanding ring. It burns with holy light and cleanses." [ref=e781] [cursor=pointer]:
+                    - generic [ref=e782]:
+                      - generic [ref=e783]: Radiant Nova
+                      - generic [ref=e784]:
+                        - generic [ref=e785]: holy
+                        - generic [ref=e786]: general
+                    - generic [ref=e787]: Radiant Nova detonates in an expanding ring. It burns with holy light and cleanses.
+                  - button "Radiant Torrent holy general Radiant Torrent unleashes a sustained stream. It burns with holy light and cleanses." [ref=e788] [cursor=pointer]:
+                    - generic [ref=e789]:
+                      - generic [ref=e790]: Radiant Torrent
+                      - generic [ref=e791]:
+                        - generic [ref=e792]: holy
+                        - generic [ref=e793]: general
+                    - generic [ref=e794]: Radiant Torrent unleashes a sustained stream. It burns with holy light and cleanses.
+                  - button "Radiant Step holy general Radiant Step blinks forward into an attack. It burns with holy light and cleanses." [ref=e795] [cursor=pointer]:
+                    - generic [ref=e796]:
+                      - generic [ref=e797]: Radiant Step
+                      - generic [ref=e798]:
+                        - generic [ref=e799]: holy
+                        - generic [ref=e800]: general
+                    - generic [ref=e801]: Radiant Step blinks forward into an attack. It burns with holy light and cleanses.
+                  - button "Radiant Cleave holy general Radiant Cleave cuts through multiple foes. It burns with holy light and cleanses." [ref=e802] [cursor=pointer]:
+                    - generic [ref=e803]:
+                      - generic [ref=e804]: Radiant Cleave
+                      - generic [ref=e805]:
+                        - generic [ref=e806]: holy
+                        - generic [ref=e807]: general
+                    - generic [ref=e808]: Radiant Cleave cuts through multiple foes. It burns with holy light and cleanses.
+                  - button "Radiant Spear holy general Radiant Spear launches a long-range thrust. It burns with holy light and cleanses." [ref=e809] [cursor=pointer]:
+                    - generic [ref=e810]:
+                      - generic [ref=e811]: Radiant Spear
+                      - generic [ref=e812]:
+                        - generic [ref=e813]: holy
+                        - generic [ref=e814]: general
+                    - generic [ref=e815]: Radiant Spear launches a long-range thrust. It burns with holy light and cleanses.
+                  - button "Venom Strike nature general Venom Strike delivers a focused hit. It applies a lingering poison." [ref=e816] [cursor=pointer]:
+                    - generic [ref=e817]:
+                      - generic [ref=e818]: Venom Strike
+                      - generic [ref=e819]:
+                        - generic [ref=e820]: nature
+                        - generic [ref=e821]: general
+                    - generic [ref=e822]: Venom Strike delivers a focused hit. It applies a lingering poison.
+                  - button "Venom Burst nature general Venom Burst erupts in a short-range blast. It applies a lingering poison." [ref=e823] [cursor=pointer]:
+                    - generic [ref=e824]:
+                      - generic [ref=e825]: Venom Burst
+                      - generic [ref=e826]:
+                        - generic [ref=e827]: nature
+                        - generic [ref=e828]: general
+                    - generic [ref=e829]: Venom Burst erupts in a short-range blast. It applies a lingering poison.
+                  - button "Venom Lance nature general Venom Lance fires a piercing line attack. It applies a lingering poison." [ref=e830] [cursor=pointer]:
+                    - generic [ref=e831]:
+                      - generic [ref=e832]: Venom Lance
+                      - generic [ref=e833]:
+                        - generic [ref=e834]: nature
+                        - generic [ref=e835]: general
+                    - generic [ref=e836]: Venom Lance fires a piercing line attack. It applies a lingering poison.
+                  - button "Venom Wave nature general Venom Wave sweeps outward in a wide arc. It applies a lingering poison." [ref=e837] [cursor=pointer]:
+                    - generic [ref=e838]:
+                      - generic [ref=e839]: Venom Wave
+                      - generic [ref=e840]:
+                        - generic [ref=e841]: nature
+                        - generic [ref=e842]: general
+                    - generic [ref=e843]: Venom Wave sweeps outward in a wide arc. It applies a lingering poison.
+                  - button "Venom Pulse nature general Venom Pulse emits a rhythmic shock. It applies a lingering poison." [ref=e844] [cursor=pointer]:
+                    - generic [ref=e845]:
+                      - generic [ref=e846]: Venom Pulse
+                      - generic [ref=e847]:
+                        - generic [ref=e848]: nature
+                        - generic [ref=e849]: general
+                    - generic [ref=e850]: Venom Pulse emits a rhythmic shock. It applies a lingering poison.
+                  - button "Venom Nova nature general Venom Nova detonates in an expanding ring. It applies a lingering poison." [ref=e851] [cursor=pointer]:
+                    - generic [ref=e852]:
+                      - generic [ref=e853]: Venom Nova
+                      - generic [ref=e854]:
+                        - generic [ref=e855]: nature
+                        - generic [ref=e856]: general
+                    - generic [ref=e857]: Venom Nova detonates in an expanding ring. It applies a lingering poison.
+                  - button "Venom Torrent nature general Venom Torrent unleashes a sustained stream. It applies a lingering poison." [ref=e858] [cursor=pointer]:
+                    - generic [ref=e859]:
+                      - generic [ref=e860]: Venom Torrent
+                      - generic [ref=e861]:
+                        - generic [ref=e862]: nature
+                        - generic [ref=e863]: general
+                    - generic [ref=e864]: Venom Torrent unleashes a sustained stream. It applies a lingering poison.
+                  - button "Venom Step nature general Venom Step blinks forward into an attack. It applies a lingering poison." [ref=e865] [cursor=pointer]:
+                    - generic [ref=e866]:
+                      - generic [ref=e867]: Venom Step
+                      - generic [ref=e868]:
+                        - generic [ref=e869]: nature
+                        - generic [ref=e870]: general
+                    - generic [ref=e871]: Venom Step blinks forward into an attack. It applies a lingering poison.
+                  - button "Venom Cleave nature general Venom Cleave cuts through multiple foes. It applies a lingering poison." [ref=e872] [cursor=pointer]:
+                    - generic [ref=e873]:
+                      - generic [ref=e874]: Venom Cleave
+                      - generic [ref=e875]:
+                        - generic [ref=e876]: nature
+                        - generic [ref=e877]: general
+                    - generic [ref=e878]: Venom Cleave cuts through multiple foes. It applies a lingering poison.
+                  - button "Venom Spear nature general Venom Spear launches a long-range thrust. It applies a lingering poison." [ref=e879] [cursor=pointer]:
+                    - generic [ref=e880]:
+                      - generic [ref=e881]: Venom Spear
+                      - generic [ref=e882]:
+                        - generic [ref=e883]: nature
+                        - generic [ref=e884]: general
+                    - generic [ref=e885]: Venom Spear launches a long-range thrust. It applies a lingering poison.
+                  - button "Iron Strike general Iron Strike delivers a focused hit. It shatters armor with brute force." [ref=e886] [cursor=pointer]:
+                    - generic [ref=e887]:
+                      - generic [ref=e888]: Iron Strike
+                      - generic [ref=e890]: general
+                    - generic [ref=e891]: Iron Strike delivers a focused hit. It shatters armor with brute force.
+                  - button "Iron Burst general Iron Burst erupts in a short-range blast. It shatters armor with brute force." [ref=e892] [cursor=pointer]:
+                    - generic [ref=e893]:
+                      - generic [ref=e894]: Iron Burst
+                      - generic [ref=e896]: general
+                    - generic [ref=e897]: Iron Burst erupts in a short-range blast. It shatters armor with brute force.
+                  - button "Iron Lance general Iron Lance fires a piercing line attack. It shatters armor with brute force." [ref=e898] [cursor=pointer]:
+                    - generic [ref=e899]:
+                      - generic [ref=e900]: Iron Lance
+                      - generic [ref=e902]: general
+                    - generic [ref=e903]: Iron Lance fires a piercing line attack. It shatters armor with brute force.
+                  - button "Iron Wave general Iron Wave sweeps outward in a wide arc. It shatters armor with brute force." [ref=e904] [cursor=pointer]:
+                    - generic [ref=e905]:
+                      - generic [ref=e906]: Iron Wave
+                      - generic [ref=e908]: general
+                    - generic [ref=e909]: Iron Wave sweeps outward in a wide arc. It shatters armor with brute force.
+                  - button "Iron Pulse general Iron Pulse emits a rhythmic shock. It shatters armor with brute force." [ref=e910] [cursor=pointer]:
+                    - generic [ref=e911]:
+                      - generic [ref=e912]: Iron Pulse
+                      - generic [ref=e914]: general
+                    - generic [ref=e915]: Iron Pulse emits a rhythmic shock. It shatters armor with brute force.
+                  - button "Iron Nova general Iron Nova detonates in an expanding ring. It shatters armor with brute force." [ref=e916] [cursor=pointer]:
+                    - generic [ref=e917]:
+                      - generic [ref=e918]: Iron Nova
+                      - generic [ref=e920]: general
+                    - generic [ref=e921]: Iron Nova detonates in an expanding ring. It shatters armor with brute force.
+                  - button "Iron Torrent general Iron Torrent unleashes a sustained stream. It shatters armor with brute force." [ref=e922] [cursor=pointer]:
+                    - generic [ref=e923]:
+                      - generic [ref=e924]: Iron Torrent
+                      - generic [ref=e926]: general
+                    - generic [ref=e927]: Iron Torrent unleashes a sustained stream. It shatters armor with brute force.
+                  - button "Iron Step general Iron Step blinks forward into an attack. It shatters armor with brute force." [ref=e928] [cursor=pointer]:
+                    - generic [ref=e929]:
+                      - generic [ref=e930]: Iron Step
+                      - generic [ref=e932]: general
+                    - generic [ref=e933]: Iron Step blinks forward into an attack. It shatters armor with brute force.
+                  - button "Iron Cleave general Iron Cleave cuts through multiple foes. It shatters armor with brute force." [ref=e934] [cursor=pointer]:
+                    - generic [ref=e935]:
+                      - generic [ref=e936]: Iron Cleave
+                      - generic [ref=e938]: general
+                    - generic [ref=e939]: Iron Cleave cuts through multiple foes. It shatters armor with brute force.
+                  - button "Iron Spear general Iron Spear launches a long-range thrust. It shatters armor with brute force." [ref=e940] [cursor=pointer]:
+                    - generic [ref=e941]:
+                      - generic [ref=e942]: Iron Spear
+                      - generic [ref=e944]: general
+                    - generic [ref=e945]: Iron Spear launches a long-range thrust. It shatters armor with brute force.
+                  - button "Astral Strike general Astral Strike delivers a focused hit. It pierces shields with arcane force." [ref=e946] [cursor=pointer]:
+                    - generic [ref=e947]:
+                      - generic [ref=e948]: Astral Strike
+                      - generic [ref=e950]: general
+                    - generic [ref=e951]: Astral Strike delivers a focused hit. It pierces shields with arcane force.
+                  - button "Astral Burst general Astral Burst erupts in a short-range blast. It pierces shields with arcane force." [ref=e952] [cursor=pointer]:
+                    - generic [ref=e953]:
+                      - generic [ref=e954]: Astral Burst
+                      - generic [ref=e956]: general
+                    - generic [ref=e957]: Astral Burst erupts in a short-range blast. It pierces shields with arcane force.
+                  - button "Astral Lance general Astral Lance fires a piercing line attack. It pierces shields with arcane force." [ref=e958] [cursor=pointer]:
+                    - generic [ref=e959]:
+                      - generic [ref=e960]: Astral Lance
+                      - generic [ref=e962]: general
+                    - generic [ref=e963]: Astral Lance fires a piercing line attack. It pierces shields with arcane force.
+                  - button "Astral Wave general Astral Wave sweeps outward in a wide arc. It pierces shields with arcane force." [ref=e964] [cursor=pointer]:
+                    - generic [ref=e965]:
+                      - generic [ref=e966]: Astral Wave
+                      - generic [ref=e968]: general
+                    - generic [ref=e969]: Astral Wave sweeps outward in a wide arc. It pierces shields with arcane force.
+                  - button "Astral Pulse general Astral Pulse emits a rhythmic shock. It pierces shields with arcane force." [ref=e970] [cursor=pointer]:
+                    - generic [ref=e971]:
+                      - generic [ref=e972]: Astral Pulse
+                      - generic [ref=e974]: general
+                    - generic [ref=e975]: Astral Pulse emits a rhythmic shock. It pierces shields with arcane force.
+                  - button "Astral Nova general Astral Nova detonates in an expanding ring. It pierces shields with arcane force." [ref=e976] [cursor=pointer]:
+                    - generic [ref=e977]:
+                      - generic [ref=e978]: Astral Nova
+                      - generic [ref=e980]: general
+                    - generic [ref=e981]: Astral Nova detonates in an expanding ring. It pierces shields with arcane force.
+                  - button "Astral Torrent general Astral Torrent unleashes a sustained stream. It pierces shields with arcane force." [ref=e982] [cursor=pointer]:
+                    - generic [ref=e983]:
+                      - generic [ref=e984]: Astral Torrent
+                      - generic [ref=e986]: general
+                    - generic [ref=e987]: Astral Torrent unleashes a sustained stream. It pierces shields with arcane force.
+                  - button "Astral Step general Astral Step blinks forward into an attack. It pierces shields with arcane force." [ref=e988] [cursor=pointer]:
+                    - generic [ref=e989]:
+                      - generic [ref=e990]: Astral Step
+                      - generic [ref=e992]: general
+                    - generic [ref=e993]: Astral Step blinks forward into an attack. It pierces shields with arcane force.
+                  - button "Astral Cleave general Astral Cleave cuts through multiple foes. It pierces shields with arcane force." [ref=e994] [cursor=pointer]:
+                    - generic [ref=e995]:
+                      - generic [ref=e996]: Astral Cleave
+                      - generic [ref=e998]: general
+                    - generic [ref=e999]: Astral Cleave cuts through multiple foes. It pierces shields with arcane force.
+                  - button "Astral Spear general Astral Spear launches a long-range thrust. It pierces shields with arcane force." [ref=e1000] [cursor=pointer]:
+                    - generic [ref=e1001]:
+                      - generic [ref=e1002]: Astral Spear
+                      - generic [ref=e1004]: general
+                    - generic [ref=e1005]: Astral Spear launches a long-range thrust. It pierces shields with arcane force.
+                  - button "Taunt (Provoking Shout) physical general A battle shout or gesture that draws enemies’ aggression toward the user. The taunter focuses enemies’ attention on themselves, often protecting weaker allies. For example, a Knight class can use a taunt to force monsters to attack them instead of the party’s mage. This is invaluable for battlefield control – it doesn’t deal damage, but it manipulates enemy behavior to advantage." [ref=e1006] [cursor=pointer]:
+                    - generic [ref=e1007]:
+                      - generic [ref=e1008]: Taunt (Provoking Shout)
+                      - generic [ref=e1009]:
+                        - generic [ref=e1010]: physical
+                        - generic [ref=e1011]: general
+                    - generic [ref=e1012]: A battle shout or gesture that draws enemies’ aggression toward the user. The taunter focuses enemies’ attention on themselves, often protecting weaker allies. For example, a Knight class can use a taunt to force monsters to attack them instead of the party’s mage. This is invaluable for battlefield control – it doesn’t deal damage, but it manipulates enemy behavior to advantage.
+                  - button "Intimidating Presence (Fear Aura) physical general Projecting an aura of menace that frightens enemies, causing them to lose morale or even flee. For instance, a Barbarian’s menacing glare can instill magical fear – in D&D 5e, the Intimidating Presence feature forces a foe to make a Wisdom save or be frightened (unable to approach and potentially running away). Enemies under this fear effect often suffer penalties to attacks and may refuse to advance. This ability doesn’t harm directly, but it debuffs opponents’ resolve, potentially removing them from the fight or making them easier to defeat." [ref=e1013] [cursor=pointer]:
+                    - generic [ref=e1014]:
+                      - generic [ref=e1015]: Intimidating Presence (Fear Aura)
+                      - generic [ref=e1016]:
+                        - generic [ref=e1017]: physical
+                        - generic [ref=e1018]: general
+                    - generic [ref=e1019]: Projecting an aura of menace that frightens enemies, causing them to lose morale or even flee. For instance, a Barbarian’s menacing glare can instill magical fear – in D&D 5e, the Intimidating Presence feature forces a foe to make a Wisdom save or be frightened (unable to approach and potentially running away). Enemies under this fear effect often suffer penalties to attacks and may refuse to advance. This ability doesn’t harm directly, but it debuffs opponents’ resolve, potentially removing them from the fight or making them easier to defeat.
+                  - button "Disarm physical general A precise maneuver to knock a weapon or item from an opponent’s grip. The fighter targets the enemy’s hand or hilt with a strike or magical force, forcing them to drop what they’re holding. A disarmed foe has reduced offensive capability – e.g. a swordsman without his sword, or an enemy cleric whose holy symbol is yanked away. In some systems, a successful disarm imposes an Unarmed status on the enemy, preventing them from using that weapon until they retrieve it. This ability shines in duels or against singular powerful weapons (imagine disarming a Dark Lord of his wand or artifact)." [ref=e1020] [cursor=pointer]:
+                    - generic [ref=e1021]:
+                      - generic [ref=e1022]: Disarm
+                      - generic [ref=e1023]:
+                        - generic [ref=e1024]: physical
+                        - generic [ref=e1025]: general
+                    - generic [ref=e1026]: A precise maneuver to knock a weapon or item from an opponent’s grip. The fighter targets the enemy’s hand or hilt with a strike or magical force, forcing them to drop what they’re holding. A disarmed foe has reduced offensive capability – e.g. a swordsman without his sword, or an enemy cleric whose holy symbol is yanked away. In some systems, a successful disarm imposes an Unarmed status on the enemy, preventing them from using that weapon until they retrieve it. This ability shines in duels or against singular powerful weapons (imagine disarming a Dark Lord of his wand or artifact).
+                  - button "Trip Attack (Knockdown) physical general A combat technique that sweeps an opponent’s legs or otherwise throws them off-balance, causing them to fall prone. A tripped enemy on the ground has difficulty moving and defending – attackers get an easier shot while they’re down. In D&D terms, a Battlemaster fighter’s Trip Attack maneuver forces a target to make a Strength save or be knocked prone. While prone, the target’s movement is halved and melee hits against them are often at advantage (since they’re struggling to get up). This ability doesn’t injure directly, but it controls the enemy’s position, setting them up for follow-up attacks or forcing them to spend time recovering instead of fighting." [ref=e1027] [cursor=pointer]:
+                    - generic [ref=e1028]:
+                      - generic [ref=e1029]: Trip Attack (Knockdown)
+                      - generic [ref=e1030]:
+                        - generic [ref=e1031]: physical
+                        - generic [ref=e1032]: general
+                    - generic [ref=e1033]: A combat technique that sweeps an opponent’s legs or otherwise throws them off-balance, causing them to fall prone. A tripped enemy on the ground has difficulty moving and defending – attackers get an easier shot while they’re down. In D&D terms, a Battlemaster fighter’s Trip Attack maneuver forces a target to make a Strength save or be knocked prone. While prone, the target’s movement is halved and melee hits against them are often at advantage (since they’re struggling to get up). This ability doesn’t injure directly, but it controls the enemy’s position, setting them up for follow-up attacks or forcing them to spend time recovering instead of fighting.
+                  - button [ref=e1034] [cursor=pointer]:
+                    - generic [ref=e1035]:
+                      - generic [ref=e1036]: Grappling/Binding
+                      - generic [ref=e1037]:
+                        - generic [ref=e1038]: physical
+                        - generic [ref=e1039]: general
+                    - generic [ref=e1040]: "Physically grappling a foe or magically binding them with restraints. In a grapple, the character seizes the target in a hold, restraining their movements. A grappled enemy has speed 0 (cannot run or charge) and often can’t use large weapons effectively. For example, rules often state that if you succeed on a grapple check, the target is subjected to the Grappled condition (speed becomes 0 and they can’t move away). Some abilities extend this to a restrained condition (the target can barely move or attack). Similarly, magical bindings – like conjuring ropes or vines – achieve the same effect at range. Synergy: Grappling an enemy makes it easier for allies to hit them (they can’t dodge well) and pairs excellently with area effects (a grappled foe can be held in a hazard like a fire or acid pool). It’s a pure control move that takes an enemy out of the fray without dealing damage."
+                  - button "Feint (Deceptive Strike) physical general A fake-out maneuver that tricks an opponent into defending the wrong angle, opening them up to attack. The user pretends to strike or signals an attack in one direction, causing the enemy to parry or dodge incorrectly, and then follows through from another direction. In game terms, performing a feint can grant advantage on your next attack against that enemy (since they’re off-balance). This ability itself doesn’t cause harm, but it increases the effectiveness of the subsequent attack (often resulting in a critical hit or a successful hit that might otherwise have missed). Outside of pure combat, feints and similar trickery can also be used to distract a guard (while an ally slips by) or to test an opponent’s reactions and skill." [ref=e1041] [cursor=pointer]:
+                    - generic [ref=e1042]:
+                      - generic [ref=e1043]: Feint (Deceptive Strike)
+                      - generic [ref=e1044]:
+                        - generic [ref=e1045]: physical
+                        - generic [ref=e1046]: general
+                    - generic [ref=e1047]: A fake-out maneuver that tricks an opponent into defending the wrong angle, opening them up to attack. The user pretends to strike or signals an attack in one direction, causing the enemy to parry or dodge incorrectly, and then follows through from another direction. In game terms, performing a feint can grant advantage on your next attack against that enemy (since they’re off-balance). This ability itself doesn’t cause harm, but it increases the effectiveness of the subsequent attack (often resulting in a critical hit or a successful hit that might otherwise have missed). Outside of pure combat, feints and similar trickery can also be used to distract a guard (while an ally slips by) or to test an opponent’s reactions and skill.
+                  - button "Parry & Riposte physical general A defensive swordplay technique where you deflect an incoming blow (parry), and then counterattack immediately (riposte). When an enemy melee attack is about to hit, the skilled fighter uses their weapon or shield to knock it aside, reducing or nullifying the damage. In D&D, a Battlemaster’s Parry maneuver allows using a reaction to reduce damage from a hit by a rolled value plus Dexterity mod. Immediately after a successful parry, a Riposte maneuver lets the fighter strike back at the attacker while their guard is down. This combo essentially turns an enemy’s failed attack into an opening for the character. It requires good timing but can negate damage and inflict damage in one sequence, all without any initial offensive action by the defender." [ref=e1048] [cursor=pointer]:
+                    - generic [ref=e1049]:
+                      - generic [ref=e1050]: Parry & Riposte
+                      - generic [ref=e1051]:
+                        - generic [ref=e1052]: physical
+                        - generic [ref=e1053]: general
+                    - generic [ref=e1054]: A defensive swordplay technique where you deflect an incoming blow (parry), and then counterattack immediately (riposte). When an enemy melee attack is about to hit, the skilled fighter uses their weapon or shield to knock it aside, reducing or nullifying the damage. In D&D, a Battlemaster’s Parry maneuver allows using a reaction to reduce damage from a hit by a rolled value plus Dexterity mod. Immediately after a successful parry, a Riposte maneuver lets the fighter strike back at the attacker while their guard is down. This combo essentially turns an enemy’s failed attack into an opening for the character. It requires good timing but can negate damage and inflict damage in one sequence, all without any initial offensive action by the defender.
+                  - 'button "Smoke Bomb (Fog Cloud) physical general Creating a cloud of smoke or fog to obscure vision on the battlefield. A ninja or rogue might throw a smoke bomb at their feet; a wizard might cast Fog Cloud. The result is a zone of heavy obscurity – as rules state, a heavily obscured area “blocks vision entirely”. Enemies can’t see targets inside or on the other side of the cloud, effectively preventing ranged targeting and making melee attackers swing blindly (often with disadvantage or a chance to miss outright). This ability causes no direct harm but is a potent tactical tool: it enables stealthy escapes, repositioning, or ambushes. An adventuring party might use a fog cloud to cover a retreat or to confuse enemies while they relocate." [ref=e1055] [cursor=pointer]':
+                    - generic [ref=e1056]:
+                      - generic [ref=e1057]: Smoke Bomb (Fog Cloud)
+                      - generic [ref=e1058]:
+                        - generic [ref=e1059]: physical
+                        - generic [ref=e1060]: general
+                    - generic [ref=e1061]: "Creating a cloud of smoke or fog to obscure vision on the battlefield. A ninja or rogue might throw a smoke bomb at their feet; a wizard might cast Fog Cloud. The result is a zone of heavy obscurity – as rules state, a heavily obscured area “blocks vision entirely”. Enemies can’t see targets inside or on the other side of the cloud, effectively preventing ranged targeting and making melee attackers swing blindly (often with disadvantage or a chance to miss outright). This ability causes no direct harm but is a potent tactical tool: it enables stealthy escapes, repositioning, or ambushes. An adventuring party might use a fog cloud to cover a retreat or to confuse enemies while they relocate."
+                  - button "Battlefield Medicine physical general The practice of providing quick first aid in the middle of combat. A character with this ability (like a combat medic or a cleric with a healer’s kit) can stabilize a dying ally or apply a small heal under pressure. For example, D&D allows using an action to administer first aid and stabilize an unconscious creature (preventing death) with a DC 10 Medicine check. Some systems or feats even let you restore a few hit points on the spot (like applying a healing salve or adrenaline shot). This doesn’t defeat enemies, but it prevents allies from falling – essentially undoing some of the enemies’ damage output. It’s a non-magical (or minimally magical) support ability critical in protracted fights." [ref=e1062] [cursor=pointer]:
+                    - generic [ref=e1063]:
+                      - generic [ref=e1064]: Battlefield Medicine
+                      - generic [ref=e1065]:
+                        - generic [ref=e1066]: physical
+                        - generic [ref=e1067]: general
+                    - generic [ref=e1068]: The practice of providing quick first aid in the middle of combat. A character with this ability (like a combat medic or a cleric with a healer’s kit) can stabilize a dying ally or apply a small heal under pressure. For example, D&D allows using an action to administer first aid and stabilize an unconscious creature (preventing death) with a DC 10 Medicine check. Some systems or feats even let you restore a few hit points on the spot (like applying a healing salve or adrenaline shot). This doesn’t defeat enemies, but it prevents allies from falling – essentially undoing some of the enemies’ damage output. It’s a non-magical (or minimally magical) support ability critical in protracted fights.
+                  - 'button "Second Wind (Adrenaline Surge) physical general A sudden burst of endurance that allows a warrior to recover in the heat of battle. The user summons a reserve of stamina – perhaps through adrenaline or sheer willpower – to restore some health or stamina mid-fight. The D&D Fighter’s Second Wind is a clear example: once per short rest, a fighter can take a breather and regain a chunk of hit points (1d10 + level) in the middle of combat. This can turn the tide by unexpectedly undoing damage the enemy just dealt. In narrative terms, the character steels themselves, wounds closing slightly, pain ignored." [ref=e1069] [cursor=pointer]':
+                    - generic [ref=e1070]:
+                      - generic [ref=e1071]: Second Wind (Adrenaline Surge)
+                      - generic [ref=e1072]:
+                        - generic [ref=e1073]: physical
+                        - generic [ref=e1074]: general
+                    - generic [ref=e1075]: "A sudden burst of endurance that allows a warrior to recover in the heat of battle. The user summons a reserve of stamina – perhaps through adrenaline or sheer willpower – to restore some health or stamina mid-fight. The D&D Fighter’s Second Wind is a clear example: once per short rest, a fighter can take a breather and regain a chunk of hit points (1d10 + level) in the middle of combat. This can turn the tide by unexpectedly undoing damage the enemy just dealt. In narrative terms, the character steels themselves, wounds closing slightly, pain ignored."
+                  - button "Evasive Dodge physical general A dedicated defensive action where the character focuses solely on avoiding incoming attacks through agility. In many systems, taking a “Dodge” action imposes disadvantages or penalties on attackers trying to hit you because you’re actively evading. For example, in D&D, using Dodge on your turn means all attack rolls against you have disadvantage until your next turn, as long as you can see the attacker. You also get advantage on Dexterity saves (for things like fireballs). This ability doesn’t harm or hinder enemies, but it greatly reduces their chances of hitting you for a short period. It’s essentially pure defense by mobility – weaving, rolling, and keeping distance." [ref=e1076] [cursor=pointer]:
+                    - generic [ref=e1077]:
+                      - generic [ref=e1078]: Evasive Dodge
+                      - generic [ref=e1079]:
+                        - generic [ref=e1080]: physical
+                        - generic [ref=e1081]: general
+                    - generic [ref=e1082]: A dedicated defensive action where the character focuses solely on avoiding incoming attacks through agility. In many systems, taking a “Dodge” action imposes disadvantages or penalties on attackers trying to hit you because you’re actively evading. For example, in D&D, using Dodge on your turn means all attack rolls against you have disadvantage until your next turn, as long as you can see the attacker. You also get advantage on Dexterity saves (for things like fireballs). This ability doesn’t harm or hinder enemies, but it greatly reduces their chances of hitting you for a short period. It’s essentially pure defense by mobility – weaving, rolling, and keeping distance.
+                  - button "Precise Strike (Aim for Weak Point) physical general A calculated attack aimed at exploiting a vulnerability in the target’s defense rather than brute-forcing damage. The user spends extra time or focus to ensure the next strike hits the mark. For instance, a Precision Attack maneuver in D&D lets a fighter add a superiority die to an attack roll, often turning a miss into a hit. In narrative, think of an archer taking careful aim for the chink in a dragon’s scales, or a duelist observing an enemy’s pattern and then thrusting exactly when and where the armor doesn’t cover. The ability itself is about increasing accuracy or penetration, not adding damage – though by ensuring a hit on a critical target, it can indirectly lead to more damage or the removal of a threat." [ref=e1083] [cursor=pointer]:
+                    - generic [ref=e1084]:
+                      - generic [ref=e1085]: Precise Strike (Aim for Weak Point)
+                      - generic [ref=e1086]:
+                        - generic [ref=e1087]: physical
+                        - generic [ref=e1088]: general
+                    - generic [ref=e1089]: A calculated attack aimed at exploiting a vulnerability in the target’s defense rather than brute-forcing damage. The user spends extra time or focus to ensure the next strike hits the mark. For instance, a Precision Attack maneuver in D&D lets a fighter add a superiority die to an attack roll, often turning a miss into a hit. In narrative, think of an archer taking careful aim for the chink in a dragon’s scales, or a duelist observing an enemy’s pattern and then thrusting exactly when and where the armor doesn’t cover. The ability itself is about increasing accuracy or penetration, not adding damage – though by ensuring a hit on a critical target, it can indirectly lead to more damage or the removal of a threat.
+                  - button "Distract (Help Action) physical general Rather than attacking directly, the character uses their action to distract or interfere with an enemy, setting up an ally to strike effectively. This could be throwing sand in the opponent’s eyes, making a faint attack at them without intent to hit, or shouting taunts and pointing to make them flinch. Mechanically, this often translates to using the Help action to give an ally advantage on their next attack against that enemy. In role-play, a classic example is one character ducks and weaves in front of a monster, drawing its attention, while another sneaks up and whacks it from behind. The distraction ability itself doesn’t damage or debuff the enemy permanently – it’s a setup move that amplifies another ally’s offense." [ref=e1090] [cursor=pointer]:
+                    - generic [ref=e1091]:
+                      - generic [ref=e1092]: Distract (Help Action)
+                      - generic [ref=e1093]:
+                        - generic [ref=e1094]: physical
+                        - generic [ref=e1095]: general
+                    - generic [ref=e1096]: Rather than attacking directly, the character uses their action to distract or interfere with an enemy, setting up an ally to strike effectively. This could be throwing sand in the opponent’s eyes, making a faint attack at them without intent to hit, or shouting taunts and pointing to make them flinch. Mechanically, this often translates to using the Help action to give an ally advantage on their next attack against that enemy. In role-play, a classic example is one character ducks and weaves in front of a monster, drawing its attention, while another sneaks up and whacks it from behind. The distraction ability itself doesn’t damage or debuff the enemy permanently – it’s a setup move that amplifies another ally’s offense.
+                  - button [ref=e1097] [cursor=pointer]:
+                    - generic [ref=e1098]:
+                      - generic [ref=e1099]: Telekinesis (Psychokinesis)
+                      - generic [ref=e1100]:
+                        - generic [ref=e1101]: arcane
+                        - generic [ref=e1102]: general
+                    - generic [ref=e1103]: "The ability to move objects (or creatures) at a distance with one’s mind or magic, exerting force without physical contact. A telekinetic mage could, for example, lift a fallen boulder pinning an ally, retrieve keys from a hook across the room, or send an enemy’s weapon flying out of their hand. The D&D Telekinesis spell lets the caster concentrate to move a Huge or smaller object up to 30 feet in any direction (if it’s unattended, it moves automatically), or to contest-control a held object or even grapple a creature in the air. Outside combat uses are legion: rearrange furniture with a thought, pull a book from a high shelf, or slowly float a dangerous item in a box without touching it. In combat, telekinesis is often used for battlefield control (e.g., yanking an enemy mage into melee range of your fighters, or slamming doors shut). It’s inherently non-lethal unless you drop something heavy on someone."
+                  - button "Invisibility & Camouflage arcane general The power to become unseen or blend into surroundings, avoiding detection. Invisibility is a classic spell that literally makes the target invisible (though still physically present). In D&D, a typical invisibility spell lasts for up to an hour, or until the invisible creature attacks or casts another spell. It allows one to slip past guards, escape pursuers, or set up ambushes. Camouflage is a more mundane or minor magical effect where you change colors/texture to match the background (like a chameleon or via an Illusion spell), achieving a similar stealth benefit. These abilities are non-combat in that their goal is to avoid a fight or gain tactical advantage without direct confrontation. For example, a thief could use invisibility to infiltrate a treasure vault without any guards noticing, rather than fighting their way in." [ref=e1104] [cursor=pointer]:
+                    - generic [ref=e1105]:
+                      - generic [ref=e1106]: Invisibility & Camouflage
+                      - generic [ref=e1107]:
+                        - generic [ref=e1108]: arcane
+                        - generic [ref=e1109]: general
+                    - generic [ref=e1110]: The power to become unseen or blend into surroundings, avoiding detection. Invisibility is a classic spell that literally makes the target invisible (though still physically present). In D&D, a typical invisibility spell lasts for up to an hour, or until the invisible creature attacks or casts another spell. It allows one to slip past guards, escape pursuers, or set up ambushes. Camouflage is a more mundane or minor magical effect where you change colors/texture to match the background (like a chameleon or via an Illusion spell), achieving a similar stealth benefit. These abilities are non-combat in that their goal is to avoid a fight or gain tactical advantage without direct confrontation. For example, a thief could use invisibility to infiltrate a treasure vault without any guards noticing, rather than fighting their way in.
+                  - button [ref=e1111] [cursor=pointer]:
+                    - generic [ref=e1112]:
+                      - generic [ref=e1113]: Illusion Casting (Sensory Deception)
+                      - generic [ref=e1114]:
+                        - generic [ref=e1115]: arcane
+                        - generic [ref=e1116]: general
+                    - generic [ref=e1117]: "The creation of false images, sounds, or sensations to deceive the senses. An illusionist can conjure phantasmal objects or creatures that appear real but have no true substance. Examples include Minor Illusion (a simple static image or single sound), Silent Image (an illusory object or creature up to a 15-foot cube), or Major Image (a larger, more complex illusion with sound, smell, and temperature). These could make, say, a ferocious tiger seem to appear in a throne room, sending everyone into a panic, or conjure the illusion of a collapsed bridge to deter pursuers. Illusions can also mask things: e.g., an illusion of a wall that isn’t really there, concealing a doorway. Importantly, while illusions can frighten or mislead enemies, they don’t directly cause harm (except in rare cases of psychic illusions). They rely on trickery – if an enemy suspects and interacts with the illusion (like poking the illusory tiger), they might get a saving throw to see through it. In literature, illusions are often used by trickster characters to avoid fights (merely appearing to have an army, or appearing to be somewhere you’re not)."
+                  - button [ref=e1118] [cursor=pointer]:
+                    - generic [ref=e1119]:
+                      - generic [ref=e1120]: Charm & Compulsion (Mind Influence)
+                      - generic [ref=e1121]:
+                        - generic [ref=e1122]: nature
+                        - generic [ref=e1123]: general
+                    - generic [ref=e1124]: Enchantments that influence the thoughts or emotional state of targets, without fully controlling them. A Charm Person spell, for example, makes a humanoid regard the caster as a friendly acquaintance for a time (usually until the spell ends or the caster’s allies harm the target). The charmed creature is less inclined to attack or be hostile to the charmer – effectively you talk an enemy into standing down or even subtly help you. Unlike domination (below), charm doesn’t allow you to issue complex orders against the target’s nature; it’s more of a befriending/confusion effect. Other compulsion spells could include Suggestion (implanting a single convincing suggestion that the target feels compelled to follow) – e.g., suggesting “Why don’t you take the day off from guard duty You look tired,” which if failed save, they’ll do. These abilities are quintessentially non-violent; they aim to avoid combat or conflict by manipulating behavior. In a novel context, this is like Jedi mind tricks (“These aren’t the droids you’re looking for…”).
+                  - button [ref=e1125] [cursor=pointer]:
+                    - generic [ref=e1126]:
+                      - generic [ref=e1127]: Telepathy & Mind Reading
+                      - generic [ref=e1128]:
+                        - generic [ref=e1129]: ice
+                        - generic [ref=e1130]: general
+                    - generic [ref=e1131]: The ability to communicate directly mind-to-mind and/or glean thoughts without spoken words. Telepathy can be one-way or two-way; for example, a wizard might project their voice into a friend’s head from afar, or a creature like a telepathic alien might carry on a silent conversation with you. Detect Thoughts is a common mind-reading spell which lets the caster hear the surface thoughts of nearby creatures (often without them knowing). By concentrating, one can probe deeper to try to learn secrets, though the target may sense the intrusion and can resist with a save. Outside combat, telepathy is a fantastic tool for silent coordination (the party can plan ambushes or share info stealthily) and for understanding creatures that don’t speak your language (if they have thoughts, you can read the general idea). Mind reading specifically can unravel mysteries – e.g., reading a suspect’s thoughts to see if they’re lying, or skimming a guarded diplomat’s mind for the password to a door. It’s non-combat because it doesn’t damage or control the target, just reads or sends information.
+                  - button [ref=e1132] [cursor=pointer]:
+                    - generic [ref=e1133]:
+                      - generic [ref=e1134]: Emotional Control (Calm or Arouse Emotions)
+                      - generic [ref=e1135]:
+                        - generic [ref=e1136]: arcane
+                        - generic [ref=e1137]: general
+                    - generic [ref=e1138]: Abilities that suppress or amplify emotions in targets. For instance, a bard’s music might Inspire Courage (buffing allies by filling them with bravery), which is a positive buff, or conversely, Calm Emotions is a cleric spell that can soothe a crowd, suppressing fear or anger. If two factions are on the verge of fighting, a cast of Calm Emotions could diffuse the hostility, essentially a non-violent resolution. On the other hand, an evil enchanter might use an aura of Despair that makes enemies feel hopeless (mechanically imposing penalties or sapping their will to fight). Unlike charm which targets one creature’s attitude toward the caster, emotional control can affect multiple people and is more about a general mood (not necessarily making them like the caster, just feel a certain way). Fear spells, which cause creatures to panic and run, also fall here – magically inducing the Frightened condition (creature wants to flee) without directly harming them. These abilities are often area-of-effect and can prevent battles (e.g., calming rioters, or scattering a group of foes in terror so you don’t have to fight them).
+                  - button [ref=e1139] [cursor=pointer]:
+                    - generic [ref=e1140]:
+                      - generic [ref=e1141]: Shapeshifting (Self-Transformation)
+                      - generic [ref=e1142]:
+                        - generic [ref=e1143]: fire
+                        - generic [ref=e1144]: general
+                    - generic [ref=e1145]: "The ability to change one’s own form into something else, typically an animal or another person. Druids are famous for Wild Shape – for example, at moderate levels a druid can assume the shape of a wolf, bird, or bear that they have seen. This is extremely useful non-combat: as a hawk you can scout from above, as a mouse you can creep through cracks into a locked room, as a horse you can carry allies faster, etc. It can also avoid combat entirely (turn into a harmless animal to sneak by monsters, or into a fierce animal to intimidate but not actually fight). Other types include polymorphing self into even other humanoids (to disguise as someone else) or into elemental forms (becoming living water or fire to slip through barriers). Importantly, while shapeshifting can be used in combat (turning into a strong beast to brawl), here we focus on its utility aspects: mobility, infiltration, escape. A classic scenario: need to eavesdrop on a meeting – shapeshift into a housecat and curl up under the table. Or escaping jail – become a tiny insect and slip through the bars."
+                  - button [ref=e1146] [cursor=pointer]:
+                    - generic [ref=e1147]:
+                      - generic [ref=e1148]: Size Alteration (Enlarge/Reduce)
+                      - generic [ref=e1149]:
+                        - generic [ref=e1150]: arcane
+                        - generic [ref=e1151]: general
+                    - generic [ref=e1152]: "Changing the size of a creature or object, either growing it larger or shrinking it smaller. The Enlarge/Reduce spell is a good example: you can double a creature’s size (and multiply its weight by 8) or halve it. Enlarging someone makes them stronger (their attacks hit harder due to mass) – often considered a buff – and reducing an enemy can weaken their blows (and let you pick them up easily!). But beyond combat, size changing has many uses: Shrinking yourself or an ally can allow entry into small passages, make you harder to spot, or lighten you to cross a flimsy bridge. Enlarging an object can help in construction (enlarge a small piece of stone to become a boulder to block a door, etc.), or allow you to reach something high (make yourself 12 feet tall to grab a ledge). It can even be used for spectacle – imagine enlarging a coin to a giant size as a distraction or as a temporary platform."
+                  - button [ref=e1153] [cursor=pointer]:
+                    - generic [ref=e1154]:
+                      - generic [ref=e1155]: Gravity Manipulation
+                      - generic [ref=e1156]:
+                        - generic [ref=e1157]: ice
+                        - generic [ref=e1158]: general
+                    - generic [ref=e1159]: "The power to increase or decrease gravity’s pull in an area or on specific objects. This is more exotic, but some mages or devices can do it. For instance, a gravity mage could make an object extremely heavy (“Gravity Well” on an enemy to pin them down) or extremely light (“Levitate” effect, like removing gravity so an object floats) – note that Levitate in D&D essentially nullifies gravity on one target up to 500 lbs, making it drift upward or stay suspended. Non-combat uses: Lightening the load of a wagon so horses can pull it easier, or letting workers lift a heavy stone by reducing its weight. Or increasing gravity in a local zone to test endurance or keep something dangerous firmly on the ground. In a security sense, a vault might have a gravity trap that slams intruders to the floor. If one can finely control it, gravity manipulation allows simulated telekinesis (make target light, so it floats; make target heavy, so it falls). It can also assist in travel: lower gravity to make huge leaps (essentially personal low-gravity environment)."
+                  - button [ref=e1160] [cursor=pointer]:
+                    - generic [ref=e1161]:
+                      - generic [ref=e1162]: Magnetism (Metal Manipulation)
+                      - generic [ref=e1163]:
+                        - generic [ref=e1164]: air
+                        - generic [ref=e1165]: general
+                    - generic [ref=e1166]: The ability to manipulate metal via magnetic force. This is narrower than general telekinesis but has unique applications – effectively, one becomes a human magnet. A magnetism user can yank metallic objects away (disarming all foes armed with steel weapons in a radius), hurl metal objects through the air, or create magnetic shields that deflect metal projectiles (bullets, arrows with iron heads, etc.). They could also assemble or dismantle machines by moving metal parts into place or apart. In modern or steampunk settings, magnetism is incredibly powerful (controlling guns, vehicles, etc.). In a medieval setting, there’s still plenty of metal to influence – armor (imagine immobilizing a knight by magnet-locking them to the ground), gates, keys, etc. This tends to be non-lethal because it’s about moving things – you could hurl a bunch of coins at someone to hurt them, but more often you’d rip their armor off or pin them to a wall by their own mail. Offensively, magnetism might cause chaos by flinging debris, but again, it could be used to end fights by de-arming foes.
+                  - button [ref=e1167] [cursor=pointer]:
+                    - generic [ref=e1168]:
+                      - generic [ref=e1169]: Memory Alteration (Modify Memory)
+                      - generic [ref=e1170]:
+                        - generic [ref=e1171]: nature
+                        - generic [ref=e1172]: general
+                    - generic [ref=e1173]: "A delicate and powerful mental ability to change or erase someone’s memories of events. For example, the Modify Memory spell in D&D allows a caster to reshape a target’s recollection of an event up to 10 minutes long, provided the event occurred in the last few hours (or longer at higher levels). The target gets a save if the memory is of something the caster wasn’t part of, but if it fails, the caster can implant a false memory or remove a real one. In practical use: you could make a guard “forget” that you snuck through the gate last night, or even implant a memory that you were officially allowed in. You could heal psychological trauma by removing the memory of it (ethical implications aside), or conversely harm someone by making them forget their best friend (again, dark use). This is clearly non-combat because it’s not about harming someone now – it’s about information and narrative. It often comes into play after a social encounter: e.g., if you had to charm and lie to get into a restricted area, you might later modify the guard’s memory so they don’t recall you trespassing (covering your tracks)."
+                  - 'button "Fire Manipulation fire general The ability to create, shape, and extinguish fire at will. A pyrokinetic or fire mage can summon flames from thin air or ignite flammable objects with a snap of their fingers. They might also control existing fire – enlarging a campfire into a roaring blaze or snuffing out a torch from across a room. Outside of combat uses include lighting torches or campfires instantly, performing controlled burns (for agriculture or clearing brush), providing warmth in cold environments, or burning debris blocking a path. Fire manipulation can also destroy evidence or hazards (burning away a patch of poisonous mold). While it can be offensive (flames hurt), here we consider its utility: e.g., cauterizing a wound in an emergency, or forging metal tools by heating a forge with magic." [ref=e1174] [cursor=pointer]':
+                    - generic [ref=e1175]:
+                      - generic [ref=e1176]: Fire Manipulation
+                      - generic [ref=e1177]:
+                        - generic [ref=e1178]: fire
+                        - generic [ref=e1179]: general
+                    - generic [ref=e1180]: "The ability to create, shape, and extinguish fire at will. A pyrokinetic or fire mage can summon flames from thin air or ignite flammable objects with a snap of their fingers. They might also control existing fire – enlarging a campfire into a roaring blaze or snuffing out a torch from across a room. Outside of combat uses include lighting torches or campfires instantly, performing controlled burns (for agriculture or clearing brush), providing warmth in cold environments, or burning debris blocking a path. Fire manipulation can also destroy evidence or hazards (burning away a patch of poisonous mold). While it can be offensive (flames hurt), here we consider its utility: e.g., cauterizing a wound in an emergency, or forging metal tools by heating a forge with magic."
+                  - 'button "Water Manipulation fire general Control over water and liquids – moving water, changing its shape, or even its state (to some extent, like freezing or vaporizing small amounts). A hydromancer can do things like: draw water from a well without a bucket (make it rise to you), split and part water (like creating a temporary dry path in a stream to cross it), or condense moisture from the air into a usable supply. Non-combat uses are extensive: dousing fires, purifying water (by separating sediment), irrigating crops by channeling river water, or creating sculptures and tools from ice. Underwater breathing could be achieved indirectly (wrap a bubble of air around someone’s head using water/air control). Travel can be aided by water shaping too – for instance, propelling a boat by forming a current." [ref=e1181] [cursor=pointer]':
+                    - generic [ref=e1182]:
+                      - generic [ref=e1183]: Water Manipulation
+                      - generic [ref=e1184]:
+                        - generic [ref=e1185]: fire
+                        - generic [ref=e1186]: general
+                    - generic [ref=e1187]: "Control over water and liquids – moving water, changing its shape, or even its state (to some extent, like freezing or vaporizing small amounts). A hydromancer can do things like: draw water from a well without a bucket (make it rise to you), split and part water (like creating a temporary dry path in a stream to cross it), or condense moisture from the air into a usable supply. Non-combat uses are extensive: dousing fires, purifying water (by separating sediment), irrigating crops by channeling river water, or creating sculptures and tools from ice. Underwater breathing could be achieved indirectly (wrap a bubble of air around someone’s head using water/air control). Travel can be aided by water shaping too – for instance, propelling a boat by forming a current."
+                  - button "Earth Manipulation earth general The power to move and reshape earth and stone. An earthbender can cause the ground to tremble, raise walls or pillars of stone, create pitfalls or close them, and even alter the consistency of earth (hardening soft ground or softening hard ground). In practical terms, this means you can dig tunnels or trenches in minutes, erect earthen barriers for protection, or seal open chasms. Need a shelter Pull up a quick stone hut from the bedrock. Need to reach something high Lift a column of rock to stand on. Earth manipulation is also great for finding or extracting minerals – sensing ore deposits or unearthing gemstones carefully." [ref=e1188] [cursor=pointer]:
+                    - generic [ref=e1189]:
+                      - generic [ref=e1190]: Earth Manipulation
+                      - generic [ref=e1191]:
+                        - generic [ref=e1192]: earth
+                        - generic [ref=e1193]: general
+                    - generic [ref=e1194]: The power to move and reshape earth and stone. An earthbender can cause the ground to tremble, raise walls or pillars of stone, create pitfalls or close them, and even alter the consistency of earth (hardening soft ground or softening hard ground). In practical terms, this means you can dig tunnels or trenches in minutes, erect earthen barriers for protection, or seal open chasms. Need a shelter Pull up a quick stone hut from the bedrock. Need to reach something high Lift a column of rock to stand on. Earth manipulation is also great for finding or extracting minerals – sensing ore deposits or unearthing gemstones carefully.
+                  - button "Air Control (Wind Manipulation) fire general The ability to influence air currents and wind pressure. An aeromancer can summon a gust to fill a ship’s sails or disperse poisonous gas from a room. They might create a cushion of air to slow a fall (feather fall effect) or generate an updraft to help allies jump higher or even glide. They can also still the air for stealth (no rustling or howling wind) or create pleasant breezes in stifling conditions. Air is critical for sound propagation too – controlling air can muffle sound (by disrupting air molecules) or carry whispers farther (like a directed “wind speech”). A skilled air mage could even remove air from a sealed space to suffocate a flame or create a vacuum (though the latter is dangerous to living beings, it could snuff out fires harmlessly)." [ref=e1195] [cursor=pointer]:
+                    - generic [ref=e1196]:
+                      - generic [ref=e1197]: Air Control (Wind Manipulation)
+                      - generic [ref=e1198]:
+                        - generic [ref=e1199]: fire
+                        - generic [ref=e1200]: general
+                    - generic [ref=e1201]: The ability to influence air currents and wind pressure. An aeromancer can summon a gust to fill a ship’s sails or disperse poisonous gas from a room. They might create a cushion of air to slow a fall (feather fall effect) or generate an updraft to help allies jump higher or even glide. They can also still the air for stealth (no rustling or howling wind) or create pleasant breezes in stifling conditions. Air is critical for sound propagation too – controlling air can muffle sound (by disrupting air molecules) or carry whispers farther (like a directed “wind speech”). A skilled air mage could even remove air from a sealed space to suffocate a flame or create a vacuum (though the latter is dangerous to living beings, it could snuff out fires harmlessly).
+                  - button [ref=e1202] [cursor=pointer]:
+                    - generic [ref=e1203]:
+                      - generic [ref=e1204]: Weather Control
+                      - generic [ref=e1205]:
+                        - generic [ref=e1206]: fire
+                        - generic [ref=e1207]: general
+                    - generic [ref=e1208]: "A grand ability to influence the weather patterns over an area. This includes summoning rain, storms, fog, wind, or calming such weather. A druid or powerful sorcerer might cast Control Weather, which over ~10 minutes can change weather conditions (within natural limits for the region/season) – e.g., calling a thunderstorm on a summer day or a blizzard in winter. They can’t pinpoint things like exactly where lightning will strike, but they control the general trend (wind direction, precipitation, temperature). Non-combat uses: end a drought by bringing rain (or create a downpour to douse a widespread fire), ensure safe passage for a ship by invoking a favorable wind and clear skies, or conversely, cover a retreat with heavy fog or a sudden snowstorm. Weather control can prevent natural disasters (calm a hurricane) or unfortunately cause them (though causing would often be combative or at least hostile to someone). It’s a wide-area, strategic ability rather than tactical."
+                  - button [ref=e1209] [cursor=pointer]:
+                    - generic [ref=e1210]:
+                      - generic [ref=e1211]: Plant Control (Nature’s Grasp)
+                      - generic [ref=e1212]:
+                        - generic [ref=e1213]: water
+                        - generic [ref=e1214]: general
+                    - generic [ref=e1215]: The ability to stimulate and direct plant growth or communicate with plant life. A druid or ranger with this power might cause vines and roots to entangle foes or obstacles – for instance, the Entangle spell causes weeds and vines to sprout from the ground and restrain creatures in an area. In a utility sense, this can be used to bind a wild animal harmlessly or create a barrier of thorny bushes to keep intruders out (without harming them, just making a literal thorn fence). Plant control also means you can encourage crops to grow faster or healthier, restore barren land to fertility, or get trees to move or part – imagine commanding a dense forest to open a pathway for your group (and then closing behind to thwart followers). Some plant masters can cause flowers to bloom instantly (handy for camouflaging an area or just beautification) or even animate a tree to walk (though that blurs into combat if used aggressively). They could also commune with plants – e.g., ask a tree if anyone passed by (like how trampled it felt), essentially Speak with Plants.
+                  - button [ref=e1216] [cursor=pointer]:
+                    - generic [ref=e1217]:
+                      - generic [ref=e1218]: Animal Empathy & Taming
+                      - generic [ref=e1219]:
+                        - generic [ref=e1220]: water
+                        - generic [ref=e1221]: general
+                    - generic [ref=e1222]: "The knack (magical or mundane) to calm animals, communicate basic intent, and even befriend or tame them. A character with this ability might use body language, treats, and a touch of magic to turn a snarling beast into a friend. For example, a ranger’s Speak with Animals or a Forest Gnome’s trait allows them to convey simple ideas to small beasts – you could ask local birds if danger is nearby, or tell a squirrel to fetch a key dropped through a grate. Animal empathy also lets you ride or utilize animals without training – e.g., approach a wild horse and have it accept you as a rider to get away from pursuers, or convince a guard dog that you’re not an intruder. It’s largely non-combat because it avoids fights with animals and can even turn animals into allies (though you could command an animal to fight, usually fantasy protagonists use this to avoid needless harm). Also, through animals, you can accomplish tasks: an eagle to deliver a message (natural messenger), a hound to track a missing child, or dolphins to guide your boat."
+                  - button [ref=e1223] [cursor=pointer]:
+                    - generic [ref=e1224]:
+                      - generic [ref=e1225]: Light & Darkness Manipulation
+                      - generic [ref=e1226]:
+                        - generic [ref=e1227]: nature
+                        - generic [ref=e1228]: general
+                    - generic [ref=e1229]: "The power to create, shape, or eliminate light and shadows. On the light side, a mage could conjure globes of light (Dancing Lights, Daylight spells) to illuminate a dark cavern or to banish magical darkness. They might also concentrate light into a beam (like a flashlight or a focused laser for precision cutting, though high-intensity light can burn). On the darkness side, a caster could summon magical darkness that normal light can’t illuminate – Darkness spell creates a 15-foot radius of pitch black that even torches can’t penetrate, useful for escaping pursuers or blinding enemy sentries (while you might have special vision or a way to see). Non-combat uses: Light manipulation can be used for signaling (flash a Morse code with magical lights), for art (light shows), or to help growth of plants (extend daylight in a greenhouse). Darkness manipulation could cool down an area by blocking sunlight or preserve privacy by covering an area in shadow (could be suspicious though!). It’s also useful against certain monsters (many undead or nocturnal creatures are weakened by sunlight – a light mage could simulate daylight to make a vampire uncomfortable without direct confrontation, for instance)."
+                  - button [ref=e1230] [cursor=pointer]:
+                    - generic [ref=e1231]:
+                      - generic [ref=e1232]: Haste (Speed Acceleration)
+                      - generic [ref=e1233]:
+                        - generic [ref=e1234]: arcane
+                        - generic [ref=e1235]: general
+                    - generic [ref=e1236]: "A buff that greatly increases a target’s speed and reaction time for a short period. Under Haste, a person can move and act much faster than normal – in D&D, the spell doubles the target’s movement speed, improves their reflexes (bonus to AC and advantage on Dexterity saves), and even grants an extra action each turn for things like an extra attack or dash. Non-combat benefits are significant: a hasted individual can run long distances quickly, possibly outrunning vehicles or covering a day’s travel in a few hours. They could complete tasks in a fraction of the time – useful for emergency repairs or quickly searching an area that’s about to collapse. The buff usually comes with a drawback: after haste ends, the target often experiences a moment of fatigue or “time lag” (in D&D, they can’t move or act for a round as lethargy hits). Still, Haste is one of the most valued buffs because it multiplicatively enhances productivity and combat prowess."
+                  - button "Might of the Ox (Strength Enhancement) arcane general A buff that significantly increases physical strength. Whether through a spell like Bull’s Strength (from the classic Enhance Ability suite) or a potion of giant strength, the affected character becomes far stronger than normal – able to lift and carry much more and hit much harder. In D&D’s Enhance Ability, Bull’s Strength gives advantage on Strength checks and doubles carrying capacity. In practical terms outside combat, this means a person can move heavy obstacles (boulders, portcullises) solo, bend iron bars, or hold up a collapsing roof long enough for others to escape. It’s essentially granting the strength of a creature like an ox or giant to a normal person. This buff often has dramatic but non-lethal uses, like performing superhuman feats of construction or rescue." [ref=e1237] [cursor=pointer]:
+                    - generic [ref=e1238]:
+                      - generic [ref=e1239]: Might of the Ox (Strength Enhancement)
+                      - generic [ref=e1240]:
+                        - generic [ref=e1241]: arcane
+                        - generic [ref=e1242]: general
+                    - generic [ref=e1243]: A buff that significantly increases physical strength. Whether through a spell like Bull’s Strength (from the classic Enhance Ability suite) or a potion of giant strength, the affected character becomes far stronger than normal – able to lift and carry much more and hit much harder. In D&D’s Enhance Ability, Bull’s Strength gives advantage on Strength checks and doubles carrying capacity. In practical terms outside combat, this means a person can move heavy obstacles (boulders, portcullises) solo, bend iron bars, or hold up a collapsing roof long enough for others to escape. It’s essentially granting the strength of a creature like an ox or giant to a normal person. This buff often has dramatic but non-lethal uses, like performing superhuman feats of construction or rescue.
+                  - button [ref=e1244] [cursor=pointer]:
+                    - generic [ref=e1245]:
+                      - generic [ref=e1246]: Endurance (Bear’s Endurance)
+                      - generic [ref=e1247]:
+                        - generic [ref=e1248]: nature
+                        - generic [ref=e1249]: general
+                    - generic [ref=e1250]: A buff that boosts constitution, stamina, and vitality, allowing someone to withstand hardship, poison, or fatigue much better. In D&D’s Enhance Ability, Bear’s Endurance grants advantage on Constitution checks and also gives some temporary hit points (making the person tougher to hurt). With this, a character can hold their breath longer, survive in extreme temperatures, resist disease or toxin effects better, and generally keep going without rest longer than normal. Non-combat, this could be used to, say, outrun a pursuer over a long distance (the buffed person won’t tire as quickly), survive a night in a freezing blizzard until rescue, or drink a cup of poison without succumbing (handy for diplomacy in fiction when forced into a “prove you’re not poisoning me by drinking it too” scenario). It also helps with things like rowing a boat for hours, digging someone out of a cave-in while dust chokes the air, or enduring the G-forces of a wild teleport or flight.
+                  - button [ref=e1251] [cursor=pointer]:
+                    - generic [ref=e1252]:
+                      - generic [ref=e1253]: Bless (Divine Favor)
+                      - generic [ref=e1254]:
+                        - generic [ref=e1255]: nature
+                        - generic [ref=e1256]: general
+                    - generic [ref=e1257]: A holy (or positive) aura that improves allies’ morale and accuracy. The Bless spell affects multiple allies, giving them a small bonus on attack rolls and saving throws (in D&D, each blessed ally can add +1d4 to every attack roll or save they make for the duration). Though described in combat terms, narratively it’s like granting courage, focus and a bit of luck. Outside of direct combat, this could help with things like overcoming fear effects, breaking enchantments (via improved saves), or succeeding at crucial tasks – e.g., a blessed ally might be more likely to not slip while climbing a cliff or to endure the pain while disarming a magical trap (since saving throws vs. environmental hazards are improved). It’s essentially a general boost to performance under pressure. In social or other challenges, one might stretch it to mean the person feels confident and optimistic, which could indirectly aid charisma checks (though not by raw rules, but a DM might allow that flavor).
+                  - button [ref=e1258] [cursor=pointer]:
+                    - generic [ref=e1259]:
+                      - generic [ref=e1260]: Inspiration (Bardic or Leadership Inspiration)
+                      - generic [ref=e1261]:
+                        - generic [ref=e1262]: arcane
+                        - generic [ref=e1263]: general
+                    - generic [ref=e1264]: "The act of bolstering an ally’s resolve, skill, or fighting spirit through words, music, or example. A Bard’s Inspiration typically lets them give a creature a special die (e.g., a d6) that the creature can roll later to add to any ability check, attack, or save. Outside of bards, a commander-type character might have a “rallying cry” that grants temporary HP or morale bonuses to allies. The key aspect: this is a targeted buff that represents confidence or clarity imparted to the ally. In non-combat scenarios, this could be used to help someone over a mental hurdle (like “You can do this!” – granting inspiration to an ally trying to pick a lock or recall lore under pressure). In tense social scenarios, a subtle bardic tune might give the party face the extra boost to not falter in negotiations. In combat (though we’re focusing on non-combat uses), it’s like giving someone the courage to land a decisive blow."
+                  - button [ref=e1265] [cursor=pointer]:
+                    - generic [ref=e1266]:
+                      - generic [ref=e1267]: Flight (Flying/Levitation Buff)
+                      - generic [ref=e1268]:
+                        - generic [ref=e1269]: water
+                        - generic [ref=e1270]: general
+                    - generic [ref=e1271]: "Granting the power of flight or levitation to someone who normally can’t. The Fly spell, for example, allows a person to fly at a good speed for several minutes. This is a huge buff in terms of mobility – it can turn a ground-bound character into an aerial one. Non-combat uses: bypassing obstacles (why fight through guards at a gate when you can fly over the wall at night), reaching high places (rescuing someone from a cliff or tall tree), quickly crossing rivers or dangerous terrain (lava, traps, etc.) without triggering them, and even dramatic entries/exits (flying in to deliver important treaty documents). Levitation, a more limited variant, might only allow up/down movement, but that could still get someone out of a pit or help with repairing a ceiling. Flying an ally also means you can evacuate wounded people or children from a disaster area easily."
+                  - button [ref=e1272] [cursor=pointer]:
+                    - generic [ref=e1273]:
+                      - generic [ref=e1274]: Elemental Resistance (Protect from Energy)
+                      - generic [ref=e1275]:
+                        - generic [ref=e1276]: fire
+                        - generic [ref=e1277]: general
+                    - generic [ref=e1278]: "A buff that protects against a specific type of elemental or magical damage – common types are fire, cold, lightning, acid, or thunder. Protection from Energy (in D&D) gives the target resistance to one chosen damage type, meaning they take only half damage from that source. In-world, that could be like a magical aura that wards off flame (your clothes might smolder but not ignite, your skin is soot-smeared but not burnt). Non-combat, this is hugely useful: walk through a burning building to save someone (fire resist), survive a fall into an icy lake and not die of hypothermia (cold resist), work safely in a lightning-charged environment like around experimental apparatus or during a storm on a ship’s mast (lightning resist), explore a volatile alchemy lab or dragon’s lair with acid puddles (acid resist). It can also protect against environmental extremes (heat of a desert – fire resistance helps; extreme cold of a mountaintop – cold resistance helps). Essentially it mitigates natural hazards that would otherwise require lengthy planning or magic to avoid."
+                  - button [ref=e1279] [cursor=pointer]:
+                    - generic [ref=e1280]:
+                      - generic [ref=e1281]: Regeneration (Rapid Healing)
+                      - generic [ref=e1282]:
+                        - generic [ref=e1283]: water
+                        - generic [ref=e1284]: general
+                    - generic [ref=e1285]: "A buff or effect that causes wounds to heal very rapidly over time. For example, the Regenerate spell in D&D gives a creature fast healing (regaining hit points every round) and even regrows lost body parts over minutes. While often thought of in combat (continuous healing each round), out of combat it’s like having superhuman recovery – one could survive grievous injuries that would normally require weeks of rest in just an hour. Lost a finger in an industrial accident This magic grows it back in 2 minutes. This ability means you can undertake dangerous tasks with less risk: climb that razor-wire fence – your cuts will seal up moments later; drink tainted water – your body shrugs it off and repairs itself; endure an ordeal like a ritual scarring or a venom coursing through you, knowing you’ll heal right after. It also massively helps after a conflict: the party can be back at full health (and even limbs restored) without needing expensive potions or long bed-rest, allowing them to press on with their mission (thus avoiding attrition-based encounters)."
+                  - button [ref=e1286] [cursor=pointer]:
+                    - generic [ref=e1287]:
+                      - generic [ref=e1288]: Healing (Lay on Hands / Cure Wounds)
+                      - generic [ref=e1289]:
+                        - generic [ref=e1290]: fire
+                        - generic [ref=e1291]: general
+                    - generic [ref=e1292]: "The straightforward magical ability to restore health and cure ailments in others. Healing spells like Cure Wounds knit flesh and close wounds instantly, while abilities like a Paladin’s Lay on Hands can remove poison or disease and heal a set amount of HP by touch. This is arguably the most important non-combat support, because it undoes the effects of violence or accidents. With a competent healer, the group can attempt more diplomatic or risky solutions knowing if it backfires into a scuffle, the healer can quickly patch people up, keeping the situation from escalating (maybe you step between a panicked civilian and a guard and take a stab wound – healing yourself quickly can show goodwill and prevent further fighting). Healing magic also saves lives on a broader scale: after a battle or disaster, a healer can treat the injured, which can end cycles of vengeance or sorrow that might lead to further conflicts. Lay on Hands, specifically, not only heals but can neutralize a poison – e.g., if an ally is bitten by a venomous creature during exploration, a paladin can purge that toxin, preventing a deadly encounter with the ticking clock of poison."
+                  - button [ref=e1293] [cursor=pointer]:
+                    - generic [ref=e1294]:
+                      - generic [ref=e1295]: Slow (Time Dilation Curse)
+                      - generic [ref=e1296]:
+                        - generic [ref=e1297]: dark
+                        - generic [ref=e1298]: general
+                    - generic [ref=e1299]: "A spell or effect that dramatically slows down one or more targets’ movements and reactions. Affected creatures move sluggishly, as if time around them has thickened. In D&D, the Slow spell halves the targets’ speed, gives them penalties to defense, and they can barely make one action at a time. Narratively, a slowed person might perceive everything in molasses speed – their speech slurs, their attempt to swing a sword or run is in ultra slow-mo. As a non-combat tactic, Slow is brilliant for crowd control: e.g., if a mob of people is panicking or rioting, a well-placed Slow can literally chill them out (hard to riot when you can barely walk). Or if a guard spots you, you can slow them and casually walk away while they futilely try to chase. Slow doesn’t harm directly, which makes it a less aggressive option for dealing with foes: you aren’t hurting them, just temporarily neutralizing them. It also could be used to safely handle dangerous creatures – e.g., slow a hostile animal and back off rather than having to injure it."
+                  - button [ref=e1300] [cursor=pointer]:
+                    - generic [ref=e1301]:
+                      - generic [ref=e1302]: Weakness (Enfeeblement)
+                      - generic [ref=e1303]:
+                        - generic [ref=e1304]: water
+                        - generic [ref=e1305]: general
+                    - generic [ref=e1306]: "A curse or effect that saps the physical strength or effectiveness of a target. An example is Ray of Enfeeblement, a spell that causes a creature’s strength-based attacks to do half damage – essentially their blows land with far less force because their muscles weaken. Another example: a potion of weakness in Skyrim makes an enemy take more damage or deal less damage. Non-combat wise, you could use this to subdue a strong opponent without injuring them – e.g., enfeeble a raging barbarian so that when they hit, it’s like a child hitting, allowing you to restrain or talk sense into them. It’s also handy for labor situations: prevent a hostile giant from lifting a boulder to throw it by zapping them with weakness so they drop it. If someone is using strength to break something (door, chains), enfeeble them to delay or prevent it. It is a targeted debuff that doesn’t immobilize, but significantly reduces physical threat."
+                  - button [ref=e1307] [cursor=pointer]:
+                    - generic [ref=e1308]:
+                      - generic [ref=e1309]: Curse of Clumsiness (Bane or Hex)
+                      - generic [ref=e1310]:
+                        - generic [ref=e1311]: fire
+                        - generic [ref=e1312]: general
+                    - generic [ref=e1313]: "A general jinx that makes a target less effective at everything – the opposite of a Bless. The Bane spell, for instance, forces targets to subtract a d4 from their attack rolls and saving throws, representing misfortune or lack of confidence. A Hex spell (from warlocks) might impose disadvantage on a certain ability checks for the target (say, everything involving Strength or Dexterity), making them clumsier or less adept. These debuffs in practice might mean the person fumbles more often – their sword swings veer off-course, their footing slips at the wrong time, etc. In a non-combat context, making someone clumsy or unlucky can defuse a situation humorously or safely: e.g., a cursed bandit trying to show off with their pistol will misfire and perhaps decide it’s not worth continuing; or a guard reaching for an alarm lever might break it accidentally if hexed. It’s a way to sabotage hostile actions indirectly."
+                  - button [ref=e1314] [cursor=pointer]:
+                    - generic [ref=e1315]:
+                      - generic [ref=e1316]: Silence (Mute Field)
+                      - generic [ref=e1317]:
+                        - generic [ref=e1318]: lightning
+                        - generic [ref=e1319]: general
+                    - generic [ref=e1320]: "An ability that eliminates sound in a certain area or on a target. The Silence spell creates a bubble (usually 20-foot radius) where no sound can be made – people inside can’t speak or shout, and those outside can’t hear anything from inside. This is immensely useful to thwart communication: a cult leader trying to chant a spell – silenced, no magic comes; guards trying to ring an alarm bell – no sound; two patrols trying to coordinate – cut off. It’s also useful to protect others from a dangerous noise (like a banshee’s wail or a thunderous explosion) by casting silence around the source. In diplomacy or trickery, casting silence on yourself or an ally can let you move utterly noiselessly (no clanking armor) or have a private conversation among a group in a crowded room (no one hears you). Offensively, it stops spellcasters from using spells with verbal components, which can avoid a fight by disabling an aggressive mage without hurting them."
+                  - 'button "Blindness (Blinding Curse) dark general A debuff that takes away a target’s sight, either temporarily or until cured. Blindness/Deafness spell can blind a foe for a while if they fail a save. A blind enemy is severely handicapped – in combat, their attacks likely miss, and they can’t easily target spells. As a non-lethal way to neutralize someone, blinding is effective: a blinded guard can’t shoot what he can’t see; a blinded monster might panic or lash out wildly while you lead civilians away. It can be used tactically to avoid killing – e.g., rather than slay the vicious guard beasts, just blind them and slip past. It’s also useful for stopping a fleeing suspect in a city without harming them – they literally can’t navigate and might stumble into a wall, where you can catch them." [ref=e1321] [cursor=pointer]':
+                    - generic [ref=e1322]:
+                      - generic [ref=e1323]: Blindness (Blinding Curse)
+                      - generic [ref=e1324]:
+                        - generic [ref=e1325]: dark
+                        - generic [ref=e1326]: general
+                    - generic [ref=e1327]: "A debuff that takes away a target’s sight, either temporarily or until cured. Blindness/Deafness spell can blind a foe for a while if they fail a save. A blind enemy is severely handicapped – in combat, their attacks likely miss, and they can’t easily target spells. As a non-lethal way to neutralize someone, blinding is effective: a blinded guard can’t shoot what he can’t see; a blinded monster might panic or lash out wildly while you lead civilians away. It can be used tactically to avoid killing – e.g., rather than slay the vicious guard beasts, just blind them and slip past. It’s also useful for stopping a fleeing suspect in a city without harming them – they literally can’t navigate and might stumble into a wall, where you can catch them."
+                  - 'button "Sleep (Magical Slumber) arcane general Causing targets to fall asleep suddenly. The Sleep spell can knock out a group of low-HP creatures for about a minute or until they’re woken. This is a classic non-combat finisher: put the guards to sleep, then quietly move past them; or put a rampaging creature to sleep so you can relocate it or escape. Asleep enemies can later be tied up or disarmed so that when they wake, a fight is avoidable (“Don’t bother struggling, you’re surrounded”). Sleep is indiscriminate in some versions (affecting whoever has the lowest HP first), so one must be careful around allies. But it’s generally kind – it’s not harming, just pacifying." [ref=e1328] [cursor=pointer]':
+                    - generic [ref=e1329]:
+                      - generic [ref=e1330]: Sleep (Magical Slumber)
+                      - generic [ref=e1331]:
+                        - generic [ref=e1332]: arcane
+                        - generic [ref=e1333]: general
+                    - generic [ref=e1334]: "Causing targets to fall asleep suddenly. The Sleep spell can knock out a group of low-HP creatures for about a minute or until they’re woken. This is a classic non-combat finisher: put the guards to sleep, then quietly move past them; or put a rampaging creature to sleep so you can relocate it or escape. Asleep enemies can later be tied up or disarmed so that when they wake, a fight is avoidable (“Don’t bother struggling, you’re surrounded”). Sleep is indiscriminate in some versions (affecting whoever has the lowest HP first), so one must be careful around allies. But it’s generally kind – it’s not harming, just pacifying."
+                  - button "Paralysis (Hold Person/Monster) arcane general A strong debuff that freezes the target in place, unable to move or speak. Hold Person paralyzes a humanoid for up to a minute if they fail a save. A paralyzed creature can still see and hear but can’t act (and if you approach them threateningly, their fear might increase). This is akin to an extreme grapple – you’ve taken them out without harming them. It’s excellent for capturing criminals or stopping a berserker without killing them. They’re conscious and can be reasoned with (though they can’t reply until it wears off), so you could, e.g., hold someone, then tell their allies “We have your leader at our mercy; let’s talk terms,” potentially ending a conflict. Or hold an assassin mid-stab, then disarm them. It’s a humane way to neutralize dangerous targets." [ref=e1335] [cursor=pointer]:
+                    - generic [ref=e1336]:
+                      - generic [ref=e1337]: Paralysis (Hold Person/Monster)
+                      - generic [ref=e1338]:
+                        - generic [ref=e1339]: arcane
+                        - generic [ref=e1340]: general
+                    - generic [ref=e1341]: A strong debuff that freezes the target in place, unable to move or speak. Hold Person paralyzes a humanoid for up to a minute if they fail a save. A paralyzed creature can still see and hear but can’t act (and if you approach them threateningly, their fear might increase). This is akin to an extreme grapple – you’ve taken them out without harming them. It’s excellent for capturing criminals or stopping a berserker without killing them. They’re conscious and can be reasoned with (though they can’t reply until it wears off), so you could, e.g., hold someone, then tell their allies “We have your leader at our mercy; let’s talk terms,” potentially ending a conflict. Or hold an assassin mid-stab, then disarm them. It’s a humane way to neutralize dangerous targets.
+                  - button [ref=e1342] [cursor=pointer]:
+                    - generic [ref=e1343]:
+                      - generic [ref=e1344]: Petrification (Turn to Stone)
+                      - generic [ref=e1345]:
+                        - generic [ref=e1346]: dark
+                        - generic [ref=e1347]: general
+                    - generic [ref=e1348]: "A more severe debuff that turns the target into stone (or another inanimate substance), effectively removing them from action entirely. While usually petrification is seen as a monster ability (like a Medusa’s gaze) or a curse (via high-level magic), a creative hero might have access to a temporary petrify (there are spells like Flesh to Stone). Non-lethally, this is an ultimate hold: the victim is in suspended animation, stone form – they won’t age or feel anything. This could be used to stop someone who cannot be reasoned with without killing them. For instance, an evil sorcerer about to unleash a world-ending spell – turn them to stone mid-cast; now you can safely store that statue in a vault indefinitely (hopefully no one breaks it). Or if a giant monster is rampaging, petrify it – instant statue (perhaps later to be de-petrified and relocated to a safer plane). The downside is, if not reversed, petrification is effectively permanent imprisonment, so ethically it’s heavy – but in lieu of execution, it’s an alternative punishment."
+                  - button "Poison & Sickness (Non-lethal Toxins) nature general Using poisons or magical sicknesses to debilitate rather than kill. For example, a blowdart with a tranquilizer poison that makes a target groggy or knocks them out – this is a classic non-combat takedown (used often by drow with their sleep poison). Or a Ray of Sickness spell that makes someone physically ill (disadvantage on attacks, possibly vomiting) without directly killing them. Applying a weak paralysis toxin from a plant to an enemy’s drink might cause them to collapse gently rather than leading to a brawl. The advantage of these is subtlety – often it doesn’t even seem like an attack; the person just falls ill. This can completely avoid a confrontation if, say, you slip a mickey finn to an aggressive drunk at the bar, he passes out, and the fight never occurs." [ref=e1349] [cursor=pointer]:
+                    - generic [ref=e1350]:
+                      - generic [ref=e1351]: Poison & Sickness (Non-lethal Toxins)
+                      - generic [ref=e1352]:
+                        - generic [ref=e1353]: nature
+                        - generic [ref=e1354]: general
+                    - generic [ref=e1355]: Using poisons or magical sicknesses to debilitate rather than kill. For example, a blowdart with a tranquilizer poison that makes a target groggy or knocks them out – this is a classic non-combat takedown (used often by drow with their sleep poison). Or a Ray of Sickness spell that makes someone physically ill (disadvantage on attacks, possibly vomiting) without directly killing them. Applying a weak paralysis toxin from a plant to an enemy’s drink might cause them to collapse gently rather than leading to a brawl. The advantage of these is subtlety – often it doesn’t even seem like an attack; the person just falls ill. This can completely avoid a confrontation if, say, you slip a mickey finn to an aggressive drunk at the bar, he passes out, and the fight never occurs.
+                  - button [ref=e1356] [cursor=pointer]:
+                    - generic [ref=e1357]:
+                      - generic [ref=e1358]: Magical Shield (Barrier Spell)
+                      - generic [ref=e1359]:
+                        - generic [ref=e1360]: arcane
+                        - generic [ref=e1361]: general
+                    - generic [ref=e1362]: "Conjuring a protective barrier of force or energy to block attacks. The classic Shield spell, for instance, creates an invisible force that intercepts an incoming blow or arrow – in D&D it gives +5 AC for an instant, often causing an attack to miss. Other examples: Shield of Faith (a luminous aura that makes it harder to hit an ally), or a wizard casting a Wall of Force to completely stop movement through an area. These abilities protect without necessarily harming the attacker – they just negate the effect of the attack. For instance, if bandits shoot arrows at you, popping a magical shield can cause the arrows to bounce off harmlessly, potentially startling the bandits into reconsidering (“These folks are immune to our arrows!”). A well-timed barrier can also protect bystanders from harm (like an explosion or falling debris), preventing collateral damage and thus preventing escalation of a situation."
+                  - button [ref=e1363] [cursor=pointer]:
+                    - generic [ref=e1364]:
+                      - generic [ref=e1365]: Deflect & Redirect (Projectile Defense)
+                      - generic [ref=e1366]:
+                        - generic [ref=e1367]: fire
+                        - generic [ref=e1368]: general
+                    - generic [ref=e1369]: "The skill or magic to deflect incoming attacks – like arrows, bolts, or even spells – and send them off-course or back at the sender. A monk’s Deflect Missiles ability in D&D lets them catch an arrow and even throw it back. Similarly, some spells like Warding Wind can push away projectiles, or Rebuke type abilities reflect damage. Non-combat, this can protect people without necessarily harming the attacker: e.g., bandits fire arrows at villagers, and the hero waves a hand causing all arrows to veer into the ground. The bandits might take that as a sign that continuing is pointless or that the villagers are protected by powerful forces, possibly ending the raid. If using literal reflection (like a magic mirror shield that bounces a spell back), it could deter the caster from further violence (“I’d only be hurting myself…”). Deflection can also save someone from environmental hazards – say, deflect falling rocks or a collapsing roof to the side to protect those underneath."
+                  - button [ref=e1370] [cursor=pointer]:
+                    - generic [ref=e1371]:
+                      - generic [ref=e1372]: Stoneskin (Damage Resistance)
+                      - generic [ref=e1373]:
+                        - generic [ref=e1374]: arcane
+                        - generic [ref=e1375]: general
+                    - generic [ref=e1376]: A protective buff that hardens the recipient’s body (skin like stone or bark) to reduce physical harm. The Stoneskin spell in D&D, for example, gives resistance to non-magical bludgeoning, piercing, and slashing damage (half damage from those) for a time. In effect, weapons have trouble cutting or bruising the target. This is defensive – it doesn’t stop attacks from happening, but it significantly blunts their effect. In a scenario, if bandits strike you and you barely flinch because your skin is hardened, that can sow fear or at least frustration (“Our blades do nothing!”), which may lead them to flee or negotiate. It’s a way to let an enemy tire themselves out on you while you try to talk sense into them or wait for reinforcements, etc. Non-combat wise, a stoneskin person can do risky tasks like walk through thornbushes or debris fields to rescue someone without getting cut up.
+                  - button [ref=e1377] [cursor=pointer]:
+                    - generic [ref=e1378]:
+                      - generic [ref=e1379]: Sanctuary (Protective Ward)
+                      - generic [ref=e1380]:
+                        - generic [ref=e1381]: holy
+                        - generic [ref=e1382]: general
+                    - generic [ref=e1383]: "A holy or magical ward that prevents enemies from directly attacking the warded person unless they resist the effect. In D&D, Sanctuary makes anyone who tries to attack the sanctified target make a Wisdom save; fail and they must choose a new target or waste the attack. It’s basically a “do no harm” aura – you can’t bring yourself to hit this peaceful-looking individual. This is the ultimate defensive stance for pacifists: cast Sanctuary on yourself (or the diplomat, or the medic) and you can walk through a battlefield largely untouched – if someone attempts to strike, the magic stays their hand (unless they’re very strong-willed). It immediately de-escalates one-sided aggression: for example, a brash youth tries to stab the wise old priest, but Sanctuary causes the youth’s strike to falter, then perhaps guilt takes over as the priest does not retaliate – a narrative outcome, but plausible. Mechanically, it forces enemies to either pick a different target (hopefully one that can handle it or also has sanctuary) or do nothing. It ends if the sanctuaried person attacks, which enforces a non-violent behavior – perfect for, say, humanitarian workers in a warzone or a negotiator walking into an angry mob."
+                  - button "Antimagic Field (Magic Nullification) arcane general A powerful defensive sphere that suppresses all magic within it. In an antimagic field, spells don’t function, summoned creatures wink out, and magical attacks or buffs are inert. This is defensive in the sense that it protects against magical harm absolutely (while also canceling your own magical advantages). It’s the “guns off” switch for a wizard duel, making it so conflict must either halt or proceed with mundane means. If you have antimagic and the opponent is heavily reliant on magic, they likely can’t or won’t fight you, leading to a standoff or negotiation. It can also protect against magical disasters – e.g., an active portal spewing demons can be shut down temporarily by antimagic, stopping a chaotic battle while you arrange a more permanent solution." [ref=e1384] [cursor=pointer]:
+                    - generic [ref=e1385]:
+                      - generic [ref=e1386]: Antimagic Field (Magic Nullification)
+                      - generic [ref=e1387]:
+                        - generic [ref=e1388]: arcane
+                        - generic [ref=e1389]: general
+                    - generic [ref=e1390]: A powerful defensive sphere that suppresses all magic within it. In an antimagic field, spells don’t function, summoned creatures wink out, and magical attacks or buffs are inert. This is defensive in the sense that it protects against magical harm absolutely (while also canceling your own magical advantages). It’s the “guns off” switch for a wizard duel, making it so conflict must either halt or proceed with mundane means. If you have antimagic and the opponent is heavily reliant on magic, they likely can’t or won’t fight you, leading to a standoff or negotiation. It can also protect against magical disasters – e.g., an active portal spewing demons can be shut down temporarily by antimagic, stopping a chaotic battle while you arrange a more permanent solution.
+                  - button [ref=e1391] [cursor=pointer]:
+                    - generic [ref=e1392]:
+                      - generic [ref=e1393]: Aura of Protection (Aura of Courage/Warding)
+                      - generic [ref=e1394]:
+                        - generic [ref=e1395]: arcane
+                        - generic [ref=e1396]: general
+                    - generic [ref=e1397]: A passive defensive aura that grants protective benefits to all allies nearby. For instance, a Paladin’s Aura of Protection adds the paladin’s Charisma bonus to all saving throws of allies within 10 feet, helping them resist spells and hazards. There’s also Aura of Courage (allies become immune to fear). Essentially, the presence of the character bolsters everyone’s defenses or resolve. This means in a dangerous situation, your group (or civilians you’re shielding) are much safer – they might shake off a mind control attempt or endure a dragon’s breath together when normally some would fall. It’s defensive because it mitigates harmful effects preemptively. In conflict avoidance, seeing a tightly knit group stand fearless (because an Aura of Courage prevents panic) might make an enemy second-guess trying scare tactics or divide-and-conquer. Protective auras can also be tailored – e.g., an Aura of Warding might give resistance to spell damage to allies. This dramatically reduces casualties in a fight and could shorten the fight when the enemy realizes their big spells aren’t having the expected impact.
+                  - 'button "Teleportation (Instant Travel) arcane general The ability to instantly transport oneself or others across space. Special about teleportation is how it can avoid conflicts by bypassing them entirely. Got a castle full of guards between you and the princess Teleport directly to the princess’s tower, grab her, and teleport out – zero swordfights needed. Even small “blink” teleports (short-range) can get you past an enemy line or out of a trap. In non-combat emergency, teleportation shines: a town is besieged – teleport the villagers to safety outside the blockade, negating the battle. Or if negotiations break down and violence starts, teleportation can extract your team to prevent further bloodshed." [ref=e1398] [cursor=pointer]':
+                    - generic [ref=e1399]:
+                      - generic [ref=e1400]: Teleportation (Instant Travel)
+                      - generic [ref=e1401]:
+                        - generic [ref=e1402]: arcane
+                        - generic [ref=e1403]: general
+                    - generic [ref=e1404]: "The ability to instantly transport oneself or others across space. Special about teleportation is how it can avoid conflicts by bypassing them entirely. Got a castle full of guards between you and the princess Teleport directly to the princess’s tower, grab her, and teleport out – zero swordfights needed. Even small “blink” teleports (short-range) can get you past an enemy line or out of a trap. In non-combat emergency, teleportation shines: a town is besieged – teleport the villagers to safety outside the blockade, negating the battle. Or if negotiations break down and violence starts, teleportation can extract your team to prevent further bloodshed."
+                  - button [ref=e1405] [cursor=pointer]:
+                    - generic [ref=e1406]:
+                      - generic [ref=e1407]: Time Manipulation (Temporal Control)
+                      - generic [ref=e1408]:
+                        - generic [ref=e1409]: fire
+                        - generic [ref=e1410]: general
+                    - generic [ref=e1411]: "Rare abilities to pause, slow, or rewind time for everyone or specific events. Time Stop literally freezes time for everyone except the caster for a few seconds. In that time, you could, say, walk out of a dangerous situation or reposition everyone’s weapons out of their hands. It’s essentially a super-buffer or reset button. Alternatively, a limited rewind ability could undo a round of combat – say an ally got hurt or killed, you rewind to before that happened and choose a different action (preventing the fight from turning deadly). Time manipulation is special since it can prevent outcomes that have already started to occur. Example: bandits spring an ambush and fire crossbows, you freeze time, move all the bolts aside (or mark their trajectories) and unfreeze – their volley misses completely, maybe scaring them (divine intervention vibe) and avoiding the fight. Or an argument leading to a duel – you rewind a few moments and interject with wiser words to stop the duel challenge from ever being issued."
+                  - button [ref=e1412] [cursor=pointer]:
+                    - generic [ref=e1413]:
+                      - generic [ref=e1414]: Summoning (Allies & Creatures)
+                      - generic [ref=e1415]:
+                        - generic [ref=e1416]: fire
+                        - generic [ref=e1417]: general
+                    - generic [ref=e1418]: "The ability to call forth creatures or companions to aid you, which can indirectly avoid combat by intimidation of numbers or delegation. For instance, summoning a celestial or elemental to parley with an aggressive force (maybe they respect that elemental or are distracted by fighting it while you shepherd others to safety). Or summoning a horde of minor spirits around your party, making potential attackers think you have an army (and thus deterred). Summoned creatures need not kill – e.g., a summoned giant eagle could grab an enemy and just carry them far away, effectively removing them from the fight without harm. A summoned water elemental could encircle a raging fire-wielding enemy, neutralizing them. Summoning also allows outsourcing: you could summon a fey creature that is good at negotiation or riddles to solve a stand-off in a tricksy way, or have a summoned unicorn cast healing on both sides mid-battle, perhaps prompting a ceasefire out of confusion or gratitude."
+                  - button [ref=e1419] [cursor=pointer]:
+                    - generic [ref=e1420]:
+                      - generic [ref=e1421]: Divination (Foresight & Scrying)
+                      - generic [ref=e1422]:
+                        - generic [ref=e1423]: arcane
+                        - generic [ref=e1424]: general
+                    - generic [ref=e1425]: "Powers of knowing things that are hidden or events before they happen. Foresight is an ultimate buff giving someone near-precognition, basically ensuring they react perfectly to danger – so a foresighted person can sidestep an assassination attempt casually (foiling conflict before it truly begins). Scrying lets you view a remote location or person. These abilities are special because they let you pre-empt conflicts: if you know the bandits are planning an ambush at dawn, you simply avoid that road or set up a negotiation at dawn instead, surprising them. Or by scrying, you locate hostages and free them stealthily, so the hostage-takers have no leverage and surrender. Divination often substitutes for confrontation: find the MacGuffin without fighting through the guards by scrying its exact spot and teleporting (combining with teleport as mentioned). Or see a vision that two armies clashing will cause mutual ruin, then use that info to convince leaders to seek peace."
+                  - button "Luck Manipulation (Bend Fate) nature general A subtle special ability to alter probability slightly in one’s favor or against someone. This could be a wild magic sorcerer’s Bend Luck feature (add or subtract a d4 to someone’s roll), a divine agent causing improbable coincidences, or a fated item that “things just tend to go right” when used. Non-combat, this might mean the crucial gate happens to be unlocked or the guard happens to slip on a banana peel – small luck nudges that prevent a fight. In social conflict, maybe the hot-headed challenger draws a lot and by sheer luck it’s the losing short straw (thus backing down per their code). In a fight, bending luck could cause the enemy’s first attacks to miss spectacularly or their gun to jam – giving them the impression that fate is not on their side, prompting retreat. It’s like a passive debuff or buff but framed as coincidence." [ref=e1426] [cursor=pointer]:
+                    - generic [ref=e1427]:
+                      - generic [ref=e1428]: Luck Manipulation (Bend Fate)
+                      - generic [ref=e1429]:
+                        - generic [ref=e1430]: nature
+                        - generic [ref=e1431]: general
+                    - generic [ref=e1432]: A subtle special ability to alter probability slightly in one’s favor or against someone. This could be a wild magic sorcerer’s Bend Luck feature (add or subtract a d4 to someone’s roll), a divine agent causing improbable coincidences, or a fated item that “things just tend to go right” when used. Non-combat, this might mean the crucial gate happens to be unlocked or the guard happens to slip on a banana peel – small luck nudges that prevent a fight. In social conflict, maybe the hot-headed challenger draws a lot and by sheer luck it’s the losing short straw (thus backing down per their code). In a fight, bending luck could cause the enemy’s first attacks to miss spectacularly or their gun to jam – giving them the impression that fate is not on their side, prompting retreat. It’s like a passive debuff or buff but framed as coincidence.
+              - generic [ref=e1433]:
+                - generic [ref=e1434]:
+                  - generic [ref=e1435]: PASSIVE SKILLS
+                  - generic [ref=e1436]: 0/6
+                - generic [ref=e1437]: Always-on enhancements that shape your passive capabilities. Select 6.
+                - generic [ref=e1438]:
+                  - button "Weapon Mastery class" [ref=e1439] [cursor=pointer]:
+                    - generic [ref=e1440]:
+                      - generic [ref=e1441]: Weapon Mastery
+                      - generic [ref=e1443]: class
+                  - button "Armor Specialization class" [ref=e1444] [cursor=pointer]:
+                    - generic [ref=e1445]:
+                      - generic [ref=e1446]: Armor Specialization
+                      - generic [ref=e1448]: class
+                  - button "Critical Block class" [ref=e1449] [cursor=pointer]:
+                    - generic [ref=e1450]:
+                      - generic [ref=e1451]: Critical Block
+                      - generic [ref=e1453]: class
+                  - button "Deep Wounds class" [ref=e1454] [cursor=pointer]:
+                    - generic [ref=e1455]:
+                      - generic [ref=e1456]: Deep Wounds
+                      - generic [ref=e1458]: class
+                  - button "Blood and Thunder class" [ref=e1459] [cursor=pointer]:
+                    - generic [ref=e1460]:
+                      - generic [ref=e1461]: Blood and Thunder
+                      - generic [ref=e1463]: class
+                  - button "Taste for Blood class" [ref=e1464] [cursor=pointer]:
+                    - generic [ref=e1465]:
+                      - generic [ref=e1466]: Taste for Blood
+                      - generic [ref=e1468]: class
+                  - button "Wrecking Ball class" [ref=e1469] [cursor=pointer]:
+                    - generic [ref=e1470]:
+                      - generic [ref=e1471]: Wrecking Ball
+                      - generic [ref=e1473]: class
+                  - button "Die by the Sword class" [ref=e1474] [cursor=pointer]:
+                    - generic [ref=e1475]:
+                      - generic [ref=e1476]: Die by the Sword
+                      - generic [ref=e1478]: class
+                  - button "Second Wind class" [ref=e1479] [cursor=pointer]:
+                    - generic [ref=e1480]:
+                      - generic [ref=e1481]: Second Wind
+                      - generic [ref=e1483]: class
+                  - button "Enrage class" [ref=e1484] [cursor=pointer]:
+                    - generic [ref=e1485]:
+                      - generic [ref=e1486]: Enrage
+                      - generic [ref=e1488]: class
+                  - button "Blood Craze class" [ref=e1489] [cursor=pointer]:
+                    - generic [ref=e1490]:
+                      - generic [ref=e1491]: Blood Craze
+                      - generic [ref=e1493]: class
+                  - button "Impending Victory class" [ref=e1494] [cursor=pointer]:
+                    - generic [ref=e1495]:
+                      - generic [ref=e1496]: Impending Victory
+                      - generic [ref=e1498]: class
+                  - button "Double Time class" [ref=e1499] [cursor=pointer]:
+                    - generic [ref=e1500]:
+                      - generic [ref=e1501]: Double Time
+                      - generic [ref=e1503]: class
+                  - button "Piercing Howl class" [ref=e1504] [cursor=pointer]:
+                    - generic [ref=e1505]:
+                      - generic [ref=e1506]: Piercing Howl
+                      - generic [ref=e1508]: class
+                  - button "Sudden Death class" [ref=e1509] [cursor=pointer]:
+                    - generic [ref=e1510]:
+                      - generic [ref=e1511]: Sudden Death
+                      - generic [ref=e1513]: class
+                  - button "Meat Cleaver class" [ref=e1514] [cursor=pointer]:
+                    - generic [ref=e1515]:
+                      - generic [ref=e1516]: Meat Cleaver
+                      - generic [ref=e1518]: class
+                  - button "Indomitable class" [ref=e1519] [cursor=pointer]:
+                    - generic [ref=e1520]:
+                      - generic [ref=e1521]: Indomitable
+                      - generic [ref=e1523]: class
+                  - button "War Machine class" [ref=e1524] [cursor=pointer]:
+                    - generic [ref=e1525]:
+                      - generic [ref=e1526]: War Machine
+                      - generic [ref=e1528]: class
+                  - button "Furious Charge class" [ref=e1529] [cursor=pointer]:
+                    - generic [ref=e1530]:
+                      - generic [ref=e1531]: Furious Charge
+                      - generic [ref=e1533]: class
+                  - button "Endless Rage class" [ref=e1534] [cursor=pointer]:
+                    - generic [ref=e1535]:
+                      - generic [ref=e1536]: Endless Rage
+                      - generic [ref=e1538]: class
+                  - button "Seasoned Soldier class" [ref=e1539] [cursor=pointer]:
+                    - generic [ref=e1540]:
+                      - generic [ref=e1541]: Seasoned Soldier
+                      - generic [ref=e1543]: class
+                  - button "Skull Banner class" [ref=e1544] [cursor=pointer]:
+                    - generic [ref=e1545]:
+                      - generic [ref=e1546]: Skull Banner
+                      - generic [ref=e1548]: class
+                  - button "Booming Voice class" [ref=e1549] [cursor=pointer]:
+                    - generic [ref=e1550]:
+                      - generic [ref=e1551]: Booming Voice
+                      - generic [ref=e1553]: class
+                  - button "Vigilance class" [ref=e1554] [cursor=pointer]:
+                    - generic [ref=e1555]:
+                      - generic [ref=e1556]: Vigilance
+                      - generic [ref=e1558]: class
+                  - button "Shield Barrier class" [ref=e1559] [cursor=pointer]:
+                    - generic [ref=e1560]:
+                      - generic [ref=e1561]: Shield Barrier
+                      - generic [ref=e1563]: class
+                  - button "Heavy Repercussions class" [ref=e1564] [cursor=pointer]:
+                    - generic [ref=e1565]:
+                      - generic [ref=e1566]: Heavy Repercussions
+                      - generic [ref=e1568]: class
+                  - button "Sword and Board class" [ref=e1569] [cursor=pointer]:
+                    - generic [ref=e1570]:
+                      - generic [ref=e1571]: Sword and Board
+                      - generic [ref=e1573]: class
+                  - button "Hold the Line class" [ref=e1574] [cursor=pointer]:
+                    - generic [ref=e1575]:
+                      - generic [ref=e1576]: Hold the Line
+                      - generic [ref=e1578]: class
+                  - button "Bastion class" [ref=e1579] [cursor=pointer]:
+                    - generic [ref=e1580]:
+                      - generic [ref=e1581]: Bastion
+                      - generic [ref=e1583]: class
+                  - button "Anger Management class" [ref=e1584] [cursor=pointer]:
+                    - generic [ref=e1585]:
+                      - generic [ref=e1586]: Anger Management
+                      - generic [ref=e1588]: class
+                  - button "Battle Trance class" [ref=e1589] [cursor=pointer]:
+                    - generic [ref=e1590]:
+                      - generic [ref=e1591]: Battle Trance
+                      - generic [ref=e1593]: class
+                  - button "Storm Bolt class" [ref=e1594] [cursor=pointer]:
+                    - generic [ref=e1595]:
+                      - generic [ref=e1596]: Storm Bolt
+                      - generic [ref=e1598]: class
+                  - button "Focused Rage class" [ref=e1599] [cursor=pointer]:
+                    - generic [ref=e1600]:
+                      - generic [ref=e1601]: Focused Rage
+                      - generic [ref=e1603]: class
+                  - button "Opportunity Strikes class" [ref=e1604] [cursor=pointer]:
+                    - generic [ref=e1605]:
+                      - generic [ref=e1606]: Opportunity Strikes
+                      - generic [ref=e1608]: class
+                  - button "Trauma class" [ref=e1609] [cursor=pointer]:
+                    - generic [ref=e1610]:
+                      - generic [ref=e1611]: Trauma
+                      - generic [ref=e1613]: class
+                  - button "Unquenchable Thirst class" [ref=e1614] [cursor=pointer]:
+                    - generic [ref=e1615]:
+                      - generic [ref=e1616]: Unquenchable Thirst
+                      - generic [ref=e1618]: class
+                  - button "Raging Blow class" [ref=e1619] [cursor=pointer]:
+                    - generic [ref=e1620]:
+                      - generic [ref=e1621]: Raging Blow
+                      - generic [ref=e1623]: class
+                  - button "Single-Minded Fury class" [ref=e1624] [cursor=pointer]:
+                    - generic [ref=e1625]:
+                      - generic [ref=e1626]: Single-Minded Fury
+                      - generic [ref=e1628]: class
+                  - button "Titans Grip class" [ref=e1629] [cursor=pointer]:
+                    - generic [ref=e1630]:
+                      - generic [ref=e1631]: Titans Grip
+                      - generic [ref=e1633]: class
+                  - button "Battle Hardened class" [ref=e1634] [cursor=pointer]:
+                    - generic [ref=e1635]:
+                      - generic [ref=e1636]: Battle Hardened
+                      - generic [ref=e1638]: class
+                  - button "Unlimited Potential race" [ref=e1639] [cursor=pointer]:
+                    - generic [ref=e1640]:
+                      - generic [ref=e1641]: Unlimited Potential
+                      - generic [ref=e1643]: race
+                  - button "Arcane Instinct general" [ref=e1644] [cursor=pointer]:
+                    - generic [ref=e1645]:
+                      - generic [ref=e1646]: Arcane Instinct
+                      - generic [ref=e1648]: general
+                  - button "Arcane Discipline general" [ref=e1649] [cursor=pointer]:
+                    - generic [ref=e1650]:
+                      - generic [ref=e1651]: Arcane Discipline
+                      - generic [ref=e1653]: general
+                  - button "Arcane Momentum general" [ref=e1654] [cursor=pointer]:
+                    - generic [ref=e1655]:
+                      - generic [ref=e1656]: Arcane Momentum
+                      - generic [ref=e1658]: general
+                  - button "Arcane Focus general" [ref=e1659] [cursor=pointer]:
+                    - generic [ref=e1660]:
+                      - generic [ref=e1661]: Arcane Focus
+                      - generic [ref=e1663]: general
+                  - button "Arcane Precision general" [ref=e1664] [cursor=pointer]:
+                    - generic [ref=e1665]:
+                      - generic [ref=e1666]: Arcane Precision
+                      - generic [ref=e1668]: general
+                  - button "Arcane Ward general" [ref=e1669] [cursor=pointer]:
+                    - generic [ref=e1670]:
+                      - generic [ref=e1671]: Arcane Ward
+                      - generic [ref=e1673]: general
+                  - button "Arcane Vitality general" [ref=e1674] [cursor=pointer]:
+                    - generic [ref=e1675]:
+                      - generic [ref=e1676]: Arcane Vitality
+                      - generic [ref=e1678]: general
+                  - button "Arcane Insight general" [ref=e1679] [cursor=pointer]:
+                    - generic [ref=e1680]:
+                      - generic [ref=e1681]: Arcane Insight
+                      - generic [ref=e1683]: general
+                  - button "Arcane Edge general" [ref=e1684] [cursor=pointer]:
+                    - generic [ref=e1685]:
+                      - generic [ref=e1686]: Arcane Edge
+                      - generic [ref=e1688]: general
+                  - button "Arcane Harmony general" [ref=e1689] [cursor=pointer]:
+                    - generic [ref=e1690]:
+                      - generic [ref=e1691]: Arcane Harmony
+                      - generic [ref=e1693]: general
+                  - button "Martial Instinct general" [ref=e1694] [cursor=pointer]:
+                    - generic [ref=e1695]:
+                      - generic [ref=e1696]: Martial Instinct
+                      - generic [ref=e1698]: general
+                  - button "Martial Discipline general" [ref=e1699] [cursor=pointer]:
+                    - generic [ref=e1700]:
+                      - generic [ref=e1701]: Martial Discipline
+                      - generic [ref=e1703]: general
+                  - button "Martial Momentum general" [ref=e1704] [cursor=pointer]:
+                    - generic [ref=e1705]:
+                      - generic [ref=e1706]: Martial Momentum
+                      - generic [ref=e1708]: general
+                  - button "Martial Focus general" [ref=e1709] [cursor=pointer]:
+                    - generic [ref=e1710]:
+                      - generic [ref=e1711]: Martial Focus
+                      - generic [ref=e1713]: general
+                  - button "Martial Precision general" [ref=e1714] [cursor=pointer]:
+                    - generic [ref=e1715]:
+                      - generic [ref=e1716]: Martial Precision
+                      - generic [ref=e1718]: general
+                  - button "Martial Ward general" [ref=e1719] [cursor=pointer]:
+                    - generic [ref=e1720]:
+                      - generic [ref=e1721]: Martial Ward
+                      - generic [ref=e1723]: general
+                  - button "Martial Vitality general" [ref=e1724] [cursor=pointer]:
+                    - generic [ref=e1725]:
+                      - generic [ref=e1726]: Martial Vitality
+                      - generic [ref=e1728]: general
+                  - button "Martial Insight general" [ref=e1729] [cursor=pointer]:
+                    - generic [ref=e1730]:
+                      - generic [ref=e1731]: Martial Insight
+                      - generic [ref=e1733]: general
+                  - button "Martial Edge general" [ref=e1734] [cursor=pointer]:
+                    - generic [ref=e1735]:
+                      - generic [ref=e1736]: Martial Edge
+                      - generic [ref=e1738]: general
+                  - button "Martial Harmony general" [ref=e1739] [cursor=pointer]:
+                    - generic [ref=e1740]:
+                      - generic [ref=e1741]: Martial Harmony
+                      - generic [ref=e1743]: general
+                  - button "Shadow Instinct general" [ref=e1744] [cursor=pointer]:
+                    - generic [ref=e1745]:
+                      - generic [ref=e1746]: Shadow Instinct
+                      - generic [ref=e1748]: general
+                  - button "Shadow Discipline general" [ref=e1749] [cursor=pointer]:
+                    - generic [ref=e1750]:
+                      - generic [ref=e1751]: Shadow Discipline
+                      - generic [ref=e1753]: general
+                  - button "Shadow Momentum general" [ref=e1754] [cursor=pointer]:
+                    - generic [ref=e1755]:
+                      - generic [ref=e1756]: Shadow Momentum
+                      - generic [ref=e1758]: general
+                  - button "Shadow Focus general" [ref=e1759] [cursor=pointer]:
+                    - generic [ref=e1760]:
+                      - generic [ref=e1761]: Shadow Focus
+                      - generic [ref=e1763]: general
+                  - button "Shadow Precision general" [ref=e1764] [cursor=pointer]:
+                    - generic [ref=e1765]:
+                      - generic [ref=e1766]: Shadow Precision
+                      - generic [ref=e1768]: general
+                  - button "Shadow Ward general" [ref=e1769] [cursor=pointer]:
+                    - generic [ref=e1770]:
+                      - generic [ref=e1771]: Shadow Ward
+                      - generic [ref=e1773]: general
+                  - button "Shadow Vitality general" [ref=e1774] [cursor=pointer]:
+                    - generic [ref=e1775]:
+                      - generic [ref=e1776]: Shadow Vitality
+                      - generic [ref=e1778]: general
+                  - button "Shadow Insight general" [ref=e1779] [cursor=pointer]:
+                    - generic [ref=e1780]:
+                      - generic [ref=e1781]: Shadow Insight
+                      - generic [ref=e1783]: general
+                  - button "Shadow Edge general" [ref=e1784] [cursor=pointer]:
+                    - generic [ref=e1785]:
+                      - generic [ref=e1786]: Shadow Edge
+                      - generic [ref=e1788]: general
+                  - button "Shadow Harmony general" [ref=e1789] [cursor=pointer]:
+                    - generic [ref=e1790]:
+                      - generic [ref=e1791]: Shadow Harmony
+                      - generic [ref=e1793]: general
+                  - button "Radiant Instinct general" [ref=e1794] [cursor=pointer]:
+                    - generic [ref=e1795]:
+                      - generic [ref=e1796]: Radiant Instinct
+                      - generic [ref=e1798]: general
+                  - button "Radiant Discipline general" [ref=e1799] [cursor=pointer]:
+                    - generic [ref=e1800]:
+                      - generic [ref=e1801]: Radiant Discipline
+                      - generic [ref=e1803]: general
+                  - button "Radiant Momentum general" [ref=e1804] [cursor=pointer]:
+                    - generic [ref=e1805]:
+                      - generic [ref=e1806]: Radiant Momentum
+                      - generic [ref=e1808]: general
+                  - button "Radiant Focus general" [ref=e1809] [cursor=pointer]:
+                    - generic [ref=e1810]:
+                      - generic [ref=e1811]: Radiant Focus
+                      - generic [ref=e1813]: general
+                  - button "Radiant Precision general" [ref=e1814] [cursor=pointer]:
+                    - generic [ref=e1815]:
+                      - generic [ref=e1816]: Radiant Precision
+                      - generic [ref=e1818]: general
+                  - button "Radiant Ward general" [ref=e1819] [cursor=pointer]:
+                    - generic [ref=e1820]:
+                      - generic [ref=e1821]: Radiant Ward
+                      - generic [ref=e1823]: general
+                  - button "Radiant Vitality general" [ref=e1824] [cursor=pointer]:
+                    - generic [ref=e1825]:
+                      - generic [ref=e1826]: Radiant Vitality
+                      - generic [ref=e1828]: general
+                  - button "Radiant Insight general" [ref=e1829] [cursor=pointer]:
+                    - generic [ref=e1830]:
+                      - generic [ref=e1831]: Radiant Insight
+                      - generic [ref=e1833]: general
+                  - button "Radiant Edge general" [ref=e1834] [cursor=pointer]:
+                    - generic [ref=e1835]:
+                      - generic [ref=e1836]: Radiant Edge
+                      - generic [ref=e1838]: general
+                  - button "Radiant Harmony general" [ref=e1839] [cursor=pointer]:
+                    - generic [ref=e1840]:
+                      - generic [ref=e1841]: Radiant Harmony
+                      - generic [ref=e1843]: general
+                  - button "Verdant Instinct general" [ref=e1844] [cursor=pointer]:
+                    - generic [ref=e1845]:
+                      - generic [ref=e1846]: Verdant Instinct
+                      - generic [ref=e1848]: general
+                  - button "Verdant Discipline general" [ref=e1849] [cursor=pointer]:
+                    - generic [ref=e1850]:
+                      - generic [ref=e1851]: Verdant Discipline
+                      - generic [ref=e1853]: general
+                  - button "Verdant Momentum general" [ref=e1854] [cursor=pointer]:
+                    - generic [ref=e1855]:
+                      - generic [ref=e1856]: Verdant Momentum
+                      - generic [ref=e1858]: general
+                  - button "Verdant Focus general" [ref=e1859] [cursor=pointer]:
+                    - generic [ref=e1860]:
+                      - generic [ref=e1861]: Verdant Focus
+                      - generic [ref=e1863]: general
+                  - button "Verdant Precision general" [ref=e1864] [cursor=pointer]:
+                    - generic [ref=e1865]:
+                      - generic [ref=e1866]: Verdant Precision
+                      - generic [ref=e1868]: general
+                  - button "Verdant Ward general" [ref=e1869] [cursor=pointer]:
+                    - generic [ref=e1870]:
+                      - generic [ref=e1871]: Verdant Ward
+                      - generic [ref=e1873]: general
+                  - button "Verdant Vitality general" [ref=e1874] [cursor=pointer]:
+                    - generic [ref=e1875]:
+                      - generic [ref=e1876]: Verdant Vitality
+                      - generic [ref=e1878]: general
+                  - button "Verdant Insight general" [ref=e1879] [cursor=pointer]:
+                    - generic [ref=e1880]:
+                      - generic [ref=e1881]: Verdant Insight
+                      - generic [ref=e1883]: general
+                  - button "Verdant Edge general" [ref=e1884] [cursor=pointer]:
+                    - generic [ref=e1885]:
+                      - generic [ref=e1886]: Verdant Edge
+                      - generic [ref=e1888]: general
+                  - button "Verdant Harmony general" [ref=e1889] [cursor=pointer]:
+                    - generic [ref=e1890]:
+                      - generic [ref=e1891]: Verdant Harmony
+                      - generic [ref=e1893]: general
+                  - button "Stalwart Instinct general" [ref=e1894] [cursor=pointer]:
+                    - generic [ref=e1895]:
+                      - generic [ref=e1896]: Stalwart Instinct
+                      - generic [ref=e1898]: general
+                  - button "Stalwart Discipline general" [ref=e1899] [cursor=pointer]:
+                    - generic [ref=e1900]:
+                      - generic [ref=e1901]: Stalwart Discipline
+                      - generic [ref=e1903]: general
+                  - button "Stalwart Momentum general" [ref=e1904] [cursor=pointer]:
+                    - generic [ref=e1905]:
+                      - generic [ref=e1906]: Stalwart Momentum
+                      - generic [ref=e1908]: general
+                  - button "Stalwart Focus general" [ref=e1909] [cursor=pointer]:
+                    - generic [ref=e1910]:
+                      - generic [ref=e1911]: Stalwart Focus
+                      - generic [ref=e1913]: general
+                  - button "Stalwart Precision general" [ref=e1914] [cursor=pointer]:
+                    - generic [ref=e1915]:
+                      - generic [ref=e1916]: Stalwart Precision
+                      - generic [ref=e1918]: general
+                  - button "Stalwart Ward general" [ref=e1919] [cursor=pointer]:
+                    - generic [ref=e1920]:
+                      - generic [ref=e1921]: Stalwart Ward
+                      - generic [ref=e1923]: general
+                  - button "Stalwart Vitality general" [ref=e1924] [cursor=pointer]:
+                    - generic [ref=e1925]:
+                      - generic [ref=e1926]: Stalwart Vitality
+                      - generic [ref=e1928]: general
+                  - button "Stalwart Insight general" [ref=e1929] [cursor=pointer]:
+                    - generic [ref=e1930]:
+                      - generic [ref=e1931]: Stalwart Insight
+                      - generic [ref=e1933]: general
+                  - button "Stalwart Edge general" [ref=e1934] [cursor=pointer]:
+                    - generic [ref=e1935]:
+                      - generic [ref=e1936]: Stalwart Edge
+                      - generic [ref=e1938]: general
+                  - button "Stalwart Harmony general" [ref=e1939] [cursor=pointer]:
+                    - generic [ref=e1940]:
+                      - generic [ref=e1941]: Stalwart Harmony
+                      - generic [ref=e1943]: general
+                  - button "Swift Instinct general" [ref=e1944] [cursor=pointer]:
+                    - generic [ref=e1945]:
+                      - generic [ref=e1946]: Swift Instinct
+                      - generic [ref=e1948]: general
+                  - button "Swift Discipline general" [ref=e1949] [cursor=pointer]:
+                    - generic [ref=e1950]:
+                      - generic [ref=e1951]: Swift Discipline
+                      - generic [ref=e1953]: general
+                  - button "Swift Momentum general" [ref=e1954] [cursor=pointer]:
+                    - generic [ref=e1955]:
+                      - generic [ref=e1956]: Swift Momentum
+                      - generic [ref=e1958]: general
+                  - button "Swift Focus general" [ref=e1959] [cursor=pointer]:
+                    - generic [ref=e1960]:
+                      - generic [ref=e1961]: Swift Focus
+                      - generic [ref=e1963]: general
+                  - button "Swift Precision general" [ref=e1964] [cursor=pointer]:
+                    - generic [ref=e1965]:
+                      - generic [ref=e1966]: Swift Precision
+                      - generic [ref=e1968]: general
+                  - button "Swift Ward general" [ref=e1969] [cursor=pointer]:
+                    - generic [ref=e1970]:
+                      - generic [ref=e1971]: Swift Ward
+                      - generic [ref=e1973]: general
+                  - button "Swift Vitality general" [ref=e1974] [cursor=pointer]:
+                    - generic [ref=e1975]:
+                      - generic [ref=e1976]: Swift Vitality
+                      - generic [ref=e1978]: general
+                  - button "Swift Insight general" [ref=e1979] [cursor=pointer]:
+                    - generic [ref=e1980]:
+                      - generic [ref=e1981]: Swift Insight
+                      - generic [ref=e1983]: general
+                  - button "Swift Edge general" [ref=e1984] [cursor=pointer]:
+                    - generic [ref=e1985]:
+                      - generic [ref=e1986]: Swift Edge
+                      - generic [ref=e1988]: general
+                  - button "Swift Harmony general" [ref=e1989] [cursor=pointer]:
+                    - generic [ref=e1990]:
+                      - generic [ref=e1991]: Swift Harmony
+                      - generic [ref=e1993]: general
+                  - button "Cunning Instinct general" [ref=e1994] [cursor=pointer]:
+                    - generic [ref=e1995]:
+                      - generic [ref=e1996]: Cunning Instinct
+                      - generic [ref=e1998]: general
+                  - button "Cunning Discipline general" [ref=e1999] [cursor=pointer]:
+                    - generic [ref=e2000]:
+                      - generic [ref=e2001]: Cunning Discipline
+                      - generic [ref=e2003]: general
+                  - button "Cunning Momentum general" [ref=e2004] [cursor=pointer]:
+                    - generic [ref=e2005]:
+                      - generic [ref=e2006]: Cunning Momentum
+                      - generic [ref=e2008]: general
+                  - button "Cunning Focus general" [ref=e2009] [cursor=pointer]:
+                    - generic [ref=e2010]:
+                      - generic [ref=e2011]: Cunning Focus
+                      - generic [ref=e2013]: general
+                  - button "Cunning Precision general" [ref=e2014] [cursor=pointer]:
+                    - generic [ref=e2015]:
+                      - generic [ref=e2016]: Cunning Precision
+                      - generic [ref=e2018]: general
+                  - button "Cunning Ward general" [ref=e2019] [cursor=pointer]:
+                    - generic [ref=e2020]:
+                      - generic [ref=e2021]: Cunning Ward
+                      - generic [ref=e2023]: general
+                  - button "Cunning Vitality general" [ref=e2024] [cursor=pointer]:
+                    - generic [ref=e2025]:
+                      - generic [ref=e2026]: Cunning Vitality
+                      - generic [ref=e2028]: general
+                  - button "Cunning Insight general" [ref=e2029] [cursor=pointer]:
+                    - generic [ref=e2030]:
+                      - generic [ref=e2031]: Cunning Insight
+                      - generic [ref=e2033]: general
+                  - button "Cunning Edge general" [ref=e2034] [cursor=pointer]:
+                    - generic [ref=e2035]:
+                      - generic [ref=e2036]: Cunning Edge
+                      - generic [ref=e2038]: general
+                  - button "Cunning Harmony general" [ref=e2039] [cursor=pointer]:
+                    - generic [ref=e2040]:
+                      - generic [ref=e2041]: Cunning Harmony
+                      - generic [ref=e2043]: general
+                  - button "Resilient Instinct general" [ref=e2044] [cursor=pointer]:
+                    - generic [ref=e2045]:
+                      - generic [ref=e2046]: Resilient Instinct
+                      - generic [ref=e2048]: general
+                  - button "Resilient Discipline general" [ref=e2049] [cursor=pointer]:
+                    - generic [ref=e2050]:
+                      - generic [ref=e2051]: Resilient Discipline
+                      - generic [ref=e2053]: general
+                  - button "Resilient Momentum general" [ref=e2054] [cursor=pointer]:
+                    - generic [ref=e2055]:
+                      - generic [ref=e2056]: Resilient Momentum
+                      - generic [ref=e2058]: general
+                  - button "Resilient Focus general" [ref=e2059] [cursor=pointer]:
+                    - generic [ref=e2060]:
+                      - generic [ref=e2061]: Resilient Focus
+                      - generic [ref=e2063]: general
+                  - button "Resilient Precision general" [ref=e2064] [cursor=pointer]:
+                    - generic [ref=e2065]:
+                      - generic [ref=e2066]: Resilient Precision
+                      - generic [ref=e2068]: general
+                  - button "Resilient Ward general" [ref=e2069] [cursor=pointer]:
+                    - generic [ref=e2070]:
+                      - generic [ref=e2071]: Resilient Ward
+                      - generic [ref=e2073]: general
+                  - button "Resilient Vitality general" [ref=e2074] [cursor=pointer]:
+                    - generic [ref=e2075]:
+                      - generic [ref=e2076]: Resilient Vitality
+                      - generic [ref=e2078]: general
+                  - button "Resilient Insight general" [ref=e2079] [cursor=pointer]:
+                    - generic [ref=e2080]:
+                      - generic [ref=e2081]: Resilient Insight
+                      - generic [ref=e2083]: general
+                  - button "Resilient Edge general" [ref=e2084] [cursor=pointer]:
+                    - generic [ref=e2085]:
+                      - generic [ref=e2086]: Resilient Edge
+                      - generic [ref=e2088]: general
+                  - button "Resilient Harmony general" [ref=e2089] [cursor=pointer]:
+                    - generic [ref=e2090]:
+                      - generic [ref=e2091]: Resilient Harmony
+                      - generic [ref=e2093]: general
+                  - button "Adept Instinct general" [ref=e2094] [cursor=pointer]:
+                    - generic [ref=e2095]:
+                      - generic [ref=e2096]: Adept Instinct
+                      - generic [ref=e2098]: general
+                  - button "Adept Discipline general" [ref=e2099] [cursor=pointer]:
+                    - generic [ref=e2100]:
+                      - generic [ref=e2101]: Adept Discipline
+                      - generic [ref=e2103]: general
+                  - button "Adept Momentum general" [ref=e2104] [cursor=pointer]:
+                    - generic [ref=e2105]:
+                      - generic [ref=e2106]: Adept Momentum
+                      - generic [ref=e2108]: general
+                  - button "Adept Focus general" [ref=e2109] [cursor=pointer]:
+                    - generic [ref=e2110]:
+                      - generic [ref=e2111]: Adept Focus
+                      - generic [ref=e2113]: general
+                  - button "Adept Precision general" [ref=e2114] [cursor=pointer]:
+                    - generic [ref=e2115]:
+                      - generic [ref=e2116]: Adept Precision
+                      - generic [ref=e2118]: general
+                  - button "Adept Ward general" [ref=e2119] [cursor=pointer]:
+                    - generic [ref=e2120]:
+                      - generic [ref=e2121]: Adept Ward
+                      - generic [ref=e2123]: general
+                  - button "Adept Vitality general" [ref=e2124] [cursor=pointer]:
+                    - generic [ref=e2125]:
+                      - generic [ref=e2126]: Adept Vitality
+                      - generic [ref=e2128]: general
+                  - button "Adept Insight general" [ref=e2129] [cursor=pointer]:
+                    - generic [ref=e2130]:
+                      - generic [ref=e2131]: Adept Insight
+                      - generic [ref=e2133]: general
+                  - button "Adept Edge general" [ref=e2134] [cursor=pointer]:
+                    - generic [ref=e2135]:
+                      - generic [ref=e2136]: Adept Edge
+                      - generic [ref=e2138]: general
+                  - button "Adept Harmony general" [ref=e2139] [cursor=pointer]:
+                    - generic [ref=e2140]:
+                      - generic [ref=e2141]: Adept Harmony
+                      - generic [ref=e2143]: general
+                  - button "Alchemy (Potion Brewing & Transmutation) general" [ref=e2144] [cursor=pointer]:
+                    - generic [ref=e2145]:
+                      - generic [ref=e2146]: Alchemy (Potion Brewing & Transmutation)
+                      - generic [ref=e2148]: general
+                  - button "Enchanting (Imbuing Magic into Items) general" [ref=e2149] [cursor=pointer]:
+                    - generic [ref=e2150]:
+                      - generic [ref=e2151]: Enchanting (Imbuing Magic into Items)
+                      - generic [ref=e2153]: general
+                  - button "Runesmithing (Rune Carving) general" [ref=e2154] [cursor=pointer]:
+                    - generic [ref=e2155]:
+                      - generic [ref=e2156]: Runesmithing (Rune Carving)
+                      - generic [ref=e2158]: general
+                  - button "Magical Cooking (Culinary Alchemy) general" [ref=e2159] [cursor=pointer]:
+                    - generic [ref=e2160]:
+                      - generic [ref=e2161]: Magical Cooking (Culinary Alchemy)
+                      - generic [ref=e2163]: general
+                  - button "Artificing (Gadgeteering & Constructs) general" [ref=e2164] [cursor=pointer]:
+                    - generic [ref=e2165]:
+                      - generic [ref=e2166]: Artificing (Gadgeteering & Constructs)
+                      - generic [ref=e2168]: general
+                  - button "Scribing & Scrollmaking general" [ref=e2169] [cursor=pointer]:
+                    - generic [ref=e2170]:
+                      - generic [ref=e2171]: Scribing & Scrollmaking
+                      - generic [ref=e2173]: general
+                  - button "Transmutation (Material Transformation) general" [ref=e2174] [cursor=pointer]:
+                    - generic [ref=e2175]:
+                      - generic [ref=e2176]: Transmutation (Material Transformation)
+                      - generic [ref=e2178]: general
+                  - button "Mending & Repair general" [ref=e2179] [cursor=pointer]:
+                    - generic [ref=e2180]:
+                      - generic [ref=e2181]: Mending & Repair
+                      - generic [ref=e2183]: general
+                  - button "Dismantling (Salvage) general" [ref=e2184] [cursor=pointer]:
+                    - generic [ref=e2185]:
+                      - generic [ref=e2186]: Dismantling (Salvage)
+                      - generic [ref=e2188]: general
+                  - button "Golem Crafting (Construct Creation) general" [ref=e2189] [cursor=pointer]:
+                    - generic [ref=e2190]:
+                      - generic [ref=e2191]: Golem Crafting (Construct Creation)
+                      - generic [ref=e2193]: general
+    - generic [ref=e145]:
+      - generic [ref=e147]: Narrative Memory
+      - generic [ref=e148]:
+        - button "⇄" [ref=e149] [cursor=pointer]
+        - button "+" [ref=e150] [cursor=pointer]
+        - button "📌" [ref=e151] [cursor=pointer]
+        - button "<<" [ref=e152] [cursor=pointer]
+  - 'button "Show Admin (Ctrl+`)" [ref=e153] [cursor=pointer]'

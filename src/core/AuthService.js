@@ -16,6 +16,30 @@ const pickEnvValue = (...values) => {
   return undefined;
 };
 
+const LOCAL_GAME_STORAGE_KEY = "localGame";
+const LOCAL_GAME_USER = Object.freeze({
+  id: "local",
+  email: "local@game.dev",
+  provider: "dev",
+  roles: Object.freeze(["authenticated"]),
+});
+
+const getLocalGameUser = () => {
+  if (typeof window === "undefined" || !window?.localStorage) return null;
+  try {
+    const enabled = window.localStorage.getItem(LOCAL_GAME_STORAGE_KEY);
+    if (enabled !== "true") return null;
+    return {
+      id: LOCAL_GAME_USER.id,
+      email: LOCAL_GAME_USER.email,
+      provider: LOCAL_GAME_USER.provider,
+      roles: [...LOCAL_GAME_USER.roles],
+    };
+  } catch {
+    return null;
+  }
+};
+
 const resolveAuthProvider = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
@@ -133,17 +157,21 @@ const getDevUser = () => {
     runtimeEnv.VITE_DEV_USER_ID,
     buildEnv.VITE_DEV_USER_ID,
   );
-  if (!devUserId) return null;
-  const devUserEmail = pickEnvValue(
-    runtimeEnv.VITE_DEV_USER_EMAIL,
-    buildEnv.VITE_DEV_USER_EMAIL,
-  );
-  return {
-    id: devUserId,
-    email: devUserEmail || devUserId,
-    provider: "dev",
-    roles: ["authenticated"],
-  };
+  if (devUserId) {
+    const devUserEmail = pickEnvValue(
+      runtimeEnv.VITE_DEV_USER_EMAIL,
+      buildEnv.VITE_DEV_USER_EMAIL,
+    );
+    return {
+      id: devUserId,
+      email: devUserEmail || devUserId,
+      provider: "dev",
+      roles: ["authenticated"],
+    };
+  }
+  const localGameUser = getLocalGameUser();
+  if (localGameUser) return localGameUser;
+  return null;
 };
 
 const mapFirebaseUser = (user) => {

@@ -103,9 +103,9 @@ export default function EquipmentSelectionPanel({
         <input
           type="text"
           className="equipment-select__search"
-          placeholder={`Filter ${label.toLowerCase()}s...`}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
+          aria-label={`Filter ${label.toLowerCase()} options`}
         />
       </div>
 

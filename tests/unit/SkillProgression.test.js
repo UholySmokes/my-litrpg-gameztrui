@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import { gameReducer } from "../../src/core/gameReducer.js";
 import { initialGameState } from "../../src/data/initialState.js";
+import { DataRegistry } from "../../src/data/DataRegistry.js";
 
 describe("skill progression systems", () => {
   it("evolves a skill via reducer", () => {
@@ -8,7 +9,7 @@ describe("skill progression systems", () => {
       id: "test_skill",
       name: "Test Skill",
       type: "active",
-      level: 1,
+      level: 10,
       manaCost: 10,
       cooldown: 3,
     };
@@ -26,7 +27,7 @@ describe("skill progression systems", () => {
     });
     expect(next.player.abilities.length).toBe(1);
     expect(next.player.abilities[0].id).not.toBe("test_skill");
-    expect(next.player.abilities[0].level).toBe(2);
+    expect(next.player.abilities[0].level).toBe(11);
   });
 
   it("fuses two skills via reducer", () => {
@@ -76,8 +77,17 @@ describe("skill progression systems", () => {
       },
       player: {
         ...initialGameState.player,
-        level: 2,
+        level: 12,
         class: "cleric",
+        attributes: {
+          ...initialGameState.player.attributes,
+          wisdom: 13,
+          strength: 10,
+        },
+        progress: {
+          ...(initialGameState.player.progress || {}),
+          totalKills: 6,
+        },
       },
     };
     const next = gameReducer(state, { type: "EVOLVE_CLASS" });
@@ -87,39 +97,96 @@ describe("skill progression systems", () => {
   });
 
   it("requires a higher level after each class evolution", () => {
-    const state = {
+    const stageOne = {
       ...initialGameState,
       config: {
         ...initialGameState.config,
-        classEvolutionLevel: 2,
+        classEvolutionLevel: 10,
         classEvolutionLevelStep: 2,
       },
       player: {
         ...initialGameState.player,
-        level: 3,
-        class: "cleric",
+        level: 12,
+        class: "warrior",
+        attributes: {
+          ...initialGameState.player.attributes,
+          strength: 14,
+          constitution: 12,
+        },
         progress: {
           ...(initialGameState.player.progress || {}),
-          classEvolutions: 1,
+          totalKills: 50,
         },
       },
     };
+    const firstEvolution = gameReducer(stageOne, { type: "EVOLVE_CLASS" });
+    const firstClassId = firstEvolution.player.class?.id || firstEvolution.player.class;
+    expect(firstClassId).toBe("berserker");
+    expect(firstEvolution.player.progress.classEvolutions).toBe(1);
 
-    const blocked = gameReducer(state, { type: "EVOLVE_CLASS" });
-    expect(blocked.player.class).toBe("cleric");
-
-    const unlocked = gameReducer(
+    const blocked = gameReducer(
       {
-        ...state,
+        ...firstEvolution,
         player: {
-          ...state.player,
-          level: 4,
+          ...firstEvolution.player,
+          level: 30,
         },
       },
       { type: "EVOLVE_CLASS" },
     );
-    const nextClassId = unlocked.player.class?.id || unlocked.player.class;
-    expect(nextClassId).toBe("paladin");
-    expect(unlocked.player.progress.classEvolutions).toBe(2);
+    const blockedClassId = blocked.player.class?.id || blocked.player.class;
+    expect(blockedClassId).toBe("berserker");
+
+    const unlockedSecond = gameReducer(
+      {
+        ...firstEvolution,
+        player: {
+          ...firstEvolution.player,
+          level: 34,
+          attributes: {
+            ...firstEvolution.player.attributes,
+            strength: 18,
+            constitution: 14,
+          },
+        },
+      },
+      { type: "EVOLVE_CLASS" },
+    );
+    const secondClassId =
+      unlockedSecond.player.class?.id || unlockedSecond.player.class;
+    expect(secondClassId).toBe("war_reaver");
+    expect(unlockedSecond.player.progress.classEvolutions).toBe(2);
+  });
+
+  it("evolves race when requirements are met", () => {
+    const firstRaceOption = DataRegistry.getRaceEvolutionOptions("pure_human", 0)[0];
+    expect(firstRaceOption?.id).toBeTruthy();
+
+    const state = {
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        level: 20,
+        race: "pure_human",
+        attributes: {
+          ...initialGameState.player.attributes,
+          strength: 13,
+        },
+        progress: {
+          ...(initialGameState.player.progress || {}),
+          totalKills: 20,
+          raceEvolutionStage: 0,
+        },
+      },
+    };
+
+    const next = gameReducer(state, {
+      type: "EVOLVE_RACE",
+      payload: { evolutionId: firstRaceOption.id },
+    });
+
+    expect(next.player.race?.name).not.toBe("Pure Human");
+    expect(next.player.progress.raceEvolutions).toBe(1);
+    expect(next.player.progress.raceEvolutionStage).toBe(1);
   });
 });

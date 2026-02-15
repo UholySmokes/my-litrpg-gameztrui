@@ -12,6 +12,9 @@ export default function AdminTools({ dispatch, getState }) {
   const [goldAmount, setGoldAmount] = useState(1000);
   const [soulpointsAmount, setSoulpointsAmount] = useState(100);
   const [xpAmount, setXpAmount] = useState(100);
+  const [hpAmount, setHpAmount] = useState(50);
+  const [manaAmount, setManaAmount] = useState(50);
+  const [attributePointsAmount, setAttributePointsAmount] = useState(5);
 
   const readState = () => (typeof getState === "function" ? getState() : null);
   const currentState = readState();
@@ -136,6 +139,120 @@ export default function AdminTools({ dispatch, getState }) {
     setOutput(`Added 1 level`);
   };
 
+  const adjustVital = (vitalKey, delta, label) => {
+    const snapshot = readState();
+    const vital = snapshot?.player?.[vitalKey];
+    if (!vital) {
+      setOutput(`Cannot adjust ${label}: player data missing.`);
+      return;
+    }
+    const current = Number(vital.current ?? 0);
+    const max = Number(vital.max ?? 0);
+    const next = Math.max(0, Math.min(current + delta, max));
+    handleDispatch({
+      type: "UPDATE_STATE",
+      payload: {
+        player: {
+          ...snapshot.player,
+          [vitalKey]: {
+            ...vital,
+            current: next,
+          },
+        },
+      },
+    });
+  };
+
+  const healHp = (amount) => {
+    const value = parseAmount(amount);
+    if (value === null) {
+      setOutput("Invalid HP amount.");
+      return;
+    }
+    const delta = Math.abs(value);
+    adjustVital("hp", delta, "HP");
+    setOutput(`Healed ${delta} HP.`);
+  };
+
+  const damageHp = (amount) => {
+    const value = parseAmount(amount);
+    if (value === null) {
+      setOutput("Invalid HP amount.");
+      return;
+    }
+    const delta = -Math.abs(value);
+    adjustVital("hp", delta, "HP");
+    setOutput(`Damaged ${Math.abs(delta)} HP.`);
+  };
+
+  const restoreMana = (amount) => {
+    const value = parseAmount(amount);
+    if (value === null) {
+      setOutput("Invalid Mana amount.");
+      return;
+    }
+    const delta = Math.abs(value);
+    adjustVital("mana", delta, "Mana");
+    setOutput(`Restored ${delta} Mana.`);
+  };
+
+  const drainMana = (amount) => {
+    const value = parseAmount(amount);
+    if (value === null) {
+      setOutput("Invalid Mana amount.");
+      return;
+    }
+    const delta = -Math.abs(value);
+    adjustVital("mana", delta, "Mana");
+    setOutput(`Drained ${Math.abs(delta)} Mana.`);
+  };
+
+  const addAttributePoints = (amount) => {
+    const value = parseAmount(amount);
+    const snapshot = readState();
+    if (!snapshot?.player) return;
+    if (value === null) {
+      setOutput("Invalid attribute points amount.");
+      return;
+    }
+    const attributes = { ...(snapshot.player.attributes || {}) };
+    const current = Number(attributes.freePoints ?? 0);
+    const next = Math.max(0, current + value);
+    handleDispatch({
+      type: "UPDATE_STATE",
+      payload: {
+        player: {
+          ...snapshot.player,
+          attributes: {
+            ...attributes,
+            freePoints: next,
+          },
+        },
+      },
+    });
+    setOutput(`Adjusted free attribute points by ${value}.`);
+  };
+
+  const revivePlayer = () => {
+    const snapshot = readState();
+    if (!snapshot?.player?.hp || !snapshot?.player?.mana) {
+      setOutput("Cannot revive: player HP/Mana data missing.");
+      return;
+    }
+    handleDispatch({
+      type: "UPDATE_STATE",
+      payload: {
+        player: {
+          ...snapshot.player,
+          isDead: false,
+          hp: { ...snapshot.player.hp, current: snapshot.player.hp.max },
+          mana: { ...snapshot.player.mana, current: snapshot.player.mana.max },
+        },
+      },
+    });
+    setOutput("Revived player and refilled vitals.");
+  };
+
   const refillVitals = () => {
     const snapshot = readState();
     if (!snapshot?.player?.hp || !snapshot?.player?.mana) {
@@ -240,36 +357,97 @@ export default function AdminTools({ dispatch, getState }) {
   };
 
   const renderPlayerTab = () => (
-    <div className="admin-tools-grid">
-      <div className="admin-tools-input-group">
-        <input
-          type="number"
-          value={goldAmount}
-          onChange={(e) => setGoldAmount(e.target.value)}
-          aria-label="Gold amount"
-        />
-        <button className="admin-tools-button" onClick={() => addGold(goldAmount)}>Add Gold</button>
+    <div>
+      <div className="admin-tools-section">
+        <h3>Player Economy</h3>
+        <div className="admin-tools-grid">
+          <div className="admin-tools-input-group">
+            <input
+              type="number"
+              value={goldAmount}
+              onChange={(e) => setGoldAmount(e.target.value)}
+              aria-label="Gold amount"
+            />
+            <button className="admin-tools-button" onClick={() => addGold(goldAmount)}>Add Gold</button>
+          </div>
+          <div className="admin-tools-input-group">
+            <input
+              type="number"
+              value={soulpointsAmount}
+              onChange={(e) => setSoulpointsAmount(e.target.value)}
+              aria-label="Soulpoints amount"
+            />
+            <button className="admin-tools-button" onClick={() => addSoulpoints(soulpointsAmount)}>Add Soulpoints</button>
+          </div>
+          <div className="admin-tools-input-group">
+            <input
+              type="number"
+              value={xpAmount}
+              onChange={(e) => setXpAmount(e.target.value)}
+              aria-label="XP amount"
+            />
+            <button className="admin-tools-button" onClick={() => addXP(xpAmount)}>Add XP</button>
+          </div>
+          <button className="admin-tools-button" onClick={addLevel}>+1 Level</button>
+        </div>
       </div>
-      <div className="admin-tools-input-group">
-        <input
-          type="number"
-          value={soulpointsAmount}
-          onChange={(e) => setSoulpointsAmount(e.target.value)}
-          aria-label="Soulpoints amount"
-        />
-        <button className="admin-tools-button" onClick={() => addSoulpoints(soulpointsAmount)}>Add Soulpoints</button>
+      <div className="admin-tools-section">
+        <h3>Vitals</h3>
+        <div className="admin-tools-grid">
+          <div className="admin-tools-input-group">
+            <input
+              type="number"
+              value={hpAmount}
+              onChange={(e) => setHpAmount(e.target.value)}
+              aria-label="HP amount"
+            />
+            <button className="admin-tools-button" onClick={() => healHp(hpAmount)}>Heal HP</button>
+          </div>
+          <div className="admin-tools-input-group">
+            <input
+              type="number"
+              value={hpAmount}
+              onChange={(e) => setHpAmount(e.target.value)}
+              aria-label="HP damage amount"
+            />
+            <button className="admin-tools-button" onClick={() => damageHp(hpAmount)}>Damage HP</button>
+          </div>
+          <div className="admin-tools-input-group">
+            <input
+              type="number"
+              value={manaAmount}
+              onChange={(e) => setManaAmount(e.target.value)}
+              aria-label="Mana amount"
+            />
+            <button className="admin-tools-button" onClick={() => restoreMana(manaAmount)}>Restore Mana</button>
+          </div>
+          <div className="admin-tools-input-group">
+            <input
+              type="number"
+              value={manaAmount}
+              onChange={(e) => setManaAmount(e.target.value)}
+              aria-label="Mana drain amount"
+            />
+            <button className="admin-tools-button" onClick={() => drainMana(manaAmount)}>Drain Mana</button>
+          </div>
+          <button className="admin-tools-button" onClick={refillVitals}>Refill Vitals</button>
+          <button className="admin-tools-button" onClick={revivePlayer}>Revive Player</button>
+        </div>
       </div>
-      <div className="admin-tools-input-group">
-        <input
-          type="number"
-          value={xpAmount}
-          onChange={(e) => setXpAmount(e.target.value)}
-          aria-label="XP amount"
-        />
-        <button className="admin-tools-button" onClick={() => addXP(xpAmount)}>Add XP</button>
+      <div className="admin-tools-section">
+        <h3>Attributes</h3>
+        <div className="admin-tools-grid">
+          <div className="admin-tools-input-group">
+            <input
+              type="number"
+              value={attributePointsAmount}
+              onChange={(e) => setAttributePointsAmount(e.target.value)}
+              aria-label="Attribute points amount"
+            />
+            <button className="admin-tools-button" onClick={() => addAttributePoints(attributePointsAmount)}>Add Attribute Points</button>
+          </div>
+        </div>
       </div>
-      <button className="admin-tools-button" onClick={addLevel}>+1 Level</button>
-      <button className="admin-tools-button" onClick={refillVitals}>Refill Vitals</button>
     </div>
   );
 

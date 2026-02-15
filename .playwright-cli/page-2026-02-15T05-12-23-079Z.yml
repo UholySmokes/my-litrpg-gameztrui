@@ -1,0 +1,136 @@
+- generic [ref=e13]:
+  - generic [ref=e17]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e23]: Character Genesis
+        - generic [ref=e24]:
+          - button "✕" [ref=e25] [cursor=pointer]
+          - button "⇄" [ref=e26] [cursor=pointer]
+          - button "–" [ref=e27] [cursor=pointer]
+          - button "📍" [ref=e28] [cursor=pointer]
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]: Character Genesis
+            - generic [ref=e34]: Guided phases with full compatibility to existing panels and game state.
+          - generic [ref=e35]:
+            - button "Back" [disabled] [ref=e36]
+            - button "Next" [ref=e37] [cursor=pointer]
+        - generic [ref=e38]:
+          - button "Phase 1 Identity NOW" [disabled] [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: Phase 1
+              - generic [ref=e42]: Identity
+            - generic [ref=e43]: NOW
+          - button "Phase 2 Race LOCK" [disabled] [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: Phase 2
+              - generic [ref=e47]: Race
+            - generic [ref=e48]: LOCK
+          - button "Phase 3 Class LOCK" [disabled] [ref=e49]:
+            - generic [ref=e50]:
+              - generic [ref=e51]: Phase 3
+              - generic [ref=e52]: Class
+            - generic [ref=e53]: LOCK
+          - button "Phase 4 Profession LOCK" [disabled] [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e56]: Phase 4
+              - generic [ref=e57]: Profession
+            - generic [ref=e58]: LOCK
+          - button "Phase 5 System LOCK" [disabled] [ref=e59]:
+            - generic [ref=e60]:
+              - generic [ref=e61]: Phase 5
+              - generic [ref=e62]: System
+            - generic [ref=e63]: LOCK
+          - button "Phase 6 Attributes LOCK" [disabled] [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: Phase 6
+              - generic [ref=e67]: Attributes
+            - generic [ref=e68]: LOCK
+          - button "Phase 7 Skills LOCK" [disabled] [ref=e69]:
+            - generic [ref=e70]:
+              - generic [ref=e71]: Phase 7
+              - generic [ref=e72]: Skills
+            - generic [ref=e73]: LOCK
+          - button "Phase 8 Review LOCK" [disabled] [ref=e74]:
+            - generic [ref=e75]:
+              - generic [ref=e76]: Phase 8
+              - generic [ref=e77]: Review
+            - generic [ref=e78]: LOCK
+        - generic [ref=e79]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: GENESIS STREAM
+            - generic [ref=e83]: The genesis terminal awaits your input. Every choice shapes the world you will inhabit.
+            - generic [ref=e84]: Select a race and class to generate a profile summary._
+            - generic [ref=e86]:
+              - generic [ref=e87]: SYNC PROGRESS
+              - generic [ref=e88]: 0%
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: ⌖
+                - generic [ref=e93]: 1. Anchor your origin
+              - generic [ref=e94]:
+                - generic [ref=e95]: ⚔
+                - generic [ref=e96]: 2. Define combat doctrine
+              - generic [ref=e97]:
+                - generic [ref=e98]: ⚙
+                - generic [ref=e99]: 3. Shape progression path
+              - generic [ref=e100]:
+                - generic [ref=e101]: ♥
+                - generic [ref=e102]: 4. Allocate survivability
+              - generic [ref=e103]:
+                - generic [ref=e104]: ⚡
+                - generic [ref=e105]: 5. Load starting skills
+              - generic [ref=e106]:
+                - generic [ref=e107]: ✔
+                - generic [ref=e108]: 6. Finalize identity
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]: ○
+                - text: "Designation: pending"
+              - generic [ref=e112]:
+                - generic [ref=e113]: ○
+                - text: "Gender: pending"
+              - generic [ref=e114]:
+                - generic [ref=e115]: ○
+                - text: "Race: pending"
+              - generic [ref=e116]:
+                - generic [ref=e117]: ○
+                - text: "Class: pending"
+              - generic [ref=e118]:
+                - generic [ref=e119]: ○
+                - text: "Profession: pending"
+              - generic [ref=e120]:
+                - generic [ref=e121]: ○
+                - text: "System: pending"
+              - generic [ref=e122]:
+                - generic [ref=e123]: ○
+                - text: "Talents: auto-assigned after creation"
+              - generic [ref=e124]:
+                - generic [ref=e125]: ○
+                - text: "Attribute points: open"
+              - generic [ref=e126]:
+                - generic [ref=e127]: ○
+                - text: "Skills: 0/3 active, 0/6 passive"
+          - generic [ref=e129]:
+            - generic [ref=e130]: Genesis Terminal
+            - generic [ref=e131]:
+              - generic [ref=e132]: DESIGNATION
+              - textbox "Enter designation..." [ref=e133]
+            - generic [ref=e134]:
+              - generic [ref=e135]: GENDER
+              - generic [ref=e136]:
+                - button "MALE" [ref=e137] [cursor=pointer]:
+                  - generic [ref=e138]: MALE
+                - button "FEMALE" [ref=e139] [cursor=pointer]:
+                  - generic [ref=e140]: FEMALE
+                - button "OTHER" [ref=e141] [cursor=pointer]:
+                  - generic [ref=e142]: OTHER
+    - generic [ref=e145]:
+      - generic [ref=e147]: Narrative Memory
+      - generic [ref=e148]:
+        - button "⇄" [ref=e149] [cursor=pointer]
+        - button "+" [ref=e150] [cursor=pointer]
+        - button "📌" [ref=e151] [cursor=pointer]
+        - button "<<" [ref=e152] [cursor=pointer]
+  - 'button "Show Admin (Ctrl+`)" [ref=e153] [cursor=pointer]'

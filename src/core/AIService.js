@@ -35,6 +35,17 @@ const sanitizeEndpointPath = (value) => {
   return trimmed;
 };
 
+const unique = (values) => {
+  const seen = new Set();
+  const result = [];
+  for (const value of values) {
+    if (!value || seen.has(value)) continue;
+    seen.add(value);
+    result.push(value);
+  }
+  return result;
+};
+
 const resolveNarrateEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
@@ -55,7 +66,7 @@ const resolveNarrateEndpoints = () => {
   const derivedEndpoint = apiBaseUrl
     ? `${normalizeBaseUrl(apiBaseUrl)}/api/narrate`
     : undefined;
-  const endpoints = [narrateEndpoint, derivedEndpoint].filter(Boolean);
+  const endpoints = unique([narrateEndpoint, derivedEndpoint]);
   if (endpoints.length === 0) {
     endpoints.push("/api/narrate");
   }

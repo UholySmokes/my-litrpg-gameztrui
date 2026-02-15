@@ -144,9 +144,9 @@ describe("skill progression systems", () => {
           ...firstEvolution.player,
           level: 34,
           attributes: {
-            ...firstEvolution.player.attributes,
+          ...firstEvolution.player.attributes,
             strength: 18,
-            constitution: 14,
+            vitality: 14,
           },
         },
       },
@@ -161,6 +161,10 @@ describe("skill progression systems", () => {
   it("evolves race when requirements are met", () => {
     const firstRaceOption = DataRegistry.getRaceEvolutionOptions("pure_human", 0)[0];
     expect(firstRaceOption?.id).toBeTruthy();
+    const requiredAttribute = Object.keys(firstRaceOption.requirements?.minAttributes || {})[0];
+    const requiredValue =
+      firstRaceOption.requirements?.minAttributes?.[requiredAttribute] ?? 0;
+    expect(requiredAttribute).toBeTruthy();
 
     const state = {
       ...initialGameState,
@@ -170,7 +174,7 @@ describe("skill progression systems", () => {
         race: "pure_human",
         attributes: {
           ...initialGameState.player.attributes,
-          strength: 13,
+          [requiredAttribute]: requiredValue,
         },
         progress: {
           ...(initialGameState.player.progress || {}),
@@ -185,7 +189,8 @@ describe("skill progression systems", () => {
       payload: { evolutionId: firstRaceOption.id },
     });
 
-    expect(next.player.race?.name).not.toBe("Pure Human");
+    expect(typeof next.player.race).toBe("object");
+    expect(next.player.race?.name).toBe(firstRaceOption.name);
     expect(next.player.progress.raceEvolutions).toBe(1);
     expect(next.player.progress.raceEvolutionStage).toBe(1);
   });

@@ -71,7 +71,7 @@ function SkillCard({ skill, isSelected, onClick, showDescription = false }) {
       </div>
       {(showDescription || isSelected) && (
         <div style={{ fontSize: "0.6rem", opacity: 0.8, lineHeight: "1.35" }}>
-          {skill.description || "No description provided."}
+          {skill.description || "Details unavailable."}
         </div>
       )}
       {(damage || manaCost) && (

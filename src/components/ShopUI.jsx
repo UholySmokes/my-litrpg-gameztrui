@@ -102,7 +102,7 @@ export default function ShopUI({
         }}
       >
         <h2 id="shop-dialog-title" style={{ color: "var(--holo-cyan)", margin: 0 }}>
-          [SHOP]
+          Shop
         </h2>
         {onClose && (
           <button

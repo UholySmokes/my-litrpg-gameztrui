@@ -185,7 +185,7 @@ export default function CreationSummaryPanel({
               {selectionSummary.activeSkills ? (
                 selectionSummary.activeSkills.map((skill) => {
                   const rank = skill.level || skill.rank || 1;
-                  const desc = skill.description || "No description provided.";
+                  const desc = skill.description || "Details unavailable.";
                   return (
                     <li key={skill.id}>
                       <strong>{skill.name}</strong> - {desc} (Rank {rank})
@@ -220,7 +220,7 @@ export default function CreationSummaryPanel({
               {selectionSummary.passiveSkills ? (
                 selectionSummary.passiveSkills.map((skill) => {
                   const rank = skill.level || skill.rank || 1;
-                  const desc = skill.description || "No description provided.";
+                  const desc = skill.description || "Details unavailable.";
                   return (
                     <li key={skill.id}>
                       <strong>{skill.name}</strong> - {desc} (Rank {rank})

@@ -4,8 +4,16 @@
  * Implements the Facade pattern to hide the complexity of multiple registry files.
  */
 
-import { races } from "./registries/RaceDataRegistry.js";
-import { classes } from "./registries/ClassDataRegistry.js";
+import {
+  races,
+  getRaceEvolutionOptions,
+  getRaceEvolutionOption,
+} from "./registries/RaceDataRegistry.js";
+import {
+  classes,
+  getClassEvolutionOptions,
+  getClassEvolutionOption,
+} from "./registries/ClassDataRegistry.js";
 import {
   itemDatabase,
   getItemsByType as getItemsByTypeFromRegistry,
@@ -65,6 +73,22 @@ export class DataRegistry {
 
   static getClassById(id) {
     return this.getClasses().find((c) => c.id === id);
+  }
+
+  static getClassEvolutionOptions(classId) {
+    return getClassEvolutionOptions(classId);
+  }
+
+  static getClassEvolutionOption(classId, optionIdOrTargetId) {
+    return getClassEvolutionOption(classId, optionIdOrTargetId);
+  }
+
+  static getRaceEvolutionOptions(raceRef, stageOverride = null) {
+    return getRaceEvolutionOptions(raceRef, stageOverride);
+  }
+
+  static getRaceEvolutionOption(raceRef, optionIdOrName, stageOverride = null) {
+    return getRaceEvolutionOption(raceRef, optionIdOrName, stageOverride);
   }
 
   static getItemById(id) {

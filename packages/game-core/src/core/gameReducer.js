@@ -44,6 +44,10 @@ import {
   getProgressionModifiers,
   resolveClassEvolutionRequirement,
 } from "../utils/shared.js";
+import {
+  applyRaceEvolution,
+  getRaceEvolutionOptions,
+} from "../data/registries/RaceDataRegistry.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -52,6 +56,312 @@ const ensureCombatStructure = (state) =>
     enemies: [],
     log: [],
   };
+
+const getCurrentLocationId = (state) => {
+  const raw = state?.world?.location;
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    return raw.current || "";
+  }
+  return typeof raw === "string" ? raw : "";
+};
+
+const getVisitedLocationCount = (state) => {
+  const raw = state?.world?.location;
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    return Array.isArray(raw.visited) ? raw.visited.length : 0;
+  }
+  return 0;
+};
+
+const getTotalKills = (state) =>
+  Math.max(
+    0,
+    Math.floor(toNumber(state?.player?.progress?.totalKills, 0)),
+  );
+
+const getPlayerAttribute = (player, attributeKey) => {
+  if (!attributeKey) return 0;
+  const canonical = toCanonicalAttributeKey(attributeKey);
+  if (!canonical) return 0;
+  return toNumber(player?.attributes?.[canonical], 0);
+};
+
+const hasInventoryItem = (state, itemId, minQuantity = 1) => {
+  if (!itemId) return false;
+  const inventory = Array.isArray(state?.player?.inventory)
+    ? state.player.inventory
+    : [];
+  return inventory.some(
+    (item) =>
+      item?.id === itemId && toNumber(item?.quantity, 1) >= minQuantity,
+  );
+};
+
+const hasAnyInventoryItem = (state) =>
+  Array.isArray(state?.player?.inventory) && state.player.inventory.length > 0;
+
+const hasUnlockedPattern = (state, requirement) => {
+  if (!requirement) return false;
+  const rawKind =
+    typeof requirement === "object" && requirement
+      ? requirement.kind
+      : "weave";
+  const rawId =
+    typeof requirement === "object" && requirement
+      ? requirement.id
+      : requirement;
+  const kind = String(rawKind || "weave").trim().toLowerCase();
+  const id = String(rawId || "").trim().toLowerCase();
+  if (!id) return false;
+  const unlocked = state?.player?.magic?.unlockedPatterns;
+  const list =
+    unlocked && typeof unlocked === "object" && !Array.isArray(unlocked)
+      ? unlocked[kind]
+      : null;
+  return Array.isArray(list)
+    ? list
+        .map((entry) => String(entry || "").trim().toLowerCase())
+        .includes(id)
+    : false;
+};
+
+const hasEssenceSource = (state, sourceId) => {
+  const id = String(sourceId || "").trim().toLowerCase();
+  if (!id) return false;
+  const sources = state?.world?.essence?.sources;
+  if (!Array.isArray(sources)) return false;
+  return sources.some((entry) => {
+    if (typeof entry === "string") {
+      return entry.trim().toLowerCase() === id;
+    }
+    if (entry && typeof entry === "object" && !Array.isArray(entry)) {
+      return String(entry.id || "").trim().toLowerCase() === id;
+    }
+    return false;
+  });
+};
+
+const matchesActionType = (action, wantedType) => {
+  if (!wantedType) return true;
+  const currentType = String(action?.type || "").trim().toLowerCase();
+  if (!currentType) return false;
+  if (Array.isArray(wantedType)) {
+    return wantedType.some(
+      (entry) =>
+        String(entry || "").trim().toLowerCase() === currentType,
+    );
+  }
+  return String(wantedType).trim().toLowerCase() === currentType;
+};
+
+const matchesActionText = (action, textIncludes) => {
+  if (!textIncludes) return true;
+  const source = String(action?.originalInput || "").trim().toLowerCase();
+  if (!source) return false;
+  const needles = Array.isArray(textIncludes) ? textIncludes : [textIncludes];
+  return needles.some((needle) =>
+    source.includes(String(needle || "").trim().toLowerCase()),
+  );
+};
+
+const meetsRequirements = (requirements, state, player) => {
+  if (!requirements || typeof requirements !== "object") return true;
+
+  const minLevel = toNumber(requirements.minLevel, 0);
+  if ((player?.level || 1) < minLevel) return false;
+
+  const minTotalKills = toNumber(requirements.minTotalKills, 0);
+  if (getTotalKills(state) < minTotalKills) return false;
+
+  if (
+    requirements.minAttributes &&
+    typeof requirements.minAttributes === "object" &&
+    !Array.isArray(requirements.minAttributes)
+  ) {
+    for (const [attribute, minValue] of Object.entries(
+      requirements.minAttributes,
+    )) {
+      if (getPlayerAttribute(player, attribute) < toNumber(minValue, 0)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+};
+
+const isQuestObjectiveMet = (criteria, prevState, nextState, action) => {
+  if (!criteria || typeof criteria !== "object") return false;
+
+  if (!matchesActionType(action, criteria.actionType || criteria.actionTypes)) {
+    return false;
+  }
+  if (!matchesActionText(action, criteria.inputIncludes)) {
+    return false;
+  }
+
+  const minLevel = toNumber(criteria.minLevel, 0);
+  if ((nextState?.player?.level || 1) < minLevel) return false;
+
+  const minTotalKills = toNumber(criteria.minTotalKills, 0);
+  if (getTotalKills(nextState) < minTotalKills) return false;
+
+  const minVisitedLocations = toNumber(criteria.minVisitedLocations, 0);
+  if (getVisitedLocationCount(nextState) < minVisitedLocations) return false;
+
+  if (criteria.requiresLocationChange) {
+    const previousLocation = getCurrentLocationId(prevState);
+    const currentLocation = getCurrentLocationId(nextState);
+    if (!previousLocation || !currentLocation || previousLocation === currentLocation) {
+      return false;
+    }
+  }
+
+  if (criteria.requiresAnyItem && !hasAnyInventoryItem(nextState)) {
+    return false;
+  }
+
+  if (criteria.requiresItem) {
+    const minQuantity = toNumber(criteria.requiresItemQuantity, 1);
+    if (!hasInventoryItem(nextState, criteria.requiresItem, minQuantity)) {
+      return false;
+    }
+  }
+
+  if (criteria.requiresLocation) {
+    const currentLocation = String(getCurrentLocationId(nextState)).toLowerCase();
+    const requiredLocation = String(criteria.requiresLocation).toLowerCase();
+    if (!currentLocation || currentLocation !== requiredLocation) {
+      return false;
+    }
+  }
+
+  if (criteria.requiresMagicPattern && !hasUnlockedPattern(nextState, criteria.requiresMagicPattern)) {
+    return false;
+  }
+
+  if (criteria.requiresEssenceSource && !hasEssenceSource(nextState, criteria.requiresEssenceSource)) {
+    return false;
+  }
+
+  return true;
+};
+
+const resolveObjectiveCriteria = (quest, objective, questMeta) => {
+  if (objective?.criteria && typeof objective.criteria === "object") {
+    return objective.criteria;
+  }
+
+  const metaObjectives = Array.isArray(questMeta?.objectives)
+    ? questMeta.objectives
+    : [];
+  const metaObjective = metaObjectives.find(
+    (entry) => entry?.id && entry.id === objective?.id,
+  );
+  if (metaObjective?.criteria && typeof metaObjective.criteria === "object") {
+    return metaObjective.criteria;
+  }
+
+  const shouldUseAutoComplete =
+    questMeta?.autoComplete &&
+    Array.isArray(quest?.objectives) &&
+    quest.objectives.length === 1;
+  if (shouldUseAutoComplete) {
+    return questMeta.autoComplete;
+  }
+
+  return null;
+};
+
+const progressQuestObjectives = (prevState, nextState, action) => {
+  const activeQuests = Array.isArray(nextState?.quests?.active)
+    ? nextState.quests.active
+    : [];
+  if (!activeQuests.length) return nextState;
+
+  const updatedActive = [];
+  const completedQuests = Array.isArray(nextState?.quests?.completed)
+    ? [...nextState.quests.completed]
+    : [];
+  const completedQuestIds = new Set(
+    completedQuests
+      .map((entry) => entry?.id)
+      .filter((id) => typeof id === "string" && id),
+  );
+
+  let rewardsState = nextState;
+  let changed = false;
+
+  for (const quest of activeQuests) {
+    const questMeta = DataRegistry.getQuestById(quest.id) || quest || {};
+    const objectives = Array.isArray(quest?.objectives) ? quest.objectives : [];
+    if (!objectives.length) {
+      updatedActive.push(quest);
+      continue;
+    }
+
+    let objectivesChanged = false;
+    const nextObjectives = objectives.map((objective) => {
+      if (objective?.completed) return objective;
+      const criteria = resolveObjectiveCriteria(quest, objective, questMeta);
+      if (!criteria) return objective;
+      if (!isQuestObjectiveMet(criteria, prevState, nextState, action)) {
+        return objective;
+      }
+      objectivesChanged = true;
+      return {
+        ...objective,
+        completed: true,
+        completedAt: SimBridge.now(),
+      };
+    });
+
+    const allCompleted =
+      nextObjectives.length > 0 &&
+      nextObjectives.every((objective) => objective?.completed);
+
+    if (allCompleted) {
+      changed = true;
+      if (!completedQuestIds.has(quest.id)) {
+        completedQuestIds.add(quest.id);
+        completedQuests.push({
+          id: quest.id,
+          date: SimBridge.now(),
+          meta: questMeta || null,
+        });
+        const reward = questMeta?.rewards || quest?.rewards || null;
+        if (reward) {
+          rewardsState = applyAutoTitleUnlocks(applyQuestRewards(rewardsState, reward), {
+            announce: true,
+          });
+        }
+      }
+      continue;
+    }
+
+    if (objectivesChanged || quest.status !== "active") {
+      changed = true;
+      updatedActive.push({
+        ...quest,
+        status: "active",
+        objectives: nextObjectives,
+      });
+    } else {
+      updatedActive.push(quest);
+    }
+  }
+
+  if (!changed) return rewardsState;
+
+  return {
+    ...rewardsState,
+    quests: {
+      ...(rewardsState.quests || {}),
+      active: updatedActive,
+      completed: completedQuests,
+    },
+  };
+};
 
 const gameReducer = (state, action) =>
   withTraceSpan(
@@ -80,7 +390,8 @@ const gameReducer = (state, action) =>
       // Two-tier dispatch: applies a StepResult from SystemEngine.step()
       const result = action.payload;
       if (!result || !result.ok || !result.nextState) return state;
-      const engineState = normalizeGameState(result.nextState);
+      let engineState = normalizeGameState(result.nextState);
+      engineState = progressQuestObjectives(state, engineState, result.action);
       // Optionally append a narrative entry for the step summary
       if (result.summary) {
         const narrativeWithSummary = appendNarrativeEntry(
@@ -598,19 +909,48 @@ const gameReducer = (state, action) =>
       const player = state.player || {};
       const classId = player.class?.id || player.class;
       if (!classId) return state;
-      const classData = DataRegistry.getClassById(classId);
-      if (!classData?.upgradePath) return state;
+      const evolutionOptions = DataRegistry.getClassEvolutionOptions(classId);
+      if (!Array.isArray(evolutionOptions) || evolutionOptions.length === 0) {
+        return state;
+      }
+
+      const requestedOptionId =
+        action.payload?.evolutionId || action.payload?.targetClassId || null;
+      const selectedOption = requestedOptionId
+        ? DataRegistry.getClassEvolutionOption(classId, requestedOptionId)
+        : evolutionOptions[0];
+      if (!selectedOption?.targetId) return state;
+
+      const nextClass = DataRegistry.getClassById(selectedOption.targetId);
+      if (!nextClass) return state;
+
       const progress = isPlainObject(player.progress) ? player.progress : {};
       const evolutionCount = toNumber(progress.classEvolutions, 0);
       const progressionModifiers = getProgressionModifiers(player);
-      const requiredLevel = resolveClassEvolutionRequirement(
+      const progressionLevelRequirement = resolveClassEvolutionRequirement(
         state.config,
         evolutionCount,
         progressionModifiers,
       );
-      if ((player.level || 1) < requiredLevel) return state;
-      const nextClass = DataRegistry.getClassById(classData.upgradePath);
-      if (!nextClass) return state;
+      const mergedRequirements = {
+        ...(selectedOption.requirements || {}),
+        minLevel: Math.max(
+          progressionLevelRequirement,
+          toNumber(selectedOption.requirements?.minLevel, 1),
+        ),
+      };
+      if (!meetsRequirements(mergedRequirements, state, player)) return state;
+
+      const history = Array.isArray(progress.classEvolutionHistory)
+        ? [...progress.classEvolutionHistory]
+        : [];
+      history.push({
+        atLevel: player.level || 1,
+        from: classId,
+        to: nextClass.id,
+        optionId: selectedOption.id,
+      });
+
       return {
         ...state,
         player: {
@@ -622,8 +962,85 @@ const gameReducer = (state, action) =>
             lastClassEvolutionFrom: classId,
             lastClassEvolutionTo: nextClass.id,
             lastClassEvolutionAtLevel: player.level || 1,
+            lastClassEvolutionOption: selectedOption.id,
+            classEvolutionHistory: history.slice(-10),
           },
         },
+      };
+    }
+
+    case "EVOLVE_RACE": {
+      const player = state.player || {};
+      if (!player.race) return state;
+
+      const progress = isPlainObject(player.progress) ? player.progress : {};
+      const stageFromProgress = toNumber(progress.raceEvolutionStage, NaN);
+      const stageOverride = Number.isFinite(stageFromProgress)
+        ? stageFromProgress
+        : null;
+      const evolutionOptions = getRaceEvolutionOptions(player.race, stageOverride);
+      if (!Array.isArray(evolutionOptions) || evolutionOptions.length === 0) {
+        return state;
+      }
+
+      const requestedOptionId = action.payload?.evolutionId || null;
+      const selectedOption = requestedOptionId
+        ? evolutionOptions.find(
+            (option) =>
+              option.id === requestedOptionId ||
+              option.name.toLowerCase() ===
+                String(requestedOptionId).trim().toLowerCase(),
+          )
+        : evolutionOptions[0];
+      if (!selectedOption) return state;
+      if (!meetsRequirements(selectedOption.requirements, state, player)) {
+        return state;
+      }
+
+      const evolvedRace = applyRaceEvolution(player.race, selectedOption, stageOverride);
+      if (!evolvedRace) return state;
+
+      const attributes = {
+        ...(player.attributes || {}),
+      };
+      Object.entries(selectedOption.statBonusesDelta || {}).forEach(
+        ([rawKey, rawValue]) => {
+          const canonical = toCanonicalAttributeKey(rawKey);
+          if (!canonical) return;
+          attributes[canonical] =
+            toNumber(attributes[canonical], 0) + toNumber(rawValue, 0);
+        },
+      );
+
+      const raceEvolutionHistory = Array.isArray(progress.raceEvolutionHistory)
+        ? [...progress.raceEvolutionHistory]
+        : [];
+      raceEvolutionHistory.push({
+        atLevel: player.level || 1,
+        toStage: selectedOption.stage,
+        toName: selectedOption.name,
+        optionId: selectedOption.id,
+      });
+
+      return {
+        ...state,
+        player: updatePlayerVitals(
+          {
+            ...player,
+            race: evolvedRace,
+            attributes,
+            progress: {
+              ...progress,
+              raceEvolutions: toNumber(progress.raceEvolutions, 0) + 1,
+              raceEvolutionStage: selectedOption.stage,
+              lastRaceEvolutionAtLevel: player.level || 1,
+              lastRaceEvolutionName: selectedOption.name,
+              raceEvolutionHistory: raceEvolutionHistory.slice(-10),
+            },
+          },
+          state.config,
+          attributes,
+        ),
       };
     }
 

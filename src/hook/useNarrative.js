@@ -18,14 +18,29 @@ import { renderStatusBlock } from "../util/statusrenderer.js";
 import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
 import { appendNarrativeEntry } from "../core/narrativeLog.js";
 import { toNumber } from "../utils/shared.js";
+import { QuestManager } from "../systems/quest/QuestManager.js";
 
 const initialNarrativeCache = new Map();
 
-const DEFAULT_ACTION_SUGGESTIONS = [
-  { t: "scan surroundings", w: 1 },
+const FIXED_ACTION_SUGGESTIONS = [
+  { t: "look around", w: 1 },
   { t: "check status", w: 1 },
   { t: "open inventory", w: 1 },
+  { t: "review quests", w: 1 },
+  { t: "train skills", w: 1 },
   { t: "talk to nearby NPC", w: 1 },
+];
+
+const CONTEXT_SUGGESTION_FILLERS = [
+  { t: "explore a nearby route", w: 0.82 },
+  { t: "prepare for the next objective", w: 0.8 },
+  { t: "gather local information", w: 0.78 },
+  { t: "take a short rest", w: 0.76 },
+];
+
+const DEFAULT_ACTION_SUGGESTIONS = [
+  ...FIXED_ACTION_SUGGESTIONS,
+  ...CONTEXT_SUGGESTION_FILLERS,
 ];
 
 // Mood inference from narrative text - used to tag entries
@@ -93,7 +108,7 @@ function buildActionSuggestions(state) {
     return DEFAULT_ACTION_SUGGESTIONS;
   }
 
-  const suggestions = [];
+  const contextSuggestions = [];
   const player = state.player || {};
   const magic =
     player.magic && typeof player.magic === "object" && !Array.isArray(player.magic)
@@ -145,7 +160,7 @@ function buildActionSuggestions(state) {
   );
 
   if (inCombat) {
-    suggestions.push(
+    contextSuggestions.push(
       { t: "attack enemy", w: 1 },
       { t: "use skill", w: 1 },
       { t: "drink potion", w: player.inventory?.length ? 0.9 : 0.6 },
@@ -156,48 +171,48 @@ function buildActionSuggestions(state) {
     if (activeSkills.length > 0) {
       const skill = activeSkills[Math.floor(Date.now() / 10000) % activeSkills.length];
       if (skill?.name) {
-        suggestions.push({ t: `use ${skill.name}`, w: 0.95 });
+        contextSuggestions.push({ t: `use ${skill.name}`, w: 0.95 });
       }
     }
     if (prepared) {
-      suggestions.push({ t: "release prepared weave", w: 0.98 });
+      contextSuggestions.push({ t: "release prepared weave", w: 0.98 });
     } else if (charges.length > 0) {
-      suggestions.push({ t: "shape a quick weave", w: 0.9 });
+      contextSuggestions.push({ t: "shape a quick weave", w: 0.9 });
     }
     if (resonanceCurrent >= 70) {
-      suggestions.push({ t: "anchor to stabilize resonance", w: 0.94 });
+      contextSuggestions.push({ t: "anchor to stabilize resonance", w: 0.94 });
     }
     if (avgReserveTaint >= 0.25) {
-      suggestions.push({ t: "purge contamination", w: 0.92 });
+      contextSuggestions.push({ t: "purge contamination", w: 0.92 });
     }
   } else {
-    suggestions.push(
+    contextSuggestions.push(
       { t: "explore area", w: 1 },
       { t: "speak with locals", w: 0.9 },
-      { t: "review quests", w: (state.quests?.active?.length ?? 0) ? 1 : 0.6 },
-      { t: "train skills", w: 0.8 },
+      { t: "follow quest lead", w: (state.quests?.active?.length ?? 0) ? 1 : 0.6 },
+      { t: "practice one ability", w: 0.8 },
     );
 
     if (!hasAmbientSnapshot) {
-      suggestions.push({ t: "sense ambient essence", w: 0.92 });
+      contextSuggestions.push({ t: "sense ambient essence", w: 0.92 });
     } else if (reserveRows.length === 0) {
-      suggestions.push({ t: "draw essence from the ambient field", w: 0.95 });
+      contextSuggestions.push({ t: "draw essence from the ambient field", w: 0.95 });
     }
     if (reserveRows.length > 0 && charges.length === 0) {
       const target = highestReserve?.essence || "fire";
-      suggestions.push({ t: `refine ${target} essence`, w: 0.95 });
+      contextSuggestions.push({ t: `refine ${target} essence`, w: 0.95 });
     }
     if (charges.length > 0 && !prepared) {
-      suggestions.push({ t: "shape and weave a pattern", w: 0.93 });
+      contextSuggestions.push({ t: "shape and weave a pattern", w: 0.93 });
     }
     if (prepared) {
-      suggestions.push({ t: "release prepared magic", w: 0.9 });
+      contextSuggestions.push({ t: "release prepared magic", w: 0.9 });
     }
     if (avgReserveTaint >= 0.2) {
-      suggestions.push({ t: "purge tainted reserves", w: 0.9 });
+      contextSuggestions.push({ t: "purge tainted reserves", w: 0.9 });
     }
     if (resonanceCurrent >= 60) {
-      suggestions.push({ t: "anchor and calm resonance", w: 0.9 });
+      contextSuggestions.push({ t: "anchor and calm resonance", w: 0.9 });
     }
 
     // Archetype-specific exploration suggestions
@@ -214,7 +229,7 @@ function buildActionSuggestions(state) {
         Overlay: { t: "probe for exploits", w: 0.85 },
       };
       if (category && systemSuggestions[category]) {
-        suggestions.push(systemSuggestions[category]);
+        contextSuggestions.push(systemSuggestions[category]);
       }
     }
 
@@ -222,10 +237,10 @@ function buildActionSuggestions(state) {
     const location = state.world?.location?.current || state.world?.location || "";
     const locationStr = typeof location === "string" ? location : "";
     if (locationStr.includes("town") || locationStr.includes("village") || locationStr.includes("city")) {
-      suggestions.push({ t: "visit shop", w: 0.8 });
+      contextSuggestions.push({ t: "visit shop", w: 0.8 });
     }
     if (locationStr.includes("dungeon") || locationStr.includes("cave") || locationStr.includes("ruin")) {
-      suggestions.push({ t: "search for treasure", w: 0.85 });
+      contextSuggestions.push({ t: "search for treasure", w: 0.85 });
     }
   }
 
@@ -241,11 +256,11 @@ function buildActionSuggestions(state) {
   );
 
   if (hpCurrent < 0.3 * Math.max(1, hpMax)) {
-    suggestions.push({ t: "rest to recover", w: 0.9 });
+    contextSuggestions.push({ t: "rest to recover", w: 0.9 });
   }
 
   if (!player.profession) {
-    suggestions.push({ t: "choose profession", w: 0.8 });
+    contextSuggestions.push({ t: "choose profession", w: 0.8 });
   }
 
   // Quest-specific suggestions
@@ -253,18 +268,28 @@ function buildActionSuggestions(state) {
   if (activeQuests.length > 0 && !inCombat) {
     const quest = activeQuests[0];
     if (quest?.name) {
-      suggestions.push({ t: `pursue ${quest.name}`, w: 0.9 });
+      contextSuggestions.push({ t: `pursue ${quest.name}`, w: 0.9 });
     }
   }
 
-  const uniqueSuggestions = suggestions.filter(
+  const fixedLabels = new Set(
+    FIXED_ACTION_SUGGESTIONS.map((suggestion) => suggestion.t.toLowerCase()),
+  );
+  const uniqueContextSuggestions = contextSuggestions.filter(
     (suggestion, index, arr) =>
-      arr.findIndex((s) => s.t === suggestion.t) === index,
+      arr.findIndex((s) => s.t === suggestion.t) === index &&
+      !fixedLabels.has(String(suggestion.t || "").toLowerCase()),
   );
 
-  return uniqueSuggestions.length
-    ? uniqueSuggestions
-    : DEFAULT_ACTION_SUGGESTIONS;
+  const normalizedContext = [
+    ...uniqueContextSuggestions,
+    ...CONTEXT_SUGGESTION_FILLERS.filter(
+      (fallback) =>
+        !uniqueContextSuggestions.some((entry) => entry.t === fallback.t),
+    ),
+  ].slice(0, 4);
+
+  return [...FIXED_ACTION_SUGGESTIONS, ...normalizedContext];
 }
 
 function resolveArchetypeSystemLabel(player = {}) {
@@ -646,7 +671,7 @@ export function useNarrative(
    * Processes user input through the full narrative pipeline
    */
   const submitInput = useCallback(
-    async (userInput, currentState) => {
+    async (userInput, currentState, options = {}) => {
       if (!userInput || !userInput.trim()) {
         return;
       }
@@ -698,8 +723,60 @@ export function useNarrative(
         }
 
         // State already updated by submitAction -> APPLY_ENGINE_RESULT in useGameEngine.
-        const newState = stepResult.nextState ?? currentState;
+        let newState = stepResult.nextState ?? currentState;
         const readOnly = newState === currentState;
+
+        if (options.fromSuggestion) {
+          const suggestedQuest = QuestManager.generateQuestFromSuggestion(
+            userInput,
+            newState,
+          );
+
+          if (suggestedQuest?.id) {
+            const existingActive = Array.isArray(newState?.quests?.active)
+              ? newState.quests.active
+              : [];
+            const existingCompleted = Array.isArray(newState?.quests?.completed)
+              ? newState.quests.completed
+              : [];
+            const alreadyTracked =
+              existingActive.some((quest) => quest.id === suggestedQuest.id) ||
+              existingCompleted.some((quest) => quest.id === suggestedQuest.id);
+
+            if (!alreadyTracked) {
+              newState = {
+                ...newState,
+                quests: {
+                  ...(newState.quests || {}),
+                  active: [...existingActive, suggestedQuest].slice(0, 6),
+                  completed: existingCompleted,
+                },
+              };
+
+              setState((prevState) => {
+                const active = Array.isArray(prevState?.quests?.active)
+                  ? prevState.quests.active
+                  : [];
+                const completed = Array.isArray(prevState?.quests?.completed)
+                  ? prevState.quests.completed
+                  : [];
+                const exists =
+                  active.some((quest) => quest.id === suggestedQuest.id) ||
+                  completed.some((quest) => quest.id === suggestedQuest.id);
+                if (exists) return prevState;
+                return {
+                  ...prevState,
+                  quests: {
+                    ...(prevState.quests || {}),
+                    active: [...active, suggestedQuest].slice(0, 6),
+                    completed,
+                  },
+                };
+              });
+            }
+          }
+        }
+
         const actionResult = {
           success: true,
           actionType: action?.type,
@@ -708,9 +785,7 @@ export function useNarrative(
           readOnly,
         };
 
-        const suggestionSource = actionResult.readOnly
-          ? currentState
-          : newState;
+        const suggestionSource = actionResult.readOnly ? currentState : newState;
         setActionSuggestions(buildActionSuggestions(suggestionSource));
 
         // Handle status display action explicitly.

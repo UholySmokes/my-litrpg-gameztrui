@@ -3,7 +3,7 @@ import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { createInitialWorldState } from "../world/WorldInitializer.js";
 
 export const INITIAL_CONFIG = {
-  maxLevel: 100,
+  maxLevel: 1000,
   attributePointsPerLevel: 3,
 
   baseAttributeValue: 5,
@@ -102,6 +102,8 @@ const initialGameState = {
       gachaPulls: 0,
       totalGoldEarned: 0,
       classEvolutions: 0,
+      raceEvolutions: 0,
+      raceEvolutionStage: 0,
     },
   },
   quests: {

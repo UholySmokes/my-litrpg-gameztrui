@@ -16,7 +16,7 @@ const normalizeType = (item) => {
   return "misc";
 };
 
-export default function InventoryPanel({ inventory }) {
+export default function InventoryPanel({ inventory, storyHint = "" }) {
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
 
@@ -39,13 +39,16 @@ export default function InventoryPanel({ inventory }) {
 
   return (
     <div className="inventory-panel">
+      {storyHint ? (
+        <div style={{ color: "var(--text-dim)", fontSize: "0.78rem" }}>{storyHint}</div>
+      ) : null}
       <div className="inventory-panel__filters">
         <input
           type="text"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Filter items..."
           className="inventory-panel__search"
+          aria-label="Filter inventory items"
         />
         <select
           className="inventory-panel__select"

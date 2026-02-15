@@ -214,8 +214,18 @@ export default function GameUI({ user }) {
     });
   };
 
-  const handleEvolveClass = () => {
-    dispatch({ type: "EVOLVE_CLASS" });
+  const handleEvolveClass = (evolutionId = null) => {
+    dispatch({
+      type: "EVOLVE_CLASS",
+      payload: evolutionId ? { evolutionId } : {},
+    });
+  };
+
+  const handleEvolveRace = (evolutionId = null) => {
+    dispatch({
+      type: "EVOLVE_RACE",
+      payload: evolutionId ? { evolutionId } : {},
+    });
   };
 
   const handleStudySpell = (payload = { mode: "create" }) => {
@@ -641,7 +651,7 @@ export default function GameUI({ user }) {
   const handleSuggestionClick = async (actionText) => {
     if (isLoading) return;
     try {
-      await submitInput(actionText, state);
+      await submitInput(actionText, state, { fromSuggestion: true });
     } catch (err) {
       console.error("Suggestion action failed:", err);
       addSystemMessage("Something went wrong processing your action.", "system");
@@ -966,6 +976,7 @@ export default function GameUI({ user }) {
               onEvolveSkill={handleEvolveSkill}
               onFuseSkills={handleFuseSkills}
               onEvolveClass={handleEvolveClass}
+              onEvolveRace={handleEvolveRace}
               onStudySpell={handleStudySpell}
               onLoadState={handleLoadState}
               addSystemMessage={addSystemMessage}

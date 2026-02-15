@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ATTRIBUTE_METADATA } from "../constants/attributes.js";
+import { ATTRIBUTE_METADATA, toCanonicalAttributeKey } from "../constants/attributes.js";
 import {
   ensureAttributeShape,
   getAttributeValue,
@@ -17,6 +17,67 @@ import {
   resolveClassEvolutionRequirement,
 } from "../utils/shared.js";
 
+const getNumeric = (value, fallback = 0) =>
+  Number.isFinite(Number(value)) ? Number(value) : fallback;
+
+const getTotalKills = (player) =>
+  Math.max(0, Math.floor(getNumeric(player?.progress?.totalKills, 0)));
+
+const getAttributeValueByAlias = (player, alias) => {
+  const canonical = toCanonicalAttributeKey(alias);
+  if (!canonical) return 0;
+  return getNumeric(player?.attributes?.[canonical], 0);
+};
+
+const meetsEvolutionRequirements = (player, requirements = {}, extraMinLevel = 0) => {
+  const minLevel = Math.max(getNumeric(requirements.minLevel, 0), extraMinLevel);
+  if ((player?.level || 1) < minLevel) return false;
+
+  const minTotalKills = getNumeric(requirements.minTotalKills, 0);
+  if (getTotalKills(player) < minTotalKills) return false;
+
+  const minAttributes =
+    requirements.minAttributes &&
+    typeof requirements.minAttributes === "object" &&
+    !Array.isArray(requirements.minAttributes)
+      ? requirements.minAttributes
+      : {};
+
+  for (const [attribute, minValue] of Object.entries(minAttributes)) {
+    if (getAttributeValueByAlias(player, attribute) < getNumeric(minValue, 0)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+const formatRequirements = (requirements = {}, extraMinLevel = 0) => {
+  const mergedLevel = Math.max(getNumeric(requirements.minLevel, 0), extraMinLevel);
+  const parts = [];
+  if (mergedLevel > 0) {
+    parts.push(`Level ${mergedLevel}`);
+  }
+  const minTotalKills = getNumeric(requirements.minTotalKills, 0);
+  if (minTotalKills > 0) {
+    parts.push(`${minTotalKills} total kills`);
+  }
+
+  const minAttributes =
+    requirements.minAttributes &&
+    typeof requirements.minAttributes === "object" &&
+    !Array.isArray(requirements.minAttributes)
+      ? requirements.minAttributes
+      : {};
+  Object.entries(minAttributes).forEach(([attribute, minValue]) => {
+    const canonical = toCanonicalAttributeKey(attribute) || attribute;
+    const label = canonical.charAt(0).toUpperCase() + canonical.slice(1);
+    parts.push(`${label} ${getNumeric(minValue, 0)}`);
+  });
+
+  return parts.length ? parts.join(" | ") : "No additional requirements";
+};
+
 export default function StatusOverlay({
   player,
   world,
@@ -28,6 +89,7 @@ export default function StatusOverlay({
   onEvolveSkill,
   onFuseSkills,
   onEvolveClass,
+  onEvolveRace,
   onStudySpell,
   variant = "modal",
 }) {
@@ -279,9 +341,6 @@ export default function StatusOverlay({
       : archetypeSystemName;
   const classId = player.class?.id || player.class;
   const classData = classId ? DataRegistry.getClassById(classId) : null;
-  const nextClass = classData?.upgradePath
-    ? DataRegistry.getClassById(classData.upgradePath)
-    : null;
   const classEvolutionCount = Math.max(
     0,
     Math.floor(
@@ -300,9 +359,48 @@ export default function StatusOverlay({
     classEvolutionCount,
     progressionModifiers,
   );
-  const canEvolveClass =
-    !!nextClass &&
-    (player.level || 1) >= requiredClassEvolutionLevel;
+  const classEvolutionOptions = classId
+    ? DataRegistry.getClassEvolutionOptions(classId).map((option) => {
+        const targetClass = DataRegistry.getClassById(option.targetId);
+        const requirementText = formatRequirements(
+          option.requirements,
+          requiredClassEvolutionLevel,
+        );
+        const unlocked = meetsEvolutionRequirements(
+          player,
+          option.requirements,
+          requiredClassEvolutionLevel,
+        );
+        return {
+          ...option,
+          targetClass,
+          requirementText,
+          unlocked,
+        };
+      })
+    : [];
+
+  const raceEvolutionStage = Math.max(
+    0,
+    Math.floor(
+      getNumeric(
+        player.progress &&
+          typeof player.progress === "object" &&
+          !Array.isArray(player.progress)
+          ? player.progress.raceEvolutionStage
+          : player.race?.evolutionStageIndex,
+        0,
+      ),
+    ),
+  );
+  const raceEvolutionOptions = DataRegistry.getRaceEvolutionOptions(
+    player.race,
+    raceEvolutionStage,
+  ).map((option) => ({
+    ...option,
+    unlocked: meetsEvolutionRequirements(player, option.requirements, 0),
+    requirementText: formatRequirements(option.requirements, 0),
+  }));
 
   const derivedCombatStats = [
     {
@@ -380,7 +478,7 @@ export default function StatusOverlay({
           >
             <div>
               <h2 id="status-dialog-title" style={{ color: "var(--holo-cyan)", margin: 0 }}>
-                [STATUS OVERLAY]
+                Character Status
               </h2>
               <div style={{ color: "var(--text-main)" }}>
                 {player.name} · Level {player.level || 1} {classLabel}
@@ -819,23 +917,100 @@ export default function StatusOverlay({
                 padding: "0.75rem",
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span>Current: {classLabel || "Unknown"}</span>
-                <span>
-                  Next: {nextClass?.name || nextClass?.id || "None"}
-                </span>
+              <div style={{ marginBottom: "0.4rem" }}>
+                Current Class: {classLabel || "Unknown"}
               </div>
-              <div style={{ color: "var(--text-dim)", marginTop: "0.25rem" }}>
-                Requires Level {requiredClassEvolutionLevel}
+              <div style={{ color: "var(--text-dim)", marginBottom: "0.5rem" }}>
+                Baseline requirement this stage: Level {requiredClassEvolutionLevel}
               </div>
-              <button
-                className="holo-button"
-                style={{ marginTop: "0.5rem" }}
-                disabled={!canEvolveClass || typeof onEvolveClass !== "function"}
-                onClick={() => onEvolveClass?.()}
-              >
-                Evolve Class
-              </button>
+              {classEvolutionOptions.length === 0 ? (
+                <div style={{ color: "var(--text-dim)" }}>
+                  No further class evolutions are available.
+                </div>
+              ) : (
+                classEvolutionOptions.map((option) => (
+                  <div
+                    key={option.id}
+                    style={{
+                      borderTop: "1px solid rgba(0, 243, 255, 0.1)",
+                      paddingTop: "0.55rem",
+                      marginTop: "0.55rem",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: "0.5rem" }}>
+                      <span style={{ color: "var(--holo-cyan)", fontWeight: "bold" }}>
+                        {option.targetClass?.name || option.name}
+                      </span>
+                      <button
+                        className="holo-button"
+                        style={{ fontSize: "0.72rem", minWidth: "108px" }}
+                        disabled={!option.unlocked || typeof onEvolveClass !== "function"}
+                        onClick={() => onEvolveClass?.(option.id)}
+                      >
+                        Evolve
+                      </button>
+                    </div>
+                    <div style={{ color: "var(--text-main)", fontSize: "0.82rem", marginTop: "0.2rem" }}>
+                      {option.description}
+                    </div>
+                    <div style={{ color: "var(--text-dim)", fontSize: "0.75rem", marginTop: "0.15rem" }}>
+                      Requirements: {option.requirementText}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </section>
+
+          <section>
+            <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+              Race Evolution
+            </h3>
+            <div
+              style={{
+                border: "1px solid rgba(0, 243, 255, 0.2)",
+                padding: "0.75rem",
+              }}
+            >
+              <div style={{ marginBottom: "0.4rem" }}>
+                Current Race Form: {raceLabel}
+              </div>
+              {raceEvolutionOptions.length === 0 ? (
+                <div style={{ color: "var(--text-dim)" }}>
+                  Race evolution limit reached for this lineage.
+                </div>
+              ) : (
+                raceEvolutionOptions.map((option) => (
+                  <div
+                    key={option.id}
+                    style={{
+                      borderTop: "1px solid rgba(0, 243, 255, 0.1)",
+                      paddingTop: "0.55rem",
+                      marginTop: "0.55rem",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: "0.5rem" }}>
+                      <span style={{ color: "var(--holo-cyan)", fontWeight: "bold" }}>
+                        {option.name}
+                      </span>
+                      <button
+                        className="holo-button"
+                        style={{ fontSize: "0.72rem", minWidth: "108px" }}
+                        disabled={!option.unlocked || typeof onEvolveRace !== "function"}
+                        onClick={() => onEvolveRace?.(option.id)}
+                      >
+                        Evolve
+                      </button>
+                    </div>
+                    <div style={{ color: "var(--text-main)", fontSize: "0.82rem", marginTop: "0.2rem" }}>
+                      {option.description}
+                    </div>
+                    <div style={{ color: "var(--text-dim)", fontSize: "0.75rem", marginTop: "0.15rem" }}>
+                      Requirements: {option.requirementText}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </section>
 
@@ -853,7 +1028,7 @@ export default function StatusOverlay({
             >
               {evolvableSkills.length === 0 ? (
                 <div style={{ color: "var(--text-dim)" }}>
-                  No skills available to evolve.
+                  No skills eligible. Skills must be level 10 or higher to evolve.
                 </div>
               ) : (
                 evolvableSkills.map((skill) => (

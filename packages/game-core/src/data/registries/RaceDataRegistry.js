@@ -2035,9 +2035,210 @@ export let races = [
   },
 ];
 
+const RACE_EVOLUTION_STAGES = [
+  "Mortal",
+  "Awakened",
+  "Ascendant",
+  "Mythic",
+  "Transcendent",
+];
+
+const RACE_EVOLUTION_LEVEL_REQUIREMENTS = [15, 45, 120, 260];
+const RACE_EVOLUTION_KILL_REQUIREMENTS = [3, 18, 60, 150];
+
+const RACE_EVOLUTION_PROFILES = {
+  martial: {
+    suffixes: ["Vanguard", "Warlord", "Titan"],
+    deltas: [
+      { str: 2, will: 1 },
+      { str: 1, const: 2 },
+      { str: 2, soul: 1 },
+    ],
+  },
+  agile: {
+    suffixes: ["Strider", "Phantom", "Riftstalker"],
+    deltas: [
+      { agi: 2, dex: 1 },
+      { dex: 2, luck: 1 },
+      { agi: 2, will: 1 },
+    ],
+  },
+  mystical: {
+    suffixes: ["Seer", "Sage", "Astral"],
+    deltas: [
+      { int: 2, wis: 1 },
+      { soul: 2, int: 1 },
+      { wis: 2, cha: 1 },
+    ],
+  },
+  adaptive: {
+    suffixes: ["Pathfinder", "Paragon", "Mythweaver"],
+    deltas: [
+      { will: 2, luck: 1 },
+      { cha: 2, dex: 1 },
+      { soul: 1, int: 1, agi: 1 },
+    ],
+  },
+};
+
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
+
+function getRaceStatBonuses(race) {
+  if (!race || typeof race !== "object" || Array.isArray(race)) return {};
+  if (race.statBonuses && typeof race.statBonuses === "object" && !Array.isArray(race.statBonuses)) {
+    return race.statBonuses;
+  }
+  if (race.modifiers && typeof race.modifiers === "object" && !Array.isArray(race.modifiers)) {
+    return race.modifiers;
+  }
+  return {};
+}
+
+function determineRaceEvolutionProfile(race) {
+  const stats = getRaceStatBonuses(race);
+  const score = {
+    martial: (stats.str || 0) + (stats.const || 0) + (stats.will || 0),
+    agile: (stats.agi || 0) + (stats.dex || 0) + (stats.luck || 0),
+    mystical: (stats.int || 0) + (stats.wis || 0) + (stats.soul || 0),
+    adaptive: (stats.cha || 0) + (stats.will || 0) + (stats.luck || 0),
+  };
+
+  const ranked = Object.entries(score).sort((a, b) => b[1] - a[1]);
+  return ranked[0]?.[0] || "adaptive";
+}
+
+function normalizeRaceRef(raceRef) {
+  if (!raceRef) return null;
+  if (typeof raceRef === "string") {
+    return getRaceById(raceRef);
+  }
+  if (typeof raceRef === "object" && !Array.isArray(raceRef)) {
+    const baseId = raceRef.baseRaceId || raceRef.id;
+    return getRaceById(baseId) || raceRef;
+  }
+  return null;
+}
+
+function resolveRaceStageIndex(raceRef, stageOverride = null) {
+  if (Number.isFinite(stageOverride)) {
+    return Math.max(0, Math.min(RACE_EVOLUTION_STAGES.length - 1, Math.floor(stageOverride)));
+  }
+
+  if (raceRef && typeof raceRef === "object" && !Array.isArray(raceRef)) {
+    if (Number.isFinite(raceRef.evolutionStageIndex)) {
+      return Math.max(
+        0,
+        Math.min(RACE_EVOLUTION_STAGES.length - 1, Math.floor(raceRef.evolutionStageIndex)),
+      );
+    }
+    if (typeof raceRef.evolutionStage === "string") {
+      const idx = RACE_EVOLUTION_STAGES.indexOf(raceRef.evolutionStage);
+      if (idx >= 0) return idx;
+    }
+  }
+
+  return 0;
+}
+
+function mergeRaceBonuses(baseBonuses = {}, delta = {}) {
+  const merged = { ...baseBonuses };
+  Object.entries(delta || {}).forEach(([key, value]) => {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) return;
+    const current = Number(merged[key]) || 0;
+    merged[key] = current + numeric;
+  });
+  return merged;
+}
+
+export function getRaceEvolutionStageName(stageIndex = 0) {
+  const idx = Math.max(0, Math.min(RACE_EVOLUTION_STAGES.length - 1, Math.floor(Number(stageIndex) || 0)));
+  return RACE_EVOLUTION_STAGES[idx];
+}
+
+export function getRaceEvolutionMaxStage() {
+  return RACE_EVOLUTION_STAGES.length - 1;
+}
+
+export function getRaceEvolutionOptions(raceRef, stageOverride = null) {
+  const race = normalizeRaceRef(raceRef);
+  if (!race) return [];
+
+  const stageIndex = resolveRaceStageIndex(raceRef, stageOverride);
+  const maxStage = getRaceEvolutionMaxStage();
+  if (stageIndex >= maxStage) return [];
+
+  const profileKey = determineRaceEvolutionProfile(race);
+  const profile = RACE_EVOLUTION_PROFILES[profileKey] || RACE_EVOLUTION_PROFILES.adaptive;
+  const optionCount = stageIndex === 0 ? 3 : stageIndex === 1 ? 2 : 1;
+  const nextStage = stageIndex + 1;
+  const levelBase = RACE_EVOLUTION_LEVEL_REQUIREMENTS[stageIndex] || 15;
+  const killBase = RACE_EVOLUTION_KILL_REQUIREMENTS[stageIndex] || 0;
+
+  const stats = getRaceStatBonuses(race);
+  const dominantStat = Object.entries(stats)
+    .filter(([, value]) => Number.isFinite(Number(value)))
+    .sort((a, b) => Number(b[1]) - Number(a[1]))[0]?.[0] || "str";
+
+  return Array.from({ length: Math.min(optionCount, profile.suffixes.length) }).map(
+    (_, index) => {
+      const suffix = profile.suffixes[index];
+      const delta = profile.deltas[index] || profile.deltas[0] || {};
+      const minAttributeValue = 8 + nextStage * 3 + index * 2;
+      return {
+        id: `${race.id}_evo_${nextStage}_${index + 1}`,
+        targetRaceId: race.id,
+        stage: nextStage,
+        stageName: getRaceEvolutionStageName(nextStage),
+        name: `${race.name} ${suffix}`,
+        description: `Evolve into the ${suffix} form with stronger specialization.`,
+        statBonusesDelta: delta,
+        requirements: {
+          minLevel: levelBase + index * 4,
+          minTotalKills: killBase + index * 8,
+          minAttributes: {
+            [dominantStat]: minAttributeValue,
+          },
+        },
+      };
+    },
+  );
+}
+
+export function getRaceEvolutionOption(raceRef, evolutionIdOrName, stageOverride = null) {
+  if (!evolutionIdOrName) return null;
+  const options = getRaceEvolutionOptions(raceRef, stageOverride);
+  return (
+    options.find(
+      (option) =>
+        option.id === evolutionIdOrName ||
+        option.name.toLowerCase() === String(evolutionIdOrName).toLowerCase(),
+    ) || null
+  );
+}
+
+export function applyRaceEvolution(raceRef, evolutionOption, stageOverride = null) {
+  const baseRace = normalizeRaceRef(raceRef);
+  if (!baseRace || !evolutionOption) return null;
+  const stageIndex = resolveRaceStageIndex(raceRef, stageOverride);
+  const currentBonuses = getRaceStatBonuses(raceRef);
+  const baseBonuses = Object.keys(currentBonuses).length ? currentBonuses : getRaceStatBonuses(baseRace);
+  const mergedBonuses = mergeRaceBonuses(baseBonuses, evolutionOption.statBonusesDelta);
+  return {
+    ...baseRace,
+    id: baseRace.id,
+    baseRaceId: baseRace.baseRaceId || baseRace.id,
+    name: evolutionOption.name,
+    description: evolutionOption.description,
+    evolutionStage: evolutionOption.stageName,
+    evolutionStageIndex: evolutionOption.stage,
+    statBonuses: mergedBonuses,
+    passiveAbility: getPassiveAbility(baseRace.id),
+    hiddenTrait: getHiddenTraits(baseRace.id),
+  };
+}
 
 export function setRaceRegistry({ races: nextRaces, raceTraits: nextTraits } = {}) {
   if (Array.isArray(nextRaces)) {

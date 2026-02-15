@@ -16,6 +16,47 @@ import ProfessionUI from "../../components/ProfessionUI.jsx";
 import StatusOverlay from "../../components/StatusOverlay.jsx";
 import SaveLoadUI from "../../components/SaveLoadUI.jsx";
 
+function deriveStoryWindowContext(latestEntry) {
+  const narrativeText = String(latestEntry?.text || "").toLowerCase();
+  if (!narrativeText) {
+    return {
+      vitalsTitle: "Vitals",
+      inventoryTitle: "Inventory",
+      questTitle: "Quests",
+      combatTitle: "Combat",
+      vitalsHint: "Current survival metrics.",
+      inventoryHint: "Current carried items.",
+      questHint: "Track your active objectives.",
+    };
+  }
+
+  const combatWords = ["enemy", "battle", "ambush", "strike", "combat", "wound"];
+  const inventoryWords = ["item", "supply", "reagent", "loot", "pack", "gear"];
+  const questWords = ["quest", "objective", "lead", "directive", "mission"];
+  const recoveryWords = ["rest", "recover", "fatigue", "strain", "exhausted"];
+
+  const hasCombat = combatWords.some((word) => narrativeText.includes(word));
+  const hasInventory = inventoryWords.some((word) => narrativeText.includes(word));
+  const hasQuest = questWords.some((word) => narrativeText.includes(word));
+  const hasRecovery = recoveryWords.some((word) => narrativeText.includes(word));
+
+  return {
+    vitalsTitle: hasRecovery ? "Vitals - Recovery Focus" : "Vitals",
+    inventoryTitle: hasInventory ? "Inventory - Story Supplies" : "Inventory",
+    questTitle: hasQuest ? "Quests - Current Leads" : "Quests",
+    combatTitle: hasCombat ? "Combat - Story Clash" : "Combat",
+    vitalsHint: hasRecovery
+      ? "The latest narrative emphasizes recovery and resource stability."
+      : "Current survival metrics.",
+    inventoryHint: hasInventory
+      ? "Recent narrative events reference supplies and carried resources."
+      : "Current carried items.",
+    questHint: hasQuest
+      ? "Narrative focus is aligned with objective progress."
+      : "Track your active objectives.",
+  };
+}
+
 export default function GameMode({
   player,
   config,
@@ -74,6 +115,7 @@ export default function GameMode({
   onEvolveSkill = () => {},
   onFuseSkills = () => {},
   onEvolveClass = () => {},
+  onEvolveRace = () => {},
   onStudySpell = () => {},
   onLoadState = () => {},
   addSystemMessage = () => {},
@@ -83,14 +125,21 @@ export default function GameMode({
   const equipmentSelectLabel = equipmentSelectSlot
     ? equipmentSelectSlot.charAt(0).toUpperCase() + equipmentSelectSlot.slice(1)
     : "";
+  const storyContext = deriveStoryWindowContext(latestEntry);
   const windows = [
     {
       id: "vitals",
-      title: "Vitals",
+      title: storyContext.vitalsTitle,
       dockZone: "left",
       minWidth: 260,
       minHeight: 180,
-      content: <VitalsPanel player={player} config={config} />,
+      content: (
+        <VitalsPanel
+          player={player}
+          config={config}
+          storyHint={storyContext.vitalsHint}
+        />
+      ),
     },
     {
       id: "equipment",
@@ -104,11 +153,16 @@ export default function GameMode({
     },
     {
       id: "inventory",
-      title: "Inventory",
+      title: storyContext.inventoryTitle,
       dockZone: "left",
       minWidth: 260,
       minHeight: 180,
-      content: <InventoryPanel inventory={player?.inventory || []} />,
+      content: (
+        <InventoryPanel
+          inventory={player?.inventory || []}
+          storyHint={storyContext.inventoryHint}
+        />
+      ),
     },
     {
       id: "statusEffects",
@@ -169,7 +223,7 @@ export default function GameMode({
       ? [
           {
             id: "quests",
-            title: "Quests",
+            title: storyContext.questTitle,
             dockZone: "float",
             position: { x: 420, y: 100 },
             size: { w: 420, h: 380 },
@@ -177,13 +231,13 @@ export default function GameMode({
             minHeight: 240,
             openFullscreenOnce: true,
             onClose: onCloseQuests,
-            content: <QuestPanel quests={quests} />,
+            content: <QuestPanel quests={quests} storyHint={storyContext.questHint} />,
           },
         ]
       : []),
     {
       id: "combat",
-      title: "Combat",
+      title: storyContext.combatTitle,
       dockZone: "float",
       position: { x: 520, y: 520 },
       size: { w: 420, h: 420 },
@@ -327,6 +381,7 @@ export default function GameMode({
                 onEvolveSkill={onEvolveSkill}
                 onFuseSkills={onFuseSkills}
                 onEvolveClass={onEvolveClass}
+                onEvolveRace={onEvolveRace}
                 onStudySpell={onStudySpell}
               />
             ),

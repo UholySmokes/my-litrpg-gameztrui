@@ -40,31 +40,41 @@ const styles = {
   },
 };
 
-export default function QuestTracker({ quests }) {
+export default function QuestTracker({ quests, storyHint = "" }) {
   const activeQuests = quests?.active || [];
 
   if (activeQuests.length === 0) {
     return (
       <div style={styles.container}>
-        <div style={styles.emptyText}>[ NO ACTIVE QUESTS ]</div>
+        {storyHint ? (
+          <div style={{ color: "var(--text-dim)", fontSize: "0.78rem", marginBottom: "0.5rem" }}>
+            {storyHint}
+          </div>
+        ) : null}
+        <div style={styles.emptyText}>No active quests yet.</div>
       </div>
     );
   }
 
   return (
     <div style={styles.container}>
+      {storyHint ? (
+        <div style={{ color: "var(--text-dim)", fontSize: "0.78rem", marginBottom: "0.5rem" }}>
+          {storyHint}
+        </div>
+      ) : null}
       {activeQuests.map((quest) => (
         <div key={quest.id} style={styles.quest}>
           <div style={styles.questTitle}>{quest.name || quest.id}</div>
           {quest.objectives?.map((objective, index) => (
             <div
-              key={index}
+              key={objective.id || index}
               style={{
                 ...styles.objective,
                 ...(objective.completed ? styles.objectiveCompleted : {}),
               }}
             >
-              ▸ {objective.description || `Objective ${index + 1}`}
+              - {objective.description || `Objective ${index + 1}`}
             </div>
           ))}
         </div>

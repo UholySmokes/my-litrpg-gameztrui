@@ -4,7 +4,7 @@
 // Abilities use their archetype's resource (rage/chi/mana/energy/focus).
 // =================================================================
 
-import { getClassById, getClassLineage } from "../../data/registries/ClassDataRegistry.js";
+import { getClassLineage } from "../../data/registries/ClassDataRegistry.js";
 
 // ── Ability Definitions ─────────────────────────────────────────────
 
@@ -880,22 +880,20 @@ const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) =
 function resolveAbilityIds(classId) {
   if (!classId) return null;
 
-  // Direct Tier 1 match
-  if (TIER1_ABILITY_SETS[classId]) {
-    return [...TIER1_ABILITY_SETS[classId]];
+  const lineage = getClassLineage(classId);
+  if (!Array.isArray(lineage) || lineage.length === 0) return null;
+
+  const ids = [];
+  for (const classData of lineage) {
+    if (!classData?.id) continue;
+    const tier1 = TIER1_ABILITY_SETS[classData.id];
+    const tier2 = TIER2_ABILITY_SETS[classData.id];
+    if (Array.isArray(tier1)) ids.push(...tier1);
+    if (Array.isArray(tier2)) ids.push(...tier2);
   }
 
-  // Tier 2 — inherit parent + own
-  if (TIER2_ABILITY_SETS[classId]) {
-    const classData = getClassById(classId);
-    const parentId = classData?.parentId;
-    const parentAbilities = parentId && TIER1_ABILITY_SETS[parentId]
-      ? TIER1_ABILITY_SETS[parentId]
-      : [];
-    return [...parentAbilities, ...TIER2_ABILITY_SETS[classId]];
-  }
-
-  return null;
+  const unique = Array.from(new Set(ids));
+  return unique.length ? unique : null;
 }
 
 // ── Public API ──────────────────────────────────────────────────────

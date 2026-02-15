@@ -59,7 +59,9 @@ export default function CreationClassPanel({
   onClassSelect,
   onAction,
 }) {
-  const classes = DataRegistry.getClasses();
+  const classes = DataRegistry.getClasses().filter(
+    (cls) => Number(cls?.tier || 1) === 1,
+  );
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>

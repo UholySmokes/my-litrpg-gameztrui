@@ -373,7 +373,7 @@ export function executeAction(state, action, _options = {}) {
             const enemyIds =
               action.enemyIds && action.enemyIds.length > 0
                 ? action.enemyIds
-                : ["goblin"];
+                : ["goblin", "goblin"];
             newState = startCombat(state, enemyIds);
             description = `Engaged combat with ${newState.combat.enemies.map((e) => e.name).join(", ")}`;
             changes.combatStarted = true;

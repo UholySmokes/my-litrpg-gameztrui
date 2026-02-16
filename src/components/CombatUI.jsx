@@ -86,7 +86,7 @@ export default function CombatUI({
 
           return (
             <div
-              key={enemy.id || index}
+              key={`${enemy.id || "enemy"}-${index}`}
               style={{
                 marginBottom: "0.75rem",
                 padding: "0.5rem",

@@ -1011,26 +1011,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     return { success: false, reason: "Not in combat", state };
   }
 
-  // Check if any enemy prevents fleeing
-  const cannotFlee = state.combat.enemies.some((enemy) =>
-    hasEffectTag(enemy, "NO_FLEE"),
-  );
-  if (cannotFlee) {
-    const newLog = [...state.combat.log, "You cannot escape!"];
-    return {
-      success: false,
-      reason: "Escape prevented",
-      state: {
-        ...state,
-        combat: {
-          ...state.combat,
-          log: newLog,
-          turn: "enemy",
-        },
-      },
-    };
-  }
-
   if (enemyIndex < 0 || enemyIndex >= state.combat.enemies.length) {
     return { success: false, reason: "Invalid enemy", state };
   }

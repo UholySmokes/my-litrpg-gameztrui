@@ -382,6 +382,13 @@ const progressQuestObjectives = (prevState, nextState, action) => {
   };
 };
 
+const syncQuestObjectivesForAction = (prevState, nextState, actionLike) => {
+  if (!nextState || nextState === prevState) {
+    return nextState;
+  }
+  return progressQuestObjectives(prevState, nextState, actionLike);
+};
+
 const gameReducer = (state, action) =>
   withTraceSpan(
     "core.gameReducer",
@@ -645,8 +652,12 @@ const gameReducer = (state, action) =>
       if (!result.success) {
         return state;
       }
-      return applyAutoTitleUnlocks(processEnemyTurns(result.state), {
+      const postCombatState = applyAutoTitleUnlocks(processEnemyTurns(result.state), {
         announce: true,
+      });
+      return syncQuestObjectivesForAction(state, postCombatState, {
+        type: "attack",
+        enemyIndex,
       });
     }
 
@@ -664,8 +675,13 @@ const gameReducer = (state, action) =>
       if (!result.success) {
         return state;
       }
-      return applyAutoTitleUnlocks(processEnemyTurns(result.state), {
+      const postCombatState = applyAutoTitleUnlocks(processEnemyTurns(result.state), {
         announce: true,
+      });
+      return syncQuestObjectivesForAction(state, postCombatState, {
+        type: "attack",
+        skillId,
+        enemyIndex,
       });
     }
 
@@ -683,8 +699,13 @@ const gameReducer = (state, action) =>
       if (!result.success) {
         return state;
       }
-      return applyAutoTitleUnlocks(processEnemyTurns(result.state), {
+      const postCombatState = applyAutoTitleUnlocks(processEnemyTurns(result.state), {
         announce: true,
+      });
+      return syncQuestObjectivesForAction(state, postCombatState, {
+        type: "attack",
+        abilityId,
+        enemyIndex,
       });
     }
 
@@ -702,8 +723,13 @@ const gameReducer = (state, action) =>
       if (!result.success) {
         return state;
       }
-      return applyAutoTitleUnlocks(processEnemyTurns(result.state), {
+      const postCombatState = applyAutoTitleUnlocks(processEnemyTurns(result.state), {
         announce: true,
+      });
+      return syncQuestObjectivesForAction(state, postCombatState, {
+        type: "attack",
+        abilityId,
+        enemyIndex,
       });
     }
 
@@ -713,7 +739,10 @@ const gameReducer = (state, action) =>
         return state;
       }
       const result = escapeCombat({ ...state, combat: combatState });
-      return result.state || state;
+      const escapedState = result.state || state;
+      return syncQuestObjectivesForAction(state, escapedState, {
+        type: "escape",
+      });
     }
 
     case "PLAYER_START_COMBAT": {

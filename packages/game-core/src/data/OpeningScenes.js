@@ -5,8 +5,120 @@
 
 import { hashSeed, mulberry32 } from "./QuestCatalog";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
+import { VOIDVERSE_START_SCENE_PACK } from "./OpeningScenePack.VoidverseStartScenes.js";
 
-const OPENING_SCENES = [
+const STARTER_TAG_TO_BIOME = {
+  xianxia: "wilds",
+  mystic: "wilds",
+  fantasy: "city",
+  action: "city",
+  lightnovel: "city",
+  mystery: "ruins",
+  "magic-research": "ruins",
+  puzzle: "ruins",
+  atmosphere: "ruins",
+  hub: "city",
+  quests: "city",
+  crafting: "city",
+  alchemy: "city",
+  systems: "city",
+  economy: "city",
+  factions: "city",
+  weird: "ruins",
+  "high-hook": "ruins",
+  combat: "wilds",
+  skills: "city",
+  tutorial: "city",
+};
+
+const STARTER_TAG_TO_TONE = {
+  combat: "tense",
+  mystic: "mysterious",
+  action: "heroic",
+  tutorial: "urgent",
+  mystery: "mysterious",
+  "magic-research": "mysterious",
+  puzzle: "stoic",
+  atmosphere: "ethereal",
+  hub: "serene",
+  quests: "heroic",
+  crafting: "stoic",
+  economy: "tense",
+  factions: "tense",
+  weird: "ethereal",
+  "high-hook": "urgent",
+  lightnovel: "heroic",
+};
+
+const cloneDeep = (value) => JSON.parse(JSON.stringify(value));
+
+const normalizeTagList = (rawTags) =>
+  Array.isArray(rawTags)
+    ? rawTags
+        .map((entry) => String(entry || "").trim().toLowerCase())
+        .filter(Boolean)
+    : [];
+
+const resolveStarterSceneBiome = (tags = []) => {
+  for (const tag of tags) {
+    if (STARTER_TAG_TO_BIOME[tag]) {
+      return STARTER_TAG_TO_BIOME[tag];
+    }
+  }
+  return "city";
+};
+
+const resolveStarterSceneTone = (tags = []) => {
+  for (const tag of tags) {
+    if (STARTER_TAG_TO_TONE[tag]) {
+      return STARTER_TAG_TO_TONE[tag];
+    }
+  }
+  return "mysterious";
+};
+
+const normalizeStarterSceneChoice = (choice, index) => ({
+  id: choice?.id || `choice_${index + 1}`,
+  label: String(choice?.label || `Choice ${index + 1}`),
+  next: choice?.next || null,
+  outcomeText:
+    typeof choice?.outcomeText === "string" ? choice.outcomeText : "",
+  effects:
+    choice?.effects && typeof choice.effects === "object"
+      ? cloneDeep(choice.effects)
+      : {},
+  aiHints: Array.isArray(choice?.aiHints)
+    ? choice.aiHints
+        .map((hint) => String(hint || "").trim())
+        .filter(Boolean)
+    : [],
+});
+
+const normalizeStarterScene = (scene) => {
+  const tags = normalizeTagList(scene?.tags);
+  const text = typeof scene?.text === "string" ? scene.text : "";
+  const choices = Array.isArray(scene?.choices)
+    ? scene.choices.map(normalizeStarterSceneChoice)
+    : [];
+
+  return {
+    id: scene?.id || `starter_scene_${SimBridge.now()}`,
+    title:
+      typeof scene?.title === "string" && scene.title.trim()
+        ? scene.title.trim()
+        : "Untitled Starter Scene",
+    tags,
+    text,
+    choices,
+    sourcePackId: VOIDVERSE_START_SCENE_PACK?.meta?.packId || null,
+    biome: resolveStarterSceneBiome(tags),
+    tone: resolveStarterSceneTone(tags),
+    descriptionTemplate: () => text,
+    compatibleQuests: [],
+  };
+};
+
+const LEGACY_OPENING_SCENES = [
   {
     id: "scene_leyline_plaza",
     biome: "ruins",
@@ -142,6 +254,12 @@ const OPENING_SCENES = [
   },
 ];
 
+const PACK_OPENING_SCENES = Array.isArray(VOIDVERSE_START_SCENE_PACK?.scenes)
+  ? VOIDVERSE_START_SCENE_PACK.scenes.map(normalizeStarterScene)
+  : [];
+
+const OPENING_SCENES = [...LEGACY_OPENING_SCENES, ...PACK_OPENING_SCENES];
+
 function scoreScene(scene, { mainQuest, character } = {}) {
   let score = 1;
   if (mainQuest) {
@@ -178,6 +296,10 @@ function scoreScene(scene, { mainQuest, character } = {}) {
       questTags.favoredProfessions.includes(character.professionId)
     ) {
       score += 1;
+    }
+    if (questTags.starter && Array.isArray(scene.tags)) {
+      if (scene.tags.includes("tutorial")) score += 2;
+      if (scene.tags.includes("hub")) score += 1;
     }
   }
   if (
@@ -217,6 +339,9 @@ export function pickOpeningScene({ seed, mainQuest, character } = {}) {
 
 export function describeOpeningScene(scene, context) {
   if (!scene) return "The world stirs as your journey begins.";
+  if (typeof scene.text === "string" && scene.text.trim()) {
+    return scene.text.trim();
+  }
   try {
     return scene.descriptionTemplate(context);
   } catch {
@@ -229,4 +354,185 @@ export function getOpeningSceneById(id) {
   return OPENING_SCENES.find((scene) => scene.id === id) || null;
 }
 
+export function listOpeningSceneChoices(sceneRef) {
+  const scene =
+    typeof sceneRef === "string" ? getOpeningSceneById(sceneRef) : sceneRef;
+  if (!scene || !Array.isArray(scene.choices)) return [];
+  return scene.choices.map((choice) => ({
+    id: choice.id || null,
+    label: choice.label || "",
+    next: choice.next || null,
+  }));
+}
+
+export function getOpeningSceneChoice(sceneRef, choiceRef = null) {
+  const scene =
+    typeof sceneRef === "string" ? getOpeningSceneById(sceneRef) : sceneRef;
+  if (!scene || !Array.isArray(scene.choices) || scene.choices.length === 0) {
+    return null;
+  }
+
+  if (choiceRef === null || choiceRef === undefined) {
+    return scene.choices[0];
+  }
+
+  if (typeof choiceRef === "number" && Number.isFinite(choiceRef)) {
+    const idx = Math.floor(choiceRef);
+    if (idx >= 0 && idx < scene.choices.length) {
+      return scene.choices[idx];
+    }
+    return null;
+  }
+
+  const normalizedRef = String(choiceRef).trim().toLowerCase();
+  if (!normalizedRef) return scene.choices[0];
+
+  return (
+    scene.choices.find((choice) => {
+      const id = String(choice.id || "").trim().toLowerCase();
+      const label = String(choice.label || "").trim().toLowerCase();
+      return normalizedRef === id || normalizedRef === label;
+    }) || null
+  );
+}
+
+const normalizeChoiceEffectsToIntents = (effects = {}) => {
+  if (!effects || typeof effects !== "object" || Array.isArray(effects)) {
+    return [];
+  }
+
+  const intents = [];
+
+  if (Number.isFinite(effects.healthDelta)) {
+    intents.push({
+      type: "player.health.delta",
+      value: Number(effects.healthDelta),
+    });
+  }
+
+  if (Number.isFinite(effects.reputationDelta)) {
+    intents.push({
+      type: "player.reputation.delta",
+      value: Number(effects.reputationDelta),
+    });
+  }
+
+  if (Number.isFinite(effects.currencyDelta)) {
+    intents.push({
+      type: "player.currency.delta",
+      currency: "goldCoins",
+      value: Number(effects.currencyDelta),
+    });
+  }
+
+  if (typeof effects.addQuest === "string" && effects.addQuest.trim()) {
+    intents.push({
+      type: "quest.add",
+      questId: effects.addQuest.trim(),
+    });
+  }
+
+  if (typeof effects.unlockSkill === "string" && effects.unlockSkill.trim()) {
+    intents.push({
+      type: "skill.unlock",
+      skillId: effects.unlockSkill.trim(),
+    });
+  }
+
+  if (typeof effects.unlockRecipe === "string" && effects.unlockRecipe.trim()) {
+    intents.push({
+      type: "recipe.unlock",
+      recipeId: effects.unlockRecipe.trim(),
+    });
+  }
+
+  if (typeof effects.unlockLaw === "string" && effects.unlockLaw.trim()) {
+    intents.push({
+      type: "law.unlock",
+      lawId: effects.unlockLaw.trim(),
+    });
+  }
+
+  if (typeof effects.addItem === "string" && effects.addItem.trim()) {
+    intents.push({
+      type: "inventory.add",
+      itemId: effects.addItem.trim(),
+      quantity: 1,
+    });
+  }
+
+  if (typeof effects.addClue === "string" && effects.addClue.trim()) {
+    intents.push({
+      type: "clue.add",
+      clueId: effects.addClue.trim(),
+    });
+  }
+
+  if (Array.isArray(effects.setFlag)) {
+    effects.setFlag
+      .map((flag) => String(flag || "").trim())
+      .filter(Boolean)
+      .forEach((flag) => {
+        intents.push({
+          type: "world.flag.set",
+          flag,
+          value: true,
+        });
+      });
+  }
+
+  if (effects.statDelta && typeof effects.statDelta === "object") {
+    Object.entries(effects.statDelta).forEach(([stat, value]) => {
+      if (!Number.isFinite(value)) return;
+      intents.push({
+        type: "player.stat.delta",
+        stat: String(stat),
+        value: Number(value),
+      });
+    });
+  }
+
+  return intents;
+};
+
+export function getOpeningSceneEffectIntents(sceneRef, choiceRef = null) {
+  const choice = getOpeningSceneChoice(sceneRef, choiceRef);
+  if (!choice) return [];
+  return normalizeChoiceEffectsToIntents(choice.effects);
+}
+
+export function buildOpeningSceneNarrativeSeed(sceneRef, choiceRef = null) {
+  const scene =
+    typeof sceneRef === "string" ? getOpeningSceneById(sceneRef) : sceneRef;
+  if (!scene) return "The world stirs as your journey begins.";
+
+  const baseText = describeOpeningScene(scene, {
+    mainQuestName: "the looming mystery",
+    sideHookNames: [],
+    locationHint: scene.biome || "district",
+    factionHint: scene.tone || "locals",
+  });
+
+  const choice = getOpeningSceneChoice(scene, choiceRef);
+  const outcome =
+    typeof choice?.outcomeText === "string" ? choice.outcomeText.trim() : "";
+  if (!outcome) return baseText;
+  return `${baseText}\n\nOutcome seed: ${outcome}`;
+}
+
+export function getOpeningScenePackMeta(packId = null) {
+  if (
+    packId &&
+    String(packId).trim() &&
+    String(packId).trim() !== VOIDVERSE_START_SCENE_PACK?.meta?.packId
+  ) {
+    return null;
+  }
+  return {
+    ...(VOIDVERSE_START_SCENE_PACK?.meta || {}),
+    sceneCount: PACK_OPENING_SCENES.length,
+  };
+}
+
 const __internalScenes = OPENING_SCENES;
+void __internalScenes;

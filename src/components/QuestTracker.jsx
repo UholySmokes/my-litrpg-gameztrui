@@ -29,7 +29,7 @@ const styles = {
   },
   objectiveCompleted: {
     textDecoration: "line-through",
-    opacity: 0.4,
+    opacity: 0.5,
   },
   emptyText: {
     color: "rgba(0, 243, 255, 0.5)",
@@ -74,7 +74,8 @@ export default function QuestTracker({ quests, storyHint = "" }) {
                 ...(objective.completed ? styles.objectiveCompleted : {}),
               }}
             >
-              - {objective.description || `Objective ${index + 1}`}
+              {objective.completed ? "[x]" : "[ ]"}{" "}
+              {objective.description || `Objective ${index + 1}`}
             </div>
           ))}
         </div>

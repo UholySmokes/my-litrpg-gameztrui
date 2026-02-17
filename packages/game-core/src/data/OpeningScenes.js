@@ -3,7 +3,7 @@
 // Opening scenes with helper to select based on quest/character
 // ============================================================================
 
-import { hashSeed, mulberry32 } from "./QuestCatalog";
+import { hashSeed, mulberry32 } from "./QuestCatalog.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { VOIDVERSE_START_SCENE_PACK } from "./OpeningScenePack.VoidverseStartScenes.js";
 

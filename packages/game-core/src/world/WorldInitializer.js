@@ -83,6 +83,11 @@ export function createInitialWorldState({ seed } = {}) {
       worldSeed,
       startingSceneId: null,
       current_quest_id: null,
+      openingSceneChoicePending: false,
+      openingSceneChoiceId: null,
+      openingSceneChoiceLabel: null,
+      openingSceneChoiceNext: null,
+      openingSceneChoiceOutcome: null,
     },
     counters: {
       day: 1,
@@ -191,6 +196,11 @@ export function seedWorldAfterCharacterCreation(
       ...(baseWorld.vars || {}),
       startingSceneId,
       current_quest_id: mainQuest?.id || null,
+      openingSceneChoicePending: Boolean(startingSceneId),
+      openingSceneChoiceId: null,
+      openingSceneChoiceLabel: null,
+      openingSceneChoiceNext: null,
+      openingSceneChoiceOutcome: null,
     },
     time: {
       currentTime: 480,

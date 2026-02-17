@@ -6,6 +6,8 @@
 import {
   describeOpeningScene,
   getOpeningSceneById,
+  listOpeningSceneChoices,
+  buildOpeningSceneNarrativeSeed,
 } from "../data/OpeningScenes.js";
 import {
   getLocationById,
@@ -512,6 +514,29 @@ function buildContextSection(gameState) {
   const zoneLabel =
     resolvedZone?.name || resolvedLocation?.zoneId || "Unknown Zone";
   const locationLabel = resolvedLocation?.name || locationId || "Unknown";
+  const combat = gameState?.combat || {};
+  const combatActive = Boolean(
+    combat?.inCombat ?? combat?.status === "active",
+  );
+  const livingCombatants = combatActive && Array.isArray(combat?.enemies)
+    ? combat.enemies.filter(
+        (enemy) => toNumber(enemy?.stats?.hp?.current, 0) > 0,
+      )
+    : [];
+  const combatTurn = typeof combat?.turn === "string" ? combat.turn : "unknown";
+  const combatLine = combatActive
+    ? `Combat Status: Active (${livingCombatants.length} enemies alive, turn: ${combatTurn})`
+    : "Combat Status: Inactive";
+  const combatEnemyLine = combatActive
+    ? `Combat Enemies: ${livingCombatants
+        .map((enemy) => {
+          const enemyName = enemy?.name || "Unknown Enemy";
+          const hpCurrent = toNumber(enemy?.stats?.hp?.current, 0);
+          const hpMax = toNumber(enemy?.stats?.hp?.max, 0);
+          return `${enemyName} (${hpCurrent}/${hpMax} HP)`;
+        })
+        .join("; ") || "None"}`
+    : null;
 
   const lines = [
     "=== CURRENT GAME STATE ===",
@@ -521,6 +546,8 @@ function buildContextSection(gameState) {
     `XP: ${xpCurrent}/${xpMax} (${xpToNext} until next level)`,
     `Zone: ${zoneLabel}`,
     `Location: ${locationLabel}`,
+    combatLine,
+    combatEnemyLine,
     equippedLine,
     `Inventory: ${inventoryList}`,
     `Active Quests: ${activeQuests}`,
@@ -640,6 +667,41 @@ The action succeeded. ${result.description || "Action completed."}`;
         actionDescription += `\nGame state changes: ${changes.join(", ")}`;
       }
     }
+
+    const resolvedState =
+      result.state && typeof result.state === "object" ? result.state : null;
+    if (resolvedState) {
+      const combat = resolvedState?.combat || {};
+      const combatActive = Boolean(
+        combat?.inCombat ?? combat?.status === "active",
+      );
+      if (!combatActive) {
+        actionDescription += "\nGround truth: Combat is inactive after this action.";
+      } else {
+        const livingEnemies = Array.isArray(combat?.enemies)
+          ? combat.enemies.filter(
+              (enemy) => toNumber(enemy?.stats?.hp?.current, 0) > 0,
+            )
+          : [];
+        const enemySummary =
+          livingEnemies
+            .map((enemy) => {
+              const enemyName = enemy?.name || "Unknown Enemy";
+              const hpCurrent = toNumber(enemy?.stats?.hp?.current, 0);
+              const hpMax = toNumber(enemy?.stats?.hp?.max, 0);
+              return `${enemyName} (${hpCurrent}/${hpMax} HP)`;
+            })
+            .join("; ") || "None";
+        actionDescription += `\nGround truth: Combat remains active with ${livingEnemies.length} enemies alive (${enemySummary}).`;
+      }
+    }
+
+    if (
+      typeof result.openingNarrativeSeed === "string" &&
+      result.openingNarrativeSeed.trim()
+    ) {
+      actionDescription += `\nOpening scene seed:\n${result.openingNarrativeSeed.trim()}`;
+    }
   } else {
     actionDescription = `The player attempted (untrusted user input): "${safeUserInput}"
 The action failed. ${result.reason || "Action could not be completed."}`;
@@ -649,7 +711,7 @@ The action failed. ${result.reason || "Action could not be completed."}`;
 ${actionDescription}
 
 === YOUR TASK ===
-Generate a narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. ${shouldFavorDialogue ? "Dialogue can appear when it directly matches the player's intent, but keep it brief and purposeful." : "Do not open with quoted dialogue; begin with immediate scene action or sensory detail."} Hard limit: keep the response under 1200 characters.`;
+Generate a narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. ${shouldFavorDialogue ? "Dialogue can appear when it directly matches the player's intent, but keep it brief and purposeful." : "Do not open with quoted dialogue; begin with immediate scene action or sensory detail."} Hard constraints: never describe ongoing combat when combat is inactive, and do not invent enemies/items/locations not present in state. Hard limit: keep the response under 1200 characters.`;
 }
 
 /**
@@ -691,6 +753,19 @@ export function buildInitialPrompt(gameState = {}) {
     gameState?.world?.vars?.startingSceneId ??
     gameState?.world?.flags?.startingSceneId;
   const scene = getOpeningSceneById(sceneId);
+  const openingChoicePending = Boolean(
+    gameState?.world?.vars?.openingSceneChoicePending,
+  );
+  const selectedOpeningChoiceId =
+    gameState?.world?.vars?.openingSceneChoiceId || null;
+  const openingChoices = sceneId ? listOpeningSceneChoices(sceneId) : [];
+  const openingChoiceLines = openingChoices
+    .slice(0, 4)
+    .map((choice, index) => `${index + 1}. ${choice.label}`);
+  const resolvedOpeningSeed =
+    sceneId && selectedOpeningChoiceId
+      ? buildOpeningSceneNarrativeSeed(sceneId, selectedOpeningChoiceId)
+      : null;
   const openingLocationRaw =
     gameState?.world?.location?.current ?? gameState?.world?.location ?? null;
   const openingLocationId =
@@ -745,6 +820,12 @@ ${skillLine}
 
 === OPENING SCENE ===
 ${sceneDescription}
+${openingChoicePending && openingChoiceLines.length
+    ? `\n=== OPENING CHOICES ===\n${openingChoiceLines.join("\n")}`
+    : ""}
+${resolvedOpeningSeed
+    ? `\n=== RESOLVED OPENING SEED ===\n${resolvedOpeningSeed}`
+    : ""}
 
 === QUEST THREADS ===
 ${questLines}
@@ -755,7 +836,7 @@ TASK: Deliver an atmospheric opening (6-9 sentences) that:
 - Establishes the scene and immediate surroundings
 - References the player's system ("${systemName}") naturally, as if it is part of the world
 - Hints at one quest thread without being heavy-handed
-- Ends with a compelling hook that invites the player's first action
+- Ends with a compelling hook that invites the player's first action${openingChoicePending && openingChoiceLines.length ? " and nudges one opening choice naturally." : ""}
 Hard limit: keep the response under 1200 characters.
 
 Respond with narrative text only.`;

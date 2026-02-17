@@ -8,6 +8,21 @@ import {
 } from "../archetype/ArchetypeSystemRegistry.js";
 
 export class QuestManager {
+  static isQuestTrackable(quest) {
+    if (!quest || typeof quest !== "object") return false;
+    if (quest.autoComplete && typeof quest.autoComplete === "object") {
+      return true;
+    }
+    const objectives = Array.isArray(quest.objectives) ? quest.objectives : [];
+    if (objectives.length === 0) return false;
+    return objectives.every(
+      (objective) =>
+        objective?.criteria &&
+        typeof objective.criteria === "object" &&
+        !Array.isArray(objective.criteria),
+    );
+  }
+
   static generateInitialQuests(player) {
     const quests = [];
 
@@ -25,12 +40,13 @@ export class QuestManager {
 
     const suitableSideQuests = SIDE_QUESTS.filter(
       (quest) =>
+        this.isQuestTrackable(quest) &&
         this.isQuestSuitable(quest, player) &&
         (!quest.levelRequirement || quest.levelRequirement <= (player?.level || 1) + 2),
     );
     const sidePool = [...suitableSideQuests];
 
-    const sideQuestCount = Math.min(1, sidePool.length);
+    const sideQuestCount = 0;
     for (let i = 0; i < sideQuestCount; i++) {
       if (sidePool.length === 0) break;
       const sideQuest = this.pullQuestByPriority(sidePool);
@@ -78,6 +94,7 @@ export class QuestManager {
 
     let pool = [...BEGINNER_QUESTS, ...SIDE_QUESTS].filter((quest) => {
       if (!quest || blockedIds.has(quest.id)) return false;
+      if (!this.isQuestTrackable(quest)) return false;
       if (!this.isQuestSuitable(quest, player)) return false;
       if (quest.levelRequirement && quest.levelRequirement > (player?.level || 1) + 2) {
         return false;

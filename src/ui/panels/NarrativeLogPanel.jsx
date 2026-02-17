@@ -56,7 +56,7 @@ export default function NarrativeLogPanel({ entries }) {
       }}
     >
       {entries.length === 0 && (
-        <div style={{ color: "var(--text-dim)", fontSize: "0.92rem", fontStyle: "italic", padding: "0.5rem 0" }}>
+        <div style={{ color: "var(--text-dim)", fontSize: "1rem", fontStyle: "italic", padding: "0.5rem 0" }}>
           The narrative awaits your first action...
         </div>
       )}
@@ -74,8 +74,8 @@ export default function NarrativeLogPanel({ entries }) {
               padding: "0.4rem 0.6rem",
               background: "rgba(0, 0, 0, 0.25)",
               borderRadius: "0 4px 4px 0",
-              fontSize: "1rem",
-              lineHeight: "1.65",
+              fontSize: "1.08rem",
+              lineHeight: "1.72",
               color: style.color,
               transition: "opacity 0.3s ease",
             }}

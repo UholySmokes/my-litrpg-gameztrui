@@ -17,8 +17,16 @@ import {
 import { renderStatusBlock } from "../util/statusrenderer.js";
 import { SimBridge } from "../simulation/bridge/SimulationBridge.js";
 import { appendNarrativeEntry } from "../core/narrativeLog.js";
-import { toNumber } from "../utils/shared.js";
+import { toNumber, mergeInventoryItems } from "../utils/shared.js";
 import { QuestManager } from "../systems/quest/QuestManager.js";
+import { DataRegistry } from "../data/DataRegistry.js";
+import { toCanonicalAttributeKey } from "../constants/attributes.js";
+import {
+  listOpeningSceneChoices,
+  getOpeningSceneChoice,
+  getOpeningSceneEffectIntents,
+  buildOpeningSceneNarrativeSeed,
+} from "../data/OpeningScenes.js";
 
 const initialNarrativeCache = new Map();
 
@@ -61,13 +69,795 @@ function inferMood(text) {
 }
 
 const SUMMARY_REFRESH_INTERVAL = 10;
-const STREAM_PLACEHOLDER_TEXT = "...";
+const STREAM_PLACEHOLDER_TEXT = "Narrator gathers the next scene.";
 const shouldRefreshSummary = (narrativeState = {}) => {
   const count = Array.isArray(narrativeState.entries)
     ? narrativeState.entries.length
     : 0;
   return count > 0 && count % SUMMARY_REFRESH_INTERVAL === 0;
 };
+
+const OPENING_SCENE_SKILL_TEMPLATES = {
+  skill_qi_strike: {
+    id: "skill_qi_strike",
+    name: "Qi Strike",
+    description: "Channel raw qi into a focused melee impact.",
+    type: "active",
+    level: 1,
+    manaCost: 6,
+    cooldown: 1,
+    isMagic: true,
+    damage: { base: 18, multiplier: 1.1 },
+    canEvolve: true,
+    canFuse: true,
+    tags: ["starter", "qi", "opening_scene"],
+  },
+  skill_ward_phrase: {
+    id: "skill_ward_phrase",
+    name: "Ward Phrase",
+    description: "Invoke a protective phrase to blunt incoming harm.",
+    type: "active",
+    level: 1,
+    manaCost: 8,
+    cooldown: 2,
+    isMagic: true,
+    allowZeroDamage: true,
+    nonDamaging: true,
+    damage: { base: 0, multiplier: 0 },
+    canEvolve: true,
+    canFuse: true,
+    tags: ["starter", "ward", "utility", "opening_scene"],
+  },
+  skill_lightflare: {
+    id: "skill_lightflare",
+    name: "Lightflare",
+    description: "Burst light to expose threats and disrupt enemies.",
+    type: "active",
+    level: 1,
+    manaCost: 7,
+    cooldown: 1,
+    isMagic: true,
+    damage: { base: 12, multiplier: 1.0 },
+    canEvolve: true,
+    canFuse: true,
+    tags: ["starter", "light", "opening_scene"],
+  },
+  skill_standfast: {
+    id: "skill_standfast",
+    name: "Standfast",
+    description: "Brace your stance and endure the next exchange.",
+    type: "active",
+    level: 1,
+    manaCost: 4,
+    cooldown: 2,
+    isMagic: false,
+    allowZeroDamage: true,
+    nonDamaging: true,
+    damage: { base: 0, multiplier: 0 },
+    canEvolve: true,
+    canFuse: true,
+    tags: ["starter", "defense", "opening_scene"],
+  },
+  skill_quick_combo: {
+    id: "skill_quick_combo",
+    name: "Quick Combo",
+    description: "A short burst chain that pressures a single target.",
+    type: "active",
+    level: 1,
+    manaCost: 5,
+    cooldown: 1,
+    isMagic: false,
+    damage: { base: 16, multiplier: 1.15 },
+    canEvolve: true,
+    canFuse: true,
+    tags: ["starter", "combo", "opening_scene"],
+  },
+  skill_feint_counter: {
+    id: "skill_feint_counter",
+    name: "Feint Counter",
+    description: "Bait the opponent and punish with precise timing.",
+    type: "active",
+    level: 1,
+    manaCost: 5,
+    cooldown: 1,
+    isMagic: false,
+    damage: { base: 15, multiplier: 1.2 },
+    canEvolve: true,
+    canFuse: true,
+    tags: ["starter", "duel", "opening_scene"],
+  },
+};
+
+const OPENING_SCENE_QUEST_TEMPLATES = {
+  quest_temple_heal_and_oath: {
+    name: "Temple Recovery and Oath",
+    description: "Recover from your wound and set your resolve.",
+    objective: "Take a short rest at safety.",
+    criteria: { actionType: "rest" },
+    rewards: { xp: 35, items: [{ id: "bandage_roll", quantity: 1 }] },
+  },
+  quest_first_core_cultivation: {
+    name: "First Core Cultivation",
+    description: "Practice your first controlled sense of essence.",
+    objective: "Use essence sense once.",
+    criteria: { actionType: "magic_sense" },
+    rewards: { xp: 35, items: [{ id: "mana_leaf", quantity: 1 }] },
+  },
+  quest_find_clan_relics: {
+    name: "Find Clan Relics",
+    description: "Search for traces of your clan artifacts.",
+    objective: "Inspect your surroundings for clues.",
+    criteria: { actionType: "look" },
+    rewards: { xp: 30, items: [] },
+  },
+  quest_track_bandit_cell: {
+    name: "Track the Bandit Cell",
+    description: "Follow signs of the raiders to their network.",
+    objective: "Travel to a new nearby location.",
+    criteria: { actionType: "move", requiresLocationChange: true },
+    rewards: { xp: 35, items: [] },
+  },
+  quest_investigate_funder: {
+    name: "Investigate the Funder",
+    description: "Identify who is paying for the raid.",
+    objective: "Inspect a suspicious detail.",
+    criteria: { actionType: "look" },
+    rewards: { xp: 35, items: [] },
+  },
+  quest_return_and_make_amends: {
+    name: "Return and Make Amends",
+    description: "Return to the village and begin repairing trust.",
+    objective: "Move toward a new location to return.",
+    criteria: { actionType: "move", requiresLocationChange: true },
+    rewards: { xp: 30, items: [] },
+  },
+  quest_identify_signet_ring: {
+    name: "Identify the Signet Ring",
+    description: "Learn who the marked ring belongs to.",
+    objective: "Inspect and analyze gathered clues.",
+    criteria: { actionType: "look" },
+    rewards: { xp: 35, items: [] },
+  },
+  quest_unlock_second_technique_slot: {
+    name: "Unlock a Second Technique Slot",
+    description: "Review your system and prepare to expand your toolkit.",
+    objective: "Check your status panel once.",
+    criteria: { actionType: "status" },
+    rewards: { xp: 30, items: [] },
+  },
+  quest_find_weapon_oil_recipe: {
+    name: "Find a Weapon Oil Recipe",
+    description: "Locate a recipe to maintain your weapon.",
+    objective: "Review your inventory and supplies.",
+    criteria: { actionType: "inventory" },
+    rewards: { xp: 30, items: [] },
+  },
+  quest_duelist_reputation: {
+    name: "Build Duelist Reputation",
+    description: "Prove your timing in active combat.",
+    objective: "Land one attack in combat.",
+    criteria: { actionType: "attack" },
+    rewards: { xp: 40, items: [] },
+  },
+  quest_combine_rune_operators: {
+    name: "Combine Rune Operators",
+    description: "Test rune combinations safely.",
+    objective: "Perform one weave action.",
+    criteria: { actionType: "magic_weave" },
+    rewards: { xp: 40, items: [] },
+  },
+  quest_stabilize_unbound_power: {
+    name: "Stabilize Unbound Power",
+    description: "Prevent your new power from destabilizing you.",
+    objective: "Anchor your resonance once.",
+    criteria: { actionType: "magic_anchor" },
+    rewards: { xp: 40, items: [] },
+  },
+  quest_the_mist_calls: {
+    name: "The Mist Calls",
+    description: "Follow the whisper to its next sign.",
+    objective: "Move and continue exploring.",
+    criteria: { actionType: "move", requiresLocationChange: true },
+    rewards: { xp: 30, items: [] },
+  },
+  quest_cellar_rats: {
+    name: "Cellar Rats",
+    description: "Clear the first safe guild contract.",
+    objective: "Attack one hostile target.",
+    criteria: { actionType: "attack" },
+    rewards: { xp: 35, items: [{ id: "ration_pack", quantity: 1 }] },
+  },
+  quest_guild_initiation: {
+    name: "Guild Initiation",
+    description: "Review your standing before taking contracts.",
+    objective: "Check your status panel.",
+    criteria: { actionType: "status" },
+    rewards: { xp: 30, items: [] },
+  },
+  quest_trace_courier_network: {
+    name: "Trace the Courier Network",
+    description: "Track suspicious deliveries through the district.",
+    objective: "Travel and follow the trail.",
+    criteria: { actionType: "move", requiresLocationChange: true },
+    rewards: { xp: 35, items: [] },
+  },
+  quest_find_who_forged_ledgers: {
+    name: "Find the Ledger Forger",
+    description: "Use records to identify forged entries.",
+    objective: "Check your inventory and notes.",
+    criteria: { actionType: "inventory" },
+    rewards: { xp: 35, items: [] },
+  },
+  quest_neighbor_pressure_or_trade: {
+    name: "Pressure or Trade",
+    description: "Decide whether to negotiate or apply pressure.",
+    objective: "Talk through your next move.",
+    criteria: {
+      actionType: "narrative",
+      inputIncludes: ["talk", "trade", "negotiate", "neighbor"],
+    },
+    rewards: { xp: 30, items: [] },
+  },
+  quest_stabilize_resonance: {
+    name: "Stabilize Resonance",
+    description: "Bring unstable resonance under control.",
+    objective: "Anchor your magic once.",
+    criteria: { actionType: "magic_anchor" },
+    rewards: { xp: 40, items: [] },
+  },
+  quest_mediation_rewards: {
+    name: "Mediation Rewards",
+    description: "Secure outcomes from your market mediation.",
+    objective: "Attempt mediation through dialogue.",
+    criteria: {
+      actionType: "narrative",
+      inputIncludes: ["mediate", "negotiate", "calm", "talk"],
+    },
+    rewards: { xp: 35, items: [] },
+  },
+  quest_supplier_contacts: {
+    name: "Supplier Contacts",
+    description: "Build reliable market supplier links.",
+    objective: "Review supplies and trading stock.",
+    criteria: { actionType: "inventory" },
+    rewards: { xp: 30, items: [] },
+  },
+  quest_find_diverted_steel: {
+    name: "Find the Diverted Steel",
+    description: "Trace the missing steel shipment.",
+    objective: "Move and follow the shipment trail.",
+    criteria: { actionType: "move", requiresLocationChange: true },
+    rewards: { xp: 40, items: [] },
+  },
+  quest_find_power_inputs: {
+    name: "Find Power Inputs",
+    description: "Gather inputs required for conservation law casting.",
+    objective: "Draw essence into your reserves.",
+    criteria: { actionType: "magic_draw" },
+    rewards: { xp: 40, items: [] },
+  },
+  quest_collect_sympathetic_links: {
+    name: "Collect Sympathetic Links",
+    description: "Gather linked objects for sympathy rituals.",
+    objective: "Inspect and collect a usable lead.",
+    criteria: { actionType: "look" },
+    rewards: { xp: 35, items: [] },
+  },
+  quest_field_test_null_zone: {
+    name: "Field Test Null Zone",
+    description: "Test null-law suppression in the field.",
+    objective: "Release prepared magic once.",
+    criteria: { actionType: "magic_release" },
+    rewards: { xp: 45, items: [] },
+  },
+};
+
+const OPENING_SCENE_ACTION_ALIASES = {
+  run: ["run", "flee", "escape"],
+  fight: ["fight", "attack", "strike", "hit"],
+  speak: ["speak", "say", "phrase", "whisper"],
+  hide: ["hide", "coward"],
+  guard: ["guard", "defend", "brace"],
+  fast: ["combo", "fast", "quick"],
+  feint: ["feint", "counter"],
+  study: ["study", "research", "analyze"],
+  ignore: ["ignore", "step through", "yolo"],
+  read: ["read", "board", "contract"],
+  talk: ["talk", "guildmaster"],
+  observe: ["observe", "watch"],
+  audit: ["audit", "inventory", "logs"],
+  confront: ["confront", "neighbor"],
+  calm: ["calm", "riot", "mediate"],
+  buy: ["buy", "sell", "profit"],
+  investigate: ["investigate", "trace", "shipment"],
+};
+
+const normalizeInputToken = (value) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const humanizeIdentifier = (value) => {
+  const normalized = String(value || "")
+    .replace(/^quest_/, "")
+    .replace(/^skill_/, "")
+    .replace(/^item_/, "")
+    .replace(/^law_/, "")
+    .replace(/^recipe_/, "");
+  if (!normalized) return "Unknown";
+  return normalized
+    .split("_")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+};
+
+function createOpeningQuestFromId(questId) {
+  const fromCatalog = DataRegistry.getQuestById(questId);
+  const source =
+    fromCatalog && typeof fromCatalog === "object"
+      ? fromCatalog
+      : OPENING_SCENE_QUEST_TEMPLATES[questId];
+
+  if (!source) {
+    return QuestManager.initializeQuest({
+      id: questId,
+      name: humanizeIdentifier(questId),
+      description: `Advance the lead: ${humanizeIdentifier(questId)}.`,
+      objectives: [
+        {
+          id: `${questId}_obj_1`,
+          description: "Take one action to pursue this lead.",
+          criteria: {
+            actionTypes: ["move", "look", "narrative", "attack", "status", "inventory"],
+          },
+          completed: false,
+        },
+      ],
+      rewards: { xp: 30, items: [] },
+      tags: { starter: true, openingScene: true },
+    });
+  }
+
+  if (fromCatalog && typeof fromCatalog === "object") {
+    return QuestManager.initializeQuest({
+      ...fromCatalog,
+      tags: {
+        ...(fromCatalog.tags || {}),
+        openingScene: true,
+      },
+    });
+  }
+
+  return QuestManager.initializeQuest({
+    id: questId,
+    name: source.name,
+    description: source.description,
+    objectives: [
+      {
+        id: `${questId}_obj_1`,
+        description: source.objective,
+        criteria: source.criteria,
+        completed: false,
+      },
+    ],
+    rewards: source.rewards || { xp: 30, items: [] },
+    tags: { starter: true, openingScene: true },
+  });
+}
+
+function createOpeningSkillDefinition(skillId) {
+  const template = OPENING_SCENE_SKILL_TEMPLATES[skillId];
+  if (template) return { ...template };
+  return {
+    id: skillId,
+    name: humanizeIdentifier(skillId),
+    description: `${humanizeIdentifier(skillId)} technique unlocked from your opening trial.`,
+    type: "active",
+    level: 1,
+    manaCost: 6,
+    cooldown: 1,
+    isMagic: true,
+    damage: { base: 14, multiplier: 1.05 },
+    canEvolve: true,
+    canFuse: true,
+    tags: ["starter", "opening_scene"],
+  };
+}
+
+function createOpeningItemDefinition(itemId, quantity = 1) {
+  const registryItem = DataRegistry.getItemById(itemId);
+  if (registryItem && typeof registryItem === "object") {
+    return {
+      ...registryItem,
+      id: itemId,
+      quantity: Math.max(1, Math.floor(Number(quantity) || 1)),
+    };
+  }
+  return {
+    id: itemId,
+    name: humanizeIdentifier(itemId),
+    description: `${humanizeIdentifier(itemId)} recovered during the opening incident.`,
+    type: "misc",
+    quantity: Math.max(1, Math.floor(Number(quantity) || 1)),
+  };
+}
+
+function resolveOpeningChoiceFromInput(userInput, sceneId) {
+  if (!sceneId) return null;
+  const choices = listOpeningSceneChoices(sceneId);
+  if (!choices.length) return null;
+
+  const normalizedInput = normalizeInputToken(userInput);
+  if (!normalizedInput) return null;
+
+  const optionMatch = normalizedInput.match(
+    /(?:option|choice|select|pick|choose)?\s*(\d{1,2})$/,
+  );
+  if (optionMatch) {
+    const index = Number(optionMatch[1]) - 1;
+    if (index >= 0 && index < choices.length) {
+      return getOpeningSceneChoice(sceneId, index);
+    }
+  }
+
+  for (let index = 0; index < choices.length; index += 1) {
+    const listedChoice = choices[index];
+    const fullChoice = getOpeningSceneChoice(sceneId, listedChoice.id || index);
+    if (!fullChoice) continue;
+
+    const label = normalizeInputToken(fullChoice.label);
+    const labelStart = label.split(" ")[0] || "";
+    const aliases = OPENING_SCENE_ACTION_ALIASES[labelStart] || [];
+    const firstClause = normalizeInputToken(
+      String(fullChoice.label || "").split(/[.!?]/)[0],
+    );
+    const idToken = normalizeInputToken(fullChoice.id || "");
+
+    if (
+      normalizedInput === label ||
+      normalizedInput === firstClause ||
+      normalizedInput === labelStart ||
+      (label && normalizedInput.startsWith(label)) ||
+      (firstClause && normalizedInput.startsWith(firstClause)) ||
+      (idToken && normalizedInput === idToken)
+    ) {
+      return fullChoice;
+    }
+
+    if (aliases.some((alias) => normalizedInput.includes(alias))) {
+      return fullChoice;
+    }
+  }
+
+  return null;
+}
+
+function applyOpeningIntentToState(baseState, intent) {
+  let nextState = baseState;
+  const notes = [];
+
+  const setPlayer = (playerUpdater) => {
+    const playerSource = nextState?.player || {};
+    const playerNext = playerUpdater(playerSource);
+    nextState = { ...nextState, player: playerNext };
+  };
+
+  const setWorld = (worldUpdater) => {
+    const worldSource = nextState?.world || {};
+    const worldNext = worldUpdater(worldSource);
+    nextState = { ...nextState, world: worldNext };
+  };
+
+  const setQuests = (questsUpdater) => {
+    const questSource = nextState?.quests || {};
+    const questNext = questsUpdater(questSource);
+    nextState = { ...nextState, quests: questNext };
+  };
+
+  switch (intent?.type) {
+    case "player.health.delta": {
+      const delta = Number(intent.value) || 0;
+      if (!delta) break;
+      setPlayer((player) => {
+        const hp = player?.hp && typeof player.hp === "object"
+          ? player.hp
+          : { current: Number(player?.hp) || 0, max: Number(player?.maxHp) || 100 };
+        const max = Math.max(1, Number(hp.max) || 1);
+        const current = Number(hp.current) || 0;
+        const nextCurrent = Math.max(0, Math.min(max, current + delta));
+        return {
+          ...player,
+          hp: { ...hp, current: nextCurrent, max },
+        };
+      });
+      notes.push(
+        delta < 0
+          ? `Opening consequence: ${Math.abs(delta)} health lost.`
+          : `Opening consequence: ${delta} health restored.`,
+      );
+      break;
+    }
+    case "player.reputation.delta": {
+      const delta = Number(intent.value) || 0;
+      if (!delta) break;
+      setPlayer((player) => ({
+        ...player,
+        reputation: (Number(player?.reputation) || 0) + delta,
+      }));
+      break;
+    }
+    case "player.currency.delta": {
+      const delta = Number(intent.value) || 0;
+      if (!delta) break;
+      const currencyKey = intent.currency || "goldCoins";
+      setPlayer((player) => {
+        const currency =
+          player?.currency && typeof player.currency === "object"
+            ? player.currency
+            : {};
+        const current = Number(currency[currencyKey]) || 0;
+        const nextValue = Math.max(0, current + delta);
+        const nextCurrency = { ...currency, [currencyKey]: nextValue };
+        const nextPlayer = { ...player, currency: nextCurrency };
+        if (currencyKey === "goldCoins") {
+          nextPlayer.gold = nextValue;
+        }
+        if (currencyKey === "soulpoints") {
+          nextPlayer.soulpoints = nextValue;
+        }
+        return nextPlayer;
+      });
+      break;
+    }
+    case "quest.add": {
+      const questId = String(intent.questId || "").trim();
+      if (!questId) break;
+      const active = Array.isArray(nextState?.quests?.active)
+        ? nextState.quests.active
+        : [];
+      const completed = Array.isArray(nextState?.quests?.completed)
+        ? nextState.quests.completed
+        : [];
+      const exists =
+        active.some((quest) => quest?.id === questId) ||
+        completed.some((quest) => quest?.id === questId);
+      if (exists) break;
+
+      const nextQuest = createOpeningQuestFromId(questId);
+      setQuests((quests) => ({
+        ...quests,
+        active: [...active, nextQuest].slice(0, 6),
+        completed,
+      }));
+      setWorld((world) => ({
+        ...world,
+        vars: {
+          ...(world.vars || {}),
+          current_quest_id:
+            world?.vars?.current_quest_id ||
+            nextQuest?.id ||
+            null,
+        },
+      }));
+      notes.push(`New quest: ${nextQuest.name}.`);
+      break;
+    }
+    case "skill.unlock": {
+      const skillId = String(intent.skillId || "").trim();
+      if (!skillId) break;
+      const skill = createOpeningSkillDefinition(skillId);
+      setPlayer((player) => {
+        const abilities = Array.isArray(player?.abilities) ? player.abilities : [];
+        const activeSkills = Array.isArray(player?.activeSkills)
+          ? player.activeSkills
+          : [];
+        const passiveSkills = Array.isArray(player?.passiveSkills)
+          ? player.passiveSkills
+          : [];
+        const exists =
+          abilities.some((entry) => entry?.id === skill.id) ||
+          activeSkills.some((entry) => entry?.id === skill.id) ||
+          passiveSkills.some((entry) => entry?.id === skill.id);
+        if (exists) return player;
+
+        const nextAbilities = [...abilities, skill];
+        if (skill.type === "passive") {
+          return {
+            ...player,
+            abilities: nextAbilities,
+            activeSkills,
+            passiveSkills: [...passiveSkills, skill],
+          };
+        }
+
+        return {
+          ...player,
+          abilities: nextAbilities,
+          activeSkills: [...activeSkills, skill],
+          passiveSkills,
+        };
+      });
+      notes.push(`New ability unlocked: ${skill.name}.`);
+      break;
+    }
+    case "recipe.unlock": {
+      const recipeId = String(intent.recipeId || "").trim();
+      if (!recipeId) break;
+      setPlayer((player) => {
+        const unlocked = Array.isArray(player?.unlockedRecipes)
+          ? player.unlockedRecipes
+          : [];
+        if (unlocked.includes(recipeId)) return player;
+        return {
+          ...player,
+          unlockedRecipes: [...unlocked, recipeId],
+        };
+      });
+      break;
+    }
+    case "law.unlock": {
+      const lawId = String(intent.lawId || "").trim();
+      if (!lawId) break;
+      setPlayer((player) => {
+        const magic =
+          player?.magic && typeof player.magic === "object"
+            ? player.magic
+            : {};
+        const unlocked = Array.isArray(magic.unlockedLaws)
+          ? magic.unlockedLaws
+          : [];
+        if (unlocked.includes(lawId)) return player;
+        return {
+          ...player,
+          magic: {
+            ...magic,
+            unlockedLaws: [...unlocked, lawId],
+          },
+        };
+      });
+      notes.push(`Law unlocked: ${humanizeIdentifier(lawId)}.`);
+      break;
+    }
+    case "inventory.add": {
+      const itemId = String(intent.itemId || "").trim();
+      const quantity = Math.max(1, Math.floor(Number(intent.quantity) || 1));
+      if (!itemId) break;
+      const item = createOpeningItemDefinition(itemId, quantity);
+      setPlayer((player) => {
+        const inventory = Array.isArray(player?.inventory) ? player.inventory : [];
+        return {
+          ...player,
+          inventory: mergeInventoryItems(inventory, [item]),
+        };
+      });
+      notes.push(`Item gained: ${item.name}.`);
+      break;
+    }
+    case "clue.add": {
+      const clueId = String(intent.clueId || "").trim();
+      if (!clueId) break;
+      setWorld((world) => {
+        const vars =
+          world?.vars && typeof world.vars === "object" ? world.vars : {};
+        const clues = Array.isArray(vars.clues) ? vars.clues : [];
+        if (clues.includes(clueId)) return world;
+        return {
+          ...world,
+          vars: {
+            ...vars,
+            clues: [...clues, clueId],
+          },
+        };
+      });
+      break;
+    }
+    case "world.flag.set": {
+      const flag = String(intent.flag || "").trim();
+      if (!flag) break;
+      setWorld((world) => ({
+        ...world,
+        flags: {
+          ...(world.flags || {}),
+          [flag]: Boolean(intent.value),
+        },
+      }));
+      break;
+    }
+    case "player.stat.delta": {
+      const statId = String(intent.stat || "").trim();
+      const delta = Number(intent.value) || 0;
+      if (!statId || !delta) break;
+      const canonical = toCanonicalAttributeKey(statId);
+      if (canonical) {
+        setPlayer((player) => {
+          const attributes =
+            player?.attributes && typeof player.attributes === "object"
+              ? player.attributes
+              : {};
+          return {
+            ...player,
+            attributes: {
+              ...attributes,
+              [canonical]: (Number(attributes[canonical]) || 0) + delta,
+            },
+          };
+        });
+      } else {
+        setPlayer((player) => {
+          const resources =
+            player?.resources && typeof player.resources === "object"
+              ? player.resources
+              : {};
+          const nextValue = (Number(resources[statId]) || 0) + delta;
+          return {
+            ...player,
+            resources: {
+              ...resources,
+              [statId]: nextValue,
+            },
+          };
+        });
+      }
+      break;
+    }
+    default:
+      break;
+  }
+
+  return { state: nextState, notes };
+}
+
+function applyOpeningSceneChoice(state, { sceneId, choice }) {
+  if (!state || !sceneId || !choice) {
+    return { state, notes: [], openingNarrativeSeed: "" };
+  }
+
+  const intents = getOpeningSceneEffectIntents(sceneId, choice.id);
+  const notes = [];
+  let nextState = state;
+
+  intents.forEach((intent) => {
+    const result = applyOpeningIntentToState(nextState, intent);
+    nextState = result.state;
+    notes.push(...result.notes);
+  });
+
+  const openingNarrativeSeed = buildOpeningSceneNarrativeSeed(sceneId, choice.id);
+  const outcomeText =
+    typeof choice.outcomeText === "string" && choice.outcomeText.trim()
+      ? choice.outcomeText.trim()
+      : "";
+
+  const worldSource =
+    nextState?.world && typeof nextState.world === "object" ? nextState.world : {};
+  const vars =
+    worldSource?.vars && typeof worldSource.vars === "object"
+      ? worldSource.vars
+      : {};
+
+  nextState = {
+    ...nextState,
+    world: {
+      ...worldSource,
+      vars: {
+        ...vars,
+        openingSceneChoicePending: false,
+        openingSceneChoiceId: choice.id || null,
+        openingSceneChoiceLabel: choice.label || null,
+        openingSceneChoiceNext: choice.next || null,
+        openingSceneChoiceOutcome: outcomeText || null,
+        openingSceneNarrativeSeed: openingNarrativeSeed || null,
+        openingSceneChoiceResolvedAt: SimBridge.now(),
+      },
+    },
+  };
+
+  return { state: nextState, notes, openingNarrativeSeed, outcomeText };
+}
 
 function computeDominantMood(entries = []) {
   const recentEntries = entries.slice(-5);
@@ -158,6 +948,23 @@ function buildActionSuggestions(state) {
   const inCombat = Boolean(
     state.combat?.inCombat ?? state.combat?.status === "active",
   );
+  const openingSceneId = state?.world?.vars?.startingSceneId || null;
+  const openingChoicePending = Boolean(
+    state?.world?.vars?.openingSceneChoicePending,
+  );
+
+  if (!inCombat && openingChoicePending && openingSceneId) {
+    const openingContext = listOpeningSceneChoices(openingSceneId)
+      .slice(0, 4)
+      .map((choice) => ({
+        t: choice.label,
+        w: 1,
+      }));
+    const fallbackContext = CONTEXT_SUGGESTION_FILLERS.slice(0, 4);
+    const resolvedContext =
+      openingContext.length > 0 ? openingContext : fallbackContext;
+    return [...FIXED_ACTION_SUGGESTIONS, ...resolvedContext];
+  }
 
   if (inCombat) {
     contextSuggestions.push(
@@ -684,6 +1491,68 @@ export function useNarrative(
       setError(null);
 
       try {
+        const openingSceneId = currentState?.world?.vars?.startingSceneId || null;
+        const openingChoicePending = Boolean(
+          currentState?.world?.vars?.openingSceneChoicePending,
+        );
+        if (openingChoicePending && openingSceneId) {
+          const selectedOpeningChoice = resolveOpeningChoiceFromInput(
+            userInput,
+            openingSceneId,
+          );
+          if (selectedOpeningChoice) {
+            const openingResolution = applyOpeningSceneChoice(currentState, {
+              sceneId: openingSceneId,
+              choice: selectedOpeningChoice,
+            });
+
+            const resolvedState = openingResolution.state || currentState;
+            setState(resolvedState);
+            setActionSuggestions(buildActionSuggestions(resolvedState));
+
+            const uniqueNotes = Array.from(
+              new Set(
+                (openingResolution.notes || []).filter(
+                  (note) => typeof note === "string" && note.trim(),
+                ),
+              ),
+            );
+            uniqueNotes.forEach((note) => addSystemMessage(note, "system"));
+
+            if (typeof evaluateQuestProgress === "function") {
+              evaluateQuestProgress(resolvedState);
+            }
+
+            setIsNarrating(true);
+            try {
+              const openingActionResult = {
+                success: true,
+                actionType: "opening_choice",
+                description:
+                  openingResolution.outcomeText ||
+                  `You choose: ${selectedOpeningChoice.label}`,
+                state: resolvedState,
+                readOnly: false,
+                openingNarrativeSeed: openingResolution.openingNarrativeSeed,
+              };
+              const mode = resolvePromptMode(resolvedState, openingActionResult);
+              const prompt = assemblePrompt(
+                resolvedState,
+                userInput,
+                openingActionResult,
+              );
+              await streamNarrative(prompt, resolvedState, { mode });
+            } catch (aiError) {
+              if (aiError?.name === "AbortError") return;
+              console.error("Opening choice narrative generation failed:", aiError);
+            } finally {
+              setIsNarrating(false);
+            }
+
+            return;
+          }
+        }
+
         // Canonical action path: engine.step via useGameEngine.submitAction.
         const stepResult = submitAction?.({ kind: "text", text: userInput });
         const action = stepResult?.action;

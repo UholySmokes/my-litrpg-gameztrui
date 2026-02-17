@@ -368,14 +368,49 @@ export function executeAction(state, action, _options = {}) {
           break;
 
         case "attack":
-          // If not already in combat, start combat with a default encounter
+          // If not already in combat, start combat and perform an opening strike.
           if (!state.combat || state.combat.status !== "active") {
             const enemyIds =
               action.enemyIds && action.enemyIds.length > 0
                 ? action.enemyIds
                 : ["goblin", "goblin"];
-            newState = startCombat(state, enemyIds);
-            description = `Engaged combat with ${newState.combat.enemies.map((e) => e.name).join(", ")}`;
+            const engagedState = startCombat(state, enemyIds);
+            if (
+              !engagedState?.combat ||
+              engagedState.combat.status !== "active"
+            ) {
+              return {
+                success: false,
+                reason: "Could not start combat encounter.",
+                state,
+              };
+            }
+
+            const enemyNames = (engagedState.combat.enemies || [])
+              .map((enemy) => enemy?.name)
+              .filter(Boolean)
+              .join(", ");
+            const openerResult = playerAttack(
+              engagedState,
+              action.enemyIndex !== undefined ? action.enemyIndex : 0,
+              action.skillId || null,
+            );
+            if (!openerResult.success) {
+              newState = engagedState;
+              description = enemyNames
+                ? `Engaged combat with ${enemyNames}.`
+                : "Engaged combat.";
+            } else {
+              newState = processEnemyTurns(openerResult.state);
+              const targetName =
+                engagedState.combat.enemies?.[
+                  action.enemyIndex !== undefined ? action.enemyIndex : 0
+                ]?.name || "enemy";
+              description = enemyNames
+                ? `Engaged combat with ${enemyNames} and struck ${targetName}.`
+                : `Engaged combat and struck ${targetName}.`;
+              changes.damage = openerResult.damage;
+            }
             changes.combatStarted = true;
           } else {
             const enemyIndex =

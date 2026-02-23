@@ -19,7 +19,7 @@
     "preview": "vite preview",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache",
     "test:firestore-rules": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/security/firestoreRules.test.js --runInBand --no-cache",
-    "test:firestore-rules:emulator": "firebase emulators:exec --only firestore \"npm run test:firestore-rules\"",
+    "test:firestore-rules:emulator": "node scripts/run-firestore-rules-emulator.mjs",
     "test:performance": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/performanceEffects.test.js",
     "simulate": "node sim_gamestart_fixed.js",
     "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",

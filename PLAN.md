@@ -19,8 +19,12 @@ Last implementation check: 2026-02-23
   - Evidence: `dataconnect/schema/schema.gql`, `functions/lib/sync-core.js`, `functions/lib/sync-store.js`, `functions/lib/sync-dataconnect-store.js`
   - Verification: `npm test -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncDataconnectStore.test.js tests/unit/SyncProcess.test.js tests/unit/SyncValidation.test.js --runInBand` (27 passed)
 - [ ] M1: run Data Connect codegen + publish migration ADR/compatibility note artifact
-- [ ] M2: add `POST /api/sync/command` route + validation/idempotency tests
-- [ ] M3: extend determinism suite to 100-run mixed-stream replay assertion
+- [x] M2: add `POST /api/sync/command` route + validation/idempotency tests
+  - Evidence: `functions/lib/api-router.js`, `functions/lib/sync.js`, `tests/unit/SyncCommandRoutes.test.js`, `tests/unit/ApiRouterSyncRoutes.test.js`
+  - Verification: `npm test -- tests/unit/ApiRouterSyncRoutes.test.js tests/unit/SyncCommandRoutes.test.js tests/unit/SyncProcess.test.js tests/unit/SyncValidation.test.js --runInBand` (25 passed)
+- [x] M3: extend determinism suite to 100-run mixed-stream replay assertion
+  - Evidence: `tests/unit/SyncCoreDeterminism.test.js`, `docs/reports/determinism_validation_2026-02-23.md`
+  - Verification: `npm test -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncProcess.test.js --runInBand` (11 passed)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

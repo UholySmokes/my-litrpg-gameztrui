@@ -630,6 +630,7 @@ export interface GetMyRunEventByCommitIdData {
     events: ({
       id: UUIDString;
       runId: string;
+      eventType?: string | null;
       commitId: string;
       clientId: string;
       clientSeq: number;
@@ -733,6 +734,7 @@ export interface ListMyRunEventsSinceData {
     events: ({
       id: UUIDString;
       runId: string;
+      eventType?: string | null;
       commitId: string;
       clientId: string;
       clientSeq: number;
@@ -1603,6 +1605,7 @@ The `CreateRunEvent` Mutation requires an argument of type `CreateRunEventVariab
 ```javascript
 export interface CreateRunEventVariables {
   runId: string;
+  eventType?: string | null;
   commitId: string;
   clientId: string;
   clientSeq: number;
@@ -1665,6 +1668,7 @@ export default function CreateRunEventComponent() {
   // The `useCreateRunEvent` Mutation requires an argument of type `CreateRunEventVariables`:
   const createRunEventVars: CreateRunEventVariables = {
     runId: ..., 
+    eventType: ..., // optional
     commitId: ..., 
     clientId: ..., 
     clientSeq: ..., 
@@ -1680,7 +1684,7 @@ export default function CreateRunEventComponent() {
   };
   mutation.mutate(createRunEventVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ runId: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
+  mutation.mutate({ runId: ..., eventType: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {

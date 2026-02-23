@@ -2,10 +2,13 @@ import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
+const functionsRequire = createRequire(
+	new URL("../../functions/lib/sync-dataconnect-store.js", import.meta.url),
+);
 
 const dataconnectStore = require("../../functions/lib/sync-dataconnect-store.js");
 const dataconnectGenerated = require("../../functions/src/dataconnect-admin-generated/index.cjs.js");
-const firebaseAdminDataConnect = require("firebase-admin/data-connect");
+const firebaseAdminDataConnect = functionsRequire("firebase-admin/data-connect");
 
 describe("sync-dataconnect-store", () => {
 	const originalGetDataConnect = firebaseAdminDataConnect.getDataConnect;

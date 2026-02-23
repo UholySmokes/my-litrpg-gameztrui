@@ -9,6 +9,10 @@ lib/**/*.js.map
 !lib/saves-store.js
 !lib/saves.js
 !lib/narrate-runs-store.js
+!lib/sync-core.js
+!lib/sync-store.js
+!lib/sync-snapshots.js
+!lib/sync.js
 
 # TypeScript v1 declaration files
 typings/

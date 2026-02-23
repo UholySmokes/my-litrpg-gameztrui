@@ -1,0 +1,67 @@
+{
+  "startedAt": "2026-02-23T14:37:17.400Z",
+  "checks": [
+    {
+      "kind": "health_attempt_1",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"void-verse-firebase-api\"}"
+    },
+    {
+      "kind": "health_attempt_2",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"void-verse-firebase-api\"}"
+    },
+    {
+      "kind": "health_attempt_3",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"void-verse-firebase-api\"}"
+    },
+    {
+      "kind": "health_attempt_4",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"void-verse-firebase-api\"}"
+    },
+    {
+      "kind": "health_attempt_5",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"void-verse-firebase-api\"}"
+    },
+    {
+      "kind": "health_attempt_6",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"void-verse-firebase-api\"}"
+    },
+    {
+      "kind": "health_attempt_7",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"void-verse-firebase-api\"}"
+    },
+    {
+      "kind": "health_attempt_8",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"service\":\"void-verse-firebase-api\"}"
+    },
+    {
+      "kind": "narrate_with_dev_headers",
+      "ok": true,
+      "status": 200,
+      "body": "{\"ok\":true,\"narrative\":\"The world stretches before you, a vast canvas awaiting definition. You stand ready for discovery, though no specific location or immediate path presents itself. The air is still, holding the silent promise of untold adventures, yet for now, your surroundings offer no further detail.\",\"mood\":\"neutral\",\"suggestions\":[{\"t\":\"explore area\",\"w\":1},{\"t\":\"check status\",\"w\":0.9},{\"t\":\"open inventory\",\"w\":0.85}],\"outputHash\":\"6d481c5e44ae954f8a29655456b7f35add1a011757b6e9b12425dd46e64a969f\",\"mode\":\"exploration\",\"status\":\"completed\"}"
+    },
+    {
+      "kind": "narrate_without_auth",
+      "ok": true,
+      "status": 401,
+      "body": "{\"ok\":false,\"errorCode\":\"UNAUTHENTICATED\",\"message\":\"Sign in required.\"}"
+    }
+  ],
+  "logs": "\n> my-litrpg-game@0.0.0 dev:api\n> firebase emulators:start --only hosting,functions\n\n\u001b[36m\u001b[1mi  emulators:\u001b[22m\u001b[39m Starting emulators: functions, hosting\r\n\u001b[33m\u001b[1m!  hosting:\u001b[22m\u001b[39m Port 5000 is not open on localhost (127.0.0.1), could not start Hosting Emulator.\r\n\u001b[33m\u001b[1m!  hosting:\u001b[22m\u001b[39m To select a different host/port, specify that host/port in a firebase.json config file:\n      {\n        // ...\n        \"emulators\": {\n          \"hosting\": {\n            \"host\": \"\u001b[33mHOST\u001b[39m\",\n            \"port\": \"\u001b[33mPORT\u001b[39m\"\n          }\n        }\n      }\r\n\u001b[33m\u001b[1m!  hub:\u001b[22m\u001b[39m emulator hub unable to start on port 4400, starting on 4401 instead.\r\n\u001b[33m\u001b[1m!  ui:\u001b[22m\u001b[39m Emulator UI unable to start on port 4000, starting on 4001 instead.\r\n\u001b[33m\u001b[1m!  logging:\u001b[22m\u001b[39m Logging Emulator unable to start on port 4500, starting on 4501 instead.\r\n\u001b[36m\u001b[1mi  emulators:\u001b[22m\u001b[39m Shutting down emulators.\r\n\r\n\u001b[1m\u001b[31mError:\u001b[39m\u001b[22m Could not start Hosting Emulator, port taken.\r\n",
+  "finishedAt": "2026-02-23T14:37:41.451Z"
+}

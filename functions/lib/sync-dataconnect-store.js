@@ -226,9 +226,7 @@ async function appendEvent({ ownerId, runId, event }) {
 			accepted: Boolean(event.accepted),
 			errorCode: normalizeString(event.error_code) || null,
 			message: normalizeString(event.message) || null,
-			seq: Number.isFinite(Number(event?.commit?.clientSeq))
-				? Number(event.commit.clientSeq)
-				: null,
+			seq: Number.isFinite(Number(event?.seq)) ? Number(event.seq) : null,
 			tick: Number.isFinite(Number(event?.tick)) ? Number(event.tick) : null,
 			stateHash: normalizeString(event.state_hash) || null,
 			contentVersion: normalizeString(event?.commit?.contentVersion) || null,

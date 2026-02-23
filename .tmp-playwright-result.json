@@ -1,0 +1,15 @@
+{
+  "startedAt": "2026-02-23T14:36:38.378Z",
+  "webReady": true,
+  "apiReady": true,
+  "healthStatus": 500,
+  "narrateStatus": 500,
+  "narrateBody": "",
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+  ],
+  "pageErrors": [],
+  "success": false,
+  "finishedAt": "2026-02-23T14:36:41.601Z"
+}

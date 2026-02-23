@@ -1,0 +1,13 @@
+{
+  "project": "my-litrpg-gameztrui-3416-da75c",
+  "startedAt": "2026-02-23T14:40:17.350Z",
+  "webReady": true,
+  "apiReady": true,
+  "healthStatus": 200,
+  "narrateStatus": 200,
+  "narrateBody": "{\"ok\":true,\"narrative\":\"The world unfolds before you, a tapestry of muted colors and shifting light. Each step carries you deeper into the expanse, your senses attuned to the subtle whispers of the environment. You scan the horizon, your gaze sweeping across the indistinct terrain, searching for any anomaly or landmark that might break the endless vista. The path ahead remains a mystery, yet the urge to discover propels you onward.\",\"mood\":\"mysterious\",\"suggestions\":[{\"t\":\"explore area\",\"w\":1},{\"t\":\"check status\",\"w\":0.9},{\"t\":\"open inventory\",\"w\":0.85}],\"outputHash\":\"f0b3b73a74224f1542b2975608e68e0e03560fe33462e9b6e04f577b69d356bb\",\"mode\":\"exploration\",\"status\":\"completed\"}",
+  "consoleErrors": [],
+  "pageErrors": [],
+  "success": true,
+  "finishedAt": "2026-02-23T14:41:14.690Z"
+}

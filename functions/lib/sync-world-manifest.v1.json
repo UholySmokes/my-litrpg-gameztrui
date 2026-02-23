@@ -1,0 +1,114 @@
+{
+  "worldId": "voidverse_slice_world_001",
+  "releaseId": "slice-v1",
+  "start": {
+    "mapId": "map_village_square",
+    "x": 3,
+    "y": 3
+  },
+  "maps": {
+    "map_village_square": {
+      "width": 20,
+      "height": 20,
+      "triggers": [
+        "tile_intro_square",
+        "npc_guide_interact",
+        "encounter_gate_training",
+        "savepoint_square_crystal"
+      ]
+    },
+    "map_training_glade": {
+      "width": 16,
+      "height": 16,
+      "triggers": [
+        "zone_exit_back_to_square"
+      ]
+    }
+  },
+  "npcs": {
+    "npc_guide": {
+      "mapId": "map_village_square",
+      "name": "Guide"
+    }
+  },
+  "objects": {
+    "encounter_gate_training_01": {
+      "mapId": "map_village_square"
+    },
+    "save_crystal_square_01": {
+      "mapId": "map_village_square"
+    }
+  },
+  "triggers": {
+    "tile_intro_square": {
+      "type": "ENTER_TILE",
+      "mapId": "map_village_square",
+      "x": 6,
+      "y": 8,
+      "cooldownMs": 0,
+      "setQuestFlags": {
+        "slice_intro_seen": true
+      }
+    },
+    "npc_guide_interact": {
+      "type": "INTERACT",
+      "mapId": "map_village_square",
+      "x": 10,
+      "y": 8,
+      "targetId": "npc_guide",
+      "targetKind": "npc",
+      "cooldownMs": 250,
+      "prereqFlags": {
+        "slice_intro_seen": true
+      },
+      "setQuestFlags": {
+        "quest_tutorial_started": true,
+        "quest_tutorial_talked_to_guide": true
+      }
+    },
+    "encounter_gate_training": {
+      "type": "ENCOUNTER_GATE",
+      "mapId": "map_village_square",
+      "x": 18,
+      "y": 8,
+      "targetId": "encounter_gate_training_01",
+      "targetKind": "object",
+      "cooldownMs": 1000,
+      "prereqFlags": {
+        "quest_tutorial_started": true
+      },
+      "setQuestFlags": {
+        "quest_tutorial_gate_entered": true
+      },
+      "transition": {
+        "mapId": "map_training_glade",
+        "x": 2,
+        "y": 2
+      }
+    },
+    "zone_exit_back_to_square": {
+      "type": "ZONE_EXIT",
+      "mapId": "map_training_glade",
+      "x": 0,
+      "y": 2,
+      "cooldownMs": 0,
+      "transition": {
+        "mapId": "map_village_square",
+        "x": 17,
+        "y": 8
+      },
+      "setQuestFlags": {
+        "quest_tutorial_gate_returned": true
+      }
+    },
+    "savepoint_square_crystal": {
+      "type": "SAVEPOINT",
+      "mapId": "map_village_square",
+      "x": 4,
+      "y": 4,
+      "targetId": "save_crystal_square_01",
+      "targetKind": "object",
+      "cooldownMs": 1500
+    }
+  }
+}

@@ -14,6 +14,9 @@ describe("sync-dataconnect-store", () => {
 	const originalGetDataConnect = firebaseAdminDataConnect.getDataConnect;
 	const originalGetMyRunSessionByRunId =
 		dataconnectGenerated.getMyRunSessionByRunId;
+	const originalGetMyProfile = dataconnectGenerated.getMyProfile;
+	const originalMarkMyProfileMigration =
+		dataconnectGenerated.markMyProfileMigration;
 	const originalUpsertRunSession = dataconnectGenerated.upsertRunSession;
 	const originalGetMyRunEventByCommitId =
 		dataconnectGenerated.getMyRunEventByCommitId;
@@ -27,10 +30,63 @@ describe("sync-dataconnect-store", () => {
 	afterEach(() => {
 		firebaseAdminDataConnect.getDataConnect = originalGetDataConnect;
 		dataconnectGenerated.getMyRunSessionByRunId = originalGetMyRunSessionByRunId;
+		dataconnectGenerated.getMyProfile = originalGetMyProfile;
+		dataconnectGenerated.markMyProfileMigration =
+			originalMarkMyProfileMigration;
 		dataconnectGenerated.upsertRunSession = originalUpsertRunSession;
 		dataconnectGenerated.getMyRunEventByCommitId = originalGetMyRunEventByCommitId;
 		dataconnectGenerated.createRunEvent = originalCreateRunEvent;
 		dataconnectGenerated.listMyRunEventsSince = originalListMyRunEventsSince;
+	});
+
+	it("reads migration version from user profile", async () => {
+		dataconnectGenerated.getMyProfile = jest.fn(async () => ({
+			data: {
+				userProfile: {
+					id: "user-1",
+					displayName: "Traveler",
+					migrationVersion: 3,
+				},
+			},
+		}));
+
+		const version = await dataconnectStore.getMigrationVersion({
+			ownerId: "user-1",
+		});
+
+		expect(dataconnectGenerated.getMyProfile).toHaveBeenCalledTimes(1);
+		expect(version).toBe(3);
+	});
+
+	it("marks migration version using existing profile display name", async () => {
+		dataconnectGenerated.getMyProfile = jest.fn(async () => ({
+			data: {
+				userProfile: {
+					id: "user-2",
+					displayName: "Aria",
+					migrationVersion: null,
+				},
+			},
+		}));
+		dataconnectGenerated.markMyProfileMigration = jest.fn(async () => ({
+			data: {
+				userProfile_upsert: {
+					id: "user-2",
+				},
+			},
+		}));
+
+		const marked = await dataconnectStore.markMigrationVersion({
+			ownerId: "user-2",
+			version: 1,
+			displayName: "",
+		});
+
+		expect(marked).toBe(true);
+		expect(dataconnectGenerated.markMyProfileMigration).toHaveBeenCalledTimes(1);
+		const callArgs = dataconnectGenerated.markMyProfileMigration.mock.calls[0][1];
+		expect(callArgs.migrationVersion).toBe(1);
+		expect(callArgs.displayName).toBe("Aria");
 	});
 
 	it("maps run sessions to sync run state", async () => {

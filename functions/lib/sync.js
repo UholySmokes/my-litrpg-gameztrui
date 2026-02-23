@@ -19,6 +19,8 @@ const {
 const syncStore = require("./sync-store");
 const { persistRunSnapshot } = require("./sync-snapshots");
 
+const LEGACY_SAVE_MIGRATION_VERSION = 1;
+
 function normalizeString(value) {
 	return typeof value === "string" ? value.trim() : "";
 }
@@ -186,6 +188,14 @@ function hydrateFromLegacySave(save, { runId, manifest }) {
 
 async function maybeMigrateLegacySave({ ownerId, runId, manifest }) {
 	try {
+		const migrationVersion = await syncStore.getMigrationVersion({ ownerId });
+		if (
+			Number.isFinite(Number(migrationVersion)) &&
+			Number(migrationVersion) >= LEGACY_SAVE_MIGRATION_VERSION
+		) {
+			return null;
+		}
+
 		const summaries = await listSaves({ userId: ownerId, limit: 20 });
 		for (const summary of summaries || []) {
 			const row = await getSave({ userId: ownerId, saveId: summary.id });
@@ -198,6 +208,16 @@ async function maybeMigrateLegacySave({ ownerId, runId, manifest }) {
 				state: legacyState,
 				saveSlotId: summary.id,
 			});
+			try {
+				await syncStore.markMigrationVersion({
+					ownerId,
+					version: LEGACY_SAVE_MIGRATION_VERSION,
+					displayName:
+						normalizeString(legacyState?.entityStates?.player?.name) || "Traveler",
+				});
+			} catch {
+				// Migration succeeded; marker write is best-effort only.
+			}
 			return run;
 		}
 		return null;

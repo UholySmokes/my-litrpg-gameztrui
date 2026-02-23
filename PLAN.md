@@ -32,6 +32,8 @@ In scope:
 - Pixel presentation pass: tilemaps, sprite pipeline, 3-5 map hub, persistent command terminal.
 - Canonical combat/inventory/quest transitions and load parity across sessions.
 - Web app repositioned to inspector/replay/debug tooling.
+- Godot runtime observability via batched telemetry reporting to backend endpoint.
+- Unified runtime config generation so Godot and Web consume the same environment flags/URLs.
 
 Explicit in-scope interface changes:
 - `functions/lib/api-router.js`: add `POST /api/sync/command`.
@@ -40,6 +42,9 @@ Explicit in-scope interface changes:
 - `dataconnect/schema/schema.gql`: add v2 session/event fields.
 - `godot/scripts/sync_client.gd`: add command API wrapper.
 - `godot/scripts/story_client.gd`: add story start/poll wrappers.
+- `godot/scripts/telemetry_reporter.gd`: batch and ship Godot runtime logs/errors.
+- `functions/lib/api-router.js`: add telemetry ingest route (`POST /api/telemetry` or equivalent observability route).
+- `scripts/generate-godot-config.js`: generate `godot/data/config.json` from shared runtime config source.
 
 Non-goals (for this 20-week window):
 - Multiplayer, co-op, guild, or shared-world mechanics.
@@ -83,15 +88,15 @@ Phase windows:
 | Phase | Timebox | Milestone | Deliverable | DoD (testable) | Dependencies | Owner | Notes |
 |------:|---------|-----------|-------------|----------------|-------------|-------|------|
 | 0 | W1 | M0 - Planning and Contract Freeze | Approved roadmap + v2 contracts + baseline snapshots | `PLAN.md`, `docs/contracts/canonical_state_v2.md`, and `docs/contracts/command_envelope_v1.md` approved; baseline test report committed | None | Tech Lead + PM | Validation: architecture review, baseline evidence. Type: Foundation |
-| 1 | W1-W3 | M1 - Canonical State v2 Schema and Migration | Data Connect schema and adapters support v1 read/v2 write | Schema compiles, client codegen succeeds, migration tests pass, existing sync tests remain green | M0 | Backend Lead | Validation: `SyncProcess` + `SyncValidation` suite. Type: Foundation |
+| 1 | W1-W3 | M1 - Canonical State v2 Schema and Migration | Data Connect schema and adapters support v1 read/v2 write with explicit command identity model | Schema compiles, client codegen succeeds, migration tests pass, existing sync tests remain green, and command-vs-trigger representation is explicit (`eventType` discriminator or `CommandLog` table) | M0 | Backend Lead | Validation: `SyncProcess` + `SyncValidation` suite and schema review. Type: Foundation |
 | 1 | W2-W4 | M2 - Command Transport API | `POST /api/sync/command` with auth/idempotency/reconcile semantics | Route tests pass for malformed payload, stale seq, replay id, mismatch, and success paths | M0, M1 | Backend Lead | Validation: route + behavior tests. Type: Product capability |
 | 1 | W3-W6 | M3 - Deterministic Server Command Engine | Bundled server command engine from shared core | Fixed-seed replay on mixed streams returns identical `{seq,tick,stateHash}` across 100 runs | M1, M2 | Systems Engineer + Backend | Validation: determinism suite and failure-mode tests. Type: Quality |
-| 2 | W5-W8 | M4 - Godot Command Terminal and Reconcile UX | Godot command input, history, response rendering, conflict reconciliation | Godot can submit commands, apply canonical updates, and recover from reconcile-required responses | M2, M3 | Godot Engineer | Validation: Godot command contract test + smoke script. Type: Product capability |
+| 2 | W5-W8 | M4 - Godot Command Terminal, Config, and Runtime CI | Godot command input/history/reconcile UX, generated config loader, and headless engine test runner in CI | Godot can submit commands, apply canonical updates, recover from reconcile-required responses, load runtime config from generated JSON, and pass headless in-engine tests in PR CI | M2, M3 | Godot Engineer + QA Lead | Validation: headless Godot CI, command contract tests, smoke script. Type: Product capability + Quality |
 | 2 | W7-W9 | M5 - Story Integration with Safe Fallback | Godot story client wired to story start/poll and fallback renderer | Success/failure/timeout branches covered; no blank prose panel state in smoke tests | M4 | Backend + Godot Engineer | Validation: story handler tests + manual narrative flow. Type: Product capability |
 | 2 | W8-W11 | M6 - Pixel Presentation MVP | Tilemap/sprite pipeline + 3-5 map hub + persistent HUD/terminal | Multi-map traversal + trigger interactions hold 60 FPS target on baseline machine | M4 | Godot Engineer + Content | Validation: map traversal checklist + FPS capture. Type: Product capability |
 | 2 | W10-W13 | M7 - Canonical Combat, Inventory, Quest Depth | Server-authoritative progression systems integrated in loop | Full scenario test (explore -> encounter -> combat -> quest update -> save/load) passes deterministically | M3, M6 | Gameplay Engineer | Validation: scenario tests + save/load parity checks. Type: Product capability |
 | 3 | W12-W14 | M8 - Web Runtime Re-scope to Tooling | Inspector/replay/hash timeline UI and dev-only gameplay flag | Tools display canonical stream accurately; production build excludes gameplay route by default | M2, M3 | Fullstack Engineer | Validation: tooling acceptance suite + README updates. Type: Operations |
-| 3 | W13-W16 | M9 - Quality and Security Gate Buildout | Expanded CI, nightly replay/load jobs, security controls documentation | CI stability >= 95% over 10 runs; security findings triaged with owners and due dates | M5, M7, M8 | QA Lead + DevOps + Backend | Validation: CI dashboard + security review output. Type: Quality |
+| 3 | W13-W16 | M9 - Quality and Security Gate Buildout | Expanded CI (excluding already-landed Godot headless lane), nightly replay/load jobs, security controls documentation | CI stability >= 95% over 10 runs; security findings triaged with owners and due dates; Godot headless lane has been green since Alpha | M5, M7, M8 | QA Lead + DevOps + Backend | Validation: CI dashboard + security review output. Type: Quality |
 | 3 | W16-W17 | M10 - Staging Reliability Soak | Staging runbook executed with replay parity and auth/reconnect stress cases | 100-run parity passes, reconnect/reconcile smoke passes, rollback drill succeeds | M9 | Release Manager + DevOps | Validation: staging sign-off packet. Type: Operations |
 | 3 | W18 | M11 - Internal Canary Release | Internal users on production path with telemetry and on-call coverage | Canary guardrails hold for 5 consecutive days with no unresolved Sev-1/Sev-2 | M10 | Tech Lead + SRE | Validation: canary report and on-call incident log. Type: Operations |
 | 4 | W19 | M12 - Limited Percentage Rollout | Controlled external rollout by feature flag percentage | Guardrails hold at each percentage step and rollback tested once live | M11 | SRE + PM | Validation: rollout gate checklist. Type: Operations |
@@ -101,15 +106,15 @@ Phase windows:
 | Milestone | Work packages (must complete) | Required test/evidence | Exit artifact |
 |-----------|-------------------------------|------------------------|---------------|
 | M0 | Baseline tests, contract draft review, dependency map, decision log initialization | Baseline command outputs and smoke notes committed | Signed-off roadmap + contract docs |
-| M1 | Schema extension, codegen, adapter dual-read/write, migration-on-write path | `tests/unit/SyncProcess.test.js`, `tests/unit/SyncValidation.test.js` | Migration ADR + compatibility notes |
+| M1 | Schema extension, codegen, adapter dual-read/write, migration-on-write path, explicit command representation decision (`eventType` enum vs `CommandLog` table) and query plan | `tests/unit/SyncProcess.test.js`, `tests/unit/SyncValidation.test.js`, schema diff review notes | Migration ADR + compatibility notes + command schema decision record |
 | M2 | API route wiring, request validation, idempotency storage check, response envelope standardization | `tests/unit/ApiRouterSyncRoutes.test.js`, `tests/unit/SyncCommandRoutes.test.js` | Command API contract doc |
 | M3 | Engine bundling script, command parser wrapper, deterministic state transitions, parity harness | `tests/unit/SyncCoreDeterminism.test.js` + 100-run replay output | Determinism validation report |
-| M4 | Godot terminal scene updates, request in-flight disable/enable state, error rendering, reconcile branch UX | `tests/unit/GodotCommandContract.test.js` + manual checklist | Godot command UX spec |
+| M4 | Godot terminal scene updates, request in-flight disable/enable state, error rendering, reconcile branch UX, `ConfigLoader.gd` reading generated `godot/data/config.json`, headless Godot runner in CI replacing string-only regex confidence | Headless Godot test run (exit 0/1), `tests/unit/GodotCommandContract.test.js`, manual checklist | Godot command UX spec + Godot runtime test harness doc |
 | M5 | Story client wrappers, polling loop, timeout handling, fallback prose templates, suggestion rendering | `tests/unit/HandlersNarrate.test.js` + flow script | Narrative fallback playbook |
 | M6 | Tilemap ingestion, sprite integration, hub map data, HUD panel updates, perf instrumentation | FPS capture + map traversal logs | Art/content MVP manifest |
 | M7 | Command verb set lock, combat transition wiring, inventory mutation, quest state transitions, save/load parity | End-to-end scenario suite + parity snapshots | Gameplay progression contract |
 | M8 | Replay inspector, hash timeline view, run diff tooling, web gameplay dev flag path | Tooling UI acceptance checklist | Web tooling scope doc |
-| M9 | CI matrix updates, nightly load tests, security checklist, retry/error-budget docs | CI pass history + security issue register | Quality gate packet |
+| M9 | CI matrix hardening, nightly load tests, security checklist, retry/error-budget docs, telemetry endpoint SLO review | CI pass history + security issue register + telemetry ingest health report | Quality gate packet |
 | M10 | Staging soak execution, auth expiry tests, reconnect storm tests, rollback rehearsal | Staging sign-off report | Release readiness report |
 | M11 | Canary enablement, alert tuning, on-call drills, incident templates | 5-day canary metrics + incident summary | Canary decision memo |
 | M12 | Percentage ramp plan execution (10%->25%->50%), live rollback verification | Rollout dashboard snapshots | Rollout gate approvals |
@@ -130,6 +135,9 @@ Dependency matrix:
 | Canonical state v2 contract approval | M1, M2, M3 | Schema/API churn and rework | Tech Lead | W1 |
 | Data Connect schema deploy window | M1 | Blocks migration and command event persistence | Backend Lead | W3 |
 | Shared game-core server bundle stability | M3, M7 | Determinism and progression blocked | Systems Engineer | W6 |
+| Headless Godot CI harness operational in PR lane | M4, M5, M6, Alpha gate | Runtime regressions missed by regex-only checks | QA Lead + Godot Lead | W6 |
+| Generated shared runtime config available to Godot | M4, M5, M11 | Environment drift between Web and Godot behavior | Fullstack Lead | W7 |
+| Telemetry ingestion endpoint and batching protocol defined | M4, M9, M11 | Godot client remains opaque during Alpha/Canary incidents | Backend Lead | W7 |
 | Godot command UX integration bandwidth | M4, M5, M6 | Delays Alpha and Beta gates | Godot Lead | W8 |
 | Command verb set freeze | M7, M5 | Narrative suggestions become invalid | Gameplay Lead | W10 |
 | Tooling data model lock | M8 | Inspector/replay mismatch with production payloads | Fullstack Lead | W12 |
@@ -169,10 +177,12 @@ Cross-team integration checkpoints:
 | Milestone on-time rate | Output | Milestones delivered by planned week | Plan ledger | Weekly | PMO/PM | Target >= 85% |
 | New path test coverage delta | Output | Coverage increase on touched modules vs baseline | Coverage reports | Weekly | QA Lead | Target +25% |
 | Determinism replay pass rate | Output | Successful identical replay runs / total runs | Replay harness | Nightly | Systems Engineer | Target 100% |
+| Godot headless runtime test pass rate | Output | Passing headless Godot in-engine test jobs / total Godot CI jobs | CI pipeline | Per PR + daily summary | QA Lead | Target 100%, Alert < 98% over 3 days |
 | `/api/sync/command` p95 latency | Guardrail | p95 server response time under expected load | APM traces | Daily | Backend Lead | Alert > 350 ms |
 | Sync error rate | Guardrail | Failed sync requests / total sync requests | API logs | Daily | SRE | Alert > 1.0% |
 | State hash divergence rate | Guardrail | Divergence incidents / total run comparisons | Replay inspector | Daily | Systems Engineer | Alert > 0 in staging, > 0.1% prod |
 | Story fallback rate | Guardrail | Story fallback responses / story attempts | Story service logs | Daily | Backend Lead | Alert > 5% |
+| Godot telemetry ingest success rate | Guardrail | Accepted telemetry batches / sent telemetry batches | Telemetry endpoint logs | Daily | Backend Lead | Alert < 99% |
 | Infra cost delta | Guardrail | Cost vs pre-command baseline for equivalent usage | Billing dashboard | Weekly | DevOps | Alert > +20% |
 | Incident MTTR | Guardrail | Mean time to recover for Sev-1/2 incidents | Incident tracker | Weekly | SRE | Alert > 60 minutes |
 
@@ -182,6 +192,8 @@ Cross-team integration checkpoints:
 - Add story timeout classification tags.
 - Add run replay hash checkpoint sampling per phase of play.
 - Add rollout stage tag to all relevant operational metrics.
+- Add Godot telemetry payload schema with client/session/build tags.
+- Add config checksum metric to detect runtime config drift between Godot and Web.
 
 ## 9. Resourcing & Operating Model
 ### Role Allocation
@@ -241,6 +253,7 @@ Execution rules:
 ## 11. Open Questions
 | Open question | Decision deadline | Interim assumption | Risk if assumption is wrong | Owner |
 |---------------|-------------------|--------------------|-----------------------------|-------|
+| Should v2 use `RunEvent.eventType` discriminator only, or introduce a dedicated `CommandLog` table? | 2026-03-06 | Start with explicit discriminator; promote to `CommandLog` if query/ops complexity remains high | Debugging complexity and slower deprecation of trigger-era semantics | Backend Lead + Tech Lead |
 | Can we guarantee a dedicated Godot engineer through W14? | 2026-03-06 | Yes | Alpha/Beta slip due to integration bottleneck | Engineering Manager |
 | Is AI model quota and budget approved for canary and limited rollout? | 2026-03-13 | Yes, with monitoring | Story feature throttling or disabled in rollout | PM + Backend Lead |
 | Is the Data Connect schema deployment window fixed and rollback-capable? | 2026-03-06 | Yes | Migration delay affecting M1-M3 critical path | Backend Lead |

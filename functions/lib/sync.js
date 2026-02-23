@@ -620,6 +620,56 @@ function normalizeLegacyActionBody(rawBody, manifest) {
 	};
 }
 
+function normalizeCommandBody(rawBody, manifest) {
+	const body = rawBody && typeof rawBody === "object" ? rawBody : {};
+	const command =
+		body.command && typeof body.command === "object" ? body.command : null;
+	if (!command) {
+		return {
+			ok: false,
+			errorCode: "INVALID_COMMAND_ENVELOPE",
+			message: "command object is required.",
+		};
+	}
+
+	const commandType = normalizeString(command.type).toUpperCase();
+	if (commandType !== "TRIGGER") {
+		return {
+			ok: false,
+			errorCode: "UNSUPPORTED_COMMAND_TYPE",
+			message: "Only TRIGGER command type is supported in v1.",
+		};
+	}
+
+	const triggerType =
+		normalizeString(command.triggerType) || normalizeString(body.triggerType);
+	const trigger =
+		command.trigger && typeof command.trigger === "object"
+			? command.trigger
+			: body.trigger && typeof body.trigger === "object"
+				? body.trigger
+				: null;
+
+	const envelope = {
+		id: body.id,
+		runId: body.runId,
+		clientId: body.clientId,
+		clientSeq: body.clientSeq,
+		createdAt: body.createdAt,
+		contentVersion:
+			normalizeString(body.contentVersion) || manifest.contentVersion,
+		triggerType,
+		trigger,
+		commandType,
+		command: {
+			...command,
+			type: commandType,
+		},
+	};
+
+	return normalizeCommitEnvelope(envelope);
+}
+
 async function action(req, res) {
 	try {
 		const user = await requireUser(req, res);
@@ -647,6 +697,46 @@ async function action(req, res) {
 				ok: false,
 				errorCode: result.errorCode || "COMMIT_FAILED",
 				message: result.message || "Commit processing failed.",
+			});
+		}
+
+		const response = buildSyncResponse({ result, manifest });
+		return json(res, response.ok ? 200 : 409, response);
+	} catch (error) {
+		return json(res, 500, {
+			ok: false,
+			errorCode: "UNEXPECTED_SYNC_ERROR",
+			message: String(error?.message || error || "Unknown error"),
+		});
+	}
+}
+
+async function command(req, res) {
+	try {
+		const user = await requireUser(req, res);
+		if (!user) return;
+
+		const manifest = getWorldManifest();
+		const body = await readJsonBody(req);
+		const normalized = normalizeCommandBody(body, manifest);
+		if (!normalized.ok) {
+			return json(res, 400, {
+				ok: false,
+				errorCode: normalized.errorCode,
+				message: normalized.message,
+			});
+		}
+
+		const result = await processCommitStream({
+			ownerId: user.id,
+			commits: [normalized.commit],
+			manifest,
+		});
+		if (!result.ok) {
+			return json(res, 500, {
+				ok: false,
+				errorCode: result.errorCode || "COMMAND_FAILED",
+				message: result.message || "Command processing failed.",
 			});
 		}
 
@@ -728,6 +818,7 @@ module.exports = {
 	commit,
 	commitBatch,
 	action,
+	command,
 	pull,
 	processCommitStream,
 	loadRunState,

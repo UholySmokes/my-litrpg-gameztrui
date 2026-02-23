@@ -348,6 +348,8 @@ function normalizeCommitEnvelope(input) {
 	const contentVersion = normalizeString(input.contentVersion);
 	const triggerType = normalizeString(input.triggerType);
 	const triggerInput = isRecord(input.trigger) ? input.trigger : null;
+	const commandType = normalizeString(input.commandType).toUpperCase();
+	const commandPayload = isRecord(input.command) ? input.command : null;
 
 	if (!id) {
 		return {
@@ -451,6 +453,8 @@ function normalizeCommitEnvelope(input) {
 				y,
 				targetId: targetId || null,
 			},
+			commandType: commandType || null,
+			command: commandPayload || null,
 		},
 	};
 }

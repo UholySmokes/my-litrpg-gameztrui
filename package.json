@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "vite",
     "dev:api": "firebase emulators:start --only hosting,functions",
+    "dev:stack": "node scripts/dev-stack.mjs",
     "build": "vite build",
     "postbuild": "node scripts/generate-runtime-config.js",
     "lint": "eslint .",

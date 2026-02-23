@@ -11,6 +11,10 @@ query ListMySaveSlots @auth(level: USER) {
       playerLevel
       worldId
       locationId
+      mapId
+      playerPosJson
+      entityStatesJson
+      questFlagsJson
       turnCount
       contentVersion
       stateVersion
@@ -33,6 +37,10 @@ query GetMySaveSlot($id: UUID!) @auth(level: USER) {
     playerLevel
     worldId
     locationId
+    mapId
+    playerPosJson
+    entityStatesJson
+    questFlagsJson
     turnCount
     contentVersion
     stateVersion
@@ -59,6 +67,93 @@ query ListMyRunSnapshots($runId: String!) @auth(level: USER) {
       seq
       tick
       stateHash
+      updatedAt
+    }
+  }
+}
+
+query GetMyRunSessionByRunId($runId: String!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    runSessions: runSessions_on_user(where: { runId: { eq: $runId } }) {
+      id
+      runId
+      worldId
+      mapId
+      playerPosJson
+      entityStatesJson
+      questFlagsJson
+      seq
+      tick
+      stateHash
+      contentVersion
+      stateVersion
+      saveSlotId
+      runSeed
+      lastCommitId
+      lastClientId
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query GetMyRunEventByCommitId($runId: String!, $commitId: String!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    events: runEvents_on_user(where: { runId: { eq: $runId }, commitId: { eq: $commitId } }) {
+      id
+      runId
+      commitId
+      clientId
+      clientSeq
+      triggerType
+      triggerPayloadJson
+      accepted
+      errorCode
+      message
+      seq
+      tick
+      stateHash
+      contentVersion
+      createdAt
+    }
+  }
+}
+
+query ListMyRunEventsSince($runId: String!, $afterSeq: Int!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    events: runEvents_on_user(where: { runId: { eq: $runId }, clientSeq: { gt: $afterSeq } }) {
+      id
+      runId
+      commitId
+      clientId
+      clientSeq
+      triggerType
+      triggerPayloadJson
+      accepted
+      errorCode
+      message
+      seq
+      tick
+      stateHash
+      contentVersion
+      createdAt
+    }
+  }
+}
+
+query ListMyStoryMemories($runId: String!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    memories: storyMemories_on_user(where: { runId: { eq: $runId } }) {
+      id
+      runId
+      memoryKey
+      memoryJson
+      lastSeq
+      createdAt
       updatedAt
     }
   }

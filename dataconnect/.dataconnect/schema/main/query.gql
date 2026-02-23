@@ -1,8 +1,8 @@
 extend type Query {
   """
-  ✨ Look up a single `GameState` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  ✨ Look up a single `RunEvent` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
   """
-  gameState(
+  runEvent(
     """
     The unique ID of the object.
     """
@@ -11,17 +11,74 @@ extend type Query {
     """
     The key used to identify the object.
     """
-    key: GameState_Key
+    key: RunEvent_Key
 
     """
     Fetch the first row based on the filters and ordering.
     """
-    first: GameState_FirstRow
-  ): GameState @fdc_generated(from: "GameState", purpose: QUERY_SINGLE)
+    first: RunEvent_FirstRow
+  ): RunEvent @fdc_generated(from: "RunEvent", purpose: QUERY_SINGLE)
   """
-  ✨ Look up a single `User` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  ✨ Look up a single `RunSession` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
   """
-  user(
+  runSession(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: RunSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: RunSession_FirstRow
+  ): RunSession @fdc_generated(from: "RunSession", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `SaveSlot` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  saveSlot(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: SaveSlot_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: SaveSlot_FirstRow
+  ): SaveSlot @fdc_generated(from: "SaveSlot", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `StoryMemory` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  storyMemory(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: StoryMemory_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: StoryMemory_FirstRow
+  ): StoryMemory @fdc_generated(from: "StoryMemory", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `UserProfile` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  userProfile(
     """
     The unique ID of the object.
     """
@@ -35,26 +92,26 @@ extend type Query {
     """
     The key used to identify the object.
     """
-    key: User_Key
+    key: UserProfile_Key
 
     """
     Fetch the first row based on the filters and ordering.
     """
-    first: User_FirstRow
-  ): User @fdc_generated(from: "User", purpose: QUERY_SINGLE)
+    first: UserProfile_FirstRow
+  ): UserProfile @fdc_generated(from: "UserProfile", purpose: QUERY_SINGLE)
   """
-  ✨ List `GameState` objects in the table and return selected fields, optionally filtered by `where` conditions
+  ✨ List `RunEvent` objects in the table and return selected fields, optionally filtered by `where` conditions
   """
-  gameStates(
+  runEvents(
     """
     Filter condition to narrow down the query results.
     """
-    where: GameState_Filter
+    where: RunEvent_Filter
 
     """
     Order the query results by specific fields.
     """
-    orderBy: [GameState_Order!]
+    orderBy: [RunEvent_Order!]
 
     """
     Number of rows to skip before starting to return the results.
@@ -74,21 +131,21 @@ extend type Query {
     """
     Filter condition to apply to the groups of aggregate queries.
     """
-    having: GameState_Having
-  ): [GameState!]! @fdc_generated(from: "GameState", purpose: QUERY_MULTIPLE)
+    having: RunEvent_Having
+  ): [RunEvent!]! @fdc_generated(from: "RunEvent", purpose: QUERY_MULTIPLE)
   """
-  ✨ List `User` objects in the table and return selected fields, optionally filtered by `where` conditions
+  ✨ List `RunSession` objects in the table and return selected fields, optionally filtered by `where` conditions
   """
-  users(
+  runSessions(
     """
     Filter condition to narrow down the query results.
     """
-    where: User_Filter
+    where: RunSession_Filter
 
     """
     Order the query results by specific fields.
     """
-    orderBy: [User_Order!]
+    orderBy: [RunSession_Order!]
 
     """
     Number of rows to skip before starting to return the results.
@@ -108,6 +165,108 @@ extend type Query {
     """
     Filter condition to apply to the groups of aggregate queries.
     """
-    having: User_Having
-  ): [User!]! @fdc_generated(from: "User", purpose: QUERY_MULTIPLE)
+    having: RunSession_Having
+  ): [RunSession!]! @fdc_generated(from: "RunSession", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `SaveSlot` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  saveSlots(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: SaveSlot_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [SaveSlot_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: SaveSlot_Having
+  ): [SaveSlot!]! @fdc_generated(from: "SaveSlot", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `StoryMemory` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  storyMemories(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: StoryMemory_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [StoryMemory_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: StoryMemory_Having
+  ): [StoryMemory!]! @fdc_generated(from: "StoryMemory", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `UserProfile` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  userProfiles(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: UserProfile_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [UserProfile_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: UserProfile_Having
+  ): [UserProfile!]! @fdc_generated(from: "UserProfile", purpose: QUERY_MULTIPLE)
 }

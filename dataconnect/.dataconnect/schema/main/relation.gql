@@ -1,246 +1,1017 @@
-extend type GameState {
+extend type RunEvent {
   """
   Implicit metadata field that cannot be written. It provides extra information about query results.
   """
-  _metadata: _Metadata @fdc_generated(from: "GameState", purpose: METADATA_FIELD)
+  _metadata: _Metadata @fdc_generated(from: "RunEvent", purpose: METADATA_FIELD)
   """
-  ✨ Count the number of rows in the `GameState` table.
+  ✨ Count the number of rows in the `RunEvent` table.
   """
-  _count: Int! @fdc_generated(from: "GameState.", purpose: QUERY_COUNT)
+  _count: Int! @fdc_generated(from: "RunEvent.", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `chatLog` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `accepted` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
-  chatLog_count(
+  accepted_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.chatLog", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.accepted", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `combat` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `clientId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
-  combat_count(
+  clientId_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.combat", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.clientId", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `config` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `clientSeq` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
-  config_count(
+  clientSeq_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.config", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.clientSeq", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `contentVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `commitId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  commitId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunEvent.commitId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunEvent` table where the `contentVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   contentVersion_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.contentVersion", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.contentVersion", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   createdAt_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.createdAt", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.createdAt", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `errorCode` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  errorCode_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunEvent.errorCode", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunEvent` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   id_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.id", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.id", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `narrative` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `message` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
-  narrative_count(
+  message_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.narrative", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.message", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `player` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `runId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
-  player_count(
+  runId_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.player", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.runId", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `quests` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `seq` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
-  quests_count(
+  seq_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.quests", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.seq", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `stateVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `stateHash` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
-  stateVersion_count(
+  stateHash_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.stateHash", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `tick` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
-  updatedAt_count(
+  tick_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.updatedAt", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.tick", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `RunEvent` table where the `triggerPayloadJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  triggerPayloadJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunEvent.triggerPayloadJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunEvent` table where the `triggerType` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  triggerType_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunEvent.triggerType", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunEvent` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   userId_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.userId", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunEvent.userId", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `GameState` table where the `world` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Sum the `clientSeq` field in the `RunEvent` table.
   """
-  world_count(
+  clientSeq_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "RunEvent.clientSeq", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `seq` field in the `RunEvent` table.
+  """
+  seq_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "RunEvent.seq", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `tick` field in the `RunEvent` table.
+  """
+  tick_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "RunEvent.tick", purpose: QUERY_SUM)
+  """
+  ✨ Average the `clientSeq` field in the `RunEvent` table.
+  """
+  clientSeq_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "RunEvent.clientSeq", purpose: QUERY_AVG)
+  """
+  ✨ Average the `seq` field in the `RunEvent` table.
+  """
+  seq_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "RunEvent.seq", purpose: QUERY_AVG)
+  """
+  ✨ Average the `tick` field in the `RunEvent` table.
+  """
+  tick_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "RunEvent.tick", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `clientSeq` field in the `RunEvent` table.
+  """
+  clientSeq_min: Int @fdc_generated(from: "RunEvent.clientSeq", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `createdAt` field in the `RunEvent` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "RunEvent.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `seq` field in the `RunEvent` table.
+  """
+  seq_min: Int @fdc_generated(from: "RunEvent.seq", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `tick` field in the `RunEvent` table.
+  """
+  tick_min: Int @fdc_generated(from: "RunEvent.tick", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `clientSeq` field in the `RunEvent` table.
+  """
+  clientSeq_max: Int @fdc_generated(from: "RunEvent.clientSeq", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `createdAt` field in the `RunEvent` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "RunEvent.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `seq` field in the `RunEvent` table.
+  """
+  seq_max: Int @fdc_generated(from: "RunEvent.seq", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `tick` field in the `RunEvent` table.
+  """
+  tick_max: Int @fdc_generated(from: "RunEvent.tick", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "RunEvent.id", purpose: GLOBAL_ID)
+}
+extend type RunSession {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "RunSession", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `RunSession` table.
+  """
+  _count: Int! @fdc_generated(from: "RunSession.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `contentVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  contentVersion_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "GameState.world", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "RunSession.contentVersion", purpose: QUERY_COUNT)
   """
-  ✨ Sum the `stateVersion` field in the `GameState` table.
+  ✨ Count the number of rows in the `RunSession` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `entityStatesJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  entityStatesJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.entityStatesJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `lastClientId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  lastClientId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.lastClientId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `lastCommitId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  lastCommitId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.lastCommitId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `mapId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  mapId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.mapId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `playerPosJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  playerPosJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.playerPosJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `questFlagsJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  questFlagsJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.questFlagsJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `runId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  runId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.runId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `runSeed` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  runSeed_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.runSeed", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `saveSlotId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  saveSlotId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.saveSlotId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `seq` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  seq_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.seq", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `stateHash` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  stateHash_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.stateHash", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `stateVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  stateVersion_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.stateVersion", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `tick` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  tick_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.tick", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `RunSession` table where the `worldId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  worldId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession.worldId", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `seq` field in the `RunSession` table.
+  """
+  seq_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "RunSession.seq", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `stateVersion` field in the `RunSession` table.
   """
   stateVersion_sum(
     """
     Set to true to sum the distinct values.
     """
     distinct: Boolean = false
-  ): Int @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_SUM)
+  ): Int @fdc_generated(from: "RunSession.stateVersion", purpose: QUERY_SUM)
   """
-  ✨ Average the `stateVersion` field in the `GameState` table.
+  ✨ Sum the `tick` field in the `RunSession` table.
+  """
+  tick_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "RunSession.tick", purpose: QUERY_SUM)
+  """
+  ✨ Average the `seq` field in the `RunSession` table.
+  """
+  seq_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "RunSession.seq", purpose: QUERY_AVG)
+  """
+  ✨ Average the `stateVersion` field in the `RunSession` table.
   """
   stateVersion_avg(
     """
     Set to true to average the distinct values.
     """
     distinct: Boolean = false
-  ): Float @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_AVG)
+  ): Float @fdc_generated(from: "RunSession.stateVersion", purpose: QUERY_AVG)
   """
-  ✨ Minimum of the `chatLog` field in the `GameState` table.
+  ✨ Average the `tick` field in the `RunSession` table.
   """
-  chatLog_min: Any @fdc_generated(from: "GameState.chatLog", purpose: QUERY_MIN)
+  tick_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "RunSession.tick", purpose: QUERY_AVG)
   """
-  ✨ Minimum of the `combat` field in the `GameState` table.
+  ✨ Minimum of the `createdAt` field in the `RunSession` table.
   """
-  combat_min: Any @fdc_generated(from: "GameState.combat", purpose: QUERY_MIN)
+  createdAt_min: Date @fdc_generated(from: "RunSession.createdAt", purpose: QUERY_MIN)
   """
-  ✨ Minimum of the `config` field in the `GameState` table.
+  ✨ Minimum of the `seq` field in the `RunSession` table.
   """
-  config_min: Any @fdc_generated(from: "GameState.config", purpose: QUERY_MIN)
+  seq_min: Int @fdc_generated(from: "RunSession.seq", purpose: QUERY_MIN)
   """
-  ✨ Minimum of the `createdAt` field in the `GameState` table.
+  ✨ Minimum of the `stateVersion` field in the `RunSession` table.
   """
-  createdAt_min: Date @fdc_generated(from: "GameState.createdAt", purpose: QUERY_MIN)
+  stateVersion_min: Int @fdc_generated(from: "RunSession.stateVersion", purpose: QUERY_MIN)
   """
-  ✨ Minimum of the `narrative` field in the `GameState` table.
+  ✨ Minimum of the `tick` field in the `RunSession` table.
   """
-  narrative_min: Any @fdc_generated(from: "GameState.narrative", purpose: QUERY_MIN)
+  tick_min: Int @fdc_generated(from: "RunSession.tick", purpose: QUERY_MIN)
   """
-  ✨ Minimum of the `player` field in the `GameState` table.
+  ✨ Minimum of the `updatedAt` field in the `RunSession` table.
   """
-  player_min: Any @fdc_generated(from: "GameState.player", purpose: QUERY_MIN)
+  updatedAt_min: Date @fdc_generated(from: "RunSession.updatedAt", purpose: QUERY_MIN)
   """
-  ✨ Minimum of the `quests` field in the `GameState` table.
+  ✨ Maximum of the `createdAt` field in the `RunSession` table.
   """
-  quests_min: Any @fdc_generated(from: "GameState.quests", purpose: QUERY_MIN)
+  createdAt_max: Date @fdc_generated(from: "RunSession.createdAt", purpose: QUERY_MAX)
   """
-  ✨ Minimum of the `stateVersion` field in the `GameState` table.
+  ✨ Maximum of the `seq` field in the `RunSession` table.
   """
-  stateVersion_min: Int @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_MIN)
+  seq_max: Int @fdc_generated(from: "RunSession.seq", purpose: QUERY_MAX)
   """
-  ✨ Minimum of the `updatedAt` field in the `GameState` table.
+  ✨ Maximum of the `stateVersion` field in the `RunSession` table.
   """
-  updatedAt_min: Date @fdc_generated(from: "GameState.updatedAt", purpose: QUERY_MIN)
+  stateVersion_max: Int @fdc_generated(from: "RunSession.stateVersion", purpose: QUERY_MAX)
   """
-  ✨ Minimum of the `world` field in the `GameState` table.
+  ✨ Maximum of the `tick` field in the `RunSession` table.
   """
-  world_min: Any @fdc_generated(from: "GameState.world", purpose: QUERY_MIN)
+  tick_max: Int @fdc_generated(from: "RunSession.tick", purpose: QUERY_MAX)
   """
-  ✨ Maximum of the `chatLog` field in the `GameState` table.
+  ✨ Maximum of the `updatedAt` field in the `RunSession` table.
   """
-  chatLog_max: Any @fdc_generated(from: "GameState.chatLog", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `combat` field in the `GameState` table.
-  """
-  combat_max: Any @fdc_generated(from: "GameState.combat", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `config` field in the `GameState` table.
-  """
-  config_max: Any @fdc_generated(from: "GameState.config", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `createdAt` field in the `GameState` table.
-  """
-  createdAt_max: Date @fdc_generated(from: "GameState.createdAt", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `narrative` field in the `GameState` table.
-  """
-  narrative_max: Any @fdc_generated(from: "GameState.narrative", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `player` field in the `GameState` table.
-  """
-  player_max: Any @fdc_generated(from: "GameState.player", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `quests` field in the `GameState` table.
-  """
-  quests_max: Any @fdc_generated(from: "GameState.quests", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `stateVersion` field in the `GameState` table.
-  """
-  stateVersion_max: Int @fdc_generated(from: "GameState.stateVersion", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `updatedAt` field in the `GameState` table.
-  """
-  updatedAt_max: Date @fdc_generated(from: "GameState.updatedAt", purpose: QUERY_MAX)
-  """
-  ✨ Maximum of the `world` field in the `GameState` table.
-  """
-  world_max: Any @fdc_generated(from: "GameState.world", purpose: QUERY_MAX)
+  updatedAt_max: Date @fdc_generated(from: "RunSession.updatedAt", purpose: QUERY_MAX)
   """
   A generated field that is used for caching results in SDKs.
   """
-  _id: ID! @fdc_generated(from: "GameState.id", purpose: GLOBAL_ID)
+  _id: ID! @fdc_generated(from: "RunSession.id", purpose: GLOBAL_ID)
 }
-extend type User {
+extend type SaveSlot {
   """
-  ✨ List `GameState` objects in a one-to-many relationship (where `GameState`.`user` is this object).
+  Implicit metadata field that cannot be written. It provides extra information about query results.
   """
-  gameStates_on_user(
+  _metadata: _Metadata @fdc_generated(from: "SaveSlot", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table.
+  """
+  _count: Int! @fdc_generated(from: "SaveSlot.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `contentVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  contentVersion_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.contentVersion", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `entityStatesJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  entityStatesJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.entityStatesJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `gameStateJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  gameStateJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.gameStateJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `locationId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  locationId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.locationId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `mapId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  mapId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.mapId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `playerLevel` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  playerLevel_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.playerLevel", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `playerName` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  playerName_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.playerName", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `playerPosJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  playerPosJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.playerPosJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `questFlagsJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  questFlagsJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.questFlagsJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `runId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  runId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.runId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `saveName` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  saveName_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.saveName", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `seq` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  seq_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.seq", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `stateHash` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  stateHash_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.stateHash", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `stateVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  stateVersion_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.stateVersion", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `tick` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  tick_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.tick", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `turnCount` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  turnCount_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.turnCount", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `SaveSlot` table where the `worldId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  worldId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot.worldId", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `playerLevel` field in the `SaveSlot` table.
+  """
+  playerLevel_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "SaveSlot.playerLevel", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `seq` field in the `SaveSlot` table.
+  """
+  seq_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "SaveSlot.seq", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `stateVersion` field in the `SaveSlot` table.
+  """
+  stateVersion_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "SaveSlot.stateVersion", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `tick` field in the `SaveSlot` table.
+  """
+  tick_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "SaveSlot.tick", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `turnCount` field in the `SaveSlot` table.
+  """
+  turnCount_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "SaveSlot.turnCount", purpose: QUERY_SUM)
+  """
+  ✨ Average the `playerLevel` field in the `SaveSlot` table.
+  """
+  playerLevel_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "SaveSlot.playerLevel", purpose: QUERY_AVG)
+  """
+  ✨ Average the `seq` field in the `SaveSlot` table.
+  """
+  seq_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "SaveSlot.seq", purpose: QUERY_AVG)
+  """
+  ✨ Average the `stateVersion` field in the `SaveSlot` table.
+  """
+  stateVersion_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "SaveSlot.stateVersion", purpose: QUERY_AVG)
+  """
+  ✨ Average the `tick` field in the `SaveSlot` table.
+  """
+  tick_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "SaveSlot.tick", purpose: QUERY_AVG)
+  """
+  ✨ Average the `turnCount` field in the `SaveSlot` table.
+  """
+  turnCount_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "SaveSlot.turnCount", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `createdAt` field in the `SaveSlot` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "SaveSlot.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `playerLevel` field in the `SaveSlot` table.
+  """
+  playerLevel_min: Int @fdc_generated(from: "SaveSlot.playerLevel", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `seq` field in the `SaveSlot` table.
+  """
+  seq_min: Int @fdc_generated(from: "SaveSlot.seq", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `stateVersion` field in the `SaveSlot` table.
+  """
+  stateVersion_min: Int @fdc_generated(from: "SaveSlot.stateVersion", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `tick` field in the `SaveSlot` table.
+  """
+  tick_min: Int @fdc_generated(from: "SaveSlot.tick", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `turnCount` field in the `SaveSlot` table.
+  """
+  turnCount_min: Int @fdc_generated(from: "SaveSlot.turnCount", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `SaveSlot` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "SaveSlot.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `SaveSlot` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "SaveSlot.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `playerLevel` field in the `SaveSlot` table.
+  """
+  playerLevel_max: Int @fdc_generated(from: "SaveSlot.playerLevel", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `seq` field in the `SaveSlot` table.
+  """
+  seq_max: Int @fdc_generated(from: "SaveSlot.seq", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `stateVersion` field in the `SaveSlot` table.
+  """
+  stateVersion_max: Int @fdc_generated(from: "SaveSlot.stateVersion", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `tick` field in the `SaveSlot` table.
+  """
+  tick_max: Int @fdc_generated(from: "SaveSlot.tick", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `turnCount` field in the `SaveSlot` table.
+  """
+  turnCount_max: Int @fdc_generated(from: "SaveSlot.turnCount", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `SaveSlot` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "SaveSlot.updatedAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "SaveSlot.id", purpose: GLOBAL_ID)
+}
+extend type StoryMemory {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "StoryMemory", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table.
+  """
+  _count: Int! @fdc_generated(from: "StoryMemory.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table where the `lastSeq` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  lastSeq_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory.lastSeq", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table where the `memoryJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  memoryJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory.memoryJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table where the `memoryKey` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  memoryKey_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory.memoryKey", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table where the `runId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  runId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory.runId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `StoryMemory` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `lastSeq` field in the `StoryMemory` table.
+  """
+  lastSeq_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "StoryMemory.lastSeq", purpose: QUERY_SUM)
+  """
+  ✨ Average the `lastSeq` field in the `StoryMemory` table.
+  """
+  lastSeq_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "StoryMemory.lastSeq", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `createdAt` field in the `StoryMemory` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "StoryMemory.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `lastSeq` field in the `StoryMemory` table.
+  """
+  lastSeq_min: Int @fdc_generated(from: "StoryMemory.lastSeq", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `StoryMemory` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "StoryMemory.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `StoryMemory` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "StoryMemory.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `lastSeq` field in the `StoryMemory` table.
+  """
+  lastSeq_max: Int @fdc_generated(from: "StoryMemory.lastSeq", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `StoryMemory` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "StoryMemory.updatedAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "StoryMemory.id", purpose: GLOBAL_ID)
+}
+extend type UserProfile {
+  """
+  ✨ List `RunEvent` objects in a one-to-many relationship (where `RunEvent`.`user` is this object).
+  """
+  runEvents_on_user(
     """
     Filter condition to narrow down the query results.
     """
-    where: GameState_Filter
+    where: RunEvent_Filter
 
     """
     Order the query results by specific fields.
     """
-    orderBy: [GameState_Order!]
+    orderBy: [RunEvent_Order!]
 
     """
     Number of rows to skip before starting to return the results.
@@ -260,70 +1031,207 @@ extend type User {
     """
     Filter condition to apply to the groups of aggregate queries.
     """
-    having: GameState_Having
-  ): [GameState!]! @fdc_generated(from: "GameState.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+    having: RunEvent_Having
+  ): [RunEvent!]! @fdc_generated(from: "RunEvent.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `RunSession` objects in a one-to-many relationship (where `RunSession`.`user` is this object).
+  """
+  runSessions_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: RunSession_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [RunSession_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: RunSession_Having
+  ): [RunSession!]! @fdc_generated(from: "RunSession.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `SaveSlot` objects in a one-to-many relationship (where `SaveSlot`.`user` is this object).
+  """
+  saveSlots_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: SaveSlot_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [SaveSlot_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: SaveSlot_Having
+  ): [SaveSlot!]! @fdc_generated(from: "SaveSlot.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `StoryMemory` objects in a one-to-many relationship (where `StoryMemory`.`user` is this object).
+  """
+  storyMemories_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: StoryMemory_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [StoryMemory_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: StoryMemory_Having
+  ): [StoryMemory!]! @fdc_generated(from: "StoryMemory.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
   """
   Implicit metadata field that cannot be written. It provides extra information about query results.
   """
-  _metadata: _Metadata @fdc_generated(from: "User", purpose: METADATA_FIELD)
+  _metadata: _Metadata @fdc_generated(from: "UserProfile", purpose: METADATA_FIELD)
   """
-  ✨ Count the number of rows in the `User` table.
+  ✨ Count the number of rows in the `UserProfile` table.
   """
-  _count: Int! @fdc_generated(from: "User.", purpose: QUERY_COUNT)
+  _count: Int! @fdc_generated(from: "UserProfile.", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `User` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `UserProfile` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   createdAt_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "User.createdAt", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "UserProfile.createdAt", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `User` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `UserProfile` table where the `displayName` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  displayName_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserProfile.displayName", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserProfile` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   id_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "User.id", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "UserProfile.id", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `User` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Count the number of rows in the `UserProfile` table where the `migrationVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  migrationVersion_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserProfile.migrationVersion", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserProfile` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   updatedAt_count(
     """
     Set to true to count the number of distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "User.updatedAt", purpose: QUERY_COUNT)
+  ): Int! @fdc_generated(from: "UserProfile.updatedAt", purpose: QUERY_COUNT)
   """
-  ✨ Count the number of rows in the `User` table where the `username` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  ✨ Sum the `migrationVersion` field in the `UserProfile` table.
   """
-  username_count(
+  migrationVersion_sum(
     """
-    Set to true to count the number of distinct values.
+    Set to true to sum the distinct values.
     """
     distinct: Boolean = false
-  ): Int! @fdc_generated(from: "User.username", purpose: QUERY_COUNT)
+  ): Int @fdc_generated(from: "UserProfile.migrationVersion", purpose: QUERY_SUM)
   """
-  ✨ Minimum of the `createdAt` field in the `User` table.
+  ✨ Average the `migrationVersion` field in the `UserProfile` table.
   """
-  createdAt_min: Date @fdc_generated(from: "User.createdAt", purpose: QUERY_MIN)
+  migrationVersion_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "UserProfile.migrationVersion", purpose: QUERY_AVG)
   """
-  ✨ Minimum of the `updatedAt` field in the `User` table.
+  ✨ Minimum of the `createdAt` field in the `UserProfile` table.
   """
-  updatedAt_min: Date @fdc_generated(from: "User.updatedAt", purpose: QUERY_MIN)
+  createdAt_min: Date @fdc_generated(from: "UserProfile.createdAt", purpose: QUERY_MIN)
   """
-  ✨ Maximum of the `createdAt` field in the `User` table.
+  ✨ Minimum of the `migrationVersion` field in the `UserProfile` table.
   """
-  createdAt_max: Date @fdc_generated(from: "User.createdAt", purpose: QUERY_MAX)
+  migrationVersion_min: Int @fdc_generated(from: "UserProfile.migrationVersion", purpose: QUERY_MIN)
   """
-  ✨ Maximum of the `updatedAt` field in the `User` table.
+  ✨ Minimum of the `updatedAt` field in the `UserProfile` table.
   """
-  updatedAt_max: Date @fdc_generated(from: "User.updatedAt", purpose: QUERY_MAX)
+  updatedAt_min: Date @fdc_generated(from: "UserProfile.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `UserProfile` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "UserProfile.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `migrationVersion` field in the `UserProfile` table.
+  """
+  migrationVersion_max: Int @fdc_generated(from: "UserProfile.migrationVersion", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `UserProfile` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "UserProfile.updatedAt", purpose: QUERY_MAX)
   """
   A generated field that is used for caching results in SDKs.
   """
-  _id: ID! @fdc_generated(from: "User.id", purpose: GLOBAL_ID)
+  _id: ID! @fdc_generated(from: "UserProfile.id", purpose: GLOBAL_ID)
 }

@@ -3,6 +3,7 @@ const path = require("path");
 const { getApps, initializeApp } = require("firebase-admin/app");
 const { getFirestore, Timestamp } = require("firebase-admin/firestore");
 const { resolveGameDbBackend } = require("./game-db");
+const dataconnectStore = require("./sync-dataconnect-store");
 
 const DEFAULT_FILE_PATH = path.resolve(__dirname, "..", ".data", "sync-db.json");
 const DEFAULT_RUNS_COLLECTION = "sync_runs";
@@ -26,7 +27,14 @@ function resolveSyncBackend() {
 	const raw = getOptionalEnv("SYNC_DB_STORAGE").toLowerCase();
 	if (["file", "filesystem", "fs", "json", "local"].includes(raw)) return "file";
 	if (["firestore", "firebase", "cloud-firestore"].includes(raw)) return "firestore";
-	return resolveGameDbBackend();
+	if (["dataconnect", "data-connect", "dc"].includes(raw)) return "dataconnect";
+	const gameBackend = resolveGameDbBackend();
+	if (gameBackend === "file") return "file";
+	return "dataconnect";
+}
+
+function isDataconnectStrictMode() {
+	return getOptionalEnv("SYNC_DATACONNECT_STRICT").toLowerCase() === "true";
 }
 
 function normalizeRunKey(ownerId, runId) {
@@ -107,10 +115,20 @@ function ensureFirestore() {
 	return getFirestore();
 }
 
-async function withBackend({ firestoreFn, fileFn }) {
+async function withBackend({ dataconnectFn, firestoreFn, fileFn }) {
 	const backend = resolveSyncBackend();
 	if (backend === "file") {
 		return fileFn();
+	}
+	if (backend === "dataconnect") {
+		try {
+			return await dataconnectFn();
+		} catch (error) {
+			if (isDataconnectStrictMode()) {
+				throw error;
+			}
+			return firestoreFn();
+		}
 	}
 	return firestoreFn();
 }
@@ -318,6 +336,7 @@ async function fireListEvents({ ownerId, runId, afterSeq = 0, limit = DEFAULT_PU
 
 async function getRun({ ownerId, runId }) {
 	return withBackend({
+		dataconnectFn: () => dataconnectStore.getRun({ ownerId, runId }),
 		firestoreFn: () => fireGetRun({ ownerId, runId }),
 		fileFn: () => fileGetRun({ ownerId, runId }),
 	});
@@ -325,6 +344,7 @@ async function getRun({ ownerId, runId }) {
 
 async function putRun({ ownerId, runId, state, saveSlotId = "" }) {
 	return withBackend({
+		dataconnectFn: () => dataconnectStore.putRun({ ownerId, runId, state, saveSlotId }),
 		firestoreFn: () => firePutRun({ ownerId, runId, state, saveSlotId }),
 		fileFn: () => filePutRun({ ownerId, runId, state, saveSlotId }),
 	});
@@ -332,6 +352,8 @@ async function putRun({ ownerId, runId, state, saveSlotId = "" }) {
 
 async function getEventByCommitId({ ownerId, runId, commitId }) {
 	return withBackend({
+		dataconnectFn: () =>
+			dataconnectStore.getEventByCommitId({ ownerId, runId, commitId }),
 		firestoreFn: () => fireGetEventByCommitId({ ownerId, runId, commitId }),
 		fileFn: () => fileGetEventByCommitId({ ownerId, runId, commitId }),
 	});
@@ -339,6 +361,7 @@ async function getEventByCommitId({ ownerId, runId, commitId }) {
 
 async function appendEvent({ ownerId, runId, event }) {
 	return withBackend({
+		dataconnectFn: () => dataconnectStore.appendEvent({ ownerId, runId, event }),
 		firestoreFn: () => fireAppendEvent({ ownerId, runId, event }),
 		fileFn: () => fileAppendEvent({ ownerId, runId, event }),
 	});
@@ -346,6 +369,8 @@ async function appendEvent({ ownerId, runId, event }) {
 
 async function listEvents({ ownerId, runId, afterSeq = 0, limit = DEFAULT_PULL_EVENT_LIMIT }) {
 	return withBackend({
+		dataconnectFn: () =>
+			dataconnectStore.listEvents({ ownerId, runId, afterSeq, limit }),
 		firestoreFn: () => fireListEvents({ ownerId, runId, afterSeq, limit }),
 		fileFn: () => fileListEvents({ ownerId, runId, afterSeq, limit }),
 	});

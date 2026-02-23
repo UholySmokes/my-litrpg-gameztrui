@@ -1,6 +1,24 @@
-extend type GameState {
+extend type RunEvent {
   """
-  ✨ Implicit foreign key field based on `GameState`.`user`. It must match the value of `User`.`id`. See `@ref` for how to customize it.
+  ✨ Implicit foreign key field based on `RunEvent`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
   """
-  userId: String! @fdc_generated(from: "GameState.user", purpose: IMPLICIT_REF_FIELD)
+  userId: String! @fdc_generated(from: "RunEvent.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type RunSession {
+  """
+  ✨ Implicit foreign key field based on `RunSession`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "RunSession.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type SaveSlot {
+  """
+  ✨ Implicit foreign key field based on `SaveSlot`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "SaveSlot.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type StoryMemory {
+  """
+  ✨ Implicit foreign key field based on `StoryMemory`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "StoryMemory.user", purpose: IMPLICIT_REF_FIELD)
 }

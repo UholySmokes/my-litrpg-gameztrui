@@ -17,6 +17,10 @@ mutation CreateSaveSlot(
   $playerLevel: Int!
   $worldId: String!
   $locationId: String!
+  $mapId: String
+  $playerPosJson: String
+  $entityStatesJson: String
+  $questFlagsJson: String
   $turnCount: Int!
   $contentVersion: String
   $stateVersion: Int
@@ -34,6 +38,10 @@ mutation CreateSaveSlot(
       playerLevel: $playerLevel
       worldId: $worldId
       locationId: $locationId
+      mapId: $mapId
+      playerPosJson: $playerPosJson
+      entityStatesJson: $entityStatesJson
+      questFlagsJson: $questFlagsJson
       turnCount: $turnCount
       contentVersion: $contentVersion
       stateVersion: $stateVersion
@@ -54,6 +62,10 @@ mutation UpsertSaveSlot(
   $playerLevel: Int!
   $worldId: String!
   $locationId: String!
+  $mapId: String
+  $playerPosJson: String
+  $entityStatesJson: String
+  $questFlagsJson: String
   $turnCount: Int!
   $contentVersion: String
   $stateVersion: Int
@@ -72,6 +84,10 @@ mutation UpsertSaveSlot(
       playerLevel: $playerLevel
       worldId: $worldId
       locationId: $locationId
+      mapId: $mapId
+      playerPosJson: $playerPosJson
+      entityStatesJson: $entityStatesJson
+      questFlagsJson: $questFlagsJson
       turnCount: $turnCount
       contentVersion: $contentVersion
       stateVersion: $stateVersion
@@ -86,4 +102,101 @@ mutation UpsertSaveSlot(
 
 mutation DeleteSaveSlot($id: UUID!) @auth(level: USER) {
   saveSlot_delete(key: { id: $id, userId_expr: "auth.uid" })
+}
+
+mutation UpsertRunSession(
+  $id: UUID!
+  $runId: String!
+  $worldId: String!
+  $mapId: String!
+  $playerPosJson: String!
+  $entityStatesJson: String!
+  $questFlagsJson: String!
+  $seq: Int!
+  $tick: Int!
+  $stateHash: String!
+  $contentVersion: String!
+  $stateVersion: Int!
+  $saveSlotId: UUID
+  $runSeed: String
+  $lastCommitId: String
+  $lastClientId: String
+) @auth(level: USER) {
+  runSession_upsert(
+    data: {
+      id: $id
+      userId_expr: "auth.uid"
+      runId: $runId
+      worldId: $worldId
+      mapId: $mapId
+      playerPosJson: $playerPosJson
+      entityStatesJson: $entityStatesJson
+      questFlagsJson: $questFlagsJson
+      seq: $seq
+      tick: $tick
+      stateHash: $stateHash
+      contentVersion: $contentVersion
+      stateVersion: $stateVersion
+      saveSlotId: $saveSlotId
+      runSeed: $runSeed
+      lastCommitId: $lastCommitId
+      lastClientId: $lastClientId
+      updatedAt_expr: "request.time"
+    }
+  )
+}
+
+mutation CreateRunEvent(
+  $runId: String!
+  $commitId: String!
+  $clientId: String!
+  $clientSeq: Int!
+  $triggerType: String!
+  $triggerPayloadJson: String!
+  $accepted: Boolean!
+  $errorCode: String
+  $message: String
+  $seq: Int
+  $tick: Int
+  $stateHash: String
+  $contentVersion: String
+) @auth(level: USER) {
+  runEvent_insert(
+    data: {
+      userId_expr: "auth.uid"
+      runId: $runId
+      commitId: $commitId
+      clientId: $clientId
+      clientSeq: $clientSeq
+      triggerType: $triggerType
+      triggerPayloadJson: $triggerPayloadJson
+      accepted: $accepted
+      errorCode: $errorCode
+      message: $message
+      seq: $seq
+      tick: $tick
+      stateHash: $stateHash
+      contentVersion: $contentVersion
+    }
+  )
+}
+
+mutation UpsertStoryMemory(
+  $id: UUID!
+  $runId: String!
+  $memoryKey: String!
+  $memoryJson: String!
+  $lastSeq: Int
+) @auth(level: USER) {
+  storyMemory_upsert(
+    data: {
+      id: $id
+      userId_expr: "auth.uid"
+      runId: $runId
+      memoryKey: $memoryKey
+      memoryJson: $memoryJson
+      lastSeq: $lastSeq
+      updatedAt_expr: "request.time"
+    }
+  )
 }

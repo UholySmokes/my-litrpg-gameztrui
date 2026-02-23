@@ -1,4 +1,4 @@
-const { upsertMyProfileRef, createSaveSlotRef, upsertSaveSlotRef, deleteSaveSlotRef, upsertRunSessionRef, createRunEventRef, upsertStoryMemoryRef, listMySaveSlotsRef, getMySaveSlotRef, listMyRunSnapshotsRef, getMyRunSessionByRunIdRef, getMyRunEventByCommitIdRef, listMyRunEventsSinceRef, listMyStoryMemoriesRef, connectorConfig } = require('../index.cjs.js');
+const { upsertMyProfileRef, markMyProfileMigrationRef, createSaveSlotRef, upsertSaveSlotRef, deleteSaveSlotRef, upsertRunSessionRef, createRunEventRef, upsertStoryMemoryRef, getMyProfileRef, listMySaveSlotsRef, getMySaveSlotRef, listMyRunSnapshotsRef, getMyRunSessionByRunIdRef, getMyRunEventByCommitIdRef, listMyRunEventsSinceRef, listMyStoryMemoriesRef, connectorConfig } = require('../index.cjs.js');
 const { validateArgs, CallerSdkTypeEnum } = require('firebase/data-connect');
 const { useDataConnectQuery, useDataConnectMutation, validateReactArgs } = require('@tanstack-query-firebase/react/data-connect');
 
@@ -6,6 +6,14 @@ exports.useUpsertMyProfile = function useUpsertMyProfile(dcOrOptions, options) {
   const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
   function refFactory(vars) {
     return upsertMyProfileRef(dcInstance, vars);
+  }
+  return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+exports.useMarkMyProfileMigration = function useMarkMyProfileMigration(dcOrOptions, options) {
+  const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
+  function refFactory(vars) {
+    return markMyProfileMigrationRef(dcInstance, vars);
   }
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
@@ -58,6 +66,12 @@ exports.useUpsertStoryMemory = function useUpsertStoryMemory(dcOrOptions, option
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 
+
+exports.useGetMyProfile = function useGetMyProfile(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = getMyProfileRef(dcInstance);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
 
 exports.useListMySaveSlots = function useListMySaveSlots(dcOrOptions, options) {
   const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);

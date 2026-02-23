@@ -62,6 +62,16 @@ export interface DeleteSaveSlotVariables {
   id: UUIDString;
 }
 
+export interface GetMyProfileData {
+  userProfile?: {
+    id: string;
+    displayName?: string | null;
+    migrationVersion?: number | null;
+    createdAt: DateString;
+    updatedAt: DateString;
+  } & UserProfile_Key;
+}
+
 export interface GetMyRunEventByCommitIdData {
   userProfile?: {
     id: string;
@@ -247,6 +257,15 @@ export interface ListMyStoryMemoriesVariables {
   runId: string;
 }
 
+export interface MarkMyProfileMigrationData {
+  userProfile_upsert: UserProfile_Key;
+}
+
+export interface MarkMyProfileMigrationVariables {
+  migrationVersion: number;
+  displayName?: string | null;
+}
+
 export interface RunEvent_Key {
   id: UUIDString;
   __typename?: 'RunEvent_Key';
@@ -272,7 +291,7 @@ export interface UpsertMyProfileData {
 }
 
 export interface UpsertMyProfileVariables {
-  displayName: string;
+  displayName?: string | null;
 }
 
 export interface UpsertRunSessionData {
@@ -342,15 +361,27 @@ export interface UserProfile_Key {
 
 interface UpsertMyProfileRef {
   /* Allow users to create refs without passing in DataConnect */
-  (vars: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
+  (vars?: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
+  (dc: DataConnect, vars?: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
   operationName: string;
 }
 export const upsertMyProfileRef: UpsertMyProfileRef;
 
-export function upsertMyProfile(vars: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
-export function upsertMyProfile(dc: DataConnect, vars: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
+export function upsertMyProfile(vars?: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
+export function upsertMyProfile(dc: DataConnect, vars?: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
+
+interface MarkMyProfileMigrationRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: MarkMyProfileMigrationVariables): MutationRef<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: MarkMyProfileMigrationVariables): MutationRef<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+  operationName: string;
+}
+export const markMyProfileMigrationRef: MarkMyProfileMigrationRef;
+
+export function markMyProfileMigration(vars: MarkMyProfileMigrationVariables): MutationPromise<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+export function markMyProfileMigration(dc: DataConnect, vars: MarkMyProfileMigrationVariables): MutationPromise<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
 
 interface CreateSaveSlotRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -423,6 +454,18 @@ export const upsertStoryMemoryRef: UpsertStoryMemoryRef;
 
 export function upsertStoryMemory(vars: UpsertStoryMemoryVariables): MutationPromise<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
 export function upsertStoryMemory(dc: DataConnect, vars: UpsertStoryMemoryVariables): MutationPromise<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+
+interface GetMyProfileRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetMyProfileData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<GetMyProfileData, undefined>;
+  operationName: string;
+}
+export const getMyProfileRef: GetMyProfileRef;
+
+export function getMyProfile(): QueryPromise<GetMyProfileData, undefined>;
+export function getMyProfile(dc: DataConnect): QueryPromise<GetMyProfileData, undefined>;
 
 interface ListMySaveSlotsRef {
   /* Allow users to create refs without passing in DataConnect */

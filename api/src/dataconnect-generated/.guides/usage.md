@@ -14,11 +14,14 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { upsertMyProfile, createSaveSlot, upsertSaveSlot, deleteSaveSlot, upsertRunSession, createRunEvent, upsertStoryMemory, listMySaveSlots, getMySaveSlot, listMyRunSnapshots } from '@dataconnect/generated';
+import { upsertMyProfile, markMyProfileMigration, createSaveSlot, upsertSaveSlot, deleteSaveSlot, upsertRunSession, createRunEvent, upsertStoryMemory, getMyProfile, listMySaveSlots } from '@dataconnect/generated';
 
 
 // Operation UpsertMyProfile:  For variables, look at type UpsertMyProfileVars in ../index.d.ts
 const { data } = await UpsertMyProfile(dataConnect, upsertMyProfileVars);
+
+// Operation MarkMyProfileMigration:  For variables, look at type MarkMyProfileMigrationVars in ../index.d.ts
+const { data } = await MarkMyProfileMigration(dataConnect, markMyProfileMigrationVars);
 
 // Operation CreateSaveSlot:  For variables, look at type CreateSaveSlotVars in ../index.d.ts
 const { data } = await CreateSaveSlot(dataConnect, createSaveSlotVars);
@@ -38,14 +41,11 @@ const { data } = await CreateRunEvent(dataConnect, createRunEventVars);
 // Operation UpsertStoryMemory:  For variables, look at type UpsertStoryMemoryVars in ../index.d.ts
 const { data } = await UpsertStoryMemory(dataConnect, upsertStoryMemoryVars);
 
+// Operation GetMyProfile: 
+const { data } = await GetMyProfile(dataConnect);
+
 // Operation ListMySaveSlots: 
 const { data } = await ListMySaveSlots(dataConnect);
-
-// Operation GetMySaveSlot:  For variables, look at type GetMySaveSlotVars in ../index.d.ts
-const { data } = await GetMySaveSlot(dataConnect, getMySaveSlotVars);
-
-// Operation ListMyRunSnapshots:  For variables, look at type ListMyRunSnapshotsVars in ../index.d.ts
-const { data } = await ListMyRunSnapshots(dataConnect, listMyRunSnapshotsVars);
 
 
 ```

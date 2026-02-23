@@ -8,11 +8,18 @@ const connectorConfig = {
 exports.connectorConfig = connectorConfig;
 
 function upsertMyProfile(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, false);
   dcInstance.useGen(true);
   return dcInstance.executeMutation('UpsertMyProfile', inputVars, inputOpts);
 }
 exports.upsertMyProfile = upsertMyProfile;
+
+function markMyProfileMigration(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('MarkMyProfileMigration', inputVars, inputOpts);
+}
+exports.markMyProfileMigration = markMyProfileMigration;
 
 function createSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
@@ -55,6 +62,13 @@ function upsertStoryMemory(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeMutation('UpsertStoryMemory', inputVars, inputOpts);
 }
 exports.upsertStoryMemory = upsertStoryMemory;
+
+function getMyProfile(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('GetMyProfile', undefined, inputOpts);
+}
+exports.getMyProfile = getMyProfile;
 
 function listMySaveSlots(dcOrOptions, options) {
   const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);

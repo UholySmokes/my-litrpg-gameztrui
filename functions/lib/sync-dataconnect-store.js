@@ -128,6 +128,34 @@ function pickLatestByUpdatedAt(rows) {
 		)[0];
 }
 
+async function getMigrationVersion({ ownerId }) {
+	const dc = getDc();
+	const response = await dataconnectGenerated.getMyProfile(dc, buildOptions(ownerId));
+	const profile = response?.data?.userProfile;
+	if (!profile || typeof profile !== "object") return 0;
+	return Math.max(0, toInteger(profile.migrationVersion, 0));
+}
+
+async function markMigrationVersion({ ownerId, version, displayName = "" }) {
+	const dc = getDc();
+	const current = await dataconnectGenerated.getMyProfile(dc, buildOptions(ownerId));
+	const profile = current?.data?.userProfile;
+	const name =
+		normalizeString(displayName) ||
+		normalizeString(profile?.displayName) ||
+		"Traveler";
+
+	await dataconnectGenerated.markMyProfileMigration(
+		dc,
+		{
+			migrationVersion: Math.max(0, toInteger(version, 0)),
+			displayName: name,
+		},
+		buildOptions(ownerId),
+	);
+	return true;
+}
+
 async function getRun({ ownerId, runId }) {
 	const options = buildOptions(ownerId);
 	const dc = getDc();
@@ -279,6 +307,8 @@ async function listEvents({ ownerId, runId, afterSeq = 0, limit = 100 }) {
 }
 
 module.exports = {
+	getMigrationVersion,
+	markMigrationVersion,
 	getRun,
 	putRun,
 	getEventByCommitId,

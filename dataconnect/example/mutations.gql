@@ -159,6 +159,7 @@ mutation UpsertRunSession(
 
 mutation CreateRunEvent(
   $runId: String!
+  $eventType: String
   $commitId: String!
   $clientId: String!
   $clientSeq: Int!
@@ -176,6 +177,7 @@ mutation CreateRunEvent(
     data: {
       userId_expr: "auth.uid"
       runId: $runId
+      eventType: $eventType
       commitId: $commitId
       clientId: $clientId
       clientSeq: $clientSeq

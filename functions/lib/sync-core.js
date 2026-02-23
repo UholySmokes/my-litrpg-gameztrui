@@ -9,6 +9,8 @@ const TRIGGER_TYPES = Object.freeze([
 	"ENCOUNTER_GATE",
 	"SAVEPOINT",
 ]);
+const SYNC_EVENT_TYPES = Object.freeze(["TRIGGER", "COMMAND"]);
+const SYNC_EVENT_TYPE_SET = new Set(SYNC_EVENT_TYPES);
 const TRIGGER_TYPE_SET = new Set(TRIGGER_TYPES);
 const BATCHABLE_TRIGGER_TYPE = "ENTER_TILE";
 const IMMEDIATE_TRIGGER_TYPES = new Set([
@@ -48,11 +50,48 @@ function normalizeString(value) {
 	return typeof value === "string" ? value.trim() : "";
 }
 
+function normalizeEventType(value, fallback = "TRIGGER") {
+	const raw = normalizeString(value).toUpperCase();
+	if (SYNC_EVENT_TYPE_SET.has(raw)) return raw;
+	const fallbackUpper = normalizeString(fallback).toUpperCase();
+	if (SYNC_EVENT_TYPE_SET.has(fallbackUpper)) return fallbackUpper;
+	return "TRIGGER";
+}
+
 function parseIsoTimestampMs(value) {
 	const raw = normalizeString(value);
 	if (!raw) return Number.NaN;
 	const ms = Date.parse(raw);
 	return Number.isFinite(ms) ? ms : Number.NaN;
+}
+
+function normalizeSyncEvent(input) {
+	const source = isRecord(input) ? input : {};
+	const commit = isRecord(source.commit) ? source.commit : {};
+	const command = isRecord(source.command)
+		? source.command
+		: isRecord(commit.command)
+			? commit.command
+			: null;
+
+	const explicit = normalizeString(source.eventType || source.event_type);
+	let inferred = "TRIGGER";
+	if (command) inferred = "COMMAND";
+	if (normalizeString(commit.commandType)) inferred = "COMMAND";
+
+	const eventType = normalizeEventType(explicit || inferred);
+	const triggerType = normalizeString(
+		source.triggerType || source.trigger_type || commit.triggerType,
+	);
+
+	return {
+		...source,
+		eventType,
+		event_type: eventType,
+		triggerType: triggerType || null,
+		trigger_type: triggerType || null,
+		commit: Object.keys(commit).length ? commit : null,
+	};
 }
 
 function canonicalize(value) {
@@ -794,6 +833,7 @@ function toPublicState(state) {
 
 module.exports = {
 	TRIGGER_TYPES,
+	SYNC_EVENT_TYPES,
 	MAX_ENTER_TILE_BATCH_WINDOW_MS,
 	MAX_ENTER_TILE_BATCH_ITEMS,
 	BATCHABLE_TRIGGER_TYPE,
@@ -811,4 +851,6 @@ module.exports = {
 	applyCommitToState,
 	replayCommitLog,
 	toPublicState,
+	normalizeEventType,
+	normalizeSyncEvent,
 };

@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const firebaseAdminDataConnect = require("firebase-admin/data-connect");
 const dataconnectGenerated = require("../src/dataconnect-admin-generated");
+const { normalizeSyncEvent } = require("./sync-core");
 
 function normalizeString(value) {
 	return typeof value === "string" ? value.trim() : "";
@@ -104,6 +105,11 @@ function mapRunSessionToRow(ownerId, session) {
 
 function mapRunEventToRow(ownerId, event) {
 	if (!event || typeof event !== "object") return null;
+	const normalizedEvent = normalizeSyncEvent({
+		eventType: event.eventType,
+		triggerType: event.triggerType,
+		commit: safeParseJson(event.triggerPayloadJson, null),
+	});
 	return {
 		owner_id: normalizeString(ownerId),
 		run_id: normalizeString(event.runId),
@@ -113,6 +119,11 @@ function mapRunEventToRow(ownerId, event) {
 		error_code: normalizeString(event.errorCode) || null,
 		message: normalizeString(event.message) || null,
 		state_hash: normalizeString(event.stateHash) || null,
+		event_type: normalizeString(normalizedEvent.eventType) || "TRIGGER",
+		trigger_type:
+			normalizeString(normalizedEvent.triggerType) ||
+			normalizeString(event.triggerType) ||
+			null,
 		commit: safeParseJson(event.triggerPayloadJson, null),
 		created_at: toIso(event.createdAt),
 		_dc_id: normalizeString(event.id),
@@ -239,6 +250,7 @@ async function getEventByCommitId({ ownerId, runId, commitId }) {
 }
 
 async function appendEvent({ ownerId, runId, event }) {
+	const normalizedEvent = normalizeSyncEvent(event || {});
 	const dc = getDc();
 	await dataconnectGenerated.createRunEvent(
 		dc,
@@ -247,7 +259,11 @@ async function appendEvent({ ownerId, runId, event }) {
 			commitId: normalizeString(event.commit_id || event.commitId),
 			clientId: normalizeString(event?.commit?.clientId) || "sync-client",
 			clientSeq: toInteger(event.client_seq, 0),
-			triggerType: normalizeString(event?.commit?.triggerType) || "UNKNOWN",
+			eventType: normalizeString(normalizedEvent.eventType) || "TRIGGER",
+			triggerType:
+				normalizeString(normalizedEvent.triggerType) ||
+				normalizeString(event?.commit?.triggerType) ||
+				"UNKNOWN",
 			triggerPayloadJson: JSON.stringify(
 				event?.commit && typeof event.commit === "object" ? event.commit : {},
 			),

@@ -121,6 +121,14 @@ input RunEvent_Data {
   """
   errorCode_expr: String_Expr
   """
+  ✨ Generated from Field `RunEvent`.`eventType` of type `String`
+  """
+  eventType: String
+  """
+  ✨ `_expr` server value variant of `eventType` (✨ Generated from Field `RunEvent`.`eventType` of type `String`)
+  """
+  eventType_expr: String_Expr
+  """
   ✨ Generated from Field `RunEvent`.`message` of type `String`
   """
   message: String
@@ -242,6 +250,10 @@ input RunEvent_Filter {
   """
   errorCode: String_Filter
   """
+  ✨ Generated from Field `RunEvent`.`eventType` of type `String`
+  """
+  eventType: String_Filter
+  """
   ✨ Generated from Field `RunEvent`.`message` of type `String`
   """
   message: String_Filter
@@ -335,6 +347,10 @@ input RunEvent_Having {
   ✨ Generated from Field `RunEvent`.`errorCode_count` of type `Int!`
   """
   errorCode_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`eventType_count` of type `Int!`
+  """
+  eventType_count: Int_Filter
   """
   ✨ Generated from Field `RunEvent`.`id_count` of type `Int!`
   """
@@ -499,6 +515,10 @@ input RunEvent_Order {
   """
   errorCode: OrderDirection
   """
+  ✨ Generated from Field `RunEvent`.`eventType` of type `String`
+  """
+  eventType: OrderDirection
+  """
   ✨ Generated from Field `RunEvent`.`message` of type `String`
   """
   message: OrderDirection
@@ -558,6 +578,10 @@ input RunEvent_Order {
   ✨ Generated from Field `RunEvent`.`errorCode_count` of type `Int!`
   """
   errorCode_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`eventType_count` of type `Int!`
+  """
+  eventType_count: OrderDirection
   """
   ✨ Generated from Field `RunEvent`.`id_count` of type `Int!`
   """

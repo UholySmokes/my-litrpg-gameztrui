@@ -114,6 +114,7 @@ query GetMyRunEventByCommitId($runId: String!, $commitId: String!) @auth(level: 
     events: runEvents_on_user(where: { runId: { eq: $runId }, commitId: { eq: $commitId } }) {
       id
       runId
+      eventType
       commitId
       clientId
       clientSeq
@@ -137,6 +138,7 @@ query ListMyRunEventsSince($runId: String!, $afterSeq: Int!) @auth(level: USER) 
     events: runEvents_on_user(where: { runId: { eq: $runId }, clientSeq: { gt: $afterSeq } }) {
       id
       runId
+      eventType
       commitId
       clientId
       clientSeq

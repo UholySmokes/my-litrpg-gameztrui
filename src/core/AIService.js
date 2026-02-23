@@ -269,6 +269,12 @@ export async function generateNarrative(prompt, { mode } = {}) {
           continue;
         }
 
+        if (response.status === 401 || response.status === 403) {
+          throw new Error(
+            "Narrator API requires sign-in. Use Firebase Google sign-in, or set VITE_DEV_USER_ID for local dev headers.",
+          );
+        }
+
         const message =
           typeof data?.message === "string"
             ? data.message
@@ -335,7 +341,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
       lastError.message.includes("Connection error"))
   ) {
     throw new Error(
-      "Narrator service unreachable. Check your connection or backend status.",
+      "Narrator service unreachable. Start local API with `npm run dev:api` (or `npm run dev:stack`) and retry.",
     );
   }
 

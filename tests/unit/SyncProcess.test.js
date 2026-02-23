@@ -7,6 +7,8 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const sync = require("../../functions/lib/sync.js");
 const syncCore = require("../../functions/lib/sync-core.js");
+const syncStore = require("../../functions/lib/sync-store.js");
+const savesStore = require("../../functions/lib/saves-store.js");
 
 function makeTempFile(name) {
 	return path.join(
@@ -52,6 +54,8 @@ describe("sync process commit stream", () => {
 	const oldGameBackend = process.env.GAME_DB_STORAGE;
 	const oldGamePath = process.env.GAME_DB_PATH;
 	const oldCanonicalPersistence = process.env.SYNC_CANONICAL_PERSISTENCE;
+	const originalGetMigrationVersion = syncStore.getMigrationVersion;
+	const originalMarkMigrationVersion = syncStore.markMigrationVersion;
 	let syncDbPath = "";
 	let gameDbPath = "";
 
@@ -77,6 +81,8 @@ describe("sync process commit stream", () => {
 		if (oldCanonicalPersistence === undefined)
 			delete process.env.SYNC_CANONICAL_PERSISTENCE;
 		else process.env.SYNC_CANONICAL_PERSISTENCE = oldCanonicalPersistence;
+		syncStore.getMigrationVersion = originalGetMigrationVersion;
+		syncStore.markMigrationVersion = originalMarkMigrationVersion;
 
 		if (fs.existsSync(syncDbPath)) fs.unlinkSync(syncDbPath);
 		if (fs.existsSync(gameDbPath)) fs.unlinkSync(gameDbPath);
@@ -308,5 +314,76 @@ describe("sync process commit stream", () => {
 		expect(result.reconcileRequired).toBe(true);
 		expect(result.results[0].accepted).toBe(false);
 		expect(result.results[0].errorCode).toBe("CONTENT_VERSION_MISMATCH");
+	});
+
+	it("migrates one legacy save and marks migration version", async () => {
+		const manifest = syncCore.getWorldManifest();
+		const ownerId = "user-migration-1";
+		const runId = "run-migration-1";
+
+		syncStore.getMigrationVersion = async () => 0;
+		let marked = null;
+		syncStore.markMigrationVersion = async (payload) => {
+			marked = payload;
+			return true;
+		};
+
+		await savesStore.createSave({
+			saveId: "legacy-save-1",
+			userId: ownerId,
+			saveName: "Legacy Save",
+			gameState: JSON.stringify({
+				worldId: manifest.worldId,
+				mapId: manifest.start.mapId,
+				playerPos: { x: manifest.start.x, y: manifest.start.y },
+				questFlags: { slice_intro_seen: true },
+			}),
+			now: "2026-02-23T00:00:00.000Z",
+		});
+
+		const loaded = await sync.loadRunState({
+			ownerId,
+			runId,
+			manifest,
+			allowCreate: false,
+		});
+
+		expect(loaded).not.toBeNull();
+		expect(loaded.state.mapId).toBe(manifest.start.mapId);
+		expect(marked).toEqual({
+			ownerId,
+			version: 1,
+			displayName: "Traveler",
+		});
+	});
+
+	it("skips legacy migration once migrationVersion is already marked", async () => {
+		const manifest = syncCore.getWorldManifest();
+		const ownerId = "user-migration-2";
+		const runId = "run-migration-2";
+
+		syncStore.getMigrationVersion = async () => 1;
+		syncStore.markMigrationVersion = async () => true;
+
+		await savesStore.createSave({
+			saveId: "legacy-save-2",
+			userId: ownerId,
+			saveName: "Legacy Save",
+			gameState: JSON.stringify({
+				worldId: manifest.worldId,
+				mapId: manifest.start.mapId,
+				playerPos: { x: manifest.start.x, y: manifest.start.y },
+			}),
+			now: "2026-02-23T00:00:00.000Z",
+		});
+
+		const loaded = await sync.loadRunState({
+			ownerId,
+			runId,
+			manifest,
+			allowCreate: false,
+		});
+
+		expect(loaded).toBeNull();
 	});
 });

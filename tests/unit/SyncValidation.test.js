@@ -4,6 +4,35 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const syncCore = require("../../functions/lib/sync-core.js");
 
+function makeCommit({
+	runId,
+	clientSeq,
+	contentVersion,
+	triggerType,
+	triggerId,
+	mapId,
+	x,
+	y,
+	targetId,
+}) {
+	return {
+		id: `commit-${triggerType.toLowerCase()}-${clientSeq}`,
+		runId,
+		clientId: "client-1",
+		clientSeq,
+		createdAt: "2026-02-23T10:00:00.000Z",
+		contentVersion,
+		triggerType,
+		trigger: {
+			triggerId,
+			mapId,
+			x,
+			y,
+			targetId,
+		},
+	};
+}
+
 describe("sync-core validation", () => {
 	it("validates single commit envelope shape", () => {
 		const manifest = syncCore.getWorldManifest();
@@ -128,5 +157,191 @@ describe("sync-core validation", () => {
 		});
 		expect(validation.ok).toBe(false);
 		expect(validation.errorCode).toBe("CONTENT_VERSION_MISMATCH");
+	});
+
+	it("validates and rejects INTERACT trigger prerequisites/target", () => {
+		const manifest = syncCore.getWorldManifest();
+		const runId = "run-interact";
+		const validState = syncCore.buildInitialGameplayState({
+			runId,
+			manifest,
+			contentVersion: manifest.contentVersion,
+		});
+		validState.mapId = "map_village_square";
+		validState.questFlags.slice_intro_seen = true;
+
+		const valid = makeCommit({
+			runId,
+			clientSeq: 1,
+			contentVersion: manifest.contentVersion,
+			triggerType: "INTERACT",
+			triggerId: "npc_guide_interact",
+			mapId: "map_village_square",
+			x: 10,
+			y: 8,
+			targetId: "npc_guide",
+		});
+		const normalizedValid = syncCore.normalizeCommitEnvelope(valid);
+		expect(normalizedValid.ok).toBe(true);
+		const interactValidation = syncCore.validateTriggerAgainstManifest({
+			manifest,
+			state: validState,
+			commit: normalizedValid.commit,
+		});
+		expect(interactValidation.ok).toBe(true);
+
+		const invalidTarget = makeCommit({
+			runId,
+			clientSeq: 2,
+			contentVersion: manifest.contentVersion,
+			triggerType: "INTERACT",
+			triggerId: "npc_guide_interact",
+			mapId: "map_village_square",
+			x: 10,
+			y: 8,
+			targetId: "npc_unknown",
+		});
+		const normalizedBadTarget = syncCore.normalizeCommitEnvelope(invalidTarget);
+		const badTargetValidation = syncCore.validateTriggerAgainstManifest({
+			manifest,
+			state: validState,
+			commit: normalizedBadTarget.commit,
+		});
+		expect(badTargetValidation.ok).toBe(false);
+		expect(badTargetValidation.errorCode).toBe("TRIGGER_TARGET_MISMATCH");
+	});
+
+	it("validates and rejects ENCOUNTER_GATE with prereq and state-map mismatch", () => {
+		const manifest = syncCore.getWorldManifest();
+		const runId = "run-encounter";
+		const validState = syncCore.buildInitialGameplayState({
+			runId,
+			manifest,
+			contentVersion: manifest.contentVersion,
+		});
+		validState.mapId = "map_village_square";
+		validState.questFlags.quest_tutorial_started = true;
+
+		const valid = makeCommit({
+			runId,
+			clientSeq: 1,
+			contentVersion: manifest.contentVersion,
+			triggerType: "ENCOUNTER_GATE",
+			triggerId: "encounter_gate_training",
+			mapId: "map_village_square",
+			x: 18,
+			y: 8,
+			targetId: "encounter_gate_training_01",
+		});
+		const normalizedValid = syncCore.normalizeCommitEnvelope(valid);
+		const validCheck = syncCore.validateTriggerAgainstManifest({
+			manifest,
+			state: validState,
+			commit: normalizedValid.commit,
+		});
+		expect(validCheck.ok).toBe(true);
+
+		const wrongMapState = {
+			...validState,
+			mapId: "map_training_glade",
+		};
+		const wrongMapCheck = syncCore.validateTriggerAgainstManifest({
+			manifest,
+			state: wrongMapState,
+			commit: normalizedValid.commit,
+		});
+		expect(wrongMapCheck.ok).toBe(false);
+		expect(wrongMapCheck.errorCode).toBe("STATE_MAP_MISMATCH");
+	});
+
+	it("validates and rejects ZONE_EXIT based on canonical state map", () => {
+		const manifest = syncCore.getWorldManifest();
+		const runId = "run-zone-exit";
+		const validState = syncCore.buildInitialGameplayState({
+			runId,
+			manifest,
+			contentVersion: manifest.contentVersion,
+		});
+		validState.mapId = "map_training_glade";
+
+		const valid = makeCommit({
+			runId,
+			clientSeq: 1,
+			contentVersion: manifest.contentVersion,
+			triggerType: "ZONE_EXIT",
+			triggerId: "zone_exit_back_to_square",
+			mapId: "map_training_glade",
+			x: 0,
+			y: 2,
+		});
+		const normalized = syncCore.normalizeCommitEnvelope(valid);
+		const validCheck = syncCore.validateTriggerAgainstManifest({
+			manifest,
+			state: validState,
+			commit: normalized.commit,
+		});
+		expect(validCheck.ok).toBe(true);
+
+		const invalidState = {
+			...validState,
+			mapId: "map_village_square",
+		};
+		const invalidCheck = syncCore.validateTriggerAgainstManifest({
+			manifest,
+			state: invalidState,
+			commit: normalized.commit,
+		});
+		expect(invalidCheck.ok).toBe(false);
+		expect(invalidCheck.errorCode).toBe("STATE_MAP_MISMATCH");
+	});
+
+	it("validates and rejects SAVEPOINT target mismatch", () => {
+		const manifest = syncCore.getWorldManifest();
+		const runId = "run-savepoint";
+		const state = syncCore.buildInitialGameplayState({
+			runId,
+			manifest,
+			contentVersion: manifest.contentVersion,
+		});
+		state.mapId = "map_village_square";
+
+		const valid = makeCommit({
+			runId,
+			clientSeq: 1,
+			contentVersion: manifest.contentVersion,
+			triggerType: "SAVEPOINT",
+			triggerId: "savepoint_square_crystal",
+			mapId: "map_village_square",
+			x: 4,
+			y: 4,
+			targetId: "save_crystal_square_01",
+		});
+		const normalizedValid = syncCore.normalizeCommitEnvelope(valid);
+		const validCheck = syncCore.validateTriggerAgainstManifest({
+			manifest,
+			state,
+			commit: normalizedValid.commit,
+		});
+		expect(validCheck.ok).toBe(true);
+
+		const invalid = makeCommit({
+			runId,
+			clientSeq: 2,
+			contentVersion: manifest.contentVersion,
+			triggerType: "SAVEPOINT",
+			triggerId: "savepoint_square_crystal",
+			mapId: "map_village_square",
+			x: 4,
+			y: 4,
+			targetId: "save_crystal_square_x",
+		});
+		const normalizedInvalid = syncCore.normalizeCommitEnvelope(invalid);
+		const invalidCheck = syncCore.validateTriggerAgainstManifest({
+			manifest,
+			state,
+			commit: normalizedInvalid.commit,
+		});
+		expect(invalidCheck.ok).toBe(false);
+		expect(invalidCheck.errorCode).toBe("TRIGGER_TARGET_MISMATCH");
 	});
 });

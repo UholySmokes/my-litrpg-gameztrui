@@ -1,0 +1,61 @@
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+const { handleApiRequest } = require("../../functions/lib/api-router.js");
+const sync = require("../../functions/lib/sync.js");
+
+function createRes() {
+	const res = {
+		statusCode: 0,
+		headers: {},
+		body: null,
+	};
+	res.status = jest.fn((code) => {
+		res.statusCode = code;
+		return res;
+	});
+	res.set = jest.fn((key, value) => {
+		res.headers[key] = value;
+		return res;
+	});
+	res.json = jest.fn((value) => {
+		res.body = value;
+		return res;
+	});
+	return res;
+}
+
+describe("api router sync routes", () => {
+	const originalCommit = sync.commit;
+	const originalAction = sync.action;
+
+	afterEach(() => {
+		sync.commit = originalCommit;
+		sync.action = originalAction;
+	});
+
+	it("routes /api/sync/commit to canonical commit handler", async () => {
+		sync.commit = jest.fn(async (_req, res) => {
+			res.status(200).set("Content-Type", "application/json").json({ ok: true });
+		});
+		const req = { method: "POST", url: "/api/sync/commit", headers: {} };
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(sync.commit).toHaveBeenCalledTimes(1);
+		expect(res.statusCode).toBe(200);
+		expect(res.body.ok).toBe(true);
+	});
+
+	it("routes /api/sync/action with deprecation headers", async () => {
+		sync.action = jest.fn(async (_req, res) => {
+			res.status(200).set("Content-Type", "application/json").json({ ok: true });
+		});
+		const req = { method: "POST", url: "/api/sync/action", headers: {} };
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(sync.action).toHaveBeenCalledTimes(1);
+		expect(res.headers.Deprecation).toBe("true");
+		expect(res.headers.Link).toContain("/api/sync/commit");
+	});
+});

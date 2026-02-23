@@ -6,20 +6,11 @@ import vm from "node:vm";
 const GODOT_CONFIG_PATH = path.resolve(process.cwd(), "godot", "data", "config.json");
 const DIST_CONFIG_PATH = path.resolve(process.cwd(), "dist", "runtime-config.js");
 const PUBLIC_CONFIG_PATH = path.resolve(process.cwd(), "public", "runtime-config.js");
-const EXTERNAL_URL_PATTERN = /^[a-z][a-z0-9+.-]*:\/\//i;
 const DEFAULT_API_BASE_URL =
 	"http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api";
 
-function sanitizePathLikeValue(value) {
-	const trimmed = String(value || "").trim();
-	if (!trimmed) return "";
-	if (EXTERNAL_URL_PATTERN.test(trimmed) || trimmed.startsWith("//")) {
-		console.warn(
-			`[godot-config] ignoring external URL and keeping local/default value: ${trimmed}`,
-		);
-		return "";
-	}
-	return trimmed;
+function normalizeConfigValue(value) {
+	return String(value || "").trim();
 }
 
 async function readRuntimeConfigFile() {
@@ -52,20 +43,24 @@ function extractRuntimeConfig(content) {
 }
 
 function buildGodotConfig({ runtimeConfig, source }) {
-	const envApiBase = sanitizePathLikeValue(
+	const envApiBase = normalizeConfigValue(
 		process.env.VITE_API_BASE_URL || process.env.VITE_API_BASE || "",
 	);
-	const envNarrate = sanitizePathLikeValue(process.env.VITE_NARRATE_ENDPOINT || "");
-	const fileApiBase = sanitizePathLikeValue(
+	const envNarrate = normalizeConfigValue(process.env.VITE_NARRATE_ENDPOINT || "");
+	const fileApiBase = normalizeConfigValue(
 		runtimeConfig.VITE_API_BASE_URL || runtimeConfig.VITE_API_BASE || "",
 	);
-	const fileNarrate = sanitizePathLikeValue(runtimeConfig.VITE_NARRATE_ENDPOINT || "");
+	const fileNarrate = normalizeConfigValue(runtimeConfig.VITE_NARRATE_ENDPOINT || "");
+	const resolvedApiBase = envApiBase || fileApiBase;
 
 	return {
 		schemaVersion: 1,
 		generatedAt: new Date().toISOString(),
 		source,
-		apiBaseUrl: envApiBase || fileApiBase || DEFAULT_API_BASE_URL,
+		apiBaseUrl:
+			resolvedApiBase && resolvedApiBase !== "/"
+				? resolvedApiBase
+				: DEFAULT_API_BASE_URL,
 		narrateEndpoint: envNarrate || fileNarrate || "/api/narrate",
 		syncCommandPath: "/api/sync/command",
 		syncPullPath: "/api/sync/pull",
@@ -95,4 +90,3 @@ main().catch((error) => {
 	console.error(error);
 	process.exitCode = 1;
 });
-

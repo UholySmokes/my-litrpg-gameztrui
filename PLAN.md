@@ -27,6 +27,10 @@ Last implementation check: 2026-02-23
 - [x] M3: extend determinism suite to 100-run mixed-stream replay assertion
   - Evidence: `tests/unit/SyncCoreDeterminism.test.js`, `docs/reports/determinism_validation_2026-02-23.md`
   - Verification: `npm test -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncProcess.test.js --runInBand` (11 passed)
+- [x] M4 (partial): add shared runtime-to-Godot config generation script
+  - Evidence: `scripts/generate-godot-config.js`, `godot/data/config.json`, `package.json` (`generate:godot-config`, updated `postbuild`)
+  - Verification: `npm run generate:godot-config` (writes `godot/data/config.json`)
+- [ ] M4: add Godot `ConfigLoader.gd` consumption path + command/reconcile contract tests
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

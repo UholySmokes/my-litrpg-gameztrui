@@ -14,6 +14,7 @@ export interface CreateRunEventData {
 
 export interface CreateRunEventVariables {
   runId: string;
+  eventType?: string | null;
   commitId: string;
   clientId: string;
   clientSeq: number;
@@ -76,6 +77,7 @@ export interface GetMyRunEventByCommitIdData {
     events: ({
       id: UUIDString;
       runId: string;
+      eventType?: string | null;
       commitId: string;
       clientId: string;
       clientSeq: number;
@@ -163,6 +165,7 @@ export interface ListMyRunEventsSinceData {
     events: ({
       id: UUIDString;
       runId: string;
+      eventType?: string | null;
       commitId: string;
       clientId: string;
       clientSeq: number;

@@ -719,6 +719,7 @@ export interface GetMyRunEventByCommitIdData {
     events: ({
       id: UUIDString;
       runId: string;
+      eventType?: string | null;
       commitId: string;
       clientId: string;
       clientSeq: number;
@@ -850,6 +851,7 @@ export interface ListMyRunEventsSinceData {
     events: ({
       id: UUIDString;
       runId: string;
+      eventType?: string | null;
       commitId: string;
       clientId: string;
       clientSeq: number;
@@ -1907,6 +1909,7 @@ The `CreateRunEvent` mutation requires an argument of type `CreateRunEventVariab
 ```typescript
 export interface CreateRunEventVariables {
   runId: string;
+  eventType?: string | null;
   commitId: string;
   clientId: string;
   clientSeq: number;
@@ -1939,6 +1942,7 @@ import { connectorConfig, createRunEvent, CreateRunEventVariables } from '@datac
 // The `CreateRunEvent` mutation requires an argument of type `CreateRunEventVariables`:
 const createRunEventVars: CreateRunEventVariables = {
   runId: ..., 
+  eventType: ..., // optional
   commitId: ..., 
   clientId: ..., 
   clientSeq: ..., 
@@ -1957,7 +1961,7 @@ const createRunEventVars: CreateRunEventVariables = {
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await createRunEvent(createRunEventVars);
 // Variables can be defined inline as well.
-const { data } = await createRunEvent({ runId: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
+const { data } = await createRunEvent({ runId: ..., eventType: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1981,6 +1985,7 @@ import { connectorConfig, createRunEventRef, CreateRunEventVariables } from '@da
 // The `CreateRunEvent` mutation requires an argument of type `CreateRunEventVariables`:
 const createRunEventVars: CreateRunEventVariables = {
   runId: ..., 
+  eventType: ..., // optional
   commitId: ..., 
   clientId: ..., 
   clientSeq: ..., 
@@ -1998,7 +2003,7 @@ const createRunEventVars: CreateRunEventVariables = {
 // Call the `createRunEventRef()` function to get a reference to the mutation.
 const ref = createRunEventRef(createRunEventVars);
 // Variables can be defined inline as well.
-const ref = createRunEventRef({ runId: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
+const ref = createRunEventRef({ runId: ..., eventType: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);

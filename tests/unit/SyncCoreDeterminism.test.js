@@ -120,6 +120,114 @@ describe("sync-core determinism", () => {
 		expect(replayA.state.tick).toBe(replayB.state.tick);
 	});
 
+	it("replays mixed trigger/command stream identically across 100 runs", () => {
+		const manifest = syncCore.getWorldManifest();
+		const runId = "run-determinism-100";
+		const commits = [
+			makeCommit({
+				id: "m1",
+				runId,
+				clientSeq: 1,
+				createdAt: "2026-02-23T10:00:00.000Z",
+				contentVersion: manifest.contentVersion,
+				triggerType: "ENTER_TILE",
+				triggerId: "tile_intro_square",
+				mapId: "map_village_square",
+				x: 6,
+				y: 8,
+			}),
+			{
+				...makeCommit({
+					id: "m2",
+					runId,
+					clientSeq: 2,
+					createdAt: "2026-02-23T10:00:00.200Z",
+					contentVersion: manifest.contentVersion,
+					triggerType: "INTERACT",
+					triggerId: "npc_guide_interact",
+					mapId: "map_village_square",
+					x: 10,
+					y: 8,
+					targetId: "npc_guide",
+				}),
+				commandType: "TRIGGER",
+				command: {
+					type: "TRIGGER",
+					triggerType: "INTERACT",
+					trigger: {
+						triggerId: "npc_guide_interact",
+						mapId: "map_village_square",
+						x: 10,
+						y: 8,
+						targetId: "npc_guide",
+					},
+				},
+			},
+			makeCommit({
+				id: "m3",
+				runId,
+				clientSeq: 3,
+				createdAt: "2026-02-23T10:00:00.400Z",
+				contentVersion: manifest.contentVersion,
+				triggerType: "ENCOUNTER_GATE",
+				triggerId: "encounter_gate_training",
+				mapId: "map_village_square",
+				x: 18,
+				y: 8,
+				targetId: "encounter_gate_training_01",
+			}),
+			{
+				...makeCommit({
+					id: "m4",
+					runId,
+					clientSeq: 4,
+					createdAt: "2026-02-23T10:00:00.600Z",
+					contentVersion: manifest.contentVersion,
+					triggerType: "ZONE_EXIT",
+					triggerId: "zone_exit_back_to_square",
+					mapId: "map_training_glade",
+					x: 0,
+					y: 2,
+				}),
+				commandType: "TRIGGER",
+				command: {
+					type: "TRIGGER",
+					triggerType: "ZONE_EXIT",
+					trigger: {
+						triggerId: "zone_exit_back_to_square",
+						mapId: "map_training_glade",
+						x: 0,
+						y: 2,
+					},
+				},
+			},
+			makeCommit({
+				id: "m5",
+				runId,
+				clientSeq: 5,
+				createdAt: "2026-02-23T10:00:00.800Z",
+				contentVersion: manifest.contentVersion,
+				triggerType: "SAVEPOINT",
+				triggerId: "savepoint_square_crystal",
+				mapId: "map_village_square",
+				x: 4,
+				y: 4,
+				targetId: "save_crystal_square_01",
+			}),
+		];
+
+		let baselineSignature = "";
+		for (let i = 0; i < 100; i += 1) {
+			const replay = syncCore.replayCommitLog({ manifest, runId, commits });
+			expect(replay.timeline.every((entry) => entry.accepted)).toBe(true);
+			const signature = `${replay.state.seq}:${replay.state.tick}:${replay.state.stateHash}`;
+			if (!baselineSignature) {
+				baselineSignature = signature;
+			}
+			expect(signature).toBe(baselineSignature);
+		}
+	});
+
 	it("derives deterministic RNG seed by runSeed+seq+subsystemTag", () => {
 		const seedA = syncCore.deriveRngSeed("run-seed", 10, "encounter");
 		const seedB = syncCore.deriveRngSeed("run-seed", 10, "encounter");

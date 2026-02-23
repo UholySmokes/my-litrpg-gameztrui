@@ -130,8 +130,9 @@ function pickLatestByUpdatedAt(rows) {
 
 async function getRun({ ownerId, runId }) {
 	const options = buildOptions(ownerId);
-	const response = await getDc().executeQuery(
-		"GetMyRunSessionByRunId",
+	const dc = getDc();
+	const response = await dataconnectGenerated.getMyRunSessionByRunId(
+		dc,
 		{ runId: String(runId) },
 		options,
 	);
@@ -159,8 +160,9 @@ async function putRun({ ownerId, runId, state, saveSlotId = "" }) {
 			: { x: 0, y: 0 },
 	);
 
-	await getDc().executeMutation(
-		"UpsertRunSession",
+	const dc = getDc();
+	await dataconnectGenerated.upsertRunSession(
+		dc,
 		{
 			id: runSessionId,
 			runId: String(runId),
@@ -190,8 +192,9 @@ async function putRun({ ownerId, runId, state, saveSlotId = "" }) {
 }
 
 async function getEventByCommitId({ ownerId, runId, commitId }) {
-	const response = await getDc().executeQuery(
-		"GetMyRunEventByCommitId",
+	const dc = getDc();
+	const response = await dataconnectGenerated.getMyRunEventByCommitId(
+		dc,
 		{
 			runId: String(runId),
 			commitId: String(commitId),
@@ -208,8 +211,9 @@ async function getEventByCommitId({ ownerId, runId, commitId }) {
 }
 
 async function appendEvent({ ownerId, runId, event }) {
-	await getDc().executeMutation(
-		"CreateRunEvent",
+	const dc = getDc();
+	await dataconnectGenerated.createRunEvent(
+		dc,
 		{
 			runId: String(runId),
 			commitId: normalizeString(event.commit_id || event.commitId),
@@ -254,8 +258,9 @@ async function appendEvent({ ownerId, runId, event }) {
 }
 
 async function listEvents({ ownerId, runId, afterSeq = 0, limit = 100 }) {
-	const response = await getDc().executeQuery(
-		"ListMyRunEventsSince",
+	const dc = getDc();
+	const response = await dataconnectGenerated.listMyRunEventsSince(
+		dc,
 		{
 			runId: String(runId),
 			afterSeq: toInteger(afterSeq, 0),

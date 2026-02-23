@@ -8,6 +8,7 @@ const {
 	health,
 } = require("./handlers");
 const { handleSavesRequest } = require("./saves");
+const sync = require("./sync");
 
 function normalizePath(url) {
 	const raw = typeof url === "string" ? url : "";
@@ -59,6 +60,37 @@ async function handleApiRequest(req, res) {
 
 	if (path === "/api/narrate-poll" && method === "GET") {
 		return narratePoll(req, res);
+	}
+
+	if (path === "/api/story/event" && method === "POST") {
+		return narrate(req, res);
+	}
+
+	if (path === "/api/story/start" && method === "POST") {
+		return narrateStart(req, res);
+	}
+
+	if (path === "/api/story/poll" && method === "GET") {
+		return narratePoll(req, res);
+	}
+
+	if (path === "/api/sync/commit" && method === "POST") {
+		return sync.commit(req, res);
+	}
+
+	if (path === "/api/sync/commit-batch" && method === "POST") {
+		return sync.commitBatch(req, res);
+	}
+
+	if (path === "/api/sync/pull" && method === "GET") {
+		return sync.pull(req, res);
+	}
+
+	if (path === "/api/sync/action" && method === "POST") {
+		res.set("Deprecation", "true");
+		res.set("Sunset", "Wed, 01 Jul 2026 00:00:00 GMT");
+		res.set("Link", '</api/sync/commit>; rel="successor-version"');
+		return sync.action(req, res);
 	}
 
 	return json(res, 404, {

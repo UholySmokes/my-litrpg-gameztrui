@@ -32,6 +32,9 @@ jobs:
       - name: Unit Tests
         run: npm test -- --runInBand
 
+      - name: Firestore Rules Blocking Test
+        run: npm run test:firestore-rules:emulator
+
       - name: Validate Registries
         run: npm run validate:registries
 

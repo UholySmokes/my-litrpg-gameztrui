@@ -66,4 +66,5 @@
 
 1. Restrictive rules are now checked by emulator test: `tests/security/firestoreRules.test.js`.
 2. CI gate runs with emulator through `npm run test:firestore-rules:emulator`.
-3. Deadline remains hard: before **March 10, 2026**.
+3. The emulator gate requires Java 21+; CI pins Temurin 21 and local wrapper script auto-selects Temurin 21 on Windows when installed.
+4. Deadline remains hard: before **March 10, 2026**.

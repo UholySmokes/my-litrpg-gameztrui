@@ -38,4 +38,18 @@ describe("sync-store backend resolution", () => {
 		process.env.GAME_DB_STORAGE = "firestore";
 		expect(syncStore.resolveSyncBackend()).toBe("dataconnect");
 	});
+
+	it("returns null migration metadata for file backend", async () => {
+		process.env.SYNC_DB_STORAGE = "file";
+		await expect(
+			syncStore.getMigrationVersion({ ownerId: "user-1" }),
+		).resolves.toBeNull();
+		await expect(
+			syncStore.markMigrationVersion({
+				ownerId: "user-1",
+				version: 1,
+				displayName: "Traveler",
+			}),
+		).resolves.toBeNull();
+	});
 });

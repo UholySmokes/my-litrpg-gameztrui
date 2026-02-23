@@ -376,8 +376,27 @@ async function listEvents({ ownerId, runId, afterSeq = 0, limit = DEFAULT_PULL_E
 	});
 }
 
+async function getMigrationVersion({ ownerId }) {
+	return withBackend({
+		dataconnectFn: () => dataconnectStore.getMigrationVersion({ ownerId }),
+		firestoreFn: () => null,
+		fileFn: () => null,
+	});
+}
+
+async function markMigrationVersion({ ownerId, version, displayName = "" }) {
+	return withBackend({
+		dataconnectFn: () =>
+			dataconnectStore.markMigrationVersion({ ownerId, version, displayName }),
+		firestoreFn: () => null,
+		fileFn: () => null,
+	});
+}
+
 module.exports = {
 	resolveSyncBackend,
+	getMigrationVersion,
+	markMigrationVersion,
 	getRun,
 	putRun,
 	getEventByCommitId,

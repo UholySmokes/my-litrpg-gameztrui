@@ -16,6 +16,13 @@ The Firebase Data Connect schema now models the trigger-commit runtime directly.
 2. `RunEvent` stores commit-level audit records (`commitId`, `clientSeq`, `triggerType`, acceptance/rejection metadata).
 3. `SaveSlot` remains compatible with existing SDK operations while adding optional runtime JSON fields.
 4. `StoryMemory` stores per-run memory fragments (`memoryKey`, `memoryJson`, `lastSeq`).
+5. `UserProfile.migrationVersion` marks completion of one-time legacy save migration.
+
+## Lazy Migration Marker
+
+1. Sync load path checks `UserProfile.migrationVersion` before attempting legacy save migration.
+2. If migration has not completed and a legacy save is successfully hydrated into canonical run state, the profile is marked with migration version `1`.
+3. Migration marker write is best-effort; canonical run migration does not roll back on marker write failures.
 
 ## Backend Selection
 

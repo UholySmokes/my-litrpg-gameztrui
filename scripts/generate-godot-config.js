@@ -61,11 +61,11 @@ function buildGodotConfig({ runtimeConfig, source }) {
 			resolvedApiBase && resolvedApiBase !== "/"
 				? resolvedApiBase
 				: DEFAULT_API_BASE_URL,
-		narrateEndpoint: envNarrate || fileNarrate || "/api/narrate",
-		syncCommandPath: "/api/sync/command",
-		syncPullPath: "/api/sync/pull",
-		storyStartPath: "/api/story/start",
-		storyPollPath: "/api/story/poll",
+		narrateEndpoint: envNarrate || fileNarrate || "/narrate",
+		syncCommandPath: "/sync/command",
+		syncPullPath: "/sync/pull",
+		storyStartPath: "/story/start",
+		storyPollPath: "/story/poll",
 	};
 }
 

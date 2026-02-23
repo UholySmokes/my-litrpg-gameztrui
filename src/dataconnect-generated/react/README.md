@@ -20,11 +20,18 @@ You can also follow the instructions from the [Data Connect documentation](https
   - [*ListMySaveSlots*](#listmysaveslots)
   - [*GetMySaveSlot*](#getmysaveslot)
   - [*ListMyRunSnapshots*](#listmyrunsnapshots)
+  - [*GetMyRunSessionByRunId*](#getmyrunsessionbyrunid)
+  - [*GetMyRunEventByCommitId*](#getmyruneventbycommitid)
+  - [*ListMyRunEventsSince*](#listmyruneventssince)
+  - [*ListMyStoryMemories*](#listmystorymemories)
 - [**Mutations**](#mutations)
   - [*UpsertMyProfile*](#upsertmyprofile)
   - [*CreateSaveSlot*](#createsaveslot)
   - [*UpsertSaveSlot*](#upsertsaveslot)
   - [*DeleteSaveSlot*](#deletesaveslot)
+  - [*UpsertRunSession*](#upsertrunsession)
+  - [*CreateRunEvent*](#createrunevent)
+  - [*UpsertStoryMemory*](#upsertstorymemory)
 
 # TanStack Query Firebase & TanStack React Query
 This SDK provides [React](https://react.dev/) hooks generated specific to your application, for the operations found in the connector `example`. These hooks are generated using [TanStack Query Firebase](https://react-query-firebase.invertase.dev/) by our partners at Invertase, a library built on top of [TanStack React Query v5](https://tanstack.com/query/v5/docs/framework/react/overview).
@@ -147,6 +154,10 @@ export interface ListMySaveSlotsData {
       playerLevel: number;
       worldId: string;
       locationId: string;
+      mapId?: string | null;
+      playerPosJson?: string | null;
+      entityStatesJson?: string | null;
+      questFlagsJson?: string | null;
       turnCount: number;
       contentVersion?: string | null;
       stateVersion?: number | null;
@@ -156,7 +167,7 @@ export interface ListMySaveSlotsData {
       stateHash?: string | null;
       createdAt: DateString;
       updatedAt: DateString;
-    })[];
+    } & SaveSlot_Key)[];
   } & UserProfile_Key;
 }
 ```
@@ -240,6 +251,10 @@ export interface GetMySaveSlotData {
     playerLevel: number;
     worldId: string;
     locationId: string;
+    mapId?: string | null;
+    playerPosJson?: string | null;
+    entityStatesJson?: string | null;
+    questFlagsJson?: string | null;
     turnCount: number;
     contentVersion?: string | null;
     stateVersion?: number | null;
@@ -249,7 +264,7 @@ export interface GetMySaveSlotData {
     stateHash?: string | null;
     createdAt: DateString;
     updatedAt: DateString;
-  };
+  } & SaveSlot_Key;
 }
 ```
 
@@ -345,7 +360,7 @@ export interface ListMyRunSnapshotsData {
       tick?: number | null;
       stateHash?: string | null;
       updatedAt: DateString;
-    })[];
+    } & SaveSlot_Key)[];
   } & UserProfile_Key;
 }
 ```
@@ -383,6 +398,409 @@ export default function ListMyRunSnapshotsComponent() {
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
   const query = useListMyRunSnapshots(dataConnect, listMyRunSnapshotsVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.userProfile);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## GetMyRunSessionByRunId
+You can execute the `GetMyRunSessionByRunId` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
+
+```javascript
+useGetMyRunSessionByRunId(dc: DataConnect, vars: GetMyRunSessionByRunIdVariables, options?: useDataConnectQueryOptions<GetMyRunSessionByRunIdData>): UseDataConnectQueryResult<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useGetMyRunSessionByRunId(vars: GetMyRunSessionByRunIdVariables, options?: useDataConnectQueryOptions<GetMyRunSessionByRunIdData>): UseDataConnectQueryResult<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+```
+
+### Variables
+The `GetMyRunSessionByRunId` Query requires an argument of type `GetMyRunSessionByRunIdVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface GetMyRunSessionByRunIdVariables {
+  runId: string;
+}
+```
+### Return Type
+Recall that calling the `GetMyRunSessionByRunId` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetMyRunSessionByRunId` Query is of type `GetMyRunSessionByRunIdData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface GetMyRunSessionByRunIdData {
+  userProfile?: {
+    id: string;
+    runSessions: ({
+      id: UUIDString;
+      runId: string;
+      worldId: string;
+      mapId: string;
+      playerPosJson: string;
+      entityStatesJson: string;
+      questFlagsJson: string;
+      seq: number;
+      tick: number;
+      stateHash: string;
+      contentVersion: string;
+      stateVersion: number;
+      saveSlotId?: UUIDString | null;
+      runSeed?: string | null;
+      lastCommitId?: string | null;
+      lastClientId?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & RunSession_Key)[];
+  } & UserProfile_Key;
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `GetMyRunSessionByRunId`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, GetMyRunSessionByRunIdVariables } from '@dataconnect/generated';
+import { useGetMyRunSessionByRunId } from '@dataconnect/generated/react'
+
+export default function GetMyRunSessionByRunIdComponent() {
+  // The `useGetMyRunSessionByRunId` Query hook requires an argument of type `GetMyRunSessionByRunIdVariables`:
+  const getMyRunSessionByRunIdVars: GetMyRunSessionByRunIdVariables = {
+    runId: ..., 
+  };
+
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useGetMyRunSessionByRunId(getMyRunSessionByRunIdVars);
+  // Variables can be defined inline as well.
+  const query = useGetMyRunSessionByRunId({ runId: ..., });
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useGetMyRunSessionByRunId(dataConnect, getMyRunSessionByRunIdVars);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetMyRunSessionByRunId(getMyRunSessionByRunIdVars, options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetMyRunSessionByRunId(dataConnect, getMyRunSessionByRunIdVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.userProfile);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## GetMyRunEventByCommitId
+You can execute the `GetMyRunEventByCommitId` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
+
+```javascript
+useGetMyRunEventByCommitId(dc: DataConnect, vars: GetMyRunEventByCommitIdVariables, options?: useDataConnectQueryOptions<GetMyRunEventByCommitIdData>): UseDataConnectQueryResult<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useGetMyRunEventByCommitId(vars: GetMyRunEventByCommitIdVariables, options?: useDataConnectQueryOptions<GetMyRunEventByCommitIdData>): UseDataConnectQueryResult<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+```
+
+### Variables
+The `GetMyRunEventByCommitId` Query requires an argument of type `GetMyRunEventByCommitIdVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface GetMyRunEventByCommitIdVariables {
+  runId: string;
+  commitId: string;
+}
+```
+### Return Type
+Recall that calling the `GetMyRunEventByCommitId` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetMyRunEventByCommitId` Query is of type `GetMyRunEventByCommitIdData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface GetMyRunEventByCommitIdData {
+  userProfile?: {
+    id: string;
+    events: ({
+      id: UUIDString;
+      runId: string;
+      commitId: string;
+      clientId: string;
+      clientSeq: number;
+      triggerType: string;
+      triggerPayloadJson: string;
+      accepted: boolean;
+      errorCode?: string | null;
+      message?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      contentVersion?: string | null;
+      createdAt: DateString;
+    } & RunEvent_Key)[];
+  } & UserProfile_Key;
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `GetMyRunEventByCommitId`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, GetMyRunEventByCommitIdVariables } from '@dataconnect/generated';
+import { useGetMyRunEventByCommitId } from '@dataconnect/generated/react'
+
+export default function GetMyRunEventByCommitIdComponent() {
+  // The `useGetMyRunEventByCommitId` Query hook requires an argument of type `GetMyRunEventByCommitIdVariables`:
+  const getMyRunEventByCommitIdVars: GetMyRunEventByCommitIdVariables = {
+    runId: ..., 
+    commitId: ..., 
+  };
+
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useGetMyRunEventByCommitId(getMyRunEventByCommitIdVars);
+  // Variables can be defined inline as well.
+  const query = useGetMyRunEventByCommitId({ runId: ..., commitId: ..., });
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useGetMyRunEventByCommitId(dataConnect, getMyRunEventByCommitIdVars);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetMyRunEventByCommitId(getMyRunEventByCommitIdVars, options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetMyRunEventByCommitId(dataConnect, getMyRunEventByCommitIdVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.userProfile);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## ListMyRunEventsSince
+You can execute the `ListMyRunEventsSince` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
+
+```javascript
+useListMyRunEventsSince(dc: DataConnect, vars: ListMyRunEventsSinceVariables, options?: useDataConnectQueryOptions<ListMyRunEventsSinceData>): UseDataConnectQueryResult<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useListMyRunEventsSince(vars: ListMyRunEventsSinceVariables, options?: useDataConnectQueryOptions<ListMyRunEventsSinceData>): UseDataConnectQueryResult<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+```
+
+### Variables
+The `ListMyRunEventsSince` Query requires an argument of type `ListMyRunEventsSinceVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface ListMyRunEventsSinceVariables {
+  runId: string;
+  afterSeq: number;
+}
+```
+### Return Type
+Recall that calling the `ListMyRunEventsSince` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `ListMyRunEventsSince` Query is of type `ListMyRunEventsSinceData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface ListMyRunEventsSinceData {
+  userProfile?: {
+    id: string;
+    events: ({
+      id: UUIDString;
+      runId: string;
+      commitId: string;
+      clientId: string;
+      clientSeq: number;
+      triggerType: string;
+      triggerPayloadJson: string;
+      accepted: boolean;
+      errorCode?: string | null;
+      message?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      contentVersion?: string | null;
+      createdAt: DateString;
+    } & RunEvent_Key)[];
+  } & UserProfile_Key;
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `ListMyRunEventsSince`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, ListMyRunEventsSinceVariables } from '@dataconnect/generated';
+import { useListMyRunEventsSince } from '@dataconnect/generated/react'
+
+export default function ListMyRunEventsSinceComponent() {
+  // The `useListMyRunEventsSince` Query hook requires an argument of type `ListMyRunEventsSinceVariables`:
+  const listMyRunEventsSinceVars: ListMyRunEventsSinceVariables = {
+    runId: ..., 
+    afterSeq: ..., 
+  };
+
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useListMyRunEventsSince(listMyRunEventsSinceVars);
+  // Variables can be defined inline as well.
+  const query = useListMyRunEventsSince({ runId: ..., afterSeq: ..., });
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useListMyRunEventsSince(dataConnect, listMyRunEventsSinceVars);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useListMyRunEventsSince(listMyRunEventsSinceVars, options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useListMyRunEventsSince(dataConnect, listMyRunEventsSinceVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.userProfile);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## ListMyStoryMemories
+You can execute the `ListMyStoryMemories` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
+
+```javascript
+useListMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables, options?: useDataConnectQueryOptions<ListMyStoryMemoriesData>): UseDataConnectQueryResult<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useListMyStoryMemories(vars: ListMyStoryMemoriesVariables, options?: useDataConnectQueryOptions<ListMyStoryMemoriesData>): UseDataConnectQueryResult<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+```
+
+### Variables
+The `ListMyStoryMemories` Query requires an argument of type `ListMyStoryMemoriesVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface ListMyStoryMemoriesVariables {
+  runId: string;
+}
+```
+### Return Type
+Recall that calling the `ListMyStoryMemories` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `ListMyStoryMemories` Query is of type `ListMyStoryMemoriesData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface ListMyStoryMemoriesData {
+  userProfile?: {
+    id: string;
+    memories: ({
+      id: UUIDString;
+      runId: string;
+      memoryKey: string;
+      memoryJson: string;
+      lastSeq?: number | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & StoryMemory_Key)[];
+  } & UserProfile_Key;
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `ListMyStoryMemories`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, ListMyStoryMemoriesVariables } from '@dataconnect/generated';
+import { useListMyStoryMemories } from '@dataconnect/generated/react'
+
+export default function ListMyStoryMemoriesComponent() {
+  // The `useListMyStoryMemories` Query hook requires an argument of type `ListMyStoryMemoriesVariables`:
+  const listMyStoryMemoriesVars: ListMyStoryMemoriesVariables = {
+    runId: ..., 
+  };
+
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useListMyStoryMemories(listMyStoryMemoriesVars);
+  // Variables can be defined inline as well.
+  const query = useListMyStoryMemories({ runId: ..., });
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useListMyStoryMemories(dataConnect, listMyStoryMemoriesVars);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useListMyStoryMemories(listMyStoryMemoriesVars, options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useListMyStoryMemories(dataConnect, listMyStoryMemoriesVars, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -541,6 +959,10 @@ export interface CreateSaveSlotVariables {
   playerLevel: number;
   worldId: string;
   locationId: string;
+  mapId?: string | null;
+  playerPosJson?: string | null;
+  entityStatesJson?: string | null;
+  questFlagsJson?: string | null;
   turnCount: number;
   contentVersion?: string | null;
   stateVersion?: number | null;
@@ -603,6 +1025,10 @@ export default function CreateSaveSlotComponent() {
     playerLevel: ..., 
     worldId: ..., 
     locationId: ..., 
+    mapId: ..., // optional
+    playerPosJson: ..., // optional
+    entityStatesJson: ..., // optional
+    questFlagsJson: ..., // optional
     turnCount: ..., 
     contentVersion: ..., // optional
     stateVersion: ..., // optional
@@ -613,7 +1039,7 @@ export default function CreateSaveSlotComponent() {
   };
   mutation.mutate(createSaveSlotVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
+  mutation.mutate({ saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {
@@ -660,6 +1086,10 @@ export interface UpsertSaveSlotVariables {
   playerLevel: number;
   worldId: string;
   locationId: string;
+  mapId?: string | null;
+  playerPosJson?: string | null;
+  entityStatesJson?: string | null;
+  questFlagsJson?: string | null;
   turnCount: number;
   contentVersion?: string | null;
   stateVersion?: number | null;
@@ -723,6 +1153,10 @@ export default function UpsertSaveSlotComponent() {
     playerLevel: ..., 
     worldId: ..., 
     locationId: ..., 
+    mapId: ..., // optional
+    playerPosJson: ..., // optional
+    entityStatesJson: ..., // optional
+    questFlagsJson: ..., // optional
     turnCount: ..., 
     contentVersion: ..., // optional
     stateVersion: ..., // optional
@@ -733,7 +1167,7 @@ export default function UpsertSaveSlotComponent() {
   };
   mutation.mutate(upsertSaveSlotVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ id: ..., saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
+  mutation.mutate({ id: ..., saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {
@@ -847,6 +1281,350 @@ export default function DeleteSaveSlotComponent() {
   // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
   if (mutation.isSuccess) {
     console.log(mutation.data.saveSlot_delete);
+  }
+  return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## UpsertRunSession
+You can execute the `UpsertRunSession` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts)):
+```javascript
+useUpsertRunSession(options?: useDataConnectMutationOptions<UpsertRunSessionData, FirebaseError, UpsertRunSessionVariables>): UseDataConnectMutationResult<UpsertRunSessionData, UpsertRunSessionVariables>;
+```
+You can also pass in a `DataConnect` instance to the Mutation hook function.
+```javascript
+useUpsertRunSession(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertRunSessionData, FirebaseError, UpsertRunSessionVariables>): UseDataConnectMutationResult<UpsertRunSessionData, UpsertRunSessionVariables>;
+```
+
+### Variables
+The `UpsertRunSession` Mutation requires an argument of type `UpsertRunSessionVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface UpsertRunSessionVariables {
+  id: UUIDString;
+  runId: string;
+  worldId: string;
+  mapId: string;
+  playerPosJson: string;
+  entityStatesJson: string;
+  questFlagsJson: string;
+  seq: number;
+  tick: number;
+  stateHash: string;
+  contentVersion: string;
+  stateVersion: number;
+  saveSlotId?: UUIDString | null;
+  runSeed?: string | null;
+  lastCommitId?: string | null;
+  lastClientId?: string | null;
+}
+```
+### Return Type
+Recall that calling the `UpsertRunSession` Mutation hook function returns a `UseMutationResult` object. This object holds the state of your Mutation, including whether the Mutation is loading, has completed, or has succeeded/failed, among other things.
+
+To check the status of a Mutation, use the `UseMutationResult.status` field. You can also check for pending / success / error status using the `UseMutationResult.isPending`, `UseMutationResult.isSuccess`, and `UseMutationResult.isError` fields.
+
+To execute the Mutation, call `UseMutationResult.mutate()`. This function executes the Mutation, but does not return the data from the Mutation.
+
+To access the data returned by a Mutation, use the `UseMutationResult.data` field. The data for the `UpsertRunSession` Mutation is of type `UpsertRunSessionData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface UpsertRunSessionData {
+  runSession_upsert: RunSession_Key;
+}
+```
+
+To learn more about the `UseMutationResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
+
+### Using `UpsertRunSession`'s Mutation hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, UpsertRunSessionVariables } from '@dataconnect/generated';
+import { useUpsertRunSession } from '@dataconnect/generated/react'
+
+export default function UpsertRunSessionComponent() {
+  // Call the Mutation hook function to get a `UseMutationResult` object which holds the state of your Mutation.
+  const mutation = useUpsertRunSession();
+
+  // You can also pass in a `DataConnect` instance to the Mutation hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const mutation = useUpsertRunSession(dataConnect);
+
+  // You can also pass in a `useDataConnectMutationOptions` object to the Mutation hook function.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useUpsertRunSession(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectMutationOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useUpsertRunSession(dataConnect, options);
+
+  // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
+  // The `useUpsertRunSession` Mutation requires an argument of type `UpsertRunSessionVariables`:
+  const upsertRunSessionVars: UpsertRunSessionVariables = {
+    id: ..., 
+    runId: ..., 
+    worldId: ..., 
+    mapId: ..., 
+    playerPosJson: ..., 
+    entityStatesJson: ..., 
+    questFlagsJson: ..., 
+    seq: ..., 
+    tick: ..., 
+    stateHash: ..., 
+    contentVersion: ..., 
+    stateVersion: ..., 
+    saveSlotId: ..., // optional
+    runSeed: ..., // optional
+    lastCommitId: ..., // optional
+    lastClientId: ..., // optional
+  };
+  mutation.mutate(upsertRunSessionVars);
+  // Variables can be defined inline as well.
+  mutation.mutate({ id: ..., runId: ..., worldId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., stateVersion: ..., saveSlotId: ..., runSeed: ..., lastCommitId: ..., lastClientId: ..., });
+
+  // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  mutation.mutate(upsertRunSessionVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Mutation.
+  if (mutation.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (mutation.isError) {
+    return <div>Error: {mutation.error.message}</div>;
+  }
+
+  // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
+  if (mutation.isSuccess) {
+    console.log(mutation.data.runSession_upsert);
+  }
+  return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## CreateRunEvent
+You can execute the `CreateRunEvent` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts)):
+```javascript
+useCreateRunEvent(options?: useDataConnectMutationOptions<CreateRunEventData, FirebaseError, CreateRunEventVariables>): UseDataConnectMutationResult<CreateRunEventData, CreateRunEventVariables>;
+```
+You can also pass in a `DataConnect` instance to the Mutation hook function.
+```javascript
+useCreateRunEvent(dc: DataConnect, options?: useDataConnectMutationOptions<CreateRunEventData, FirebaseError, CreateRunEventVariables>): UseDataConnectMutationResult<CreateRunEventData, CreateRunEventVariables>;
+```
+
+### Variables
+The `CreateRunEvent` Mutation requires an argument of type `CreateRunEventVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface CreateRunEventVariables {
+  runId: string;
+  commitId: string;
+  clientId: string;
+  clientSeq: number;
+  triggerType: string;
+  triggerPayloadJson: string;
+  accepted: boolean;
+  errorCode?: string | null;
+  message?: string | null;
+  seq?: number | null;
+  tick?: number | null;
+  stateHash?: string | null;
+  contentVersion?: string | null;
+}
+```
+### Return Type
+Recall that calling the `CreateRunEvent` Mutation hook function returns a `UseMutationResult` object. This object holds the state of your Mutation, including whether the Mutation is loading, has completed, or has succeeded/failed, among other things.
+
+To check the status of a Mutation, use the `UseMutationResult.status` field. You can also check for pending / success / error status using the `UseMutationResult.isPending`, `UseMutationResult.isSuccess`, and `UseMutationResult.isError` fields.
+
+To execute the Mutation, call `UseMutationResult.mutate()`. This function executes the Mutation, but does not return the data from the Mutation.
+
+To access the data returned by a Mutation, use the `UseMutationResult.data` field. The data for the `CreateRunEvent` Mutation is of type `CreateRunEventData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface CreateRunEventData {
+  runEvent_insert: RunEvent_Key;
+}
+```
+
+To learn more about the `UseMutationResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
+
+### Using `CreateRunEvent`'s Mutation hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, CreateRunEventVariables } from '@dataconnect/generated';
+import { useCreateRunEvent } from '@dataconnect/generated/react'
+
+export default function CreateRunEventComponent() {
+  // Call the Mutation hook function to get a `UseMutationResult` object which holds the state of your Mutation.
+  const mutation = useCreateRunEvent();
+
+  // You can also pass in a `DataConnect` instance to the Mutation hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const mutation = useCreateRunEvent(dataConnect);
+
+  // You can also pass in a `useDataConnectMutationOptions` object to the Mutation hook function.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useCreateRunEvent(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectMutationOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useCreateRunEvent(dataConnect, options);
+
+  // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
+  // The `useCreateRunEvent` Mutation requires an argument of type `CreateRunEventVariables`:
+  const createRunEventVars: CreateRunEventVariables = {
+    runId: ..., 
+    commitId: ..., 
+    clientId: ..., 
+    clientSeq: ..., 
+    triggerType: ..., 
+    triggerPayloadJson: ..., 
+    accepted: ..., 
+    errorCode: ..., // optional
+    message: ..., // optional
+    seq: ..., // optional
+    tick: ..., // optional
+    stateHash: ..., // optional
+    contentVersion: ..., // optional
+  };
+  mutation.mutate(createRunEventVars);
+  // Variables can be defined inline as well.
+  mutation.mutate({ runId: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
+
+  // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  mutation.mutate(createRunEventVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Mutation.
+  if (mutation.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (mutation.isError) {
+    return <div>Error: {mutation.error.message}</div>;
+  }
+
+  // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
+  if (mutation.isSuccess) {
+    console.log(mutation.data.runEvent_insert);
+  }
+  return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## UpsertStoryMemory
+You can execute the `UpsertStoryMemory` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts)):
+```javascript
+useUpsertStoryMemory(options?: useDataConnectMutationOptions<UpsertStoryMemoryData, FirebaseError, UpsertStoryMemoryVariables>): UseDataConnectMutationResult<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+```
+You can also pass in a `DataConnect` instance to the Mutation hook function.
+```javascript
+useUpsertStoryMemory(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertStoryMemoryData, FirebaseError, UpsertStoryMemoryVariables>): UseDataConnectMutationResult<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+```
+
+### Variables
+The `UpsertStoryMemory` Mutation requires an argument of type `UpsertStoryMemoryVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface UpsertStoryMemoryVariables {
+  id: UUIDString;
+  runId: string;
+  memoryKey: string;
+  memoryJson: string;
+  lastSeq?: number | null;
+}
+```
+### Return Type
+Recall that calling the `UpsertStoryMemory` Mutation hook function returns a `UseMutationResult` object. This object holds the state of your Mutation, including whether the Mutation is loading, has completed, or has succeeded/failed, among other things.
+
+To check the status of a Mutation, use the `UseMutationResult.status` field. You can also check for pending / success / error status using the `UseMutationResult.isPending`, `UseMutationResult.isSuccess`, and `UseMutationResult.isError` fields.
+
+To execute the Mutation, call `UseMutationResult.mutate()`. This function executes the Mutation, but does not return the data from the Mutation.
+
+To access the data returned by a Mutation, use the `UseMutationResult.data` field. The data for the `UpsertStoryMemory` Mutation is of type `UpsertStoryMemoryData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface UpsertStoryMemoryData {
+  storyMemory_upsert: StoryMemory_Key;
+}
+```
+
+To learn more about the `UseMutationResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
+
+### Using `UpsertStoryMemory`'s Mutation hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, UpsertStoryMemoryVariables } from '@dataconnect/generated';
+import { useUpsertStoryMemory } from '@dataconnect/generated/react'
+
+export default function UpsertStoryMemoryComponent() {
+  // Call the Mutation hook function to get a `UseMutationResult` object which holds the state of your Mutation.
+  const mutation = useUpsertStoryMemory();
+
+  // You can also pass in a `DataConnect` instance to the Mutation hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const mutation = useUpsertStoryMemory(dataConnect);
+
+  // You can also pass in a `useDataConnectMutationOptions` object to the Mutation hook function.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useUpsertStoryMemory(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectMutationOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useUpsertStoryMemory(dataConnect, options);
+
+  // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
+  // The `useUpsertStoryMemory` Mutation requires an argument of type `UpsertStoryMemoryVariables`:
+  const upsertStoryMemoryVars: UpsertStoryMemoryVariables = {
+    id: ..., 
+    runId: ..., 
+    memoryKey: ..., 
+    memoryJson: ..., 
+    lastSeq: ..., // optional
+  };
+  mutation.mutate(upsertStoryMemoryVars);
+  // Variables can be defined inline as well.
+  mutation.mutate({ id: ..., runId: ..., memoryKey: ..., memoryJson: ..., lastSeq: ..., });
+
+  // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  mutation.mutate(upsertStoryMemoryVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Mutation.
+  if (mutation.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (mutation.isError) {
+    return <div>Error: {mutation.error.message}</div>;
+  }
+
+  // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
+  if (mutation.isSuccess) {
+    console.log(mutation.data.storyMemory_upsert);
   }
   return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
 }

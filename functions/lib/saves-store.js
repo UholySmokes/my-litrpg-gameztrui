@@ -1,8 +1,12 @@
 const { getApps, initializeApp } = require("firebase-admin/app");
 const { getFirestore, Timestamp } = require("firebase-admin/firestore");
+const { getDataConnect } = require("firebase-admin/data-connect");
+const dataconnectGenerated = require("../src/dataconnect-admin-generated");
 const { resolveGameDbBackend, fileDb } = require("./game-db");
 
 const DEFAULT_COLLECTION = "game_saves";
+const DEFAULT_WORLD_ID = "voidverse_slice_world_001";
+const DEFAULT_MAP_ID = "map_village_square";
 
 function getOptionalEnv(name) {
 	const value = process.env[name];
@@ -31,11 +35,254 @@ function getCollectionName() {
 	return getOptionalEnv("GAME_SAVES_COLLECTION") || DEFAULT_COLLECTION;
 }
 
+function resolveSavesBackend() {
+	const raw = getOptionalEnv("GAME_SAVES_STORAGE").toLowerCase();
+	if (["file", "filesystem", "fs", "json", "local"].includes(raw)) return "file";
+	if (["firestore", "firebase", "cloud-firestore"].includes(raw)) return "firestore";
+	if (["dataconnect", "data-connect", "dc"].includes(raw)) return "dataconnect";
+	const gameBackend = resolveGameDbBackend();
+	if (gameBackend === "file") return "file";
+	return "dataconnect";
+}
+
+function isDataconnectStrictMode() {
+	const strictRaw =
+		getOptionalEnv("SAVES_DATACONNECT_STRICT") ||
+		getOptionalEnv("GAME_DATACONNECT_STRICT");
+	return strictRaw.toLowerCase() === "true";
+}
+
 function getFirestoreDb() {
 	if (getApps().length === 0) {
 		initializeApp();
 	}
 	return getFirestore();
+}
+
+function getDataConnectDb() {
+	return getDataConnect(dataconnectGenerated.connectorConfig);
+}
+
+function normalizeString(value) {
+	return typeof value === "string" ? value.trim() : "";
+}
+
+function toInteger(value, fallback = 0) {
+	const parsed = Number(value);
+	if (!Number.isFinite(parsed)) return fallback;
+	return Math.floor(parsed);
+}
+
+function safeParseJson(value, fallback = null) {
+	if (value === null || value === undefined) return fallback;
+	if (typeof value === "object") return value;
+	if (typeof value !== "string") return fallback;
+	try {
+		return JSON.parse(value);
+	} catch {
+		return fallback;
+	}
+}
+
+function isRecord(value) {
+	return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function toJsonOrNull(value) {
+	if (!isRecord(value) && !Array.isArray(value)) return null;
+	try {
+		return JSON.stringify(value);
+	} catch {
+		return null;
+	}
+}
+
+function buildDcOptions(userId) {
+	const uid = normalizeString(userId);
+	return {
+		impersonate: {
+			authClaims: {
+				sub: uid,
+				uid,
+				user_id: uid,
+				email_verified: false,
+			},
+		},
+	};
+}
+
+function extractSaveSlotMetadata(gameStateInput) {
+	const parsed = safeParseJson(gameStateInput, {});
+	const gameState = isRecord(parsed) ? parsed : {};
+	const player = isRecord(gameState.player) ? gameState.player : {};
+	const world = isRecord(gameState.world) ? gameState.world : {};
+	const location = isRecord(world.location) ? world.location : {};
+
+	const mapId =
+		normalizeString(gameState.mapId) ||
+		normalizeString(location.current) ||
+		DEFAULT_MAP_ID;
+	const locationId = normalizeString(gameState.locationId) || mapId;
+	const worldId = normalizeString(world.id) || normalizeString(gameState.worldId) || DEFAULT_WORLD_ID;
+	const turnCount = toInteger(world.turnCount, toInteger(world.time, toInteger(gameState.tick, 0)));
+	const playerName = normalizeString(player.name) || "Traveler";
+	const playerLevel = Math.max(1, toInteger(player.level, 1));
+
+	const playerPosJson = toJsonOrNull(gameState.playerPos);
+	const entityStatesJson = toJsonOrNull(gameState.entityStates);
+	const questFlagsJson = toJsonOrNull(
+		isRecord(gameState.questFlags) ? gameState.questFlags : world.flags,
+	);
+
+	return {
+		worldId,
+		locationId,
+		mapId,
+		playerName,
+		playerLevel,
+		turnCount,
+		playerPosJson,
+		entityStatesJson,
+		questFlagsJson,
+		contentVersion: normalizeString(gameState.contentVersion) || null,
+		stateVersion: Number.isInteger(gameState.stateVersion) ? gameState.stateVersion : null,
+		runId: normalizeString(gameState.runId) || null,
+		seq: Number.isInteger(gameState.seq) ? gameState.seq : null,
+		tick: Number.isInteger(gameState.tick) ? gameState.tick : null,
+		stateHash: normalizeString(gameState.stateHash) || null,
+	};
+}
+
+function buildSaveSlotVars({ saveId, saveName, gameState }) {
+	const stateJson =
+		typeof gameState === "string"
+			? gameState
+			: JSON.stringify(gameState && typeof gameState === "object" ? gameState : {});
+	const metadata = extractSaveSlotMetadata(stateJson);
+	return {
+		id: String(saveId),
+		saveName: String(saveName),
+		gameStateJson: stateJson,
+		playerName: metadata.playerName,
+		playerLevel: metadata.playerLevel,
+		worldId: metadata.worldId,
+		locationId: metadata.locationId,
+		mapId: metadata.mapId,
+		playerPosJson: metadata.playerPosJson,
+		entityStatesJson: metadata.entityStatesJson,
+		questFlagsJson: metadata.questFlagsJson,
+		turnCount: metadata.turnCount,
+		contentVersion: metadata.contentVersion,
+		stateVersion: metadata.stateVersion,
+		runId: metadata.runId,
+		seq: metadata.seq,
+		tick: metadata.tick,
+		stateHash: metadata.stateHash,
+	};
+}
+
+function mapDataconnectSave({ userId, slot }) {
+	if (!slot || typeof slot !== "object") return null;
+	return {
+		id: String(slot.id || ""),
+		user_id: String(userId || ""),
+		save_name: String(slot.saveName || "Auto Save"),
+		game_state: slot.gameStateJson,
+		created_at: toIso(slot.createdAt),
+		updated_at: toIso(slot.updatedAt),
+	};
+}
+
+async function ensureDcProfile({ userId, displayName }) {
+	const dc = getDataConnectDb();
+	await dataconnectGenerated.upsertMyProfile(
+		dc,
+		{ displayName: normalizeString(displayName) || "Traveler" },
+		buildDcOptions(userId),
+	);
+}
+
+async function dcListSaves({ userId, limit }) {
+	const dc = getDataConnectDb();
+	const response = await dataconnectGenerated.listMySaveSlots(
+		dc,
+		buildDcOptions(userId),
+	);
+	const slots = Array.isArray(response?.data?.userProfile?.saveSlots)
+		? response.data.userProfile.saveSlots
+		: [];
+	return slots
+		.map((slot) => mapDataconnectSave({ userId, slot }))
+		.filter(Boolean)
+		.sort((a, b) =>
+			String(b.updated_at || "").localeCompare(String(a.updated_at || "")),
+		)
+		.slice(0, limit)
+		.map((row) => ({
+			id: row.id,
+			save_name: row.save_name,
+			created_at: row.created_at,
+			updated_at: row.updated_at,
+		}));
+}
+
+async function dcGetSave({ userId, saveId }) {
+	const dc = getDataConnectDb();
+	const response = await dataconnectGenerated.getMySaveSlot(
+		dc,
+		{ id: String(saveId) },
+		buildDcOptions(userId),
+	);
+	const slot = response?.data?.saveSlot;
+	if (!slot) return null;
+	return mapDataconnectSave({ userId, slot });
+}
+
+async function dcCreateSave({ saveId, userId, saveName, gameState, now }) {
+	const vars = buildSaveSlotVars({ saveId, saveName, gameState });
+	await ensureDcProfile({ userId, displayName: vars.playerName });
+	const dc = getDataConnectDb();
+	await dataconnectGenerated.upsertSaveSlot(dc, vars, buildDcOptions(userId));
+	const row = await dcGetSave({ userId, saveId: vars.id });
+	if (row) return row;
+	return {
+		id: String(vars.id),
+		user_id: String(userId),
+		save_name: String(saveName),
+		game_state: vars.gameStateJson,
+		created_at: now || nowIso(),
+		updated_at: now || nowIso(),
+	};
+}
+
+async function dcUpdateSave({ userId, saveId, saveName, gameState, now }) {
+	const existing = await dcGetSave({ userId, saveId });
+	if (!existing) return null;
+
+	const vars = buildSaveSlotVars({ saveId, saveName, gameState });
+	await ensureDcProfile({ userId, displayName: vars.playerName });
+	const dc = getDataConnectDb();
+	await dataconnectGenerated.upsertSaveSlot(dc, vars, buildDcOptions(userId));
+	const updated = await dcGetSave({ userId, saveId });
+	if (updated) return updated;
+	return {
+		...existing,
+		save_name: String(saveName),
+		game_state: vars.gameStateJson,
+		updated_at: now || nowIso(),
+	};
+}
+
+async function dcDeleteSave({ userId, saveId }) {
+	const existing = await dcGetSave({ userId, saveId });
+	if (!existing) return false;
+	const dc = getDataConnectDb();
+	await dataconnectGenerated.deleteSaveSlot(
+		dc,
+		{ id: String(saveId) },
+		buildDcOptions(userId),
+	);
+	return true;
 }
 
 function mapFirestoreSave(doc) {
@@ -139,18 +386,27 @@ async function fireDeleteSave({ userId, saveId }) {
 	return true;
 }
 
-async function withBackend({ firestoreFn, fileFn }) {
-	const backend = resolveGameDbBackend();
+async function withBackend({ dataconnectFn, firestoreFn, fileFn }) {
+	const backend = resolveSavesBackend();
 	if (backend === "file") {
 		return fileFn();
 	}
-
+	if (backend === "dataconnect") {
+		try {
+			return await dataconnectFn();
+		} catch (error) {
+			if (isDataconnectStrictMode()) {
+				throw error;
+			}
+			return firestoreFn();
+		}
+	}
 	return firestoreFn();
 }
 
 async function listSaves({ userId, limit }) {
 	return withBackend({
-		operation: "list",
+		dataconnectFn: () => dcListSaves({ userId, limit }),
 		firestoreFn: () => fireListSaves({ userId, limit }),
 		fileFn: () => fileDb.listSaves({ userId, limit }),
 	});
@@ -158,7 +414,7 @@ async function listSaves({ userId, limit }) {
 
 async function getSave({ userId, saveId }) {
 	return withBackend({
-		operation: "get",
+		dataconnectFn: () => dcGetSave({ userId, saveId }),
 		firestoreFn: () => fireGetSave({ userId, saveId }),
 		fileFn: () => fileDb.getSave({ userId, saveId }),
 	});
@@ -166,7 +422,8 @@ async function getSave({ userId, saveId }) {
 
 async function createSave({ saveId, userId, saveName, gameState, now }) {
 	return withBackend({
-		operation: "create",
+		dataconnectFn: () =>
+			dcCreateSave({ saveId, userId, saveName, gameState, now }),
 		firestoreFn: () =>
 			fireCreateSave({ saveId, userId, saveName, gameState, now }),
 		fileFn: () => fileDb.createSave({ saveId, userId, saveName, gameState, now }),
@@ -175,7 +432,8 @@ async function createSave({ saveId, userId, saveName, gameState, now }) {
 
 async function updateSave({ userId, saveId, saveName, gameState, now }) {
 	return withBackend({
-		operation: "update",
+		dataconnectFn: () =>
+			dcUpdateSave({ userId, saveId, saveName, gameState, now }),
 		firestoreFn: () =>
 			fireUpdateSave({ userId, saveId, saveName, gameState, now }),
 		fileFn: () => fileDb.updateSave({ userId, saveId, saveName, gameState, now }),
@@ -184,13 +442,14 @@ async function updateSave({ userId, saveId, saveName, gameState, now }) {
 
 async function deleteSave({ userId, saveId }) {
 	return withBackend({
-		operation: "delete",
+		dataconnectFn: () => dcDeleteSave({ userId, saveId }),
 		firestoreFn: () => fireDeleteSave({ userId, saveId }),
 		fileFn: () => fileDb.deleteSave({ userId, saveId }),
 	});
 }
 
 module.exports = {
+	resolveSavesBackend,
 	listSaves,
 	getSave,
 	createSave,

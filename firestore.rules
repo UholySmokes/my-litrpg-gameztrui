@@ -1,18 +1,49 @@
-rules_version='2'
+rules_version='2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function ownerMatches(ownerField) {
+      return isSignedIn() && resource.data[ownerField] == request.auth.uid;
+    }
+
+    function ownerMatchesRequest(ownerField) {
+      return isSignedIn() && request.resource.data[ownerField] == request.auth.uid;
+    }
+
+    match /game_saves/{saveId} {
+      allow read: if ownerMatches("user_id");
+      allow create: if ownerMatchesRequest("user_id");
+      allow update: if ownerMatches("user_id") && ownerMatchesRequest("user_id");
+      allow delete: if ownerMatches("user_id");
+    }
+
+    match /narrate_runs/{runKey} {
+      allow read: if ownerMatches("owner_id");
+      allow create: if ownerMatchesRequest("owner_id");
+      allow update: if ownerMatches("owner_id") && ownerMatchesRequest("owner_id");
+      allow delete: if ownerMatches("owner_id");
+    }
+
+    match /sync_runs/{runKey} {
+      allow read: if ownerMatches("owner_id");
+      allow create: if ownerMatchesRequest("owner_id");
+      allow update: if ownerMatches("owner_id") && ownerMatchesRequest("owner_id");
+      allow delete: if ownerMatches("owner_id");
+    }
+
+    match /run_events/{eventKey} {
+      allow read: if ownerMatches("owner_id");
+      allow create: if ownerMatchesRequest("owner_id");
+      allow update: if false;
+      allow delete: if ownerMatches("owner_id");
+    }
+
     match /{document=**} {
-      // This rule allows anyone with your database reference to view, edit,
-      // and delete all data in your database. It is useful for getting
-      // started, but it is configured to expire after 30 days because it
-      // leaves your app open to attackers. At that time, all client
-      // requests to your database will be denied.
-      //
-      // Make sure to write security rules for your app before that time, or
-      // else all client requests to your database will be denied until you
-      // update your rules.
-      allow read, write: if request.time < timestamp.date(2026, 3, 10);
+      allow read, write: if false;
     }
   }
 }

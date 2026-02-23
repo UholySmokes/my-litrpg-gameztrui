@@ -11,6 +11,7 @@ const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SA
 @onready var _npc_guide: ColorRect = %NpcGuide
 @onready var _auth_client: FirebaseAuthClient = %AuthClient
 @onready var _sync_client: SyncClient = %SyncClient
+@onready var _config_loader: ConfigLoader = %ConfigLoader
 @onready var _trigger_queue: TriggerQueue = %TriggerQueue
 @onready var _prose_panel: ProsePanel = %ProsePanel
 
@@ -24,9 +25,13 @@ var _flush_timer: Timer
 var _sync_in_flight: bool = false
 var _last_savepoint_seq: int = 0
 var _last_checkpoint_written_seq: int = 0
+var _runtime_config: Dictionary = {}
 
 
 func _ready() -> void:
+	_runtime_config = _config_loader.load_runtime_config()
+	_apply_runtime_config(_runtime_config)
+
 	_manifest = _load_manifest()
 	_content_version = _hash_manifest(_manifest)
 
@@ -164,7 +169,7 @@ func _build_commit_envelope(trigger_id: String, def: Dictionary) -> Dictionary:
 	if not target_id.is_empty():
 		trigger_payload["targetId"] = target_id
 
-	return {
+	var envelope := {
 		"id": "%s-%d" % [run_id, _client_seq],
 		"runId": run_id,
 		"clientId": _sync_client.client_id,
@@ -174,6 +179,13 @@ func _build_commit_envelope(trigger_id: String, def: Dictionary) -> Dictionary:
 		"triggerType": trigger_type,
 		"trigger": trigger_payload,
 	}
+	envelope["commandType"] = "TRIGGER"
+	envelope["command"] = {
+		"type": "TRIGGER",
+		"triggerType": trigger_type,
+		"trigger": trigger_payload,
+	}
+	return envelope
 
 
 func _handle_sync_response(response: Dictionary) -> void:
@@ -375,7 +387,38 @@ func _load_checkpoint_and_pull() -> void:
 
 
 func _on_sync_rejected(_payload: Dictionary) -> void:
-	_prose_panel.append_line("Commit rejected by authority; reconciling...")
+	_prose_panel.append_line("Command rejected by authority; reconciling...")
+
+
+func _apply_runtime_config(config: Dictionary) -> void:
+	if _sync_client == null:
+		return
+	var api_base_url := String(config.get("apiBaseUrl", "")).strip_edges()
+	if not api_base_url.is_empty():
+		_sync_client.api_base_url = api_base_url
+
+	var command_path := _normalize_sync_path(
+		String(config.get("syncCommandPath", _sync_client.sync_command_path))
+	)
+	var pull_path := _normalize_sync_path(
+		String(config.get("syncPullPath", _sync_client.sync_pull_path))
+	)
+	if not command_path.is_empty():
+		_sync_client.sync_command_path = command_path
+	if not pull_path.is_empty():
+		_sync_client.sync_pull_path = pull_path
+
+
+func _normalize_sync_path(path_value: String) -> String:
+	var trimmed := path_value.strip_edges()
+	if trimmed.is_empty():
+		return ""
+	var without_api_prefix := trimmed
+	if without_api_prefix.begins_with("/api/"):
+		without_api_prefix = "/" + without_api_prefix.substr(5)
+	if not without_api_prefix.begins_with("/"):
+		without_api_prefix = "/" + without_api_prefix
+	return without_api_prefix
 
 
 func _load_manifest() -> Dictionary:

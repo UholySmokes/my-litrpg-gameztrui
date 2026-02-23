@@ -7,26 +7,30 @@ signal sync_rejected(payload: Dictionary)
 @export var api_base_url: String = "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api"
 @export var auth_client_path: NodePath
 @export var client_id: String = "godot-client"
+@export var sync_commit_path: String = "/sync/commit"
+@export var sync_command_path: String = "/sync/command"
+@export var sync_commit_batch_path: String = "/sync/commit-batch"
+@export var sync_pull_path: String = "/sync/pull"
 
 var safe_mode_active: bool = true
 
 
 func commit(envelope: Dictionary) -> Dictionary:
-	return await _authorized_json_request("/sync/commit", HTTPClient.METHOD_POST, envelope)
+	return await _authorized_json_request(sync_commit_path, HTTPClient.METHOD_POST, envelope)
 
 
 func command(envelope: Dictionary) -> Dictionary:
-	return await _authorized_json_request("/sync/command", HTTPClient.METHOD_POST, envelope)
+	return await _authorized_json_request(sync_command_path, HTTPClient.METHOD_POST, envelope)
 
 
 func commit_batch(commits: Array) -> Dictionary:
-	return await _authorized_json_request("/sync/commit-batch", HTTPClient.METHOD_POST, {
+	return await _authorized_json_request(sync_commit_batch_path, HTTPClient.METHOD_POST, {
 		"commits": commits,
 	})
 
 
 func pull(run_id: String, after_seq: int = 0) -> Dictionary:
-	var endpoint := "/sync/pull?runId=%s&afterSeq=%d" % [run_id.uri_encode(), after_seq]
+	var endpoint := "%s?runId=%s&afterSeq=%d" % [sync_pull_path, run_id.uri_encode(), after_seq]
 	return await _authorized_json_request(endpoint, HTTPClient.METHOD_GET, null)
 
 

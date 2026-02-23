@@ -30,7 +30,10 @@ Last implementation check: 2026-02-23
 - [x] M4 (partial): add shared runtime-to-Godot config generation script
   - Evidence: `scripts/generate-godot-config.js`, `godot/data/config.json`, `package.json` (`generate:godot-config`, updated `postbuild`)
   - Verification: `npm run generate:godot-config` (writes `godot/data/config.json`)
-- [ ] M4: add Godot `ConfigLoader.gd` consumption path + command/reconcile contract tests
+- [x] M4: add Godot `ConfigLoader.gd` consumption path + command/reconcile contract tests
+  - Evidence: `godot/scripts/config_loader.gd`, `godot/scripts/world_controller.gd`, `godot/scripts/sync_client.gd`, `godot/scripts/trigger_queue.gd`, `godot/scenes/Main.tscn`, `tests/unit/GodotCommandContract.test.js`
+  - Verification: `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js --runInBand` (7 passed)
+- [ ] M4: add headless Godot runtime lane in CI and document runtime harness
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

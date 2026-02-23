@@ -49,4 +49,4 @@ func send_immediate(sync_client: SyncClient, commit_envelope: Dictionary) -> Dic
 		var flushed := await flush_pending(sync_client)
 		if not flushed.http_ok:
 			return flushed
-	return await sync_client.commit(commit_envelope)
+	return await sync_client.command(commit_envelope)

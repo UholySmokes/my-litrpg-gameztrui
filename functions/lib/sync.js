@@ -344,6 +344,8 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 					accepted: false,
 					error_code: reject.errorCode,
 					message: reject.message,
+					seq: state.seq,
+					tick: state.tick,
 					commit,
 				},
 			});
@@ -367,6 +369,8 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 					accepted: false,
 					error_code: reject.errorCode,
 					message: reject.message,
+					seq: state.seq,
+					tick: state.tick,
 					commit,
 				},
 			});
@@ -395,6 +399,8 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 					accepted: false,
 					error_code: reject.errorCode,
 					message: reject.message,
+					seq: state.seq,
+					tick: state.tick,
 					commit,
 				},
 			});
@@ -425,6 +431,8 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 				accepted: true,
 				error_code: null,
 				message: null,
+				seq: state.seq,
+				tick: state.tick,
 				state_hash: state.stateHash,
 				commit,
 			},

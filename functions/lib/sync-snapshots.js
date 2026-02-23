@@ -82,6 +82,21 @@ function buildSaveGameState(runState) {
 function buildSaveSlotVariables({ saveSlotId, runState }) {
 	const gameState = buildSaveGameState(runState);
 	const mapId = normalizeString(runState?.mapId) || "map_village_square";
+	const playerPosJson = JSON.stringify(
+		runState?.playerPos && typeof runState.playerPos === "object"
+			? runState.playerPos
+			: { x: 0, y: 0 },
+	);
+	const entityStatesJson = JSON.stringify(
+		runState?.entityStates && typeof runState.entityStates === "object"
+			? runState.entityStates
+			: {},
+	);
+	const questFlagsJson = JSON.stringify(
+		runState?.questFlags && typeof runState.questFlags === "object"
+			? runState.questFlags
+			: {},
+	);
 	const contentVersion = normalizeString(runState?.contentVersion) || null;
 	const stateVersion = Number.isInteger(runState?.stateVersion)
 		? runState.stateVersion
@@ -98,6 +113,10 @@ function buildSaveSlotVariables({ saveSlotId, runState }) {
 		playerLevel: 1,
 		worldId: normalizeString(runState?.worldId) || "voidverse_slice_world_001",
 		locationId: mapId,
+		mapId,
+		playerPosJson,
+		entityStatesJson,
+		questFlagsJson,
 		turnCount: Number.isInteger(runState?.tick) ? runState.tick : 0,
 		contentVersion,
 		stateVersion,

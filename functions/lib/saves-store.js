@@ -1,6 +1,6 @@
-const { getApps, initializeApp } = require("firebase-admin/app");
-const { getFirestore, Timestamp } = require("firebase-admin/firestore");
-const { getDataConnect } = require("firebase-admin/data-connect");
+const firebaseAdminApp = require("firebase-admin/app");
+const firebaseAdminFirestore = require("firebase-admin/firestore");
+const firebaseAdminDataConnect = require("firebase-admin/data-connect");
 const dataconnectGenerated = require("../src/dataconnect-admin-generated");
 const { resolveGameDbBackend, fileDb } = require("./game-db");
 
@@ -53,14 +53,14 @@ function isDataconnectStrictMode() {
 }
 
 function getFirestoreDb() {
-	if (getApps().length === 0) {
-		initializeApp();
+	if (firebaseAdminApp.getApps().length === 0) {
+		firebaseAdminApp.initializeApp();
 	}
-	return getFirestore();
+	return firebaseAdminFirestore.getFirestore();
 }
 
 function getDataConnectDb() {
-	return getDataConnect(dataconnectGenerated.connectorConfig);
+	return firebaseAdminDataConnect.getDataConnect(dataconnectGenerated.connectorConfig);
 }
 
 function normalizeString(value) {
@@ -329,7 +329,7 @@ async function fireGetSave({ userId, saveId }) {
 
 async function fireCreateSave({ saveId, userId, saveName, gameState, now }) {
 	const iso = now || nowIso();
-	const ts = Timestamp.fromDate(new Date(iso));
+	const ts = firebaseAdminFirestore.Timestamp.fromDate(new Date(iso));
 	const row = {
 		user_id: String(userId),
 		save_name: String(saveName),
@@ -361,7 +361,7 @@ async function fireUpdateSave({ userId, saveId, saveName, gameState, now }) {
 	if (existing.user_id !== String(userId)) return null;
 
 	const iso = now || nowIso();
-	const ts = Timestamp.fromDate(new Date(iso));
+	const ts = firebaseAdminFirestore.Timestamp.fromDate(new Date(iso));
 	await docRef.update({
 		save_name: String(saveName),
 		game_state: gameState,

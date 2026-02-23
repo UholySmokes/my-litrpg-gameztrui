@@ -1,5 +1,15 @@
 # LitRPG persistence queries.
 
+query GetMyProfile @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    displayName
+    migrationVersion
+    createdAt
+    updatedAt
+  }
+}
+
 query ListMySaveSlots @auth(level: USER) {
   userProfile(key: { id_expr: "auth.uid" }) {
     id

@@ -1,12 +1,15 @@
-import { UpsertMyProfileData, UpsertMyProfileVariables, CreateSaveSlotData, CreateSaveSlotVariables, UpsertSaveSlotData, UpsertSaveSlotVariables, DeleteSaveSlotData, DeleteSaveSlotVariables, UpsertRunSessionData, UpsertRunSessionVariables, CreateRunEventData, CreateRunEventVariables, UpsertStoryMemoryData, UpsertStoryMemoryVariables, ListMySaveSlotsData, GetMySaveSlotData, GetMySaveSlotVariables, ListMyRunSnapshotsData, ListMyRunSnapshotsVariables, GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables, GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables, ListMyRunEventsSinceData, ListMyRunEventsSinceVariables, ListMyStoryMemoriesData, ListMyStoryMemoriesVariables } from '../';
+import { UpsertMyProfileData, UpsertMyProfileVariables, MarkMyProfileMigrationData, MarkMyProfileMigrationVariables, CreateSaveSlotData, CreateSaveSlotVariables, UpsertSaveSlotData, UpsertSaveSlotVariables, DeleteSaveSlotData, DeleteSaveSlotVariables, UpsertRunSessionData, UpsertRunSessionVariables, CreateRunEventData, CreateRunEventVariables, UpsertStoryMemoryData, UpsertStoryMemoryVariables, GetMyProfileData, ListMySaveSlotsData, GetMySaveSlotData, GetMySaveSlotVariables, ListMyRunSnapshotsData, ListMyRunSnapshotsVariables, GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables, GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables, ListMyRunEventsSinceData, ListMyRunEventsSinceVariables, ListMyStoryMemoriesData, ListMyStoryMemoriesVariables } from '../';
 import { UseDataConnectQueryResult, useDataConnectQueryOptions, UseDataConnectMutationResult, useDataConnectMutationOptions} from '@tanstack-query-firebase/react/data-connect';
 import { UseQueryResult, UseMutationResult} from '@tanstack/react-query';
 import { DataConnect } from 'firebase/data-connect';
 import { FirebaseError } from 'firebase/app';
 
 
-export function useUpsertMyProfile(options?: useDataConnectMutationOptions<UpsertMyProfileData, FirebaseError, UpsertMyProfileVariables>): UseDataConnectMutationResult<UpsertMyProfileData, UpsertMyProfileVariables>;
-export function useUpsertMyProfile(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertMyProfileData, FirebaseError, UpsertMyProfileVariables>): UseDataConnectMutationResult<UpsertMyProfileData, UpsertMyProfileVariables>;
+export function useUpsertMyProfile(options?: useDataConnectMutationOptions<UpsertMyProfileData, FirebaseError, UpsertMyProfileVariables | void>): UseDataConnectMutationResult<UpsertMyProfileData, UpsertMyProfileVariables>;
+export function useUpsertMyProfile(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertMyProfileData, FirebaseError, UpsertMyProfileVariables | void>): UseDataConnectMutationResult<UpsertMyProfileData, UpsertMyProfileVariables>;
+
+export function useMarkMyProfileMigration(options?: useDataConnectMutationOptions<MarkMyProfileMigrationData, FirebaseError, MarkMyProfileMigrationVariables>): UseDataConnectMutationResult<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+export function useMarkMyProfileMigration(dc: DataConnect, options?: useDataConnectMutationOptions<MarkMyProfileMigrationData, FirebaseError, MarkMyProfileMigrationVariables>): UseDataConnectMutationResult<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
 
 export function useCreateSaveSlot(options?: useDataConnectMutationOptions<CreateSaveSlotData, FirebaseError, CreateSaveSlotVariables>): UseDataConnectMutationResult<CreateSaveSlotData, CreateSaveSlotVariables>;
 export function useCreateSaveSlot(dc: DataConnect, options?: useDataConnectMutationOptions<CreateSaveSlotData, FirebaseError, CreateSaveSlotVariables>): UseDataConnectMutationResult<CreateSaveSlotData, CreateSaveSlotVariables>;
@@ -25,6 +28,9 @@ export function useCreateRunEvent(dc: DataConnect, options?: useDataConnectMutat
 
 export function useUpsertStoryMemory(options?: useDataConnectMutationOptions<UpsertStoryMemoryData, FirebaseError, UpsertStoryMemoryVariables>): UseDataConnectMutationResult<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
 export function useUpsertStoryMemory(dc: DataConnect, options?: useDataConnectMutationOptions<UpsertStoryMemoryData, FirebaseError, UpsertStoryMemoryVariables>): UseDataConnectMutationResult<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+
+export function useGetMyProfile(options?: useDataConnectQueryOptions<GetMyProfileData>): UseDataConnectQueryResult<GetMyProfileData, undefined>;
+export function useGetMyProfile(dc: DataConnect, options?: useDataConnectQueryOptions<GetMyProfileData>): UseDataConnectQueryResult<GetMyProfileData, undefined>;
 
 export function useListMySaveSlots(options?: useDataConnectQueryOptions<ListMySaveSlotsData>): UseDataConnectQueryResult<ListMySaveSlotsData, undefined>;
 export function useListMySaveSlots(dc: DataConnect, options?: useDataConnectQueryOptions<ListMySaveSlotsData>): UseDataConnectQueryResult<ListMySaveSlotsData, undefined>;

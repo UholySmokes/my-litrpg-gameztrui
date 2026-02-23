@@ -8,6 +8,7 @@ This README will guide you through the process of using the generated JavaScript
 - [**Accessing the connector**](#accessing-the-connector)
   - [*Connecting to the local Emulator*](#connecting-to-the-local-emulator)
 - [**Queries**](#queries)
+  - [*GetMyProfile*](#getmyprofile)
   - [*ListMySaveSlots*](#listmysaveslots)
   - [*GetMySaveSlot*](#getmysaveslot)
   - [*ListMyRunSnapshots*](#listmyrunsnapshots)
@@ -17,6 +18,7 @@ This README will guide you through the process of using the generated JavaScript
   - [*ListMyStoryMemories*](#listmystorymemories)
 - [**Mutations**](#mutations)
   - [*UpsertMyProfile*](#upsertmyprofile)
+  - [*MarkMyProfileMigration*](#markmyprofilemigration)
   - [*CreateSaveSlot*](#createsaveslot)
   - [*UpsertSaveSlot*](#upsertsaveslot)
   - [*DeleteSaveSlot*](#deletesaveslot)
@@ -68,6 +70,103 @@ The following is true for both the action shortcut function and the `QueryRef` f
 - Both functions can be called with or without passing in a `DataConnect` instance as an argument. If no `DataConnect` argument is passed in, then the generated SDK will call `getDataConnect(connectorConfig)` behind the scenes for you.
 
 Below are examples of how to use the `example` connector's generated functions to execute each query. You can also follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#using-queries).
+
+## GetMyProfile
+You can execute the `GetMyProfile` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+getMyProfile(): QueryPromise<GetMyProfileData, undefined>;
+
+interface GetMyProfileRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetMyProfileData, undefined>;
+}
+export const getMyProfileRef: GetMyProfileRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+getMyProfile(dc: DataConnect): QueryPromise<GetMyProfileData, undefined>;
+
+interface GetMyProfileRef {
+  ...
+  (dc: DataConnect): QueryRef<GetMyProfileData, undefined>;
+}
+export const getMyProfileRef: GetMyProfileRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getMyProfileRef:
+```typescript
+const name = getMyProfileRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `GetMyProfile` query has no variables.
+### Return Type
+Recall that executing the `GetMyProfile` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `GetMyProfileData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface GetMyProfileData {
+  userProfile?: {
+    id: string;
+    displayName?: string | null;
+    migrationVersion?: number | null;
+    createdAt: DateString;
+    updatedAt: DateString;
+  } & UserProfile_Key;
+}
+```
+### Using `GetMyProfile`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, getMyProfile } from '@dataconnect/generated';
+
+
+// Call the `getMyProfile()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await getMyProfile();
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await getMyProfile(dataConnect);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+getMyProfile().then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+### Using `GetMyProfile`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, getMyProfileRef } from '@dataconnect/generated';
+
+
+// Call the `getMyProfileRef()` function to get a reference to the query.
+const ref = getMyProfileRef();
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = getMyProfileRef(dataConnect);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
 
 ## ListMySaveSlots
 You can execute the `ListMySaveSlots` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
@@ -969,22 +1068,22 @@ Below are examples of how to use the `example` connector's generated functions t
 ## UpsertMyProfile
 You can execute the `UpsertMyProfile` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-upsertMyProfile(vars: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
+upsertMyProfile(vars?: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
 
 interface UpsertMyProfileRef {
   ...
   /* Allow users to create refs without passing in DataConnect */
-  (vars: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
+  (vars?: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
 }
 export const upsertMyProfileRef: UpsertMyProfileRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
 ```typescript
-upsertMyProfile(dc: DataConnect, vars: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
+upsertMyProfile(dc: DataConnect, vars?: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
 
 interface UpsertMyProfileRef {
   ...
-  (dc: DataConnect, vars: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
+  (dc: DataConnect, vars?: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
 }
 export const upsertMyProfileRef: UpsertMyProfileRef;
 ```
@@ -996,11 +1095,11 @@ console.log(name);
 ```
 
 ### Variables
-The `UpsertMyProfile` mutation requires an argument of type `UpsertMyProfileVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+The `UpsertMyProfile` mutation has an optional argument of type `UpsertMyProfileVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
 
 ```typescript
 export interface UpsertMyProfileVariables {
-  displayName: string;
+  displayName?: string | null;
 }
 ```
 ### Return Type
@@ -1018,9 +1117,9 @@ export interface UpsertMyProfileData {
 import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, upsertMyProfile, UpsertMyProfileVariables } from '@dataconnect/generated';
 
-// The `UpsertMyProfile` mutation requires an argument of type `UpsertMyProfileVariables`:
+// The `UpsertMyProfile` mutation has an optional argument of type `UpsertMyProfileVariables`:
 const upsertMyProfileVars: UpsertMyProfileVariables = {
-  displayName: ..., 
+  displayName: ..., // optional
 };
 
 // Call the `upsertMyProfile()` function to execute the mutation.
@@ -1028,6 +1127,8 @@ const upsertMyProfileVars: UpsertMyProfileVariables = {
 const { data } = await upsertMyProfile(upsertMyProfileVars);
 // Variables can be defined inline as well.
 const { data } = await upsertMyProfile({ displayName: ..., });
+// Since all variables are optional for this mutation, you can omit the `UpsertMyProfileVariables` argument.
+const { data } = await upsertMyProfile();
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1048,19 +1149,133 @@ upsertMyProfile(upsertMyProfileVars).then((response) => {
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, upsertMyProfileRef, UpsertMyProfileVariables } from '@dataconnect/generated';
 
-// The `UpsertMyProfile` mutation requires an argument of type `UpsertMyProfileVariables`:
+// The `UpsertMyProfile` mutation has an optional argument of type `UpsertMyProfileVariables`:
 const upsertMyProfileVars: UpsertMyProfileVariables = {
-  displayName: ..., 
+  displayName: ..., // optional
 };
 
 // Call the `upsertMyProfileRef()` function to get a reference to the mutation.
 const ref = upsertMyProfileRef(upsertMyProfileVars);
 // Variables can be defined inline as well.
 const ref = upsertMyProfileRef({ displayName: ..., });
+// Since all variables are optional for this mutation, you can omit the `UpsertMyProfileVariables` argument.
+const ref = upsertMyProfileRef();
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
 const ref = upsertMyProfileRef(dataConnect, upsertMyProfileVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.userProfile_upsert);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile_upsert);
+});
+```
+
+## MarkMyProfileMigration
+You can execute the `MarkMyProfileMigration` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+markMyProfileMigration(vars: MarkMyProfileMigrationVariables): MutationPromise<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+
+interface MarkMyProfileMigrationRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: MarkMyProfileMigrationVariables): MutationRef<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+}
+export const markMyProfileMigrationRef: MarkMyProfileMigrationRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+markMyProfileMigration(dc: DataConnect, vars: MarkMyProfileMigrationVariables): MutationPromise<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+
+interface MarkMyProfileMigrationRef {
+  ...
+  (dc: DataConnect, vars: MarkMyProfileMigrationVariables): MutationRef<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+}
+export const markMyProfileMigrationRef: MarkMyProfileMigrationRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the markMyProfileMigrationRef:
+```typescript
+const name = markMyProfileMigrationRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `MarkMyProfileMigration` mutation requires an argument of type `MarkMyProfileMigrationVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface MarkMyProfileMigrationVariables {
+  migrationVersion: number;
+  displayName?: string | null;
+}
+```
+### Return Type
+Recall that executing the `MarkMyProfileMigration` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `MarkMyProfileMigrationData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface MarkMyProfileMigrationData {
+  userProfile_upsert: UserProfile_Key;
+}
+```
+### Using `MarkMyProfileMigration`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, markMyProfileMigration, MarkMyProfileMigrationVariables } from '@dataconnect/generated';
+
+// The `MarkMyProfileMigration` mutation requires an argument of type `MarkMyProfileMigrationVariables`:
+const markMyProfileMigrationVars: MarkMyProfileMigrationVariables = {
+  migrationVersion: ..., 
+  displayName: ..., // optional
+};
+
+// Call the `markMyProfileMigration()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await markMyProfileMigration(markMyProfileMigrationVars);
+// Variables can be defined inline as well.
+const { data } = await markMyProfileMigration({ migrationVersion: ..., displayName: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await markMyProfileMigration(dataConnect, markMyProfileMigrationVars);
+
+console.log(data.userProfile_upsert);
+
+// Or, you can use the `Promise` API.
+markMyProfileMigration(markMyProfileMigrationVars).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile_upsert);
+});
+```
+
+### Using `MarkMyProfileMigration`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, markMyProfileMigrationRef, MarkMyProfileMigrationVariables } from '@dataconnect/generated';
+
+// The `MarkMyProfileMigration` mutation requires an argument of type `MarkMyProfileMigrationVariables`:
+const markMyProfileMigrationVars: MarkMyProfileMigrationVariables = {
+  migrationVersion: ..., 
+  displayName: ..., // optional
+};
+
+// Call the `markMyProfileMigrationRef()` function to get a reference to the mutation.
+const ref = markMyProfileMigrationRef(markMyProfileMigrationVars);
+// Variables can be defined inline as well.
+const ref = markMyProfileMigrationRef({ migrationVersion: ..., displayName: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = markMyProfileMigrationRef(dataConnect, markMyProfileMigrationVars);
 
 // Call `executeMutation()` on the reference to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.

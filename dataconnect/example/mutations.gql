@@ -1,10 +1,21 @@
 # LitRPG persistence mutations.
 
-mutation UpsertMyProfile($displayName: String!) @auth(level: USER) {
+mutation UpsertMyProfile($displayName: String) @auth(level: USER) {
   userProfile_upsert(
     data: {
       id_expr: "auth.uid"
       displayName: $displayName
+      updatedAt_expr: "request.time"
+    }
+  )
+}
+
+mutation MarkMyProfileMigration($migrationVersion: Int!, $displayName: String) @auth(level: USER) {
+  userProfile_upsert(
+    data: {
+      id_expr: "auth.uid"
+      displayName: $displayName
+      migrationVersion: $migrationVersion
       updatedAt_expr: "request.time"
     }
   )

@@ -7,7 +7,7 @@ export const connectorConfig = {
 };
 
 export const upsertMyProfileRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars);
   dcInstance._useGeneratedSdk();
   return mutationRef(dcInstance, 'UpsertMyProfile', inputVars);
 }
@@ -15,6 +15,17 @@ upsertMyProfileRef.operationName = 'UpsertMyProfile';
 
 export function upsertMyProfile(dcOrVars, vars) {
   return executeMutation(upsertMyProfileRef(dcOrVars, vars));
+}
+
+export const markMyProfileMigrationRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'MarkMyProfileMigration', inputVars);
+}
+markMyProfileMigrationRef.operationName = 'MarkMyProfileMigration';
+
+export function markMyProfileMigration(dcOrVars, vars) {
+  return executeMutation(markMyProfileMigrationRef(dcOrVars, vars));
 }
 
 export const createSaveSlotRef = (dcOrVars, vars) => {
@@ -81,6 +92,17 @@ upsertStoryMemoryRef.operationName = 'UpsertStoryMemory';
 
 export function upsertStoryMemory(dcOrVars, vars) {
   return executeMutation(upsertStoryMemoryRef(dcOrVars, vars));
+}
+
+export const getMyProfileRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetMyProfile');
+}
+getMyProfileRef.operationName = 'GetMyProfile';
+
+export function getMyProfile(dc) {
+  return executeQuery(getMyProfileRef(dc));
 }
 
 export const listMySaveSlotsRef = (dc) => {

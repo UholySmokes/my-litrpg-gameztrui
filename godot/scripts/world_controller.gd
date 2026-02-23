@@ -23,6 +23,7 @@ var _local_cooldowns_ms: Dictionary = {}
 var _flush_timer: Timer
 var _sync_in_flight: bool = false
 var _last_savepoint_seq: int = 0
+var _last_checkpoint_written_seq: int = 0
 
 
 func _ready() -> void:
@@ -190,9 +191,9 @@ func _handle_sync_response(response: Dictionary) -> void:
 
 	if bool(body.get("reconcileRequired", false)):
 		_trigger_queue.clear_pending()
-	await _reconcile_from_pull()
+		await _reconcile_from_pull()
 
-	if _last_savepoint_seq > 0 and _last_savepoint_seq >= _client_seq:
+	if _last_savepoint_seq > _last_checkpoint_written_seq and _last_savepoint_seq <= _client_seq:
 		_write_local_checkpoint()
 
 
@@ -358,6 +359,7 @@ func _write_local_checkpoint() -> void:
 		return
 	file.store_string(JSON.stringify(payload))
 	file.close()
+	_last_checkpoint_written_seq = _last_savepoint_seq
 
 
 func _load_checkpoint_and_pull() -> void:

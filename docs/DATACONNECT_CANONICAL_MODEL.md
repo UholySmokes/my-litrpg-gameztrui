@@ -13,7 +13,7 @@ The Firebase Data Connect schema now models the trigger-commit runtime directly.
 ## Contract Alignment
 
 1. `RunSession` stores canonical sync tip fields (`runId`, `seq`, `tick`, `stateHash`, `contentVersion`, `stateVersion`) and dynamic JSON payloads (`playerPosJson`, `entityStatesJson`, `questFlagsJson`).
-2. `RunEvent` stores commit-level audit records (`commitId`, `clientSeq`, `triggerType`, acceptance/rejection metadata).
+2. `RunEvent` stores commit-level audit records (`eventType`, `commitId`, `clientSeq`, `triggerType`, acceptance/rejection metadata).
 3. `SaveSlot` remains compatible with existing SDK operations while adding optional runtime JSON fields.
 4. `StoryMemory` stores per-run memory fragments (`memoryKey`, `memoryJson`, `lastSeq`).
 5. `UserProfile.migrationVersion` marks completion of one-time legacy save migration.

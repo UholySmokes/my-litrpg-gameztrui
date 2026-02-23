@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-02-23T16:42:43.921Z",
+  "source": "dist\\runtime-config.js",
+  "apiBaseUrl": "/",
+  "narrateEndpoint": "/api/narrate",
+  "syncCommandPath": "/api/sync/command",
+  "syncPullPath": "/api/sync/pull",
+  "storyStartPath": "/api/story/start",
+  "storyPollPath": "/api/story/poll"
+}

@@ -18,7 +18,9 @@ Last implementation check: 2026-02-23
 - [x] M1: add explicit command identity model (`RunEvent.eventType`) in schema + adapters
   - Evidence: `dataconnect/schema/schema.gql`, `functions/lib/sync-core.js`, `functions/lib/sync-store.js`, `functions/lib/sync-dataconnect-store.js`
   - Verification: `npm test -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncDataconnectStore.test.js tests/unit/SyncProcess.test.js tests/unit/SyncValidation.test.js --runInBand` (27 passed)
-- [ ] M1: run Data Connect codegen + publish migration ADR/compatibility note artifact
+- [x] M1: run Data Connect codegen + publish migration ADR/compatibility note artifact
+  - Evidence: `docs/adr/adr-2026-02-23-m1-eventtype-discriminator.md`, generated SDK deltas under `src/dataconnect-generated`, `api/src/dataconnect-generated`, `packages/*/src/dataconnect-generated`, `functions/src/dataconnect-admin-generated`
+  - Verification: `npx firebase dataconnect:sdk:generate` (successful generation for service `my-litrpg-gameztrui`)
 - [x] M2: add `POST /api/sync/command` route + validation/idempotency tests
   - Evidence: `functions/lib/api-router.js`, `functions/lib/sync.js`, `tests/unit/SyncCommandRoutes.test.js`, `tests/unit/ApiRouterSyncRoutes.test.js`
   - Verification: `npm test -- tests/unit/ApiRouterSyncRoutes.test.js tests/unit/SyncCommandRoutes.test.js tests/unit/SyncProcess.test.js tests/unit/SyncValidation.test.js --runInBand` (25 passed)

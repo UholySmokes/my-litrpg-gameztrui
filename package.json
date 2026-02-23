@@ -14,7 +14,7 @@
     "dev:api": "npx kill-port 5000 5001 4000 4400 4500 && firebase emulators:start --only hosting,functions",
     "dev:stack": "concurrently -k -n api,web -c blue,green \"npm run dev:api\" \"npm run dev\"",
     "build": "vite build",
-    "postbuild": "node scripts/generate-runtime-config.js",
+    "postbuild": "node scripts/generate-runtime-config.js && node scripts/generate-godot-config.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
@@ -27,7 +27,8 @@
     "simulate:csv": "node sim_gamestart_fixed.js --format csv",
     "simulate:full": "node sim_gamestart_fixed.js --runs 100",
     "validate:registries": "node scripts/validate-registries.mjs",
-    "validate:archetypes": "node scripts/validate-archetypes.mjs"
+    "validate:archetypes": "node scripts/validate-archetypes.mjs",
+    "generate:godot-config": "node scripts/generate-godot-config.js"
   },
   "dependencies": {
     "@dataconnect/generated": "file:src/dataconnect-generated",

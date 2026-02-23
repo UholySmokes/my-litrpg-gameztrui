@@ -7,6 +7,21 @@
 4. Data Connect is canonical persistence; Firestore is migration source/fallback only during cutover.
 5. Determinism rules, trigger schema, content-version enforcement, and Firestore-rules deadline are now explicit.
 
+## Implementation Status (2026-02-23)
+1. ✅ Canonical API surface implemented (`/api/sync/commit`, `/api/sync/commit-batch`, `/api/sync/pull`, `/api/sync/action` wrapper, `/api/story/*`, `/api/saves*`, `/api/narrate*` compatibility).
+2. ✅ Trigger-commit contract implemented in server and Godot client (batching policy, immediate flush-before-send, reject-and-reconcile, local-only state exclusions).
+3. ✅ Determinism appendix implemented in runtime (`hashCanonicalState`, stable serializer, deterministic RNG seed derivation, replay determinism tests).
+4. ✅ Static world/content-version enforcement implemented (manifest hash, trigger/map/target validation, contentVersion mismatch rejection).
+5. ✅ Data Connect canonical persistence implemented for sync + saves, with controlled Firestore fallback during cutover.
+6. ✅ Lazy migration implemented with one-time `migrationVersion` marker.
+7. ✅ Firestore blocking security tests implemented and passing in emulator CI.
+8. ✅ Test scenarios implemented for trigger validation, batch ordering/idempotency, immediate triggers, reject/reconcile, determinism parity, content-version mismatch, Firestore denial checks, and auth resilience contract checks.
+9. ⚠️ Remaining highest-priority items are operational, not code:
+   March 3, 2026: restrictive rules freeze confirmation in repo/release branch.
+   March 7, 2026: staging verification sign-off.
+   March 9, 2026: production rules deployment.
+10. ⚠️ Next technical backlog item after slice stabilization: region alignment for sync path (Functions + DB locality tuning).
+
 ## Canonical API Surface
 1. `POST /api/sync/commit` (canonical).
 2. `POST /api/sync/commit-batch` (canonical for batchable triggers).

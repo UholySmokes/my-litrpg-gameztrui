@@ -344,4 +344,91 @@ describe("sync-core validation", () => {
 		expect(invalidCheck.ok).toBe(false);
 		expect(invalidCheck.errorCode).toBe("TRIGGER_TARGET_MISMATCH");
 	});
+
+	it("rejects unknown NPC ids when manifest target is not approved", () => {
+		const manifest = syncCore.getWorldManifest();
+		const runId = "run-unknown-npc";
+		const mutatedManifest = {
+			...manifest,
+			triggers: {
+				...manifest.triggers,
+				npc_guide_interact: {
+					...manifest.triggers.npc_guide_interact,
+					targetId: "npc_missing",
+				},
+			},
+			approvedNpcIds: new Set(manifest.approvedNpcIds),
+		};
+		const state = syncCore.buildInitialGameplayState({
+			runId,
+			manifest: mutatedManifest,
+			contentVersion: mutatedManifest.contentVersion,
+		});
+		state.mapId = "map_village_square";
+		state.questFlags.slice_intro_seen = true;
+
+		const commit = makeCommit({
+			runId,
+			clientSeq: 1,
+			contentVersion: mutatedManifest.contentVersion,
+			triggerType: "INTERACT",
+			triggerId: "npc_guide_interact",
+			mapId: "map_village_square",
+			x: 10,
+			y: 8,
+		});
+		const normalized = syncCore.normalizeCommitEnvelope(commit);
+		expect(normalized.ok).toBe(true);
+
+		const validation = syncCore.validateTriggerAgainstManifest({
+			manifest: mutatedManifest,
+			state,
+			commit: normalized.commit,
+		});
+		expect(validation.ok).toBe(false);
+		expect(validation.errorCode).toBe("UNKNOWN_NPC_ID");
+	});
+
+	it("rejects unknown object ids when manifest target is not approved", () => {
+		const manifest = syncCore.getWorldManifest();
+		const runId = "run-unknown-object";
+		const mutatedManifest = {
+			...manifest,
+			triggers: {
+				...manifest.triggers,
+				savepoint_square_crystal: {
+					...manifest.triggers.savepoint_square_crystal,
+					targetId: "object_missing",
+				},
+			},
+			approvedObjectIds: new Set(manifest.approvedObjectIds),
+		};
+		const state = syncCore.buildInitialGameplayState({
+			runId,
+			manifest: mutatedManifest,
+			contentVersion: mutatedManifest.contentVersion,
+		});
+		state.mapId = "map_village_square";
+
+		const commit = makeCommit({
+			runId,
+			clientSeq: 1,
+			contentVersion: mutatedManifest.contentVersion,
+			triggerType: "SAVEPOINT",
+			triggerId: "savepoint_square_crystal",
+			mapId: "map_village_square",
+			x: 4,
+			y: 4,
+		});
+		const normalized = syncCore.normalizeCommitEnvelope(commit);
+		expect(normalized.ok).toBe(true);
+
+		const validation = syncCore.validateTriggerAgainstManifest({
+			manifest: mutatedManifest,
+			state,
+			commit: normalized.commit,
+		});
+		expect(validation.ok).toBe(false);
+		expect(validation.errorCode).toBe("UNKNOWN_OBJECT_ID");
+	});
 });

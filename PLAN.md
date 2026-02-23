@@ -1,358 +1,248 @@
-# PLAN.md Replacement: Godot-First Hybrid Command Pixel RPG (AI Narrative + Online Canonical Sync)
+# PLAN: Godot-First Hybrid Command Pixel RPG Roadmap
 
-## Summary
-As of **February 23, 2026**, the repo already has:
-1. A complete Godot trigger-commit vertical slice (`godot/` + `/api/sync/*`).
-2. A mature command-driven web RPG engine (`packages/game-core`, `src/hook/useNarrative.js`, `src/core/AIService.js`).
-3. Narration endpoints with start/poll flow (`functions/lib/handlers.js`).
+Last updated: 2026-02-23
+Planning horizon: W1-W20 (2026-02-23 to 2026-07-12)
 
-This plan reworks the project into a **Godot-first hybrid**:
-1. Top-down 2D pixel exploration in Godot.
-2. Command-driven RPG decisions and deterministic server outcomes.
-3. AI-generated narrative and quest variation (not AI-generated core mechanics).
-4. Firebase/Data Connect as canonical online authority.
+## 1. Executive Summary
+Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.
 
-## Locked Product Decisions
-1. Primary runtime: **Godot-first**.
-2. Core loop: **Hybrid command RPG** (pixel exploration + command decisions + deterministic RPG rules).
-3. AI scope: **Narrative + quest variation only**.
-4. Connectivity model: **Online canonical backend** with safe-mode degradation.
-5. Scope: **Single-player runtime this phase** (no multiplayer mechanics in this rework).
+Secondary objectives:
+- Use AI for narrative and quest flavor only, never for core rules or balance math.
+- Convert the existing web runtime to tooling and observability for faster debugging and safer rollout.
+- Reach production via staged launch with explicit rollback levers and reliability guardrails.
 
-## PLAN.md Operating Model (Keep Updated + Review Between Tasks)
+Success definition for this roadmap window:
+- Internal Alpha by 2026-04-19 (end of W8): Godot exploration + command mutation + reconcile loop works end-to-end.
+- Beta by 2026-05-31 (end of W14): combat/inventory/quest loop is canonical and save/load parity is proven.
+- Release Candidate by 2026-06-28 (end of W18): quality, security, and staging soak gates pass.
+- General Availability by 2026-07-12 (end of W20): staged production rollout completes within error budget.
 
-### Required PLAN.md Structure
-1. `# Goal`
-2. `# Locked Decisions`
-3. `# Task Ledger`
-4. `# Current Sprint`
-5. `# Between-Task Review Checklist`
-6. `# Risks/Blockers`
-7. `# Change Log`
+Prioritization method:
+- Default model: RICE-lite (Reach, Impact, Confidence, Effort bands).
+- Platform/foundation override: Cost of Delay + Risk Reduction weighted above feature breadth.
+- Tie-break rule: choose items that reduce critical-path uncertainty first.
 
-### Task Ledger Template (copy into `PLAN.md`)
-| ID | Task | Status | Owner | Started | Done | Evidence | Notes |
-|---|---|---|---|---|---|---|---|
-| P0-01 | Replace PLAN with new structure | TODO | | | | | |
-| P0-02 | Baseline validation run | TODO | | | | | |
+## 2. Scope & Non-Goals
+In scope:
+- Godot as primary runtime for exploration, interaction, and command entry.
+- Canonical state v2 contract covering `worldProjection`, `rpgState`, `narrativeState`, and `syncMeta`.
+- `POST /api/sync/command` with idempotency (`id`), ordering (`clientSeq`), and reconcile signaling.
+- Server-side deterministic command engine based on shared game-core logic.
+- AI story start/poll integration with deterministic fallback narrative for timeout/failure.
+- Pixel presentation pass: tilemaps, sprite pipeline, 3-5 map hub, persistent command terminal.
+- Canonical combat/inventory/quest transitions and load parity across sessions.
+- Web app repositioned to inspector/replay/debug tooling.
 
-### Status Values
-1. `TODO`
-2. `IN_PROGRESS`
-3. `BLOCKED`
-4. `DONE`
+Explicit in-scope interface changes:
+- `functions/lib/api-router.js`: add `POST /api/sync/command`.
+- `functions/lib/sync.js`: add command handler and migration-on-write logic.
+- `functions/lib/sync-core.js`: normalize mixed trigger/command event streams.
+- `dataconnect/schema/schema.gql`: add v2 session/event fields.
+- `godot/scripts/sync_client.gd`: add command API wrapper.
+- `godot/scripts/story_client.gd`: add story start/poll wrappers.
 
-### Mandatory Between-Task Review Checklist (run after every completed task)
-1. Confirm task acceptance criteria were met.
-2. Run the task’s required automated tests.
-3. Run `npm run lint`.
-4. Update `PLAN.md` Task Ledger status and add evidence (test names, commands, screenshots, commit hash).
-5. Add one line to `PLAN.md` Change Log with date and what changed.
-6. Re-evaluate `PLAN.md` Risks/Blockers and add/remove items.
-7. Confirm the next task’s prerequisites are satisfied.
-8. If a task changed API/schema, update contract docs the same day.
-9. If test failures remain, set next task to `BLOCKED` and state exact unblock condition.
-10. Do not start the next task until items 1-9 are complete.
+Non-goals (for this 20-week window):
+- Multiplayer, co-op, guild, or shared-world mechanics.
+- Migration away from Node/Firebase/Data Connect stack.
+- AI-generated combat formulas, economy tuning, or XP curves.
+- Production parity between Godot and web gameplay clients.
+- Full content expansion beyond MVP hub + core questline loop.
 
-## Step-by-Step Implementation Plan
+## 3. Assumptions
+- A1: Existing sync/commit route tests are valid as regression anchors.
+- A2: Existing story handlers remain usable and can be extended without full rewrite.
+- A3: Data Connect schema changes can be deployed with dual-read compatibility.
+- A4: At least one dedicated Godot engineer remains assigned through W14.
+- A5: Narrative model quota and budget are approved for canary-scale traffic.
+- A6: Existing auth model and token refresh flow remain compatible with new command endpoint.
+- A7: Team capacity baseline is 4.3 FTE effective (engineering + QA + DevOps + content).
+- A8: CI can support added tests with nightly split for heavier replay/load suites.
+- A9: Art production for pixel assets is scoped to MVP quality, not final polished content pack.
+- A10: Firestore hardening requirements committed for March 2026 remain mandatory and non-negotiable.
 
-## Phase 0: Replace Planning Surface and Capture Baseline
-### Steps
-1. `P0-01`: Replace `PLAN.md` content with this exact structure and phase list.
-2. `P0-02`: Move current trigger-commit plan content from `PLAN.md` into `docs/archive/PLAN_trigger_commit_2026-02-23.md`.
-3. `P0-03`: Record baseline command outputs in `docs/baseline/2026-02-23.md`:
-   - `npm run test -- tests/unit/ApiRouterSyncRoutes.test.js`
-   - `npm run test -- tests/unit/HandlersNarrate.test.js`
-   - `npm run test -- tests/unit/SyncProcess.test.js`
-   - `npm run test -- tests/unit/SyncValidation.test.js`
-4. `P0-04`: Record baseline Godot manual smoke flow in `docs/baseline/godot_smoke_2026-02-23.md` (move, interact, savepoint, pull).
+## 4. Constraints
+- C1: Schedule is fixed to 20 weeks; scope reduction is the primary control lever.
+- C2: Backward compatibility for legacy trigger-commit run data is required during transition.
+- C3: Determinism failures block release progression regardless of feature completeness.
+- C4: Security/privacy review is required before canary and before percentage expansion.
+- C5: No destructive schema migration without tested rollback path.
+- C6: Production rollout must include feature flag kill switches for command/story paths.
+- C7: Client UX cannot hard-fail when narrative service is degraded; fallback prose is mandatory.
+- C8: Test evidence and docs updates are release artifacts, not optional cleanup.
+- C9: Web runtime de-scope cannot break internal debugging visibility.
+- C10: All week ranges map to concrete dates; gate reviews occur at fixed week ends.
 
-### Exit Criteria
-1. `PLAN.md` has the new living format.
-2. Baseline tests are recorded with pass/fail evidence.
-3. Archive snapshot exists and is linked from `PLAN.md`.
+## 5. Roadmap (Phases & Milestones)
+Phase windows:
+- Phase 0 (Alignment and Discovery): W1 (2026-02-23 to 2026-03-01)
+- Phase 1 (Foundations): W1-W6 (2026-02-23 to 2026-04-05)
+- Phase 2 (Core Delivery): W5-W13 (2026-03-23 to 2026-05-24)
+- Phase 3 (Hardening and Launch): W12-W18 (2026-05-11 to 2026-06-28)
+- Phase 4 (Iteration and Scale): W19-W20 (2026-06-29 to 2026-07-12)
 
-## Phase 1: Canonical State v2 Contract (Server + Storage + Docs)
-### Steps
-1. `P1-01`: Create `docs/contracts/canonical_state_v2.md` with exact JSON shape for:
-   - `worldProjection`
-   - `rpgState`
-   - `narrativeState`
-   - `syncMeta`
-2. `P1-02`: Extend `dataconnect/schema/schema.gql`:
-   - `RunSession.gameStateJson: String`
-   - `RunSession.narrativeStateJson: String`
-   - `RunSession.schemaVersion: Int`
-   - `RunEvent.eventType: String`
-   - `RunEvent.eventPayloadJson: String`
-   - `RunEvent.actionType: String`
-   - Keep existing trigger fields for backward compatibility.
-3. `P1-03`: Regenerate Data Connect clients used by:
-   - `functions/src/dataconnect-admin-generated`
-   - `src/dataconnect-generated`
-   - `packages/game-schemas/src/dataconnect-generated`
-4. `P1-04`: Update adapters in `functions/lib/sync-dataconnect-store.js` and `functions/lib/sync-store.js` to read/write v2 fields.
-5. `P1-05`: Add migration logic in `functions/lib/sync.js`:
-   - Existing runs with v1 fields are auto-upgraded to v2 on first write.
-   - Upgrade must preserve existing `seq`, `tick`, `stateHash`, and quest flags.
-6. `P1-06`: Add migration tests in `tests/unit/SyncProcess.test.js` for v1 -> v2 upgrade.
+| Phase | Timebox | Milestone | Deliverable | DoD (testable) | Dependencies | Owner | Notes |
+|------:|---------|-----------|-------------|----------------|-------------|-------|------|
+| 0 | W1 | M0 - Planning and Contract Freeze | Approved roadmap + v2 contracts + baseline snapshots | `PLAN.md`, `docs/contracts/canonical_state_v2.md`, and `docs/contracts/command_envelope_v1.md` approved; baseline test report committed | None | Tech Lead + PM | Validation: architecture review, baseline evidence. Type: Foundation |
+| 1 | W1-W3 | M1 - Canonical State v2 Schema and Migration | Data Connect schema and adapters support v1 read/v2 write | Schema compiles, client codegen succeeds, migration tests pass, existing sync tests remain green | M0 | Backend Lead | Validation: `SyncProcess` + `SyncValidation` suite. Type: Foundation |
+| 1 | W2-W4 | M2 - Command Transport API | `POST /api/sync/command` with auth/idempotency/reconcile semantics | Route tests pass for malformed payload, stale seq, replay id, mismatch, and success paths | M0, M1 | Backend Lead | Validation: route + behavior tests. Type: Product capability |
+| 1 | W3-W6 | M3 - Deterministic Server Command Engine | Bundled server command engine from shared core | Fixed-seed replay on mixed streams returns identical `{seq,tick,stateHash}` across 100 runs | M1, M2 | Systems Engineer + Backend | Validation: determinism suite and failure-mode tests. Type: Quality |
+| 2 | W5-W8 | M4 - Godot Command Terminal and Reconcile UX | Godot command input, history, response rendering, conflict reconciliation | Godot can submit commands, apply canonical updates, and recover from reconcile-required responses | M2, M3 | Godot Engineer | Validation: Godot command contract test + smoke script. Type: Product capability |
+| 2 | W7-W9 | M5 - Story Integration with Safe Fallback | Godot story client wired to story start/poll and fallback renderer | Success/failure/timeout branches covered; no blank prose panel state in smoke tests | M4 | Backend + Godot Engineer | Validation: story handler tests + manual narrative flow. Type: Product capability |
+| 2 | W8-W11 | M6 - Pixel Presentation MVP | Tilemap/sprite pipeline + 3-5 map hub + persistent HUD/terminal | Multi-map traversal + trigger interactions hold 60 FPS target on baseline machine | M4 | Godot Engineer + Content | Validation: map traversal checklist + FPS capture. Type: Product capability |
+| 2 | W10-W13 | M7 - Canonical Combat, Inventory, Quest Depth | Server-authoritative progression systems integrated in loop | Full scenario test (explore -> encounter -> combat -> quest update -> save/load) passes deterministically | M3, M6 | Gameplay Engineer | Validation: scenario tests + save/load parity checks. Type: Product capability |
+| 3 | W12-W14 | M8 - Web Runtime Re-scope to Tooling | Inspector/replay/hash timeline UI and dev-only gameplay flag | Tools display canonical stream accurately; production build excludes gameplay route by default | M2, M3 | Fullstack Engineer | Validation: tooling acceptance suite + README updates. Type: Operations |
+| 3 | W13-W16 | M9 - Quality and Security Gate Buildout | Expanded CI, nightly replay/load jobs, security controls documentation | CI stability >= 95% over 10 runs; security findings triaged with owners and due dates | M5, M7, M8 | QA Lead + DevOps + Backend | Validation: CI dashboard + security review output. Type: Quality |
+| 3 | W16-W17 | M10 - Staging Reliability Soak | Staging runbook executed with replay parity and auth/reconnect stress cases | 100-run parity passes, reconnect/reconcile smoke passes, rollback drill succeeds | M9 | Release Manager + DevOps | Validation: staging sign-off packet. Type: Operations |
+| 3 | W18 | M11 - Internal Canary Release | Internal users on production path with telemetry and on-call coverage | Canary guardrails hold for 5 consecutive days with no unresolved Sev-1/Sev-2 | M10 | Tech Lead + SRE | Validation: canary report and on-call incident log. Type: Operations |
+| 4 | W19 | M12 - Limited Percentage Rollout | Controlled external rollout by feature flag percentage | Guardrails hold at each percentage step and rollback tested once live | M11 | SRE + PM | Validation: rollout gate checklist. Type: Operations |
+| 4 | W20 | M13 - Full Rollout and Post-Launch Handoff | Full release plus post-launch operating playbook | GA complete; backlog triaged for Phase 5; runbooks and ownership finalized | M12 | Tech Lead + PM + DevOps | Validation: GA review and handoff package. Type: Operations |
 
-### Exit Criteria
-1. v1 and v2 run sessions are both readable.
-2. New writes always persist v2 fields.
-3. Existing sync routes still pass all current tests.
+### Milestone Work Package Detail
+| Milestone | Work packages (must complete) | Required test/evidence | Exit artifact |
+|-----------|-------------------------------|------------------------|---------------|
+| M0 | Baseline tests, contract draft review, dependency map, decision log initialization | Baseline command outputs and smoke notes committed | Signed-off roadmap + contract docs |
+| M1 | Schema extension, codegen, adapter dual-read/write, migration-on-write path | `tests/unit/SyncProcess.test.js`, `tests/unit/SyncValidation.test.js` | Migration ADR + compatibility notes |
+| M2 | API route wiring, request validation, idempotency storage check, response envelope standardization | `tests/unit/ApiRouterSyncRoutes.test.js`, `tests/unit/SyncCommandRoutes.test.js` | Command API contract doc |
+| M3 | Engine bundling script, command parser wrapper, deterministic state transitions, parity harness | `tests/unit/SyncCoreDeterminism.test.js` + 100-run replay output | Determinism validation report |
+| M4 | Godot terminal scene updates, request in-flight disable/enable state, error rendering, reconcile branch UX | `tests/unit/GodotCommandContract.test.js` + manual checklist | Godot command UX spec |
+| M5 | Story client wrappers, polling loop, timeout handling, fallback prose templates, suggestion rendering | `tests/unit/HandlersNarrate.test.js` + flow script | Narrative fallback playbook |
+| M6 | Tilemap ingestion, sprite integration, hub map data, HUD panel updates, perf instrumentation | FPS capture + map traversal logs | Art/content MVP manifest |
+| M7 | Command verb set lock, combat transition wiring, inventory mutation, quest state transitions, save/load parity | End-to-end scenario suite + parity snapshots | Gameplay progression contract |
+| M8 | Replay inspector, hash timeline view, run diff tooling, web gameplay dev flag path | Tooling UI acceptance checklist | Web tooling scope doc |
+| M9 | CI matrix updates, nightly load tests, security checklist, retry/error-budget docs | CI pass history + security issue register | Quality gate packet |
+| M10 | Staging soak execution, auth expiry tests, reconnect storm tests, rollback rehearsal | Staging sign-off report | Release readiness report |
+| M11 | Canary enablement, alert tuning, on-call drills, incident templates | 5-day canary metrics + incident summary | Canary decision memo |
+| M12 | Percentage ramp plan execution (10%->25%->50%), live rollback verification | Rollout dashboard snapshots | Rollout gate approvals |
+| M13 | 100% enablement, postmortem, backlog re-prioritization, ownership handoff | GA review notes + runbook links | Phase closeout dossier |
 
-## Phase 2: Add Canonical Command Transport
-### Steps
-1. `P2-01`: Define `CommandEnvelope` in `docs/contracts/command_envelope_v1.md`:
-   - `id`, `runId`, `clientId`, `clientSeq`, `createdAt`, `contentVersion`, `commandText`, `context`.
-2. `P2-02`: Add route in `functions/lib/api-router.js`:
-   - `POST /api/sync/command`.
-3. `P2-03`: Add handler in `functions/lib/sync.js`:
-   - `command(req, res)` with same auth/reconcile semantics as commit endpoints.
-4. `P2-04`: Extend event normalization in `functions/lib/sync-core.js` to support `eventType: COMMAND` alongside trigger commits.
-5. `P2-05`: Persist command events in `RunEvent` using `eventType=COMMAND`, `eventPayloadJson`, `actionType`.
-6. `P2-06`: Return command responses with:
-   - `accepted/rejected`
-   - `reconcileRequired`
-   - `canonicalState`
-   - `actionResult`
-   - `contentVersion`
-7. `P2-07`: Add route/behavior tests in `tests/unit/ApiRouterSyncRoutes.test.js` and new `tests/unit/SyncCommandRoutes.test.js`.
+### Phase Gate Criteria
+| Gate | Target date | Pass criteria | Fail action | Owner |
+|------|-------------|---------------|-------------|-------|
+| Alpha | 2026-04-19 | M0-M4 complete; command loop and reconcile UX proven | Freeze new scope, extend Phase 1 by up to 1 week, cut non-critical content | Tech Lead |
+| Beta | 2026-05-31 | M5-M8 complete; full gameplay loop deterministic; tooling baseline ready | Remove low-priority content, shift rollout by one sprint | PM + Tech Lead |
+| RC | 2026-06-28 | M9-M10 complete; security and staging soak pass | Block canary, run remediation sprint | Release Manager |
+| GA | 2026-07-12 | M11-M13 complete; guardrails stable during ramp | Hold at safe rollout percentage and execute rollback if needed | SRE + Tech Lead |
 
-### Exit Criteria
-1. `/api/sync/command` is live and authenticated.
-2. Command events are stored and replay-safe.
-3. Existing `/api/sync/commit*` behavior remains unchanged.
+## 6. Dependencies & Critical Path
+Dependency matrix:
+| Dependency | Needed by | Risk if late | Mitigation owner | Latest safe week |
+|------------|-----------|--------------|------------------|------------------|
+| Canonical state v2 contract approval | M1, M2, M3 | Schema/API churn and rework | Tech Lead | W1 |
+| Data Connect schema deploy window | M1 | Blocks migration and command event persistence | Backend Lead | W3 |
+| Shared game-core server bundle stability | M3, M7 | Determinism and progression blocked | Systems Engineer | W6 |
+| Godot command UX integration bandwidth | M4, M5, M6 | Delays Alpha and Beta gates | Godot Lead | W8 |
+| Command verb set freeze | M7, M5 | Narrative suggestions become invalid | Gameplay Lead | W10 |
+| Tooling data model lock | M8 | Inspector/replay mismatch with production payloads | Fullstack Lead | W12 |
+| Security review availability | M9, M10 | Canary delayed despite feature readiness | Security Owner | W15 |
+| Staging environment parity with prod | M10, M11 | Canary findings become unreliable | DevOps | W16 |
 
-## Phase 3: Server-Side Deterministic Command Execution
-### Steps
-1. `P3-01`: Create `scripts/build-server-engine-bundle.mjs` to bundle deterministic engine code from `packages/game-core` into `functions/lib/server-engine.bundle.cjs`.
-2. `P3-02`: Add script hooks:
-   - Root `package.json`: `build:server-engine`.
-   - Ensure CI runs this before unit tests touching command execution.
-3. `P3-03`: Add `functions/lib/command-engine.js` that loads bundled engine and exposes:
-   - `parseCommand`
-   - `executeCommandAgainstCanonicalState`
-4. `P3-04`: Wire `/api/sync/command` to execute deterministic action transitions and update `rpgState`.
-5. `P3-05`: Increment canonical `seq/tick` for accepted commands exactly once.
-6. `P3-06`: Add deterministic parity tests:
-   - Same command sequence against same seed returns same `{seq,tick,stateHash}`.
-   - Add `tests/unit/SyncCoreDeterminism.test.js` cases for command streams.
-7. `P3-07`: Add failure-mode tests:
-   - invalid command
-   - stale `clientSeq`
-   - contentVersion mismatch
-   - replayed `id` idempotency.
+Critical path (with practical slack):
+1. M0 -> M1 -> M2 -> M3 -> M4 -> M7 -> M9 -> M10 -> M11 -> M12 -> M13.
+2. Near-critical branch: M5 must complete by W14 to avoid M9 slip.
+3. Optional compression lever: trim map breadth in M6 to preserve M7/M9 schedule.
 
-### Exit Criteria
-1. Server command execution is deterministic and canonical.
-2. Replay parity tests pass.
-3. No regression in trigger-commit determinism tests.
+Cross-team integration checkpoints:
+- End of W4: backend contract checkpoint (M1 + M2).
+- End of W8: Godot end-to-end checkpoint (M4 + early M5).
+- End of W13: progression and tooling checkpoint (M7 + M8).
+- End of W17: release readiness checkpoint (M10).
 
-## Phase 4: Godot Command Terminal + Sync Integration
-### Steps
-1. `P4-01`: Update `godot/scenes/Main.tscn` to add:
-   - command input `LineEdit`
-   - submit button
-   - suggestions container
-   - command log panel.
-2. `P4-02`: Add `godot/scripts/command_terminal.gd`:
-   - input submission
-   - command history navigation
-   - disable/enable on request in-flight
-   - display validation errors.
-3. `P4-03`: Extend `godot/scripts/sync_client.gd` with:
-   - `command(envelope: Dictionary) -> Dictionary`.
-4. `P4-04`: Update `godot/scripts/world_controller.gd` to:
-   - build command envelope
-   - call sync command endpoint
-   - apply canonical returned state
-   - reconcile on 409/`reconcileRequired`.
-5. `P4-05`: Keep movement trigger flow unchanged and compatible with command flow in same run.
-6. `P4-06`: Add Godot contract tests similar to existing string-contract style:
-   - `tests/unit/GodotCommandContract.test.js`.
+## 7. Risks & Mitigations
+| Risk | Category | Probability | Impact | Mitigation | Contingency | Trigger / Leading indicator | Owner |
+|------|----------|-------------|--------|------------|-------------|-----------------------------|-------|
+| Determinism drift in command execution | Technical | Medium | Critical | Shared engine bundle + fixed-seed replay in CI | Freeze deploys, run parity diff triage swarm | Any replay mismatch in staging or nightly | Systems Engineer |
+| Scope creep in content/UI | Scope | High | High | Verb freeze by W10, map cap fixed at 3-5 | Defer non-core content to post-GA | New unplanned features after Beta lock | PM |
+| Godot/backend interface churn | Coordination | Medium | High | Contract tests and weekly integration demos | Temporary adapter layer with strict deprecation date | Same interface broken in 2 consecutive sprints | Tech Lead |
+| Story service instability | Reliability | Medium | Medium | Timeout budget + deterministic fallback lines | Auto-disable story calls by flag and keep gameplay live | Fallback usage > 5% for 3 days | Backend Lead |
+| Prompt/log data leakage | Security/Privacy | Low | Critical | Redaction rules, least-privilege logging, pre-canary security review | Pause rollout and rotate credentials | Unresolved high-severity security finding at M9 | Security Owner |
+| CI instability from heavier suites | Delivery | Medium | Medium | Separate fast PR lane and nightly heavy lane | Temporarily gate heavy suites nightly only | PR lane flakiness > 5% over 1 week | QA Lead |
+| Single-owner bottlenecks | People | Medium | High | Backup ownership and paired reviews on critical modules | Reassign sprint scope and protect critical path tasks | Any critical task blocked > 3 business days | Engineering Manager |
+| Live rollout incident response gaps | Operations | Low | Critical | On-call drills and prewritten runbooks before canary | Roll back to last stable flag percentage | Sev-1 with no response within SLA | SRE |
 
-### Exit Criteria
-1. Commands can be submitted from Godot and mutate canonical state.
-2. Trigger and command streams coexist on one run ID.
-3. Reconcile flow works for both event types.
+## 8. Metrics (Success + Guardrails)
+### Metric Catalog
+| Metric | Type | Definition | Source | Cadence | Owner | Target / Alert |
+|--------|------|------------|--------|---------|-------|----------------|
+| Session completion rate | Outcome | Completed playable loop sessions / started sessions | Analytics events | Weekly | PM | Target >= 70% by canary end |
+| Command adoption | Outcome | Sessions with >= 3 accepted commands / active sessions | Sync event stream | Weekly | Product Analyst | Target >= 60% |
+| Story continuity score | Outcome | Internal playtest rubric average (1-5) | Playtest forms | Biweekly | Narrative Lead | Target >= 4.0 |
+| Milestone on-time rate | Output | Milestones delivered by planned week | Plan ledger | Weekly | PMO/PM | Target >= 85% |
+| New path test coverage delta | Output | Coverage increase on touched modules vs baseline | Coverage reports | Weekly | QA Lead | Target +25% |
+| Determinism replay pass rate | Output | Successful identical replay runs / total runs | Replay harness | Nightly | Systems Engineer | Target 100% |
+| `/api/sync/command` p95 latency | Guardrail | p95 server response time under expected load | APM traces | Daily | Backend Lead | Alert > 350 ms |
+| Sync error rate | Guardrail | Failed sync requests / total sync requests | API logs | Daily | SRE | Alert > 1.0% |
+| State hash divergence rate | Guardrail | Divergence incidents / total run comparisons | Replay inspector | Daily | Systems Engineer | Alert > 0 in staging, > 0.1% prod |
+| Story fallback rate | Guardrail | Story fallback responses / story attempts | Story service logs | Daily | Backend Lead | Alert > 5% |
+| Infra cost delta | Guardrail | Cost vs pre-command baseline for equivalent usage | Billing dashboard | Weekly | DevOps | Alert > +20% |
+| Incident MTTR | Guardrail | Mean time to recover for Sev-1/2 incidents | Incident tracker | Weekly | SRE | Alert > 60 minutes |
 
-## Phase 5: AI Story Streaming in Godot
-### Steps
-1. `P5-01`: Add `godot/scripts/story_client.gd` with:
-   - `story_start(payload)`
-   - `story_poll(threadId, runId)`.
-2. `P5-02`: On accepted command/trigger, call `/api/story/start`; poll until done or timeout.
-3. `P5-03`: Render narrative in `ProsePanel` with:
-   - title
-   - current beat
-   - suggested next actions.
-4. `P5-04`: Handle failures with deterministic fallback lines:
-   - no blank prose states
-   - clear safe-mode messaging.
-5. `P5-05`: Add backend tests for story coupling:
-   - command result -> prompt payload shape
-   - poll terminal states.
-6. `P5-06`: Add manual smoke script `docs/playtests/godot_story_flow.md`.
+### Instrumentation Backlog (must be done by W12)
+- Add command result reason codes for rejected requests.
+- Add reconcile cause telemetry buckets.
+- Add story timeout classification tags.
+- Add run replay hash checkpoint sampling per phase of play.
+- Add rollout stage tag to all relevant operational metrics.
 
-### Exit Criteria
-1. Godot can generate story beats through `/api/story/*`.
-2. Timeout and failure fallback paths are user-visible and stable.
-3. Suggestions returned by narrative layer are displayed in UI.
+## 9. Resourcing & Operating Model
+### Role Allocation
+| Role | Effective FTE | Primary responsibility | Backup responsibility |
+|------|----------------|------------------------|-----------------------|
+| Tech Lead | 1.0 | Architecture, critical path decisions, gate approvals | Release readiness review |
+| Backend Engineer | 1.0 | Sync routes, migration, story integration | Load/security fixes |
+| Systems Engineer | 0.7 | Determinism engine and replay harness | Backend incident triage |
+| Godot Engineer | 1.0 | Client UX, command terminal, gameplay integration | Tooling integration support |
+| Fullstack/Tools Engineer | 1.0 | Replay inspector, web tooling, docs updates | QA automation support |
+| QA Automation | 0.5 | Test matrix, regression automation, gate evidence | Release checklist support |
+| DevOps/SRE | 0.3 | CI reliability, rollout, monitoring, on-call prep | Incident response |
+| Narrative/Content | 0.5 | Story prompts, fallback prose, quest seed curation | Playtest analysis |
+| PM | 0.5 | Prioritization, milestone governance, stakeholder updates | Risk tracking |
 
-## Phase 6: Pixel RPG Presentation Upgrade
-### Steps
-1. `P6-01`: Replace placeholder `ColorRect` actors with tilemap/sprite pipeline in `godot/scenes/Main.tscn`.
-2. `P6-02`: Add map art/content directories:
-   - `godot/assets/tilesets/`
-   - `godot/assets/sprites/`
-   - `godot/data/maps/`.
-3. `P6-03`: Expand `godot/data/world_manifest.json` from slice to a small hub zone set (3-5 maps).
-4. `P6-04`: Add in-game UI panels for:
-   - vitals
-   - inventory summary
-   - quest tracker
-   - combat status.
-5. `P6-05`: Keep command terminal always available while moving/exploring.
-6. `P6-06`: Add performance checks for 60 FPS target on baseline desktop profile.
+### Operating Cadence
+| Cadence item | Frequency | Inputs | Outputs | Owner |
+|--------------|-----------|--------|---------|-------|
+| Sprint planning | Weekly | Risk register, dependency status, failed tests | Updated milestone commitments | PM + Tech Lead |
+| Integration demo | Biweekly | Latest staging build and test evidence | Go/no-go for next phase tasks | Tech Lead |
+| Contract review | Weekly through W10 | API/schema diffs, failing contract tests | Approved interface changes only | Backend Lead + Godot Lead |
+| Risk review | Weekly | Triggers, incidents, staffing changes | Updated mitigation actions | PM |
+| Gate review | End of W8/W14/W18/W20 | Gate checklist and metric pack | Advance/hold decision | Release Manager |
+| Incident drill | Twice before canary | Runbooks and alert routing | MTTR validation and runbook fixes | SRE |
 
-### Exit Criteria
-1. Godot gameplay is visually pixel-RPG (not debug rectangles).
-2. Multi-map travel and triggers remain canonical.
-3. Command + exploration loop remains uninterrupted.
+### Required Artifacts by Milestone
+| Milestone | Mandatory artifact |
+|-----------|--------------------|
+| M0 | Roadmap + dependency map + baseline report |
+| M1 | Migration ADR + schema compatibility notes |
+| M2 | Command envelope contract and API examples |
+| M3 | Determinism report with replay evidence |
+| M4 | Godot command UX behavior spec |
+| M5 | Story fallback playbook |
+| M7 | Progression contract and scenario matrix |
+| M9 | Quality/security gate packet |
+| M10 | Staging readiness packet |
+| M11-M13 | Rollout logs, incident summary, GA closeout |
 
-## Phase 7: Combat, Inventory, Quest Depth on Canonical State
-### Steps
-1. `P7-01`: Finalize executable command verb set in `docs/contracts/command_verbs_v1.md`:
-   - `look`, `move`, `talk`, `attack`, `use`, `rest`, `status`, `inventory`, magic verbs.
-2. `P7-02`: Ensure server command engine applies combat and inventory changes to `rpgState`.
-3. `P7-03`: Add combat overlay in Godot for target, action result, and turn summary.
-4. `P7-04`: Add quest objective updates and completion feed from canonical state changes.
-5. `P7-05`: Add save/load parity validation:
-   - load from canonical pull reproduces combat/quest/inventory exactly.
-6. `P7-06`: Add scenario tests for full loop:
-   - exploration -> encounter -> combat -> quest flag -> save -> load.
+Execution rules:
+- Definition of Ready: owner, dependency, DoD test, and rollback plan identified.
+- Definition of Done: merged code, passing tests, updated docs, and linked evidence.
+- Blocking rule: no milestone closes with unresolved Sev-1 or critical determinism defect.
 
-### Exit Criteria
-1. RPG progression systems run through canonical server state.
-2. Save/load parity proven across full loop.
-3. Quest and combat are visible and actionable in Godot.
+## 10. Decision Log
+| Decision | Date | Rationale | Alternatives considered | Revisit trigger |
+|----------|------|-----------|-------------------------|-----------------|
+| Godot is the primary gameplay runtime | 2026-02-23 | Best fit for desired exploration UX and current vertical slice trajectory | Keep React as primary runtime | Revisit if Alpha misses by > 2 weeks |
+| AI scope is narrative and quest flavor only | 2026-02-23 | Preserves deterministic mechanics and balancing control | AI-generated rules and combat systems | Revisit after 8 weeks stable post-GA metrics |
+| Canonical online state is required for progression | 2026-02-23 | Ensures replayability, observability, and consistent saves | Client-authoritative state | Revisit if guardrails cannot be met by RC |
+| Legacy trigger routes remain during migration | 2026-02-23 | Lowers migration risk and protects old runs | Hard cutover to command-only | Revisit when command route reaches >= 95% usage for 4 weeks |
+| Web gameplay path becomes dev-only | 2026-02-23 | Focuses team on one production client while preserving debug value | Keep dual production clients | Revisit if tooling users require direct browser play |
+| Rollout must be staged with feature flags | 2026-02-23 | Limits blast radius for sync or data regressions | Big-bang launch | Revisit only if deployment architecture changes |
+| Scope flex is preferred over schedule slip | 2026-02-23 | Protects fixed release horizon and stakeholder expectations | Extend release date to keep all scope | Revisit if critical path blockers remain unresolved by W16 |
+| Determinism and security defects are release blockers | 2026-02-23 | Core trust and safety requirement | Ship with known issues and patch later | Revisit never unless product strategy changes materially |
 
-## Phase 8: Narrative-Quest Content Pipeline (AI-Assisted, Guardrailed)
-### Steps
-1. `P8-01`: Create `godot/data/quest_seeds/*.json` for deterministic quest skeletons.
-2. `P8-02`: Update backend prompt assembly for Godot mode to include:
-   - current map
-   - active quest objectives
-   - recent command outcomes
-   - mood continuity.
-3. `P8-03`: Enforce suggestion guardrail:
-   - only return suggestions that map to known command verbs.
-4. `P8-04`: Add narrative memory persistence with `StoryMemory`:
-   - keep concise run summary
-   - prune/rotate memory.
-5. `P8-05`: Add tests for memory continuity and suggestion validity.
-
-### Exit Criteria
-1. AI output is consistent with game rules and command grammar.
-2. Narrative memory improves continuity across sessions.
-3. Suggestions are always executable commands.
-
-## Phase 9: Web App Re-scope as Tooling + Observability
-### Steps
-1. `P9-01`: Define web role in `docs/web_tooling_scope.md`:
-   - admin tools
-   - run inspector
-   - balance harness
-   - content editor.
-2. `P9-02`: Add run replay/debug view based on canonical event streams.
-3. `P9-03`: Add state hash timeline inspector to catch divergence early.
-4. `P9-04`: Keep existing React gameplay path behind dev flag only.
-5. `P9-05`: Update README sections for Godot-first primary flow.
-
-### Exit Criteria
-1. Web is explicitly tooling-first.
-2. Godot is clearly the primary gameplay client.
-3. Replay/inspection tools support debugging production-like runs.
-
-## Phase 10: Quality Gates, Security, Rollout
-### Steps
-1. `P10-01`: Expand CI test matrix:
-   - sync routes
-   - command routes
-   - determinism replay
-   - story handlers
-   - Firestore rules emulator.
-2. `P10-02`: Add load tests for `/api/sync/command` and `/api/story/*`.
-3. `P10-03`: Add error budget and retry policy docs for story and sync paths.
-4. `P10-04`: Staging checklist:
-   - 100-run deterministic replay parity
-   - auth expiry resilience
-   - reconnect/reconcile resilience.
-5. `P10-05`: Production rollout in three stages:
-   - internal canary users
-   - limited % rollout
-   - full rollout after stability window.
-6. `P10-06`: Rollback plan:
-   - disable command endpoint via feature flag
-   - fall back to trigger-only mode
-   - preserve saves and run events.
-
-### Exit Criteria
-1. CI and staging gates pass consistently.
-2. Production rollout has clear rollback levers.
-3. No unresolved P0-P10 blockers remain in `PLAN.md`.
-
-## Important Public API / Interface / Type Changes
-
-1. Add `POST /api/sync/command` in `functions/lib/api-router.js`.
-2. Add command handler in `functions/lib/sync.js`.
-3. Extend sync state contract in `functions/lib/sync-core.js` to include `rpgState` and `narrativeState` in canonical payload.
-4. Update `GET /api/sync/pull` response to include v2 canonical state sections.
-5. Extend Data Connect schema in `dataconnect/schema/schema.gql`:
-   - `RunSession.gameStateJson`
-   - `RunSession.narrativeStateJson`
-   - `RunSession.schemaVersion`
-   - `RunEvent.eventType`
-   - `RunEvent.eventPayloadJson`
-   - `RunEvent.actionType`
-6. Add Godot client interface in `godot/scripts/sync_client.gd`:
-   - `command(envelope)`.
-7. Add Godot story interface in `godot/scripts/story_client.gd`:
-   - `story_start`, `story_poll`.
-
-## Test Cases and Scenarios (Must Exist Before Final Rollout)
-
-1. Command envelope validation rejects malformed payloads.
-2. Idempotency by `id` works for repeated command submissions.
-3. `clientSeq` ordering is strictly enforced across mixed trigger+command streams.
-4. Reconcile flow works when command event is rejected.
-5. Command determinism replay produces stable `{seq,tick,stateHash}`.
-6. Content version mismatch rejects both triggers and commands.
-7. Story start/poll handles success, failure, timeout, and missing run.
-8. Suggestions returned by AI always map to valid command verbs.
-9. Godot auth token refresh and one-retry behavior remains intact.
-10. Save/load restores full v2 canonical state with no drift.
-11. Mixed gameplay scenario:
-    - move on map
-    - command interact
-    - trigger encounter
-    - command combat action
-    - savepoint
-    - pull/reload
-    - state parity confirmed.
-12. Safe-mode scenario:
-    - API unavailable
-    - local UX remains responsive
-    - reconnect pulls canonical tip and resumes.
-
-## Assumptions and Defaults
-
-1. Node/Firebase runtime remains in place; no platform migration in this phase.
-2. Movement remains client-authoritative between validated trigger commits.
-3. Canonical server authority applies to all state-changing command outcomes.
-4. AI does not author core game math/rules at runtime.
-5. Single-player only; multiplayer is explicitly out of scope.
-6. Existing `/api/sync/action` legacy route remains during transition and is deprecated, not removed.
-7. Existing March 2026 Firestore hardening commitments remain mandatory and are not de-scoped by this plan.
+## 11. Open Questions
+| Open question | Decision deadline | Interim assumption | Risk if assumption is wrong | Owner |
+|---------------|-------------------|--------------------|-----------------------------|-------|
+| Can we guarantee a dedicated Godot engineer through W14? | 2026-03-06 | Yes | Alpha/Beta slip due to integration bottleneck | Engineering Manager |
+| Is AI model quota and budget approved for canary and limited rollout? | 2026-03-13 | Yes, with monitoring | Story feature throttling or disabled in rollout | PM + Backend Lead |
+| Is the Data Connect schema deployment window fixed and rollback-capable? | 2026-03-06 | Yes | Migration delay affecting M1-M3 critical path | Backend Lead |
+| Do we have security reviewer allocation for W15-W18 gates? | 2026-04-24 | Yes | RC slip despite feature readiness | Security Owner |
+| What baseline machine profile defines the 60 FPS acceptance target? | 2026-03-20 | Current dev desktop profile | Ambiguous perf gates and rework | Godot Lead |

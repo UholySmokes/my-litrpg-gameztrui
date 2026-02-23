@@ -268,7 +268,11 @@ async function listEvents({ ownerId, runId, afterSeq = 0, limit = 100 }) {
 		.filter(Boolean)
 		.sort((a, b) => Number(a.client_seq) - Number(b.client_seq))
 		.slice(0, cappedLimit)
-		.map(({ _dc_id, ...row }) => row);
+		.map((row) => {
+			const clean = { ...row };
+			delete clean._dc_id;
+			return clean;
+		});
 }
 
 module.exports = {

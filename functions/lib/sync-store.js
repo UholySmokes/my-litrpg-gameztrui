@@ -4,6 +4,7 @@ const { getApps, initializeApp } = require("firebase-admin/app");
 const { getFirestore, Timestamp } = require("firebase-admin/firestore");
 const { resolveGameDbBackend } = require("./game-db");
 const dataconnectStore = require("./sync-dataconnect-store");
+const { normalizeSyncEvent } = require("./sync-core");
 
 const DEFAULT_FILE_PATH = path.resolve(__dirname, "..", ".data", "sync-db.json");
 const DEFAULT_RUNS_COLLECTION = "sync_runs";
@@ -156,7 +157,8 @@ function mapRunDoc(doc) {
 }
 
 function mapEventDoc(doc) {
-	const data = doc || {};
+	const normalized = normalizeSyncEvent(doc || {});
+	const data = normalized || {};
 	return {
 		owner_id: String(data.owner_id || ""),
 		run_id: String(data.run_id || ""),
@@ -168,6 +170,18 @@ function mapEventDoc(doc) {
 		error_code: typeof data.error_code === "string" ? data.error_code : null,
 		message: typeof data.message === "string" ? data.message : null,
 		state_hash: typeof data.state_hash === "string" ? data.state_hash : null,
+		event_type:
+			typeof data.event_type === "string"
+				? data.event_type
+				: typeof data.eventType === "string"
+					? data.eventType
+					: "TRIGGER",
+		trigger_type:
+			typeof data.trigger_type === "string"
+				? data.trigger_type
+				: typeof data.triggerType === "string"
+					? data.triggerType
+					: null,
 		commit: data.commit && typeof data.commit === "object" ? data.commit : null,
 		created_at:
 			typeof data.created_at === "string"
@@ -221,6 +235,7 @@ async function fileAppendEvent({ ownerId, runId, event }) {
 	const db = readDb();
 	const key = `${normalizeRunKey(ownerId, runId)}:${String(event.commit_id || event.commitId)}`;
 	const existingIdx = db.events.findIndex((entry) => entry.key === key);
+	const normalizedEvent = normalizeSyncEvent(event || {});
 	const row = {
 		key,
 		owner_id: String(ownerId),
@@ -233,6 +248,11 @@ async function fileAppendEvent({ ownerId, runId, event }) {
 		error_code: typeof event.error_code === "string" ? event.error_code : null,
 		message: typeof event.message === "string" ? event.message : null,
 		state_hash: typeof event.state_hash === "string" ? event.state_hash : null,
+		event_type: String(normalizedEvent.eventType || "TRIGGER"),
+		trigger_type:
+			typeof normalizedEvent.triggerType === "string"
+				? normalizedEvent.triggerType
+				: null,
 		commit: event.commit && typeof event.commit === "object" ? event.commit : null,
 		created_at: nowIso(),
 	};
@@ -298,6 +318,7 @@ async function fireGetEventByCommitId({ ownerId, runId, commitId }) {
 
 async function fireAppendEvent({ ownerId, runId, event }) {
 	const key = `${normalizeRunKey(ownerId, runId)}:${String(event.commit_id || event.commitId)}`;
+	const normalizedEvent = normalizeSyncEvent(event || {});
 	const payload = {
 		owner_id: String(ownerId),
 		run_id: String(runId),
@@ -309,6 +330,11 @@ async function fireAppendEvent({ ownerId, runId, event }) {
 		error_code: typeof event.error_code === "string" ? event.error_code : null,
 		message: typeof event.message === "string" ? event.message : null,
 		state_hash: typeof event.state_hash === "string" ? event.state_hash : null,
+		event_type: String(normalizedEvent.eventType || "TRIGGER"),
+		trigger_type:
+			typeof normalizedEvent.triggerType === "string"
+				? normalizedEvent.triggerType
+				: null,
 		commit: event.commit && typeof event.commit === "object" ? event.commit : null,
 		created_at: nowTimestamp(),
 	};

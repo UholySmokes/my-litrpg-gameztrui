@@ -71,6 +71,8 @@ type RunEvent @table {
   user: UserProfile!
 
   runId: String! @col(dataType: "varchar(120)")
+  # Explicit command-vs-trigger discriminator for v2 transition.
+  eventType: String @col(dataType: "varchar(32)")
   commitId: String! @col(dataType: "varchar(120)")
   clientId: String! @col(dataType: "varchar(120)")
   clientSeq: Int!

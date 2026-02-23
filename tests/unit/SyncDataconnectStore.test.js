@@ -212,6 +212,7 @@ describe("sync-dataconnect-store", () => {
 						{
 							id: "event-1",
 							runId: "run-3",
+							eventType: "TRIGGER",
 							commitId: "c10",
 							clientId: "godot-a",
 							clientSeq: 10,
@@ -253,10 +254,12 @@ describe("sync-dataconnect-store", () => {
 
 		expect(dataconnectGenerated.createRunEvent).toHaveBeenCalledTimes(1);
 		const callArgs = dataconnectGenerated.createRunEvent.mock.calls[0][1];
+		expect(callArgs.eventType).toBe("TRIGGER");
 		expect(callArgs.seq).toBe(10);
 		expect(callArgs.tick).toBe(10);
 		expect(callArgs.stateHash).toBe("hash-10");
 		expect(row.commit_id).toBe("c10");
+		expect(row.event_type).toBe("TRIGGER");
 		expect(row.accepted).toBe(true);
 	});
 
@@ -268,6 +271,7 @@ describe("sync-dataconnect-store", () => {
 						{
 							id: "e2",
 							runId: "run-4",
+							eventType: "TRIGGER",
 							commitId: "c2",
 							clientSeq: 2,
 							triggerPayloadJson: "{}",
@@ -277,6 +281,7 @@ describe("sync-dataconnect-store", () => {
 						{
 							id: "e1",
 							runId: "run-4",
+							eventType: "TRIGGER",
 							commitId: "c1",
 							clientSeq: 1,
 							triggerPayloadJson: "{}",
@@ -298,6 +303,7 @@ describe("sync-dataconnect-store", () => {
 		expect(dataconnectGenerated.listMyRunEventsSince).toHaveBeenCalledTimes(1);
 		expect(rows).toHaveLength(1);
 		expect(rows[0].client_seq).toBe(1);
+		expect(rows[0].event_type).toBe("TRIGGER");
 		expect(rows[0]._dc_id).toBeUndefined();
 	});
 });

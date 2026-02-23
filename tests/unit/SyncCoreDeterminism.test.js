@@ -127,4 +127,25 @@ describe("sync-core determinism", () => {
 		expect(seedA).toBe(seedB);
 		expect(seedA).not.toBe(seedC);
 	});
+
+	it("normalizes mixed trigger/command stream records to explicit eventType", () => {
+		const triggerEvent = syncCore.normalizeSyncEvent({
+			commit: { triggerType: "INTERACT" },
+		});
+		expect(triggerEvent.eventType).toBe("TRIGGER");
+		expect(triggerEvent.triggerType).toBe("INTERACT");
+
+		const commandEvent = syncCore.normalizeSyncEvent({
+			commit: {
+				command: { type: "MOVE" },
+			},
+		});
+		expect(commandEvent.eventType).toBe("COMMAND");
+
+		const explicitWins = syncCore.normalizeSyncEvent({
+			eventType: "command",
+			commit: { triggerType: "ENTER_TILE" },
+		});
+		expect(explicitWins.eventType).toBe("COMMAND");
+	});
 });

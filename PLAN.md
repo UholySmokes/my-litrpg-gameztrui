@@ -3,6 +3,22 @@
 Last updated: 2026-02-23
 Planning horizon: W1-W20 (2026-02-23 to 2026-07-12)
 
+## 0. Execution Tracker (Live)
+Last implementation check: 2026-02-23
+
+### M0 - Planning and Contract Freeze
+- [x] Baseline sync regression tests executed and evidence committed (`docs/reports/baseline_test_report_2026-02-23.md`)
+- [x] Canonical state v2 contract drafted (`docs/contracts/canonical_state_v2.md`)
+- [x] Command envelope v1 contract drafted (`docs/contracts/command_envelope_v1.md`)
+- [x] Dependency map exists and is maintained (`PLAN.md` section `## 6`)
+- [x] Decision log initialized (`PLAN.md` section `## 10`)
+- [ ] Formal roadmap/contracts approval recorded by owners
+
+### Next unblocked implementation slices
+- [ ] M1: add explicit command identity model (`RunEvent.eventType`) in schema + adapters
+- [ ] M2: add `POST /api/sync/command` route + validation/idempotency tests
+- [ ] M3: extend determinism suite to 100-run mixed-stream replay assertion
+
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.
 

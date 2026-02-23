@@ -706,6 +706,8 @@ async function pull(req, res) {
 			events: events.map((event) => ({
 				commitId: event.commit_id,
 				clientSeq: event.client_seq,
+				eventType: event.event_type || event.eventType || "TRIGGER",
+				triggerType: event.trigger_type || event.triggerType || null,
 				accepted: event.accepted,
 				errorCode: event.error_code,
 				message: event.message,

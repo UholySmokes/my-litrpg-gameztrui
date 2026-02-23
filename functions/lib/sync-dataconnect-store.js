@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const { getDataConnect } = require("firebase-admin/data-connect");
+const firebaseAdminDataConnect = require("firebase-admin/data-connect");
 const dataconnectGenerated = require("../src/dataconnect-admin-generated");
 
 function normalizeString(value) {
@@ -42,7 +42,7 @@ function toArray(value) {
 }
 
 function getDc() {
-	return getDataConnect(dataconnectGenerated.connectorConfig);
+	return firebaseAdminDataConnect.getDataConnect(dataconnectGenerated.connectorConfig);
 }
 
 function buildOptions(ownerId) {

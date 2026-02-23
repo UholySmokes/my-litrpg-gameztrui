@@ -36,3 +36,4 @@ Default behavior:
 
 1. If `GAME_DB_STORAGE=file`, sync stays file-backed.
 2. Otherwise sync defaults to Data Connect with automatic Firestore fallback unless `SYNC_DATACONNECT_STRICT=true`.
+3. `/api/saves*` uses Data Connect as canonical persistence through `functions/lib/saves-store.js`, with Firestore fallback during cutover unless `SAVES_DATACONNECT_STRICT=true` or `GAME_DATACONNECT_STRICT=true`.

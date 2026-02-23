@@ -11,11 +11,18 @@ This README will guide you through the process of using the generated JavaScript
   - [*ListMySaveSlots*](#listmysaveslots)
   - [*GetMySaveSlot*](#getmysaveslot)
   - [*ListMyRunSnapshots*](#listmyrunsnapshots)
+  - [*GetMyRunSessionByRunId*](#getmyrunsessionbyrunid)
+  - [*GetMyRunEventByCommitId*](#getmyruneventbycommitid)
+  - [*ListMyRunEventsSince*](#listmyruneventssince)
+  - [*ListMyStoryMemories*](#listmystorymemories)
 - [**Mutations**](#mutations)
   - [*UpsertMyProfile*](#upsertmyprofile)
   - [*CreateSaveSlot*](#createsaveslot)
   - [*UpsertSaveSlot*](#upsertsaveslot)
   - [*DeleteSaveSlot*](#deletesaveslot)
+  - [*UpsertRunSession*](#upsertrunsession)
+  - [*CreateRunEvent*](#createrunevent)
+  - [*UpsertStoryMemory*](#upsertstorymemory)
 
 # Accessing the connector
 A connector is a collection of Queries and Mutations. One SDK is generated for each connector - this SDK is generated for the connector `example`. You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
@@ -109,6 +116,10 @@ export interface ListMySaveSlotsData {
       playerLevel: number;
       worldId: string;
       locationId: string;
+      mapId?: string | null;
+      playerPosJson?: string | null;
+      entityStatesJson?: string | null;
+      questFlagsJson?: string | null;
       turnCount: number;
       contentVersion?: string | null;
       stateVersion?: number | null;
@@ -118,7 +129,7 @@ export interface ListMySaveSlotsData {
       stateHash?: string | null;
       createdAt: DateString;
       updatedAt: DateString;
-    })[];
+    } & SaveSlot_Key)[];
   } & UserProfile_Key;
 }
 ```
@@ -224,6 +235,10 @@ export interface GetMySaveSlotData {
     playerLevel: number;
     worldId: string;
     locationId: string;
+    mapId?: string | null;
+    playerPosJson?: string | null;
+    entityStatesJson?: string | null;
+    questFlagsJson?: string | null;
     turnCount: number;
     contentVersion?: string | null;
     stateVersion?: number | null;
@@ -233,7 +248,7 @@ export interface GetMySaveSlotData {
     stateHash?: string | null;
     createdAt: DateString;
     updatedAt: DateString;
-  };
+  } & SaveSlot_Key;
 }
 ```
 ### Using `GetMySaveSlot`'s action shortcut function
@@ -356,7 +371,7 @@ export interface ListMyRunSnapshotsData {
       tick?: number | null;
       stateHash?: string | null;
       updatedAt: DateString;
-    })[];
+    } & SaveSlot_Key)[];
   } & UserProfile_Key;
 }
 ```
@@ -409,6 +424,519 @@ const ref = listMyRunSnapshotsRef({ runId: ..., });
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
 const ref = listMyRunSnapshotsRef(dataConnect, listMyRunSnapshotsVars);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+## GetMyRunSessionByRunId
+You can execute the `GetMyRunSessionByRunId` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+getMyRunSessionByRunId(vars: GetMyRunSessionByRunIdVariables): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+
+interface GetMyRunSessionByRunIdRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetMyRunSessionByRunIdVariables): QueryRef<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+}
+export const getMyRunSessionByRunIdRef: GetMyRunSessionByRunIdRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+getMyRunSessionByRunId(dc: DataConnect, vars: GetMyRunSessionByRunIdVariables): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+
+interface GetMyRunSessionByRunIdRef {
+  ...
+  (dc: DataConnect, vars: GetMyRunSessionByRunIdVariables): QueryRef<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+}
+export const getMyRunSessionByRunIdRef: GetMyRunSessionByRunIdRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getMyRunSessionByRunIdRef:
+```typescript
+const name = getMyRunSessionByRunIdRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `GetMyRunSessionByRunId` query requires an argument of type `GetMyRunSessionByRunIdVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface GetMyRunSessionByRunIdVariables {
+  runId: string;
+}
+```
+### Return Type
+Recall that executing the `GetMyRunSessionByRunId` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `GetMyRunSessionByRunIdData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface GetMyRunSessionByRunIdData {
+  userProfile?: {
+    id: string;
+    runSessions: ({
+      id: UUIDString;
+      runId: string;
+      worldId: string;
+      mapId: string;
+      playerPosJson: string;
+      entityStatesJson: string;
+      questFlagsJson: string;
+      seq: number;
+      tick: number;
+      stateHash: string;
+      contentVersion: string;
+      stateVersion: number;
+      saveSlotId?: UUIDString | null;
+      runSeed?: string | null;
+      lastCommitId?: string | null;
+      lastClientId?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & RunSession_Key)[];
+  } & UserProfile_Key;
+}
+```
+### Using `GetMyRunSessionByRunId`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, getMyRunSessionByRunId, GetMyRunSessionByRunIdVariables } from '@dataconnect/generated';
+
+// The `GetMyRunSessionByRunId` query requires an argument of type `GetMyRunSessionByRunIdVariables`:
+const getMyRunSessionByRunIdVars: GetMyRunSessionByRunIdVariables = {
+  runId: ..., 
+};
+
+// Call the `getMyRunSessionByRunId()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await getMyRunSessionByRunId(getMyRunSessionByRunIdVars);
+// Variables can be defined inline as well.
+const { data } = await getMyRunSessionByRunId({ runId: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await getMyRunSessionByRunId(dataConnect, getMyRunSessionByRunIdVars);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+getMyRunSessionByRunId(getMyRunSessionByRunIdVars).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+### Using `GetMyRunSessionByRunId`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, getMyRunSessionByRunIdRef, GetMyRunSessionByRunIdVariables } from '@dataconnect/generated';
+
+// The `GetMyRunSessionByRunId` query requires an argument of type `GetMyRunSessionByRunIdVariables`:
+const getMyRunSessionByRunIdVars: GetMyRunSessionByRunIdVariables = {
+  runId: ..., 
+};
+
+// Call the `getMyRunSessionByRunIdRef()` function to get a reference to the query.
+const ref = getMyRunSessionByRunIdRef(getMyRunSessionByRunIdVars);
+// Variables can be defined inline as well.
+const ref = getMyRunSessionByRunIdRef({ runId: ..., });
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = getMyRunSessionByRunIdRef(dataConnect, getMyRunSessionByRunIdVars);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+## GetMyRunEventByCommitId
+You can execute the `GetMyRunEventByCommitId` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+getMyRunEventByCommitId(vars: GetMyRunEventByCommitIdVariables): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+
+interface GetMyRunEventByCommitIdRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetMyRunEventByCommitIdVariables): QueryRef<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+}
+export const getMyRunEventByCommitIdRef: GetMyRunEventByCommitIdRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+getMyRunEventByCommitId(dc: DataConnect, vars: GetMyRunEventByCommitIdVariables): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+
+interface GetMyRunEventByCommitIdRef {
+  ...
+  (dc: DataConnect, vars: GetMyRunEventByCommitIdVariables): QueryRef<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+}
+export const getMyRunEventByCommitIdRef: GetMyRunEventByCommitIdRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getMyRunEventByCommitIdRef:
+```typescript
+const name = getMyRunEventByCommitIdRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `GetMyRunEventByCommitId` query requires an argument of type `GetMyRunEventByCommitIdVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface GetMyRunEventByCommitIdVariables {
+  runId: string;
+  commitId: string;
+}
+```
+### Return Type
+Recall that executing the `GetMyRunEventByCommitId` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `GetMyRunEventByCommitIdData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface GetMyRunEventByCommitIdData {
+  userProfile?: {
+    id: string;
+    events: ({
+      id: UUIDString;
+      runId: string;
+      commitId: string;
+      clientId: string;
+      clientSeq: number;
+      triggerType: string;
+      triggerPayloadJson: string;
+      accepted: boolean;
+      errorCode?: string | null;
+      message?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      contentVersion?: string | null;
+      createdAt: DateString;
+    } & RunEvent_Key)[];
+  } & UserProfile_Key;
+}
+```
+### Using `GetMyRunEventByCommitId`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, getMyRunEventByCommitId, GetMyRunEventByCommitIdVariables } from '@dataconnect/generated';
+
+// The `GetMyRunEventByCommitId` query requires an argument of type `GetMyRunEventByCommitIdVariables`:
+const getMyRunEventByCommitIdVars: GetMyRunEventByCommitIdVariables = {
+  runId: ..., 
+  commitId: ..., 
+};
+
+// Call the `getMyRunEventByCommitId()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await getMyRunEventByCommitId(getMyRunEventByCommitIdVars);
+// Variables can be defined inline as well.
+const { data } = await getMyRunEventByCommitId({ runId: ..., commitId: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await getMyRunEventByCommitId(dataConnect, getMyRunEventByCommitIdVars);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+getMyRunEventByCommitId(getMyRunEventByCommitIdVars).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+### Using `GetMyRunEventByCommitId`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, getMyRunEventByCommitIdRef, GetMyRunEventByCommitIdVariables } from '@dataconnect/generated';
+
+// The `GetMyRunEventByCommitId` query requires an argument of type `GetMyRunEventByCommitIdVariables`:
+const getMyRunEventByCommitIdVars: GetMyRunEventByCommitIdVariables = {
+  runId: ..., 
+  commitId: ..., 
+};
+
+// Call the `getMyRunEventByCommitIdRef()` function to get a reference to the query.
+const ref = getMyRunEventByCommitIdRef(getMyRunEventByCommitIdVars);
+// Variables can be defined inline as well.
+const ref = getMyRunEventByCommitIdRef({ runId: ..., commitId: ..., });
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = getMyRunEventByCommitIdRef(dataConnect, getMyRunEventByCommitIdVars);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+## ListMyRunEventsSince
+You can execute the `ListMyRunEventsSince` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+listMyRunEventsSince(vars: ListMyRunEventsSinceVariables): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+
+interface ListMyRunEventsSinceRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: ListMyRunEventsSinceVariables): QueryRef<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+}
+export const listMyRunEventsSinceRef: ListMyRunEventsSinceRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+listMyRunEventsSince(dc: DataConnect, vars: ListMyRunEventsSinceVariables): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+
+interface ListMyRunEventsSinceRef {
+  ...
+  (dc: DataConnect, vars: ListMyRunEventsSinceVariables): QueryRef<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+}
+export const listMyRunEventsSinceRef: ListMyRunEventsSinceRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the listMyRunEventsSinceRef:
+```typescript
+const name = listMyRunEventsSinceRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `ListMyRunEventsSince` query requires an argument of type `ListMyRunEventsSinceVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface ListMyRunEventsSinceVariables {
+  runId: string;
+  afterSeq: number;
+}
+```
+### Return Type
+Recall that executing the `ListMyRunEventsSince` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `ListMyRunEventsSinceData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface ListMyRunEventsSinceData {
+  userProfile?: {
+    id: string;
+    events: ({
+      id: UUIDString;
+      runId: string;
+      commitId: string;
+      clientId: string;
+      clientSeq: number;
+      triggerType: string;
+      triggerPayloadJson: string;
+      accepted: boolean;
+      errorCode?: string | null;
+      message?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      contentVersion?: string | null;
+      createdAt: DateString;
+    } & RunEvent_Key)[];
+  } & UserProfile_Key;
+}
+```
+### Using `ListMyRunEventsSince`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, listMyRunEventsSince, ListMyRunEventsSinceVariables } from '@dataconnect/generated';
+
+// The `ListMyRunEventsSince` query requires an argument of type `ListMyRunEventsSinceVariables`:
+const listMyRunEventsSinceVars: ListMyRunEventsSinceVariables = {
+  runId: ..., 
+  afterSeq: ..., 
+};
+
+// Call the `listMyRunEventsSince()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await listMyRunEventsSince(listMyRunEventsSinceVars);
+// Variables can be defined inline as well.
+const { data } = await listMyRunEventsSince({ runId: ..., afterSeq: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await listMyRunEventsSince(dataConnect, listMyRunEventsSinceVars);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+listMyRunEventsSince(listMyRunEventsSinceVars).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+### Using `ListMyRunEventsSince`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, listMyRunEventsSinceRef, ListMyRunEventsSinceVariables } from '@dataconnect/generated';
+
+// The `ListMyRunEventsSince` query requires an argument of type `ListMyRunEventsSinceVariables`:
+const listMyRunEventsSinceVars: ListMyRunEventsSinceVariables = {
+  runId: ..., 
+  afterSeq: ..., 
+};
+
+// Call the `listMyRunEventsSinceRef()` function to get a reference to the query.
+const ref = listMyRunEventsSinceRef(listMyRunEventsSinceVars);
+// Variables can be defined inline as well.
+const ref = listMyRunEventsSinceRef({ runId: ..., afterSeq: ..., });
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = listMyRunEventsSinceRef(dataConnect, listMyRunEventsSinceVars);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+## ListMyStoryMemories
+You can execute the `ListMyStoryMemories` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+listMyStoryMemories(vars: ListMyStoryMemoriesVariables): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+
+interface ListMyStoryMemoriesRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: ListMyStoryMemoriesVariables): QueryRef<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+}
+export const listMyStoryMemoriesRef: ListMyStoryMemoriesRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+
+interface ListMyStoryMemoriesRef {
+  ...
+  (dc: DataConnect, vars: ListMyStoryMemoriesVariables): QueryRef<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+}
+export const listMyStoryMemoriesRef: ListMyStoryMemoriesRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the listMyStoryMemoriesRef:
+```typescript
+const name = listMyStoryMemoriesRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `ListMyStoryMemories` query requires an argument of type `ListMyStoryMemoriesVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface ListMyStoryMemoriesVariables {
+  runId: string;
+}
+```
+### Return Type
+Recall that executing the `ListMyStoryMemories` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `ListMyStoryMemoriesData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface ListMyStoryMemoriesData {
+  userProfile?: {
+    id: string;
+    memories: ({
+      id: UUIDString;
+      runId: string;
+      memoryKey: string;
+      memoryJson: string;
+      lastSeq?: number | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & StoryMemory_Key)[];
+  } & UserProfile_Key;
+}
+```
+### Using `ListMyStoryMemories`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, listMyStoryMemories, ListMyStoryMemoriesVariables } from '@dataconnect/generated';
+
+// The `ListMyStoryMemories` query requires an argument of type `ListMyStoryMemoriesVariables`:
+const listMyStoryMemoriesVars: ListMyStoryMemoriesVariables = {
+  runId: ..., 
+};
+
+// Call the `listMyStoryMemories()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await listMyStoryMemories(listMyStoryMemoriesVars);
+// Variables can be defined inline as well.
+const { data } = await listMyStoryMemories({ runId: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await listMyStoryMemories(dataConnect, listMyStoryMemoriesVars);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+listMyStoryMemories(listMyStoryMemoriesVars).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+### Using `ListMyStoryMemories`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, listMyStoryMemoriesRef, ListMyStoryMemoriesVariables } from '@dataconnect/generated';
+
+// The `ListMyStoryMemories` query requires an argument of type `ListMyStoryMemoriesVariables`:
+const listMyStoryMemoriesVars: ListMyStoryMemoriesVariables = {
+  runId: ..., 
+};
+
+// Call the `listMyStoryMemoriesRef()` function to get a reference to the query.
+const ref = listMyStoryMemoriesRef(listMyStoryMemoriesVars);
+// Variables can be defined inline as well.
+const ref = listMyStoryMemoriesRef({ runId: ..., });
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = listMyStoryMemoriesRef(dataConnect, listMyStoryMemoriesVars);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
@@ -587,6 +1115,10 @@ export interface CreateSaveSlotVariables {
   playerLevel: number;
   worldId: string;
   locationId: string;
+  mapId?: string | null;
+  playerPosJson?: string | null;
+  entityStatesJson?: string | null;
+  questFlagsJson?: string | null;
   turnCount: number;
   contentVersion?: string | null;
   stateVersion?: number | null;
@@ -619,6 +1151,10 @@ const createSaveSlotVars: CreateSaveSlotVariables = {
   playerLevel: ..., 
   worldId: ..., 
   locationId: ..., 
+  mapId: ..., // optional
+  playerPosJson: ..., // optional
+  entityStatesJson: ..., // optional
+  questFlagsJson: ..., // optional
   turnCount: ..., 
   contentVersion: ..., // optional
   stateVersion: ..., // optional
@@ -632,7 +1168,7 @@ const createSaveSlotVars: CreateSaveSlotVariables = {
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await createSaveSlot(createSaveSlotVars);
 // Variables can be defined inline as well.
-const { data } = await createSaveSlot({ saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
+const { data } = await createSaveSlot({ saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -661,6 +1197,10 @@ const createSaveSlotVars: CreateSaveSlotVariables = {
   playerLevel: ..., 
   worldId: ..., 
   locationId: ..., 
+  mapId: ..., // optional
+  playerPosJson: ..., // optional
+  entityStatesJson: ..., // optional
+  questFlagsJson: ..., // optional
   turnCount: ..., 
   contentVersion: ..., // optional
   stateVersion: ..., // optional
@@ -673,7 +1213,7 @@ const createSaveSlotVars: CreateSaveSlotVariables = {
 // Call the `createSaveSlotRef()` function to get a reference to the mutation.
 const ref = createSaveSlotRef(createSaveSlotVars);
 // Variables can be defined inline as well.
-const ref = createSaveSlotRef({ saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
+const ref = createSaveSlotRef({ saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -733,6 +1273,10 @@ export interface UpsertSaveSlotVariables {
   playerLevel: number;
   worldId: string;
   locationId: string;
+  mapId?: string | null;
+  playerPosJson?: string | null;
+  entityStatesJson?: string | null;
+  questFlagsJson?: string | null;
   turnCount: number;
   contentVersion?: string | null;
   stateVersion?: number | null;
@@ -766,6 +1310,10 @@ const upsertSaveSlotVars: UpsertSaveSlotVariables = {
   playerLevel: ..., 
   worldId: ..., 
   locationId: ..., 
+  mapId: ..., // optional
+  playerPosJson: ..., // optional
+  entityStatesJson: ..., // optional
+  questFlagsJson: ..., // optional
   turnCount: ..., 
   contentVersion: ..., // optional
   stateVersion: ..., // optional
@@ -779,7 +1327,7 @@ const upsertSaveSlotVars: UpsertSaveSlotVariables = {
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await upsertSaveSlot(upsertSaveSlotVars);
 // Variables can be defined inline as well.
-const { data } = await upsertSaveSlot({ id: ..., saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
+const { data } = await upsertSaveSlot({ id: ..., saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -809,6 +1357,10 @@ const upsertSaveSlotVars: UpsertSaveSlotVariables = {
   playerLevel: ..., 
   worldId: ..., 
   locationId: ..., 
+  mapId: ..., // optional
+  playerPosJson: ..., // optional
+  entityStatesJson: ..., // optional
+  questFlagsJson: ..., // optional
   turnCount: ..., 
   contentVersion: ..., // optional
   stateVersion: ..., // optional
@@ -821,7 +1373,7 @@ const upsertSaveSlotVars: UpsertSaveSlotVariables = {
 // Call the `upsertSaveSlotRef()` function to get a reference to the mutation.
 const ref = upsertSaveSlotRef(upsertSaveSlotVars);
 // Variables can be defined inline as well.
-const ref = upsertSaveSlotRef({ id: ..., saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
+const ref = upsertSaveSlotRef({ id: ..., saveName: ..., gameStateJson: ..., playerName: ..., playerLevel: ..., worldId: ..., locationId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., turnCount: ..., contentVersion: ..., stateVersion: ..., runId: ..., seq: ..., tick: ..., stateHash: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -946,6 +1498,426 @@ console.log(data.saveSlot_delete);
 executeMutation(ref).then((response) => {
   const data = response.data;
   console.log(data.saveSlot_delete);
+});
+```
+
+## UpsertRunSession
+You can execute the `UpsertRunSession` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+upsertRunSession(vars: UpsertRunSessionVariables): MutationPromise<UpsertRunSessionData, UpsertRunSessionVariables>;
+
+interface UpsertRunSessionRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpsertRunSessionVariables): MutationRef<UpsertRunSessionData, UpsertRunSessionVariables>;
+}
+export const upsertRunSessionRef: UpsertRunSessionRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+upsertRunSession(dc: DataConnect, vars: UpsertRunSessionVariables): MutationPromise<UpsertRunSessionData, UpsertRunSessionVariables>;
+
+interface UpsertRunSessionRef {
+  ...
+  (dc: DataConnect, vars: UpsertRunSessionVariables): MutationRef<UpsertRunSessionData, UpsertRunSessionVariables>;
+}
+export const upsertRunSessionRef: UpsertRunSessionRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the upsertRunSessionRef:
+```typescript
+const name = upsertRunSessionRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `UpsertRunSession` mutation requires an argument of type `UpsertRunSessionVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface UpsertRunSessionVariables {
+  id: UUIDString;
+  runId: string;
+  worldId: string;
+  mapId: string;
+  playerPosJson: string;
+  entityStatesJson: string;
+  questFlagsJson: string;
+  seq: number;
+  tick: number;
+  stateHash: string;
+  contentVersion: string;
+  stateVersion: number;
+  saveSlotId?: UUIDString | null;
+  runSeed?: string | null;
+  lastCommitId?: string | null;
+  lastClientId?: string | null;
+}
+```
+### Return Type
+Recall that executing the `UpsertRunSession` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `UpsertRunSessionData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface UpsertRunSessionData {
+  runSession_upsert: RunSession_Key;
+}
+```
+### Using `UpsertRunSession`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, upsertRunSession, UpsertRunSessionVariables } from '@dataconnect/generated';
+
+// The `UpsertRunSession` mutation requires an argument of type `UpsertRunSessionVariables`:
+const upsertRunSessionVars: UpsertRunSessionVariables = {
+  id: ..., 
+  runId: ..., 
+  worldId: ..., 
+  mapId: ..., 
+  playerPosJson: ..., 
+  entityStatesJson: ..., 
+  questFlagsJson: ..., 
+  seq: ..., 
+  tick: ..., 
+  stateHash: ..., 
+  contentVersion: ..., 
+  stateVersion: ..., 
+  saveSlotId: ..., // optional
+  runSeed: ..., // optional
+  lastCommitId: ..., // optional
+  lastClientId: ..., // optional
+};
+
+// Call the `upsertRunSession()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await upsertRunSession(upsertRunSessionVars);
+// Variables can be defined inline as well.
+const { data } = await upsertRunSession({ id: ..., runId: ..., worldId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., stateVersion: ..., saveSlotId: ..., runSeed: ..., lastCommitId: ..., lastClientId: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await upsertRunSession(dataConnect, upsertRunSessionVars);
+
+console.log(data.runSession_upsert);
+
+// Or, you can use the `Promise` API.
+upsertRunSession(upsertRunSessionVars).then((response) => {
+  const data = response.data;
+  console.log(data.runSession_upsert);
+});
+```
+
+### Using `UpsertRunSession`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, upsertRunSessionRef, UpsertRunSessionVariables } from '@dataconnect/generated';
+
+// The `UpsertRunSession` mutation requires an argument of type `UpsertRunSessionVariables`:
+const upsertRunSessionVars: UpsertRunSessionVariables = {
+  id: ..., 
+  runId: ..., 
+  worldId: ..., 
+  mapId: ..., 
+  playerPosJson: ..., 
+  entityStatesJson: ..., 
+  questFlagsJson: ..., 
+  seq: ..., 
+  tick: ..., 
+  stateHash: ..., 
+  contentVersion: ..., 
+  stateVersion: ..., 
+  saveSlotId: ..., // optional
+  runSeed: ..., // optional
+  lastCommitId: ..., // optional
+  lastClientId: ..., // optional
+};
+
+// Call the `upsertRunSessionRef()` function to get a reference to the mutation.
+const ref = upsertRunSessionRef(upsertRunSessionVars);
+// Variables can be defined inline as well.
+const ref = upsertRunSessionRef({ id: ..., runId: ..., worldId: ..., mapId: ..., playerPosJson: ..., entityStatesJson: ..., questFlagsJson: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., stateVersion: ..., saveSlotId: ..., runSeed: ..., lastCommitId: ..., lastClientId: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = upsertRunSessionRef(dataConnect, upsertRunSessionVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.runSession_upsert);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.runSession_upsert);
+});
+```
+
+## CreateRunEvent
+You can execute the `CreateRunEvent` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+createRunEvent(vars: CreateRunEventVariables): MutationPromise<CreateRunEventData, CreateRunEventVariables>;
+
+interface CreateRunEventRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: CreateRunEventVariables): MutationRef<CreateRunEventData, CreateRunEventVariables>;
+}
+export const createRunEventRef: CreateRunEventRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+createRunEvent(dc: DataConnect, vars: CreateRunEventVariables): MutationPromise<CreateRunEventData, CreateRunEventVariables>;
+
+interface CreateRunEventRef {
+  ...
+  (dc: DataConnect, vars: CreateRunEventVariables): MutationRef<CreateRunEventData, CreateRunEventVariables>;
+}
+export const createRunEventRef: CreateRunEventRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the createRunEventRef:
+```typescript
+const name = createRunEventRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `CreateRunEvent` mutation requires an argument of type `CreateRunEventVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface CreateRunEventVariables {
+  runId: string;
+  commitId: string;
+  clientId: string;
+  clientSeq: number;
+  triggerType: string;
+  triggerPayloadJson: string;
+  accepted: boolean;
+  errorCode?: string | null;
+  message?: string | null;
+  seq?: number | null;
+  tick?: number | null;
+  stateHash?: string | null;
+  contentVersion?: string | null;
+}
+```
+### Return Type
+Recall that executing the `CreateRunEvent` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `CreateRunEventData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface CreateRunEventData {
+  runEvent_insert: RunEvent_Key;
+}
+```
+### Using `CreateRunEvent`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, createRunEvent, CreateRunEventVariables } from '@dataconnect/generated';
+
+// The `CreateRunEvent` mutation requires an argument of type `CreateRunEventVariables`:
+const createRunEventVars: CreateRunEventVariables = {
+  runId: ..., 
+  commitId: ..., 
+  clientId: ..., 
+  clientSeq: ..., 
+  triggerType: ..., 
+  triggerPayloadJson: ..., 
+  accepted: ..., 
+  errorCode: ..., // optional
+  message: ..., // optional
+  seq: ..., // optional
+  tick: ..., // optional
+  stateHash: ..., // optional
+  contentVersion: ..., // optional
+};
+
+// Call the `createRunEvent()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await createRunEvent(createRunEventVars);
+// Variables can be defined inline as well.
+const { data } = await createRunEvent({ runId: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await createRunEvent(dataConnect, createRunEventVars);
+
+console.log(data.runEvent_insert);
+
+// Or, you can use the `Promise` API.
+createRunEvent(createRunEventVars).then((response) => {
+  const data = response.data;
+  console.log(data.runEvent_insert);
+});
+```
+
+### Using `CreateRunEvent`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, createRunEventRef, CreateRunEventVariables } from '@dataconnect/generated';
+
+// The `CreateRunEvent` mutation requires an argument of type `CreateRunEventVariables`:
+const createRunEventVars: CreateRunEventVariables = {
+  runId: ..., 
+  commitId: ..., 
+  clientId: ..., 
+  clientSeq: ..., 
+  triggerType: ..., 
+  triggerPayloadJson: ..., 
+  accepted: ..., 
+  errorCode: ..., // optional
+  message: ..., // optional
+  seq: ..., // optional
+  tick: ..., // optional
+  stateHash: ..., // optional
+  contentVersion: ..., // optional
+};
+
+// Call the `createRunEventRef()` function to get a reference to the mutation.
+const ref = createRunEventRef(createRunEventVars);
+// Variables can be defined inline as well.
+const ref = createRunEventRef({ runId: ..., commitId: ..., clientId: ..., clientSeq: ..., triggerType: ..., triggerPayloadJson: ..., accepted: ..., errorCode: ..., message: ..., seq: ..., tick: ..., stateHash: ..., contentVersion: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = createRunEventRef(dataConnect, createRunEventVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.runEvent_insert);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.runEvent_insert);
+});
+```
+
+## UpsertStoryMemory
+You can execute the `UpsertStoryMemory` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+upsertStoryMemory(vars: UpsertStoryMemoryVariables): MutationPromise<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+
+interface UpsertStoryMemoryRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpsertStoryMemoryVariables): MutationRef<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+}
+export const upsertStoryMemoryRef: UpsertStoryMemoryRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+upsertStoryMemory(dc: DataConnect, vars: UpsertStoryMemoryVariables): MutationPromise<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+
+interface UpsertStoryMemoryRef {
+  ...
+  (dc: DataConnect, vars: UpsertStoryMemoryVariables): MutationRef<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+}
+export const upsertStoryMemoryRef: UpsertStoryMemoryRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the upsertStoryMemoryRef:
+```typescript
+const name = upsertStoryMemoryRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `UpsertStoryMemory` mutation requires an argument of type `UpsertStoryMemoryVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface UpsertStoryMemoryVariables {
+  id: UUIDString;
+  runId: string;
+  memoryKey: string;
+  memoryJson: string;
+  lastSeq?: number | null;
+}
+```
+### Return Type
+Recall that executing the `UpsertStoryMemory` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `UpsertStoryMemoryData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface UpsertStoryMemoryData {
+  storyMemory_upsert: StoryMemory_Key;
+}
+```
+### Using `UpsertStoryMemory`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, upsertStoryMemory, UpsertStoryMemoryVariables } from '@dataconnect/generated';
+
+// The `UpsertStoryMemory` mutation requires an argument of type `UpsertStoryMemoryVariables`:
+const upsertStoryMemoryVars: UpsertStoryMemoryVariables = {
+  id: ..., 
+  runId: ..., 
+  memoryKey: ..., 
+  memoryJson: ..., 
+  lastSeq: ..., // optional
+};
+
+// Call the `upsertStoryMemory()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await upsertStoryMemory(upsertStoryMemoryVars);
+// Variables can be defined inline as well.
+const { data } = await upsertStoryMemory({ id: ..., runId: ..., memoryKey: ..., memoryJson: ..., lastSeq: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await upsertStoryMemory(dataConnect, upsertStoryMemoryVars);
+
+console.log(data.storyMemory_upsert);
+
+// Or, you can use the `Promise` API.
+upsertStoryMemory(upsertStoryMemoryVars).then((response) => {
+  const data = response.data;
+  console.log(data.storyMemory_upsert);
+});
+```
+
+### Using `UpsertStoryMemory`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, upsertStoryMemoryRef, UpsertStoryMemoryVariables } from '@dataconnect/generated';
+
+// The `UpsertStoryMemory` mutation requires an argument of type `UpsertStoryMemoryVariables`:
+const upsertStoryMemoryVars: UpsertStoryMemoryVariables = {
+  id: ..., 
+  runId: ..., 
+  memoryKey: ..., 
+  memoryJson: ..., 
+  lastSeq: ..., // optional
+};
+
+// Call the `upsertStoryMemoryRef()` function to get a reference to the mutation.
+const ref = upsertStoryMemoryRef(upsertStoryMemoryVars);
+// Variables can be defined inline as well.
+const ref = upsertStoryMemoryRef({ id: ..., runId: ..., memoryKey: ..., memoryJson: ..., lastSeq: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = upsertStoryMemoryRef(dataConnect, upsertStoryMemoryVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.storyMemory_upsert);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.storyMemory_upsert);
 });
 ```
 

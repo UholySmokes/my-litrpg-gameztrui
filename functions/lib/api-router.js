@@ -82,6 +82,10 @@ async function handleApiRequest(req, res) {
 		return sync.commitBatch(req, res);
 	}
 
+	if (path === "/api/sync/command" && method === "POST") {
+		return sync.command(req, res);
+	}
+
 	if (path === "/api/sync/pull" && method === "GET") {
 		return sync.pull(req, res);
 	}

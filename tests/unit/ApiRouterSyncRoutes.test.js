@@ -29,10 +29,12 @@ function createRes() {
 describe("api router sync routes", () => {
 	const originalCommit = sync.commit;
 	const originalAction = sync.action;
+	const originalCommand = sync.command;
 
 	afterEach(() => {
 		sync.commit = originalCommit;
 		sync.action = originalAction;
+		sync.command = originalCommand;
 	});
 
 	it("routes /api/sync/commit to canonical commit handler", async () => {
@@ -57,5 +59,17 @@ describe("api router sync routes", () => {
 		expect(sync.action).toHaveBeenCalledTimes(1);
 		expect(res.headers.Deprecation).toBe("true");
 		expect(res.headers.Link).toContain("/api/sync/commit");
+	});
+
+	it("routes /api/sync/command to command handler", async () => {
+		sync.command = jest.fn(async (_req, res) => {
+			res.status(200).set("Content-Type", "application/json").json({ ok: true });
+		});
+		const req = { method: "POST", url: "/api/sync/command", headers: {} };
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(sync.command).toHaveBeenCalledTimes(1);
+		expect(res.statusCode).toBe(200);
+		expect(res.body.ok).toBe(true);
 	});
 });

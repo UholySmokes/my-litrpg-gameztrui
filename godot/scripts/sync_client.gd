@@ -15,6 +15,10 @@ func commit(envelope: Dictionary) -> Dictionary:
 	return await _authorized_json_request("/sync/commit", HTTPClient.METHOD_POST, envelope)
 
 
+func command(envelope: Dictionary) -> Dictionary:
+	return await _authorized_json_request("/sync/command", HTTPClient.METHOD_POST, envelope)
+
+
 func commit_batch(commits: Array) -> Dictionary:
 	return await _authorized_json_request("/sync/commit-batch", HTTPClient.METHOD_POST, {
 		"commits": commits,

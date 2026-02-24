@@ -140,6 +140,14 @@ Last implementation check: 2026-02-24
   - Verification:
     - `npm test -- tests/unit/SyncCommandRoutes.test.js tests/unit/SyncReconnectStorm.test.js --runInBand` (9 passed)
     - `npm run test:staging:soak-smoke` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS; 4 checks, 0 failed)
+- [x] M10 (partial): add rollback parity baseline check and wire it into staging soak smoke workflow
+  - Evidence: `scripts/run-rollback-parity-check.mjs`, `docs/contracts/m10_rollback_parity_baseline_v1.json`, `scripts/run-staging-soak-smoke.mjs`, `docs/M10_STAGING_SOAK_RUNBOOK.md`, `package.json`
+  - Verification:
+    - `npm run test:rollback:parity` (PASS; mismatches 0)
+    - `npm run test:staging:soak-smoke` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS; 5 checks, 0 failed)
+- [x] M10 (partial): automate staging sign-off packet generation from soak smoke artifacts
+  - Evidence: `scripts/generate-staging-signoff-packet.mjs`, `package.json`, `docs/M10_STAGING_SOAK_RUNBOOK.md`, `docs/reports/m10_staging_signoff_packet_2026-02-24.md`
+  - Verification: `npm run report:staging:signoff` (PASS; decision ADVANCE from latest soak report)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

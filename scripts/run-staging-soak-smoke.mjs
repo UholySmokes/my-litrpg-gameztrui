@@ -104,6 +104,7 @@ async function main() {
 			"--runInBand",
 		]),
 	);
+	checks.push(runCommand("Rollback Parity Baseline", "npm", ["run", "test:rollback:parity"]));
 	checks.push(runCommand("Telemetry Ingest Smoke", "npm", ["run", "test:telemetry:smoke"]));
 
 	const godotBin = String(process.env.GODOT_BIN || "").trim();

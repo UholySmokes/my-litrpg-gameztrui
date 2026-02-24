@@ -115,6 +115,26 @@ describe("/api/sync/command route", () => {
 		expect(res.body.errorCode).toBe("INVALID_COMMAND_ENVELOPE");
 	});
 
+	it("requires authentication for command submission", async () => {
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: {},
+			body: createCommandEnvelope({
+				id: "cmd-auth-required-1",
+				runId: "run-command-auth-required",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(401);
+		expect(res.body.ok).toBe(false);
+		expect(res.body.errorCode).toBe("UNAUTHENTICATED");
+	});
+
 	it("accepts a valid command envelope", async () => {
 		const manifest = syncCore.getWorldManifest();
 		const req = {

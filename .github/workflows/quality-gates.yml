@@ -61,6 +61,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Sync Tooling Contract Tests
+        run: npm test -- tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand
+
       - name: Unit Tests
         run: npm test -- --runInBand
 

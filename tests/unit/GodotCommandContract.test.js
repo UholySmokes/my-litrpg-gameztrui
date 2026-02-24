@@ -13,8 +13,10 @@ describe("godot command + config contract", () => {
 		expect(source).toContain("class_name ConfigLoader");
 		expect(source).toContain('const CONFIG_PATH := "res://data/config.json"');
 		expect(source).toContain("func load_runtime_config(config_path: String = CONFIG_PATH) -> Dictionary:");
+		expect(source).toContain('"buildId": "godot-dev"');
 		expect(source).toContain('"syncCommandPath": "/sync/command"');
 		expect(source).toContain('"syncPullPath": "/sync/pull"');
+		expect(source).toContain('"telemetryPath": "/telemetry"');
 		expect(source).toContain('"storyStartPath": "/story/start"');
 		expect(source).toContain('"storyPollPath": "/story/poll"');
 	});
@@ -24,11 +26,16 @@ describe("godot command + config contract", () => {
 		const world = readGodotAsset("godot/scripts/world_controller.gd");
 
 		expect(scene).toContain('path="res://scripts/config_loader.gd"');
+		expect(scene).toContain('path="res://scripts/telemetry_reporter.gd"');
 		expect(scene).toContain('[node name="ConfigLoader" type="Node" parent="."]');
+		expect(scene).toContain('[node name="TelemetryReporter" type="Node" parent="."]');
 		expect(world).toContain("@onready var _config_loader: ConfigLoader = %ConfigLoader");
+		expect(world).toContain("@onready var _telemetry_reporter = %TelemetryReporter");
 		expect(world).toContain("_runtime_config = _config_loader.load_runtime_config()");
 		expect(world).toContain("_apply_runtime_config(_runtime_config)");
 		expect(world).toContain("_sync_client.api_base_url = api_base_url");
+		expect(world).toContain("_telemetry_reporter.api_base_url = api_base_url");
+		expect(world).toContain("String(config.get(\"telemetryPath\", _telemetry_reporter.telemetry_path))");
 	});
 
 	it("sends immediate actions through command path and keeps reconcile hook", () => {
@@ -49,11 +56,26 @@ describe("godot command + config contract", () => {
 	it("keeps generated Godot config paths relative to apiBaseUrl", () => {
 		const configJson = JSON.parse(readGodotAsset("godot/data/config.json"));
 		expect(configJson.apiBaseUrl).toBeTruthy();
+		expect(configJson.buildId).toBeTruthy();
 		expect(configJson.syncCommandPath).toBe("/sync/command");
 		expect(configJson.syncPullPath).toBe("/sync/pull");
+		expect(configJson.telemetryPath).toBe("/telemetry");
 		expect(configJson.narrateEndpoint).toBe("/narrate");
 		expect(configJson.storyStartPath).toBe("/story/start");
 		expect(configJson.storyPollPath).toBe("/story/poll");
+	});
+
+	it("defines telemetry reporter payload contract for /api/telemetry", () => {
+		const telemetry = readGodotAsset("godot/scripts/telemetry_reporter.gd");
+		expect(telemetry).toContain("class_name TelemetryReporter");
+		expect(telemetry).toContain('@export var telemetry_path: String = "/telemetry"');
+		expect(telemetry).toContain("func enqueue_event(");
+		expect(telemetry).toContain("func flush(session_id: String, build_id: String, extra_tags: Dictionary = {}) -> Dictionary:");
+		expect(telemetry).toContain('"source": source_tag');
+		expect(telemetry).toContain('"sessionId": session_id.strip_edges()');
+		expect(telemetry).toContain('"build": build_id.strip_edges()');
+		expect(telemetry).toContain('"clientTime": _iso_now()');
+		expect(telemetry).toContain('"events": events');
 	});
 
 	it("wires StoryClient wrappers and fallback prose rendering into world flow", () => {

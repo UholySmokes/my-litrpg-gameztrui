@@ -20,7 +20,7 @@ const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"
 @onready var _auth_client: FirebaseAuthClient = %AuthClient
 @onready var _sync_client: SyncClient = %SyncClient
 @onready var _story_client = %StoryClient
-@onready var _telemetry_reporter: TelemetryReporter = %TelemetryReporter
+@onready var _telemetry_reporter = %TelemetryReporter
 @onready var _config_loader: ConfigLoader = %ConfigLoader
 @onready var _trigger_queue: TriggerQueue = %TriggerQueue
 @onready var _prose_panel: ProsePanel = %ProsePanel
@@ -266,6 +266,8 @@ func _handle_sync_response(response: Dictionary) -> void:
 
 	if _last_savepoint_seq > _last_checkpoint_written_seq and _last_savepoint_seq <= _client_seq:
 		_write_local_checkpoint()
+	var accepted_entries: Array = body.get("accepted", [])
+	var rejected_entries: Array = body.get("rejected", [])
 
 	_enqueue_telemetry(
 		"sync_response",
@@ -274,8 +276,8 @@ func _handle_sync_response(response: Dictionary) -> void:
 		{
 			"status": int(response.get("status", 0)),
 			"canonicalSeq": int(canonical.get("seq", _client_seq)),
-			"acceptedCount": (body.get("accepted", []) as Array).size(),
-			"rejectedCount": (body.get("rejected", []) as Array).size(),
+			"acceptedCount": accepted_entries.size(),
+			"rejectedCount": rejected_entries.size(),
 			"reconcileRequired": bool(body.get("reconcileRequired", false)),
 		}
 	)
@@ -711,6 +713,9 @@ func _apply_runtime_config(config: Dictionary) -> void:
 	if _sync_client == null:
 		return
 	var api_base_url := String(config.get("apiBaseUrl", "")).strip_edges()
+	var configured_build := String(config.get("buildId", _telemetry_build_id)).strip_edges()
+	if not configured_build.is_empty():
+		_telemetry_build_id = configured_build
 	if not api_base_url.is_empty():
 		_sync_client.api_base_url = api_base_url
 

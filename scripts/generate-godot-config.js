@@ -70,10 +70,12 @@ function buildGodotConfig({ runtimeConfig, source }) {
 	const envApiBase = normalizeConfigValue(
 		process.env.VITE_API_BASE_URL || process.env.VITE_API_BASE || "",
 	);
+	const envBuildId = normalizeConfigValue(process.env.VITE_BUILD_ID || "");
 	const envNarrate = normalizeConfigValue(process.env.VITE_NARRATE_ENDPOINT || "");
 	const fileApiBase = normalizeConfigValue(
 		runtimeConfig.VITE_API_BASE_URL || runtimeConfig.VITE_API_BASE || "",
 	);
+	const fileBuildId = normalizeConfigValue(runtimeConfig.VITE_BUILD_ID || "");
 	const fileNarrate = normalizeConfigValue(runtimeConfig.VITE_NARRATE_ENDPOINT || "");
 	const resolvedApiBase = envApiBase || fileApiBase;
 	const syncCommandPath = normalizeRelativeApiPath(
@@ -101,6 +103,7 @@ function buildGodotConfig({ runtimeConfig, source }) {
 		schemaVersion: 1,
 		generatedAt: new Date().toISOString(),
 		source,
+		buildId: envBuildId || fileBuildId || "godot-dev",
 		apiBaseUrl:
 			resolvedApiBase && resolvedApiBase !== "/"
 				? resolvedApiBase

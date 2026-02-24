@@ -108,7 +108,15 @@ Last implementation check: 2026-02-24
     - `npm run generate:godot-config` (PASS)
     - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/TelemetryRoute.test.js --runInBand` (12 passed)
     - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
-- [ ] M9 (next): add telemetry ingest health smoke script + report artifact for quality gate packet inputs
+- [x] M9 (next): add telemetry ingest health smoke script + report artifact for quality gate packet inputs
+  - Evidence: `scripts/run-telemetry-ingest-smoke.mjs`, `package.json`, `docs/reports/telemetry_ingest_health_smoke_2026-02-24.md`
+  - Verification: `npm run test:telemetry:smoke` (PASS; status 202, accepted 2, dropped 0)
+- [x] M9 (next): harden CI matrix with nightly replay/load workflow and artifact capture
+  - Evidence: `.github/workflows/nightly-replay-load.yml`, `package.json`, `docs/reports/m9_quality_gate_packet_template.md`, `docs/reports/m9_nightly_replay_load_bootstrap_2026-02-24.md`
+  - Verification:
+    - `npm test -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncProgressionScenarioHarness.test.js tests/unit/SyncReplayRoute.test.js tests/unit/TelemetryRoute.test.js --runInBand` (14 passed)
+    - `npm run simulate:nightly` (PASS; success rate 97.0%)
+    - `npm run test:telemetry:smoke` (PASS; status 202, accepted 2, dropped 0)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

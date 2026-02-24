@@ -127,6 +127,9 @@ Last implementation check: 2026-02-24
   - Verification:
     - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/TelemetryRoute.test.js --runInBand` (9 passed)
     - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
+- [x] M10 (partial): add staging soak smoke harness and runbook baseline for parity/auth/reconnect readiness checks
+  - Evidence: `scripts/run-staging-soak-smoke.mjs`, `package.json`, `docs/M10_STAGING_SOAK_RUNBOOK.md`, `docs/reports/m10_staging_soak_smoke_2026-02-24.md`
+  - Verification: `npm run test:staging:soak-smoke` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS; 4 checks, 0 failed)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

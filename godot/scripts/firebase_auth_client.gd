@@ -139,13 +139,13 @@ func _request_json(
 			"error": "request_start_failed",
 		}
 
-	var completed := await request.request_completed
+	var completed: Array = await request.request_completed
 	request.queue_free()
 	var response_code := int(completed[1])
 	var raw_body := PackedByteArray(completed[3]).get_string_from_utf8()
 	var parsed_body: Dictionary = {}
 	if not raw_body.is_empty():
-		var parsed := JSON.parse_string(raw_body)
+		var parsed: Variant = JSON.parse_string(raw_body)
 		if typeof(parsed) == TYPE_DICTIONARY:
 			parsed_body = parsed
 

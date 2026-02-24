@@ -11,6 +11,7 @@ const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SA
 @onready var _npc_guide: ColorRect = %NpcGuide
 @onready var _auth_client: FirebaseAuthClient = %AuthClient
 @onready var _sync_client: SyncClient = %SyncClient
+@onready var _story_client = %StoryClient
 @onready var _config_loader: ConfigLoader = %ConfigLoader
 @onready var _trigger_queue: TriggerQueue = %TriggerQueue
 @onready var _prose_panel: ProsePanel = %ProsePanel
@@ -26,6 +27,9 @@ var _sync_in_flight: bool = false
 var _last_savepoint_seq: int = 0
 var _last_checkpoint_written_seq: int = 0
 var _runtime_config: Dictionary = {}
+var _last_story_context_key: String = ""
+var _pending_story_context_key: String = ""
+var _story_request_in_flight: bool = false
 
 
 func _ready() -> void:
@@ -45,8 +49,10 @@ func _ready() -> void:
 	_render_story()
 
 	_sync_client.auth_client_path = _auth_client.get_path()
+	_story_client.auth_client_path = _auth_client.get_path()
 	_sync_client.sync_rejected.connect(_on_sync_rejected)
 	await _auth_client.ensure_session()
+	_queue_story_refresh()
 
 	_flush_timer = Timer.new()
 	_flush_timer.one_shot = false
@@ -241,6 +247,7 @@ func _apply_canonical_state(canonical: Dictionary) -> void:
 		_last_savepoint_seq = int(savepoint.get("seq", _last_savepoint_seq))
 	_update_scene_for_map()
 	_render_story()
+	_queue_story_refresh()
 
 
 func _local_precheck_trigger(
@@ -337,28 +344,121 @@ func _update_scene_for_map() -> void:
 
 
 func _render_story() -> void:
-	if bool(_quest_flags.get("quest_tutorial_encounter_resolved", false)):
-		_prose_panel.set_story(
-			"Trial Cleared",
-			"You crossed the encounter gate and returned with a story etched into the run."
-		)
-		return
-	if bool(_quest_flags.get("quest_tutorial_started", false)):
-		_prose_panel.set_story(
-			"Guide's Challenge",
-			"Find the training gate and step through. Return once the trial resolves."
-		)
-		return
-	if bool(_quest_flags.get("slice_intro_seen", false)):
-		_prose_panel.set_story(
-			"A Voice in the Square",
-			"The guide watches from the center tile. Press E near them to begin."
-		)
-		return
+	var fallback: Dictionary = _fallback_story_payload()
+	var fallback_suggestions: Array = fallback.get("suggestions", []) as Array
 	_prose_panel.set_story(
-		"Arrival",
-		"Walk across the square. Trigger commits are sparse and server-validated."
+		String(fallback.get("title", "Arrival")),
+		String(fallback.get("body", "The run continues.")),
+		fallback_suggestions
 	)
+
+
+func _queue_story_refresh() -> void:
+	if _story_client == null:
+		return
+	var context_key := _story_context_key()
+	if context_key == _last_story_context_key:
+		return
+	_pending_story_context_key = context_key
+	if _story_request_in_flight:
+		return
+	_story_request_in_flight = true
+	_refresh_story_for_context(context_key)
+
+
+func _refresh_story_for_context(context_key: String) -> void:
+	var fallback: Dictionary = _fallback_story_payload()
+	var request_payload: Dictionary = {
+		"runId": run_id,
+		"mapId": _current_map_id,
+		"clientSeq": _client_seq,
+		"questFlags": _quest_flags.duplicate(true),
+	}
+	var prompt := _build_story_prompt(fallback)
+	var mode := String(fallback.get("mode", "exploration"))
+	var story_result: Dictionary = await _story_client.request_story(prompt, mode, request_payload)
+
+	_story_request_in_flight = false
+	if context_key != _pending_story_context_key:
+		_queue_story_refresh()
+		return
+
+	_last_story_context_key = context_key
+	var narrative := String(story_result.get("narrative", "")).strip_edges()
+	if narrative.is_empty():
+		narrative = String(fallback.get("body", "The story presses onward."))
+	var suggestions: Array = story_result.get("suggestions", fallback.get("suggestions", [])) as Array
+	_prose_panel.set_story(
+		String(fallback.get("title", "Story")),
+		narrative,
+		suggestions
+	)
+
+
+func _story_context_key() -> String:
+	return "%s|%d|%d|%d" % [
+		_current_map_id,
+		int(bool(_quest_flags.get("slice_intro_seen", false))),
+		int(bool(_quest_flags.get("quest_tutorial_started", false))),
+		int(bool(_quest_flags.get("quest_tutorial_encounter_resolved", false))),
+	]
+
+
+func _fallback_story_payload() -> Dictionary:
+	if bool(_quest_flags.get("quest_tutorial_encounter_resolved", false)):
+		return {
+			"title": "Trial Cleared",
+			"body": "You crossed the encounter gate and returned with a story etched into the run.",
+			"mode": "scene-transition",
+			"suggestions": [
+				{"t": "report back to the guide", "w": 1.0},
+				{"t": "check quest log", "w": 0.9},
+				{"t": "save progress", "w": 0.85},
+			],
+		}
+	if bool(_quest_flags.get("quest_tutorial_started", false)):
+		return {
+			"title": "Guide's Challenge",
+			"body": "Find the training gate and step through. Return once the trial resolves.",
+			"mode": "exploration",
+			"suggestions": [
+				{"t": "head to training gate", "w": 1.0},
+				{"t": "scan the glade", "w": 0.9},
+				{"t": "return to square", "w": 0.8},
+			],
+		}
+	if bool(_quest_flags.get("slice_intro_seen", false)):
+		return {
+			"title": "A Voice in the Square",
+			"body": "The guide watches from the center tile. Press E near them to begin.",
+			"mode": "dialogue",
+			"suggestions": [
+				{"t": "approach the guide", "w": 1.0},
+				{"t": "ask about the trial", "w": 0.9},
+				{"t": "prepare to move out", "w": 0.85},
+			],
+		}
+	return {
+		"title": "Arrival",
+		"body": "Walk across the square. Trigger commits are sparse and server-validated.",
+		"mode": "exploration",
+		"suggestions": [
+			{"t": "walk the square", "w": 1.0},
+			{"t": "inspect nearby tiles", "w": 0.9},
+			{"t": "locate the guide", "w": 0.85},
+		],
+	}
+
+
+func _build_story_prompt(fallback: Dictionary) -> String:
+	var lines: Array[String] = []
+	lines.append("Write 2-3 concise, in-world sentences for the player.")
+	lines.append("Avoid markdown, role disclaimers, or system framing.")
+	lines.append("mapId=%s runId=%s seq=%d" % [_current_map_id, run_id, _client_seq])
+	lines.append("storyState=%s" % String(fallback.get("title", "Arrival")))
+	lines.append("fallbackHint=%s" % String(fallback.get("body", "")))
+	lines.append("questFlags=%s" % JSON.stringify(_quest_flags))
+	return "\n".join(lines)
 
 
 func _write_local_checkpoint() -> void:
@@ -397,10 +497,10 @@ func _apply_runtime_config(config: Dictionary) -> void:
 	if not api_base_url.is_empty():
 		_sync_client.api_base_url = api_base_url
 
-	var command_path := _normalize_sync_path(
+	var command_path := _normalize_api_path(
 		String(config.get("syncCommandPath", _sync_client.sync_command_path))
 	)
-	var pull_path := _normalize_sync_path(
+	var pull_path := _normalize_api_path(
 		String(config.get("syncPullPath", _sync_client.sync_pull_path))
 	)
 	if not command_path.is_empty():
@@ -408,8 +508,22 @@ func _apply_runtime_config(config: Dictionary) -> void:
 	if not pull_path.is_empty():
 		_sync_client.sync_pull_path = pull_path
 
+	if _story_client != null:
+		if not api_base_url.is_empty():
+			_story_client.api_base_url = api_base_url
+		var story_start_path := _normalize_api_path(
+			String(config.get("storyStartPath", _story_client.story_start_path))
+		)
+		var story_poll_path := _normalize_api_path(
+			String(config.get("storyPollPath", _story_client.story_poll_path))
+		)
+		if not story_start_path.is_empty():
+			_story_client.story_start_path = story_start_path
+		if not story_poll_path.is_empty():
+			_story_client.story_poll_path = story_poll_path
 
-func _normalize_sync_path(path_value: String) -> String:
+
+func _normalize_api_path(path_value: String) -> String:
 	var trimmed := path_value.strip_edges()
 	if trimmed.is_empty():
 		return ""

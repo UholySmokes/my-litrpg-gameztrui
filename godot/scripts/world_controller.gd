@@ -85,7 +85,7 @@ func _on_flush_timer_timeout() -> void:
 	if not _trigger_queue.should_flush():
 		return
 	_sync_in_flight = true
-	var response := await _trigger_queue.flush_pending(_sync_client)
+	var response: Dictionary = await _trigger_queue.flush_pending(_sync_client)
 	await _handle_sync_response(response)
 	_sync_in_flight = false
 
@@ -120,7 +120,7 @@ func _try_savepoint() -> void:
 
 
 func _process_tile_triggers(tile: Vector2i) -> void:
-	var triggers := _find_triggers_at_tile(_current_map_id, tile)
+	var triggers: Array = _find_triggers_at_tile(_current_map_id, tile)
 	for hit in triggers:
 		var trigger_id := String(hit.id)
 		var def: Dictionary = hit.def
@@ -128,7 +128,7 @@ func _process_tile_triggers(tile: Vector2i) -> void:
 		if trigger_type == "ENTER_TILE":
 			if not _local_precheck_trigger(trigger_id, def, 0, false):
 				continue
-			var queued := _build_commit_envelope(trigger_id, def)
+			var queued: Dictionary = _build_commit_envelope(trigger_id, def)
 			if queued.is_empty():
 				continue
 			_trigger_queue.queue_enter_tile(queued)
@@ -138,18 +138,18 @@ func _process_tile_triggers(tile: Vector2i) -> void:
 			await _send_immediate_commit(trigger_id, def)
 
 	if _trigger_queue.should_flush():
-		var response := await _trigger_queue.flush_pending(_sync_client)
+		var response: Dictionary = await _trigger_queue.flush_pending(_sync_client)
 		await _handle_sync_response(response)
 
 
 func _send_immediate_commit(trigger_id: String, def: Dictionary) -> void:
 	if _sync_in_flight:
 		return
-	var envelope := _build_commit_envelope(trigger_id, def)
+	var envelope: Dictionary = _build_commit_envelope(trigger_id, def)
 	if envelope.is_empty():
 		return
 	_sync_in_flight = true
-	var response := await _trigger_queue.send_immediate(_sync_client, envelope)
+	var response: Dictionary = await _trigger_queue.send_immediate(_sync_client, envelope)
 	await _handle_sync_response(response)
 	_sync_in_flight = false
 
@@ -197,7 +197,7 @@ func _handle_sync_response(response: Dictionary) -> void:
 	if body.is_empty():
 		return
 
-	var canonical := body.get("canonicalState", {})
+	var canonical: Dictionary = body.get("canonicalState", {})
 	if typeof(canonical) == TYPE_DICTIONARY and not canonical.is_empty():
 		_apply_canonical_state(canonical)
 
@@ -210,7 +210,7 @@ func _handle_sync_response(response: Dictionary) -> void:
 
 
 func _reconcile_from_pull() -> void:
-	var pull_response := await _sync_client.pull(run_id, 0)
+	var pull_response: Dictionary = await _sync_client.pull(run_id, 0)
 	if not bool(pull_response.get("http_ok", false)):
 		_prose_panel.append_line("Reconcile pull failed; staying in local safe mode.")
 		return
@@ -218,7 +218,7 @@ func _reconcile_from_pull() -> void:
 	if not bool(body.get("ok", false)):
 		_prose_panel.append_line("Reconcile pull returned no canonical state.")
 		return
-	var canonical := body.get("canonicalState", {})
+	var canonical: Dictionary = body.get("canonicalState", {})
 	if typeof(canonical) == TYPE_DICTIONARY and not canonical.is_empty():
 		_apply_canonical_state(canonical)
 	_trigger_queue.clear_pending()
@@ -251,7 +251,7 @@ func _local_precheck_trigger(
 ) -> bool:
 	var trigger_tile := Vector2i(int(def.get("x", 0)), int(def.get("y", 0)))
 	var player_tile := _get_player_tile()
-	var dist := abs(player_tile.x - trigger_tile.x) + abs(player_tile.y - trigger_tile.y)
+	var dist: int = abs(player_tile.x - trigger_tile.x) + abs(player_tile.y - trigger_tile.y)
 	if dist > max_distance:
 		_prose_panel.append_line("Too far from trigger.")
 		return false
@@ -282,7 +282,7 @@ func _find_nearest_trigger(trigger_type: String) -> Dictionary:
 		if String(def.get("type", "")) != trigger_type:
 			continue
 		var tile := Vector2i(int(def.get("x", 0)), int(def.get("y", 0)))
-		var dist := abs(player_tile.x - tile.x) + abs(player_tile.y - tile.y)
+		var dist: int = abs(player_tile.x - tile.x) + abs(player_tile.y - tile.y)
 		if dist < best_dist:
 			best_dist = dist
 			best = {
@@ -380,7 +380,7 @@ func _load_checkpoint_and_pull() -> void:
 		if file:
 			var raw := file.get_as_text()
 			file.close()
-			var parsed := JSON.parse_string(raw)
+			var parsed: Variant = JSON.parse_string(raw)
 			if typeof(parsed) == TYPE_DICTIONARY:
 				run_id = String(parsed.get("run_id", run_id))
 	await _reconcile_from_pull()
@@ -427,7 +427,7 @@ func _load_manifest() -> Dictionary:
 		return {}
 	var text := file.get_as_text()
 	file.close()
-	var parsed := JSON.parse_string(text)
+	var parsed: Variant = JSON.parse_string(text)
 	if typeof(parsed) == TYPE_DICTIONARY:
 		return parsed
 	return {}

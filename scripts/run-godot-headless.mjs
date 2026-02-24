@@ -48,10 +48,18 @@ function main() {
 		HEADLESS_SCRIPT,
 	];
 	const run = spawnSync(godotBin, args, {
-		stdio: "inherit",
+		encoding: "utf8",
 	});
+	const output = `${run.stdout || ""}${run.stderr || ""}`;
+	if (run.stdout) process.stdout.write(run.stdout);
+	if (run.stderr) process.stderr.write(run.stderr);
 	if (run.error) {
 		console.error(run.error.message);
+		process.exitCode = 1;
+		return;
+	}
+	const hasScriptErrors = /(SCRIPT ERROR:|Parse Error:|Failed to load script)/.test(output);
+	if (hasScriptErrors) {
 		process.exitCode = 1;
 		return;
 	}

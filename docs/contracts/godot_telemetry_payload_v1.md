@@ -54,7 +54,9 @@ Minimum event fields:
 
 - Reporter queues events locally via `enqueue_event(...)`.
 - `flush(...)` sends up to `max_batch_size` events per request.
-- On successful HTTP response (`2xx`), sent events are removed from queue.
+- On successful HTTP response (`2xx`), sent events are removed from queue and backoff state is reset.
+- For retriable failures (network/5xx/timeouts), events remain queued and exponential backoff is applied (`retry_base_backoff_sec` up to `retry_max_backoff_sec`).
+- For non-retriable failures (`400`, `401`, `403`, `404`, `422`), the current batch is dropped and response metadata includes `dropped`.
 
 ## 5. Compatibility
 

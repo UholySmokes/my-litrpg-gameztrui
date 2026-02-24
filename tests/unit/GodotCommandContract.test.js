@@ -69,8 +69,13 @@ describe("godot command + config contract", () => {
 		const telemetry = readGodotAsset("godot/scripts/telemetry_reporter.gd");
 		expect(telemetry).toContain("class_name TelemetryReporter");
 		expect(telemetry).toContain('@export var telemetry_path: String = "/telemetry"');
+		expect(telemetry).toContain("@export var retry_base_backoff_sec: float = 0.5");
+		expect(telemetry).toContain("@export var retry_max_backoff_sec: float = 8.0");
+		expect(telemetry).toContain("non_retriable_statuses");
 		expect(telemetry).toContain("func enqueue_event(");
 		expect(telemetry).toContain("func flush(session_id: String, build_id: String, extra_tags: Dictionary = {}) -> Dictionary:");
+		expect(telemetry).toContain("retry_backoff_active");
+		expect(telemetry).toContain("non_retriable_telemetry_response");
 		expect(telemetry).toContain('"source": source_tag');
 		expect(telemetry).toContain('"sessionId": session_id.strip_edges()');
 		expect(telemetry).toContain('"build": build_id.strip_edges()');

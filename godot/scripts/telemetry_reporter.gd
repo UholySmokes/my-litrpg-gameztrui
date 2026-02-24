@@ -6,8 +6,13 @@ class_name TelemetryReporter
 @export var auth_client_path: NodePath
 @export var source_tag: String = "godot"
 @export var max_batch_size: int = 50
+@export var retry_base_backoff_sec: float = 0.5
+@export var retry_max_backoff_sec: float = 8.0
+@export var non_retriable_statuses: PackedInt32Array = PackedInt32Array([400, 401, 403, 404, 422])
 
 var _pending_events: Array = []
+var _consecutive_failures: int = 0
+var _next_retry_unix_msec: int = 0
 
 
 func enqueue_event(
@@ -44,6 +49,16 @@ func flush(session_id: String, build_id: String, extra_tags: Dictionary = {}) ->
 			},
 		}
 
+	var now_msec := Time.get_ticks_msec()
+	if now_msec < _next_retry_unix_msec:
+		return {
+			"http_ok": false,
+			"status": 0,
+			"body": {},
+			"error": "retry_backoff_active",
+			"retryAfterMs": _next_retry_unix_msec - now_msec,
+		}
+
 	var batch_count := mini(max_batch_size, _pending_events.size())
 	var batch_events: Array = _pending_events.slice(0, batch_count)
 	var payload := _build_payload(batch_events, session_id, build_id, extra_tags)
@@ -55,6 +70,19 @@ func flush(session_id: String, build_id: String, extra_tags: Dictionary = {}) ->
 	if bool(response.get("http_ok", false)):
 		for _i in range(batch_count):
 			_pending_events.remove_at(0)
+		_reset_retry_backoff()
+		return response
+
+	var status := int(response.get("status", 0))
+	if non_retriable_statuses.has(status):
+		for _i in range(batch_count):
+			_pending_events.remove_at(0)
+		_reset_retry_backoff()
+		response["error"] = "non_retriable_telemetry_response"
+		response["dropped"] = batch_count
+		return response
+
+	_register_retry_backoff()
 	return response
 
 
@@ -155,6 +183,19 @@ func _request_json(
 		"body": parsed_body,
 		"raw": raw_body,
 	}
+
+
+func _register_retry_backoff() -> void:
+	_consecutive_failures += 1
+	var exponent := maxi(_consecutive_failures - 1, 0)
+	var raw_delay := retry_base_backoff_sec * pow(2.0, float(exponent))
+	var backoff_sec := minf(retry_max_backoff_sec, raw_delay)
+	_next_retry_unix_msec = Time.get_ticks_msec() + int(backoff_sec * 1000.0)
+
+
+func _reset_retry_backoff() -> void:
+	_consecutive_failures = 0
+	_next_retry_unix_msec = 0
 
 
 func _iso_now() -> String:

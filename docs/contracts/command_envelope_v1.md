@@ -1,7 +1,7 @@
 # Command Envelope v1 Contract
 
 Status: Draft (target transport contract)  
-Last updated: 2026-02-23
+Last updated: 2026-02-24
 
 ## 1. Endpoint
 
@@ -23,6 +23,7 @@ Command envelope fields:
   "contentVersion": "sha256hex",
   "command": {
     "type": "TRIGGER",
+    "verb": "ENTER_TILE",
     "triggerType": "ENTER_TILE",
     "trigger": {
       "triggerId": "tile_intro_square",
@@ -44,8 +45,24 @@ Command envelope fields:
 - `createdAt`: ISO-8601 timestamp from client.
 - `contentVersion`: active world/content hash expected by server.
 - `command.type`: command family (`TRIGGER` in v1 slice).
-- `command.triggerType`: one of current trigger mutation types.
+- `command.verb`: canonical command verb for trigger execution (see `docs/contracts/command_verbs_v1.md`).
+- `command.triggerType`: optional compatibility alias for trigger verb; if present, must match `command.verb`.
 - `command.trigger`: deterministic trigger payload fields.
+
+### Supported v1 command verbs
+
+`TRIGGER` supports:
+
+1. `ENTER_TILE`
+2. `INTERACT`
+3. `ZONE_EXIT`
+4. `ENCOUNTER_GATE`
+5. `SAVEPOINT`
+
+Validation behavior:
+
+- Unknown verb values return `UNSUPPORTED_COMMAND_VERB`.
+- Mismatched `verb`/`triggerType` values return `COMMAND_VERB_TRIGGER_MISMATCH`.
 
 ## 3. v1 Transitional Compatibility
 
@@ -112,4 +129,3 @@ HTTP `409` when command is rejected and client must reconcile:
 - `401`: unauthenticated.
 - `409`: sequence/state/content mismatch, reconcile required.
 - `500`: unexpected server failure.
-

@@ -90,6 +90,10 @@ async function handleApiRequest(req, res) {
 		return sync.pull(req, res);
 	}
 
+	if (path === "/api/sync/replay" && method === "GET") {
+		return sync.replay(req, res);
+	}
+
 	if (path === "/api/sync/action" && method === "POST") {
 		res.set("Deprecation", "true");
 		res.set("Sunset", "Wed, 01 Jul 2026 00:00:00 GMT");

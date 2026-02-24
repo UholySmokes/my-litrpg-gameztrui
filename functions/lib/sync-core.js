@@ -1,28 +1,40 @@
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
+const {
+	SYNC_COMMAND_VERBS_V1,
+	COMMAND_VERB_POLICY_V1,
+} = require("./sync-command-contract");
 
-const TRIGGER_TYPES = Object.freeze([
-	"ENTER_TILE",
-	"INTERACT",
-	"ZONE_EXIT",
-	"ENCOUNTER_GATE",
-	"SAVEPOINT",
-]);
+const TRIGGER_TYPES = Object.freeze([...SYNC_COMMAND_VERBS_V1]);
 const SYNC_EVENT_TYPES = Object.freeze(["TRIGGER", "COMMAND"]);
 const SYNC_EVENT_TYPE_SET = new Set(SYNC_EVENT_TYPES);
 const TRIGGER_TYPE_SET = new Set(TRIGGER_TYPES);
 const BATCHABLE_TRIGGER_TYPE = "ENTER_TILE";
-const IMMEDIATE_TRIGGER_TYPES = new Set([
-	"INTERACT",
-	"ZONE_EXIT",
-	"ENCOUNTER_GATE",
-	"SAVEPOINT",
-]);
+const IMMEDIATE_TRIGGER_TYPES = new Set(
+	Object.keys(COMMAND_VERB_POLICY_V1).filter(
+		(verb) => Boolean(COMMAND_VERB_POLICY_V1[verb]?.immediate),
+	),
+);
 const MAX_ENTER_TILE_BATCH_WINDOW_MS = 100;
 const MAX_ENTER_TILE_BATCH_ITEMS = 4;
 const DEFAULT_MANIFEST_PATH = path.resolve(__dirname, "sync-world-manifest.v1.json");
 const DEFAULT_STATE_VERSION = 1;
+const XP_PER_LEVEL = 100;
+const ENCOUNTER_REWARD_TABLE = Object.freeze({
+	victory: Object.freeze({
+		xp: 40,
+		gold: 12,
+		itemId: "training_emblem",
+		quantity: 1,
+	}),
+	setback: Object.freeze({
+		xp: 20,
+		gold: 4,
+		itemId: "field_bandage",
+		quantity: 1,
+	}),
+});
 
 let manifestCache = null;
 
@@ -48,6 +60,12 @@ function toInteger(value) {
 
 function normalizeString(value) {
 	return typeof value === "string" ? value.trim() : "";
+}
+
+function toNonNegativeInteger(value, fallback = 0) {
+	const parsed = toInteger(value);
+	if (!Number.isInteger(parsed) || parsed < 0) return fallback;
+	return parsed;
 }
 
 function normalizeEventType(value, fallback = "TRIGGER") {
@@ -327,6 +345,115 @@ function createHashPayload(state) {
 		contentVersion: state.contentVersion,
 		stateVersion: state.stateVersion,
 		runSeed: state.runSeed,
+	};
+}
+
+function createDefaultProgressionState() {
+	return {
+		level: 1,
+		xp: 0,
+		gold: 0,
+		inventory: [],
+	};
+}
+
+function normalizeProgressionState(input) {
+	const source = isRecord(input) ? input : {};
+	const level = Math.max(1, toNonNegativeInteger(source.level, 1));
+	const xp = toNonNegativeInteger(source.xp, 0);
+	const gold = toNonNegativeInteger(source.gold, 0);
+	const inventoryMap = new Map();
+	const inventoryInput = Array.isArray(source.inventory) ? source.inventory : [];
+	for (const rawItem of inventoryInput) {
+		if (!isRecord(rawItem)) continue;
+		const itemId = normalizeString(rawItem.id);
+		const quantity = toNonNegativeInteger(rawItem.quantity, 0);
+		if (!itemId || quantity < 1) continue;
+		inventoryMap.set(itemId, (inventoryMap.get(itemId) || 0) + quantity);
+	}
+	const inventory = Array.from(inventoryMap.entries())
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(([id, quantity]) => ({ id, quantity }));
+	return {
+		level,
+		xp,
+		gold,
+		inventory,
+	};
+}
+
+function withInventoryReward(inventory, { itemId, quantity }) {
+	const normalizedItemId = normalizeString(itemId);
+	const normalizedQty = toNonNegativeInteger(quantity, 0);
+	if (!normalizedItemId || normalizedQty < 1) return inventory;
+	const map = new Map(
+		(Array.isArray(inventory) ? inventory : [])
+			.filter((item) => isRecord(item) && normalizeString(item.id))
+			.map((item) => [
+				normalizeString(item.id),
+				toNonNegativeInteger(item.quantity, 0),
+			]),
+	);
+	map.set(normalizedItemId, (map.get(normalizedItemId) || 0) + normalizedQty);
+	return Array.from(map.entries())
+		.filter(([, qty]) => qty > 0)
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(([id, qty]) => ({ id, quantity: qty }));
+}
+
+function applyEncounterProgressionMutation({
+	nextState,
+	commit,
+	triggerDef,
+	resolvedTargetId,
+	roll,
+}) {
+	const outcome = roll >= 50 ? "victory" : "setback";
+	const reward = ENCOUNTER_REWARD_TABLE[outcome] || ENCOUNTER_REWARD_TABLE.setback;
+	const progression = normalizeProgressionState(
+		nextState.entityStates.progression || createDefaultProgressionState(),
+	);
+
+	progression.xp += reward.xp;
+	progression.gold += reward.gold;
+	progression.inventory = withInventoryReward(progression.inventory, {
+		itemId: reward.itemId,
+		quantity: reward.quantity,
+	});
+
+	const levelsGained = [];
+	for (;;) {
+		const levelThreshold = Math.max(1, progression.level) * XP_PER_LEVEL;
+		if (progression.xp < levelThreshold) break;
+		progression.xp -= levelThreshold;
+		progression.level += 1;
+		levelsGained.push(progression.level);
+	}
+
+	nextState.entityStates.progression = progression;
+	nextState.entityStates.combat = {
+		encounterId: resolvedTargetId || triggerDef.id,
+		status: "resolved",
+		outcome,
+		roll,
+		rewards: {
+			xp: reward.xp,
+			gold: reward.gold,
+			itemId: reward.itemId,
+			quantity: reward.quantity,
+		},
+		levelsGained,
+		resolvedAtSeq: commit.clientSeq,
+		resolvedAtTick: nextState.tick,
+	};
+	nextState.questFlags.quest_tutorial_combat_resolved = true;
+	nextState.questFlags.quest_tutorial_combat_victory = outcome === "victory";
+	nextState.questFlags.quest_tutorial_combat_setback = outcome === "setback";
+	nextState.questFlags.quest_tutorial_loot_claimed = true;
+
+	return {
+		outcome,
+		reward,
 	};
 }
 
@@ -715,14 +842,31 @@ function applyCommitToState({ state, commit, triggerDef, resolvedTargetId }) {
 			subsystemTag: "encounter",
 		});
 		const roll = Math.floor(rng() * 100);
+		const encounterResult = applyEncounterProgressionMutation({
+			nextState,
+			commit,
+			triggerDef,
+			resolvedTargetId,
+			roll,
+		});
 		nextState.entityStates.encounter = {
 			gateId: resolvedTargetId || triggerDef.id,
 			status: "resolved",
 			roll,
-			outcome: roll >= 50 ? "win" : "setback",
+			outcome:
+				encounterResult.outcome === "victory"
+					? "win"
+					: encounterResult.outcome,
+			rewards: {
+				xp: encounterResult.reward.xp,
+				gold: encounterResult.reward.gold,
+				itemId: encounterResult.reward.itemId,
+				quantity: encounterResult.reward.quantity,
+			},
 		};
 		nextState.questFlags.quest_tutorial_encounter_resolved = true;
-		nextState.questFlags.quest_tutorial_encounter_win = roll >= 50;
+		nextState.questFlags.quest_tutorial_encounter_win =
+			encounterResult.outcome === "victory";
 		applyManifestTransition(nextState, triggerDef);
 	}
 
@@ -731,6 +875,14 @@ function applyCommitToState({ state, commit, triggerDef, resolvedTargetId }) {
 	}
 
 	if (commit.triggerType === "SAVEPOINT") {
+		const progression = normalizeProgressionState(
+			nextState.entityStates.progression || createDefaultProgressionState(),
+		);
+		nextState.entityStates.progression = progression;
+		const inventoryUnitCount = progression.inventory.reduce(
+			(total, item) => total + toNonNegativeInteger(item.quantity, 0),
+			0,
+		);
 		nextState.entityStates.lastSavepoint = {
 			triggerId: triggerDef.id,
 			mapId: commit.trigger.mapId,
@@ -738,7 +890,14 @@ function applyCommitToState({ state, commit, triggerDef, resolvedTargetId }) {
 			y: commit.trigger.y,
 			seq: commit.clientSeq,
 			tick: nextState.tick,
+			progression: {
+				level: progression.level,
+				xp: progression.xp,
+				gold: progression.gold,
+				inventoryUnitCount,
+			},
 		};
+		nextState.questFlags.quest_tutorial_savepoint_bound = true;
 	}
 
 	if (commit.triggerType === "ENTER_TILE") {

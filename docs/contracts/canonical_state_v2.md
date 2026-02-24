@@ -1,7 +1,7 @@
 # Canonical State v2 Contract
 
 Status: Draft (implementation-aligned)  
-Last updated: 2026-02-23
+Last updated: 2026-02-24
 
 ## 1. Purpose
 
@@ -31,7 +31,12 @@ Current world/movement projection needed by runtime clients.
   "worldId": "voidverse_slice_world_001",
   "mapId": "map_village_square",
   "playerPos": { "x": 6, "y": 8 },
-  "entityStates": {}
+  "entityStates": {
+    "combat": {},
+    "encounter": {},
+    "progression": {},
+    "lastSavepoint": {}
+  }
 }
 ```
 
@@ -41,9 +46,13 @@ Deterministic gameplay progression state.
 
 ```json
 {
-  "questFlags": {}
+  "questFlags": {
+    "quest_tutorial_started": true
+  }
 }
 ```
+
+Progression/combat details are defined in `docs/contracts/gameplay_progression_v1.md`.
 
 ### `narrativeState`
 
@@ -100,4 +109,3 @@ This allows dual-read during migration while clients adopt the grouped v2 contra
 - Contract version: v2 (domain-grouped layout).
 - Storage `stateVersion` remains numeric and is persisted in canonical run session.
 - During migration, server may continue returning flattened shape while adapters emit v2 grouped form for downstream consumers.
-

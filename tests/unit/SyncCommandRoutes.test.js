@@ -41,6 +41,7 @@ function createCommandEnvelope({
 	runId,
 	clientSeq,
 	contentVersion,
+	verb = "ENTER_TILE",
 	createdAt = "2026-02-23T10:00:00.000Z",
 }) {
 	return {
@@ -52,7 +53,8 @@ function createCommandEnvelope({
 		contentVersion,
 		command: {
 			type: "TRIGGER",
-			triggerType: "ENTER_TILE",
+			verb,
+			triggerType: verb,
 			trigger: {
 				triggerId: "tile_intro_square",
 				mapId: "map_village_square",
@@ -223,5 +225,70 @@ describe("/api/sync/command route", () => {
 		expect(res.body.reconcileRequired).toBe(true);
 		expect(res.body.rejected[0].errorCode).toBe("CONTENT_VERSION_MISMATCH");
 	});
-});
 
+	it("rejects unsupported command verb", async () => {
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "user-command-6" },
+			body: {
+				...createCommandEnvelope({
+					id: "cmd-verb-bad-1",
+					runId: "run-command-verb-bad",
+					clientSeq: 1,
+					contentVersion: manifest.contentVersion,
+				}),
+				command: {
+					type: "TRIGGER",
+					verb: "TELEPORT",
+					triggerType: "TELEPORT",
+					trigger: {
+						triggerId: "tile_intro_square",
+						mapId: "map_village_square",
+						x: 6,
+						y: 8,
+					},
+				},
+			},
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(400);
+		expect(res.body.ok).toBe(false);
+		expect(res.body.errorCode).toBe("UNSUPPORTED_COMMAND_VERB");
+	});
+
+	it("rejects mismatched command verb and trigger type", async () => {
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "user-command-7" },
+			body: {
+				...createCommandEnvelope({
+					id: "cmd-verb-mismatch-1",
+					runId: "run-command-verb-mismatch",
+					clientSeq: 1,
+					contentVersion: manifest.contentVersion,
+				}),
+				command: {
+					type: "TRIGGER",
+					verb: "INTERACT",
+					triggerType: "ENTER_TILE",
+					trigger: {
+						triggerId: "tile_intro_square",
+						mapId: "map_village_square",
+						x: 6,
+						y: 8,
+					},
+				},
+			},
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(400);
+		expect(res.body.ok).toBe(false);
+		expect(res.body.errorCode).toBe("COMMAND_VERB_TRIGGER_MISMATCH");
+	});
+});

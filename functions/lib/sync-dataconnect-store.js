@@ -119,6 +119,8 @@ function mapRunEventToRow(ownerId, event) {
 		error_code: normalizeString(event.errorCode) || null,
 		message: normalizeString(event.message) || null,
 		state_hash: normalizeString(event.stateHash) || null,
+		seq: Number.isFinite(Number(event.seq)) ? Number(event.seq) : null,
+		tick: Number.isFinite(Number(event.tick)) ? Number(event.tick) : null,
 		event_type: normalizeString(normalizedEvent.eventType) || "TRIGGER",
 		trigger_type:
 			normalizeString(normalizedEvent.triggerType) ||
@@ -293,6 +295,8 @@ async function appendEvent({ ownerId, runId, event }) {
 			error_code: normalizeString(event.error_code) || null,
 			message: normalizeString(event.message) || null,
 			state_hash: normalizeString(event.state_hash) || null,
+			seq: Number.isFinite(Number(event.seq)) ? Number(event.seq) : null,
+			tick: Number.isFinite(Number(event.tick)) ? Number(event.tick) : null,
 			commit: event?.commit || null,
 			created_at: new Date().toISOString(),
 		}

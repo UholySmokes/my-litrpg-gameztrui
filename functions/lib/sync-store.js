@@ -170,6 +170,8 @@ function mapEventDoc(doc) {
 		error_code: typeof data.error_code === "string" ? data.error_code : null,
 		message: typeof data.message === "string" ? data.message : null,
 		state_hash: typeof data.state_hash === "string" ? data.state_hash : null,
+		seq: Number.isFinite(Number(data.seq)) ? Number(data.seq) : null,
+		tick: Number.isFinite(Number(data.tick)) ? Number(data.tick) : null,
 		event_type:
 			typeof data.event_type === "string"
 				? data.event_type
@@ -248,6 +250,8 @@ async function fileAppendEvent({ ownerId, runId, event }) {
 		error_code: typeof event.error_code === "string" ? event.error_code : null,
 		message: typeof event.message === "string" ? event.message : null,
 		state_hash: typeof event.state_hash === "string" ? event.state_hash : null,
+		seq: Number.isFinite(Number(event.seq)) ? Number(event.seq) : null,
+		tick: Number.isFinite(Number(event.tick)) ? Number(event.tick) : null,
 		event_type: String(normalizedEvent.eventType || "TRIGGER"),
 		trigger_type:
 			typeof normalizedEvent.triggerType === "string"
@@ -330,6 +334,8 @@ async function fireAppendEvent({ ownerId, runId, event }) {
 		error_code: typeof event.error_code === "string" ? event.error_code : null,
 		message: typeof event.message === "string" ? event.message : null,
 		state_hash: typeof event.state_hash === "string" ? event.state_hash : null,
+		seq: Number.isFinite(Number(event.seq)) ? Number(event.seq) : null,
+		tick: Number.isFinite(Number(event.tick)) ? Number(event.tick) : null,
 		event_type: String(normalizedEvent.eventType || "TRIGGER"),
 		trigger_type:
 			typeof normalizedEvent.triggerType === "string"

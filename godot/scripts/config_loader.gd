@@ -13,7 +13,7 @@ const DEFAULT_CONFIG := {
 
 
 func load_runtime_config(config_path: String = CONFIG_PATH) -> Dictionary:
-	var merged := DEFAULT_CONFIG.duplicate(true)
+	var merged: Dictionary = DEFAULT_CONFIG.duplicate(true)
 	if not FileAccess.file_exists(config_path):
 		return merged
 
@@ -26,11 +26,10 @@ func load_runtime_config(config_path: String = CONFIG_PATH) -> Dictionary:
 	if raw.strip_edges().is_empty():
 		return merged
 
-	var parsed := JSON.parse_string(raw)
+	var parsed: Variant = JSON.parse_string(raw)
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return merged
 
 	for key in parsed.keys():
 		merged[key] = parsed[key]
 	return merged
-

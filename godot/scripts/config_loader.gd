@@ -7,6 +7,7 @@ const DEFAULT_CONFIG := {
 	"apiBaseUrl": "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api",
 	"syncCommandPath": "/sync/command",
 	"syncPullPath": "/sync/pull",
+	"telemetryPath": "/telemetry",
 	"storyStartPath": "/story/start",
 	"storyPollPath": "/story/poll",
 }

@@ -20,6 +20,7 @@ const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"
 @onready var _auth_client: FirebaseAuthClient = %AuthClient
 @onready var _sync_client: SyncClient = %SyncClient
 @onready var _story_client = %StoryClient
+@onready var _telemetry_reporter: TelemetryReporter = %TelemetryReporter
 @onready var _config_loader: ConfigLoader = %ConfigLoader
 @onready var _trigger_queue: TriggerQueue = %TriggerQueue
 @onready var _prose_panel: ProsePanel = %ProsePanel
@@ -35,6 +36,8 @@ var _sync_in_flight: bool = false
 var _last_savepoint_seq: int = 0
 var _last_checkpoint_written_seq: int = 0
 var _runtime_config: Dictionary = {}
+var _telemetry_session_id: String = ""
+var _telemetry_build_id: String = "godot-unknown"
 var _last_story_context_key: String = ""
 var _pending_story_context_key: String = ""
 var _story_request_in_flight: bool = false
@@ -53,6 +56,8 @@ func _ready() -> void:
 
 	if run_id.strip_edges().is_empty():
 		run_id = "slice-run-%d" % int(Time.get_unix_time_from_system())
+	_telemetry_session_id = "godot-session-%d" % int(Time.get_unix_time_from_system())
+	_telemetry_build_id = String(_runtime_config.get("buildId", "godot-4.x"))
 
 	var start: Dictionary = _manifest.get("start", {})
 	_current_map_id = str(start.get("mapId", "map_village_square"))
@@ -64,8 +69,20 @@ func _ready() -> void:
 
 	_sync_client.auth_client_path = _auth_client.get_path()
 	_story_client.auth_client_path = _auth_client.get_path()
+	if _telemetry_reporter != null:
+		_telemetry_reporter.auth_client_path = _auth_client.get_path()
+		_enqueue_telemetry(
+			"world_ready",
+			"info",
+			"world_controller_ready",
+			{
+				"runId": run_id,
+				"mapId": _current_map_id,
+			}
+		)
 	_sync_client.sync_rejected.connect(_on_sync_rejected)
 	await _auth_client.ensure_session()
+	await _flush_telemetry_if_needed()
 	_queue_story_refresh()
 
 	_flush_timer = Timer.new()
@@ -108,6 +125,7 @@ func _on_flush_timer_timeout() -> void:
 	var response: Dictionary = await _trigger_queue.flush_pending(_sync_client)
 	await _handle_sync_response(response)
 	_sync_in_flight = false
+	await _flush_telemetry_if_needed()
 
 
 func _try_move(direction: Vector2i) -> void:
@@ -213,6 +231,15 @@ func _build_commit_envelope(trigger_id: String, def: Dictionary) -> Dictionary:
 func _handle_sync_response(response: Dictionary) -> void:
 	if not bool(response.get("http_ok", false)):
 		_prose_panel.append_line("Sync unavailable. Local traversal continues in safe mode.")
+		_enqueue_telemetry(
+			"sync_response",
+			"error",
+			"sync_unavailable",
+			{
+				"status": int(response.get("status", 0)),
+				"error": String(response.get("error", "")),
+			}
+		)
 		return
 
 	var body: Dictionary = response.get("body", {})
@@ -225,10 +252,34 @@ func _handle_sync_response(response: Dictionary) -> void:
 
 	if bool(body.get("reconcileRequired", false)):
 		_trigger_queue.clear_pending()
+		_enqueue_telemetry(
+			"sync_reconcile_required",
+			"warn",
+			"reconcile_required",
+			{
+				"runId": run_id,
+				"clientSeq": _client_seq,
+				"rejected": body.get("rejected", []),
+			}
+		)
 		await _reconcile_from_pull()
 
 	if _last_savepoint_seq > _last_checkpoint_written_seq and _last_savepoint_seq <= _client_seq:
 		_write_local_checkpoint()
+
+	_enqueue_telemetry(
+		"sync_response",
+		"info",
+		"sync_response_ok",
+		{
+			"status": int(response.get("status", 0)),
+			"canonicalSeq": int(canonical.get("seq", _client_seq)),
+			"acceptedCount": (body.get("accepted", []) as Array).size(),
+			"rejectedCount": (body.get("rejected", []) as Array).size(),
+			"reconcileRequired": bool(body.get("reconcileRequired", false)),
+		}
+	)
+	await _flush_telemetry_if_needed()
 
 
 func _reconcile_from_pull() -> void:
@@ -645,6 +696,15 @@ func _load_checkpoint_and_pull() -> void:
 
 func _on_sync_rejected(_payload: Dictionary) -> void:
 	_prose_panel.append_line("Command rejected by authority; reconciling...")
+	_enqueue_telemetry(
+		"sync_rejected_signal",
+		"warn",
+		"sync_rejected_signal",
+		{
+			"runId": run_id,
+			"clientSeq": _client_seq,
+		}
+	)
 
 
 func _apply_runtime_config(config: Dictionary) -> void:
@@ -678,6 +738,39 @@ func _apply_runtime_config(config: Dictionary) -> void:
 			_story_client.story_start_path = story_start_path
 		if not story_poll_path.is_empty():
 			_story_client.story_poll_path = story_poll_path
+
+	if _telemetry_reporter != null:
+		if not api_base_url.is_empty():
+			_telemetry_reporter.api_base_url = api_base_url
+		var telemetry_path := _normalize_api_path(
+			String(config.get("telemetryPath", _telemetry_reporter.telemetry_path))
+		)
+		if not telemetry_path.is_empty():
+			_telemetry_reporter.telemetry_path = telemetry_path
+
+
+func _enqueue_telemetry(
+	event_type: String,
+	level: String = "info",
+	message: String = "",
+	data: Dictionary = {}
+) -> void:
+	if _telemetry_reporter == null:
+		return
+	_telemetry_reporter.enqueue_event(event_type, level, message, data)
+
+
+func _flush_telemetry_if_needed() -> void:
+	if _telemetry_reporter == null:
+		return
+	if not _telemetry_reporter.has_pending():
+		return
+	var tags := {
+		"runId": run_id,
+		"mapId": _current_map_id,
+		"clientId": _sync_client.client_id,
+	}
+	await _telemetry_reporter.flush(_telemetry_session_id, _telemetry_build_id, tags)
 
 
 func _normalize_api_path(path_value: String) -> String:

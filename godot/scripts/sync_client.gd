@@ -35,7 +35,7 @@ func pull(run_id: String, after_seq: int = 0) -> Dictionary:
 
 
 func _authorized_json_request(endpoint: String, method: int, payload: Variant) -> Dictionary:
-	var auth_client := _auth_client()
+	var auth_client: FirebaseAuthClient = _auth_client()
 	var token := ""
 	if auth_client:
 		token = await auth_client.get_id_token()
@@ -44,7 +44,7 @@ func _authorized_json_request(endpoint: String, method: int, payload: Variant) -
 	if not token.is_empty():
 		headers.append("Authorization: Bearer %s" % token)
 
-	var response := await _request_json(_build_url(endpoint), method, headers, payload)
+	var response: Dictionary = await _request_json(_build_url(endpoint), method, headers, payload)
 	if response.status == 401 and auth_client:
 		var refreshed := await auth_client.refresh_id_token()
 		if refreshed:
@@ -53,7 +53,6 @@ func _authorized_json_request(endpoint: String, method: int, payload: Variant) -
 			if not retry_token.is_empty():
 				retry_headers.append("Authorization: Bearer %s" % retry_token)
 			response = await _request_json(_build_url(endpoint), method, retry_headers, payload)
-	}
 
 	_set_safe_mode(not response.http_ok)
 	if response.status == 409 and typeof(response.body) == TYPE_DICTIONARY:
@@ -106,13 +105,13 @@ func _request_json(
 			"error": "request_start_failed",
 		}
 
-	var completed := await request.request_completed
+	var completed: Array = await request.request_completed
 	request.queue_free()
 	var response_code := int(completed[1])
 	var raw_body := PackedByteArray(completed[3]).get_string_from_utf8()
 	var parsed_body: Dictionary = {}
 	if not raw_body.is_empty():
-		var parsed := JSON.parse_string(raw_body)
+		var parsed: Variant = JSON.parse_string(raw_body)
 		if typeof(parsed) == TYPE_DICTIONARY:
 			parsed_body = parsed
 

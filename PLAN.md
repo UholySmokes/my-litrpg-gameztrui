@@ -135,6 +135,11 @@ Last implementation check: 2026-02-24
   - Verification:
     - `npm test -- tests/unit/SyncReconnectStorm.test.js tests/unit/SyncCommandRoutes.test.js --runInBand` (8 passed)
     - `npm run test:staging:soak-smoke` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS; 4 checks, 0 failed)
+- [x] M10 (partial): add auth-guard command route coverage and include it in staging soak smoke checks
+  - Evidence: `tests/unit/SyncCommandRoutes.test.js`, `scripts/run-staging-soak-smoke.mjs`
+  - Verification:
+    - `npm test -- tests/unit/SyncCommandRoutes.test.js tests/unit/SyncReconnectStorm.test.js --runInBand` (9 passed)
+    - `npm run test:staging:soak-smoke` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS; 4 checks, 0 failed)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

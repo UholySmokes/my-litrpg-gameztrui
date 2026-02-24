@@ -23,13 +23,15 @@
     "test:firestore-rules:emulator": "node scripts/run-firestore-rules-emulator.mjs",
     "test:performance": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/performanceEffects.test.js",
     "test:godot:headless": "node scripts/run-godot-headless.mjs",
+    "test:godot:perf": "node scripts/run-godot-perf-probe.mjs",
     "simulate": "node sim_gamestart_fixed.js",
     "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",
     "simulate:csv": "node sim_gamestart_fixed.js --format csv",
     "simulate:full": "node sim_gamestart_fixed.js --runs 100",
     "validate:registries": "node scripts/validate-registries.mjs",
     "validate:archetypes": "node scripts/validate-archetypes.mjs",
-    "generate:godot-config": "node scripts/generate-godot-config.js"
+    "generate:godot-config": "node scripts/generate-godot-config.js",
+    "generate:godot-assets:placeholder": "powershell -ExecutionPolicy Bypass -File scripts/generate-godot-placeholder-assets.ps1"
   },
   "dependencies": {
     "@dataconnect/generated": "file:src/dataconnect-generated",

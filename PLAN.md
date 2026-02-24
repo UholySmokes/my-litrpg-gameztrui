@@ -53,7 +53,13 @@ Last implementation check: 2026-02-24
   - Verification:
     - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/HandlersNarrate.test.js --runInBand` (13 passed)
     - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
-- [ ] M6: hook real sprite assets + perf instrumentation baselines for map traversal
+- [x] M6: hook real sprite assets + perf instrumentation baselines for map traversal
+  - Evidence: `docs/ART_ASSET_LIST.md` (integration status), `godot/assets/**` (placeholder runtime pack), `scripts/generate-godot-placeholder-assets.ps1`, `godot/scenes/Main.tscn`, `godot/scripts/world_controller.gd`, `godot/scripts/pixel_map_renderer.gd`, `godot/scripts/headless_perf_probe.gd`, `scripts/run-godot-perf-probe.mjs`, `docs/reports/godot_map_traversal_perf_baseline_2026-02-24.md`
+  - Verification:
+    - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/HandlersNarrate.test.js --runInBand` (13 passed)
+    - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
+    - `npm run test:godot:perf` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS, baseline report written)
+- [ ] M7: start progression depth slice by locking initial command verb set + scenario harness skeleton
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

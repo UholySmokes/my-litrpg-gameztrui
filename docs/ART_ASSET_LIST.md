@@ -120,3 +120,9 @@
   - `/props/{item_name}.png`
   - `/ui/{element}_sheet.png`
 - [ ] **License File:** Included `LICENSE` or `NOTICE` text file specifying rights.
+
+## 8. Integration Status (2026-02-24)
+- [x] Initial placeholder PNG runtime pack generated under `godot/assets`.
+- [x] Runtime hooks wired for character sprites and tileset atlases.
+- [x] Placeholder asset notice included at `godot/assets/NOTICE.txt`.
+- [ ] Replace placeholders with final production art exports (`.ase`/`.psd` + final PNG sheets).

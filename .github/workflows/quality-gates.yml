@@ -31,6 +31,9 @@ jobs:
       - name: Godot Headless Smoke
         run: npm run test:godot:headless
 
+      - name: Godot Perf Probe
+        run: npm run test:godot:perf
+
   app-quality:
     runs-on: ubuntu-latest
     steps:

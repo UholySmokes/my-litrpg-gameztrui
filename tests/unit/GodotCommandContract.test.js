@@ -63,6 +63,7 @@ describe("godot command + config contract", () => {
 		const prose = readGodotAsset("godot/scripts/prose_panel.gd");
 		const mapRenderer = readGodotAsset("godot/scripts/pixel_map_renderer.gd");
 		const manifest = JSON.parse(readGodotAsset("godot/data/world_manifest.json"));
+		const perfRunner = readGodotAsset("scripts/run-godot-perf-probe.mjs");
 
 		expect(scene).toContain('path="res://scripts/story_client.gd"');
 		expect(scene).toContain('[node name="StoryClient" type="Node" parent="."]');
@@ -70,11 +71,18 @@ describe("godot command + config contract", () => {
 		expect(scene).toContain('[node name="MapRenderer" type="Node2D" parent="."]');
 		expect(scene).toContain('[node name="SpriteHooks" type="Node2D" parent="."]');
 		expect(scene).toContain('[node name="PlayerSpriteAnchor" type="Node2D" parent="SpriteHooks"]');
+		expect(scene).toContain('[node name="PlayerSprite" type="Sprite2D" parent="SpriteHooks/PlayerSpriteAnchor"]');
 		expect(scene).toContain('[node name="GuideSpriteAnchor" type="Node2D" parent="SpriteHooks"]');
+		expect(scene).toContain('[node name="GuideSprite" type="Sprite2D" parent="SpriteHooks/GuideSpriteAnchor"]');
 		expect(world).toContain("@onready var _story_client = %StoryClient");
 		expect(world).toContain("@onready var _map_renderer = %MapRenderer");
 		expect(world).toContain("@onready var _player_sprite_anchor: Node2D = %PlayerSpriteAnchor");
 		expect(world).toContain("@onready var _guide_sprite_anchor: Node2D = %GuideSpriteAnchor");
+		expect(world).toContain("@onready var _player_sprite: Sprite2D = %PlayerSprite");
+		expect(world).toContain("@onready var _guide_sprite: Sprite2D = %GuideSprite");
+		expect(world).toContain('const PLAYER_SPRITE_PATH := "res://assets/characters/traveler_idle_down.png"');
+		expect(world).toContain('const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"');
+		expect(world).toContain("func _assign_sprite_texture(sprite: Sprite2D, asset_path: String) -> void:");
 		expect(world).toContain("_story_client.auth_client_path = _auth_client.get_path()");
 		expect(world).toContain("_queue_story_refresh()");
 		expect(world).toContain('String(config.get("storyStartPath", _story_client.story_start_path))');
@@ -82,6 +90,8 @@ describe("godot command + config contract", () => {
 		expect(world).toContain("_map_renderer.render_map(");
 		expect(world).toContain("_guide_sprite_anchor.visible = _npc_guide.visible");
 		expect(world).toContain("func _trigger_tiles_for_map(map_id: String) -> Array:");
+		expect(world).toContain("func get_perf_snapshot() -> Dictionary:");
+		expect(world).toContain("func run_perf_baseline(iterations: int = 180) -> Dictionary:");
 
 		expect(story).toContain("class_name StoryClient");
 		expect(story).toContain('@export var story_start_path: String = "/story/start"');
@@ -94,12 +104,28 @@ describe("godot command + config contract", () => {
 		expect(mapRenderer).toContain("func render_map(map_id: String, width: int, height: int, trigger_tiles: Array = []) -> void:");
 		expect(mapRenderer).toContain("func _marker_color_for_trigger(trigger_type: String) -> Color:");
 		expect(mapRenderer).toContain('"map_ruined_outlook"');
+		expect(mapRenderer).toContain("const TILE_ATLAS_PATHS := {");
+		expect(mapRenderer).toContain('res://assets/tilesets/village_square_atlas.png');
+		expect(mapRenderer).toContain("draw_texture_rect_region(");
+
+		expect(perfRunner).toContain("res://scripts/headless_perf_probe.gd");
+		expect(perfRunner).toContain("godot_map_traversal_perf_baseline_");
 
 		expect(Object.keys(manifest.maps || {}).length).toBeGreaterThanOrEqual(3);
 		expect(manifest.maps?.map_ruined_outlook).toBeTruthy();
 		expect(manifest.triggers?.zone_exit_to_ruins).toBeTruthy();
 		expect(manifest.triggers?.zone_exit_ruins_to_glade).toBeTruthy();
 		expect(manifest.triggers?.zone_exit_ruins_to_square).toBeTruthy();
+
+		expect(fs.existsSync(path.resolve(process.cwd(), "godot/assets/characters/traveler_idle_down.png"))).toBe(
+			true,
+		);
+		expect(fs.existsSync(path.resolve(process.cwd(), "godot/assets/tilesets/village_square_atlas.png"))).toBe(
+			true,
+		);
+		expect(fs.existsSync(path.resolve(process.cwd(), "godot/assets/ui/prose_panel_frame.png"))).toBe(
+			true,
+		);
 		
 		expect(prose).toContain("Suggested actions:");
 		expect(prose).toContain("func _format_suggestions(suggestions: Array) -> String:");

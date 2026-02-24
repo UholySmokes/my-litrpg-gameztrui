@@ -2,6 +2,13 @@ extends Node2D
 class_name PixelMapRenderer
 
 const TILE_SIZE := 32
+const ATLAS_COLUMNS := 3
+
+const TILE_ATLAS_PATHS := {
+	"map_village_square": "res://assets/tilesets/village_square_atlas.png",
+	"map_training_glade": "res://assets/tilesets/training_glade_atlas.png",
+	"map_ruined_outlook": "res://assets/tilesets/ruined_outlook_atlas.png",
+}
 
 const MAP_THEMES := {
 	"map_village_square": {
@@ -25,6 +32,11 @@ var _current_map_id: String = ""
 var _map_width: int = 1
 var _map_height: int = 1
 var _trigger_tiles: Dictionary = {}
+var _atlas_cache: Dictionary = {}
+
+
+func _ready() -> void:
+	_load_atlases()
 
 
 func render_map(map_id: String, width: int, height: int, trigger_tiles: Array = []) -> void:
@@ -50,6 +62,9 @@ func _draw() -> void:
 	var ground: Color = theme.get("ground", Color(0.17, 0.21, 0.26, 1.0))
 	var path: Color = theme.get("path", Color(0.29, 0.34, 0.40, 1.0))
 	var accent: Color = theme.get("accent", Color(0.12, 0.16, 0.20, 1.0))
+	var atlas: Texture2D = null
+	if _atlas_cache.has(_current_map_id):
+		atlas = _atlas_cache[_current_map_id] as Texture2D
 
 	var canvas_rect := Rect2(
 		Vector2.ZERO,
@@ -63,7 +78,15 @@ func _draw() -> void:
 				Vector2(x * TILE_SIZE, y * TILE_SIZE),
 				Vector2(TILE_SIZE, TILE_SIZE)
 			)
-			draw_rect(tile_rect.grow(-1.0), _tile_color(x, y, ground, path, accent), true)
+			var tile_kind := _tile_kind(x, y)
+			if atlas != null:
+				draw_texture_rect_region(
+					atlas,
+					tile_rect,
+					Rect2(Vector2(tile_kind * TILE_SIZE, 0), Vector2(TILE_SIZE, TILE_SIZE))
+				)
+			else:
+				draw_rect(tile_rect.grow(-1.0), _tile_color_from_kind(tile_kind, ground, path, accent), true)
 			draw_rect(tile_rect, Color(1.0, 1.0, 1.0, 0.03), false, 1.0)
 
 			var key := _tile_key(x, y)
@@ -72,37 +95,66 @@ func _draw() -> void:
 				draw_rect(tile_rect.grow(-10.0), marker_color, true)
 
 
+func _load_atlases() -> void:
+	_atlas_cache.clear()
+	for map_id_value in TILE_ATLAS_PATHS.keys():
+		var map_id := String(map_id_value)
+		var path_value := String(TILE_ATLAS_PATHS[map_id_value])
+		var absolute_path := ProjectSettings.globalize_path(path_value)
+		if not FileAccess.file_exists(absolute_path):
+			continue
+		var image := Image.new()
+		if image.load(absolute_path) != OK:
+			continue
+		var texture := ImageTexture.create_from_image(image)
+		if texture != null:
+			_atlas_cache[map_id] = texture
+
+
 func _theme_for_map(map_id: String) -> Dictionary:
 	if MAP_THEMES.has(map_id):
 		return MAP_THEMES[map_id]
 	return MAP_THEMES["map_village_square"]
 
 
-func _tile_color(x: int, y: int, ground: Color, path: Color, accent: Color) -> Color:
+func _tile_kind(x: int, y: int) -> int:
 	if _current_map_id == "map_village_square":
 		if y == 8 or x == 10:
-			return path
+			return 1
 		if (x + y) % 5 == 0:
-			return accent
-		return ground
+			return 2
+		return 0
 
 	if _current_map_id == "map_training_glade":
 		if x == 0 or x == _map_width - 1 or y == 0 or y == _map_height - 1:
-			return accent
+			return 2
 		if (x * 13 + y * 7) % 6 == 0:
-			return path
-		return ground
+			return 1
+		return 0
 
 	if _current_map_id == "map_ruined_outlook":
 		if y > _map_height - 3:
-			return path
+			return 1
 		if (x * 3 + y * 5) % 7 == 0:
-			return accent
-		return ground
+			return 2
+		return 0
 
 	if (x + y) % 2 == 0:
-		return ground
-	return accent
+		return 0
+	return 2
+
+
+func _tile_color_from_kind(kind: int, ground: Color, path: Color, accent: Color) -> Color:
+	var normalized: int = kind
+	if normalized < 0:
+		normalized = 0
+	if normalized > ATLAS_COLUMNS - 1:
+		normalized = ATLAS_COLUMNS - 1
+	if normalized == 1:
+		return path
+	if normalized == 2:
+		return accent
+	return ground
 
 
 func _marker_color_for_trigger(trigger_type: String) -> Color:

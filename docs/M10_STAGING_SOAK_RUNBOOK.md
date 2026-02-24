@@ -31,6 +31,12 @@ Artifacts:
 - `docs/reports/m10_staging_soak_smoke_<YYYY-MM-DD>.md`
 - `docs/reports/telemetry_ingest_health_smoke_<YYYY-MM-DD>.md`
 
+Generate sign-off packet:
+
+```bash
+npm run report:staging:signoff
+```
+
 ## Manual Drill Checklist
 
 1. Auth expiry drill:
@@ -42,6 +48,11 @@ Artifacts:
 3. Rollback drill:
    - Revert to last known-good deployment package.
    - Run soak smoke harness and compare parity hash stability.
+   - Validate rollback signature parity:
+
+```bash
+npm run test:rollback:parity
+```
 
 ## Exit Criteria for M10
 

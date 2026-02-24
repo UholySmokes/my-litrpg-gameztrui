@@ -12,7 +12,7 @@ Last implementation check: 2026-02-24
 - [x] Command envelope v1 contract drafted (`docs/contracts/command_envelope_v1.md`)
 - [x] Dependency map exists and is maintained (`PLAN.md` section `## 6`)
 - [x] Decision log initialized (`PLAN.md` section `## 10`)
-- [ ] Formal roadmap/contracts approval recorded by owners
+- [x] Formal roadmap/contracts approval recorded by owners (`docs/ROADMAP_CONTRACT_APPROVAL_2026-02-24.md`)
 
 ### Next unblocked implementation slices
 - [x] M1: add explicit command identity model (`RunEvent.eventType`) in schema + adapters

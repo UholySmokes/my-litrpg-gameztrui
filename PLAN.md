@@ -43,7 +43,17 @@ Last implementation check: 2026-02-24
   - Verification:
     - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/HandlersNarrate.test.js --runInBand` (13 passed)
     - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
-- [ ] M6: start pixel presentation MVP slice (tilemap/sprite pipeline + 3-5 map hub foundation)
+- [x] M6 (partial): add pixel map renderer foundation for tile-pattern maps and trigger markers
+  - Evidence: `godot/scripts/pixel_map_renderer.gd`, `godot/scripts/world_controller.gd`, `godot/scenes/Main.tscn`, `godot/scripts/headless_smoke.gd`, `tests/unit/GodotCommandContract.test.js`, `godot/README.md`
+  - Verification:
+    - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/HandlersNarrate.test.js --runInBand` (13 passed)
+    - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
+- [x] M6: expand hub foundation to 3-map traversal + sprite pass hook points
+  - Evidence: `godot/data/world_manifest.json`, `godot/scripts/pixel_map_renderer.gd`, `godot/scenes/Main.tscn`, `godot/scripts/world_controller.gd`, `godot/scripts/headless_smoke.gd`, `tests/unit/GodotCommandContract.test.js`, `godot/README.md`
+  - Verification:
+    - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/HandlersNarrate.test.js --runInBand` (13 passed)
+    - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
+- [ ] M6: hook real sprite assets + perf instrumentation baselines for map traversal
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

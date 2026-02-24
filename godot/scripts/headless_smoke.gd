@@ -1,6 +1,7 @@
 extends SceneTree
 
 const CONFIG_PATH := "res://data/config.json"
+const MANIFEST_PATH := "res://data/world_manifest.json"
 const MAIN_SCENE_PATH := "res://scenes/Main.tscn"
 
 
@@ -37,6 +38,16 @@ func _init() -> void:
 			failures,
 		)
 
+	var manifest: Dictionary = _read_json(MANIFEST_PATH, failures)
+	if manifest.is_empty():
+		failures.append("World manifest is missing or invalid.")
+	else:
+		var maps: Dictionary = manifest.get("maps", {})
+		_assert(maps.size() >= 3, "world_manifest must define at least 3 maps.", failures)
+		_assert(maps.has("map_village_square"), "world_manifest missing map_village_square.", failures)
+		_assert(maps.has("map_training_glade"), "world_manifest missing map_training_glade.", failures)
+		_assert(maps.has("map_ruined_outlook"), "world_manifest missing map_ruined_outlook.", failures)
+
 	var packed: Variant = load(MAIN_SCENE_PATH)
 	if packed == null or not packed is PackedScene:
 		failures.append("Main scene failed to load as PackedScene.")
@@ -48,6 +59,10 @@ func _init() -> void:
 			_assert(root.has_node("ConfigLoader"), "Main scene missing ConfigLoader node.", failures)
 			_assert(root.has_node("SyncClient"), "Main scene missing SyncClient node.", failures)
 			_assert(root.has_node("StoryClient"), "Main scene missing StoryClient node.", failures)
+			_assert(root.has_node("MapRenderer"), "Main scene missing MapRenderer node.", failures)
+			_assert(root.has_node("SpriteHooks"), "Main scene missing SpriteHooks node.", failures)
+			_assert(root.has_node("SpriteHooks/PlayerSpriteAnchor"), "Main scene missing PlayerSpriteAnchor.", failures)
+			_assert(root.has_node("SpriteHooks/GuideSpriteAnchor"), "Main scene missing GuideSpriteAnchor.", failures)
 			root.free()
 
 	if failures.size() > 0:

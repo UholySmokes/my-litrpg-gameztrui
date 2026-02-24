@@ -7,7 +7,7 @@ const MAIN_SCENE_PATH := "res://scenes/Main.tscn"
 func _init() -> void:
 	var failures: Array[String] = []
 
-	var config := _read_json(CONFIG_PATH, failures)
+	var config: Dictionary = _read_json(CONFIG_PATH, failures)
 	if config.is_empty():
 		failures.append("Runtime config is missing or invalid.")
 	else:
@@ -25,11 +25,11 @@ func _init() -> void:
 			failures,
 		)
 
-	var packed := load(MAIN_SCENE_PATH)
+	var packed: Variant = load(MAIN_SCENE_PATH)
 	if packed == null or not packed is PackedScene:
 		failures.append("Main scene failed to load as PackedScene.")
 	else:
-		var root := (packed as PackedScene).instantiate()
+		var root: Node = (packed as PackedScene).instantiate()
 		if root == null:
 			failures.append("Main scene could not instantiate.")
 		else:
@@ -63,7 +63,7 @@ func _read_json(path_value: String, failures: Array[String]) -> Dictionary:
 		failures.append("File empty: " + path_value)
 		return {}
 
-	var parsed := JSON.parse_string(text)
+	var parsed: Variant = JSON.parse_string(text)
 	if typeof(parsed) != TYPE_DICTIONARY:
 		failures.append("JSON root must be object: " + path_value)
 		return {}
@@ -73,4 +73,3 @@ func _read_json(path_value: String, failures: Array[String]) -> Dictionary:
 func _assert(condition: bool, message: String, failures: Array[String]) -> void:
 	if not condition:
 		failures.append(message)
-

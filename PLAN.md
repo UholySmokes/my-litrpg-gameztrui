@@ -99,7 +99,10 @@ Last implementation check: 2026-02-24
 - [x] M9 (next): scaffold quality gate packet template (CI history + security register + telemetry health sections)
   - Evidence: `docs/reports/m9_quality_gate_packet_template.md`
   - Verification: `npm test -- tests/unit/SyncReplayRoute.test.js --runInBand` (3 passed)
-- [ ] M9 (next): add telemetry ingest route contract scaffold (`POST /api/telemetry`) for Godot/web runtime observability
+- [x] M9 (next): add telemetry ingest route contract scaffold (`POST /api/telemetry`) for Godot/web runtime observability
+  - Evidence: `functions/lib/telemetry.js`, `functions/lib/api-router.js`, `tests/unit/TelemetryRoute.test.js`, `docs/contracts/telemetry_ingest_v1.md`
+  - Verification: `npm test -- tests/unit/TelemetryRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js tests/unit/SyncReplayRoute.test.js --runInBand` (10 passed)
+- [ ] M9 (next): add Godot telemetry reporter payload schema + client-to-endpoint contract test coverage
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

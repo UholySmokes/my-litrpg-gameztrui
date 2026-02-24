@@ -9,6 +9,7 @@ const {
 } = require("./handlers");
 const { handleSavesRequest } = require("./saves");
 const sync = require("./sync");
+const telemetry = require("./telemetry");
 
 function normalizePath(url) {
 	const raw = typeof url === "string" ? url : "";
@@ -72,6 +73,10 @@ async function handleApiRequest(req, res) {
 
 	if (path === "/api/story/poll" && method === "GET") {
 		return narratePoll(req, res);
+	}
+
+	if (path === "/api/telemetry" && method === "POST") {
+		return telemetry.telemetryIngest(req, res);
 	}
 
 	if (path === "/api/sync/commit" && method === "POST") {

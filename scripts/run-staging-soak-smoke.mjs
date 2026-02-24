@@ -90,6 +90,7 @@ async function main() {
 			"--",
 			"tests/unit/SyncCoreDeterminism.test.js",
 			"tests/unit/SyncProgressionScenarioHarness.test.js",
+			"tests/unit/SyncReconnectStorm.test.js",
 			"--runInBand",
 		]),
 	);

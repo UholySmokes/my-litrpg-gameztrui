@@ -74,6 +74,12 @@ VITE_FIREBASE_APP_ID=...
 # Local dev auth fallback (optional)
 # VITE_DEV_USER_ID=local-dev
 # VITE_DEV_USER_EMAIL=local-dev@example.com
+
+# Web gameplay gate (production-safe default)
+# Dev builds always allow gameplay UI.
+# Outside dev, gameplay UI is disabled unless explicitly enabled.
+# VITE_WEB_GAMEPLAY_ENABLED=true
+# (alias: VITE_ENABLE_WEB_GAMEPLAY=true)
 ```
 
 Firebase local dev:
@@ -96,6 +102,25 @@ Narrative endpoint notes:
 - `npm run build` – Production build (Vite)
 - `npm run preview` – Preview production build
 - `npm run lint` – ESLint with React hooks rules
+
+### Replay Inspector (Dev Only)
+
+The web tooling path includes a dev-only replay/hash inspector window backed by `GET /api/sync/replay`.
+
+Usage:
+
+1. Start API + web locally (`npm run dev:api` and `npm run dev`).
+2. Open the game shell in a dev build.
+3. Click `Replay Inspector` in quick actions.
+4. Enter sync `runId` and click `Fetch`.
+5. Inspect canonical tip, `hashTimeline`, and replay timeline rows.
+
+Relevant files:
+
+- `src/components/ReplayInspector.jsx`
+- `src/core/SyncReplayService.js`
+- `docs/contracts/replay_timeline_v1.md`
+- `docs/reports/m8_replay_inspector_acceptance_checklist_2026-02-24.md`
 
 ---
 

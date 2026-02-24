@@ -7,8 +7,11 @@ const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SA
 @export var run_id: String = "slice-run-001"
 
 @onready var _map_background: ColorRect = %MapBackground
+@onready var _map_renderer = %MapRenderer
 @onready var _player: ColorRect = %Player
+@onready var _player_sprite_anchor: Node2D = %PlayerSpriteAnchor
 @onready var _npc_guide: ColorRect = %NpcGuide
+@onready var _guide_sprite_anchor: Node2D = %GuideSpriteAnchor
 @onready var _auth_client: FirebaseAuthClient = %AuthClient
 @onready var _sync_client: SyncClient = %SyncClient
 @onready var _story_client = %StoryClient
@@ -322,6 +325,8 @@ func _within_map_bounds(map_id: String, tile: Vector2i) -> bool:
 
 func _set_player_tile(tile: Vector2i) -> void:
 	_player.position = Vector2(tile.x * TILE_SIZE + 2, tile.y * TILE_SIZE + 2)
+	if _player_sprite_anchor != null:
+		_player_sprite_anchor.position = _player.position
 
 
 func _get_player_tile() -> Vector2i:
@@ -339,8 +344,20 @@ func _update_scene_for_map() -> void:
 		color = Color(0.08, 0.17, 0.11, 1.0)
 	_map_background.color = color
 
+	var map_entry: Dictionary = _manifest.get("maps", {}).get(_current_map_id, {})
+	if _map_renderer != null:
+		_map_renderer.render_map(
+			_current_map_id,
+			int(map_entry.get("width", 1)),
+			int(map_entry.get("height", 1)),
+			_trigger_tiles_for_map(_current_map_id),
+		)
+
 	_npc_guide.visible = _current_map_id == "map_village_square"
 	_npc_guide.position = Vector2(10 * TILE_SIZE + 2, 8 * TILE_SIZE + 2)
+	if _guide_sprite_anchor != null:
+		_guide_sprite_anchor.position = _npc_guide.position
+		_guide_sprite_anchor.visible = _npc_guide.visible
 
 
 func _render_story() -> void:
@@ -459,6 +476,20 @@ func _build_story_prompt(fallback: Dictionary) -> String:
 	lines.append("fallbackHint=%s" % String(fallback.get("body", "")))
 	lines.append("questFlags=%s" % JSON.stringify(_quest_flags))
 	return "\n".join(lines)
+
+
+func _trigger_tiles_for_map(map_id: String) -> Array:
+	var tiles: Array = []
+	var map_entry: Dictionary = _manifest.get("maps", {}).get(map_id, {})
+	var trigger_ids: Array = map_entry.get("triggers", [])
+	for trigger_id in trigger_ids:
+		var def: Dictionary = _manifest.get("triggers", {}).get(String(trigger_id), {})
+		tiles.append({
+			"x": int(def.get("x", -1)),
+			"y": int(def.get("y", -1)),
+			"type": String(def.get("type", "")),
+		})
+	return tiles
 
 
 func _write_local_checkpoint() -> void:

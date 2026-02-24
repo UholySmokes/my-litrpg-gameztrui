@@ -42,6 +42,13 @@ Set these exports in the Godot editor on the `AuthClient` and `SyncClient` nodes
 2. World state changes keep a local fallback prose payload active before remote story arrives.
 3. If story start/poll fails or times out, template-based fallback prose + suggestions render instead of a blank panel.
 
+## Pixel Map Foundation
+
+1. `PixelMapRenderer` draws map tiles and trigger markers from `world_manifest.json`.
+2. `WorldController` calls renderer updates on map changes (`_update_scene_for_map`).
+3. Hub traversal now includes three maps (`map_village_square` -> `map_training_glade` -> `map_ruined_outlook`).
+4. `SpriteHooks` (`PlayerSpriteAnchor`, `GuideSpriteAnchor`) are updated by the controller for future sprite replacement passes.
+
 ## Headless Runtime Harness
 
 1. Local smoke run:

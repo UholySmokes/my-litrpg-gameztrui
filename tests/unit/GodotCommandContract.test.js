@@ -61,14 +61,27 @@ describe("godot command + config contract", () => {
 		const world = readGodotAsset("godot/scripts/world_controller.gd");
 		const story = readGodotAsset("godot/scripts/story_client.gd");
 		const prose = readGodotAsset("godot/scripts/prose_panel.gd");
+		const mapRenderer = readGodotAsset("godot/scripts/pixel_map_renderer.gd");
+		const manifest = JSON.parse(readGodotAsset("godot/data/world_manifest.json"));
 
 		expect(scene).toContain('path="res://scripts/story_client.gd"');
 		expect(scene).toContain('[node name="StoryClient" type="Node" parent="."]');
+		expect(scene).toContain('path="res://scripts/pixel_map_renderer.gd"');
+		expect(scene).toContain('[node name="MapRenderer" type="Node2D" parent="."]');
+		expect(scene).toContain('[node name="SpriteHooks" type="Node2D" parent="."]');
+		expect(scene).toContain('[node name="PlayerSpriteAnchor" type="Node2D" parent="SpriteHooks"]');
+		expect(scene).toContain('[node name="GuideSpriteAnchor" type="Node2D" parent="SpriteHooks"]');
 		expect(world).toContain("@onready var _story_client = %StoryClient");
+		expect(world).toContain("@onready var _map_renderer = %MapRenderer");
+		expect(world).toContain("@onready var _player_sprite_anchor: Node2D = %PlayerSpriteAnchor");
+		expect(world).toContain("@onready var _guide_sprite_anchor: Node2D = %GuideSpriteAnchor");
 		expect(world).toContain("_story_client.auth_client_path = _auth_client.get_path()");
 		expect(world).toContain("_queue_story_refresh()");
 		expect(world).toContain('String(config.get("storyStartPath", _story_client.story_start_path))');
 		expect(world).toContain('String(config.get("storyPollPath", _story_client.story_poll_path))');
+		expect(world).toContain("_map_renderer.render_map(");
+		expect(world).toContain("_guide_sprite_anchor.visible = _npc_guide.visible");
+		expect(world).toContain("func _trigger_tiles_for_map(map_id: String) -> Array:");
 
 		expect(story).toContain("class_name StoryClient");
 		expect(story).toContain('@export var story_start_path: String = "/story/start"');
@@ -77,7 +90,17 @@ describe("godot command + config contract", () => {
 		expect(story).toContain("func poll(thread_id: String, run_id: String, mode: String = \"\") -> Dictionary:");
 		expect(story).toContain("func request_story(prompt: String, mode: String = \"exploration\", extra_payload: Dictionary = {}) -> Dictionary:");
 		expect(story).toContain("return _fallback_result(normalized_mode, \"story_poll_timeout\")");
+		expect(mapRenderer).toContain("class_name PixelMapRenderer");
+		expect(mapRenderer).toContain("func render_map(map_id: String, width: int, height: int, trigger_tiles: Array = []) -> void:");
+		expect(mapRenderer).toContain("func _marker_color_for_trigger(trigger_type: String) -> Color:");
+		expect(mapRenderer).toContain('"map_ruined_outlook"');
 
+		expect(Object.keys(manifest.maps || {}).length).toBeGreaterThanOrEqual(3);
+		expect(manifest.maps?.map_ruined_outlook).toBeTruthy();
+		expect(manifest.triggers?.zone_exit_to_ruins).toBeTruthy();
+		expect(manifest.triggers?.zone_exit_ruins_to_glade).toBeTruthy();
+		expect(manifest.triggers?.zone_exit_ruins_to_square).toBeTruthy();
+		
 		expect(prose).toContain("Suggested actions:");
 		expect(prose).toContain("func _format_suggestions(suggestions: Array) -> String:");
 	});

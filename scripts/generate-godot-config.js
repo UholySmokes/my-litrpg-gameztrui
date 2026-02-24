@@ -84,6 +84,10 @@ function buildGodotConfig({ runtimeConfig, source }) {
 		runtimeConfig.GODOT_SYNC_PULL_PATH || "",
 		"/sync/pull",
 	);
+	const telemetryPath = normalizeRelativeApiPath(
+		runtimeConfig.GODOT_TELEMETRY_PATH || "",
+		"/telemetry",
+	);
 	const storyStartPath = normalizeRelativeApiPath(
 		runtimeConfig.GODOT_STORY_START_PATH || "",
 		"/story/start",
@@ -107,6 +111,7 @@ function buildGodotConfig({ runtimeConfig, source }) {
 		),
 		syncCommandPath,
 		syncPullPath,
+		telemetryPath,
 		storyStartPath,
 		storyPollPath,
 	};

@@ -15,6 +15,7 @@ import TitleUI from "../../components/TitleUI.jsx";
 import ProfessionUI from "../../components/ProfessionUI.jsx";
 import StatusOverlay from "../../components/StatusOverlay.jsx";
 import SaveLoadUI from "../../components/SaveLoadUI.jsx";
+import ReplayInspector from "../../components/ReplayInspector.jsx";
 
 function deriveStoryWindowContext(latestEntry) {
   const narrativeText = String(latestEntry?.text || "").toLowerCase();
@@ -96,6 +97,7 @@ export default function GameMode({
   showProfessions = false,
   showStatusOverlay = false,
   showSaveLoad = false,
+  showReplayInspector = false,
   onCloseShop = () => {},
   onCloseGacha = () => {},
   onCloseTitleSystem = () => {},
@@ -104,6 +106,7 @@ export default function GameMode({
   onCloseSaveLoad = () => {},
   showQuests = false,
   onCloseQuests = () => {},
+  onCloseReplayInspector = () => {},
   onShopPurchase = () => {},
   onGachaPull = () => {},
   onTitleEquip = () => {},
@@ -411,6 +414,22 @@ export default function GameMode({
                 user={user}
               />
             ),
+          },
+        ]
+      : []),
+    ...(showReplayInspector
+      ? [
+          {
+            id: "replayInspector",
+            title: "Replay Inspector",
+            dockZone: "float",
+            position: { x: 180, y: 120 },
+            size: { w: 900, h: 620 },
+            minWidth: 620,
+            minHeight: 360,
+            openFullscreenOnce: true,
+            onClose: onCloseReplayInspector,
+            content: <ReplayInspector gameState={gameState} />,
           },
         ]
       : []),

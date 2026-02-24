@@ -11,6 +11,7 @@ import { seedWorldAfterCharacterCreation } from "../world/WorldInitializer.js";
 import CharacterCreationMode from "../ui/modes/CharacterCreationMode.jsx";
 import GameMode from "../ui/modes/GameMode.jsx";
 
+const IS_DEV_BUILD = Boolean(import.meta?.env?.DEV);
 const TYPEWRITER_CHAR_DELAY_MS = 28;
 
 const renderTypewriterText = (text = "") => {
@@ -99,6 +100,7 @@ export default function GameUI({ user }) {
   const [showStatusOverlay, setShowStatusOverlay] = useState(false);
   const [showSaveLoad, setShowSaveLoad] = useState(false);
   const [showQuests, setShowQuests] = useState(false);
+  const [showReplayInspector, setShowReplayInspector] = useState(false);
   const [equipmentSelectSlot, setEquipmentSelectSlot] = useState(null);
   const [autosavePrompt, setAutosavePrompt] = useState(readAutosavePromptCandidate);
 
@@ -817,6 +819,10 @@ export default function GameUI({ user }) {
   const handleCloseStatusOverlay = useCallback(() => setShowStatusOverlay(false), []);
   const handleCloseSaveLoad = useCallback(() => setShowSaveLoad(false), []);
   const handleCloseQuests = useCallback(() => setShowQuests(false), []);
+  const handleCloseReplayInspector = useCallback(
+    () => setShowReplayInspector(false),
+    [],
+  );
 
   return (
     <div className="app-frame">
@@ -917,6 +923,21 @@ export default function GameUI({ user }) {
               >
                 Save and Load
               </button>
+              {IS_DEV_BUILD && (
+                <button
+                  type="button"
+                  className="holo-button"
+                  onClick={() =>
+                    toggleWindow(
+                      "replayInspector",
+                      showReplayInspector,
+                      setShowReplayInspector,
+                    )
+                  }
+                >
+                  Replay Inspector
+                </button>
+              )}
             </div>
             <GameMode
               player={state?.player}
@@ -958,6 +979,7 @@ export default function GameUI({ user }) {
               showStatusOverlay={showStatusOverlay}
               showSaveLoad={showSaveLoad}
               showQuests={showQuests}
+              showReplayInspector={IS_DEV_BUILD && showReplayInspector}
               onCloseShop={handleCloseShop}
               onCloseGacha={handleCloseGacha}
               onCloseTitleSystem={handleCloseTitleSystem}
@@ -965,6 +987,7 @@ export default function GameUI({ user }) {
               onCloseStatusOverlay={handleCloseStatusOverlay}
               onCloseSaveLoad={handleCloseSaveLoad}
               onCloseQuests={handleCloseQuests}
+              onCloseReplayInspector={handleCloseReplayInspector}
               onShopPurchase={handleShopPurchase}
               onGachaPull={handleGachaPull}
               onTitleEquip={handleTitleEquip}

@@ -74,6 +74,10 @@ Last implementation check: 2026-02-24
 - [x] M7 (partial): cover deterministic setback branch for combat/inventory/quest progression
   - Evidence: `tests/unit/SyncProgressionScenarioHarness.test.js`
   - Verification: `npm test -- tests/unit/SyncProcess.test.js tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncValidation.test.js tests/unit/SyncProgressionScenarioHarness.test.js --runInBand` (25 passed)
+- [x] M8 (partial): add replay timeline API foundation for tooling/hash inspector
+  - Evidence: `functions/lib/sync.js`, `functions/lib/api-router.js`, `functions/lib/sync-store.js`, `functions/lib/sync-dataconnect-store.js`, `tests/unit/SyncReplayRoute.test.js`, `tests/unit/ApiRouterSyncRoutes.test.js`, `docs/contracts/replay_timeline_v1.md`
+  - Verification: `npm test -- tests/unit/ApiRouterSyncRoutes.test.js tests/unit/SyncReplayRoute.test.js tests/unit/SyncCommandRoutes.test.js tests/unit/SyncProcess.test.js tests/unit/SyncDataconnectStore.test.js --runInBand` (26 passed)
+- [ ] M8 (next): add dev-only web replay/hash inspector view consuming `GET /api/sync/replay`
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

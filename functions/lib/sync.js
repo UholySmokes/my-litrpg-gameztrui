@@ -16,6 +16,12 @@ const {
 	toPublicState,
 	hashCanonicalState,
 } = require("./sync-core");
+const {
+	SYNC_COMMAND_TYPES_V1,
+	SYNC_COMMAND_VERBS_V1,
+	normalizeSyncCommandType,
+	normalizeSyncCommandVerb,
+} = require("./sync-command-contract");
 const syncStore = require("./sync-store");
 const { persistRunSnapshot } = require("./sync-snapshots");
 
@@ -29,6 +35,14 @@ function parseInteger(value, fallback = 0) {
 	const parsed = Number(value);
 	if (!Number.isFinite(parsed)) return fallback;
 	return Math.floor(parsed);
+}
+
+function parseBoolean(value, fallback = false) {
+	const normalized = normalizeString(value).toLowerCase();
+	if (!normalized) return fallback;
+	if (["1", "true", "yes", "on"].includes(normalized)) return true;
+	if (["0", "false", "no", "off"].includes(normalized)) return false;
+	return fallback;
 }
 
 function normalizeStoredState(state, { runId, manifest }) {
@@ -632,17 +646,47 @@ function normalizeCommandBody(rawBody, manifest) {
 		};
 	}
 
-	const commandType = normalizeString(command.type).toUpperCase();
-	if (commandType !== "TRIGGER") {
+	const commandType = normalizeSyncCommandType(command.type);
+	if (!commandType) {
 		return {
 			ok: false,
 			errorCode: "UNSUPPORTED_COMMAND_TYPE",
-			message: "Only TRIGGER command type is supported in v1.",
+			message: `Supported command types: ${SYNC_COMMAND_TYPES_V1.join(", ")}.`,
 		};
 	}
 
-	const triggerType =
-		normalizeString(command.triggerType) || normalizeString(body.triggerType);
+	const rawCommandVerb =
+		normalizeString(command.verb) ||
+		normalizeString(command.triggerType) ||
+		normalizeString(body.triggerType);
+	const commandVerb = normalizeSyncCommandVerb(rawCommandVerb);
+	if (!commandVerb) {
+		return {
+			ok: false,
+			errorCode: "UNSUPPORTED_COMMAND_VERB",
+			message: `Supported command verbs: ${SYNC_COMMAND_VERBS_V1.join(", ")}.`,
+		};
+	}
+
+	const explicitTriggerType = normalizeString(command.triggerType).toUpperCase();
+	if (explicitTriggerType && explicitTriggerType !== commandVerb) {
+		return {
+			ok: false,
+			errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
+			message: "command.verb must match command.triggerType for TRIGGER commands.",
+		};
+	}
+
+	const bodyTriggerType = normalizeString(body.triggerType).toUpperCase();
+	if (bodyTriggerType && bodyTriggerType !== commandVerb) {
+		return {
+			ok: false,
+			errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
+			message: "command.verb must match triggerType envelope value.",
+		};
+	}
+
+	const triggerType = commandVerb;
 	const trigger =
 		command.trigger && typeof command.trigger === "object"
 			? command.trigger
@@ -664,6 +708,8 @@ function normalizeCommandBody(rawBody, manifest) {
 		command: {
 			...command,
 			type: commandType,
+			verb: commandVerb,
+			triggerType,
 		},
 	};
 
@@ -814,12 +860,96 @@ async function pull(req, res) {
 	}
 }
 
+async function replay(req, res) {
+	try {
+		const user = await requireUser(req, res);
+		if (!user) return;
+
+		const runId = normalizeString(req?.query?.runId);
+		if (!runId) {
+			return json(res, 400, {
+				ok: false,
+				errorCode: "MISSING_RUN_ID",
+				message: "runId query parameter is required.",
+			});
+		}
+
+		const manifest = getWorldManifest();
+		const loaded = await loadRunState({
+			ownerId: user.id,
+			runId,
+			manifest,
+			allowCreate: false,
+		});
+		if (!loaded) {
+			return json(res, 404, {
+				ok: false,
+				errorCode: "RUN_NOT_FOUND",
+				message: "Run not found.",
+			});
+		}
+
+		const afterSeq = Math.max(0, parseInteger(req?.query?.afterSeq, 0));
+		const limit = Math.max(1, Math.min(500, parseInteger(req?.query?.limit, 200)));
+		const includeRejected = parseBoolean(req?.query?.includeRejected, false);
+		const events = await syncStore.listEvents({
+			ownerId: user.id,
+			runId,
+			afterSeq,
+			limit,
+		});
+		const timeline = events
+			.map((event) => ({
+				commitId: event.commit_id,
+				clientSeq: event.client_seq,
+				seq: Number.isFinite(Number(event.seq)) ? Number(event.seq) : null,
+				tick: Number.isFinite(Number(event.tick)) ? Number(event.tick) : null,
+				eventType: event.event_type || event.eventType || "TRIGGER",
+				triggerType: event.trigger_type || event.triggerType || null,
+				accepted: event.accepted,
+				errorCode: event.error_code || null,
+				message: event.message || null,
+				stateHash: event.state_hash || null,
+				createdAt: event.created_at || null,
+			}))
+			.filter((event) => includeRejected || event.accepted);
+		const hashTimeline = timeline
+			.filter((event) => event.accepted && normalizeString(event.stateHash))
+			.map((event) => ({
+				seq: Number.isFinite(Number(event.seq))
+					? Number(event.seq)
+					: Number(event.clientSeq) || null,
+				tick: Number.isFinite(Number(event.tick))
+					? Number(event.tick)
+					: Number(event.clientSeq) || null,
+				stateHash: event.stateHash,
+			}))
+			.filter((event) => Number.isFinite(Number(event.seq)));
+
+		return json(res, 200, {
+			ok: true,
+			runId,
+			contentVersion: manifest.contentVersion,
+			canonicalState: toPublicState(loaded.state),
+			timeline,
+			hashTimeline,
+		});
+	} catch (error) {
+		return json(res, 500, {
+			ok: false,
+			errorCode: "UNEXPECTED_SYNC_ERROR",
+			message: String(error?.message || error || "Unknown error"),
+		});
+	}
+}
+
 module.exports = {
 	commit,
 	commitBatch,
 	action,
 	command,
 	pull,
+	replay,
 	processCommitStream,
 	loadRunState,
 };

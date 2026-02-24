@@ -23,14 +23,47 @@ function ensureUuid(value) {
 	return crypto.randomUUID();
 }
 
-function buildMinimalPlayerState() {
+function toNonNegativeInteger(value, fallback = 0) {
+	const parsed = Number(value);
+	if (!Number.isInteger(parsed) || parsed < 0) return fallback;
+	return parsed;
+}
+
+function readProgressionState(runState) {
+	const progression =
+		runState?.entityStates && typeof runState.entityStates === "object"
+			? runState.entityStates.progression
+			: null;
+	const source = progression && typeof progression === "object" ? progression : {};
+	const level = Math.max(1, toNonNegativeInteger(source.level, 1));
+	const xp = toNonNegativeInteger(source.xp, 0);
+	const gold = toNonNegativeInteger(source.gold, 0);
+	const inventory = Array.isArray(source.inventory)
+		? source.inventory
+				.filter((entry) => entry && typeof entry === "object")
+				.map((entry) => ({
+					id: normalizeString(entry.id),
+					quantity: toNonNegativeInteger(entry.quantity, 0),
+				}))
+				.filter((entry) => entry.id && entry.quantity > 0)
+		: [];
+	return {
+		level,
+		xp,
+		gold,
+		inventory,
+	};
+}
+
+function buildMinimalPlayerState(runState) {
+	const progression = readProgressionState(runState);
 	return {
 		name: "Traveler",
-		level: 1,
+		level: progression.level,
 		hp: { current: 100, max: 100 },
 		mana: { current: 50, max: 50 },
 		attributes: {},
-		inventory: [],
+		inventory: progression.inventory,
 		equipment: {},
 		abilities: [],
 		titles: [],
@@ -38,7 +71,8 @@ function buildMinimalPlayerState() {
 		equippedTitle: null,
 		activeSkills: [],
 		passiveSkills: [],
-		xp: { current: 0, max: 100 },
+		xp: { current: progression.xp, max: progression.level * 100 },
+		gold: progression.gold,
 	};
 }
 
@@ -65,7 +99,7 @@ function buildMinimalWorldState(runState) {
 
 function buildSaveGameState(runState) {
 	return {
-		player: buildMinimalPlayerState(),
+		player: buildMinimalPlayerState(runState),
 		world: buildMinimalWorldState(runState),
 		quests: {
 			active: [],
@@ -75,7 +109,8 @@ function buildSaveGameState(runState) {
 		narrative: {
 			lastTrigger: runState?.entityStates?.lastSavepoint?.triggerId || null,
 		},
-		combat: runState?.entityStates?.encounter || null,
+		combat:
+			runState?.entityStates?.combat || runState?.entityStates?.encounter || null,
 	};
 }
 
@@ -110,7 +145,7 @@ function buildSaveSlotVariables({ saveSlotId, runState }) {
 		saveName: "Auto Savepoint",
 		gameStateJson: JSON.stringify(gameState),
 		playerName: "Traveler",
-		playerLevel: 1,
+		playerLevel: toNonNegativeInteger(gameState?.player?.level, 1),
 		worldId: normalizeString(runState?.worldId) || "voidverse_slice_world_001",
 		locationId: mapId,
 		mapId,

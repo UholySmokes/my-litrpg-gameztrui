@@ -1,6 +1,6 @@
 # PLAN: Godot-First Hybrid Command Pixel RPG Roadmap
 
-Last updated: 2026-02-23
+Last updated: 2026-02-24
 Planning horizon: W1-W20 (2026-02-23 to 2026-07-12)
 
 ## 0. Execution Tracker (Live)
@@ -59,7 +59,21 @@ Last implementation check: 2026-02-24
     - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/HandlersNarrate.test.js --runInBand` (13 passed)
     - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
     - `npm run test:godot:perf` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS, baseline report written)
-- [ ] M7: start progression depth slice by locking initial command verb set + scenario harness skeleton
+- [x] M7: start progression depth slice by locking initial command verb set + scenario harness skeleton
+  - Evidence: `functions/lib/sync-command-contract.js`, `functions/lib/sync.js`, `functions/lib/sync-core.js`, `tests/helpers/syncProgressionHarness.cjs`, `tests/unit/SyncProgressionScenarioHarness.test.js`, `docs/contracts/command_verbs_v1.md`, `docs/contracts/command_envelope_v1.md`
+  - Verification: `npm test -- tests/unit/SyncCommandRoutes.test.js tests/unit/SyncProcess.test.js tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncProgressionScenarioHarness.test.js --runInBand` (20 passed)
+- [x] M7 (partial): wire deterministic combat rewards + inventory/quest/savepoint progression mutations
+  - Evidence: `functions/lib/sync-core.js`, `functions/lib/sync-snapshots.js`, `tests/unit/SyncProgressionScenarioHarness.test.js`, `docs/contracts/gameplay_progression_v1.md`, `docs/contracts/canonical_state_v2.md`
+  - Verification: `npm test -- tests/unit/SyncCommandRoutes.test.js tests/unit/SyncProcess.test.js tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncValidation.test.js tests/unit/SyncProgressionScenarioHarness.test.js --runInBand` (31 passed)
+- [x] M7 (partial): add deterministic save/load parity assertions for progression snapshots
+  - Evidence: `tests/unit/SyncProgressionScenarioHarness.test.js`
+  - Verification: `npm test -- tests/unit/SyncProcess.test.js tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncValidation.test.js tests/unit/SyncProgressionScenarioHarness.test.js --runInBand` (24 passed)
+- [x] M7 (partial): publish progression scenario matrix artifact for auditability
+  - Evidence: `docs/reports/m7_progression_scenario_matrix_2026-02-24.md`
+  - Verification: `npm test -- tests/unit/SyncProcess.test.js tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncValidation.test.js tests/unit/SyncProgressionScenarioHarness.test.js --runInBand` (24 passed)
+- [x] M7 (partial): cover deterministic setback branch for combat/inventory/quest progression
+  - Evidence: `tests/unit/SyncProgressionScenarioHarness.test.js`
+  - Verification: `npm test -- tests/unit/SyncProcess.test.js tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncValidation.test.js tests/unit/SyncProgressionScenarioHarness.test.js --runInBand` (25 passed)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

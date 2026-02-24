@@ -30,11 +30,13 @@ describe("api router sync routes", () => {
 	const originalCommit = sync.commit;
 	const originalAction = sync.action;
 	const originalCommand = sync.command;
+	const originalReplay = sync.replay;
 
 	afterEach(() => {
 		sync.commit = originalCommit;
 		sync.action = originalAction;
 		sync.command = originalCommand;
+		sync.replay = originalReplay;
 	});
 
 	it("routes /api/sync/commit to canonical commit handler", async () => {
@@ -69,6 +71,18 @@ describe("api router sync routes", () => {
 		const res = createRes();
 		await handleApiRequest(req, res);
 		expect(sync.command).toHaveBeenCalledTimes(1);
+		expect(res.statusCode).toBe(200);
+		expect(res.body.ok).toBe(true);
+	});
+
+	it("routes /api/sync/replay to replay handler", async () => {
+		sync.replay = jest.fn(async (_req, res) => {
+			res.status(200).set("Content-Type", "application/json").json({ ok: true });
+		});
+		const req = { method: "GET", url: "/api/sync/replay?runId=run-1", headers: {} };
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(sync.replay).toHaveBeenCalledTimes(1);
 		expect(res.statusCode).toBe(200);
 		expect(res.body.ok).toBe(true);
 	});

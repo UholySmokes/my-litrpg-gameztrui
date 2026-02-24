@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-02-23T18:50:43.199Z",
+  "generatedAt": "2026-02-24T10:23:48.157Z",
   "source": "dist\\runtime-config.js",
   "apiBaseUrl": "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api",
-  "narrateEndpoint": "/api/narrate",
+  "narrateEndpoint": "/narrate",
   "syncCommandPath": "/sync/command",
   "syncPullPath": "/sync/pull",
   "storyStartPath": "/story/start",

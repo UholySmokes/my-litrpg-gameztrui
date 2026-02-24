@@ -49,5 +49,6 @@ describe("godot command + config contract", () => {
 		expect(configJson.apiBaseUrl).toBeTruthy();
 		expect(configJson.syncCommandPath).toBe("/sync/command");
 		expect(configJson.syncPullPath).toBe("/sync/pull");
+		expect(configJson.narrateEndpoint).toBe("/narrate");
 	});
 });

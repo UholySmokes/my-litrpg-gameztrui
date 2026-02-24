@@ -8,6 +8,29 @@ on:
   pull_request:
 
 jobs:
+  godot-headless:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Godot 4
+        uses: firebelley/setup-godot@v1
+        with:
+          version: 4.2.2
+
+      - name: Generate Godot Runtime Config
+        run: npm run generate:godot-config
+
+      - name: Godot Headless Smoke
+        run: npm run test:godot:headless
+
   app-quality:
     runs-on: ubuntu-latest
     steps:

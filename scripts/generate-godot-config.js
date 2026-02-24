@@ -13,6 +13,30 @@ function normalizeConfigValue(value) {
 	return String(value || "").trim();
 }
 
+function normalizeRelativeApiPath(value, fallbackPath) {
+	const raw = normalizeConfigValue(value);
+	let pathOnly = raw;
+	if (!pathOnly) {
+		pathOnly = fallbackPath;
+	}
+	try {
+		if (/^[a-z][a-z0-9+.-]*:\/\//i.test(pathOnly)) {
+			const parsed = new URL(pathOnly);
+			pathOnly = `${parsed.pathname || ""}${parsed.search || ""}` || fallbackPath;
+		}
+	} catch {
+		pathOnly = fallbackPath;
+	}
+
+	if (!pathOnly.startsWith("/")) {
+		pathOnly = `/${pathOnly}`;
+	}
+	if (pathOnly.startsWith("/api/")) {
+		pathOnly = `/${pathOnly.slice(5)}`;
+	}
+	return pathOnly;
+}
+
 async function readRuntimeConfigFile() {
 	for (const candidate of [DIST_CONFIG_PATH, PUBLIC_CONFIG_PATH]) {
 		try {
@@ -52,6 +76,22 @@ function buildGodotConfig({ runtimeConfig, source }) {
 	);
 	const fileNarrate = normalizeConfigValue(runtimeConfig.VITE_NARRATE_ENDPOINT || "");
 	const resolvedApiBase = envApiBase || fileApiBase;
+	const syncCommandPath = normalizeRelativeApiPath(
+		runtimeConfig.GODOT_SYNC_COMMAND_PATH || "",
+		"/sync/command",
+	);
+	const syncPullPath = normalizeRelativeApiPath(
+		runtimeConfig.GODOT_SYNC_PULL_PATH || "",
+		"/sync/pull",
+	);
+	const storyStartPath = normalizeRelativeApiPath(
+		runtimeConfig.GODOT_STORY_START_PATH || "",
+		"/story/start",
+	);
+	const storyPollPath = normalizeRelativeApiPath(
+		runtimeConfig.GODOT_STORY_POLL_PATH || "",
+		"/story/poll",
+	);
 
 	return {
 		schemaVersion: 1,
@@ -61,11 +101,14 @@ function buildGodotConfig({ runtimeConfig, source }) {
 			resolvedApiBase && resolvedApiBase !== "/"
 				? resolvedApiBase
 				: DEFAULT_API_BASE_URL,
-		narrateEndpoint: envNarrate || fileNarrate || "/narrate",
-		syncCommandPath: "/sync/command",
-		syncPullPath: "/sync/pull",
-		storyStartPath: "/story/start",
-		storyPollPath: "/story/poll",
+		narrateEndpoint: normalizeRelativeApiPath(
+			envNarrate || fileNarrate,
+			"/narrate",
+		),
+		syncCommandPath,
+		syncPullPath,
+		storyStartPath,
+		storyPollPath,
 	};
 }
 

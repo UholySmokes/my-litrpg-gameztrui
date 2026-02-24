@@ -15,6 +15,8 @@ describe("godot command + config contract", () => {
 		expect(source).toContain("func load_runtime_config(config_path: String = CONFIG_PATH) -> Dictionary:");
 		expect(source).toContain('"syncCommandPath": "/sync/command"');
 		expect(source).toContain('"syncPullPath": "/sync/pull"');
+		expect(source).toContain('"storyStartPath": "/story/start"');
+		expect(source).toContain('"storyPollPath": "/story/poll"');
 	});
 
 	it("wires ConfigLoader node and applies runtime config in world_controller", () => {
@@ -50,5 +52,33 @@ describe("godot command + config contract", () => {
 		expect(configJson.syncCommandPath).toBe("/sync/command");
 		expect(configJson.syncPullPath).toBe("/sync/pull");
 		expect(configJson.narrateEndpoint).toBe("/narrate");
+		expect(configJson.storyStartPath).toBe("/story/start");
+		expect(configJson.storyPollPath).toBe("/story/poll");
+	});
+
+	it("wires StoryClient wrappers and fallback prose rendering into world flow", () => {
+		const scene = readGodotAsset("godot/scenes/Main.tscn");
+		const world = readGodotAsset("godot/scripts/world_controller.gd");
+		const story = readGodotAsset("godot/scripts/story_client.gd");
+		const prose = readGodotAsset("godot/scripts/prose_panel.gd");
+
+		expect(scene).toContain('path="res://scripts/story_client.gd"');
+		expect(scene).toContain('[node name="StoryClient" type="Node" parent="."]');
+		expect(world).toContain("@onready var _story_client = %StoryClient");
+		expect(world).toContain("_story_client.auth_client_path = _auth_client.get_path()");
+		expect(world).toContain("_queue_story_refresh()");
+		expect(world).toContain('String(config.get("storyStartPath", _story_client.story_start_path))');
+		expect(world).toContain('String(config.get("storyPollPath", _story_client.story_poll_path))');
+
+		expect(story).toContain("class_name StoryClient");
+		expect(story).toContain('@export var story_start_path: String = "/story/start"');
+		expect(story).toContain('@export var story_poll_path: String = "/story/poll"');
+		expect(story).toContain("func start(payload: Dictionary) -> Dictionary:");
+		expect(story).toContain("func poll(thread_id: String, run_id: String, mode: String = \"\") -> Dictionary:");
+		expect(story).toContain("func request_story(prompt: String, mode: String = \"exploration\", extra_payload: Dictionary = {}) -> Dictionary:");
+		expect(story).toContain("return _fallback_result(normalized_mode, \"story_poll_timeout\")");
+
+		expect(prose).toContain("Suggested actions:");
+		expect(prose).toContain("func _format_suggestions(suggestions: Array) -> String:");
 	});
 });

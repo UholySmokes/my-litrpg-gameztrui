@@ -14,6 +14,8 @@ func _init() -> void:
 		_assert(config.has("apiBaseUrl"), "config.apiBaseUrl missing", failures)
 		_assert(config.has("syncCommandPath"), "config.syncCommandPath missing", failures)
 		_assert(config.has("syncPullPath"), "config.syncPullPath missing", failures)
+		_assert(config.has("storyStartPath"), "config.storyStartPath missing", failures)
+		_assert(config.has("storyPollPath"), "config.storyPollPath missing", failures)
 		_assert(
 			String(config.get("syncCommandPath", "")).begins_with("/sync/"),
 			"syncCommandPath must be relative to api base (expected /sync/*).",
@@ -22,6 +24,16 @@ func _init() -> void:
 		_assert(
 			String(config.get("syncPullPath", "")).begins_with("/sync/"),
 			"syncPullPath must be relative to api base (expected /sync/*).",
+			failures,
+		)
+		_assert(
+			String(config.get("storyStartPath", "")).begins_with("/story/"),
+			"storyStartPath must be relative to api base (expected /story/*).",
+			failures,
+		)
+		_assert(
+			String(config.get("storyPollPath", "")).begins_with("/story/"),
+			"storyPollPath must be relative to api base (expected /story/*).",
 			failures,
 		)
 
@@ -35,6 +47,7 @@ func _init() -> void:
 		else:
 			_assert(root.has_node("ConfigLoader"), "Main scene missing ConfigLoader node.", failures)
 			_assert(root.has_node("SyncClient"), "Main scene missing SyncClient node.", failures)
+			_assert(root.has_node("StoryClient"), "Main scene missing StoryClient node.", failures)
 			root.free()
 
 	if failures.size() > 0:

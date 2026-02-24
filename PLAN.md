@@ -4,7 +4,7 @@ Last updated: 2026-02-23
 Planning horizon: W1-W20 (2026-02-23 to 2026-07-12)
 
 ## 0. Execution Tracker (Live)
-Last implementation check: 2026-02-23
+Last implementation check: 2026-02-24
 
 ### M0 - Planning and Contract Freeze
 - [x] Baseline sync regression tests executed and evidence committed (`docs/reports/baseline_test_report_2026-02-23.md`)
@@ -38,7 +38,12 @@ Last implementation check: 2026-02-23
   - Verification:
     - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
     - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js --runInBand` (7 passed)
-- [ ] M5: add `godot/scripts/story_client.gd` wrappers for `/story/start` + `/story/poll` and wire fallback behavior
+- [x] M5: add `godot/scripts/story_client.gd` wrappers for `/story/start` + `/story/poll` and wire fallback behavior
+  - Evidence: `godot/scripts/story_client.gd`, `godot/scripts/world_controller.gd`, `godot/scripts/prose_panel.gd`, `godot/scenes/Main.tscn`, `godot/scripts/headless_smoke.gd`, `tests/unit/GodotCommandContract.test.js`, `godot/README.md`
+  - Verification:
+    - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/HandlersNarrate.test.js --runInBand` (13 passed)
+    - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
+- [ ] M6: start pixel presentation MVP slice (tilemap/sprite pipeline + 3-5 map hub foundation)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

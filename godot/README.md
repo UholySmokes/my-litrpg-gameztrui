@@ -36,6 +36,12 @@ Set these exports in the Godot editor on the `AuthClient` and `SyncClient` nodes
 3. Client prechecks are local (distance, LoS, cooldown).
 4. Server remains authoritative for trigger validation and state transitions.
 
+## Story Client Notes
+
+1. `StoryClient` calls `/story/start` and `/story/poll` (relative to `apiBaseUrl`).
+2. World state changes keep a local fallback prose payload active before remote story arrives.
+3. If story start/poll fails or times out, template-based fallback prose + suggestions render instead of a blank panel.
+
 ## Headless Runtime Harness
 
 1. Local smoke run:

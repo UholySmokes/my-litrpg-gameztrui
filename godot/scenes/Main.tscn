@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/world_controller.gd" id="1_world"]
 [ext_resource type="Script" path="res://scripts/firebase_auth_client.gd" id="2_auth"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/trigger_queue.gd" id="4_queue"]
 [ext_resource type="Script" path="res://scripts/prose_panel.gd" id="5_prose"]
 [ext_resource type="Script" path="res://scripts/config_loader.gd" id="6_config"]
+[ext_resource type="Script" path="res://scripts/story_client.gd" id="7_story"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_world")
@@ -39,6 +40,11 @@ unique_name_in_owner = true
 script = ExtResource("3_sync")
 api_base_url = "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api"
 client_id = "godot-client"
+
+[node name="StoryClient" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_story")
+api_base_url = "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api"
 
 [node name="ConfigLoader" type="Node" parent="."]
 unique_name_in_owner = true

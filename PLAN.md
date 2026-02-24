@@ -122,6 +122,11 @@ Last implementation check: 2026-02-24
   - Verification:
     - `npm run audit:security:root` (expected findings; exit 1 with 5 vulnerabilities captured)
     - `npm run audit:security:functions` (expected findings; exit 1 with 3 vulnerabilities captured, including 1 critical)
+- [x] M9 (next): define telemetry ingest SLO/error-budget policy and harden Godot retry behavior
+  - Evidence: `docs/M9_TELEMETRY_SLO_RETRY_POLICY.md`, `godot/scripts/telemetry_reporter.gd`, `docs/contracts/godot_telemetry_payload_v1.md`, `tests/unit/GodotCommandContract.test.js`
+  - Verification:
+    - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/TelemetryRoute.test.js --runInBand` (9 passed)
+    - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

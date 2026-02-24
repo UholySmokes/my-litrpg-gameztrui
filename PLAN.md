@@ -117,6 +117,11 @@ Last implementation check: 2026-02-24
     - `npm test -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncProgressionScenarioHarness.test.js tests/unit/SyncReplayRoute.test.js tests/unit/TelemetryRoute.test.js --runInBand` (14 passed)
     - `npm run simulate:nightly` (PASS; success rate 97.0%)
     - `npm run test:telemetry:smoke` (PASS; status 202, accepted 2, dropped 0)
+- [x] M9 (next): publish security controls register with triaged dependency findings and remediation owners
+  - Evidence: `docs/M9_SECURITY_CONTROLS_REGISTER.md`, `package.json`
+  - Verification:
+    - `npm run audit:security:root` (expected findings; exit 1 with 5 vulnerabilities captured)
+    - `npm run audit:security:functions` (expected findings; exit 1 with 3 vulnerabilities captured, including 1 critical)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

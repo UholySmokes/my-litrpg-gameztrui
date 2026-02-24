@@ -3,6 +3,13 @@ extends SceneTree
 const CONFIG_PATH := "res://data/config.json"
 const MANIFEST_PATH := "res://data/world_manifest.json"
 const MAIN_SCENE_PATH := "res://scenes/Main.tscn"
+const REQUIRED_ASSET_PATHS := [
+	"res://assets/characters/traveler_idle_down.png",
+	"res://assets/characters/guide_idle_down.png",
+	"res://assets/tilesets/village_square_atlas.png",
+	"res://assets/tilesets/training_glade_atlas.png",
+	"res://assets/tilesets/ruined_outlook_atlas.png",
+]
 
 
 func _init() -> void:
@@ -63,7 +70,13 @@ func _init() -> void:
 			_assert(root.has_node("SpriteHooks"), "Main scene missing SpriteHooks node.", failures)
 			_assert(root.has_node("SpriteHooks/PlayerSpriteAnchor"), "Main scene missing PlayerSpriteAnchor.", failures)
 			_assert(root.has_node("SpriteHooks/GuideSpriteAnchor"), "Main scene missing GuideSpriteAnchor.", failures)
+			_assert(root.has_node("SpriteHooks/PlayerSpriteAnchor/PlayerSprite"), "Main scene missing PlayerSprite.", failures)
+			_assert(root.has_node("SpriteHooks/GuideSpriteAnchor/GuideSprite"), "Main scene missing GuideSprite.", failures)
 			root.free()
+
+	for asset_path in REQUIRED_ASSET_PATHS:
+		var absolute_path := ProjectSettings.globalize_path(asset_path)
+		_assert(FileAccess.file_exists(absolute_path), "Missing required asset: " + asset_path, failures)
 
 	if failures.size() > 0:
 		for item in failures:

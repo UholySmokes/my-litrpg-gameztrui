@@ -3,6 +3,9 @@ extends Node2D
 const TILE_SIZE := 32
 const LOCAL_SAVE_PATH := "user://slice_save.json"
 const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SAVEPOINT"]
+const PERF_SAMPLE_LIMIT := 240
+const PLAYER_SPRITE_PATH := "res://assets/characters/traveler_idle_down.png"
+const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"
 
 @export var run_id: String = "slice-run-001"
 
@@ -10,8 +13,10 @@ const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SA
 @onready var _map_renderer = %MapRenderer
 @onready var _player: ColorRect = %Player
 @onready var _player_sprite_anchor: Node2D = %PlayerSpriteAnchor
+@onready var _player_sprite: Sprite2D = %PlayerSprite
 @onready var _npc_guide: ColorRect = %NpcGuide
 @onready var _guide_sprite_anchor: Node2D = %GuideSpriteAnchor
+@onready var _guide_sprite: Sprite2D = %GuideSprite
 @onready var _auth_client: FirebaseAuthClient = %AuthClient
 @onready var _sync_client: SyncClient = %SyncClient
 @onready var _story_client = %StoryClient
@@ -33,6 +38,10 @@ var _runtime_config: Dictionary = {}
 var _last_story_context_key: String = ""
 var _pending_story_context_key: String = ""
 var _story_request_in_flight: bool = false
+var _perf_move_samples_ms: Array = []
+var _perf_render_samples_ms: Array = []
+var _perf_map_transitions: int = 0
+var _last_perf_map_id: String = ""
 
 
 func _ready() -> void:
@@ -47,8 +56,10 @@ func _ready() -> void:
 
 	var start: Dictionary = _manifest.get("start", {})
 	_current_map_id = str(start.get("mapId", "map_village_square"))
+	_load_runtime_sprite_assets()
 	_set_player_tile(Vector2i(int(start.get("x", 3)), int(start.get("y", 3))))
 	_update_scene_for_map()
+	_apply_sprite_fallback_visibility()
 	_render_story()
 
 	_sync_client.auth_client_path = _auth_client.get_path()
@@ -100,12 +111,14 @@ func _on_flush_timer_timeout() -> void:
 
 
 func _try_move(direction: Vector2i) -> void:
+	var started_us := Time.get_ticks_usec()
 	var current_tile := _get_player_tile()
 	var next_tile := current_tile + direction
 	if not _within_map_bounds(_current_map_id, next_tile):
 		return
 	_set_player_tile(next_tile)
 	await _process_tile_triggers(next_tile)
+	_record_perf_sample(_perf_move_samples_ms, _duration_ms(started_us))
 
 
 func _try_interact() -> void:
@@ -337,11 +350,18 @@ func _get_player_tile() -> Vector2i:
 
 
 func _update_scene_for_map() -> void:
+	var started_us := Time.get_ticks_usec()
+	if not _last_perf_map_id.is_empty() and _last_perf_map_id != _current_map_id:
+		_perf_map_transitions += 1
+	_last_perf_map_id = _current_map_id
+
 	var color := Color(0.07, 0.10, 0.13, 1.0)
 	if _current_map_id == "map_village_square":
 		color = Color(0.10, 0.14, 0.18, 1.0)
 	if _current_map_id == "map_training_glade":
 		color = Color(0.08, 0.17, 0.11, 1.0)
+	if _current_map_id == "map_ruined_outlook":
+		color = Color(0.17, 0.13, 0.12, 1.0)
 	_map_background.color = color
 
 	var map_entry: Dictionary = _manifest.get("maps", {}).get(_current_map_id, {})
@@ -358,6 +378,7 @@ func _update_scene_for_map() -> void:
 	if _guide_sprite_anchor != null:
 		_guide_sprite_anchor.position = _npc_guide.position
 		_guide_sprite_anchor.visible = _npc_guide.visible
+	_record_perf_sample(_perf_render_samples_ms, _duration_ms(started_us))
 
 
 func _render_story() -> void:
@@ -490,6 +511,111 @@ func _trigger_tiles_for_map(map_id: String) -> Array:
 			"type": String(def.get("type", "")),
 		})
 	return tiles
+
+
+func _apply_sprite_fallback_visibility() -> void:
+	if _player_sprite != null and _player_sprite.texture != null:
+		_player.color = Color(1.0, 1.0, 1.0, 0.0)
+	if _guide_sprite != null and _guide_sprite.texture != null:
+		_npc_guide.color = Color(1.0, 1.0, 1.0, 0.0)
+
+
+func _load_runtime_sprite_assets() -> void:
+	_assign_sprite_texture(_player_sprite, PLAYER_SPRITE_PATH)
+	_assign_sprite_texture(_guide_sprite, GUIDE_SPRITE_PATH)
+
+
+func _assign_sprite_texture(sprite: Sprite2D, asset_path: String) -> void:
+	if sprite == null:
+		return
+	var absolute_path := ProjectSettings.globalize_path(asset_path)
+	if not FileAccess.file_exists(absolute_path):
+		return
+	var image := Image.new()
+	if image.load(absolute_path) != OK:
+		return
+	var texture := ImageTexture.create_from_image(image)
+	if texture != null:
+		sprite.texture = texture
+
+
+func _duration_ms(started_us: int) -> float:
+	return float(Time.get_ticks_usec() - started_us) / 1000.0
+
+
+func _record_perf_sample(samples: Array, value_ms: float) -> void:
+	samples.append(value_ms)
+	if samples.size() > PERF_SAMPLE_LIMIT:
+		samples.remove_at(0)
+
+
+func _average_ms(samples: Array) -> float:
+	if samples.is_empty():
+		return 0.0
+	var total := 0.0
+	for value in samples:
+		total += float(value)
+	return total / float(samples.size())
+
+
+func _percentile_ms(samples: Array, percentile: float) -> float:
+	if samples.is_empty():
+		return 0.0
+	var sorted: Array = samples.duplicate()
+	sorted.sort()
+	var index := int(floor((sorted.size() - 1) * percentile))
+	index = maxi(index, 0)
+	index = mini(index, sorted.size() - 1)
+	return float(sorted[index])
+
+
+func get_perf_snapshot() -> Dictionary:
+	return {
+		"mapId": _current_map_id,
+		"mapTransitions": _perf_map_transitions,
+		"moveSamples": _perf_move_samples_ms.size(),
+		"renderSamples": _perf_render_samples_ms.size(),
+		"moveAvgMs": _average_ms(_perf_move_samples_ms),
+		"moveP95Ms": _percentile_ms(_perf_move_samples_ms, 0.95),
+		"renderAvgMs": _average_ms(_perf_render_samples_ms),
+		"renderP95Ms": _percentile_ms(_perf_render_samples_ms, 0.95),
+	}
+
+
+func run_perf_baseline(iterations: int = 180) -> Dictionary:
+	var original_map_id := _current_map_id
+	var original_tile := _get_player_tile()
+	var maps := [
+		"map_village_square",
+		"map_training_glade",
+		"map_ruined_outlook",
+	]
+
+	for i in range(maxi(iterations, 1)):
+		var map_id := String(maps[i % maps.size()])
+		var map_entry: Dictionary = _manifest.get("maps", {}).get(map_id, {})
+		if map_entry.is_empty():
+			continue
+		var width := int(map_entry.get("width", 1))
+		var height := int(map_entry.get("height", 1))
+		var tile := Vector2i(
+			int((i * 3) % maxi(width, 1)),
+			int((i * 5 + 2) % maxi(height, 1))
+		)
+		var started_us := Time.get_ticks_usec()
+		_current_map_id = map_id
+		_set_player_tile(tile)
+		_update_scene_for_map()
+		_record_perf_sample(_perf_move_samples_ms, _duration_ms(started_us))
+		await get_tree().process_frame
+
+	_current_map_id = original_map_id
+	_set_player_tile(original_tile)
+	_update_scene_for_map()
+
+	var snapshot: Dictionary = get_perf_snapshot()
+	snapshot["baselineIterations"] = maxi(iterations, 1)
+	return snapshot
 
 
 func _write_local_checkpoint() -> void:

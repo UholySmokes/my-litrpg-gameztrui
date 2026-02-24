@@ -14,6 +14,9 @@ dist
 middleware-report.json
 *-analysis-*.json
 reports/
+!docs/reports/
+docs/reports/*
+!docs/reports/godot_map_traversal_perf_baseline_2026-02-24.md
 
 # Codex / editor temp
 tmpclaude-*

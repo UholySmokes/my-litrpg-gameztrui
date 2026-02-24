@@ -48,11 +48,19 @@ Set these exports in the Godot editor on the `AuthClient` and `SyncClient` nodes
 2. `WorldController` calls renderer updates on map changes (`_update_scene_for_map`).
 3. Hub traversal now includes three maps (`map_village_square` -> `map_training_glade` -> `map_ruined_outlook`).
 4. `SpriteHooks` (`PlayerSpriteAnchor`, `GuideSpriteAnchor`) are updated by the controller for future sprite replacement passes.
+5. Placeholder runtime art pack currently lives under `godot/assets` and is generated with `npm run generate:godot-assets:placeholder`.
+
+## Perf Baseline Probe
+
+1. Run `npm run test:godot:perf` to execute headless map-traversal instrumentation.
+2. The command writes a baseline report under `docs/reports/godot_map_traversal_perf_baseline_<date>.md`.
+3. Metrics include traversal transitions plus average/p95 movement and render timings.
 
 ## Headless Runtime Harness
 
 1. Local smoke run:
    - `npm run generate:godot-config`
+   - `npm run generate:godot-assets:placeholder`
    - `npm run test:godot:headless`
 2. If Godot is not in PATH, set `GODOT_BIN` to the executable path.
 3. CI runs the same harness via `.github/workflows/quality-gates.yml` in `godot-headless` job.

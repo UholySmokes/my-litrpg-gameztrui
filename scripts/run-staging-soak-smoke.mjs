@@ -85,12 +85,13 @@ async function main() {
 	const runDate = new Date().toISOString().slice(0, 10);
 	const checks = [];
 	checks.push(
-		runCommand("Determinism + Progression", "npm", [
+		runCommand("Determinism + Command Resilience", "npm", [
 			"test",
 			"--",
 			"tests/unit/SyncCoreDeterminism.test.js",
 			"tests/unit/SyncProgressionScenarioHarness.test.js",
 			"tests/unit/SyncReconnectStorm.test.js",
+			"tests/unit/SyncCommandRoutes.test.js",
 			"--runInBand",
 		]),
 	);

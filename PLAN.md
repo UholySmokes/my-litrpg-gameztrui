@@ -102,7 +102,13 @@ Last implementation check: 2026-02-24
 - [x] M9 (next): add telemetry ingest route contract scaffold (`POST /api/telemetry`) for Godot/web runtime observability
   - Evidence: `functions/lib/telemetry.js`, `functions/lib/api-router.js`, `tests/unit/TelemetryRoute.test.js`, `docs/contracts/telemetry_ingest_v1.md`
   - Verification: `npm test -- tests/unit/TelemetryRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js tests/unit/SyncReplayRoute.test.js --runInBand` (10 passed)
-- [ ] M9 (next): add Godot telemetry reporter payload schema + client-to-endpoint contract test coverage
+- [x] M9 (next): add Godot telemetry reporter payload schema + client-to-endpoint contract test coverage
+  - Evidence: `godot/scripts/telemetry_reporter.gd`, `godot/scripts/world_controller.gd`, `godot/scenes/Main.tscn`, `godot/scripts/config_loader.gd`, `scripts/generate-godot-config.js`, `godot/data/config.json`, `tests/unit/GodotCommandContract.test.js`, `docs/contracts/godot_telemetry_payload_v1.md`
+  - Verification:
+    - `npm run generate:godot-config` (PASS)
+    - `npm test -- tests/unit/GodotCommandContract.test.js tests/unit/GodotAuthResilienceContract.test.js tests/unit/TelemetryRoute.test.js --runInBand` (12 passed)
+    - `npm run test:godot:headless` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS)
+- [ ] M9 (next): add telemetry ingest health smoke script + report artifact for quality gate packet inputs
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

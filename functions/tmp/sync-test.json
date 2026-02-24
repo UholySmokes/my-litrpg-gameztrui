@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "created_at": "2026-02-24T22:42:48.081Z",
+  "updated_at": "2026-02-24T22:42:48.085Z",
+  "runs": [
+    {
+      "key": "storm-user:run-storm",
+      "owner_id": "storm-user",
+      "run_id": "run-storm",
+      "state": {
+        "worldId": "voidverse_slice_world_001",
+        "mapId": "map_village_square",
+        "playerPos": {
+          "x": 6,
+          "y": 8
+        },
+        "entityStates": {},
+        "questFlags": {
+          "slice_intro_seen": true
+        },
+        "runId": "run-storm",
+        "seq": 1,
+        "tick": 1,
+        "stateHash": "8a3020ea9cde08e34bd704db0195bf96975c627c1b0fec7c058e40a3ff6818ad",
+        "contentVersion": "8f3578dfce8f1e0826567f7696998e50cd40e23689540692da365475eeb82120",
+        "stateVersion": 1,
+        "runSeed": "7cc122cc7f711790",
+        "cooldowns": {
+          "tile_intro_square": 1771972968076
+        }
+      },
+      "save_slot_id": "",
+      "created_at": "2026-02-24T22:42:48.081Z",
+      "updated_at": "2026-02-24T22:42:48.083Z"
+    }
+  ],
+  "events": [
+    {
+      "key": "storm-user:run-storm:cmd1",
+      "owner_id": "storm-user",
+      "run_id": "run-storm",
+      "commit_id": "cmd1",
+      "client_seq": 1,
+      "accepted": true,
+      "error_code": null,
+      "message": null,
+      "state_hash": "8a3020ea9cde08e34bd704db0195bf96975c627c1b0fec7c058e40a3ff6818ad",
+      "seq": 1,
+      "tick": 1,
+      "event_type": "COMMAND",
+      "trigger_type": "ENTER_TILE",
+      "commit": {
+        "id": "cmd1",
+        "runId": "run-storm",
+        "clientId": "godot",
+        "clientSeq": 1,
+        "createdAt": "2026-02-24T22:42:48.076Z",
+        "createdAtMs": 1771972968076,
+        "contentVersion": "8f3578dfce8f1e0826567f7696998e50cd40e23689540692da365475eeb82120",
+        "triggerType": "ENTER_TILE",
+        "trigger": {
+          "triggerId": "tile_intro_square",
+          "mapId": "map_village_square",
+          "x": 6,
+          "y": 8,
+          "targetId": null
+        },
+        "commandType": "TRIGGER",
+        "command": {
+          "type": "TRIGGER",
+          "verb": "ENTER_TILE",
+          "triggerType": "ENTER_TILE",
+          "trigger": {
+            "triggerId": "tile_intro_square",
+            "mapId": "map_village_square",
+            "x": 6,
+            "y": 8
+          }
+        }
+      },
+      "created_at": "2026-02-24T22:42:48.085Z"
+    }
+  ]
+}

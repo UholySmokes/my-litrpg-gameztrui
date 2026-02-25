@@ -1,5 +1,95 @@
 extend type Query {
   """
+  ✨ Look up a single `DiscoveryList` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  discoveryList(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: DiscoveryList_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: DiscoveryList_FirstRow
+  ): DiscoveryList @fdc_generated(from: "DiscoveryList", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `DiscoveryListItem` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  discoveryListItem(
+    """
+    The key used to identify the object.
+    """
+    key: DiscoveryListItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: DiscoveryListItem_FirstRow
+  ): DiscoveryListItem @fdc_generated(from: "DiscoveryListItem", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `GameEntity` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  gameEntity(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: GameEntity_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: GameEntity_FirstRow
+  ): GameEntity @fdc_generated(from: "GameEntity", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `GameSession` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  gameSession(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: GameSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: GameSession_FirstRow
+  ): GameSession @fdc_generated(from: "GameSession", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Review` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  review(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Review_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Review_FirstRow
+  ): Review @fdc_generated(from: "Review", purpose: QUERY_SINGLE)
+  """
   ✨ Look up a single `RunEvent` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
   """
   runEvent(
@@ -99,6 +189,176 @@ extend type Query {
     """
     first: UserProfile_FirstRow
   ): UserProfile @fdc_generated(from: "UserProfile", purpose: QUERY_SINGLE)
+  """
+  ✨ List `DiscoveryList` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  discoveryLists(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: DiscoveryList_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [DiscoveryList_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: DiscoveryList_Having
+  ): [DiscoveryList!]! @fdc_generated(from: "DiscoveryList", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `DiscoveryListItem` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  discoveryListItems(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: DiscoveryListItem_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [DiscoveryListItem_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: DiscoveryListItem_Having
+  ): [DiscoveryListItem!]! @fdc_generated(from: "DiscoveryListItem", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `GameEntity` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  gameEntities(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: GameEntity_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [GameEntity_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: GameEntity_Having
+  ): [GameEntity!]! @fdc_generated(from: "GameEntity", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `GameSession` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  gameSessions(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: GameSession_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [GameSession_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: GameSession_Having
+  ): [GameSession!]! @fdc_generated(from: "GameSession", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Review` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  reviews(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Review_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Review_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Review_Having
+  ): [Review!]! @fdc_generated(from: "Review", purpose: QUERY_MULTIPLE)
   """
   ✨ List `RunEvent` objects in the table and return selected fields, optionally filtered by `where` conditions
   """

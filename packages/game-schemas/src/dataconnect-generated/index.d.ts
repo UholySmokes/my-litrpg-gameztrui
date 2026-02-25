@@ -63,6 +63,27 @@ export interface DeleteSaveSlotVariables {
   id: UUIDString;
 }
 
+export interface DiscoveryListItem_Key {
+  discoveryListId: UUIDString;
+  gameEntityId: UUIDString;
+  __typename?: 'DiscoveryListItem_Key';
+}
+
+export interface DiscoveryList_Key {
+  id: UUIDString;
+  __typename?: 'DiscoveryList_Key';
+}
+
+export interface GameEntity_Key {
+  id: UUIDString;
+  __typename?: 'GameEntity_Key';
+}
+
+export interface GameSession_Key {
+  id: UUIDString;
+  __typename?: 'GameSession_Key';
+}
+
 export interface GetMyProfileData {
   userProfile?: {
     id: string;
@@ -267,6 +288,11 @@ export interface MarkMyProfileMigrationData {
 export interface MarkMyProfileMigrationVariables {
   migrationVersion: number;
   displayName?: string | null;
+}
+
+export interface Review_Key {
+  id: UUIDString;
+  __typename?: 'Review_Key';
 }
 
 export interface RunEvent_Key {

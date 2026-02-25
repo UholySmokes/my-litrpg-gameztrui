@@ -70,6 +70,9 @@ describe("/api/sync/command route", () => {
 	const originalSyncPath = process.env.SYNC_DB_PATH;
 	const originalGameBackend = process.env.GAME_DB_STORAGE;
 	const originalGamePath = process.env.GAME_DB_PATH;
+	const originalCanaryMode = process.env.INTERNAL_CANARY_MODE;
+	const originalCanaryAllowlist = process.env.INTERNAL_CANARY_ALLOWLIST;
+	const originalRolloutStage = process.env.RUNTIME_ROLLOUT_STAGE;
 	let syncDbPath = "";
 	let gameDbPath = "";
 
@@ -80,6 +83,9 @@ describe("/api/sync/command route", () => {
 		process.env.SYNC_DB_PATH = syncDbPath;
 		process.env.GAME_DB_STORAGE = "file";
 		process.env.GAME_DB_PATH = gameDbPath;
+		delete process.env.INTERNAL_CANARY_MODE;
+		delete process.env.INTERNAL_CANARY_ALLOWLIST;
+		delete process.env.RUNTIME_ROLLOUT_STAGE;
 	});
 
 	afterEach(() => {
@@ -91,6 +97,12 @@ describe("/api/sync/command route", () => {
 		else process.env.GAME_DB_STORAGE = originalGameBackend;
 		if (originalGamePath === undefined) delete process.env.GAME_DB_PATH;
 		else process.env.GAME_DB_PATH = originalGamePath;
+		if (originalCanaryMode === undefined) delete process.env.INTERNAL_CANARY_MODE;
+		else process.env.INTERNAL_CANARY_MODE = originalCanaryMode;
+		if (originalCanaryAllowlist === undefined) delete process.env.INTERNAL_CANARY_ALLOWLIST;
+		else process.env.INTERNAL_CANARY_ALLOWLIST = originalCanaryAllowlist;
+		if (originalRolloutStage === undefined) delete process.env.RUNTIME_ROLLOUT_STAGE;
+		else process.env.RUNTIME_ROLLOUT_STAGE = originalRolloutStage;
 
 		if (syncDbPath && fs.existsSync(syncDbPath)) fs.unlinkSync(syncDbPath);
 		if (gameDbPath && fs.existsSync(gameDbPath)) fs.unlinkSync(gameDbPath);
@@ -133,6 +145,81 @@ describe("/api/sync/command route", () => {
 		expect(res.statusCode).toBe(401);
 		expect(res.body.ok).toBe(false);
 		expect(res.body.errorCode).toBe("UNAUTHENTICATED");
+	});
+
+	it("blocks command path if canary enforce mode is active with no allowlist", async () => {
+		process.env.INTERNAL_CANARY_MODE = "enforce";
+		delete process.env.INTERNAL_CANARY_ALLOWLIST;
+
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "user-command-canary-empty" },
+			body: createCommandEnvelope({
+				id: "cmd-canary-empty-1",
+				runId: "run-command-canary-empty",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(503);
+		expect(res.body.ok).toBe(false);
+		expect(res.body.errorCode).toBe("CANARY_ALLOWLIST_EMPTY");
+	});
+
+	it("blocks non-allowlisted users when canary enforce mode is active", async () => {
+		process.env.INTERNAL_CANARY_MODE = "enforce";
+		process.env.INTERNAL_CANARY_ALLOWLIST = "allowed-user@example.test,allowed-user-id";
+		process.env.RUNTIME_ROLLOUT_STAGE = "m11_canary";
+
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: {
+				"x-dev-user-id": "non-allowlisted-user",
+				"x-dev-user-email": "outsider@example.test",
+			},
+			body: createCommandEnvelope({
+				id: "cmd-canary-denied-1",
+				runId: "run-command-canary-denied",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(403);
+		expect(res.body.ok).toBe(false);
+		expect(res.body.errorCode).toBe("CANARY_ACCESS_DENIED");
+		expect(res.body.rolloutStage).toBe("m11_canary");
+	});
+
+	it("allows allowlisted users when canary enforce mode is active", async () => {
+		process.env.INTERNAL_CANARY_MODE = "enforce";
+		process.env.INTERNAL_CANARY_ALLOWLIST = "allowlisted-user";
+		process.env.RUNTIME_ROLLOUT_STAGE = "m11_canary";
+
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "allowlisted-user" },
+			body: createCommandEnvelope({
+				id: "cmd-canary-allow-1",
+				runId: "run-command-canary-allow",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(200);
+		expect(res.body.ok).toBe(true);
+		expect(res.body.accepted).toHaveLength(1);
 	});
 
 	it("accepts a valid command envelope", async () => {

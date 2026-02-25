@@ -12,6 +12,13 @@ Finalize GA launch handoff with complete stage evidence and ownership documentat
 - M12 rollout gate checklist decision is `ADVANCE`.
 - Latest live rollback verification is `PASS`.
 - M11 canary decision memo is available and healthy.
+- M13 full enablement audit decision is `FULLY_ENABLED`.
+
+Generate full enablement audit before GA handoff:
+
+```bash
+npm run report:ga:enablement
+```
 
 ## Generate GA Handoff Package
 
@@ -25,7 +32,7 @@ Output artifact:
 
 - `docs/reports/m13_ga_handoff_package_<YYYY-MM-DD>.md`
 
-The generator links latest M10/M11/M12 artifacts and computes an initial `READY_FOR_GA` or `HOLD` decision.
+The generator links latest M10/M11/M12/M13 readiness artifacts and computes an initial `READY_FOR_GA` or `HOLD` decision.
 
 ## Exit Criteria for M13
 
@@ -33,3 +40,9 @@ The generator links latest M10/M11/M12 artifacts and computes an initial `READY_
 - Release timestamp + owners recorded.
 - Phase 5 backlog triage documented.
 - Operating runbooks linked with named owners.
+
+Integrated validation command:
+
+```bash
+npm run test:ga:readiness
+```

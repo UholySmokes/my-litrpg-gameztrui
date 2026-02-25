@@ -176,6 +176,9 @@ Last implementation check: 2026-02-25
   - Verification:
     - `npm run log:canary:drill -- --input docs/reports/m11_canary_inputs_2026-02-25.json --name "Pager duty handoff drill" --date 2026-02-25 --result pass --mttr 12 --notes "Escalation and ownership transfer completed within SLA"` (PASS)
     - `npm run report:canary:m11 -- --input docs/reports/m11_canary_inputs_2026-02-25.json` (PASS; decision `ADVANCE`)
+- [x] M12 (partial): enforce limited percentage rollout gate on sync routes with allowlist bypass controls
+  - Evidence: `functions/lib/sync.js`, `tests/unit/SyncCommandRoutes.test.js`, `docs/M12_LIMITED_ROLLOUT_POLICY.md`
+  - Verification: `npm test -- tests/unit/SyncCommandRoutes.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand` (PASS; 19 passed)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

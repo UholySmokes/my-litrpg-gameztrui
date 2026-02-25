@@ -156,6 +156,12 @@ Last implementation check: 2026-02-25
   - Verification:
     - `npm run test:staging:endpoint-probe` (expected FAIL; `CONFIGURATION_NOT_FOUND` on both `web.app` and `void-verse.com`)
     - `npm run report:staging:signoff` after `npm run test:staging:soak-smoke` (PASS command; decision `HOLD` due endpoint probe gate)
+- [x] M10 (partial): initialize Firebase Auth project config, keep anonymous sign-up restricted, and clear staging gate HOLD
+  - Evidence: `scripts/run-staging-endpoint-probe.mjs`, `docs/M10_STAGING_TARGET_POLICY.md`, `docs/reports/m10_staging_endpoint_probe_2026-02-25.md`, `docs/reports/m10_staging_signoff_packet_2026-02-25.md`
+  - Verification:
+    - `npm run test:staging:endpoint-probe` (PASS; auth readiness `ADMIN_ONLY_OPERATION`, recommended `https://my-litrpg-gameztrui-3416-da75c.web.app`)
+    - `npm run test:staging:soak-smoke` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS; 5 checks, 0 failed)
+    - `npm run report:staging:signoff` (PASS command; decision `ADVANCE`)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

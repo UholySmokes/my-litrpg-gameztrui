@@ -1,3 +1,803 @@
+extend type DiscoveryList {
+  """
+  ✨ List `DiscoveryListItem` objects in a one-to-many relationship (where `DiscoveryListItem`.`discoveryList` is this object).
+  """
+  discoveryListItems_on_discoveryList(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: DiscoveryListItem_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [DiscoveryListItem_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: DiscoveryListItem_Having
+  ): [DiscoveryListItem!]! @fdc_generated(from: "DiscoveryListItem.discoveryList", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `GameEntity` objects using `DiscoveryListItem` as the join table (a `DiscoveryListItem` object exists where its `discoveryList` is this and its `gameEntity` is that).
+  """
+  gameEntities_via_DiscoveryListItem(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: DiscoveryListItem_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [DiscoveryListItem_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: DiscoveryListItem_Having
+  ): [GameEntity!]! @fdc_generated(from: "DiscoveryListItem", purpose: QUERY_MULTIPLE_MANY_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "DiscoveryList", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `DiscoveryList` table.
+  """
+  _count: Int! @fdc_generated(from: "DiscoveryList.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryList` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryList.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryList` table where the `description` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  description_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryList.description", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryList` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryList.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryList` table where the `isPublic` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  isPublic_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryList.isPublic", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryList` table where the `name` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  name_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryList.name", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryList` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryList.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryList` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryList.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Minimum of the `createdAt` field in the `DiscoveryList` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "DiscoveryList.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `DiscoveryList` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "DiscoveryList.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `DiscoveryList` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "DiscoveryList.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `DiscoveryList` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "DiscoveryList.updatedAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "DiscoveryList.id", purpose: GLOBAL_ID)
+}
+extend type DiscoveryListItem {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "DiscoveryListItem", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `DiscoveryListItem` table.
+  """
+  _count: Int! @fdc_generated(from: "DiscoveryListItem.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryListItem` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryListItem.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryListItem` table where the `discoveryListId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  discoveryListId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryListItem.discoveryListId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryListItem` table where the `gameEntityId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  gameEntityId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryListItem.gameEntityId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryListItem` table where the `note` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  note_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryListItem.note", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryListItem` table where the `position` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  position_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryListItem.position", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `DiscoveryListItem` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryListItem.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `position` field in the `DiscoveryListItem` table.
+  """
+  position_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "DiscoveryListItem.position", purpose: QUERY_SUM)
+  """
+  ✨ Average the `position` field in the `DiscoveryListItem` table.
+  """
+  position_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "DiscoveryListItem.position", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `createdAt` field in the `DiscoveryListItem` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "DiscoveryListItem.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `position` field in the `DiscoveryListItem` table.
+  """
+  position_min: Int @fdc_generated(from: "DiscoveryListItem.position", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `DiscoveryListItem` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "DiscoveryListItem.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `DiscoveryListItem` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "DiscoveryListItem.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `position` field in the `DiscoveryListItem` table.
+  """
+  position_max: Int @fdc_generated(from: "DiscoveryListItem.position", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `DiscoveryListItem` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "DiscoveryListItem.updatedAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "DiscoveryListItem.discoveryListId,gameEntityId", purpose: GLOBAL_ID)
+}
+extend type GameEntity {
+  """
+  ✨ List `DiscoveryListItem` objects in a one-to-many relationship (where `DiscoveryListItem`.`gameEntity` is this object).
+  """
+  discoveryListItems_on_gameEntity(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: DiscoveryListItem_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [DiscoveryListItem_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: DiscoveryListItem_Having
+  ): [DiscoveryListItem!]! @fdc_generated(from: "DiscoveryListItem.gameEntity", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `Review` objects in a one-to-many relationship (where `Review`.`gameEntity` is this object).
+  """
+  reviews_on_gameEntity(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Review_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Review_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Review_Having
+  ): [Review!]! @fdc_generated(from: "Review.gameEntity", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `DiscoveryList` objects using `DiscoveryListItem` as the join table (a `DiscoveryListItem` object exists where its `gameEntity` is this and its `discoveryList` is that).
+  """
+  discoveryLists_via_DiscoveryListItem(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: DiscoveryListItem_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [DiscoveryListItem_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: DiscoveryListItem_Having
+  ): [DiscoveryList!]! @fdc_generated(from: "DiscoveryListItem", purpose: QUERY_MULTIPLE_MANY_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "GameEntity", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `GameEntity` table.
+  """
+  _count: Int! @fdc_generated(from: "GameEntity.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `description` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  description_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.description", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `entityType` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  entityType_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.entityType", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `imageUrl` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  imageUrl_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.imageUrl", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `name` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  name_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.name", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `rarity` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  rarity_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.rarity", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `starSystem` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  starSystem_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.starSystem", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `statsJson` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  statsJson_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.statsJson", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameEntity` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Minimum of the `createdAt` field in the `GameEntity` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "GameEntity.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `GameEntity` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "GameEntity.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `GameEntity` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "GameEntity.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `GameEntity` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "GameEntity.updatedAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "GameEntity.id", purpose: GLOBAL_ID)
+}
+extend type GameSession {
+  """
+  ✨ List `Review` objects in a one-to-many relationship (where `Review`.`gameSession` is this object).
+  """
+  reviews_on_gameSession(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Review_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Review_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Review_Having
+  ): [Review!]! @fdc_generated(from: "Review.gameSession", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "GameSession", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `GameSession` table.
+  """
+  _count: Int! @fdc_generated(from: "GameSession.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `notes` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  notes_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.notes", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `planetVisited` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  planetVisited_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.planetVisited", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `runId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  runId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.runId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `sessionEndTime` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  sessionEndTime_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.sessionEndTime", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `sessionStartTime` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  sessionStartTime_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.sessionStartTime", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `GameSession` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Minimum of the `createdAt` field in the `GameSession` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "GameSession.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `sessionEndTime` field in the `GameSession` table.
+  """
+  sessionEndTime_min: Date @fdc_generated(from: "GameSession.sessionEndTime", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `sessionStartTime` field in the `GameSession` table.
+  """
+  sessionStartTime_min: Date @fdc_generated(from: "GameSession.sessionStartTime", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `GameSession` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "GameSession.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `GameSession` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "GameSession.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `sessionEndTime` field in the `GameSession` table.
+  """
+  sessionEndTime_max: Date @fdc_generated(from: "GameSession.sessionEndTime", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `sessionStartTime` field in the `GameSession` table.
+  """
+  sessionStartTime_max: Date @fdc_generated(from: "GameSession.sessionStartTime", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `GameSession` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "GameSession.updatedAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "GameSession.id", purpose: GLOBAL_ID)
+}
+extend type Review {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "Review", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `Review` table.
+  """
+  _count: Int! @fdc_generated(from: "Review.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `gameEntityId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  gameEntityId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.gameEntityId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `gameSessionId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  gameSessionId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.gameSessionId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `isPublic` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  isPublic_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.isPublic", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `privateShareLink` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  privateShareLink_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.privateShareLink", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `rating` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  rating_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.rating", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `text` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  text_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.text", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  updatedAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.updatedAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Review` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Review.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `rating` field in the `Review` table.
+  """
+  rating_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "Review.rating", purpose: QUERY_SUM)
+  """
+  ✨ Average the `rating` field in the `Review` table.
+  """
+  rating_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Review.rating", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `createdAt` field in the `Review` table.
+  """
+  createdAt_min: Date @fdc_generated(from: "Review.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `rating` field in the `Review` table.
+  """
+  rating_min: Int @fdc_generated(from: "Review.rating", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `updatedAt` field in the `Review` table.
+  """
+  updatedAt_min: Date @fdc_generated(from: "Review.updatedAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `Review` table.
+  """
+  createdAt_max: Date @fdc_generated(from: "Review.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `rating` field in the `Review` table.
+  """
+  rating_max: Int @fdc_generated(from: "Review.rating", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `updatedAt` field in the `Review` table.
+  """
+  updatedAt_max: Date @fdc_generated(from: "Review.updatedAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "Review.id", purpose: GLOBAL_ID)
+}
 extend type RunEvent {
   """
   Implicit metadata field that cannot be written. It provides extra information about query results.
@@ -1009,6 +1809,108 @@ extend type StoryMemory {
 }
 extend type UserProfile {
   """
+  ✨ List `DiscoveryList` objects in a one-to-many relationship (where `DiscoveryList`.`user` is this object).
+  """
+  discoveryLists_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: DiscoveryList_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [DiscoveryList_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: DiscoveryList_Having
+  ): [DiscoveryList!]! @fdc_generated(from: "DiscoveryList.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `GameSession` objects in a one-to-many relationship (where `GameSession`.`user` is this object).
+  """
+  gameSessions_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: GameSession_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [GameSession_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: GameSession_Having
+  ): [GameSession!]! @fdc_generated(from: "GameSession.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `Review` objects in a one-to-many relationship (where `Review`.`user` is this object).
+  """
+  reviews_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Review_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Review_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Review_Having
+  ): [Review!]! @fdc_generated(from: "Review.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
   ✨ List `RunEvent` objects in a one-to-many relationship (where `RunEvent`.`user` is this object).
   """
   runEvents_on_user(
@@ -1171,6 +2073,15 @@ extend type UserProfile {
     distinct: Boolean = false
   ): Int! @fdc_generated(from: "UserProfile.displayName", purpose: QUERY_COUNT)
   """
+  ✨ Count the number of rows in the `UserProfile` table where the `email` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  email_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserProfile.email", purpose: QUERY_COUNT)
+  """
   ✨ Count the number of rows in the `UserProfile` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   id_count(
@@ -1180,6 +2091,24 @@ extend type UserProfile {
     distinct: Boolean = false
   ): Int! @fdc_generated(from: "UserProfile.id", purpose: QUERY_COUNT)
   """
+  ✨ Count the number of rows in the `UserProfile` table where the `inGameHandle` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  inGameHandle_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserProfile.inGameHandle", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserProfile` table where the `lastLogin` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  lastLogin_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserProfile.lastLogin", purpose: QUERY_COUNT)
+  """
   ✨ Count the number of rows in the `UserProfile` table where the `migrationVersion` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   migrationVersion_count(
@@ -1188,6 +2117,15 @@ extend type UserProfile {
     """
     distinct: Boolean = false
   ): Int! @fdc_generated(from: "UserProfile.migrationVersion", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `UserProfile` table where the `photoUrl` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  photoUrl_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "UserProfile.photoUrl", purpose: QUERY_COUNT)
   """
   ✨ Count the number of rows in the `UserProfile` table where the `updatedAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
@@ -1220,6 +2158,10 @@ extend type UserProfile {
   """
   createdAt_min: Date @fdc_generated(from: "UserProfile.createdAt", purpose: QUERY_MIN)
   """
+  ✨ Minimum of the `lastLogin` field in the `UserProfile` table.
+  """
+  lastLogin_min: Date @fdc_generated(from: "UserProfile.lastLogin", purpose: QUERY_MIN)
+  """
   ✨ Minimum of the `migrationVersion` field in the `UserProfile` table.
   """
   migrationVersion_min: Int @fdc_generated(from: "UserProfile.migrationVersion", purpose: QUERY_MIN)
@@ -1231,6 +2173,10 @@ extend type UserProfile {
   ✨ Maximum of the `createdAt` field in the `UserProfile` table.
   """
   createdAt_max: Date @fdc_generated(from: "UserProfile.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `lastLogin` field in the `UserProfile` table.
+  """
+  lastLogin_max: Date @fdc_generated(from: "UserProfile.lastLogin", purpose: QUERY_MAX)
   """
   ✨ Maximum of the `migrationVersion` field in the `UserProfile` table.
   """

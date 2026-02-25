@@ -17,6 +17,7 @@ Operate the internal canary window with explicit guardrails and evidence collect
 - M10 staging sign-off packet decision is `ADVANCE`.
 - Telemetry ingest SLO policy is active (`docs/M9_TELEMETRY_SLO_RETRY_POLICY.md`).
 - On-call rotation and escalation paths are staffed for the canary window.
+- Canary access controls configured per `docs/M11_CANARY_ENABLEMENT_POLICY.md`.
 - Canary input JSON exists for the current review window.
 
 ## Guardrails
@@ -40,6 +41,14 @@ Create `docs/reports/m11_canary_inputs_<YYYY-MM-DD>.json` with:
 Reference sample: `docs/reports/m11_canary_inputs_sample.json`
 
 ## Commands
+
+Enable enforced canary mode on staging/prod canary environment:
+
+```bash
+INTERNAL_CANARY_MODE=enforce
+INTERNAL_CANARY_ALLOWLIST=<comma-separated-uid-or-email-list>
+RUNTIME_ROLLOUT_STAGE=m11_canary
+```
 
 Generate canary report + incident log:
 

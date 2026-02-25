@@ -13,6 +13,7 @@ Required upstream artifacts:
 - M13 post-launch playbook (`PASS` + `OPS_READY`)
 - M13 GA handoff package (`PASS` + `READY_FOR_GA`)
 - M13 full enablement audit (`PASS` + `FULLY_ENABLED`)
+- M13 sign-off register (`PASS` + `APPROVED`)
 
 ## Command
 

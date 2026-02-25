@@ -3,6 +3,10 @@ import path from "node:path";
 import process from "node:process";
 import { spawnSync } from "node:child_process";
 
+function quoteArg(value) {
+	return `"${String(value || "").replace(/"/gu, '\\"')}"`;
+}
+
 function runStep(label, commandLine, extraEnv = {}) {
 	const startedAt = Date.now();
 	const result = spawnSync(commandLine, {
@@ -75,6 +79,12 @@ ${detailBlocks}
 
 async function main() {
 	const reportDate = new Date().toISOString().slice(0, 10);
+	const releaseId = process.env.GA_RELEASE_ID || "ga-prep-2026-02-25";
+	const techLead = process.env.GA_SIGNOFF_TECH_LEAD || "";
+	const sre = process.env.GA_SIGNOFF_SRE || "";
+	const pm = process.env.GA_SIGNOFF_PM || "";
+	const releaseManager = process.env.GA_SIGNOFF_RELEASE_MANAGER || "";
+
 	const steps = [];
 	steps.push(
 		runStep("M13 Full Enablement Audit", "npm run report:ga:enablement", {
@@ -83,10 +93,30 @@ async function main() {
 			LIMITED_ROLLOUT_MODE: "off",
 		}),
 	);
-	steps.push(runStep("M13 GA Handoff Package", "npm run report:ga:handoff -- --release-id ga-prep-2026-02-25"));
+	steps.push(
+		runStep(
+			"M13 GA Handoff Package",
+			`npm run report:ga:handoff -- --release-id ${quoteArg(releaseId)}`,
+		),
+	);
 	steps.push(runStep("M13 Closeout Dossier", "npm run report:ga:closeout -- --input docs/reports/m13_closeout_inputs_sample.json"));
 	steps.push(runStep("M13 Post-Launch Playbook", "npm run report:ga:playbook -- --input docs/reports/m13_closeout_inputs_sample.json"));
-	steps.push(runStep("M13 GA Review Notes", "npm run report:ga:review -- --release-id ga-prep-2026-02-25"));
+	steps.push(
+		runStep(
+			"M13 Sign-off Register",
+			`npm run report:ga:signoff -- --release-id ${quoteArg(releaseId)} --tech-lead ${quoteArg(
+				techLead,
+			)} --sre ${quoteArg(sre)} --pm ${quoteArg(pm)} --release-manager ${quoteArg(
+				releaseManager,
+			)}`,
+		),
+	);
+	steps.push(
+		runStep(
+			"M13 GA Review Notes",
+			`npm run report:ga:review -- --release-id ${quoteArg(releaseId)}`,
+		),
+	);
 	steps.push(runStep("M13 Rollout Logs Summary", "npm run report:ga:rollout-logs"));
 
 	const reportPath = path.resolve(

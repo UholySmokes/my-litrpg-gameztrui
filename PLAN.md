@@ -1,10 +1,10 @@
 # PLAN: Godot-First Hybrid Command Pixel RPG Roadmap
 
-Last updated: 2026-02-24
+Last updated: 2026-02-25
 Planning horizon: W1-W20 (2026-02-23 to 2026-07-12)
 
 ## 0. Execution Tracker (Live)
-Last implementation check: 2026-02-24
+Last implementation check: 2026-02-25
 
 ### M0 - Planning and Contract Freeze
 - [x] Baseline sync regression tests executed and evidence committed (`docs/reports/baseline_test_report_2026-02-23.md`)
@@ -148,6 +148,9 @@ Last implementation check: 2026-02-24
 - [x] M10 (partial): automate staging sign-off packet generation from soak smoke artifacts
   - Evidence: `scripts/generate-staging-signoff-packet.mjs`, `package.json`, `docs/M10_STAGING_SOAK_RUNBOOK.md`, `docs/reports/m10_staging_signoff_packet_2026-02-24.md`
   - Verification: `npm run report:staging:signoff` (PASS; decision ADVANCE from latest soak report)
+- [x] M10 (partial): define current-project staging host policy and add endpoint probe for target selection
+  - Evidence: `scripts/run-staging-endpoint-probe.mjs`, `docs/M10_STAGING_TARGET_POLICY.md`, `docs/M10_STAGING_SOAK_RUNBOOK.md`, `package.json`, `docs/reports/m10_staging_endpoint_probe_2026-02-25.md`
+  - Verification: `npm run test:staging:endpoint-probe` (PASS; recommended `https://my-litrpg-gameztrui-3416-da75c.web.app`)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

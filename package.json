@@ -29,6 +29,7 @@
     "test:godot:perf": "node scripts/run-godot-perf-probe.mjs",
     "test:rollback:parity": "node scripts/run-rollback-parity-check.mjs",
     "test:rollback:parity:update": "node scripts/run-rollback-parity-check.mjs --update-baseline",
+    "test:staging:endpoint-probe": "node scripts/run-staging-endpoint-probe.mjs",
     "test:telemetry:smoke": "node scripts/run-telemetry-ingest-smoke.mjs",
     "test:staging:soak-smoke": "node scripts/run-staging-soak-smoke.mjs",
     "report:staging:signoff": "node scripts/generate-staging-signoff-packet.mjs",

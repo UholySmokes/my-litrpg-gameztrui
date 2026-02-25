@@ -20,6 +20,18 @@ Execute staging reliability checks required for M10:
 
 ## Baseline Smoke Harness
 
+Target probe (required before soak run):
+
+```bash
+npm run test:staging:endpoint-probe
+```
+
+Target selection policy:
+
+- Primary automation host: `https://my-litrpg-gameztrui-3416-da75c.web.app`
+- Manual custom-domain checks: `https://void-verse.com`
+- See `docs/M10_STAGING_TARGET_POLICY.md`
+
 Command:
 
 ```bash
@@ -29,6 +41,7 @@ npm run test:staging:soak-smoke
 Artifacts:
 
 - `docs/reports/m10_staging_soak_smoke_<YYYY-MM-DD>.md`
+- `docs/reports/m10_staging_endpoint_probe_<YYYY-MM-DD>.md`
 - `docs/reports/telemetry_ingest_health_smoke_<YYYY-MM-DD>.md`
 
 Generate sign-off packet:

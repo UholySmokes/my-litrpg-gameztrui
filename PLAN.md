@@ -162,6 +162,9 @@ Last implementation check: 2026-02-25
     - `npm run test:staging:endpoint-probe` (PASS; auth readiness `ADMIN_ONLY_OPERATION`, recommended `https://my-litrpg-gameztrui-3416-da75c.web.app`)
     - `npm run test:staging:soak-smoke` with `GODOT_BIN=D:\Godot_v4.6.1-stable_win64.exe\Godot_v4.6.1-stable_win64_console.exe` (PASS; 5 checks, 0 failed)
     - `npm run report:staging:signoff` (PASS command; decision `ADVANCE`)
+- [x] M11 (partial): add internal canary gate runbook + structured canary report/incident log generator
+  - Evidence: `scripts/generate-m11-canary-report.mjs`, `docs/M11_INTERNAL_CANARY_RUNBOOK.md`, `docs/reports/m11_canary_inputs_sample.json`, `docs/reports/m11_canary_incident_log_2026-02-24.md`, `docs/reports/m11_canary_decision_memo_2026-02-24.md`, `package.json`
+  - Verification: `npm run report:canary:m11 -- --input docs/reports/m11_canary_inputs_sample.json` (PASS; decision `ADVANCE`)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

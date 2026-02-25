@@ -29,12 +29,18 @@ function parseSummaryRows(markdown) {
 	return rows;
 }
 
-function buildPacket({ packetDate, smokeReportName, rows }) {
+function parseStatus(markdown) {
+	const match = markdown.match(/^Status:\s*(PASS|FAIL)\s*$/imu);
+	return match ? match[1] : "UNKNOWN";
+}
+
+function buildPacket({ packetDate, smokeReportName, rows, probeReportName, probeStatus }) {
 	const failed = rows.filter((row) => row.status !== "PASS");
-	const decision = failed.length === 0 ? "ADVANCE" : "HOLD";
+	const decision = failed.length === 0 && probeStatus === "PASS" ? "ADVANCE" : "HOLD";
 	const summaryRows = rows.map(
 		(row) => `| ${row.check} | ${row.status} | ${row.exitCode} | ${row.durationMs} |`,
 	);
+	const probeRow = `| Endpoint Probe Gate | ${probeStatus} | n/a | n/a |`;
 	return `# M10 Staging Sign-off Packet (${packetDate})
 
 Status: ${decision === "ADVANCE" ? "PASS" : "FAIL"}  
@@ -44,20 +50,23 @@ Generated: ${new Date().toISOString()}
 ## Input Artifact
 
 - Smoke report: \`docs/reports/${smokeReportName}\`
+- Endpoint probe report: \`docs/reports/${probeReportName}\`
 
 ## Check Summary
 
 | Check | Status | Exit code | Duration (ms) |
 |-------|--------|-----------|---------------|
 ${summaryRows.join("\n")}
+${probeRow}
 
 ## Decision Notes
 
 - Failed checks: ${failed.length}
+- Endpoint probe status: ${probeStatus}
 - Required follow-up: ${
-		failed.length === 0
+		failed.length === 0 && probeStatus === "PASS"
 			? "None. Proceed with staging soak window sign-off review."
-			: "Resolve failed checks, re-run soak smoke, regenerate this packet."
+			: "Resolve failed checks and/or endpoint probe blocker, re-run soak smoke, regenerate this packet."
 	}
 
 ## Sign-off
@@ -74,10 +83,19 @@ async function main() {
 	const smokeReportName = `m10_staging_soak_smoke_${packetDate}.md`;
 	const smokeReportPath = path.resolve(process.cwd(), "docs", "reports", smokeReportName);
 	const smokeMarkdown = await fs.readFile(smokeReportPath, "utf8");
+	const probeReportName = `m10_staging_endpoint_probe_${packetDate}.md`;
+	const probeReportPath = path.resolve(process.cwd(), "docs", "reports", probeReportName);
+	const probeMarkdown = await fs.readFile(probeReportPath, "utf8");
 	const rows = parseSummaryRows(smokeMarkdown);
 	if (rows.length === 0) {
 		throw new Error(
 			`Could not parse summary rows from ${path.relative(process.cwd(), smokeReportPath)}.`,
+		);
+	}
+	const probeStatus = parseStatus(probeMarkdown);
+	if (probeStatus === "UNKNOWN") {
+		throw new Error(
+			`Could not parse status from ${path.relative(process.cwd(), probeReportPath)}.`,
 		);
 	}
 
@@ -90,14 +108,17 @@ async function main() {
 			packetDate,
 			smokeReportName,
 			rows,
+			probeReportName,
+			probeStatus,
 		}),
 		"utf8",
 	);
 	console.log(
-		`[staging-signoff] GENERATED decision=${rows.every((row) => row.status === "PASS") ? "ADVANCE" : "HOLD"} packet=${path.relative(
-			process.cwd(),
-			packetPath,
-		)}`,
+		`[staging-signoff] GENERATED decision=${
+			rows.every((row) => row.status === "PASS") && probeStatus === "PASS"
+				? "ADVANCE"
+				: "HOLD"
+		} packet=${path.relative(process.cwd(), packetPath)}`,
 	);
 }
 

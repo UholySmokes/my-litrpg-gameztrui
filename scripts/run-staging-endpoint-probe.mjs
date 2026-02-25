@@ -77,11 +77,119 @@ function evaluateProbe(result) {
 		rootReachable,
 		telemetryAuthGuard,
 		commandAuthGuard,
-		passed: rootReachable && telemetryAuthGuard && commandAuthGuard,
+		passed:
+			rootReachable &&
+			telemetryAuthGuard &&
+			commandAuthGuard &&
+			Boolean(result.authReadiness?.ready),
 	};
 }
 
+async function readFirebaseApiKeyFromBundle(baseUrl) {
+	const htmlRes = await httpRequest(`${baseUrl}/`);
+	if (!htmlRes.ok || !htmlRes.status || htmlRes.status >= 400) {
+		return "";
+	}
+	const htmlTextRes = await fetch(`${baseUrl}/`, {
+		redirect: "manual",
+	});
+	const html = await htmlTextRes.text();
+	const scriptMatch = html.match(/<script[^>]+type="module"[^>]+src="([^"]+)"/iu);
+	if (!scriptMatch || !scriptMatch[1]) return "";
+	const assetPath = scriptMatch[1].startsWith("http")
+		? scriptMatch[1]
+		: `${baseUrl}${scriptMatch[1].startsWith("/") ? "" : "/"}${scriptMatch[1]}`;
+
+	const jsRes = await fetch(assetPath, {
+		redirect: "manual",
+	});
+	if (!jsRes.ok) return "";
+	const js = await jsRes.text();
+	const keyMatch = js.match(/VITE_FIREBASE_API_KEY:"([^"]+)"/u);
+	return keyMatch && keyMatch[1] ? keyMatch[1] : "";
+}
+
+async function probeAuthReadiness(firebaseApiKey) {
+	if (!firebaseApiKey) {
+		return {
+			ready: false,
+			status: 0,
+			code: "MISSING_FIREBASE_API_KEY",
+			message: "Could not resolve Firebase API key from staging bundle.",
+		};
+	}
+	try {
+		const response = await fetch(
+			`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${encodeURIComponent(
+				firebaseApiKey,
+			)}`,
+			{
+				method: "POST",
+				headers: {
+					"content-type": "application/json",
+				},
+				body: JSON.stringify({
+					returnSecureToken: true,
+				}),
+			},
+		);
+		const bodyText = await response.text();
+		let parsed = {};
+		try {
+			parsed = JSON.parse(bodyText);
+		} catch {
+			parsed = {};
+		}
+
+		if (response.ok && parsed && typeof parsed.idToken === "string") {
+			return {
+				ready: true,
+				status: response.status,
+				code: "ANON_TOKEN_MINTED",
+				message: "Anonymous sign-up produced an ID token.",
+			};
+		}
+
+		const message = String(parsed?.error?.message || "").trim();
+		if (message === "CONFIGURATION_NOT_FOUND") {
+			return {
+				ready: false,
+				status: response.status,
+				code: message,
+				message: "Firebase Auth configuration is missing for this API key/project.",
+			};
+		}
+
+		if (message === "OPERATION_NOT_ALLOWED") {
+			return {
+				ready: true,
+				status: response.status,
+				code: message,
+				message:
+					"Firebase Auth is configured but anonymous sign-in is disabled (expected in some setups).",
+			};
+		}
+
+		return {
+			ready: false,
+			status: response.status,
+			code: message || "AUTH_READINESS_UNKNOWN",
+			message:
+				"Firebase Auth readiness probe returned unexpected response; treat as blocked until triaged.",
+		};
+	} catch (error) {
+		return {
+			ready: false,
+			status: 0,
+			code: "AUTH_READINESS_REQUEST_FAILED",
+			message: error instanceof Error ? error.message : String(error),
+		};
+	}
+}
+
 async function probeBase(baseUrl) {
+	const firebaseApiKey = await readFirebaseApiKeyFromBundle(baseUrl);
+	const authReadiness = await probeAuthReadiness(firebaseApiKey);
 	const telemetryBody = JSON.stringify({
 		source: "staging_probe",
 		events: [
@@ -127,9 +235,11 @@ async function probeBase(baseUrl) {
 		},
 		body: commandBody,
 	});
-	const assessment = evaluateProbe({ root, telemetry, command });
+	const assessment = evaluateProbe({ root, telemetry, command, authReadiness });
 	return {
 		baseUrl,
+		firebaseApiKeyPresent: Boolean(firebaseApiKey),
+		authReadiness,
 		root,
 		telemetry,
 		command,
@@ -181,6 +291,14 @@ function buildReport({
 		row("root `/`", `\`${fmtStatus(probe.root)}\``),
 		row("`POST /api/telemetry`", `\`${fmtStatus(probe.telemetry)}\``),
 		row("`POST /api/sync/command`", `\`${fmtStatus(probe.command)}\``),
+		row(
+			"auth configuration readiness",
+			`\`${probe.authReadiness.ready ? "ready" : "blocked"}\` (${probe.authReadiness.code})`,
+		),
+		row(
+			"auth readiness detail",
+			probe.authReadiness.message || "none",
+		),
 		row("passed", `\`${probe.assessment.passed ? "yes" : "no"}\``),
 	].join("\n");
 

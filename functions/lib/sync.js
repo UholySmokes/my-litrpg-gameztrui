@@ -45,6 +45,73 @@ function parseBoolean(value, fallback = false) {
 	return fallback;
 }
 
+function parseCommaSeparatedSet(value) {
+	return new Set(
+		normalizeString(value)
+			.split(",")
+			.map((item) => normalizeString(item).toLowerCase())
+			.filter(Boolean),
+	);
+}
+
+function resolveCanaryPolicy() {
+	const rolloutStage =
+		normalizeString(process.env.RUNTIME_ROLLOUT_STAGE || process.env.ROLLOUT_STAGE) ||
+		"unknown";
+	const requestedMode = normalizeString(process.env.INTERNAL_CANARY_MODE).toLowerCase();
+	const inferredMode = rolloutStage.toLowerCase() === "m11_canary" ? "enforce" : "off";
+	const mode = ["off", "monitor", "enforce"].includes(requestedMode)
+		? requestedMode
+		: inferredMode;
+	return {
+		rolloutStage,
+		mode,
+		allowlist: parseCommaSeparatedSet(process.env.INTERNAL_CANARY_ALLOWLIST),
+	};
+}
+
+function canaryPrincipals(user) {
+	return [
+		normalizeString(user?.id).toLowerCase(),
+		normalizeString(user?.email).toLowerCase(),
+	].filter(Boolean);
+}
+
+function enforceCanaryAccess(res, user) {
+	const policy = resolveCanaryPolicy();
+	if (policy.mode !== "enforce") {
+		return true;
+	}
+
+	if (policy.allowlist.size === 0) {
+		json(res, 503, {
+			ok: false,
+			errorCode: "CANARY_ALLOWLIST_EMPTY",
+			message:
+				"Internal canary mode is enabled but INTERNAL_CANARY_ALLOWLIST is empty.",
+			rolloutStage: policy.rolloutStage,
+			canaryMode: policy.mode,
+		});
+		return false;
+	}
+
+	const principalMatch = canaryPrincipals(user).some((principal) =>
+		policy.allowlist.has(principal),
+	);
+	if (!principalMatch) {
+		json(res, 403, {
+			ok: false,
+			errorCode: "CANARY_ACCESS_DENIED",
+			message: "User is not allowlisted for internal canary access.",
+			rolloutStage: policy.rolloutStage,
+			canaryMode: policy.mode,
+		});
+		return false;
+	}
+
+	return true;
+}
+
 function normalizeStoredState(state, { runId, manifest }) {
 	const base = buildInitialGameplayState({
 		runId,
@@ -532,6 +599,7 @@ async function commit(req, res) {
 	try {
 		const user = await requireUser(req, res);
 		if (!user) return;
+		if (!enforceCanaryAccess(res, user)) return;
 
 		const body = await readJsonBody(req);
 		const normalized = normalizeCommitEnvelope(body);
@@ -573,6 +641,7 @@ async function commitBatch(req, res) {
 	try {
 		const user = await requireUser(req, res);
 		if (!user) return;
+		if (!enforceCanaryAccess(res, user)) return;
 
 		const body = await readJsonBody(req);
 		const normalized = normalizeCommitBatchRequest(body);
@@ -720,6 +789,7 @@ async function action(req, res) {
 	try {
 		const user = await requireUser(req, res);
 		if (!user) return;
+		if (!enforceCanaryAccess(res, user)) return;
 
 		const manifest = getWorldManifest();
 		const body = await readJsonBody(req);
@@ -761,6 +831,7 @@ async function command(req, res) {
 	try {
 		const user = await requireUser(req, res);
 		if (!user) return;
+		if (!enforceCanaryAccess(res, user)) return;
 
 		const manifest = getWorldManifest();
 		const body = await readJsonBody(req);
@@ -801,6 +872,7 @@ async function pull(req, res) {
 	try {
 		const user = await requireUser(req, res);
 		if (!user) return;
+		if (!enforceCanaryAccess(res, user)) return;
 
 		const runId = normalizeString(req?.query?.runId);
 		if (!runId) {
@@ -864,6 +936,7 @@ async function replay(req, res) {
 	try {
 		const user = await requireUser(req, res);
 		if (!user) return;
+		if (!enforceCanaryAccess(res, user)) return;
 
 		const runId = normalizeString(req?.query?.runId);
 		if (!runId) {

@@ -1,0 +1,384 @@
+{
+    "meta": {
+        "version": "1.0.0",
+        "generatedFrom": "packages/game-core/src/data/registries/{Race,Class}DataRegistry.js",
+        "note": "Subset of races/classes for Godot character creation. Tier-1 classes only."
+    },
+    "steps": [
+        "name",
+        "race",
+        "class",
+        "attributes",
+        "skills",
+        "review"
+    ],
+    "races": [
+        {
+            "id": "pure_human",
+            "name": "Pure Human",
+            "description": "Standard human with balanced potential across all areas.",
+            "statBonuses": {
+                "str": 2,
+                "agi": 2,
+                "dex": 2,
+                "int": 2,
+                "cha": 2,
+                "will": 2,
+                "luck": 2,
+                "soul": 1
+            },
+            "passive": {
+                "name": "Unlimited Potential",
+                "description": "Gain +10% Experience from all sources."
+            }
+        },
+        {
+            "id": "neo_human",
+            "name": "Neo-Human",
+            "description": "Human with cybernetic enhancements. Enhanced physical capabilities.",
+            "statBonuses": {
+                "str": 3,
+                "agi": 2,
+                "dex": 3,
+                "int": 1,
+                "cha": 0,
+                "will": 1,
+                "luck": 0,
+                "soul": 0
+            },
+            "passive": {
+                "name": "Targeting Array",
+                "description": "Accuracy is always 100%. Critical Hit Chance +5%."
+            }
+        },
+        {
+            "id": "ancient_bloodline",
+            "name": "Ancient Bloodline",
+            "description": "Descendant of an ancient powerful lineage. Natural affinity for cultivation.",
+            "statBonuses": {
+                "str": 1,
+                "agi": 1,
+                "dex": 1,
+                "int": 4,
+                "cha": 2,
+                "will": 2,
+                "luck": 2,
+                "soul": 3
+            },
+            "passive": {
+                "name": "Ancient Mana Core",
+                "description": "Mana Regeneration +50%."
+            }
+        },
+        {
+            "id": "spirit_beast",
+            "name": "Spirit Beast",
+            "description": "A creature with spiritual energy flowing through its veins.",
+            "statBonuses": {
+                "str": 4,
+                "agi": 4,
+                "dex": 2,
+                "int": 0,
+                "cha": -1,
+                "will": 2,
+                "luck": 1,
+                "soul": 1
+            },
+            "passive": {
+                "name": "Predator Reflexes",
+                "description": "Dodge Chance +10%."
+            }
+        },
+        {
+            "id": "demon_kin",
+            "name": "Demon Kin",
+            "description": "Mixed heritage with demonic ancestry. Dark power courses through you.",
+            "statBonuses": {
+                "str": 4,
+                "agi": 2,
+                "dex": 1,
+                "int": 2,
+                "cha": -1,
+                "will": 3,
+                "luck": -1,
+                "soul": 2
+            },
+            "passive": {
+                "name": "Siphoning Strikes",
+                "description": "Heal for 5% of damage dealt."
+            }
+        },
+        {
+            "id": "celestial_descendant",
+            "name": "Celestial Descendant",
+            "description": "Bloodline touched by celestial beings. Radiant energy within.",
+            "statBonuses": {
+                "str": 1,
+                "agi": 2,
+                "dex": 2,
+                "int": 3,
+                "cha": 4,
+                "will": 2,
+                "luck": 2,
+                "soul": 2
+            },
+            "passive": {
+                "name": "Celestial Radiance",
+                "description": "Healing effects +20%."
+            }
+        },
+        {
+            "id": "shadow_walker",
+            "name": "Shadow Walker",
+            "description": "Born from the void between realms. Natural stealth and darkness affinity.",
+            "statBonuses": {
+                "str": 1,
+                "agi": 5,
+                "dex": 4,
+                "int": 2,
+                "cha": 0,
+                "will": 2,
+                "luck": 1,
+                "soul": 2
+            },
+            "passive": {
+                "name": "Shadow Form",
+                "description": "20% chance to negate damage."
+            }
+        },
+        {
+            "id": "dragon_blood",
+            "name": "Dragon Blood",
+            "description": "Ancient dragon heritage. Immense physical and magical potential.",
+            "statBonuses": {
+                "str": 5,
+                "agi": 2,
+                "dex": 1,
+                "int": 3,
+                "cha": 2,
+                "will": 3,
+                "luck": 1,
+                "soul": 2
+            },
+            "passive": {
+                "name": "Draconic Resilience",
+                "description": "Phys/Magic Defense +15%."
+            }
+        },
+        {
+            "id": "undead_awakened",
+            "name": "Undead Awakened",
+            "description": "Risen from death with unnatural vitality and dark power.",
+            "statBonuses": {
+                "str": 3,
+                "agi": 1,
+                "dex": 1,
+                "int": 3,
+                "cha": -2,
+                "will": 4,
+                "luck": 0,
+                "soul": 3
+            },
+            "passive": {
+                "name": "Undying Will",
+                "description": "Survive with 1 HP once per battle."
+            }
+        },
+        {
+            "id": "phoenix_reborn",
+            "name": "Phoenix Reborn",
+            "description": "Reborn from fire with blazing power and eternal resilience.",
+            "statBonuses": {
+                "str": 2,
+                "agi": 3,
+                "dex": 2,
+                "int": 3,
+                "cha": 2,
+                "will": 3,
+                "luck": 1,
+                "soul": 2
+            },
+            "passive": {
+                "name": "Heart of Fire",
+                "description": "Fire Damage +20%."
+            }
+        },
+        {
+            "id": "fae_touched",
+            "name": "Fae Touched",
+            "description": "Kissed by fae magic, dancing between worlds with trickster grace.",
+            "statBonuses": {
+                "str": 0,
+                "agi": 3,
+                "dex": 3,
+                "int": 3,
+                "cha": 3,
+                "will": 1,
+                "luck": 3,
+                "soul": 1
+            },
+            "passive": {
+                "name": "Fae Trickery",
+                "description": "10% Evasion."
+            }
+        },
+        {
+            "id": "mechanical_construct",
+            "name": "Mechanical Construct",
+            "description": "Artificial being of gears and circuits. Pure logic, no soul.",
+            "statBonuses": {
+                "str": 4,
+                "agi": 1,
+                "dex": 3,
+                "int": 3,
+                "cha": -2,
+                "will": 0,
+                "luck": 0,
+                "soul": 0
+            },
+            "passive": {
+                "name": "System Overclock",
+                "description": "Attack Speed +10%."
+            }
+        }
+    ],
+    "classes": [
+        {
+            "id": "warrior",
+            "name": "Warrior",
+            "description": "Beginner-friendly frontline fighter focused on direct melee combat.",
+            "resourceSystem": "rage",
+            "coreMechanics": [
+                "stance_system",
+                "block",
+                "weapon_mastery"
+            ],
+            "baseStats": {
+                "strength": 3,
+                "dexterity": 1,
+                "intelligence": 0,
+                "wisdom": 0,
+                "constitution": 2,
+                "charisma": 0
+            }
+        },
+        {
+            "id": "rogue",
+            "name": "Rogue",
+            "description": "Beginner-friendly agile class built around stealth and burst windows.",
+            "resourceSystem": "energy",
+            "coreMechanics": [
+                "stealth",
+                "combo",
+                "lockpicking",
+                "traps"
+            ],
+            "baseStats": {
+                "strength": 1,
+                "dexterity": 3,
+                "intelligence": 0,
+                "wisdom": 0,
+                "constitution": 1,
+                "charisma": 1
+            }
+        },
+        {
+            "id": "mage",
+            "name": "Mage",
+            "description": "Beginner-friendly caster class using straightforward elemental spells.",
+            "resourceSystem": "mana",
+            "coreMechanics": [
+                "spell_schools",
+                "arcane_mastery"
+            ],
+            "baseStats": {
+                "strength": 0,
+                "dexterity": 1,
+                "intelligence": 3,
+                "wisdom": 2,
+                "constitution": 0,
+                "charisma": 0
+            }
+        },
+        {
+            "id": "cleric",
+            "name": "Cleric",
+            "description": "Beginner-friendly support class with healing and protective holy magic.",
+            "resourceSystem": "mana",
+            "coreMechanics": [
+                "divine_intervention",
+                "prayer_system",
+                "holy_magic"
+            ],
+            "baseStats": {
+                "strength": 1,
+                "dexterity": 0,
+                "intelligence": 1,
+                "wisdom": 3,
+                "constitution": 1,
+                "charisma": 0
+            }
+        },
+        {
+            "id": "monk",
+            "name": "Monk",
+            "description": "Beginner-friendly martial class focused on combos and chi control.",
+            "resourceSystem": "chi",
+            "coreMechanics": [
+                "unarmed",
+                "meditation",
+                "combo_attacks",
+                "chi_system"
+            ],
+            "baseStats": {
+                "strength": 1,
+                "dexterity": 2,
+                "intelligence": 0,
+                "wisdom": 2,
+                "constitution": 1,
+                "charisma": 0
+            }
+        },
+        {
+            "id": "ranger",
+            "name": "Ranger",
+            "description": "Beginner-friendly ranged class with tracking and companion support.",
+            "resourceSystem": "focus",
+            "coreMechanics": [
+                "aim",
+                "pet_companion",
+                "tracking",
+                "favored_enemy"
+            ],
+            "baseStats": {
+                "strength": 1,
+                "dexterity": 2,
+                "intelligence": 0,
+                "wisdom": 1,
+                "constitution": 1,
+                "charisma": 1
+            }
+        }
+    ],
+    "attributes": {
+        "base": {
+            "strength": 10,
+            "dexterity": 10,
+            "intelligence": 10,
+            "vitality": 10,
+            "wisdom": 10,
+            "luck": 10
+        },
+        "freePoints": 15,
+        "minValue": 1,
+        "maxValue": 30
+    },
+    "skills": {
+        "maxActiveSkills": 3,
+        "maxPassiveSkills": 6
+    },
+    "characterCreation": {
+        "required": true,
+        "startMapAfterCreation": "map_village_square"
+    }
+}

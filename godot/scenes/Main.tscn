@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/world_controller.gd" id="1_world"]
 [ext_resource type="Script" path="res://scripts/firebase_auth_client.gd" id="2_auth"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://scripts/story_client.gd" id="7_story"]
 [ext_resource type="Script" path="res://scripts/pixel_map_renderer.gd" id="8_renderer"]
 [ext_resource type="Script" path="res://scripts/telemetry_reporter.gd" id="9_telemetry"]
+[ext_resource type="Script" path="res://scripts/character_creation_controller.gd" id="10_cc_ctrl"]
+[ext_resource type="Script" path="res://scripts/character_creation_panel.gd" id="11_cc_panel"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_world")
@@ -84,6 +86,10 @@ script = ExtResource("6_config")
 unique_name_in_owner = true
 script = ExtResource("4_queue")
 
+[node name="CharacterCreationController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("10_cc_ctrl")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ProsePanel" type="Panel" parent="CanvasLayer"]
@@ -113,3 +119,67 @@ fit_content = true
 scroll_active = true
 bbcode_enabled = false
 text = ""
+
+[node name="CharacterCreationPanel" type="Panel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 80.0
+offset_top = 40.0
+offset_right = 740.0
+offset_bottom = 680.0
+script = ExtResource("11_cc_panel")
+
+[node name="CreationTitleLabel" type="Label" parent="CanvasLayer/CharacterCreationPanel"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 14.0
+offset_right = 640.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 24
+text = "CHARACTER CREATION"
+
+[node name="CreationStepLabel" type="Label" parent="CanvasLayer/CharacterCreationPanel"]
+unique_name_in_owner = true
+offset_left = 480.0
+offset_top = 14.0
+offset_right = 640.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 2
+text = "Step 1 / 6"
+
+[node name="CreationBodyLabel" type="RichTextLabel" parent="CanvasLayer/CharacterCreationPanel"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 60.0
+offset_right = 640.0
+offset_bottom = 580.0
+fit_content = false
+scroll_active = true
+bbcode_enabled = false
+text = ""
+
+[node name="CreationNameInput" type="LineEdit" parent="CanvasLayer/CharacterCreationPanel"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 590.0
+offset_right = 400.0
+offset_bottom = 620.0
+placeholder_text = "Enter your name..."
+visible = false
+
+[node name="CreationBackButton" type="Button" parent="CanvasLayer/CharacterCreationPanel"]
+unique_name_in_owner = true
+offset_left = 420.0
+offset_top = 590.0
+offset_right = 520.0
+offset_bottom = 625.0
+text = "BACK"
+disabled = true
+
+[node name="CreationNextButton" type="Button" parent="CanvasLayer/CharacterCreationPanel"]
+unique_name_in_owner = true
+offset_left = 530.0
+offset_top = 590.0
+offset_right = 640.0
+offset_bottom = 625.0
+text = "NEXT"

@@ -24,6 +24,8 @@ const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"
 @onready var _config_loader: ConfigLoader = %ConfigLoader
 @onready var _trigger_queue: TriggerQueue = %TriggerQueue
 @onready var _prose_panel: ProsePanel = %ProsePanel
+@onready var _cc_controller: CharacterCreationController = %CharacterCreationController
+@onready var _cc_panel: CharacterCreationPanel = %CharacterCreationPanel
 
 var _manifest: Dictionary = {}
 var _content_version: String = ""
@@ -45,6 +47,7 @@ var _perf_move_samples_ms: Array = []
 var _perf_render_samples_ms: Array = []
 var _perf_map_transitions: int = 0
 var _last_perf_map_id: String = ""
+var _creating_character: bool = false
 
 
 func _ready() -> void:
@@ -63,9 +66,30 @@ func _ready() -> void:
 	_current_map_id = str(start.get("mapId", "map_village_square"))
 	_load_runtime_sprite_assets()
 	_set_player_tile(Vector2i(int(start.get("x", 3)), int(start.get("y", 3))))
-	_update_scene_for_map()
-	_apply_sprite_fallback_visibility()
-	_render_story()
+
+	# ── character creation gate ──
+	var cc_cfg: Dictionary = _manifest.get("characterCreation", {})
+	var cc_required: bool = cc_cfg.get("required", false)
+	if cc_required and _cc_controller and _cc_panel:
+		_creating_character = true
+		_cc_panel.bind_controller(_cc_controller)
+		_cc_controller.creation_completed.connect(_on_character_creation_completed)
+		_cc_controller.load_options()
+		# hide world elements while creating
+		_player.visible = false
+		_player_sprite_anchor.visible = false
+		if _npc_guide:
+			_npc_guide.visible = false
+			_guide_sprite_anchor.visible = false
+		_map_renderer.visible = false
+		_prose_panel.visible = false
+		_cc_panel.visible = true
+	else:
+		if _cc_panel:
+			_cc_panel.visible = false
+		_update_scene_for_map()
+		_apply_sprite_fallback_visibility()
+		_render_story()
 
 	_sync_client.auth_client_path = _auth_client.get_path()
 	_story_client.auth_client_path = _auth_client.get_path()
@@ -93,7 +117,48 @@ func _ready() -> void:
 	_flush_timer.timeout.connect(_on_flush_timer_timeout)
 
 
+func _on_character_creation_completed(character_data: Dictionary) -> void:
+	_creating_character = false
+
+	# hide creation UI
+	_cc_panel.visible = false
+
+	# optionally switch to the post-creation map
+	var cc_cfg: Dictionary = _manifest.get("characterCreation", {})
+	var start_map: String = String(cc_cfg.get("startMapAfterCreation", _current_map_id))
+	if not start_map.is_empty():
+		_current_map_id = start_map
+
+	# show world elements
+	_player.visible = true
+	_player_sprite_anchor.visible = true
+	_map_renderer.visible = true
+	_prose_panel.visible = true
+	_update_scene_for_map()
+	_apply_sprite_fallback_visibility()
+	_render_story()
+
+	# send character data to backend
+	if _sync_client and _sync_client.has_method("send_command"):
+		_sync_client.send_command("create_character", character_data)
+
+	_enqueue_telemetry(
+		"character_created",
+		"info",
+		"character_creation_complete",
+		{
+			"name": String(character_data.get("name", "")),
+			"race": String(character_data.get("race", {}).get("id", "")),
+			"class": String(character_data.get("class", {}).get("id", "")),
+		}
+	)
+
+	print("=== Transitioning to gameplay after character creation ===")
+
+
 func _unhandled_key_input(event: InputEvent) -> void:
+	if _creating_character:
+		return  # let CharacterCreationPanel handle input
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
 	var key_event := event as InputEventKey

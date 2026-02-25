@@ -16,6 +16,7 @@ Defines which host to use for staging soak automation in the current Firebase pr
 
 - Primary staging automation target: `web.app` host.
 - Secondary manual UX check target: custom domain.
+- Current gate state: `HOLD` until Firebase Auth readiness probe passes.
 
 ## Rationale
 
@@ -36,4 +37,5 @@ Probe result artifact:
 ## Operational Rule
 
 - Run endpoint probe before staging soak sign-off generation.
+- If auth readiness reports `CONFIGURATION_NOT_FOUND` (or any blocking auth state), block sign-off and fix Firebase Auth project configuration before continuing M10.
 - If `web.app` probe fails and custom domain passes, block sign-off and investigate Hosting/domain config drift.

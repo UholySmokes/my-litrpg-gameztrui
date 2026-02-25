@@ -151,6 +151,11 @@ Last implementation check: 2026-02-25
 - [x] M10 (partial): define current-project staging host policy and add endpoint probe for target selection
   - Evidence: `scripts/run-staging-endpoint-probe.mjs`, `docs/M10_STAGING_TARGET_POLICY.md`, `docs/M10_STAGING_SOAK_RUNBOOK.md`, `package.json`, `docs/reports/m10_staging_endpoint_probe_2026-02-25.md`
   - Verification: `npm run test:staging:endpoint-probe` (PASS; recommended `https://my-litrpg-gameztrui-3416-da75c.web.app`)
+- [x] M10 (partial): add Firebase Auth readiness gate to staging probe/sign-off and capture current blocker
+  - Evidence: `scripts/run-staging-endpoint-probe.mjs`, `scripts/generate-staging-signoff-packet.mjs`, `docs/reports/m10_staging_endpoint_probe_2026-02-25.md`, `docs/reports/m10_staging_signoff_packet_2026-02-25.md`
+  - Verification:
+    - `npm run test:staging:endpoint-probe` (expected FAIL; `CONFIGURATION_NOT_FOUND` on both `web.app` and `void-verse.com`)
+    - `npm run report:staging:signoff` after `npm run test:staging:soak-smoke` (PASS command; decision `HOLD` due endpoint probe gate)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

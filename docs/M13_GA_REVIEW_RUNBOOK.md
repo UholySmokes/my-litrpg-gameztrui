@@ -7,6 +7,13 @@ Last updated: 2026-02-25
 
 Generate GA review notes and postmortem checklist after closeout dossier and operating playbook are available.
 
+Required upstream artifacts:
+
+- M13 closeout dossier (`PASS` + `COMPLETE`)
+- M13 post-launch playbook (`PASS` + `OPS_READY`)
+- M13 GA handoff package (`PASS` + `READY_FOR_GA`)
+- M13 full enablement audit (`PASS` + `FULLY_ENABLED`)
+
 ## Command
 
 ```bash

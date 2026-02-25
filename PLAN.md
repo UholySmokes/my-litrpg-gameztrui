@@ -199,6 +199,23 @@ Last implementation check: 2026-02-25
 - [x] M13 (partial): add GA review notes generator with postmortem checklist linkage to closeout/playbook artifacts
   - Evidence: `scripts/generate-m13-ga-review-notes.mjs`, `docs/M13_GA_REVIEW_RUNBOOK.md`, `docs/reports/m13_ga_review_notes_2026-02-25.md`, `package.json`
   - Verification: `npm run report:ga:review -- --release-id ga-prep-2026-02-25` (PASS; decision `GA_CONFIRMED`)
+- [x] M13 (partial): add full-enablement audit gate and require it in GA handoff decision logic
+  - Evidence: `scripts/generate-m13-full-enablement-audit.mjs`, `scripts/generate-m13-ga-handoff-package.mjs`, `docs/M13_FULL_ENABLEMENT_AUDIT_RUNBOOK.md`, `docs/M13_GA_HANDOFF_RUNBOOK.md`, `docs/reports/m13_full_enablement_audit_2026-02-25.md`, `docs/reports/m13_ga_handoff_package_2026-02-25.md`, `package.json`
+  - Verification:
+    - `npm run report:ga:enablement` with `RUNTIME_ROLLOUT_STAGE=m13_ga`, `INTERNAL_CANARY_MODE=off`, `LIMITED_ROLLOUT_MODE=off` (PASS; decision `FULLY_ENABLED`)
+    - `npm run report:ga:handoff -- --release-id ga-prep-2026-02-25` (PASS; decision `READY_FOR_GA`)
+- [x] M13 (partial): harden GA review gate to require closeout, playbook, handoff, and full-enablement artifacts
+  - Evidence: `scripts/generate-m13-ga-review-notes.mjs`, `docs/M13_GA_REVIEW_RUNBOOK.md`, `docs/reports/m13_ga_review_notes_2026-02-25.md`
+  - Verification: `npm run report:ga:review -- --release-id ga-prep-2026-02-25` (PASS; decision `GA_CONFIRMED`)
+- [x] M13 (partial): add consolidated rollout logs and incident summary artifact generator for M11-M13 archive handoff
+  - Evidence: `scripts/generate-m13-rollout-logs-summary.mjs`, `docs/M13_ROLLOUT_LOGS_SUMMARY_RUNBOOK.md`, `docs/reports/m13_rollout_logs_summary_2026-02-25.md`, `package.json`
+  - Verification: `npm run report:ga:rollout-logs` (PASS; decision `OPS_ARCHIVE_READY`)
+- [x] M13 (partial): add one-command GA readiness suite that executes full M13 evidence chain
+  - Evidence: `scripts/run-m13-ga-readiness-suite.mjs`, `docs/M13_GA_HANDOFF_RUNBOOK.md`, `docs/reports/m13_ga_readiness_suite_2026-02-25.md`, `package.json`
+  - Verification: `npm run test:ga:readiness` (PASS; 6 steps, 0 failed)
+- [x] M13 (partial): add M13 sign-off register generator to capture named approvers against final artifact set
+  - Evidence: `scripts/generate-m13-signoff-register.mjs`, `docs/M13_SIGNOFF_REGISTER_RUNBOOK.md`, `docs/reports/m13_signoff_register_2026-02-25.md`, `package.json`
+  - Verification: `npm run report:ga:signoff -- --release-id ga-prep-2026-02-25 --tech-lead tech_lead --sre sre_lead --pm pm_lead --release-manager release_manager` (PASS; decision `APPROVED`)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

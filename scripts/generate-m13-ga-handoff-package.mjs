@@ -67,12 +67,16 @@ function buildPackage({
 	canaryMemo,
 	rolloutChecklist,
 	liveRollback,
+	fullEnablementAudit,
 }) {
-	const required = [stagingSignoff, canaryMemo, rolloutChecklist];
+	const required = [stagingSignoff, canaryMemo, rolloutChecklist, fullEnablementAudit];
 	const hasMissing = required.some((artifact) => artifact.status === "MISSING");
 	const hasFail = required.some((artifact) => artifact.status === "FAIL");
 	const decision =
-		!hasMissing && !hasFail && rolloutChecklist.decision === "ADVANCE"
+		!hasMissing &&
+		!hasFail &&
+		rolloutChecklist.decision === "ADVANCE" &&
+		fullEnablementAudit.decision === "FULLY_ENABLED"
 			? "READY_FOR_GA"
 			: "HOLD";
 	const status = decision === "READY_FOR_GA" ? "PASS" : "FAIL";
@@ -96,6 +100,7 @@ Generated: ${new Date().toISOString()}
 | M11 Canary Decision Memo | \`${canaryMemo.fileName || "missing"}\` | ${canaryMemo.status} | ${canaryMemo.decision} |
 | M12 Rollout Gate Checklist | \`${rolloutChecklist.fileName || "missing"}\` | ${rolloutChecklist.status} | ${rolloutChecklist.decision} |
 | M12 Live Rollback Verification | \`${liveRollback.fileName || "missing"}\` | ${liveRollback.status} | ${liveRollback.decision} |
+| M13 Full Enablement Audit | \`${fullEnablementAudit.fileName || "missing"}\` | ${fullEnablementAudit.status} | ${fullEnablementAudit.decision} |
 
 ## Handoff Checklist
 
@@ -124,11 +129,13 @@ async function main() {
 	const canaryMemoFile = pickLatestFile(files, ["m11_canary_decision_memo_"]);
 	const rolloutChecklistFile = pickLatestFile(files, ["m12_rollout_gate_checklist_"]);
 	const liveRollbackFile = pickLatestFile(files, ["m12_live_rollback_verification_"]);
+	const fullEnablementAuditFile = pickLatestFile(files, ["m13_full_enablement_audit_"]);
 
 	const stagingSignoff = await readReportMetadata(reportsDir, stagingSignoffFile);
 	const canaryMemo = await readReportMetadata(reportsDir, canaryMemoFile);
 	const rolloutChecklist = await readReportMetadata(reportsDir, rolloutChecklistFile);
 	const liveRollback = await readReportMetadata(reportsDir, liveRollbackFile);
+	const fullEnablementAudit = await readReportMetadata(reportsDir, fullEnablementAuditFile);
 
 	const handoffName = `m13_ga_handoff_package_${reportDate}.md`;
 	const handoffPath = path.resolve(reportsDir, handoffName);
@@ -142,6 +149,7 @@ async function main() {
 			canaryMemo,
 			rolloutChecklist,
 			liveRollback,
+			fullEnablementAudit,
 		}),
 		"utf8",
 	);

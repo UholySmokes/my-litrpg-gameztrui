@@ -44,6 +44,18 @@ Output artifact:
 
 - `docs/reports/m12_rollout_gate_checklist_<YYYY-MM-DD>.md`
 
+## Live Rollback Verification
+
+Run rollback parity and stamp result into the current rollout step:
+
+```bash
+npm run test:rollout:rollback -- --input docs/reports/m12_rollout_inputs_<YYYY-MM-DD>.json --percent <10|25|50> --notes "Rollback verified after step window"
+```
+
+Output artifact:
+
+- `docs/reports/m12_live_rollback_verification_<YYYY-MM-DD>_<percent>.md`
+
 ## Exit Criteria for M12
 
 - All three steps (`10%`, `25%`, `50%`) pass guardrails.

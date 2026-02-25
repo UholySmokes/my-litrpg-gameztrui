@@ -35,6 +35,7 @@
     "report:staging:signoff": "node scripts/generate-staging-signoff-packet.mjs",
     "report:canary:m11": "node scripts/generate-m11-canary-report.mjs",
     "report:canary:alerts": "node scripts/generate-m11-alert-tuning-report.mjs",
+    "report:rollout:m12": "node scripts/generate-m12-rollout-gate-checklist.mjs",
     "log:canary:drill": "node scripts/log-m11-oncall-drill.mjs",
     "simulate": "node sim_gamestart_fixed.js",
     "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",

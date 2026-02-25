@@ -73,6 +73,11 @@ describe("/api/sync/command route", () => {
 	const originalCanaryMode = process.env.INTERNAL_CANARY_MODE;
 	const originalCanaryAllowlist = process.env.INTERNAL_CANARY_ALLOWLIST;
 	const originalRolloutStage = process.env.RUNTIME_ROLLOUT_STAGE;
+	const originalLimitedRolloutMode = process.env.LIMITED_ROLLOUT_MODE;
+	const originalLimitedRolloutPercentage = process.env.LIMITED_ROLLOUT_PERCENTAGE;
+	const originalLimitedRolloutAllowlist = process.env.LIMITED_ROLLOUT_ALLOWLIST;
+	const originalLimitedRolloutSalt = process.env.LIMITED_ROLLOUT_SALT;
+	const originalRolloutPercentage = process.env.ROLLOUT_PERCENTAGE;
 	let syncDbPath = "";
 	let gameDbPath = "";
 
@@ -86,6 +91,11 @@ describe("/api/sync/command route", () => {
 		delete process.env.INTERNAL_CANARY_MODE;
 		delete process.env.INTERNAL_CANARY_ALLOWLIST;
 		delete process.env.RUNTIME_ROLLOUT_STAGE;
+		delete process.env.LIMITED_ROLLOUT_MODE;
+		delete process.env.LIMITED_ROLLOUT_PERCENTAGE;
+		delete process.env.LIMITED_ROLLOUT_ALLOWLIST;
+		delete process.env.LIMITED_ROLLOUT_SALT;
+		delete process.env.ROLLOUT_PERCENTAGE;
 	});
 
 	afterEach(() => {
@@ -103,6 +113,16 @@ describe("/api/sync/command route", () => {
 		else process.env.INTERNAL_CANARY_ALLOWLIST = originalCanaryAllowlist;
 		if (originalRolloutStage === undefined) delete process.env.RUNTIME_ROLLOUT_STAGE;
 		else process.env.RUNTIME_ROLLOUT_STAGE = originalRolloutStage;
+		if (originalLimitedRolloutMode === undefined) delete process.env.LIMITED_ROLLOUT_MODE;
+		else process.env.LIMITED_ROLLOUT_MODE = originalLimitedRolloutMode;
+		if (originalLimitedRolloutPercentage === undefined) delete process.env.LIMITED_ROLLOUT_PERCENTAGE;
+		else process.env.LIMITED_ROLLOUT_PERCENTAGE = originalLimitedRolloutPercentage;
+		if (originalLimitedRolloutAllowlist === undefined) delete process.env.LIMITED_ROLLOUT_ALLOWLIST;
+		else process.env.LIMITED_ROLLOUT_ALLOWLIST = originalLimitedRolloutAllowlist;
+		if (originalLimitedRolloutSalt === undefined) delete process.env.LIMITED_ROLLOUT_SALT;
+		else process.env.LIMITED_ROLLOUT_SALT = originalLimitedRolloutSalt;
+		if (originalRolloutPercentage === undefined) delete process.env.ROLLOUT_PERCENTAGE;
+		else process.env.ROLLOUT_PERCENTAGE = originalRolloutPercentage;
 
 		if (syncDbPath && fs.existsSync(syncDbPath)) fs.unlinkSync(syncDbPath);
 		if (gameDbPath && fs.existsSync(gameDbPath)) fs.unlinkSync(gameDbPath);
@@ -211,6 +231,105 @@ describe("/api/sync/command route", () => {
 			body: createCommandEnvelope({
 				id: "cmd-canary-allow-1",
 				runId: "run-command-canary-allow",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(200);
+		expect(res.body.ok).toBe(true);
+		expect(res.body.accepted).toHaveLength(1);
+	});
+
+	it("blocks commands when limited rollout enforce mode has invalid percentage", async () => {
+		process.env.LIMITED_ROLLOUT_MODE = "enforce";
+		delete process.env.LIMITED_ROLLOUT_PERCENTAGE;
+		delete process.env.ROLLOUT_PERCENTAGE;
+		process.env.RUNTIME_ROLLOUT_STAGE = "m12_limited";
+
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "user-rollout-invalid-percent" },
+			body: createCommandEnvelope({
+				id: "cmd-rollout-invalid-1",
+				runId: "run-command-rollout-invalid",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(503);
+		expect(res.body.ok).toBe(false);
+		expect(res.body.errorCode).toBe("LIMITED_ROLLOUT_PERCENTAGE_INVALID");
+	});
+
+	it("blocks non-allowlisted users when limited rollout percentage is 0", async () => {
+		process.env.LIMITED_ROLLOUT_MODE = "enforce";
+		process.env.LIMITED_ROLLOUT_PERCENTAGE = "0";
+		process.env.RUNTIME_ROLLOUT_STAGE = "m12_limited";
+
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "user-rollout-zero" },
+			body: createCommandEnvelope({
+				id: "cmd-rollout-zero-1",
+				runId: "run-command-rollout-zero",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(403);
+		expect(res.body.ok).toBe(false);
+		expect(res.body.errorCode).toBe("LIMITED_ROLLOUT_DENIED");
+		expect(res.body.rolloutPercentage).toBe(0);
+	});
+
+	it("allows users when limited rollout percentage is 100", async () => {
+		process.env.LIMITED_ROLLOUT_MODE = "enforce";
+		process.env.LIMITED_ROLLOUT_PERCENTAGE = "100";
+		process.env.RUNTIME_ROLLOUT_STAGE = "m12_limited";
+
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "user-rollout-full" },
+			body: createCommandEnvelope({
+				id: "cmd-rollout-full-1",
+				runId: "run-command-rollout-full",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(200);
+		expect(res.body.ok).toBe(true);
+		expect(res.body.accepted).toHaveLength(1);
+	});
+
+	it("allows allowlisted users even when rollout percentage is 0", async () => {
+		process.env.LIMITED_ROLLOUT_MODE = "enforce";
+		process.env.LIMITED_ROLLOUT_PERCENTAGE = "0";
+		process.env.LIMITED_ROLLOUT_ALLOWLIST = "rollout-allowlisted-user";
+		process.env.RUNTIME_ROLLOUT_STAGE = "m12_limited";
+
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "rollout-allowlisted-user" },
+			body: createCommandEnvelope({
+				id: "cmd-rollout-allowlist-1",
+				runId: "run-command-rollout-allowlist",
 				clientSeq: 1,
 				contentVersion: manifest.contentVersion,
 			}),

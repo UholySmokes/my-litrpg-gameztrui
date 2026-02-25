@@ -1,7 +1,7 @@
 # M10 Staging Target Policy
 
 Status: Active  
-Last updated: 2026-02-24
+Last updated: 2026-02-25
 
 ## Scope
 
@@ -16,7 +16,7 @@ Defines which host to use for staging soak automation in the current Firebase pr
 
 - Primary staging automation target: `web.app` host.
 - Secondary manual UX check target: custom domain.
-- Current gate state: `HOLD` until Firebase Auth readiness probe passes.
+- Current gate state: `PASS` (endpoint probe is green with auth readiness `ADMIN_ONLY_OPERATION`).
 
 ## Rationale
 

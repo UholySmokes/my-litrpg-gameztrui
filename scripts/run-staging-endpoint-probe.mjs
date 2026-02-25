@@ -169,6 +169,15 @@ async function probeAuthReadiness(firebaseApiKey) {
 					"Firebase Auth is configured but anonymous sign-in is disabled (expected in some setups).",
 			};
 		}
+		if (message === "ADMIN_ONLY_OPERATION") {
+			return {
+				ready: true,
+				status: response.status,
+				code: message,
+				message:
+					"Firebase Auth is configured; anonymous end-user sign-up is restricted by admin policy.",
+			};
+		}
 
 		return {
 			ready: false,

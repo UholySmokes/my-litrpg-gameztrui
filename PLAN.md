@@ -165,6 +165,9 @@ Last implementation check: 2026-02-25
 - [x] M11 (partial): add internal canary gate runbook + structured canary report/incident log generator
   - Evidence: `scripts/generate-m11-canary-report.mjs`, `docs/M11_INTERNAL_CANARY_RUNBOOK.md`, `docs/reports/m11_canary_inputs_sample.json`, `docs/reports/m11_canary_incident_log_2026-02-24.md`, `docs/reports/m11_canary_decision_memo_2026-02-24.md`, `package.json`
   - Verification: `npm run report:canary:m11 -- --input docs/reports/m11_canary_inputs_sample.json` (PASS; decision `ADVANCE`)
+- [x] M11 (partial): enforce internal canary allowlist gate on sync routes and publish enablement policy
+  - Evidence: `functions/lib/sync.js`, `tests/unit/SyncCommandRoutes.test.js`, `docs/M11_CANARY_ENABLEMENT_POLICY.md`, `docs/M11_INTERNAL_CANARY_RUNBOOK.md`
+  - Verification: `npm test -- tests/unit/SyncCommandRoutes.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand` (PASS; 15 passed)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

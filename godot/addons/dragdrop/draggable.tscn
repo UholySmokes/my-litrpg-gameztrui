@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://btp1h0cpgfkp1"]
+
+[ext_resource type="Script" uid="uid://1olpto6u2jk4" path="res://dragdrop/draggable.gd" id="1_cvp0x"]
+
+[node name="Draggable" type="CharacterBody2D" unique_id=794590492]
+input_pickable = true
+script = ExtResource("1_cvp0x")

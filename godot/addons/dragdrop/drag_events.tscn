@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://yxgy7tvjpvc7"]
+
+[ext_resource type="Script" uid="uid://dvkpapmyfgmfe" path="res://addons/dragdrop/drag_events.gd" id="1_j0w3e"]
+
+[node name="DragEvents" type="Node" unique_id=992663643]
+script = ExtResource("1_j0w3e")

@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://kkt7m53cggtl"]
+
+[ext_resource type="Script" uid="uid://vue2phkpodrc" path="res://example/example.gd" id="1_8clr1"]
+[ext_resource type="PackedScene" uid="uid://btp1h0cpgfkp1" path="res://addons/dragdrop/draggable.tscn" id="1_pjyox"]
+[ext_resource type="Texture2D" uid="uid://nhhfhl2q2kn3" path="res://icon.svg" id="2_8clr1"]
+[ext_resource type="Script" uid="uid://bkh7tdqaevfqi" path="res://example/snapback.gd" id="4_7cn0y"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_dxt2o"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_fdt2r"]
+distance = -648.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_pjyox"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_8clr1"]
+normal = Vector2(-1, 0)
+distance = -1152.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7cn0y"]
+size = Vector2(128, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pjyox"]
+size = Vector2(64, 64)
+
+[sub_resource type="Gradient" id="Gradient_8clr1"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7cn0y"]
+gradient = SubResource("Gradient_8clr1")
+
+[node name="Example" type="Node2D" unique_id=905154273]
+script = ExtResource("1_8clr1")
+
+[node name="BoundsStaticBody2D" type="StaticBody2D" parent="." unique_id=1231802053]
+
+[node name="Top" type="CollisionShape2D" parent="BoundsStaticBody2D" unique_id=1826617637]
+shape = SubResource("WorldBoundaryShape2D_dxt2o")
+
+[node name="Bottom" type="CollisionShape2D" parent="BoundsStaticBody2D" unique_id=512876107]
+shape = SubResource("WorldBoundaryShape2D_fdt2r")
+
+[node name="Left" type="CollisionShape2D" parent="BoundsStaticBody2D" unique_id=1203533192]
+shape = SubResource("WorldBoundaryShape2D_pjyox")
+
+[node name="Right" type="CollisionShape2D" parent="BoundsStaticBody2D" unique_id=815663153]
+shape = SubResource("WorldBoundaryShape2D_8clr1")
+
+[node name="DragMeOnScreen" parent="." unique_id=794590492 instance=ExtResource("1_pjyox")]
+position = Vector2(550, 295)
+drop_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DragMeOnScreen" unique_id=672618556]
+shape = SubResource("RectangleShape2D_7cn0y")
+
+[node name="Sprite2D" type="Sprite2D" parent="DragMeOnScreen" unique_id=749829982]
+texture = ExtResource("2_8clr1")
+
+[node name="Label" type="Label" parent="DragMeOnScreen" unique_id=1829365955]
+offset_left = -67.0
+offset_top = -87.0
+offset_right = 78.0
+offset_bottom = -64.0
+text = "Drag me on screen"
+
+[node name="IResetUnlessYouHitATarget" parent="." unique_id=304877108 instance=ExtResource("1_pjyox")]
+position = Vector2(352, 298)
+script = ExtResource("4_7cn0y")
+drop_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IResetUnlessYouHitATarget" unique_id=211020321]
+shape = SubResource("RectangleShape2D_7cn0y")
+
+[node name="Sprite2D" type="Sprite2D" parent="IResetUnlessYouHitATarget" unique_id=1109249474]
+texture = ExtResource("2_8clr1")
+
+[node name="Label" type="Label" parent="IResetUnlessYouHitATarget" unique_id=1430746953]
+offset_left = -74.0
+offset_top = -114.0
+offset_right = 231.0
+offset_bottom = -65.0
+text = "I can only be dragged
+onto valid targets"
+
+[node name="DragMeAnywhere" parent="." unique_id=887812794 instance=ExtResource("1_pjyox")]
+modulate = Color(0, 1, 0, 1)
+position = Vector2(861, 469)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DragMeAnywhere" unique_id=946321498]
+shape = SubResource("RectangleShape2D_7cn0y")
+
+[node name="Sprite2D" type="Sprite2D" parent="DragMeAnywhere" unique_id=940408150]
+texture = ExtResource("2_8clr1")
+
+[node name="Label" type="Label" parent="DragMeAnywhere" unique_id=1612685679]
+offset_left = -70.0
+offset_top = -87.0
+offset_right = 77.0
+offset_bottom = -64.0
+text = "Drag me anywhere"
+
+[node name="DropZone" type="Area2D" parent="." unique_id=1672203762]
+position = Vector2(91, 562)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DropZone" unique_id=1662969293]
+shape = SubResource("RectangleShape2D_pjyox")
+
+[node name="Sprite2D" type="Sprite2D" parent="DropZone" unique_id=1628261994]
+texture = SubResource("GradientTexture2D_7cn0y")
+
+[node name="Label" type="Label" parent="DropZone" unique_id=108965628]
+offset_left = -40.0
+offset_top = -54.0
+offset_right = 49.0
+offset_bottom = -31.0
+text = "DROP HERE"
+
+[node name="PlayByPlayLabel" type="Label" parent="." unique_id=837070848]
+offset_left = 39.0
+offset_top = 24.0
+offset_right = 79.0
+offset_bottom = 47.0
+
+[connection signal="drag_ended" from="DragMeOnScreen" to="." method="_on_drag_me_on_screen_1_drag_ended"]
+[connection signal="drag_ended" from="IResetUnlessYouHitATarget" to="." method="_on_drag_me_on_screen_2_drag_ended"]

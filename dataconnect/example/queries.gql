@@ -1,3 +1,4 @@
+
 # LitRPG persistence queries.
 
 query GetMyProfile @auth(level: USER) {
@@ -39,7 +40,7 @@ query ListMySaveSlots @auth(level: USER) {
 }
 
 query GetMySaveSlot($id: UUID!) @auth(level: USER) {
-  saveSlot(key: { id: $id, userId_expr: "auth.uid" }) {
+  saveSlot(key: { id: $id }) {
     id
     saveName
     gameStateJson

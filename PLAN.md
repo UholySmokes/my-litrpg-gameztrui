@@ -190,6 +190,15 @@ Last implementation check: 2026-02-25
 - [x] M13 (partial): add GA handoff package generator that composes M10/M11/M12 readiness artifacts
   - Evidence: `scripts/generate-m13-ga-handoff-package.mjs`, `docs/M13_GA_HANDOFF_RUNBOOK.md`, `docs/reports/m13_ga_handoff_package_2026-02-25.md`, `package.json`
   - Verification: `npm run report:ga:handoff -- --release-id ga-prep-2026-02-25` (PASS; decision `READY_FOR_GA`)
+- [x] M13 (partial): add automated phase closeout dossier generator for ownership + Phase 5 triage handoff
+  - Evidence: `scripts/generate-m13-phase-closeout-dossier.mjs`, `docs/M13_PHASE_CLOSEOUT_RUNBOOK.md`, `docs/reports/m13_closeout_inputs_sample.json`, `docs/reports/m13_phase_closeout_dossier_2026-02-25.md`, `package.json`
+  - Verification: `npm run report:ga:closeout -- --input docs/reports/m13_closeout_inputs_sample.json` (PASS; decision `COMPLETE`)
+- [x] M13 (partial): add post-launch operating playbook generator linked to closeout dossier state
+  - Evidence: `scripts/generate-m13-post-launch-playbook.mjs`, `docs/M13_POST_LAUNCH_OPERATING_PLAYBOOK_RUNBOOK.md`, `docs/reports/m13_closeout_inputs_sample.json`, `docs/reports/m13_post_launch_operating_playbook_2026-02-25.md`, `package.json`
+  - Verification: `npm run report:ga:playbook -- --input docs/reports/m13_closeout_inputs_sample.json` (PASS; decision `OPS_READY`)
+- [x] M13 (partial): add GA review notes generator with postmortem checklist linkage to closeout/playbook artifacts
+  - Evidence: `scripts/generate-m13-ga-review-notes.mjs`, `docs/M13_GA_REVIEW_RUNBOOK.md`, `docs/reports/m13_ga_review_notes_2026-02-25.md`, `package.json`
+  - Verification: `npm run report:ga:review -- --release-id ga-prep-2026-02-25` (PASS; decision `GA_CONFIRMED`)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

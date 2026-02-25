@@ -179,6 +179,9 @@ Last implementation check: 2026-02-25
 - [x] M12 (partial): enforce limited percentage rollout gate on sync routes with allowlist bypass controls
   - Evidence: `functions/lib/sync.js`, `tests/unit/SyncCommandRoutes.test.js`, `docs/M12_LIMITED_ROLLOUT_POLICY.md`
   - Verification: `npm test -- tests/unit/SyncCommandRoutes.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand` (PASS; 19 passed)
+- [x] M12 (partial): add rollout gate checklist automation for 10%->25%->50% with rollback evidence
+  - Evidence: `scripts/generate-m12-rollout-gate-checklist.mjs`, `docs/M12_LIMITED_ROLLOUT_RUNBOOK.md`, `docs/reports/m12_rollout_inputs_sample.json`, `docs/reports/m12_rollout_gate_checklist_2026-03-06.md`, `package.json`
+  - Verification: `npm run report:rollout:m12 -- --input docs/reports/m12_rollout_inputs_sample.json` (PASS; decision `ADVANCE`)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

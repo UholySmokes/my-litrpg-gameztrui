@@ -17,6 +17,13 @@ Output artifact:
 
 - `docs/reports/m13_signoff_register_<YYYY-MM-DD>.md`
 
+Readiness suite env integration:
+
+- `GA_SIGNOFF_TECH_LEAD`
+- `GA_SIGNOFF_SRE`
+- `GA_SIGNOFF_PM`
+- `GA_SIGNOFF_RELEASE_MANAGER`
+
 ## Exit Criteria
 
 - Sign-off register status is `PASS`.

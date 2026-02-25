@@ -216,6 +216,9 @@ Last implementation check: 2026-02-25
 - [x] M13 (partial): add M13 sign-off register generator to capture named approvers against final artifact set
   - Evidence: `scripts/generate-m13-signoff-register.mjs`, `docs/M13_SIGNOFF_REGISTER_RUNBOOK.md`, `docs/reports/m13_signoff_register_2026-02-25.md`, `package.json`
   - Verification: `npm run report:ga:signoff -- --release-id ga-prep-2026-02-25 --tech-lead tech_lead --sre sre_lead --pm pm_lead --release-manager release_manager` (PASS; decision `APPROVED`)
+- [x] M13 (partial): require approved sign-off register in GA review and readiness suite chain
+  - Evidence: `scripts/generate-m13-ga-review-notes.mjs`, `scripts/run-m13-ga-readiness-suite.mjs`, `docs/M13_GA_REVIEW_RUNBOOK.md`, `docs/M13_GA_HANDOFF_RUNBOOK.md`, `docs/M13_SIGNOFF_REGISTER_RUNBOOK.md`, `docs/reports/m13_ga_review_notes_2026-02-25.md`, `docs/reports/m13_ga_readiness_suite_2026-02-25.md`
+  - Verification: `npm run test:ga:readiness` with `GA_RELEASE_ID=ga-prep-2026-02-25`, `GA_SIGNOFF_TECH_LEAD=tech_lead`, `GA_SIGNOFF_SRE=sre_lead`, `GA_SIGNOFF_PM=pm_lead`, `GA_SIGNOFF_RELEASE_MANAGER=release_manager` (PASS; 7 steps, 0 failed)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

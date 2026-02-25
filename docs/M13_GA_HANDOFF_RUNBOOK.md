@@ -44,5 +44,9 @@ The generator links latest M10/M11/M12/M13 readiness artifacts and computes an i
 Integrated validation command:
 
 ```bash
+GA_SIGNOFF_TECH_LEAD=<name> \
+GA_SIGNOFF_SRE=<name> \
+GA_SIGNOFF_PM=<name> \
+GA_SIGNOFF_RELEASE_MANAGER=<name> \
 npm run test:ga:readiness
 ```

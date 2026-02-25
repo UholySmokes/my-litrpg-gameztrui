@@ -18,6 +18,7 @@ Operate the internal canary window with explicit guardrails and evidence collect
 - Telemetry ingest SLO policy is active (`docs/M9_TELEMETRY_SLO_RETRY_POLICY.md`).
 - On-call rotation and escalation paths are staffed for the canary window.
 - Canary access controls configured per `docs/M11_CANARY_ENABLEMENT_POLICY.md`.
+- Alert profile configured per `docs/M11_ALERT_TUNING_PROFILE.md`.
 - Canary input JSON exists for the current review window.
 
 ## Guardrails
@@ -56,10 +57,23 @@ Generate canary report + incident log:
 npm run report:canary:m11 -- --input docs/reports/m11_canary_inputs_<YYYY-MM-DD>.json
 ```
 
+Generate alert tuning report:
+
+```bash
+npm run report:canary:alerts -- --input docs/reports/m11_canary_inputs_<YYYY-MM-DD>.json
+```
+
+Record or update on-call drill outcome:
+
+```bash
+npm run log:canary:drill -- --input docs/reports/m11_canary_inputs_<YYYY-MM-DD>.json --name "Canary rollback drill" --date <YYYY-MM-DD> --result pass --mttr 15 --notes "Recovered within target"
+```
+
 Generated artifacts:
 
 - `docs/reports/m11_canary_incident_log_<YYYY-MM-DD>.md`
 - `docs/reports/m11_canary_decision_memo_<YYYY-MM-DD>.md`
+- `docs/reports/m11_alert_tuning_<YYYY-MM-DD>.md`
 
 ## Exit Criteria for M11
 

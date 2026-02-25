@@ -171,6 +171,11 @@ Last implementation check: 2026-02-25
 - [x] M11 (partial): add canary alert-tuning profile and automated alert-window report
   - Evidence: `scripts/generate-m11-alert-tuning-report.mjs`, `docs/M11_ALERT_TUNING_PROFILE.md`, `docs/M11_INTERNAL_CANARY_RUNBOOK.md`, `docs/reports/m11_alert_tuning_2026-02-24.md`, `package.json`
   - Verification: `npm run report:canary:alerts -- --input docs/reports/m11_canary_inputs_sample.json` (PASS)
+- [x] M11 (partial): add CLI workflow to record on-call drill outcomes into canary evidence inputs
+  - Evidence: `scripts/log-m11-oncall-drill.mjs`, `docs/M11_INTERNAL_CANARY_RUNBOOK.md`, `docs/reports/m11_canary_inputs_2026-02-25.json`, `package.json`
+  - Verification:
+    - `npm run log:canary:drill -- --input docs/reports/m11_canary_inputs_2026-02-25.json --name "Pager duty handoff drill" --date 2026-02-25 --result pass --mttr 12 --notes "Escalation and ownership transfer completed within SLA"` (PASS)
+    - `npm run report:canary:m11 -- --input docs/reports/m11_canary_inputs_2026-02-25.json` (PASS; decision `ADVANCE`)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

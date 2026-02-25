@@ -112,6 +112,102 @@ function enforceCanaryAccess(res, user) {
 	return true;
 }
 
+function parsePercentage(value) {
+	const raw = normalizeString(value);
+	if (!raw) return null;
+	const parsed = Number(raw);
+	if (!Number.isFinite(parsed)) return null;
+	return Math.max(0, Math.min(100, Math.floor(parsed)));
+}
+
+function resolveLimitedRolloutPolicy() {
+	const rolloutStage =
+		normalizeString(process.env.RUNTIME_ROLLOUT_STAGE || process.env.ROLLOUT_STAGE) ||
+		"unknown";
+	const stageLower = rolloutStage.toLowerCase();
+	const requestedMode = normalizeString(process.env.LIMITED_ROLLOUT_MODE).toLowerCase();
+	const inferredMode =
+		stageLower === "m12_limited" || stageLower === "m12_percentage" ? "enforce" : "off";
+	const mode = ["off", "monitor", "enforce"].includes(requestedMode)
+		? requestedMode
+		: inferredMode;
+	return {
+		rolloutStage,
+		mode,
+		percentage: parsePercentage(
+			process.env.LIMITED_ROLLOUT_PERCENTAGE || process.env.ROLLOUT_PERCENTAGE || "",
+		),
+		allowlist: parseCommaSeparatedSet(process.env.LIMITED_ROLLOUT_ALLOWLIST),
+		salt:
+			normalizeString(process.env.LIMITED_ROLLOUT_SALT) ||
+			normalizeString(process.env.GCLOUD_PROJECT || process.env.FIREBASE_PROJECT_ID) ||
+			"limited-rollout-default-salt",
+	};
+}
+
+function stableRolloutBucket(principal, salt) {
+	const digest = crypto
+		.createHash("sha256")
+		.update(`${salt}:${principal}`, "utf8")
+		.digest("hex");
+	return parseInt(digest.slice(0, 8), 16) % 100;
+}
+
+function enforceLimitedRolloutAccess(res, user) {
+	const policy = resolveLimitedRolloutPolicy();
+	if (policy.mode !== "enforce") {
+		return true;
+	}
+
+	if (policy.percentage === null) {
+		json(res, 503, {
+			ok: false,
+			errorCode: "LIMITED_ROLLOUT_PERCENTAGE_INVALID",
+			message:
+				"Limited rollout mode is enabled but LIMITED_ROLLOUT_PERCENTAGE/ROLLOUT_PERCENTAGE is missing or invalid.",
+			rolloutStage: policy.rolloutStage,
+			rolloutMode: policy.mode,
+		});
+		return false;
+	}
+
+	const principals = canaryPrincipals(user);
+	const principalMatch = principals.some((principal) => policy.allowlist.has(principal));
+	if (principalMatch || policy.percentage >= 100) {
+		return true;
+	}
+
+	if (policy.percentage <= 0) {
+		json(res, 403, {
+			ok: false,
+			errorCode: "LIMITED_ROLLOUT_DENIED",
+			message: "Limited rollout percentage is 0; access denied.",
+			rolloutStage: policy.rolloutStage,
+			rolloutMode: policy.mode,
+			rolloutPercentage: policy.percentage,
+			rolloutBucket: 99,
+		});
+		return false;
+	}
+
+	const principal = principals[0] || "anonymous";
+	const bucket = stableRolloutBucket(principal, policy.salt);
+	if (bucket >= policy.percentage) {
+		json(res, 403, {
+			ok: false,
+			errorCode: "LIMITED_ROLLOUT_DENIED",
+			message: "User is outside current limited rollout percentage window.",
+			rolloutStage: policy.rolloutStage,
+			rolloutMode: policy.mode,
+			rolloutPercentage: policy.percentage,
+			rolloutBucket: bucket,
+		});
+		return false;
+	}
+
+	return true;
+}
+
 function normalizeStoredState(state, { runId, manifest }) {
 	const base = buildInitialGameplayState({
 		runId,
@@ -600,6 +696,7 @@ async function commit(req, res) {
 		const user = await requireUser(req, res);
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
+		if (!enforceLimitedRolloutAccess(res, user)) return;
 
 		const body = await readJsonBody(req);
 		const normalized = normalizeCommitEnvelope(body);
@@ -642,6 +739,7 @@ async function commitBatch(req, res) {
 		const user = await requireUser(req, res);
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
+		if (!enforceLimitedRolloutAccess(res, user)) return;
 
 		const body = await readJsonBody(req);
 		const normalized = normalizeCommitBatchRequest(body);
@@ -790,6 +888,7 @@ async function action(req, res) {
 		const user = await requireUser(req, res);
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
+		if (!enforceLimitedRolloutAccess(res, user)) return;
 
 		const manifest = getWorldManifest();
 		const body = await readJsonBody(req);
@@ -832,6 +931,7 @@ async function command(req, res) {
 		const user = await requireUser(req, res);
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
+		if (!enforceLimitedRolloutAccess(res, user)) return;
 
 		const manifest = getWorldManifest();
 		const body = await readJsonBody(req);
@@ -873,6 +973,7 @@ async function pull(req, res) {
 		const user = await requireUser(req, res);
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
+		if (!enforceLimitedRolloutAccess(res, user)) return;
 
 		const runId = normalizeString(req?.query?.runId);
 		if (!runId) {
@@ -937,6 +1038,7 @@ async function replay(req, res) {
 		const user = await requireUser(req, res);
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
+		if (!enforceLimitedRolloutAccess(res, user)) return;
 
 		const runId = normalizeString(req?.query?.runId);
 		if (!runId) {

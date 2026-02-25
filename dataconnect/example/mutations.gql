@@ -112,7 +112,7 @@ mutation UpsertSaveSlot(
 }
 
 mutation DeleteSaveSlot($id: UUID!) @auth(level: USER) {
-  saveSlot_delete(key: { id: $id, userId_expr: "auth.uid" })
+  saveSlot_delete(key: { id: $id })
 }
 
 mutation UpsertRunSession(

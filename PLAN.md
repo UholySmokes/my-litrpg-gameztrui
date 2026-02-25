@@ -187,6 +187,9 @@ Last implementation check: 2026-02-25
   - Verification:
     - `npm run test:rollout:rollback -- --input docs/reports/m12_rollout_inputs_2026-02-25.json --percent 50 --notes "Rollback verified during limited rollout step"` (PASS)
     - `npm run report:rollout:m12 -- --input docs/reports/m12_rollout_inputs_2026-02-25.json` (PASS; decision `ADVANCE`)
+- [x] M13 (partial): add GA handoff package generator that composes M10/M11/M12 readiness artifacts
+  - Evidence: `scripts/generate-m13-ga-handoff-package.mjs`, `docs/M13_GA_HANDOFF_RUNBOOK.md`, `docs/reports/m13_ga_handoff_package_2026-02-25.md`, `package.json`
+  - Verification: `npm run report:ga:handoff -- --release-id ga-prep-2026-02-25` (PASS; decision `READY_FOR_GA`)
 
 ## 1. Executive Summary
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.

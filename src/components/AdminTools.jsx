@@ -1,12 +1,33 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { mergeInventoryItems } from "../utils/shared.js";
+import { listAgents, runAgent } from "../core/AgentService.js";
 import "./AdminTools.css";
 
 export default function AdminTools({ dispatch, getState }) {
+  const isDevBuild = Boolean(import.meta.env.DEV);
+  if (!isDevBuild) return null;
+
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("player");
   const [output, setOutput] = useState("");
+  const [agentCatalog, setAgentCatalog] = useState([]);
+  const [agentSelection, setAgentSelection] = useState("narrator");
+  const [agentInput, setAgentInput] = useState(
+    JSON.stringify(
+      {
+        game_state: {
+          location: "Ashen Gate",
+          hp: 42,
+        },
+      },
+      null,
+      2,
+    ),
+  );
+  const [agentModel, setAgentModel] = useState("gemini-2.5-flash");
+  const [agentTemperature, setAgentTemperature] = useState("0.8");
+  const [agentBusy, setAgentBusy] = useState(false);
 
   // Amounts for input fields
   const [goldAmount, setGoldAmount] = useState(1000);
@@ -356,6 +377,59 @@ export default function AdminTools({ dispatch, getState }) {
     }
   };
 
+  const handleFetchAgents = async () => {
+    setAgentBusy(true);
+    try {
+      const result = await listAgents();
+      if (!result.success) {
+        setOutput(`Agent list failed: ${result.error}`);
+        return;
+      }
+      const names = result.agents.map((item) => item.name || item.id).filter(Boolean);
+      setAgentCatalog(result.agents);
+      if (names.length > 0) {
+        setAgentSelection((current) => (names.includes(current) ? current : names[0]));
+      }
+      setOutput(
+        `Agents (${result.agents.length}):\n${JSON.stringify(result.agents, null, 2)}`,
+      );
+    } finally {
+      setAgentBusy(false);
+    }
+  };
+
+  const handleRunAgent = async () => {
+    let parsedInput;
+    try {
+      parsedInput = agentInput ? JSON.parse(agentInput) : {};
+    } catch {
+      setOutput("Invalid agent input JSON.");
+      return;
+    }
+
+    const temperature = Number.parseFloat(agentTemperature);
+    const payload = {
+      agent: agentSelection || "narrator",
+      input: parsedInput,
+      model: String(agentModel || "").trim() || undefined,
+      temperature: Number.isFinite(temperature) ? temperature : undefined,
+    };
+
+    setAgentBusy(true);
+    try {
+      const result = await runAgent(payload);
+      if (!result.success) {
+        setOutput(`Agent run failed: ${result.error}`);
+        return;
+      }
+      setOutput(
+        `Agent "${payload.agent}" response:\n${JSON.stringify(result.data, null, 2)}`,
+      );
+    } finally {
+      setAgentBusy(false);
+    }
+  };
+
   const renderPlayerTab = () => (
     <div>
       <div className="admin-tools-section">
@@ -501,6 +575,79 @@ export default function AdminTools({ dispatch, getState }) {
     </div>
   );
 
+  const renderAgentsTab = () => {
+    const agentNames = agentCatalog
+      .map((item) => item.name || item.id)
+      .filter(Boolean);
+    const selectOptions = [...new Set([...agentNames, agentSelection || "narrator"])];
+
+    return (
+      <div>
+        <div className="admin-tools-section">
+          <h3>Agent Routes (Dev)</h3>
+          <div className="admin-tools-grid">
+            <button
+              className="admin-tools-button"
+              onClick={handleFetchAgents}
+              disabled={agentBusy}
+            >
+              {agentBusy ? "Loading..." : "Fetch /api/agents"}
+            </button>
+          </div>
+        </div>
+        <div className="admin-tools-section">
+          <h3>Run Agent</h3>
+          <div className="admin-tools-grid">
+            <label className="admin-tools-field">
+              <span>Agent</span>
+              <select
+                value={agentSelection}
+                onChange={(event) => setAgentSelection(event.target.value)}
+              >
+                {selectOptions.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="admin-tools-field">
+              <span>Model</span>
+              <input
+                value={agentModel}
+                onChange={(event) => setAgentModel(event.target.value)}
+                placeholder="gemini-2.5-flash"
+              />
+            </label>
+            <label className="admin-tools-field">
+              <span>Temperature</span>
+              <input
+                value={agentTemperature}
+                onChange={(event) => setAgentTemperature(event.target.value)}
+                placeholder="0.8"
+              />
+            </label>
+            <label className="admin-tools-field admin-tools-field-full">
+              <span>Input JSON</span>
+              <textarea
+                value={agentInput}
+                onChange={(event) => setAgentInput(event.target.value)}
+                rows={8}
+              />
+            </label>
+            <button
+              className="admin-tools-button"
+              onClick={handleRunAgent}
+              disabled={agentBusy}
+            >
+              {agentBusy ? "Running..." : "POST /api/agents/run"}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
       <button className="admin-toggle-button" onClick={() => setIsVisible(!isVisible)}>
@@ -525,12 +672,14 @@ export default function AdminTools({ dispatch, getState }) {
             <button className={`admin-tools-tab ${activeTab === 'player' ? 'active' : ''}`} onClick={() => setActiveTab('player')}>Player</button>
             <button className={`admin-tools-tab ${activeTab === 'content' ? 'active' : ''}`} onClick={() => setActiveTab('content')}>Content</button>
             <button className={`admin-tools-tab ${activeTab === 'system' ? 'active' : ''}`} onClick={() => setActiveTab('system')}>System</button>
+            <button className={`admin-tools-tab ${activeTab === 'agents' ? 'active' : ''}`} onClick={() => setActiveTab('agents')}>Agents</button>
           </div>
 
           <div className="admin-tools-content">
             {activeTab === 'player' && renderPlayerTab()}
             {activeTab === 'content' && renderContentTab()}
             {activeTab === 'system' && renderSystemTab()}
+            {activeTab === 'agents' && renderAgentsTab()}
 
             {output && (
                 <div className="admin-tools-section">

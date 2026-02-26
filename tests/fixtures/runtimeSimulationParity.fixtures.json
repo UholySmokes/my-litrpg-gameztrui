@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "rest_single_tick",
+      "runtimeAction": {
+        "type": "rest"
+      },
+      "simulationCommand": {
+        "type": "Rest",
+        "duration": 1
+      },
+      "assertions": [
+        "tick_advances",
+        "hp_non_decreasing",
+        "mana_non_decreasing",
+        "resources_bounded"
+      ]
+    },
+    {
+      "id": "rest_double_tick",
+      "runtimeAction": {
+        "type": "rest"
+      },
+      "simulationCommand": {
+        "type": "Rest",
+        "duration": 1
+      },
+      "repeat": 2,
+      "assertions": [
+        "tick_advances",
+        "hp_non_decreasing",
+        "mana_non_decreasing",
+        "resources_bounded"
+      ]
+    }
+  ]
+}
+

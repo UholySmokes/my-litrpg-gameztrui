@@ -1,3 +1,9 @@
+/**
+ * @experimental
+ * This module is not yet wired into the runtime reducer/engine loop.
+ * Keep it isolated until integration criteria in docs/EXPERIMENTAL_SYSTEMS.md
+ * are satisfied.
+ */
 export interface PrestigeStats {
   prestigeLevel: number;
   soulShards: number; // Currency earned on reset

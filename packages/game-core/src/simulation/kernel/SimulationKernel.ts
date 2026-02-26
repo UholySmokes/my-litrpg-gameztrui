@@ -223,6 +223,7 @@ export class DefaultSimulationKernel implements SimulationKernel {
     // Advance tick counter
     this.state.currentTick += 1;
     this.state.world.currentTime += dt;
+    this.state.world.currentTick = this.state.currentTick;
   }
 
   /**
@@ -379,10 +380,39 @@ export class DefaultSimulationKernel implements SimulationKernel {
   // ============================================================================
 
   private updateWorld(dt: number): void {
-    // TODO: Implement world state updates
-    // - Global timers
-    // - Environmental effects
-    // - Zone changes
+    const counters = this.state.world.globalCounters;
+    const flags = this.state.world.globalFlags;
+    const nextTime = this.state.world.currentTime + dt;
+
+    const tickCount = Number(counters.get("simulation_ticks") || 0) + 1;
+    counters.set("simulation_ticks", tickCount);
+
+    const elapsedSeconds = Number(counters.get("elapsed_seconds") || 0) + dt;
+    counters.set("elapsed_seconds", elapsedSeconds);
+
+    const activeEntities = Array.from(this.state.entities.values())
+      .filter((entity) => !entity.isDead)
+      .map((entity) => entity.id);
+    this.state.world.activeEntities = activeEntities;
+    counters.set("active_entities", activeEntities.length);
+
+    // Deterministic day/night cycle: 600-second loop.
+    const cycleLengthSeconds = 600;
+    const cyclePosition = ((nextTime % cycleLengthSeconds) + cycleLengthSeconds) % cycleLengthSeconds;
+    const isNight = cyclePosition >= cycleLengthSeconds / 2;
+    const previousIsNight = flags.get("isNight");
+    flags.set("isNight", isNight);
+
+    if (typeof previousIsNight === "boolean" && previousIsNight !== isNight) {
+      this.createEvent({
+        id: this.nextEventId("world"),
+        type: "StateChanged",
+        tick: this.state.currentTick,
+        timestamp: this.getEventTimestamp(),
+        actionType: "WorldCycleChanged",
+        description: isNight ? "Night cycle started." : "Day cycle started.",
+      } as Event);
+    }
   }
 
   // ============================================================================
@@ -590,6 +620,33 @@ export class DefaultSimulationKernel implements SimulationKernel {
 
     if (typeof state.isRunning !== "boolean") {
       state.isRunning = false;
+    }
+
+    if (!state.world || typeof state.world !== "object") {
+      state.world = {
+        currentTick: state.currentTick,
+        currentTime: 0,
+        zones: new Map(),
+        globalFlags: new Map(),
+        globalCounters: new Map(),
+        activeEntities: [],
+      } as WorldState;
+    }
+
+    if (!(state.world.zones instanceof Map)) {
+      state.world.zones = new Map(Object.entries(state.world.zones || {}));
+    }
+
+    if (!(state.world.globalFlags instanceof Map)) {
+      state.world.globalFlags = new Map(Object.entries(state.world.globalFlags || {}));
+    }
+
+    if (!(state.world.globalCounters instanceof Map)) {
+      state.world.globalCounters = new Map(Object.entries(state.world.globalCounters || {}));
+    }
+
+    if (!Array.isArray(state.world.activeEntities)) {
+      state.world.activeEntities = [];
     }
 
     return state;

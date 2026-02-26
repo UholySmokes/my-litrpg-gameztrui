@@ -1,5 +1,9 @@
 import { random, randomInt } from "../utils/DeterministicRandom.js";
 
+/**
+ * @experimental
+ * This generator is not yet registered in the default runtime loop.
+ */
 export enum TileType {
   Wall = '#',
   Floor = '.',

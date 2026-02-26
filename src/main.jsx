@@ -5,10 +5,12 @@ import App from "./App.jsx";
 import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
 import { verifyEnv } from "./core/EnvCheck.js";
 import { initBrowserFixes } from "./core/BrowserFixes.js";
+import { registerServiceWorker } from "./core/registerServiceWorker.js";
 import { bootstrapStaticData } from "./data/StaticDataBootstrap.js";
 
 async function startApp() {
   initBrowserFixes();
+  registerServiceWorker();
   if (import.meta.env.DEV) verifyEnv();
   await bootstrapStaticData();
 

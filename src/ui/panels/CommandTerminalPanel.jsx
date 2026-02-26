@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styles from './CommandTerminalPanel.module.css';
 
 export default function CommandTerminalPanel({
@@ -8,10 +9,25 @@ export default function CommandTerminalPanel({
   error,
   inputRef,
 }) {
+  const [landscapeMobile, setLandscapeMobile] = useState(false);
   const errorId = error ? "command-terminal-error" : undefined;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const media = window.matchMedia("(max-width: 900px) and (orientation: landscape)");
+    const onChange = () => setLandscapeMobile(media.matches);
+    onChange();
+    media.addEventListener?.("change", onChange);
+    return () => media.removeEventListener?.("change", onChange);
+  }, []);
 
   return (
     <div className={styles.container}>
+      {landscapeMobile ? (
+        <div className={styles.orientationWarning} role="status" aria-live="polite">
+          Rotate to portrait for the most reliable command input layout.
+        </div>
+      ) : null}
       {error ? (
         <div
           id={errorId}
@@ -36,6 +52,9 @@ export default function CommandTerminalPanel({
           disabled={isLoading}
           autoComplete="off"
           spellCheck={false}
+          autoCapitalize="off"
+          autoCorrect="off"
+          enterKeyHint="send"
           aria-describedby={errorId}
           aria-invalid={Boolean(error)}
         />

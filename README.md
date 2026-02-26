@@ -105,7 +105,7 @@ Narrative endpoint notes:
 - `npm run preview` – Preview production build
 - `npm run lint` – ESLint with React hooks rules
 - `npm run test:pwa:installability` - Validate manifest/service-worker/installability contract in `dist`
-
+- `npm run android:preflight` - Validate local Godot/Android toolchain + templates before export
 ### Replay Inspector (Dev Only)
 
 The web tooling path includes a dev-only replay/hash inspector window backed by `GET /api/sync/replay`.
@@ -167,9 +167,9 @@ Two supported Android paths:
    - `npm run build:pwa`
    - includes install manifest + service worker + install prompt UX
 2. Godot native track (APK/AAB):
+   - `npm run android:preflight`
    - `npm run android:export:internal`
    - `npm run android:export:release`
-
 Supporting docs:
 
 - `docs/ANDROID_TOOLCHAIN_CONTRACT.md`

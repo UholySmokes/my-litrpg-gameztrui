@@ -131,6 +131,30 @@ function resolveGodotBin() {
   return "";
 }
 
+function cleanupStaleGodotTempLibraries(projectPath) {
+  // Godot can leave hidden "~lib*.dll" temp files behind after a crashed run.
+  // On Windows these stale files can cause subsequent extension load/copy failures.
+  const binPath = path.join(projectPath, "addons", "quarkphysics", "bin");
+  let entries = [];
+  try {
+    entries = fs.readdirSync(binPath, { withFileTypes: true });
+  } catch {
+    return;
+  }
+
+  for (const entry of entries) {
+    if (!entry.isFile()) continue;
+    if (!entry.name.startsWith("~libquarkphysics.")) continue;
+    const fullPath = path.join(binPath, entry.name);
+    try {
+      fs.rmSync(fullPath, { force: true });
+      console.log(`[android-export] removed stale temp library: ${fullPath}`);
+    } catch {
+      // Ignore cleanup failures and let export surface the root cause if it still fails.
+    }
+  }
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
 
@@ -142,6 +166,8 @@ function main() {
   if (!godotBin) {
     throw new Error("Godot CLI not found. Set GODOT_BIN to your Godot executable.");
   }
+
+  cleanupStaleGodotTempLibraries(PROJECT_PATH);
 
   const outputPath = path.resolve(process.cwd(), args.output);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });

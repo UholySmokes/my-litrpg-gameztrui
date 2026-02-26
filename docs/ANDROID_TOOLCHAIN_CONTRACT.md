@@ -36,3 +36,10 @@ This contract defines the required environment for dual-track Android delivery:
    `internal-debug.apk`, `release-candidate.aab`.
 3. Fail the job when preset config, Godot binary, or expected artifacts are missing.
 
+## Local Preflight
+1. Run `npm run android:preflight` before `android:export:*`.
+2. Preflight validates:
+   - SDK path + required tool directories.
+   - Android export templates (`android_debug.apk`, `android_release.apk`, `android_source.zip`).
+   - Project build template install (`godot/android/build/*`).
+   - Required preset names in `godot/export_presets.cfg`.

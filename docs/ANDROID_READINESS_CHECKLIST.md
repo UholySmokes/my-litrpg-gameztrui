@@ -30,10 +30,11 @@
 - [ ] Release candidate AAB builds with signing credentials.
 
 ## 5) Runtime Connection Closure
-- [ ] `/api/agents` callable from AdminTools (dev-only).
-- [ ] `/api/agents/run` callable from AdminTools (dev-only).
+- [x] `/api/agents` callable from AdminTools (dev-only).
+- [x] `/api/agents/run` callable from AdminTools (dev-only).
 - [x] Experimental systems are documented and not re-exported in app runtime shims.
 - [x] Simulation parity tests pass with shared fixtures.
+- Evidence (2026-02-26): `npm test -- tests/unit/AgentService.test.js --runInBand` passed (3/3).
 
 ## 6) Evidence Pack
 - [ ] CI run links for `app-quality`, `godot-headless`, and `godot-android-export`.

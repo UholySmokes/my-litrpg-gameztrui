@@ -37,19 +37,97 @@ function isExecutable(filePath) {
   }
 }
 
-function commandExists(cmd) {
-  const result =
-    process.platform === "win32"
-      ? spawnSync("where", [cmd], { stdio: "ignore" })
-      : spawnSync("which", [cmd], { stdio: "ignore" });
-  return result.status === 0;
+function resolveCommand(cmd) {
+  const tool = process.platform === "win32" ? "where" : "which";
+  const result = spawnSync(tool, [cmd], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  });
+  if (result.status !== 0 || !result.stdout) return "";
+  return result.stdout
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find(Boolean) || "";
+}
+
+function listMatchingFiles(rootPath, pattern) {
+  try {
+    return fs
+      .readdirSync(rootPath, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && pattern.test(entry.name))
+      .map((entry) => path.join(rootPath, entry.name));
+  } catch {
+    return [];
+  }
+}
+
+function resolveWindowsGodotBin() {
+  const localAppData = String(process.env.LOCALAPPDATA || "");
+  const winGetLinksRoot = path.join(localAppData, "Microsoft", "WinGet", "Links");
+  const winGetPackagesRoot = path.join(localAppData, "Microsoft", "WinGet", "Packages");
+
+  const directCandidates = [
+    path.join(winGetLinksRoot, "godot4.exe"),
+    path.join(winGetLinksRoot, "godot.exe"),
+  ];
+  for (const candidate of directCandidates) {
+    if (isExecutable(candidate)) return candidate;
+  }
+
+  const discovered = [];
+  try {
+    const packageDirs = fs
+      .readdirSync(winGetPackagesRoot, { withFileTypes: true })
+      .filter(
+        (entry) =>
+          entry.isDirectory() &&
+          entry.name.toLowerCase().startsWith("godotengine.godotengine_"),
+      )
+      .map((entry) => path.join(winGetPackagesRoot, entry.name));
+
+    for (const packageDir of packageDirs) {
+      discovered.push(
+        ...listMatchingFiles(packageDir, /godot_v.*_win64_console\.exe$/i),
+        ...listMatchingFiles(packageDir, /godot_v.*_win64\.exe$/i),
+      );
+    }
+  } catch {
+    // ignore: fallback scanning may fail on machines without WinGet installs.
+  }
+
+  const programFiles = String(process.env.ProgramFiles || "C:\\Program Files");
+  const programFilesGodot = path.join(programFiles, "Godot");
+  discovered.push(
+    ...listMatchingFiles(programFilesGodot, /godot_v.*_win64_console\.exe$/i),
+    ...listMatchingFiles(programFilesGodot, /godot_v.*_win64\.exe$/i),
+  );
+
+  const unique = [...new Set(discovered)].filter(isExecutable);
+  if (unique.length === 0) return "";
+
+  unique.sort((left, right) => {
+    const leftConsole = left.toLowerCase().includes("_console.exe") ? 1 : 0;
+    const rightConsole = right.toLowerCase().includes("_console.exe") ? 1 : 0;
+    if (leftConsole !== rightConsole) return rightConsole - leftConsole;
+    const leftMtime = fs.statSync(left).mtimeMs;
+    const rightMtime = fs.statSync(right).mtimeMs;
+    return rightMtime - leftMtime;
+  });
+
+  return unique[0] || "";
 }
 
 function resolveGodotBin() {
   const explicit = String(process.env.GODOT_BIN || "").trim();
   if (explicit && isExecutable(explicit)) return explicit;
-  if (commandExists("godot4")) return "godot4";
-  if (commandExists("godot")) return "godot";
+  const fromGodot4 = resolveCommand("godot4");
+  if (fromGodot4) return fromGodot4;
+  const fromGodot = resolveCommand("godot");
+  if (fromGodot) return fromGodot;
+  if (process.platform === "win32") {
+    const windowsResolved = resolveWindowsGodotBin();
+    if (windowsResolved) return windowsResolved;
+  }
   return "";
 }
 
@@ -103,4 +181,3 @@ try {
   console.error(`[android-export] FAIL: ${error.message}`);
   process.exitCode = 1;
 }
-

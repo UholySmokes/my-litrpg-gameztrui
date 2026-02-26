@@ -14,7 +14,7 @@ function requireEnv(name) {
 
 function upsertOption(content, key, value) {
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const pattern = new RegExp(`^${escapedKey}=.*$`, "m");
+  const pattern = new RegExp(`^${escapedKey}=.*$`, "gm");
   const replacement = `${key}="${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
   if (pattern.test(content)) {
     return content.replace(pattern, replacement);
@@ -39,7 +39,6 @@ function main() {
   content = upsertOption(content, "keystore/debug", keystorePath);
   content = upsertOption(content, "keystore/debug_password", keystorePassword);
   content = upsertOption(content, "keystore/debug_user", keyAlias);
-  content = upsertOption(content, "architectures/arm64-v8a", "true");
   fs.writeFileSync(presetsPath, content, "utf8");
 
   // Godot 4 also reads env vars for jarsigner in some export templates.
@@ -57,4 +56,3 @@ try {
   console.error(`[android-signing] FAIL: ${error.message}`);
   process.exitCode = 1;
 }
-

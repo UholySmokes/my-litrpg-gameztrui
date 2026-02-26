@@ -49,6 +49,9 @@ Rules:
    - `VITE_WEB_GAMEPLAY_ENABLED=true`
    - `VITE_ENABLE_WEB_GAMEPLAY=true`
 4. When disabled, web renders a tooling-only notice instead of gameplay UI.
+5. CI/release build profiles:
+   - `npm run build:tooling` strips installable PWA artifacts.
+   - `npm run build:pwa` keeps manifest/service worker for Android install.
 
 ## 4. Operator Flow
 

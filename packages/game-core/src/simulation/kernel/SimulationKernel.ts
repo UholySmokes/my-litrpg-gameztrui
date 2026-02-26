@@ -18,7 +18,53 @@ import { isValidCommand, isValidEntity } from "../validation/basic";
 import { resolveCommand } from "../combat/ActionResolver";
 import { advanceActionPoints } from "../combat/ActionScheduler";
 import { tickEffects } from "../effects/EffectEngine";
-import { normalizeForHash, hashString } from "../../utils/stateHash.js";
+
+function normalizeForHash(value: unknown): unknown {
+  if (value === null || value === undefined) {
+    return value;
+  }
+
+  if (typeof value !== "object") {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((entry) => normalizeForHash(entry));
+  }
+
+  if (value instanceof Map) {
+    const entries = Array.from(value.entries()).map(([key, entry]) => [
+      String(key),
+      normalizeForHash(entry),
+    ]);
+    entries.sort((a, b) => String(a[0]).localeCompare(String(b[0])));
+    return entries;
+  }
+
+  if (value instanceof Set) {
+    const entries = Array.from(value.values()).map((entry) =>
+      normalizeForHash(entry),
+    );
+    entries.sort((a, b) => String(a).localeCompare(String(b)));
+    return entries;
+  }
+
+  const record = value as Record<string, unknown>;
+  const keys = Object.keys(record).sort();
+  const sorted: Record<string, unknown> = {};
+  for (const key of keys) {
+    sorted[key] = normalizeForHash(record[key]);
+  }
+  return sorted;
+}
+
+function hashString(input: string): string {
+  let hash = 5381;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = ((hash << 5) + hash + input.charCodeAt(i)) >>> 0;
+  }
+  return hash.toString(16).padStart(8, "0");
+}
 
 // ============================================================================
 // SEEDED PRNG IMPLEMENTATION

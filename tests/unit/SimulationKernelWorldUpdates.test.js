@@ -1,4 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
+
 import { DefaultSimulationKernel } from "../../packages/game-core/src/simulation/kernel/SimulationKernel.ts";
 
 function createKernelState() {
@@ -121,4 +122,3 @@ describe("DefaultSimulationKernel world updates", () => {
     ).toBe(true);
   });
 });
-

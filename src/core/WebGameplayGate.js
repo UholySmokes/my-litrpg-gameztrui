@@ -25,7 +25,7 @@ function parseBooleanFlag(value, fallback = false) {
 
 export function isWebGameplayEnabled() {
   const buildEnv = getBuildEnv();
-  if (Boolean(buildEnv.DEV)) return true;
+  if (buildEnv.DEV) return true;
 
   const runtimeEnv = getRuntimeEnv();
   const explicit = pickEnvValue(

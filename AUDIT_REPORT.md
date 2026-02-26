@@ -266,3 +266,15 @@ functions[us-central1-api] initialized ...
 - [ ] **Needs verification (Hypothesis):** Quantify runtime/simulation parity. Next check: add one parity test comparing same combat command through `createSystemEngine.step` vs `DefaultSimulationKernel` command resolution outputs.
 - [ ] **Needs verification:** Open any view containing `SystemLog` and confirm chat/system actions append entries via `system:log` in real time.
 - [ ] **Needs verification:** Exercise all six modal overlays via keyboard-only navigation and confirm Escape-close + focus restore behavior in each.
+
+## Phase 6 - Hypothesis Closure Matrix (Pass/Fail)
+
+| Hypothesis | Check | Result | Evidence |
+|---|---|---|---|
+| `/api/agents*` is orphaned from product surfaces | Dev-only internal caller exists and reaches list/run routes | **PASS** | `src/core/AgentService.js`, `src/components/AdminTools.jsx` agents tab (`Fetch /api/agents`, `POST /api/agents/run`) |
+| Experimental systems are accidentally exposed as runtime-ready | App-level shims removed; experimental status explicitly documented | **PASS** | removed `src/systems/PrestigeSystem.ts`, removed `src/systems/DungeonGenerator.ts`, added `docs/EXPERIMENTAL_SYSTEMS.md` |
+| Simulation world layer is incomplete | Kernel world update now mutates deterministic counters/flags/entities | **PASS** | `packages/game-core/src/simulation/kernel/SimulationKernel.ts` (`updateWorld`), `tests/unit/SimulationKernelWorldUpdates.test.js` |
+| Adapter hardcodes stamina/cooldowns | Adapter maps stamina/cooldowns from player state with round-trip coverage | **PASS** | `packages/game-core/src/simulation/bridge/GameStateAdapter.js`, `tests/unit/GameStateAdapter.test.js` |
+| Runtime/simulation command parity lacks executable contract | Shared fixture format + parity test added | **PASS** | `tests/fixtures/runtimeSimulationParity.fixtures.json`, `tests/unit/RuntimeSimulationParity.test.js` |
+| Web Android installability is incomplete | Manifest + service worker + install prompt + installability gate script | **PASS** | `public/manifest.webmanifest`, `public/sw.js`, `src/components/PwaInstallPrompt.jsx`, `scripts/test-pwa-installability.mjs` |
+| Android native export pipeline is incomplete | Export presets, scripts, and CI job added with staged signing flow | **PASS** | `godot/export_presets.cfg`, `scripts/export-godot-android.mjs`, `.github/workflows/quality-gates.yml` (`godot-android-export`) |

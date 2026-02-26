@@ -1,4 +1,6 @@
 import { spawnSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
 import process from "node:process";
 
 const profile = String(process.argv[2] || "tooling").trim().toLowerCase();
@@ -27,7 +29,25 @@ if (!validProfiles.has(profile)) {
     console.error(result.error.message);
     process.exitCode = 1;
   } else {
+    if (result.status === 0 && profile === "tooling") {
+      const distDir = path.resolve(process.cwd(), "dist");
+      const indexPath = path.join(distDir, "index.html");
+      if (fs.existsSync(indexPath)) {
+        const source = fs.readFileSync(indexPath, "utf8");
+        const withoutManifest = source.replace(
+          /\s*<link rel="manifest" href="\/manifest\.webmanifest"\s*\/?>/i,
+          "",
+        );
+        fs.writeFileSync(indexPath, withoutManifest, "utf8");
+      }
+      for (const file of ["manifest.webmanifest", "sw.js"]) {
+        const filePath = path.join(distDir, file);
+        if (fs.existsSync(filePath)) {
+          fs.rmSync(filePath);
+        }
+      }
+      console.log("[build-profile] tooling profile removed installable PWA artifacts.");
+    }
     process.exitCode = Number.isInteger(result.status) ? result.status : 1;
   }
 }
-

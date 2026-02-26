@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, it, expect } from "@jest/globals";
+
 import { createSystemEngine } from "../../packages/game-core/src/engine/createSystemEngine.js";
 import { initialGameState } from "../../packages/game-core/src/data/initialState.js";
 import { gameStateToSimulation } from "../../packages/game-core/src/simulation/bridge/GameStateAdapter.js";
@@ -19,10 +20,10 @@ describe("runtime/simulation parity fixtures", () => {
     it(`maintains invariants for ${scenario.id}`, () => {
       const runCount = Number.isFinite(scenario.repeat) ? scenario.repeat : 1;
       const runtimeInitial = cloneState(initialGameState);
-      const runtimeStartTurn = Number(runtimeInitial.world?.turnCount || 0);
       const runtimeInitialHp = Number(runtimeInitial.player?.hp?.current || 0);
       const runtimeInitialMana = Number(runtimeInitial.player?.mana?.current || 0);
       const runtimeEngine = createSystemEngine({ seed: 1337, mode: "client" });
+      const runtimeStartTick = Number(runtimeEngine.tick || 0);
       let runtimeState = runtimeInitial;
 
       const simulationState = gameStateToSimulation(cloneState(runtimeInitial));
@@ -59,7 +60,7 @@ describe("runtime/simulation parity fixtures", () => {
       expect(simPlayer).toBeDefined();
 
       if (scenario.assertions.includes("tick_advances")) {
-        expect(Number(runtimeState.world?.turnCount || 0) - runtimeStartTurn).toBe(runCount);
+        expect(Number(runtimeEngine.tick || 0) - runtimeStartTick).toBe(runCount);
         expect(simulationFinal.currentTick - simulationStartTick).toBe(runCount);
       }
 
@@ -90,4 +91,3 @@ describe("runtime/simulation parity fixtures", () => {
     });
   }
 });
-

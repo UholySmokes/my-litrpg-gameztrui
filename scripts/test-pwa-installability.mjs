@@ -50,36 +50,43 @@ function validateManifest(manifest) {
 function main() {
   const expectedGameplayFlag = parseExpectedGameplayFlag();
   const indexHtml = readFileOrThrow(INDEX_PATH);
-  const manifestText = readFileOrThrow(MANIFEST_PATH);
-  const serviceWorker = readFileOrThrow(SW_PATH);
-  readFileOrThrow(OFFLINE_PATH);
   const runtimeConfig = readFileOrThrow(RUNTIME_CONFIG_PATH);
 
-  assert(
-    indexHtml.includes('rel="manifest"') && indexHtml.includes("manifest.webmanifest"),
-    "index.html must reference manifest.webmanifest.",
-  );
-  assert(
-    indexHtml.includes('meta name="theme-color"'),
-    "index.html must include theme-color metadata.",
-  );
+  const hasManifestLink =
+    indexHtml.includes('rel="manifest"') && indexHtml.includes("manifest.webmanifest");
+  const hasThemeColor = indexHtml.includes('meta name="theme-color"');
+  assert(hasThemeColor, "index.html must include theme-color metadata.");
 
-  const manifest = JSON.parse(manifestText);
-  validateManifest(manifest);
-
-  for (const icon of manifest.icons) {
-    const src = String(icon.src || "").replace(/^\//, "");
-    const iconPath = path.join(DIST_DIR, src);
+  if (expectedGameplayFlag === false) {
     assert(
-      fs.existsSync(iconPath),
-      `Manifest icon is missing from dist: ${src}`,
+      !hasManifestLink,
+      "Tooling profile must not include an install manifest link.",
+    );
+    assert(!fs.existsSync(MANIFEST_PATH), "Tooling profile must not emit manifest.webmanifest.");
+    assert(!fs.existsSync(SW_PATH), "Tooling profile must not emit sw.js.");
+  } else {
+    const manifestText = readFileOrThrow(MANIFEST_PATH);
+    const serviceWorker = readFileOrThrow(SW_PATH);
+    readFileOrThrow(OFFLINE_PATH);
+    assert(hasManifestLink, "index.html must reference manifest.webmanifest.");
+
+    const manifest = JSON.parse(manifestText);
+    validateManifest(manifest);
+
+    for (const icon of manifest.icons) {
+      const src = String(icon.src || "").replace(/^\//, "");
+      const iconPath = path.join(DIST_DIR, src);
+      assert(
+        fs.existsSync(iconPath),
+        `Manifest icon is missing from dist: ${src}`,
+      );
+    }
+
+    assert(
+      serviceWorker.includes("self.addEventListener"),
+      "sw.js must register service worker lifecycle listeners.",
     );
   }
-
-  assert(
-    serviceWorker.includes("self.addEventListener"),
-    "sw.js must register service worker lifecycle listeners.",
-  );
 
   if (expectedGameplayFlag !== undefined) {
     const hasFlagTrue = runtimeConfig.includes(
@@ -105,4 +112,3 @@ try {
   console.error(`[pwa-installability] FAIL: ${error.message}`);
   process.exitCode = 1;
 }
-

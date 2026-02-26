@@ -6,7 +6,6 @@ import "./AdminTools.css";
 
 export default function AdminTools({ dispatch, getState }) {
   const isDevBuild = Boolean(import.meta.env.DEV);
-  if (!isDevBuild) return null;
 
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("player");
@@ -74,6 +73,7 @@ export default function AdminTools({ dispatch, getState }) {
   }, [playerState]);
 
   useEffect(() => {
+    if (!isDevBuild) return undefined;
     const handleKeyDown = (e) => {
       if (e.repeat) return;
       if (e.ctrlKey && e.key === "`") {
@@ -82,7 +82,7 @@ export default function AdminTools({ dispatch, getState }) {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [isDevBuild]);
 
   const parseAmount = (rawValue) => {
     const value = Number.parseInt(rawValue, 10);
@@ -647,6 +647,8 @@ export default function AdminTools({ dispatch, getState }) {
       </div>
     );
   };
+
+  if (!isDevBuild) return null;
 
   return (
     <div>

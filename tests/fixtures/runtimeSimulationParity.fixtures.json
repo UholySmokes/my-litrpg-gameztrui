@@ -2,13 +2,12 @@
   "version": 1,
   "scenarios": [
     {
-      "id": "rest_single_tick",
+      "id": "status_single_tick",
       "runtimeAction": {
-        "type": "rest"
+        "type": "status"
       },
       "simulationCommand": {
-        "type": "Rest",
-        "duration": 1
+        "type": "MagicSense"
       },
       "assertions": [
         "tick_advances",
@@ -18,13 +17,12 @@
       ]
     },
     {
-      "id": "rest_double_tick",
+      "id": "status_double_tick",
       "runtimeAction": {
-        "type": "rest"
+        "type": "status"
       },
       "simulationCommand": {
-        "type": "Rest",
-        "duration": 1
+        "type": "MagicSense"
       },
       "repeat": 2,
       "assertions": [
@@ -36,4 +34,3 @@
     }
   ]
 }
-

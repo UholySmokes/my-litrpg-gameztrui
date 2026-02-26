@@ -30,11 +30,13 @@ import {
 } from "../types/core";
 import { spendActionPoints } from "./ActionScheduler";
 import { applyEffect as applySimulationEffect } from "../effects/EffectEngine";
-import { getSkillById } from "../../systems/skills/SkillRegistry.js";
-import {
-  STACKING_RULES,
-  getEffectDefinition,
-} from "../../systems/effects/EffectRegistry.js";
+
+const STACKING_RULES = {
+  DONT_STACK: "DONT_STACK",
+  STACK_DURATION: "STACK_DURATION",
+  STACK_INTENSITY: "STACK_INTENSITY",
+  INDEPENDENT: "INDEPENDENT",
+} as const;
 
 export type ActionResolutionContext = {
   tick: Tick;
@@ -162,6 +164,96 @@ type SkillDefinition = {
   effects?: SkillEffectConfig[];
 };
 
+type EffectTemplate = {
+  id?: string;
+  name?: string;
+  type?: string;
+  stacking?: string;
+  duration?: number;
+  magnitude?: number;
+  maxStacks?: number;
+  statModifiers?: Partial<StatBlock>;
+  tags?: string[];
+};
+
+type SkillResolver = (skillId: string) => SkillDefinition | null | undefined;
+type EffectResolver = (effectId: string) => EffectTemplate | null | undefined;
+
+let simulationSkillResolver: SkillResolver | null = null;
+let simulationEffectResolver: EffectResolver | null = null;
+
+export function setSimulationSkillResolver(
+  resolver: SkillResolver | null | undefined,
+): void {
+  simulationSkillResolver = typeof resolver === "function" ? resolver : null;
+}
+
+export function setSimulationEffectResolver(
+  resolver: EffectResolver | null | undefined,
+): void {
+  simulationEffectResolver = typeof resolver === "function" ? resolver : null;
+}
+
+function getGlobalSkillResolver(): SkillResolver | null {
+  if (typeof globalThis === "undefined") {
+    return null;
+  }
+
+  const host = globalThis as typeof globalThis & {
+    __VOIDVERSE_SIM_SKILL_RESOLVER?: unknown;
+  };
+
+  return typeof host.__VOIDVERSE_SIM_SKILL_RESOLVER === "function"
+    ? (host.__VOIDVERSE_SIM_SKILL_RESOLVER as SkillResolver)
+    : null;
+}
+
+function getGlobalEffectResolver(): EffectResolver | null {
+  if (typeof globalThis === "undefined") {
+    return null;
+  }
+
+  const host = globalThis as typeof globalThis & {
+    __VOIDVERSE_SIM_EFFECT_DEFINITION_RESOLVER?: unknown;
+  };
+
+  return typeof host.__VOIDVERSE_SIM_EFFECT_DEFINITION_RESOLVER === "function"
+    ? (host.__VOIDVERSE_SIM_EFFECT_DEFINITION_RESOLVER as EffectResolver)
+    : null;
+}
+
+function resolveSkillDefinition(skillId: string): SkillDefinition | null {
+  const resolver = simulationSkillResolver || getGlobalSkillResolver();
+  if (resolver) {
+    const resolved = resolver(skillId);
+    if (resolved?.id) {
+      return resolved;
+    }
+  }
+
+  if (!skillId) {
+    return null;
+  }
+
+  // Keep deterministic simulation command flow available even when the
+  // runtime skill registry is intentionally not wired into this environment.
+  return {
+    id: skillId,
+    effects: [],
+  };
+}
+
+function resolveEffectDefinition(effectId: string): EffectTemplate | null {
+  const resolver = simulationEffectResolver || getGlobalEffectResolver();
+  if (resolver) {
+    const resolved = resolver(effectId);
+    if (resolved) {
+      return resolved;
+    }
+  }
+  return null;
+}
+
 function mapStackingRule(
   stacking?: string,
   fallback: Effect["stackingRule"] = "refresh",
@@ -204,7 +296,7 @@ function convertSkillEffectToSimulationEffect(
     return null;
   }
 
-  const template = getEffectDefinition(effectConfig.id) || null;
+  const template = resolveEffectDefinition(effectConfig.id);
   const templateTags = Array.isArray((template as any)?.tags)
     ? ((template as any).tags as string[])
     : [];
@@ -536,7 +628,7 @@ export function resolveUseSkillCommand(
     };
   }
 
-  const skill = getSkillById(command.skillId) as SkillDefinition | null;
+  const skill = resolveSkillDefinition(command.skillId);
   if (!skill) {
     return {
       success: false,

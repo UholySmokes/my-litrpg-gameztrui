@@ -51,5 +51,3 @@ error/index.html
 
 # Godot Android/Gradle generated state
 godot/android/build/.gradle/
-godot/android/build/build/
-godot/android/build/.kotlin/

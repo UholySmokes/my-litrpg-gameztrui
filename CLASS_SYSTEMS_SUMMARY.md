@@ -34,7 +34,7 @@ All 20 class-specific gameplay systems have been implemented, closing the lore-t
 
 **File:** `src/systems/combat/StealthSystem.js`
 
-- **Mechanics:**
+- **Mechanics:**  
   - Enter/exit stealth, detection checks
   - Ambush damage (2x multiplier)
   - Vanish ability for combat stealth

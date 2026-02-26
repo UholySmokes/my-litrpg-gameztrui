@@ -10,7 +10,15 @@ if (!validProfiles.has(profile)) {
   console.error(`Unknown build profile "${profile}". Use "tooling" or "pwa".`);
   process.exitCode = 1;
 } else {
-  const env = { ...process.env };
+  const env = Object.fromEntries(
+    Object.entries(process.env).filter(
+      ([key, value]) =>
+        typeof key === "string" &&
+        key.length > 0 &&
+        !key.startsWith("=") &&
+        typeof value === "string",
+    ),
+  );
 
   if (profile === "pwa") {
     env.VITE_WEB_GAMEPLAY_ENABLED = "true";
@@ -19,11 +27,16 @@ if (!validProfiles.has(profile)) {
     delete env.VITE_ENABLE_WEB_GAMEPLAY;
   }
 
-  const npmCmd = process.platform === "win32" ? "npm.cmd" : "npm";
-  const result = spawnSync(npmCmd, ["run", "build"], {
-    stdio: "inherit",
-    env,
-  });
+  const result =
+    process.platform === "win32"
+      ? spawnSync("cmd.exe", ["/d", "/s", "/c", "npm run build"], {
+          stdio: "inherit",
+          env,
+        })
+      : spawnSync("npm", ["run", "build"], {
+          stdio: "inherit",
+          env,
+        });
 
   if (result.error) {
     console.error(result.error.message);

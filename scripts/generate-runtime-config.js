@@ -54,6 +54,10 @@ function hasApiBase(configText) {
   return /VITE_API_BASE_URL|VITE_API_BASE/.test(configText);
 }
 
+function hasWebGameplayFlag(configText) {
+  return /VITE_WEB_GAMEPLAY_ENABLED/.test(configText);
+}
+
 function sanitizeEndpoint(value, keyName) {
   const trimmed = String(value || "").trim();
   if (!trimmed) return "";
@@ -64,6 +68,27 @@ function sanitizeEndpoint(value, keyName) {
     return "";
   }
   return trimmed;
+}
+
+function parseWebGameplayFlag(value) {
+  if (typeof value !== "string") return undefined;
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) return undefined;
+  if (["1", "true", "yes", "on"].includes(normalized)) return "true";
+  if (["0", "false", "no", "off"].includes(normalized)) return "false";
+  return undefined;
+}
+
+function withWebGameplayFlag(configText, boolLiteral) {
+  const assignment =
+    `globalThis.__RUNTIME_CONFIG__.VITE_WEB_GAMEPLAY_ENABLED = "${boolLiteral}";`;
+  const pattern =
+    /globalThis\.__RUNTIME_CONFIG__\.VITE_WEB_GAMEPLAY_ENABLED\s*=\s*[^;]+;/;
+  if (pattern.test(configText)) {
+    return configText.replace(pattern, assignment);
+  }
+  const trimmed = ensureBase(configText).replace(/\s*$/, "");
+  return `${trimmed}\n${assignment}\n`;
 }
 
 async function main() {
@@ -77,12 +102,17 @@ async function main() {
     "",
     "VITE_API_BASE_URL",
   );
+  const webGameplayFlag = parseWebGameplayFlag(
+    process.env.VITE_WEB_GAMEPLAY_ENABLED ||
+    process.env.VITE_ENABLE_WEB_GAMEPLAY ||
+    "",
+  );
   const publicConfig = await readPublicConfig();
 
   let output = publicConfig;
   let sourceLabel = "public";
 
-  if (envEndpoint || envApiBase) {
+  if (envEndpoint || envApiBase || webGameplayFlag !== undefined) {
     output = ensureBase(publicConfig);
     if (envEndpoint) {
       output = withEndpoint(output, envEndpoint);
@@ -90,8 +120,15 @@ async function main() {
     if (envApiBase) {
       output = withApiBase(output, envApiBase);
     }
+    if (webGameplayFlag !== undefined) {
+      output = withWebGameplayFlag(output, webGameplayFlag);
+    }
     sourceLabel = "env";
-  } else if (!hasEndpoint(publicConfig) && !hasApiBase(publicConfig)) {
+  } else if (
+    !hasEndpoint(publicConfig) &&
+    !hasApiBase(publicConfig) &&
+    !hasWebGameplayFlag(publicConfig)
+  ) {
     output = ensureBase(publicConfig);
     sourceLabel = "base";
   }

@@ -99,9 +99,12 @@ Narrative endpoint notes:
 ### Run / Build / Test
 
 - `npm run dev` – Start Vite dev server with HMR
-- `npm run build` – Production build (Vite)
+- `npm run build` - Production tooling build (Vite)
+- `npm run build:tooling` - Explicit tooling-only profile
+- `npm run build:pwa` - Android-installable PWA profile (web gameplay enabled)
 - `npm run preview` – Preview production build
 - `npm run lint` – ESLint with React hooks rules
+- `npm run test:pwa:installability` - Validate manifest/service-worker/installability contract in `dist`
 
 ### Replay Inspector (Dev Only)
 
@@ -155,6 +158,26 @@ Key documentation:
 - **Narrative Cache** ensures repeated openings aren’t re-generated unless the seed or snapshot changes.
 
 ---
+
+
+---
+
+## Android Delivery Tracks
+
+Two supported Android paths:
+
+1. Web PWA track (browser install):
+   - `npm run build:pwa`
+   - includes install manifest + service worker + install prompt UX
+2. Godot native track (APK/AAB):
+   - `npm run android:export:internal`
+   - `npm run android:export:release`
+
+Supporting docs:
+
+- `docs/ANDROID_TOOLCHAIN_CONTRACT.md`
+- `docs/ANDROID_READINESS_CHECKLIST.md`
+- `docs/EXPERIMENTAL_SYSTEMS.md`
 
 ## 🔧 Contribution Tips
 

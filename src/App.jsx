@@ -2,6 +2,7 @@ import { useState, useEffect, Suspense, lazy } from "react";
 import { getCurrentUser, onAuthStateChange } from "./core/AuthService.js";
 import { isWebGameplayEnabled } from "./core/WebGameplayGate.js";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
+import PwaInstallPrompt from "./components/PwaInstallPrompt.jsx";
 import "./index.css";
 import "./App.css";
 
@@ -161,7 +162,10 @@ function AppContent() {
 
   return (
     <Suspense fallback={loadingScreen}>
-      <GameUI user={user} />
+      <>
+        <PwaInstallPrompt enabled={WEB_GAMEPLAY_ENABLED} />
+        <GameUI user={user} />
+      </>
     </Suspense>
   );
 }

@@ -165,6 +165,40 @@
   white-space: nowrap;
 }
 
+.admin-tools-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.admin-tools-field span {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.admin-tools-field input,
+.admin-tools-field select,
+.admin-tools-field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  background: #222;
+  border: 1px solid #444;
+  color: #eee;
+  border-radius: 4px;
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.82rem;
+}
+
+.admin-tools-field textarea {
+  resize: vertical;
+}
+
+.admin-tools-field-full {
+  grid-column: 1 / -1;
+}
+
 .admin-tools-output {
   margin-top: 15px;
   background: #000;

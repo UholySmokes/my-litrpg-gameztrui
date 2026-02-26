@@ -25,4 +25,4 @@
 
 ## Notes
 - These defaults originate in `src/core/StateNormalizer.js` and `src/data/initialState.js`.
-- Dungeon generation tuning is provided via `DungeonGenerator` constructor or `generate` overrides.
+- Dungeon generation tuning is experimental (`packages/game-core/src/systems/DungeonGenerator.ts`) and is not wired into the default runtime loop.

@@ -23,6 +23,8 @@ export function playerToEntity(player) {
       : { current: player.mana || 0, max: player.maxMana || 100 };
 
   const attributes = player.attributes || {};
+  const stamina = resolveStamina(player);
+  const cooldowns = resolveCooldowns(player);
 
   return {
     id: "player",
@@ -40,7 +42,7 @@ export function playerToEntity(player) {
       charisma: attributes.charisma || 5,
       health: { current: hp.current, maximum: hp.max },
       mana: { current: mana.current, maximum: mana.max },
-      stamina: { current: 100, maximum: 100 }, // TODO: Add stamina to player state
+      stamina,
       attackPower: calculateAttackPower(attributes),
       defense: calculateDefense(attributes),
       speed: attributes.agility || 5,
@@ -55,7 +57,7 @@ export function playerToEntity(player) {
     initiative: attributes.agility || 5,
     effects: convertEffects(player.effects || []),
     equipment: convertEquipment(player.equipment || {}),
-    cooldowns: [], // TODO: Track cooldowns in player state
+    cooldowns,
     faction: "player",
     tags: buildPlayerTags(player),
     isDead: player.isDead || false,
@@ -171,6 +173,13 @@ export function gameStateToSimulation(gameState) {
  * Convert simulation entity back to player state
  */
 export function entityToPlayer(entity, existingPlayer = {}) {
+  const existingResources = existingPlayer.resources || {};
+  const nextResources = {
+    ...existingResources,
+    stamina: entity.stats.stamina.current,
+    maxStamina: entity.stats.stamina.maximum,
+  };
+
   return {
     ...existingPlayer,
     name: entity.name,
@@ -187,6 +196,11 @@ export function entityToPlayer(entity, existingPlayer = {}) {
       current: entity.stats.mana.current,
       max: entity.stats.mana.maximum,
     },
+    stamina: {
+      current: entity.stats.stamina.current,
+      max: entity.stats.stamina.maximum,
+    },
+    resources: nextResources,
     attributes: {
       ...existingPlayer.attributes,
       strength: entity.stats.strength,
@@ -197,6 +211,7 @@ export function entityToPlayer(entity, existingPlayer = {}) {
       charisma: entity.stats.charisma,
     },
     effects: entity.effects.map(convertEffectFromSim),
+    cooldowns: entity.cooldowns,
     isDead: entity.isDead,
   };
 }
@@ -296,6 +311,118 @@ function convertEquipment(equipment) {
     }
   }
   return slots;
+}
+
+function normalizeNumber(value, fallback = 0) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : fallback;
+}
+
+function normalizeResource(value, fallback) {
+  if (value && typeof value === "object") {
+    const current = normalizeNumber(value.current, fallback.current);
+    const max = normalizeNumber(value.max ?? value.maximum, fallback.maximum);
+    return {
+      current: Math.max(0, current),
+      maximum: Math.max(1, max),
+    };
+  }
+
+  const numeric = normalizeNumber(value, fallback.current);
+  const maximum = Math.max(fallback.maximum, numeric, 1);
+  return {
+    current: Math.max(0, numeric),
+    maximum,
+  };
+}
+
+function resolveStamina(player) {
+  const fallback = { current: 100, maximum: 100 };
+  if (player?.stamina) return normalizeResource(player.stamina, fallback);
+
+  if (player?.resources?.stamina !== undefined) {
+    const maxStamina = player.resources.maxStamina ?? player.resources.stamina;
+    return normalizeResource(
+      { current: player.resources.stamina, max: maxStamina },
+      fallback,
+    );
+  }
+
+  if (player?.resources?.energy !== undefined) {
+    const maxEnergy = player.resources.maxEnergy ?? player.resources.energy;
+    return normalizeResource(
+      { current: player.resources.energy, max: maxEnergy },
+      fallback,
+    );
+  }
+
+  return fallback;
+}
+
+function normalizeCooldownEntry(entry, index = 0) {
+  if (!entry || typeof entry !== "object") {
+    return {
+      skillId: `cooldown_${index}`,
+      remainingTicks: 0,
+      totalTicks: 0,
+    };
+  }
+
+  const remainingTicks = Math.max(
+    0,
+    normalizeNumber(entry.remainingTicks ?? entry.remaining ?? entry.turns, 0),
+  );
+  const totalTicks = Math.max(
+    remainingTicks,
+    normalizeNumber(entry.totalTicks ?? entry.total ?? entry.max, remainingTicks),
+  );
+
+  return {
+    skillId: String(entry.skillId || entry.id || `cooldown_${index}`),
+    remainingTicks,
+    totalTicks,
+  };
+}
+
+function mapCooldownRecord(record) {
+  if (!record || typeof record !== "object" || Array.isArray(record)) return [];
+  return Object.entries(record).map(([skillId, value]) => {
+    if (value && typeof value === "object") {
+      return normalizeCooldownEntry({ skillId, ...value });
+    }
+    const ticks = Math.max(0, normalizeNumber(value, 0));
+    return {
+      skillId: String(skillId),
+      remainingTicks: ticks,
+      totalTicks: ticks,
+    };
+  });
+}
+
+function resolveCooldowns(player) {
+  const candidates = [
+    player?.cooldowns,
+    player?.skillCooldowns,
+    player?.resources?.cooldowns,
+    player?.combat?.cooldowns,
+  ];
+
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate)) {
+      return candidate
+        .map((entry, index) => normalizeCooldownEntry(entry, index))
+        .filter((entry) => entry.remainingTicks > 0);
+    }
+
+    const mapped = mapCooldownRecord(candidate).filter(
+      (entry) => entry.remainingTicks > 0,
+    );
+    if (mapped.length > 0) {
+      return mapped;
+    }
+  }
+
+  return [];
 }
 
 function buildPlayerTags(player) {

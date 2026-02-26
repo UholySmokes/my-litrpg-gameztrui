@@ -6,8 +6,12 @@ import vm from "node:vm";
 const GODOT_CONFIG_PATH = path.resolve(process.cwd(), "godot", "data", "config.json");
 const DIST_CONFIG_PATH = path.resolve(process.cwd(), "dist", "runtime-config.js");
 const PUBLIC_CONFIG_PATH = path.resolve(process.cwd(), "public", "runtime-config.js");
-const DEFAULT_API_BASE_URL =
-	"http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api";
+const DEFAULT_API_BASE_BY_PROFILE = Object.freeze({
+	local: "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api",
+	production:
+		"https://us-central1-my-litrpg-gameztrui-3416-da75c.cloudfunctions.net/api",
+});
+const SUPPORTED_PROFILES = new Set(["local", "production"]);
 
 function normalizeConfigValue(value) {
 	return String(value || "").trim();
@@ -66,7 +70,47 @@ function extractRuntimeConfig(content) {
 	}
 }
 
-function buildGodotConfig({ runtimeConfig, source }) {
+function parseArgs(argv) {
+	const result = {};
+	for (let i = 0; i < argv.length; i += 1) {
+		const token = argv[i];
+		if (token === "--profile") result.profile = String(argv[i + 1] || "").trim();
+		if (token === "--api-base") result.apiBaseUrl = String(argv[i + 1] || "").trim();
+	}
+	return result;
+}
+
+function resolveProfile(cliArgs) {
+	const profile = normalizeConfigValue(
+		cliArgs.profile ||
+		process.env.GODOT_CONFIG_PROFILE ||
+		process.env.VITE_GODOT_CONFIG_PROFILE ||
+		"",
+	).toLowerCase();
+	if (!profile) return "local";
+	if (!SUPPORTED_PROFILES.has(profile)) {
+		throw new Error(
+			`Unsupported Godot config profile "${profile}". Use one of: ${Array.from(SUPPORTED_PROFILES).join(", ")}`,
+		);
+	}
+	return profile;
+}
+
+function resolveExplicitApiBase(cliArgs) {
+	return normalizeConfigValue(
+		cliArgs.apiBaseUrl ||
+		process.env.GODOT_API_BASE_URL ||
+		process.env.VITE_GODOT_API_BASE_URL ||
+		"",
+	);
+}
+
+function isLocalhostApi(value) {
+	const normalized = normalizeConfigValue(value).toLowerCase();
+	return normalized.includes("127.0.0.1") || normalized.includes("localhost");
+}
+
+function buildGodotConfig({ runtimeConfig, source, profile, explicitApiBase }) {
 	const envApiBase = normalizeConfigValue(
 		process.env.VITE_API_BASE_URL || process.env.VITE_API_BASE || "",
 	);
@@ -77,7 +121,15 @@ function buildGodotConfig({ runtimeConfig, source }) {
 	);
 	const fileBuildId = normalizeConfigValue(runtimeConfig.VITE_BUILD_ID || "");
 	const fileNarrate = normalizeConfigValue(runtimeConfig.VITE_NARRATE_ENDPOINT || "");
-	const resolvedApiBase = envApiBase || fileApiBase;
+	const resolvedApiBase = explicitApiBase || envApiBase || fileApiBase;
+	const fallbackApiBase =
+		DEFAULT_API_BASE_BY_PROFILE[profile] || DEFAULT_API_BASE_BY_PROFILE.local;
+	const apiBaseFromResolved =
+		resolvedApiBase && resolvedApiBase !== "/" ? resolvedApiBase : fallbackApiBase;
+	const safeApiBaseUrl =
+		profile === "production" && isLocalhostApi(apiBaseFromResolved) && !explicitApiBase
+			? DEFAULT_API_BASE_BY_PROFILE.production
+			: apiBaseFromResolved;
 	const syncCommandPath = normalizeRelativeApiPath(
 		runtimeConfig.GODOT_SYNC_COMMAND_PATH || "",
 		"/sync/command",
@@ -103,11 +155,9 @@ function buildGodotConfig({ runtimeConfig, source }) {
 		schemaVersion: 1,
 		generatedAt: new Date().toISOString(),
 		source,
+		profile,
 		buildId: envBuildId || fileBuildId || "godot-dev",
-		apiBaseUrl:
-			resolvedApiBase && resolvedApiBase !== "/"
-				? resolvedApiBase
-				: DEFAULT_API_BASE_URL,
+		apiBaseUrl: safeApiBaseUrl,
 		narrateEndpoint: normalizeRelativeApiPath(
 			envNarrate || fileNarrate,
 			"/narrate",
@@ -121,9 +171,17 @@ function buildGodotConfig({ runtimeConfig, source }) {
 }
 
 async function main() {
+	const cliArgs = parseArgs(process.argv.slice(2));
+	const profile = resolveProfile(cliArgs);
+	const explicitApiBase = resolveExplicitApiBase(cliArgs);
 	const { content, source } = await readRuntimeConfigFile();
 	const runtimeConfig = extractRuntimeConfig(content);
-	const godotConfig = buildGodotConfig({ runtimeConfig, source });
+	const godotConfig = buildGodotConfig({
+		runtimeConfig,
+		source,
+		profile,
+		explicitApiBase,
+	});
 
 	await fs.mkdir(path.dirname(GODOT_CONFIG_PATH), { recursive: true });
 	await fs.writeFile(
@@ -133,7 +191,7 @@ async function main() {
 	);
 
 	console.log(
-		`[godot-config] wrote ${path.relative(process.cwd(), GODOT_CONFIG_PATH)} from ${source}`,
+		`[godot-config] wrote ${path.relative(process.cwd(), GODOT_CONFIG_PATH)} from ${source} (profile=${profile})`,
 	);
 }
 

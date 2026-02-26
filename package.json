@@ -14,6 +14,8 @@
     "dev:api": "npx kill-port 5000 5001 4000 4400 4500 && firebase emulators:start --only hosting,functions",
     "dev:stack": "concurrently -k -n api,web -c blue,green \"npm run dev:api\" \"npm run dev\"",
     "build": "vite build",
+    "build:tooling": "node scripts/build-profile.mjs tooling",
+    "build:pwa": "node scripts/build-profile.mjs pwa",
     "postbuild": "node scripts/generate-runtime-config.js && node scripts/generate-godot-config.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -32,6 +34,7 @@
     "test:staging:endpoint-probe": "node scripts/run-staging-endpoint-probe.mjs",
     "test:telemetry:smoke": "node scripts/run-telemetry-ingest-smoke.mjs",
     "test:staging:soak-smoke": "node scripts/run-staging-soak-smoke.mjs",
+    "test:pwa:installability": "node scripts/test-pwa-installability.mjs",
     "test:rollout:rollback": "node scripts/verify-m12-live-rollback.mjs",
     "test:ga:readiness": "node scripts/run-m13-ga-readiness-suite.mjs",
     "report:staging:signoff": "node scripts/generate-staging-signoff-packet.mjs",
@@ -54,6 +57,9 @@
     "validate:registries": "node scripts/validate-registries.mjs",
     "validate:archetypes": "node scripts/validate-archetypes.mjs",
     "generate:godot-config": "node scripts/generate-godot-config.js",
+    "generate:godot-config:prod": "node scripts/generate-godot-config.js --profile production",
+    "android:export:internal": "node scripts/export-godot-android.mjs --preset \"Android Internal Debug\" --mode debug --output \"build/android/internal-debug.apk\"",
+    "android:export:release": "node scripts/export-godot-android.mjs --preset \"Android Release Candidate\" --mode release --output \"build/android/release-candidate.aab\"",
     "generate:godot-assets:placeholder": "powershell -ExecutionPolicy Bypass -File scripts/generate-godot-placeholder-assets.ps1"
   },
   "dependencies": {

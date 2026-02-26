@@ -58,6 +58,7 @@
     "validate:archetypes": "node scripts/validate-archetypes.mjs",
     "generate:godot-config": "node scripts/generate-godot-config.js",
     "generate:godot-config:prod": "node scripts/generate-godot-config.js --profile production",
+    "android:preflight": "node scripts/android-preflight.mjs",
     "android:signing:configure": "node scripts/configure-android-signing.mjs",
     "android:export:internal": "node scripts/export-godot-android.mjs --preset \"Android Internal Debug\" --mode debug --output \"build/android/internal-debug.apk\"",
     "android:export:release": "node scripts/export-godot-android.mjs --preset \"Android Release Candidate\" --mode release --output \"build/android/release-candidate.aab\"",

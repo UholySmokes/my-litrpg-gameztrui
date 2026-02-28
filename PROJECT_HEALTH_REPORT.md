@@ -94,3 +94,5 @@ Note:
 
 1. Expand runtime/env guard scripts if additional required infra files or env keys are introduced.
 2. Continue reducing placeholder item footprint through authored item replacement workflow.
+   - Workflow command: `npm run report:worldbuild:placeholders`
+   - Output: `docs/reports/placeholder_item_curation_queue.json` + dated markdown summary

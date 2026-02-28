@@ -254,6 +254,8 @@ Per content patch:
 
 - Complete downstream migration from legacy `skill.class` reads to `ownerType` + `ownerId`.
 - Add conversion workflow (placeholder -> authored item) using placeholder provenance metadata.
+  - Implemented command: `npm run report:worldbuild:placeholders`
+  - Artifacts: `docs/reports/placeholder_item_curation_queue.json` and a dated markdown queue report
 
 ### P2 (Medium)
 

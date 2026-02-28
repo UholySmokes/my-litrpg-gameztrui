@@ -48,6 +48,7 @@
     "report:ga:review": "node scripts/generate-m13-ga-review-notes.mjs",
     "report:ga:rollout-logs": "node scripts/generate-m13-rollout-logs-summary.mjs",
     "report:ga:signoff": "node scripts/generate-m13-signoff-register.mjs",
+    "report:worldbuild:placeholders": "node scripts/generate-placeholder-item-curation-report.mjs",
     "log:canary:drill": "node scripts/log-m11-oncall-drill.mjs",
     "simulate": "node sim_gamestart_fixed.js",
     "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",

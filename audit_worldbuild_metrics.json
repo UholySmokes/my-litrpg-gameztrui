@@ -1,0 +1,1452 @@
+{
+  "counts": {
+    "classCount": 30,
+    "raceCount": 55,
+    "classAbilityCount": 216,
+    "raceAbilityCount": 55,
+    "totalSkills": 1648,
+    "professionCount": 21,
+    "itemCount": 37,
+    "questCount": 29
+  },
+  "classTierCounts": {
+    "1": 6,
+    "2": 12,
+    "3": 12
+  },
+  "classResourceCounts": {
+    "rage": 5,
+    "energy": 5,
+    "mana": 10,
+    "chi": 5,
+    "focus": 5
+  },
+  "classesMissingSkills": [
+    "war_reaver",
+    "bulwark_sentinel",
+    "night_reaper",
+    "chaos_saboteur",
+    "astral_archon",
+    "spellbreaker",
+    "dawn_vindicator",
+    "oracle_hierophant",
+    "tempest_reveler",
+    "adamant_champion",
+    "primal_overlord",
+    "deadeye_commander"
+  ],
+  "skillClassCounts": [
+    [
+      "universal",
+      274
+    ],
+    [
+      "warrior",
+      64
+    ],
+    [
+      "rogue",
+      64
+    ],
+    [
+      "paladin",
+      64
+    ],
+    [
+      "ranger",
+      64
+    ],
+    [
+      "monk",
+      64
+    ],
+    [
+      "battlemage",
+      64
+    ],
+    [
+      "berserker",
+      64
+    ],
+    [
+      "mage",
+      62
+    ],
+    [
+      "knight",
+      60
+    ],
+    [
+      "priest",
+      60
+    ],
+    [
+      "bard",
+      60
+    ],
+    [
+      "necromancer",
+      60
+    ],
+    [
+      "druid",
+      60
+    ],
+    [
+      "warlock",
+      60
+    ],
+    [
+      "shaman",
+      60
+    ],
+    [
+      "archer",
+      60
+    ],
+    [
+      "summoner",
+      60
+    ],
+    [
+      "templar",
+      60
+    ],
+    [
+      "shadowblade",
+      60
+    ],
+    [
+      "assassin",
+      59
+    ],
+    [
+      "blacksmithing",
+      5
+    ],
+    [
+      "alchemy",
+      5
+    ],
+    [
+      "enchanting",
+      5
+    ],
+    [
+      "tailoring",
+      5
+    ],
+    [
+      "jewelcrafting",
+      5
+    ],
+    [
+      "engineering",
+      5
+    ],
+    [
+      "construction",
+      5
+    ],
+    [
+      "mining",
+      5
+    ],
+    [
+      "herbalism",
+      5
+    ],
+    [
+      "skinning",
+      5
+    ],
+    [
+      "logging",
+      5
+    ],
+    [
+      "fishing",
+      5
+    ],
+    [
+      "farming",
+      5
+    ],
+    [
+      "cooking",
+      5
+    ],
+    [
+      "brewing",
+      5
+    ],
+    [
+      "butchery",
+      5
+    ],
+    [
+      "inscription",
+      5
+    ],
+    [
+      "first_aid",
+      5
+    ],
+    [
+      "repair",
+      5
+    ],
+    [
+      "portal_creation",
+      5
+    ],
+    [
+      "dyeing",
+      5
+    ],
+    [
+      "guardian",
+      4
+    ],
+    [
+      "shadow_assassin",
+      4
+    ],
+    [
+      "trickster",
+      4
+    ],
+    [
+      "archmage",
+      4
+    ],
+    [
+      "cleric",
+      4
+    ],
+    [
+      "high_priest",
+      4
+    ],
+    [
+      "drunken_master",
+      4
+    ],
+    [
+      "iron_fist",
+      4
+    ],
+    [
+      "beastmaster",
+      4
+    ],
+    [
+      "sharpshooter",
+      4
+    ]
+  ],
+  "skillClassesMissingClass": [
+    "knight",
+    "assassin",
+    "priest",
+    "bard",
+    "necromancer",
+    "druid",
+    "warlock",
+    "shaman",
+    "archer",
+    "summoner",
+    "templar",
+    "shadowblade",
+    "universal",
+    "blacksmithing",
+    "alchemy",
+    "enchanting",
+    "tailoring",
+    "jewelcrafting",
+    "engineering",
+    "construction",
+    "mining",
+    "herbalism",
+    "skinning",
+    "logging",
+    "fishing",
+    "farming",
+    "cooking",
+    "brewing",
+    "butchery",
+    "inscription",
+    "first_aid",
+    "repair",
+    "portal_creation",
+    "dyeing"
+  ],
+  "classAbilityCoverage": [
+    {
+      "id": "warrior",
+      "count": 4
+    },
+    {
+      "id": "rogue",
+      "count": 4
+    },
+    {
+      "id": "mage",
+      "count": 4
+    },
+    {
+      "id": "cleric",
+      "count": 4
+    },
+    {
+      "id": "monk",
+      "count": 4
+    },
+    {
+      "id": "ranger",
+      "count": 4
+    },
+    {
+      "id": "berserker",
+      "count": 8
+    },
+    {
+      "id": "guardian",
+      "count": 8
+    },
+    {
+      "id": "shadow_assassin",
+      "count": 8
+    },
+    {
+      "id": "trickster",
+      "count": 8
+    },
+    {
+      "id": "archmage",
+      "count": 8
+    },
+    {
+      "id": "battlemage",
+      "count": 8
+    },
+    {
+      "id": "paladin",
+      "count": 8
+    },
+    {
+      "id": "high_priest",
+      "count": 8
+    },
+    {
+      "id": "drunken_master",
+      "count": 8
+    },
+    {
+      "id": "iron_fist",
+      "count": 8
+    },
+    {
+      "id": "beastmaster",
+      "count": 8
+    },
+    {
+      "id": "sharpshooter",
+      "count": 8
+    },
+    {
+      "id": "war_reaver",
+      "count": 8
+    },
+    {
+      "id": "bulwark_sentinel",
+      "count": 8
+    },
+    {
+      "id": "night_reaper",
+      "count": 8
+    },
+    {
+      "id": "chaos_saboteur",
+      "count": 8
+    },
+    {
+      "id": "astral_archon",
+      "count": 8
+    },
+    {
+      "id": "spellbreaker",
+      "count": 8
+    },
+    {
+      "id": "dawn_vindicator",
+      "count": 8
+    },
+    {
+      "id": "oracle_hierophant",
+      "count": 8
+    },
+    {
+      "id": "tempest_reveler",
+      "count": 8
+    },
+    {
+      "id": "adamant_champion",
+      "count": 8
+    },
+    {
+      "id": "primal_overlord",
+      "count": 8
+    },
+    {
+      "id": "deadeye_commander",
+      "count": 8
+    }
+  ],
+  "raceAbilityCoverage": [
+    {
+      "id": "pure_human",
+      "count": 1
+    },
+    {
+      "id": "neo_human",
+      "count": 1
+    },
+    {
+      "id": "ancient_bloodline",
+      "count": 1
+    },
+    {
+      "id": "spirit_beast",
+      "count": 1
+    },
+    {
+      "id": "demon_kin",
+      "count": 1
+    },
+    {
+      "id": "celestial_descendant",
+      "count": 1
+    },
+    {
+      "id": "shadow_walker",
+      "count": 1
+    },
+    {
+      "id": "dragon_blood",
+      "count": 1
+    },
+    {
+      "id": "elemental_attuned",
+      "count": 1
+    },
+    {
+      "id": "mutant",
+      "count": 1
+    },
+    {
+      "id": "undead_awakened",
+      "count": 1
+    },
+    {
+      "id": "fae_touched",
+      "count": 1
+    },
+    {
+      "id": "beast_kin",
+      "count": 1
+    },
+    {
+      "id": "mechanical_construct",
+      "count": 1
+    },
+    {
+      "id": "void_walker",
+      "count": 1
+    },
+    {
+      "id": "phoenix_reborn",
+      "count": 1
+    },
+    {
+      "id": "nature_spirit",
+      "count": 1
+    },
+    {
+      "id": "crystal_being",
+      "count": 1
+    },
+    {
+      "id": "chaos_born",
+      "count": 1
+    },
+    {
+      "id": "divine_scion",
+      "count": 1
+    },
+    {
+      "id": "stormforged",
+      "count": 1
+    },
+    {
+      "id": "frostborne",
+      "count": 1
+    },
+    {
+      "id": "emberkin",
+      "count": 1
+    },
+    {
+      "id": "tidecaller",
+      "count": 1
+    },
+    {
+      "id": "sunborn",
+      "count": 1
+    },
+    {
+      "id": "duskborne",
+      "count": 1
+    },
+    {
+      "id": "ironroot",
+      "count": 1
+    },
+    {
+      "id": "skybound",
+      "count": 1
+    },
+    {
+      "id": "bloodwoven",
+      "count": 1
+    },
+    {
+      "id": "starseer",
+      "count": 1
+    },
+    {
+      "id": "rune_sentinel",
+      "count": 1
+    },
+    {
+      "id": "mirageborn",
+      "count": 1
+    },
+    {
+      "id": "quakeborn",
+      "count": 1
+    },
+    {
+      "id": "venomtail",
+      "count": 1
+    },
+    {
+      "id": "auric_seraph",
+      "count": 1
+    },
+    {
+      "id": "gloomshade",
+      "count": 1
+    },
+    {
+      "id": "sandstrider",
+      "count": 1
+    },
+    {
+      "id": "umbral_oracle",
+      "count": 1
+    },
+    {
+      "id": "verdant_shaper",
+      "count": 1
+    },
+    {
+      "id": "astral_nomad",
+      "count": 1
+    },
+    {
+      "id": "riftborn",
+      "count": 1
+    },
+    {
+      "id": "ashenblood",
+      "count": 1
+    },
+    {
+      "id": "glacierkin",
+      "count": 1
+    },
+    {
+      "id": "luckweaver",
+      "count": 1
+    },
+    {
+      "id": "blood_frenzied",
+      "count": 1
+    },
+    {
+      "id": "grim_revenant",
+      "count": 1
+    },
+    {
+      "id": "sparkborn",
+      "count": 1
+    },
+    {
+      "id": "whisper_fae",
+      "count": 1
+    },
+    {
+      "id": "shadow_veil",
+      "count": 1
+    },
+    {
+      "id": "wild_mutant",
+      "count": 1
+    },
+    {
+      "id": "flux_attuned",
+      "count": 1
+    },
+    {
+      "id": "ironhide",
+      "count": 1
+    },
+    {
+      "id": "echo_spirit",
+      "count": 1
+    },
+    {
+      "id": "chaos_touched",
+      "count": 1
+    },
+    {
+      "id": "sunforged",
+      "count": 1
+    }
+  ],
+  "recipeStats": [
+    {
+      "id": "blacksmithing",
+      "recipes": 28
+    },
+    {
+      "id": "alchemy",
+      "recipes": 26
+    },
+    {
+      "id": "enchanting",
+      "recipes": 22
+    },
+    {
+      "id": "tailoring",
+      "recipes": 20
+    },
+    {
+      "id": "jewelcrafting",
+      "recipes": 20
+    },
+    {
+      "id": "engineering",
+      "recipes": 20
+    },
+    {
+      "id": "construction",
+      "recipes": 20
+    },
+    {
+      "id": "mining",
+      "recipes": 20
+    },
+    {
+      "id": "herbalism",
+      "recipes": 20
+    },
+    {
+      "id": "skinning",
+      "recipes": 20
+    },
+    {
+      "id": "logging",
+      "recipes": 20
+    },
+    {
+      "id": "fishing",
+      "recipes": 20
+    },
+    {
+      "id": "farming",
+      "recipes": 20
+    },
+    {
+      "id": "cooking",
+      "recipes": 23
+    },
+    {
+      "id": "brewing",
+      "recipes": 20
+    },
+    {
+      "id": "butchery",
+      "recipes": 20
+    },
+    {
+      "id": "inscription",
+      "recipes": 22
+    },
+    {
+      "id": "first_aid",
+      "recipes": 20
+    },
+    {
+      "id": "repair",
+      "recipes": 20
+    },
+    {
+      "id": "portal_creation",
+      "recipes": 20
+    },
+    {
+      "id": "dyeing",
+      "recipes": 20
+    }
+  ],
+  "missingRecipeIngredientCount": 795,
+  "missingRecipeResultCount": 440,
+  "missingRecipeIngredientsSample": [
+    {
+      "profession": "blacksmithing",
+      "recipe": "iron_dagger",
+      "itemId": "iron_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "iron_chainmail",
+      "itemId": "iron_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "steel_ingot",
+      "itemId": "iron_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "steel_ingot",
+      "itemId": "coal"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "steel_sword",
+      "itemId": "steel_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "mythril_ingot",
+      "itemId": "mythril_ore"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "mythril_ingot",
+      "itemId": "spirit_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "mythril_blade",
+      "itemId": "mythril_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "mythril_blade",
+      "itemId": "enchanted_leather"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "soulforged_helmet",
+      "itemId": "adamantine_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "soulforged_helmet",
+      "itemId": "soul_gem"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "soulforged_helmet",
+      "itemId": "enchanted_leather"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_basic_blade",
+      "itemId": "iron_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_basic_shield",
+      "itemId": "iron_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_basic_armor",
+      "itemId": "iron_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_basic_tool",
+      "itemId": "iron_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_sturdy_blade",
+      "itemId": "steel_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_sturdy_shield",
+      "itemId": "steel_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_sturdy_armor",
+      "itemId": "steel_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_sturdy_tool",
+      "itemId": "steel_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_blade",
+      "itemId": "mythril_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_blade",
+      "itemId": "arcane_dust"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_shield",
+      "itemId": "mythril_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_shield",
+      "itemId": "arcane_dust"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_armor",
+      "itemId": "mythril_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_armor",
+      "itemId": "arcane_dust"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_tool",
+      "itemId": "mythril_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_tool",
+      "itemId": "arcane_dust"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_blade",
+      "itemId": "adamantine_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_blade",
+      "itemId": "spirit_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_shield",
+      "itemId": "adamantine_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_shield",
+      "itemId": "spirit_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_armor",
+      "itemId": "adamantine_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_armor",
+      "itemId": "spirit_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_tool",
+      "itemId": "adamantine_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_tool",
+      "itemId": "spirit_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_blade",
+      "itemId": "divine_metal"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_blade",
+      "itemId": "primordial_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_blade",
+      "itemId": "rare_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_shield",
+      "itemId": "divine_metal"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_shield",
+      "itemId": "primordial_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_shield",
+      "itemId": "rare_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_armor",
+      "itemId": "divine_metal"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_armor",
+      "itemId": "primordial_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_armor",
+      "itemId": "rare_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_tool",
+      "itemId": "divine_metal"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_tool",
+      "itemId": "primordial_essence"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_tool",
+      "itemId": "rare_essence"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "minor_healing_potion",
+      "itemId": "common_herb"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "minor_healing_potion",
+      "itemId": "water"
+    }
+  ],
+  "missingRecipeResultsSample": [
+    {
+      "profession": "blacksmithing",
+      "recipe": "iron_ingot",
+      "itemId": "iron_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "iron_dagger",
+      "itemId": "iron_dagger"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "iron_chainmail",
+      "itemId": "iron_chainmail"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "steel_ingot",
+      "itemId": "steel_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "mythril_ingot",
+      "itemId": "mythril_ingot"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "mythril_blade",
+      "itemId": "mythril_blade"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "soulforged_helmet",
+      "itemId": "soulforged_helmet"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_basic_blade",
+      "itemId": "blacksmithing_basic_blade"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_basic_shield",
+      "itemId": "blacksmithing_basic_shield"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_basic_armor",
+      "itemId": "blacksmithing_basic_armor"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_basic_tool",
+      "itemId": "blacksmithing_basic_tool"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_sturdy_blade",
+      "itemId": "blacksmithing_sturdy_blade"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_sturdy_shield",
+      "itemId": "blacksmithing_sturdy_shield"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_sturdy_armor",
+      "itemId": "blacksmithing_sturdy_armor"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_sturdy_tool",
+      "itemId": "blacksmithing_sturdy_tool"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_blade",
+      "itemId": "blacksmithing_enchanted_blade"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_shield",
+      "itemId": "blacksmithing_enchanted_shield"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_armor",
+      "itemId": "blacksmithing_enchanted_armor"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_enchanted_tool",
+      "itemId": "blacksmithing_enchanted_tool"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_blade",
+      "itemId": "blacksmithing_masterwork_blade"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_shield",
+      "itemId": "blacksmithing_masterwork_shield"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_armor",
+      "itemId": "blacksmithing_masterwork_armor"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_masterwork_tool",
+      "itemId": "blacksmithing_masterwork_tool"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_blade",
+      "itemId": "blacksmithing_mythic_blade"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_shield",
+      "itemId": "blacksmithing_mythic_shield"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_armor",
+      "itemId": "blacksmithing_mythic_armor"
+    },
+    {
+      "profession": "blacksmithing",
+      "recipe": "blacksmithing_mythic_tool",
+      "itemId": "blacksmithing_mythic_tool"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "minor_healing_potion",
+      "itemId": "minor_healing_potion"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "minor_mana_potion",
+      "itemId": "minor_mana_potion"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "healing_potion",
+      "itemId": "healing_potion"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "antidote",
+      "itemId": "antidote"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "mind_focus_elixir",
+      "itemId": "mind_focus_elixir"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "aurora_flux",
+      "itemId": "aurora_flux"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_basic_potion",
+      "itemId": "alchemy_basic_potion"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_basic_elixir",
+      "itemId": "alchemy_basic_elixir"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_basic_tonic",
+      "itemId": "alchemy_basic_tonic"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_basic_catalyst",
+      "itemId": "alchemy_basic_catalyst"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_sturdy_potion",
+      "itemId": "alchemy_sturdy_potion"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_sturdy_elixir",
+      "itemId": "alchemy_sturdy_elixir"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_sturdy_tonic",
+      "itemId": "alchemy_sturdy_tonic"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_sturdy_catalyst",
+      "itemId": "alchemy_sturdy_catalyst"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_enchanted_potion",
+      "itemId": "alchemy_enchanted_potion"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_enchanted_elixir",
+      "itemId": "alchemy_enchanted_elixir"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_enchanted_tonic",
+      "itemId": "alchemy_enchanted_tonic"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_enchanted_catalyst",
+      "itemId": "alchemy_enchanted_catalyst"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_masterwork_potion",
+      "itemId": "alchemy_masterwork_potion"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_masterwork_elixir",
+      "itemId": "alchemy_masterwork_elixir"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_masterwork_tonic",
+      "itemId": "alchemy_masterwork_tonic"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_masterwork_catalyst",
+      "itemId": "alchemy_masterwork_catalyst"
+    },
+    {
+      "profession": "alchemy",
+      "recipe": "alchemy_mythic_potion",
+      "itemId": "alchemy_mythic_potion"
+    }
+  ],
+  "questsWithFavoredClasses": 26,
+  "questsWithFavoredRaces": 24,
+  "questsWithFavoredProfessions": 0,
+  "questFavoredClassMissing": [
+    {
+      "quest": "mq_fallen_spire",
+      "classId": "sorcerer"
+    },
+    {
+      "quest": "mq_whisper_market",
+      "classId": "shadow_dancer"
+    },
+    {
+      "quest": "mq_ember_bloom",
+      "classId": "druid"
+    },
+    {
+      "quest": "mq_starforge_siege",
+      "classId": "templar"
+    },
+    {
+      "quest": "mq_starforge_siege",
+      "classId": "archer"
+    },
+    {
+      "quest": "mq_ashen_caldera",
+      "classId": "warlock"
+    },
+    {
+      "quest": "mq_ashen_caldera",
+      "classId": "druid"
+    },
+    {
+      "quest": "mq_veil_archive",
+      "classId": "shadowblade"
+    },
+    {
+      "quest": "mq_veil_archive",
+      "classId": "necromancer"
+    },
+    {
+      "quest": "mq_crystal_forge",
+      "classId": "shaman"
+    },
+    {
+      "quest": "mq_tide_breach",
+      "classId": "shaman"
+    },
+    {
+      "quest": "mq_oracle_sundial",
+      "classId": "bard"
+    },
+    {
+      "quest": "mq_oracle_sundial",
+      "classId": "shadowblade"
+    },
+    {
+      "quest": "sq_cryptic_cache",
+      "classId": "scholar"
+    },
+    {
+      "quest": "sq_skyfisher",
+      "classId": "artificer"
+    },
+    {
+      "quest": "sq_skyfisher",
+      "classId": "bard"
+    },
+    {
+      "quest": "sq_mnemonic_dust",
+      "classId": "psion"
+    },
+    {
+      "quest": "sq_storm_capacitor",
+      "classId": "templar"
+    },
+    {
+      "quest": "sq_storm_capacitor",
+      "classId": "archer"
+    },
+    {
+      "quest": "sq_rune_cache",
+      "classId": "shaman"
+    },
+    {
+      "quest": "sq_bloomed_spores",
+      "classId": "druid"
+    },
+    {
+      "quest": "sq_venom_exchange",
+      "classId": "assassin"
+    },
+    {
+      "quest": "sq_auric_harmony",
+      "classId": "priest"
+    },
+    {
+      "quest": "sq_astral_waypoint",
+      "classId": "summoner"
+    },
+    {
+      "quest": "sq_mirage_map",
+      "classId": "bard"
+    },
+    {
+      "quest": "sq_source_stormwater",
+      "classId": "shaman"
+    },
+    {
+      "quest": "sq_source_ashfire",
+      "classId": "warlock"
+    },
+    {
+      "quest": "sq_source_ashfire",
+      "classId": "druid"
+    }
+  ],
+  "questFavoredRaceMissing": [],
+  "questFavoredProfMissing": [],
+  "questRewardItemMissingCount": 27,
+  "questRewardItemMissingSample": [
+    {
+      "quest": "bq_first_stride",
+      "itemId": "ration_pack"
+    },
+    {
+      "quest": "bq_first_conflict",
+      "itemId": "bandage_roll"
+    },
+    {
+      "quest": "bq_arcane_awareness",
+      "itemId": "mana_leaf"
+    },
+    {
+      "quest": "mq_fallen_spire",
+      "itemId": "leyline_shard"
+    },
+    {
+      "quest": "mq_whisper_market",
+      "itemId": "soulseal_token"
+    },
+    {
+      "quest": "mq_ember_bloom",
+      "itemId": "ember_bloom_petal"
+    },
+    {
+      "quest": "mq_starforge_siege",
+      "itemId": "skyforge_core"
+    },
+    {
+      "quest": "mq_ashen_caldera",
+      "itemId": "caldera_seal"
+    },
+    {
+      "quest": "mq_veil_archive",
+      "itemId": "veil_ledger"
+    },
+    {
+      "quest": "mq_crystal_forge",
+      "itemId": "resonance_shard"
+    },
+    {
+      "quest": "mq_tide_breach",
+      "itemId": "tide_ward_charm"
+    },
+    {
+      "quest": "mq_oracle_sundial",
+      "itemId": "sundial_glyph"
+    },
+    {
+      "quest": "sq_cryptic_cache",
+      "itemId": "encrypted_cube"
+    },
+    {
+      "quest": "sq_ghoul_pit",
+      "itemId": "cleansed_toxin"
+    },
+    {
+      "quest": "sq_skyfisher",
+      "itemId": "skyfisher_filament"
+    },
+    {
+      "quest": "sq_mnemonic_dust",
+      "itemId": "mnemonic_vial"
+    },
+    {
+      "quest": "sq_storm_capacitor",
+      "itemId": "storm_capacitor"
+    },
+    {
+      "quest": "sq_frost_lattice",
+      "itemId": "frost_lattice"
+    },
+    {
+      "quest": "sq_rune_cache",
+      "itemId": "rune_cache"
+    },
+    {
+      "quest": "sq_bloomed_spores",
+      "itemId": "spore_sac"
+    },
+    {
+      "quest": "sq_venom_exchange",
+      "itemId": "prime_venom"
+    },
+    {
+      "quest": "sq_auric_harmony",
+      "itemId": "auric_chime"
+    },
+    {
+      "quest": "sq_quake_relief",
+      "itemId": "support_brace"
+    },
+    {
+      "quest": "sq_astral_waypoint",
+      "itemId": "waypoint_fragment"
+    },
+    {
+      "quest": "sq_mirage_map",
+      "itemId": "mirage_map"
+    },
+    {
+      "quest": "sq_source_stormwater",
+      "itemId": "storm_capacitor"
+    },
+    {
+      "quest": "sq_source_ashfire",
+      "itemId": "caldera_seal"
+    }
+  ],
+  "godotRacesNotInRegistry": [],
+  "godotClassesNotInRegistry": []
+}

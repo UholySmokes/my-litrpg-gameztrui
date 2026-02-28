@@ -1,357 +1,296 @@
-# Comprehensive LitRPG Game Systems Audit Report
+# Worldbuilding Systems Audit (War Room Output Backing Report)
 
-## 📊 System Overview
+## 1) Scope and Method
 
-This audit analyzes the complete LitRPG game system architecture, focusing on:
+This audit reviews integration quality across:
 
-- **Worldbuilding & Lore Integration**
-- **Class Systems & Combat Mechanics**
-- **Race Abilities & Passive Traits**
-- **Magic Systems & Spellcasting**
-- **Skill Trees & Talent Management**
-- **Professions & Crafting**
-- **Item Systems & Inventory Management**
-- **Game Mechanics & Balancing**
+- Character classes
+- Races
+- Skills and abilities
+- Magic systems
+- Professions and crafting
+- Items and loot
+- Quest metadata and world progression links
 
-## 🏗️ Architecture Assessment
+Evidence sources:
 
-### Data Structures (Class, Race, Item)
+- Runtime registries in `packages/game-core/src`
+- Godot slice manifests in `godot/data`
+- Sync-side manifests in `functions/lib`
+- Computed cross-reference metrics in `audit_worldbuild_metrics.json`
 
-✅ **Strengths:**
-- Well-organized registry system with clear data separation
-- Comprehensive class definitions with evolution paths
-- Detailed race traits including passive and hidden mechanics
-- Multi-tier item system with rarity and unique effects
+## 2) System Topology (Intended)
 
-❌ **Gaps:**
-- Missing data access layer abstraction
-- Tight coupling between data and system code
-- Duplicate effect processing logic
-
-### Systems Architecture
-
-✅ **Strengths:**
-- Modular system design with separate concerns
-- Comprehensive combat system with damage calculation
-- Detailed magic system with essence weaving mechanics
-- Profession system with 9-tier progression
-
-❌ **Gaps:**
-- Resource systems (mana, rage, chi, energy, focus) handled separately
-- Effect system scattered across multiple files
-- Missing world interaction system (day/night, environment effects)
-
-## ⚔️ Combat System Analysis
-
-### Core Mechanics
-
-✅ **Implemented:**
-- Damage calculation with modifiers
-- Skill effect application
-- Casting interruption from damage
-- Resource consumption (mana, rage, etc.)
-- Effect duration and stacking
-
-❌ **Missing:**
-- Unified resource management interface
-- Standardized effect system
-- Environmental interaction effects
-
-### Race/Class Integration
-
-✅ **Implemented:**
-- Race-specific combat bonuses
-- Class ability cooldowns
-- Talent modifiers
-- Item passive effects
-
-❌ **Missing:**
-- Proper integration of all 20 classes
-- Race-specific environmental interactions
-- Class evolution mechanics
-
-## ✨ Magic System Analysis
-
-### Essence Weaving System
-
-✅ **Implemented:**
-- 12 essence types with opposition pairs
-- Pattern unlocking and usage
-- Perk training and rank progression
-- Resonance and overload mechanics
-
-❌ **Missing:**
-- Integration with combat system
-- Essence-based spell effects
-- Environmental essence sources
-
-## 🎯 Skill & Talent System
-
-### Skill Registry
-
-✅ **Implemented:**
-- 20 active + 40 passive skills per class
-- Character creation skill selection
-- Skill level requirements
-- Cooldown and cost management
-
-❌ **Missing:**
-- Skill evolution and fusion
-- Non-combat skill integration
-- Skill progression trees
-
-### Talent System
-
-✅ **Implemented:**
-- Talent definitions with magnitude caps
-- Talent effect application
-- Cost and cooldown overrides
-- Drop chance modifiers
-
-❌ **Missing:**
-- Talent tree visualization
-- Talent progression tracking
-- Advanced talent combinations
-
-## 💼 Profession & Crafting System
-
-### Profession Registry
-
-✅ **Implemented:**
-- 9-tier progression with sub-ranks
-- 21 professions across 4 categories
-- Skill points and XP requirements
-- Tier advancement logic
-
-❌ **Missing:**
-- Crafting recipe system
-- Gathering mechanics
-- Profession skill integration
-
-## 🔮 Item & Inventory System
-
-### Item Database
-
-✅ **Implemented:**
-- 50+ items with rarity tiers
-- Consumables, equipment, materials
-- Unique legendary item passives
-- Inventory management functions
-
-❌ **Missing:**
-- Crafting recipe items
-- Set bonuses
-- Item durability and repair
-
-## 🌍 World Interaction System
-
-### Day/Night Cycle
-
-✅ **Implemented:**
-- Basic time system framework
-
-❌ **Missing:**
-- Race-specific time bonuses
-- Environmental effect integration
-- Day/night visual changes
-
-### Environment Effects
-
-✅ **Implemented:**
-- Location-based essence profiles
-
-❌ **Missing:**
-- Weather effects
-- Biome-specific mechanics
-- Terrain interaction
-
-## 🛠️ Technical Improvements
-
-### 1. Unified Resource Manager
-
-```javascript
-// ResourceManager.js
-export class ResourceManager {
-  static getResourceType(classId) {
-    const classDef = DataAccessLayer.getClass(classId);
-    return classDef?.resourceSystem || 'mana';
-  }
-
-  static getResource(player, type) {
-    switch(type) {
-      case 'mana': return player.mana;
-      case 'rage': return player.rage;
-      case 'chi': return player.chi;
-      case 'energy': return player.energy;
-      case 'focus': return player.focus;
-      default: return { current: 0, max: 0 };
-    }
-  }
-
-  static setResource(player, type, value) {
-    switch(type) {
-      case 'mana':
-        player.mana = { ...player.mana, current: value };
-        break;
-      case 'rage':
-        player.rage = { ...player.rage, current: value };
-        break;
-      case 'chi':
-        player.chi = { ...player.chi, current: value };
-        break;
-      case 'energy':
-        player.energy = { ...player.energy, current: value };
-        break;
-      case 'focus':
-        player.focus = { ...player.focus, current: value };
-        break;
-    }
-  }
-}
+```mermaid
+flowchart LR
+  Races --> RaceAbilities
+  Classes --> ClassAbilities
+  Classes --> Skills
+  Skills --> Combat
+  ClassAbilities --> Combat
+  RaceAbilities --> Combat
+  World --> Magic
+  TimeWeather --> Magic
+  Professions --> Recipes
+  Recipes --> Items
+  Items --> Combat
+  Items --> Quests
+  Quests --> Progression
+  World --> Quests
 ```
 
-### 2. Standardized Effect System
+## 3) Current State Metrics (Observed)
 
-```javascript
-// EffectRegistry.js
-export const EFFECT_TYPES = {
-  DAMAGE: 'damage',
-  HEAL: 'heal',
-  STUN: 'stun',
-  BLEED: 'bleed',
-  POISON: 'poison',
-  BUFF: 'buff',
-  DEBUFF: 'debuff'
-};
+From `audit_worldbuild_metrics.json`:
 
-export const EffectRegistry = {
-  registerEffect: (effectId, handler) => {
-    // Registration logic
-  },
-  
-  applyEffect: (target, effect, source) => {
-    // Dispatch to specific effect handler
-  },
-  
-  getEffectById: (effectId) => {
-    // Get effect definition
-  }
-};
-```
+- Classes: `30`
+- Races: `55`
+- Class abilities: `216`
+- Race abilities: `55`
+- Skills: `1648`
+- Professions: `21`
+- Items: `37`
+- Quests: `29`
 
-### 3. Centralized Data Access Layer
+Structural distribution:
 
-```javascript
-// DataAccessLayer.js
-import { classes } from './ClassDataRegistry.js';
-import { races } from './RaceDataRegistry.js';
-import { itemDatabase } from './ItemDataRegistry.js';
+- Class tiers: `6` (T1), `12` (T2), `12` (T3)
+- Resource systems: `mana=10`, `rage=5`, `energy=5`, `chi=5`, `focus=5`
 
-export class DataAccessLayer {
-  static getClass(classId) {
-    return classes.find(c => c.id === classId);
-  }
-  
-  static getRace(raceId) {
-    return races.find(r => r.id === raceId);
-  }
-  
-  static getItem(itemId) {
-    return itemDatabase[itemId];
-  }
-  
-  static getAllClasses() {
-    return [...classes];
-  }
-  
-  static getAllRaces() {
-    return [...races];
-  }
-  
-  static getAllItems() {
-    return Object.values(itemDatabase);
-  }
-}
-```
+High-risk mismatch counts:
 
-## 📈 Implementation Roadmap
+- Classes with zero direct skill entries: `12` (all T3 classes)
+- Skill-owner IDs not in class registry: `34` (legacy class IDs + profession IDs + `universal`)
+- Recipe ingredient IDs missing from item registry: `795`
+- Recipe result IDs missing from item registry: `440`
+- Quest favored class IDs not in class registry: `28`
+- Quest reward items missing from item registry: `27`
 
-### Phase 1: Foundation (2-3 weeks)
-- [ ] Create data access layer abstraction
-- [ ] Implement unified resource manager
-- [ ] Standardize effect system
-- [ ] Fix system integration issues
+## 4) Dependency Findings
 
-### Phase 2: Combat Enhancement (3-4 weeks)
-- [ ] Integrate all 20 class systems
-- [ ] Implement race-specific combat mechanics
-- [ ] Add class evolution system
-- [ ] Improve damage calculation balancing
+### A. Classes, Skills, and Abilities
 
-### Phase 3: Magic & Skills (2-3 weeks)
-- [ ] Integrate essence weaving with combat
-- [ ] Implement skill fusion system
-- [ ] Create talent tree progression
-- [ ] Add non-combat skill mechanics
+Strengths:
 
-### Phase 4: Professions & Crafting (2-3 weeks)
-- [ ] Implement crafting recipe system
-- [ ] Add gathering mechanics
-- [ ] Create profession skill integration
-- [ ] Implement item durability system
+- Class ability coverage exists for all class IDs (no class missing class abilities).
+- Resource distribution is deliberate and symmetric around five resource archetypes.
 
-### Phase 5: World & Environment (1-2 weeks)
-- [ ] Complete day/night cycle
-- [ ] Add weather and environment effects
-- [ ] Implement biome-specific mechanics
-- [ ] Create terrain interaction system
+Failure points:
 
-## 🎯 Success Metrics
+- Tier-3 classes are present in class registry but absent as direct owners in skill registry.
+- Skill registry still contains a parallel legacy class taxonomy (`knight`, `priest`, `templar`, etc.) that diverges from canonical class IDs.
+- Profession skills share the same owner field (`class`) as combat classes, increasing ambiguity and error surface.
 
-- 100% coverage of all 20 classes
-- 100% coverage of all 20 races
-- All skills and talents functional
-- Professions and crafting fully implemented
-- World interaction system complete
-- Performance optimized for 60+ FPS on target platforms
+Design impact:
 
-## 📊 Current Status
+- Build planning and progression pacing become inconsistent.
+- Quest affinity weighting and skill unlock UX can misfire because “class identity” is non-canonical.
 
-| System | Status | Progress | Priority |
-|--------|--------|----------|----------|
-| Class System | Complete | 100% | High |
-| Race System | Complete | 100% | High |
-| Combat System | Complete | 85% | High |
-| Magic System | Partial | 60% | Medium |
-| Skill System | Complete | 100% | High |
-| Talent System | Complete | 100% | Medium |
-| Profession System | Complete | 80% | Medium |
-| Item System | Complete | 85% | High |
-| World System | Partial | 30% | Low |
+### B. Races and Racial Effects
 
-## 🎮 Gameplay Experience
+Strengths:
 
-The current implementation provides a solid foundation for a LitRPG experience with:
-- Diverse character creation options
-- Deep class and race combinations
-- Complex magic system
-- Comprehensive crafting and gathering
-- Strategic combat mechanics
+- Every race has race ability support.
+- Race catalog depth is high and world flavor alignment is strong.
 
-### Emerging Meta Archetypes:
-1. **Glass Cannon:** High INT Mage + Chaos Born (massive damage variance)
-2. **Immortal Tank:** Dragon Blood + Knight (unbreakable defense)
-3. **Shadow Assassin:** Shadow Walker + Assassin (permanent stealth)
-4. **Elemental Master:** Elemental Attuned + Battlemage (element absorption)
-5. **Undying Phoenix:** Phoenix Reborn + Priest (double resurrection)
+Failure points:
 
-## 📝 Conclusion
+- Time/day-night combat modifiers are implemented only for a small subset of races, creating uneven systemic relevance across 55 race options.
 
-The LitRPG game system is well-designed with a strong foundation for future growth. The architecture supports modular development and the systems are well-balanced with meaningful trade-offs. The main areas for improvement are:
+Design impact:
 
-1. Technical architecture refactoring
-2. System integration and standardization
-3. World interaction and environment effects
-4. Endgame content and progression
+- Many races feel cosmetic or front-loaded, with low sustained mechanical identity.
 
-With the outlined roadmap and technical improvements, the game will provide a rich, engaging experience that captures the essence of LitRPG storytelling and gameplay mechanics.
+### C. Magic Integration
+
+Strengths:
+
+- Essence model is robust (12 primes + opposition pairs + resonance/taint/overload).
+- Magic layer reads biome/weather/anomaly context from world registry.
+- Spell study supports generation + evolution and tags for downstream filtering.
+
+Failure points:
+
+- Parallel spell/class identity stacks (`study`, legacy caster classes, canonical class IDs) complicate balancing.
+- Magic progression is rich but difficult to tune against non-magic class budgets without a shared power budget framework.
+
+Design impact:
+
+- High risk of non-linear power spikes and onboarding confusion.
+
+### D. Professions, Recipes, and Items
+
+Strengths:
+
+- Profession taxonomy is broad and well-themed (21 professions, 9-tier structure).
+- Recipe generation framework scales content quickly.
+
+Failure points:
+
+- Recipe and item registries are largely disconnected by ID.
+- Crafting outputs often do not resolve to actual item entities.
+- Economy cannot stabilize when source catalogs and sink catalogs are non-overlapping.
+
+Design impact:
+
+- Crafting loop feels fake/proxy-driven rather than materially integrated.
+- Loot-to-craft progression lacks trust and predictability.
+
+### E. Quests and World Progression
+
+Strengths:
+
+- Quest tags include biome + tone + affinity concepts.
+- Weighted selection logic exists.
+
+Failure points:
+
+- Many quest favored classes reference IDs not present in canonical class registry.
+- Most quest reward item IDs are absent from item registry.
+- `godot/data/world_manifest.json` and `functions/lib/sync-world-manifest.v1.json` are out of sync (different map graph and triggers).
+- Quest flag vocabularies drift across Godot/sync pipelines.
+
+Design impact:
+
+- Narrative personalization and rewards are semantically rich but mechanically brittle.
+- Cross-client progression parity is vulnerable to desync bugs.
+
+## 5) Common Pitfalls in Successful RPG/LitRPG Systems
+
+These are the failure modes top live games avoid aggressively:
+
+- Taxonomy drift: multiple “truths” for classes/races/items.
+- Content generation without compile-time reference validation.
+- Broad combinatorics without bounded power budgets.
+- Quest personalization data that references deprecated archetypes.
+- Economy loops with weak item sinks and disconnected crafting outputs.
+- Parallel world manifests per runtime (client/server/tooling) with no contract enforcement.
+
+## 6) Best-Practice Integration Model
+
+### 1. Canonical ID Spine
+
+Maintain one canonical ID contract for:
+
+- class
+- race
+- skill owner type + owner ID
+- item
+- recipe
+- quest reward
+- world map/location/flag identifiers
+
+Generate all runtime artifacts from this contract.
+
+### 2. Typed Ownership Model
+
+Replace overloaded skill owner field:
+
+- `ownerType`: `class | profession | universal | system`
+- `ownerId`: canonical ID from the respective registry
+
+### 3. Content Contract Tests as Build Gates
+
+CI should fail on:
+
+- Missing item refs in recipes/quests
+- Missing class/race refs in quest affinity tags
+- Nonexistent map/trigger/flag refs between Godot and sync manifests
+
+### 4. Bounded Growth Design
+
+Use hard/soft limits:
+
+- Diminishing returns on damage multipliers, regen, and cooldown compression
+- Caps on stackable multiplicative effects
+- Tier budgets per class and per activity loop
+
+### 5. Horizontal + Vertical Progression Balance
+
+- Vertical: controlled numeric growth (TTK/TTS constraints)
+- Horizontal: alternate utility/playstyle paths with similar budget value
+
+## 7) Balancing Methodology (Recommended)
+
+### A. Power Budget Equation
+
+Define budget units per level band:
+
+- `PowerBudget = DPS_weight + Survivability_weight + Utility_weight + Control_weight`
+
+Constrain each class/race archetype to a target envelope per tier.
+
+### B. Encounter Anchors
+
+Track:
+
+- Time-to-kill (TTK) targets by archetype and enemy tier
+- Time-to-fail (TTF) targets for defensive archetypes
+- Resource sustainability curves over 3/6/10 turn windows
+
+### C. Economy Stability
+
+For each tier:
+
+- `NetInflation = currency_sources + item_sources - sinks`
+- Keep inflation near a bounded corridor (e.g., ±5% per progression band)
+
+### D. Monte Carlo + Worst-Case Sweeps
+
+Run automated simulations for:
+
+- Meta extremes (max crit, max CDR, max sustain)
+- Quest reward throughput
+- Craft loop profitability
+
+### E. Regression Guardrails
+
+Per patch:
+
+- Delta budget per class <= defined threshold
+- No new broken references
+- No increased unresolved item references
+
+## 8) Prioritized Recommendations
+
+### P0 (Immediate, Blocker)
+
+- Unify class taxonomy between class registry, skill registry, and quest tags.
+- Add CI cross-reference validation for recipes/quests/items.
+- Reconcile `godot/data/world_manifest.json` and `functions/lib/sync-world-manifest.v1.json`.
+- Standardize quest flag dictionary across Godot + sync core.
+
+### P1 (High)
+
+- Introduce typed skill owner schema (`ownerType`/`ownerId`).
+- Expand item registry to cover all referenced crafting and quest rewards.
+- Add race-effect coverage policy so each race has sustained mechanical relevance.
+
+### P2 (Medium)
+
+- Build an automated balance harness (TTK/TTF/resource/economy simulations).
+- Introduce explicit class tier power budgets and progression breakpoints.
+- Tighten magic-combat interoperability constraints and expose debug telemetry.
+
+### P3 (Longer-term)
+
+- Build content authoring tools that emit validated registries.
+- Add live-ops balancing dashboards for economy and build diversity.
+
+## 9) Cohesion Design Targets
+
+To keep worldbuilding mechanically sound and emotionally engaging:
+
+- Every lore-significant system element must have at least one reliable gameplay affordance.
+- Every gameplay-critical affordance must resolve to canonical IDs and validated data.
+- Every progression axis (class/race/magic/profession) must have both identity and bounded power.
+- Every reward promise (quest/craft/loot) must resolve to a real, usable item.
+
+## 10) Acceptance Criteria for “Healthy Integration”
+
+- `0` unresolved class references in quests and skills.
+- `0` unresolved item references in recipes and quest rewards.
+- `0` manifest drift between Godot and sync world specs.
+- Tier-3 classes have complete skill identity paths or explicit design rationale.
+- Automated balance tests pass for TTK, TTF, and economy inflation corridors.
+

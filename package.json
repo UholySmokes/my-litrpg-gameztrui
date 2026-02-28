@@ -62,6 +62,7 @@
     "validate:player-loot": "node scripts/validate-player-facing-loot.mjs",
     "validate:placeholder-curation": "node scripts/validate-placeholder-curation-thresholds.mjs",
     "validate:balance-corridors": "node scripts/validate-balance-corridors.mjs",
+    "validate:skill-owner-schema": "node scripts/validate-skill-owner-schema.mjs",
     "validate:worldbuild": "node scripts/run-worldbuild-integrity-check.mjs",
     "validate:worldbuild:strict": "node scripts/run-worldbuild-integrity-check.mjs --strict",
     "validate:worldbuild:update-baseline": "node scripts/run-worldbuild-integrity-check.mjs --update-baseline",

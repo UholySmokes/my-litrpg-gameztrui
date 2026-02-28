@@ -1,0 +1,9 @@
+{
+  "version": "placeholder_curation_thresholds_v1",
+  "updatedAt": "2026-02-28T00:00:00.000Z",
+  "thresholds": {
+    "maxCritical": 0,
+    "maxPlayerFacingPlaceholders": 0,
+    "maxHigh": 10
+  }
+}

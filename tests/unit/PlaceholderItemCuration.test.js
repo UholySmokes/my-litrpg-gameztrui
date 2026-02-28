@@ -4,6 +4,7 @@ import {
   collectEnemyDropItemRefs,
   collectQuestRewardItemRefs,
   collectShopStockItemRefs,
+  evaluatePlaceholderCurationThresholds,
 } from "@voidverse/game-core/util/placeholderItemCuration.js";
 import { shopDatabase } from "@voidverse/game-core/data/shopData.js";
 
@@ -117,5 +118,34 @@ describe("placeholder item curation queue", () => {
 
     expect(report.entries[0].itemId).toBe("alpha_reagent");
     expect(alpha.score).toBeGreaterThan(beta.score);
+  });
+
+  it("evaluates curation thresholds with pass/fail issues", () => {
+    const report = {
+      summary: {
+        playerFacingPlaceholderCount: 2,
+        priorityCounts: { critical: 1, high: 3, medium: 4, low: 5 },
+      },
+    };
+
+    const fail = evaluatePlaceholderCurationThresholds(report, {
+      maxCritical: 0,
+      maxPlayerFacingPlaceholders: 0,
+      maxHigh: 2,
+    });
+    expect(fail.pass).toBe(false);
+    expect(fail.issues.map((issue) => issue.key).sort()).toEqual([
+      "critical",
+      "high",
+      "playerFacingPlaceholders",
+    ]);
+
+    const pass = evaluatePlaceholderCurationThresholds(report, {
+      maxCritical: 1,
+      maxPlayerFacingPlaceholders: 2,
+      maxHigh: 3,
+    });
+    expect(pass.pass).toBe(true);
+    expect(pass.issues).toHaveLength(0);
   });
 });

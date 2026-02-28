@@ -96,3 +96,6 @@ Note:
 2. Continue reducing placeholder item footprint through authored item replacement workflow.
    - Workflow command: `npm run report:worldbuild:placeholders`
    - Output: `docs/reports/placeholder_item_curation_queue.json` + dated markdown summary
+3. Keep placeholder curation thresholds enforced in CI.
+   - Guard command: `npm run validate:placeholder-curation`
+   - Contract: `docs/contracts/placeholder_curation_thresholds_v1.json`

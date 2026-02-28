@@ -250,6 +250,7 @@ Per content patch:
 - Keep `validate:worldbuild:strict` and runtime/env contract guards mandatory in CI.
 - Prevent placeholder item leakage into player-facing loot tables without curation tags.
   - Enforced by `validate:player-loot` across quest rewards, enemy drops, and shop stock refs.
+  - Threshold-enforced by `validate:placeholder-curation` (contract: `docs/contracts/placeholder_curation_thresholds_v1.json`).
 
 ### P1 (High)
 

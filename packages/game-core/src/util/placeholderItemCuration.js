@@ -253,3 +253,49 @@ export function buildPlaceholderItemCurationReport({
     entries,
   };
 }
+
+function toSafeNumber(value, fallback = 0) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+export function evaluatePlaceholderCurationThresholds(
+  report,
+  {
+    maxCritical = 0,
+    maxPlayerFacingPlaceholders = 0,
+    maxHigh = Infinity,
+  } = {},
+) {
+  const summary = report?.summary || {};
+  const priorityCounts = summary.priorityCounts || {};
+
+  const actualCritical = toSafeNumber(priorityCounts.critical, 0);
+  const actualPlayerFacing = toSafeNumber(summary.playerFacingPlaceholderCount, 0);
+  const actualHigh = toSafeNumber(priorityCounts.high, 0);
+
+  const checks = [
+    {
+      key: "critical",
+      actual: actualCritical,
+      expectedMax: toSafeNumber(maxCritical, 0),
+    },
+    {
+      key: "playerFacingPlaceholders",
+      actual: actualPlayerFacing,
+      expectedMax: toSafeNumber(maxPlayerFacingPlaceholders, 0),
+    },
+    {
+      key: "high",
+      actual: actualHigh,
+      expectedMax: toSafeNumber(maxHigh, Number.POSITIVE_INFINITY),
+    },
+  ];
+
+  const issues = checks.filter((row) => row.actual > row.expectedMax);
+  return {
+    pass: issues.length === 0,
+    checks,
+    issues,
+  };
+}

@@ -19,6 +19,28 @@ Evidence sources:
 - Sync-side manifests in `functions/lib`
 - Computed cross-reference metrics in `audit_worldbuild_metrics.json`
 
+## 1.1) Progress Snapshot (2026-02-28)
+
+After remediation passes, integrity gate status is:
+
+- `npm run validate:worldbuild`: PASS
+- `npm run validate:worldbuild:strict`: PASS
+
+Current key signature values:
+
+- `classesMissingSkills: 0` (was 12)
+- `skillOwnersNotClassOrReserved: 0` (was 12)
+- `missingRecipeIngredientCount: 0` (was 795)
+- `missingRecipeResultCount: 0` (was 440)
+- `missingQuestFavoredClassCount: 0` (was 28)
+- `missingQuestRewardItemCount: 0` (was 27)
+- `manifestMismatchCount: 0` (was 7)
+
+Notes:
+
+- Recipe/item closure currently uses generated placeholder item records for unresolved recipe IDs.
+- Item registry size increased to support full reference closure; this is mechanically coherent but should be curated in a later content-quality pass.
+
 ## 2) System Topology (Intended)
 
 ```mermaid
@@ -293,4 +315,3 @@ To keep worldbuilding mechanically sound and emotionally engaging:
 - `0` manifest drift between Godot and sync world specs.
 - Tier-3 classes have complete skill identity paths or explicit design rationale.
 - Automated balance tests pass for TTK, TTF, and economy inflation corridors.
-

@@ -14,6 +14,7 @@ describe("worldbuild integrity audit utilities", () => {
     expect(report.counts.raceCount).toBeGreaterThan(0);
     expect(report.counts.questCount).toBeGreaterThan(0);
     expect(Array.isArray(report.classesMissingSkills)).toBe(true);
+    expect(Array.isArray(report.skillOwnersReservedNonClass)).toBe(true);
     expect(Array.isArray(report.skillOwnersNotClassOrReserved)).toBe(true);
   });
 

@@ -32,6 +32,21 @@ function detectTemurin21OnWindows() {
 	return existsSync(javaExe) ? javaHome : "";
 }
 
+function detectMicrosoftOpenJdk21OnWindows() {
+	if (process.platform !== "win32") return "";
+	const base = "C:\\Program Files\\Microsoft";
+	if (!existsSync(base)) return "";
+	const dirs = readdirSync(base, { withFileTypes: true })
+		.filter((entry) => entry.isDirectory() && /^jdk-21(\.|-|$)/i.test(entry.name))
+		.map((entry) => entry.name)
+		.sort()
+		.reverse();
+	if (dirs.length === 0) return "";
+	const javaHome = path.join(base, dirs[0]);
+	const javaExe = path.join(javaHome, "bin", "java.exe");
+	return existsSync(javaExe) ? javaHome : "";
+}
+
 function resolveJavaEnv(baseEnv) {
 	const env = { ...baseEnv };
 	const current = spawnSync("java", ["-version"], {
@@ -44,9 +59,11 @@ function resolveJavaEnv(baseEnv) {
 	}
 
 	const temurin21 = detectTemurin21OnWindows();
-	if (temurin21) {
-		env.JAVA_HOME = temurin21;
-		const javaBin = path.join(temurin21, "bin");
+	const microsoft21 = detectMicrosoftOpenJdk21OnWindows();
+	const javaHome = temurin21 || microsoft21;
+	if (javaHome) {
+		env.JAVA_HOME = javaHome;
+		const javaBin = path.join(javaHome, "bin");
 		const existingPath = String(env.Path || env.PATH || "");
 		env.Path = `${javaBin};${existingPath}`;
 		env.PATH = env.Path;

@@ -167,7 +167,6 @@ export async function bootstrapStaticData() {
   }
 
   if (lastError) {
-    // eslint-disable-next-line no-console
     console.warn("Static data endpoint unavailable; using local bundle:", lastError);
   }
   return { ok: true, source: "local", warning: lastError?.message };

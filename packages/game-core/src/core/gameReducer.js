@@ -1,11 +1,8 @@
 import { DataRegistry } from "../data/DataRegistry.js";
 import { performLevelUp } from "../systems/leveling/LevelingManager.js";
 import { toCanonicalAttributeKey } from "../constants/attributes.js";
-import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeGameState } from "./StateNormalizer.js";
 import {
-  getEffectiveAttributes,
-  getAutoUnlockableTitles,
   canPurchaseTitle,
   getTitleById,
 } from "./titleLogic.js";

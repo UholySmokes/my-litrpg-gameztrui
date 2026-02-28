@@ -340,7 +340,6 @@ export default function StatusOverlay({
       ? `${archetypeSystemName} (${archetypeSystemCategory})`
       : archetypeSystemName;
   const classId = player.class?.id || player.class;
-  const classData = classId ? DataRegistry.getClassById(classId) : null;
   const classEvolutionCount = Math.max(
     0,
     Math.floor(

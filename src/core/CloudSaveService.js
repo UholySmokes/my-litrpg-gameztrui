@@ -230,7 +230,7 @@ export async function loadGameState(_userId, saveId) {
   }
 }
 
-export async function listSaves(_userId) {
+export async function listSaves() {
   try {
     const { response, data } = await requestJson("", {
       method: "GET",

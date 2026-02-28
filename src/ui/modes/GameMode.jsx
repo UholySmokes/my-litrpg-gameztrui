@@ -62,7 +62,6 @@ export default function GameMode({
   player,
   config,
   gameState,
-  chatLog,
   userInput,
   onInputChange,
   onSubmit,

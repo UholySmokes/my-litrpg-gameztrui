@@ -119,7 +119,7 @@ export function validateArchetype(archetype) {
           } else {
               errorsArray = [{ path: [], message: result.error.message }];
           }
-      } catch (e) {
+      } catch {
           // If message is not JSON, use it as single error
           errorsArray = [{ path: [], message: result.error.message }];
       }

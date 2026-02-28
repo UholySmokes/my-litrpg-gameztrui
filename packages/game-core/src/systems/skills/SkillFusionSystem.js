@@ -286,7 +286,9 @@ const extractTokensFromSkill = (skill) => {
   const tokens = [];
   tokens.push(...tokenize(skill.name));
   tokens.push(...tokenize(skill.description));
+  tokens.push(...tokenize(skill.ownerId));
   tokens.push(...tokenize(skill.class));
+  tokens.push(...tokenize(skill.ownerType));
   tokens.push(...normalizeTags(skill.tags).flatMap((tag) => tokenize(tag)));
   tokens.push(...extractEffectIds(skill).flatMap((id) => tokenize(id)));
   if (typeof skill.element === "string") tokens.push(...tokenize(skill.element));
@@ -484,6 +486,8 @@ export const fuseSkills = (skillA, skillB, { existingIds } = {}) => {
     name,
     type,
     class: "fusion",
+    ownerType: "system",
+    ownerId: "fusion",
     description,
     level,
     manaCost:

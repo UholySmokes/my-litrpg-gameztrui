@@ -83,6 +83,9 @@ jobs:
       - name: Validate Archetypes
         run: npm run validate:archetypes
 
+      - name: Validate Player Loot Contract
+        run: npm run validate:player-loot
+
       - name: Build
         run: npm run build:tooling
 

@@ -58,6 +58,7 @@
     "validate:archetypes": "node scripts/validate-archetypes.mjs",
     "validate:runtime-contract": "node scripts/check-runtime-contract.mjs",
     "validate:env-examples": "node scripts/check-env-example-coverage.mjs",
+    "validate:player-loot": "node scripts/validate-player-facing-loot.mjs",
     "validate:worldbuild": "node scripts/run-worldbuild-integrity-check.mjs",
     "validate:worldbuild:strict": "node scripts/run-worldbuild-integrity-check.mjs --strict",
     "validate:worldbuild:update-baseline": "node scripts/run-worldbuild-integrity-check.mjs --update-baseline",

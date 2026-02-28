@@ -3,6 +3,8 @@ const SOURCE_COLORS = {
   race: "#96F2D7",
   general: "#E599F7",
   universal: "#E599F7",
+  profession: "#FFD43B",
+  system: "#ADB5BD",
 };
 
 function SourceBadge({ source }) {
@@ -29,7 +31,11 @@ function SourceBadge({ source }) {
 }
 
 function SkillCard({ skill, isSelected, onClick, showDescription = false }) {
-  const source = skill.source || skill.class || "general";
+  const source =
+    skill.source ||
+    skill.ownerType ||
+    skill.class ||
+    "general";
   const element = skill.element || null;
   const damage = skill.stats?.damage || null;
   const manaCost = skill.stats?.manaCost || null;

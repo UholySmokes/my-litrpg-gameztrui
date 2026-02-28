@@ -1,47 +1,43 @@
-# Worldbuilding Systems Audit (War Room Output Backing Report)
+﻿# Worldbuilding Systems Audit (War Room Output Backing Report)
+
+Date: 2026-02-28
 
 ## 1) Scope and Method
 
-This audit reviews integration quality across:
+This audit evaluates systemic integration across:
 
-- Character classes
-- Races
-- Skills and abilities
-- Magic systems
-- Professions and crafting
-- Items and loot
+- Classes and class abilities
+- Races and racial abilities
+- Skills and magic layers
+- Professions, recipes, and itemization
 - Quest metadata and world progression links
+- Godot runtime manifests and sync manifests
 
-Evidence sources:
+Evidence used:
 
-- Runtime registries in `packages/game-core/src`
-- Godot slice manifests in `godot/data`
-- Sync-side manifests in `functions/lib`
+- Runtime registries under `packages/game-core/src`
+- World manifests in `godot/data/world_manifest.json` and `functions/lib/sync-world-manifest.v1.json`
 - Computed cross-reference metrics in `audit_worldbuild_metrics.json`
+- Integrity gate outputs from `npm run validate:worldbuild:strict`
 
-## 1.1) Progress Snapshot (2026-02-28)
+## 2) Current Integrity Snapshot
 
-After remediation passes, integrity gate status is:
+Validation status (2026-02-28):
 
 - `npm run validate:worldbuild`: PASS
 - `npm run validate:worldbuild:strict`: PASS
 
-Current key signature values:
+Current key integrity signals:
 
-- `classesMissingSkills: 0` (was 12)
-- `skillOwnersNotClassOrReserved: 0` (was 12)
-- `missingRecipeIngredientCount: 0` (was 795)
-- `missingRecipeResultCount: 0` (was 440)
-- `missingQuestFavoredClassCount: 0` (was 28)
-- `missingQuestRewardItemCount: 0` (was 27)
-- `manifestMismatchCount: 0` (was 7)
+- `classesMissingSkills: 0`
+- `skillOwnersNotClassOrReserved: 0`
+- `missingRecipeIngredientCount: 0`
+- `missingRecipeResultCount: 0`
+- `missingQuestFavoredClassCount: 0`
+- `missingQuestRewardItemCount: 0`
+- `manifestMismatchCount: 0`
 
-Notes:
-
-- Recipe/item closure currently uses generated placeholder item records for unresolved recipe IDs.
-- Item registry size increased to support full reference closure; this is mechanically coherent but should be curated in a later content-quality pass.
-
-## 2) System Topology (Intended)
+## 3) System Topology (Intended)
 
 ```mermaid
 flowchart LR
@@ -61,7 +57,7 @@ flowchart LR
   World --> Quests
 ```
 
-## 3) Current State Metrics (Observed)
+## 4) Current State Metrics (Observed)
 
 From `audit_worldbuild_metrics.json`:
 
@@ -69,9 +65,9 @@ From `audit_worldbuild_metrics.json`:
 - Races: `55`
 - Class abilities: `216`
 - Race abilities: `55`
-- Skills: `1648`
+- Skills: `2246`
 - Professions: `21`
-- Items: `37`
+- Items: `608`
 - Quests: `29`
 
 Structural distribution:
@@ -79,239 +75,207 @@ Structural distribution:
 - Class tiers: `6` (T1), `12` (T2), `12` (T3)
 - Resource systems: `mana=10`, `rage=5`, `energy=5`, `chi=5`, `focus=5`
 
-High-risk mismatch counts:
+Reference integrity counts:
 
-- Classes with zero direct skill entries: `12` (all T3 classes)
-- Skill-owner IDs not in class registry: `34` (legacy class IDs + profession IDs + `universal`)
-- Recipe ingredient IDs missing from item registry: `795`
-- Recipe result IDs missing from item registry: `440`
-- Quest favored class IDs not in class registry: `28`
-- Quest reward items missing from item registry: `27`
+- Classes with zero direct skill entries: `0`
+- Skill owner IDs not class/reserved: `0`
+- Missing recipe ingredient IDs: `0`
+- Missing recipe result IDs: `0`
+- Missing quest favored class IDs: `0`
+- Missing quest reward item IDs: `0`
+- Godot/sync manifest mismatch count: `0`
 
-## 4) Dependency Findings
+## 5) Dependency Findings
 
 ### A. Classes, Skills, and Abilities
 
 Strengths:
 
-- Class ability coverage exists for all class IDs (no class missing class abilities).
-- Resource distribution is deliberate and symmetric around five resource archetypes.
+- Canonical class IDs are now consistent across class registry, skill ownership, and quest affinity data.
+- Tier-3 classes have direct skill ownership and no longer appear as orphan progression paths.
+- Class ability coverage is complete for all class IDs.
 
-Failure points:
+Residual risks:
 
-- Tier-3 classes are present in class registry but absent as direct owners in skill registry.
-- Skill registry still contains a parallel legacy class taxonomy (`knight`, `priest`, `templar`, etc.) that diverges from canonical class IDs.
-- Profession skills share the same owner field (`class`) as combat classes, increasing ambiguity and error surface.
-
-Design impact:
-
-- Build planning and progression pacing become inconsistent.
-- Quest affinity weighting and skill unlock UX can misfire because “class identity” is non-canonical.
+- Skill ownership still overloads one owner field for class/profession/universal semantics.
+- Canonicalization logic currently protects against drift, but schema-level typing would reduce future ambiguity further.
 
 ### B. Races and Racial Effects
 
 Strengths:
 
-- Every race has race ability support.
-- Race catalog depth is high and world flavor alignment is strong.
+- Every race has race ability coverage.
+- Race roster depth and thematic identity are strong.
 
-Failure points:
+Residual risks:
 
-- Time/day-night combat modifiers are implemented only for a small subset of races, creating uneven systemic relevance across 55 race options.
-
-Design impact:
-
-- Many races feel cosmetic or front-loaded, with low sustained mechanical identity.
+- Sustained mechanical differentiation across all races should be monitored, especially for long-session or endgame relevance.
 
 ### C. Magic Integration
 
 Strengths:
 
-- Essence model is robust (12 primes + opposition pairs + resonance/taint/overload).
-- Magic layer reads biome/weather/anomaly context from world registry.
-- Spell study supports generation + evolution and tags for downstream filtering.
+- Magic model remains context-aware (world/time/weather interplay) and supports progression depth.
+- Current reference closure prevents immediate integration breakage with class/race/quest systems.
 
-Failure points:
+Residual risks:
 
-- Parallel spell/class identity stacks (`study`, legacy caster classes, canonical class IDs) complicate balancing.
-- Magic progression is rich but difficult to tune against non-magic class budgets without a shared power budget framework.
-
-Design impact:
-
-- High risk of non-linear power spikes and onboarding confusion.
+- Magic progression complexity can outpace non-magic budgets without explicit simulation guardrails.
 
 ### D. Professions, Recipes, and Items
 
 Strengths:
 
-- Profession taxonomy is broad and well-themed (21 professions, 9-tier structure).
-- Recipe generation framework scales content quickly.
+- Profession/recipe graph is fully reference-closed against item IDs.
+- Crafting and quest reward chains now resolve to concrete item entries.
 
-Failure points:
+Residual risks:
 
-- Recipe and item registries are largely disconnected by ID.
-- Crafting outputs often do not resolve to actual item entities.
-- Economy cannot stabilize when source catalogs and sink catalogs are non-overlapping.
-
-Design impact:
-
-- Crafting loop feels fake/proxy-driven rather than materially integrated.
-- Loot-to-craft progression lacks trust and predictability.
+- Closure currently includes generated placeholder item records for unresolved recipe IDs.
+- Placeholder inflation can distort economy or reward quality if not curated into authored content.
 
 ### E. Quests and World Progression
 
 Strengths:
 
-- Quest tags include biome + tone + affinity concepts.
-- Weighted selection logic exists.
+- Favored class references are canonical and valid.
+- Quest reward item references resolve to the registry.
+- Godot and sync world manifests are now aligned for maps/triggers/objects.
 
-Failure points:
+Residual risks:
 
-- Many quest favored classes reference IDs not present in canonical class registry.
-- Most quest reward item IDs are absent from item registry.
-- `godot/data/world_manifest.json` and `functions/lib/sync-world-manifest.v1.json` are out of sync (different map graph and triggers).
-- Quest flag vocabularies drift across Godot/sync pipelines.
+- Quest personalization quality remains dependent on ongoing class/race/profession balance curation, not only ID validity.
 
-Design impact:
+## 6) Common Failure Points to Keep Prevented
 
-- Narrative personalization and rewards are semantically rich but mechanically brittle.
-- Cross-client progression parity is vulnerable to desync bugs.
+High-frequency failure modes in RPG/LitRPG system evolution:
 
-## 5) Common Pitfalls in Successful RPG/LitRPG Systems
+- Taxonomy drift: multiple incompatible class/race/item vocabularies
+- Content generation without hard reference checks
+- Unlimited combinatorics without power ceilings
+- Craft outputs that do not map to usable items
+- Reward promises that do not resolve in runtime inventories
+- Parallel world manifests without a contract gate
 
-These are the failure modes top live games avoid aggressively:
+Current project status against these pitfalls:
 
-- Taxonomy drift: multiple “truths” for classes/races/items.
-- Content generation without compile-time reference validation.
-- Broad combinatorics without bounded power budgets.
-- Quest personalization data that references deprecated archetypes.
-- Economy loops with weak item sinks and disconnected crafting outputs.
-- Parallel world manifests per runtime (client/server/tooling) with no contract enforcement.
+- Most hard-reference pitfalls are remediated and currently guarded by strict integrity checks.
+- Main remaining risk is quality/balance drift, not raw reference breakage.
 
-## 6) Best-Practice Integration Model
+## 7) Best-Practice Integration Model (Recommended)
 
 ### 1. Canonical ID Spine
 
-Maintain one canonical ID contract for:
+Keep one canonical ID contract for:
 
 - class
 - race
-- skill owner type + owner ID
+- skill owner type/id
 - item
 - recipe
 - quest reward
-- world map/location/flag identifiers
+- map/trigger/object identifiers
 
-Generate all runtime artifacts from this contract.
+### 2. Typed Skill Ownership
 
-### 2. Typed Ownership Model
-
-Replace overloaded skill owner field:
+Move toward explicit ownership typing:
 
 - `ownerType`: `class | profession | universal | system`
-- `ownerId`: canonical ID from the respective registry
+- `ownerId`: canonical ID for that owner type
 
-### 3. Content Contract Tests as Build Gates
+### 3. Contract Gates in CI
 
-CI should fail on:
+Keep CI failing on:
 
-- Missing item refs in recipes/quests
-- Missing class/race refs in quest affinity tags
-- Nonexistent map/trigger/flag refs between Godot and sync manifests
+- Missing recipe/quest item refs
+- Missing quest class/race refs
+- Manifest drift between Godot and sync runtime
+- Runtime/env contract drift for backend and deployment-critical files
 
 ### 4. Bounded Growth Design
 
-Use hard/soft limits:
+Maintain hard and soft limits for:
 
-- Diminishing returns on damage multipliers, regen, and cooldown compression
-- Caps on stackable multiplicative effects
-- Tier budgets per class and per activity loop
+- Multiplicative damage and regen stacking
+- Cooldown compression
+- Sustain loops and resource bypass chains
 
-### 5. Horizontal + Vertical Progression Balance
+### 5. Horizontal + Vertical Balance
 
-- Vertical: controlled numeric growth (TTK/TTS constraints)
-- Horizontal: alternate utility/playstyle paths with similar budget value
+- Vertical: bounded numeric progression per tier
+- Horizontal: equivalent-value playstyle variance
 
-## 7) Balancing Methodology (Recommended)
+## 8) Balancing Methodology
 
-### A. Power Budget Equation
+### A. Power Budget Envelope
 
-Define budget units per level band:
+Use tier-banded budget vectors:
 
-- `PowerBudget = DPS_weight + Survivability_weight + Utility_weight + Control_weight`
-
-Constrain each class/race archetype to a target envelope per tier.
+- `PowerBudget = DPS + Survivability + Utility + Control`
 
 ### B. Encounter Anchors
 
-Track:
+Track and gate:
 
-- Time-to-kill (TTK) targets by archetype and enemy tier
-- Time-to-fail (TTF) targets for defensive archetypes
-- Resource sustainability curves over 3/6/10 turn windows
+- Time-to-kill by archetype and enemy tier
+- Time-to-fail for defensive builds
+- Resource sustainability over 3/6/10 turn windows
 
 ### C. Economy Stability
 
-For each tier:
+Per progression band:
 
 - `NetInflation = currency_sources + item_sources - sinks`
-- Keep inflation near a bounded corridor (e.g., ±5% per progression band)
+- Keep inflation in a bounded corridor (for example, +/-5%).
 
-### D. Monte Carlo + Worst-Case Sweeps
+### D. Simulation Harness
 
-Run automated simulations for:
+Automate sweeps for:
 
-- Meta extremes (max crit, max CDR, max sustain)
-- Quest reward throughput
-- Craft loop profitability
+- Extreme build combinations
+- Craft profitability outliers
+- Quest reward throughput pacing
 
 ### E. Regression Guardrails
 
-Per patch:
+Per content patch:
 
-- Delta budget per class <= defined threshold
-- No new broken references
-- No increased unresolved item references
+- No new unresolved references
+- Class budget delta bounded by threshold
+- Economy corridor remains in tolerance
 
-## 8) Prioritized Recommendations
+## 9) Prioritized Recommendations
 
-### P0 (Immediate, Blocker)
+### P0 (Now)
 
-- Unify class taxonomy between class registry, skill registry, and quest tags.
-- Add CI cross-reference validation for recipes/quests/items.
-- Reconcile `godot/data/world_manifest.json` and `functions/lib/sync-world-manifest.v1.json`.
-- Standardize quest flag dictionary across Godot + sync core.
+- Keep `validate:worldbuild:strict` and runtime/env contract guards mandatory in CI.
+- Prevent placeholder item leakage into player-facing loot tables without curation tags.
 
 ### P1 (High)
 
-- Introduce typed skill owner schema (`ownerType`/`ownerId`).
-- Expand item registry to cover all referenced crafting and quest rewards.
-- Add race-effect coverage policy so each race has sustained mechanical relevance.
+- Introduce typed skill ownership schema (`ownerType` + `ownerId`).
+- Add placeholder provenance metadata and conversion workflow (placeholder -> authored item).
 
 ### P2 (Medium)
 
-- Build an automated balance harness (TTK/TTF/resource/economy simulations).
-- Introduce explicit class tier power budgets and progression breakpoints.
-- Tighten magic-combat interoperability constraints and expose debug telemetry.
+- Build an automated balance harness for TTK/TTF/resource/economy corridors.
+- Add race and class long-session relevance checks (not only existence/coverage).
 
 ### P3 (Longer-term)
 
-- Build content authoring tools that emit validated registries.
-- Add live-ops balancing dashboards for economy and build diversity.
+- Build authoring tools that emit validated registries by construction.
+- Add live-ops dashboards for build diversity, economy pressure, and reward satisfaction.
 
-## 9) Cohesion Design Targets
+## 10) Healthy Integration Acceptance Criteria
 
-To keep worldbuilding mechanically sound and emotionally engaging:
+Current status versus target:
 
-- Every lore-significant system element must have at least one reliable gameplay affordance.
-- Every gameplay-critical affordance must resolve to canonical IDs and validated data.
-- Every progression axis (class/race/magic/profession) must have both identity and bounded power.
-- Every reward promise (quest/craft/loot) must resolve to a real, usable item.
+- `0` unresolved class references in quests/skills: Met
+- `0` unresolved item references in recipes/quest rewards: Met
+- `0` manifest drift between Godot and sync specs: Met
+- Tier-3 class skill identity coverage: Met
+- Automated balance corridor tests (TTK/TTF/economy): Not yet met
 
-## 10) Acceptance Criteria for “Healthy Integration”
+Overall assessment:
 
-- `0` unresolved class references in quests and skills.
-- `0` unresolved item references in recipes and quest rewards.
-- `0` manifest drift between Godot and sync world specs.
-- Tier-3 classes have complete skill identity paths or explicit design rationale.
-- Automated balance tests pass for TTK, TTF, and economy inflation corridors.
+The worldbuilding system has moved from reference-fragile to mechanically coherent at the contract level. The next quality frontier is balance reliability and content curation depth, not structural integrity repair.

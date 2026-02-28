@@ -21,8 +21,8 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Setup Godot 4
-        uses: firebelley/setup-godot@v1
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
         with:
           version: 4.2.2
 
@@ -134,8 +134,8 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Setup Godot 4
-        uses: firebelley/setup-godot@v1
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v2
         with:
           version: 4.2.2
 

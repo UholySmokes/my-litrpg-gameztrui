@@ -7,6 +7,7 @@ const SLOT_LABELS = {
   accessory: "Accessory",
   title: "Title",
 };
+const EMPTY_INVENTORY = Object.freeze([]);
 
 const normalizeText = (value) => String(value || "").toLowerCase();
 
@@ -20,7 +21,7 @@ export default function EquipmentSelectionPanel({
 }) {
   const [query, setQuery] = useState("");
   const label = SLOT_LABELS[slotKey] || "Item";
-  const inventory = Array.isArray(player?.inventory) ? player.inventory : [];
+  const inventory = Array.isArray(player?.inventory) ? player.inventory : EMPTY_INVENTORY;
   const equipment = player?.equipment || {};
 
   const equippedItem =

@@ -8,6 +8,7 @@ const TYPE_LABELS = {
   quest: "Quest",
   misc: "Misc",
 };
+const EMPTY_INVENTORY = Object.freeze([]);
 
 const normalizeType = (item) => {
   if (!item) return "misc";
@@ -20,7 +21,7 @@ export default function InventoryPanel({ inventory, storyHint = "" }) {
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
 
-  const normalizedInventory = Array.isArray(inventory) ? inventory : [];
+  const normalizedInventory = Array.isArray(inventory) ? inventory : EMPTY_INVENTORY;
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase();
     return normalizedInventory.filter((item) => {

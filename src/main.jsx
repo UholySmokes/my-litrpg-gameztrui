@@ -12,7 +12,12 @@ async function startApp() {
   initBrowserFixes();
   registerServiceWorker();
   if (import.meta.env.DEV) verifyEnv();
-  await bootstrapStaticData();
+
+  void bootstrapStaticData().catch((error) => {
+    if (import.meta.env.DEV) {
+      console.warn("Static data bootstrap failed:", error);
+    }
+  });
 
   createRoot(document.getElementById("root")).render(
     <StrictMode>

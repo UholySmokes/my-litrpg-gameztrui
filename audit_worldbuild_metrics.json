@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-28T13:29:09.418Z",
+  "generatedAt": "2026-02-28T13:34:31.655Z",
   "counts": {
     "classCount": 30,
     "raceCount": 55,
     "classAbilityCount": 216,
     "raceAbilityCount": 55,
-    "totalSkills": 1648,
+    "totalSkills": 2246,
     "professionCount": 21,
-    "itemCount": 62,
+    "itemCount": 608,
     "questCount": 29
   },
   "classTierCounts": {
@@ -22,20 +22,7 @@
     "chi": 5,
     "focus": 5
   },
-  "classesMissingSkills": [
-    "war_reaver",
-    "bulwark_sentinel",
-    "night_reaper",
-    "chaos_saboteur",
-    "astral_archon",
-    "spellbreaker",
-    "dawn_vindicator",
-    "oracle_hierophant",
-    "tempest_reveler",
-    "adamant_champion",
-    "primal_overlord",
-    "deadeye_commander"
-  ],
+  "classesMissingSkills": [],
   "skillOwnerCounts": [
     [
       "universal",
@@ -50,11 +37,7 @@
       64
     ],
     [
-      "paladin",
-      64
-    ],
-    [
-      "ranger",
+      "cleric",
       64
     ],
     [
@@ -62,7 +45,7 @@
       64
     ],
     [
-      "battlemage",
+      "ranger",
       64
     ],
     [
@@ -70,56 +53,100 @@
       64
     ],
     [
+      "guardian",
+      64
+    ],
+    [
+      "trickster",
+      64
+    ],
+    [
+      "battlemage",
+      64
+    ],
+    [
+      "paladin",
+      64
+    ],
+    [
+      "high_priest",
+      64
+    ],
+    [
+      "drunken_master",
+      64
+    ],
+    [
+      "iron_fist",
+      64
+    ],
+    [
+      "beastmaster",
+      64
+    ],
+    [
+      "sharpshooter",
+      64
+    ],
+    [
+      "shadow_assassin",
+      63
+    ],
+    [
       "mage",
       62
     ],
     [
-      "knight",
+      "archmage",
+      62
+    ],
+    [
+      "war_reaver",
       60
     ],
     [
-      "priest",
+      "bulwark_sentinel",
       60
     ],
     [
-      "bard",
+      "night_reaper",
       60
     ],
     [
-      "necromancer",
+      "chaos_saboteur",
       60
     ],
     [
-      "druid",
+      "astral_archon",
       60
     ],
     [
-      "warlock",
+      "spellbreaker",
       60
     ],
     [
-      "shaman",
+      "dawn_vindicator",
       60
     ],
     [
-      "archer",
+      "oracle_hierophant",
       60
     ],
     [
-      "summoner",
+      "tempest_reveler",
       60
     ],
     [
-      "templar",
+      "adamant_champion",
       60
     ],
     [
-      "shadowblade",
+      "primal_overlord",
       60
     ],
     [
-      "assassin",
-      59
+      "deadeye_commander",
+      60
     ],
     [
       "blacksmithing",
@@ -204,61 +231,9 @@
     [
       "dyeing",
       5
-    ],
-    [
-      "guardian",
-      4
-    ],
-    [
-      "shadow_assassin",
-      4
-    ],
-    [
-      "trickster",
-      4
-    ],
-    [
-      "archmage",
-      4
-    ],
-    [
-      "cleric",
-      4
-    ],
-    [
-      "high_priest",
-      4
-    ],
-    [
-      "drunken_master",
-      4
-    ],
-    [
-      "iron_fist",
-      4
-    ],
-    [
-      "beastmaster",
-      4
-    ],
-    [
-      "sharpshooter",
-      4
     ]
   ],
   "skillOwnersMissingClass": [
-    "knight",
-    "assassin",
-    "priest",
-    "bard",
-    "necromancer",
-    "druid",
-    "warlock",
-    "shaman",
-    "archer",
-    "summoner",
-    "templar",
-    "shadowblade",
     "universal",
     "blacksmithing",
     "alchemy",
@@ -282,20 +257,7 @@
     "portal_creation",
     "dyeing"
   ],
-  "skillOwnersNotClassOrReserved": [
-    "knight",
-    "assassin",
-    "priest",
-    "bard",
-    "necromancer",
-    "druid",
-    "warlock",
-    "shaman",
-    "archer",
-    "summoner",
-    "templar",
-    "shadowblade"
-  ],
+  "skillOwnersNotClassOrReserved": [],
   "classAbilityCoverage": [
     {
       "id": "warrior",
@@ -726,512 +688,10 @@
       "recipes": 20
     }
   ],
-  "missingRecipeIngredientCount": 795,
-  "missingRecipeResultCount": 440,
-  "missingRecipeIngredientsSample": [
-    {
-      "profession": "blacksmithing",
-      "recipe": "iron_dagger",
-      "itemId": "iron_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "iron_chainmail",
-      "itemId": "iron_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "steel_ingot",
-      "itemId": "iron_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "steel_ingot",
-      "itemId": "coal"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "steel_sword",
-      "itemId": "steel_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "mythril_ingot",
-      "itemId": "mythril_ore"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "mythril_ingot",
-      "itemId": "spirit_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "mythril_blade",
-      "itemId": "mythril_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "mythril_blade",
-      "itemId": "enchanted_leather"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "soulforged_helmet",
-      "itemId": "adamantine_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "soulforged_helmet",
-      "itemId": "soul_gem"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "soulforged_helmet",
-      "itemId": "enchanted_leather"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_basic_blade",
-      "itemId": "iron_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_basic_shield",
-      "itemId": "iron_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_basic_armor",
-      "itemId": "iron_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_basic_tool",
-      "itemId": "iron_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_sturdy_blade",
-      "itemId": "steel_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_sturdy_shield",
-      "itemId": "steel_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_sturdy_armor",
-      "itemId": "steel_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_sturdy_tool",
-      "itemId": "steel_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_blade",
-      "itemId": "mythril_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_blade",
-      "itemId": "arcane_dust"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_shield",
-      "itemId": "mythril_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_shield",
-      "itemId": "arcane_dust"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_armor",
-      "itemId": "mythril_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_armor",
-      "itemId": "arcane_dust"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_tool",
-      "itemId": "mythril_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_tool",
-      "itemId": "arcane_dust"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_blade",
-      "itemId": "adamantine_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_blade",
-      "itemId": "spirit_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_shield",
-      "itemId": "adamantine_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_shield",
-      "itemId": "spirit_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_armor",
-      "itemId": "adamantine_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_armor",
-      "itemId": "spirit_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_tool",
-      "itemId": "adamantine_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_tool",
-      "itemId": "spirit_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_blade",
-      "itemId": "divine_metal"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_blade",
-      "itemId": "primordial_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_blade",
-      "itemId": "rare_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_shield",
-      "itemId": "divine_metal"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_shield",
-      "itemId": "primordial_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_shield",
-      "itemId": "rare_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_armor",
-      "itemId": "divine_metal"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_armor",
-      "itemId": "primordial_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_armor",
-      "itemId": "rare_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_tool",
-      "itemId": "divine_metal"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_tool",
-      "itemId": "primordial_essence"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_tool",
-      "itemId": "rare_essence"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "minor_healing_potion",
-      "itemId": "common_herb"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "minor_healing_potion",
-      "itemId": "water"
-    }
-  ],
-  "missingRecipeResultsSample": [
-    {
-      "profession": "blacksmithing",
-      "recipe": "iron_ingot",
-      "itemId": "iron_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "iron_dagger",
-      "itemId": "iron_dagger"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "iron_chainmail",
-      "itemId": "iron_chainmail"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "steel_ingot",
-      "itemId": "steel_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "mythril_ingot",
-      "itemId": "mythril_ingot"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "mythril_blade",
-      "itemId": "mythril_blade"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "soulforged_helmet",
-      "itemId": "soulforged_helmet"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_basic_blade",
-      "itemId": "blacksmithing_basic_blade"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_basic_shield",
-      "itemId": "blacksmithing_basic_shield"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_basic_armor",
-      "itemId": "blacksmithing_basic_armor"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_basic_tool",
-      "itemId": "blacksmithing_basic_tool"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_sturdy_blade",
-      "itemId": "blacksmithing_sturdy_blade"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_sturdy_shield",
-      "itemId": "blacksmithing_sturdy_shield"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_sturdy_armor",
-      "itemId": "blacksmithing_sturdy_armor"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_sturdy_tool",
-      "itemId": "blacksmithing_sturdy_tool"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_blade",
-      "itemId": "blacksmithing_enchanted_blade"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_shield",
-      "itemId": "blacksmithing_enchanted_shield"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_armor",
-      "itemId": "blacksmithing_enchanted_armor"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_enchanted_tool",
-      "itemId": "blacksmithing_enchanted_tool"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_blade",
-      "itemId": "blacksmithing_masterwork_blade"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_shield",
-      "itemId": "blacksmithing_masterwork_shield"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_armor",
-      "itemId": "blacksmithing_masterwork_armor"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_masterwork_tool",
-      "itemId": "blacksmithing_masterwork_tool"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_blade",
-      "itemId": "blacksmithing_mythic_blade"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_shield",
-      "itemId": "blacksmithing_mythic_shield"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_armor",
-      "itemId": "blacksmithing_mythic_armor"
-    },
-    {
-      "profession": "blacksmithing",
-      "recipe": "blacksmithing_mythic_tool",
-      "itemId": "blacksmithing_mythic_tool"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "minor_healing_potion",
-      "itemId": "minor_healing_potion"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "minor_mana_potion",
-      "itemId": "minor_mana_potion"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "healing_potion",
-      "itemId": "healing_potion"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "antidote",
-      "itemId": "antidote"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "mind_focus_elixir",
-      "itemId": "mind_focus_elixir"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "aurora_flux",
-      "itemId": "aurora_flux"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_basic_potion",
-      "itemId": "alchemy_basic_potion"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_basic_elixir",
-      "itemId": "alchemy_basic_elixir"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_basic_tonic",
-      "itemId": "alchemy_basic_tonic"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_basic_catalyst",
-      "itemId": "alchemy_basic_catalyst"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_sturdy_potion",
-      "itemId": "alchemy_sturdy_potion"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_sturdy_elixir",
-      "itemId": "alchemy_sturdy_elixir"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_sturdy_tonic",
-      "itemId": "alchemy_sturdy_tonic"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_sturdy_catalyst",
-      "itemId": "alchemy_sturdy_catalyst"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_enchanted_potion",
-      "itemId": "alchemy_enchanted_potion"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_enchanted_elixir",
-      "itemId": "alchemy_enchanted_elixir"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_enchanted_tonic",
-      "itemId": "alchemy_enchanted_tonic"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_enchanted_catalyst",
-      "itemId": "alchemy_enchanted_catalyst"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_masterwork_potion",
-      "itemId": "alchemy_masterwork_potion"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_masterwork_elixir",
-      "itemId": "alchemy_masterwork_elixir"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_masterwork_tonic",
-      "itemId": "alchemy_masterwork_tonic"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_masterwork_catalyst",
-      "itemId": "alchemy_masterwork_catalyst"
-    },
-    {
-      "profession": "alchemy",
-      "recipe": "alchemy_mythic_potion",
-      "itemId": "alchemy_mythic_potion"
-    }
-  ],
+  "missingRecipeIngredientCount": 0,
+  "missingRecipeResultCount": 0,
+  "missingRecipeIngredientsSample": [],
+  "missingRecipeResultsSample": [],
   "questsWithFavoredClasses": 26,
   "questsWithFavoredRaces": 24,
   "questsWithFavoredProfessions": 0,

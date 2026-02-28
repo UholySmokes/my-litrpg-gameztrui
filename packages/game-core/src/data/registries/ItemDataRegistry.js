@@ -4,6 +4,11 @@
 // Migrated from: src/entities/ItemRegistry.js
 // =================================================================
 
+import {
+  PROFESSIONS,
+  getRecipesForProfession,
+} from "../../systems/profession/ProfessionRegistry.js";
+
 /**
  * Item Database - All items in the game with their complete definitions
  */
@@ -696,6 +701,94 @@ export let itemDatabase = {
     },
   },
 };
+
+function humanizeItemId(itemId) {
+  return String(itemId || "")
+    .split("_")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function inferPlaceholderRarity(tier) {
+  const safeTier = Number.isFinite(tier) ? Number(tier) : 1;
+  if (safeTier >= 9) return "legendary";
+  if (safeTier >= 7) return "epic";
+  if (safeTier >= 5) return "rare";
+  if (safeTier >= 3) return "uncommon";
+  return "common";
+}
+
+function inferPlaceholderType(itemId, { isResult = false } = {}) {
+  const normalized = String(itemId || "").toLowerCase();
+  if (!isResult) return "material";
+  if (
+    /(potion|elixir|tonic|meal|stew|bread|ale|wine|jerky|salve|antidote|ration|bandage|kit)/u.test(
+      normalized,
+    )
+  ) {
+    return "consumable";
+  }
+  if (
+    /(sword|blade|dagger|armor|robe|cloak|gloves|shield|ring|amulet|circlet|crown|tool|bow|helmet|charm|relic|catalyst)/u.test(
+      normalized,
+    )
+  ) {
+    return "equipment";
+  }
+  if (/(cache|ledger|glyph|scroll|map|token|seal|fragment|core|shard|rune)/u.test(normalized)) {
+    return "quest";
+  }
+  return "material";
+}
+
+function buildRecipePlaceholderItems() {
+  const placeholders = {};
+  const professions = Object.values(PROFESSIONS || {});
+
+  for (const profession of professions) {
+    const recipes = getRecipesForProfession(profession.id, 9) || [];
+    for (const recipe of recipes) {
+      const tier = Number.isFinite(recipe?.tier) ? recipe.tier : 1;
+      const rarity = inferPlaceholderRarity(tier);
+      const baseValue = Math.max(5, 8 + tier * 12);
+
+      const ingredients = Array.isArray(recipe?.ingredients) ? recipe.ingredients : [];
+      for (const ingredient of ingredients) {
+        const ingredientId = ingredient?.id || ingredient?.itemId;
+        if (!ingredientId || itemDatabase[ingredientId] || placeholders[ingredientId]) {
+          continue;
+        }
+        placeholders[ingredientId] = {
+          id: ingredientId,
+          name: humanizeItemId(ingredientId),
+          type: inferPlaceholderType(ingredientId, { isResult: false }),
+          quantity: 1,
+          description: `Crafting reagent placeholder generated from recipe '${recipe.id}'.`,
+          rarity,
+          value: baseValue,
+        };
+      }
+
+      const resultId = recipe?.result?.id || recipe?.result?.itemId;
+      if (resultId && !itemDatabase[resultId] && !placeholders[resultId]) {
+        placeholders[resultId] = {
+          id: resultId,
+          name: humanizeItemId(resultId),
+          type: inferPlaceholderType(resultId, { isResult: true }),
+          quantity: 1,
+          description: `Crafted item placeholder generated from recipe '${recipe.id}'.`,
+          rarity,
+          value: baseValue + 10,
+        };
+      }
+    }
+  }
+
+  return placeholders;
+}
+
+Object.assign(itemDatabase, buildRecipePlaceholderItems());
 
 /**
  * Cached item lookup data.

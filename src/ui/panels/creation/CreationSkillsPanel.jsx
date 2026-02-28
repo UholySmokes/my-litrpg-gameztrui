@@ -34,7 +34,6 @@ function SkillCard({ skill, isSelected, onClick, showDescription = false }) {
   const source =
     skill.source ||
     skill.ownerType ||
-    skill.class ||
     "general";
   const element = skill.element || null;
   const damage = skill.stats?.damage || null;

@@ -287,7 +287,6 @@ const extractTokensFromSkill = (skill) => {
   tokens.push(...tokenize(skill.name));
   tokens.push(...tokenize(skill.description));
   tokens.push(...tokenize(skill.ownerId));
-  tokens.push(...tokenize(skill.class));
   tokens.push(...tokenize(skill.ownerType));
   tokens.push(...normalizeTags(skill.tags).flatMap((tag) => tokenize(tag)));
   tokens.push(...extractEffectIds(skill).flatMap((id) => tokenize(id)));

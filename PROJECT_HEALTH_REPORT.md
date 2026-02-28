@@ -102,3 +102,5 @@ Note:
 4. Keep balance corridor thresholds enforced and tune as content grows.
    - Guard command: `npm run validate:balance-corridors`
    - Contract: `docs/contracts/balance_corridor_thresholds_v1.json`
+5. Keep skill owner schema migration locked.
+   - Guard command: `npm run validate:skill-owner-schema`

@@ -255,6 +255,7 @@ Per content patch:
 ### P1 (High)
 
 - Complete downstream migration from legacy `skill.class` reads to `ownerType` + `ownerId`.
+  - Guarded by `npm run validate:skill-owner-schema` to prevent new `skill.class` reads outside compatibility allowlist.
 - Add conversion workflow (placeholder -> authored item) using placeholder provenance metadata.
   - Implemented command: `npm run report:worldbuild:placeholders`
   - Artifacts: `docs/reports/placeholder_item_curation_queue.json` and a dated markdown queue report

@@ -1,10 +1,10 @@
 /**
- * Import function triggers from their respective submodules:
+ * TEMPLATE-ONLY FILE (not deployed runtime).
  *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
+ * Canonical runtime entrypoint for this repo is functions/index.js.
+ * API route and handler logic lives in functions/lib/**/*.js.
  *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ * This file remains only as Firebase TypeScript scaffold/reference.
  */
 
 import {setGlobalOptions} from "firebase-functions";

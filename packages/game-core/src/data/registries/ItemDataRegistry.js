@@ -710,6 +710,246 @@ function humanizeItemId(itemId) {
     .join(" ");
 }
 
+// ---------------------------------------------------------------------------
+// PLACEHOLDER DESCRIPTION GENERATOR
+// Produces lore-consistent flavor text for auto-generated items by pattern-
+// matching on the item ID.  All text is grounded in the Shardfall Meridian
+// setting (neon arcology, leylines, factional economy).
+// ---------------------------------------------------------------------------
+
+const PLACEHOLDER_MATERIAL_PATTERNS = [
+  // Metals & ores
+  [/iron_ore|raw_iron/, "Chunks of iron ore pried from the Meridian's underlayer. Unremarkable on its own, essential in bulk."],
+  [/iron_ingot/, "A bar of smelted iron, still warm from the forge. The backbone of every armorer's work order."],
+  [/coal/, "Dense coal bricks hauled from the lower vents. Burns slow and hot — the forge's quiet partner."],
+  [/steel_ingot/, "A bar of folded steel, grain tight and even. Standard output from a journeyman smith."],
+  [/mythril_ore/, "A shimmering vein fragment of mythril. The resonance in it makes compass needles spin."],
+  [/mythril_ingot/, "Refined mythril: lightweight, corrosion-resistant, and faintly audible to those who listen for leyline hum."],
+  [/adamantine/, "Adamantine — near-indestructible and notoriously difficult to work. Smiths charge extra just to touch it."],
+  [/divine_metal/, "An alloy whispered from a collapse-rift. Wardens classify it as a controlled salvage material."],
+  [/copper_ore/, "Surface-layer copper ore, common and oxidizing quickly. Good starting material."],
+  [/copper_gear/, "A small copper gear machined to standard tolerances. Base component for engineering projects."],
+  [/steel_gear/, "Steel gear stock. Engineers go through these faster than they admit."],
+  // Essences & magical reagents
+  [/primordial_essence/, "Distilled from pre-Spirefall node sites. The taste of it in the air causes memory gaps."],
+  [/rare_essence/, "Concentrated essence drawn off a stabilized leyline tap. Bottled fast, sold faster."],
+  [/void_essence/, "Essence harvested from a thin-place. Approaches the absolute zero of meaning — handle carefully."],
+  [/spirit_essence/, "Residue from a spiritual anchor site. Practitioners use it in rituals; others sell it at the bazaar."],
+  [/arcane_dust/, "Powder ground from spent enchantment foci. Still warm to the touch and faintly luminescent."],
+  [/arcane_ink/, "Ink infused with condensed mana-charge. Inscriptions written with it stay legible in low-light leyline zones."],
+  [/arcane_core/, "A lattice-crystal grown inside a spent mana battery. Holds residual charge useful for enchantment work."],
+  [/arcane_binding/, "Binding thread woven with sigil-work. Used to stitch enchantments into physical substrates."],
+  [/mana_battery/, "A standardized Aurum Exchange energy cell. Discharged ones still fetch a few soulcoins as scrap."],
+  [/void_capacitor/, "An unstable storage unit compressing void-matter. Warden-restricted. The serial number has been filed off."],
+  [/elemental_shard/, "A fractured crystal still cycling through its elemental phase. Touch it wrong and it cycles through you."],
+  [/lightning_core/, "A crystallized storm-discharge. Engineers prize it; everyone else should respect it."],
+  [/soulthread/, "Drawn from a living-essence extraction. Warm and resistant to physical damage."],
+  [/soul_gem/, "A gem lattice that has absorbed an imprint of consciousness. Trade in them is technically legal."],
+  [/soul_ink/, "Ink catalyzed with a processed soul-imprint. The inscriptions it creates can move on their own."],
+  [/void_ink/, "Ink extracted from Void-adjacent repositories. The text written with it only reads in certain light conditions."],
+  [/void_crystal/, "A crystal grown in void-adjacent conditions. Portal engineers need these; everyone else should stay away."],
+  [/prismatic_powder/, "Ground from multi-spectrum gemstones. Changes color depending on the viewer's essence type."],
+  [/aurora_flux/, "A volatile mixture of ambient leyline discharge and prismatic pigment. Reacts unpredictably with raw mana."],
+  [/wisdom_essence/, "Crystallized essence from a meditation-site node. Favored by enchanters working on cognitive items."],
+  [/mindshield_charm/, "A rough charm assembly providing minor cognitive protection. A stop-gap until proper enchanting is available."],
+  [/stormbrand_enchant/, "An enchantment pattern that channels storm-energy into a bound object. Handle the installation carefully."],
+  // Cloth & textiles
+  [/linen_cloth/, "Woven linen, durable and breathable. Supplies most of the Meridian's non-combat wardrobe."],
+  [/wool_cloth/, "Sheared wool from the highland herds above the city platforms. Warm and reliable."],
+  [/silk_cloth/, "Spun by silkworms kept in the upper arcade. Its trade value exceeds most metals by weight."],
+  [/mageweave_cloth/, "Cloth grown in leyline-adjacent weaving rooms. The threads carry minor arcane conductivity."],
+  [/mooncloth/, "Woven under harmonic conditions during leyline surge events. Cool to the touch and unnaturally white."],
+  [/enchanted_leather/, "Leather processed through an enchantment bath. Flexible and resistant to minor magical abrasion."],
+  // Herbs & botanicals
+  [/common_herb/, "A dried bundle of regionally common medicinal herbs. Every apothecary stocks shelves of the stuff."],
+  [/spirit_flower/, "A bloom that grows near spirit-anchor sites. The petals cause mild euphoria when brewed."],
+  [/medicinal_herb/, "A carefully selected handful of healing herbs. Properly processed, it doubles the yield of most remedies."],
+  [/antidote_herb/, "A bitter-tasting herb known for neutralizing common poisons. Required in every field kit."],
+  [/ancient_root/, "A root system pre-dating the Spirefall. Radiates trace essence and resists standard preservation."],
+  [/rare_herb/, "An uncommon botanical found in low-population zones. Sought by both cooks and alchemists."],
+  [/divine_bloom/, "A flower that blooms only near collapse-rift sites. Picking it is technically a Warden infraction."],
+  // Hides & leather
+  [/raw_hide/, "Untreated animal hide, still carrying the smell of the field. Needs processing before use."],
+  [/thick_hide/, "Heavier hide from larger fauna. Requires specialized tools to tan correctly."],
+  [/exotic_hide/, "Hide from a creature outside the common registry. Skinners charge premium rates for the extra effort."],
+  [/dragon_hide/, "Dragon hide — dense, heat-resistant, and structurally superior to most armors."],
+  [/divine_hide/, "Hide harvested from a creature of confirmed rift-origin. Wardens consider it a controlled material."],
+  // Wood & timber
+  [/oak_wood/, "Straight-grained oak, widely used in the lower districts for construction and handles."],
+  [/maple_wood/, "Maple from the highland groves. Dense and fine-grained; preferred for bows and instrument crafts."],
+  [/ironwood/, "Wood as hard as mild steel. Only the best tools can cut it cleanly."],
+  [/ancient_wood/, "Timber from a grove predating recorded settlement. Each plank holds trace spatial memory."],
+  [/world_tree_wood/, "Wood from a rift-adjacent ancient. The grain shifts like it is still deciding what shape to be."],
+  // Fish
+  [/common_fish/, "A standard catch from the water channels beneath the arcology. Protein, no frills."],
+  [/rare_fish/, "A variety from deeper or more esoteric water sources. Prized by serious cooks."],
+  [/magical_fish/, "A fish that absorbed ambient leyline energy. Glows faintly. Interesting to eat."],
+  [/legendary_fish/, "One of a class of fish with documented history in the Meridian fishing guilds. A status catch."],
+  [/divine_fish/, "A creature from near-void water sources. Not available through standard market channels."],
+  // Gems
+  [/rough_gem/, "Uncut mineral with gemstone potential. Requires a jeweler's eye to realize its value."],
+  [/polished_gem/, "A cut and polished gem, ready for setting. Standard quality for commercial jewelry."],
+  [/perfect_gem/, "A flawless specimen. Jewelers take time off to talk about these."],
+  [/prismatic_gem/, "A gem that cycles through visible spectrums. Its market value changes depending on who needs what this week."],
+  // Farming
+  [/wheat/, "Cultivated wheat from the upper-tier growing platforms. Feeds a quarter of the arcology's population."],
+  [/^fruit$/, "Fresh produce from the agricultural terraces. Shelf life is short; move it fast."],
+  [/magical_crop/, "A crop grown in leyline-adjacent soil. Nutritionally superior; mildly psychoactive in raw form."],
+  [/ancient_seed/, "A seed from a pre-Spirefall cultivar. Germination requires specialized soil conditions."],
+  [/divine_harvest/, "A crop harvested from a rift-adjacent growing site. Trade is monitored by the Wardens."],
+  [/^grain$/, "Processed grain, ready for brewing or baking. Moves quickly through the market."],
+  // Cooking
+  [/raw_meat/, "Field-dressed meat, unprocessed. Needs work before it becomes food."],
+  [/^vegetables$/, "Mixed vegetables from market stalls. Diet basics."],
+  [/^flour$/, "Ground grain, ready for baking. A domestic staple."],
+  [/prime_meat/, "Well-sourced, well-cut meat. Makes a difference in the finished dish."],
+  [/^spices$/, "Trade-route spices from the bazaar quarter. Transforms adequate food into something worth talking about."],
+  [/divine_flesh/, "Butchered from a rift-adjacent creature. Cooks handle it with care and curiosity."],
+  [/exotic_meat/, "Meat from outside the standard fauna registry. Unusual flavor profile; high novelty value."],
+  [/dragon_steak/, "Dragon steak — dense, hot to handle even after butchery, and difficult to overcook."],
+  [/divine_nectar/, "A fermentation base of unclear origin. One vintage per decade if the rift cooperates."],
+  // Inscription
+  [/parchment/, "Standard writing parchment, treated for long-term inscription. Bulk commodity in the archive district."],
+  [/light_ink/, "Basic ink, clear and consistent. Entry-level inscription work requires nothing more."],
+  [/stone_tablet/, "A carved tablet for rune inscription. Heavy, durable, and impossible to casually destroy."],
+  [/basic_glyph/, "A freshly inscribed glyph on treated surface. Activates under standard mana application."],
+  [/rune_stone/, "A stone prepared for advanced runic inscription. The surface has already been tuned."],
+  // Portal creation
+  [/portal_shard/, "A fragment from a decommissioned portal frame. Still carries a dimensional echo."],
+  [/waypoint_core/, "The key component in a waypoint anchor. Requires proper attunement before deployment."],
+  [/dimensional_anchor/, "A device that pins local space to a fixed coordinate. Warden-issued hardware, usually."],
+  [/planar_key/, "A resonance key that bridges planar boundaries. Each one is keyed to a specific pair of coordinates."],
+  // First aid & repair
+  [/clean_cloth/, "Sanitized cloth bandaging. Standard issue across all district medic posts."],
+  [/herb_paste/, "A prepared medicinal paste combining common herbs. Applied directly to wounds."],
+  [/healing_kit/, "A mid-tier field kit with supplies for multiple wound types. Standard guild-issued gear."],
+  [/regeneration_kit/, "An advanced recovery kit combining alchemical compounds and enchanted dressings."],
+  [/divine_intervention_kit/, "A Warden-restricted medical kit. The name is not figurative."],
+  [/scrap_metal/, "Mixed salvage from the repair district. Usefulness varies by job."],
+  [/polishing_oil/, "A light oil for surface finish work. Blacksmiths use it; everyone with nice things should own it."],
+  [/reinforced_plate/, "A plate steel section, pre-reinforced for use in armor repair or construction."],
+  [/divine_thread/, "Thread spun from a rift-adjacent source. It self-repairs minor cuts over time."],
+  // Dye & cosmetics
+  [/basic_dye/, "A vat-brewed dye in standard market colors. Reliable and color-fast."],
+  [/metallic_pigment/, "Pigment ground from metallic ore. Produces sheen finishes unavailable in standard dyes."],
+  [/prismatic_pigment/, "A pigment that shifts color in different light conditions. Popular in the upper-district fashion market."],
+  [/illusion_dust/, "Enchantment pigment that projects a visual overlay. Wears off without regular re-application."],
+  [/divine_radiance/, "A luminescent dye compound from rift-adjacent material. Produces light without consuming it."],
+  // Miscellaneous reagents
+  [/purified_water/, "Water run through a leyline-adjacent filtration system. No impurities. No flavor either."],
+  [/^water$/, "Water. The arcology's filtration infrastructure keeps it available and drinkable."],
+  [/charcoal/, "Char from controlled burns in the lower district. Fuel for alchemical furnaces and forge work."],
+];
+
+// Profession, tier, and output-type labels used when the item ID follows the
+// convention: <profession>_<tier>_<output_type>
+const PROFESSION_CRAFT_LABEL = {
+  blacksmithing: "forged by a Meridian smith",
+  alchemy: "prepared in an alchemical workspace",
+  enchanting: "inscribed by an enchanter",
+  tailoring: "stitched by a skilled tailor",
+  jewelcrafting: "set by a jeweler",
+  engineering: "assembled by an engineer",
+  construction: "erected by a licensed builder",
+  mining: "extracted and refined by a miner",
+  herbalism: "harvested and prepared by an herbalist",
+  skinning: "processed by a skinner",
+  logging: "worked by a woodcutter",
+  fishing: "sourced by a certified fisher",
+  farming: "cultivated and processed by a farmer",
+  cooking: "prepared in a proper kitchen",
+  brewing: "brewed to specification",
+  butchery: "processed by a butcher",
+  inscription: "inscribed by a trained scribe",
+  first_aid: "assembled for field medical use",
+  repair: "fabricated for maintenance work",
+  portal_creation: "engineered for spatial anchoring",
+  dyeing: "finished by a dye specialist",
+};
+
+const TIER_QUALITY_LABEL = {
+  basic: "entry-level",
+  sturdy: "reliable",
+  enchanted: "magically enhanced",
+  masterwork: "masterwork-grade",
+  mythic: "mythic-quality",
+};
+
+const OUTPUT_TYPE_LABEL = {
+  blade: "blade", dagger: "dagger", sword: "sword", armor: "armor piece",
+  shield: "shield", tool: "tool", helmet: "helmet", robe: "robe",
+  cloak: "cloak", gloves: "gloves", bag: "bag", ring: "ring",
+  amulet: "amulet", gem: "gem", circlet: "circlet",
+  bomb: "demolition charge", turret: "turret assembly",
+  gadget: "gadget", automaton: "automaton unit",
+  wall: "wall section", gate: "gate assembly",
+  tower: "tower section", workshop: "workshop kit",
+  potion: "potion", elixir: "elixir", tonic: "tonic", catalyst: "catalyst",
+  rune: "rune", sigil: "sigil", ward: "ward inscription", charm: "charm",
+  refined_ore: "refined ore batch", cut_gem: "cut gem",
+  alloy: "alloy ingot", core: "core component",
+  herb_bundle: "herb bundle", salve: "salve", draught: "draught",
+  leather: "leather sheet", hide_armor: "hide armor",
+  trophy: "trophy", pelt: "pelt",
+  plank: "timber plank", bow: "bow", totem: "totem", workbench: "workbench kit",
+  fish_fillet: "fish fillet", oil: "rendered oil",
+  bait: "fishing bait", talisman: "talisman",
+  grain_sack: "grain sack", fertilizer: "fertilizer batch",
+  seedling: "seedling tray", harvest_feast: "harvest feast",
+  meal: "meal", stew: "stew", skewer: "skewer", dessert: "dessert",
+  ale: "ale", wine: "wine", cured_meat: "cured meat",
+  jerky: "jerky", sausage: "sausage", ration: "ration pack",
+  scroll: "scroll", glyph: "glyph tablet", contract: "contract document",
+  bandage: "bandage", kit: "kit", antidote: "antidote",
+  repair_kit: "repair kit", polish: "polish compound",
+  reinforcement: "reinforcement plate", restoration: "restoration compound",
+  portal_rune: "portal rune", waypoint_seal: "waypoint seal",
+  anchor_stone: "anchor stone", gate_sigil: "gate sigil",
+  dye: "dye batch", pattern: "dye pattern",
+  glamour: "glamour finish", finish: "surface finish",
+};
+
+/**
+ * Generates a lore-appropriate description for an auto-generated placeholder
+ * item.  Pattern-matches on the item ID first; falls back to a profession /
+ * tier / output-type pattern, then to generic type copy.
+ */
+function generatePlaceholderDescription(itemId, type, professionId, isResult) {
+  const id = String(itemId || "").toLowerCase();
+
+  for (const [pattern, desc] of PLACEHOLDER_MATERIAL_PATTERNS) {
+    if (pattern.test(id)) return desc;
+  }
+
+  // Match profession_tier_outputType convention (e.g. "blacksmithing_basic_blade")
+  for (const [profKey, profLabel] of Object.entries(PROFESSION_CRAFT_LABEL)) {
+    if (!id.startsWith(profKey + "_")) continue;
+    const rest = id.slice(profKey.length + 1);
+    for (const [tierKey, tierLabel] of Object.entries(TIER_QUALITY_LABEL)) {
+      if (!rest.startsWith(tierKey + "_") && rest !== tierKey) continue;
+      const typeKey = rest.startsWith(tierKey + "_")
+        ? rest.slice(tierKey.length + 1)
+        : "";
+      const typeLabel =
+        OUTPUT_TYPE_LABEL[typeKey] || typeKey.replace(/_/g, " ") || "item";
+      const article = /^[aeiou]/i.test(tierLabel) ? "An" : "A";
+      return `${article} ${tierLabel} ${typeLabel} ${profLabel}. Meets guild specifications for Shardfall Meridian trade.`;
+    }
+    // Profession matches but no tier token — generic craft line
+    const typeLabel = OUTPUT_TYPE_LABEL[rest] || rest.replace(/_/g, " ") || "item";
+    return `A ${typeLabel} ${profLabel}. Produced to Meridian standard.`;
+  }
+
+  // Generic fallback by resolved type
+  if (type === "consumable") {
+    return "A prepared consumable sourced from the Meridian's production districts. Consult the label before use.";
+  }
+  if (type === "equipment") {
+    return "A crafted piece of equipment from the Meridian workshops. Functional and field-ready.";
+  }
+  return "A material component sourced from the Meridian's production districts. Required for advanced crafting.";
+}
+
 function inferPlaceholderRarity(tier) {
   const safeTier = Number.isFinite(tier) ? Number(tier) : 1;
   if (safeTier >= 9) return "legendary";
@@ -818,7 +1058,7 @@ function buildRecipePlaceholderItems() {
           name: humanizeItemId(ingredientId),
           type: inferPlaceholderType(ingredientId, { isResult: false }),
           quantity: 1,
-          description: `Crafting reagent placeholder generated from recipe '${recipe.id}'.`,
+          description: generatePlaceholderDescription(ingredientId, inferPlaceholderType(ingredientId, { isResult: false }), profession.id, false),
           rarity,
           value: baseValue,
           },
@@ -835,7 +1075,7 @@ function buildRecipePlaceholderItems() {
           name: humanizeItemId(resultId),
           type: inferPlaceholderType(resultId, { isResult: true }),
           quantity: 1,
-          description: `Crafted item placeholder generated from recipe '${recipe.id}'.`,
+          description: generatePlaceholderDescription(resultId, inferPlaceholderType(resultId, { isResult: true }), profession.id, true),
           rarity,
           value: baseValue + 10,
           },

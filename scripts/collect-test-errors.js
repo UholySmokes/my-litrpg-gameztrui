@@ -21,7 +21,6 @@ const DEFAULT_IGNORED_DIRS = new Set([
 ]);
 
 function printHelp() {
-  // eslint-disable-next-line no-console
   console.log(
     [
       "Collect test errors across project folders and write a JSON report.",
@@ -525,7 +524,6 @@ async function main() {
   const results = [];
   for (const pkg of testPackages) {
     // Sequential on purpose to preserve existing runner behavior and output.
-    // eslint-disable-next-line no-await-in-loop
     const result = await runPackageTests({
       rootDir,
       packageDir: pkg.dir,
@@ -559,7 +557,6 @@ main()
     process.exitCode = code;
   })
   .catch((err) => {
-    // eslint-disable-next-line no-console
     console.error(err);
     process.exitCode = 1;
   });

@@ -2219,10 +2219,9 @@ export function getRaceEvolutionOption(raceRef, evolutionIdOrName, stageOverride
   );
 }
 
-export function applyRaceEvolution(raceRef, evolutionOption, stageOverride = null) {
+export function applyRaceEvolution(raceRef, evolutionOption) {
   const baseRace = normalizeRaceRef(raceRef);
   if (!baseRace || !evolutionOption) return null;
-  const stageIndex = resolveRaceStageIndex(raceRef, stageOverride);
   const currentBonuses = getRaceStatBonuses(raceRef);
   const baseBonuses = Object.keys(currentBonuses).length ? currentBonuses : getRaceStatBonuses(baseRace);
   const mergedBonuses = mergeRaceBonuses(baseBonuses, evolutionOption.statBonusesDelta);

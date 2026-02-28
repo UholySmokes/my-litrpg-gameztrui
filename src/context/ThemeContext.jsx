@@ -188,26 +188,6 @@ function useTheme() {
   return context;
 }
 
-// Generate CSS variables from theme
-function getThemeCSS(theme) {
-  return {
-    '--bg-deep': theme.colors.bgDeep,
-    '--bg-panel': theme.colors.bgPanel,
-    '--holo-cyan': theme.colors.primary,
-    '--holo-gold': theme.colors.secondary,
-    '--holo-alert': theme.colors.alert,
-    '--text-main': theme.colors.textMain,
-    '--text-dim': theme.colors.textDim,
-    '--border-color': theme.colors.border,
-    '--button-bg': theme.colors.buttonBg,
-    '--button-selected': theme.colors.buttonSelected,
-    '--glow-color': theme.colors.glow,
-    '--border-radius': theme.borderRadius,
-    '--font-text': theme.fontFamily,
-    '--font-hud': theme.hudFont
-  };
-}
-
 // Theme Switcher Component
 function ThemeSwitcher({ style = {} }) {
   const { currentThemeId, setTheme, allThemes } = useTheme();

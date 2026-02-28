@@ -1,4 +1,5 @@
 {
+  "generatedAt": "2026-02-28T13:25:10.203Z",
   "counts": {
     "classCount": 30,
     "raceCount": 55,
@@ -35,7 +36,7 @@
     "primal_overlord",
     "deadeye_commander"
   ],
-  "skillClassCounts": [
+  "skillOwnerCounts": [
     [
       "universal",
       274
@@ -245,7 +246,7 @@
       4
     ]
   ],
-  "skillClassesMissingClass": [
+  "skillOwnersMissingClass": [
     "knight",
     "assassin",
     "priest",
@@ -280,6 +281,20 @@
     "repair",
     "portal_creation",
     "dyeing"
+  ],
+  "skillOwnersNotClassOrReserved": [
+    "knight",
+    "assassin",
+    "priest",
+    "bard",
+    "necromancer",
+    "druid",
+    "warlock",
+    "shaman",
+    "archer",
+    "summoner",
+    "templar",
+    "shadowblade"
   ],
   "classAbilityCoverage": [
     {
@@ -1220,7 +1235,7 @@
   "questsWithFavoredClasses": 26,
   "questsWithFavoredRaces": 24,
   "questsWithFavoredProfessions": 0,
-  "questFavoredClassMissing": [
+  "missingQuestFavoredClasses": [
     {
       "quest": "mq_fallen_spire",
       "classId": "sorcerer"
@@ -1334,10 +1349,10 @@
       "classId": "druid"
     }
   ],
-  "questFavoredRaceMissing": [],
-  "questFavoredProfMissing": [],
-  "questRewardItemMissingCount": 27,
-  "questRewardItemMissingSample": [
+  "missingQuestFavoredRaces": [],
+  "missingQuestFavoredProfessions": [],
+  "missingQuestRewardItemCount": 27,
+  "missingQuestRewardItemsSample": [
     {
       "quest": "bq_first_stride",
       "itemId": "ration_pack"
@@ -1447,6 +1462,40 @@
       "itemId": "caldera_seal"
     }
   ],
-  "godotRacesNotInRegistry": [],
-  "godotClassesNotInRegistry": []
+  "manifests": {
+    "maps": {
+      "missingInSync": [
+        "map_ruined_outlook"
+      ],
+      "missingInGodot": [],
+      "sharedCount": 2
+    },
+    "triggers": {
+      "missingInSync": [
+        "zone_exit_to_ruins",
+        "zone_exit_ruins_to_glade",
+        "zone_exit_ruins_to_square",
+        "savepoint_ruins_obelisk"
+      ],
+      "missingInGodot": [],
+      "sharedCount": 5
+    },
+    "objects": {
+      "missingInSync": [
+        "save_obelisk_ruins_01"
+      ],
+      "missingInGodot": [],
+      "sharedCount": 2
+    },
+    "mapTriggerDiffs": [
+      {
+        "mapId": "map_training_glade",
+        "missingInSync": [
+          "zone_exit_to_ruins"
+        ],
+        "missingInGodot": []
+      }
+    ],
+    "mismatchCount": 7
+  }
 }

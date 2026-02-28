@@ -1,0 +1,19 @@
+{
+  "version": "worldbuild_integrity_baseline_v1",
+  "updatedAt": "2026-02-28T13:24:52.641Z",
+  "signature": {
+    "classCount": 30,
+    "raceCount": 55,
+    "questCount": 29,
+    "itemCount": 37,
+    "classesMissingSkills": 12,
+    "skillOwnersNotClassOrReserved": 12,
+    "missingRecipeIngredientCount": 795,
+    "missingRecipeResultCount": 440,
+    "missingQuestFavoredClassCount": 28,
+    "missingQuestFavoredRaceCount": 0,
+    "missingQuestFavoredProfessionCount": 0,
+    "missingQuestRewardItemCount": 27,
+    "manifestMismatchCount": 7
+  }
+}

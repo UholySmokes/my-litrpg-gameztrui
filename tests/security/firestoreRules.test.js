@@ -10,21 +10,42 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 const PROJECT_ID = "demo-my-litrpg-gameztrui-rules";
 const RULES_PATH = path.resolve(process.cwd(), "firestore.rules");
+const FIRESTORE_EMULATOR_HOST = String(
+	process.env.FIRESTORE_EMULATOR_HOST || "",
+).trim();
 
-describe("firestore security rules", () => {
+function parseHostPort(hostPort) {
+	if (!hostPort) return null;
+	const trimmed = hostPort.trim();
+	const separator = trimmed.lastIndexOf(":");
+	if (separator <= 0 || separator >= trimmed.length - 1) return null;
+	const host = trimmed.slice(0, separator);
+	const port = Number.parseInt(trimmed.slice(separator + 1), 10);
+	if (!host || !Number.isFinite(port) || port < 1) return null;
+	return { host, port };
+}
+
+const emulatorTarget = parseHostPort(FIRESTORE_EMULATOR_HOST);
+const describeWithEmulator = emulatorTarget ? describe : describe.skip;
+
+describeWithEmulator("firestore security rules", () => {
 	let testEnv;
 
 	beforeAll(async () => {
 		testEnv = await initializeTestEnvironment({
 			projectId: PROJECT_ID,
 			firestore: {
+				host: emulatorTarget.host,
+				port: emulatorTarget.port,
 				rules: readFileSync(RULES_PATH, "utf8"),
 			},
 		});
 	});
 
 	afterAll(async () => {
-		await testEnv.cleanup();
+		if (testEnv) {
+			await testEnv.cleanup();
+		}
 	});
 
 	it("denies unauthenticated reads/writes to save-related collections", async () => {

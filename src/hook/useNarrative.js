@@ -1576,11 +1576,7 @@ export function useNarrative(
               actionType: action?.type,
             });
 
-            const aiResponse = await streamNarrative(
-              failurePrompt,
-              currentState,
-              { mode },
-            );
+            await streamNarrative(failurePrompt, currentState, { mode });
             // streamNarrative already updated state via onChunk + finalize
           } catch (aiError) {
             if (aiError?.name === "AbortError") return;
@@ -1674,7 +1670,7 @@ export function useNarrative(
           const promptState = actionResult.readOnly ? currentState : newState;
           const mode = resolvePromptMode(promptState, actionResult);
           const prompt = assemblePrompt(promptState, userInput, actionResult);
-          const aiResponse = await streamNarrative(prompt, promptState, { mode });
+          await streamNarrative(prompt, promptState, { mode });
 
           // streamNarrative already manages the entry; just evaluate quests
           setState((prevState) => {
@@ -1701,7 +1697,13 @@ export function useNarrative(
         setIsLoading(false);
       }
     },
-    [setState, addSystemMessage, evaluateQuestProgress, submitAction],
+    [
+      setState,
+      addSystemMessage,
+      evaluateQuestProgress,
+      submitAction,
+      streamNarrative,
+    ],
   );
 
   /**
@@ -1813,7 +1815,7 @@ export function useNarrative(
         setIsNarrating(false);
       }
     },
-    [setState, addSystemMessage, evaluateQuestProgress],
+    [setState, evaluateQuestProgress],
   );
 
   return {

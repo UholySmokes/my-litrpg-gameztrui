@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-28T13:58:58.307Z",
+  "generatedAt": "2026-02-28T14:07:14.713Z",
   "counts": {
     "classCount": 30,
     "raceCount": 55,
@@ -231,6 +231,20 @@
     [
       "dyeing",
       5
+    ]
+  ],
+  "skillOwnerTypeCounts": [
+    [
+      "class",
+      1867
+    ],
+    [
+      "universal",
+      274
+    ],
+    [
+      "profession",
+      105
     ]
   ],
   "skillOwnersOutsideClassSet": [
@@ -711,6 +725,59 @@
       "id": "dyeing",
       "recipes": 20
     }
+  ],
+  "placeholderItemCount": 546,
+  "placeholderItemIdsSample": [
+    "iron_ingot",
+    "iron_dagger",
+    "iron_chainmail",
+    "coal",
+    "steel_ingot",
+    "mythril_ore",
+    "spirit_essence",
+    "mythril_ingot",
+    "enchanted_leather",
+    "mythril_blade",
+    "adamantine_ingot",
+    "soul_gem",
+    "soulforged_helmet",
+    "blacksmithing_basic_blade",
+    "blacksmithing_basic_shield",
+    "blacksmithing_basic_armor",
+    "blacksmithing_basic_tool",
+    "blacksmithing_sturdy_blade",
+    "blacksmithing_sturdy_shield",
+    "blacksmithing_sturdy_armor",
+    "blacksmithing_sturdy_tool",
+    "arcane_dust",
+    "blacksmithing_enchanted_blade",
+    "blacksmithing_enchanted_shield",
+    "blacksmithing_enchanted_armor",
+    "blacksmithing_enchanted_tool",
+    "blacksmithing_masterwork_blade",
+    "blacksmithing_masterwork_shield",
+    "blacksmithing_masterwork_armor",
+    "blacksmithing_masterwork_tool",
+    "divine_metal",
+    "primordial_essence",
+    "rare_essence",
+    "blacksmithing_mythic_blade",
+    "blacksmithing_mythic_shield",
+    "blacksmithing_mythic_armor",
+    "blacksmithing_mythic_tool",
+    "common_herb",
+    "water",
+    "minor_healing_potion",
+    "spirit_flower",
+    "minor_mana_potion",
+    "medicinal_herb",
+    "purified_water",
+    "healing_potion",
+    "antidote_herb",
+    "charcoal",
+    "antidote",
+    "mind_focus_elixir",
+    "void_essence"
   ],
   "missingRecipeIngredientCount": 0,
   "missingRecipeResultCount": 0,

@@ -97,8 +97,7 @@ Strengths:
 
 Residual risks:
 
-- Skill ownership still overloads one owner field for class/profession/universal semantics.
-- Canonicalization logic currently protects against drift, but schema-level typing would reduce future ambiguity further.
+- Legacy consumers still read `skill.class`; dual-field compatibility (`class` + `ownerType/ownerId`) should be retained until all callers migrate.
 
 ### B. Races and Racial Effects
 
@@ -131,7 +130,7 @@ Strengths:
 
 Residual risks:
 
-- Closure currently includes generated placeholder item records for unresolved recipe IDs.
+- Closure currently includes generated placeholder item records for unresolved recipe IDs, now tagged with provenance metadata for curation.
 - Placeholder inflation can distort economy or reward quality if not curated into authored content.
 
 ### E. Quests and World Progression
@@ -253,8 +252,8 @@ Per content patch:
 
 ### P1 (High)
 
-- Introduce typed skill ownership schema (`ownerType` + `ownerId`).
-- Add placeholder provenance metadata and conversion workflow (placeholder -> authored item).
+- Complete downstream migration from legacy `skill.class` reads to `ownerType` + `ownerId`.
+- Add conversion workflow (placeholder -> authored item) using placeholder provenance metadata.
 
 ### P2 (Medium)
 

@@ -262,7 +262,10 @@ Per content patch:
 ### P2 (Medium)
 
 - Build an automated balance harness for TTK/TTF/resource/economy corridors.
+  - Implemented guard: `npm run validate:balance-corridors`
+  - Contract: `docs/contracts/balance_corridor_thresholds_v1.json`
 - Add race and class long-session relevance checks (not only existence/coverage).
+  - Included in balance corridor guard via race relevance spread and per-tier class power spread checks.
 
 ### P3 (Longer-term)
 
@@ -277,7 +280,7 @@ Current status versus target:
 - `0` unresolved item references in recipes/quest rewards: Met
 - `0` manifest drift between Godot and sync specs: Met
 - Tier-3 class skill identity coverage: Met
-- Automated balance corridor tests (TTK/TTF/economy): Not yet met
+- Automated balance corridor tests (TTK/TTF/economy): Met (contract-enforced)
 
 Overall assessment:
 

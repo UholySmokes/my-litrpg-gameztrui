@@ -2,6 +2,15 @@
 
 This repository includes a Firebase Hosting + Cloud Functions implementation under `functions/`.
 
+## Runtime Ownership (Functions)
+
+`functions/` is JS-first at runtime:
+- Production entrypoint: `functions/index.js`
+- Request routing and business logic: `functions/lib/**/*.js`
+- Package contract: `functions/package.json` uses CommonJS with `main: index.js`
+
+`functions/src/` is not the deployed runtime path for API handling. It contains Firebase template/generated artifacts and should not be treated as the source of truth for `/api/*` behavior.
+
 ## What This Enables
 
 - Hosting rewrites `/api/*` to a single Firebase function named `api`.

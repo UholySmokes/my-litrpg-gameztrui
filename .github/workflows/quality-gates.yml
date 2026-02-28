@@ -56,6 +56,12 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Runtime Contract Guard
+        run: npm run validate:runtime-contract
+
+      - name: Env Example Coverage Guard
+        run: npm run validate:env-examples
+
       - name: Lint
         run: npm run lint
 
@@ -176,6 +182,12 @@ jobs:
 
       - name: Install Functions Dependencies
         run: npm --prefix functions ci
+
+      - name: Functions Typecheck
+        run: npm --prefix functions run typecheck
+
+      - name: Runtime Contract Guard
+        run: npm run validate:runtime-contract
 
       - name: Functions Audit (moderate+)
         run: npm --prefix functions audit --audit-level=moderate

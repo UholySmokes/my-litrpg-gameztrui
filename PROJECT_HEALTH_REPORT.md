@@ -9,7 +9,7 @@ Overall health moved from critical failure to controlled risk:
 - Workspace dependencies are installed.
 - Worldbuilding integrity checks are passing in strict mode.
 
-**Overall Health Status**: LOW-MODERATE (buildable and testable; primary remaining debt is runtime architecture clarity).
+**Overall Health Status**: LOW (buildable, testable, and guarded by runtime/config integrity checks).
 
 ---
 
@@ -43,18 +43,21 @@ Overall health moved from critical failure to controlled risk:
 - `user_agent/requirements.txt` now exists.
 - Result: Dockerized Python path has explicit dependency baseline, even when currently stdlib-only.
 
+### Runtime Architecture Ownership (Resolved)
+- Canonical runtime path is now explicitly documented as JS-first:
+  - `functions/index.js` (entrypoint)
+  - `functions/lib/**/*.js` (API routing and handlers)
+- Documentation added in `docs/FIREBASE_QUICKSTART.md` under "Runtime Ownership (Functions)".
+- CI/runtime guard added to detect contract drift before merge.
+
 ---
 
 ## 2. Active Risks
 
-### Medium: Functions Runtime Source-of-Truth Is Ambiguous
-- `functions/package.json` uses CommonJS `main: index.js`.
-- `functions/tsconfig.json` targets `outDir: lib`.
-- `functions/src/` has limited TypeScript surface (`index.ts`, `genkit-sample.ts`) while core API runtime lives in `functions/lib/*.js`.
-- Risk: Unclear ownership between TS and JS paths can cause accidental breakage during refactors/build scripting.
-- Recommendation: Choose one canonical runtime path:
-  - Option A: full TS source in `src/` with generated `lib/`.
-  - Option B: JS runtime in `lib/` and remove conflicting TS compile assumptions.
+### Low: Legacy Scaffold Noise in `functions/src/`
+- `functions/src/` still contains Firebase template TypeScript that is not used for deployed `/api/*` runtime.
+- Risk: New contributors can still misinterpret scaffold files as active runtime source.
+- Recommendation: In a follow-up cleanup, archive or annotate template-only TS files to reduce onboarding ambiguity further.
 
 ---
 
@@ -83,15 +86,14 @@ Note:
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Frontend (React/Vite) | Stable | No immediate blocker found in this pass. |
-| Backend (Firebase Functions) | Stable with architecture debt | Runtime handlers restored; env docs updated; TS/JS ownership still ambiguous. |
+| Backend (Firebase Functions) | Stable | Runtime ownership documented, env docs updated, runtime contract guard in place. |
 | Game Engine (Godot) | Stable | `export_presets.cfg` present again. |
 | Shared Packages (`game-core`, `game-schemas`) | Stable | Worldbuild validation and targeted tests passing. |
-| Tooling/Docs | Improved | Health report and env contracts aligned in this pass. |
+| Tooling/Docs | Strong | Health report, env contracts, runtime contract checks, and CI guards aligned. |
 
 ---
 
 ## 5. Prioritized Next Actions
 
-1. Decide and document the canonical `functions/` runtime architecture (JS-first vs TS-first), then align scripts/files accordingly.
-2. Add a lightweight CI check that fails if critical infra files disappear (`functions/lib/handlers.js`, `godot/export_presets.cfg`).
-3. Add a CI guard that validates `.env.example` coverage for required runtime keys.
+1. (Optional cleanup) Annotate or archive template-only files in `functions/src/` to reduce contributor confusion.
+2. Expand runtime/env guard scripts if additional required infra files or env keys are introduced.

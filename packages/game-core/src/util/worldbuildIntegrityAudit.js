@@ -133,8 +133,11 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
 
   const reservedSkillOwners = new Set(["universal", ...professionIds]);
   const classesMissingSkills = [...classIds].filter((id) => !skillOwnerCounts.has(id));
-  const skillOwnersMissingClass = skillOwnerIds.filter(
+  const skillOwnersOutsideClassSet = skillOwnerIds.filter(
     (ownerId) => !classIds.has(ownerId),
+  );
+  const skillOwnersReservedNonClass = skillOwnersOutsideClassSet.filter((ownerId) =>
+    reservedSkillOwners.has(ownerId),
   );
   const skillOwnersNotClassOrReserved = skillOwnerIds.filter(
     (ownerId) => !classIds.has(ownerId) && !reservedSkillOwners.has(ownerId),
@@ -243,7 +246,8 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
     skillOwnerCounts: skillOwnerIds
       .map((id) => [id, skillOwnerCounts.get(id)])
       .sort((a, b) => b[1] - a[1]),
-    skillOwnersMissingClass,
+    skillOwnersOutsideClassSet,
+    skillOwnersReservedNonClass,
     skillOwnersNotClassOrReserved,
     classAbilityCoverage,
     raceAbilityCoverage,

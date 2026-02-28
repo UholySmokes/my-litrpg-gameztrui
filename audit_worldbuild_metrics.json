@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-28T13:34:31.655Z",
+  "generatedAt": "2026-02-28T13:36:58.889Z",
   "counts": {
     "classCount": 30,
     "raceCount": 55,
@@ -233,7 +233,31 @@
       5
     ]
   ],
-  "skillOwnersMissingClass": [
+  "skillOwnersOutsideClassSet": [
+    "universal",
+    "blacksmithing",
+    "alchemy",
+    "enchanting",
+    "tailoring",
+    "jewelcrafting",
+    "engineering",
+    "construction",
+    "mining",
+    "herbalism",
+    "skinning",
+    "logging",
+    "fishing",
+    "farming",
+    "cooking",
+    "brewing",
+    "butchery",
+    "inscription",
+    "first_aid",
+    "repair",
+    "portal_creation",
+    "dyeing"
+  ],
+  "skillOwnersReservedNonClass": [
     "universal",
     "blacksmithing",
     "alchemy",

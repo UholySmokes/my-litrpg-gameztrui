@@ -139,7 +139,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "ruins",
       tones: ["mysterious", "urgent"],
-      favoredClasses: ["battlemage", "sorcerer"],
+      favoredClasses: ["battlemage", "archmage"],
       favoredRaces: ["void_walker", "celestial_descendant"],
     },
   },
@@ -164,7 +164,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "city",
       tones: ["tense"],
-      favoredClasses: ["rogue", "shadow_dancer"],
+      favoredClasses: ["rogue", "shadow_assassin"],
       favoredRaces: ["shadow_walker", "neo_human"],
     },
   },
@@ -189,7 +189,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "wilds",
       tones: ["triumphant", "mystical"],
-      favoredClasses: ["druid", "ranger"],
+      favoredClasses: ["beastmaster", "ranger"],
       favoredRaces: ["nature_spirit", "beast_kin"],
     },
   },
@@ -214,7 +214,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "skydocks",
       tones: ["urgent", "heroic"],
-      favoredClasses: ["templar", "archer", "battlemage"],
+      favoredClasses: ["paladin", "sharpshooter", "battlemage"],
       favoredRaces: ["skybound", "starseer", "stormforged"],
     },
   },
@@ -239,7 +239,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "volcanic",
       tones: ["grim", "mystical"],
-      favoredClasses: ["berserker", "warlock", "druid"],
+      favoredClasses: ["berserker", "spellbreaker", "beastmaster"],
       favoredRaces: ["emberkin", "phoenix_reborn", "demon_kin"],
     },
   },
@@ -264,7 +264,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "undercity",
       tones: ["tense", "mysterious"],
-      favoredClasses: ["rogue", "shadowblade", "necromancer"],
+      favoredClasses: ["rogue", "night_reaper", "oracle_hierophant"],
       favoredRaces: ["gloomshade", "duskborne", "undead_awakened"],
     },
   },
@@ -289,7 +289,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "mountain",
       tones: ["stoic", "mysterious"],
-      favoredClasses: ["mage", "shaman", "battlemage"],
+      favoredClasses: ["mage", "tempest_reveler", "battlemage"],
       favoredRaces: ["crystal_being", "rune_sentinel", "ironroot"],
     },
   },
@@ -314,7 +314,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "coast",
       tones: ["urgent"],
-      favoredClasses: ["shaman", "ranger", "monk"],
+      favoredClasses: ["tempest_reveler", "ranger", "monk"],
       favoredRaces: ["tidecaller", "frostborne", "astral_nomad"],
     },
   },
@@ -339,7 +339,7 @@ let MAIN_QUESTS = [
     tags: {
       biome: "desert",
       tones: ["ethereal", "mysterious"],
-      favoredClasses: ["mage", "bard", "shadowblade"],
+      favoredClasses: ["mage", "trickster", "night_reaper"],
       favoredRaces: ["umbral_oracle", "mirageborn", "sandstrider"],
     },
   },
@@ -365,7 +365,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "city",
       tones: ["mysterious"],
-      favoredClasses: ["scholar", "battlemage"],
+      favoredClasses: ["mage", "battlemage"],
       favoredRaces: ["mechanical_construct", "ancient_bloodline"],
     },
   },
@@ -407,7 +407,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "skydocks",
       tones: ["whimsical"],
-      favoredClasses: ["artificer", "bard"],
+      favoredClasses: ["spellbreaker", "trickster"],
       favoredRaces: ["fae_touched", "phoenix_reborn"],
     },
   },
@@ -428,7 +428,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "dreamscape",
       tones: ["ethereal"],
-      favoredClasses: ["cleric", "psion"],
+      favoredClasses: ["cleric", "oracle_hierophant"],
       favoredRaces: ["void_walker", "phoenix_reborn"],
     },
   },
@@ -449,7 +449,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "skydocks",
       tones: ["urgent"],
-      favoredClasses: ["templar", "archer"],
+      favoredClasses: ["paladin", "sharpshooter"],
       favoredRaces: ["stormforged", "skybound"],
     },
   },
@@ -491,7 +491,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "mountain",
       tones: ["stoic"],
-      favoredClasses: ["shaman", "paladin"],
+      favoredClasses: ["tempest_reveler", "paladin"],
       favoredRaces: ["rune_sentinel", "ironroot"],
     },
   },
@@ -512,7 +512,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "wilds",
       tones: ["mystical"],
-      favoredClasses: ["druid", "ranger"],
+      favoredClasses: ["beastmaster", "ranger"],
       favoredRaces: ["verdant_shaper", "nature_spirit"],
     },
   },
@@ -533,7 +533,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "undercity",
       tones: ["tense"],
-      favoredClasses: ["rogue", "assassin"],
+      favoredClasses: ["rogue", "shadow_assassin"],
       favoredRaces: ["venomtail", "gloomshade"],
     },
   },
@@ -554,7 +554,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "city",
       tones: ["triumphant"],
-      favoredClasses: ["priest", "paladin"],
+      favoredClasses: ["cleric", "paladin"],
       favoredRaces: ["auric_seraph", "celestial_descendant"],
     },
   },
@@ -596,7 +596,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "coast",
       tones: ["mysterious"],
-      favoredClasses: ["battlemage", "summoner"],
+      favoredClasses: ["battlemage", "astral_archon"],
       favoredRaces: ["astral_nomad", "starseer"],
     },
   },
@@ -617,7 +617,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "desert",
       tones: ["ethereal"],
-      favoredClasses: ["bard", "ranger"],
+      favoredClasses: ["trickster", "ranger"],
       favoredRaces: ["mirageborn", "sandstrider"],
     },
   },
@@ -676,7 +676,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "skydocks",
       tones: ["urgent", "mysterious"],
-      favoredClasses: ["mage", "battlemage", "shaman"],
+      favoredClasses: ["mage", "battlemage", "tempest_reveler"],
       favoredRaces: ["stormforged", "skybound"],
     },
   },
@@ -707,7 +707,7 @@ let SIDE_QUESTS = [
     tags: {
       biome: "volcanic",
       tones: ["grim", "mystical"],
-      favoredClasses: ["warlock", "battlemage", "druid"],
+      favoredClasses: ["spellbreaker", "battlemage", "beastmaster"],
       favoredRaces: ["emberkin", "phoenix_reborn"],
     },
   },

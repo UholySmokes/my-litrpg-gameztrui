@@ -380,6 +380,258 @@ export let itemDatabase = {
     value: 500,
   },
 
+  ration_pack: {
+    id: "ration_pack",
+    name: "Ration Pack",
+    type: "consumable",
+    quantity: 1,
+    description: "Compact field rations that restore a small amount of health.",
+    effect: { heal: 15 },
+    rarity: "common",
+    value: 8,
+  },
+
+  bandage_roll: {
+    id: "bandage_roll",
+    name: "Bandage Roll",
+    type: "consumable",
+    quantity: 1,
+    description: "A sterile bandage roll for patching minor wounds.",
+    effect: { heal: 20 },
+    rarity: "common",
+    value: 12,
+  },
+
+  mana_leaf: {
+    id: "mana_leaf",
+    name: "Mana Leaf",
+    type: "material",
+    quantity: 1,
+    description: "A luminous leaf used in low-tier mana tinctures.",
+    rarity: "common",
+    value: 10,
+  },
+
+  leyline_shard: {
+    id: "leyline_shard",
+    name: "Leyline Shard",
+    type: "quest",
+    quantity: 1,
+    description: "A stabilized shard harvested from a fractured leyline core.",
+    rarity: "rare",
+    value: 120,
+  },
+
+  soulseal_token: {
+    id: "soulseal_token",
+    name: "Soulseal Token",
+    type: "quest",
+    quantity: 1,
+    description: "A notarized token stamped by undercity contract brokers.",
+    rarity: "uncommon",
+    value: 85,
+  },
+
+  ember_bloom_petal: {
+    id: "ember_bloom_petal",
+    name: "Ember Bloom Petal",
+    type: "material",
+    quantity: 1,
+    description: "A heatless petal from the Ember Bloom, prized by alchemists.",
+    rarity: "rare",
+    value: 140,
+  },
+
+  skyforge_core: {
+    id: "skyforge_core",
+    name: "Skyforge Core",
+    type: "quest",
+    quantity: 1,
+    description: "A compact core from seized skydock forge machinery.",
+    rarity: "rare",
+    value: 160,
+  },
+
+  caldera_seal: {
+    id: "caldera_seal",
+    name: "Caldera Seal",
+    type: "quest",
+    quantity: 1,
+    description: "A warded seal used to stabilize volcanic vent lines.",
+    rarity: "rare",
+    value: 150,
+  },
+
+  veil_ledger: {
+    id: "veil_ledger",
+    name: "Veil Ledger",
+    type: "quest",
+    quantity: 1,
+    description: "An encoded ledger page recovered from the Veil Archive.",
+    rarity: "rare",
+    value: 170,
+  },
+
+  resonance_shard: {
+    id: "resonance_shard",
+    name: "Resonance Shard",
+    type: "material",
+    quantity: 1,
+    description: "A crystal fragment vibrating at a stable tuning frequency.",
+    rarity: "uncommon",
+    value: 65,
+  },
+
+  tide_ward_charm: {
+    id: "tide_ward_charm",
+    name: "Tideward Charm",
+    type: "quest",
+    quantity: 1,
+    description: "A charm attuned to coastal barrier wards.",
+    rarity: "uncommon",
+    value: 90,
+  },
+
+  sundial_glyph: {
+    id: "sundial_glyph",
+    name: "Sundial Glyph",
+    type: "quest",
+    quantity: 1,
+    description: "A glyph plate copied from the Oracle Sundial.",
+    rarity: "rare",
+    value: 130,
+  },
+
+  encrypted_cube: {
+    id: "encrypted_cube",
+    name: "Encrypted Cube",
+    type: "quest",
+    quantity: 1,
+    description: "A stasis cube sealed behind rotating rune ciphers.",
+    rarity: "uncommon",
+    value: 75,
+  },
+
+  cleansed_toxin: {
+    id: "cleansed_toxin",
+    name: "Cleansed Toxin",
+    type: "material",
+    quantity: 1,
+    description: "Neutralized ghoul toxin safe for antidote refining.",
+    rarity: "uncommon",
+    value: 55,
+  },
+
+  skyfisher_filament: {
+    id: "skyfisher_filament",
+    name: "Skyfisher Filament",
+    type: "material",
+    quantity: 1,
+    description: "Elastic filament harvested from skyfisher wing-webbing.",
+    rarity: "uncommon",
+    value: 60,
+  },
+
+  mnemonic_vial: {
+    id: "mnemonic_vial",
+    name: "Mnemonic Vial",
+    type: "quest",
+    quantity: 1,
+    description: "A sealed vial containing distilled memory dust.",
+    rarity: "uncommon",
+    value: 95,
+  },
+
+  storm_capacitor: {
+    id: "storm_capacitor",
+    name: "Storm Capacitor",
+    type: "quest",
+    quantity: 1,
+    description: "A stabilized capacitor coil humming with static charge.",
+    rarity: "rare",
+    value: 135,
+  },
+
+  frost_lattice: {
+    id: "frost_lattice",
+    name: "Frost Lattice",
+    type: "quest",
+    quantity: 1,
+    description: "A chilled lattice crystal for containment studies.",
+    rarity: "rare",
+    value: 125,
+  },
+
+  rune_cache: {
+    id: "rune_cache",
+    name: "Rune Cache",
+    type: "quest",
+    quantity: 1,
+    description: "A cache capsule of compressed runic tablets.",
+    rarity: "rare",
+    value: 145,
+  },
+
+  spore_sac: {
+    id: "spore_sac",
+    name: "Spore Sac",
+    type: "material",
+    quantity: 1,
+    description: "A volatile sac of bloom spores gathered in the wilds.",
+    rarity: "common",
+    value: 22,
+  },
+
+  prime_venom: {
+    id: "prime_venom",
+    name: "Prime Venom",
+    type: "material",
+    quantity: 1,
+    description: "A concentrated venom sample for high-potency antidotes.",
+    rarity: "rare",
+    value: 110,
+  },
+
+  auric_chime: {
+    id: "auric_chime",
+    name: "Auric Chime",
+    type: "quest",
+    quantity: 1,
+    description: "A tuning chime used in cathedral resonance rites.",
+    rarity: "uncommon",
+    value: 88,
+  },
+
+  support_brace: {
+    id: "support_brace",
+    name: "Support Brace",
+    type: "material",
+    quantity: 1,
+    description: "A reinforced brace used to secure unstable tunnel supports.",
+    rarity: "common",
+    value: 18,
+  },
+
+  waypoint_fragment: {
+    id: "waypoint_fragment",
+    name: "Waypoint Fragment",
+    type: "quest",
+    quantity: 1,
+    description: "A shard from an astral navigation waypoint.",
+    rarity: "rare",
+    value: 118,
+  },
+
+  mirage_map: {
+    id: "mirage_map",
+    name: "Mirage Map",
+    type: "quest",
+    quantity: 1,
+    description: "A shifting map that reveals trails only at the right light angle.",
+    rarity: "uncommon",
+    value: 92,
+  },
+
   // Premium pool exclusives (accessories with canonical stat hooks)
   astral_token: {
     id: "astral_token",

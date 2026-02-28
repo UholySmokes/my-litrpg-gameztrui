@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-28T13:25:10.203Z",
+  "generatedAt": "2026-02-28T13:29:09.418Z",
   "counts": {
     "classCount": 30,
     "raceCount": 55,
@@ -7,7 +7,7 @@
     "raceAbilityCount": 55,
     "totalSkills": 1648,
     "professionCount": 21,
-    "itemCount": 37,
+    "itemCount": 62,
     "questCount": 29
   },
   "classTierCounts": {
@@ -1235,267 +1235,28 @@
   "questsWithFavoredClasses": 26,
   "questsWithFavoredRaces": 24,
   "questsWithFavoredProfessions": 0,
-  "missingQuestFavoredClasses": [
-    {
-      "quest": "mq_fallen_spire",
-      "classId": "sorcerer"
-    },
-    {
-      "quest": "mq_whisper_market",
-      "classId": "shadow_dancer"
-    },
-    {
-      "quest": "mq_ember_bloom",
-      "classId": "druid"
-    },
-    {
-      "quest": "mq_starforge_siege",
-      "classId": "templar"
-    },
-    {
-      "quest": "mq_starforge_siege",
-      "classId": "archer"
-    },
-    {
-      "quest": "mq_ashen_caldera",
-      "classId": "warlock"
-    },
-    {
-      "quest": "mq_ashen_caldera",
-      "classId": "druid"
-    },
-    {
-      "quest": "mq_veil_archive",
-      "classId": "shadowblade"
-    },
-    {
-      "quest": "mq_veil_archive",
-      "classId": "necromancer"
-    },
-    {
-      "quest": "mq_crystal_forge",
-      "classId": "shaman"
-    },
-    {
-      "quest": "mq_tide_breach",
-      "classId": "shaman"
-    },
-    {
-      "quest": "mq_oracle_sundial",
-      "classId": "bard"
-    },
-    {
-      "quest": "mq_oracle_sundial",
-      "classId": "shadowblade"
-    },
-    {
-      "quest": "sq_cryptic_cache",
-      "classId": "scholar"
-    },
-    {
-      "quest": "sq_skyfisher",
-      "classId": "artificer"
-    },
-    {
-      "quest": "sq_skyfisher",
-      "classId": "bard"
-    },
-    {
-      "quest": "sq_mnemonic_dust",
-      "classId": "psion"
-    },
-    {
-      "quest": "sq_storm_capacitor",
-      "classId": "templar"
-    },
-    {
-      "quest": "sq_storm_capacitor",
-      "classId": "archer"
-    },
-    {
-      "quest": "sq_rune_cache",
-      "classId": "shaman"
-    },
-    {
-      "quest": "sq_bloomed_spores",
-      "classId": "druid"
-    },
-    {
-      "quest": "sq_venom_exchange",
-      "classId": "assassin"
-    },
-    {
-      "quest": "sq_auric_harmony",
-      "classId": "priest"
-    },
-    {
-      "quest": "sq_astral_waypoint",
-      "classId": "summoner"
-    },
-    {
-      "quest": "sq_mirage_map",
-      "classId": "bard"
-    },
-    {
-      "quest": "sq_source_stormwater",
-      "classId": "shaman"
-    },
-    {
-      "quest": "sq_source_ashfire",
-      "classId": "warlock"
-    },
-    {
-      "quest": "sq_source_ashfire",
-      "classId": "druid"
-    }
-  ],
+  "missingQuestFavoredClasses": [],
   "missingQuestFavoredRaces": [],
   "missingQuestFavoredProfessions": [],
-  "missingQuestRewardItemCount": 27,
-  "missingQuestRewardItemsSample": [
-    {
-      "quest": "bq_first_stride",
-      "itemId": "ration_pack"
-    },
-    {
-      "quest": "bq_first_conflict",
-      "itemId": "bandage_roll"
-    },
-    {
-      "quest": "bq_arcane_awareness",
-      "itemId": "mana_leaf"
-    },
-    {
-      "quest": "mq_fallen_spire",
-      "itemId": "leyline_shard"
-    },
-    {
-      "quest": "mq_whisper_market",
-      "itemId": "soulseal_token"
-    },
-    {
-      "quest": "mq_ember_bloom",
-      "itemId": "ember_bloom_petal"
-    },
-    {
-      "quest": "mq_starforge_siege",
-      "itemId": "skyforge_core"
-    },
-    {
-      "quest": "mq_ashen_caldera",
-      "itemId": "caldera_seal"
-    },
-    {
-      "quest": "mq_veil_archive",
-      "itemId": "veil_ledger"
-    },
-    {
-      "quest": "mq_crystal_forge",
-      "itemId": "resonance_shard"
-    },
-    {
-      "quest": "mq_tide_breach",
-      "itemId": "tide_ward_charm"
-    },
-    {
-      "quest": "mq_oracle_sundial",
-      "itemId": "sundial_glyph"
-    },
-    {
-      "quest": "sq_cryptic_cache",
-      "itemId": "encrypted_cube"
-    },
-    {
-      "quest": "sq_ghoul_pit",
-      "itemId": "cleansed_toxin"
-    },
-    {
-      "quest": "sq_skyfisher",
-      "itemId": "skyfisher_filament"
-    },
-    {
-      "quest": "sq_mnemonic_dust",
-      "itemId": "mnemonic_vial"
-    },
-    {
-      "quest": "sq_storm_capacitor",
-      "itemId": "storm_capacitor"
-    },
-    {
-      "quest": "sq_frost_lattice",
-      "itemId": "frost_lattice"
-    },
-    {
-      "quest": "sq_rune_cache",
-      "itemId": "rune_cache"
-    },
-    {
-      "quest": "sq_bloomed_spores",
-      "itemId": "spore_sac"
-    },
-    {
-      "quest": "sq_venom_exchange",
-      "itemId": "prime_venom"
-    },
-    {
-      "quest": "sq_auric_harmony",
-      "itemId": "auric_chime"
-    },
-    {
-      "quest": "sq_quake_relief",
-      "itemId": "support_brace"
-    },
-    {
-      "quest": "sq_astral_waypoint",
-      "itemId": "waypoint_fragment"
-    },
-    {
-      "quest": "sq_mirage_map",
-      "itemId": "mirage_map"
-    },
-    {
-      "quest": "sq_source_stormwater",
-      "itemId": "storm_capacitor"
-    },
-    {
-      "quest": "sq_source_ashfire",
-      "itemId": "caldera_seal"
-    }
-  ],
+  "missingQuestRewardItemCount": 0,
+  "missingQuestRewardItemsSample": [],
   "manifests": {
     "maps": {
-      "missingInSync": [
-        "map_ruined_outlook"
-      ],
+      "missingInSync": [],
       "missingInGodot": [],
-      "sharedCount": 2
+      "sharedCount": 3
     },
     "triggers": {
-      "missingInSync": [
-        "zone_exit_to_ruins",
-        "zone_exit_ruins_to_glade",
-        "zone_exit_ruins_to_square",
-        "savepoint_ruins_obelisk"
-      ],
+      "missingInSync": [],
       "missingInGodot": [],
-      "sharedCount": 5
+      "sharedCount": 9
     },
     "objects": {
-      "missingInSync": [
-        "save_obelisk_ruins_01"
-      ],
+      "missingInSync": [],
       "missingInGodot": [],
-      "sharedCount": 2
+      "sharedCount": 3
     },
-    "mapTriggerDiffs": [
-      {
-        "mapId": "map_training_glade",
-        "missingInSync": [
-          "zone_exit_to_ruins"
-        ],
-        "missingInGodot": []
-      }
-    ],
-    "mismatchCount": 7
+    "mapTriggerDiffs": [],
+    "mismatchCount": 0
   }
 }

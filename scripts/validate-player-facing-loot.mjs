@@ -5,12 +5,12 @@ import {
   itemDatabase,
   isGeneratedPlaceholderItem,
 } from "../packages/game-core/src/data/registries/ItemDataRegistry.js";
+import { shopDatabase } from "../packages/game-core/src/data/shopData.js";
 import {
-  BEGINNER_QUESTS,
-  MAIN_QUESTS,
-  SIDE_QUESTS,
-} from "../packages/game-core/src/data/QuestCatalog.js";
-import { enemies } from "../packages/game-core/src/data/registries/EnemyDataRegistry.js";
+  collectEnemyDropItemRefs,
+  collectQuestRewardItemRefs,
+  collectShopStockItemRefs,
+} from "../packages/game-core/src/util/placeholderItemCuration.js";
 
 const ALLOWLIST_PATH = path.resolve(
   process.cwd(),
@@ -41,43 +41,6 @@ const readAllowlist = async () => {
 const normalizeItemId = (value) =>
   typeof value === "string" && value.trim().length > 0 ? value.trim() : "";
 
-const collectQuestRewardRefs = () => {
-  const refs = [];
-  const allQuests = [...BEGINNER_QUESTS, ...MAIN_QUESTS, ...SIDE_QUESTS];
-  for (const quest of allQuests) {
-    const rewardItems = Array.isArray(quest?.rewards?.items) ? quest.rewards.items : [];
-    for (const rewardItem of rewardItems) {
-      const itemId = normalizeItemId(rewardItem?.id || rewardItem?.itemId);
-      if (!itemId) continue;
-      refs.push({
-        sourceType: "quest_reward",
-        sourceId: String(quest.id || ""),
-        itemId,
-      });
-    }
-  }
-  return refs;
-};
-
-const collectEnemyDropRefs = () => {
-  const refs = [];
-  for (const enemy of Array.isArray(enemies) ? enemies : []) {
-    const drops = Array.isArray(enemy?.drops) ? enemy.drops : [];
-    for (const drop of drops) {
-      const itemId = normalizeItemId(
-        typeof drop === "string" ? drop : drop?.item || drop?.itemId || drop?.id,
-      );
-      if (!itemId) continue;
-      refs.push({
-        sourceType: "enemy_drop",
-        sourceId: String(enemy.id || ""),
-        itemId,
-      });
-    }
-  }
-  return refs;
-};
-
 const dedupeRefs = (refs) => {
   const seen = new Set();
   const output = [];
@@ -102,9 +65,13 @@ const printIssueSample = (label, issues) => {
 
 async function main() {
   const { allowedItemIds } = await readAllowlist();
+  const questRefs = collectQuestRewardItemRefs();
+  const enemyRefs = collectEnemyDropItemRefs();
+  const shopRefs = collectShopStockItemRefs(shopDatabase);
   const lootRefs = dedupeRefs([
-    ...collectQuestRewardRefs(),
-    ...collectEnemyDropRefs(),
+    ...questRefs,
+    ...enemyRefs,
+    ...shopRefs,
   ]);
 
   const missingItems = [];
@@ -131,8 +98,14 @@ async function main() {
     return;
   }
 
+  const sourceCounts = lootRefs.reduce((acc, ref) => {
+    const key = normalizeItemId(ref.sourceType) || "unknown";
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+
   console.log(
-    `[player-loot-contract] PASS refs=${lootRefs.length} allowlist=${allowedItemIds.size} placeholderViolations=0`,
+    `[player-loot-contract] PASS refs=${lootRefs.length} allowlist=${allowedItemIds.size} placeholderViolations=0 sources=${JSON.stringify(sourceCounts)}`,
   );
 }
 

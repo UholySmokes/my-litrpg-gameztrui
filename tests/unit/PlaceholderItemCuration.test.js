@@ -1,7 +1,27 @@
 import { describe, expect, it } from "@jest/globals";
-import { buildPlaceholderItemCurationReport } from "@voidverse/game-core/util/placeholderItemCuration.js";
+import {
+  buildPlaceholderItemCurationReport,
+  collectEnemyDropItemRefs,
+  collectQuestRewardItemRefs,
+  collectShopStockItemRefs,
+} from "@voidverse/game-core/util/placeholderItemCuration.js";
+import { shopDatabase } from "@voidverse/game-core/data/shopData.js";
 
 describe("placeholder item curation queue", () => {
+  it("collects stable player-facing item references from quests/enemies/shops", () => {
+    const questRefs = collectQuestRewardItemRefs();
+    const enemyRefs = collectEnemyDropItemRefs();
+    const shopRefs = collectShopStockItemRefs(shopDatabase);
+
+    expect(questRefs.length).toBeGreaterThan(0);
+    expect(enemyRefs.length).toBeGreaterThan(0);
+    expect(shopRefs.length).toBeGreaterThan(0);
+
+    expect(questRefs.some((ref) => ref.itemId === "ration_pack")).toBe(true);
+    expect(enemyRefs.some((ref) => ref.itemId === "goblin_ear")).toBe(true);
+    expect(shopRefs.some((ref) => ref.itemId === "health_potion")).toBe(true);
+  });
+
   it("builds a queue from generated placeholders", () => {
     const report = buildPlaceholderItemCurationReport();
     expect(report).toBeTruthy();

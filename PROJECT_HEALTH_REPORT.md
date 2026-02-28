@@ -1,82 +1,95 @@
-# Project Health & Integrity Report
+﻿# Project Health & Integrity Report
 
 ## Executive Summary
-A comprehensive scan of the `my-litrpg-gameztrui` project reveals a mixed-technology stack (React/Vite, Firebase Functions, Godot, Python) with a Monorepo structure. While the codebase contains significant functionality, there are **CRITICAL** missing components that will prevent both the backend API from starting and the game client from building.
+This report reflects the current repository state as of 2026-02-28.
 
-**Overall Health Status**: 🔴 **CRITICAL** - Immediate remediation required for build and runtime stability.
+Overall health moved from critical failure to controlled risk:
+- Backend route handlers are present.
+- Godot export presets are present.
+- Workspace dependencies are installed.
+- Worldbuilding integrity checks are passing in strict mode.
 
----
-
-## 1. Critical Issues (Blocking Run/Build)
-
-### 🔴 Missing Backend Handler Logic
-*   **Location**: `functions/lib/handlers.js`
-*   **Impact**: **API CRASH**. The `functions/lib/api-router.js` file explicitly requires `./handlers`, but this file does not exist in `functions/lib/` or `functions/`.
-*   **Consequence**: The Firebase Function `api` will fail to initialize, causing all API endpoints (`/api/narrate`, `/api/health`, etc.) to error with `MODULE_NOT_FOUND`.
-*   **Recommendation**: Restore `handlers.js` from backup or history, or reimplement the missing route handlers (`health`, `agents`, `narrate`, `narrateStart`, `narratePoll`).
-
-### 🔴 Missing Godot Export Configuration
-*   **Location**: `godot/export_presets.cfg`
-*   **Impact**: **BUILD FAILURE**. The build script `scripts/configure-android-signing.mjs` and Godot export process rely on this file. Only a backup (`export_presets.cfg.bak.codex`) exists.
-*   **Consequence**: Android and Web builds cannot be generated.
-*   **Recommendation**: Restore `export_presets.cfg` from the backup or regenerate it within the Godot Editor.
+**Overall Health Status**: MODERATE (buildable and testable, with cleanup/documentation debt).
 
 ---
 
-## 2. High Severity Issues (Configuration & Dependencies)
+## 1. Resolved Blockers
 
-### 🟠 Missing/Uninstalled Dependencies
-*   **Location**: Root and subdirectories
-*   **Impact**: **CANNOT RUN**. `node_modules` are missing (standard for fresh clones), but `functions/` and `packages/` also lack installed dependencies.
-*   **Recommendation**: Run `npm install` in the root (which should handle workspaces). Ensure `functions/` dependencies are also installed if not covered by root workspaces.
+### Backend Handler Availability (Resolved)
+- Location: `functions/lib/handlers.js`
+- Current state: File exists and exports expected handlers used by `functions/lib/api-router.js`.
+- Result: Prior `MODULE_NOT_FOUND` startup risk for API routing is removed.
 
-### 🟠 Incomplete Environment Configuration
-*   **Location**: `functions/.env.example`
-*   **Impact**: **RUNTIME ERRORS**.
-    *   `functions/lib/narrate-runs-store.js` uses `NARRATE_RUN_TTL_MS`, which is missing from `functions/.env.example`.
-    *   `src/observability/initTracing.node.js` uses `TRACE_ENABLED`, `OTEL_EXPORTER_OTLP_ENDPOINT`, etc., which are not documented in root `.env.example`.
-*   **Recommendation**: Update `.env.example` files to include all required variables.
+### Godot Export Presets (Resolved)
+- Location: `godot/export_presets.cfg`
+- Current state: File exists (restored from backup during remediation).
+- Result: Build tooling that depends on export presets can run again.
 
----
-
-## 3. Medium Severity Issues (Structure & Maintenance)
-
-### 🟡 Confused Functions Build Process
-*   **Location**: `functions/`
-*   **Issue**: `functions/package.json` specifies `"main": "index.js"` (CommonJS), but `functions/tsconfig.json` specifies `"outDir": "lib"`.
-    *   `functions/src/` contains `index.ts` and `genkit-sample.ts` but **NO** `api-router.ts` or `handlers.ts`.
-    *   `functions/lib/` contains `api-router.js` (CommonJS) but **NO** `handlers.js`.
-*   **Risk**: It is unclear if `functions/` is meant to be a TypeScript project compiled to `lib/` or a JavaScript project. Running `tsc` might overwrite valid JS files in `lib/` with incomplete TS compilations.
-*   **Recommendation**: Clarify if `functions` is TS or JS. If TS, migrate all `lib/*.js` files to `src/*.ts`. If JS, remove `tsconfig.json` and `src/*.ts` to avoid confusion.
-
-### 🟡 Missing Python Dependencies File
-*   **Location**: `user_agent/`
-*   **Issue**: `Dockerfile` checks for `requirements.txt`, but it does not exist.
-*   **Impact**: While `main.py` currently only uses standard libraries, future additions will fail without this file.
-*   **Recommendation**: Create an empty `requirements.txt` or remove the check from `Dockerfile` if strictly standard lib.
+### Dependency Presence (Resolved for current workspace)
+- `node_modules` exists at repo root and in `functions/`.
+- Result: Local runtime/test setup is no longer blocked by missing installs.
 
 ---
 
-## 4. Component Analysis & Missing References
+## 2. Active Risks
 
-| Component | Status | Missing / Broken References |
-|-----------|--------|-----------------------------|
-| **Frontend (React)** | 🟡 Warning | `src/main.jsx` imports exist, but `dataconnect-generated` imports in `package.json` need verification after `npm install`. |
-| **Backend (Firebase)** | 🔴 Critical | `functions/lib/handlers.js` (MISSING). `functions/.env` missing vars. |
-| **Game Engine (Godot)** | 🔴 Critical | `godot/export_presets.cfg` (MISSING). |
-| **Packages** | 🟢 OK | `game-core` and `game-schemas` structure appears valid. |
-| **Documentation** | 🟢 OK | Extensive docs available, though scattered. |
+### High: Environment Variable Documentation Drift
+- `functions/lib/narrate-runs-store.js` supports `NARRATE_RUN_TTL_MS`, but `functions/.env.example` does not document it.
+- Root `.env.example` does not document tracing-related variables used by observability initialization.
+- Risk: Operators do not have a complete contract for runtime configuration.
+- Recommendation: Add explicit variable docs and defaults in both `.env.example` files.
+
+### Medium: Functions Runtime Source-of-Truth Is Ambiguous
+- `functions/package.json` uses CommonJS `main: index.js`.
+- `functions/tsconfig.json` targets `outDir: lib`.
+- `functions/src/` has limited TypeScript surface (`index.ts`, `genkit-sample.ts`) while core API runtime lives in `functions/lib/*.js`.
+- Risk: Unclear ownership between TS and JS paths can cause accidental breakage during refactors/build scripting.
+- Recommendation: Choose one canonical runtime path:
+  - Option A: full TS source in `src/` with generated `lib/`.
+  - Option B: JS runtime in `lib/` and remove conflicting TS compile assumptions.
+
+### Low: Python Packaging Hygiene
+- `user_agent/requirements.txt` is absent.
+- Risk: Future non-stdlib additions can become implicit and non-reproducible.
+- Recommendation: add `requirements.txt` (empty is acceptable) or remove dependency-check logic in Docker path if intentionally stdlib-only.
 
 ---
 
-## 5. Remediation Plan
+## 3. Worldbuilding Integrity Snapshot
 
-1.  **Immediate Fixes**:
-    *   Recreate/Restore `functions/lib/handlers.js`.
-    *   Restore `godot/export_presets.cfg` from `.bak.codex` or Godot Editor.
-2.  **Setup**:
-    *   Run `npm install`.
-    *   Copy `.env.example` to `.env` and fill values.
-3.  **Cleanup**:
-    *   Decide on TS vs JS for `functions/` and consolidate.
-    *   Add missing env vars to documentation.
+Validation evidence:
+- `npm run validate:worldbuild:strict`: PASS (2026-02-28)
+- `npm test -- tests/unit/WorldbuildIntegrityAudit.test.js tests/unit/SkillRegistryCanonicalization.test.js`: PASS
+
+Current integrity metrics (`audit_worldbuild_metrics.json`):
+- `classesMissingSkills`: `[]`
+- `skillOwnersNotClassOrReserved`: `[]`
+- `missingRecipeIngredientCount`: `0`
+- `missingRecipeResultCount`: `0`
+- `missingQuestFavoredClassCount`: `0`
+- `missingQuestRewardItemCount`: `0`
+- `manifestMismatchCount`: `0`
+
+Note:
+- `itemCount` is currently elevated by recipe-driven placeholder generation. This is valid for integrity closure but should be tracked so placeholders do not leak into player-facing balance/economy systems.
+
+---
+
+## 4. Component Status Matrix
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Frontend (React/Vite) | Stable | No immediate blocker found in this pass. |
+| Backend (Firebase Functions) | Stable with config debt | Runtime handlers restored; env docs incomplete. |
+| Game Engine (Godot) | Stable | `export_presets.cfg` present again. |
+| Shared Packages (`game-core`, `game-schemas`) | Stable | Worldbuild validation and targeted tests passing. |
+| Tooling/Docs | Needs cleanup | Health doc previously stale; env contracts need updates. |
+
+---
+
+## 5. Prioritized Next Actions
+
+1. Update `functions/.env.example` and root `.env.example` with full runtime and tracing variable contracts.
+2. Decide and document the canonical `functions/` runtime architecture (JS-first vs TS-first), then align scripts/files accordingly.
+3. Add `user_agent/requirements.txt` (or remove Docker check) to make Python runtime intent explicit.
+4. Add a lightweight CI check that fails if critical infra files disappear (`functions/lib/handlers.js`, `godot/export_presets.cfg`).

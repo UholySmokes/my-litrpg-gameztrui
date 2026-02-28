@@ -16,6 +16,10 @@ import {
   getZoneById,
   resolveLocationId,
 } from "../../world/WorldDataRegistry.js";
+import {
+  classes as canonicalClasses,
+  getClassLineage,
+} from "../../data/registries/ClassDataRegistry.js";
 import { getAllClassAbilityIds, getClassAbilityById, getAbilityOwner } from "../class/ClassAbilityRegistry.js";
 import { PROFESSIONS } from "../profession/ProfessionRegistry.js";
 
@@ -10627,18 +10631,108 @@ const classSkillsDatabase = {
   },
 };
 
+const CANONICAL_CLASS_ID_SET = new Set(
+  (canonicalClasses || [])
+    .map((entry) => entry?.id)
+    .filter((id) => typeof id === "string" && id.length > 0),
+);
+
+// Legacy class ids used in the skill library are mapped onto canonical class ids.
+const LEGACY_CLASS_TO_CANONICAL = {
+  knight: "guardian",
+  priest: "cleric",
+  assassin: "shadow_assassin",
+  bard: "trickster",
+  necromancer: "oracle_hierophant",
+  druid: "beastmaster",
+  warlock: "spellbreaker",
+  shaman: "tempest_reveler",
+  archer: "sharpshooter",
+  summoner: "astral_archon",
+  templar: "paladin",
+  shadowblade: "night_reaper",
+};
+
+// Canonical classes without direct skill packs can point at legacy or parent packs.
+const CANONICAL_CLASS_SKILL_SOURCE_OVERRIDES = {
+  cleric: "priest",
+  guardian: "knight",
+  shadow_assassin: "assassin",
+  high_priest: "priest",
+  sharpshooter: "archer",
+  trickster: "bard",
+  oracle_hierophant: "necromancer",
+  beastmaster: "druid",
+  spellbreaker: "warlock",
+  tempest_reveler: "shaman",
+  astral_archon: "summoner",
+  night_reaper: "shadowblade",
+  dawn_vindicator: "templar",
+};
+
+function toCanonicalSkillClassId(classId) {
+  if (typeof classId !== "string" || classId.trim().length === 0) return classId;
+  const normalized = classId.trim();
+  if (CANONICAL_CLASS_ID_SET.has(normalized)) return normalized;
+  return LEGACY_CLASS_TO_CANONICAL[normalized] || normalized;
+}
+
+function resolveSkillSourceClassId(classId) {
+  if (typeof classId !== "string" || classId.trim().length === 0) return null;
+  const normalized = classId.trim();
+  if (classSkillsDatabase[normalized]) return normalized;
+
+  const override = CANONICAL_CLASS_SKILL_SOURCE_OVERRIDES[normalized];
+  if (override && classSkillsDatabase[override]) return override;
+
+  const lineage = getClassLineage(normalized);
+  for (let index = lineage.length - 1; index >= 0; index -= 1) {
+    const candidate = lineage[index]?.id;
+    if (!candidate) continue;
+    if (classSkillsDatabase[candidate]) return candidate;
+    const lineageOverride = CANONICAL_CLASS_SKILL_SOURCE_OVERRIDES[candidate];
+    if (lineageOverride && classSkillsDatabase[lineageOverride]) {
+      return lineageOverride;
+    }
+  }
+
+  return null;
+}
+
 /**
  * Get skills for a class (returns 4 active and 12 passive randomly selected)
  */
 export function getSkillsByClass(classId) {
-  const classSkills = classSkillsDatabase[classId];
+  const requestedClassId =
+    typeof classId === "string"
+      ? classId
+      : classId && typeof classId === "object"
+        ? classId.id
+        : null;
+  const sourceClassId = resolveSkillSourceClassId(requestedClassId || "");
+  const classSkills = sourceClassId ? classSkillsDatabase[sourceClassId] : null;
   if (!classSkills) {
     return { active: [], passive: [] };
   }
 
+  const normalizedClassId =
+    requestedClassId && CANONICAL_CLASS_ID_SET.has(requestedClassId)
+      ? requestedClassId
+      : toCanonicalSkillClassId(sourceClassId || requestedClassId);
+
   return {
-    active: getRandomSkills(classSkills.active || [], 8).map(normalizeSkillTemplate),
-    passive: getRandomSkills(classSkills.passive || [], 12).map(normalizeSkillTemplate),
+    active: getRandomSkills(classSkills.active || [], 8).map((skill) =>
+      normalizeSkillTemplate({
+        ...skill,
+        class: normalizedClassId || skill.class || sourceClassId,
+      }),
+    ),
+    passive: getRandomSkills(classSkills.passive || [], 12).map((skill) =>
+      normalizeSkillTemplate({
+        ...skill,
+        class: normalizedClassId || skill.class || sourceClassId,
+      }),
+    ),
   };
 }
 
@@ -10844,7 +10938,11 @@ try {
       // Map to SkillRegistry format
       const isPassive = !ability.cost && !ability.cooldown && !ability.damage;
       const metaOwner = ability.template?.meta?.ownerId;
-      const resolvedClass = (metaOwner && metaOwner !== "unbound") ? metaOwner : (getAbilityOwner(ability.id) || "universal");
+      const resolvedClassRaw =
+        (metaOwner && metaOwner !== "unbound")
+          ? metaOwner
+          : (getAbilityOwner(ability.id) || "universal");
+      const resolvedClass = toCanonicalSkillClassId(resolvedClassRaw);
       
       classAbilitySkills.push({
         ...ability,
@@ -10879,17 +10977,29 @@ try {
 export function getAllSkills() {
   const allSkills = [];
 
-  // Add class-specific skills
-  for (const classId in classSkillsDatabase) {
-    const skills = classSkillsDatabase[classId];
+  // Add class-specific skills using canonical class ids with lineage fallback.
+  for (const classDef of canonicalClasses || []) {
+    const canonicalClassId = classDef?.id;
+    if (!canonicalClassId) continue;
+
+    const sourceClassId = resolveSkillSourceClassId(canonicalClassId);
+    if (!sourceClassId) continue;
+
+    const skills = classSkillsDatabase[sourceClassId];
+    if (!skills) continue;
+
     if (skills.active) {
       allSkills.push(
-        ...skills.active.map((s) => normalizeSkillTemplate({ ...s, class: classId })),
+        ...skills.active.map((s) =>
+          normalizeSkillTemplate({ ...s, class: canonicalClassId }),
+        ),
       );
     }
     if (skills.passive) {
       allSkills.push(
-        ...skills.passive.map((s) => normalizeSkillTemplate({ ...s, class: classId })),
+        ...skills.passive.map((s) =>
+          normalizeSkillTemplate({ ...s, class: canonicalClassId }),
+        ),
       );
     }
   }

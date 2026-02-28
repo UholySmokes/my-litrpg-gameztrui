@@ -99,3 +99,6 @@ Note:
 3. Keep placeholder curation thresholds enforced in CI.
    - Guard command: `npm run validate:placeholder-curation`
    - Contract: `docs/contracts/placeholder_curation_thresholds_v1.json`
+4. Keep balance corridor thresholds enforced and tune as content grows.
+   - Guard command: `npm run validate:balance-corridors`
+   - Contract: `docs/contracts/balance_corridor_thresholds_v1.json`

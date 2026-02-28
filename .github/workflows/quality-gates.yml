@@ -89,6 +89,9 @@ jobs:
       - name: Validate Placeholder Curation Contract
         run: npm run validate:placeholder-curation
 
+      - name: Validate Balance Corridors
+        run: npm run validate:balance-corridors
+
       - name: Build
         run: npm run build:tooling
 

@@ -1,6 +1,9 @@
 import { classes } from "../data/registries/ClassDataRegistry.js";
 import { races } from "../data/registries/RaceDataRegistry.js";
-import { itemDatabase } from "../data/registries/ItemDataRegistry.js";
+import {
+  itemDatabase,
+  isGeneratedPlaceholderItem,
+} from "../data/registries/ItemDataRegistry.js";
 import { getClassAbilitiesFor } from "../systems/class/ClassAbilityRegistry.js";
 import { getRaceAbilitiesFor } from "../systems/race/RaceAbilityRegistry.js";
 import { getAllSkills } from "../systems/skills/SkillRegistry.js";
@@ -124,15 +127,47 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
 
   const skills = getAllSkills();
   const skillOwnerCounts = new Map();
+  const skillOwnerTypeCounts = new Map();
+  const skillClassOwnerCounts = new Map();
   skills.forEach((skill) => {
-    const ownerId = skill?.class;
-    if (typeof ownerId !== "string" || ownerId.trim().length === 0) return;
+    const ownerIdRaw =
+      typeof skill?.ownerId === "string" && skill.ownerId.trim().length > 0
+        ? skill.ownerId
+        : skill?.class;
+    const ownerId =
+      typeof ownerIdRaw === "string" && ownerIdRaw.trim().length > 0
+        ? ownerIdRaw.trim()
+        : "";
+    if (!ownerId) return;
+
+    const ownerTypeRaw =
+      typeof skill?.ownerType === "string" ? skill.ownerType.trim().toLowerCase() : "";
+    const ownerType =
+      ownerTypeRaw ||
+      (ownerId === "universal"
+        ? "universal"
+        : professionIds.has(ownerId)
+          ? "profession"
+          : classIds.has(ownerId)
+            ? "class"
+            : "system");
+
     skillOwnerCounts.set(ownerId, (skillOwnerCounts.get(ownerId) || 0) + 1);
+    skillOwnerTypeCounts.set(
+      ownerType,
+      (skillOwnerTypeCounts.get(ownerType) || 0) + 1,
+    );
+    if (ownerType === "class") {
+      skillClassOwnerCounts.set(
+        ownerId,
+        (skillClassOwnerCounts.get(ownerId) || 0) + 1,
+      );
+    }
   });
   const skillOwnerIds = [...skillOwnerCounts.keys()];
 
   const reservedSkillOwners = new Set(["universal", ...professionIds]);
-  const classesMissingSkills = [...classIds].filter((id) => !skillOwnerCounts.has(id));
+  const classesMissingSkills = [...classIds].filter((id) => !skillClassOwnerCounts.has(id));
   const skillOwnersOutsideClassSet = skillOwnerIds.filter(
     (ownerId) => !classIds.has(ownerId),
   );
@@ -228,6 +263,10 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
     return acc;
   }, {});
 
+  const placeholderItems = Object.values(itemDatabase).filter((entry) =>
+    isGeneratedPlaceholderItem(entry),
+  );
+
   return {
     generatedAt: new Date().toISOString(),
     counts: {
@@ -246,12 +285,15 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
     skillOwnerCounts: skillOwnerIds
       .map((id) => [id, skillOwnerCounts.get(id)])
       .sort((a, b) => b[1] - a[1]),
+    skillOwnerTypeCounts: [...skillOwnerTypeCounts.entries()].sort((a, b) => b[1] - a[1]),
     skillOwnersOutsideClassSet,
     skillOwnersReservedNonClass,
     skillOwnersNotClassOrReserved,
     classAbilityCoverage,
     raceAbilityCoverage,
     recipeStats,
+    placeholderItemCount: placeholderItems.length,
+    placeholderItemIdsSample: placeholderItems.slice(0, 50).map((entry) => entry.id),
     missingRecipeIngredientCount: missingRecipeIngredients.length,
     missingRecipeResultCount: missingRecipeResults.length,
     missingRecipeIngredientsSample: missingRecipeIngredients.slice(0, 50),

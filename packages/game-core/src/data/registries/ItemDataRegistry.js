@@ -742,9 +742,61 @@ function inferPlaceholderType(itemId, { isResult = false } = {}) {
   return "material";
 }
 
+function withPlaceholderProvenance(item, { professionId, recipeId, role }) {
+  const existingMeta =
+    item?.placeholderMeta && typeof item.placeholderMeta === "object"
+      ? item.placeholderMeta
+      : {};
+  const existingRefs = Array.isArray(existingMeta.references)
+    ? [...existingMeta.references]
+    : [];
+  const nextRef = {
+    professionId: String(professionId || ""),
+    recipeId: String(recipeId || ""),
+    role: String(role || "reference"),
+  };
+  const hasRef = existingRefs.some(
+    (ref) =>
+      ref?.professionId === nextRef.professionId &&
+      ref?.recipeId === nextRef.recipeId &&
+      ref?.role === nextRef.role,
+  );
+  if (!hasRef) {
+    existingRefs.push(nextRef);
+  }
+
+  const nextTags = Array.isArray(item?.tags) ? [...item.tags] : [];
+  if (!nextTags.includes("placeholder_generated")) {
+    nextTags.push("placeholder_generated");
+  }
+
+  return {
+    ...item,
+    tags: nextTags,
+    contentStatus: "placeholder",
+    placeholderMeta: {
+      generated: true,
+      source: "recipe_reference_closure",
+      references: existingRefs,
+    },
+  };
+}
+
 function buildRecipePlaceholderItems() {
   const placeholders = {};
   const professions = Object.values(PROFESSIONS || {});
+
+  const upsertPlaceholder = (itemId, payload, provenance) => {
+    if (itemDatabase[itemId]) return;
+    if (placeholders[itemId]) {
+      placeholders[itemId] = withPlaceholderProvenance(
+        placeholders[itemId],
+        provenance,
+      );
+      return;
+    }
+    placeholders[itemId] = withPlaceholderProvenance(payload, provenance);
+  };
 
   for (const profession of professions) {
     const recipes = getRecipesForProfession(profession.id, 9) || [];
@@ -756,10 +808,12 @@ function buildRecipePlaceholderItems() {
       const ingredients = Array.isArray(recipe?.ingredients) ? recipe.ingredients : [];
       for (const ingredient of ingredients) {
         const ingredientId = ingredient?.id || ingredient?.itemId;
-        if (!ingredientId || itemDatabase[ingredientId] || placeholders[ingredientId]) {
+        if (!ingredientId || itemDatabase[ingredientId]) {
           continue;
         }
-        placeholders[ingredientId] = {
+        upsertPlaceholder(
+          ingredientId,
+          {
           id: ingredientId,
           name: humanizeItemId(ingredientId),
           type: inferPlaceholderType(ingredientId, { isResult: false }),
@@ -767,12 +821,16 @@ function buildRecipePlaceholderItems() {
           description: `Crafting reagent placeholder generated from recipe '${recipe.id}'.`,
           rarity,
           value: baseValue,
-        };
+          },
+          { professionId: profession.id, recipeId: recipe.id, role: "ingredient" },
+        );
       }
 
       const resultId = recipe?.result?.id || recipe?.result?.itemId;
-      if (resultId && !itemDatabase[resultId] && !placeholders[resultId]) {
-        placeholders[resultId] = {
+      if (resultId && !itemDatabase[resultId]) {
+        upsertPlaceholder(
+          resultId,
+          {
           id: resultId,
           name: humanizeItemId(resultId),
           type: inferPlaceholderType(resultId, { isResult: true }),
@@ -780,7 +838,9 @@ function buildRecipePlaceholderItems() {
           description: `Crafted item placeholder generated from recipe '${recipe.id}'.`,
           rarity,
           value: baseValue + 10,
-        };
+          },
+          { professionId: profession.id, recipeId: recipe.id, role: "result" },
+        );
       }
     }
   }
@@ -897,4 +957,14 @@ export function getEquipmentBySlot(slot) {
 
 export function getItems() {
   return getItemListCache().slice();
+}
+
+export function isGeneratedPlaceholderItem(item) {
+  return Boolean(item?.placeholderMeta?.generated === true);
+}
+
+export function getGeneratedPlaceholderItemIds() {
+  return getItemListCache()
+    .filter((item) => isGeneratedPlaceholderItem(item))
+    .map((item) => item.id);
 }

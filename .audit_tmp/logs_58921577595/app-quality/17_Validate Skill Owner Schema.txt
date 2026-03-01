@@ -1,0 +1,12 @@
+﻿2026-03-01T00:46:04.7039774Z ##[group]Run npm run validate:skill-owner-schema
+2026-03-01T00:46:04.7040433Z [36;1mnpm run validate:skill-owner-schema[0m
+2026-03-01T00:46:04.7108729Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:04.7108980Z env:
+2026-03-01T00:46:04.7109276Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.7109760Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.7110126Z ##[endgroup]
+2026-03-01T00:46:04.8164678Z 
+2026-03-01T00:46:04.8167691Z > my-litrpg-game@0.0.0 validate:skill-owner-schema
+2026-03-01T00:46:04.8172603Z > node scripts/validate-skill-owner-schema.mjs
+2026-03-01T00:46:04.8173027Z 
+2026-03-01T00:46:04.9671303Z [skill-owner-schema] PASS token='skill.class' allowlist=3 scanned=407

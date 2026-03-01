@@ -1,0 +1,23 @@
+﻿2026-03-01T00:44:33.9768196Z ##[group]Run actions/setup-node@v4
+2026-03-01T00:44:33.9768476Z with:
+2026-03-01T00:44:33.9768656Z   node-version: 22
+2026-03-01T00:44:33.9768853Z   cache: npm
+2026-03-01T00:44:33.9769088Z   cache-dependency-path: functions/package-lock.json
+2026-03-01T00:44:33.9769405Z   always-auth: false
+2026-03-01T00:44:33.9769597Z   check-latest: false
+2026-03-01T00:44:33.9769903Z   token: ***
+2026-03-01T00:44:33.9770086Z ##[endgroup]
+2026-03-01T00:44:34.4272611Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+2026-03-01T00:44:34.4273942Z ##[group]Environment details
+2026-03-01T00:44:35.5618365Z node: v22.22.0
+2026-03-01T00:44:35.5619878Z npm: 10.9.4
+2026-03-01T00:44:35.5620212Z yarn: 1.22.22
+2026-03-01T00:44:35.5621374Z ##[endgroup]
+2026-03-01T00:44:35.5647229Z [command]/opt/hostedtoolcache/node/22.22.0/x64/bin/npm config get cache
+2026-03-01T00:44:35.6780681Z /home/runner/.npm
+2026-03-01T00:44:35.7677351Z Cache hit for: node-cache-Linux-x64-npm-5c138f9e38ea36654f25972ebe6f48c16f887f58db8cbe6745989d356f6e494c
+2026-03-01T00:44:36.2063454Z Received 43776008 of 43776008 (100.0%), 104.6 MBs/sec
+2026-03-01T00:44:36.2065538Z Cache Size: ~42 MB (43776008 B)
+2026-03-01T00:44:36.2096018Z [command]/usr/bin/tar -xf /home/runner/work/_temp/c4461dbf-33a2-44ff-a1a7-d6fe8b601062/cache.tzst -P -C /home/runner/work/my-litrpg-gameztrui/my-litrpg-gameztrui --use-compress-program unzstd
+2026-03-01T00:44:36.3995334Z Cache restored successfully
+2026-03-01T00:44:36.4084884Z Cache restored from key: node-cache-Linux-x64-npm-5c138f9e38ea36654f25972ebe6f48c16f887f58db8cbe6745989d356f6e494c

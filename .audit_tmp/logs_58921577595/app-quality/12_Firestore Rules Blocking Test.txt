@@ -1,0 +1,77 @@
+﻿2026-03-01T00:45:52.9833348Z ##[group]Run npm run test:firestore-rules:emulator
+2026-03-01T00:45:52.9834025Z [36;1mnpm run test:firestore-rules:emulator[0m
+2026-03-01T00:45:52.9893010Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:52.9893257Z env:
+2026-03-01T00:45:52.9893550Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:52.9894054Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:52.9894441Z ##[endgroup]
+2026-03-01T00:45:53.0941274Z 
+2026-03-01T00:45:53.0941998Z > my-litrpg-game@0.0.0 test:firestore-rules:emulator
+2026-03-01T00:45:53.0942838Z > node scripts/run-firestore-rules-emulator.mjs
+2026-03-01T00:45:53.0943277Z 
+2026-03-01T00:45:54.9676305Z [33m[1m⚠  emulators:[22m[39m You are not currently authenticated so some features may not work correctly. Please run [1mfirebase login[22m to authenticate the CLI.
+2026-03-01T00:45:55.0093826Z [36m[1mi  emulators:[22m[39m Starting emulators: firestore
+2026-03-01T00:45:55.0232861Z [33m[1m⚠ [22m[39m It appears you are running in a CI environment. You can avoid downloading the Firestore Emulator repeatedly by caching the /home/runner/.cache/firebase/emulators directory.
+2026-03-01T00:45:55.0238051Z [36m[1mi  firestore:[22m[39m downloading cloud-firestore-emulator-v1.20.2.jar...
+2026-03-01T00:45:56.1339389Z 
+2026-03-01T00:45:56.5358242Z [36m[1mi  firestore:[22m[39m Firestore Emulator logging to [1mfirestore-debug.log[22m
+2026-03-01T00:45:58.5507312Z [32m[1m✔  firestore:[22m[39m Firestore Emulator UI websocket is running on 9150.
+2026-03-01T00:45:58.5562838Z [36m[1mi [22m[39m Running script: [1mnpm run test:firestore-rules[22m
+2026-03-01T00:45:58.6922545Z 
+2026-03-01T00:45:58.6923708Z > my-litrpg-game@0.0.0 test:firestore-rules
+2026-03-01T00:45:58.6925846Z > node --experimental-vm-modules node_modules/jest/bin/jest.js tests/security/firestoreRules.test.js --runInBand --no-cache
+2026-03-01T00:45:58.6927068Z 
+2026-03-01T00:45:59.8046506Z (node:2529) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+2026-03-01T00:45:59.8048081Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-03-01T00:46:02.3601947Z   console.warn
+2026-03-01T00:46:02.3605196Z     [2026-03-01T00:46:02.159Z]  @firebase/firestore: Firestore (12.9.0): GrpcConnection RPC 'Write' stream 0x1d409463 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+2026-03-01T00:46:02.3608590Z     false for 'create' @ L33, false for 'create' @ L46, false for 'update' @ L34, false for 'update' @ L46
+2026-03-01T00:46:02.3610850Z 
+2026-03-01T00:46:02.3613063Z       at Logger.defaultLogHandler [as _logHandler] (node_modules/@firebase/logger/src/logger.ts:115:57)
+2026-03-01T00:46:02.3615676Z       at Logger.warn (node_modules/@firebase/logger/src/logger.ts:206:10)
+2026-03-01T00:46:02.3617807Z       at logWarn (node_modules/@firebase/firestore/src/util/log.ts:69:15)
+2026-03-01T00:46:02.3619215Z       at ClientDuplexStreamImpl.<anonymous> (node_modules/@firebase/firestore/src/platform/node/grpc_connection.ts:318:9)
+2026-03-01T00:46:02.3621144Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client.ts:705:18)
+2026-03-01T00:46:02.3622893Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client-interceptors.ts:419:48)
+2026-03-01T00:46:02.3624463Z       at node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/resolving-call.ts:132:24
+2026-03-01T00:46:02.3625381Z 
+2026-03-01T00:46:02.3979887Z   console.warn
+2026-03-01T00:46:02.3982862Z     [2026-03-01T00:46:02.395Z]  @firebase/firestore: Firestore (12.9.0): GrpcConnection RPC 'Write' stream 0x1d409464 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+2026-03-01T00:46:02.3986091Z     false for 'create' @ L40, false for 'create' @ L46, false for 'update' @ L41, false for 'update' @ L46
+2026-03-01T00:46:02.3986783Z 
+2026-03-01T00:46:02.3987455Z       at Logger.defaultLogHandler [as _logHandler] (node_modules/@firebase/logger/src/logger.ts:115:57)
+2026-03-01T00:46:02.3989073Z       at Logger.warn (node_modules/@firebase/logger/src/logger.ts:206:10)
+2026-03-01T00:46:02.3990003Z       at logWarn (node_modules/@firebase/firestore/src/util/log.ts:69:15)
+2026-03-01T00:46:02.3991345Z       at ClientDuplexStreamImpl.<anonymous> (node_modules/@firebase/firestore/src/platform/node/grpc_connection.ts:318:9)
+2026-03-01T00:46:02.3993037Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client.ts:705:18)
+2026-03-01T00:46:02.3994733Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client-interceptors.ts:419:48)
+2026-03-01T00:46:02.3996486Z       at node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/resolving-call.ts:132:24
+2026-03-01T00:46:02.3997215Z 
+2026-03-01T00:46:02.6776207Z   console.warn
+2026-03-01T00:46:02.6778149Z     [2026-03-01T00:46:02.673Z]  @firebase/firestore: Firestore (12.9.0): GrpcConnection RPC 'Write' stream 0x1d409467 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+2026-03-01T00:46:02.6796262Z     evaluation error at L34:24 for 'update' @ L34, false for 'update' @ L46, false for 'update' @ L34, false for 'update' @ L46
+2026-03-01T00:46:02.6797449Z 
+2026-03-01T00:46:02.6798943Z       at Logger.defaultLogHandler [as _logHandler] (node_modules/@firebase/logger/src/logger.ts:115:57)
+2026-03-01T00:46:02.6802373Z       at Logger.warn (node_modules/@firebase/logger/src/logger.ts:206:10)
+2026-03-01T00:46:02.6808866Z       at logWarn (node_modules/@firebase/firestore/src/util/log.ts:69:15)
+2026-03-01T00:46:02.6810381Z       at ClientDuplexStreamImpl.<anonymous> (node_modules/@firebase/firestore/src/platform/node/grpc_connection.ts:318:9)
+2026-03-01T00:46:02.6812034Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client.ts:705:18)
+2026-03-01T00:46:02.6816051Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client-interceptors.ts:419:48)
+2026-03-01T00:46:02.6819441Z       at node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/resolving-call.ts:132:24
+2026-03-01T00:46:02.6820158Z 
+2026-03-01T00:46:02.8613651Z PASS tests/security/firestoreRules.test.js
+2026-03-01T00:46:02.8622636Z   firestore security rules
+2026-03-01T00:46:02.8626304Z     ✓ denies unauthenticated reads/writes to save-related collections (1107 ms)
+2026-03-01T00:46:02.8629746Z     ✓ denies authenticated access to another user's data (278 ms)
+2026-03-01T00:46:02.8632890Z     ✓ allows owner-scoped operations (174 ms)
+2026-03-01T00:46:02.8645869Z 
+2026-03-01T00:46:02.8662239Z Test Suites: 1 passed, 1 total
+2026-03-01T00:46:02.8676918Z Tests:       3 passed, 3 total
+2026-03-01T00:46:02.8679461Z Snapshots:   0 total
+2026-03-01T00:46:02.8680145Z Time:        3.686 s
+2026-03-01T00:46:02.8681032Z Ran all test suites matching tests/security/firestoreRules.test.js.
+2026-03-01T00:46:02.9834721Z [32m[1m✔ [22m[39m Script exited successfully (code 0)
+2026-03-01T00:46:03.4842898Z [36m[1mi  emulators:[22m[39m Shutting down emulators.
+2026-03-01T00:46:03.4846127Z [36m[1mi  firestore:[22m[39m Stopping Firestore Emulator
+2026-03-01T00:46:03.8198602Z [36m[1mi  hub:[22m[39m Stopping emulator hub
+2026-03-01T00:46:03.8203066Z [36m[1mi  logging:[22m[39m Stopping Logging Emulator

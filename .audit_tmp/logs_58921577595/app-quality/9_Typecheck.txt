@@ -1,0 +1,11 @@
+﻿2026-03-01T00:45:25.0659829Z ##[group]Run npm run typecheck
+2026-03-01T00:45:25.0660358Z [36;1mnpm run typecheck[0m
+2026-03-01T00:45:25.0716609Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:25.0716851Z env:
+2026-03-01T00:45:25.0717162Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:25.0717656Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:25.0718039Z ##[endgroup]
+2026-03-01T00:45:25.1775317Z 
+2026-03-01T00:45:25.1776343Z > my-litrpg-game@0.0.0 typecheck
+2026-03-01T00:45:25.1776883Z > tsc --noEmit
+2026-03-01T00:45:25.1777123Z 

@@ -1,0 +1,12 @@
+﻿2026-03-01T00:44:39.4766927Z ##[group]Run npm run generate:godot-config
+2026-03-01T00:44:39.4767700Z [36;1mnpm run generate:godot-config[0m
+2026-03-01T00:44:39.8100359Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:44:39.8100790Z env:
+2026-03-01T00:44:39.8101104Z   GODOT: /home/runner/bin/godot
+2026-03-01T00:44:39.8101536Z   GODOT4: /home/runner/bin/godot
+2026-03-01T00:44:39.8101922Z ##[endgroup]
+2026-03-01T00:44:39.9814140Z 
+2026-03-01T00:44:39.9816694Z > my-litrpg-game@0.0.0 generate:godot-config
+2026-03-01T00:44:39.9817987Z > node scripts/generate-godot-config.js
+2026-03-01T00:44:39.9820194Z 
+2026-03-01T00:44:40.0270174Z [godot-config] wrote godot/data/config.json from public/runtime-config.js (profile=local)

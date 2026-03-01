@@ -1,0 +1,17 @@
+﻿2026-03-01T00:44:35.2798200Z ##[group]Run npm ci
+2026-03-01T00:44:35.2798472Z [36;1mnpm ci[0m
+2026-03-01T00:44:35.2857404Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:44:35.2857656Z env:
+2026-03-01T00:44:35.2857942Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:44:35.2858431Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:44:35.2858804Z ##[endgroup]
+2026-03-01T00:44:41.2161524Z npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2026-03-01T00:44:43.1849657Z npm warn deprecated json-ptr@3.1.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-03-01T00:44:43.7537865Z npm warn deprecated @opentelemetry/exporter-jaeger@1.30.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-03-01T00:45:06.5187717Z 
+2026-03-01T00:45:06.5188810Z added 1558 packages, and audited 1564 packages in 31s
+2026-03-01T00:45:06.5189733Z 
+2026-03-01T00:45:06.5190510Z 155 packages are looking for funding
+2026-03-01T00:45:06.5191209Z   run `npm fund` for details
+2026-03-01T00:45:06.5210512Z 
+2026-03-01T00:45:06.5211433Z found 0 vulnerabilities

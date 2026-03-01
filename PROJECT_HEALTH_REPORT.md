@@ -54,10 +54,7 @@ Overall health moved from critical failure to controlled risk:
 
 ## 2. Active Risks
 
-### Low: Legacy Scaffold Noise in `functions/src/`
-- `functions/src/` still contains Firebase template TypeScript that is not used for deployed `/api/*` runtime.
-- Risk: New contributors can still misinterpret scaffold files as active runtime source.
-- Recommendation: In a follow-up cleanup, archive or annotate template-only TS files to reduce onboarding ambiguity further.
+No active structural blockers identified in this pass.
 
 ---
 
@@ -89,11 +86,21 @@ Note:
 | Backend (Firebase Functions) | Stable | Runtime ownership documented, env docs updated, runtime contract guard in place. |
 | Game Engine (Godot) | Stable | `export_presets.cfg` present again. |
 | Shared Packages (`game-core`, `game-schemas`) | Stable | Worldbuild validation and targeted tests passing. |
-| Tooling/Docs | Strong | Health report, env contracts, runtime contract checks, and CI guards aligned. |
+| Tooling/Docs | Strong | `functions/src` template-only status explicitly annotated; runtime ownership now clear in-code and in docs. |
 
 ---
 
 ## 5. Prioritized Next Actions
 
-1. (Optional cleanup) Annotate or archive template-only files in `functions/src/` to reduce contributor confusion.
-2. Expand runtime/env guard scripts if additional required infra files or env keys are introduced.
+1. Expand runtime/env guard scripts if additional required infra files or env keys are introduced.
+2. Continue reducing placeholder item footprint through authored item replacement workflow.
+   - Workflow command: `npm run report:worldbuild:placeholders`
+   - Output: `docs/reports/placeholder_item_curation_queue.json` + dated markdown summary
+3. Keep placeholder curation thresholds enforced in CI.
+   - Guard command: `npm run validate:placeholder-curation`
+   - Contract: `docs/contracts/placeholder_curation_thresholds_v1.json`
+4. Keep balance corridor thresholds enforced and tune as content grows.
+   - Guard command: `npm run validate:balance-corridors`
+   - Contract: `docs/contracts/balance_corridor_thresholds_v1.json`
+5. Keep skill owner schema migration locked.
+   - Guard command: `npm run validate:skill-owner-schema`

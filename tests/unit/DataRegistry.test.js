@@ -59,4 +59,16 @@ describe("DataRegistry item lookups", () => {
     const itemsAfterReset = DataRegistry.getItemsByType("consumable");
     expect(itemsAfterReset.map((item) => item.id)).not.toContain(tempId);
   });
+
+  it("marks generated recipe placeholders with provenance metadata", () => {
+    const placeholder = Object.values(itemDatabase).find(
+      (item) => item?.placeholderMeta?.generated === true,
+    );
+    expect(placeholder).toBeTruthy();
+    expect(placeholder.contentStatus).toBe("placeholder");
+    expect(Array.isArray(placeholder.placeholderMeta.references)).toBe(true);
+    expect(placeholder.placeholderMeta.references.length).toBeGreaterThan(0);
+    expect(Array.isArray(placeholder.tags)).toBe(true);
+    expect(placeholder.tags).toContain("placeholder_generated");
+  });
 });

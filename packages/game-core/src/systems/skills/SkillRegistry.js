@@ -10636,6 +10636,12 @@ const CANONICAL_CLASS_ID_SET = new Set(
     .map((entry) => entry?.id)
     .filter((id) => typeof id === "string" && id.length > 0),
 );
+const PROFESSION_ID_SET = new Set(
+  Object.values(PROFESSIONS || {})
+    .map((entry) => entry?.id)
+    .filter((id) => typeof id === "string" && id.length > 0),
+);
+const SKILL_OWNER_TYPES = new Set(["class", "profession", "universal", "system"]);
 
 // Legacy class ids used in the skill library are mapped onto canonical class ids.
 const LEGACY_CLASS_TO_CANONICAL = {
@@ -10675,6 +10681,47 @@ function toCanonicalSkillClassId(classId) {
   const normalized = classId.trim();
   if (CANONICAL_CLASS_ID_SET.has(normalized)) return normalized;
   return LEGACY_CLASS_TO_CANONICAL[normalized] || normalized;
+}
+
+function normalizeSkillOwner(skill) {
+  if (!skill || typeof skill !== "object") {
+    return { ownerType: "system", ownerId: "unbound" };
+  }
+
+  const declaredOwnerType =
+    typeof skill.ownerType === "string" ? skill.ownerType.trim().toLowerCase() : "";
+  const legacyClassOwner =
+    typeof skill.class === "string" && skill.class.trim().length > 0 ? skill.class.trim() : "";
+  const explicitOwnerId =
+    typeof skill.ownerId === "string" && skill.ownerId.trim().length > 0
+      ? skill.ownerId.trim()
+      : "";
+  const rawOwnerId = explicitOwnerId || legacyClassOwner;
+  const canonicalClassOwnerId = toCanonicalSkillClassId(rawOwnerId);
+
+  let ownerType = SKILL_OWNER_TYPES.has(declaredOwnerType) ? declaredOwnerType : "";
+  if (!ownerType) {
+    if (rawOwnerId === "universal" || rawOwnerId === "general") {
+      ownerType = "universal";
+    } else if (PROFESSION_ID_SET.has(rawOwnerId)) {
+      ownerType = "profession";
+    } else if (CANONICAL_CLASS_ID_SET.has(canonicalClassOwnerId)) {
+      ownerType = "class";
+    } else {
+      ownerType = "system";
+    }
+  }
+
+  let ownerId = rawOwnerId;
+  if (ownerType === "class") {
+    ownerId = canonicalClassOwnerId;
+  } else if (ownerType === "universal") {
+    ownerId = "universal";
+  } else if (!ownerId) {
+    ownerId = "unbound";
+  }
+
+  return { ownerType, ownerId };
 }
 
 function resolveSkillSourceClassId(classId) {
@@ -10725,12 +10772,16 @@ export function getSkillsByClass(classId) {
       normalizeSkillTemplate({
         ...skill,
         class: normalizedClassId || skill.class || sourceClassId,
+        ownerType: "class",
+        ownerId: normalizedClassId || toCanonicalSkillClassId(skill.class || sourceClassId),
       }),
     ),
     passive: getRandomSkills(classSkills.passive || [], 12).map((skill) =>
       normalizeSkillTemplate({
         ...skill,
         class: normalizedClassId || skill.class || sourceClassId,
+        ownerType: "class",
+        ownerId: normalizedClassId || toCanonicalSkillClassId(skill.class || sourceClassId),
       }),
     ),
   };
@@ -10797,6 +10848,13 @@ const normalizeSkillTemplate = (skill) => {
   if (!skill || typeof skill !== "object") return skill;
 
   const next = { ...skill };
+  const { ownerType, ownerId } = normalizeSkillOwner(next);
+  const compatibilityClassId =
+    ownerType === "class" || ownerType === "profession" || ownerType === "universal"
+      ? ownerId
+      : (typeof next.class === "string" && next.class.trim().length > 0)
+        ? next.class.trim()
+        : ownerId;
   const tags = Array.isArray(next.tags) ? [...next.tags] : [];
   let effects = Array.isArray(next.effects) ? [...next.effects] : [];
 
@@ -10857,10 +10915,21 @@ const normalizeSkillTemplate = (skill) => {
 
   return {
     ...next,
+    ownerType,
+    ownerId,
+    class: compatibilityClassId,
     tags,
     effects,
     template: {
-      category: template.category || (next.class === "universal" ? "Universal" : "Class"),
+      category:
+        template.category ||
+        (ownerType === "universal"
+          ? "Universal"
+          : ownerType === "profession"
+            ? "Profession Skill"
+            : ownerType === "system"
+              ? "System"
+              : "Class"),
       function: template.function || (next.type === "passive" ? "passive" : "combat"),
       elements: Array.isArray(template.elements)
         ? template.elements
@@ -10899,6 +10968,8 @@ try {
                     .join(" "),
                 type: "passive", // Default to passive trait
                 class: profId,
+                ownerType: "profession",
+                ownerId: profId,
                 description: `Unlocked at ${prof.name} Tier ${tier}.`,
                 level: 1,
                 template: {
@@ -10943,13 +11014,17 @@ try {
           ? metaOwner
           : (getAbilityOwner(ability.id) || "universal");
       const resolvedClass = toCanonicalSkillClassId(resolvedClassRaw);
+      const ownerType = resolvedClass === "universal" ? "universal" : "class";
+      const ownerId = ownerType === "universal" ? "universal" : resolvedClass;
       
       classAbilitySkills.push({
         ...ability,
         id: ability.id, // Ensure ID is preserved
         name: ability.name,
         type: isPassive ? "passive" : "active",
-        class: resolvedClass,
+        class: ownerId,
+        ownerType,
+        ownerId,
         description: ability.description || "Class Ability",
         level: 1,
         manaCost: ability.costType === "mana" ? ability.cost : 0,
@@ -10991,14 +11066,24 @@ export function getAllSkills() {
     if (skills.active) {
       allSkills.push(
         ...skills.active.map((s) =>
-          normalizeSkillTemplate({ ...s, class: canonicalClassId }),
+          normalizeSkillTemplate({
+            ...s,
+            class: canonicalClassId,
+            ownerType: "class",
+            ownerId: canonicalClassId,
+          }),
         ),
       );
     }
     if (skills.passive) {
       allSkills.push(
         ...skills.passive.map((s) =>
-          normalizeSkillTemplate({ ...s, class: canonicalClassId }),
+          normalizeSkillTemplate({
+            ...s,
+            class: canonicalClassId,
+            ownerType: "class",
+            ownerId: canonicalClassId,
+          }),
         ),
       );
     }
@@ -11008,9 +11093,21 @@ export function getAllSkills() {
   if (universalSkillsDatabase) {
     allSkills.push(
       ...universalSkillsDatabase.map((s) =>
-        normalizeSkillTemplate({ ...s, class: "universal" }),
+        normalizeSkillTemplate({
+          ...s,
+          class: "universal",
+          ownerType: "universal",
+          ownerId: "universal",
+        }),
       ),
-      ...nonCombatSkills.map((s) => normalizeSkillTemplate({ ...s, class: "universal" })),
+      ...nonCombatSkills.map((s) =>
+        normalizeSkillTemplate({
+          ...s,
+          class: "universal",
+          ownerType: "universal",
+          ownerId: "universal",
+        }),
+      ),
     );
   }
 
@@ -13312,6 +13409,8 @@ export function getSkillDisplayInfo(
     description: skill.description,
     type: skill.type,
     class: skill.class,
+    ownerType: skill.ownerType || (skill.class === "universal" ? "universal" : "class"),
+    ownerId: skill.ownerId || skill.class,
     level: skill.level,
     base: {
       manaCost: skill.manaCost,

@@ -1,0 +1,5 @@
+﻿2026-03-01T00:44:48.4986253Z ##[group]Run npm --prefix functions audit --audit-level=moderate
+2026-03-01T00:44:48.4987010Z [36;1mnpm --prefix functions audit --audit-level=moderate[0m
+2026-03-01T00:44:48.5052275Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:44:48.5052694Z ##[endgroup]
+2026-03-01T00:44:49.4713187Z found 0 vulnerabilities

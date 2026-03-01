@@ -1,0 +1,23 @@
+﻿2026-03-01T00:46:04.0776038Z ##[group]Run npm run validate:archetypes
+2026-03-01T00:46:04.0776373Z [36;1mnpm run validate:archetypes[0m
+2026-03-01T00:46:04.0824607Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:04.0825127Z env:
+2026-03-01T00:46:04.0825468Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.0825981Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.0826345Z ##[endgroup]
+2026-03-01T00:46:04.1988029Z 
+2026-03-01T00:46:04.1989551Z > my-litrpg-game@0.0.0 validate:archetypes
+2026-03-01T00:46:04.1990699Z > node scripts/validate-archetypes.mjs
+2026-03-01T00:46:04.1991316Z 
+2026-03-01T00:46:04.2751992Z 🔍 Validating archetype definitions...
+2026-03-01T00:46:04.2752934Z 
+2026-03-01T00:46:04.2881582Z ✅ systems.json: 87 archetypes valid
+2026-03-01T00:46:04.2910744Z ✅ authorities.json: 27 archetypes valid
+2026-03-01T00:46:04.2917128Z ✅ paths.json: 5 archetypes valid
+2026-03-01T00:46:04.2948438Z ✅ frameworks.json: 16 archetypes valid
+2026-03-01T00:46:04.2949239Z ✅ privileges.json: 7 archetypes valid
+2026-03-01T00:46:04.2949887Z ✅ overlays.json: 1 archetypes valid
+2026-03-01T00:46:04.2950202Z 
+2026-03-01T00:46:04.2950537Z 📊 Summary: 143/143 archetypes valid
+2026-03-01T00:46:04.2951222Z 
+2026-03-01T00:46:04.2951466Z ✅ All archetypes valid!

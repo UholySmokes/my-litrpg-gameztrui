@@ -1,3 +1,12 @@
+/**
+ * TEMPLATE-ONLY FILE (not deployed runtime).
+ *
+ * Canonical runtime entrypoint for this repo is functions/index.js.
+ * API route and handler logic lives in functions/lib/**/*.js.
+ *
+ * This file remains as a sample Genkit TypeScript scaffold only.
+ */
+
 import {genkit, z} from "genkit";
 import {vertexAI} from "@genkit-ai/google-genai";
 

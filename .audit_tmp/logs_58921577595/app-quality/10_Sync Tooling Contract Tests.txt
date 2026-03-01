@@ -1,0 +1,23 @@
+﻿2026-03-01T00:45:35.3388721Z ##[group]Run npm test -- tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand
+2026-03-01T00:45:35.3391390Z [36;1mnpm test -- tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand[0m
+2026-03-01T00:45:35.3444370Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:35.3444613Z env:
+2026-03-01T00:45:35.3445138Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:35.3445629Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:35.3445995Z ##[endgroup]
+2026-03-01T00:45:35.4520996Z 
+2026-03-01T00:45:35.4521600Z > my-litrpg-game@0.0.0 test
+2026-03-01T00:45:35.4524084Z > node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand
+2026-03-01T00:45:35.4526180Z 
+2026-03-01T00:45:37.4435653Z (node:2373) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+2026-03-01T00:45:37.4437009Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-03-01T00:45:37.4455672Z PASS tests/unit/SyncReplayRoute.test.js
+2026-03-01T00:45:37.6773807Z PASS tests/unit/ApiRouterSyncRoutes.test.js
+2026-03-01T00:45:37.8170045Z PASS tests/unit/SyncReplayService.test.js
+2026-03-01T00:45:37.9068096Z PASS tests/unit/WebGameplayGate.test.js
+2026-03-01T00:45:37.9082872Z 
+2026-03-01T00:45:37.9093137Z Test Suites: 4 passed, 4 total
+2026-03-01T00:45:37.9094107Z Tests:       14 passed, 14 total
+2026-03-01T00:45:37.9104616Z Snapshots:   0 total
+2026-03-01T00:45:37.9105846Z Time:        1.958 s
+2026-03-01T00:45:37.9108040Z Ran all test suites matching tests/unit/WebGameplayGate.test.js|tests/unit/SyncReplayService.test.js|tests/unit/SyncReplayRoute.test.js|tests/unit/ApiRouterSyncRoutes.test.js.

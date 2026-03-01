@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-02-26T07:38:24.372Z",
+  "generatedAt": "2026-03-01T00:57:12.400Z",
   "source": "dist\\runtime-config.js",
-  "profile": "production",
+  "profile": "local",
   "buildId": "godot-dev",
-  "apiBaseUrl": "https://us-central1-my-litrpg-gameztrui-3416-da75c.cloudfunctions.net/api",
+  "apiBaseUrl": "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api",
   "narrateEndpoint": "/narrate",
   "syncCommandPath": "/sync/command",
   "syncPullPath": "/sync/pull",

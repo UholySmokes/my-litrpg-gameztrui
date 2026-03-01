@@ -1,0 +1,8 @@
+﻿2026-03-01T00:44:44.9903930Z ##[group]Run npm --prefix functions run typecheck
+2026-03-01T00:44:44.9904360Z [36;1mnpm --prefix functions run typecheck[0m
+2026-03-01T00:44:44.9956763Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:44:44.9957020Z ##[endgroup]
+2026-03-01T00:44:45.1411072Z 
+2026-03-01T00:44:45.1412974Z > typecheck
+2026-03-01T00:44:45.1414055Z > tsc -p tsconfig.runtime.json --noEmit
+2026-03-01T00:44:45.1416072Z 

@@ -14,8 +14,10 @@ describe("worldbuild integrity audit utilities", () => {
     expect(report.counts.raceCount).toBeGreaterThan(0);
     expect(report.counts.questCount).toBeGreaterThan(0);
     expect(Array.isArray(report.classesMissingSkills)).toBe(true);
+    expect(Array.isArray(report.skillOwnerTypeCounts)).toBe(true);
     expect(Array.isArray(report.skillOwnersReservedNonClass)).toBe(true);
     expect(Array.isArray(report.skillOwnersNotClassOrReserved)).toBe(true);
+    expect(typeof report.placeholderItemCount).toBe("number");
   });
 
   it("compares world manifests and detects structural drift", () => {

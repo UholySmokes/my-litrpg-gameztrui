@@ -1,0 +1,678 @@
+﻿2026-03-01T00:44:14.4734790Z Current runner version: '2.331.0'
+2026-03-01T00:44:14.4761255Z ##[group]Runner Image Provisioner
+2026-03-01T00:44:14.4762054Z Hosted Compute Agent
+2026-03-01T00:44:14.4762711Z Version: 20260213.493
+2026-03-01T00:44:14.4763364Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-03-01T00:44:14.4764052Z Build Date: 2026-02-13T00:28:41Z
+2026-03-01T00:44:14.4764980Z Worker ID: {bb826a7f-c1d8-4697-ba35-b05dec390176}
+2026-03-01T00:44:14.4765694Z Azure Region: centralus
+2026-03-01T00:44:14.4766263Z ##[endgroup]
+2026-03-01T00:44:14.4767635Z ##[group]Operating System
+2026-03-01T00:44:14.4768363Z Ubuntu
+2026-03-01T00:44:14.4768813Z 24.04.3
+2026-03-01T00:44:14.4769301Z LTS
+2026-03-01T00:44:14.4769882Z ##[endgroup]
+2026-03-01T00:44:14.4770351Z ##[group]Runner Image
+2026-03-01T00:44:14.4770913Z Image: ubuntu-24.04
+2026-03-01T00:44:14.4771458Z Version: 20260224.36.1
+2026-03-01T00:44:14.4772700Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260224.36/images/ubuntu/Ubuntu2404-Readme.md
+2026-03-01T00:44:14.4774246Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260224.36
+2026-03-01T00:44:14.4775317Z ##[endgroup]
+2026-03-01T00:44:14.4776440Z ##[group]GITHUB_TOKEN Permissions
+2026-03-01T00:44:14.4778361Z Contents: read
+2026-03-01T00:44:14.4778964Z Metadata: read
+2026-03-01T00:44:14.4779538Z Packages: read
+2026-03-01T00:44:14.4780127Z ##[endgroup]
+2026-03-01T00:44:14.4782119Z Secret source: Actions
+2026-03-01T00:44:14.4782926Z Prepare workflow directory
+2026-03-01T00:44:14.5126283Z Prepare all required actions
+2026-03-01T00:44:14.5173829Z Getting action download info
+2026-03-01T00:44:14.9140905Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-03-01T00:44:15.0805368Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-03-01T00:44:15.1968055Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2026-03-01T00:44:15.9738271Z Complete job name: app-quality
+2026-03-01T00:44:16.0552701Z ##[group]Run actions/checkout@v4
+2026-03-01T00:44:16.0553624Z with:
+2026-03-01T00:44:16.0554106Z   repository: UholySmokes/my-litrpg-gameztrui
+2026-03-01T00:44:16.0555040Z   token: ***
+2026-03-01T00:44:16.0555480Z   ssh-strict: true
+2026-03-01T00:44:16.0555905Z   ssh-user: git
+2026-03-01T00:44:16.0556342Z   persist-credentials: true
+2026-03-01T00:44:16.0556821Z   clean: true
+2026-03-01T00:44:16.0557251Z   sparse-checkout-cone-mode: true
+2026-03-01T00:44:16.0557764Z   fetch-depth: 1
+2026-03-01T00:44:16.0558180Z   fetch-tags: false
+2026-03-01T00:44:16.0558607Z   show-progress: true
+2026-03-01T00:44:16.0559042Z   lfs: false
+2026-03-01T00:44:16.0559435Z   submodules: false
+2026-03-01T00:44:16.0559872Z   set-safe-directory: true
+2026-03-01T00:44:16.0560591Z ##[endgroup]
+2026-03-01T00:44:16.1819124Z Syncing repository: UholySmokes/my-litrpg-gameztrui
+2026-03-01T00:44:16.1821831Z ##[group]Getting Git version info
+2026-03-01T00:44:16.1823096Z Working directory is '/home/runner/work/my-litrpg-gameztrui/my-litrpg-gameztrui'
+2026-03-01T00:44:16.1826937Z [command]/usr/bin/git version
+2026-03-01T00:44:16.1857865Z git version 2.53.0
+2026-03-01T00:44:16.1891487Z ##[endgroup]
+2026-03-01T00:44:16.1906692Z Temporarily overriding HOME='/home/runner/work/_temp/5a70122e-8667-4c5e-a7bf-c5e5cd4ca2a2' before making global git config changes
+2026-03-01T00:44:16.1909670Z Adding repository directory to the temporary git global config as a safe directory
+2026-03-01T00:44:16.1914253Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/my-litrpg-gameztrui/my-litrpg-gameztrui
+2026-03-01T00:44:16.1958246Z Deleting the contents of '/home/runner/work/my-litrpg-gameztrui/my-litrpg-gameztrui'
+2026-03-01T00:44:16.1963312Z ##[group]Initializing the repository
+2026-03-01T00:44:16.1969884Z [command]/usr/bin/git init /home/runner/work/my-litrpg-gameztrui/my-litrpg-gameztrui
+2026-03-01T00:44:16.2087230Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-03-01T00:44:16.2091554Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-03-01T00:44:16.2093446Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-03-01T00:44:16.2095168Z hint: call:
+2026-03-01T00:44:16.2095906Z hint:
+2026-03-01T00:44:16.2096829Z hint: 	git config --global init.defaultBranch <name>
+2026-03-01T00:44:16.2097962Z hint:
+2026-03-01T00:44:16.2099062Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-03-01T00:44:16.2100853Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-03-01T00:44:16.2102336Z hint:
+2026-03-01T00:44:16.2103107Z hint: 	git branch -m <name>
+2026-03-01T00:44:16.2104010Z hint:
+2026-03-01T00:44:16.2105384Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-03-01T00:44:16.2107424Z Initialized empty Git repository in /home/runner/work/my-litrpg-gameztrui/my-litrpg-gameztrui/.git/
+2026-03-01T00:44:16.2114235Z [command]/usr/bin/git remote add origin https://github.com/UholySmokes/my-litrpg-gameztrui
+2026-03-01T00:44:16.2150925Z ##[endgroup]
+2026-03-01T00:44:16.2154094Z ##[group]Disabling automatic garbage collection
+2026-03-01T00:44:16.2155468Z [command]/usr/bin/git config --local gc.auto 0
+2026-03-01T00:44:16.2188590Z ##[endgroup]
+2026-03-01T00:44:16.2191611Z ##[group]Setting up auth
+2026-03-01T00:44:16.2196767Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-03-01T00:44:16.2234319Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-03-01T00:44:16.2608113Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-03-01T00:44:16.2645308Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-03-01T00:44:16.2914301Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-03-01T00:44:16.2951185Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-03-01T00:44:16.3217838Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-03-01T00:44:16.3277425Z ##[endgroup]
+2026-03-01T00:44:16.3281334Z ##[group]Fetching the repository
+2026-03-01T00:44:16.3285701Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f3b2f0073a5c41c65e25aded44b2340992f3da40:refs/remotes/pull/53/merge
+2026-03-01T00:44:28.1270161Z From https://github.com/UholySmokes/my-litrpg-gameztrui
+2026-03-01T00:44:28.1276054Z  * [new ref]         f3b2f0073a5c41c65e25aded44b2340992f3da40 -> pull/53/merge
+2026-03-01T00:44:28.1320154Z ##[endgroup]
+2026-03-01T00:44:28.1321072Z ##[group]Determining the checkout info
+2026-03-01T00:44:28.1321881Z ##[endgroup]
+2026-03-01T00:44:28.1326261Z [command]/usr/bin/git sparse-checkout disable
+2026-03-01T00:44:28.1396808Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-03-01T00:44:28.1446961Z ##[group]Checking out the ref
+2026-03-01T00:44:28.1457481Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/53/merge
+2026-03-01T00:44:29.1696200Z Updating files:   6% (284/4076)
+2026-03-01T00:44:29.1873449Z Updating files:   7% (286/4076)
+2026-03-01T00:44:29.1972249Z Updating files:   8% (327/4076)
+2026-03-01T00:44:29.2070993Z Updating files:   9% (367/4076)
+2026-03-01T00:44:29.2195948Z Updating files:  10% (408/4076)
+2026-03-01T00:44:29.2264406Z Updating files:  11% (449/4076)
+2026-03-01T00:44:29.2327124Z Updating files:  12% (490/4076)
+2026-03-01T00:44:29.2371519Z Updating files:  13% (530/4076)
+2026-03-01T00:44:29.2464696Z Updating files:  14% (571/4076)
+2026-03-01T00:44:29.2491377Z Updating files:  15% (612/4076)
+2026-03-01T00:44:29.2519607Z Updating files:  16% (653/4076)
+2026-03-01T00:44:29.2542502Z Updating files:  17% (693/4076)
+2026-03-01T00:44:29.2572066Z Updating files:  18% (734/4076)
+2026-03-01T00:44:29.2595190Z Updating files:  19% (775/4076)
+2026-03-01T00:44:29.2634315Z Updating files:  20% (816/4076)
+2026-03-01T00:44:29.2666623Z Updating files:  21% (856/4076)
+2026-03-01T00:44:29.2713403Z Updating files:  22% (897/4076)
+2026-03-01T00:44:29.2737950Z Updating files:  23% (938/4076)
+2026-03-01T00:44:29.2761858Z Updating files:  24% (979/4076)
+2026-03-01T00:44:29.2796057Z Updating files:  25% (1019/4076)
+2026-03-01T00:44:29.2816767Z Updating files:  26% (1060/4076)
+2026-03-01T00:44:29.2852045Z Updating files:  27% (1101/4076)
+2026-03-01T00:44:29.2885742Z Updating files:  28% (1142/4076)
+2026-03-01T00:44:29.2933826Z Updating files:  29% (1183/4076)
+2026-03-01T00:44:29.2956623Z Updating files:  30% (1223/4076)
+2026-03-01T00:44:29.2982632Z Updating files:  31% (1264/4076)
+2026-03-01T00:44:29.3005916Z Updating files:  32% (1305/4076)
+2026-03-01T00:44:29.3023152Z Updating files:  33% (1346/4076)
+2026-03-01T00:44:29.3147140Z Updating files:  34% (1386/4076)
+2026-03-01T00:44:29.3176840Z Updating files:  35% (1427/4076)
+2026-03-01T00:44:29.3387133Z Updating files:  36% (1468/4076)
+2026-03-01T00:44:29.3433389Z Updating files:  37% (1509/4076)
+2026-03-01T00:44:29.5417431Z Updating files:  38% (1549/4076)
+2026-03-01T00:44:29.5437895Z Updating files:  39% (1590/4076)
+2026-03-01T00:44:29.5476567Z Updating files:  40% (1631/4076)
+2026-03-01T00:44:29.6155715Z Updating files:  41% (1672/4076)
+2026-03-01T00:44:29.6216950Z Updating files:  42% (1712/4076)
+2026-03-01T00:44:29.6246433Z Updating files:  43% (1753/4076)
+2026-03-01T00:44:29.6278815Z Updating files:  44% (1794/4076)
+2026-03-01T00:44:29.9280409Z Updating files:  45% (1835/4076)
+2026-03-01T00:44:30.2061522Z Updating files:  46% (1875/4076)
+2026-03-01T00:44:31.1008292Z Updating files:  46% (1886/4076)
+2026-03-01T00:44:31.1023046Z Updating files:  47% (1916/4076)
+2026-03-01T00:44:31.1040959Z Updating files:  48% (1957/4076)
+2026-03-01T00:44:31.1060192Z Updating files:  49% (1998/4076)
+2026-03-01T00:44:31.1076315Z Updating files:  50% (2038/4076)
+2026-03-01T00:44:31.4151508Z Updating files:  51% (2079/4076)
+2026-03-01T00:44:31.4171041Z Updating files:  51% (2101/4076)
+2026-03-01T00:44:31.4201097Z Updating files:  52% (2120/4076)
+2026-03-01T00:44:32.3203976Z Updating files:  53% (2161/4076)
+2026-03-01T00:44:32.6424060Z Updating files:  53% (2173/4076)
+2026-03-01T00:44:32.6454736Z Updating files:  54% (2202/4076)
+2026-03-01T00:44:32.6508548Z Updating files:  55% (2242/4076)
+2026-03-01T00:44:32.6542571Z Updating files:  56% (2283/4076)
+2026-03-01T00:44:32.6570205Z Updating files:  57% (2324/4076)
+2026-03-01T00:44:32.6592825Z Updating files:  58% (2365/4076)
+2026-03-01T00:44:32.6612180Z Updating files:  59% (2405/4076)
+2026-03-01T00:44:32.6655335Z Updating files:  60% (2446/4076)
+2026-03-01T00:44:32.6690632Z Updating files:  61% (2487/4076)
+2026-03-01T00:44:32.6730609Z Updating files:  62% (2528/4076)
+2026-03-01T00:44:32.6767120Z Updating files:  63% (2568/4076)
+2026-03-01T00:44:32.6836298Z Updating files:  64% (2609/4076)
+2026-03-01T00:44:32.6858114Z Updating files:  65% (2650/4076)
+2026-03-01T00:44:32.6921062Z Updating files:  66% (2691/4076)
+2026-03-01T00:44:32.6952493Z Updating files:  67% (2731/4076)
+2026-03-01T00:44:32.6973365Z Updating files:  68% (2772/4076)
+2026-03-01T00:44:32.6997679Z Updating files:  69% (2813/4076)
+2026-03-01T00:44:32.7021337Z Updating files:  70% (2854/4076)
+2026-03-01T00:44:32.7047186Z Updating files:  71% (2894/4076)
+2026-03-01T00:44:32.7067947Z Updating files:  72% (2935/4076)
+2026-03-01T00:44:32.7096016Z Updating files:  73% (2976/4076)
+2026-03-01T00:44:32.7117918Z Updating files:  74% (3017/4076)
+2026-03-01T00:44:32.7148744Z Updating files:  75% (3057/4076)
+2026-03-01T00:44:32.7172798Z Updating files:  76% (3098/4076)
+2026-03-01T00:44:32.7193961Z Updating files:  77% (3139/4076)
+2026-03-01T00:44:32.7221265Z Updating files:  78% (3180/4076)
+2026-03-01T00:44:32.7244343Z Updating files:  79% (3221/4076)
+2026-03-01T00:44:32.7267917Z Updating files:  80% (3261/4076)
+2026-03-01T00:44:32.7288650Z Updating files:  81% (3302/4076)
+2026-03-01T00:44:32.7310055Z Updating files:  82% (3343/4076)
+2026-03-01T00:44:32.7333286Z Updating files:  83% (3384/4076)
+2026-03-01T00:44:32.7354473Z Updating files:  84% (3424/4076)
+2026-03-01T00:44:32.7379106Z Updating files:  85% (3465/4076)
+2026-03-01T00:44:32.7400684Z Updating files:  86% (3506/4076)
+2026-03-01T00:44:32.7424659Z Updating files:  87% (3547/4076)
+2026-03-01T00:44:32.7444725Z Updating files:  88% (3587/4076)
+2026-03-01T00:44:32.7463821Z Updating files:  89% (3628/4076)
+2026-03-01T00:44:32.7486393Z Updating files:  90% (3669/4076)
+2026-03-01T00:44:32.7507765Z Updating files:  91% (3710/4076)
+2026-03-01T00:44:32.7527687Z Updating files:  92% (3750/4076)
+2026-03-01T00:44:32.7546195Z Updating files:  93% (3791/4076)
+2026-03-01T00:44:32.7563963Z Updating files:  94% (3832/4076)
+2026-03-01T00:44:32.7583522Z Updating files:  95% (3873/4076)
+2026-03-01T00:44:32.7604245Z Updating files:  96% (3913/4076)
+2026-03-01T00:44:32.7626239Z Updating files:  97% (3954/4076)
+2026-03-01T00:44:32.7642583Z Updating files:  98% (3995/4076)
+2026-03-01T00:44:32.7674609Z Updating files:  99% (4036/4076)
+2026-03-01T00:44:32.7716843Z Updating files: 100% (4076/4076)
+2026-03-01T00:44:32.7719204Z Updating files: 100% (4076/4076), done.
+2026-03-01T00:44:32.7760559Z Note: switching to 'refs/remotes/pull/53/merge'.
+2026-03-01T00:44:32.7765696Z 
+2026-03-01T00:44:32.7766070Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-03-01T00:44:32.7766791Z changes and commit them, and you can discard any commits you make in this
+2026-03-01T00:44:32.7767588Z state without impacting any branches by switching back to a branch.
+2026-03-01T00:44:32.7768066Z 
+2026-03-01T00:44:32.7768372Z If you want to create a new branch to retain commits you create, you may
+2026-03-01T00:44:32.7769378Z do so (now or later) by using -c with the switch command. Example:
+2026-03-01T00:44:32.7769828Z 
+2026-03-01T00:44:32.7773493Z   git switch -c <new-branch-name>
+2026-03-01T00:44:32.7773818Z 
+2026-03-01T00:44:32.7773981Z Or undo this operation with:
+2026-03-01T00:44:32.7774235Z 
+2026-03-01T00:44:32.7774361Z   git switch -
+2026-03-01T00:44:32.7774540Z 
+2026-03-01T00:44:32.7775109Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-03-01T00:44:32.7775651Z 
+2026-03-01T00:44:32.7776190Z HEAD is now at f3b2f00 Merge 401549431442189ea51d3362c37ea851fe0699e7 into 57e306c404c048135099f874b25e36620ee51b04
+2026-03-01T00:44:32.8352401Z ##[endgroup]
+2026-03-01T00:44:32.8409139Z [command]/usr/bin/git log -1 --format=%H
+2026-03-01T00:44:32.8432905Z f3b2f0073a5c41c65e25aded44b2340992f3da40
+2026-03-01T00:44:32.8682568Z ##[group]Run actions/setup-node@v4
+2026-03-01T00:44:32.8682827Z with:
+2026-03-01T00:44:32.8683005Z   node-version: 22
+2026-03-01T00:44:32.8683194Z   cache: npm
+2026-03-01T00:44:32.8683365Z   always-auth: false
+2026-03-01T00:44:32.8683575Z   check-latest: false
+2026-03-01T00:44:32.8683868Z   token: ***
+2026-03-01T00:44:32.8684049Z ##[endgroup]
+2026-03-01T00:44:33.7240829Z Found in cache @ /opt/hostedtoolcache/node/22.22.0/x64
+2026-03-01T00:44:33.7247713Z ##[group]Environment details
+2026-03-01T00:44:34.7224636Z node: v22.22.0
+2026-03-01T00:44:34.7225467Z npm: 10.9.4
+2026-03-01T00:44:34.7225780Z yarn: 1.22.22
+2026-03-01T00:44:34.7227172Z ##[endgroup]
+2026-03-01T00:44:34.7252417Z [command]/opt/hostedtoolcache/node/22.22.0/x64/bin/npm config get cache
+2026-03-01T00:44:34.8348108Z /home/runner/.npm
+2026-03-01T00:44:35.0049200Z npm cache is not found
+2026-03-01T00:44:35.0243013Z ##[group]Run actions/setup-java@v4
+2026-03-01T00:44:35.0243270Z with:
+2026-03-01T00:44:35.0243452Z   distribution: temurin
+2026-03-01T00:44:35.0243652Z   java-version: 21
+2026-03-01T00:44:35.0243850Z   java-package: jdk
+2026-03-01T00:44:35.0244062Z   check-latest: false
+2026-03-01T00:44:35.0244267Z   server-id: github
+2026-03-01T00:44:35.0244465Z   server-username: GITHUB_ACTOR
+2026-03-01T00:44:35.0245024Z   server-password: GITHUB_TOKEN
+2026-03-01T00:44:35.0245265Z   overwrite-settings: true
+2026-03-01T00:44:35.0245475Z   job-status: success
+2026-03-01T00:44:35.0245775Z   token: ***
+2026-03-01T00:44:35.0245954Z ##[endgroup]
+2026-03-01T00:44:35.2442556Z ##[group]Installed distributions
+2026-03-01T00:44:35.2550411Z Resolved Java 21.0.10+7 from tool-cache
+2026-03-01T00:44:35.2551141Z Setting Java 21.0.10+7 as the default
+2026-03-01T00:44:35.2563033Z Creating toolchains.xml for JDK version 21 from temurin
+2026-03-01T00:44:35.2648145Z Writing to /home/runner/.m2/toolchains.xml
+2026-03-01T00:44:35.2661403Z 
+2026-03-01T00:44:35.2661649Z Java configuration:
+2026-03-01T00:44:35.2662056Z   Distribution: temurin
+2026-03-01T00:44:35.2662426Z   Version: 21.0.10+7
+2026-03-01T00:44:35.2665627Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:44:35.2666769Z 
+2026-03-01T00:44:35.2667990Z ##[endgroup]
+2026-03-01T00:44:35.2671761Z Creating settings.xml with server-id: github
+2026-03-01T00:44:35.2684686Z Writing to /home/runner/.m2/settings.xml
+2026-03-01T00:44:35.2798210Z ##[group]Run npm ci
+2026-03-01T00:44:35.2798475Z [36;1mnpm ci[0m
+2026-03-01T00:44:35.2857414Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:44:35.2857659Z env:
+2026-03-01T00:44:35.2857945Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:44:35.2858434Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:44:35.2858807Z ##[endgroup]
+2026-03-01T00:44:41.2161567Z npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2026-03-01T00:44:43.1849701Z npm warn deprecated json-ptr@3.1.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-03-01T00:44:43.7537906Z npm warn deprecated @opentelemetry/exporter-jaeger@1.30.1: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2026-03-01T00:45:06.5187766Z 
+2026-03-01T00:45:06.5188823Z added 1558 packages, and audited 1564 packages in 31s
+2026-03-01T00:45:06.5189815Z 
+2026-03-01T00:45:06.5190518Z 155 packages are looking for funding
+2026-03-01T00:45:06.5191215Z   run `npm fund` for details
+2026-03-01T00:45:06.5210530Z 
+2026-03-01T00:45:06.5211445Z found 0 vulnerabilities
+2026-03-01T00:45:06.6028833Z ##[group]Run npm run validate:runtime-contract
+2026-03-01T00:45:06.6029406Z [36;1mnpm run validate:runtime-contract[0m
+2026-03-01T00:45:06.6080240Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:06.6080479Z env:
+2026-03-01T00:45:06.6080771Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:06.6081256Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:06.6081618Z ##[endgroup]
+2026-03-01T00:45:06.7081786Z 
+2026-03-01T00:45:06.7083327Z > my-litrpg-game@0.0.0 validate:runtime-contract
+2026-03-01T00:45:06.7085575Z > node scripts/check-runtime-contract.mjs
+2026-03-01T00:45:06.7086019Z 
+2026-03-01T00:45:06.7396615Z [runtime-contract] PASS
+2026-03-01T00:45:06.7520164Z ##[group]Run npm run validate:env-examples
+2026-03-01T00:45:06.7520497Z [36;1mnpm run validate:env-examples[0m
+2026-03-01T00:45:06.7570056Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:06.7570296Z env:
+2026-03-01T00:45:06.7570588Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:06.7571091Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:06.7571457Z ##[endgroup]
+2026-03-01T00:45:06.8917300Z 
+2026-03-01T00:45:06.8918704Z > my-litrpg-game@0.0.0 validate:env-examples
+2026-03-01T00:45:06.8919523Z > node scripts/check-env-example-coverage.mjs
+2026-03-01T00:45:06.8919927Z 
+2026-03-01T00:45:06.9356021Z [env-example-coverage] PASS
+2026-03-01T00:45:06.9544027Z ##[group]Run npm run lint
+2026-03-01T00:45:06.9544469Z [36;1mnpm run lint[0m
+2026-03-01T00:45:06.9594412Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:06.9594648Z env:
+2026-03-01T00:45:06.9595390Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:06.9595895Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:06.9596275Z ##[endgroup]
+2026-03-01T00:45:07.0655146Z 
+2026-03-01T00:45:07.0657549Z > my-litrpg-game@0.0.0 lint
+2026-03-01T00:45:07.0658512Z > eslint .
+2026-03-01T00:45:07.0661733Z 
+2026-03-01T00:45:25.0659848Z ##[group]Run npm run typecheck
+2026-03-01T00:45:25.0660363Z [36;1mnpm run typecheck[0m
+2026-03-01T00:45:25.0716617Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:25.0716854Z env:
+2026-03-01T00:45:25.0717164Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:25.0717659Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:25.0718042Z ##[endgroup]
+2026-03-01T00:45:25.1775367Z 
+2026-03-01T00:45:25.1776355Z > my-litrpg-game@0.0.0 typecheck
+2026-03-01T00:45:25.1776888Z > tsc --noEmit
+2026-03-01T00:45:25.1777128Z 
+2026-03-01T00:45:35.3388740Z ##[group]Run npm test -- tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand
+2026-03-01T00:45:35.3391417Z [36;1mnpm test -- tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand[0m
+2026-03-01T00:45:35.3444377Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:35.3444616Z env:
+2026-03-01T00:45:35.3445142Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:35.3445632Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:35.3445998Z ##[endgroup]
+2026-03-01T00:45:35.4521038Z 
+2026-03-01T00:45:35.4521609Z > my-litrpg-game@0.0.0 test
+2026-03-01T00:45:35.4524183Z > node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand
+2026-03-01T00:45:35.4526193Z 
+2026-03-01T00:45:37.4435694Z (node:2373) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+2026-03-01T00:45:37.4437020Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-03-01T00:45:37.4455686Z PASS tests/unit/SyncReplayRoute.test.js
+2026-03-01T00:45:37.6773848Z PASS tests/unit/ApiRouterSyncRoutes.test.js
+2026-03-01T00:45:37.8170089Z PASS tests/unit/SyncReplayService.test.js
+2026-03-01T00:45:37.9068139Z PASS tests/unit/WebGameplayGate.test.js
+2026-03-01T00:45:37.9082903Z 
+2026-03-01T00:45:37.9093154Z Test Suites: 4 passed, 4 total
+2026-03-01T00:45:37.9094115Z Tests:       14 passed, 14 total
+2026-03-01T00:45:37.9104631Z Snapshots:   0 total
+2026-03-01T00:45:37.9105856Z Time:        1.958 s
+2026-03-01T00:45:37.9108089Z Ran all test suites matching tests/unit/WebGameplayGate.test.js|tests/unit/SyncReplayService.test.js|tests/unit/SyncReplayRoute.test.js|tests/unit/ApiRouterSyncRoutes.test.js.
+2026-03-01T00:45:37.9493645Z ##[group]Run npm test -- --runInBand
+2026-03-01T00:45:37.9494195Z [36;1mnpm test -- --runInBand[0m
+2026-03-01T00:45:37.9560011Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:37.9560256Z env:
+2026-03-01T00:45:37.9560554Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:37.9561065Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:37.9561438Z ##[endgroup]
+2026-03-01T00:45:38.0672777Z 
+2026-03-01T00:45:38.0675549Z > my-litrpg-game@0.0.0 test
+2026-03-01T00:45:38.0683001Z > node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache --runInBand
+2026-03-01T00:45:38.0683670Z 
+2026-03-01T00:45:39.9767049Z (node:2398) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+2026-03-01T00:45:39.9817594Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-03-01T00:45:39.9840751Z PASS tests/unit/SyncCommandRoutes.test.js
+2026-03-01T00:45:41.9006277Z PASS tests/unit/LevelingAndCombat.test.js
+2026-03-01T00:45:41.9949082Z PASS tests/unit/SyncValidation.test.js
+2026-03-01T00:45:42.2228581Z PASS tests/essenceEcology.test.js
+2026-03-01T00:45:42.2352161Z   ● Console
+2026-03-01T00:45:42.2352666Z 
+2026-03-01T00:45:42.2353163Z     console.log
+2026-03-01T00:45:42.2354715Z       [SimBridge] Initialized with seed: 1337
+2026-03-01T00:45:42.2356301Z 
+2026-03-01T00:45:42.2357120Z       at SimulationContext.log [as initialize] (packages/game-core/src/simulation/bridge/SimulationContext.js:61:13)
+2026-03-01T00:45:42.2357956Z 
+2026-03-01T00:45:42.2358119Z     console.log
+2026-03-01T00:45:42.2358590Z       [SimBridge] Initialized with seed: 1337
+2026-03-01T00:45:42.2358951Z 
+2026-03-01T00:45:42.2359935Z       at SimulationContext.log [as initialize] (packages/game-core/src/simulation/bridge/SimulationContext.js:61:13)
+2026-03-01T00:45:42.2360646Z 
+2026-03-01T00:45:42.4813505Z PASS tests/unit/SyncProcess.test.js
+2026-03-01T00:45:42.5788416Z PASS tests/unit/GodotCommandContract.test.js
+2026-03-01T00:45:42.7824122Z PASS tests/unit/ActionDispatcher.test.js
+2026-03-01T00:45:42.9099333Z PASS tests/unit/SyncDataconnectStore.test.js
+2026-03-01T00:45:43.0925382Z PASS tests/unit/SavesStoreDataconnect.test.js
+2026-03-01T00:45:43.3459606Z PASS tests/unit/SyncProgressionScenarioHarness.test.js
+2026-03-01T00:45:43.5183003Z PASS tests/unit/SchemaValidation.test.js
+2026-03-01T00:45:43.7938752Z PASS tests/essenceEcologyScenario.test.js
+2026-03-01T00:45:43.9971786Z PASS tests/unit/HandlersNarrate.test.js
+2026-03-01T00:45:44.1406606Z PASS tests/unit/SyncCoreDeterminism.test.js
+2026-03-01T00:45:44.3550447Z PASS tests/unit/SyncReplayRoute.test.js
+2026-03-01T00:45:44.6434350Z PASS tests/unit/SkillProgression.test.js
+2026-03-01T00:45:44.9584000Z PASS tests/unit/ArchetypeProgressionImpact.test.js
+2026-03-01T00:45:45.2233481Z PASS tests/unit/SyncReconnectStorm.test.js
+2026-03-01T00:45:45.4433808Z PASS tests/unit/ApiRouterSavesRoutes.test.js
+2026-03-01T00:45:45.6983844Z PASS tests/unit/PlaceholderItemCuration.test.js
+2026-03-01T00:45:45.8419264Z PASS tests/unit/InputValidator.test.js
+2026-03-01T00:45:45.9917978Z PASS tests/unit/NarrateRunsStore.test.js
+2026-03-01T00:45:46.1588152Z PASS tests/unit/MagicCombatCasting.test.js
+2026-03-01T00:45:46.8856644Z PASS tests/unit/RuntimeSimulationParity.test.js
+2026-03-01T00:45:46.8866140Z   ● Console
+2026-03-01T00:45:46.8868118Z 
+2026-03-01T00:45:46.8870050Z     console.log
+2026-03-01T00:45:46.8872692Z       [SimBridge] Initialized with seed: 1337
+2026-03-01T00:45:46.8875536Z 
+2026-03-01T00:45:46.8876342Z       at SimulationContext.log [as initialize] (packages/game-core/src/simulation/bridge/SimulationContext.js:61:13)
+2026-03-01T00:45:46.8877152Z 
+2026-03-01T00:45:47.0396077Z PASS tests/unit/EffectEngineAndLog.test.js
+2026-03-01T00:45:47.3047415Z PASS tests/unit/PromptAssembler.test.js
+2026-03-01T00:45:47.4507024Z PASS tests/unit/SavesStoreBackendResolution.test.js
+2026-03-01T00:45:47.5382394Z PASS tests/unit/SimulationKernelWorldUpdates.test.js
+2026-03-01T00:45:47.8466811Z PASS tests/unit/MagicParser.test.js
+2026-03-01T00:45:48.0370717Z PASS tests/unit/WorldbuildIntegrityAudit.test.js
+2026-03-01T00:45:48.2319879Z PASS tests/unit/ApiRouterSyncRoutes.test.js
+2026-03-01T00:45:48.3515569Z PASS tests/unit/DataRegistry.test.js
+2026-03-01T00:45:48.5531103Z PASS tests/unit/SystemBuilderPlatformNeutrality.test.js
+2026-03-01T00:45:48.7650280Z PASS tests/unit/TelemetryRoute.test.js
+2026-03-01T00:45:48.8916250Z PASS tests/unit/SyncReplayService.test.js
+2026-03-01T00:45:49.0098862Z PASS tests/unit/WorldInitializer.test.js
+2026-03-01T00:45:49.1199162Z PASS tests/unit/AgentService.test.js
+2026-03-01T00:45:49.2528135Z PASS tests/unit/BalanceCorridorAudit.test.js
+2026-03-01T00:45:50.6319983Z PASS tests/unit/CharacterCreationSkillPools.test.js
+2026-03-01T00:45:50.7854583Z PASS tests/unit/SkillRegistryCanonicalization.test.js
+2026-03-01T00:45:51.0804518Z PASS tests/unit/QuestObjectiveProgression.test.js
+2026-03-01T00:45:51.3301204Z PASS tests/unit/GameSystems.test.js
+2026-03-01T00:45:51.4193123Z PASS tests/unit/GameStateAdapter.test.js
+2026-03-01T00:45:51.5784299Z PASS tests/unit/SyncStoreBackendResolution.test.js
+2026-03-01T00:45:51.6664369Z PASS tests/unit/GodotAuthResilienceContract.test.js
+2026-03-01T00:45:51.7611171Z PASS tests/unit/WorldDataRegistry.test.js
+2026-03-01T00:45:51.8816500Z PASS tests/unit/QuestAutoCompleteMagic.test.js
+2026-03-01T00:45:52.0076763Z PASS tests/unit/AmbientShiftObserver.test.js
+2026-03-01T00:45:52.1369461Z PASS tests/unit/InventorySystem.test.js
+2026-03-01T00:45:52.1401390Z   ● Console
+2026-03-01T00:45:52.1403428Z 
+2026-03-01T00:45:52.1404664Z     console.warn
+2026-03-01T00:45:52.1406095Z       Item "mystery_token" not found in database. Adding as basic item.
+2026-03-01T00:45:52.1408663Z 
+2026-03-01T00:45:52.1410063Z     [0m [90m 21 |[39m     itemData [33m=[39m getItemData(itemId)[33m;[39m
+2026-03-01T00:45:52.1411433Z      [90m 22 |[39m     [36mif[39m ([33m![39mitemData) {
+2026-03-01T00:45:52.1413715Z     [31m[1m>[22m[39m[90m 23 |[39m       console[33m.[39mwarn(
+2026-03-01T00:45:52.1414477Z      [90m    |[39m               [31m[1m^[22m[39m
+2026-03-01T00:45:52.1415777Z      [90m 24 |[39m         [32m`Item "${itemId}" not found in database. Adding as basic item.`[39m[33m,[39m
+2026-03-01T00:45:52.1416720Z      [90m 25 |[39m       )[33m;[39m
+2026-03-01T00:45:52.1418428Z      [90m 26 |[39m       itemData [33m=[39m { id[33m:[39m itemId[33m,[39m name[33m:[39m itemId[33m,[39m type[33m:[39m [32m"misc"[39m[33m,[39m quantity[33m:[39m [35m1[39m }[33m;[39m[0m
+2026-03-01T00:45:52.1419543Z 
+2026-03-01T00:45:52.1420040Z       at warn (packages/game-core/src/systems/inventory/InventorySystem.js:23:15)
+2026-03-01T00:45:52.1421007Z       at Object.addItem (tests/unit/InventorySystem.test.js:12:18)
+2026-03-01T00:45:52.1421484Z 
+2026-03-01T00:45:52.2413122Z PASS tests/unit/WebGameplayGate.test.js
+2026-03-01T00:45:52.3624012Z PASS tests/unit/NarrationGuards.test.js
+2026-03-01T00:45:52.5034428Z PASS tests/unit/RaceAbilityExposure.test.js
+2026-03-01T00:45:52.6131874Z PASS tests/unit/AIServiceEndpointResolution.test.js
+2026-03-01T00:45:52.7052977Z PASS tests/unit/TracingShim.test.js
+2026-03-01T00:45:52.7938382Z PASS tests/unit/LocationResolution.test.js
+2026-03-01T00:45:52.8826437Z PASS tests/unit/AuthServiceLocalMode.test.js
+2026-03-01T00:45:52.8846441Z 
+2026-03-01T00:45:52.8856237Z Test Suites: 1 skipped, 56 passed, 56 of 57 total
+2026-03-01T00:45:52.8858744Z Tests:       3 skipped, 269 passed, 272 total
+2026-03-01T00:45:52.8862034Z Snapshots:   0 total
+2026-03-01T00:45:52.8862438Z Time:        14.324 s
+2026-03-01T00:45:52.8862862Z Ran all test suites.
+2026-03-01T00:45:52.9833367Z ##[group]Run npm run test:firestore-rules:emulator
+2026-03-01T00:45:52.9834031Z [36;1mnpm run test:firestore-rules:emulator[0m
+2026-03-01T00:45:52.9893017Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:45:52.9893259Z env:
+2026-03-01T00:45:52.9893558Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:52.9894057Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:45:52.9894443Z ##[endgroup]
+2026-03-01T00:45:53.0941321Z 
+2026-03-01T00:45:53.0942017Z > my-litrpg-game@0.0.0 test:firestore-rules:emulator
+2026-03-01T00:45:53.0942846Z > node scripts/run-firestore-rules-emulator.mjs
+2026-03-01T00:45:53.0943284Z 
+2026-03-01T00:45:54.9676345Z [33m[1m⚠  emulators:[22m[39m You are not currently authenticated so some features may not work correctly. Please run [1mfirebase login[22m to authenticate the CLI.
+2026-03-01T00:45:55.0093871Z [36m[1mi  emulators:[22m[39m Starting emulators: firestore
+2026-03-01T00:45:55.0232988Z [33m[1m⚠ [22m[39m It appears you are running in a CI environment. You can avoid downloading the Firestore Emulator repeatedly by caching the /home/runner/.cache/firebase/emulators directory.
+2026-03-01T00:45:55.0238085Z [36m[1mi  firestore:[22m[39m downloading cloud-firestore-emulator-v1.20.2.jar...
+2026-03-01T00:45:56.1339442Z 
+2026-03-01T00:45:56.5358282Z [36m[1mi  firestore:[22m[39m Firestore Emulator logging to [1mfirestore-debug.log[22m
+2026-03-01T00:45:58.5507357Z [32m[1m✔  firestore:[22m[39m Firestore Emulator UI websocket is running on 9150.
+2026-03-01T00:45:58.5562872Z [36m[1mi [22m[39m Running script: [1mnpm run test:firestore-rules[22m
+2026-03-01T00:45:58.6922597Z 
+2026-03-01T00:45:58.6923723Z > my-litrpg-game@0.0.0 test:firestore-rules
+2026-03-01T00:45:58.6925861Z > node --experimental-vm-modules node_modules/jest/bin/jest.js tests/security/firestoreRules.test.js --runInBand --no-cache
+2026-03-01T00:45:58.6927079Z 
+2026-03-01T00:45:59.8046578Z (node:2529) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+2026-03-01T00:45:59.8048086Z (Use `node --trace-warnings ...` to show where the warning was created)
+2026-03-01T00:46:02.3601989Z   console.warn
+2026-03-01T00:46:02.3605209Z     [2026-03-01T00:46:02.159Z]  @firebase/firestore: Firestore (12.9.0): GrpcConnection RPC 'Write' stream 0x1d409463 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+2026-03-01T00:46:02.3608603Z     false for 'create' @ L33, false for 'create' @ L46, false for 'update' @ L34, false for 'update' @ L46
+2026-03-01T00:46:02.3610863Z 
+2026-03-01T00:46:02.3613074Z       at Logger.defaultLogHandler [as _logHandler] (node_modules/@firebase/logger/src/logger.ts:115:57)
+2026-03-01T00:46:02.3615687Z       at Logger.warn (node_modules/@firebase/logger/src/logger.ts:206:10)
+2026-03-01T00:46:02.3617829Z       at logWarn (node_modules/@firebase/firestore/src/util/log.ts:69:15)
+2026-03-01T00:46:02.3619248Z       at ClientDuplexStreamImpl.<anonymous> (node_modules/@firebase/firestore/src/platform/node/grpc_connection.ts:318:9)
+2026-03-01T00:46:02.3621156Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client.ts:705:18)
+2026-03-01T00:46:02.3622904Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client-interceptors.ts:419:48)
+2026-03-01T00:46:02.3624472Z       at node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/resolving-call.ts:132:24
+2026-03-01T00:46:02.3625389Z 
+2026-03-01T00:46:02.3979925Z   console.warn
+2026-03-01T00:46:02.3982878Z     [2026-03-01T00:46:02.395Z]  @firebase/firestore: Firestore (12.9.0): GrpcConnection RPC 'Write' stream 0x1d409464 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+2026-03-01T00:46:02.3986104Z     false for 'create' @ L40, false for 'create' @ L46, false for 'update' @ L41, false for 'update' @ L46
+2026-03-01T00:46:02.3986791Z 
+2026-03-01T00:46:02.3987867Z       at Logger.defaultLogHandler [as _logHandler] (node_modules/@firebase/logger/src/logger.ts:115:57)
+2026-03-01T00:46:02.3989082Z       at Logger.warn (node_modules/@firebase/logger/src/logger.ts:206:10)
+2026-03-01T00:46:02.3990013Z       at logWarn (node_modules/@firebase/firestore/src/util/log.ts:69:15)
+2026-03-01T00:46:02.3991355Z       at ClientDuplexStreamImpl.<anonymous> (node_modules/@firebase/firestore/src/platform/node/grpc_connection.ts:318:9)
+2026-03-01T00:46:02.3993049Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client.ts:705:18)
+2026-03-01T00:46:02.3994745Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client-interceptors.ts:419:48)
+2026-03-01T00:46:02.3996506Z       at node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/resolving-call.ts:132:24
+2026-03-01T00:46:02.3997223Z 
+2026-03-01T00:46:02.6776240Z   console.warn
+2026-03-01T00:46:02.6778192Z     [2026-03-01T00:46:02.673Z]  @firebase/firestore: Firestore (12.9.0): GrpcConnection RPC 'Write' stream 0x1d409467 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+2026-03-01T00:46:02.6796276Z     evaluation error at L34:24 for 'update' @ L34, false for 'update' @ L46, false for 'update' @ L34, false for 'update' @ L46
+2026-03-01T00:46:02.6797460Z 
+2026-03-01T00:46:02.6798953Z       at Logger.defaultLogHandler [as _logHandler] (node_modules/@firebase/logger/src/logger.ts:115:57)
+2026-03-01T00:46:02.6802386Z       at Logger.warn (node_modules/@firebase/logger/src/logger.ts:206:10)
+2026-03-01T00:46:02.6808877Z       at logWarn (node_modules/@firebase/firestore/src/util/log.ts:69:15)
+2026-03-01T00:46:02.6810390Z       at ClientDuplexStreamImpl.<anonymous> (node_modules/@firebase/firestore/src/platform/node/grpc_connection.ts:318:9)
+2026-03-01T00:46:02.6812045Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client.ts:705:18)
+2026-03-01T00:46:02.6816085Z       at Object.onReceiveStatus (node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/client-interceptors.ts:419:48)
+2026-03-01T00:46:02.6819451Z       at node_modules/@firebase/firestore/node_modules/@grpc/grpc-js/src/resolving-call.ts:132:24
+2026-03-01T00:46:02.6820164Z 
+2026-03-01T00:46:02.8613685Z PASS tests/security/firestoreRules.test.js
+2026-03-01T00:46:02.8622648Z   firestore security rules
+2026-03-01T00:46:02.8626318Z     ✓ denies unauthenticated reads/writes to save-related collections (1107 ms)
+2026-03-01T00:46:02.8629760Z     ✓ denies authenticated access to another user's data (278 ms)
+2026-03-01T00:46:02.8632903Z     ✓ allows owner-scoped operations (174 ms)
+2026-03-01T00:46:02.8645882Z 
+2026-03-01T00:46:02.8662255Z Test Suites: 1 passed, 1 total
+2026-03-01T00:46:02.8676933Z Tests:       3 passed, 3 total
+2026-03-01T00:46:02.8679474Z Snapshots:   0 total
+2026-03-01T00:46:02.8680152Z Time:        3.686 s
+2026-03-01T00:46:02.8681040Z Ran all test suites matching tests/security/firestoreRules.test.js.
+2026-03-01T00:46:02.9834764Z [32m[1m✔ [22m[39m Script exited successfully (code 0)
+2026-03-01T00:46:03.4842956Z [36m[1mi  emulators:[22m[39m Shutting down emulators.
+2026-03-01T00:46:03.4846142Z [36m[1mi  firestore:[22m[39m Stopping Firestore Emulator
+2026-03-01T00:46:03.8198643Z [36m[1mi  hub:[22m[39m Stopping emulator hub
+2026-03-01T00:46:03.8203079Z [36m[1mi  logging:[22m[39m Stopping Logging Emulator
+2026-03-01T00:46:03.8894307Z ##[group]Run npm run validate:registries
+2026-03-01T00:46:03.8895059Z [36;1mnpm run validate:registries[0m
+2026-03-01T00:46:03.8962553Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:03.8962928Z env:
+2026-03-01T00:46:03.8963308Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:03.8963899Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:03.8964519Z ##[endgroup]
+2026-03-01T00:46:04.0034624Z 
+2026-03-01T00:46:04.0037274Z > my-litrpg-game@0.0.0 validate:registries
+2026-03-01T00:46:04.0043391Z > node scripts/validate-registries.mjs
+2026-03-01T00:46:04.0043754Z 
+2026-03-01T00:46:04.0642280Z Registry validation passed.
+2026-03-01T00:46:04.0776050Z ##[group]Run npm run validate:archetypes
+2026-03-01T00:46:04.0776376Z [36;1mnpm run validate:archetypes[0m
+2026-03-01T00:46:04.0824613Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:04.0825133Z env:
+2026-03-01T00:46:04.0825471Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.0825984Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.0826347Z ##[endgroup]
+2026-03-01T00:46:04.1988084Z 
+2026-03-01T00:46:04.1989562Z > my-litrpg-game@0.0.0 validate:archetypes
+2026-03-01T00:46:04.1990710Z > node scripts/validate-archetypes.mjs
+2026-03-01T00:46:04.1991325Z 
+2026-03-01T00:46:04.2752032Z 🔍 Validating archetype definitions...
+2026-03-01T00:46:04.2752946Z 
+2026-03-01T00:46:04.2881600Z ✅ systems.json: 87 archetypes valid
+2026-03-01T00:46:04.2910758Z ✅ authorities.json: 27 archetypes valid
+2026-03-01T00:46:04.2917142Z ✅ paths.json: 5 archetypes valid
+2026-03-01T00:46:04.2948547Z ✅ frameworks.json: 16 archetypes valid
+2026-03-01T00:46:04.2949244Z ✅ privileges.json: 7 archetypes valid
+2026-03-01T00:46:04.2949893Z ✅ overlays.json: 1 archetypes valid
+2026-03-01T00:46:04.2950208Z 
+2026-03-01T00:46:04.2950542Z 📊 Summary: 143/143 archetypes valid
+2026-03-01T00:46:04.2951227Z 
+2026-03-01T00:46:04.2951471Z ✅ All archetypes valid!
+2026-03-01T00:46:04.3128966Z ##[group]Run npm run validate:player-loot
+2026-03-01T00:46:04.3129523Z [36;1mnpm run validate:player-loot[0m
+2026-03-01T00:46:04.3200716Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:04.3201114Z env:
+2026-03-01T00:46:04.3201604Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.3202501Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.3203186Z ##[endgroup]
+2026-03-01T00:46:04.4252874Z 
+2026-03-01T00:46:04.4253491Z > my-litrpg-game@0.0.0 validate:player-loot
+2026-03-01T00:46:04.4254299Z > node scripts/validate-player-facing-loot.mjs
+2026-03-01T00:46:04.4254713Z 
+2026-03-01T00:46:04.4828694Z [player-loot-contract] PASS refs=52 allowlist=0 placeholderViolations=0 sources={"quest_reward":28,"enemy_drop":15,"shop_item":6,"shop_material":3}
+2026-03-01T00:46:04.4975101Z ##[group]Run npm run validate:placeholder-curation
+2026-03-01T00:46:04.4975807Z [36;1mnpm run validate:placeholder-curation[0m
+2026-03-01T00:46:04.5047794Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:04.5048193Z env:
+2026-03-01T00:46:04.5048678Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.5049567Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.5050245Z ##[endgroup]
+2026-03-01T00:46:04.6091349Z 
+2026-03-01T00:46:04.6093506Z > my-litrpg-game@0.0.0 validate:placeholder-curation
+2026-03-01T00:46:04.6096247Z > node scripts/validate-placeholder-curation-thresholds.mjs
+2026-03-01T00:46:04.6098300Z 
+2026-03-01T00:46:04.6887345Z [placeholder-curation-contract] PASS thresholds={"maxCritical":0,"maxPlayerFacingPlaceholders":0,"maxHigh":10} summary={"critical":0,"high":4,"playerFacingPlaceholders":0}
+2026-03-01T00:46:04.7039790Z ##[group]Run npm run validate:skill-owner-schema
+2026-03-01T00:46:04.7040439Z [36;1mnpm run validate:skill-owner-schema[0m
+2026-03-01T00:46:04.7108738Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:04.7108983Z env:
+2026-03-01T00:46:04.7109279Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.7109763Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.7110128Z ##[endgroup]
+2026-03-01T00:46:04.8164733Z 
+2026-03-01T00:46:04.8167706Z > my-litrpg-game@0.0.0 validate:skill-owner-schema
+2026-03-01T00:46:04.8172619Z > node scripts/validate-skill-owner-schema.mjs
+2026-03-01T00:46:04.8173033Z 
+2026-03-01T00:46:04.9671345Z [skill-owner-schema] PASS token='skill.class' allowlist=3 scanned=407
+2026-03-01T00:46:04.9829664Z ##[group]Run npm run validate:balance-corridors
+2026-03-01T00:46:04.9830288Z [36;1mnpm run validate:balance-corridors[0m
+2026-03-01T00:46:04.9885684Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:04.9885924Z env:
+2026-03-01T00:46:04.9886212Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.9886691Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:04.9887068Z ##[endgroup]
+2026-03-01T00:46:05.0942276Z 
+2026-03-01T00:46:05.0943044Z > my-litrpg-game@0.0.0 validate:balance-corridors
+2026-03-01T00:46:05.0944292Z > node scripts/validate-balance-corridors.mjs
+2026-03-01T00:46:05.0949641Z 
+2026-03-01T00:46:05.1578144Z [balance-corridor-contract] PASS thresholds={"maxMedianTTK":8,"minMedianTTF":4,"minMedianWinRatio":0.85,"maxMedianWinRatio":8,"minQuestToEnemyGoldRatio":1.5,"maxQuestToEnemyGoldRatio":20,"minQuestToEnemyXpRatio":1.2,"maxQuestToEnemyXpRatio":8,"maxRaceRelevanceSpread":18,"maxTierClassPowerSpread":14} summary={"globalMedianTTK":2.947,"globalMedianTTF":19.473,"globalMedianWinRatio":7.854,"questToEnemyGoldRatio":3.682,"questToEnemyXpRatio":1.697,"raceRelevanceSpread":11}
+2026-03-01T00:46:05.1722147Z ##[group]Run npm run build:tooling
+2026-03-01T00:46:05.1722444Z [36;1mnpm run build:tooling[0m
+2026-03-01T00:46:05.1772080Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:05.1772484Z env:
+2026-03-01T00:46:05.1772768Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:05.1773248Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:05.1773608Z ##[endgroup]
+2026-03-01T00:46:05.2845197Z 
+2026-03-01T00:46:05.2848043Z > my-litrpg-game@0.0.0 build:tooling
+2026-03-01T00:46:05.2850310Z > node scripts/build-profile.mjs tooling
+2026-03-01T00:46:05.2850683Z 
+2026-03-01T00:46:05.4248660Z 
+2026-03-01T00:46:05.4251625Z > my-litrpg-game@0.0.0 build
+2026-03-01T00:46:05.4258153Z > vite build
+2026-03-01T00:46:05.4258386Z 
+2026-03-01T00:46:05.6746764Z [36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+2026-03-01T00:46:05.7196317Z transforming...
+2026-03-01T00:46:05.7240318Z [32m✓[39m 1 modules transformed.
+2026-03-01T00:46:05.7537439Z rendering chunks...
+2026-03-01T00:46:05.7579553Z computing gzip size...
+2026-03-01T00:46:05.7602946Z [2mdist/[22m[32mindex.html  [39m[1m[2m0.13 kB[22m[1m[22m[2m │ gzip: 0.13 kB[22m
+2026-03-01T00:46:05.7607358Z [32m✓ built in 62ms[39m
+2026-03-01T00:46:05.7741574Z 
+2026-03-01T00:46:05.7743356Z > my-litrpg-game@0.0.0 postbuild
+2026-03-01T00:46:05.7744304Z > node scripts/generate-runtime-config.js && node scripts/generate-godot-config.js
+2026-03-01T00:46:05.7745248Z 
+2026-03-01T00:46:05.8041410Z [runtime-config] wrote dist/runtime-config.js from public
+2026-03-01T00:46:05.8377397Z [godot-config] wrote godot/data/config.json from dist/runtime-config.js (profile=local)
+2026-03-01T00:46:05.8487754Z [build-profile] tooling profile removed installable PWA artifacts.
+2026-03-01T00:46:05.8642725Z ##[group]Run npm run test:pwa:installability -- --expect-web-gameplay=false
+2026-03-01T00:46:05.8643258Z [36;1mnpm run test:pwa:installability -- --expect-web-gameplay=false[0m
+2026-03-01T00:46:05.8692143Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:46:05.8692382Z env:
+2026-03-01T00:46:05.8692674Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:05.8693173Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.10-7/x64
+2026-03-01T00:46:05.8693538Z ##[endgroup]
+2026-03-01T00:46:06.0095858Z 
+2026-03-01T00:46:06.0099146Z > my-litrpg-game@0.0.0 test:pwa:installability
+2026-03-01T00:46:06.0101119Z > node scripts/test-pwa-installability.mjs --expect-web-gameplay=false
+2026-03-01T00:46:06.0106211Z 
+2026-03-01T00:46:06.0418653Z [pwa-installability] FAIL: index.html must include theme-color metadata.
+2026-03-01T00:46:06.0549456Z ##[error]Process completed with exit code 1.
+2026-03-01T00:46:06.0659778Z Post job cleanup.
+2026-03-01T00:46:06.2519316Z Post job cleanup.
+2026-03-01T00:46:06.3862526Z [command]/usr/bin/git version
+2026-03-01T00:46:06.3914641Z git version 2.53.0
+2026-03-01T00:46:06.3965471Z Temporarily overriding HOME='/home/runner/work/_temp/3d7d041d-7bbb-47bb-a9e1-ebca6daf0f53' before making global git config changes
+2026-03-01T00:46:06.3969560Z Adding repository directory to the temporary git global config as a safe directory
+2026-03-01T00:46:06.3973216Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/my-litrpg-gameztrui/my-litrpg-gameztrui
+2026-03-01T00:46:06.4015893Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-03-01T00:46:06.4055789Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-03-01T00:46:06.4341076Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-03-01T00:46:06.4370860Z http.https://github.com/.extraheader
+2026-03-01T00:46:06.4387460Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-03-01T00:46:06.4425490Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-03-01T00:46:06.4695930Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-03-01T00:46:06.4734006Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-03-01T00:46:06.5127953Z Cleaning up orphan processes

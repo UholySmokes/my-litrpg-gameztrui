@@ -1,0 +1,15 @@
+﻿2026-03-01T00:44:41.7132812Z ##[group]Run npm run test:godot:perf
+2026-03-01T00:44:41.7133135Z [36;1mnpm run test:godot:perf[0m
+2026-03-01T00:44:41.7182008Z shell: /usr/bin/bash -e {0}
+2026-03-01T00:44:41.7182245Z env:
+2026-03-01T00:44:41.7182433Z   GODOT: /home/runner/bin/godot
+2026-03-01T00:44:41.7182684Z   GODOT4: /home/runner/bin/godot
+2026-03-01T00:44:41.7182908Z ##[endgroup]
+2026-03-01T00:44:41.8279520Z 
+2026-03-01T00:44:41.8280183Z > my-litrpg-game@0.0.0 test:godot:perf
+2026-03-01T00:44:41.8280900Z > node scripts/run-godot-perf-probe.mjs
+2026-03-01T00:44:41.8281245Z 
+2026-03-01T00:44:43.8793219Z Godot Engine v4.2.2.stable.mono.official.15073afe3 - https://godotengine.org
+2026-03-01T00:44:43.8795224Z  
+2026-03-01T00:44:43.8797654Z [godot-perf-probe] {"baselineIterations":240,"mapId":"map_village_square","mapTransitions":240,"moveAvgMs":0.0308583333333333,"moveP95Ms":0.04,"moveSamples":240,"renderAvgMs":0.0244625,"renderP95Ms":0.033,"renderSamples":240}
+2026-03-01T00:44:43.8805081Z [godot-perf-probe] report: docs/reports/godot_map_traversal_perf_baseline_2026-03-01.md

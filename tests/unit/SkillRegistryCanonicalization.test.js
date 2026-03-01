@@ -17,9 +17,13 @@ describe("SkillRegistry canonical class ownership", () => {
       expect(pool.passive.length).toBeGreaterThan(0);
       pool.active.forEach((skill) => {
         expect(skill.class).toBe(classId);
+        expect(skill.ownerType).toBe("class");
+        expect(skill.ownerId).toBe(classId);
       });
       pool.passive.forEach((skill) => {
         expect(skill.class).toBe(classId);
+        expect(skill.ownerType).toBe("class");
+        expect(skill.ownerId).toBe(classId);
       });
     }
   });
@@ -37,12 +41,27 @@ describe("SkillRegistry canonical class ownership", () => {
 
     const allSkills = getAllSkills();
     const leakedOwners = [];
+    const invalidOwnerShapes = [];
+    const allowedOwnerTypes = new Set([
+      "class",
+      "profession",
+      "universal",
+      "system",
+    ]);
     allSkills.forEach((skill) => {
       if (!allowedOwners.has(skill.class)) {
         leakedOwners.push(skill.class);
       }
+      if (
+        !allowedOwnerTypes.has(skill.ownerType) ||
+        typeof skill.ownerId !== "string" ||
+        skill.ownerId.trim().length === 0
+      ) {
+        invalidOwnerShapes.push(skill.id);
+      }
     });
 
     expect(leakedOwners).toHaveLength(0);
+    expect(invalidOwnerShapes).toHaveLength(0);
   });
 });

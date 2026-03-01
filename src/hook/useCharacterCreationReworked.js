@@ -222,7 +222,9 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
     : skillCatalog
         .filter(
           (skill) =>
-            skill?.class === cls.id && isSkillUnlockedAtCreation(skill),
+            skill?.ownerType === "class" &&
+            skill?.ownerId === cls.id &&
+            isSkillUnlockedAtCreation(skill),
         )
         .map((skill) =>
           collectSkillEntries([skill], skill.type || null, skillIndex, "class")[0],
@@ -325,7 +327,8 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
   const racePools = splitSkillsByType(raceSkillEntries);
 
   const generalEntries = skillCatalog.filter(
-    (skill) => skill.class === "universal" || skill.class === "general",
+    (skill) =>
+      skill?.ownerType === "universal" && skill?.ownerId === "universal",
   );
   const generalPools = splitSkillsByType(
     generalEntries

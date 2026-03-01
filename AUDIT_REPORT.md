@@ -97,8 +97,7 @@ Strengths:
 
 Residual risks:
 
-- Skill ownership still overloads one owner field for class/profession/universal semantics.
-- Canonicalization logic currently protects against drift, but schema-level typing would reduce future ambiguity further.
+- Legacy consumers still read `skill.class`; dual-field compatibility (`class` + `ownerType/ownerId`) should be retained until all callers migrate.
 
 ### B. Races and Racial Effects
 
@@ -131,7 +130,7 @@ Strengths:
 
 Residual risks:
 
-- Closure currently includes generated placeholder item records for unresolved recipe IDs.
+- Closure currently includes generated placeholder item records for unresolved recipe IDs, now tagged with provenance metadata for curation.
 - Placeholder inflation can distort economy or reward quality if not curated into authored content.
 
 ### E. Quests and World Progression
@@ -250,16 +249,24 @@ Per content patch:
 
 - Keep `validate:worldbuild:strict` and runtime/env contract guards mandatory in CI.
 - Prevent placeholder item leakage into player-facing loot tables without curation tags.
+  - Enforced by `validate:player-loot` across quest rewards, enemy drops, and shop stock refs.
+  - Threshold-enforced by `validate:placeholder-curation` (contract: `docs/contracts/placeholder_curation_thresholds_v1.json`).
 
 ### P1 (High)
 
-- Introduce typed skill ownership schema (`ownerType` + `ownerId`).
-- Add placeholder provenance metadata and conversion workflow (placeholder -> authored item).
+- Complete downstream migration from legacy `skill.class` reads to `ownerType` + `ownerId`.
+  - Guarded by `npm run validate:skill-owner-schema` to prevent new `skill.class` reads outside compatibility allowlist.
+- Add conversion workflow (placeholder -> authored item) using placeholder provenance metadata.
+  - Implemented command: `npm run report:worldbuild:placeholders`
+  - Artifacts: `docs/reports/placeholder_item_curation_queue.json` and a dated markdown queue report
 
 ### P2 (Medium)
 
 - Build an automated balance harness for TTK/TTF/resource/economy corridors.
+  - Implemented guard: `npm run validate:balance-corridors`
+  - Contract: `docs/contracts/balance_corridor_thresholds_v1.json`
 - Add race and class long-session relevance checks (not only existence/coverage).
+  - Included in balance corridor guard via race relevance spread and per-tier class power spread checks.
 
 ### P3 (Longer-term)
 
@@ -274,7 +281,7 @@ Current status versus target:
 - `0` unresolved item references in recipes/quest rewards: Met
 - `0` manifest drift between Godot and sync specs: Met
 - Tier-3 class skill identity coverage: Met
-- Automated balance corridor tests (TTK/TTF/economy): Not yet met
+- Automated balance corridor tests (TTK/TTF/economy): Met (contract-enforced)
 
 Overall assessment:
 

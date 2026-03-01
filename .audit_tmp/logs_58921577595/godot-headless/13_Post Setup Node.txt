@@ -1,0 +1,4 @@
+﻿2026-03-01T00:44:43.8997430Z Post job cleanup.
+2026-03-01T00:44:44.0936464Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/my-litrpg-gameztrui/my-litrpg-gameztrui --files-from manifest.txt --use-compress-program zstdmt
+2026-03-01T00:44:44.7107845Z Sent 951 of 951 (100.0%), 0.0 MBs/sec
+2026-03-01T00:44:44.9961499Z Cache saved with the key: node-cache-Linux-x64-npm-9cb6c369acb757abe5046ba909e003d44695ba957863c19e23d3d5e6423ae40b

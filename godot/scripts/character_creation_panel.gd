@@ -4,6 +4,8 @@ class_name CharacterCreationPanel
 ## options list, and navigation controls inside a CanvasLayer panel.
 ## Works with CharacterCreationController to drive the flow.
 
+const CharacterCreationController = preload("res://scripts/character_creation_controller.gd")
+
 @onready var _title_label: Label = %CreationTitleLabel
 @onready var _step_label: Label = %CreationStepLabel
 @onready var _body_label: RichTextLabel = %CreationBodyLabel

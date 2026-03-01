@@ -1,6 +1,8 @@
 extends Node
 class_name SyncClient
 
+const FirebaseAuthClient = preload("res://scripts/firebase_auth_client.gd")
+
 signal safe_mode_changed(active: bool)
 signal sync_rejected(payload: Dictionary)
 

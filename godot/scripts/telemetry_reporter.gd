@@ -1,6 +1,8 @@
 extends Node
 class_name TelemetryReporter
 
+const FirebaseAuthClient = preload("res://scripts/firebase_auth_client.gd")
+
 @export var api_base_url: String = "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api"
 @export var telemetry_path: String = "/telemetry"
 @export var auth_client_path: NodePath

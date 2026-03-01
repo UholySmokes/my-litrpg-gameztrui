@@ -1,5 +1,13 @@
 extends Node2D
 
+const FirebaseAuthClient = preload("res://scripts/firebase_auth_client.gd")
+const SyncClient = preload("res://scripts/sync_client.gd")
+const ConfigLoader = preload("res://scripts/config_loader.gd")
+const TriggerQueue = preload("res://scripts/trigger_queue.gd")
+const ProsePanel = preload("res://scripts/prose_panel.gd")
+const CharacterCreationController = preload("res://scripts/character_creation_controller.gd")
+const CharacterCreationPanel = preload("res://scripts/character_creation_panel.gd")
+
 const TILE_SIZE := 32
 const LOCAL_SAVE_PATH := "user://slice_save.json"
 const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SAVEPOINT"]

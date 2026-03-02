@@ -1,0 +1,4 @@
+15a85640e4a0a7dcc1c296641ce53da3
+// Back-compat shim: implementation lives in @voidverse/game-core.
+export * from '@voidverse/game-core/utils/shared.js';
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sInNvdXJjZXMiOlsic2hhcmVkLmpzIl0sInNvdXJjZXNDb250ZW50IjpbIu+7vy8vIEJhY2stY29tcGF0IHNoaW06IGltcGxlbWVudGF0aW9uIGxpdmVzIGluIEB2b2lkdmVyc2UvZ2FtZS1jb3JlLlxyXG5leHBvcnQgKiBmcm9tICdAdm9pZHZlcnNlL2dhbWUtY29yZS91dGlscy9zaGFyZWQuanMnO1xyXG5cclxuIl0sIm1hcHBpbmdzIjoiQUFBQztBQUNELGNBQWMsc0NBQXNDIiwiaWdub3JlTGlzdCI6W119

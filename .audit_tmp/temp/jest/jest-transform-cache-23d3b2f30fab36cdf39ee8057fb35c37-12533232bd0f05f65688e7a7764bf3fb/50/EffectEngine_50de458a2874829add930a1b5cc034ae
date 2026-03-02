@@ -1,0 +1,42 @@
+9c5531a1e76719cf507049a6326eada0
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _exportNames = {
+  applyEffect: true,
+  removeEffect: true,
+  tickEffects: true
+};
+Object.defineProperty(exports, "applyEffect", {
+  enumerable: true,
+  get: function () {
+    return _EffectEngine.applyEffect;
+  }
+});
+Object.defineProperty(exports, "removeEffect", {
+  enumerable: true,
+  get: function () {
+    return _EffectEngine.removeEffect;
+  }
+});
+Object.defineProperty(exports, "tickEffects", {
+  enumerable: true,
+  get: function () {
+    return _EffectEngine.tickEffects;
+  }
+});
+var _EffectEngine = require("../../../packages/game-core/src/simulation/effects/EffectEngine.ts");
+Object.keys(_EffectEngine).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _EffectEngine[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _EffectEngine[key];
+    }
+  });
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfRWZmZWN0RW5naW5lIiwicmVxdWlyZSIsIk9iamVjdCIsImtleXMiLCJmb3JFYWNoIiwia2V5IiwicHJvdG90eXBlIiwiaGFzT3duUHJvcGVydHkiLCJjYWxsIiwiX2V4cG9ydE5hbWVzIiwiZXhwb3J0cyIsImRlZmluZVByb3BlcnR5IiwiZW51bWVyYWJsZSIsImdldCJdLCJzb3VyY2VzIjpbIkVmZmVjdEVuZ2luZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyLvu78vLyBCYWNrLWNvbXBhdCBzaGltOiBpbXBsZW1lbnRhdGlvbiBsaXZlcyBpbiBAdm9pZHZlcnNlL2dhbWUtY29yZS5cclxuZXhwb3J0IHtcclxuICBhcHBseUVmZmVjdCxcclxuICByZW1vdmVFZmZlY3QsXHJcbiAgdGlja0VmZmVjdHMsXHJcbn0gZnJvbSBcIi4uLy4uLy4uL3BhY2thZ2VzL2dhbWUtY29yZS9zcmMvc2ltdWxhdGlvbi9lZmZlY3RzL0VmZmVjdEVuZ2luZS50c1wiO1xyXG5leHBvcnQgKiBmcm9tIFwiLi4vLi4vLi4vcGFja2FnZXMvZ2FtZS1jb3JlL3NyYy9zaW11bGF0aW9uL2VmZmVjdHMvRWZmZWN0RW5naW5lLnRzXCI7XHJcblxyXG4iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFDQSxJQUFBQSxhQUFBLEdBQUFDLE9BQUE7QUFLQUMsTUFBQSxDQUFBQyxJQUFBLENBQUFILGFBQUEsRUFBQUksT0FBQSxXQUFBQyxHQUFBO0VBQUEsSUFBQUEsR0FBQSxrQkFBQUEsR0FBQTtFQUFBLElBQUFILE1BQUEsQ0FBQUksU0FBQSxDQUFBQyxjQUFBLENBQUFDLElBQUEsQ0FBQUMsWUFBQSxFQUFBSixHQUFBO0VBQUEsSUFBQUEsR0FBQSxJQUFBSyxPQUFBLElBQUFBLE9BQUEsQ0FBQUwsR0FBQSxNQUFBTCxhQUFBLENBQUFLLEdBQUE7RUFBQUgsTUFBQSxDQUFBUyxjQUFBLENBQUFELE9BQUEsRUFBQUwsR0FBQTtJQUFBTyxVQUFBO0lBQUFDLEdBQUEsV0FBQUEsQ0FBQTtNQUFBLE9BQUFiLGFBQUEsQ0FBQUssR0FBQTtJQUFBO0VBQUE7QUFBQSIsImlnbm9yZUxpc3QiOltdfQ==

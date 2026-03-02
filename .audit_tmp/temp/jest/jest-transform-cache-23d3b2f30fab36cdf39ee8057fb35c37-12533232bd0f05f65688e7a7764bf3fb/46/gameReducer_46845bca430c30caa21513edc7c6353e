@@ -1,0 +1,4 @@
+da44824a8602e0ce02dcc2d43c98b763
+// Back-compat shim: implementation lives in @voidverse/game-core.
+export * from '@voidverse/game-core/core/gameReducer.js';
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiZ2FtZVJlZHVjZXIuanMiXSwic291cmNlc0NvbnRlbnQiOlsi77u/Ly8gQmFjay1jb21wYXQgc2hpbTogaW1wbGVtZW50YXRpb24gbGl2ZXMgaW4gQHZvaWR2ZXJzZS9nYW1lLWNvcmUuXHJcbmV4cG9ydCAqIGZyb20gJ0B2b2lkdmVyc2UvZ2FtZS1jb3JlL2NvcmUvZ2FtZVJlZHVjZXIuanMnO1xyXG5cclxuIl0sIm1hcHBpbmdzIjoiQUFBQztBQUNELGNBQWMsMENBQTBDIiwiaWdub3JlTGlzdCI6W119

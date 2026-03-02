@@ -1,0 +1,4 @@
+afd0311fdf9e7eb5f3dd2a26ef07b389
+// Back-compat shim: implementation lives in @voidverse/game-core.
+export * from '@voidverse/game-core/core/xpCurve.js';
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sInNvdXJjZXMiOlsieHBDdXJ2ZS5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyLvu78vLyBCYWNrLWNvbXBhdCBzaGltOiBpbXBsZW1lbnRhdGlvbiBsaXZlcyBpbiBAdm9pZHZlcnNlL2dhbWUtY29yZS5cclxuZXhwb3J0ICogZnJvbSAnQHZvaWR2ZXJzZS9nYW1lLWNvcmUvY29yZS94cEN1cnZlLmpzJztcclxuXHJcbiJdLCJtYXBwaW5ncyI6IkFBQUM7QUFDRCxjQUFjLHNDQUFzQyIsImlnbm9yZUxpc3QiOltdfQ==

@@ -1,0 +1,4 @@
+a852c95809efeed1bf9a4279aa886b03
+// Back-compat shim: implementation lives in @voidverse/game-core.
+export * from '@voidverse/game-core/data/gachaData.js';
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiZ2FjaGFEYXRhLmpzIl0sInNvdXJjZXNDb250ZW50IjpbIu+7vy8vIEJhY2stY29tcGF0IHNoaW06IGltcGxlbWVudGF0aW9uIGxpdmVzIGluIEB2b2lkdmVyc2UvZ2FtZS1jb3JlLlxyXG5leHBvcnQgKiBmcm9tICdAdm9pZHZlcnNlL2dhbWUtY29yZS9kYXRhL2dhY2hhRGF0YS5qcyc7XHJcblxyXG4iXSwibWFwcGluZ3MiOiJBQUFDO0FBQ0QsY0FBYyx3Q0FBd0MiLCJpZ25vcmVMaXN0IjpbXX0=

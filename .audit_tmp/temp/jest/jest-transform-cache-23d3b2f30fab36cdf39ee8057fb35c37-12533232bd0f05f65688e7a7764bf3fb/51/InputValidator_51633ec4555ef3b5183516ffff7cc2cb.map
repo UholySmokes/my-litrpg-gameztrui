@@ -1,0 +1,1 @@
+{"version":3,"names":[],"sources":["InputValidator.js"],"sourcesContent":["﻿// Back-compat shim: implementation lives in @voidverse/game-core.\r\nexport * from '@voidverse/game-core/core/InputValidator.js';\r\n\r\n"],"mappings":"AAAC;AACD,cAAc,6CAA6C","ignoreList":[]}

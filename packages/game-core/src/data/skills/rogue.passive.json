@@ -1,0 +1,322 @@
+[
+  {
+    "id": "rogue_combat_potency",
+    "name": "Combat Potency",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Off-hand attacks have a chance to generate energy.",
+    "level": 1
+  },
+  {
+    "id": "rogue_find_weakness",
+    "name": "Find Weakness",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Abilities from stealth ignore a portion of armor.",
+    "level": 1
+  },
+  {
+    "id": "rogue_master_of_subtlety",
+    "name": "Master of Subtlety",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Attacks from stealth deal bonus damage.",
+    "level": 1
+  },
+  {
+    "id": "rogue_opportunity",
+    "name": "Opportunity",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Sinister Strike has a chance to strike twice.",
+    "level": 1
+  },
+  {
+    "id": "rogue_relentless_strikes",
+    "name": "Relentless Strikes",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Finishing moves restore energy.",
+    "level": 1
+  },
+  {
+    "id": "rogue_ruthlessness",
+    "name": "Ruthlessness",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Finishing moves have a chance to add a combo point.",
+    "level": 1
+  },
+  {
+    "id": "rogue_seal_fate",
+    "name": "Seal Fate",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Critical strikes with combo generators add an extra point.",
+    "level": 1
+  },
+  {
+    "id": "rogue_fleet_footed",
+    "name": "Fleet Footed",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Increased movement speed and reduced fall damage.",
+    "level": 1
+  },
+  {
+    "id": "rogue_quick_recovery",
+    "name": "Quick Recovery",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Energy regeneration is increased.",
+    "level": 1
+  },
+  {
+    "id": "rogue_improved_stealth",
+    "name": "Improved Stealth",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Movement speed while stealthed is increased.",
+    "level": 1
+  },
+  {
+    "id": "rogue_nightstalker",
+    "name": "Nightstalker",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Stealth abilities deal bonus damage at night.",
+    "level": 1
+  },
+  {
+    "id": "rogue_deeper_stratagem",
+    "name": "Deeper Stratagem",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Maximum combo points increased by one.",
+    "level": 1
+  },
+  {
+    "id": "rogue_elaborate_planning",
+    "name": "Elaborate Planning",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Finishing moves increase damage dealt briefly.",
+    "level": 1
+  },
+  {
+    "id": "rogue_lethality",
+    "name": "Lethality",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Critical strike damage is increased.",
+    "level": 1
+  },
+  {
+    "id": "rogue_vile_poisons",
+    "name": "Vile Poisons",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Poison effects deal more damage.",
+    "level": 1
+  },
+  {
+    "id": "rogue_improved_poisons",
+    "name": "Improved Poisons",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Poison application chance is increased.",
+    "level": 1
+  },
+  {
+    "id": "rogue_master_poisoner",
+    "name": "Master Poisoner",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Envenom has no cooldown.",
+    "level": 1
+  },
+  {
+    "id": "rogue_venomous_wounds",
+    "name": "Venomous Wounds",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Bleed effects on poisoned targets restore energy.",
+    "level": 1
+  },
+  {
+    "id": "rogue_internal_bleeding",
+    "name": "Internal Bleeding",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Kidney Shot causes the target to bleed.",
+    "level": 1
+  },
+  {
+    "id": "rogue_serrated_blades",
+    "name": "Serrated Blades",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Rupture critical strikes refresh the duration.",
+    "level": 1
+  },
+  {
+    "id": "rogue_turn_the_tables",
+    "name": "Turn the Tables",
+    "type": "passive",
+    "class": "rogue",
+    "description": "After dodging, your next attack deals bonus damage.",
+    "level": 1
+  },
+  {
+    "id": "rogue_sleight_of_hand",
+    "name": "Sleight of Hand",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Pickpocket range increased and always succeeds.",
+    "level": 1
+  },
+  {
+    "id": "rogue_lucky_fingers",
+    "name": "Lucky Fingers",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Pickpocket yields better rewards.",
+    "level": 1
+  },
+  {
+    "id": "rogue_acrobatics",
+    "name": "Acrobatics",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Sprint removes movement impairing effects.",
+    "level": 1
+  },
+  {
+    "id": "rogue_improved_ambush",
+    "name": "Improved Ambush",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Ambush critical strike chance increased.",
+    "level": 1
+  },
+  {
+    "id": "rogue_initiative",
+    "name": "Initiative",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Opening from stealth generates bonus combo points.",
+    "level": 1
+  },
+  {
+    "id": "rogue_dirty_tricks",
+    "name": "Dirty Tricks",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Blind and Gouge no longer cost energy.",
+    "level": 1
+  },
+  {
+    "id": "rogue_shadow_focus",
+    "name": "Shadow Focus",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Abilities while stealthed cost less energy.",
+    "level": 1
+  },
+  {
+    "id": "rogue_improved_recuperate",
+    "name": "Improved Recuperate",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Recuperate heals for more and reduces damage taken.",
+    "level": 1
+  },
+  {
+    "id": "rogue_elusiveness",
+    "name": "Elusiveness",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Evasion cooldown reduced.",
+    "level": 1
+  },
+  {
+    "id": "rogue_cheat_death",
+    "name": "Cheat Death",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Fatal damage instead reduces you to low health once per fight.",
+    "level": 1
+  },
+  {
+    "id": "rogue_prey_on_the_weak",
+    "name": "Prey on the Weak",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Enemies you control take increased damage from all sources.",
+    "level": 1
+  },
+  {
+    "id": "rogue_sanguinary_vein",
+    "name": "Sanguinary Vein",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Deal bonus damage to bleeding targets.",
+    "level": 1
+  },
+  {
+    "id": "rogue_anticipation",
+    "name": "Anticipation",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Excess combo points are stored for later use.",
+    "level": 1
+  },
+  {
+    "id": "rogue_alacrity",
+    "name": "Alacrity",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Finishing moves have a chance to increase haste.",
+    "level": 1
+  },
+  {
+    "id": "rogue_vigor",
+    "name": "Vigor",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Maximum energy increased.",
+    "level": 1
+  },
+  {
+    "id": "rogue_premeditation",
+    "name": "Premeditation",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Stealth generates combo points on your target.",
+    "level": 1
+  },
+  {
+    "id": "rogue_subterfuge",
+    "name": "Subterfuge",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Stealth abilities remain usable briefly after leaving stealth.",
+    "level": 1
+  },
+  {
+    "id": "rogue_master_assassin",
+    "name": "Master Assassin",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Critical strike chance increased while stealthed and briefly after.",
+    "level": 1
+  },
+  {
+    "id": "rogue_fan_of_knives_mastery",
+    "name": "Fan of Knives Mastery",
+    "type": "passive",
+    "class": "rogue",
+    "description": "Fan of Knives generates combo points on all targets hit.",
+    "level": 1
+  }
+]

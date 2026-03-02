@@ -2,6 +2,7 @@ const functions = require("firebase-functions");
 const { handleApiRequest } = require("./lib/api-router");
 const crypto = require("crypto");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { isDevAuthEnabled } = require("./lib/auth");
 const {
 	listFirebaseAgents,
 	runFirebaseAgent,
@@ -30,10 +31,7 @@ exports.agentList = onCall({ region: "us-central1" }, async () => ({
 }));
 
 exports.agentRun = onCall({ region: "us-central1", timeoutSeconds: 120 }, async (request) => {
-	const devUserId =
-		process.env.NODE_ENV === "production"
-			? ""
-			: String(process.env.DEV_USER_ID || "").trim();
+	const devUserId = isDevAuthEnabled() ? String(process.env.DEV_USER_ID || "").trim() : "";
 	const callerId = String(request?.auth?.uid || devUserId || "").trim();
 	if (!callerId) {
 		throw new HttpsError("unauthenticated", "Sign in required.");

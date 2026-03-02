@@ -1,0 +1,322 @@
+[
+  {
+    "id": "templar_magic_resistance",
+    "name": "Magic Resistance",
+    "type": "passive",
+    "class": "templar",
+    "description": "Reduced damage from magic.",
+    "level": 1
+  },
+  {
+    "id": "templar_spell_immunity",
+    "name": "Spell Immunity",
+    "type": "passive",
+    "class": "templar",
+    "description": "Chance to ignore spells entirely.",
+    "level": 1
+  },
+  {
+    "id": "templar_mage_slayer",
+    "name": "Mage Slayer",
+    "type": "passive",
+    "class": "templar",
+    "description": "Bonus damage against spellcasters.",
+    "level": 1
+  },
+  {
+    "id": "templar_antimagic_aura",
+    "name": "Antimagic Aura",
+    "type": "passive",
+    "class": "templar",
+    "description": "Enemies near you have weakened magic.",
+    "level": 1
+  },
+  {
+    "id": "templar_purity_of_spirit",
+    "name": "Purity of Spirit",
+    "type": "passive",
+    "class": "templar",
+    "description": "Cannot be possessed or mind controlled.",
+    "level": 1
+  },
+  {
+    "id": "templar_divine_health",
+    "name": "Divine Health",
+    "type": "passive",
+    "class": "templar",
+    "description": "Immune to disease.",
+    "level": 1
+  },
+  {
+    "id": "templar_aura_of_courage",
+    "name": "Aura of Courage",
+    "type": "passive",
+    "class": "templar",
+    "description": "Immune to fear, allies resist fear.",
+    "level": 1
+  },
+  {
+    "id": "templar_holy_fortitude",
+    "name": "Holy Fortitude",
+    "type": "passive",
+    "class": "templar",
+    "description": "Increased health and stamina.",
+    "level": 1
+  },
+  {
+    "id": "templar_shield_mastery",
+    "name": "Shield Mastery",
+    "type": "passive",
+    "class": "templar",
+    "description": "Superior blocking ability.",
+    "level": 1
+  },
+  {
+    "id": "templar_sacred_oath",
+    "name": "Sacred Oath",
+    "type": "passive",
+    "class": "templar",
+    "description": "Your oaths grant you power.",
+    "level": 1
+  },
+  {
+    "id": "templar_detect_evil",
+    "name": "Detect Evil",
+    "type": "passive",
+    "class": "templar",
+    "description": "Sense the presence of evil.",
+    "level": 1
+  },
+  {
+    "id": "templar_detect_magic",
+    "name": "Detect Magic",
+    "type": "passive",
+    "class": "templar",
+    "description": "Sense magical presences.",
+    "level": 1
+  },
+  {
+    "id": "templar_blessed_warrior",
+    "name": "Blessed Warrior",
+    "type": "passive",
+    "class": "templar",
+    "description": "Holy damage bonus on all attacks.",
+    "level": 1
+  },
+  {
+    "id": "templar_improved_dispel",
+    "name": "Improved Dispel",
+    "type": "passive",
+    "class": "templar",
+    "description": "Dispel effects are more powerful.",
+    "level": 1
+  },
+  {
+    "id": "templar_greater_dispel",
+    "name": "Greater Dispel",
+    "type": "passive",
+    "class": "templar",
+    "description": "Can dispel even powerful magic.",
+    "level": 1
+  },
+  {
+    "id": "templar_counterspell_mastery",
+    "name": "Counterspell Mastery",
+    "type": "passive",
+    "class": "templar",
+    "description": "Better at interrupting spells.",
+    "level": 1
+  },
+  {
+    "id": "templar_spell_absorption",
+    "name": "Spell Absorption",
+    "type": "passive",
+    "class": "templar",
+    "description": "Absorb blocked spells for mana.",
+    "level": 1
+  },
+  {
+    "id": "templar_nullification",
+    "name": "Nullification",
+    "type": "passive",
+    "class": "templar",
+    "description": "Your presence weakens magic.",
+    "level": 1
+  },
+  {
+    "id": "templar_holy_champion",
+    "name": "Holy Champion",
+    "type": "passive",
+    "class": "templar",
+    "description": "Bonus damage against evil creatures.",
+    "level": 1
+  },
+  {
+    "id": "templar_zealous_accusation",
+    "name": "Zealous Accusation",
+    "type": "passive",
+    "class": "templar",
+    "description": "Censured enemies take more damage.",
+    "level": 1
+  },
+  {
+    "id": "templar_divine_grace",
+    "name": "Divine Grace",
+    "type": "passive",
+    "class": "templar",
+    "description": "Add willpower to all saving throws.",
+    "level": 1
+  },
+  {
+    "id": "templar_tireless",
+    "name": "Tireless",
+    "type": "passive",
+    "class": "templar",
+    "description": "Never tire from exertion.",
+    "level": 1
+  },
+  {
+    "id": "templar_sacred_weapon",
+    "name": "Sacred Weapon",
+    "type": "passive",
+    "class": "templar",
+    "description": "Weapons count as holy.",
+    "level": 1
+  },
+  {
+    "id": "templar_stalwart",
+    "name": "Stalwart",
+    "type": "passive",
+    "class": "templar",
+    "description": "Immune to movement impairment.",
+    "level": 1
+  },
+  {
+    "id": "templar_divine_mount",
+    "name": "Divine Mount",
+    "type": "passive",
+    "class": "templar",
+    "description": "Summon a celestial steed.",
+    "level": 1
+  },
+  {
+    "id": "templar_aura_of_resolve",
+    "name": "Aura of Resolve",
+    "type": "passive",
+    "class": "templar",
+    "description": "Nearby allies resist mental effects.",
+    "level": 1
+  },
+  {
+    "id": "templar_holy_resilience",
+    "name": "Holy Resilience",
+    "type": "passive",
+    "class": "templar",
+    "description": "Recover from debuffs faster.",
+    "level": 1
+  },
+  {
+    "id": "templar_improved_censure",
+    "name": "Improved Censure",
+    "type": "passive",
+    "class": "templar",
+    "description": "Censure is more effective.",
+    "level": 1
+  },
+  {
+    "id": "templar_righteous_defense",
+    "name": "Righteous Defense",
+    "type": "passive",
+    "class": "templar",
+    "description": "Protect allies from attacks.",
+    "level": 1
+  },
+  {
+    "id": "templar_unshakeable_faith",
+    "name": "Unshakeable Faith",
+    "type": "passive",
+    "class": "templar",
+    "description": "Your faith cannot be broken.",
+    "level": 1
+  },
+  {
+    "id": "templar_judge_jury",
+    "name": "Judge and Jury",
+    "type": "passive",
+    "class": "templar",
+    "description": "Your judgments are absolute.",
+    "level": 1
+  },
+  {
+    "id": "templar_inquisitor",
+    "name": "Inquisitor",
+    "type": "passive",
+    "class": "templar",
+    "description": "Root out corruption with ease.",
+    "level": 1
+  },
+  {
+    "id": "templar_purifier",
+    "name": "Purifier",
+    "type": "passive",
+    "class": "templar",
+    "description": "Cleansing abilities are enhanced.",
+    "level": 1
+  },
+  {
+    "id": "templar_hammer_of_heretics",
+    "name": "Hammer of Heretics",
+    "type": "passive",
+    "class": "templar",
+    "description": "Devastating against magic users.",
+    "level": 1
+  },
+  {
+    "id": "templar_divine_wrath",
+    "name": "Divine Wrath",
+    "type": "passive",
+    "class": "templar",
+    "description": "Holy damage increased significantly.",
+    "level": 1
+  },
+  {
+    "id": "templar_blessing_of_protection",
+    "name": "Blessing of Protection",
+    "type": "passive",
+    "class": "templar",
+    "description": "Grant allies magic resistance.",
+    "level": 1
+  },
+  {
+    "id": "templar_holy_vengeance",
+    "name": "Holy Vengeance",
+    "type": "passive",
+    "class": "templar",
+    "description": "Deal damage to those who harm allies.",
+    "level": 1
+  },
+  {
+    "id": "templar_sanctified_ground",
+    "name": "Sanctified Ground",
+    "type": "passive",
+    "class": "templar",
+    "description": "Create holy ground when standing still.",
+    "level": 1
+  },
+  {
+    "id": "templar_vow_of_enmity",
+    "name": "Vow of Enmity",
+    "type": "passive",
+    "class": "templar",
+    "description": "Declare an enemy your sworn foe.",
+    "level": 1
+  },
+  {
+    "id": "templar_paragon_of_virtue",
+    "name": "Paragon of Virtue",
+    "type": "passive",
+    "class": "templar",
+    "description": "The ultimate expression of faith.",
+    "level": 1
+  }
+]

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "paladin_crusader_strike",
+    "name": "Crusader Strike",
+    "type": "active",
+    "class": "paladin",
+    "description": "Strike the enemy with holy power, generating resources.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 4
+  },
+  {
+    "id": "paladin_judgment",
+    "name": "Judgment",
+    "type": "active",
+    "class": "paladin",
+    "description": "Judge an enemy, dealing holy damage from range.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 6
+  },
+  {
+    "id": "paladin_divine_storm",
+    "name": "Divine Storm",
+    "type": "active",
+    "class": "paladin",
+    "description": "Unleash holy energy in a whirlwind around you.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 8
+  },
+  {
+    "id": "paladin_templar_verdict",
+    "name": "Templars Verdict",
+    "type": "active",
+    "class": "paladin",
+    "description": "Unleash accumulated holy power in a devastating strike.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 0
+  },
+  {
+    "id": "paladin_hammer_of_justice",
+    "name": "Hammer of Justice",
+    "type": "active",
+    "class": "paladin",
+    "description": "Hurl a hammer that stuns the target.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 60
+  },
+  {
+    "id": "paladin_lay_on_hands",
+    "name": "Lay on Hands",
+    "type": "active",
+    "class": "paladin",
+    "description": "Instantly heal a target to full health.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 600
+  },
+  {
+    "id": "paladin_flash_of_light",
+    "name": "Flash of Light",
+    "type": "active",
+    "class": "paladin",
+    "description": "A quick but expensive healing spell.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 0
+  },
+  {
+    "id": "paladin_word_of_glory",
+    "name": "Word of Glory",
+    "type": "active",
+    "class": "paladin",
+    "description": "Consume holy power to heal an ally.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 0
+  },
+  {
+    "id": "paladin_blessing_of_protection",
+    "name": "Blessing of Protection",
+    "type": "active",
+    "class": "paladin",
+    "description": "Make a target immune to physical damage briefly.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 300
+  },
+  {
+    "id": "paladin_divine_shield",
+    "name": "Divine Shield",
+    "type": "active",
+    "class": "paladin",
+    "description": "Become immune to all damage for a short time.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 300
+  },
+  {
+    "id": "paladin_avenging_wrath",
+    "name": "Avenging Wrath",
+    "type": "active",
+    "class": "paladin",
+    "description": "Wings of light increase damage and healing done.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 120
+  },
+  {
+    "id": "paladin_consecration",
+    "name": "Consecration",
+    "type": "active",
+    "class": "paladin",
+    "description": "Consecrate the ground, dealing holy damage to enemies.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 9
+  },
+  {
+    "id": "paladin_holy_wrath",
+    "name": "Holy Wrath",
+    "type": "active",
+    "class": "paladin",
+    "description": "Blast all nearby enemies with holy damage.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 15
+  },
+  {
+    "id": "paladin_devotion_aura",
+    "name": "Devotion Aura",
+    "type": "active",
+    "class": "paladin",
+    "description": "Reduce magic damage taken by nearby allies.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 180
+  },
+  {
+    "id": "paladin_cleanse",
+    "name": "Cleanse",
+    "type": "active",
+    "class": "paladin",
+    "description": "Remove poison and disease effects from an ally.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 8
+  },
+  {
+    "id": "paladin_hammer_of_wrath",
+    "name": "Hammer of Wrath",
+    "type": "active",
+    "class": "paladin",
+    "description": "Hurl a hammer at low health enemies.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 6
+  },
+  {
+    "id": "paladin_rebuke",
+    "name": "Rebuke",
+    "type": "active",
+    "class": "paladin",
+    "description": "Interrupt an enemy spellcast.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 15
+  },
+  {
+    "id": "paladin_divine_protection",
+    "name": "Divine Protection",
+    "type": "active",
+    "class": "paladin",
+    "description": "Reduce all damage taken for a short time.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 60
+  },
+  {
+    "id": "paladin_guardian_of_ancient_kings",
+    "name": "Guardian of Ancient Kings",
+    "type": "active",
+    "class": "paladin",
+    "description": "Summon a guardian that enhances your abilities.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 180
+  },
+  {
+    "id": "paladin_final_verdict",
+    "name": "Final Verdict",
+    "type": "active",
+    "class": "paladin",
+    "description": "A powerful finishing strike that echoes to nearby enemies.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 0
+  }
+]

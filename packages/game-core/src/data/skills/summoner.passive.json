@@ -1,0 +1,322 @@
+[
+  {
+    "id": "summoner_enhanced_summons",
+    "name": "Enhanced Summons",
+    "type": "passive",
+    "class": "summoner",
+    "description": "All summons are stronger.",
+    "level": 1
+  },
+  {
+    "id": "summoner_extended_duration",
+    "name": "Extended Duration",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons last longer.",
+    "level": 1
+  },
+  {
+    "id": "summoner_reduced_cost",
+    "name": "Reduced Summoning Cost",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons cost less mana.",
+    "level": 1
+  },
+  {
+    "id": "summoner_twin_summon",
+    "name": "Twin Summon",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Chance to summon two creatures at once.",
+    "level": 1
+  },
+  {
+    "id": "summoner_elemental_mastery",
+    "name": "Elemental Mastery",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Elemental summons are more powerful.",
+    "level": 1
+  },
+  {
+    "id": "summoner_beast_mastery",
+    "name": "Beast Mastery",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Beast summons are more powerful.",
+    "level": 1
+  },
+  {
+    "id": "summoner_construct_mastery",
+    "name": "Construct Mastery",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Golem and construct summons are more powerful.",
+    "level": 1
+  },
+  {
+    "id": "summoner_spirit_mastery",
+    "name": "Spirit Mastery",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Spirit summons are more powerful.",
+    "level": 1
+  },
+  {
+    "id": "summoner_bond_of_life",
+    "name": "Bond of Life",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Share health pool with your summons.",
+    "level": 1
+  },
+  {
+    "id": "summoner_shared_senses",
+    "name": "Shared Senses",
+    "type": "passive",
+    "class": "summoner",
+    "description": "See and hear through your summons.",
+    "level": 1
+  },
+  {
+    "id": "summoner_empathic_bond",
+    "name": "Empathic Bond",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Feel what your summons feel.",
+    "level": 1
+  },
+  {
+    "id": "summoner_mana_efficiency",
+    "name": "Mana Efficiency",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Maintaining summons costs less.",
+    "level": 1
+  },
+  {
+    "id": "summoner_superior_summons",
+    "name": "Superior Summons",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons gain bonus abilities.",
+    "level": 1
+  },
+  {
+    "id": "summoner_augment_summoning",
+    "name": "Augment Summoning",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons have enhanced stats.",
+    "level": 1
+  },
+  {
+    "id": "summoner_quick_summon",
+    "name": "Quick Summon",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summoning is faster.",
+    "level": 1
+  },
+  {
+    "id": "summoner_resilient_summons",
+    "name": "Resilient Summons",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons take less damage.",
+    "level": 1
+  },
+  {
+    "id": "summoner_makers_call",
+    "name": "Makers Call",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons teleport to you when called.",
+    "level": 1
+  },
+  {
+    "id": "summoner_transposition",
+    "name": "Transposition",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Swap positions with a summon.",
+    "level": 1
+  },
+  {
+    "id": "summoner_sacrifice_mastery",
+    "name": "Sacrifice Mastery",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Sacrificing summons is more effective.",
+    "level": 1
+  },
+  {
+    "id": "summoner_eternal_bond",
+    "name": "Eternal Bond",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Permanent summons never expire.",
+    "level": 1
+  },
+  {
+    "id": "summoner_legion",
+    "name": "Legion",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Control more summons at once.",
+    "level": 1
+  },
+  {
+    "id": "summoner_army_commander",
+    "name": "Army Commander",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Nearby summons deal more damage.",
+    "level": 1
+  },
+  {
+    "id": "summoner_life_link",
+    "name": "Life Link",
+    "type": "passive",
+    "class": "summoner",
+    "description": "When you heal, summons heal too.",
+    "level": 1
+  },
+  {
+    "id": "summoner_death_pact",
+    "name": "Death Pact",
+    "type": "passive",
+    "class": "summoner",
+    "description": "When a summon dies, you gain a buff.",
+    "level": 1
+  },
+  {
+    "id": "summoner_perfect_control",
+    "name": "Perfect Control",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons obey commands instantly.",
+    "level": 1
+  },
+  {
+    "id": "summoner_fusion_mastery",
+    "name": "Fusion Mastery",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Fusion summons are stronger.",
+    "level": 1
+  },
+  {
+    "id": "summoner_planar_knowledge",
+    "name": "Planar Knowledge",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Access to more summon types.",
+    "level": 1
+  },
+  {
+    "id": "summoner_eidolon",
+    "name": "Eidolon",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Your primary summon is much stronger.",
+    "level": 1
+  },
+  {
+    "id": "summoner_aspect_sharing",
+    "name": "Aspect Sharing",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Gain some abilities of your summons.",
+    "level": 1
+  },
+  {
+    "id": "summoner_shield_ally",
+    "name": "Shield Ally",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons protect you from damage.",
+    "level": 1
+  },
+  {
+    "id": "summoner_greater_shield",
+    "name": "Greater Shield Ally",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Protection from summons increased.",
+    "level": 1
+  },
+  {
+    "id": "summoner_summon_healing",
+    "name": "Summon Healing",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Summons slowly regenerate health.",
+    "level": 1
+  },
+  {
+    "id": "summoner_twin_eidolon",
+    "name": "Twin Eidolon",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Can have two eidolons at once.",
+    "level": 1
+  },
+  {
+    "id": "summoner_merge_forms",
+    "name": "Merge Forms",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Fuse with your eidolon for power.",
+    "level": 1
+  },
+  {
+    "id": "summoner_summoner_sight",
+    "name": "Summoner Sight",
+    "type": "passive",
+    "class": "summoner",
+    "description": "See invisible creatures.",
+    "level": 1
+  },
+  {
+    "id": "summoner_control_outsider",
+    "name": "Control Outsider",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Can summon extraplanar beings.",
+    "level": 1
+  },
+  {
+    "id": "summoner_makers_jump",
+    "name": "Makers Jump",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Teleport to any summon.",
+    "level": 1
+  },
+  {
+    "id": "summoner_mass_command",
+    "name": "Mass Command",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Command all summons simultaneously.",
+    "level": 1
+  },
+  {
+    "id": "summoner_resilient_eidolon",
+    "name": "Resilient Eidolon",
+    "type": "passive",
+    "class": "summoner",
+    "description": "Eidolon can survive fatal damage once.",
+    "level": 1
+  },
+  {
+    "id": "summoner_master_summoner",
+    "name": "Master Summoner",
+    "type": "passive",
+    "class": "summoner",
+    "description": "The ultimate summoning mastery.",
+    "level": 1
+  }
+]

@@ -1,6 +1,21 @@
 const { getApps, initializeApp } = require("firebase-admin/app");
 const { getAuth } = require("firebase-admin/auth");
 
+function parseOptionalBoolean(value) {
+	if (typeof value !== "string") return null;
+	const normalized = value.trim().toLowerCase();
+	if (!normalized) return null;
+	if (["1", "true", "yes", "on"].includes(normalized)) return true;
+	if (["0", "false", "no", "off"].includes(normalized)) return false;
+	return null;
+}
+
+function isDevAuthEnabled() {
+	const explicit = parseOptionalBoolean(process.env.DEV_AUTH_ENABLED);
+	if (explicit !== null) return explicit;
+	return String(process.env.FUNCTIONS_EMULATOR || "").toLowerCase() === "true";
+}
+
 function getHeader(req, name) {
 	if (!req || !req.headers) return "";
 	const lower = String(name || "").toLowerCase();
@@ -8,7 +23,7 @@ function getHeader(req, name) {
 }
 
 function getDevUser(req) {
-	if (process.env.NODE_ENV === "production") {
+	if (!isDevAuthEnabled()) {
 		return null;
 	}
 
@@ -84,5 +99,6 @@ async function getUserFromRequest(req) {
 }
 
 module.exports = {
+	isDevAuthEnabled,
 	getUserFromRequest,
 };

@@ -1,0 +1,322 @@
+[
+  {
+    "id": "necro_death_mastery",
+    "name": "Death Mastery",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Increased damage from death magic.",
+    "level": 1
+  },
+  {
+    "id": "necro_minion_mastery",
+    "name": "Minion Mastery",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Your undead minions are stronger.",
+    "level": 1
+  },
+  {
+    "id": "necro_life_from_death",
+    "name": "Life from Death",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Gain health when enemies die nearby.",
+    "level": 1
+  },
+  {
+    "id": "necro_dark_resilience",
+    "name": "Dark Resilience",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Increased resistance to dark and death magic.",
+    "level": 1
+  },
+  {
+    "id": "necro_corpse_collector",
+    "name": "Corpse Collector",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Corpses last longer and you can store more.",
+    "level": 1
+  },
+  {
+    "id": "necro_soul_link",
+    "name": "Soul Link",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Share damage between you and your minions.",
+    "level": 1
+  },
+  {
+    "id": "necro_improved_drain",
+    "name": "Improved Drain",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Drain Life heals for more.",
+    "level": 1
+  },
+  {
+    "id": "necro_plague_spreader",
+    "name": "Plague Spreader",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Your diseases spread more easily.",
+    "level": 1
+  },
+  {
+    "id": "necro_bone_collector",
+    "name": "Bone Collector",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Bone spells are more powerful.",
+    "level": 1
+  },
+  {
+    "id": "necro_death_embrace",
+    "name": "Death Embrace",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Deal more damage to low health enemies.",
+    "level": 1
+  },
+  {
+    "id": "necro_unholy_presence",
+    "name": "Unholy Presence",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Enemies near you are weakened.",
+    "level": 1
+  },
+  {
+    "id": "necro_dark_empowerment",
+    "name": "Dark Empowerment",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Minions periodically gain damage boosts.",
+    "level": 1
+  },
+  {
+    "id": "necro_necrotic_wounds",
+    "name": "Necrotic Wounds",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Your attacks reduce enemy healing.",
+    "level": 1
+  },
+  {
+    "id": "necro_essence_drain",
+    "name": "Essence Drain",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Killing enemies restores mana.",
+    "level": 1
+  },
+  {
+    "id": "necro_skeleton_commander",
+    "name": "Skeleton Commander",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Can control more skeleton minions.",
+    "level": 1
+  },
+  {
+    "id": "necro_zombie_swarm",
+    "name": "Zombie Swarm",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Raised zombies explode on death.",
+    "level": 1
+  },
+  {
+    "id": "necro_ghoul_frenzy",
+    "name": "Ghoul Frenzy",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Ghouls attack faster when below half health.",
+    "level": 1
+  },
+  {
+    "id": "necro_spectral_sight",
+    "name": "Spectral Sight",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "See hidden enemies and spirits.",
+    "level": 1
+  },
+  {
+    "id": "necro_death_bargain",
+    "name": "Death Bargain",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Deal more damage the lower your health.",
+    "level": 1
+  },
+  {
+    "id": "necro_corpse_magic",
+    "name": "Corpse Magic",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Spells near corpses are more powerful.",
+    "level": 1
+  },
+  {
+    "id": "necro_dark_fortitude",
+    "name": "Dark Fortitude",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Increased maximum health.",
+    "level": 1
+  },
+  {
+    "id": "necro_master_of_undeath",
+    "name": "Master of Undeath",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Raised undead last longer.",
+    "level": 1
+  },
+  {
+    "id": "necro_curse_amplification",
+    "name": "Curse Amplification",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Curse effects are stronger.",
+    "level": 1
+  },
+  {
+    "id": "necro_shadow_affinity",
+    "name": "Shadow Affinity",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Shadow spells cost less mana.",
+    "level": 1
+  },
+  {
+    "id": "necro_bone_barrier",
+    "name": "Bone Barrier",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Bone Armor absorbs more damage.",
+    "level": 1
+  },
+  {
+    "id": "necro_vampiric_aura",
+    "name": "Vampiric Aura",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "You and minions heal from damage dealt.",
+    "level": 1
+  },
+  {
+    "id": "necro_death_magic_mastery",
+    "name": "Death Magic Mastery",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "All death magic enhanced.",
+    "level": 1
+  },
+  {
+    "id": "necro_reaper_form",
+    "name": "Reaper Form",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "When health is low, transform into a reaper.",
+    "level": 1
+  },
+  {
+    "id": "necro_corpse_lance",
+    "name": "Corpse Lance",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Corpses can be launched as projectiles.",
+    "level": 1
+  },
+  {
+    "id": "necro_devour",
+    "name": "Devour",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Consume corpses to heal.",
+    "level": 1
+  },
+  {
+    "id": "necro_grisly_tribute",
+    "name": "Grisly Tribute",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Minion kills empower your next spell.",
+    "level": 1
+  },
+  {
+    "id": "necro_dark_harvest",
+    "name": "Dark Harvest",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Collecting souls increases your power.",
+    "level": 1
+  },
+  {
+    "id": "necro_flesh_golem",
+    "name": "Flesh Golem",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Can create a powerful flesh golem minion.",
+    "level": 1
+  },
+  {
+    "id": "necro_bone_prison",
+    "name": "Bone Prison",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Can trap enemies in bone cages.",
+    "level": 1
+  },
+  {
+    "id": "necro_touch_of_death",
+    "name": "Touch of Death",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Melee attacks deal death damage.",
+    "level": 1
+  },
+  {
+    "id": "necro_pestilence",
+    "name": "Pestilence",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Your presence spreads disease.",
+    "level": 1
+  },
+  {
+    "id": "necro_eternal_torment",
+    "name": "Eternal Torment",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "DoT effects last longer.",
+    "level": 1
+  },
+  {
+    "id": "necro_blood_magic",
+    "name": "Blood Magic",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Can cast spells using health instead of mana.",
+    "level": 1
+  },
+  {
+    "id": "necro_phylactery",
+    "name": "Phylactery",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Survive death once per combat.",
+    "level": 1
+  },
+  {
+    "id": "necro_army_of_shadows",
+    "name": "Army of Shadows",
+    "type": "passive",
+    "class": "necromancer",
+    "description": "Increased maximum minion count.",
+    "level": 1
+  }
+]

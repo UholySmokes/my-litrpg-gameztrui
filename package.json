@@ -130,6 +130,9 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup-dev-auth-env.js"
+    ],
     "testPathIgnorePatterns": [
       "<rootDir>/tests/skillEffects.test.js",
       "<rootDir>/tests/endToEndEffects.test.js",

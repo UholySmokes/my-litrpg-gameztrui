@@ -18,7 +18,9 @@ describe("godot auth resilience contract", () => {
 	it("retries once on 401 in sync_client.gd and reuses refreshed token", () => {
 		const source = readGodotScript("godot/scripts/sync_client.gd");
 		expect(source).toContain("if response.status == 401 and auth_client:");
-		expect(source).toContain("var refreshed := await auth_client.refresh_id_token()");
+		expect(source).toMatch(
+			/var refreshed(?::\s*bool)?\s*(?:=|:=)\s*await auth_client\.refresh_id_token\(\)/,
+		);
 		expect(source).toContain(
 			"response = await _request_json(_build_url(endpoint), method, retry_headers, payload)",
 		);

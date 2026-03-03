@@ -1,6 +1,8 @@
 extends Node
 class_name SyncClient
 
+const FirebaseAuthClient := preload("res://scripts/firebase_auth_client.gd")
+
 signal safe_mode_changed(active: bool)
 signal sync_rejected(payload: Dictionary)
 
@@ -46,7 +48,7 @@ func _authorized_json_request(endpoint: String, method: int, payload: Variant) -
 
 	var response: Dictionary = await _request_json(_build_url(endpoint), method, headers, payload)
 	if response.status == 401 and auth_client:
-		var refreshed := await auth_client.refresh_id_token()
+		var refreshed: bool = await auth_client.refresh_id_token()
 		if refreshed:
 			var retry_headers := PackedStringArray(["Content-Type: application/json"])
 			var retry_token := str(auth_client.id_token)

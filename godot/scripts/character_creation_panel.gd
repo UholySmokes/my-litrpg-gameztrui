@@ -4,6 +4,8 @@ class_name CharacterCreationPanel
 ## options list, and navigation controls inside a CanvasLayer panel.
 ## Works with CharacterCreationController to drive the flow.
 
+const CharacterCreationController := preload("res://scripts/character_creation_controller.gd")
+
 @onready var _title_label: Label = %CreationTitleLabel
 @onready var _step_label: Label = %CreationStepLabel
 @onready var _body_label: RichTextLabel = %CreationBodyLabel
@@ -35,7 +37,7 @@ func _on_step_changed(step_id: String, step_index: int, data: Dictionary) -> voi
 	_attr_keys.clear()
 	_name_input.hide()
 
-	var total := _controller.get_total_steps()
+	var total: int = _controller.get_total_steps()
 	_step_label.text = "Step %d / %d" % [step_index + 1, total]
 	_back_button.disabled = not _controller.can_go_back()
 
@@ -86,7 +88,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 
 	var key := (event as InputEventKey).keycode
-	var step_id := _controller.get_current_step() if _controller else ""
+	var step_id: String = _controller.get_current_step() if _controller else ""
 
 	# Name step: let LineEdit handle input
 	if step_id == "name":
@@ -234,7 +236,7 @@ func _refresh_options_display() -> void:
 	if _option_list.is_empty():
 		return
 
-	var step_id := _controller.get_current_step()
+	var step_id: String = _controller.get_current_step()
 	var title := "CHOOSE YOUR RACE" if step_id == "race" else "CHOOSE YOUR CLASS"
 	_title_label.text = title
 
@@ -259,8 +261,8 @@ func _refresh_options_display() -> void:
 func _refresh_attribute_display() -> void:
 	if not _controller:
 		return
-	var points := _controller.attribute_points
-	var fp := _controller.free_points
+	var points: Dictionary = _controller.attribute_points
+	var fp: int = _controller.free_points
 	var lines: PackedStringArray = []
 	lines.append("Free Points: %d" % fp)
 	lines.append("Use ◀ ▶ to adjust, ▲ ▼ to navigate.\n")
@@ -278,7 +280,7 @@ func _confirm_option_selection() -> void:
 		return
 	var opt: Dictionary = _option_list[_selected_index]
 	var opt_id := String(opt.get("id", ""))
-	var step_id := _controller.get_current_step()
+	var step_id: String = _controller.get_current_step()
 	match step_id:
 		"race":
 			_controller.select_race(opt_id)
@@ -292,6 +294,6 @@ func _confirm_option_selection() -> void:
 func _update_next_state() -> void:
 	if not _controller:
 		return
-	var on_review := _controller.get_current_step() == "review"
+	var on_review: bool = _controller.get_current_step() == "review"
 	_next_button.text = "CONFIRM" if on_review else "NEXT"
 	_next_button.disabled = not _controller.can_go_next()

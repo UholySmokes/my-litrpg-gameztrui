@@ -46,3 +46,19 @@ npm run check:godot:smoke
 - **Nightly Replay and Load** runs on a schedule for determinism + simulation coverage.
 
 If post-merge **Quality Gates** fails, treat it as “main is broken”: fix-forward or revert quickly.
+
+## Branch protection (recommended)
+
+To enforce the fast lane, set `main` to require **PR Fast** before merging.
+
+1. Trigger **PR Fast** once on the default branch so GitHub can “see” the check name:
+   - GitHub → **Actions** → **PR Fast** → **Run workflow** → branch `main`
+2. GitHub → **Settings** → **Branches** → **Branch protection rules** → **Add rule**
+3. Target: `main`
+4. Enable **Require status checks to pass before merging**
+5. Select the check that appears as `PR Fast / pr-fast` (job name may be shown after a run)
+
+Optional (recommended):
+- Enable **Require branches to be up to date before merging**
+- Enable **Require a pull request before merging**
+- Require at least 1 approval

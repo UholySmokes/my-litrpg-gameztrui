@@ -1,0 +1,102 @@
+[
+  {
+    "id": "flame_blade",
+    "name": "Flame Blade",
+    "description": "Imbue your strike with fire.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "frost_blade",
+    "name": "Frost Blade",
+    "description": "Imbue your strike with frost.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "arcane_strike",
+    "name": "Arcane Strike",
+    "description": "A precise arcane-infused melee attack.",
+    "cost": 15,
+    "costType": "mana",
+    "cooldown": 2,
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "arcane_burst",
+    "name": "Arcane Burst",
+    "description": "Unleash a volatile blast at close range.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1.45,
+      "isMagic": true
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "grim_revenant_special",
+    "name": "Death's Echo",
+    "description": "Strike from beyond and siphon resolve.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "lifesteal": 0.35,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "id": "venomtail_special",
+    "name": "Venom Fang",
+    "description": "Inject a potent toxin.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": true,
+      "element": "nature"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "poison",
+        "duration": 4,
+        "magnitude": 5
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

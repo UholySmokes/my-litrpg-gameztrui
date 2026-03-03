@@ -27,7 +27,7 @@ jobs:
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
         with:
-          version: 4.2.2
+          version: 4.6.1
 
       - name: Generate Godot Runtime Config
         run: npm run generate:godot-config
@@ -140,7 +140,7 @@ jobs:
       - name: Setup Godot
         uses: chickensoft-games/setup-godot@v2
         with:
-          version: 4.2.2
+          version: 4.6.1
 
       - name: Install Dependencies
         run: npm ci

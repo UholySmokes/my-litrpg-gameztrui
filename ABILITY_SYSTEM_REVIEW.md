@@ -4,9 +4,11 @@
 **Team:** Engineering, Design, Narrative, QA
 
 ## 1. Executive Summary
+
 The team reviewed the `ability_catalog.json` and its sources. We found a fragmented architecture ("Split Brain") where skills were defined across inconsistent JS registries and JSON files. This caused data loss (105 profession skills had `null` descriptions) and makes balancing difficult.
 
 **Status:**
+
 - **Critical Fix Applied:** Created `packages/game-core/src/data/skills/profession_skills.json` to define missing skills.
 - **Tooling Fix Applied:** Patched `tools/buildAbilityCatalog.mjs` to correctly merge data from multiple sources (preserving both descriptions and system metadata like Tiers).
 - **Current Health:** The catalog is now complete (no nulls) and accurate.
@@ -25,15 +27,19 @@ The team reviewed the `ability_catalog.json` and its sources. We found a fragmen
 
 ## 3. Recommendations & Next Steps
 
+
 ### Phase 1: Consolidation (Approved/Done)
+
 - [x] Create definitions for ghost profession skills.
 - [x] Fix catalog generator to merge `details` from different sources.
 
 ### Phase 2: Migration (Completed)
+
 - [x] **Migrate Class Abilities:** Converted `ClassAbilityRegistry.js` inline `ABILITIES` object into JSON data files under `packages/game-core/src/data/skills/class_<classId>.json`.
 - [x] **Migrate Race Abilities:** Converted `RaceAbilityRegistry.js` inline race ability definitions into JSON data files under `packages/game-core/src/data/skills/race_<raceId>.json`.
 - [x] **Refactor Registries:** Updated Class/Race ability registries to load JSON sources (`class_abilities.json`, `class_ability_sets.json`, `race_abilities.json`, `race_ability_sets.json`) instead of defining large inline registries.
 - [x] **Migration Tooling:** `tools/migrate_registries_to_json.cjs` now regenerates aggregate + split JSON files in a stable format.
 
 ### Phase 3: Validation
+
 - [ ] Add a JSON Schema validator to the build script to ensure no future skills are added without descriptions or types.

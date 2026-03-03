@@ -27,7 +27,6 @@ The team reviewed the `ability_catalog.json` and its sources. We found a fragmen
 
 ## 3. Recommendations & Next Steps
 
-
 ### Phase 1: Consolidation (Approved/Done)
 
 - [x] Create definitions for ghost profession skills.

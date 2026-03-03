@@ -1,13 +1,12 @@
 {
   "meta": {
-    "generatedAt": "2026-03-03T13:20:50.182Z",
+    "generatedAt": "2026-03-03T14:15:28.407Z",
     "root": "my-litrpg-gameztrui",
     "counts": {
       "total": 1821,
       "byKind": {
         "ability": 126,
-        "profession_skill": 105,
-        "skill": 1470,
+        "skill": 1575,
         "talent": 120
       }
     },
@@ -5917,2106 +5916,6 @@
       "mentions": []
     },
     {
-      "key": "advanced_distillation",
-      "id": "advanced_distillation",
-      "name": "Advanced Distillation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "alchemy",
-        "professionName": "Alchemy",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "advanced_dyeing",
-      "id": "advanced_dyeing",
-      "name": "Advanced Dyeing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "dyeing",
-        "professionName": "Dyeing & Customization",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "advanced_mechanics",
-      "id": "advanced_mechanics",
-      "name": "Advanced Mechanics",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "engineering",
-        "professionName": "Engineering",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "advanced_medicine",
-      "id": "advanced_medicine",
-      "name": "Advanced Medicine",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "first_aid",
-        "professionName": "First Aid & Medicine",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "arcane_engineering",
-      "id": "arcane_engineering",
-      "name": "Arcane Engineering",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "engineering",
-        "professionName": "Engineering",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "arcane_writing",
-      "id": "arcane_writing",
-      "name": "Arcane Writing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "inscription",
-        "professionName": "Inscription & Scribing",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "artifact_repair",
-      "id": "artifact_repair",
-      "name": "Artifact Repair",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "repair",
-        "professionName": "Repair & Maintenance",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_brewing",
-      "id": "basic_brewing",
-      "name": "Basic Brewing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "alchemy",
-        "professionName": "Alchemy",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_brewing_drinks",
-      "id": "basic_brewing_drinks",
-      "name": "Basic Brewing Drinks",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "brewing",
-        "professionName": "Brewing & Vinting",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_butchery",
-      "id": "basic_butchery",
-      "name": "Basic Butchery",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "butchery",
-        "professionName": "Butchery",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_construction",
-      "id": "basic_construction",
-      "name": "Basic Construction",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "construction",
-        "professionName": "Construction",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_cooking",
-      "id": "basic_cooking",
-      "name": "Basic Cooking",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "cooking",
-        "professionName": "Cooking",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_cutting",
-      "id": "basic_cutting",
-      "name": "Basic Cutting",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "jewelcrafting",
-        "professionName": "Jewelcrafting",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_dyeing",
-      "id": "basic_dyeing",
-      "name": "Basic Dyeing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "dyeing",
-        "professionName": "Dyeing & Customization",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_enchanting",
-      "id": "basic_enchanting",
-      "name": "Basic Enchanting",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "enchanting",
-        "professionName": "Enchanting",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_engineering",
-      "id": "basic_engineering",
-      "name": "Basic Engineering",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "engineering",
-        "professionName": "Engineering",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_farming",
-      "id": "basic_farming",
-      "name": "Basic Farming",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "farming",
-        "professionName": "Farming & Agriculture",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_first_aid",
-      "id": "basic_first_aid",
-      "name": "Basic First Aid",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "first_aid",
-        "professionName": "First Aid & Medicine",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_fishing",
-      "id": "basic_fishing",
-      "name": "Basic Fishing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "fishing",
-        "professionName": "Fishing",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_herbalism",
-      "id": "basic_herbalism",
-      "name": "Basic Herbalism",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "herbalism",
-        "professionName": "Herbalism",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_inscription",
-      "id": "basic_inscription",
-      "name": "Basic Inscription",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "inscription",
-        "professionName": "Inscription & Scribing",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_logging",
-      "id": "basic_logging",
-      "name": "Basic Logging",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "logging",
-        "professionName": "Logging & Woodcutting",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_maintenance",
-      "id": "basic_maintenance",
-      "name": "Basic Maintenance",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "repair",
-        "professionName": "Repair & Maintenance",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_mining",
-      "id": "basic_mining",
-      "name": "Basic Mining",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "mining",
-        "professionName": "Mining",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_sewing",
-      "id": "basic_sewing",
-      "name": "Basic Sewing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "tailoring",
-        "professionName": "Tailoring",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_skinning",
-      "id": "basic_skinning",
-      "name": "Basic Skinning",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "skinning",
-        "professionName": "Skinning & Tracking",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_smithing",
-      "id": "basic_smithing",
-      "name": "Basic Smithing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "blacksmithing",
-        "professionName": "Blacksmithing",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "basic_teleportation",
-      "id": "basic_teleportation",
-      "name": "Basic Teleportation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "portal_creation",
-        "professionName": "Portal Creation",
-        "tierUnlock": 1
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "clean_carving",
-      "id": "clean_carving",
-      "name": "Clean Carving",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "butchery",
-        "professionName": "Butchery",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "clean_cuts",
-      "id": "clean_cuts",
-      "name": "Clean Cuts",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "skinning",
-        "professionName": "Skinning & Tracking",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "clockwork_mastery",
-      "id": "clockwork_mastery",
-      "name": "Clockwork Mastery",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "engineering",
-        "professionName": "Engineering",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "crop_rotation",
-      "id": "crop_rotation",
-      "name": "Crop Rotation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "farming",
-        "professionName": "Farming & Agriculture",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "deep_earth_mining",
-      "id": "deep_earth_mining",
-      "name": "Deep Earth Mining",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "mining",
-        "professionName": "Mining",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "deep_water_fishing",
-      "id": "deep_water_fishing",
-      "name": "Deep Water Fishing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "fishing",
-        "professionName": "Fishing",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "dimensional_anchor",
-      "id": "dimensional_anchor",
-      "name": "Dimensional Anchor",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "portal_creation",
-        "professionName": "Portal Creation",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "durability_boost",
-      "id": "durability_boost",
-      "name": "Durability Boost",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "repair",
-        "professionName": "Repair & Maintenance",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "efficient_chopping",
-      "id": "efficient_chopping",
-      "name": "Efficient Chopping",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "logging",
-        "professionName": "Logging & Woodcutting",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "elemental_infusion",
-      "id": "elemental_infusion",
-      "name": "Elemental Infusion",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "enchanting",
-        "professionName": "Enchanting",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "enchant_preservation",
-      "id": "enchant_preservation",
-      "name": "Enchant Preservation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "repair",
-        "professionName": "Repair & Maintenance",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "enchanted_forging",
-      "id": "enchanted_forging",
-      "name": "Enchanted Forging",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "blacksmithing",
-        "professionName": "Blacksmithing",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "essence_cultivation",
-      "id": "essence_cultivation",
-      "name": "Essence Cultivation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "farming",
-        "professionName": "Farming & Agriculture",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "essence_extraction",
-      "id": "essence_extraction",
-      "name": "Essence Extraction",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "alchemy",
-        "professionName": "Alchemy",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "essence_gathering",
-      "id": "essence_gathering",
-      "name": "Essence Gathering",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "herbalism",
-        "professionName": "Herbalism",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "essence_socketing",
-      "id": "essence_socketing",
-      "name": "Essence Socketing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "jewelcrafting",
-        "professionName": "Jewelcrafting",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "ethereal_weaving",
-      "id": "ethereal_weaving",
-      "name": "Ethereal Weaving",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "tailoring",
-        "professionName": "Tailoring",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "exotic_processing",
-      "id": "exotic_processing",
-      "name": "Exotic Processing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "butchery",
-        "professionName": "Butchery",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "exotic_skinning",
-      "id": "exotic_skinning",
-      "name": "Exotic Skinning",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "skinning",
-        "professionName": "Skinning & Tracking",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "fermentation",
-      "id": "fermentation",
-      "name": "Fermentation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "brewing",
-        "professionName": "Brewing & Vinting",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "fine_stitching",
-      "id": "fine_stitching",
-      "name": "Fine Stitching",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "tailoring",
-        "professionName": "Tailoring",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "fortification",
-      "id": "fortification",
-      "name": "Fortification",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "construction",
-        "professionName": "Construction",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "gem_polishing",
-      "id": "gem_polishing",
-      "name": "Gem Polishing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "jewelcrafting",
-        "professionName": "Jewelcrafting",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "grand_architecture",
-      "id": "grand_architecture",
-      "name": "Grand Architecture",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "construction",
-        "professionName": "Construction",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "legendary_butchery",
-      "id": "legendary_butchery",
-      "name": "Legendary Butchery",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "butchery",
-        "professionName": "Butchery",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "legendary_customization",
-      "id": "legendary_customization",
-      "name": "Legendary Customization",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "dyeing",
-        "professionName": "Dyeing & Customization",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "legendary_farming",
-      "id": "legendary_farming",
-      "name": "Legendary Farming",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "farming",
-        "professionName": "Farming & Agriculture",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "legendary_harvesting",
-      "id": "legendary_harvesting",
-      "name": "Legendary Harvesting",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "skinning",
-        "professionName": "Skinning & Tracking",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "legendary_logging",
-      "id": "legendary_logging",
-      "name": "Legendary Logging",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "logging",
-        "professionName": "Logging & Woodcutting",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "legendary_smithing",
-      "id": "legendary_smithing",
-      "name": "Legendary Smithing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "blacksmithing",
-        "professionName": "Blacksmithing",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "life_sense",
-      "id": "life_sense",
-      "name": "Life Sense",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "herbalism",
-        "professionName": "Herbalism",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "lure_crafting",
-      "id": "lure_crafting",
-      "name": "Lure Crafting",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "fishing",
-        "professionName": "Fishing",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "magical_brewing",
-      "id": "magical_brewing",
-      "name": "Magical Brewing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "brewing",
-        "professionName": "Brewing & Vinting",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "magical_cuisine",
-      "id": "magical_cuisine",
-      "name": "Magical Cuisine",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "cooking",
-        "professionName": "Cooking",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "magical_glamour",
-      "id": "magical_glamour",
-      "name": "Magical Glamour",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "dyeing",
-        "professionName": "Dyeing & Customization",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "magical_threading",
-      "id": "magical_threading",
-      "name": "Magical Threading",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "tailoring",
-        "professionName": "Tailoring",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "magical_wood_sense",
-      "id": "magical_wood_sense",
-      "name": "Magical Wood Sense",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "logging",
-        "professionName": "Logging & Woodcutting",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "masonry",
-      "id": "masonry",
-      "name": "Masonry",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "construction",
-        "professionName": "Construction",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "master_angling",
-      "id": "master_angling",
-      "name": "Master Angling",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "fishing",
-        "professionName": "Fishing",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "master_brewing",
-      "id": "master_brewing",
-      "name": "Master Brewing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "brewing",
-        "professionName": "Brewing & Vinting",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "master_chef",
-      "id": "master_chef",
-      "name": "Master Chef",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "cooking",
-        "professionName": "Cooking",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "master_scribing",
-      "id": "master_scribing",
-      "name": "Master Scribing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "inscription",
-        "professionName": "Inscription & Scribing",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "metal_hardening",
-      "id": "metal_hardening",
-      "name": "Metal Hardening",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "blacksmithing",
-        "professionName": "Blacksmithing",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "miraculous_healing",
-      "id": "miraculous_healing",
-      "name": "Miraculous Healing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "first_aid",
-        "professionName": "First Aid & Medicine",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_agriculture",
-      "id": "mythical_agriculture",
-      "name": "Mythical Agriculture",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "farming",
-        "professionName": "Farming & Agriculture",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_brewing",
-      "id": "mythical_brewing",
-      "name": "Mythical Brewing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "brewing",
-        "professionName": "Brewing & Vinting",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_butchery",
-      "id": "mythical_butchery",
-      "name": "Mythical Butchery",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "butchery",
-        "professionName": "Butchery",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_construction",
-      "id": "mythical_construction",
-      "name": "Mythical Construction",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "construction",
-        "professionName": "Construction",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_cooking",
-      "id": "mythical_cooking",
-      "name": "Mythical Cooking",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "cooking",
-        "professionName": "Cooking",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_enchanting",
-      "id": "mythical_enchanting",
-      "name": "Mythical Enchanting",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "enchanting",
-        "professionName": "Enchanting",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_engineering",
-      "id": "mythical_engineering",
-      "name": "Mythical Engineering",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "engineering",
-        "professionName": "Engineering",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_extraction",
-      "id": "mythical_extraction",
-      "name": "Mythical Extraction",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "mining",
-        "professionName": "Mining",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_fishing",
-      "id": "mythical_fishing",
-      "name": "Mythical Fishing",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "fishing",
-        "professionName": "Fishing",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_forging",
-      "id": "mythical_forging",
-      "name": "Mythical Forging",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "blacksmithing",
-        "professionName": "Blacksmithing",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_glamour",
-      "id": "mythical_glamour",
-      "name": "Mythical Glamour",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "dyeing",
-        "professionName": "Dyeing & Customization",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_herbalism",
-      "id": "mythical_herbalism",
-      "name": "Mythical Herbalism",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "herbalism",
-        "professionName": "Herbalism",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_inscription",
-      "id": "mythical_inscription",
-      "name": "Mythical Inscription",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "inscription",
-        "professionName": "Inscription & Scribing",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_jewelcraft",
-      "id": "mythical_jewelcraft",
-      "name": "Mythical Jewelcraft",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "jewelcrafting",
-        "professionName": "Jewelcrafting",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_logging",
-      "id": "mythical_logging",
-      "name": "Mythical Logging",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "logging",
-        "professionName": "Logging & Woodcutting",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_maintenance",
-      "id": "mythical_maintenance",
-      "name": "Mythical Maintenance",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "repair",
-        "professionName": "Repair & Maintenance",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_medicine",
-      "id": "mythical_medicine",
-      "name": "Mythical Medicine",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "first_aid",
-        "professionName": "First Aid & Medicine",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_skinning",
-      "id": "mythical_skinning",
-      "name": "Mythical Skinning",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "skinning",
-        "professionName": "Skinning & Tracking",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_tailoring",
-      "id": "mythical_tailoring",
-      "name": "Mythical Tailoring",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "tailoring",
-        "professionName": "Tailoring",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_teleportation",
-      "id": "mythical_teleportation",
-      "name": "Mythical Teleportation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "portal_creation",
-        "professionName": "Portal Creation",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "mythical_transmutation",
-      "id": "mythical_transmutation",
-      "name": "Mythical Transmutation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "alchemy",
-        "professionName": "Alchemy",
-        "tierUnlock": 9
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "philosopher_methods",
-      "id": "philosopher_methods",
-      "name": "Philosopher Methods",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "alchemy",
-        "professionName": "Alchemy",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "plant_identification",
-      "id": "plant_identification",
-      "name": "Plant Identification",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "herbalism",
-        "professionName": "Herbalism",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "rare_ore_sense",
-      "id": "rare_ore_sense",
-      "name": "Rare Ore Sense",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "mining",
-        "professionName": "Mining",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "reality_weaving",
-      "id": "reality_weaving",
-      "name": "Reality Weaving",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "enchanting",
-        "professionName": "Enchanting",
-        "tierUnlock": 7
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "seasoning",
-      "id": "seasoning",
-      "name": "Seasoning",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "cooking",
-        "professionName": "Cooking",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "socket_creation",
-      "id": "socket_creation",
-      "name": "Socket Creation",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "jewelcrafting",
-        "professionName": "Jewelcrafting",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "soul_binding",
-      "id": "soul_binding",
-      "name": "Soul Binding",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "enchanting",
-        "professionName": "Enchanting",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "soul_inscription",
-      "id": "soul_inscription",
-      "name": "Soul Inscription",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "inscription",
-        "professionName": "Inscription & Scribing",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "stable_portals",
-      "id": "stable_portals",
-      "name": "Stable Portals",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "portal_creation",
-        "professionName": "Portal Creation",
-        "tierUnlock": 5
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "vein_detection",
-      "id": "vein_detection",
-      "name": "Vein Detection",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "mining",
-        "professionName": "Mining",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "waypoint_linking",
-      "id": "waypoint_linking",
-      "name": "Waypoint Linking",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "portal_creation",
-        "professionName": "Portal Creation",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
-      "key": "wound_treatment",
-      "id": "wound_treatment",
-      "name": "Wound Treatment",
-      "kind": "profession_skill",
-      "description": null,
-      "details": {
-        "professionId": "first_aid",
-        "professionName": "First Aid & Medicine",
-        "tierUnlock": 3
-      },
-      "sources": [
-        {
-          "type": "structured",
-          "origin": "profession_registry",
-          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
-        }
-      ],
-      "mentions": []
-    },
-    {
       "key": "rogue_acrobatics",
       "id": "rogue_acrobatics",
       "name": "Acrobatics",
@@ -8298,6 +6197,158 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/universal.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "advanced_distillation",
+      "id": "advanced_distillation",
+      "name": "Advanced Distillation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Complex techniques for Distillation.",
+      "details": {
+        "id": "advanced_distillation",
+        "name": "Advanced Distillation",
+        "type": "passive",
+        "class": "universal",
+        "description": "Complex techniques for Distillation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "distillation"
+        ],
+        "professionId": "alchemy",
+        "professionName": "Alchemy",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "advanced_dyeing",
+      "id": "advanced_dyeing",
+      "name": "Advanced Dyeing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Complex techniques for Dyeing.",
+      "details": {
+        "id": "advanced_dyeing",
+        "name": "Advanced Dyeing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Complex techniques for Dyeing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "dyeing"
+        ],
+        "professionId": "dyeing",
+        "professionName": "Dyeing & Customization",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "advanced_mechanics",
+      "id": "advanced_mechanics",
+      "name": "Advanced Mechanics",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Complex techniques for Mechanics.",
+      "details": {
+        "id": "advanced_mechanics",
+        "name": "Advanced Mechanics",
+        "type": "passive",
+        "class": "universal",
+        "description": "Complex techniques for Mechanics.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "mechanics"
+        ],
+        "professionId": "engineering",
+        "professionName": "Engineering",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "advanced_medicine",
+      "id": "advanced_medicine",
+      "name": "Advanced Medicine",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Complex techniques for Medicine.",
+      "details": {
+        "id": "advanced_medicine",
+        "name": "Advanced Medicine",
+        "type": "passive",
+        "class": "universal",
+        "description": "Complex techniques for Medicine.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "medicine"
+        ],
+        "professionId": "first_aid",
+        "professionName": "First Aid & Medicine",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -8970,6 +7021,44 @@
       "mentions": []
     },
     {
+      "key": "arcane_engineering",
+      "id": "arcane_engineering",
+      "name": "Arcane Engineering",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Arcane Engineering.",
+      "details": {
+        "id": "arcane_engineering",
+        "name": "Arcane Engineering",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Arcane Engineering.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "engineering"
+        ],
+        "professionId": "engineering",
+        "professionName": "Engineering",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "battlemage_arcane_explosion",
       "id": "battlemage_arcane_explosion",
       "name": "Arcane Explosion",
@@ -9582,6 +7671,44 @@
       "mentions": []
     },
     {
+      "key": "arcane_writing",
+      "id": "arcane_writing",
+      "name": "Arcane Writing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Arcane Writing.",
+      "details": {
+        "id": "arcane_writing",
+        "name": "Arcane Writing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Arcane Writing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "writing"
+        ],
+        "professionId": "inscription",
+        "professionName": "Inscription & Scribing",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "warlock_archimonde_vengeance",
       "id": "warlock_archimonde_vengeance",
       "name": "Archimondes Vengeance",
@@ -10105,6 +8232,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/paladin.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "artifact_repair",
+      "id": "artifact_repair",
+      "name": "Artifact Repair",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Artifact Repair.",
+      "details": {
+        "id": "artifact_repair",
+        "name": "Artifact Repair",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Artifact Repair.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "repair"
+        ],
+        "professionId": "repair",
+        "professionName": "Repair & Maintenance",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -11236,6 +9401,804 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/mage.active.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_brewing",
+      "id": "basic_brewing",
+      "name": "Basic Brewing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Brewing.",
+      "details": {
+        "id": "basic_brewing",
+        "name": "Basic Brewing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Brewing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "brewing"
+        ],
+        "professionId": "alchemy",
+        "professionName": "Alchemy",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_brewing_drinks",
+      "id": "basic_brewing_drinks",
+      "name": "Basic Brewing Drinks",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Brewing Drinks.",
+      "details": {
+        "id": "basic_brewing_drinks",
+        "name": "Basic Brewing Drinks",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Brewing Drinks.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "brewing"
+        ],
+        "professionId": "brewing",
+        "professionName": "Brewing & Vinting",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_butchery",
+      "id": "basic_butchery",
+      "name": "Basic Butchery",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Butchery.",
+      "details": {
+        "id": "basic_butchery",
+        "name": "Basic Butchery",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Butchery.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "butchery"
+        ],
+        "professionId": "butchery",
+        "professionName": "Butchery",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_construction",
+      "id": "basic_construction",
+      "name": "Basic Construction",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Construction.",
+      "details": {
+        "id": "basic_construction",
+        "name": "Basic Construction",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Construction.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "construction"
+        ],
+        "professionId": "construction",
+        "professionName": "Construction",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_cooking",
+      "id": "basic_cooking",
+      "name": "Basic Cooking",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Cooking.",
+      "details": {
+        "id": "basic_cooking",
+        "name": "Basic Cooking",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Cooking.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "cooking"
+        ],
+        "professionId": "cooking",
+        "professionName": "Cooking",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_cutting",
+      "id": "basic_cutting",
+      "name": "Basic Cutting",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Cutting.",
+      "details": {
+        "id": "basic_cutting",
+        "name": "Basic Cutting",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Cutting.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "cutting"
+        ],
+        "professionId": "jewelcrafting",
+        "professionName": "Jewelcrafting",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_dyeing",
+      "id": "basic_dyeing",
+      "name": "Basic Dyeing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Dyeing.",
+      "details": {
+        "id": "basic_dyeing",
+        "name": "Basic Dyeing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Dyeing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "dyeing"
+        ],
+        "professionId": "dyeing",
+        "professionName": "Dyeing & Customization",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_enchanting",
+      "id": "basic_enchanting",
+      "name": "Basic Enchanting",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Enchanting.",
+      "details": {
+        "id": "basic_enchanting",
+        "name": "Basic Enchanting",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Enchanting.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "enchanting"
+        ],
+        "professionId": "enchanting",
+        "professionName": "Enchanting",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_engineering",
+      "id": "basic_engineering",
+      "name": "Basic Engineering",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Engineering.",
+      "details": {
+        "id": "basic_engineering",
+        "name": "Basic Engineering",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Engineering.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "engineering"
+        ],
+        "professionId": "engineering",
+        "professionName": "Engineering",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_farming",
+      "id": "basic_farming",
+      "name": "Basic Farming",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Farming.",
+      "details": {
+        "id": "basic_farming",
+        "name": "Basic Farming",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Farming.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "farming"
+        ],
+        "professionId": "farming",
+        "professionName": "Farming & Agriculture",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_first_aid",
+      "id": "basic_first_aid",
+      "name": "Basic First Aid",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for First Aid.",
+      "details": {
+        "id": "basic_first_aid",
+        "name": "Basic First Aid",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for First Aid.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "first"
+        ],
+        "professionId": "first_aid",
+        "professionName": "First Aid & Medicine",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_fishing",
+      "id": "basic_fishing",
+      "name": "Basic Fishing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Fishing.",
+      "details": {
+        "id": "basic_fishing",
+        "name": "Basic Fishing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Fishing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "fishing"
+        ],
+        "professionId": "fishing",
+        "professionName": "Fishing",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_herbalism",
+      "id": "basic_herbalism",
+      "name": "Basic Herbalism",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Herbalism.",
+      "details": {
+        "id": "basic_herbalism",
+        "name": "Basic Herbalism",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Herbalism.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "herbalism"
+        ],
+        "professionId": "herbalism",
+        "professionName": "Herbalism",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_inscription",
+      "id": "basic_inscription",
+      "name": "Basic Inscription",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Inscription.",
+      "details": {
+        "id": "basic_inscription",
+        "name": "Basic Inscription",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Inscription.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "inscription"
+        ],
+        "professionId": "inscription",
+        "professionName": "Inscription & Scribing",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_logging",
+      "id": "basic_logging",
+      "name": "Basic Logging",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Logging.",
+      "details": {
+        "id": "basic_logging",
+        "name": "Basic Logging",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Logging.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "logging"
+        ],
+        "professionId": "logging",
+        "professionName": "Logging & Woodcutting",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_maintenance",
+      "id": "basic_maintenance",
+      "name": "Basic Maintenance",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Maintenance.",
+      "details": {
+        "id": "basic_maintenance",
+        "name": "Basic Maintenance",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Maintenance.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "maintenance"
+        ],
+        "professionId": "repair",
+        "professionName": "Repair & Maintenance",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_mining",
+      "id": "basic_mining",
+      "name": "Basic Mining",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Mining.",
+      "details": {
+        "id": "basic_mining",
+        "name": "Basic Mining",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Mining.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "mining"
+        ],
+        "professionId": "mining",
+        "professionName": "Mining",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_sewing",
+      "id": "basic_sewing",
+      "name": "Basic Sewing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Sewing.",
+      "details": {
+        "id": "basic_sewing",
+        "name": "Basic Sewing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Sewing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "sewing"
+        ],
+        "professionId": "tailoring",
+        "professionName": "Tailoring",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_skinning",
+      "id": "basic_skinning",
+      "name": "Basic Skinning",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Skinning.",
+      "details": {
+        "id": "basic_skinning",
+        "name": "Basic Skinning",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Skinning.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "skinning"
+        ],
+        "professionId": "skinning",
+        "professionName": "Skinning & Tracking",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_smithing",
+      "id": "basic_smithing",
+      "name": "Basic Smithing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Smithing.",
+      "details": {
+        "id": "basic_smithing",
+        "name": "Basic Smithing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Smithing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "smithing"
+        ],
+        "professionId": "blacksmithing",
+        "professionName": "Blacksmithing",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "basic_teleportation",
+      "id": "basic_teleportation",
+      "name": "Basic Teleportation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Fundamental techniques for Teleportation.",
+      "details": {
+        "id": "basic_teleportation",
+        "name": "Basic Teleportation",
+        "type": "passive",
+        "class": "universal",
+        "description": "Fundamental techniques for Teleportation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "teleportation"
+        ],
+        "professionId": "portal_creation",
+        "professionName": "Portal Creation",
+        "tierUnlock": 1
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -13816,6 +12779,82 @@
       "mentions": []
     },
     {
+      "key": "clean_carving",
+      "id": "clean_carving",
+      "name": "Clean Carving",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Clean Carving.",
+      "details": {
+        "id": "clean_carving",
+        "name": "Clean Carving",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Clean Carving.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "carving"
+        ],
+        "professionId": "butchery",
+        "professionName": "Butchery",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "clean_cuts",
+      "id": "clean_cuts",
+      "name": "Clean Cuts",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Clean Cuts.",
+      "details": {
+        "id": "clean_cuts",
+        "name": "Clean Cuts",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Clean Cuts.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "cuts"
+        ],
+        "professionId": "skinning",
+        "professionName": "Skinning & Tracking",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "paladin_cleanse",
       "id": "paladin_cleanse",
       "name": "Cleanse",
@@ -13984,6 +13023,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/shadowblade.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "clockwork_mastery",
+      "id": "clockwork_mastery",
+      "name": "Clockwork Mastery",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Clockwork Mastery.",
+      "details": {
+        "id": "clockwork_mastery",
+        "name": "Clockwork Mastery",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Clockwork Mastery.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "mastery"
+        ],
+        "professionId": "engineering",
+        "professionName": "Engineering",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -15295,6 +14372,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/bard.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "crop_rotation",
+      "id": "crop_rotation",
+      "name": "Crop Rotation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Crop Rotation.",
+      "details": {
+        "id": "crop_rotation",
+        "name": "Crop Rotation",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Crop Rotation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "rotation"
+        ],
+        "professionId": "farming",
+        "professionName": "Farming & Agriculture",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -16903,6 +16018,44 @@
       "mentions": []
     },
     {
+      "key": "deep_earth_mining",
+      "id": "deep_earth_mining",
+      "name": "Deep Earth Mining",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Deep Earth Mining.",
+      "details": {
+        "id": "deep_earth_mining",
+        "name": "Deep Earth Mining",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Deep Earth Mining.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "earth"
+        ],
+        "professionId": "mining",
+        "professionName": "Mining",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "shadowblade_deep_shadows",
       "id": "shadowblade_deep_shadows",
       "name": "Deep Shadows",
@@ -16924,6 +16077,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/shadowblade.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "deep_water_fishing",
+      "id": "deep_water_fishing",
+      "name": "Deep Water Fishing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Deep Water Fishing.",
+      "details": {
+        "id": "deep_water_fishing",
+        "name": "Deep Water Fishing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Deep Water Fishing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "water"
+        ],
+        "professionId": "fishing",
+        "professionName": "Fishing",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -17542,6 +16733,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/shadowblade.active.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "dimensional_anchor",
+      "id": "dimensional_anchor",
+      "name": "Dimensional Anchor",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Dimensional Anchor.",
+      "details": {
+        "id": "dimensional_anchor",
+        "name": "Dimensional Anchor",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Dimensional Anchor.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "anchor"
+        ],
+        "professionId": "portal_creation",
+        "professionName": "Portal Creation",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -18798,6 +18027,44 @@
       "mentions": []
     },
     {
+      "key": "durability_boost",
+      "id": "durability_boost",
+      "name": "Durability Boost",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Durability Boost.",
+      "details": {
+        "id": "durability_boost",
+        "name": "Durability Boost",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Durability Boost.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "boost"
+        ],
+        "professionId": "repair",
+        "professionName": "Repair & Maintenance",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "archer_eagle_eye",
       "id": "archer_eagle_eye",
       "name": "Eagle Eye",
@@ -19064,6 +18331,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/druid.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "efficient_chopping",
+      "id": "efficient_chopping",
+      "name": "Efficient Chopping",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Efficient Chopping.",
+      "details": {
+        "id": "efficient_chopping",
+        "name": "Efficient Chopping",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Efficient Chopping.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "chopping"
+        ],
+        "professionId": "logging",
+        "professionName": "Logging & Woodcutting",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -19378,6 +18683,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/mage.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "elemental_infusion",
+      "id": "elemental_infusion",
+      "name": "Elemental Infusion",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Elemental Infusion.",
+      "details": {
+        "id": "elemental_infusion",
+        "name": "Elemental Infusion",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Elemental Infusion.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "infusion"
+        ],
+        "professionId": "enchanting",
+        "professionName": "Enchanting",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -19818,6 +19161,82 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/battlemage.active.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "enchant_preservation",
+      "id": "enchant_preservation",
+      "name": "Enchant Preservation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Enchant Preservation.",
+      "details": {
+        "id": "enchant_preservation",
+        "name": "Enchant Preservation",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Enchant Preservation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "preservation"
+        ],
+        "professionId": "repair",
+        "professionName": "Repair & Maintenance",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "enchanted_forging",
+      "id": "enchanted_forging",
+      "name": "Enchanted Forging",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Enchanted Forging.",
+      "details": {
+        "id": "enchanted_forging",
+        "name": "Enchanted Forging",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Enchanted Forging.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "forging"
+        ],
+        "professionId": "blacksmithing",
+        "professionName": "Blacksmithing",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -20293,6 +19712,44 @@
       "mentions": []
     },
     {
+      "key": "essence_cultivation",
+      "id": "essence_cultivation",
+      "name": "Essence Cultivation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Essence Cultivation.",
+      "details": {
+        "id": "essence_cultivation",
+        "name": "Essence Cultivation",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Essence Cultivation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "cultivation"
+        ],
+        "professionId": "farming",
+        "professionName": "Farming & Agriculture",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "necro_essence_drain",
       "id": "necro_essence_drain",
       "name": "Essence Drain",
@@ -20314,6 +19771,120 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/necromancer.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "essence_extraction",
+      "id": "essence_extraction",
+      "name": "Essence Extraction",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Essence Extraction.",
+      "details": {
+        "id": "essence_extraction",
+        "name": "Essence Extraction",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Essence Extraction.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "extraction"
+        ],
+        "professionId": "alchemy",
+        "professionName": "Alchemy",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "essence_gathering",
+      "id": "essence_gathering",
+      "name": "Essence Gathering",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Essence Gathering.",
+      "details": {
+        "id": "essence_gathering",
+        "name": "Essence Gathering",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Essence Gathering.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "gathering"
+        ],
+        "professionId": "herbalism",
+        "professionName": "Herbalism",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "essence_socketing",
+      "id": "essence_socketing",
+      "name": "Essence Socketing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Essence Socketing.",
+      "details": {
+        "id": "essence_socketing",
+        "name": "Essence Socketing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Essence Socketing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "socketing"
+        ],
+        "professionId": "jewelcrafting",
+        "professionName": "Jewelcrafting",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -20420,6 +19991,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/necromancer.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "ethereal_weaving",
+      "id": "ethereal_weaving",
+      "name": "Ethereal Weaving",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Ethereal Weaving.",
+      "details": {
+        "id": "ethereal_weaving",
+        "name": "Ethereal Weaving",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Ethereal Weaving.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "weaving"
+        ],
+        "professionId": "tailoring",
+        "professionName": "Tailoring",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -20829,6 +20438,82 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/ranger.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "exotic_processing",
+      "id": "exotic_processing",
+      "name": "Exotic Processing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Exotic Processing.",
+      "details": {
+        "id": "exotic_processing",
+        "name": "Exotic Processing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Exotic Processing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "processing"
+        ],
+        "professionId": "butchery",
+        "professionName": "Butchery",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "exotic_skinning",
+      "id": "exotic_skinning",
+      "name": "Exotic Skinning",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Exotic Skinning.",
+      "details": {
+        "id": "exotic_skinning",
+        "name": "Exotic Skinning",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Exotic Skinning.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "skinning"
+        ],
+        "professionId": "skinning",
+        "professionName": "Skinning & Tracking",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -21431,6 +21116,44 @@
       "mentions": []
     },
     {
+      "key": "fermentation",
+      "id": "fermentation",
+      "name": "Fermentation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Fermentation.",
+      "details": {
+        "id": "fermentation",
+        "name": "Fermentation",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Fermentation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "general"
+        ],
+        "professionId": "brewing",
+        "professionName": "Brewing & Vinting",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "battlemage_fighter_training",
       "id": "battlemage_fighter_training",
       "name": "Fighter Training",
@@ -21588,6 +21311,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/shadowblade.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "fine_stitching",
+      "id": "fine_stitching",
+      "name": "Fine Stitching",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Fine Stitching.",
+      "details": {
+        "id": "fine_stitching",
+        "name": "Fine Stitching",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Fine Stitching.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "stitching"
+        ],
+        "professionId": "tailoring",
+        "professionName": "Tailoring",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -22711,6 +22472,44 @@
       "mentions": []
     },
     {
+      "key": "fortification",
+      "id": "fortification",
+      "name": "Fortification",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Fortification.",
+      "details": {
+        "id": "fortification",
+        "name": "Fortification",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Fortification.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "general"
+        ],
+        "professionId": "construction",
+        "professionName": "Construction",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "monk_fortifying_brew",
       "id": "monk_fortifying_brew",
       "name": "Fortifying Brew",
@@ -23737,6 +23536,44 @@
       "mentions": []
     },
     {
+      "key": "gem_polishing",
+      "id": "gem_polishing",
+      "name": "Gem Polishing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Gem Polishing.",
+      "details": {
+        "id": "gem_polishing",
+        "name": "Gem Polishing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Gem Polishing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "polishing"
+        ],
+        "professionId": "jewelcrafting",
+        "professionName": "Jewelcrafting",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "battlemage_ghost_blade",
       "id": "battlemage_ghost_blade",
       "name": "Ghost Blade",
@@ -23982,6 +23819,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/priest.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "grand_architecture",
+      "id": "grand_architecture",
+      "name": "Grand Architecture",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Grand Architecture.",
+      "details": {
+        "id": "grand_architecture",
+        "name": "Grand Architecture",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Grand Architecture.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "architecture"
+        ],
+        "professionId": "construction",
+        "professionName": "Construction",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -28386,6 +28261,196 @@
       "mentions": []
     },
     {
+      "key": "legendary_butchery",
+      "id": "legendary_butchery",
+      "name": "Legendary Butchery",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Legendary mastery of Butchery.",
+      "details": {
+        "id": "legendary_butchery",
+        "name": "Legendary Butchery",
+        "type": "passive",
+        "class": "universal",
+        "description": "Legendary mastery of Butchery.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "butchery"
+        ],
+        "professionId": "butchery",
+        "professionName": "Butchery",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "legendary_customization",
+      "id": "legendary_customization",
+      "name": "Legendary Customization",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Legendary mastery of Customization.",
+      "details": {
+        "id": "legendary_customization",
+        "name": "Legendary Customization",
+        "type": "passive",
+        "class": "universal",
+        "description": "Legendary mastery of Customization.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "customization"
+        ],
+        "professionId": "dyeing",
+        "professionName": "Dyeing & Customization",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "legendary_farming",
+      "id": "legendary_farming",
+      "name": "Legendary Farming",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Legendary mastery of Farming.",
+      "details": {
+        "id": "legendary_farming",
+        "name": "Legendary Farming",
+        "type": "passive",
+        "class": "universal",
+        "description": "Legendary mastery of Farming.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "farming"
+        ],
+        "professionId": "farming",
+        "professionName": "Farming & Agriculture",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "legendary_harvesting",
+      "id": "legendary_harvesting",
+      "name": "Legendary Harvesting",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Legendary mastery of Harvesting.",
+      "details": {
+        "id": "legendary_harvesting",
+        "name": "Legendary Harvesting",
+        "type": "passive",
+        "class": "universal",
+        "description": "Legendary mastery of Harvesting.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "harvesting"
+        ],
+        "professionId": "skinning",
+        "professionName": "Skinning & Tracking",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "legendary_logging",
+      "id": "legendary_logging",
+      "name": "Legendary Logging",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Legendary mastery of Logging.",
+      "details": {
+        "id": "legendary_logging",
+        "name": "Legendary Logging",
+        "type": "passive",
+        "class": "universal",
+        "description": "Legendary mastery of Logging.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "logging"
+        ],
+        "professionId": "logging",
+        "professionName": "Logging & Woodcutting",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "bard_legendary_performance",
       "id": "bard_legendary_performance",
       "name": "Legendary Performance",
@@ -28433,6 +28498,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/archer.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "legendary_smithing",
+      "id": "legendary_smithing",
+      "name": "Legendary Smithing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Legendary mastery of Smithing.",
+      "details": {
+        "id": "legendary_smithing",
+        "name": "Legendary Smithing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Legendary mastery of Smithing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "smithing"
+        ],
+        "professionId": "blacksmithing",
+        "professionName": "Blacksmithing",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -28643,6 +28746,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/summoner.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "life_sense",
+      "id": "life_sense",
+      "name": "Life Sense",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Life Sense.",
+      "details": {
+        "id": "life_sense",
+        "name": "Life Sense",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Life Sense.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "sense"
+        ],
+        "professionId": "herbalism",
+        "professionName": "Herbalism",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -29168,6 +29309,44 @@
       "mentions": []
     },
     {
+      "key": "lure_crafting",
+      "id": "lure_crafting",
+      "name": "Lure Crafting",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Lure Crafting.",
+      "details": {
+        "id": "lure_crafting",
+        "name": "Lure Crafting",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Lure Crafting.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "crafting"
+        ],
+        "professionId": "fishing",
+        "professionName": "Fishing",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "shaman_maelstrom_weapon",
       "id": "shaman_maelstrom_weapon",
       "name": "Maelstrom Weapon",
@@ -29274,6 +29453,44 @@
       "mentions": []
     },
     {
+      "key": "magical_brewing",
+      "id": "magical_brewing",
+      "name": "Magical Brewing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Magical Brewing.",
+      "details": {
+        "id": "magical_brewing",
+        "name": "Magical Brewing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Magical Brewing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "brewing"
+        ],
+        "professionId": "brewing",
+        "professionName": "Brewing & Vinting",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "doc_magical_cooking",
       "id": "doc_magical_cooking",
       "name": "Magical Cooking (Culinary Alchemy)",
@@ -29307,6 +29524,82 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/non_combat.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "magical_cuisine",
+      "id": "magical_cuisine",
+      "name": "Magical Cuisine",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Magical Cuisine.",
+      "details": {
+        "id": "magical_cuisine",
+        "name": "Magical Cuisine",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Magical Cuisine.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "cuisine"
+        ],
+        "professionId": "cooking",
+        "professionName": "Cooking",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "magical_glamour",
+      "id": "magical_glamour",
+      "name": "Magical Glamour",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Magical Glamour.",
+      "details": {
+        "id": "magical_glamour",
+        "name": "Magical Glamour",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Magical Glamour.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "glamour"
+        ],
+        "professionId": "dyeing",
+        "professionName": "Dyeing & Customization",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -29392,6 +29685,82 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/non_combat.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "magical_threading",
+      "id": "magical_threading",
+      "name": "Magical Threading",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Magical Threading.",
+      "details": {
+        "id": "magical_threading",
+        "name": "Magical Threading",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Magical Threading.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "threading"
+        ],
+        "professionId": "tailoring",
+        "professionName": "Tailoring",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "magical_wood_sense",
+      "id": "magical_wood_sense",
+      "name": "Magical Wood Sense",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Magical Wood Sense.",
+      "details": {
+        "id": "magical_wood_sense",
+        "name": "Magical Wood Sense",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Magical Wood Sense.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "wood"
+        ],
+        "professionId": "logging",
+        "professionName": "Logging & Woodcutting",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -30430,6 +30799,44 @@
       "mentions": []
     },
     {
+      "key": "masonry",
+      "id": "masonry",
+      "name": "Masonry",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Masonry.",
+      "details": {
+        "id": "masonry",
+        "name": "Masonry",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Masonry.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "general"
+        ],
+        "professionId": "construction",
+        "professionName": "Construction",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "summoner_mass_command",
       "id": "summoner_mass_command",
       "name": "Mass Command",
@@ -30536,6 +30943,44 @@
       "mentions": []
     },
     {
+      "key": "master_angling",
+      "id": "master_angling",
+      "name": "Master Angling",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Master Angling.",
+      "details": {
+        "id": "master_angling",
+        "name": "Master Angling",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Master Angling.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "angling"
+        ],
+        "professionId": "fishing",
+        "professionName": "Fishing",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "rogue_master_assassin",
       "id": "rogue_master_assassin",
       "name": "Master Assassin",
@@ -30557,6 +31002,82 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/rogue.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "master_brewing",
+      "id": "master_brewing",
+      "name": "Master Brewing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Master Brewing.",
+      "details": {
+        "id": "master_brewing",
+        "name": "Master Brewing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Master Brewing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "brewing"
+        ],
+        "professionId": "brewing",
+        "professionName": "Brewing & Vinting",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "master_chef",
+      "id": "master_chef",
+      "name": "Master Chef",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Master Chef.",
+      "details": {
+        "id": "master_chef",
+        "name": "Master Chef",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Master Chef.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "chef"
+        ],
+        "professionId": "cooking",
+        "professionName": "Cooking",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -30713,6 +31234,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/rogue.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "master_scribing",
+      "id": "master_scribing",
+      "name": "Master Scribing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Master Scribing.",
+      "details": {
+        "id": "master_scribing",
+        "name": "Master Scribing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Master Scribing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "scribing"
+        ],
+        "professionId": "inscription",
+        "professionName": "Inscription & Scribing",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -31271,6 +31830,44 @@
       "mentions": []
     },
     {
+      "key": "metal_hardening",
+      "id": "metal_hardening",
+      "name": "Metal Hardening",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Metal Hardening.",
+      "details": {
+        "id": "metal_hardening",
+        "name": "Metal Hardening",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Metal Hardening.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "hardening"
+        ],
+        "professionId": "blacksmithing",
+        "professionName": "Blacksmithing",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "warlock_metamorphosis",
       "id": "warlock_metamorphosis",
       "name": "Metamorphosis",
@@ -31487,6 +32084,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/necromancer.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "miraculous_healing",
+      "id": "miraculous_healing",
+      "name": "Miraculous Healing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Miraculous Healing.",
+      "details": {
+        "id": "miraculous_healing",
+        "name": "Miraculous Healing",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Miraculous Healing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "healing"
+        ],
+        "professionId": "first_aid",
+        "professionName": "First Aid & Medicine",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -31727,6 +32362,804 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/ranger.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_agriculture",
+      "id": "mythical_agriculture",
+      "name": "Mythical Agriculture",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Agriculture.",
+      "details": {
+        "id": "mythical_agriculture",
+        "name": "Mythical Agriculture",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Agriculture.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "agriculture"
+        ],
+        "professionId": "farming",
+        "professionName": "Farming & Agriculture",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_brewing",
+      "id": "mythical_brewing",
+      "name": "Mythical Brewing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Brewing.",
+      "details": {
+        "id": "mythical_brewing",
+        "name": "Mythical Brewing",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Brewing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "brewing"
+        ],
+        "professionId": "brewing",
+        "professionName": "Brewing & Vinting",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_butchery",
+      "id": "mythical_butchery",
+      "name": "Mythical Butchery",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Butchery.",
+      "details": {
+        "id": "mythical_butchery",
+        "name": "Mythical Butchery",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Butchery.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "butchery"
+        ],
+        "professionId": "butchery",
+        "professionName": "Butchery",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_construction",
+      "id": "mythical_construction",
+      "name": "Mythical Construction",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Construction.",
+      "details": {
+        "id": "mythical_construction",
+        "name": "Mythical Construction",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Construction.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "construction"
+        ],
+        "professionId": "construction",
+        "professionName": "Construction",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_cooking",
+      "id": "mythical_cooking",
+      "name": "Mythical Cooking",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Cooking.",
+      "details": {
+        "id": "mythical_cooking",
+        "name": "Mythical Cooking",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Cooking.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "cooking"
+        ],
+        "professionId": "cooking",
+        "professionName": "Cooking",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_enchanting",
+      "id": "mythical_enchanting",
+      "name": "Mythical Enchanting",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Enchanting.",
+      "details": {
+        "id": "mythical_enchanting",
+        "name": "Mythical Enchanting",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Enchanting.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "enchanting"
+        ],
+        "professionId": "enchanting",
+        "professionName": "Enchanting",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_engineering",
+      "id": "mythical_engineering",
+      "name": "Mythical Engineering",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Engineering.",
+      "details": {
+        "id": "mythical_engineering",
+        "name": "Mythical Engineering",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Engineering.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "engineering"
+        ],
+        "professionId": "engineering",
+        "professionName": "Engineering",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_extraction",
+      "id": "mythical_extraction",
+      "name": "Mythical Extraction",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Extraction.",
+      "details": {
+        "id": "mythical_extraction",
+        "name": "Mythical Extraction",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Extraction.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "extraction"
+        ],
+        "professionId": "mining",
+        "professionName": "Mining",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_fishing",
+      "id": "mythical_fishing",
+      "name": "Mythical Fishing",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Fishing.",
+      "details": {
+        "id": "mythical_fishing",
+        "name": "Mythical Fishing",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Fishing.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "fishing"
+        ],
+        "professionId": "fishing",
+        "professionName": "Fishing",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_forging",
+      "id": "mythical_forging",
+      "name": "Mythical Forging",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Forging.",
+      "details": {
+        "id": "mythical_forging",
+        "name": "Mythical Forging",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Forging.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "forging"
+        ],
+        "professionId": "blacksmithing",
+        "professionName": "Blacksmithing",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_glamour",
+      "id": "mythical_glamour",
+      "name": "Mythical Glamour",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Glamour.",
+      "details": {
+        "id": "mythical_glamour",
+        "name": "Mythical Glamour",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Glamour.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "glamour"
+        ],
+        "professionId": "dyeing",
+        "professionName": "Dyeing & Customization",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_herbalism",
+      "id": "mythical_herbalism",
+      "name": "Mythical Herbalism",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Herbalism.",
+      "details": {
+        "id": "mythical_herbalism",
+        "name": "Mythical Herbalism",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Herbalism.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "herbalism"
+        ],
+        "professionId": "herbalism",
+        "professionName": "Herbalism",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_inscription",
+      "id": "mythical_inscription",
+      "name": "Mythical Inscription",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Inscription.",
+      "details": {
+        "id": "mythical_inscription",
+        "name": "Mythical Inscription",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Inscription.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "inscription"
+        ],
+        "professionId": "inscription",
+        "professionName": "Inscription & Scribing",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_jewelcraft",
+      "id": "mythical_jewelcraft",
+      "name": "Mythical Jewelcraft",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Jewelcraft.",
+      "details": {
+        "id": "mythical_jewelcraft",
+        "name": "Mythical Jewelcraft",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Jewelcraft.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "jewelcraft"
+        ],
+        "professionId": "jewelcrafting",
+        "professionName": "Jewelcrafting",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_logging",
+      "id": "mythical_logging",
+      "name": "Mythical Logging",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Logging.",
+      "details": {
+        "id": "mythical_logging",
+        "name": "Mythical Logging",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Logging.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "logging"
+        ],
+        "professionId": "logging",
+        "professionName": "Logging & Woodcutting",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_maintenance",
+      "id": "mythical_maintenance",
+      "name": "Mythical Maintenance",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Maintenance.",
+      "details": {
+        "id": "mythical_maintenance",
+        "name": "Mythical Maintenance",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Maintenance.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "maintenance"
+        ],
+        "professionId": "repair",
+        "professionName": "Repair & Maintenance",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_medicine",
+      "id": "mythical_medicine",
+      "name": "Mythical Medicine",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Medicine.",
+      "details": {
+        "id": "mythical_medicine",
+        "name": "Mythical Medicine",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Medicine.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "medicine"
+        ],
+        "professionId": "first_aid",
+        "professionName": "First Aid & Medicine",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_skinning",
+      "id": "mythical_skinning",
+      "name": "Mythical Skinning",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Skinning.",
+      "details": {
+        "id": "mythical_skinning",
+        "name": "Mythical Skinning",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Skinning.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "skinning"
+        ],
+        "professionId": "skinning",
+        "professionName": "Skinning & Tracking",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_tailoring",
+      "id": "mythical_tailoring",
+      "name": "Mythical Tailoring",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Tailoring.",
+      "details": {
+        "id": "mythical_tailoring",
+        "name": "Mythical Tailoring",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Tailoring.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "tailoring"
+        ],
+        "professionId": "tailoring",
+        "professionName": "Tailoring",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_teleportation",
+      "id": "mythical_teleportation",
+      "name": "Mythical Teleportation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Teleportation.",
+      "details": {
+        "id": "mythical_teleportation",
+        "name": "Mythical Teleportation",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Teleportation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "teleportation"
+        ],
+        "professionId": "portal_creation",
+        "professionName": "Portal Creation",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "mythical_transmutation",
+      "id": "mythical_transmutation",
+      "name": "Mythical Transmutation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "God-tier mastery of Transmutation.",
+      "details": {
+        "id": "mythical_transmutation",
+        "name": "Mythical Transmutation",
+        "type": "passive",
+        "class": "universal",
+        "description": "God-tier mastery of Transmutation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "transmutation"
+        ],
+        "professionId": "alchemy",
+        "professionName": "Alchemy",
+        "tierUnlock": 9
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -33095,6 +34528,44 @@
       "mentions": []
     },
     {
+      "key": "philosopher_methods",
+      "id": "philosopher_methods",
+      "name": "Philosopher Methods",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Philosopher Methods.",
+      "details": {
+        "id": "philosopher_methods",
+        "name": "Philosopher Methods",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Philosopher Methods.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "methods"
+        ],
+        "professionId": "alchemy",
+        "professionName": "Alchemy",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "necro_phylactery",
       "id": "necro_phylactery",
       "name": "Phylactery",
@@ -33398,6 +34869,44 @@
       "mentions": []
     },
     {
+      "key": "plant_identification",
+      "id": "plant_identification",
+      "name": "Plant Identification",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Plant Identification.",
+      "details": {
+        "id": "plant_identification",
+        "name": "Plant Identification",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Plant Identification.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "identification"
+        ],
+        "professionId": "herbalism",
+        "professionName": "Herbalism",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "doc_poison_and_sickness",
       "id": "doc_poison_and_sickness",
       "name": "Poison & Sickness (Non-lethal Toxins)",
@@ -33609,10 +35118,10 @@
       "description": "Area poison damage.",
       "details": {
         "id": "assassin_poison_cloud",
-        "name": "Poison Cloud",
-        "type": "active",
+        "name": "Poison Cloud Passive",
+        "type": "passive",
         "class": "assassin",
-        "description": "Area poison damage.",
+        "description": "Leave poison trail behind.",
         "level": 1,
         "manaCost": 28,
         "cooldown": 15
@@ -35634,6 +37143,82 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/priest.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "rare_ore_sense",
+      "id": "rare_ore_sense",
+      "name": "Rare Ore Sense",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Rare Ore Sense.",
+      "details": {
+        "id": "rare_ore_sense",
+        "name": "Rare Ore Sense",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Rare Ore Sense.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "ore"
+        ],
+        "professionId": "mining",
+        "professionName": "Mining",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "reality_weaving",
+      "id": "reality_weaving",
+      "name": "Reality Weaving",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Reality Weaving.",
+      "details": {
+        "id": "reality_weaving",
+        "name": "Reality Weaving",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Reality Weaving.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "weaving"
+        ],
+        "professionId": "enchanting",
+        "professionName": "Enchanting",
+        "tierUnlock": 7
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -37687,6 +39272,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/warrior.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "seasoning",
+      "id": "seasoning",
+      "name": "Seasoning",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Seasoning.",
+      "details": {
+        "id": "seasoning",
+        "name": "Seasoning",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Seasoning.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "general"
+        ],
+        "professionId": "cooking",
+        "professionName": "Cooking",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -41051,6 +42674,44 @@
       "mentions": []
     },
     {
+      "key": "socket_creation",
+      "id": "socket_creation",
+      "name": "Socket Creation",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Socket Creation.",
+      "details": {
+        "id": "socket_creation",
+        "name": "Socket Creation",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Socket Creation.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "creation"
+        ],
+        "professionId": "jewelcrafting",
+        "professionName": "Jewelcrafting",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "bard_song_mastery",
       "id": "bard_song_mastery",
       "name": "Song Mastery",
@@ -41319,6 +42980,44 @@
       "mentions": []
     },
     {
+      "key": "soul_binding",
+      "id": "soul_binding",
+      "name": "Soul Binding",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Soul Binding.",
+      "details": {
+        "id": "soul_binding",
+        "name": "Soul Binding",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Soul Binding.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "binding"
+        ],
+        "professionId": "enchanting",
+        "professionName": "Enchanting",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "warlock_soul_fire",
       "id": "warlock_soul_fire",
       "name": "Soul Fire",
@@ -41370,6 +43069,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/necromancer.active.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "soul_inscription",
+      "id": "soul_inscription",
+      "name": "Soul Inscription",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Soul Inscription.",
+      "details": {
+        "id": "soul_inscription",
+        "name": "Soul Inscription",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Soul Inscription.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "inscription"
+        ],
+        "professionId": "inscription",
+        "professionName": "Inscription & Scribing",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -42478,6 +44215,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/rogue.active.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "stable_portals",
+      "id": "stable_portals",
+      "name": "Stable Portals",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Stable Portals.",
+      "details": {
+        "id": "stable_portals",
+        "name": "Stable Portals",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Stable Portals.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "portals"
+        ],
+        "professionId": "portal_creation",
+        "professionName": "Portal Creation",
+        "tierUnlock": 5
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -47483,6 +49258,44 @@
       "mentions": []
     },
     {
+      "key": "vein_detection",
+      "id": "vein_detection",
+      "name": "Vein Detection",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Vein Detection.",
+      "details": {
+        "id": "vein_detection",
+        "name": "Vein Detection",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Vein Detection.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "detection"
+        ],
+        "professionId": "mining",
+        "professionName": "Mining",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "druid_vengeance",
       "id": "druid_vengeance",
       "name": "Vengeance",
@@ -48730,6 +50543,44 @@
       "mentions": []
     },
     {
+      "key": "waypoint_linking",
+      "id": "waypoint_linking",
+      "name": "Waypoint Linking",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Waypoint Linking.",
+      "details": {
+        "id": "waypoint_linking",
+        "name": "Waypoint Linking",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Waypoint Linking.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "linking"
+        ],
+        "professionId": "portal_creation",
+        "professionName": "Portal Creation",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
+        }
+      ],
+      "mentions": []
+    },
+    {
       "key": "doc_weakness",
       "id": "doc_weakness",
       "name": "Weakness (Enfeeblement)",
@@ -49360,6 +51211,44 @@
           "type": "structured",
           "origin": "skill_pack",
           "path": "packages/game-core/src/data/skills/bard.passive.json"
+        }
+      ],
+      "mentions": []
+    },
+    {
+      "key": "wound_treatment",
+      "id": "wound_treatment",
+      "name": "Wound Treatment",
+      "kind": "skill",
+      "type": "passive",
+      "description": "Mastery of Wound Treatment.",
+      "details": {
+        "id": "wound_treatment",
+        "name": "Wound Treatment",
+        "type": "passive",
+        "class": "universal",
+        "description": "Mastery of Wound Treatment.",
+        "level": 1,
+        "tags": [
+          "profession",
+          "treatment"
+        ],
+        "professionId": "first_aid",
+        "professionName": "First Aid & Medicine",
+        "tierUnlock": 3
+      },
+      "ownerType": "universal",
+      "ownerId": "universal",
+      "sources": [
+        {
+          "type": "structured",
+          "origin": "skill_pack",
+          "path": "packages/game-core/src/data/skills/profession_skills.json"
+        },
+        {
+          "type": "structured",
+          "origin": "profession_registry",
+          "path": "packages/game-core/src/systems/profession/ProfessionRegistry.js"
         }
       ],
       "mentions": []
@@ -51501,7 +53390,33 @@
         "actions": {},
         "strainCost": 6,
         "phrase": "SHADOW-STEP",
-        "description": "Shadow Step enhances repositioning and backstrike angles."
+        "description": "Teleport behind the target for a devastating ambush.",
+        "name": "Shadow Step",
+        "cost": 35,
+        "costType": "energy",
+        "cooldown": 5,
+        "damage": {
+          "multiplier": 1.5,
+          "isMagic": false
+        },
+        "effects": [
+          {
+            "target": "enemy",
+            "id": "slow",
+            "duration": 1,
+            "magnitude": -0.2
+          }
+        ],
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "synergies": [],
+          "source": "ClassAbilityRegistry",
+          "meta": {
+            "ownerId": "unbound"
+          }
+        }
       },
       "ownerType": "class",
       "ownerId": null,

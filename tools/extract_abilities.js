@@ -1,6 +1,10 @@
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const inputPath = path.join(__dirname, '../packages/game-core/src/systems/class/ClassAbilityRegistry.js');
 const outputDir = path.join(__dirname, '../packages/game-core/src/data/skills');

@@ -1,1 +1,0 @@
-{"version":3,"names":["calculateGainedXP","xpForNextLevel","xpToReachLevel"],"sources":["LevelingSystem.js"],"sourcesContent":["export {\r\n  calculateGainedXP,\r\n  xpForNextLevel,\r\n  xpToReachLevel,\r\n} from \"../../core/xpCurve.js\";\r\n"],"mappings":"AAAA,SACEA,iBAAiB,EACjBC,cAAc,EACdC,cAAc,QACT,uBAAuB","ignoreList":[]}

@@ -1,4 +1,0 @@
-d4969f872f504c202f76753babf20741
-// Back-compat shim: implementation lives in @voidverse/game-core.
-export * from '@voidverse/game-core/data/OpeningScenes.js';
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiT3BlbmluZ1NjZW5lcy5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyLvu78vLyBCYWNrLWNvbXBhdCBzaGltOiBpbXBsZW1lbnRhdGlvbiBsaXZlcyBpbiBAdm9pZHZlcnNlL2dhbWUtY29yZS5cclxuZXhwb3J0ICogZnJvbSAnQHZvaWR2ZXJzZS9nYW1lLWNvcmUvZGF0YS9PcGVuaW5nU2NlbmVzLmpzJztcclxuXHJcbiJdLCJtYXBwaW5ncyI6IkFBQUM7QUFDRCxjQUFjLDRDQUE0QyIsImlnbm9yZUxpc3QiOltdfQ==

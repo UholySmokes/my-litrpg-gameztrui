@@ -1,4 +1,0 @@
-310589849882c6be4f83a7fc0292656c
-// Back-compat shim: implementation lives in @voidverse/game-core.
-export * from '@voidverse/game-core/systems/world/TimeSystem.js';
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiVGltZVN5c3RlbS5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyLvu78vLyBCYWNrLWNvbXBhdCBzaGltOiBpbXBsZW1lbnRhdGlvbiBsaXZlcyBpbiBAdm9pZHZlcnNlL2dhbWUtY29yZS5cclxuZXhwb3J0ICogZnJvbSAnQHZvaWR2ZXJzZS9nYW1lLWNvcmUvc3lzdGVtcy93b3JsZC9UaW1lU3lzdGVtLmpzJztcclxuXHJcbiJdLCJtYXBwaW5ncyI6IkFBQUM7QUFDRCxjQUFjLGtEQUFrRCIsImlnbm9yZUxpc3QiOltdfQ==

@@ -1,1 +1,0 @@
-{"version":3,"names":[],"sources":["StateNormalizer.js"],"sourcesContent":["﻿// Back-compat shim: implementation lives in @voidverse/game-core.\r\nexport * from '@voidverse/game-core/core/StateNormalizer.js';\r\n\r\n"],"mappings":"AAAC;AACD,cAAc,8CAA8C","ignoreList":[]}

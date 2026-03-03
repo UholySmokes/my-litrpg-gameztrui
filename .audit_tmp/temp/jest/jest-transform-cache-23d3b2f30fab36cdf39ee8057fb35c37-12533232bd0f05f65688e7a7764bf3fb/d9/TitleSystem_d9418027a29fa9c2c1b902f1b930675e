@@ -1,4 +1,0 @@
-091d61936efcfd4cdb12f71c4263e757
-// Back-compat shim: implementation lives in @voidverse/game-core.
-export * from '@voidverse/game-core/systems/titles/TitleSystem.js';
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiVGl0bGVTeXN0ZW0uanMiXSwic291cmNlc0NvbnRlbnQiOlsi77u/Ly8gQmFjay1jb21wYXQgc2hpbTogaW1wbGVtZW50YXRpb24gbGl2ZXMgaW4gQHZvaWR2ZXJzZS9nYW1lLWNvcmUuXHJcbmV4cG9ydCAqIGZyb20gJ0B2b2lkdmVyc2UvZ2FtZS1jb3JlL3N5c3RlbXMvdGl0bGVzL1RpdGxlU3lzdGVtLmpzJztcclxuXHJcbiJdLCJtYXBwaW5ncyI6IkFBQUM7QUFDRCxjQUFjLG9EQUFvRCIsImlnbm9yZUxpc3QiOltdfQ==

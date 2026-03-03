@@ -6,13 +6,10 @@ const PRIORITY = {
 
 import talentRegistry from "../../data/talent.registry.json" with { type: "json" };
 import {
-  getTalentClassById,
-  getAllTalentClasses as _getAllTalentClasses,
-} from "./TalentRegistry.js";
-import {
   getTalentComponent,
   getTalentMagnitude,
   collectBypassFlags,
+  TALENT_COMPONENTS,
 } from "./TalentDefinitions.js";
 
 // Build rules from JSON registry (administrative layer)
@@ -133,10 +130,9 @@ function getTalentRule(id) {
 
 /**
  * Calculate magnitude based on player level using component-based system
- * Falls back to class hierarchy for legacy talents
  */
 function calculateMagnitude(talentId, playerLevel) {
-  // Try component-based system first
+  // Try component-based system
   const component = getTalentComponent(talentId);
   if (component?.magnitudeThresholds) {
     const mag = getTalentMagnitude(talentId, playerLevel);
@@ -146,22 +142,13 @@ function calculateMagnitude(talentId, playerLevel) {
     };
   }
 
-  // Fall back to class-based system
-  try {
-    const cls = getTalentClassById(talentId);
-    return cls.calculateMagnitude(playerLevel);
-  } catch (error) {
-    console.warn(
-      `Failed to calculate magnitude for talent ${talentId}:`,
-      error,
-    );
-    return {
-      label: "Region-Scale",
-      aoeRadius: 50,
-      damageCap: 1000,
-      description: "Local area influence (fallback)",
-    };
-  }
+  // Fallback default
+  return {
+    label: "Region-Scale",
+    aoeRadius: 50,
+    damageCap: 1000,
+    description: "Local area influence (fallback)",
+  };
 }
 
 /**
@@ -189,16 +176,16 @@ export function applyMagnitudeDamageCap(damage, caps) {
  * Check if talent exists and is valid
  */
 function isValidTalent(talentId) {
-  return !!getTalentRule(talentId) || !!getTalentClassById(talentId);
+  return !!getTalentRule(talentId) || !!getTalentComponent(talentId);
 }
 
 /**
  * Get talent description with system-style formatting
  */
 function getTalentSystemDescription(talentId) {
-  const talentClass = getTalentClassById(talentId);
-  if (talentClass && typeof talentClass.getSystemDescription === "function") {
-    return talentClass.getSystemDescription();
+  const component = getTalentComponent(talentId);
+  if (component && component.phrase) {
+    return `PROTOCOL: ${component.phrase.toUpperCase()}_INITIATED`;
   }
 
   const rule = getTalentRule(talentId);
@@ -214,12 +201,6 @@ function getTalentSystemDescription(talentId) {
  */
 function getMagnitudeDescription(talentId, playerLevel) {
   const mag = calculateMagnitude(talentId, playerLevel);
-  const talentClass = getTalentClassById(talentId);
-
-  if (talentClass && typeof talentClass.describeMagnitude === "function") {
-    return talentClass.describeMagnitude(mag);
-  }
-
   return `${mag.label} - ${mag.description}`;
 }
 
@@ -285,7 +266,7 @@ export function applyDropOverrides(baseDropChance, bypasses) {
  */
 export function getTalentInfo(talentId, playerLevel = 1) {
   const rule = getTalentRule(talentId);
-  const talentClass = getTalentClassById(talentId);
+  const component = getTalentComponent(talentId);
   const magnitude = calculateMagnitude(talentId, playerLevel);
   const systemDescription = getTalentSystemDescription(talentId);
   const magnitudeDescription = getMagnitudeDescription(talentId, playerLevel);
@@ -293,12 +274,13 @@ export function getTalentInfo(talentId, playerLevel = 1) {
   return {
     id: talentId,
     rule: rule,
-    talentClass: talentClass,
+    talentClass: component, // Renamed but keeping API shape somewhat similar if used elsewhere, or just component
+    component: component,
     magnitude: magnitude,
     systemDescription: systemDescription,
     magnitudeDescription: magnitudeDescription,
     isValid: isValidTalent(talentId),
-    priority: rule?.priority || PRIORITY.NORMAL,
+    priority: rule?.priority || component?.priority || PRIORITY.NORMAL,
   };
 }
 
@@ -306,12 +288,11 @@ export function getTalentInfo(talentId, playerLevel = 1) {
  * Get all talents with their information
  */
 export function getAllTalentInfo(playerLevel = 1) {
-  const allTalentClasses = _getAllTalentClasses();
   const talentInfo = [];
 
-  for (const TalentClass of allTalentClasses) {
-    const talent = new TalentClass();
-    const info = getTalentInfo(talent.id, playerLevel);
+  // Include talents from components
+  for (const talentId of Object.keys(TALENT_COMPONENTS)) {
+    const info = getTalentInfo(talentId, playerLevel);
     talentInfo.push(info);
   }
 
@@ -346,7 +327,7 @@ export function getTalentsByPriority(priority, playerLevel = 1) {
  */
 export function getTalentsByType(type, playerLevel = 1) {
   return filterTalents(
-    (talent) => talent.talentClass?.type === type,
+    (talent) => talent.component?.type === type, // Check component type
     playerLevel,
   );
 }

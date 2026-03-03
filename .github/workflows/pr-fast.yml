@@ -1,0 +1,105 @@
+name: PR Fast
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: pr-fast-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr-fast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            app:
+              - ".nvmrc"
+              - "package.json"
+              - "package-lock.json"
+              - "vite.config.js"
+              - "tsconfig.json"
+              - "eslint.config.js"
+              - "index.html"
+              - "src/**"
+              - "packages/**"
+              - "api/**"
+              - "public/**"
+              - "scripts/**"
+              - "tests/**"
+              - "firebase.json"
+              - "firestore.indexes.json"
+              - "docs/contracts/**"
+              - "docs/system-contracts/**"
+            functions:
+              - "functions/**"
+            godot:
+              - "godot/**"
+            firestore_rules:
+              - "firestore.rules"
+
+      - name: Skip (docs-only)
+        if: |
+          steps.changes.outputs.app != 'true' &&
+          steps.changes.outputs.functions != 'true' &&
+          steps.changes.outputs.godot != 'true' &&
+          steps.changes.outputs.firestore_rules != 'true'
+        run: echo "Docs-only change detected; skipping checks."
+
+      - name: Setup Node
+        if: |
+          steps.changes.outputs.app == 'true' ||
+          steps.changes.outputs.functions == 'true' ||
+          steps.changes.outputs.godot == 'true' ||
+          steps.changes.outputs.firestore_rules == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install root dependencies
+        if: |
+          steps.changes.outputs.app == 'true' ||
+          steps.changes.outputs.godot == 'true' ||
+          steps.changes.outputs.firestore_rules == 'true'
+        run: npm ci
+
+      - name: App fast checks
+        if: steps.changes.outputs.app == 'true'
+        run: npm run check
+
+      - name: Install functions dependencies
+        if: steps.changes.outputs.functions == 'true'
+        run: npm --prefix functions ci
+
+      - name: Functions typecheck
+        if: steps.changes.outputs.functions == 'true'
+        run: npm --prefix functions run typecheck
+
+      - name: Setup Java 21
+        if: steps.changes.outputs.firestore_rules == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Firestore rules blocking test (emulator)
+        if: steps.changes.outputs.firestore_rules == 'true'
+        run: npm run test:firestore-rules:emulator
+
+      - name: Setup Godot
+        if: steps.changes.outputs.godot == 'true'
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.6.1
+
+      - name: Godot headless smoke
+        if: steps.changes.outputs.godot == 'true'
+        run: npm run check:godot:smoke

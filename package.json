@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "dev": "npx kill-port 5173 && vite --host 127.0.0.1 --port 5173 --strictPort",
@@ -20,7 +20,12 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:ci": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache --runInBand",
+    "test:smoke": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js tests/unit/SchemaValidation.test.js tests/unit/SkillSchemaValidation.test.js --runInBand",
+    "check": "npm run lint && npm run typecheck && npm run validate:runtime-contract && npm run validate:env-examples && npm run validate:registries && npm run validate:archetypes && npm run test:smoke",
+    "check:functions": "npm --prefix functions ci && npm --prefix functions run typecheck",
+    "check:godot:smoke": "npm run generate:godot-config && npm run test:godot:headless",
     "audit:security:root": "npm audit --audit-level=moderate",
     "audit:security:functions": "npm --prefix functions audit --audit-level=moderate",
     "audit:security": "npm run audit:security:root && npm run audit:security:functions",

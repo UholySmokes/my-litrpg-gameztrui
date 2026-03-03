@@ -1,0 +1,106 @@
+[
+  {
+    "id": "stumble_strike",
+    "name": "Stumble Strike",
+    "description": "An erratic lunge that confuses the target.",
+    "cost": 20,
+    "costType": "chi",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "drunken_sway",
+    "name": "Drunken Sway",
+    "description": "Sway unpredictably, gaining evasion and counter-attack potential.",
+    "cost": 25,
+    "costType": "chi",
+    "cooldown": 6,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 3,
+        "magnitude": 0.25
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "counter_flow",
+    "name": "Counter Flow",
+    "description": "Redirect enemy momentum into a devastating counter.",
+    "cost": 30,
+    "costType": "chi",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1.5,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "reflect",
+        "duration": 1,
+        "magnitude": 0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "barrel_roll",
+    "name": "Barrel Roll",
+    "description": "Tumble through the enemy, damaging and repositioning.",
+    "cost": 35,
+    "costType": "chi",
+    "cooldown": 10,
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

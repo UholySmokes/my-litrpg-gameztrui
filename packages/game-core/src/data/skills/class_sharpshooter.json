@@ -1,0 +1,100 @@
+[
+  {
+    "id": "rapid_fire",
+    "name": "Rapid Fire",
+    "description": "A burst of quick shots.",
+    "cost": 40,
+    "costType": "focus",
+    "cooldown": 5,
+    "damage": {
+      "multiplier": 1.4,
+      "isMagic": false
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "trick_shot",
+    "name": "Trick Shot",
+    "description": "A ricocheting shot that hits around defenses.",
+    "cost": 30,
+    "costType": "focus",
+    "cooldown": 4,
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "overwatch",
+    "name": "Overwatch",
+    "description": "Set up a killzone — gain haste and damage.",
+    "cost": 35,
+    "costType": "focus",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 3,
+        "magnitude": 0.2
+      },
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "kill_shot",
+    "name": "Kill Shot",
+    "description": "A precise finisher that executes weakened targets.",
+    "cost": 50,
+    "costType": "focus",
+    "cooldown": 12,
+    "damage": {
+      "multiplier": 2,
+      "isMagic": false
+    },
+    "executeThreshold": 0.25,
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

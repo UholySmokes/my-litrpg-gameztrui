@@ -1,0 +1,20 @@
+[
+  {
+    "id": "wild_mutant_special",
+    "name": "Wild Surge",
+    "description": "A volatile surge with unpredictable results.",
+    "cost": 22,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "self",
+    "randomBuff": true,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

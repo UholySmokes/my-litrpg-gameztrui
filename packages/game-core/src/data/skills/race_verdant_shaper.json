@@ -1,0 +1,32 @@
+[
+  {
+    "id": "verdant_shaper_special",
+    "name": "Thornburst",
+    "description": "Verdant thorns bind and pierce the foe.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "nature"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "root",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

@@ -178,18 +178,19 @@ export const VOIDVERSE_START_SCENE_PACK = {
       id: "start_white_mist_runes",
       title: "White Mist, Old Runes",
       tags: ["mystery", "magic-research", "puzzle", "atmosphere"],
-      text: "A shrine appears where your map insists there is only empty hillside.\n\nWhite mist pools at its feet, and runes flicker on the stone like someone left the universe on \"idle.\" The air tastes faintly metallic-like a storm is arguing with reality.\n\nA whisper threads into your thoughts: Not all doors open outward.\n\nYour UI glitches for half a second. That's usually a bad sign. Or a good sign with a higher mortality rate.\n\nThe runes aren't decorative. They're instructions-compressed rules, a spell written like math.\n\nYou can feel a threshold here: step wrong and the shrine will either gift you knowledge... or file you under \"lesson.\"",
+      text: "A shrine appears where your map insists there is only empty hillside.\n\nWhite mist pools at its feet, and runes flicker on the stone like someone left the universe on \"idle.\" The air tastes faintly metallic-like a storm is arguing with reality.\n\nA whisper threads into your thoughts—warm, patient, almost amused: Not all doors open outward.\n\nYour UI glitches for half a second. That's usually a bad sign. Or a good sign with a higher mortality rate.\n\nThe runes aren't decorative. They're instructions—compressed rules, a spell written like math.\n\nYou can feel a threshold here: step wrong and the shrine will either gift you knowledge... or file you under \"lesson.\"",
       choices: [
         {
           label: "Study the runes carefully (research-first).",
           next: "rune_analysis_success",
           outcomeText:
-            "You trace patterns, count strokes, compare symmetry. The runes respond like a lock recognizing its key. A fragment of ritual logic snaps into place.",
+            "You trace patterns, count strokes, compare symmetry. The runes respond like a lock recognizing its key. A fragment of ritual logic snaps into place. Something old and kind steadies your hand—not giving you raw power, just a safe spark of it.",
           effects: {
+            unlockSkill: "skill_voidspark",
             addClue: "clue_rune_operator_set",
             addQuest: "quest_combine_rune_operators",
             statDelta: { focus: 1 },
-            setFlag: ["runes_studied"],
+            setFlag: ["runes_studied", "voidspark_awakened"],
           },
           aiHints: [
             "magic as physics",

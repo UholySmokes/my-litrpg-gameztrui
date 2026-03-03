@@ -21,6 +21,24 @@ describe("Skill JSON Schema Validation", () => {
         it(`should have valid structure for ${fileName}`, () => {
             const content = fs.readFileSync(file, 'utf8');
             const skills = JSON.parse(content);
+
+            // Ability-set files are maps (ownerId -> abilityId[]), not arrays.
+            if (fileName.endsWith('_ability_sets.json')) {
+                expect(skills).toBeTruthy();
+                expect(Array.isArray(skills)).toBe(false);
+                expect(typeof skills).toBe('object');
+
+                Object.entries(skills).forEach(([ownerId, abilityIds]) => {
+                    expect(typeof ownerId).toBe('string');
+                    expect(ownerId.length).toBeGreaterThan(0);
+                    expect(Array.isArray(abilityIds)).toBe(true);
+                    abilityIds.forEach((abilityId) => {
+                        expect(typeof abilityId).toBe('string');
+                        expect(abilityId.length).toBeGreaterThan(0);
+                    });
+                });
+                return;
+            }
             
             expect(Array.isArray(skills)).toBe(true);
             

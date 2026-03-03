@@ -29,10 +29,11 @@ The team reviewed the `ability_catalog.json` and its sources. We found a fragmen
 - [x] Create definitions for ghost profession skills.
 - [x] Fix catalog generator to merge `details` from different sources.
 
-### Phase 2: Migration (Proposed)
-- [ ] **Migrate Class Abilities:** Convert `ClassAbilityRegistry.js` `ABILITIES` object to `src/data/skills/class_warrior.json`, etc.
-- [ ] **Migrate Race Abilities:** Convert `RaceAbilityRegistry.js` to `src/data/skills/race_human.json`, etc.
-- [ ] **Refactor Registries:** Update Registry JS files to *load* these JSONs instead of defining data. This decouples content from code.
+### Phase 2: Migration (Completed)
+- [x] **Migrate Class Abilities:** Converted `ClassAbilityRegistry.js` inline `ABILITIES` object into JSON data files under `packages/game-core/src/data/skills/class_<classId>.json`.
+- [x] **Migrate Race Abilities:** Converted `RaceAbilityRegistry.js` inline race ability definitions into JSON data files under `packages/game-core/src/data/skills/race_<raceId>.json`.
+- [x] **Refactor Registries:** Updated Class/Race ability registries to load JSON sources (`class_abilities.json`, `class_ability_sets.json`, `race_abilities.json`, `race_ability_sets.json`) instead of defining large inline registries.
+- [x] **Migration Tooling:** `tools/migrate_registries_to_json.cjs` now regenerates aggregate + split JSON files in a stable format.
 
 ### Phase 3: Validation
 - [ ] Add a JSON Schema validator to the build script to ensure no future skills are added without descriptions or types.

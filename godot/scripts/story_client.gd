@@ -1,6 +1,8 @@
 extends Node
 class_name StoryClient
 
+const FirebaseAuthClient := preload("res://scripts/firebase_auth_client.gd")
+
 @export var api_base_url: String = "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api"
 @export var auth_client_path: NodePath
 @export var story_start_path: String = "/story/start"
@@ -230,7 +232,7 @@ func _authorized_json_request(endpoint: String, method: int, payload: Variant) -
 
 	var response: Dictionary = await _request_json(_build_url(endpoint), method, headers, payload)
 	if response.status == 401 and auth_client:
-		var refreshed := await auth_client.refresh_id_token()
+		var refreshed: bool = await auth_client.refresh_id_token()
 		if refreshed:
 			var retry_headers := PackedStringArray(["Content-Type: application/json"])
 			var retry_token := String(auth_client.id_token)

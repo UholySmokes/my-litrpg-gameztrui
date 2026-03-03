@@ -1,6 +1,8 @@
 extends Node
 class_name TriggerQueue
 
+const SyncClient := preload("res://scripts/sync_client.gd")
+
 const BATCH_WINDOW_MS := 100
 const BATCH_MAX_ITEMS := 4
 

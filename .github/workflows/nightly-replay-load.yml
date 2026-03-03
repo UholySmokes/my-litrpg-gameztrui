@@ -17,14 +17,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install Dependencies
         run: npm ci
 
       - name: Replay and Determinism Suite
-        run: npm test -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncProgressionScenarioHarness.test.js tests/unit/SyncReplayRoute.test.js tests/unit/TelemetryRoute.test.js --runInBand
+        run: npm run test:ci -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncProgressionScenarioHarness.test.js tests/unit/SyncReplayRoute.test.js tests/unit/TelemetryRoute.test.js
 
       - name: Load Simulation (Fixed Seed)
         run: npm run simulate:nightly

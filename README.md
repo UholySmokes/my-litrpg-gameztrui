@@ -21,7 +21,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - **State/Game Logic**: Custom hook `useGameEngine`, immutable reducers, config-driven balance
 - **Styling**: CSS modules + inline HUD styling for neon HUD aesthetic
 - **Backend Integrations**: Firebase Hosting + Firebase Functions API, Genkit/Gemini narrative service
-- **Tooling**: ESLint (React hooks rules), npm scripts, Node 18+
+- **Tooling**: ESLint (React hooks rules), npm scripts, Node 20+
 
 ---
 
@@ -29,7 +29,7 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - npm 9+ (comes with Node)
 - Firebase CLI (for local hosting/functions emulators)
 - Firebase/Gemini credentials for Genkit agents (`GOOGLE_GENAI_API_KEY` or ADC)
@@ -182,6 +182,7 @@ Supporting docs:
 2. Keep constants/config in `state.config` or dedicated data files – no magic numbers.
 3. When adding content (races, quests, scenes), use JSON/registry files to remain generator-friendly.
 4. Update `current_state.md` and relevant docs when adding/removing systems.
+5. Workflow notes: see `docs/WORKFLOW.md`.
 
 ---
 

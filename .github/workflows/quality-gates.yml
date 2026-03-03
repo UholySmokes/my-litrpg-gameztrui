@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - master
-  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -18,7 +17,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install Dependencies
@@ -47,7 +46,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Setup Java 21
@@ -72,10 +71,10 @@ jobs:
         run: npm run typecheck
 
       - name: Sync Tooling Contract Tests
-        run: npm test -- tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js --runInBand
+        run: npm run test:ci -- tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js
 
       - name: Unit Tests
-        run: npm test -- --runInBand
+        run: npm run test:ci
 
       - name: Firestore Rules Blocking Test
         run: npm run test:firestore-rules:emulator
@@ -125,7 +124,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Setup Java 21
@@ -191,7 +190,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
           cache-dependency-path: functions/package-lock.json
 

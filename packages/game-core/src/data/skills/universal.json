@@ -1,5 +1,33 @@
 [
   {
+    "id": "skill_voidspark",
+    "name": "Voidspark",
+    "type": "passive",
+    "class": "universal",
+    "description": "A survivable seed of Void-purity, filtered through space and time. Required to endure and shape true Void workings.",
+    "level": 1,
+    "isMagic": true,
+    "tags": ["void", "voidspark", "magic"],
+    "template": {
+      "category": "Voidverse Magic",
+      "function": "utility",
+      "elements": ["space"],
+      "synergies": [
+        "Unlocks Void techniques that would otherwise be lethal.",
+        "Pairs with Spell Study and Essence Weaving (space/time patterns).",
+        "Acts as a safety filter: reduces the narrative risk of raw Void exposure."
+      ],
+      "source": "voidverse_magic_system"
+    },
+    "unlockConditions": {
+      "level": 1,
+      "location": null,
+      "quest": null,
+      "item": null,
+      "skillPrerequisites": []
+    }
+  },
+  {
     "id": "universal_meditation",
     "name": "Meditation",
     "type": "passive",

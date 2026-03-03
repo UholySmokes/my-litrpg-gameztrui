@@ -78,6 +78,18 @@ const shouldRefreshSummary = (narrativeState = {}) => {
 };
 
 const OPENING_SCENE_SKILL_TEMPLATES = {
+  skill_voidspark: {
+    id: "skill_voidspark",
+    name: "Voidspark",
+    description:
+      "A survivable seed of Void-purity, filtered through space and time. It aches when overused, but it won’t unmake you—yet.",
+    type: "passive",
+    level: 1,
+    isMagic: true,
+    canEvolve: false,
+    canFuse: false,
+    tags: ["starter", "void", "space", "voidspark", "opening_scene"],
+  },
   skill_qi_strike: {
     id: "skill_qi_strike",
     name: "Qi Strike",

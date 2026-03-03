@@ -170,7 +170,12 @@ function createCatalog() {
     existing.description = mergePreferredString(existing.description, raw?.description);
     existing.ownerType = mergePreferredString(existing.ownerType, raw?.ownerType);
     existing.ownerId = mergePreferredString(existing.ownerId, raw?.ownerId);
-    existing.details = existing.details ?? raw?.details ?? null;
+    
+    if (raw?.details && typeof raw.details === "object") {
+      existing.details = existing.details ? { ...existing.details, ...raw.details } : raw.details;
+    } else if (!existing.details && raw?.details) {
+      existing.details = raw.details;
+    }
 
     if (source) appendUnique(existing.sources, source);
 

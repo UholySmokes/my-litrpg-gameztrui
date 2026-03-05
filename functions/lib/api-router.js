@@ -10,6 +10,7 @@ const {
 const { handleSavesRequest } = require("./saves");
 const sync = require("./sync");
 const telemetry = require("./telemetry");
+const bulkGeneration = require("./bulk-generation-handlers");
 
 function normalizePath(url) {
 	const raw = typeof url === "string" ? url : "";
@@ -104,6 +105,34 @@ async function handleApiRequest(req, res) {
 		res.set("Sunset", "Wed, 01 Jul 2026 00:00:00 GMT");
 		res.set("Link", '</api/sync/commit>; rel="successor-version"');
 		return sync.action(req, res);
+	}
+
+	if (path === "/api/bulk-gen/run/start" && method === "POST") {
+		return bulkGeneration.startRun(req, res);
+	}
+
+	if (path === "/api/bulk-gen/run/tick" && method === "POST") {
+		return bulkGeneration.tickRun(req, res);
+	}
+
+	if (path === "/api/bulk-gen/run/status" && method === "GET") {
+		return bulkGeneration.getRunStatus(req, res);
+	}
+
+	if (path === "/api/bulk-gen/run/pause" && method === "POST") {
+		return bulkGeneration.pauseRun(req, res);
+	}
+
+	if (path === "/api/bulk-gen/run/resume" && method === "POST") {
+		return bulkGeneration.resumeRun(req, res);
+	}
+
+	if (path === "/api/bulk-gen/style" && method === "POST") {
+		return bulkGeneration.upsertStyle(req, res);
+	}
+
+	if (path === "/api/bulk-gen/budget-alert" && method === "POST") {
+		return bulkGeneration.budgetAlert(req, res);
 	}
 
 	return json(res, 404, {

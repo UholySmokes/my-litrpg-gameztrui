@@ -8,6 +8,8 @@
     "geequlim.godot-tools",
     "github.copilot-chat",
     "github.vscode-github-actions",
+    "googlecloudtools.cloudcode",
+    "googlecloudtools.firebase-dataconnect-vscode",
     "gruntfuggly.todo-tree",
     "mikestead.dotenv",
     "mtxr.sqltools",

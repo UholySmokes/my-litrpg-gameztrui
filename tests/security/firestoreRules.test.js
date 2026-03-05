@@ -6,7 +6,7 @@ import {
 	assertSucceeds,
 	initializeTestEnvironment,
 } from "@firebase/rules-unit-testing";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, setLogLevel, updateDoc } from "firebase/firestore";
 
 const PROJECT_ID = "demo-my-litrpg-gameztrui-rules";
 const RULES_PATH = path.resolve(process.cwd(), "firestore.rules");
@@ -32,6 +32,8 @@ describeWithEmulator("firestore security rules", () => {
 	let testEnv;
 
 	beforeAll(async () => {
+		// These tests intentionally trigger denied writes; keep logs quiet in CI output.
+		setLogLevel("error");
 		testEnv = await initializeTestEnvironment({
 			projectId: PROJECT_ID,
 			firestore: {

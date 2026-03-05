@@ -7,11 +7,11 @@ service cloud.firestore {
     }
 
     function ownerMatches(ownerField) {
-      return isSignedIn() && resource.data[ownerField] == request.auth.uid;
+      return isSignedIn() && resource != null && resource.data[ownerField] == request.auth.uid;
     }
 
     function ownerMatchesRequest(ownerField) {
-      return isSignedIn() && request.resource.data[ownerField] == request.auth.uid;
+      return isSignedIn() && request.resource != null && request.resource.data[ownerField] == request.auth.uid;
     }
 
     match /game_saves/{saveId} {

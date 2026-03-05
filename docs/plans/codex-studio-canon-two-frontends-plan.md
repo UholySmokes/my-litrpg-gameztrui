@@ -35,7 +35,7 @@
 - Soft warning: custom static check flags package-directory requires in `functions/lib/*` (`../src/dataconnect-admin-generated`), but this resolves via that directory’s `package.json` (`main`/`exports`), so it is likely valid.
   - **What to do:** keep as-is, but add a tiny unit test that `require("../src/dataconnect-admin-generated")` resolves.
   - **Where to do it:** `functions/lib` tests.
-  - **How to verify:** run `npm --prefix functions test` (or equivalent targeted test).
+  - **How to verify:** run the existing root test suite that covers `functions/lib/*` (via `npm test`).
 
 ### Exists-but-unused (high confidence)
 - Large generated/coverage artifacts are committed (e.g., `coverage/lcov-report/*`), which are not runtime dependencies.

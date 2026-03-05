@@ -1,6 +1,15 @@
 {
   "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "geequlim.godot-tools",
+    "github.copilot-chat",
+    "github.vscode-github-actions",
+    "ms-azuretools.vscode-docker",
     "ms-ossdata.vscode-pgsql",
-    "github.copilot-chat"
+    "ms-playwright.playwright",
+    "ms-vscode.powershell",
+    "redhat.vscode-yaml",
+    "streetsidesoftware.code-spell-checker"
   ]
 }

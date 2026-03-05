@@ -35,7 +35,7 @@
 - Soft warning: custom static check flags package-directory requires in `functions/lib/*` (`../src/dataconnect-admin-generated`), but this resolves via that directory’s `package.json` (`main`/`exports`), so it is likely valid.
   - **What to do:** keep as-is, but add a tiny unit test that `require("../src/dataconnect-admin-generated")` resolves.
   - **Where to do it:** `functions/lib` tests.
-  - **How to verify:** run `npm --prefix functions test` (or equivalent targeted test).
+  - **How to verify:** run the existing root test suite that covers `functions/lib/*` (via `npm test`).
 
 ### Exists-but-unused (high confidence)
 - Large generated/coverage artifacts are committed (e.g., `coverage/lcov-report/*`), which are not runtime dependencies.
@@ -43,16 +43,16 @@
   - **Where to do it:** root `.gitignore` + CI artifact config.
   - **How to verify:** clean clone + build/test still pass.
 
-### Duplicate implementations (high impact)
-- Direct duplicate module families exist in both web app and canon package:
-  - `src/core/*` and `packages/game-core/src/core/*` (10 same filenames).
-  - `src/simulation/*` and `packages/game-core/src/simulation/*` (15 same filenames).
-  - `src/util/{numberFormat,statusrenderer}.js` and package equivalents.
-  - **Why it matters:** future bug fixes may be applied to one copy only.
-  - **Smallest safe fix:** freeze `src/*` copies as back-compat shims that re-export from `@voidverse/game-core`, then migrate import paths gradually.
-  - **What to do:** convert one duplicate area per patch (start with `src/core`).
-  - **Where to do it:** `src/core/*.js`.
-  - **How to verify:** `npm run test:smoke` + compare behavior in one manual play session.
+### Duplicate surfaces / shims (high impact)
+- Historically duplicated module families now exist as a mix of **back-compat shims** and a few remaining **local implementations**:
+  - `src/core/*` and `packages/game-core/src/core/*` (10 same filenames; many `src/core/*` files now just re-export from `@voidverse/game-core`, e.g., `src/core/ActionDispatcher.js`).
+  - `src/simulation/*` and `packages/game-core/src/simulation/*` (15 same filenames; several `src/simulation/*` modules are also re-export shims, e.g., `src/simulation/kernel/SimulationKernel.ts`).
+  - `src/util/{numberFormat,statusrenderer}.js` and package equivalents (these still have local logic in the web app surface).
+  - **Why it matters:** even when `src/*` is “just a shim”, you still have two import surfaces; the real drift risk is in any files that still contain local logic or partially duplicated behavior, where future bug fixes may be applied to only one surface.
+  - **Smallest safe fix:** clearly mark pure `src/*` shims as back-compat re-exports into `@voidverse/game-core` and avoid adding new logic there; for any remaining non-shim duplicates, move logic into `packages/game-core` and convert the `src/*` side to a thin re-export.
+  - **What to do:** audit one duplicate area per patch (start with `src/core`) to (a) confirm which files are pure shims, and (b) finish converting any remaining local implementations into shims pointing at `@voidverse/game-core`.
+  - **Where to do it:** `src/core/*.js` first, then `src/simulation/*` and `src/util/*` helpers that still contain local logic.
+  - **How to verify:** `npm run test:smoke` + compare behavior in one manual play session; new changes should land in `packages/game-core` and be visible through both import surfaces.
 
 ### “This will bite you later” list
 1. **Legacy alias routes** in API (`/api/story/*` and `/api/narrate*`) map to same handlers.

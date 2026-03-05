@@ -1,7 +1,6 @@
-const functions = require("firebase-functions");
 const { handleApiRequest } = require("./lib/api-router");
 const crypto = require("crypto");
-const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { onCall, onRequest, HttpsError } = require("firebase-functions/v2/https");
 const { isDevAuthEnabled } = require("./lib/auth");
 const {
 	listFirebaseAgents,
@@ -15,14 +14,21 @@ function hashContent(text) {
 		.digest("hex");
 }
 
-exports.api = functions.https.onRequest(async (req, res) => {
-	try {
-		await handleApiRequest(req, res);
-	} catch (error) {
-		const message = String(error?.message || error || "Unknown error");
-		res.status(500).json({ ok: false, errorCode: "UNEXPECTED_ERROR", message });
-	}
-});
+exports.api = onRequest(
+	{
+		region: "us-central1",
+		memory: "1GiB",
+		timeoutSeconds: 540,
+	},
+	async (req, res) => {
+		try {
+			await handleApiRequest(req, res);
+		} catch (error) {
+			const message = String(error?.message || error || "Unknown error");
+			res.status(500).json({ ok: false, errorCode: "UNEXPECTED_ERROR", message });
+		}
+	},
+);
 
 exports.agentList = onCall({ region: "us-central1" }, async () => ({
 	ok: true,

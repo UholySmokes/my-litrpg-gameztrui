@@ -67,7 +67,7 @@
       "port": 8080
     },
     "dataconnect": {
-      "dataDir": "dataconnect/.dataconnect/pgliteData"
+      "dataDir": ".cache/dataconnect/pgliteData"
     }
   },
   "dataconnect": {

@@ -1,14 +1,22 @@
 {
   "recommendations": [
+    "GraphQL.vscode-graphql",
+    "GraphQL.vscode-graphql-syntax",
     "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
     "esbenp.prettier-vscode",
     "geequlim.godot-tools",
     "github.copilot-chat",
     "github.vscode-github-actions",
+    "gruntfuggly.todo-tree",
+    "mikestead.dotenv",
     "ms-ossdata.vscode-pgsql",
     "ms-playwright.playwright",
     "ms-vscode.powershell",
+    "orta.vscode-jest",
     "redhat.vscode-yaml",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "yzhang.markdown-all-in-one"
   ]
 }

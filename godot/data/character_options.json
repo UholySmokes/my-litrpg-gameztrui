@@ -1,15 +1,22 @@
 {
     "meta": {
-        "version": "1.0.0",
+        "version": "1.1.0",
         "generatedFrom": "packages/game-core/src/data/registries/{Race,Class}DataRegistry.js",
-        "note": "Subset of races/classes for Godot character creation. Tier-1 classes only."
+        "note": "Subset of races/classes for Godot character creation. Tier-1 classes only. Origins/alignments/perks are Godot-only starter content."
     },
     "steps": [
+        "mode",
         "name",
         "race",
         "class",
+        "multiclass",
+        "origin",
         "attributes",
         "skills",
+        "perks",
+        "archetype",
+        "trees",
+        "alignment",
         "review"
     ],
     "races": [
@@ -375,8 +382,209 @@
     },
     "skills": {
         "maxActiveSkills": 3,
-        "maxPassiveSkills": 6
+        "maxPassiveSkills": 6,
+        "minActiveSkills": 1,
+        "minPassiveSkills": 0,
+        "loadouts": [
+            {
+                "id": "blades",
+                "name": "Blades",
+                "description": "Melee starter kit: Slash + Toughness.",
+                "activeSkills": ["slash"],
+                "passiveSkills": ["toughness"]
+            },
+            {
+                "id": "marksman",
+                "name": "Marksman",
+                "description": "Ranged starter kit: Piercing Shot + Keen Eye.",
+                "activeSkills": ["piercing_shot"],
+                "passiveSkills": ["keen_eye"]
+            },
+            {
+                "id": "arcanist",
+                "name": "Arcanist",
+                "description": "Caster starter kit: Arcane Bolt + Mana Trickle.",
+                "activeSkills": ["arcane_bolt"],
+                "passiveSkills": ["mana_trickle"]
+            },
+            {
+                "id": "acolyte",
+                "name": "Acolyte",
+                "description": "Support starter kit: Holy Mend + Toughness.",
+                "activeSkills": ["holy_mend"],
+                "passiveSkills": ["toughness"]
+            },
+            {
+                "id": "shadow",
+                "name": "Shadow",
+                "description": "Mobility starter kit: Shadow Step + Fleet-Footed.",
+                "activeSkills": ["shadow_step"],
+                "passiveSkills": ["fleet_footed"]
+            }
+        ],
+        "activeSkills": [
+            {
+                "id": "slash",
+                "name": "Slash",
+                "description": "A reliable melee strike. Low cooldown, good for learning timing."
+            },
+            {
+                "id": "piercing_shot",
+                "name": "Piercing Shot",
+                "description": "A ranged shot that ignores a portion of armor. Good vs tough enemies."
+            },
+            {
+                "id": "arcane_bolt",
+                "name": "Arcane Bolt",
+                "description": "A simple spell projectile. Scales with Intelligence."
+            },
+            {
+                "id": "holy_mend",
+                "name": "Holy Mend",
+                "description": "A small heal that stabilizes early fights."
+            },
+            {
+                "id": "shadow_step",
+                "name": "Shadow Step",
+                "description": "A short reposition that breaks line-of-sight briefly."
+            }
+        ],
+        "passiveSkills": [
+            {
+                "id": "toughness",
+                "name": "Toughness",
+                "description": "+5% Max HP."
+            },
+            {
+                "id": "keen_eye",
+                "name": "Keen Eye",
+                "description": "+5% crit chance."
+            },
+            {
+                "id": "mana_trickle",
+                "name": "Mana Trickle",
+                "description": "+5% mana regeneration."
+            },
+            {
+                "id": "fleet_footed",
+                "name": "Fleet-Footed",
+                "description": "+5% move speed."
+            },
+            {
+                "id": "lucky_breaks",
+                "name": "Lucky Breaks",
+                "description": "Small chance to avoid a negative status effect."
+            }
+        ]
     },
+    "origins": [
+        {
+            "id": "street_urchin",
+            "name": "Street Urchin",
+            "description": "You grew up surviving on instincts, favors, and fast feet.",
+            "trait": {
+                "name": "Quick Hands",
+                "description": "+1 Dexterity (creation only). Better odds on early lockpicks."
+            }
+        },
+        {
+            "id": "apprentice_scholar",
+            "name": "Apprentice Scholar",
+            "description": "You studied scraps of forbidden knowledge and learned to read the world.",
+            "trait": {
+                "name": "Book-Learned",
+                "description": "+1 Intelligence (creation only). Unlocks extra lore prompts."
+            }
+        },
+        {
+            "id": "temple_acolyte",
+            "name": "Temple Acolyte",
+            "description": "You learned discipline, ritual, and the weight of vows.",
+            "trait": {
+                "name": "Rite of Shelter",
+                "description": "Start with a small protective blessing (placeholder)."
+            }
+        },
+        {
+            "id": "frontier_hunter",
+            "name": "Frontier Hunter",
+            "description": "You track, observe, and strike when the moment is right.",
+            "trait": {
+                "name": "Tracker",
+                "description": "+1 Wisdom (creation only). Better encounter scouting (placeholder)."
+            }
+        },
+        {
+            "id": "arena_recruit",
+            "name": "Arena Recruit",
+            "description": "You learned to fight for crowds and coin, under harsh rules.",
+            "trait": {
+                "name": "Crowd-Ready",
+                "description": "+1 Strength (creation only). Start with a basic combat consumable."
+            }
+        },
+        {
+            "id": "exiled_noble",
+            "name": "Exiled Noble",
+            "description": "You have manners, debts, and enemies with long memories.",
+            "trait": {
+                "name": "Commanding Presence",
+                "description": "+1 Charisma (creation only). Better early negotiation prompts."
+            }
+        }
+    ],
+    "perks": {
+        "maxPicks": 2,
+        "minPicks": 1,
+        "options": [
+            { "id": "iron_stomach", "name": "Iron Stomach", "description": "Consumables are 10% more effective." },
+            { "id": "battle_focus", "name": "Battle Focus", "description": "+5% damage while above 80% HP." },
+            { "id": "cautious", "name": "Cautious", "description": "+5% dodge while below 30% HP." },
+            { "id": "scavenger", "name": "Scavenger", "description": "+10% gold from drops." },
+            { "id": "ritualist", "name": "Ritualist", "description": "Story rituals have an extra outcome option (placeholder)." },
+            { "id": "quick_learner", "name": "Quick Learner", "description": "+5% XP gain." },
+            { "id": "sturdy_grip", "name": "Sturdy Grip", "description": "Reduced knockback and stagger (placeholder)." },
+            { "id": "arcane_sense", "name": "Arcane Sense", "description": "Detect magical traces on maps (placeholder)." }
+        ]
+    },
+    "archetypes": [
+        {
+            "id": "balanced",
+            "name": "Balanced",
+            "description": "A safe start that adapts to whatever you find."
+        },
+        {
+            "id": "glass_cannon",
+            "name": "Glass Cannon",
+            "description": "High damage, low safety. Best with careful positioning."
+        },
+        {
+            "id": "bulwark",
+            "name": "Bulwark",
+            "description": "High survivability. Wins long fights and protects allies."
+        },
+        {
+            "id": "trickster",
+            "name": "Trickster",
+            "description": "Evasion, crits, and opportunism. Strong with stealth and timing."
+        }
+    ],
+    "trees": {
+        "maxPicks": 1,
+        "options": [
+            { "id": "offense", "name": "Offense", "description": "Plan toward burst damage and crit synergies." },
+            { "id": "defense", "name": "Defense", "description": "Plan toward mitigation, sustain, and resistances." },
+            { "id": "utility", "name": "Utility", "description": "Plan toward mobility, control, and exploration perks." }
+        ]
+    },
+    "alignments": [
+        { "id": "lawful_good", "name": "Lawful Good", "description": "Order and compassion. You keep your word." },
+        { "id": "neutral_good", "name": "Neutral Good", "description": "Kindness first. Rules are tools, not chains." },
+        { "id": "chaotic_good", "name": "Chaotic Good", "description": "Freedom and mercy. You break cages." },
+        { "id": "lawful_neutral", "name": "Lawful Neutral", "description": "Structure above all. The system must stand." },
+        { "id": "true_neutral", "name": "True Neutral", "description": "Balance and pragmatism. Survive, adapt, endure." },
+        { "id": "chaotic_neutral", "name": "Chaotic Neutral", "description": "Impulse and independence. You choose your own path." }
+    ],
     "characterCreation": {
         "required": true,
         "startMapAfterCreation": "map_village_square"

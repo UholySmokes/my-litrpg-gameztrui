@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/world_controller.gd" id="1_world"]
 [ext_resource type="Script" path="res://scripts/firebase_auth_client.gd" id="2_auth"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/telemetry_reporter.gd" id="9_telemetry"]
 [ext_resource type="Script" path="res://scripts/character_creation_controller.gd" id="10_cc_ctrl"]
 [ext_resource type="Script" path="res://scripts/character_creation_panel.gd" id="11_cc_panel"]
+[ext_resource type="Script" path="res://scripts/character_creation_summary_panel.gd" id="12_cc_summary"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_world")
@@ -183,3 +184,32 @@ offset_top = 590.0
 offset_right = 640.0
 offset_bottom = 625.0
 text = "NEXT"
+
+[node name="CharacterCreationSummaryPanel" type="Panel" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 760.0
+offset_top = 40.0
+offset_right = 1240.0
+offset_bottom = 680.0
+visible = false
+script = ExtResource("12_cc_summary")
+
+[node name="SummaryTitleLabel" type="Label" parent="CanvasLayer/CharacterCreationSummaryPanel"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 14.0
+offset_right = 464.0
+offset_bottom = 44.0
+theme_override_font_sizes/font_size = 18
+text = "SUMMARY"
+
+[node name="SummaryBodyLabel" type="RichTextLabel" parent="CanvasLayer/CharacterCreationSummaryPanel"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 56.0
+offset_right = 464.0
+offset_bottom = 624.0
+fit_content = false
+scroll_active = true
+bbcode_enabled = false
+text = ""

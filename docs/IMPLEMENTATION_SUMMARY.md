@@ -290,3 +290,21 @@ The foundation is now in place for:
 ---
 
 **Next Session**: Fix high-priority platform neutrality violations and begin system contract documentation.
+
+## Consolidation Status Addendum (Merged 2026-03-05)
+
+This summary now includes the consolidation findings previously maintained in
+`consolidation_plan.md`.
+
+### Consolidation Outcomes
+
+- Data-layer fragmentation resolved via `src/data/DataRegistry.js` and registry split under `src/data/registries/`.
+- Effect-system fragmentation resolved with unified processing in effect engines/systems.
+- Verification script sprawl reduced by moving checks to Jest and dedicated validation scripts.
+- Service-layer restructuring intentionally deferred; current `src/core/` placement is stable and consistent.
+
+### Ongoing Priority
+
+- Keep architecture neutrality and deterministic contracts as top-level quality gates.
+- Treat service-manager style refactor as low priority unless maintainability signals regress.
+- Keep documentation and runbook references aligned with current file layout after each structural change.

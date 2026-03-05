@@ -119,9 +119,9 @@ type CanonState = {
 - Add stable IDs everywhere (`quest_id`, `enemy_id`, etc.) to avoid fragile string matching.
 
 ### Versioning rule (`contentVersion`)
-- Use: `contentVersion = "<pack>@<YYYY.MM.DD>+<shortsha>"`.
-- Engine should stamp step outputs with this exact version.
-- Godot/web can reject mismatched save replays if version drift is detected.
+- Use the existing convention: `contentVersion` **MUST** be a `sha256hex` manifest/content hash, as defined in `docs/contracts/canonical_state_v2.md` and `docs/contracts/command_envelope_v1.md`.
+- Engine should derive and stamp step outputs with this SHA-256 content hash in the same way `functions/lib/sync-core.js` does today.
+- Godot/web can reject mismatched save replays if a content hash/version mismatch is detected.
 
 **What to do / where / verify**
 - **Do:** add `events.d.ts` + small canon type alias `CanonState`.

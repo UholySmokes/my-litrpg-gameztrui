@@ -10,6 +10,8 @@
     "github.vscode-github-actions",
     "gruntfuggly.todo-tree",
     "mikestead.dotenv",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
     "ms-ossdata.vscode-pgsql",
     "ms-playwright.playwright",
     "ms-vscode.powershell",

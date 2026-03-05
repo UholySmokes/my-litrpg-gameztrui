@@ -4,9 +4,11 @@ Last updated: 2026-02-25
 Planning horizon: W1-W20 (2026-02-23 to 2026-07-12)
 
 ## 0. Execution Tracker (Live)
+
 Last implementation check: 2026-02-25
 
 ### M0 - Planning and Contract Freeze
+
 - [x] Baseline sync regression tests executed and evidence committed (`docs/reports/baseline_test_report_2026-02-23.md`)
 - [x] Canonical state v2 contract drafted (`docs/contracts/canonical_state_v2.md`)
 - [x] Command envelope v1 contract drafted (`docs/contracts/command_envelope_v1.md`)
@@ -15,6 +17,7 @@ Last implementation check: 2026-02-25
 - [x] Formal roadmap/contracts approval recorded by owners (`docs/ROADMAP_CONTRACT_APPROVAL_2026-02-24.md`)
 
 ### Next unblocked implementation slices
+
 - [x] M1: add explicit command identity model (`RunEvent.eventType`) in schema + adapters
   - Evidence: `dataconnect/schema/schema.gql`, `functions/lib/sync-core.js`, `functions/lib/sync-store.js`, `functions/lib/sync-dataconnect-store.js`
   - Verification: `npm test -- tests/unit/SyncCoreDeterminism.test.js tests/unit/SyncDataconnectStore.test.js tests/unit/SyncProcess.test.js tests/unit/SyncValidation.test.js --runInBand` (27 passed)
@@ -221,26 +224,32 @@ Last implementation check: 2026-02-25
   - Verification: `npm run test:ga:readiness` with `GA_RELEASE_ID=ga-prep-2026-02-25`, `GA_SIGNOFF_TECH_LEAD=tech_lead`, `GA_SIGNOFF_SRE=sre_lead`, `GA_SIGNOFF_PM=pm_lead`, `GA_SIGNOFF_RELEASE_MANAGER=release_manager` (PASS; 7 steps, 0 failed)
 
 ## 1. Executive Summary
+
 Primary objective: ship a Godot-first, single-player, command-driven pixel RPG where canonical state is owned by the online backend and all core gameplay transitions are deterministic.
 
 Secondary objectives:
+
 - Use AI for narrative and quest flavor only, never for core rules or balance math.
 - Convert the existing web runtime to tooling and observability for faster debugging and safer rollout.
 - Reach production via staged launch with explicit rollback levers and reliability guardrails.
 
 Success definition for this roadmap window:
+
 - Internal Alpha by 2026-04-19 (end of W8): Godot exploration + command mutation + reconcile loop works end-to-end.
 - Beta by 2026-05-31 (end of W14): combat/inventory/quest loop is canonical and save/load parity is proven.
 - Release Candidate by 2026-06-28 (end of W18): quality, security, and staging soak gates pass.
 - General Availability by 2026-07-12 (end of W20): staged production rollout completes within error budget.
 
 Prioritization method:
+
 - Default model: RICE-lite (Reach, Impact, Confidence, Effort bands).
 - Platform/foundation override: Cost of Delay + Risk Reduction weighted above feature breadth.
 - Tie-break rule: choose items that reduce critical-path uncertainty first.
 
 ## 2. Scope & Non-Goals
+
 In scope:
+
 - Godot as primary runtime for exploration, interaction, and command entry.
 - Canonical state v2 contract covering `worldProjection`, `rpgState`, `narrativeState`, and `syncMeta`.
 - `POST /api/sync/command` with idempotency (`id`), ordering (`clientSeq`), and reconcile signaling.
@@ -253,6 +262,7 @@ In scope:
 - Unified runtime config generation so Godot and Web consume the same environment flags/URLs.
 
 Explicit in-scope interface changes:
+
 - `functions/lib/api-router.js`: add `POST /api/sync/command`.
 - `functions/lib/sync.js`: add command handler and migration-on-write logic.
 - `functions/lib/sync-core.js`: normalize mixed trigger/command event streams.
@@ -264,6 +274,7 @@ Explicit in-scope interface changes:
 - `scripts/generate-godot-config.js`: generate `godot/data/config.json` from shared runtime config source.
 
 Non-goals (for this 20-week window):
+
 - Multiplayer, co-op, guild, or shared-world mechanics.
 - Migration away from Node/Firebase/Data Connect stack.
 - AI-generated combat formulas, economy tuning, or XP curves.
@@ -271,6 +282,7 @@ Non-goals (for this 20-week window):
 - Full content expansion beyond MVP hub + core questline loop.
 
 ## 3. Assumptions
+
 - A1: Existing sync/commit route tests are valid as regression anchors.
 - A2: Existing story handlers remain usable and can be extended without full rewrite.
 - A3: Data Connect schema changes can be deployed with dual-read compatibility.
@@ -283,6 +295,7 @@ Non-goals (for this 20-week window):
 - A10: Firestore hardening requirements committed for March 2026 remain mandatory and non-negotiable.
 
 ## 4. Constraints
+
 - C1: Schedule is fixed to 20 weeks; scope reduction is the primary control lever.
 - C2: Backward compatibility for legacy trigger-commit run data is required during transition.
 - C3: Determinism failures block release progression regardless of feature completeness.
@@ -295,7 +308,9 @@ Non-goals (for this 20-week window):
 - C10: All week ranges map to concrete dates; gate reviews occur at fixed week ends.
 
 ## 5. Roadmap (Phases & Milestones)
+
 Phase windows:
+
 - Phase 0 (Alignment and Discovery): W1 (2026-02-23 to 2026-03-01)
 - Phase 1 (Foundations): W1-W6 (2026-02-23 to 2026-04-05)
 - Phase 2 (Core Delivery): W5-W13 (2026-03-23 to 2026-05-24)
@@ -320,6 +335,7 @@ Phase windows:
 | 4 | W20 | M13 - Full Rollout and Post-Launch Handoff | Full release plus post-launch operating playbook | GA complete; backlog triaged for Phase 5; runbooks and ownership finalized | M12 | Tech Lead + PM + DevOps | Validation: GA review and handoff package. Type: Operations |
 
 ### Milestone Work Package Detail
+
 | Milestone | Work packages (must complete) | Required test/evidence | Exit artifact |
 |-----------|-------------------------------|------------------------|---------------|
 | M0 | Baseline tests, contract draft review, dependency map, decision log initialization | Baseline command outputs and smoke notes committed | Signed-off roadmap + contract docs |
@@ -338,6 +354,7 @@ Phase windows:
 | M13 | 100% enablement, postmortem, backlog re-prioritization, ownership handoff | GA review notes + runbook links | Phase closeout dossier |
 
 ### Phase Gate Criteria
+
 | Gate | Target date | Pass criteria | Fail action | Owner |
 |------|-------------|---------------|-------------|-------|
 | Alpha | 2026-04-19 | M0-M4 complete; command loop and reconcile UX proven | Freeze new scope, extend Phase 1 by up to 1 week, cut non-critical content | Tech Lead |
@@ -346,7 +363,9 @@ Phase windows:
 | GA | 2026-07-12 | M11-M13 complete; guardrails stable during ramp | Hold at safe rollout percentage and execute rollback if needed | SRE + Tech Lead |
 
 ## 6. Dependencies & Critical Path
+
 Dependency matrix:
+
 | Dependency | Needed by | Risk if late | Mitigation owner | Latest safe week |
 |------------|-----------|--------------|------------------|------------------|
 | Canonical state v2 contract approval | M1, M2, M3 | Schema/API churn and rework | Tech Lead | W1 |
@@ -362,17 +381,20 @@ Dependency matrix:
 | Staging environment parity with prod | M10, M11 | Canary findings become unreliable | DevOps | W16 |
 
 Critical path (with practical slack):
+
 1. M0 -> M1 -> M2 -> M3 -> M4 -> M7 -> M9 -> M10 -> M11 -> M12 -> M13.
 2. Near-critical branch: M5 must complete by W14 to avoid M9 slip.
 3. Optional compression lever: trim map breadth in M6 to preserve M7/M9 schedule.
 
 Cross-team integration checkpoints:
+
 - End of W4: backend contract checkpoint (M1 + M2).
 - End of W8: Godot end-to-end checkpoint (M4 + early M5).
 - End of W13: progression and tooling checkpoint (M7 + M8).
 - End of W17: release readiness checkpoint (M10).
 
 ## 7. Risks & Mitigations
+
 | Risk | Category | Probability | Impact | Mitigation | Contingency | Trigger / Leading indicator | Owner |
 |------|----------|-------------|--------|------------|-------------|-----------------------------|-------|
 | Determinism drift in command execution | Technical | Medium | Critical | Shared engine bundle + fixed-seed replay in CI | Freeze deploys, run parity diff triage swarm | Any replay mismatch in staging or nightly | Systems Engineer |
@@ -385,7 +407,9 @@ Cross-team integration checkpoints:
 | Live rollout incident response gaps | Operations | Low | Critical | On-call drills and prewritten runbooks before canary | Roll back to last stable flag percentage | Sev-1 with no response within SLA | SRE |
 
 ## 8. Metrics (Success + Guardrails)
+
 ### Metric Catalog
+
 | Metric | Type | Definition | Source | Cadence | Owner | Target / Alert |
 |--------|------|------------|--------|---------|-------|----------------|
 | Session completion rate | Outcome | Completed playable loop sessions / started sessions | Analytics events | Weekly | PM | Target >= 70% by canary end |
@@ -404,6 +428,7 @@ Cross-team integration checkpoints:
 | Incident MTTR | Guardrail | Mean time to recover for Sev-1/2 incidents | Incident tracker | Weekly | SRE | Alert > 60 minutes |
 
 ### Instrumentation Backlog (must be done by W12)
+
 - Add command result reason codes for rejected requests.
 - Add reconcile cause telemetry buckets.
 - Add story timeout classification tags.
@@ -413,7 +438,9 @@ Cross-team integration checkpoints:
 - Add config checksum metric to detect runtime config drift between Godot and Web.
 
 ## 9. Resourcing & Operating Model
+
 ### Role Allocation
+
 | Role | Effective FTE | Primary responsibility | Backup responsibility |
 |------|----------------|------------------------|-----------------------|
 | Tech Lead | 1.0 | Architecture, critical path decisions, gate approvals | Release readiness review |
@@ -427,6 +454,7 @@ Cross-team integration checkpoints:
 | PM | 0.5 | Prioritization, milestone governance, stakeholder updates | Risk tracking |
 
 ### Operating Cadence
+
 | Cadence item | Frequency | Inputs | Outputs | Owner |
 |--------------|-----------|--------|---------|-------|
 | Sprint planning | Weekly | Risk register, dependency status, failed tests | Updated milestone commitments | PM + Tech Lead |
@@ -437,6 +465,7 @@ Cross-team integration checkpoints:
 | Incident drill | Twice before canary | Runbooks and alert routing | MTTR validation and runbook fixes | SRE |
 
 ### Required Artifacts by Milestone
+
 | Milestone | Mandatory artifact |
 |-----------|--------------------|
 | M0 | Roadmap + dependency map + baseline report |
@@ -451,11 +480,13 @@ Cross-team integration checkpoints:
 | M11-M13 | Rollout logs, incident summary, GA closeout |
 
 Execution rules:
+
 - Definition of Ready: owner, dependency, DoD test, and rollback plan identified.
 - Definition of Done: merged code, passing tests, updated docs, and linked evidence.
 - Blocking rule: no milestone closes with unresolved Sev-1 or critical determinism defect.
 
 ## 10. Decision Log
+
 | Decision | Date | Rationale | Alternatives considered | Revisit trigger |
 |----------|------|-----------|-------------------------|-----------------|
 | Godot is the primary gameplay runtime | 2026-02-23 | Best fit for desired exploration UX and current vertical slice trajectory | Keep React as primary runtime | Revisit if Alpha misses by > 2 weeks |
@@ -468,6 +499,7 @@ Execution rules:
 | Determinism and security defects are release blockers | 2026-02-23 | Core trust and safety requirement | Ship with known issues and patch later | Revisit never unless product strategy changes materially |
 
 ## 11. Open Questions
+
 | Open question | Decision deadline | Interim assumption | Risk if assumption is wrong | Owner |
 |---------------|-------------------|--------------------|-----------------------------|-------|
 | Should v2 use `RunEvent.eventType` discriminator only, or introduce a dedicated `CommandLog` table? | 2026-03-06 | Start with explicit discriminator; promote to `CommandLog` if query/ops complexity remains high | Debugging complexity and slower deprecation of trigger-era semantics | Backend Lead + Tech Lead |
@@ -476,3 +508,35 @@ Execution rules:
 | Is the Data Connect schema deployment window fixed and rollback-capable? | 2026-03-06 | Yes | Migration delay affecting M1-M3 critical path | Backend Lead |
 | Do we have security reviewer allocation for W15-W18 gates? | 2026-04-24 | Yes | RC slip despite feature readiness | Security Owner |
 | What baseline machine profile defines the 60 FPS acceptance target? | 2026-03-20 | Current dev desktop profile | Ambiguous perf gates and rework | Godot Lead |
+
+## 12. Merged Backlog Inputs (2026-03-05)
+
+This roadmap now absorbs the unique backlog content previously tracked in
+`mastertodolist.md` and `IMPLEMENTATION_PLAN.md`.
+
+### Magic Ecology and Gameplay Risk Items
+
+- Keep ambient snapshot as a single modifier bundle (biome primary, time/weather as nudges).
+- Keep turn-advancing ecology updates only on mutating actions (not read-only `SENSE`).
+- Preserve contamination loop (`draw -> taint pressure`, `purge` as active relief with cost).
+- Continue resonance spectrum outcomes (`clean`, `strained`, `misfire`, `backlash`) and overload readability.
+- Keep anchor/shape persistence and combat cast interruption rules as balancing levers.
+
+### Backend/Security Hardening Continuation
+
+- Keep strict auth requirements for AI-costly endpoints and callable routes.
+- Keep model allowlist enforcement in Firebase runtime.
+- Keep malformed input hard-fail behavior (`400` for invalid IDs/encoding).
+- Keep production fail-closed storage behavior (no implicit Firestore/file fallback).
+- Keep Azure legacy artifacts/docs removed or rewritten to Firebase-only architecture.
+
+### Deferred Backlog from Priority-Based Planning
+
+- Priority 1 follow-ups: stat pressure/threshold mechanics, failure-as-progression, class identity drift.
+- Priority 2 follow-ups: targeting selectors, lane battlefield, preview system, reactions, threat/aggro, NPC build logic.
+- Priority 3 follow-ups: AI-initiated world events and main-quest seed progression.
+
+### Consolidation Rule
+
+- `PLAN.md` is the only active roadmap/todo source.
+- Archived legacy plans remain in `docs/archive/2026-03-05/` for historical traceability.

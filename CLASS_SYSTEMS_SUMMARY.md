@@ -326,3 +326,36 @@ All 20 base classes now have dedicated gameplay systems:
 2. **UI Integration** - Connect status functions to game UI
 3. **Balance Tuning** - Adjust damage/duration values based on playtesting
 4. **Documentation** - Add JSDoc comments to all functions
+
+---
+
+## UI Integration Status (Merged 2026-03-05)
+
+This section merges the actionable content from `UI_INTEGRATION_PLAN.md`.
+
+### Implemented
+
+- `ClassResourceBar.jsx` created.
+- `ClassAbilities.jsx` created.
+- `StatusEffects.jsx` created.
+- `MinionPanel.jsx` created.
+- EventBus wiring pattern documented for real-time class feedback updates.
+
+### Pending UI Components
+
+- `TotemDisplay.jsx`
+- `AuraIndicator.jsx`
+- `StanceIndicator.jsx`
+- `ComboCounter.jsx`
+
+### Integration Target Files
+
+- `src/components/CombatUI.jsx`
+- `src/components/GameUI.jsx`
+- `src/components/CharacterCreation.jsx`
+
+### Next UI Slice
+
+1. Finish pending class indicators (totem/aura/stance/combo).
+2. Wire component visibility by class/resource context.
+3. Add interaction and cooldown affordance tests around class action buttons.

@@ -371,7 +371,7 @@ Explore map → trigger encounter/objective → spend class resources to resolve
 ### Event/state consumption model
 
 1. Input in Godot creates canonical action envelope.
-2. `SyncClient` posts action to `/sync/command`.
+2. `SyncClient` posts action to `POST /api/sync/command` (or `/sync/command` relative to `apiBaseUrl` that already includes `/api`).
 3. API responds with updated canonical state + emitted events.
 4. Godot applies state snapshot to scene (HP bars, quest panel, map markers).
 5. `StoryClient` optionally requests prose for current state transition.

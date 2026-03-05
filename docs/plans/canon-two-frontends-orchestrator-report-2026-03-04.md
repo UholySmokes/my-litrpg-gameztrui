@@ -382,7 +382,7 @@ Explore map → trigger encounter/objective → spend class resources to resolve
 - **Canon action:** `{ type: "INTERACT", targetId: "npc_guide" }`.
 - **Server transition:** quest objective flips from `locked` -> `active`; emits `QUEST_UPDATED`.
 - **State response:** `quest.activeQuestId` set; `world.flags.met_guide=true`.
-- **UI reaction in Godot:** objective panel refreshes + narration panel polls `/story/start`.
+- **UI reaction in Godot:** objective panel refreshes + narration panel starts then polls narration via `POST /api/story/start` followed by `GET /api/story/poll`.
 
 **Beginner Tips:**
 - Keep one bridge file for input mapping; easier debugging.

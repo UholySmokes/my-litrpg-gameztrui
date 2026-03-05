@@ -195,7 +195,7 @@ GameState {
 
 ### Example numbers
 - Early (Lv1–5):
-  - Vanguard O/D/U: 28/52/20
+  - Vanguard O/D/U: 28/50/22
   - Arcanist O/D/U: 48/22/30
 - Mid (Lv15):
   - Vanguard O/D/U: 44/80/36

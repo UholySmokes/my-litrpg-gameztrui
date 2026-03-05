@@ -176,7 +176,7 @@ My Disciples Are All Villains — MC (not shown) — Mentor system + disciples g
 
 Second World — MC (not shown) — Second-life world with leveling advantage + resets.
 
-Demonic P*rnstar System — MC (not shown) — Explicit system rewards; stats from tasks.
+Demonic Pornstar System — MC (not shown) — Explicit system rewards; stats from tasks.
 
 Gathering Wives with a System — MC (not shown) — Marriage/recruit system generating buffs/resources.
 
@@ -513,6 +513,6 @@ Underworld Cheat Save File — Keeps prior “cheat run” powers inside a new r
 
 System-of-Systems Creator — Builds systems, patches reality like software.
 
-# This is a fixed hidden System default for all. doesnt use a place.
+# This is a fixed hidden System default for all. doesn't use a place.
 
 My Talent’s Name Is Generator — MC: (not shown) — Generates abilities/resources continuously (permanent engine).

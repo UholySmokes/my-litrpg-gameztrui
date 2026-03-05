@@ -123,7 +123,7 @@ Relevant files:
 - `src/components/ReplayInspector.jsx`
 - `src/core/SyncReplayService.js`
 - `docs/contracts/replay_timeline_v1.md`
-- `docs/reports/m8_replay_inspector_acceptance_checklist_2026-02-24.md`
+- `docs/WEB_TOOLING_SCOPE_M8.md`
 
 ---
 
@@ -143,7 +143,7 @@ src/
 
 Key documentation:
 
-- `current_state.md` – living feature tracker
+- `docs/WORKFLOW.md` – active development workflow and CI gates
 - `IMPLEMENTATION_PLAN.md` – multi-phase roadmap
 - `CLASS_SYSTEMS_SUMMARY.md` – rage/chi/stealth design notes
 - `RPG_BLUEPRINT.md` – attribute, race, and class reference
@@ -181,7 +181,7 @@ Supporting docs:
 1. Run `npm run lint` before committing (hooks & unused-var rules are strict).
 2. Keep constants/config in `state.config` or dedicated data files – no magic numbers.
 3. When adding content (races, quests, scenes), use JSON/registry files to remain generator-friendly.
-4. Update `current_state.md` and relevant docs when adding/removing systems.
+4. Update `docs/WORKFLOW.md` and relevant docs when adding/removing systems.
 5. Workflow notes: see `docs/WORKFLOW.md`.
 
 ---

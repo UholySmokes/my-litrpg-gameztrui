@@ -32,6 +32,10 @@ mcp
 # Local Godot CLI binaries (avoid committing large executables)
 tools/godot/
 
+# Bulk-gen scheduler scratch payloads (contain runIds/tokens)
+functions/tmp/bulk-gen-tick-*-body.json
+functions/tmp/scheduler-body.json
+
 # Temporary scratch files
 .tmp-*
 

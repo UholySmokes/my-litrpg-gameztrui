@@ -14,6 +14,7 @@
 	"dependencies": {
 		"@dataconnect/admin-generated": "file:src/dataconnect-admin-generated",
 		"@genkit-ai/google-genai": "^1.28.0",
+		"@google-cloud/aiplatform": "^6.5.0",
 		"@google-cloud/firestore": "^7.11.6",
 		"firebase-admin": "^13.6.1",
 		"firebase-functions": "^7.0.5",

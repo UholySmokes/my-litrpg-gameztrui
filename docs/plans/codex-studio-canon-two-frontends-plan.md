@@ -12,7 +12,8 @@
 ### What is “canon” today (messy but identifiable)
 - **Closest thing to canon logic:** `packages/game-core/src/engine/createSystemEngine.js` + systems/data under `packages/game-core/src/*`.
 - **Closest thing to canon contracts:** `packages/game-schemas/src/*.d.ts`.
-- **Reality gap:** `game-schemas` runtime files are currently no-op JS placeholders, so runtime canon enforcement is mostly in `game-core` + tests.
+- **Runtime validation (partial):** `packages/game-schemas/src/validation.js` already provides Zod validators for actions (`validateAction`) and game state (`validateGameState`), exported via `@voidverse/game-schemas/validation`.
+- **Reality gap:** Most other module entrypoints (`actions.js`, `index.js`, `state.js`, `content.js`, `engine.js`, `sync.js`) are still no-op JS placeholders. The key remaining gap is **content validation** — archetypes, quest templates, enemy/item registries, and world nodes have no runtime validators yet, so invalid content data can still enter the engine.
 
 ### Biggest 3 risks
 1. **Drift risk**: duplicated logic between `src/*` and `packages/game-core/*` can diverge silently.
@@ -59,10 +60,10 @@
    - What: keep aliases but add deprecation response headers + docs timeline.
    - Where: `functions/lib/api-router.js`.
    - Verify: curl both routes and confirm matching body + deprecation metadata.
-2. **Schema/runtime mismatch risk**: `game-schemas` JS files are runtime no-op.
-   - What: add runtime zod validation entrypoints for state/action/content.
-   - Where: `packages/game-schemas/src/validation.js` + exports.
-   - Verify: intentionally malformed payload fails validation tests.
+2. **Schema/runtime mismatch risk**: most `game-schemas` module entrypoints (`actions.js`, `index.js`, `state.js`, `content.js`, `engine.js`, `sync.js`) are runtime no-ops; `validation.js` already provides real Zod validators (`validateAction`, `validateGameState`), but **content validation is still absent**.
+   - What: add Zod runtime validators for content types (archetypes, quest templates, enemy/item registries, world nodes) in `packages/game-schemas/src/validation.js` or a new `content-validation.js` entry.
+   - Where: `packages/game-schemas/src/` + update `package.json` exports if adding a new entry point.
+   - Verify: intentionally malformed content fixture fails validation; existing action/state tests remain green.
 3. **Canon boundary not documented for Godot**.
    - What: add one short contract doc for `ActionEnvelope`, `StepResult`, `SyncPullResult`.
    - Where: `docs/contracts/canon-bridge.md`.
@@ -372,10 +373,10 @@ GameState {
    - What: stop new logic in `src/core` duplicates.
    - Where: `src/core/*`.
    - Verify: smoke tests pass unchanged.
-3. **Add runtime schema checks** in `game-schemas`.
-   - What: validate action/state/content at boundaries.
-   - Where: `packages/game-schemas/src/validation.js`.
-   - Verify: malformed fixture fails test.
+3. **Add content runtime validators** in `game-schemas`.
+   - What: action and game-state Zod validators already exist in `validation.js`; the remaining gap is content validation (archetypes, quest templates, enemy/item registries, world nodes).
+   - Where: `packages/game-schemas/src/validation.js` (extend) or a new `packages/game-schemas/src/content-validation.js` entry point.
+   - Verify: malformed content fixture fails validation test; existing action/state tests remain green.
 4. **Create quest template JSON directory**.
    - What: move 1–2 quests from ad hoc code into data.
    - Where: `packages/game-core/src/data/quests/`.

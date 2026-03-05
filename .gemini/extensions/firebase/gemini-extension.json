@@ -4,7 +4,7 @@
   "mcpServers": {
     "firebase": {
       "command": "npx",
-      "args": ["-y", "firebase-tools", "mcp", "--dir", "d:\ai t6ext\my-litrpg-gameztrui"]
+      "args": ["-y", "firebase-tools", "mcp", "--dir", "d:\Apps\my-litrpg-gameztrui"]
     }
   },
   "contextFileName": "FIREBASE.md"

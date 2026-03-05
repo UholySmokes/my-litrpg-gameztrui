@@ -46,9 +46,9 @@ Scope: Web/Text LitRPG + Godot client, aligned on one canon.
 
 ### Duplicate implementations
 - There is broad duplication between `src/` and `packages/game-core/src/` across core, systems, utils, entities, and simulation modules.
-- Current status: many of the historically duplicated `src/` modules are now thin back-compat re-export shims to `@voidverse/game-core`; any **remaining** true duplicates should be re-identified from the current tree rather than relying on older file lists.
+- Examples: `ActionDispatcher.js`, `InputParser.js`, `StateNormalizer.js`, `CombatSystem.js`, `SimulationBridge.js`, etc.
 - **Why this matters:** one frontend may use stale behavior vs the other if only one copy is updated.
-- **Smallest safe fix:** declare `packages/game-core` authoritative for rules; keep `src`-side shims that re-export from `@voidverse/game-core`, and, in small batches, migrate any still-duplicated implementations over to that shim pattern.
+- **Smallest safe fix:** declare `packages/game-core` authoritative for rules; for each duplicate pair, replace root `src` copies with thin re-exports in small batches.
 
 ### “This will bite you later” list
 1. **Web gameplay gating can hide gameplay regressions** if teams only test in Godot or only in web.
@@ -119,9 +119,9 @@ type CanonState = {
 - Add stable IDs everywhere (`quest_id`, `enemy_id`, etc.) to avoid fragile string matching.
 
 ### Versioning rule (`contentVersion`)
-- Use the existing convention: `contentVersion` **MUST** be a `sha256hex` manifest/content hash, as defined in `docs/contracts/canonical_state_v2.md` and `docs/contracts/command_envelope_v1.md`.
-- Engine should derive and stamp step outputs with this SHA-256 content hash in the same way `functions/lib/sync-core.js` does today.
-- Godot/web can reject mismatched save replays if a content hash/version mismatch is detected.
+- Use: `contentVersion = "<pack>@<YYYY.MM.DD>+<shortsha>"`.
+- Engine should stamp step outputs with this exact version.
+- Godot/web can reject mismatched save replays if version drift is detected.
 
 **What to do / where / verify**
 - **Do:** add `events.d.ts` + small canon type alias `CanonState`.
@@ -275,7 +275,7 @@ Anti-infinite-scaling guardrails:
 
 ### End-to-end example flow
 1. Player presses `E` near NPC.
-2. Godot builds `INTERACT` action and POSTs to `/api/sync/command`.
+2. Godot builds `INTERACT` action and POSTs to `/sync/command`.
 3. Canon engine resolves action and emits `QUEST_UPDATED` event.
 4. Response returns updated quest flag + tick increment.
 5. Godot updates quest panel + narrator panel from returned state/event payload.

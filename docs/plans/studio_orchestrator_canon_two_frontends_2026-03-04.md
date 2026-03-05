@@ -275,7 +275,7 @@ Anti-infinite-scaling guardrails:
 
 ### End-to-end example flow
 1. Player presses `E` near NPC.
-2. Godot builds `INTERACT` action and POSTs to `/sync/command`.
+2. Godot builds `INTERACT` action and POSTs to `/api/sync/command`.
 3. Canon engine resolves action and emits `QUEST_UPDATED` event.
 4. Response returns updated quest flag + tick increment.
 5. Godot updates quest panel + narrator panel from returned state/event payload.

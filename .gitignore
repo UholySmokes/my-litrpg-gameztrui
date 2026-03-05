@@ -10,6 +10,12 @@ lerna-debug.log*
 dist
 *.local
 
+# Playwright artifacts
+playwright-report/
+test-results/
+.playwright-cli/
+.playwright-mcp/
+
 # Analysis reports (temporary)
 middleware-report.json
 *-analysis-*.json
@@ -22,6 +28,9 @@ docs/reports/*
 tmpclaude-*
 tmp/godot/
 mcp
+
+# Temporary scratch files
+.tmp-*
 
 # Environment variables
 .env
@@ -37,6 +46,7 @@ functions/.data/
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
@@ -44,11 +54,29 @@ functions/.data/
 *.sw?
 node_modules
 
+# Tooling caches
+.cache/
+.parcel-cache/
+.turbo/
+.vite/
+.eslintcache
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
 # GitHub Pages
 .nojekyll
 
 # Error pages
 error/index.html
+
+# Firebase CLI cache
+.firebase/hosting.*.cache
 
 # Godot Android/Gradle generated state
 godot/android/build/.gradle/

@@ -87,15 +87,15 @@
 
 ### Minimal state shape (v1)
 ```ts
-GameState {
+interface GameState {
   contentVersion: string;
   stateVersion: number;
   runId: string;
   seq: number;
   tick: number;
-  player: { level, xp, hp, mana, attributes, inventory, equipment, flags };
-  world: { id, location, turnCount, time, weather, flags, counters };
-  quests: { active: QuestState[], completed: QuestState[] };
+  player: { level: number; xp: number; hp: number; mana: number; attributes: Record<string, number>; inventory: unknown[]; equipment: Record<string, unknown>; flags: Record<string, unknown> };
+  world: { id: string; location: string; turnCount: number; time: string; weather: string; flags: Record<string, unknown>; counters: Record<string, number> };
+  quests: { active: QuestState[]; completed: QuestState[] };
   combat?: CombatState;
   narrative?: NarrativeState;
 }

@@ -1,5 +1,32 @@
-const { getApps, initializeApp } = require("firebase-admin/app");
-const { getAuth } = require("firebase-admin/auth");
+let firebaseAdminAppModule = null;
+let firebaseAdminAuthModule = null;
+let firebaseAdminLoadAttempted = false;
+
+function loadFirebaseAdminModules() {
+	if (firebaseAdminLoadAttempted) {
+		if (firebaseAdminAppModule && firebaseAdminAuthModule) {
+			return {
+				app: firebaseAdminAppModule,
+				auth: firebaseAdminAuthModule,
+			};
+		}
+		return null;
+	}
+
+	firebaseAdminLoadAttempted = true;
+	try {
+		firebaseAdminAppModule = require("firebase-admin/app");
+		firebaseAdminAuthModule = require("firebase-admin/auth");
+		return {
+			app: firebaseAdminAppModule,
+			auth: firebaseAdminAuthModule,
+		};
+	} catch {
+		firebaseAdminAppModule = null;
+		firebaseAdminAuthModule = null;
+		return null;
+	}
+}
 
 function parseOptionalBoolean(value) {
 	if (typeof value !== "string") return null;
@@ -54,9 +81,15 @@ function getDevUser(req) {
 }
 
 function ensureFirebaseApp() {
+	const modules = loadFirebaseAdminModules();
+	if (!modules) return false;
+
+	const { getApps, initializeApp } = modules.app;
 	if (getApps().length === 0) {
 		initializeApp();
 	}
+
+	return true;
 }
 
 function extractBearerToken(req) {
@@ -71,7 +104,10 @@ async function getFirebaseUser(req) {
 	if (!token) return null;
 
 	try {
-		ensureFirebaseApp();
+		if (!ensureFirebaseApp()) return null;
+		const modules = loadFirebaseAdminModules();
+		if (!modules) return null;
+		const { getAuth } = modules.auth;
 		const decoded = await getAuth().verifyIdToken(token);
 		if (!decoded || !decoded.uid) return null;
 		return {

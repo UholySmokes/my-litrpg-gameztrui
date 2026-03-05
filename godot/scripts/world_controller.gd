@@ -7,9 +7,11 @@ const TriggerQueue := preload("res://scripts/trigger_queue.gd")
 const ProsePanel := preload("res://scripts/prose_panel.gd")
 const CharacterCreationController := preload("res://scripts/character_creation_controller.gd")
 const CharacterCreationPanel := preload("res://scripts/character_creation_panel.gd")
+const CharacterCreationSummaryPanel := preload("res://scripts/character_creation_summary_panel.gd")
 
 const TILE_SIZE := 32
 const LOCAL_SAVE_PATH := "user://slice_save.json"
+const PLAYER_PROFILE_PATH := "user://player_profile.json"
 const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SAVEPOINT"]
 const PERF_SAMPLE_LIMIT := 240
 const PLAYER_SPRITE_PATH := "res://assets/characters/traveler_idle_down.png"
@@ -34,6 +36,7 @@ const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"
 @onready var _prose_panel: ProsePanel = %ProsePanel
 @onready var _cc_controller: CharacterCreationController = %CharacterCreationController
 @onready var _cc_panel: CharacterCreationPanel = %CharacterCreationPanel
+@onready var _cc_summary_panel: CharacterCreationSummaryPanel = %CharacterCreationSummaryPanel
 
 var _manifest: Dictionary = {}
 var _content_version: String = ""
@@ -56,6 +59,7 @@ var _perf_render_samples_ms: Array = []
 var _perf_map_transitions: int = 0
 var _last_perf_map_id: String = ""
 var _creating_character: bool = false
+var _player_profile: Dictionary = {}
 
 
 func _ready() -> void:
@@ -75,12 +79,20 @@ func _ready() -> void:
 	_load_runtime_sprite_assets()
 	_set_player_tile(Vector2i(int(start.get("x", 3)), int(start.get("y", 3))))
 
+	_player_profile = _load_player_profile()
+	var created_count: int = int(_player_profile.get("characters_created", 0))
+	if _cc_controller:
+		_cc_controller.set_advanced_unlocked(created_count >= 1)
+		_cc_controller.set_preferred_creation_mode(String(_player_profile.get("last_creation_mode", "basic")))
+
 	# ── character creation gate ──
 	var cc_cfg: Dictionary = _manifest.get("characterCreation", {})
 	var cc_required: bool = cc_cfg.get("required", false)
 	if cc_required and _cc_controller and _cc_panel:
 		_creating_character = true
 		_cc_panel.bind_controller(_cc_controller)
+		if _cc_summary_panel:
+			_cc_summary_panel.bind_controller(_cc_controller)
 		_cc_controller.creation_completed.connect(_on_character_creation_completed)
 		_cc_controller.load_options()
 		# hide world elements while creating
@@ -92,9 +104,13 @@ func _ready() -> void:
 		_map_renderer.visible = false
 		_prose_panel.visible = false
 		_cc_panel.visible = true
+		if _cc_summary_panel:
+			_cc_summary_panel.visible = true
 	else:
 		if _cc_panel:
 			_cc_panel.visible = false
+		if _cc_summary_panel:
+			_cc_summary_panel.visible = false
 		_update_scene_for_map()
 		_apply_sprite_fallback_visibility()
 		_render_story()
@@ -127,9 +143,14 @@ func _ready() -> void:
 
 func _on_character_creation_completed(character_data: Dictionary) -> void:
 	_creating_character = false
+	_player_profile["characters_created"] = int(_player_profile.get("characters_created", 0)) + 1
+	_player_profile["last_creation_mode"] = String(character_data.get("mode", "basic"))
+	_save_player_profile(_player_profile)
 
 	# hide creation UI
 	_cc_panel.visible = false
+	if _cc_summary_panel:
+		_cc_summary_panel.visible = false
 
 	# optionally switch to the post-creation map
 	var cc_cfg: Dictionary = _manifest.get("characterCreation", {})
@@ -767,6 +788,30 @@ func _load_checkpoint_and_pull() -> void:
 			if typeof(parsed) == TYPE_DICTIONARY:
 				run_id = String(parsed.get("run_id", run_id))
 	await _reconcile_from_pull()
+
+
+func _load_player_profile() -> Dictionary:
+	if not FileAccess.file_exists(PLAYER_PROFILE_PATH):
+		return { "characters_created": 0, "last_creation_mode": "basic" }
+	var file := FileAccess.open(PLAYER_PROFILE_PATH, FileAccess.READ)
+	if file == null:
+		return { "characters_created": 0, "last_creation_mode": "basic" }
+	var raw := file.get_as_text()
+	file.close()
+
+	var parsed: Variant = JSON.parse_string(raw)
+	if typeof(parsed) == TYPE_DICTIONARY:
+		return parsed
+	return { "characters_created": 0, "last_creation_mode": "basic" }
+
+
+func _save_player_profile(profile: Dictionary) -> void:
+	var file := FileAccess.open(PLAYER_PROFILE_PATH, FileAccess.WRITE)
+	if file == null:
+		push_warning("world_controller: could not write player profile")
+		return
+	file.store_string(JSON.stringify(profile, "\t"))
+	file.close()
 
 
 func _on_sync_rejected(_payload: Dictionary) -> void:

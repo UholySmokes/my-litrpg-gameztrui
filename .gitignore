@@ -29,6 +29,9 @@ tmpclaude-*
 tmp/godot/
 mcp
 
+# Local Godot CLI binaries (avoid committing large executables)
+tools/godot/
+
 # Temporary scratch files
 .tmp-*
 

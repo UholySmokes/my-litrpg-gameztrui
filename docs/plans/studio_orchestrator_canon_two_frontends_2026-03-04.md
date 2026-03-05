@@ -46,9 +46,9 @@ Scope: Web/Text LitRPG + Godot client, aligned on one canon.
 
 ### Duplicate implementations
 - There is broad duplication between `src/` and `packages/game-core/src/` across core, systems, utils, entities, and simulation modules.
-- Examples: `ActionDispatcher.js`, `InputParser.js`, `StateNormalizer.js`, `CombatSystem.js`, `SimulationBridge.js`, etc.
+- Current status: many of the historically duplicated `src/` modules are now thin back-compat re-export shims to `@voidverse/game-core`; any **remaining** true duplicates should be re-identified from the current tree rather than relying on older file lists.
 - **Why this matters:** one frontend may use stale behavior vs the other if only one copy is updated.
-- **Smallest safe fix:** declare `packages/game-core` authoritative for rules; for each duplicate pair, replace root `src` copies with thin re-exports in small batches.
+- **Smallest safe fix:** declare `packages/game-core` authoritative for rules; keep `src`-side shims that re-export from `@voidverse/game-core`, and, in small batches, migrate any still-duplicated implementations over to that shim pattern.
 
 ### “This will bite you later” list
 1. **Web gameplay gating can hide gameplay regressions** if teams only test in Godot or only in web.

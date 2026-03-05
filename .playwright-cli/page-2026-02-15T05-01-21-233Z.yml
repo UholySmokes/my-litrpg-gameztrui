@@ -1,8 +1,0 @@
-- region "Cloud Sign-In" [ref=e6]:
-  - generic [ref=e7]:
-    - heading "Cloud Sign-In" [level=3] [ref=e8]
-    - paragraph [ref=e9]: Sign in to enable cloud saves and synced progression.
-    - button "Sign In" [ref=e10] [cursor=pointer]
-    - generic [ref=e11]:
-      - paragraph [ref=e12]: Developer Mode
-      - button "Play Local Game (No Login)" [ref=e13] [cursor=pointer]

@@ -4,6 +4,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: read
+
 concurrency:
   group: pr-fast-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true

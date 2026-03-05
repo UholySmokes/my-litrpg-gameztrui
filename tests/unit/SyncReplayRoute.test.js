@@ -2,11 +2,11 @@ import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 import fs from "fs";
 import os from "os";
 import path from "path";
-import { createRequire } from "module";
 
-const require = createRequire(import.meta.url);
-const { handleApiRequest } = require("../../functions/lib/api-router.js");
-const syncCore = require("../../functions/lib/sync-core.js");
+import apiRouter from "../../functions/lib/api-router.js";
+import syncCore from "../../functions/lib/sync-core.js";
+
+const { handleApiRequest } = apiRouter;
 
 function tempPath(prefix) {
 	return path.join(

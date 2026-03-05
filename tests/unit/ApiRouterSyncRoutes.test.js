@@ -1,9 +1,8 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
-import { createRequire } from "module";
+import apiRouter from "../../functions/lib/api-router.js";
+import sync from "../../functions/lib/sync.js";
 
-const require = createRequire(import.meta.url);
-const { handleApiRequest } = require("../../functions/lib/api-router.js");
-const sync = require("../../functions/lib/sync.js");
+const { handleApiRequest } = apiRouter;
 
 function createRes() {
 	const res = {

@@ -1,5 +1,6 @@
 import { classes } from "../data/registries/ClassDataRegistry.js";
 import { races } from "../data/registries/RaceDataRegistry.js";
+import { origins } from "../data/registries/OriginDataRegistry.js";
 import {
   itemDatabase,
   isGeneratedPlaceholderItem,
@@ -9,6 +10,7 @@ import { getRaceAbilitiesFor } from "../systems/race/RaceAbilityRegistry.js";
 import { getAllSkills } from "../systems/skills/SkillRegistry.js";
 import { PROFESSIONS, getRecipesForProfession } from "../systems/profession/ProfessionRegistry.js";
 import { BEGINNER_QUESTS, MAIN_QUESTS, SIDE_QUESTS } from "../data/QuestCatalog.js";
+import { OPENING_SCENES } from "../data/OpeningScenes.js";
 
 function toSet(values) {
   return new Set(Array.isArray(values) ? values : []);
@@ -121,6 +123,7 @@ function getQuestTagArray(quest, key) {
 export function buildWorldbuildIntegrityReport({ manifests } = {}) {
   const classIds = new Set(classes.map((entry) => entry.id));
   const raceIds = new Set(races.map((entry) => entry.id));
+  const originIds = new Set(origins.map((entry) => entry.id));
   const itemIds = new Set(Object.keys(itemDatabase));
   const professionEntries = Object.values(PROFESSIONS || {});
   const professionIds = new Set(professionEntries.map((entry) => entry.id));
@@ -223,6 +226,7 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
   const missingQuestFavoredClasses = [];
   const missingQuestFavoredRaces = [];
   const missingQuestFavoredProfessions = [];
+  const missingQuestFavoredOrigins = [];
   const missingQuestRewardItems = [];
 
   for (const quest of quests) {
@@ -239,6 +243,11 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
     for (const professionId of getQuestTagArray(quest, "favoredProfessions")) {
       if (!professionIds.has(professionId)) {
         missingQuestFavoredProfessions.push({ quest: quest.id, professionId });
+      }
+    }
+    for (const originId of getQuestTagArray(quest, "favoredOrigins")) {
+      if (!originIds.has(originId)) {
+        missingQuestFavoredOrigins.push({ quest: quest.id, originId });
       }
     }
 
@@ -266,6 +275,33 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
   const placeholderItems = Object.values(itemDatabase).filter((entry) =>
     isGeneratedPlaceholderItem(entry),
   );
+  const missingOpeningSceneFavoredClasses = [];
+  const missingOpeningSceneFavoredRaces = [];
+  const missingOpeningSceneFavoredProfessions = [];
+  const missingOpeningSceneFavoredOrigins = [];
+
+  for (const scene of OPENING_SCENES) {
+    for (const classId of normalizeStringArray(scene?.favoredClasses)) {
+      if (!classIds.has(classId)) {
+        missingOpeningSceneFavoredClasses.push({ scene: scene.id, classId });
+      }
+    }
+    for (const raceId of normalizeStringArray(scene?.favoredRaces)) {
+      if (!raceIds.has(raceId)) {
+        missingOpeningSceneFavoredRaces.push({ scene: scene.id, raceId });
+      }
+    }
+    for (const professionId of normalizeStringArray(scene?.favoredProfessions)) {
+      if (!professionIds.has(professionId)) {
+        missingOpeningSceneFavoredProfessions.push({ scene: scene.id, professionId });
+      }
+    }
+    for (const originId of normalizeStringArray(scene?.favoredOrigins)) {
+      if (!originIds.has(originId)) {
+        missingOpeningSceneFavoredOrigins.push({ scene: scene.id, originId });
+      }
+    }
+  }
 
   return {
     generatedAt: new Date().toISOString(),
@@ -276,8 +312,10 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
       raceAbilityCount: raceAbilityCoverage.reduce((sum, row) => sum + row.count, 0),
       totalSkills: skills.length,
       professionCount: professionEntries.length,
+      originCount: origins.length,
       itemCount: Object.keys(itemDatabase).length,
       questCount: quests.length,
+      openingSceneCount: OPENING_SCENES.length,
     },
     classTierCounts,
     classResourceCounts,
@@ -307,9 +345,29 @@ export function buildWorldbuildIntegrityReport({ manifests } = {}) {
     questsWithFavoredProfessions: quests.filter(
       (quest) => getQuestTagArray(quest, "favoredProfessions").length > 0,
     ).length,
+    questsWithFavoredOrigins: quests.filter(
+      (quest) => getQuestTagArray(quest, "favoredOrigins").length > 0,
+    ).length,
     missingQuestFavoredClasses,
     missingQuestFavoredRaces,
     missingQuestFavoredProfessions,
+    missingQuestFavoredOrigins,
+    openingScenesWithFavoredClasses: OPENING_SCENES.filter(
+      (scene) => normalizeStringArray(scene?.favoredClasses).length > 0,
+    ).length,
+    openingScenesWithFavoredRaces: OPENING_SCENES.filter(
+      (scene) => normalizeStringArray(scene?.favoredRaces).length > 0,
+    ).length,
+    openingScenesWithFavoredProfessions: OPENING_SCENES.filter(
+      (scene) => normalizeStringArray(scene?.favoredProfessions).length > 0,
+    ).length,
+    openingScenesWithFavoredOrigins: OPENING_SCENES.filter(
+      (scene) => normalizeStringArray(scene?.favoredOrigins).length > 0,
+    ).length,
+    missingOpeningSceneFavoredClasses,
+    missingOpeningSceneFavoredRaces,
+    missingOpeningSceneFavoredProfessions,
+    missingOpeningSceneFavoredOrigins,
     missingQuestRewardItemCount: missingQuestRewardItems.length,
     missingQuestRewardItemsSample: missingQuestRewardItems.slice(0, 50),
     manifests:
@@ -344,6 +402,21 @@ export function buildWorldbuildIntegritySignature(report) {
     missingQuestFavoredProfessionCount: Array.isArray(summary.missingQuestFavoredProfessions)
       ? summary.missingQuestFavoredProfessions.length
       : 0,
+    missingQuestFavoredOriginCount: Array.isArray(summary.missingQuestFavoredOrigins)
+      ? summary.missingQuestFavoredOrigins.length
+      : 0,
+    missingOpeningSceneFavoredClassCount: Array.isArray(summary.missingOpeningSceneFavoredClasses)
+      ? summary.missingOpeningSceneFavoredClasses.length
+      : 0,
+    missingOpeningSceneFavoredRaceCount: Array.isArray(summary.missingOpeningSceneFavoredRaces)
+      ? summary.missingOpeningSceneFavoredRaces.length
+      : 0,
+    missingOpeningSceneFavoredProfessionCount: Array.isArray(summary.missingOpeningSceneFavoredProfessions)
+      ? summary.missingOpeningSceneFavoredProfessions.length
+      : 0,
+    missingOpeningSceneFavoredOriginCount: Array.isArray(summary.missingOpeningSceneFavoredOrigins)
+      ? summary.missingOpeningSceneFavoredOrigins.length
+      : 0,
     missingQuestRewardItemCount: summary.missingQuestRewardItemCount || 0,
     manifestMismatchCount: manifests.mismatchCount || 0,
   };
@@ -358,6 +431,11 @@ export function compareIntegritySignature(actual, baseline) {
     "missingQuestFavoredClassCount",
     "missingQuestFavoredRaceCount",
     "missingQuestFavoredProfessionCount",
+    "missingQuestFavoredOriginCount",
+    "missingOpeningSceneFavoredClassCount",
+    "missingOpeningSceneFavoredRaceCount",
+    "missingOpeningSceneFavoredProfessionCount",
+    "missingOpeningSceneFavoredOriginCount",
     "missingQuestRewardItemCount",
     "manifestMismatchCount",
   ];

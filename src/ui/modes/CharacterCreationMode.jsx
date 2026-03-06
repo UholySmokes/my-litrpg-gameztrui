@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
-import { useCharacterCreationReworked } from "../../hook/useCharacterCreationReworked.js";
 import {
-  CANONICAL_ATTRIBUTES,
-  createAttributeBaseline,
-  ensureAttributeShape,
-} from "../../constants/attributes.js";
+  buildCharacterCreationDerivedState,
+  useCharacterCreationReworked,
+} from "../../hook/useCharacterCreationReworked.js";
 import WindowManager from "../windowing/WindowManager.jsx";
 import NarrativeMemoryPanel from "../panels/NarrativeMemoryPanel.jsx";
 import CreationNarrativePanel from "../panels/CreationNarrativePanel.jsx";
@@ -116,6 +114,7 @@ export default function CharacterCreationMode({ onComplete }) {
   const {
     currentStep,
     steps,
+    selectedOrigin,
     selectedRace,
     selectedClass,
     selectedArchetypeSystem,
@@ -130,6 +129,7 @@ export default function CharacterCreationMode({ onComplete }) {
     availablePassiveSkills,
     availableArchetypeSystems,
     rerollsRemaining,
+    handleOriginSelect,
     handleRaceSelect,
     handleClassSelect,
     handleArchetypeSystemSelect,

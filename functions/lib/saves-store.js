@@ -1,3 +1,4 @@
+let dataconnectGenerated = null;
 const { resolveGameDbBackend, fileDb } = require("./game-db");
 
 let firebaseAdminApp = null;
@@ -51,6 +52,14 @@ function isDataconnectStrictMode() {
 		getOptionalEnv("SAVES_DATACONNECT_STRICT") ||
 		getOptionalEnv("GAME_DATACONNECT_STRICT");
 	return strictRaw.toLowerCase() === "true";
+}
+
+
+function getDataconnectGenerated() {
+	if (!dataconnectGenerated) {
+		dataconnectGenerated = require("../src/dataconnect-admin-generated");
+	}
+	return dataconnectGenerated;
 }
 
 function loadFirebaseAdmin() {

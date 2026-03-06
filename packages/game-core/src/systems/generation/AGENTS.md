@@ -105,7 +105,8 @@ When making changes:
 1. Preserve determinism by using the deterministic RNG helpers.
 2. Keep code small and readable. Put tunable tables (elements, forms, traits, archetypes) near the top.
 3. Add minimal Jest tests if behavior is non-trivial (e.g., schema validation, id sanitization, deterministic output under seeded `SimBridge`).
-4. Run `npm test` and `npm run lint` when practical.
+4. Prefer the repo fast gate npm run check (see docs/WORKFLOW.md) before handoff.
+5. If you only need a targeted pass for generator work, run npm run lint + npm run test:smoke; when touching registry-backed content, also run npm run validate:registries and npm run validate:archetypes.
 
 ## Guardrails
 

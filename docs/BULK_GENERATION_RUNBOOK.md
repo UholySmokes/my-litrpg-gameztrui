@@ -10,7 +10,20 @@ Set environment in Functions runtime (secret/token + guardrails):
 - `BULK_GEN_INITIAL_CREDITS_EUR`
 - `BULK_GEN_STOP_THRESHOLD_EUR`
 - `BULK_GEN_IMAGE_MODEL=imagen-4.0-fast-generate-001`
-- `BULK_GEN_IMAGE_VARIANTS=3`
+- `BULK_GEN_IMAGE_LOCATION=global`
+- `BULK_GEN_IMAGE_VARIANTS=4`
+
+Imagen 4 operator presets:
+
+- `imagen-4.0-fast-generate-001` → default budget estimate `0.02 EUR` per image variant
+- `imagen-4.0-generate-001` → default budget estimate `0.04 EUR` per image variant
+- `imagen-4.0-ultra-generate-001` → default budget estimate `0.06 EUR` per image variant
+
+If `BULK_GEN_IMAGE_COST_PER_VARIANT_EUR` is unset, the pipeline infers the default estimate from the selected Imagen model. Keep the env var only when intentionally overriding the estimate.
+
+## 1a) Suspension check
+
+If GCP commands start returning `CONSUMER_SUSPENDED` or Storage shows `There is an account problem for the requested project`, stop trying to deploy or schedule more work. Fix the billing/account verification issue in Google Cloud Console first, then resume the bulk run.
 
 ## 2) Deploy functions
 
@@ -30,6 +43,33 @@ curl -X POST "https://us-central1-my-litrpg-gameztrui-3416-da75c.cloudfunctions.
     "assetCount": 12000,
     "creditStopThresholdEur": 120,
     "maxEstimatedEur": 2400
+  }'
+```
+
+Optional per-run generation overrides:
+
+- `imageModel`
+- `imageLocation`
+- `imageVariants`
+- `imageCostPerVariantEur`
+- `textModel`
+- `textCostPerOutputEur`
+
+Example: asset-only high-burn run without changing env defaults first:
+
+```bash
+curl -X POST "https://us-central1-my-litrpg-gameztrui-3416-da75c.cloudfunctions.net/api/api/bulk-gen/run/start" \
+  -H "Authorization: Bearer <FIREBASE_ID_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "questCount": 0,
+    "loreCount": 0,
+    "assetCount": 30000,
+    "maxEstimatedEur": 2400,
+    "creditStopThresholdEur": 100,
+    "imageModel": "imagen-4.0-ultra-generate-001",
+    "imageLocation": "global",
+    "imageVariants": 4
   }'
 ```
 

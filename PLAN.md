@@ -536,6 +536,13 @@ This roadmap now absorbs the unique backlog content previously tracked in
 - Priority 2 follow-ups: targeting selectors, lane battlefield, preview system, reactions, threat/aggro, NPC build logic.
 - Priority 3 follow-ups: AI-initiated world events and main-quest seed progression.
 
+### Queued AI Content Generation After Asset Burn
+
+- Generate character-beginning/origin intro stories for first-character onboarding.
+- Generate race packs with identity summaries, hooks, and creator-facing selection copy.
+- Generate class packs with class fantasy, progression framing, and creator-facing selection copy.
+- Expand later into subclass/archetype, perk tree, and multiclass-support content once the base race/class/origin set is locked.
+
 ### Consolidation Rule
 
 - `PLAN.md` is the only active roadmap/todo source.

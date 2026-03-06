@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const { json, readJsonBody } = require("./http");
 const { getUserFromRequest } = require("./auth");
-const { listSaves, getSave } = require("./saves-store");
+const { enforceProgressReset } = require("./save-reset");
 const {
 	BATCHABLE_TRIGGER_TYPE,
 	IMMEDIATE_TRIGGER_TYPES,
@@ -24,8 +24,6 @@ const {
 } = require("./sync-command-contract");
 const syncStore = require("./sync-store");
 const { persistRunSnapshot } = require("./sync-snapshots");
-
-const LEGACY_SAVE_MIGRATION_VERSION = 1;
 
 function normalizeString(value) {
 	return typeof value === "string" ? value.trim() : "";
@@ -363,60 +361,12 @@ function hydrateFromLegacySave(save, { runId, manifest }) {
 	return state;
 }
 
-async function maybeMigrateLegacySave({ ownerId, runId, manifest }) {
-	try {
-		const migrationVersion = await syncStore.getMigrationVersion({ ownerId });
-		if (
-			Number.isFinite(Number(migrationVersion)) &&
-			Number(migrationVersion) >= LEGACY_SAVE_MIGRATION_VERSION
-		) {
-			return null;
-		}
-
-		const summaries = await listSaves({ userId: ownerId, limit: 20 });
-		for (const summary of summaries || []) {
-			const row = await getSave({ userId: ownerId, saveId: summary.id });
-			if (!row) continue;
-			const legacyState = hydrateFromLegacySave(row, { runId, manifest });
-			if (!legacyState) continue;
-			const run = await syncStore.putRun({
-				ownerId,
-				runId,
-				state: legacyState,
-				saveSlotId: summary.id,
-			});
-			try {
-				await syncStore.markMigrationVersion({
-					ownerId,
-					version: LEGACY_SAVE_MIGRATION_VERSION,
-					displayName:
-						normalizeString(legacyState?.entityStates?.player?.name) || "Traveler",
-				});
-			} catch {
-				// Migration succeeded; marker write is best-effort only.
-			}
-			return run;
-		}
-		return null;
-	} catch {
-		return null;
-	}
-}
-
 async function loadRunState({ ownerId, runId, manifest, allowCreate = false }) {
 	const run = await syncStore.getRun({ ownerId, runId });
 	if (run && run.state) {
 		return {
 			state: normalizeStoredState(run.state, { runId, manifest }),
 			saveSlotId: normalizeString(run.save_slot_id),
-		};
-	}
-
-	const migrated = await maybeMigrateLegacySave({ ownerId, runId, manifest });
-	if (migrated && migrated.state) {
-		return {
-			state: normalizeStoredState(migrated.state, { runId, manifest }),
-			saveSlotId: normalizeString(migrated.save_slot_id),
 		};
 	}
 

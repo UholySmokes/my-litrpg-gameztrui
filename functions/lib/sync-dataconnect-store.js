@@ -141,6 +141,28 @@ function pickLatestByUpdatedAt(rows) {
 		)[0];
 }
 
+async function listAllRunSessions({ ownerId }) {
+	const dc = getDc();
+	const response = await dataconnectGenerated.listAllMyRunSessions(
+		dc,
+		buildOptions(ownerId),
+	);
+	return toArray(response?.data?.userProfile?.runSessions)
+		.map((session) => mapRunSessionToRow(ownerId, session))
+		.filter(Boolean);
+}
+
+async function listAllRunEvents({ ownerId }) {
+	const dc = getDc();
+	const response = await dataconnectGenerated.listAllMyRunEvents(
+		dc,
+		buildOptions(ownerId),
+	);
+	return toArray(response?.data?.userProfile?.events)
+		.map((event) => mapRunEventToRow(ownerId, event))
+		.filter(Boolean);
+}
+
 async function getMigrationVersion({ ownerId }) {
 	const dc = getDc();
 	const response = await dataconnectGenerated.getMyProfile(dc, buildOptions(ownerId));
@@ -326,9 +348,39 @@ async function listEvents({ ownerId, runId, afterSeq = 0, limit = 100 }) {
 		});
 }
 
+async function purgeUserProgress({ ownerId }) {
+	const dc = getDc();
+	const options = buildOptions(ownerId);
+	const runSessions = await listAllRunSessions({ ownerId });
+	const runEvents = await listAllRunEvents({ ownerId });
+
+	await Promise.all(
+		runEvents
+			.map((event) => normalizeString(event._dc_id))
+			.filter(Boolean)
+			.map((id) =>
+				dataconnectGenerated.deleteRunEvent(dc, { id }, options),
+			),
+	);
+	await Promise.all(
+		runSessions
+			.map((session) => normalizeString(session._dc_id))
+			.filter(Boolean)
+			.map((id) =>
+				dataconnectGenerated.deleteRunSession(dc, { id }, options),
+			),
+	);
+
+	return {
+		deletedRunCount: runSessions.length,
+		deletedEventCount: runEvents.length,
+	};
+}
+
 module.exports = {
 	getMigrationVersion,
 	markMigrationVersion,
+	purgeUserProgress,
 	getRun,
 	putRun,
 	getEventByCommitId,

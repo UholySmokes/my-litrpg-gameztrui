@@ -157,6 +157,56 @@ query ListMyRunEventsSince($runId: String!, $afterSeq: Int!) @auth(level: USER) 
   }
 }
 
+query ListAllMyRunSessions @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    runSessions: runSessions_on_user {
+      id
+      runId
+      worldId
+      mapId
+      playerPosJson
+      entityStatesJson
+      questFlagsJson
+      seq
+      tick
+      stateHash
+      contentVersion
+      stateVersion
+      saveSlotId
+      runSeed
+      lastCommitId
+      lastClientId
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query ListAllMyRunEvents @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    events: runEvents_on_user {
+      id
+      runId
+      eventType
+      commitId
+      clientId
+      clientSeq
+      triggerType
+      triggerPayloadJson
+      accepted
+      errorCode
+      message
+      seq
+      tick
+      stateHash
+      contentVersion
+      createdAt
+    }
+  }
+}
+
 query ListMyStoryMemories($runId: String!) @auth(level: USER) {
   userProfile(key: { id_expr: "auth.uid" }) {
     id

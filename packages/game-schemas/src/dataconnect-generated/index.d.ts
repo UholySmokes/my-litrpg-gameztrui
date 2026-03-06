@@ -388,102 +388,6 @@ export interface UserProfile_Key {
   __typename?: 'UserProfile_Key';
 }
 
-interface UpsertMyProfileRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars?: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars?: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
-  operationName: string;
-}
-export const upsertMyProfileRef: UpsertMyProfileRef;
-
-export function upsertMyProfile(vars?: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
-export function upsertMyProfile(dc: DataConnect, vars?: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
-
-interface MarkMyProfileMigrationRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: MarkMyProfileMigrationVariables): MutationRef<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: MarkMyProfileMigrationVariables): MutationRef<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
-  operationName: string;
-}
-export const markMyProfileMigrationRef: MarkMyProfileMigrationRef;
-
-export function markMyProfileMigration(vars: MarkMyProfileMigrationVariables): MutationPromise<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
-export function markMyProfileMigration(dc: DataConnect, vars: MarkMyProfileMigrationVariables): MutationPromise<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
-
-interface CreateSaveSlotRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: CreateSaveSlotVariables): MutationRef<CreateSaveSlotData, CreateSaveSlotVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: CreateSaveSlotVariables): MutationRef<CreateSaveSlotData, CreateSaveSlotVariables>;
-  operationName: string;
-}
-export const createSaveSlotRef: CreateSaveSlotRef;
-
-export function createSaveSlot(vars: CreateSaveSlotVariables): MutationPromise<CreateSaveSlotData, CreateSaveSlotVariables>;
-export function createSaveSlot(dc: DataConnect, vars: CreateSaveSlotVariables): MutationPromise<CreateSaveSlotData, CreateSaveSlotVariables>;
-
-interface UpsertSaveSlotRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: UpsertSaveSlotVariables): MutationRef<UpsertSaveSlotData, UpsertSaveSlotVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: UpsertSaveSlotVariables): MutationRef<UpsertSaveSlotData, UpsertSaveSlotVariables>;
-  operationName: string;
-}
-export const upsertSaveSlotRef: UpsertSaveSlotRef;
-
-export function upsertSaveSlot(vars: UpsertSaveSlotVariables): MutationPromise<UpsertSaveSlotData, UpsertSaveSlotVariables>;
-export function upsertSaveSlot(dc: DataConnect, vars: UpsertSaveSlotVariables): MutationPromise<UpsertSaveSlotData, UpsertSaveSlotVariables>;
-
-interface DeleteSaveSlotRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: DeleteSaveSlotVariables): MutationRef<DeleteSaveSlotData, DeleteSaveSlotVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: DeleteSaveSlotVariables): MutationRef<DeleteSaveSlotData, DeleteSaveSlotVariables>;
-  operationName: string;
-}
-export const deleteSaveSlotRef: DeleteSaveSlotRef;
-
-export function deleteSaveSlot(vars: DeleteSaveSlotVariables): MutationPromise<DeleteSaveSlotData, DeleteSaveSlotVariables>;
-export function deleteSaveSlot(dc: DataConnect, vars: DeleteSaveSlotVariables): MutationPromise<DeleteSaveSlotData, DeleteSaveSlotVariables>;
-
-interface UpsertRunSessionRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: UpsertRunSessionVariables): MutationRef<UpsertRunSessionData, UpsertRunSessionVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: UpsertRunSessionVariables): MutationRef<UpsertRunSessionData, UpsertRunSessionVariables>;
-  operationName: string;
-}
-export const upsertRunSessionRef: UpsertRunSessionRef;
-
-export function upsertRunSession(vars: UpsertRunSessionVariables): MutationPromise<UpsertRunSessionData, UpsertRunSessionVariables>;
-export function upsertRunSession(dc: DataConnect, vars: UpsertRunSessionVariables): MutationPromise<UpsertRunSessionData, UpsertRunSessionVariables>;
-
-interface CreateRunEventRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: CreateRunEventVariables): MutationRef<CreateRunEventData, CreateRunEventVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: CreateRunEventVariables): MutationRef<CreateRunEventData, CreateRunEventVariables>;
-  operationName: string;
-}
-export const createRunEventRef: CreateRunEventRef;
-
-export function createRunEvent(vars: CreateRunEventVariables): MutationPromise<CreateRunEventData, CreateRunEventVariables>;
-export function createRunEvent(dc: DataConnect, vars: CreateRunEventVariables): MutationPromise<CreateRunEventData, CreateRunEventVariables>;
-
-interface UpsertStoryMemoryRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: UpsertStoryMemoryVariables): MutationRef<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: UpsertStoryMemoryVariables): MutationRef<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
-  operationName: string;
-}
-export const upsertStoryMemoryRef: UpsertStoryMemoryRef;
-
-export function upsertStoryMemory(vars: UpsertStoryMemoryVariables): MutationPromise<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
-export function upsertStoryMemory(dc: DataConnect, vars: UpsertStoryMemoryVariables): MutationPromise<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
-
 interface GetMyProfileRef {
   /* Allow users to create refs without passing in DataConnect */
   (): QueryRef<GetMyProfileData, undefined>;
@@ -579,4 +483,100 @@ export const listMyStoryMemoriesRef: ListMyStoryMemoriesRef;
 
 export function listMyStoryMemories(vars: ListMyStoryMemoriesVariables): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
 export function listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+
+interface UpsertMyProfileRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars?: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars?: UpsertMyProfileVariables): MutationRef<UpsertMyProfileData, UpsertMyProfileVariables>;
+  operationName: string;
+}
+export const upsertMyProfileRef: UpsertMyProfileRef;
+
+export function upsertMyProfile(vars?: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
+export function upsertMyProfile(dc: DataConnect, vars?: UpsertMyProfileVariables): MutationPromise<UpsertMyProfileData, UpsertMyProfileVariables>;
+
+interface MarkMyProfileMigrationRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: MarkMyProfileMigrationVariables): MutationRef<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: MarkMyProfileMigrationVariables): MutationRef<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+  operationName: string;
+}
+export const markMyProfileMigrationRef: MarkMyProfileMigrationRef;
+
+export function markMyProfileMigration(vars: MarkMyProfileMigrationVariables): MutationPromise<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+export function markMyProfileMigration(dc: DataConnect, vars: MarkMyProfileMigrationVariables): MutationPromise<MarkMyProfileMigrationData, MarkMyProfileMigrationVariables>;
+
+interface CreateSaveSlotRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: CreateSaveSlotVariables): MutationRef<CreateSaveSlotData, CreateSaveSlotVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: CreateSaveSlotVariables): MutationRef<CreateSaveSlotData, CreateSaveSlotVariables>;
+  operationName: string;
+}
+export const createSaveSlotRef: CreateSaveSlotRef;
+
+export function createSaveSlot(vars: CreateSaveSlotVariables): MutationPromise<CreateSaveSlotData, CreateSaveSlotVariables>;
+export function createSaveSlot(dc: DataConnect, vars: CreateSaveSlotVariables): MutationPromise<CreateSaveSlotData, CreateSaveSlotVariables>;
+
+interface UpsertSaveSlotRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpsertSaveSlotVariables): MutationRef<UpsertSaveSlotData, UpsertSaveSlotVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: UpsertSaveSlotVariables): MutationRef<UpsertSaveSlotData, UpsertSaveSlotVariables>;
+  operationName: string;
+}
+export const upsertSaveSlotRef: UpsertSaveSlotRef;
+
+export function upsertSaveSlot(vars: UpsertSaveSlotVariables): MutationPromise<UpsertSaveSlotData, UpsertSaveSlotVariables>;
+export function upsertSaveSlot(dc: DataConnect, vars: UpsertSaveSlotVariables): MutationPromise<UpsertSaveSlotData, UpsertSaveSlotVariables>;
+
+interface DeleteSaveSlotRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: DeleteSaveSlotVariables): MutationRef<DeleteSaveSlotData, DeleteSaveSlotVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: DeleteSaveSlotVariables): MutationRef<DeleteSaveSlotData, DeleteSaveSlotVariables>;
+  operationName: string;
+}
+export const deleteSaveSlotRef: DeleteSaveSlotRef;
+
+export function deleteSaveSlot(vars: DeleteSaveSlotVariables): MutationPromise<DeleteSaveSlotData, DeleteSaveSlotVariables>;
+export function deleteSaveSlot(dc: DataConnect, vars: DeleteSaveSlotVariables): MutationPromise<DeleteSaveSlotData, DeleteSaveSlotVariables>;
+
+interface UpsertRunSessionRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpsertRunSessionVariables): MutationRef<UpsertRunSessionData, UpsertRunSessionVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: UpsertRunSessionVariables): MutationRef<UpsertRunSessionData, UpsertRunSessionVariables>;
+  operationName: string;
+}
+export const upsertRunSessionRef: UpsertRunSessionRef;
+
+export function upsertRunSession(vars: UpsertRunSessionVariables): MutationPromise<UpsertRunSessionData, UpsertRunSessionVariables>;
+export function upsertRunSession(dc: DataConnect, vars: UpsertRunSessionVariables): MutationPromise<UpsertRunSessionData, UpsertRunSessionVariables>;
+
+interface CreateRunEventRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: CreateRunEventVariables): MutationRef<CreateRunEventData, CreateRunEventVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: CreateRunEventVariables): MutationRef<CreateRunEventData, CreateRunEventVariables>;
+  operationName: string;
+}
+export const createRunEventRef: CreateRunEventRef;
+
+export function createRunEvent(vars: CreateRunEventVariables): MutationPromise<CreateRunEventData, CreateRunEventVariables>;
+export function createRunEvent(dc: DataConnect, vars: CreateRunEventVariables): MutationPromise<CreateRunEventData, CreateRunEventVariables>;
+
+interface UpsertStoryMemoryRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpsertStoryMemoryVariables): MutationRef<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: UpsertStoryMemoryVariables): MutationRef<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+  operationName: string;
+}
+export const upsertStoryMemoryRef: UpsertStoryMemoryRef;
+
+export function upsertStoryMemory(vars: UpsertStoryMemoryVariables): MutationPromise<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
+export function upsertStoryMemory(dc: DataConnect, vars: UpsertStoryMemoryVariables): MutationPromise<UpsertStoryMemoryData, UpsertStoryMemoryVariables>;
 

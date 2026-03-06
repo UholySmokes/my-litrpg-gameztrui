@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 <<<<<<< ours
 =======
 let dataconnectGenerated = null;
 >>>>>>> theirs
+=======
+let dataconnectGenerated = null;
+>>>>>>> 0487f21ba1bda707ca3f5ea719ed4c7381a6e472
 const { resolveGameDbBackend, fileDb } = require("./game-db");
 
 let firebaseAdminApp = null;

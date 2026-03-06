@@ -1,592 +1,592 @@
 {
-    "meta": {
-        "version": "1.1.0",
-        "generatedFrom": "packages/game-core/src/data/registries/{Race,Class}DataRegistry.js",
-        "note": "Subset of races/classes for Godot character creation. Tier-1 classes only. Origins/alignments/perks are Godot-only starter content."
-    },
-    "steps": [
-        "mode",
-        "name",
-        "race",
-        "class",
-        "multiclass",
-        "origin",
-        "attributes",
-        "skills",
-        "perks",
-        "archetype",
-        "trees",
-        "alignment",
+	"meta": {
+		"version": "1.1.0",
+		"generatedFrom": "packages/game-core/src/data/registries/{Race,Class}DataRegistry.js",
+		"note": "Subset of races/classes for Godot character creation. Tier-1 classes only. Origins/alignments/perks are Godot-only starter content."
+	},
+	"steps": [
+		"mode",
+		"name",
+		"race",
+		"class",
+		"multiclass",
+		"origin",
+		"attributes",
+		"skills",
+		"perks",
+		"archetype",
+		"trees",
+		"alignment",
         "review"
-    ],
-    "races": [
-        {
-            "id": "pure_human",
-            "name": "Pure Human",
-            "description": "Standard human with balanced potential across all areas.",
-            "statBonuses": {
-                "str": 2,
-                "agi": 2,
-                "dex": 2,
-                "int": 2,
-                "cha": 2,
-                "will": 2,
-                "luck": 2,
-                "soul": 1
-            },
-            "passive": {
-                "name": "Unlimited Potential",
-                "description": "Gain +10% Experience from all sources."
-            }
-        },
-        {
-            "id": "neo_human",
-            "name": "Neo-Human",
-            "description": "Human with cybernetic enhancements. Enhanced physical capabilities.",
-            "statBonuses": {
-                "str": 3,
-                "agi": 2,
-                "dex": 3,
-                "int": 1,
-                "cha": 0,
-                "will": 1,
-                "luck": 0,
-                "soul": 0
-            },
-            "passive": {
-                "name": "Targeting Array",
-                "description": "Accuracy is always 100%. Critical Hit Chance +5%."
-            }
-        },
-        {
-            "id": "ancient_bloodline",
-            "name": "Ancient Bloodline",
-            "description": "Descendant of an ancient powerful lineage. Natural affinity for cultivation.",
-            "statBonuses": {
-                "str": 1,
-                "agi": 1,
-                "dex": 1,
-                "int": 4,
-                "cha": 2,
-                "will": 2,
-                "luck": 2,
-                "soul": 3
-            },
-            "passive": {
-                "name": "Ancient Mana Core",
-                "description": "Mana Regeneration +50%."
-            }
-        },
-        {
-            "id": "spirit_beast",
-            "name": "Spirit Beast",
-            "description": "A creature with spiritual energy flowing through its veins.",
-            "statBonuses": {
-                "str": 4,
-                "agi": 4,
-                "dex": 2,
-                "int": 0,
-                "cha": -1,
-                "will": 2,
-                "luck": 1,
-                "soul": 1
-            },
-            "passive": {
-                "name": "Predator Reflexes",
-                "description": "Dodge Chance +10%."
-            }
-        },
-        {
-            "id": "demon_kin",
-            "name": "Demon Kin",
-            "description": "Mixed heritage with demonic ancestry. Dark power courses through you.",
-            "statBonuses": {
-                "str": 4,
-                "agi": 2,
-                "dex": 1,
-                "int": 2,
-                "cha": -1,
-                "will": 3,
-                "luck": -1,
-                "soul": 2
-            },
-            "passive": {
-                "name": "Siphoning Strikes",
-                "description": "Heal for 5% of damage dealt."
-            }
-        },
-        {
-            "id": "celestial_descendant",
-            "name": "Celestial Descendant",
-            "description": "Bloodline touched by celestial beings. Radiant energy within.",
-            "statBonuses": {
-                "str": 1,
-                "agi": 2,
-                "dex": 2,
-                "int": 3,
-                "cha": 4,
-                "will": 2,
-                "luck": 2,
-                "soul": 2
-            },
-            "passive": {
-                "name": "Celestial Radiance",
-                "description": "Healing effects +20%."
-            }
-        },
-        {
-            "id": "shadow_walker",
-            "name": "Shadow Walker",
-            "description": "Born from the void between realms. Natural stealth and darkness affinity.",
-            "statBonuses": {
-                "str": 1,
-                "agi": 5,
-                "dex": 4,
-                "int": 2,
-                "cha": 0,
-                "will": 2,
-                "luck": 1,
-                "soul": 2
-            },
-            "passive": {
-                "name": "Shadow Form",
-                "description": "20% chance to negate damage."
-            }
-        },
-        {
-            "id": "dragon_blood",
-            "name": "Dragon Blood",
-            "description": "Ancient dragon heritage. Immense physical and magical potential.",
-            "statBonuses": {
-                "str": 5,
-                "agi": 2,
-                "dex": 1,
-                "int": 3,
-                "cha": 2,
-                "will": 3,
-                "luck": 1,
-                "soul": 2
-            },
-            "passive": {
-                "name": "Draconic Resilience",
-                "description": "Phys/Magic Defense +15%."
-            }
-        },
-        {
-            "id": "undead_awakened",
-            "name": "Undead Awakened",
-            "description": "Risen from death with unnatural vitality and dark power.",
-            "statBonuses": {
-                "str": 3,
-                "agi": 1,
-                "dex": 1,
-                "int": 3,
-                "cha": -2,
-                "will": 4,
-                "luck": 0,
-                "soul": 3
-            },
-            "passive": {
-                "name": "Undying Will",
-                "description": "Survive with 1 HP once per battle."
-            }
-        },
-        {
-            "id": "phoenix_reborn",
-            "name": "Phoenix Reborn",
-            "description": "Reborn from fire with blazing power and eternal resilience.",
-            "statBonuses": {
-                "str": 2,
-                "agi": 3,
-                "dex": 2,
-                "int": 3,
-                "cha": 2,
-                "will": 3,
-                "luck": 1,
-                "soul": 2
-            },
-            "passive": {
-                "name": "Heart of Fire",
-                "description": "Fire Damage +20%."
-            }
-        },
-        {
-            "id": "fae_touched",
-            "name": "Fae Touched",
-            "description": "Kissed by fae magic, dancing between worlds with trickster grace.",
-            "statBonuses": {
-                "str": 0,
-                "agi": 3,
-                "dex": 3,
-                "int": 3,
-                "cha": 3,
-                "will": 1,
-                "luck": 3,
-                "soul": 1
-            },
-            "passive": {
-                "name": "Fae Trickery",
-                "description": "10% Evasion."
-            }
-        },
-        {
-            "id": "mechanical_construct",
-            "name": "Mechanical Construct",
-            "description": "Artificial being of gears and circuits. Pure logic, no soul.",
-            "statBonuses": {
-                "str": 4,
-                "agi": 1,
-                "dex": 3,
-                "int": 3,
-                "cha": -2,
-                "will": 0,
-                "luck": 0,
-                "soul": 0
-            },
-            "passive": {
-                "name": "System Overclock",
-                "description": "Attack Speed +10%."
-            }
-        }
-    ],
-    "classes": [
-        {
-            "id": "warrior",
-            "name": "Warrior",
-            "description": "Beginner-friendly frontline fighter focused on direct melee combat.",
-            "resourceSystem": "rage",
-            "coreMechanics": [
-                "stance_system",
-                "block",
+	],
+	"races": [
+		{
+			"id": "pure_human",
+			"name": "Pure Human",
+			"description": "Standard human with balanced potential across all areas.",
+			"statBonuses": {
+				"str": 2,
+				"agi": 2,
+				"dex": 2,
+				"int": 2,
+				"cha": 2,
+				"will": 2,
+				"luck": 2,
+				"soul": 1
+			},
+			"passive": {
+				"name": "Unlimited Potential",
+				"description": "Gain +10% Experience from all sources."
+			}
+		},
+		{
+			"id": "neo_human",
+			"name": "Neo-Human",
+			"description": "Human with cybernetic enhancements. Enhanced physical capabilities.",
+			"statBonuses": {
+				"str": 3,
+				"agi": 2,
+				"dex": 3,
+				"int": 1,
+				"cha": 0,
+				"will": 1,
+				"luck": 0,
+				"soul": 0
+			},
+			"passive": {
+				"name": "Targeting Array",
+				"description": "Accuracy is always 100%. Critical Hit Chance +5%."
+			}
+		},
+		{
+			"id": "ancient_bloodline",
+			"name": "Ancient Bloodline",
+			"description": "Descendant of an ancient powerful lineage. Natural affinity for cultivation.",
+			"statBonuses": {
+				"str": 1,
+				"agi": 1,
+				"dex": 1,
+				"int": 4,
+				"cha": 2,
+				"will": 2,
+				"luck": 2,
+				"soul": 3
+			},
+			"passive": {
+				"name": "Ancient Mana Core",
+				"description": "Mana Regeneration +50%."
+			}
+		},
+		{
+			"id": "spirit_beast",
+			"name": "Spirit Beast",
+			"description": "A creature with spiritual energy flowing through its veins.",
+			"statBonuses": {
+				"str": 4,
+				"agi": 4,
+				"dex": 2,
+				"int": 0,
+				"cha": -1,
+				"will": 2,
+				"luck": 1,
+				"soul": 1
+			},
+			"passive": {
+				"name": "Predator Reflexes",
+				"description": "Dodge Chance +10%."
+			}
+		},
+		{
+			"id": "demon_kin",
+			"name": "Demon Kin",
+			"description": "Mixed heritage with demonic ancestry. Dark power courses through you.",
+			"statBonuses": {
+				"str": 4,
+				"agi": 2,
+				"dex": 1,
+				"int": 2,
+				"cha": -1,
+				"will": 3,
+				"luck": -1,
+				"soul": 2
+			},
+			"passive": {
+				"name": "Siphoning Strikes",
+				"description": "Heal for 5% of damage dealt."
+			}
+		},
+		{
+			"id": "celestial_descendant",
+			"name": "Celestial Descendant",
+			"description": "Bloodline touched by celestial beings. Radiant energy within.",
+			"statBonuses": {
+				"str": 1,
+				"agi": 2,
+				"dex": 2,
+				"int": 3,
+				"cha": 4,
+				"will": 2,
+				"luck": 2,
+				"soul": 2
+			},
+			"passive": {
+				"name": "Celestial Radiance",
+				"description": "Healing effects +20%."
+			}
+		},
+		{
+			"id": "shadow_walker",
+			"name": "Shadow Walker",
+			"description": "Born from the void between realms. Natural stealth and darkness affinity.",
+			"statBonuses": {
+				"str": 1,
+				"agi": 5,
+				"dex": 4,
+				"int": 2,
+				"cha": 0,
+				"will": 2,
+				"luck": 1,
+				"soul": 2
+			},
+			"passive": {
+				"name": "Shadow Form",
+				"description": "20% chance to negate damage."
+			}
+		},
+		{
+			"id": "dragon_blood",
+			"name": "Dragon Blood",
+			"description": "Ancient dragon heritage. Immense physical and magical potential.",
+			"statBonuses": {
+				"str": 5,
+				"agi": 2,
+				"dex": 1,
+				"int": 3,
+				"cha": 2,
+				"will": 3,
+				"luck": 1,
+				"soul": 2
+			},
+			"passive": {
+				"name": "Draconic Resilience",
+				"description": "Phys/Magic Defense +15%."
+			}
+		},
+		{
+			"id": "undead_awakened",
+			"name": "Undead Awakened",
+			"description": "Risen from death with unnatural vitality and dark power.",
+			"statBonuses": {
+				"str": 3,
+				"agi": 1,
+				"dex": 1,
+				"int": 3,
+				"cha": -2,
+				"will": 4,
+				"luck": 0,
+				"soul": 3
+			},
+			"passive": {
+				"name": "Undying Will",
+				"description": "Survive with 1 HP once per battle."
+			}
+		},
+		{
+			"id": "phoenix_reborn",
+			"name": "Phoenix Reborn",
+			"description": "Reborn from fire with blazing power and eternal resilience.",
+			"statBonuses": {
+				"str": 2,
+				"agi": 3,
+				"dex": 2,
+				"int": 3,
+				"cha": 2,
+				"will": 3,
+				"luck": 1,
+				"soul": 2
+			},
+			"passive": {
+				"name": "Heart of Fire",
+				"description": "Fire Damage +20%."
+			}
+		},
+		{
+			"id": "fae_touched",
+			"name": "Fae Touched",
+			"description": "Kissed by fae magic, dancing between worlds with trickster grace.",
+			"statBonuses": {
+				"str": 0,
+				"agi": 3,
+				"dex": 3,
+				"int": 3,
+				"cha": 3,
+				"will": 1,
+				"luck": 3,
+				"soul": 1
+			},
+			"passive": {
+				"name": "Fae Trickery",
+				"description": "10% Evasion."
+			}
+		},
+		{
+			"id": "mechanical_construct",
+			"name": "Mechanical Construct",
+			"description": "Artificial being of gears and circuits. Pure logic, no soul.",
+			"statBonuses": {
+				"str": 4,
+				"agi": 1,
+				"dex": 3,
+				"int": 3,
+				"cha": -2,
+				"will": 0,
+				"luck": 0,
+				"soul": 0
+			},
+			"passive": {
+				"name": "System Overclock",
+				"description": "Attack Speed +10%."
+			}
+		}
+	],
+	"classes": [
+		{
+			"id": "warrior",
+			"name": "Warrior",
+			"description": "Beginner-friendly frontline fighter focused on direct melee combat.",
+			"resourceSystem": "rage",
+			"coreMechanics": [
+				"stance_system",
+				"block",
                 "weapon_mastery"
-            ],
-            "baseStats": {
-                "strength": 3,
-                "dexterity": 1,
-                "intelligence": 0,
-                "wisdom": 0,
-                "constitution": 2,
-                "charisma": 0
-            }
-        },
-        {
-            "id": "rogue",
-            "name": "Rogue",
-            "description": "Beginner-friendly agile class built around stealth and burst windows.",
-            "resourceSystem": "energy",
-            "coreMechanics": [
-                "stealth",
-                "combo",
-                "lockpicking",
+			],
+			"baseStats": {
+				"strength": 3,
+				"dexterity": 1,
+				"intelligence": 0,
+				"wisdom": 0,
+				"constitution": 2,
+				"charisma": 0
+			}
+		},
+		{
+			"id": "rogue",
+			"name": "Rogue",
+			"description": "Beginner-friendly agile class built around stealth and burst windows.",
+			"resourceSystem": "energy",
+			"coreMechanics": [
+				"stealth",
+				"combo",
+				"lockpicking",
                 "traps"
-            ],
-            "baseStats": {
-                "strength": 1,
-                "dexterity": 3,
-                "intelligence": 0,
-                "wisdom": 0,
-                "constitution": 1,
-                "charisma": 1
-            }
-        },
-        {
-            "id": "mage",
-            "name": "Mage",
-            "description": "Beginner-friendly caster class using straightforward elemental spells.",
-            "resourceSystem": "mana",
-            "coreMechanics": [
-                "spell_schools",
+			],
+			"baseStats": {
+				"strength": 1,
+				"dexterity": 3,
+				"intelligence": 0,
+				"wisdom": 0,
+				"constitution": 1,
+				"charisma": 1
+			}
+		},
+		{
+			"id": "mage",
+			"name": "Mage",
+			"description": "Beginner-friendly caster class using straightforward elemental spells.",
+			"resourceSystem": "mana",
+			"coreMechanics": [
+				"spell_schools",
                 "arcane_mastery"
-            ],
-            "baseStats": {
-                "strength": 0,
-                "dexterity": 1,
-                "intelligence": 3,
-                "wisdom": 2,
-                "constitution": 0,
-                "charisma": 0
-            }
-        },
-        {
-            "id": "cleric",
-            "name": "Cleric",
-            "description": "Beginner-friendly support class with healing and protective holy magic.",
-            "resourceSystem": "mana",
-            "coreMechanics": [
-                "divine_intervention",
-                "prayer_system",
+			],
+			"baseStats": {
+				"strength": 0,
+				"dexterity": 1,
+				"intelligence": 3,
+				"wisdom": 2,
+				"constitution": 0,
+				"charisma": 0
+			}
+		},
+		{
+			"id": "cleric",
+			"name": "Cleric",
+			"description": "Beginner-friendly support class with healing and protective holy magic.",
+			"resourceSystem": "mana",
+			"coreMechanics": [
+				"divine_intervention",
+				"prayer_system",
                 "holy_magic"
-            ],
-            "baseStats": {
-                "strength": 1,
-                "dexterity": 0,
-                "intelligence": 1,
-                "wisdom": 3,
-                "constitution": 1,
-                "charisma": 0
-            }
-        },
-        {
-            "id": "monk",
-            "name": "Monk",
-            "description": "Beginner-friendly martial class focused on combos and chi control.",
-            "resourceSystem": "chi",
-            "coreMechanics": [
-                "unarmed",
-                "meditation",
-                "combo_attacks",
+			],
+			"baseStats": {
+				"strength": 1,
+				"dexterity": 0,
+				"intelligence": 1,
+				"wisdom": 3,
+				"constitution": 1,
+				"charisma": 0
+			}
+		},
+		{
+			"id": "monk",
+			"name": "Monk",
+			"description": "Beginner-friendly martial class focused on combos and chi control.",
+			"resourceSystem": "chi",
+			"coreMechanics": [
+				"unarmed",
+				"meditation",
+				"combo_attacks",
                 "chi_system"
-            ],
-            "baseStats": {
-                "strength": 1,
-                "dexterity": 2,
-                "intelligence": 0,
-                "wisdom": 2,
-                "constitution": 1,
-                "charisma": 0
-            }
-        },
-        {
-            "id": "ranger",
-            "name": "Ranger",
-            "description": "Beginner-friendly ranged class with tracking and companion support.",
-            "resourceSystem": "focus",
-            "coreMechanics": [
-                "aim",
-                "pet_companion",
-                "tracking",
+			],
+			"baseStats": {
+				"strength": 1,
+				"dexterity": 2,
+				"intelligence": 0,
+				"wisdom": 2,
+				"constitution": 1,
+				"charisma": 0
+			}
+		},
+		{
+			"id": "ranger",
+			"name": "Ranger",
+			"description": "Beginner-friendly ranged class with tracking and companion support.",
+			"resourceSystem": "focus",
+			"coreMechanics": [
+				"aim",
+				"pet_companion",
+				"tracking",
                 "favored_enemy"
-            ],
-            "baseStats": {
-                "strength": 1,
-                "dexterity": 2,
-                "intelligence": 0,
-                "wisdom": 1,
-                "constitution": 1,
-                "charisma": 1
-            }
-        }
-    ],
-    "attributes": {
-        "base": {
-            "strength": 10,
-            "dexterity": 10,
-            "intelligence": 10,
-            "vitality": 10,
-            "wisdom": 10,
-            "luck": 10
-        },
-        "freePoints": 15,
-        "minValue": 1,
-        "maxValue": 30
-    },
-    "skills": {
-        "maxActiveSkills": 3,
-        "maxPassiveSkills": 6,
-        "minActiveSkills": 1,
-        "minPassiveSkills": 0,
-        "loadouts": [
-            {
-                "id": "blades",
-                "name": "Blades",
-                "description": "Melee starter kit: Slash + Toughness.",
-                "activeSkills": ["slash"],
-                "passiveSkills": ["toughness"]
-            },
-            {
-                "id": "marksman",
-                "name": "Marksman",
-                "description": "Ranged starter kit: Piercing Shot + Keen Eye.",
-                "activeSkills": ["piercing_shot"],
-                "passiveSkills": ["keen_eye"]
-            },
-            {
-                "id": "arcanist",
-                "name": "Arcanist",
-                "description": "Caster starter kit: Arcane Bolt + Mana Trickle.",
-                "activeSkills": ["arcane_bolt"],
-                "passiveSkills": ["mana_trickle"]
-            },
-            {
-                "id": "acolyte",
-                "name": "Acolyte",
-                "description": "Support starter kit: Holy Mend + Toughness.",
-                "activeSkills": ["holy_mend"],
-                "passiveSkills": ["toughness"]
-            },
-            {
-                "id": "shadow",
-                "name": "Shadow",
-                "description": "Mobility starter kit: Shadow Step + Fleet-Footed.",
-                "activeSkills": ["shadow_step"],
-                "passiveSkills": ["fleet_footed"]
-            }
-        ],
-        "activeSkills": [
-            {
-                "id": "slash",
-                "name": "Slash",
-                "description": "A reliable melee strike. Low cooldown, good for learning timing."
-            },
-            {
-                "id": "piercing_shot",
-                "name": "Piercing Shot",
-                "description": "A ranged shot that ignores a portion of armor. Good vs tough enemies."
-            },
-            {
-                "id": "arcane_bolt",
-                "name": "Arcane Bolt",
-                "description": "A simple spell projectile. Scales with Intelligence."
-            },
-            {
-                "id": "holy_mend",
-                "name": "Holy Mend",
-                "description": "A small heal that stabilizes early fights."
-            },
-            {
-                "id": "shadow_step",
-                "name": "Shadow Step",
-                "description": "A short reposition that breaks line-of-sight briefly."
-            }
-        ],
-        "passiveSkills": [
-            {
-                "id": "toughness",
-                "name": "Toughness",
-                "description": "+5% Max HP."
-            },
-            {
-                "id": "keen_eye",
-                "name": "Keen Eye",
-                "description": "+5% crit chance."
-            },
-            {
-                "id": "mana_trickle",
-                "name": "Mana Trickle",
-                "description": "+5% mana regeneration."
-            },
-            {
-                "id": "fleet_footed",
-                "name": "Fleet-Footed",
-                "description": "+5% move speed."
-            },
-            {
-                "id": "lucky_breaks",
-                "name": "Lucky Breaks",
-                "description": "Small chance to avoid a negative status effect."
-            }
-        ]
-    },
-    "origins": [
-        {
-            "id": "street_urchin",
-            "name": "Street Urchin",
-            "description": "You grew up surviving on instincts, favors, and fast feet.",
-            "trait": {
-                "name": "Quick Hands",
-                "description": "+1 Dexterity (creation only). Better odds on early lockpicks."
-            }
-        },
-        {
-            "id": "apprentice_scholar",
-            "name": "Apprentice Scholar",
-            "description": "You studied scraps of forbidden knowledge and learned to read the world.",
-            "trait": {
-                "name": "Book-Learned",
-                "description": "+1 Intelligence (creation only). Unlocks extra lore prompts."
-            }
-        },
-        {
-            "id": "temple_acolyte",
-            "name": "Temple Acolyte",
-            "description": "You learned discipline, ritual, and the weight of vows.",
-            "trait": {
-                "name": "Rite of Shelter",
-                "description": "Start with a small protective blessing (placeholder)."
-            }
-        },
-        {
-            "id": "frontier_hunter",
-            "name": "Frontier Hunter",
-            "description": "You track, observe, and strike when the moment is right.",
-            "trait": {
-                "name": "Tracker",
-                "description": "+1 Wisdom (creation only). Better encounter scouting (placeholder)."
-            }
-        },
-        {
-            "id": "arena_recruit",
-            "name": "Arena Recruit",
-            "description": "You learned to fight for crowds and coin, under harsh rules.",
-            "trait": {
-                "name": "Crowd-Ready",
-                "description": "+1 Strength (creation only). Start with a basic combat consumable."
-            }
-        },
-        {
-            "id": "exiled_noble",
-            "name": "Exiled Noble",
-            "description": "You have manners, debts, and enemies with long memories.",
-            "trait": {
-                "name": "Commanding Presence",
-                "description": "+1 Charisma (creation only). Better early negotiation prompts."
-            }
-        }
-    ],
-    "perks": {
-        "maxPicks": 2,
-        "minPicks": 1,
-        "options": [
-            { "id": "iron_stomach", "name": "Iron Stomach", "description": "Consumables are 10% more effective." },
-            { "id": "battle_focus", "name": "Battle Focus", "description": "+5% damage while above 80% HP." },
-            { "id": "cautious", "name": "Cautious", "description": "+5% dodge while below 30% HP." },
-            { "id": "scavenger", "name": "Scavenger", "description": "+10% gold from drops." },
-            { "id": "ritualist", "name": "Ritualist", "description": "Story rituals have an extra outcome option (placeholder)." },
-            { "id": "quick_learner", "name": "Quick Learner", "description": "+5% XP gain." },
-            { "id": "sturdy_grip", "name": "Sturdy Grip", "description": "Reduced knockback and stagger (placeholder)." },
-            { "id": "arcane_sense", "name": "Arcane Sense", "description": "Detect magical traces on maps (placeholder)." }
-        ]
-    },
-    "archetypes": [
-        {
-            "id": "balanced",
-            "name": "Balanced",
-            "description": "A safe start that adapts to whatever you find."
-        },
-        {
-            "id": "glass_cannon",
-            "name": "Glass Cannon",
-            "description": "High damage, low safety. Best with careful positioning."
-        },
-        {
-            "id": "bulwark",
-            "name": "Bulwark",
-            "description": "High survivability. Wins long fights and protects allies."
-        },
-        {
-            "id": "trickster",
-            "name": "Trickster",
-            "description": "Evasion, crits, and opportunism. Strong with stealth and timing."
-        }
-    ],
-    "trees": {
-        "maxPicks": 1,
-        "options": [
-            { "id": "offense", "name": "Offense", "description": "Plan toward burst damage and crit synergies." },
-            { "id": "defense", "name": "Defense", "description": "Plan toward mitigation, sustain, and resistances." },
-            { "id": "utility", "name": "Utility", "description": "Plan toward mobility, control, and exploration perks." }
-        ]
-    },
-    "alignments": [
-        { "id": "lawful_good", "name": "Lawful Good", "description": "Order and compassion. You keep your word." },
-        { "id": "neutral_good", "name": "Neutral Good", "description": "Kindness first. Rules are tools, not chains." },
-        { "id": "chaotic_good", "name": "Chaotic Good", "description": "Freedom and mercy. You break cages." },
-        { "id": "lawful_neutral", "name": "Lawful Neutral", "description": "Structure above all. The system must stand." },
-        { "id": "true_neutral", "name": "True Neutral", "description": "Balance and pragmatism. Survive, adapt, endure." },
-        { "id": "chaotic_neutral", "name": "Chaotic Neutral", "description": "Impulse and independence. You choose your own path." }
-    ],
-    "characterCreation": {
-        "required": true,
-        "startMapAfterCreation": "map_village_square"
-    }
+			],
+			"baseStats": {
+				"strength": 1,
+				"dexterity": 2,
+				"intelligence": 0,
+				"wisdom": 1,
+				"constitution": 1,
+				"charisma": 1
+			}
+		}
+	],
+	"attributes": {
+		"base": {
+			"strength": 10,
+			"dexterity": 10,
+			"intelligence": 10,
+			"vitality": 10,
+			"wisdom": 10,
+			"luck": 10
+		},
+		"freePoints": 15,
+		"minValue": 1,
+		"maxValue": 30
+	},
+	"skills": {
+		"maxActiveSkills": 3,
+		"maxPassiveSkills": 6,
+		"minActiveSkills": 1,
+		"minPassiveSkills": 0,
+		"loadouts": [
+			{
+				"id": "blades",
+				"name": "Blades",
+				"description": "Melee starter kit: Slash + Toughness.",
+				"activeSkills": ["slash"],
+				"passiveSkills": ["toughness"]
+			},
+			{
+				"id": "marksman",
+				"name": "Marksman",
+				"description": "Ranged starter kit: Piercing Shot + Keen Eye.",
+				"activeSkills": ["piercing_shot"],
+				"passiveSkills": ["keen_eye"]
+			},
+			{
+				"id": "arcanist",
+				"name": "Arcanist",
+				"description": "Caster starter kit: Arcane Bolt + Mana Trickle.",
+				"activeSkills": ["arcane_bolt"],
+				"passiveSkills": ["mana_trickle"]
+			},
+			{
+				"id": "acolyte",
+				"name": "Acolyte",
+				"description": "Support starter kit: Holy Mend + Toughness.",
+				"activeSkills": ["holy_mend"],
+				"passiveSkills": ["toughness"]
+			},
+			{
+				"id": "shadow",
+				"name": "Shadow",
+				"description": "Mobility starter kit: Shadow Step + Fleet-Footed.",
+				"activeSkills": ["shadow_step"],
+				"passiveSkills": ["fleet_footed"]
+			}
+		],
+		"activeSkills": [
+			{
+				"id": "slash",
+				"name": "Slash",
+				"description": "A reliable melee strike. Low cooldown, good for learning timing."
+			},
+			{
+				"id": "piercing_shot",
+				"name": "Piercing Shot",
+				"description": "A ranged shot that ignores a portion of armor. Good vs tough enemies."
+			},
+			{
+				"id": "arcane_bolt",
+				"name": "Arcane Bolt",
+				"description": "A simple spell projectile. Scales with Intelligence."
+			},
+			{
+				"id": "holy_mend",
+				"name": "Holy Mend",
+				"description": "A small heal that stabilizes early fights."
+			},
+			{
+				"id": "shadow_step",
+				"name": "Shadow Step",
+				"description": "A short reposition that breaks line-of-sight briefly."
+			}
+		],
+		"passiveSkills": [
+			{
+				"id": "toughness",
+				"name": "Toughness",
+				"description": "+5% Max HP."
+			},
+			{
+				"id": "keen_eye",
+				"name": "Keen Eye",
+				"description": "+5% crit chance."
+			},
+			{
+				"id": "mana_trickle",
+				"name": "Mana Trickle",
+				"description": "+5% mana regeneration."
+			},
+			{
+				"id": "fleet_footed",
+				"name": "Fleet-Footed",
+				"description": "+5% move speed."
+			},
+			{
+				"id": "lucky_breaks",
+				"name": "Lucky Breaks",
+				"description": "Small chance to avoid a negative status effect."
+			}
+		]
+	},
+	"origins": [
+		{
+			"id": "street_urchin",
+			"name": "Street Urchin",
+			"description": "You grew up surviving on instincts, favors, and fast feet.",
+			"trait": {
+				"name": "Quick Hands",
+				"description": "+1 Dexterity (creation only). Better odds on early lockpicks."
+			}
+		},
+		{
+			"id": "apprentice_scholar",
+			"name": "Apprentice Scholar",
+			"description": "You studied scraps of forbidden knowledge and learned to read the world.",
+			"trait": {
+				"name": "Book-Learned",
+				"description": "+1 Intelligence (creation only). Unlocks extra lore prompts."
+			}
+		},
+		{
+			"id": "temple_acolyte",
+			"name": "Temple Acolyte",
+			"description": "You learned discipline, ritual, and the weight of vows.",
+			"trait": {
+				"name": "Rite of Shelter",
+				"description": "Start with a small protective blessing (placeholder)."
+			}
+		},
+		{
+			"id": "frontier_hunter",
+			"name": "Frontier Hunter",
+			"description": "You track, observe, and strike when the moment is right.",
+			"trait": {
+				"name": "Tracker",
+				"description": "+1 Wisdom (creation only). Better encounter scouting (placeholder)."
+			}
+		},
+		{
+			"id": "arena_recruit",
+			"name": "Arena Recruit",
+			"description": "You learned to fight for crowds and coin, under harsh rules.",
+			"trait": {
+				"name": "Crowd-Ready",
+				"description": "+1 Strength (creation only). Start with a basic combat consumable."
+			}
+		},
+		{
+			"id": "exiled_noble",
+			"name": "Exiled Noble",
+			"description": "You have manners, debts, and enemies with long memories.",
+			"trait": {
+				"name": "Commanding Presence",
+				"description": "+1 Charisma (creation only). Better early negotiation prompts."
+			}
+		}
+	],
+	"perks": {
+		"maxPicks": 2,
+		"minPicks": 1,
+		"options": [
+			{ "id": "iron_stomach", "name": "Iron Stomach", "description": "Consumables are 10% more effective." },
+			{ "id": "battle_focus", "name": "Battle Focus", "description": "+5% damage while above 80% HP." },
+			{ "id": "cautious", "name": "Cautious", "description": "+5% dodge while below 30% HP." },
+			{ "id": "scavenger", "name": "Scavenger", "description": "+10% gold from drops." },
+			{ "id": "ritualist", "name": "Ritualist", "description": "Story rituals have an extra outcome option (placeholder)." },
+			{ "id": "quick_learner", "name": "Quick Learner", "description": "+5% XP gain." },
+			{ "id": "sturdy_grip", "name": "Sturdy Grip", "description": "Reduced knockback and stagger (placeholder)." },
+			{ "id": "arcane_sense", "name": "Arcane Sense", "description": "Detect magical traces on maps (placeholder)." }
+		]
+	},
+	"archetypes": [
+		{
+			"id": "balanced",
+			"name": "Balanced",
+			"description": "A safe start that adapts to whatever you find."
+		},
+		{
+			"id": "glass_cannon",
+			"name": "Glass Cannon",
+			"description": "High damage, low safety. Best with careful positioning."
+		},
+		{
+			"id": "bulwark",
+			"name": "Bulwark",
+			"description": "High survivability. Wins long fights and protects allies."
+		},
+		{
+			"id": "trickster",
+			"name": "Trickster",
+			"description": "Evasion, crits, and opportunism. Strong with stealth and timing."
+		}
+	],
+	"trees": {
+		"maxPicks": 1,
+		"options": [
+			{ "id": "offense", "name": "Offense", "description": "Plan toward burst damage and crit synergies." },
+			{ "id": "defense", "name": "Defense", "description": "Plan toward mitigation, sustain, and resistances." },
+			{ "id": "utility", "name": "Utility", "description": "Plan toward mobility, control, and exploration perks." }
+		]
+	},
+	"alignments": [
+		{ "id": "lawful_good", "name": "Lawful Good", "description": "Order and compassion. You keep your word." },
+		{ "id": "neutral_good", "name": "Neutral Good", "description": "Kindness first. Rules are tools, not chains." },
+		{ "id": "chaotic_good", "name": "Chaotic Good", "description": "Freedom and mercy. You break cages." },
+		{ "id": "lawful_neutral", "name": "Lawful Neutral", "description": "Structure above all. The system must stand." },
+		{ "id": "true_neutral", "name": "True Neutral", "description": "Balance and pragmatism. Survive, adapt, endure." },
+		{ "id": "chaotic_neutral", "name": "Chaotic Neutral", "description": "Impulse and independence. You choose your own path." }
+	],
+	"characterCreation": {
+		"required": true,
+		"startMapAfterCreation": "map_village_square"
+	}
 }

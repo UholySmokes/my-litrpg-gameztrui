@@ -1,3 +1,7 @@
+<<<<<<< ours
+=======
+let dataconnectGenerated = null;
+>>>>>>> theirs
 const { resolveGameDbBackend, fileDb } = require("./game-db");
 
 let firebaseAdminApp = null;
@@ -53,6 +57,14 @@ function isDataconnectStrictMode() {
 	return strictRaw.toLowerCase() === "true";
 }
 
+
+function getDataconnectGenerated() {
+	if (!dataconnectGenerated) {
+		dataconnectGenerated = require("../src/dataconnect-admin-generated");
+	}
+	return dataconnectGenerated;
+}
+
 function loadFirebaseAdmin() {
 	if (firebaseAdminApp && firebaseAdminFirestore && firebaseAdminDataConnect) {
 		return;
@@ -73,6 +85,7 @@ function getFirestoreDb() {
 
 function getDataConnectDb() {
 	loadFirebaseAdmin();
+<<<<<<< ours
 	const generated = loadDataconnectGenerated();
 	return firebaseAdminDataConnect.getDataConnect(generated.connectorConfig);
 }
@@ -81,6 +94,9 @@ function loadDataconnectGenerated() {
 	if (dataconnectGenerated) return dataconnectGenerated;
 	dataconnectGenerated = require("../src/dataconnect-admin-generated");
 	return dataconnectGenerated;
+=======
+	return firebaseAdminDataConnect.getDataConnect(getDataconnectGenerated().connectorConfig);
+>>>>>>> theirs
 }
 
 function normalizeString(value) {
@@ -216,7 +232,11 @@ function mapDataconnectSave({ userId, slot }) {
 async function ensureDcProfile({ userId, displayName }) {
 	const generated = loadDataconnectGenerated();
 	const dc = getDataConnectDb();
+<<<<<<< ours
 	await generated.upsertMyProfile(
+=======
+	await getDataconnectGenerated().upsertMyProfile(
+>>>>>>> theirs
 		dc,
 		{ displayName: normalizeString(displayName) || "Traveler" },
 		buildDcOptions(userId),
@@ -226,7 +246,11 @@ async function ensureDcProfile({ userId, displayName }) {
 async function dcListSaves({ userId, limit }) {
 	const generated = loadDataconnectGenerated();
 	const dc = getDataConnectDb();
+<<<<<<< ours
 	const response = await generated.listMySaveSlots(
+=======
+	const response = await getDataconnectGenerated().listMySaveSlots(
+>>>>>>> theirs
 		dc,
 		buildDcOptions(userId),
 	);
@@ -251,7 +275,11 @@ async function dcListSaves({ userId, limit }) {
 async function dcGetSave({ userId, saveId }) {
 	const generated = loadDataconnectGenerated();
 	const dc = getDataConnectDb();
+<<<<<<< ours
 	const response = await generated.getMySaveSlot(
+=======
+	const response = await getDataconnectGenerated().getMySaveSlot(
+>>>>>>> theirs
 		dc,
 		{ id: String(saveId) },
 		buildDcOptions(userId),
@@ -266,7 +294,11 @@ async function dcCreateSave({ saveId, userId, saveName, gameState, now }) {
 	const vars = buildSaveSlotVars({ saveId, saveName, gameState });
 	await ensureDcProfile({ userId, displayName: vars.playerName });
 	const dc = getDataConnectDb();
+<<<<<<< ours
 	await generated.upsertSaveSlot(dc, vars, buildDcOptions(userId));
+=======
+	await getDataconnectGenerated().upsertSaveSlot(dc, vars, buildDcOptions(userId));
+>>>>>>> theirs
 	const row = await dcGetSave({ userId, saveId: vars.id });
 	if (row) return row;
 	return {
@@ -287,7 +319,11 @@ async function dcUpdateSave({ userId, saveId, saveName, gameState, now }) {
 	const vars = buildSaveSlotVars({ saveId, saveName, gameState });
 	await ensureDcProfile({ userId, displayName: vars.playerName });
 	const dc = getDataConnectDb();
+<<<<<<< ours
 	await generated.upsertSaveSlot(dc, vars, buildDcOptions(userId));
+=======
+	await getDataconnectGenerated().upsertSaveSlot(dc, vars, buildDcOptions(userId));
+>>>>>>> theirs
 	const updated = await dcGetSave({ userId, saveId });
 	if (updated) return updated;
 	return {
@@ -303,7 +339,11 @@ async function dcDeleteSave({ userId, saveId }) {
 	const existing = await dcGetSave({ userId, saveId });
 	if (!existing) return false;
 	const dc = getDataConnectDb();
+<<<<<<< ours
 	await generated.deleteSaveSlot(
+=======
+	await getDataconnectGenerated().deleteSaveSlot(
+>>>>>>> theirs
 		dc,
 		{ id: String(saveId) },
 		buildDcOptions(userId),

@@ -8,7 +8,7 @@ const {
 	updateSave,
 	deleteSave,
 } = require("./saves-store");
-const { enforceProgressReset, resetLegacyProgress } = require("./save-reset");
+const { enforceProgressReset, resetLegacyProgress } = require("./save-reset.cjs");
 
 const MAX_SAVE_NAME_LENGTH = 80;
 const MAX_SAVES_RETURNED = 50;

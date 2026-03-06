@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const { json, readJsonBody } = require("./http");
 const { getUserFromRequest } = require("./auth");
-const { enforceProgressReset } = require("./save-reset");
+const { enforceProgressReset } = require("./save-reset.cjs");
 const {
 	BATCHABLE_TRIGGER_TYPE,
 	IMMEDIATE_TRIGGER_TYPES,
@@ -277,88 +277,6 @@ async function requireUser(req, res) {
 		message: "Sign in required.",
 	});
 	return null;
-}
-
-function parseLegacySaveState(rawValue) {
-	if (!rawValue) return null;
-	let parsed = rawValue;
-	if (typeof rawValue === "string") {
-		try {
-			parsed = JSON.parse(rawValue);
-		} catch {
-			return null;
-		}
-	}
-	if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null;
-	return parsed;
-}
-
-function hydrateFromLegacySave(save, { runId, manifest }) {
-	const parsed = parseLegacySaveState(save?.game_state);
-	if (!parsed) return null;
-
-	const world = parsed.world && typeof parsed.world === "object" ? parsed.world : {};
-	const player = parsed.player && typeof parsed.player === "object" ? parsed.player : {};
-	const location = world.location && typeof world.location === "object" ? world.location : {};
-	const mapId = normalizeString(parsed.mapId || parsed.locationId || location.current);
-	if (!mapId) return null;
-
-	const seq = parseInteger(parsed.seq, 0);
-	const tick = parseInteger(parsed.tick, parseInteger(world.turnCount, seq));
-	const contentVersion =
-		normalizeString(parsed.contentVersion) || manifest.contentVersion;
-	const entityStates = {
-		player: {
-			name: normalizeString(player.name) || "Traveler",
-			level: parseInteger(player.level, 1),
-		},
-	};
-
-	const state = {
-		worldId: normalizeString(parsed.worldId || world.id) || manifest.worldId,
-		mapId,
-		playerPos: {
-			x: Number.isFinite(Number(parsed?.playerPos?.x))
-				? Number(parsed.playerPos.x)
-				: manifest.start.x,
-			y: Number.isFinite(Number(parsed?.playerPos?.y))
-				? Number(parsed.playerPos.y)
-				: manifest.start.y,
-		},
-		entityStates,
-		questFlags:
-			parsed.questFlags && typeof parsed.questFlags === "object"
-				? parsed.questFlags
-				: world.flags && typeof world.flags === "object"
-					? world.flags
-					: {},
-		runId,
-		seq,
-		tick,
-		stateHash: normalizeString(parsed.stateHash),
-		contentVersion,
-		stateVersion: Number.isInteger(parsed.stateVersion) ? parsed.stateVersion : 1,
-		runSeed: normalizeString(parsed.runSeed) || crypto.createHash("sha256").update(`run:${runId}`, "utf8").digest("hex").slice(0, 16),
-		cooldowns:
-			parsed.cooldowns && typeof parsed.cooldowns === "object" ? parsed.cooldowns : {},
-	};
-
-	if (!state.stateHash) {
-		state.stateHash = hashCanonicalState({
-			worldId: state.worldId,
-			mapId: state.mapId,
-			playerPos: state.playerPos,
-			entityStates: state.entityStates,
-			questFlags: state.questFlags,
-			runId: state.runId,
-			seq: state.seq,
-			tick: state.tick,
-			contentVersion: state.contentVersion,
-			stateVersion: state.stateVersion,
-			runSeed: state.runSeed,
-		});
-	}
-	return state;
 }
 
 async function loadRunState({ ownerId, runId, manifest, allowCreate = false }) {
@@ -647,6 +565,8 @@ async function commit(req, res) {
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
 		if (!enforceLimitedRolloutAccess(res, user)) return;
+		const gate = await enforceProgressReset(res, { ownerId: user.id });
+		if (!gate.ok) return;
 
 		const body = await readJsonBody(req);
 		const normalized = normalizeCommitEnvelope(body);
@@ -690,6 +610,8 @@ async function commitBatch(req, res) {
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
 		if (!enforceLimitedRolloutAccess(res, user)) return;
+		const gate = await enforceProgressReset(res, { ownerId: user.id });
+		if (!gate.ok) return;
 
 		const body = await readJsonBody(req);
 		const normalized = normalizeCommitBatchRequest(body);
@@ -839,6 +761,8 @@ async function action(req, res) {
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
 		if (!enforceLimitedRolloutAccess(res, user)) return;
+		const gate = await enforceProgressReset(res, { ownerId: user.id });
+		if (!gate.ok) return;
 
 		const manifest = getWorldManifest();
 		const body = await readJsonBody(req);
@@ -882,6 +806,8 @@ async function command(req, res) {
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
 		if (!enforceLimitedRolloutAccess(res, user)) return;
+		const gate = await enforceProgressReset(res, { ownerId: user.id });
+		if (!gate.ok) return;
 
 		const manifest = getWorldManifest();
 		const body = await readJsonBody(req);
@@ -924,6 +850,8 @@ async function pull(req, res) {
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
 		if (!enforceLimitedRolloutAccess(res, user)) return;
+		const gate = await enforceProgressReset(res, { ownerId: user.id });
+		if (!gate.ok) return;
 
 		const runId = normalizeString(req?.query?.runId);
 		if (!runId) {
@@ -989,6 +917,8 @@ async function replay(req, res) {
 		if (!user) return;
 		if (!enforceCanaryAccess(res, user)) return;
 		if (!enforceLimitedRolloutAccess(res, user)) return;
+		const gate = await enforceProgressReset(res, { ownerId: user.id });
+		if (!gate.ok) return;
 
 		const runId = normalizeString(req?.query?.runId);
 		if (!runId) {

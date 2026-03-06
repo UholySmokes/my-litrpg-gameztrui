@@ -145,6 +145,17 @@ const buildError = (data, fallback, status) => {
   return fallback;
 };
 
+const buildFailure = (data, fallback, status, extras = {}) => ({
+  success: false,
+  error: buildError(data, fallback, status),
+  errorCode:
+    typeof data?.errorCode === "string" && data.errorCode.trim()
+      ? data.errorCode
+      : null,
+  status,
+  ...extras,
+});
+
 export async function saveGameState(_userId, gameState, saveName = "Auto Save") {
   try {
     const { response, data } = await requestJson("", {
@@ -153,10 +164,11 @@ export async function saveGameState(_userId, gameState, saveName = "Auto Save") 
     });
 
     if (!response.ok || data?.ok === false) {
-      return {
-        success: false,
-        error: buildError(data, "Failed to save game state.", response.status),
-      };
+      return buildFailure(
+        data,
+        "Failed to save game state.",
+        response.status,
+      );
     }
 
     return {
@@ -168,6 +180,8 @@ export async function saveGameState(_userId, gameState, saveName = "Auto Save") 
     return {
       success: false,
       error: error.message || "Failed to save game state.",
+      errorCode: null,
+      status: null,
     };
   }
 }
@@ -180,14 +194,11 @@ export async function updateGameState(_userId, saveId, gameState, saveName) {
     });
 
     if (!response.ok || data?.ok === false) {
-      return {
-        success: false,
-        error: buildError(
-          data,
-          "Failed to update game state.",
-          response.status,
-        ),
-      };
+      return buildFailure(
+        data,
+        "Failed to update game state.",
+        response.status,
+      );
     }
 
     return {
@@ -198,6 +209,8 @@ export async function updateGameState(_userId, saveId, gameState, saveName) {
     return {
       success: false,
       error: error.message || "Failed to update game state.",
+      errorCode: null,
+      status: null,
     };
   }
 }
@@ -209,10 +222,11 @@ export async function loadGameState(_userId, saveId) {
     });
 
     if (!response.ok || data?.ok === false) {
-      return {
-        success: false,
-        error: buildError(data, "Failed to load game state.", response.status),
-      };
+      return buildFailure(
+        data,
+        "Failed to load game state.",
+        response.status,
+      );
     }
 
     return {
@@ -226,6 +240,8 @@ export async function loadGameState(_userId, saveId) {
     return {
       success: false,
       error: error.message || "Failed to load game state.",
+      errorCode: null,
+      status: null,
     };
   }
 }
@@ -237,11 +253,12 @@ export async function listSaves() {
     });
 
     if (!response.ok || data?.ok === false) {
-      return {
-        success: false,
-        error: buildError(data, "Failed to list saves.", response.status),
-        saves: [],
-      };
+      return buildFailure(
+        data,
+        "Failed to list saves.",
+        response.status,
+        { saves: [] },
+      );
     }
 
     return {
@@ -252,6 +269,8 @@ export async function listSaves() {
     return {
       success: false,
       error: error.message || "Failed to list saves.",
+      errorCode: null,
+      status: null,
       saves: [],
     };
   }
@@ -264,10 +283,11 @@ export async function deleteSave(_userId, saveId) {
     });
 
     if (!response.ok || data?.ok === false) {
-      return {
-        success: false,
-        error: buildError(data, "Failed to delete save.", response.status),
-      };
+      return buildFailure(
+        data,
+        "Failed to delete save.",
+        response.status,
+      );
     }
 
     return {
@@ -277,6 +297,39 @@ export async function deleteSave(_userId, saveId) {
     return {
       success: false,
       error: error.message || "Failed to delete save.",
+      errorCode: null,
+      status: null,
+    };
+  }
+}
+
+export async function resetLegacyProgress() {
+  try {
+    const { response, data } = await requestJson("reset-legacy", {
+      method: "POST",
+    });
+
+    if (!response.ok || data?.ok === false) {
+      return buildFailure(
+        data,
+        "Failed to reset legacy progress.",
+        response.status,
+      );
+    }
+
+    return {
+      success: true,
+      migrationVersion: data?.migrationVersion ?? null,
+      deletedSaveCount: data?.deletedSaveCount ?? 0,
+      deletedRunCount: data?.deletedRunCount ?? 0,
+      deletedEventCount: data?.deletedEventCount ?? 0,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || "Failed to reset legacy progress.",
+      errorCode: null,
+      status: null,
     };
   }
 }

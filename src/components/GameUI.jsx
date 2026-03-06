@@ -8,11 +8,14 @@ import { gachaPools } from "../data/gachaData.js";
 import { getTitleBonuses } from "../core/titleLogic.js";
 import { mergeInventoryItems } from "../utils/shared.js";
 import { seedWorldAfterCharacterCreation } from "../world/WorldInitializer.js";
+import { resetLegacyProgress } from "../core/CloudSaveService.js";
 import CharacterCreationMode from "../ui/modes/CharacterCreationMode.jsx";
 import GameMode from "../ui/modes/GameMode.jsx";
+import saveCutover from "../../shared/save-cutover.cjs";
 
 const IS_DEV_BUILD = Boolean(import.meta?.env?.DEV);
 const TYPEWRITER_CHAR_DELAY_MS = 28;
+const { SAVE_RESET_EPOCH } = saveCutover;
 
 const renderTypewriterText = (text = "") => {
   const segments = text.split("\n");
@@ -45,9 +48,10 @@ const renderTypewriterText = (text = "") => {
 
 const AUTOSAVE_DEBOUNCE_MS = 2000;
 const TRANSITION_DURATION_MS = 1200;
-const MAX_LOCAL_SAVES = 20;
 const LOCAL_AUTOSAVE_KEY = "localAutosave:v1";
+const LOCAL_SAVE_KEY = "localSaves:v1";
 const AUTOSAVE_PROMPT_DISMISS_KEY = "autosavePromptDismissed:v1";
+const SAVE_RESET_MARKER_KEY = "saveResetEpochApplied:v1";
 
 const safeParseJson = (value) => {
   try {
@@ -66,7 +70,8 @@ const hasCreatedCharacterSnapshot = (snapshotState) => {
   if (!isRecord(player)) return false;
 
   return Boolean(
-    player.race ||
+    player.origin ||
+      player.race ||
       player.class ||
       player.profession ||
       (Array.isArray(player.activeSkills) && player.activeSkills.length > 0) ||
@@ -90,6 +95,31 @@ const readAutosavePromptCandidate = () => {
   return parsedAutosave;
 };
 
+const readAppliedResetEpoch = () => {
+  if (typeof window === "undefined") return 0;
+  try {
+    return Number(localStorage.getItem(SAVE_RESET_MARKER_KEY) || 0) || 0;
+  } catch {
+    return 0;
+  }
+};
+
+const clearLegacyLocalProgress = () => {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(LOCAL_AUTOSAVE_KEY);
+    localStorage.removeItem(LOCAL_SAVE_KEY);
+    localStorage.setItem(SAVE_RESET_MARKER_KEY, String(SAVE_RESET_EPOCH));
+  } catch {
+    return;
+  }
+  try {
+    sessionStorage.removeItem(AUTOSAVE_PROMPT_DISMISS_KEY);
+  } catch {
+    return;
+  }
+};
+
 export default function GameUI({ user }) {
   // PART 1: State Sanitation - Define missing visibility states
   const [showShop, setShowShop] = useState(false);
@@ -102,7 +132,14 @@ export default function GameUI({ user }) {
   const [showQuests, setShowQuests] = useState(false);
   const [showReplayInspector, setShowReplayInspector] = useState(false);
   const [equipmentSelectSlot, setEquipmentSelectSlot] = useState(null);
-  const [autosavePrompt, setAutosavePrompt] = useState(readAutosavePromptCandidate);
+  const [autosavePrompt, setAutosavePrompt] = useState(null);
+  const [saveResetAttempt, setSaveResetAttempt] = useState(0);
+  const [saveResetState, setSaveResetState] = useState({
+    ready: false,
+    busy: true,
+    error: "",
+    mode: "pending",
+  });
 
   const {
     state,
@@ -137,6 +174,7 @@ export default function GameUI({ user }) {
 
   const persistLocalAutosave = useCallback(
     (snapshotState, saveName = "Autosave") => {
+      if (!saveResetState.ready) return;
       if (!snapshotState) return;
       try {
         const { previousState: _prev, ...stateToSave } = snapshotState;
@@ -156,8 +194,66 @@ export default function GameUI({ user }) {
         console.warn(`${saveName} failed:`, err);
       }
     },
-    [user],
+    [saveResetState.ready, user],
   );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const ensureSaveCutover = async () => {
+      const isAuthenticated = Boolean(user?.id && user.id !== "local");
+      const requiresLocalWipe = readAppliedResetEpoch() < SAVE_RESET_EPOCH;
+
+      if (requiresLocalWipe) {
+        clearLegacyLocalProgress();
+      }
+
+      if (!isAuthenticated) {
+        if (cancelled) return;
+        setSaveResetState({
+          ready: true,
+          busy: false,
+          error: "",
+          mode: "local",
+        });
+        return;
+      }
+
+      if (cancelled) return;
+      setSaveResetState({
+        ready: false,
+        busy: true,
+        error: "",
+        mode: "remote",
+      });
+
+      const result = await resetLegacyProgress();
+      if (cancelled) return;
+
+      if (!result.success) {
+        setSaveResetState({
+          ready: false,
+          busy: false,
+          error: result.error || "Legacy progress reset failed.",
+          mode: "remote",
+        });
+        return;
+      }
+
+      clearLegacyLocalProgress();
+      setSaveResetState({
+        ready: true,
+        busy: false,
+        error: "",
+        mode: "remote",
+      });
+    };
+
+    ensureSaveCutover();
+    return () => {
+      cancelled = true;
+    };
+  }, [saveResetAttempt, user?.id]);
 
   useEffect(() => {
     const container = narrativeMemoryRef.current;
@@ -167,7 +263,7 @@ export default function GameUI({ user }) {
   }, [narrativeEntries.length]);
 
   useEffect(() => {
-    if (!state) return;
+    if (!saveResetState.ready || !state) return;
 
     // Debounced local autosave
     if (autosaveTimerRef.current) {
@@ -184,7 +280,15 @@ export default function GameUI({ user }) {
         autosaveTimerRef.current = null;
       }
     };
-  }, [persistLocalAutosave, state]);
+  }, [persistLocalAutosave, saveResetState.ready, state]);
+
+  useEffect(() => {
+    if (!saveResetState.ready) {
+      setAutosavePrompt(null);
+      return;
+    }
+    setAutosavePrompt(readAutosavePromptCandidate());
+  }, [saveResetState.ready]);
 
   const {
     submitInput,
@@ -823,6 +927,68 @@ export default function GameUI({ user }) {
     () => setShowReplayInspector(false),
     [],
   );
+
+  if (!saveResetState.ready) {
+    const isRetryable = !saveResetState.busy && Boolean(saveResetState.error);
+    return (
+      <div className="app-frame">
+        <div className="app-container">
+          <div
+            style={{
+              minHeight: "100vh",
+              display: "grid",
+              placeItems: "center",
+              padding: "2rem",
+            }}
+          >
+            <div
+              style={{
+                width: "min(560px, 100%)",
+                background: "rgba(0, 0, 0, 0.88)",
+                border: "1px solid var(--holo-cyan)",
+                borderRadius: "10px",
+                padding: "1.5rem",
+                display: "grid",
+                gap: "0.9rem",
+                fontFamily: "monospace",
+              }}
+            >
+              <div
+                style={{
+                  color: "var(--holo-cyan)",
+                  fontSize: "1rem",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Progress Reset Required
+              </div>
+              <div style={{ color: "var(--text-main)", lineHeight: 1.5 }}>
+                {saveResetState.busy
+                  ? saveResetState.mode === "remote"
+                    ? "Clearing local progress and resetting synced saves before gameplay can continue."
+                    : "Clearing local progress before gameplay can continue."
+                  : saveResetState.error ||
+                    "Legacy progress reset could not be completed."}
+              </div>
+              <div style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>
+                Save epoch {SAVE_RESET_EPOCH} invalidates all pre-origin progress.
+              </div>
+              {isRetryable ? (
+                <button
+                  type="button"
+                  className="holo-button"
+                  onClick={() => setSaveResetAttempt((value) => value + 1)}
+                >
+                  Retry Reset
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-frame">

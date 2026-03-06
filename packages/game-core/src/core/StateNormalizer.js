@@ -97,6 +97,76 @@ function normalizeEntityRef(value, { kind, fallback } = {}) {
   return fallback ?? null;
 }
 
+function normalizeOriginRef(value, fallback = null) {
+  const normalized = normalizeEntityRef(value, {
+    kind: "origin",
+    fallback,
+  });
+
+  if (!normalized) return fallback ?? null;
+
+  const originId =
+    typeof normalized === "string"
+      ? normalized
+      : typeof normalized.id === "string"
+        ? normalized.id
+        : null;
+  const registryOrigin = originId ? DataRegistry.getOriginById(originId) : null;
+
+  if (registryOrigin) {
+    return {
+      ...registryOrigin,
+      ...(isPlainObject(value) ? value : {}),
+      id: registryOrigin.id,
+      name:
+        typeof value?.name === "string" && value.name.trim()
+          ? value.name
+          : registryOrigin.name,
+      description:
+        typeof value?.description === "string" && value.description.trim()
+          ? value.description
+          : registryOrigin.description,
+      attributeBonuses: ensureAttributeShape(
+        isPlainObject(value?.attributeBonuses)
+          ? value.attributeBonuses
+          : registryOrigin.attributeBonuses,
+        0,
+      ),
+      favoredBiome:
+        typeof value?.favoredBiome === "string" && value.favoredBiome.trim()
+          ? value.favoredBiome
+          : registryOrigin.favoredBiome,
+      favoredFactionId:
+        typeof value?.favoredFactionId === "string" && value.favoredFactionId.trim()
+          ? value.favoredFactionId
+          : registryOrigin.favoredFactionId || null,
+      favoredQuestTags: Array.isArray(value?.favoredQuestTags)
+        ? value.favoredQuestTags.filter((tag) => typeof tag === "string" && tag.trim())
+        : Array.isArray(registryOrigin.favoredQuestTags)
+          ? [...registryOrigin.favoredQuestTags]
+          : [],
+    };
+  }
+
+  if (isPlainObject(value) && typeof value.id === "string" && value.id.trim()) {
+    return {
+      id: value.id,
+      name: typeof value.name === "string" && value.name.trim() ? value.name : value.id,
+      description: typeof value.description === "string" ? value.description : "",
+      attributeBonuses: ensureAttributeShape(value.attributeBonuses, 0),
+      favoredBiome:
+        typeof value.favoredBiome === "string" ? value.favoredBiome : "neutral",
+      favoredFactionId:
+        typeof value.favoredFactionId === "string" ? value.favoredFactionId : null,
+      favoredQuestTags: Array.isArray(value.favoredQuestTags)
+        ? value.favoredQuestTags.filter((tag) => typeof tag === "string" && tag.trim())
+        : [],
+    };
+  }
+
+  return fallback ?? null;
+}
+
 function normalizeConfig(rawConfig) {
   const source = isPlainObject(rawConfig) ? rawConfig : {};
 
@@ -237,10 +307,7 @@ function normalizePlayer(rawPlayer, config) {
     kind: "class",
     fallback: null,
   });
-  const normalizedOrigin = normalizeEntityRef(player.origin, {
-    kind: "origin",
-    fallback: null,
-  });
+  const normalizedOrigin = normalizeOriginRef(player.origin, null);
   const attributes = normalizeAttributes(
     player.attributes,
     config.baseAttributeValue,

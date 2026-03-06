@@ -7,7 +7,6 @@ const {
 	narratePoll,
 	health,
 } = require("./handlers");
-const { handleSavesRequest } = require("./saves");
 const sync = require("./sync");
 const telemetry = require("./telemetry");
 const bulkGeneration = require("./bulk-generation-handlers");
@@ -24,6 +23,7 @@ async function handleApiRequest(req, res) {
 
 	const savesMatch = path.match(/^\/api\/saves(?:\/([^/]+))?$/);
 	if (savesMatch) {
+		const { handleSavesRequest } = require("./saves");
 		const encodedSaveId = savesMatch[1] || "";
 		let saveId = "";
 		if (encodedSaveId) {

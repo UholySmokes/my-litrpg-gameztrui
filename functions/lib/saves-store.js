@@ -1,8 +1,9 @@
-const firebaseAdminApp = require("firebase-admin/app");
-const firebaseAdminFirestore = require("firebase-admin/firestore");
-const firebaseAdminDataConnect = require("firebase-admin/data-connect");
 const dataconnectGenerated = require("../src/dataconnect-admin-generated");
 const { resolveGameDbBackend, fileDb } = require("./game-db");
+
+let firebaseAdminApp = null;
+let firebaseAdminFirestore = null;
+let firebaseAdminDataConnect = null;
 
 const DEFAULT_COLLECTION = "game_saves";
 const DEFAULT_WORLD_ID = "voidverse_slice_world_001";
@@ -52,7 +53,18 @@ function isDataconnectStrictMode() {
 	return strictRaw.toLowerCase() === "true";
 }
 
+function loadFirebaseAdmin() {
+	if (firebaseAdminApp && firebaseAdminFirestore && firebaseAdminDataConnect) {
+		return;
+	}
+
+	firebaseAdminApp = require("firebase-admin/app");
+	firebaseAdminFirestore = require("firebase-admin/firestore");
+	firebaseAdminDataConnect = require("firebase-admin/data-connect");
+}
+
 function getFirestoreDb() {
+	loadFirebaseAdmin();
 	if (firebaseAdminApp.getApps().length === 0) {
 		firebaseAdminApp.initializeApp();
 	}
@@ -60,6 +72,7 @@ function getFirestoreDb() {
 }
 
 function getDataConnectDb() {
+	loadFirebaseAdmin();
 	return firebaseAdminDataConnect.getDataConnect(dataconnectGenerated.connectorConfig);
 }
 

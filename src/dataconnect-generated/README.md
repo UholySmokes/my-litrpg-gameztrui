@@ -17,6 +17,8 @@ This README will guide you through the process of using the generated JavaScript
   - [*GetMyRunSessionByRunId*](#getmyrunsessionbyrunid)
   - [*GetMyRunEventByCommitId*](#getmyruneventbycommitid)
   - [*ListMyRunEventsSince*](#listmyruneventssince)
+  - [*ListAllMyRunSessions*](#listallmyrunsessions)
+  - [*ListAllMyRunEvents*](#listallmyrunevents)
   - [*ListMyStoryMemories*](#listmystorymemories)
 - [**Mutations**](#mutations)
   - [*UpsertMyProfile*](#upsertmyprofile)
@@ -24,6 +26,8 @@ This README will guide you through the process of using the generated JavaScript
   - [*CreateSaveSlot*](#createsaveslot)
   - [*UpsertSaveSlot*](#upsertsaveslot)
   - [*DeleteSaveSlot*](#deletesaveslot)
+  - [*DeleteRunSession*](#deleterunsession)
+  - [*DeleteRunEvent*](#deleterunevent)
   - [*UpsertRunSession*](#upsertrunsession)
   - [*CreateRunEvent*](#createrunevent)
   - [*UpsertStoryMemory*](#upsertstorymemory)
@@ -934,6 +938,230 @@ executeQuery(ref).then((response) => {
 });
 ```
 
+## ListAllMyRunSessions
+You can execute the `ListAllMyRunSessions` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+listAllMyRunSessions(): QueryPromise<ListAllMyRunSessionsData, undefined>;
+
+interface ListAllMyRunSessionsRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListAllMyRunSessionsData, undefined>;
+}
+export const listAllMyRunSessionsRef: ListAllMyRunSessionsRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+listAllMyRunSessions(dc: DataConnect): QueryPromise<ListAllMyRunSessionsData, undefined>;
+
+interface ListAllMyRunSessionsRef {
+  ...
+  (dc: DataConnect): QueryRef<ListAllMyRunSessionsData, undefined>;
+}
+export const listAllMyRunSessionsRef: ListAllMyRunSessionsRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the listAllMyRunSessionsRef:
+```typescript
+const name = listAllMyRunSessionsRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `ListAllMyRunSessions` query has no variables.
+### Return Type
+Recall that executing the `ListAllMyRunSessions` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `ListAllMyRunSessionsData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface ListAllMyRunSessionsData {
+  userProfile?: {
+    id: string;
+    runSessions: ({
+      id: UUIDString;
+      runId: string;
+      worldId: string;
+      mapId: string;
+      playerPosJson: string;
+      entityStatesJson: string;
+      questFlagsJson: string;
+      seq: number;
+      tick: number;
+      stateHash: string;
+      contentVersion: string;
+      stateVersion: number;
+      saveSlotId?: UUIDString | null;
+      runSeed?: string | null;
+      lastCommitId?: string | null;
+      lastClientId?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & RunSession_Key)[];
+  } & UserProfile_Key;
+}
+```
+### Using `ListAllMyRunSessions`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, listAllMyRunSessions } from '@dataconnect/generated';
+
+
+// Call the `listAllMyRunSessions()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await listAllMyRunSessions();
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await listAllMyRunSessions(dataConnect);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+listAllMyRunSessions().then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+### Using `ListAllMyRunSessions`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, listAllMyRunSessionsRef } from '@dataconnect/generated';
+
+
+// Call the `listAllMyRunSessionsRef()` function to get a reference to the query.
+const ref = listAllMyRunSessionsRef();
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = listAllMyRunSessionsRef(dataConnect);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+## ListAllMyRunEvents
+You can execute the `ListAllMyRunEvents` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+listAllMyRunEvents(): QueryPromise<ListAllMyRunEventsData, undefined>;
+
+interface ListAllMyRunEventsRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListAllMyRunEventsData, undefined>;
+}
+export const listAllMyRunEventsRef: ListAllMyRunEventsRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+listAllMyRunEvents(dc: DataConnect): QueryPromise<ListAllMyRunEventsData, undefined>;
+
+interface ListAllMyRunEventsRef {
+  ...
+  (dc: DataConnect): QueryRef<ListAllMyRunEventsData, undefined>;
+}
+export const listAllMyRunEventsRef: ListAllMyRunEventsRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the listAllMyRunEventsRef:
+```typescript
+const name = listAllMyRunEventsRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `ListAllMyRunEvents` query has no variables.
+### Return Type
+Recall that executing the `ListAllMyRunEvents` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `ListAllMyRunEventsData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface ListAllMyRunEventsData {
+  userProfile?: {
+    id: string;
+    events: ({
+      id: UUIDString;
+      runId: string;
+      eventType?: string | null;
+      commitId: string;
+      clientId: string;
+      clientSeq: number;
+      triggerType: string;
+      triggerPayloadJson: string;
+      accepted: boolean;
+      errorCode?: string | null;
+      message?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      contentVersion?: string | null;
+      createdAt: DateString;
+    } & RunEvent_Key)[];
+  } & UserProfile_Key;
+}
+```
+### Using `ListAllMyRunEvents`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, listAllMyRunEvents } from '@dataconnect/generated';
+
+
+// Call the `listAllMyRunEvents()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await listAllMyRunEvents();
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await listAllMyRunEvents(dataConnect);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+listAllMyRunEvents().then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
+### Using `ListAllMyRunEvents`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, listAllMyRunEventsRef } from '@dataconnect/generated';
+
+
+// Call the `listAllMyRunEventsRef()` function to get a reference to the query.
+const ref = listAllMyRunEventsRef();
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = listAllMyRunEventsRef(dataConnect);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.userProfile);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.userProfile);
+});
+```
+
 ## ListMyStoryMemories
 You can execute the `ListMyStoryMemories` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
@@ -1717,6 +1945,224 @@ console.log(data.saveSlot_delete);
 executeMutation(ref).then((response) => {
   const data = response.data;
   console.log(data.saveSlot_delete);
+});
+```
+
+## DeleteRunSession
+You can execute the `DeleteRunSession` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+deleteRunSession(vars: DeleteRunSessionVariables): MutationPromise<DeleteRunSessionData, DeleteRunSessionVariables>;
+
+interface DeleteRunSessionRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: DeleteRunSessionVariables): MutationRef<DeleteRunSessionData, DeleteRunSessionVariables>;
+}
+export const deleteRunSessionRef: DeleteRunSessionRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+deleteRunSession(dc: DataConnect, vars: DeleteRunSessionVariables): MutationPromise<DeleteRunSessionData, DeleteRunSessionVariables>;
+
+interface DeleteRunSessionRef {
+  ...
+  (dc: DataConnect, vars: DeleteRunSessionVariables): MutationRef<DeleteRunSessionData, DeleteRunSessionVariables>;
+}
+export const deleteRunSessionRef: DeleteRunSessionRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the deleteRunSessionRef:
+```typescript
+const name = deleteRunSessionRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `DeleteRunSession` mutation requires an argument of type `DeleteRunSessionVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface DeleteRunSessionVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that executing the `DeleteRunSession` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `DeleteRunSessionData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface DeleteRunSessionData {
+  runSession_delete?: RunSession_Key | null;
+}
+```
+### Using `DeleteRunSession`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, deleteRunSession, DeleteRunSessionVariables } from '@dataconnect/generated';
+
+// The `DeleteRunSession` mutation requires an argument of type `DeleteRunSessionVariables`:
+const deleteRunSessionVars: DeleteRunSessionVariables = {
+  id: ..., 
+};
+
+// Call the `deleteRunSession()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await deleteRunSession(deleteRunSessionVars);
+// Variables can be defined inline as well.
+const { data } = await deleteRunSession({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await deleteRunSession(dataConnect, deleteRunSessionVars);
+
+console.log(data.runSession_delete);
+
+// Or, you can use the `Promise` API.
+deleteRunSession(deleteRunSessionVars).then((response) => {
+  const data = response.data;
+  console.log(data.runSession_delete);
+});
+```
+
+### Using `DeleteRunSession`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, deleteRunSessionRef, DeleteRunSessionVariables } from '@dataconnect/generated';
+
+// The `DeleteRunSession` mutation requires an argument of type `DeleteRunSessionVariables`:
+const deleteRunSessionVars: DeleteRunSessionVariables = {
+  id: ..., 
+};
+
+// Call the `deleteRunSessionRef()` function to get a reference to the mutation.
+const ref = deleteRunSessionRef(deleteRunSessionVars);
+// Variables can be defined inline as well.
+const ref = deleteRunSessionRef({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = deleteRunSessionRef(dataConnect, deleteRunSessionVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.runSession_delete);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.runSession_delete);
+});
+```
+
+## DeleteRunEvent
+You can execute the `DeleteRunEvent` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+deleteRunEvent(vars: DeleteRunEventVariables): MutationPromise<DeleteRunEventData, DeleteRunEventVariables>;
+
+interface DeleteRunEventRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: DeleteRunEventVariables): MutationRef<DeleteRunEventData, DeleteRunEventVariables>;
+}
+export const deleteRunEventRef: DeleteRunEventRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+deleteRunEvent(dc: DataConnect, vars: DeleteRunEventVariables): MutationPromise<DeleteRunEventData, DeleteRunEventVariables>;
+
+interface DeleteRunEventRef {
+  ...
+  (dc: DataConnect, vars: DeleteRunEventVariables): MutationRef<DeleteRunEventData, DeleteRunEventVariables>;
+}
+export const deleteRunEventRef: DeleteRunEventRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the deleteRunEventRef:
+```typescript
+const name = deleteRunEventRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `DeleteRunEvent` mutation requires an argument of type `DeleteRunEventVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface DeleteRunEventVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that executing the `DeleteRunEvent` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `DeleteRunEventData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface DeleteRunEventData {
+  runEvent_delete?: RunEvent_Key | null;
+}
+```
+### Using `DeleteRunEvent`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, deleteRunEvent, DeleteRunEventVariables } from '@dataconnect/generated';
+
+// The `DeleteRunEvent` mutation requires an argument of type `DeleteRunEventVariables`:
+const deleteRunEventVars: DeleteRunEventVariables = {
+  id: ..., 
+};
+
+// Call the `deleteRunEvent()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await deleteRunEvent(deleteRunEventVars);
+// Variables can be defined inline as well.
+const { data } = await deleteRunEvent({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await deleteRunEvent(dataConnect, deleteRunEventVars);
+
+console.log(data.runEvent_delete);
+
+// Or, you can use the `Promise` API.
+deleteRunEvent(deleteRunEventVars).then((response) => {
+  const data = response.data;
+  console.log(data.runEvent_delete);
+});
+```
+
+### Using `DeleteRunEvent`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, deleteRunEventRef, DeleteRunEventVariables } from '@dataconnect/generated';
+
+// The `DeleteRunEvent` mutation requires an argument of type `DeleteRunEventVariables`:
+const deleteRunEventVars: DeleteRunEventVariables = {
+  id: ..., 
+};
+
+// Call the `deleteRunEventRef()` function to get a reference to the mutation.
+const ref = deleteRunEventRef(deleteRunEventVars);
+// Variables can be defined inline as well.
+const ref = deleteRunEventRef({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = deleteRunEventRef(dataConnect, deleteRunEventVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.runEvent_delete);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.runEvent_delete);
 });
 ```
 

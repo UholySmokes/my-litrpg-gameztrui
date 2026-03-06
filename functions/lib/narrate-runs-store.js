@@ -1,7 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const { getApps, initializeApp } = require("firebase-admin/app");
-const { getFirestore, Timestamp } = require("firebase-admin/firestore");
 const { resolveGameDbBackend } = require("./game-db");
 
 const DEFAULT_COLLECTION = "narrate_runs";
@@ -12,6 +10,7 @@ const DEFAULT_FILE_PATH = path.resolve(
 	"narrate-runs.json",
 );
 const DEFAULT_TTL_MS = 5 * 60 * 1000;
+let firebaseAdminModules = null;
 
 function getOptionalEnv(name) {
 	const value = process.env[name];
@@ -32,6 +31,19 @@ function nowMs() {
 	return Date.now();
 }
 
+function getFirebaseAdminModules() {
+	if (firebaseAdminModules) return firebaseAdminModules;
+	const app = require("firebase-admin/app");
+	const firestore = require("firebase-admin/firestore");
+	firebaseAdminModules = {
+		getApps: app.getApps,
+		initializeApp: app.initializeApp,
+		getFirestore: firestore.getFirestore,
+		Timestamp: firestore.Timestamp,
+	};
+	return firebaseAdminModules;
+}
+
 function toIso(value) {
 	if (!value) return null;
 	if (typeof value === "string") return value;
@@ -47,6 +59,7 @@ function toIso(value) {
 }
 
 function toTimestamp(ms) {
+	const { Timestamp } = getFirebaseAdminModules();
 	return Timestamp.fromDate(new Date(ms));
 }
 
@@ -90,6 +103,7 @@ function getCollectionName() {
 }
 
 function getFirestoreDb() {
+	const { getApps, initializeApp, getFirestore } = getFirebaseAdminModules();
 	if (getApps().length === 0) {
 		initializeApp();
 	}

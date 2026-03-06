@@ -136,6 +136,35 @@ describe("saves-store dataconnect behavior", () => {
 		dataconnectGenerated.deleteSaveSlot = originalDeleteSaveSlot;
 	});
 
+	it("purges dataconnect save slots for a user", async () => {
+		dataconnectGenerated.listMySaveSlots = jest.fn(async () => ({
+			data: {
+				userProfile: {
+					saveSlots: [
+						{
+							id: "00000000-0000-4000-8000-000000000001",
+							saveName: "A",
+							updatedAt: "2026-03-06T00:00:00.000Z",
+						},
+						{
+							id: "00000000-0000-4000-8000-000000000002",
+							saveName: "B",
+							updatedAt: "2026-03-06T00:00:01.000Z",
+						},
+					],
+				},
+			},
+		}));
+		dataconnectGenerated.deleteSaveSlot = jest.fn(async () => ({
+			data: { saveSlot_delete: { id: "deleted" } },
+		}));
+
+		const result = await savesStore.purgeUserProgress({ ownerId: "user-1" });
+
+		expect(result.deletedSaveCount).toBe(2);
+		expect(dataconnectGenerated.deleteSaveSlot).toHaveBeenCalledTimes(2);
+	});
+
 	it("lists save slots via dataconnect with descending updated_at ordering", async () => {
 		dataconnectGenerated.listMySaveSlots = jest.fn(async () => ({
 			data: {

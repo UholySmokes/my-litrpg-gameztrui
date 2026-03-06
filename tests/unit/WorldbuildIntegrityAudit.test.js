@@ -12,11 +12,15 @@ describe("worldbuild integrity audit utilities", () => {
     expect(report).toBeTruthy();
     expect(report.counts.classCount).toBeGreaterThan(0);
     expect(report.counts.raceCount).toBeGreaterThan(0);
+    expect(report.counts.originCount).toBeGreaterThan(0);
     expect(report.counts.questCount).toBeGreaterThan(0);
+    expect(report.counts.openingSceneCount).toBeGreaterThan(0);
     expect(Array.isArray(report.classesMissingSkills)).toBe(true);
     expect(Array.isArray(report.skillOwnerTypeCounts)).toBe(true);
     expect(Array.isArray(report.skillOwnersReservedNonClass)).toBe(true);
     expect(Array.isArray(report.skillOwnersNotClassOrReserved)).toBe(true);
+    expect(Array.isArray(report.missingQuestFavoredOrigins)).toBe(true);
+    expect(Array.isArray(report.missingOpeningSceneFavoredOrigins)).toBe(true);
     expect(typeof report.placeholderItemCount).toBe("number");
   });
 
@@ -61,6 +65,11 @@ describe("worldbuild integrity audit utilities", () => {
       missingQuestFavoredClassCount: 2,
       missingQuestFavoredRaceCount: 0,
       missingQuestFavoredProfessionCount: 0,
+      missingQuestFavoredOriginCount: 0,
+      missingOpeningSceneFavoredClassCount: 0,
+      missingOpeningSceneFavoredRaceCount: 0,
+      missingOpeningSceneFavoredProfessionCount: 0,
+      missingOpeningSceneFavoredOriginCount: 0,
       missingQuestRewardItemCount: 5,
       manifestMismatchCount: 1,
     };
@@ -72,6 +81,11 @@ describe("worldbuild integrity audit utilities", () => {
       missingQuestFavoredClassCount: 2,
       missingQuestFavoredRaceCount: 0,
       missingQuestFavoredProfessionCount: 0,
+      missingQuestFavoredOriginCount: 0,
+      missingOpeningSceneFavoredClassCount: 0,
+      missingOpeningSceneFavoredRaceCount: 0,
+      missingOpeningSceneFavoredProfessionCount: 0,
+      missingOpeningSceneFavoredOriginCount: 0,
       missingQuestRewardItemCount: 5,
       manifestMismatchCount: 1,
     };
@@ -85,6 +99,8 @@ describe("worldbuild integrity audit utilities", () => {
     const signature = buildWorldbuildIntegritySignature(report);
     expect(signature.classCount).toBe(report.counts.classCount);
     expect(signature.raceCount).toBe(report.counts.raceCount);
+    expect(signature.originCount).toBe(report.counts.originCount);
     expect(signature.questCount).toBe(report.counts.questCount);
+    expect(signature.openingSceneCount).toBe(report.counts.openingSceneCount);
   });
 });

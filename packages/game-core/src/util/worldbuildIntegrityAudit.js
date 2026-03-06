@@ -383,7 +383,9 @@ export function buildWorldbuildIntegritySignature(report) {
   return {
     classCount: summary.counts?.classCount || 0,
     raceCount: summary.counts?.raceCount || 0,
+    originCount: summary.counts?.originCount || 0,
     questCount: summary.counts?.questCount || 0,
+    openingSceneCount: summary.counts?.openingSceneCount || 0,
     itemCount: summary.counts?.itemCount || 0,
     classesMissingSkills: Array.isArray(summary.classesMissingSkills)
       ? summary.classesMissingSkills.length

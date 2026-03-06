@@ -16,6 +16,7 @@ import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSy
 import CreationArchetypeRecommendations from "../panels/creation/CreationArchetypeRecommendations.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 import CreationWizardShellPanel from "../panels/creation/CreationWizardShellPanel.jsx";
+import { ensureAttributeShape } from "../../constants/attributes.js";
 import { getRaceAbilitiesFor } from "../../systems/race/RaceAbilityRegistry.js";
 import { recommendArchetypeSystems } from "../../utils/archetypeRecommendations.js";
 

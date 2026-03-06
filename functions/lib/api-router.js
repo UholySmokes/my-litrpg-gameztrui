@@ -21,6 +21,11 @@ async function handleApiRequest(req, res) {
 	const path = normalizePath(req?.url);
 	const method = (req?.method || "GET").toUpperCase();
 
+	if (path === "/api/saves/reset-legacy") {
+		const { handleResetLegacyRequest } = require("./saves");
+		return handleResetLegacyRequest(req, res);
+	}
+
 	const savesMatch = path.match(/^\/api\/saves(?:\/([^/]+))?$/);
 	if (savesMatch) {
 		const { handleSavesRequest } = require("./saves");

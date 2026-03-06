@@ -540,12 +540,10 @@ async function main() {
 
   await fsp.mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
   await fsp.writeFile(OUTPUT_PATH, JSON.stringify(output, null, 2) + "\n", "utf-8");
-  // eslint-disable-next-line no-console
   console.log(`Wrote ${abilities.length} entries to ${path.relative(ROOT, OUTPUT_PATH)}`);
 }
 
 main().catch((error) => {
-  // eslint-disable-next-line no-console
   console.error(error);
   process.exitCode = 1;
 });

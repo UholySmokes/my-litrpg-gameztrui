@@ -93,6 +93,15 @@ export type PlayerState = {
   currency?: { goldCoins: number; soulpoints: number };
   gold?: number;
   soulpoints?: number;
+  origin?: {
+    id: string;
+    name: string;
+    description: string;
+    attributeBonuses: Record<string, number>;
+    favoredBiome: string;
+    favoredFactionId?: string | null;
+    favoredQuestTags?: string[];
+  } | null;
   profession?: unknown;
   professions?: Record<string, unknown>;
   progress?: Record<string, unknown>;

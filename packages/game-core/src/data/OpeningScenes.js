@@ -170,8 +170,9 @@ const LEGACY_OPENING_SCENES = [
     }) =>
       `Engines roar across the ${locationHint} as ${factionHint} rally for ${mainQuestName}. Rumors of ${sideHookNames.join(" and ") || "urgent contracts"} drift across the catwalks.`,
     compatibleQuests: ["mq_starforge_siege", "sq_storm_capacitor"],
-    favoredClasses: ["archer", "templar"],
+    favoredClasses: ["sharpshooter", "paladin"],
     favoredRaces: ["skybound", "stormforged"],
+    favoredOrigins: ["deckhand_cadet"],
   },
   {
     id: "scene_undercity_veil",
@@ -189,8 +190,9 @@ const LEGACY_OPENING_SCENES = [
       "sq_venom_exchange",
       "sq_quake_relief",
     ],
-    favoredClasses: ["rogue", "assassin", "shadowblade"],
+    favoredClasses: ["rogue", "shadow_assassin", "night_reaper"],
     favoredRaces: ["gloomshade", "duskborne"],
+    favoredOrigins: ["archive_runner", "dreamwake_survivor"],
   },
   {
     id: "scene_crystal_forge",
@@ -204,8 +206,9 @@ const LEGACY_OPENING_SCENES = [
     }) =>
       `A low hum reverberates along the ${locationHint} while ${factionHint} prepare for ${mainQuestName}. ${sideHookNames.join(" and ") || "Auxiliary tasks"} remain unclaimed among the scaffolds.`,
     compatibleQuests: ["mq_crystal_forge", "sq_rune_cache"],
-    favoredClasses: ["shaman", "battlemage"],
+    favoredClasses: ["tempest_reveler", "battlemage"],
     favoredRaces: ["crystal_being", "rune_sentinel"],
+    favoredOrigins: ["salvage_adept", "ledger_apprentice"],
   },
   {
     id: "scene_tideward",
@@ -219,8 +222,9 @@ const LEGACY_OPENING_SCENES = [
     }) =>
       `Spray lashes the ${locationHint} as ${factionHint} brace for ${mainQuestName}. The call of ${sideHookNames.join(" and ") || "floating bounties"} rises with every surge.`,
     compatibleQuests: ["mq_tide_breach", "sq_astral_waypoint"],
-    favoredClasses: ["shaman", "ranger"],
+    favoredClasses: ["tempest_reveler", "ranger"],
     favoredRaces: ["tidecaller", "frostborne"],
+    favoredOrigins: ["tidebound_votary"],
   },
   {
     id: "scene_sundial_mirage",
@@ -234,8 +238,9 @@ const LEGACY_OPENING_SCENES = [
     }) =>
       `Heat haze ripples across the ${locationHint} as ${factionHint} await ${mainQuestName}. Hushed offers of ${sideHookNames.join(" and ") || "lost routes"} linger in the wind.`,
     compatibleQuests: ["mq_oracle_sundial", "sq_mirage_map"],
-    favoredClasses: ["bard", "mage"],
+    favoredClasses: ["trickster", "mage"],
     favoredRaces: ["mirageborn", "sandstrider"],
+    favoredOrigins: ["sandstep_scout", "dreamwake_survivor"],
   },
   {
     id: "scene_ashen_caldera",
@@ -249,8 +254,9 @@ const LEGACY_OPENING_SCENES = [
     }) =>
       `Embers drift over the ${locationHint} while ${factionHint} plan for ${mainQuestName}. Calls for ${sideHookNames.join(" and ") || "hazard support"} echo through the smoke.`,
     compatibleQuests: ["mq_ashen_caldera", "sq_bloomed_spores"],
-    favoredClasses: ["berserker", "warlock"],
+    favoredClasses: ["berserker", "spellbreaker"],
     favoredRaces: ["emberkin", "phoenix_reborn"],
+    favoredOrigins: ["ashmarked_prospector"],
   },
 ];
 
@@ -297,6 +303,13 @@ function scoreScene(scene, { mainQuest, character } = {}) {
     ) {
       score += 1;
     }
+    if (
+      character?.originId &&
+      Array.isArray(questTags.favoredOrigins) &&
+      questTags.favoredOrigins.includes(character.originId)
+    ) {
+      score += 1;
+    }
     if (questTags.starter && Array.isArray(scene.tags)) {
       if (scene.tags.includes("tutorial")) score += 2;
       if (scene.tags.includes("hub")) score += 1;
@@ -313,6 +326,13 @@ function scoreScene(scene, { mainQuest, character } = {}) {
     character?.raceId &&
     Array.isArray(scene.favoredRaces) &&
     scene.favoredRaces.includes(character.raceId)
+  ) {
+    score += 1;
+  }
+  if (
+    character?.originId &&
+    Array.isArray(scene.favoredOrigins) &&
+    scene.favoredOrigins.includes(character.originId)
   ) {
     score += 1;
   }
@@ -353,6 +373,8 @@ export function getOpeningSceneById(id) {
   if (!id) return null;
   return OPENING_SCENES.find((scene) => scene.id === id) || null;
 }
+
+export { OPENING_SCENES };
 
 export function listOpeningSceneChoices(sceneRef) {
   const scene =

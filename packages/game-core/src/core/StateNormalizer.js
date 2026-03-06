@@ -6,6 +6,7 @@ import {
   getAutoUnlockableTitles,
   getEffectiveAttributes,
 } from "./titleLogic.js";
+import saveCutover from "../../../../shared/save-cutover.cjs";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeNarrativeEntries } from "./narrativeLog.js";
 import {
@@ -27,6 +28,7 @@ import {
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
+const { GAME_STATE_VERSION } = saveCutover;
 
 const DEFAULT_RESOURCES = {
   rage: 0,
@@ -59,6 +61,11 @@ function lookupEntityByKind(trimmed, kind) {
           getById: (id) => DataRegistry.getClassById(id),
           getAll: () => DataRegistry.getClasses(),
         }
+      : kind === "origin"
+        ? {
+            getById: (id) => DataRegistry.getOriginById(id),
+            getAll: () => DataRegistry.getOrigins(),
+          }
       : null;
   if (!registry) return null;
 
@@ -230,6 +237,10 @@ function normalizePlayer(rawPlayer, config) {
     kind: "class",
     fallback: null,
   });
+  const normalizedOrigin = normalizeEntityRef(player.origin, {
+    kind: "origin",
+    fallback: null,
+  });
   const attributes = normalizeAttributes(
     player.attributes,
     config.baseAttributeValue,
@@ -285,6 +296,7 @@ function normalizePlayer(rawPlayer, config) {
     level,
     race: normalizedRace,
     class: normalizedClass,
+    origin: normalizedOrigin,
     attributes,
     attributeInvestments: isPlainObject(player.attributeInvestments)
         ? player.attributeInvestments
@@ -1004,7 +1016,10 @@ export function normalizeGameState(rawState) {
       ),
     },
     contentVersion: state.contentVersion ?? "core@0.1.0",
-    stateVersion: typeof state.stateVersion === "number" ? state.stateVersion : 1,
+    stateVersion:
+      typeof state.stateVersion === "number"
+        ? state.stateVersion
+        : GAME_STATE_VERSION,
   };
 
   const autoUnlockable = getAutoUnlockableTitles(normalized);

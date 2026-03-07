@@ -121,6 +121,15 @@ function buildRepetitionDirective(gameState = {}) {
   return `Recent repetition watchlist: avoid reusing ${repeatedTerms.join(", ")} unless essential for continuity.`;
 }
 
+
+function resolveEntityLabel(value, fallback = "None") {
+  if (typeof value === "string" && value.trim()) return value.trim();
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    return value.name || value.id || fallback;
+  }
+  return fallback;
+}
+
 function resolveArchetypeSystem(player = {}) {
   const raw = player.system ?? player.archetypeSystem;
   if (!raw) return null;
@@ -538,9 +547,37 @@ function buildContextSection(gameState) {
         .join("; ") || "None"}`
     : null;
 
+  const secondaryClassLabel = resolveEntityLabel(player.secondaryClass, "None");
+  const alignmentLabel = resolveEntityLabel(player.alignment, "None");
+  const starterTrees = Array.isArray(player.starterTrees) ? player.starterTrees : [];
+  const starterTreeLabel =
+    starterTrees.length > 0
+      ? starterTrees
+          .map((entry) => resolveEntityLabel(entry, ""))
+          .filter(Boolean)
+          .join(", ")
+      : "None";
+  const creationPerks = Array.isArray(player.perks) ? player.perks : [];
+  const creationPerkLabel =
+    creationPerks.length > 0
+      ? creationPerks
+          .map((entry) => resolveEntityLabel(entry, ""))
+          .filter(Boolean)
+          .join(", ")
+      : "None";
+  const skillLoadoutLabel =
+    typeof player.skillLoadoutId === "string" && player.skillLoadoutId.trim()
+      ? player.skillLoadoutId.trim()
+      : "None";
+
   const lines = [
     "=== CURRENT GAME STATE ===",
     `Player: ${name} (Level ${level})`,
+    `Secondary Class: ${secondaryClassLabel}`,
+    `Alignment: ${alignmentLabel}`,
+    `Creation Perks: ${creationPerkLabel}`,
+    `Starter Trees: ${starterTreeLabel}`,
+    `Skill Loadout: ${skillLoadoutLabel}`,
     `HP: ${hpCurrent}/${hpMax}`,
     `Mana: ${manaCurrent}/${manaMax}`,
     `XP: ${xpCurrent}/${xpMax} (${xpToNext} until next level)`,

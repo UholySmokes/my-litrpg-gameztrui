@@ -1,5 +1,6 @@
 import { races, RACE_TRAITS, setRaceRegistry } from "./registries/RaceDataRegistry.js";
 import { classes, setClasses } from "./registries/ClassDataRegistry.js";
+import { origins, setOrigins } from "./registries/OriginDataRegistry.js";
 import { itemDatabase, setItemDatabase } from "./registries/ItemDataRegistry.js";
 import { enemies, setEnemies } from "./registries/EnemyDataRegistry.js";
 import { gachaPools, setGachaPools } from "./gachaData.js";
@@ -88,6 +89,9 @@ function applyStaticBundle(bundle) {
     raceTraits: bundle.raceTraits,
   });
   setClasses(bundle.classes);
+  if (Array.isArray(bundle.origins)) {
+    setOrigins(bundle.origins);
+  }
   setItemDatabase(bundle.items);
   setEnemies(bundle.enemies);
   setGachaPools(bundle.gachaPools);
@@ -109,6 +113,7 @@ function buildLocalBundle() {
     races,
     raceTraits: RACE_TRAITS,
     classes,
+    origins,
     items: itemDatabase,
     enemies,
     gachaPools,

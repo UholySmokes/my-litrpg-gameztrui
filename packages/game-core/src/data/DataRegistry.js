@@ -15,6 +15,10 @@ import {
   getClassEvolutionOption,
 } from "./registries/ClassDataRegistry.js";
 import {
+  origins,
+  getOriginById as getOriginByIdFromRegistry,
+} from "./registries/OriginDataRegistry.js";
+import {
   itemDatabase,
   getItemsByType as getItemsByTypeFromRegistry,
   getItemsByRarity as getItemsByRarityFromRegistry,
@@ -33,6 +37,10 @@ export class DataRegistry {
 
   static getClasses() {
     return classes || [];
+  }
+
+  static getOrigins() {
+    return origins || [];
   }
 
   static getItems() {
@@ -73,6 +81,10 @@ export class DataRegistry {
 
   static getClassById(id) {
     return this.getClasses().find((c) => c.id === id);
+  }
+
+  static getOriginById(id) {
+    return getOriginByIdFromRegistry(id);
   }
 
   static getClassEvolutionOptions(classId) {

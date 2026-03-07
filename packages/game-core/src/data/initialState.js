@@ -1,6 +1,9 @@
 import { xpForNextLevel } from "../core/xpCurve.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { createInitialWorldState } from "../world/WorldInitializer.js";
+import saveCutover from "../../../../shared/save-cutover.cjs";
+
+const { GAME_STATE_VERSION } = saveCutover;
 
 export const INITIAL_CONFIG = {
   maxLevel: 1000,
@@ -94,6 +97,7 @@ const initialGameState = {
     talent: "None",
     talents: [],
     archetypeSystem: null,
+    origin: null,
     profession: null,
     professions: {},
     progress: {
@@ -120,7 +124,7 @@ const initialGameState = {
     sequence: 0,
   },
   contentVersion: "core@0.1.0",
-  stateVersion: 1,
+  stateVersion: GAME_STATE_VERSION,
 };
 
 export { initialGameState };

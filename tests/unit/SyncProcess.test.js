@@ -316,17 +316,10 @@ describe("sync process commit stream", () => {
 		expect(result.results[0].errorCode).toBe("CONTENT_VERSION_MISMATCH");
 	});
 
-	it("migrates one legacy save and marks migration version", async () => {
+	it("does not hydrate legacy save slots into sync runs after the cutover", async () => {
 		const manifest = syncCore.getWorldManifest();
 		const ownerId = "user-migration-1";
 		const runId = "run-migration-1";
-
-		syncStore.getMigrationVersion = async () => 0;
-		let marked = null;
-		syncStore.markMigrationVersion = async (payload) => {
-			marked = payload;
-			return true;
-		};
 
 		await savesStore.createSave({
 			saveId: "legacy-save-1",
@@ -348,22 +341,13 @@ describe("sync process commit stream", () => {
 			allowCreate: false,
 		});
 
-		expect(loaded).not.toBeNull();
-		expect(loaded.state.mapId).toBe(manifest.start.mapId);
-		expect(marked).toEqual({
-			ownerId,
-			version: 1,
-			displayName: "Traveler",
-		});
+		expect(loaded).toBeNull();
 	});
 
-	it("skips legacy migration once migrationVersion is already marked", async () => {
+	it("keeps returning null when only legacy save slots exist", async () => {
 		const manifest = syncCore.getWorldManifest();
 		const ownerId = "user-migration-2";
 		const runId = "run-migration-2";
-
-		syncStore.getMigrationVersion = async () => 1;
-		syncStore.markMigrationVersion = async () => true;
 
 		await savesStore.createSave({
 			saveId: "legacy-save-2",

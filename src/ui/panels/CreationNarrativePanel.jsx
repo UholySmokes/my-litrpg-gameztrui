@@ -2,12 +2,14 @@ import { useMemo } from "react";
 import { getCategoryConfig } from "../../systems/archetype/ArchetypeSystemRegistry.js";
 
 const STEP_DESCRIPTIONS = [
-  { step: 1, label: "Anchor your origin", icon: "\u2316" },
-  { step: 2, label: "Define combat doctrine", icon: "\u2694" },
-  { step: 3, label: "Shape progression path", icon: "\u2699" },
-  { step: 4, label: "Allocate survivability", icon: "\u2665" },
-  { step: 5, label: "Load starting skills", icon: "\u26A1" },
-  { step: 6, label: "Finalize identity", icon: "\u2714" },
+  { step: 1, label: "Lock identity and origin", icon: "\u2316" },
+  { step: 2, label: "Select lineage", icon: "\u25C7" },
+  { step: 3, label: "Define combat doctrine", icon: "\u2694" },
+  { step: 4, label: "Choose craft", icon: "\u2699" },
+  { step: 5, label: "Bind progression system", icon: "\u25A4" },
+  { step: 6, label: "Allocate attributes", icon: "\u2665" },
+  { step: 7, label: "Load starting skills", icon: "\u26A1" },
+  { step: 8, label: "Finalize identity", icon: "\u2714" },
 ];
 
 function buildFlavorText(statusLines) {
@@ -37,6 +39,7 @@ export default function CreationNarrativePanel({
   statusLines = [],
   typewriterText,
   syncProgress,
+  selectedOrigin,
   selectedRace,
   selectedClass,
   selectedArchetypeSystem,
@@ -98,7 +101,7 @@ export default function CreationNarrativePanel({
       </div>
 
       {/* Active selections summary */}
-      {(selectedRace || selectedClass || selectedArchetypeSystem) && (
+      {(selectedOrigin || selectedRace || selectedClass || selectedArchetypeSystem) && (
         <div style={{
           padding: "0.5rem",
           background: "rgba(0, 0, 0, 0.4)",
@@ -109,6 +112,12 @@ export default function CreationNarrativePanel({
           gap: "0.2rem",
           fontSize: "0.65rem",
         }}>
+          {selectedOrigin && (
+            <div>
+              <span style={{ color: "#FFD43B" }}>ORIGIN:</span>{" "}
+              <span style={{ color: "var(--text-main)" }}>{selectedOrigin.name}</span>
+            </div>
+          )}
           {selectedRace && (
             <div>
               <span style={{ color: "#96F2D7" }}>RACE:</span>{" "}

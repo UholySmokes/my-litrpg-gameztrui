@@ -22,6 +22,10 @@ describe("sync-dataconnect-store", () => {
 		dataconnectGenerated.getMyRunEventByCommitId;
 	const originalCreateRunEvent = dataconnectGenerated.createRunEvent;
 	const originalListMyRunEventsSince = dataconnectGenerated.listMyRunEventsSince;
+	const originalListAllMyRunSessions = dataconnectGenerated.listAllMyRunSessions;
+	const originalListAllMyRunEvents = dataconnectGenerated.listAllMyRunEvents;
+	const originalDeleteRunSession = dataconnectGenerated.deleteRunSession;
+	const originalDeleteRunEvent = dataconnectGenerated.deleteRunEvent;
 
 	beforeEach(() => {
 		firebaseAdminDataConnect.getDataConnect = jest.fn(() => ({ mockDc: true }));
@@ -37,6 +41,10 @@ describe("sync-dataconnect-store", () => {
 		dataconnectGenerated.getMyRunEventByCommitId = originalGetMyRunEventByCommitId;
 		dataconnectGenerated.createRunEvent = originalCreateRunEvent;
 		dataconnectGenerated.listMyRunEventsSince = originalListMyRunEventsSince;
+		dataconnectGenerated.listAllMyRunSessions = originalListAllMyRunSessions;
+		dataconnectGenerated.listAllMyRunEvents = originalListAllMyRunEvents;
+		dataconnectGenerated.deleteRunSession = originalDeleteRunSession;
+		dataconnectGenerated.deleteRunEvent = originalDeleteRunEvent;
 	});
 
 	it("reads migration version from user profile", async () => {
@@ -305,5 +313,63 @@ describe("sync-dataconnect-store", () => {
 		expect(rows[0].client_seq).toBe(1);
 		expect(rows[0].event_type).toBe("TRIGGER");
 		expect(rows[0]._dc_id).toBeUndefined();
+	});
+
+	it("purges run sessions and events for a user", async () => {
+		dataconnectGenerated.listAllMyRunSessions = jest.fn(async () => ({
+			data: {
+				userProfile: {
+					runSessions: [
+						{
+							id: "00000000-0000-4000-8000-000000000101",
+							runId: "run-a",
+							worldId: "w1",
+							mapId: "m1",
+							playerPosJson: "{\"x\":1,\"y\":2}",
+							entityStatesJson: "{}",
+							questFlagsJson: "{}",
+							seq: 1,
+							tick: 1,
+							stateHash: "hash-a",
+							contentVersion: "cv-1",
+							stateVersion: 1,
+							createdAt: "2026-03-06T00:00:00.000Z",
+							updatedAt: "2026-03-06T00:00:01.000Z",
+						},
+					],
+				},
+			},
+		}));
+		dataconnectGenerated.listAllMyRunEvents = jest.fn(async () => ({
+			data: {
+				userProfile: {
+					events: [
+						{
+							id: "00000000-0000-4000-8000-000000000201",
+							runId: "run-a",
+							commitId: "commit-a",
+							clientSeq: 1,
+							triggerType: "ENTER_TILE",
+							triggerPayloadJson: "{}",
+							accepted: true,
+							createdAt: "2026-03-06T00:00:02.000Z",
+						},
+					],
+				},
+			},
+		}));
+		dataconnectGenerated.deleteRunSession = jest.fn(async () => ({
+			data: { runSession_delete: { id: "00000000-0000-4000-8000-000000000101" } },
+		}));
+		dataconnectGenerated.deleteRunEvent = jest.fn(async () => ({
+			data: { runEvent_delete: { id: "00000000-0000-4000-8000-000000000201" } },
+		}));
+
+		const result = await dataconnectStore.purgeUserProgress({ ownerId: "user-9" });
+
+		expect(result.deletedRunCount).toBe(1);
+		expect(result.deletedEventCount).toBe(1);
+		expect(dataconnectGenerated.deleteRunSession).toHaveBeenCalledTimes(1);
+		expect(dataconnectGenerated.deleteRunEvent).toHaveBeenCalledTimes(1);
 	});
 });

@@ -6,6 +6,7 @@ import {
   getAutoUnlockableTitles,
   getEffectiveAttributes,
 } from "./titleLogic.js";
+import saveCutover from "../../../../shared/save-cutover.cjs";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeNarrativeEntries } from "./narrativeLog.js";
 import {
@@ -27,6 +28,7 @@ import {
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
+const { GAME_STATE_VERSION } = saveCutover;
 
 const DEFAULT_RESOURCES = {
   rage: 0,
@@ -59,6 +61,11 @@ function lookupEntityByKind(trimmed, kind) {
           getById: (id) => DataRegistry.getClassById(id),
           getAll: () => DataRegistry.getClasses(),
         }
+      : kind === "origin"
+        ? {
+            getById: (id) => DataRegistry.getOriginById(id),
+            getAll: () => DataRegistry.getOrigins(),
+          }
       : null;
   if (!registry) return null;
 
@@ -85,6 +92,76 @@ function normalizeEntityRef(value, { kind, fallback } = {}) {
     const trimmed = value.trim();
     if (!trimmed) return fallback ?? null;
     return lookupEntityByKind(trimmed, kind) ?? trimmed;
+  }
+
+  return fallback ?? null;
+}
+
+function normalizeOriginRef(value, fallback = null) {
+  const normalized = normalizeEntityRef(value, {
+    kind: "origin",
+    fallback,
+  });
+
+  if (!normalized) return fallback ?? null;
+
+  const originId =
+    typeof normalized === "string"
+      ? normalized
+      : typeof normalized.id === "string"
+        ? normalized.id
+        : null;
+  const registryOrigin = originId ? DataRegistry.getOriginById(originId) : null;
+
+  if (registryOrigin) {
+    return {
+      ...registryOrigin,
+      ...(isPlainObject(value) ? value : {}),
+      id: registryOrigin.id,
+      name:
+        typeof value?.name === "string" && value.name.trim()
+          ? value.name
+          : registryOrigin.name,
+      description:
+        typeof value?.description === "string" && value.description.trim()
+          ? value.description
+          : registryOrigin.description,
+      attributeBonuses: ensureAttributeShape(
+        isPlainObject(value?.attributeBonuses)
+          ? value.attributeBonuses
+          : registryOrigin.attributeBonuses,
+        0,
+      ),
+      favoredBiome:
+        typeof value?.favoredBiome === "string" && value.favoredBiome.trim()
+          ? value.favoredBiome
+          : registryOrigin.favoredBiome,
+      favoredFactionId:
+        typeof value?.favoredFactionId === "string" && value.favoredFactionId.trim()
+          ? value.favoredFactionId
+          : registryOrigin.favoredFactionId || null,
+      favoredQuestTags: Array.isArray(value?.favoredQuestTags)
+        ? value.favoredQuestTags.filter((tag) => typeof tag === "string" && tag.trim())
+        : Array.isArray(registryOrigin.favoredQuestTags)
+          ? [...registryOrigin.favoredQuestTags]
+          : [],
+    };
+  }
+
+  if (isPlainObject(value) && typeof value.id === "string" && value.id.trim()) {
+    return {
+      id: value.id,
+      name: typeof value.name === "string" && value.name.trim() ? value.name : value.id,
+      description: typeof value.description === "string" ? value.description : "",
+      attributeBonuses: ensureAttributeShape(value.attributeBonuses, 0),
+      favoredBiome:
+        typeof value.favoredBiome === "string" ? value.favoredBiome : "neutral",
+      favoredFactionId:
+        typeof value.favoredFactionId === "string" ? value.favoredFactionId : null,
+      favoredQuestTags: Array.isArray(value.favoredQuestTags)
+        ? value.favoredQuestTags.filter((tag) => typeof tag === "string" && tag.trim())
+        : [],
+    };
   }
 
   return fallback ?? null;
@@ -230,6 +307,7 @@ function normalizePlayer(rawPlayer, config) {
     kind: "class",
     fallback: null,
   });
+  const normalizedOrigin = normalizeOriginRef(player.origin, null);
   const attributes = normalizeAttributes(
     player.attributes,
     config.baseAttributeValue,
@@ -285,6 +363,7 @@ function normalizePlayer(rawPlayer, config) {
     level,
     race: normalizedRace,
     class: normalizedClass,
+    origin: normalizedOrigin,
     attributes,
     attributeInvestments: isPlainObject(player.attributeInvestments)
         ? player.attributeInvestments
@@ -1004,7 +1083,10 @@ export function normalizeGameState(rawState) {
       ),
     },
     contentVersion: state.contentVersion ?? "core@0.1.0",
-    stateVersion: typeof state.stateVersion === "number" ? state.stateVersion : 1,
+    stateVersion:
+      typeof state.stateVersion === "number"
+        ? state.stateVersion
+        : GAME_STATE_VERSION,
   };
 
   const autoUnlockable = getAutoUnlockableTitles(normalized);

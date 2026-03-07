@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
-import { useCharacterCreationReworked } from "../../hook/useCharacterCreationReworked.js";
 import {
-  CANONICAL_ATTRIBUTES,
-  createAttributeBaseline,
-  ensureAttributeShape,
-} from "../../constants/attributes.js";
+  buildCharacterCreationDerivedState,
+  useCharacterCreationReworked,
+} from "../../hook/useCharacterCreationReworked.js";
 import WindowManager from "../windowing/WindowManager.jsx";
 import NarrativeMemoryPanel from "../panels/NarrativeMemoryPanel.jsx";
 import CreationNarrativePanel from "../panels/CreationNarrativePanel.jsx";
@@ -18,6 +16,7 @@ import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSy
 import CreationArchetypeRecommendations from "../panels/creation/CreationArchetypeRecommendations.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 import CreationWizardShellPanel from "../panels/creation/CreationWizardShellPanel.jsx";
+import { ensureAttributeShape } from "../../constants/attributes.js";
 import { getRaceAbilitiesFor } from "../../systems/race/RaceAbilityRegistry.js";
 import { recommendArchetypeSystems } from "../../utils/archetypeRecommendations.js";
 
@@ -116,6 +115,7 @@ export default function CharacterCreationMode({ onComplete }) {
   const {
     currentStep,
     steps,
+    selectedOrigin,
     selectedRace,
     selectedClass,
     selectedArchetypeSystem,
@@ -130,6 +130,7 @@ export default function CharacterCreationMode({ onComplete }) {
     availablePassiveSkills,
     availableArchetypeSystems,
     rerollsRemaining,
+    handleOriginSelect,
     handleRaceSelect,
     handleClassSelect,
     handleArchetypeSystemSelect,
@@ -168,47 +169,24 @@ export default function CharacterCreationMode({ onComplete }) {
   );
 
   const [typewriterText, setTypewriterText] = useState(
-    "Select a race and class to generate a profile summary.",
+    "Choose your origin, race, and class to generate a profile summary.",
   );
   const [syncProgress, setSyncProgress] = useState(0);
   const [wizardError, setWizardError] = useState("");
   const derivedStats = useMemo(() => {
-    const resourceSystem =
-      selectedClass?.resourceSystem || selectedClass?.resource || null;
-    const raceBonusSource =
-      selectedRace?.statBonuses || selectedRace?.modifiers || selectedRace?.baseStats;
-    const classBonusSource =
-      selectedClass?.baseStats || selectedClass?.statBonuses || selectedClass?.modifiers;
-    const raceBonuses = ensureAttributeShape(raceBonusSource, 0);
-    const classBonuses = ensureAttributeShape(classBonusSource, 0);
-    const totals = CANONICAL_ATTRIBUTES.reduce((acc, key) => {
-      const playerValue = allocationPoints[key] ?? 5;
-      const raceBonus = raceBonuses[key] ?? 0;
-      const classBonus = classBonuses[key] ?? 0;
-      acc[key] = playerValue + raceBonus + classBonus;
-      return acc;
-    }, createAttributeBaseline(0));
-    const vitalityScore = totals.vitality ?? 0;
-    const intellectScore = totals.intelligence ?? 0;
+    const totals = buildCharacterCreationDerivedState({
+      attributePoints: allocationPoints,
+      selectedRace,
+      selectedClass,
+      selectedOrigin,
+    });
     return {
-      ...totals,
-      hp: {
-        current: 100 + vitalityScore * 5,
-        max: 100 + vitalityScore * 5,
-      },
-      mana: {
-        current: 50 + intellectScore * 3,
-        max: 50 + intellectScore * 3,
-      },
-      resources: {
-        rage: resourceSystem === "rage" ? 100 : 0,
-        chi: resourceSystem === "chi" ? 100 : 0,
-        focus: resourceSystem === "focus" ? 100 : 0,
-        stealth: resourceSystem === "stealth" ? 100 : 0,
-        energy: resourceSystem === "energy" ? 100 : 0,
-      },
+      ...totals.attributes,
+      hp: totals.hp,
+      mana: totals.mana,
+      resources: totals.resources,
     };
-  }, [allocationPoints, selectedRace, selectedClass]);
+  }, [allocationPoints, selectedClass, selectedOrigin, selectedRace]);
 
   useEffect(() => {
     if (selectedClass?.id && CLASS_THEMES[selectedClass.id]) {
@@ -225,6 +203,7 @@ export default function CharacterCreationMode({ onComplete }) {
 
   useEffect(() => {
     const descriptionParts = [];
+    if (selectedOrigin?.description) descriptionParts.push(selectedOrigin.description);
     if (selectedClass?.description) descriptionParts.push(selectedClass.description);
     if (selectedRace?.description) descriptionParts.push(selectedRace.description);
     const combinedDescription = descriptionParts.join(" ").trim();
@@ -241,10 +220,14 @@ export default function CharacterCreationMode({ onComplete }) {
       }, 15);
       return () => clearInterval(interval);
     }
-    setTypewriterText("Select a race and class to generate a profile summary.");
-  }, [selectedClass, selectedRace]);
+    setTypewriterText("Choose your origin, race, and class to generate a profile summary.");
+  }, [selectedClass, selectedOrigin, selectedRace]);
 
   const selectionSummary = useMemo(() => {
+    const originName = selectedOrigin?.name || "Origin not selected";
+    const originDescription =
+      selectedOrigin?.description ||
+      "Choose an origin to shape starting stat pressures and world hooks.";
     const raceName = selectedRace?.name || "Race not selected";
     const raceDescription =
       selectedRace?.description || "Choose a race to view genetic bonuses.";
@@ -275,6 +258,9 @@ export default function CharacterCreationMode({ onComplete }) {
       ? selectedProfession.tierUnlocks[1].skills
       : null;
     return {
+      originName,
+      originDescription,
+      originBiome: selectedOrigin?.favoredBiome || null,
       raceName,
       raceDescription,
       racePassiveAbility,
@@ -296,6 +282,7 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedRace,
     selectedClass,
     selectedArchetypeSystem,
+    selectedOrigin,
     selectedProfession,
     selectedActiveSkills,
     selectedPassiveSkills,
@@ -305,7 +292,7 @@ export default function CharacterCreationMode({ onComplete }) {
     const stepValue = 100 / 8;
     let progress = 0;
     if (characterName && characterName.trim().length > 0) progress += stepValue;
-    if (gender) progress += stepValue;
+    if (gender && selectedOrigin) progress += stepValue;
     if (selectedRace) progress += stepValue;
     if (selectedClass) progress += stepValue;
     if (selectedProfession) progress += stepValue;
@@ -320,6 +307,7 @@ export default function CharacterCreationMode({ onComplete }) {
   }, [
     characterName,
     gender,
+    selectedOrigin,
     selectedRace,
     selectedClass,
     selectedProfession,
@@ -385,6 +373,10 @@ export default function CharacterCreationMode({ onComplete }) {
       },
       { label: `Gender: ${gender || "pending"}`, active: Boolean(gender) },
       {
+        label: `Origin: ${selectedOrigin?.name || "pending"}`,
+        active: Boolean(selectedOrigin),
+      },
+      {
         label: `Race: ${selectedRace?.name || "pending"}`,
         active: Boolean(selectedRace),
       },
@@ -419,6 +411,7 @@ export default function CharacterCreationMode({ onComplete }) {
       availablePoints,
       characterName,
       gender,
+      selectedOrigin,
       selectedActiveSkills.length,
       selectedClass,
       selectedArchetypeSystem,
@@ -432,6 +425,12 @@ export default function CharacterCreationMode({ onComplete }) {
 
   const creationMemoryEntries = useMemo(() => {
     const entries = [];
+    if (selectedOrigin) {
+      entries.push({
+        timestamp: "origin",
+        text: `Origin anchored: ${selectedOrigin.name}`,
+      });
+    }
     if (selectedRace) {
       entries.push({
         timestamp: "race",
@@ -482,6 +481,7 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedClass,
     selectedArchetypeSystem,
     selectedPassiveSkills,
+    selectedOrigin,
     selectedRace,
     selectedProfession,
   ]);
@@ -515,6 +515,11 @@ export default function CharacterCreationMode({ onComplete }) {
           onGenderSelect={(value) => {
             setWizardError("");
             setGender(value);
+          }}
+          selectedOrigin={selectedOrigin}
+          onOriginSelect={(origin) => {
+            setWizardError("");
+            handleOriginSelect(origin);
           }}
           onAction={handleClick}
         />
@@ -648,6 +653,7 @@ export default function CharacterCreationMode({ onComplete }) {
     handleActiveSkillSelect,
     handleArchetypeSystemSelect,
     handleClassSelect,
+    handleOriginSelect,
     handleProfessionSelect,
     handleRaceSelect,
     handleReroll,
@@ -657,6 +663,7 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedActiveSkills,
     selectedArchetypeSystem,
     selectedClass,
+    selectedOrigin,
     selectedPassiveSkills,
     selectedProfession,
     selectedRace,
@@ -676,7 +683,11 @@ export default function CharacterCreationMode({ onComplete }) {
 
   const wizardSteps = useMemo(() => {
     const stepDefs = [
-      { id: "identity", label: "Identity", ok: Boolean(characterName?.trim()) && Boolean(gender) },
+      {
+        id: "identity",
+        label: "Identity",
+        ok: Boolean(characterName?.trim()) && Boolean(gender) && Boolean(selectedOrigin),
+      },
       { id: "race", label: "Race", ok: Boolean(selectedRace) },
       { id: "class", label: "Class", ok: Boolean(selectedClass) },
       { id: "profession", label: "Profession", ok: Boolean(selectedProfession) },
@@ -706,6 +717,7 @@ export default function CharacterCreationMode({ onComplete }) {
     characterName,
     currentStep,
     gender,
+    selectedOrigin,
     selectedActiveSkills.length,
     selectedArchetypeSystem,
     selectedClass,
@@ -765,6 +777,7 @@ export default function CharacterCreationMode({ onComplete }) {
               statusLines={statusLines}
               typewriterText={typewriterText}
               syncProgress={syncProgress}
+              selectedOrigin={selectedOrigin}
               selectedRace={selectedRace}
               selectedClass={selectedClass}
               selectedArchetypeSystem={selectedArchetypeSystem}

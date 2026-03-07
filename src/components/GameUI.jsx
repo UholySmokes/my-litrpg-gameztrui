@@ -132,7 +132,7 @@ export default function GameUI({ user }) {
   const [showQuests, setShowQuests] = useState(false);
   const [showReplayInspector, setShowReplayInspector] = useState(false);
   const [equipmentSelectSlot, setEquipmentSelectSlot] = useState(null);
-  const [autosavePrompt, setAutosavePrompt] = useState(null);
+  const [dismissedAutosavePromptMarker, setDismissedAutosavePromptMarker] = useState("");
   const [saveResetAttempt, setSaveResetAttempt] = useState(0);
   const [saveResetState, setSaveResetState] = useState({
     ready: false,
@@ -282,13 +282,22 @@ export default function GameUI({ user }) {
     };
   }, [persistLocalAutosave, saveResetState.ready, state]);
 
-  useEffect(() => {
+  const autosavePrompt = useMemo(() => {
     if (!saveResetState.ready) {
-      setAutosavePrompt(null);
-      return;
+      return null;
     }
-    setAutosavePrompt(readAutosavePromptCandidate());
-  }, [saveResetState.ready]);
+
+    const candidate = readAutosavePromptCandidate();
+    const candidateMarker = String(
+      candidate?.updated_at || candidate?.created_at || "",
+    );
+
+    if (candidateMarker && candidateMarker === dismissedAutosavePromptMarker) {
+      return null;
+    }
+
+    return candidate;
+  }, [dismissedAutosavePromptMarker, saveResetState.ready]);
 
   const {
     submitInput,
@@ -376,7 +385,9 @@ export default function GameUI({ user }) {
 
     setState(nextState);
     persistLocalAutosave(nextState, "Character Creation Checkpoint");
-    setAutosavePrompt(null);
+    setDismissedAutosavePromptMarker(
+      String(autosavePrompt?.updated_at || autosavePrompt?.created_at || ""),
+    );
 
     setIsTransitioning(true);
     if (transitionTimeoutRef.current) {
@@ -703,7 +714,9 @@ export default function GameUI({ user }) {
 
   const handleResumeAutosave = useCallback(() => {
     if (!isRecord(autosavePrompt?.game_state)) {
-      setAutosavePrompt(null);
+      setDismissedAutosavePromptMarker(
+        String(autosavePrompt?.updated_at || autosavePrompt?.created_at || ""),
+      );
       return;
     }
 
@@ -712,12 +725,16 @@ export default function GameUI({ user }) {
       closeSaveLoad: false,
     });
     rememberAutosavePromptDismissal(autosavePrompt);
-    setAutosavePrompt(null);
+    setDismissedAutosavePromptMarker(
+      String(autosavePrompt?.updated_at || autosavePrompt?.created_at || ""),
+    );
   }, [autosavePrompt, handleLoadState, rememberAutosavePromptDismissal]);
 
   const handleDismissAutosavePrompt = useCallback(() => {
     rememberAutosavePromptDismissal(autosavePrompt);
-    setAutosavePrompt(null);
+    setDismissedAutosavePromptMarker(
+      String(autosavePrompt?.updated_at || autosavePrompt?.created_at || ""),
+    );
   }, [autosavePrompt, rememberAutosavePromptDismissal]);
 
   const handleCombatEscape = () => {

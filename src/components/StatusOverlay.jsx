@@ -339,6 +339,25 @@ export default function StatusOverlay({
     archetypeSystemName !== "None" && archetypeSystemCategory
       ? `${archetypeSystemName} (${archetypeSystemCategory})`
       : archetypeSystemName;
+  const secondaryClassLabel =
+    typeof player.secondaryClass === "string"
+      ? player.secondaryClass
+      : player.secondaryClass?.name || player.secondaryClass?.id || "None";
+  const alignmentLabel =
+    typeof player.alignment === "string"
+      ? player.alignment
+      : player.alignment?.name || player.alignment?.id || "None";
+  const starterTreeLabel = Array.isArray(player.starterTrees)
+    ? player.starterTrees
+        .map((entry) => (typeof entry === "string" ? entry : entry?.name || entry?.id))
+        .filter(Boolean)
+        .join(", ") || "None"
+    : "None";
+  const creationPerkCount = Array.isArray(player.perks) ? player.perks.length : 0;
+  const skillLoadoutLabel =
+    typeof player.skillLoadoutId === "string" && player.skillLoadoutId.trim().length > 0
+      ? player.skillLoadoutId
+      : "None";
   const classId = player.class?.id || player.class;
   const classEvolutionCount = Math.max(
     0,
@@ -524,6 +543,11 @@ export default function StatusOverlay({
               <StatCard label="System" value={archetypeSystemLabel} />
               <StatCard label="Race" value={raceLabel} />
               <StatCard label="Talents" value={talentLabel} />
+              <StatCard label="Secondary Class" value={secondaryClassLabel} />
+              <StatCard label="Alignment" value={alignmentLabel} />
+              <StatCard label="Starter Trees" value={starterTreeLabel} />
+              <StatCard label="Creation Perks" value={String(creationPerkCount)} />
+              <StatCard label="Skill Loadout" value={skillLoadoutLabel} />
             </div>
           </section>
 

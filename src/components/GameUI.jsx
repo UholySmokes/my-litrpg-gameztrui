@@ -79,6 +79,11 @@ const hasCreatedCharacterSnapshot = (snapshotState) => {
   );
 };
 
+const getAutosavePromptMarker = (autosaveRecord) =>
+  String(
+    autosaveRecord?.updated_at || autosaveRecord?.created_at || autosaveRecord?.id || "",
+  );
+
 const readAutosavePromptCandidate = () => {
   if (typeof window === "undefined") return null;
   const rawAutosave = localStorage.getItem(LOCAL_AUTOSAVE_KEY);
@@ -88,7 +93,7 @@ const readAutosavePromptCandidate = () => {
   if (!isRecord(parsedAutosave)) return null;
   if (!hasCreatedCharacterSnapshot(parsedAutosave.game_state)) return null;
 
-  const marker = String(parsedAutosave.updated_at || parsedAutosave.created_at || "");
+  const marker = getAutosavePromptMarker(parsedAutosave);
   const dismissedMarker = sessionStorage.getItem(AUTOSAVE_PROMPT_DISMISS_KEY);
   if (marker && dismissedMarker === marker) return null;
 

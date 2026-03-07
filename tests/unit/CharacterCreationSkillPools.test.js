@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 import { DataRegistry } from "../../src/data/DataRegistry.js";
 import {
+  buildCharacterCreationDerivedState,
   buildCharacterCreationSkillPools,
 } from "../../src/hook/useCharacterCreationReworked.js";
 
@@ -48,5 +49,49 @@ describe("character creation skill pools", () => {
         expect(entry.description.trim().length).toBeGreaterThan(0);
       });
     }
+  });
+
+  it("builds finalized creation stats with race, class, and origin bonuses", () => {
+    const warrior = DataRegistry.getClassById("warrior");
+    const human = DataRegistry.getRaceById("pure_human") || DataRegistry.getRaces()[0];
+    const origin = DataRegistry.getOriginById("ashmarked_prospector");
+    const base = buildCharacterCreationDerivedState({
+      attributePoints: {
+        strength: 5,
+        agility: 5,
+        dexterity: 5,
+        vitality: 5,
+        intelligence: 5,
+        wisdom: 5,
+        charisma: 5,
+        willpower: 5,
+        luck: 5,
+        soul: 5,
+      },
+    });
+
+    const derived = buildCharacterCreationDerivedState({
+      attributePoints: {
+        strength: 5,
+        agility: 5,
+        dexterity: 5,
+        vitality: 5,
+        intelligence: 5,
+        wisdom: 5,
+        charisma: 5,
+        willpower: 5,
+        luck: 5,
+        soul: 5,
+      },
+      selectedRace: human,
+      selectedClass: warrior,
+      selectedOrigin: origin,
+    });
+
+    expect(derived.attributes.strength).toBeGreaterThan(base.attributes.strength);
+    expect(derived.attributes.vitality).toBeGreaterThan(base.attributes.vitality);
+    expect(derived.attributes.charisma).toBeGreaterThanOrEqual(base.attributes.charisma);
+    expect(derived.hp.current).toBe(derived.hp.max);
+    expect(derived.mana.current).toBe(derived.mana.max);
   });
 });

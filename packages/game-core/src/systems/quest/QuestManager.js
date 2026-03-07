@@ -8,6 +8,53 @@ import {
 } from "../archetype/ArchetypeSystemRegistry.js";
 
 export class QuestManager {
+  static resolvePlayerClassId(player) {
+    return player?.class?.id || player?.class || null;
+  }
+
+  static resolvePlayerRaceId(player) {
+    return player?.race?.id || player?.race || null;
+  }
+
+  static resolvePlayerProfessionId(player) {
+    return player?.profession?.id || player?.profession || null;
+  }
+
+  static resolvePlayerOriginId(player) {
+    return player?.origin?.id || player?.origin || null;
+  }
+
+  static getQuestAffinityWeight(quest, player) {
+    let weight = 1;
+    const tags = quest?.tags || {};
+    const classId = this.resolvePlayerClassId(player);
+    const raceId = this.resolvePlayerRaceId(player);
+    const professionId = this.resolvePlayerProfessionId(player);
+    const originId = this.resolvePlayerOriginId(player);
+
+    if (classId && Array.isArray(tags.favoredClasses) && tags.favoredClasses.includes(classId)) {
+      weight += 2;
+    }
+    if (raceId && Array.isArray(tags.favoredRaces) && tags.favoredRaces.includes(raceId)) {
+      weight += 2;
+    }
+    if (
+      professionId &&
+      Array.isArray(tags.favoredProfessions) &&
+      tags.favoredProfessions.includes(professionId)
+    ) {
+      weight += 1;
+    }
+    if (originId && Array.isArray(tags.favoredOrigins) && tags.favoredOrigins.includes(originId)) {
+      weight += 2;
+    }
+    if (player?.origin?.favoredBiome && tags.biome === player.origin.favoredBiome) {
+      weight += 1;
+    }
+
+    return weight;
+  }
+
   static isQuestTrackable(quest) {
     if (!quest || typeof quest !== "object") return false;
     if (quest.autoComplete && typeof quest.autoComplete === "object") {
@@ -25,6 +72,14 @@ export class QuestManager {
 
   static generateInitialQuests(player) {
     const quests = [];
+    const suitableMainQuests = MAIN_QUESTS.filter((quest) =>
+      this.isQuestSuitable(quest, player),
+    );
+    if (suitableMainQuests.length > 0) {
+      quests.push(
+        this.initializeQuest(this.pullQuestByPriority([...suitableMainQuests], player)),
+      );
+    }
 
     const suitableBeginnerQuests = BEGINNER_QUESTS.filter((quest) =>
       this.isQuestSuitable(quest, player),
@@ -34,7 +89,7 @@ export class QuestManager {
     const beginnerQuestCount = Math.min(2, beginnerPool.length);
     for (let i = 0; i < beginnerQuestCount; i++) {
       if (beginnerPool.length === 0) break;
-      const quest = this.pullQuestByPriority(beginnerPool);
+      const quest = this.pullQuestByPriority(beginnerPool, player);
       quests.push(this.initializeQuest(quest));
     }
 
@@ -49,7 +104,7 @@ export class QuestManager {
     const sideQuestCount = 0;
     for (let i = 0; i < sideQuestCount; i++) {
       if (sidePool.length === 0) break;
-      const sideQuest = this.pullQuestByPriority(sidePool);
+      const sideQuest = this.pullQuestByPriority(sidePool, player);
       quests.push(this.initializeQuest(sideQuest));
     }
 
@@ -58,7 +113,9 @@ export class QuestManager {
         this.isQuestSuitable(quest, player),
       );
       if (fallbackMain.length > 0) {
-        quests.push(this.initializeQuest(this.pullQuestByPriority(fallbackMain)));
+        quests.push(
+          this.initializeQuest(this.pullQuestByPriority([...fallbackMain], player)),
+        );
       }
     }
 
@@ -210,10 +267,20 @@ export class QuestManager {
     return quests[randomIndex];
   }
 
-  static pullQuestByPriority(quests) {
+  static pullQuestByPriority(quests, player = null) {
     if (!quests?.length) return null;
-    const randomIndex = randomInt(0, quests.length - 1);
-    const [quest] = quests.splice(randomIndex, 1);
+    const weights = quests.map((quest) => this.getQuestAffinityWeight(quest, player));
+    const totalWeight = weights.reduce((sum, value) => sum + value, 0);
+    let roll = randomInt(1, Math.max(1, totalWeight));
+    let index = 0;
+    for (let i = 0; i < quests.length; i += 1) {
+      roll -= weights[i];
+      if (roll <= 0) {
+        index = i;
+        break;
+      }
+    }
+    const [quest] = quests.splice(index, 1);
     return quest;
   }
 

@@ -33,6 +33,7 @@ let BEGINNER_QUESTS = [
     tags: {
       starter: true,
       tones: ["serene"],
+      favoredOrigins: ["freehold_scrapper", "deckhand_cadet", "sandstep_scout"],
     },
   },
   {
@@ -62,6 +63,7 @@ let BEGINNER_QUESTS = [
     tags: {
       starter: true,
       tones: ["neutral"],
+      favoredOrigins: ["ledger_apprentice", "archive_runner"],
     },
   },
   {
@@ -83,6 +85,7 @@ let BEGINNER_QUESTS = [
     tags: {
       starter: true,
       tones: ["tense"],
+      favoredOrigins: ["ashmarked_prospector", "grove_exile", "deckhand_cadet"],
     },
   },
   {
@@ -113,6 +116,7 @@ let BEGINNER_QUESTS = [
       starter: true,
       tones: ["mysterious"],
       favoredClasses: ["mage", "battlemage", "cleric"],
+      favoredOrigins: ["salvage_adept", "tidebound_votary", "dreamwake_survivor"],
     },
   },
 ];
@@ -141,6 +145,7 @@ let MAIN_QUESTS = [
       tones: ["mysterious", "urgent"],
       favoredClasses: ["battlemage", "archmage"],
       favoredRaces: ["void_walker", "celestial_descendant"],
+      favoredOrigins: ["salvage_adept", "ledger_apprentice"],
     },
   },
   {
@@ -166,6 +171,7 @@ let MAIN_QUESTS = [
       tones: ["tense"],
       favoredClasses: ["rogue", "shadow_assassin"],
       favoredRaces: ["shadow_walker", "neo_human"],
+      favoredOrigins: ["freehold_scrapper", "ledger_apprentice"],
     },
   },
   {
@@ -191,6 +197,7 @@ let MAIN_QUESTS = [
       tones: ["triumphant", "mystical"],
       favoredClasses: ["beastmaster", "ranger"],
       favoredRaces: ["nature_spirit", "beast_kin"],
+      favoredOrigins: ["grove_exile"],
     },
   },
   {
@@ -216,6 +223,7 @@ let MAIN_QUESTS = [
       tones: ["urgent", "heroic"],
       favoredClasses: ["paladin", "sharpshooter", "battlemage"],
       favoredRaces: ["skybound", "starseer", "stormforged"],
+      favoredOrigins: ["deckhand_cadet"],
     },
   },
   {
@@ -241,6 +249,7 @@ let MAIN_QUESTS = [
       tones: ["grim", "mystical"],
       favoredClasses: ["berserker", "spellbreaker", "beastmaster"],
       favoredRaces: ["emberkin", "phoenix_reborn", "demon_kin"],
+      favoredOrigins: ["ashmarked_prospector"],
     },
   },
   {
@@ -266,6 +275,7 @@ let MAIN_QUESTS = [
       tones: ["tense", "mysterious"],
       favoredClasses: ["rogue", "night_reaper", "oracle_hierophant"],
       favoredRaces: ["gloomshade", "duskborne", "undead_awakened"],
+      favoredOrigins: ["archive_runner", "dreamwake_survivor"],
     },
   },
   {
@@ -291,6 +301,7 @@ let MAIN_QUESTS = [
       tones: ["stoic", "mysterious"],
       favoredClasses: ["mage", "tempest_reveler", "battlemage"],
       favoredRaces: ["crystal_being", "rune_sentinel", "ironroot"],
+      favoredOrigins: ["salvage_adept", "ledger_apprentice"],
     },
   },
   {
@@ -316,6 +327,7 @@ let MAIN_QUESTS = [
       tones: ["urgent"],
       favoredClasses: ["tempest_reveler", "ranger", "monk"],
       favoredRaces: ["tidecaller", "frostborne", "astral_nomad"],
+      favoredOrigins: ["tidebound_votary"],
     },
   },
   {
@@ -341,6 +353,7 @@ let MAIN_QUESTS = [
       tones: ["ethereal", "mysterious"],
       favoredClasses: ["mage", "trickster", "night_reaper"],
       favoredRaces: ["umbral_oracle", "mirageborn", "sandstrider"],
+      favoredOrigins: ["sandstep_scout", "dreamwake_survivor"],
     },
   },
 ];
@@ -745,12 +758,13 @@ export function hashSeed(seedInput) {
 
 function computeQuestWeight(quest, character = {}) {
   let weight = 1;
-  const { classId, raceId, professionId } = character;
+  const { classId, raceId, professionId, originId } = character;
   const tags = quest.tags || {};
   if (classId && tags.favoredClasses?.includes(classId)) weight += 2;
   if (raceId && tags.favoredRaces?.includes(raceId)) weight += 2;
   if (professionId && tags.favoredProfessions?.includes(professionId))
     weight += 1;
+  if (originId && tags.favoredOrigins?.includes(originId)) weight += 2;
   return weight;
 }
 

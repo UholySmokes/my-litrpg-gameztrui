@@ -37,6 +37,8 @@ function resolvePlayerArchetypeIds(player) {
     typeof player?.class === "string" ? player.class : player?.class?.id;
   const raceId =
     typeof player?.race === "string" ? player.race : player?.race?.id;
+  const originId =
+    typeof player?.origin === "string" ? player.origin : player?.origin?.id;
   const professionId =
     typeof player?.profession === "string"
       ? player.profession
@@ -44,6 +46,7 @@ function resolvePlayerArchetypeIds(player) {
   return {
     classId: classId || null,
     raceId: raceId || null,
+    originId: originId || null,
     professionId: professionId || null,
   };
 }

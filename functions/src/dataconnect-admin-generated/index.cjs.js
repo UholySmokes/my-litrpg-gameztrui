@@ -7,6 +7,76 @@ const connectorConfig = {
 };
 exports.connectorConfig = connectorConfig;
 
+function upsertMyProfile(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, false);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpsertMyProfile', inputVars, inputOpts);
+}
+exports.upsertMyProfile = upsertMyProfile;
+
+function markMyProfileMigration(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('MarkMyProfileMigration', inputVars, inputOpts);
+}
+exports.markMyProfileMigration = markMyProfileMigration;
+
+function createSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateSaveSlot', inputVars, inputOpts);
+}
+exports.createSaveSlot = createSaveSlot;
+
+function upsertSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpsertSaveSlot', inputVars, inputOpts);
+}
+exports.upsertSaveSlot = upsertSaveSlot;
+
+function deleteSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteSaveSlot', inputVars, inputOpts);
+}
+exports.deleteSaveSlot = deleteSaveSlot;
+
+function deleteRunSession(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteRunSession', inputVars, inputOpts);
+}
+exports.deleteRunSession = deleteRunSession;
+
+function deleteRunEvent(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('DeleteRunEvent', inputVars, inputOpts);
+}
+exports.deleteRunEvent = deleteRunEvent;
+
+function upsertRunSession(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpsertRunSession', inputVars, inputOpts);
+}
+exports.upsertRunSession = upsertRunSession;
+
+function createRunEvent(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('CreateRunEvent', inputVars, inputOpts);
+}
+exports.createRunEvent = createRunEvent;
+
+function upsertStoryMemory(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
+  dcInstance.useGen(true);
+  return dcInstance.executeMutation('UpsertStoryMemory', inputVars, inputOpts);
+}
+exports.upsertStoryMemory = upsertStoryMemory;
+
 function getMyProfile(dcOrOptions, options) {
   const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);
   dcInstance.useGen(true);
@@ -56,66 +126,24 @@ function listMyRunEventsSince(dcOrVarsOrOptions, varsOrOptions, options) {
 }
 exports.listMyRunEventsSince = listMyRunEventsSince;
 
+function listAllMyRunSessions(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListAllMyRunSessions', undefined, inputOpts);
+}
+exports.listAllMyRunSessions = listAllMyRunSessions;
+
+function listAllMyRunEvents(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);
+  dcInstance.useGen(true);
+  return dcInstance.executeQuery('ListAllMyRunEvents', undefined, inputOpts);
+}
+exports.listAllMyRunEvents = listAllMyRunEvents;
+
 function listMyStoryMemories(dcOrVarsOrOptions, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
   return dcInstance.executeQuery('ListMyStoryMemories', inputVars, inputOpts);
 }
 exports.listMyStoryMemories = listMyStoryMemories;
-
-function upsertMyProfile(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, false);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('UpsertMyProfile', inputVars, inputOpts);
-}
-exports.upsertMyProfile = upsertMyProfile;
-
-function markMyProfileMigration(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('MarkMyProfileMigration', inputVars, inputOpts);
-}
-exports.markMyProfileMigration = markMyProfileMigration;
-
-function createSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateSaveSlot', inputVars, inputOpts);
-}
-exports.createSaveSlot = createSaveSlot;
-
-function upsertSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('UpsertSaveSlot', inputVars, inputOpts);
-}
-exports.upsertSaveSlot = upsertSaveSlot;
-
-function deleteSaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('DeleteSaveSlot', inputVars, inputOpts);
-}
-exports.deleteSaveSlot = deleteSaveSlot;
-
-function upsertRunSession(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('UpsertRunSession', inputVars, inputOpts);
-}
-exports.upsertRunSession = upsertRunSession;
-
-function createRunEvent(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('CreateRunEvent', inputVars, inputOpts);
-}
-exports.createRunEvent = createRunEvent;
-
-function upsertStoryMemory(dcOrVarsOrOptions, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
-  dcInstance.useGen(true);
-  return dcInstance.executeMutation('UpsertStoryMemory', inputVars, inputOpts);
-}
-exports.upsertStoryMemory = upsertStoryMemory;
 

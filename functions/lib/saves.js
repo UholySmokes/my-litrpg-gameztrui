@@ -8,6 +8,7 @@ const {
 	updateSave,
 	deleteSave,
 } = require("./saves-store");
+const { enforceProgressReset, resetLegacyProgress } = require("./save-reset.cjs");
 
 const MAX_SAVE_NAME_LENGTH = 80;
 const MAX_SAVES_RETURNED = 50;
@@ -52,6 +53,46 @@ function isGuid(value) {
 	return GUID_REGEX.test(String(value || ""));
 }
 
+async function handleResetLegacyRequest(req, res) {
+	try {
+		const user = await getUserFromRequest(req);
+		if (!user) {
+			return json(res, 401, {
+				ok: false,
+				errorCode: "UNAUTHENTICATED",
+				message: "Sign in required.",
+			});
+		}
+
+		if (String(req?.method || "GET").toUpperCase() !== "POST") {
+			return json(res, 405, {
+				ok: false,
+				errorCode: "METHOD_NOT_ALLOWED",
+				message: "Use POST to reset legacy progress.",
+			});
+		}
+
+		const result = await resetLegacyProgress({
+			ownerId: user.id,
+			displayName: user.displayName || user.email || "Traveler",
+		});
+
+		return json(res, 200, {
+			ok: true,
+			migrationVersion: result.migrationVersion,
+			deletedSaveCount: result.saveResult?.deletedSaveCount || 0,
+			deletedRunCount: result.syncResult?.deletedRunCount || 0,
+			deletedEventCount: result.syncResult?.deletedEventCount || 0,
+		});
+	} catch (error) {
+		return json(res, 500, {
+			ok: false,
+			errorCode: "RESET_FAILED",
+			message: String(error?.message || error || "Reset failed."),
+		});
+	}
+}
+
 async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 	try {
 		const user = await getUserFromRequest(req);
@@ -62,6 +103,9 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 				message: "Sign in required.",
 			});
 		}
+
+		const gate = await enforceProgressReset(res, { ownerId: user.id });
+		if (!gate.ok) return;
 
 		const method = String(req?.method || "GET").toUpperCase();
 		const normalizedSaveId = String(saveId || "").trim();
@@ -236,4 +280,5 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 
 module.exports = {
 	handleSavesRequest,
+	handleResetLegacyRequest,
 };

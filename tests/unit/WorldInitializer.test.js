@@ -31,13 +31,22 @@ describe("WorldInitializer", () => {
 
   it("seeds world after character creation into the quest biome", () => {
     const baseWorld = createInitialWorldState({ seed: 1 });
-    const player = { class: "templar", race: "skybound", profession: null };
+    const player = {
+      class: "paladin",
+      race: "skybound",
+      profession: null,
+      origin: { id: "deckhand_cadet", name: "Deckhand Cadet" },
+    };
     const quests = {
       active: [
         {
           id: "mq_starforge_siege",
           name: "Starforge Siege",
-          tags: { biome: "skydocks" },
+          tags: {
+            biome: "skydocks",
+            favoredClasses: ["paladin"],
+            favoredOrigins: ["deckhand_cadet"],
+          },
         },
       ],
       completed: [],

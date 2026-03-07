@@ -8,7 +8,6 @@
 // =================================================================
 
 import { useState, useCallback } from "react";
-import { ContentGenerator } from "../systems/generation/ContentGenerator.js";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
 import { ARCHETYPE_SYSTEMS } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import { getAllSkills, getSkillById } from "../systems/skills/SkillRegistry.js";
@@ -52,6 +51,89 @@ function normalizeEntityRef(value, fallback) {
   }
   if (typeof value === "string" && value) return value;
   return fallback;
+}
+
+function cloneOrigin(origin) {
+  if (!origin || typeof origin !== "object" || Array.isArray(origin)) return null;
+  return {
+    ...origin,
+    attributeBonuses:
+      origin.attributeBonuses && typeof origin.attributeBonuses === "object"
+        ? { ...origin.attributeBonuses }
+        : {},
+    favoredQuestTags: Array.isArray(origin.favoredQuestTags)
+      ? [...origin.favoredQuestTags]
+      : [],
+  };
+}
+
+function getAttributeBonuses(entity, preferredKey = "attributeBonuses") {
+  return ensureAttributeShape(
+    entity?.[preferredKey] ||
+      entity?.statBonuses ||
+      entity?.modifiers ||
+      entity?.baseStats ||
+      {},
+    0,
+  );
+}
+
+export function buildCharacterCreationAttributes({
+  attributePoints,
+  selectedRace,
+  selectedClass,
+  selectedOrigin,
+} = {}) {
+  const baseAttributes = ensureAttributeShape(attributePoints, BASE_ATTRIBUTE_VALUE);
+  const raceBonuses = getAttributeBonuses(selectedRace);
+  const classBonuses = getAttributeBonuses(selectedClass, "baseStats");
+  const originBonuses = getAttributeBonuses(selectedOrigin);
+
+  return CANONICAL_ATTRIBUTES.reduce((acc, key) => {
+    acc[key] =
+      (baseAttributes[key] ?? BASE_ATTRIBUTE_VALUE) +
+      (raceBonuses[key] ?? 0) +
+      (classBonuses[key] ?? 0) +
+      (originBonuses[key] ?? 0);
+    return acc;
+  }, createAttributeBaseline(0));
+}
+
+export function buildCharacterCreationDerivedState({
+  attributePoints,
+  selectedRace,
+  selectedClass,
+  selectedOrigin,
+} = {}) {
+  const attributes = buildCharacterCreationAttributes({
+    attributePoints,
+    selectedRace,
+    selectedClass,
+    selectedOrigin,
+  });
+  const resourceSystem =
+    selectedClass?.resourceSystem || selectedClass?.resource || null;
+  const hpMax = calculateMaxHp(attributes);
+  const manaMax = calculateMaxMana(attributes);
+
+  return {
+    attributes,
+    hp: {
+      current: hpMax,
+      max: hpMax,
+    },
+    mana: {
+      current: manaMax,
+      max: manaMax,
+    },
+    resources: {
+      rage: resourceSystem === "rage" ? 100 : 0,
+      chi: resourceSystem === "chi" ? 100 : 0,
+      focus: resourceSystem === "focus" ? 100 : 0,
+      stealth: resourceSystem === "stealth" ? 100 : 0,
+      energy: resourceSystem === "energy" ? 100 : 0,
+    },
+  };
 }
 
 function dedupeSkills(skills = []) {
@@ -369,19 +451,10 @@ export function useCharacterCreationReworked() {
     REVIEW: 8,
   };
 
-  // Generated Content State
-  const [generatedRaces, setGeneratedRaces] = useState(() => {
-    const options = ContentGenerator.generateCharacterOptions(5);
-    return options.races;
-  });
-  const [generatedClasses, setGeneratedClasses] = useState(() => {
-    const options = ContentGenerator.generateCharacterOptions(5);
-    return options.classes;
-  });
-
   // Step 1: Identity & Origin
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
+  const [selectedOrigin, setSelectedOrigin] = useState(null);
   const [selectedRace, setSelectedRace] = useState(null);
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedArchetypeSystem, setSelectedArchetypeSystem] = useState(null);
@@ -424,40 +497,16 @@ export function useCharacterCreationReworked() {
     [buildSkillPools],
   );
 
-  // Regenerate races
-  const regenerateRaces = useCallback(() => {
-    const options = ContentGenerator.generateCharacterOptions(5);
-    setGeneratedRaces(options.races);
-    setSelectedRace(null);
-    if (selectedClass) {
-      generateSkillPools(selectedClass, null);
-    }
-  }, [generateSkillPools, selectedClass]);
-
-  // Regenerate classes
-  const regenerateClasses = useCallback(() => {
-    const options = ContentGenerator.generateCharacterOptions(5);
-    setGeneratedClasses(options.classes);
-    setSelectedClass(null);
-    setSelectedActiveSkills([]);
-    setSelectedPassiveSkills([]);
-    setAvailableActiveSkills([]);
-    setAvailablePassiveSkills([]);
-  }, []);
-
   const handleReroll = useCallback(() => {
     if (rerollsRemaining <= 0) return;
 
     setRerollsRemaining((prev) => Math.max(0, prev - 1));
 
-    const options = ContentGenerator.generateCharacterOptions(5);
-    setGeneratedRaces(options.races);
-    setGeneratedClasses(options.classes);
-
     setCurrentStep(1);
     setShowBootSequence(false);
     setName("");
     setGender("");
+    setSelectedOrigin(null);
     setSelectedRace(null);
     setSelectedClass(null);
     setSelectedArchetypeSystem(null);
@@ -468,6 +517,10 @@ export function useCharacterCreationReworked() {
     setAvailablePassiveSkills([]);
     setAttributePoints(createAttributeBaseline(BASE_ATTRIBUTE_VALUE));
   }, [rerollsRemaining]);
+
+  const handleOriginSelect = useCallback((origin) => {
+    setSelectedOrigin(origin ? cloneOrigin(origin) : null);
+  }, []);
 
   // Calculate remaining points
   const totalAllocated = Object.values(attributePoints).reduce(
@@ -591,8 +644,9 @@ export function useCharacterCreationReworked() {
   const validateIdentity = useCallback(() => {
     if (!name.trim()) return { valid: false, error: "Name is required" };
     if (!gender) return { valid: false, error: "Gender is required" };
+    if (!selectedOrigin) return { valid: false, error: "Origin is required" };
     return { valid: true };
-  }, [name, gender]);
+  }, [gender, name, selectedOrigin]);
 
   const validateRace = useCallback(() => {
     if (!selectedRace) return { valid: false, error: "Race is required" };
@@ -723,18 +777,12 @@ export function useCharacterCreationReworked() {
     const validation = validateReview();
     if (!validation.valid) return validation;
 
-    // Apply race stat bonuses
-    const finalStats = ensureAttributeShape(
+    const derivedState = buildCharacterCreationDerivedState({
       attributePoints,
-      BASE_ATTRIBUTE_VALUE,
-    );
-    const bonuses = selectedRace.modifiers || selectedRace.statBonuses || {};
-    for (const [stat, bonus] of Object.entries(bonuses)) {
-      const canonicalKey = toCanonicalAttributeKey(stat);
-      if (!canonicalKey) continue;
-      finalStats[canonicalKey] =
-        (finalStats[canonicalKey] ?? BASE_ATTRIBUTE_VALUE) + bonus;
-    }
+      selectedRace,
+      selectedClass,
+      selectedOrigin,
+    });
 
     // Add profession skills at tier 1
     const professionSkills = [];
@@ -768,10 +816,6 @@ export function useCharacterCreationReworked() {
       ...professionSkills,
     ];
 
-    // Calculate derived stats (HP/Mana)
-    const baseHp = calculateMaxHp(finalStats);
-    const baseMana = calculateMaxMana(finalStats);
-
     const professionId = selectedProfession?.id || null;
     const professionName = selectedProfession?.name || null;
     const startingGold = 100;
@@ -785,21 +829,12 @@ export function useCharacterCreationReworked() {
     const talentLabel = assignedTalentNames.length
       ? assignedTalentNames.join(", ")
       : "None";
-    const resourceSystem =
-      selectedClass?.resourceSystem || selectedClass?.resource || null;
-    const initialResources = {
-      rage: resourceSystem === "rage" ? 100 : 0,
-      chi: resourceSystem === "chi" ? 100 : 0,
-      focus: resourceSystem === "focus" ? 100 : 0,
-      stealth: resourceSystem === "stealth" ? 100 : 0,
-      energy: resourceSystem === "energy" ? 100 : 0,
-    };
-
     const characterData = {
       name: name.trim(),
       gender,
       race: normalizeEntityRef(selectedRace, "Unknown"),
       class: normalizeEntityRef(selectedClass, "None"),
+      origin: cloneOrigin(selectedOrigin),
       archetypeSystem: selectedArchetypeSystem
         ? {
             id: selectedArchetypeSystem.id,
@@ -819,7 +854,7 @@ export function useCharacterCreationReworked() {
       professionSkills,
       abilities: allAbilities,
       attributes: {
-        ...finalStats,
+        ...derivedState.attributes,
         freePoints: 0, // All points allocated during creation
       },
       level: 1,
@@ -827,15 +862,9 @@ export function useCharacterCreationReworked() {
         current: 0,
         max: xpForNextLevel(1),
       },
-      hp: {
-        current: baseHp,
-        max: baseHp,
-      },
-      mana: {
-        current: baseMana,
-        max: baseMana,
-      },
-      resources: initialResources,
+      hp: derivedState.hp,
+      mana: derivedState.mana,
+      resources: derivedState.resources,
       gold: startingGold,
       soulpoints: startingSoulpoints,
       currency: {
@@ -859,6 +888,7 @@ export function useCharacterCreationReworked() {
     attributePoints,
     name,
     gender,
+    selectedOrigin,
     selectedRace,
     selectedClass,
     selectedArchetypeSystem,
@@ -880,6 +910,7 @@ export function useCharacterCreationReworked() {
     name,
     characterName: name,
     gender,
+    selectedOrigin,
     selectedRace,
     selectedClass,
     selectedArchetypeSystem,
@@ -888,8 +919,6 @@ export function useCharacterCreationReworked() {
     selectedProfession,
     attributePoints,
     remainingPoints,
-    generatedRaces,
-    generatedClasses,
     availableActiveSkills,
     availablePassiveSkills,
     availableArchetypeSystems: ARCHETYPE_SYSTEMS,
@@ -900,8 +929,7 @@ export function useCharacterCreationReworked() {
     setGender,
 
     // Actions
-    regenerateRaces,
-    regenerateClasses,
+    handleOriginSelect,
     handleRaceSelect,
     handleClassSelect,
     handleArchetypeSystemSelect,

@@ -115,6 +115,14 @@ mutation DeleteSaveSlot($id: UUID!) @auth(level: USER) {
   saveSlot_delete(key: { id: $id })
 }
 
+mutation DeleteRunSession($id: UUID!) @auth(level: USER) {
+  runSession_delete(key: { id: $id })
+}
+
+mutation DeleteRunEvent($id: UUID!) @auth(level: USER) {
+  runEvent_delete(key: { id: $id })
+}
+
 mutation UpsertRunSession(
   $id: UUID!
   $runId: String!

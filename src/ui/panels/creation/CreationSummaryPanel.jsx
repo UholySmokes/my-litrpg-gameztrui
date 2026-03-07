@@ -16,6 +16,10 @@ export default function CreationSummaryPanel({
   const professionSkills = Array.isArray(selectionSummary.professionSkills)
     ? selectionSummary.professionSkills
     : [];
+  const originBiome = selectionSummary.originBiome
+    ? String(selectionSummary.originBiome).replace(/_/g, " ")
+    : null;
+
   return (
     <div
       style={{
@@ -63,6 +67,29 @@ export default function CreationSummaryPanel({
         >
           <div style={{ color: "var(--holo-cyan)" }}>
             <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
+              ORIGIN
+            </div>
+            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
+              {selectionSummary.originName || "Origin not selected"}
+            </div>
+            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
+              {selectionSummary.originDescription ||
+                "Choose an origin to shape your opening pressures."}
+            </div>
+            {originBiome ? (
+              <div
+                style={{
+                  marginTop: "0.35rem",
+                  fontSize: "0.75rem",
+                  color: "var(--text-dim)",
+                }}
+              >
+                <strong>Favored Biome:</strong> {originBiome}
+              </div>
+            ) : null}
+          </div>
+          <div style={{ color: "var(--holo-cyan)" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
               RACE
             </div>
             <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
@@ -81,18 +108,18 @@ export default function CreationSummaryPanel({
                   gap: "0.2rem",
                 }}
               >
-                {racePassiveAbility && (
+                {racePassiveAbility ? (
                   <div>
-                    <strong>Passive:</strong> {racePassiveAbility.name} —
-                    {" "}{racePassiveAbility.description}
+                    <strong>Passive:</strong> {racePassiveAbility.name} -{" "}
+                    {racePassiveAbility.description}
                   </div>
-                )}
-                {raceActiveAbility && (
+                ) : null}
+                {raceActiveAbility ? (
                   <div>
-                    <strong>Active:</strong> {raceActiveAbility.name} —
-                    {" "}{raceActiveAbility.description}
+                    <strong>Active:</strong> {raceActiveAbility.name} -{" "}
+                    {raceActiveAbility.description}
                   </div>
-                )}
+                ) : null}
               </div>
             )}
           </div>
@@ -138,9 +165,10 @@ export default function CreationSummaryPanel({
                   lineHeight: 1.35,
                 }}
               >
-                <strong>Tier 1:</strong> {professionSkills
+                <strong>Tier 1:</strong>{" "}
+                {professionSkills
                   .slice(0, 6)
-                  .map((s) => String(s).replace(/_/g, " "))
+                  .map((skill) => String(skill).replace(/_/g, " "))
                   .join(", ")}
               </div>
             ) : null}
@@ -287,7 +315,7 @@ export default function CreationSummaryPanel({
             Complete all requirements to initialize
           </div>
         )}
-        {canFinalize && (
+        {canFinalize ? (
           <button
             type="button"
             onClick={async () => {
@@ -327,7 +355,7 @@ export default function CreationSummaryPanel({
           >
             {isInitializing ? "INITIALIZING..." : "INITIALIZE AVATAR"}
           </button>
-        )}
+        ) : null}
       </div>
     </div>
   );

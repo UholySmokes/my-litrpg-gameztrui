@@ -9,6 +9,7 @@ const { normalizeSyncEvent } = require("./sync-core");
 const DEFAULT_FILE_PATH = path.resolve(__dirname, "..", ".data", "sync-db.json");
 const DEFAULT_RUNS_COLLECTION = "sync_runs";
 const DEFAULT_EVENTS_COLLECTION = "run_events";
+const DEFAULT_PROFILES_COLLECTION = "sync_profiles";
 const DEFAULT_PULL_EVENT_LIMIT = 100;
 
 function getOptionalEnv(name) {
@@ -50,6 +51,10 @@ function getEventsCollectionName() {
 	return getOptionalEnv("SYNC_EVENTS_COLLECTION") || DEFAULT_EVENTS_COLLECTION;
 }
 
+function getProfilesCollectionName() {
+	return getOptionalEnv("SYNC_PROFILES_COLLECTION") || DEFAULT_PROFILES_COLLECTION;
+}
+
 function getFilePath() {
 	const configured = getOptionalEnv("SYNC_DB_PATH") || getOptionalEnv("SYNC_DB_FILE_PATH");
 	if (!configured) return DEFAULT_FILE_PATH;
@@ -64,6 +69,7 @@ function createEmptyDb() {
 		updated_at: nowIso(),
 		runs: [],
 		events: [],
+		migration_versions: {},
 	};
 }
 
@@ -82,6 +88,12 @@ function normalizeDb(value) {
 			typeof value.updated_at === "string" ? value.updated_at : base.updated_at,
 		runs: Array.isArray(value.runs) ? value.runs : [],
 		events: Array.isArray(value.events) ? value.events : [],
+		migration_versions:
+			value.migration_versions &&
+			typeof value.migration_versions === "object" &&
+			!Array.isArray(value.migration_versions)
+				? value.migration_versions
+				: {},
 	};
 }
 
@@ -281,6 +293,35 @@ async function fileListEvents({ ownerId, runId, afterSeq = 0, limit = DEFAULT_PU
 		.slice(0, cappedLimit);
 }
 
+async function fileGetMigrationVersion({ ownerId }) {
+	const db = readDb();
+	return Math.max(0, Number(db.migration_versions?.[String(ownerId)] || 0) || 0);
+}
+
+async function fileMarkMigrationVersion({ ownerId, version }) {
+	const db = readDb();
+	db.migration_versions = {
+		...(db.migration_versions || {}),
+		[String(ownerId)]: Math.max(0, Number(version) || 0),
+	};
+	writeDb(db);
+	return true;
+}
+
+async function filePurgeUserProgress({ ownerId }) {
+	const db = readDb();
+	const normalizedOwnerId = String(ownerId || "");
+	const deletedRunCount = db.runs.filter((entry) => entry.owner_id === normalizedOwnerId).length;
+	const deletedEventCount = db.events.filter((entry) => entry.owner_id === normalizedOwnerId).length;
+	db.runs = db.runs.filter((entry) => entry.owner_id !== normalizedOwnerId);
+	db.events = db.events.filter((entry) => entry.owner_id !== normalizedOwnerId);
+	writeDb(db);
+	return {
+		deletedRunCount,
+		deletedEventCount,
+	};
+}
+
 async function fireGetRun({ ownerId, runId }) {
 	const key = normalizeRunKey(ownerId, runId);
 	const snap = await ensureFirestore()
@@ -366,6 +407,58 @@ async function fireListEvents({ ownerId, runId, afterSeq = 0, limit = DEFAULT_PU
 	return snapshot.docs.map((doc) => mapEventDoc(doc.data())).filter((row) => row.commit_id && row.owner_id && row.run_id && `${row.owner_id}:${row.run_id}` === runKey);
 }
 
+async function fireGetMigrationVersion({ ownerId }) {
+	const snap = await ensureFirestore()
+		.collection(getProfilesCollectionName())
+		.doc(String(ownerId))
+		.get();
+	if (!snap.exists) return 0;
+	return Math.max(0, Number(snap.get("migrationVersion") || 0) || 0);
+}
+
+async function fireMarkMigrationVersion({ ownerId, version, displayName = "" }) {
+	await ensureFirestore()
+		.collection(getProfilesCollectionName())
+		.doc(String(ownerId))
+		.set(
+			{
+				owner_id: String(ownerId),
+				display_name: String(displayName || "Traveler"),
+				migrationVersion: Math.max(0, Number(version) || 0),
+				updated_at: nowTimestamp(),
+			},
+			{ merge: true },
+		);
+	return true;
+}
+
+async function firePurgeUserProgress({ ownerId }) {
+	const db = ensureFirestore();
+	const runsSnapshot = await db
+		.collection(getRunsCollectionName())
+		.where("owner_id", "==", String(ownerId))
+		.get();
+	const eventsSnapshot = await db
+		.collection(getEventsCollectionName())
+		.where("owner_id", "==", String(ownerId))
+		.get();
+
+	const batch = db.batch();
+	runsSnapshot.docs.forEach((doc) => {
+		batch.delete(doc.ref);
+	});
+	eventsSnapshot.docs.forEach((doc) => {
+		batch.delete(doc.ref);
+	});
+	if (runsSnapshot.docs.length || eventsSnapshot.docs.length) {
+		await batch.commit();
+	}
+	return {
+		deletedRunCount: runsSnapshot.docs.length,
+		deletedEventCount: eventsSnapshot.docs.length,
+	};
+}
+
 async function getRun({ ownerId, runId }) {
 	return withBackend({
 		dataconnectFn: () => dataconnectStore.getRun({ ownerId, runId }),
@@ -411,8 +504,8 @@ async function listEvents({ ownerId, runId, afterSeq = 0, limit = DEFAULT_PULL_E
 async function getMigrationVersion({ ownerId }) {
 	return withBackend({
 		dataconnectFn: () => dataconnectStore.getMigrationVersion({ ownerId }),
-		firestoreFn: () => null,
-		fileFn: () => null,
+		firestoreFn: () => fireGetMigrationVersion({ ownerId }),
+		fileFn: () => fileGetMigrationVersion({ ownerId }),
 	});
 }
 
@@ -420,8 +513,16 @@ async function markMigrationVersion({ ownerId, version, displayName = "" }) {
 	return withBackend({
 		dataconnectFn: () =>
 			dataconnectStore.markMigrationVersion({ ownerId, version, displayName }),
-		firestoreFn: () => null,
-		fileFn: () => null,
+		firestoreFn: () => fireMarkMigrationVersion({ ownerId, version, displayName }),
+		fileFn: () => fileMarkMigrationVersion({ ownerId, version }),
+	});
+}
+
+async function purgeUserProgress({ ownerId }) {
+	return withBackend({
+		dataconnectFn: () => dataconnectStore.purgeUserProgress({ ownerId }),
+		firestoreFn: () => firePurgeUserProgress({ ownerId }),
+		fileFn: () => filePurgeUserProgress({ ownerId }),
 	});
 }
 
@@ -429,6 +530,7 @@ module.exports = {
 	resolveSyncBackend,
 	getMigrationVersion,
 	markMigrationVersion,
+	purgeUserProgress,
 	getRun,
 	putRun,
 	getEventByCommitId,

@@ -101,9 +101,10 @@ async function runNarration(body) {
 	const input =
 		prompt ||
 		`Narrate the next scene based on: ${JSON.stringify(body || {})}`;
+	const agentId = resolveNarratorAgentId(mode);
 
 	const result = await runtime.runFirebaseAgent({
-		agent: resolveNarratorAgentId(mode),
+		agent: agentId,
 		input: {
 			prompt: input,
 			mode,
@@ -116,6 +117,7 @@ async function runNarration(body) {
 	const payload = buildNarrativePayload(result?.text, mode);
 	return {
 		mode,
+		agentId,
 		status: "completed",
 		backend: result?.backend || "firebase-genkit",
 		model: result?.model,
@@ -229,6 +231,9 @@ async function narrate(req, res) {
 			suggestions: result.suggestions,
 			outputHash: result.outputHash,
 			mode: result.mode,
+			agentId: result.agentId,
+			backend: result.backend,
+			model: result.model,
 			status: result.status,
 		});
 	} catch (error) {
@@ -318,6 +323,7 @@ async function narrateStart(req, res) {
 			status: "completed",
 			done: true,
 			mode: result.mode,
+			agentId: result.agentId,
 			narrative: result.narrative,
 			mood: result.mood,
 			suggestions: result.suggestions,

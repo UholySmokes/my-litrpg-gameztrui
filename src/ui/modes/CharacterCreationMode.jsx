@@ -292,7 +292,7 @@ export default function CharacterCreationMode({ onComplete }) {
     const stepValue = 100 / 8;
     let progress = 0;
     if (characterName && characterName.trim().length > 0) progress += stepValue;
-    if (gender && selectedOrigin) progress += stepValue;
+    if (selectedOrigin) progress += stepValue;
     if (selectedRace) progress += stepValue;
     if (selectedClass) progress += stepValue;
     if (selectedProfession) progress += stepValue;
@@ -306,7 +306,6 @@ export default function CharacterCreationMode({ onComplete }) {
     setSyncProgress(Math.min(100, progress));
   }, [
     characterName,
-    gender,
     selectedOrigin,
     selectedRace,
     selectedClass,
@@ -371,7 +370,7 @@ export default function CharacterCreationMode({ onComplete }) {
         label: `Designation: ${characterName?.trim() ? "set" : "pending"}`,
         active: Boolean(characterName?.trim()),
       },
-      { label: `Gender: ${gender || "pending"}`, active: Boolean(gender) },
+      { label: `Gender: ${gender || "optional"}`, active: true },
       {
         label: `Origin: ${selectedOrigin?.name || "pending"}`,
         active: Boolean(selectedOrigin),
@@ -686,7 +685,7 @@ export default function CharacterCreationMode({ onComplete }) {
       {
         id: "identity",
         label: "Identity",
-        ok: Boolean(characterName?.trim()) && Boolean(gender) && Boolean(selectedOrigin),
+        ok: Boolean(characterName?.trim()) && Boolean(selectedOrigin),
       },
       { id: "race", label: "Race", ok: Boolean(selectedRace) },
       { id: "class", label: "Class", ok: Boolean(selectedClass) },
@@ -716,7 +715,6 @@ export default function CharacterCreationMode({ onComplete }) {
     canFinalize,
     characterName,
     currentStep,
-    gender,
     selectedOrigin,
     selectedActiveSkills.length,
     selectedArchetypeSystem,

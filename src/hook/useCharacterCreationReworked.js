@@ -26,6 +26,11 @@ import {
 } from "../constants/attributes.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { xpForNextLevel } from "../core/xpCurve.js";
+import {
+  createCharacterCreationBlueprint,
+  createCharacterCreationOutcome,
+  validateCharacterCreationBlueprint,
+} from "@voidverse/game-core";
 
 const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;
@@ -643,10 +648,9 @@ export function useCharacterCreationReworked() {
 
   const validateIdentity = useCallback(() => {
     if (!name.trim()) return { valid: false, error: "Name is required" };
-    if (!gender) return { valid: false, error: "Gender is required" };
     if (!selectedOrigin) return { valid: false, error: "Origin is required" };
     return { valid: true };
-  }, [gender, name, selectedOrigin]);
+  }, [name, selectedOrigin]);
 
   const validateRace = useCallback(() => {
     if (!selectedRace) return { valid: false, error: "Race is required" };
@@ -710,12 +714,54 @@ export function useCharacterCreationReworked() {
       const result = check();
       if (!result.valid) return result;
     }
+
+    const blueprintValidation = validateCharacterCreationBlueprint(
+      {
+        name,
+        gender,
+        raceId: selectedRace?.id,
+        classId: selectedClass?.id,
+        originId: selectedOrigin?.id,
+        professionId: selectedProfession?.id,
+        archetypeSystemId: selectedArchetypeSystem?.id,
+        attributes: buildCharacterCreationAttributes({
+          attributePoints,
+          selectedRace,
+          selectedClass,
+          selectedOrigin,
+        }),
+        activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
+        passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
+      },
+      {
+        requiredActiveSkillCount: MAX_ACTIVE_SKILLS,
+        requiredPassiveSkillCount: MAX_PASSIVE_SKILLS,
+      },
+    );
+    if (!blueprintValidation.valid) {
+      return {
+        valid: false,
+        error: blueprintValidation.errors[0],
+        errors: blueprintValidation.errors,
+      };
+    }
+
     return { valid: true };
   }, [
+    attributePoints,
+    gender,
+    name,
+    selectedActiveSkills,
     validateArchetype,
     validateAttributes,
     validateClass,
     validateIdentity,
+    selectedArchetypeSystem,
+    selectedClass,
+    selectedOrigin,
+    selectedPassiveSkills,
+    selectedProfession,
+    selectedRace,
     validateProfession,
     validateRace,
     validateSkills,
@@ -829,12 +875,36 @@ export function useCharacterCreationReworked() {
     const talentLabel = assignedTalentNames.length
       ? assignedTalentNames.join(", ")
       : "None";
-    const characterData = {
+    const blueprint = createCharacterCreationBlueprint({
       name: name.trim(),
       gender,
+      raceId: selectedRace?.id,
+      classId: selectedClass?.id,
+      secondaryClassId: null,
+      originId: selectedOrigin?.id,
+      professionId,
+      archetypeSystemId: selectedArchetypeSystem?.id,
+      attributes: derivedState.attributes,
+      skillLoadoutId: null,
+      activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
+      passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
+      perkIds: [],
+      starterTreeIds: [],
+      alignmentId: null,
+    });
+
+    const characterData = {
+      name: name.trim(),
+      gender: gender || null,
       race: normalizeEntityRef(selectedRace, "Unknown"),
       class: normalizeEntityRef(selectedClass, "None"),
+      secondaryClass: null,
       origin: cloneOrigin(selectedOrigin),
+      alignment: null,
+      perks: [],
+      starterTrees: [],
+      skillLoadoutId: null,
+      characterCreationBlueprint: blueprint,
       archetypeSystem: selectedArchetypeSystem
         ? {
             id: selectedArchetypeSystem.id,
@@ -882,7 +952,16 @@ export function useCharacterCreationReworked() {
       equipment: {}, // Empty starting equipment
     };
 
-    return { valid: true, characterData };
+    const creationOutcome = createCharacterCreationOutcome({
+      blueprint,
+      derivedState,
+      seedData: {
+        startingGold,
+        startingSoulpoints,
+      },
+    });
+
+    return { valid: true, characterData, creationOutcome };
   }, [
     validateReview,
     attributePoints,
@@ -953,7 +1032,5 @@ export function useCharacterCreationReworked() {
     isSkillSelected,
 
     // Constants
-    MAX_ACTIVE_SKILLS,
-    MAX_PASSIVE_SKILLS,
   };
 }

@@ -94,6 +94,11 @@ describe("assemblePrompt", () => {
         xp: { current: 10, max: 100 },
         inventory: [],
         equipment: {},
+        secondaryClass: { id: "rogue", name: "Rogue" },
+        alignment: { id: "lawful_good", name: "Lawful Good" },
+        perks: ["quick_learner"],
+        starterTrees: ["offense"],
+        skillLoadoutId: "warrior_starter",
         magic: {
           resonance: { current: 42, max: 100, state: "humming" },
           reserves: { fire: 4.2 },
@@ -138,5 +143,10 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("Magic Reserves:");
     expect(prompt).toContain("Ambient Context:");
     expect(prompt).toContain("Ambient Draw Multipliers:");
+    expect(prompt).toContain("Secondary Class: Rogue");
+    expect(prompt).toContain("Alignment: Lawful Good");
+    expect(prompt).toContain("Creation Perks: quick_learner");
+    expect(prompt).toContain("Starter Trees: offense");
+    expect(prompt).toContain("Skill Loadout: warrior_starter");
   });
 });

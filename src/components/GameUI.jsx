@@ -120,6 +120,99 @@ const clearLegacyLocalProgress = () => {
   }
 };
 
+function AutosaveResumeOverlay({ isTransitioning, onLoadState }) {
+  const [autosavePrompt, setAutosavePrompt] = useState(() =>
+    readAutosavePromptCandidate(),
+  );
+
+  const rememberAutosavePromptDismissal = useCallback((autosaveRecord) => {
+    if (typeof window === "undefined") return;
+    const marker = String(
+      autosaveRecord?.updated_at || autosaveRecord?.created_at || "",
+    );
+    if (!marker) return;
+    try {
+      sessionStorage.setItem(AUTOSAVE_PROMPT_DISMISS_KEY, marker);
+    } catch {
+      return;
+    }
+  }, []);
+
+  const handleResumeAutosave = useCallback(() => {
+    if (!isRecord(autosavePrompt?.game_state)) {
+      setAutosavePrompt(null);
+      return;
+    }
+
+    onLoadState(autosavePrompt.game_state, {
+      message: `Resumed autosave: ${autosavePrompt?.save_name || "Autosave"}`,
+      closeSaveLoad: false,
+    });
+    rememberAutosavePromptDismissal(autosavePrompt);
+    setAutosavePrompt(null);
+  }, [autosavePrompt, onLoadState, rememberAutosavePromptDismissal]);
+
+  const handleDismissAutosavePrompt = useCallback(() => {
+    rememberAutosavePromptDismissal(autosavePrompt);
+    setAutosavePrompt(null);
+  }, [autosavePrompt, rememberAutosavePromptDismissal]);
+
+  if (!autosavePrompt || isTransitioning) return null;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: "rgba(0, 0, 0, 0.65)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 950,
+        padding: "1.25rem",
+      }}
+    >
+      <div
+        className="holo-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="autosave-resume-title"
+        style={{ width: "min(540px, 100%)", padding: "1.25rem" }}
+      >
+        <h2 id="autosave-resume-title" style={{ marginTop: 0 }}>
+          RESUME AUTOSAVE?
+        </h2>
+        <p style={{ color: "var(--text-main)", marginBottom: "0.5rem" }}>
+          A previous run was detected. Continue from the latest autosave or start a
+          fresh character setup.
+        </p>
+        <p style={{ color: "var(--text-muted)", marginTop: 0 }}>
+          Last update: {autosavePrompt.updated_at || autosavePrompt.created_at || "unknown"}
+        </p>
+        <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
+          <button
+            className="holo-button"
+            style={{ borderColor: "var(--holo-cyan)", color: "var(--holo-cyan)" }}
+            onClick={handleResumeAutosave}
+          >
+            Continue Autosave
+          </button>
+          <button
+            className="holo-button"
+            style={{ borderColor: "var(--holo-gold)", color: "var(--holo-gold)" }}
+            onClick={handleDismissAutosavePrompt}
+          >
+            Start Fresh
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function GameUI({ user }) {
   // PART 1: State Sanitation - Define missing visibility states
   const [showShop, setShowShop] = useState(false);
@@ -132,7 +225,6 @@ export default function GameUI({ user }) {
   const [showQuests, setShowQuests] = useState(false);
   const [showReplayInspector, setShowReplayInspector] = useState(false);
   const [equipmentSelectSlot, setEquipmentSelectSlot] = useState(null);
-  const [autosavePrompt, setAutosavePrompt] = useState(null);
   const [saveResetAttempt, setSaveResetAttempt] = useState(0);
   const [saveResetState, setSaveResetState] = useState({
     ready: false,
@@ -282,14 +374,6 @@ export default function GameUI({ user }) {
     };
   }, [persistLocalAutosave, saveResetState.ready, state]);
 
-  useEffect(() => {
-    if (!saveResetState.ready) {
-      setAutosavePrompt(null);
-      return;
-    }
-    setAutosavePrompt(readAutosavePromptCandidate());
-  }, [saveResetState.ready]);
-
   const {
     submitInput,
     isLoading,
@@ -376,7 +460,6 @@ export default function GameUI({ user }) {
 
     setState(nextState);
     persistLocalAutosave(nextState, "Character Creation Checkpoint");
-    setAutosavePrompt(null);
 
     setIsTransitioning(true);
     if (transitionTimeoutRef.current) {
@@ -687,38 +770,6 @@ export default function GameUI({ user }) {
     },
     [addSystemMessage, setState],
   );
-
-  const rememberAutosavePromptDismissal = useCallback((autosaveRecord) => {
-    if (typeof window === "undefined") return;
-    const marker = String(
-      autosaveRecord?.updated_at || autosaveRecord?.created_at || "",
-    );
-    if (!marker) return;
-    try {
-      sessionStorage.setItem(AUTOSAVE_PROMPT_DISMISS_KEY, marker);
-    } catch {
-      return;
-    }
-  }, []);
-
-  const handleResumeAutosave = useCallback(() => {
-    if (!isRecord(autosavePrompt?.game_state)) {
-      setAutosavePrompt(null);
-      return;
-    }
-
-    handleLoadState(autosavePrompt.game_state, {
-      message: `Resumed autosave: ${autosavePrompt?.save_name || "Autosave"}`,
-      closeSaveLoad: false,
-    });
-    rememberAutosavePromptDismissal(autosavePrompt);
-    setAutosavePrompt(null);
-  }, [autosavePrompt, handleLoadState, rememberAutosavePromptDismissal]);
-
-  const handleDismissAutosavePrompt = useCallback(() => {
-    rememberAutosavePromptDismissal(autosavePrompt);
-    setAutosavePrompt(null);
-  }, [autosavePrompt, rememberAutosavePromptDismissal]);
 
   const handleCombatEscape = () => {
     if (state?.combat?.status !== "active") return;
@@ -1177,58 +1228,12 @@ export default function GameUI({ user }) {
         </div>
       </div>
 
-      {autosavePrompt && !isTransitioning && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: "rgba(0, 0, 0, 0.65)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 950,
-            padding: "1.25rem",
-          }}
-        >
-          <div
-            className="holo-panel"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="autosave-resume-title"
-            style={{ width: "min(540px, 100%)", padding: "1.25rem" }}
-          >
-            <h2 id="autosave-resume-title" style={{ marginTop: 0 }}>
-              RESUME AUTOSAVE?
-            </h2>
-            <p style={{ color: "var(--text-main)", marginBottom: "0.5rem" }}>
-              A previous run was detected. Continue from the latest autosave or start a
-              fresh character setup.
-            </p>
-            <p style={{ color: "var(--text-muted)", marginTop: 0 }}>
-              Last update:{" "}
-              {autosavePrompt.updated_at || autosavePrompt.created_at || "unknown"}
-            </p>
-            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
-              <button
-                className="holo-button"
-                style={{ borderColor: "var(--holo-cyan)", color: "var(--holo-cyan)" }}
-                onClick={handleResumeAutosave}
-              >
-                Continue Autosave
-              </button>
-              <button
-                className="holo-button"
-                style={{ borderColor: "var(--holo-gold)", color: "var(--holo-gold)" }}
-                onClick={handleDismissAutosavePrompt}
-              >
-                Start Fresh
-              </button>
-            </div>
-          </div>
-        </div>
+      {saveResetState.ready && (
+        <AutosaveResumeOverlay
+          key={`autosave-prompt-${saveResetAttempt}-${user?.id || "local"}`}
+          isTransitioning={isTransitioning}
+          onLoadState={handleLoadState}
+        />
       )}
 
       {state?.player?.isDead && (

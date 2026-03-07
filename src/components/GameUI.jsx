@@ -11,6 +11,10 @@ import { seedWorldAfterCharacterCreation } from "../world/WorldInitializer.js";
 import { resetLegacyProgress } from "../core/CloudSaveService.js";
 import CharacterCreationMode from "../ui/modes/CharacterCreationMode.jsx";
 import GameMode from "../ui/modes/GameMode.jsx";
+import {
+  incrementCharactersCreated,
+  isAdvancedCreationUnlocked,
+} from "../core/playerProfile.js";
 import saveCutover from "../../shared/save-cutover.cjs";
 
 const IS_DEV_BUILD = Boolean(import.meta?.env?.DEV);
@@ -458,6 +462,7 @@ export default function GameUI({ user }) {
 
     const nextState = {
       ...state,
+      player_profile: incrementCharactersCreated(state?.player_profile),
       player: characterData,
       quests: nextQuests,
       world: seededWorld,
@@ -823,6 +828,10 @@ export default function GameUI({ user }) {
 
   const [isTransitioning, setIsTransitioning] = useState(false);
   const transitionTimeoutRef = useRef(null);
+  const advancedCreationUnlocked = useMemo(
+    () => isAdvancedCreationUnlocked(state),
+    [state],
+  );
   useEffect(() => {
     return () => {
       if (transitionTimeoutRef.current) {
@@ -1073,7 +1082,11 @@ export default function GameUI({ user }) {
                 .filter(Boolean)
                 .join(" ")}
             >
-              <CharacterCreationMode onComplete={handleCharacterCreationComplete} />
+              <CharacterCreationMode
+                advancedUnlocked={advancedCreationUnlocked}
+                telemetryUser={user}
+                onComplete={handleCharacterCreationComplete}
+              />
             </div>
           )}
           {shouldRenderGameShell && (

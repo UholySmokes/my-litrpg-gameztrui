@@ -7,7 +7,7 @@
 // - Persistent selections across rerolls
 // =================================================================
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
 import { ARCHETYPE_SYSTEMS } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import { getAllSkills, getSkillById } from "../systems/skills/SkillRegistry.js";
@@ -25,24 +25,16 @@ import {
   toCanonicalAttributeKey,
 } from "../constants/attributes.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
+import { buildCreationStepSequence } from "../core/characterCreationWizardFlow.js";
 import { xpForNextLevel } from "../core/xpCurve.js";
 import {
   createCharacterCreationBlueprint,
   createCharacterCreationOutcome,
-<<<<<<< ours
-<<<<<<< ours
-=======
-=======
->>>>>>> theirs
   getCharacterCreationPerkLimits,
   listCharacterCreationAlignments,
   listCharacterCreationPerks,
   listCharacterCreationSkillLoadouts,
   listCharacterCreationStarterTrees,
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
   validateCharacterCreationBlueprint,
 } from "@voidverse/game-core";
 
@@ -454,7 +446,7 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
   };
 }
 
-export function useCharacterCreationReworked() {
+export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) {
   const [currentStep, setCurrentStep] = useState(1);
   const [showBootSequence, setShowBootSequence] = useState(true);
   const [rerollsRemaining, setRerollsRemaining] = useState(INITIAL_REROLLS);
@@ -473,6 +465,10 @@ export function useCharacterCreationReworked() {
     ALIGNMENT: 11,
     REVIEW: 12,
   };
+  const stepSequence = useMemo(
+    () => buildCreationStepSequence(STEPS, advancedUnlocked).map((entry) => entry.step),
+    [STEPS, advancedUnlocked],
+  );
 
   // Step 1: Identity & Origin
   const [name, setName] = useState("");
@@ -584,6 +580,9 @@ export function useCharacterCreationReworked() {
   const handleClassSelect = useCallback(
     (cls) => {
       setSelectedClass(cls);
+      setSelectedSecondaryClass((prev) =>
+        prev?.id && prev.id === cls?.id ? null : prev,
+      );
       setSelectedActiveSkills([]);
       setSelectedPassiveSkills([]);
       generateSkillPools(cls, selectedRace);
@@ -799,13 +798,13 @@ export function useCharacterCreationReworked() {
       validateIdentity,
       validateRace,
       validateClass,
-      validateMulticlass,
+      ...(advancedUnlocked ? [validateMulticlass] : []),
       validateProfession,
       validateArchetype,
       validateAttributes,
       validateSkills,
       validatePerks,
-      validateStarterTree,
+      ...(advancedUnlocked ? [validateStarterTree] : []),
       validateAlignment,
     ];
     for (const check of checks) {
@@ -830,36 +829,19 @@ export function useCharacterCreationReworked() {
         }),
         activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
         passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
-<<<<<<< ours
-<<<<<<< ours
-=======
-=======
->>>>>>> theirs
-        secondaryClassId: selectedSecondaryClass?.id,
+        secondaryClassId: advancedUnlocked ? selectedSecondaryClass?.id : null,
         skillLoadoutId: selectedSkillLoadoutId,
         perkIds: selectedPerkIds,
-        starterTreeIds: selectedStarterTreeIds,
+        starterTreeIds: advancedUnlocked ? selectedStarterTreeIds : [],
         alignmentId: selectedAlignmentId,
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
       },
       {
         requiredActiveSkillCount: MAX_ACTIVE_SKILLS,
         requiredPassiveSkillCount: MAX_PASSIVE_SKILLS,
-<<<<<<< ours
-<<<<<<< ours
-=======
         minPerks: creationPerkLimits.minPicks,
         maxPerks: creationPerkLimits.maxPicks,
-        requiresStarterTree: availableCreationStarterTrees.length > 0,
->>>>>>> theirs
-=======
-        minPerks: creationPerkLimits.minPicks,
-        maxPerks: creationPerkLimits.maxPicks,
-        requiresStarterTree: availableCreationStarterTrees.length > 0,
->>>>>>> theirs
+        requiresStarterTree:
+          advancedUnlocked && availableCreationStarterTrees.length > 0,
       },
     );
     if (!blueprintValidation.valid) {
@@ -872,34 +854,17 @@ export function useCharacterCreationReworked() {
 
     return { valid: true };
   }, [
+    advancedUnlocked,
     attributePoints,
     gender,
     name,
     selectedActiveSkills,
-<<<<<<< ours
-<<<<<<< ours
-=======
     selectedAlignmentId,
->>>>>>> theirs
-=======
-    selectedAlignmentId,
->>>>>>> theirs
     validateArchetype,
     validateAttributes,
     validateAlignment,
     validateClass,
     validateIdentity,
-<<<<<<< ours
-<<<<<<< ours
-    selectedArchetypeSystem,
-    selectedClass,
-    selectedOrigin,
-    selectedPassiveSkills,
-    selectedProfession,
-    selectedRace,
-=======
-=======
->>>>>>> theirs
     validateMulticlass,
     validatePerks,
     selectedArchetypeSystem,
@@ -913,10 +878,6 @@ export function useCharacterCreationReworked() {
     selectedSkillLoadoutId,
     selectedStarterTreeIds,
     validateStarterTree,
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
     validateProfession,
     validateRace,
     validateSkills,
@@ -984,13 +945,21 @@ export function useCharacterCreationReworked() {
   const nextStep = useCallback(() => {
     const validation = validateCurrentStep();
     if (!validation.valid) return validation;
-    setCurrentStep((prev) => Math.min(STEPS.REVIEW, prev + 1));
+    setCurrentStep((prev) => {
+      const currentIndex = stepSequence.indexOf(prev);
+      if (currentIndex < 0) return stepSequence[0] || STEPS.IDENTITY;
+      return stepSequence[Math.min(stepSequence.length - 1, currentIndex + 1)];
+    });
     return { valid: true };
-  }, [STEPS.REVIEW, validateCurrentStep]);
+  }, [STEPS.IDENTITY, stepSequence, validateCurrentStep]);
 
   const previousStep = useCallback(() => {
-    setCurrentStep((prev) => Math.max(STEPS.IDENTITY, prev - 1));
-  }, [STEPS.IDENTITY]);
+    setCurrentStep((prev) => {
+      const currentIndex = stepSequence.indexOf(prev);
+      if (currentIndex <= 0) return stepSequence[0] || STEPS.IDENTITY;
+      return stepSequence[currentIndex - 1];
+    });
+  }, [STEPS.IDENTITY, stepSequence]);
 
   // Finalize character
   const finalizeCharacter = useCallback(() => {
@@ -1054,40 +1023,18 @@ export function useCharacterCreationReworked() {
       gender,
       raceId: selectedRace?.id,
       classId: selectedClass?.id,
-<<<<<<< ours
-<<<<<<< ours
-      secondaryClassId: null,
-=======
-      secondaryClassId: selectedSecondaryClass?.id || null,
->>>>>>> theirs
-=======
-      secondaryClassId: selectedSecondaryClass?.id || null,
->>>>>>> theirs
+      secondaryClassId:
+        advancedUnlocked ? selectedSecondaryClass?.id || null : null,
       originId: selectedOrigin?.id,
       professionId,
       archetypeSystemId: selectedArchetypeSystem?.id,
       attributes: derivedState.attributes,
-<<<<<<< ours
-<<<<<<< ours
-      skillLoadoutId: null,
-      activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
-      passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
-      perkIds: [],
-      starterTreeIds: [],
-      alignmentId: null,
-=======
-=======
->>>>>>> theirs
       skillLoadoutId: selectedSkillLoadoutId,
       activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
       passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
       perkIds: selectedPerkIds,
-      starterTreeIds: selectedStarterTreeIds,
+      starterTreeIds: advancedUnlocked ? selectedStarterTreeIds : [],
       alignmentId: selectedAlignmentId,
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
     });
 
     const characterData = {
@@ -1095,27 +1042,14 @@ export function useCharacterCreationReworked() {
       gender: gender || null,
       race: normalizeEntityRef(selectedRace, "Unknown"),
       class: normalizeEntityRef(selectedClass, "None"),
-<<<<<<< ours
-<<<<<<< ours
-      secondaryClass: null,
-      origin: cloneOrigin(selectedOrigin),
-      alignment: null,
-      perks: [],
-      starterTrees: [],
-      skillLoadoutId: null,
-=======
-=======
->>>>>>> theirs
-      secondaryClass: normalizeEntityRef(selectedSecondaryClass, "None"),
+      secondaryClass: advancedUnlocked
+        ? normalizeEntityRef(selectedSecondaryClass, "None")
+        : null,
       origin: cloneOrigin(selectedOrigin),
       alignment: selectedAlignmentId,
       perks: selectedPerkIds,
-      starterTrees: selectedStarterTreeIds,
+      starterTrees: advancedUnlocked ? selectedStarterTreeIds : [],
       skillLoadoutId: selectedSkillLoadoutId,
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
       characterCreationBlueprint: blueprint,
       archetypeSystem: selectedArchetypeSystem
         ? {
@@ -1175,6 +1109,7 @@ export function useCharacterCreationReworked() {
 
     return { valid: true, characterData, creationOutcome };
   }, [
+    advancedUnlocked,
     validateReview,
     attributePoints,
     name,
@@ -1260,5 +1195,8 @@ export function useCharacterCreationReworked() {
     isSkillSelected,
 
     // Constants
+    stepSequence,
+    MAX_ACTIVE_SKILLS,
+    MAX_PASSIVE_SKILLS,
   };
 }

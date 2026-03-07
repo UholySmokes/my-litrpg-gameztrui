@@ -56,6 +56,9 @@ const INITIAL_XP_MAX = xpForNextLevel(INITIAL_LEVEL, INITIAL_CONFIG);
 
 const initialGameState = {
   config: INITIAL_CONFIG,
+  player_profile: {
+    characters_created: 0,
+  },
   player: {
     name: "Wanderer",
     level: INITIAL_LEVEL,

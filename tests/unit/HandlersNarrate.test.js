@@ -87,6 +87,11 @@ describe("handlers narrate endpoints", () => {
     expect(narrateRunsStore.createNarrateRun).toHaveBeenCalledTimes(1);
     expect(narrateRunsStore.updateNarrateRun).toHaveBeenCalledTimes(1);
     expect(runtime.runFirebaseAgent).toHaveBeenCalledTimes(1);
+    // Generation trace fields
+    expect(typeof res.body.agentId).toBe("string");
+    expect(res.body.agentId).toBe("narrator");
+    expect(typeof res.body.backend).toBe("string");
+    expect(typeof res.body.model).toBe("string");
   });
 
   it("persists failed run state and returns error details when narration fails", async () => {
@@ -190,5 +195,27 @@ describe("handlers narrate endpoints", () => {
     expect(res.body.status).toBe("failed");
     expect(res.body.errorCode).toBe("RUN_FAILED");
     expect(res.body.done).toBe(true);
+  });
+
+  it("returns generation trace metadata (agentId, backend, model) in narrate response", async () => {
+    const req = {
+      method: "POST",
+      body: {
+        mode: "combat",
+        prompt: "Narrate the battle.",
+      },
+    };
+    const res = createRes();
+
+    await handlers.narrate(req, res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.ok).toBe(true);
+    expect(res.body.narrative).toContain("market lights");
+    // Generation trace: which agent, backend, and model handled the request
+    expect(res.body.agentId).toBe("combat");
+    expect(typeof res.body.backend).toBe("string");
+    expect(typeof res.body.model).toBe("string");
+    expect(res.body.mode).toBe("combat");
   });
 });

@@ -18,6 +18,17 @@ import CreationArchetypeRecommendations from "../panels/creation/CreationArchety
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 import CreationWizardShellPanel from "../panels/creation/CreationWizardShellPanel.jsx";
 import { ensureAttributeShape } from "../../constants/attributes.js";
+import {
+  buildCreationStepSequence,
+  buildCreationWizardSteps,
+  calculateCreationSyncProgress,
+  findCreationStepIndex,
+  getCreationActiveStepId,
+} from "../../core/characterCreationWizardFlow.js";
+import {
+  createTelemetryEvent,
+  postTelemetryBatch,
+} from "../../core/telemetryClient.js";
 import { DataRegistry } from "../../data/DataRegistry.js";
 import { getRaceAbilitiesFor } from "../../systems/race/RaceAbilityRegistry.js";
 import { recommendArchetypeSystems } from "../../utils/archetypeRecommendations.js";
@@ -113,7 +124,11 @@ const playSystemSound = (sound) => {
   }
 };
 
-export default function CharacterCreationMode({ onComplete }) {
+export default function CharacterCreationMode({
+  onComplete,
+  advancedUnlocked = false,
+  telemetryUser = null,
+}) {
   const {
     currentStep,
     steps,
@@ -166,13 +181,21 @@ export default function CharacterCreationMode({ onComplete }) {
     validateReview,
     MAX_ACTIVE_SKILLS,
     MAX_PASSIVE_SKILLS,
-  } = useCharacterCreationReworked();
+  } = useCharacterCreationReworked({ advancedUnlocked });
 
   const allocationPoints = useMemo(
     () => ensureAttributeShape(attributePoints, 5),
     [attributePoints],
   );
   const availablePoints = remainingPoints || 0;
+  const creationFlow = useMemo(
+    () => buildCreationStepSequence(steps, advancedUnlocked),
+    [advancedUnlocked, steps],
+  );
+  const currentSequenceIndex = useMemo(
+    () => findCreationStepIndex(creationFlow, currentStep),
+    [creationFlow, currentStep],
+  );
 
   const handleStatChange = useCallback(
     (stat, delta) => {
@@ -188,8 +211,20 @@ export default function CharacterCreationMode({ onComplete }) {
   const [typewriterText, setTypewriterText] = useState(
     "Choose your origin, race, and class to generate a profile summary.",
   );
-  const [syncProgress, setSyncProgress] = useState(0);
   const [wizardError, setWizardError] = useState("");
+  const emitCreationTelemetry = useCallback(
+    (event) => {
+      void postTelemetryBatch({
+        user: telemetryUser,
+        tags: {
+          surface: "character_creation",
+          mode: advancedUnlocked ? "advanced" : "basic",
+        },
+        events: [event],
+      });
+    },
+    [advancedUnlocked, telemetryUser],
+  );
   const derivedStats = useMemo(() => {
     const totals = buildCharacterCreationDerivedState({
       attributePoints: allocationPoints,
@@ -305,40 +340,67 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedPassiveSkills,
   ]);
 
-  useEffect(() => {
-    const stepValue = 100 / 8;
-    let progress = 0;
-    if (characterName && characterName.trim().length > 0) progress += stepValue;
-    if (selectedOrigin) progress += stepValue;
-    if (selectedRace) progress += stepValue;
-    if (selectedClass) progress += stepValue;
-    if (selectedProfession) progress += stepValue;
-    if (selectedArchetypeSystem) progress += stepValue;
-    if (availablePoints === 0) progress += stepValue;
-    if (
-      selectedActiveSkills?.length >= MAX_ACTIVE_SKILLS &&
-      selectedPassiveSkills?.length >= MAX_PASSIVE_SKILLS
-    )
-      progress += stepValue;
-    setSyncProgress(Math.min(100, progress));
-  }, [
-    characterName,
-    selectedOrigin,
-    selectedRace,
-    selectedClass,
-    selectedProfession,
-    selectedArchetypeSystem,
-    availablePoints,
-    selectedActiveSkills,
-    selectedPassiveSkills,
-    MAX_ACTIVE_SKILLS,
-    MAX_PASSIVE_SKILLS,
-  ]);
-
   const canFinalize = useMemo(() => {
     const result = validateReview?.();
     return Boolean(result?.valid);
   }, [validateReview]);
+  const completionById = useMemo(
+    () => ({
+      identity: Boolean(characterName?.trim()) && Boolean(selectedOrigin),
+      race: Boolean(selectedRace),
+      class: Boolean(selectedClass),
+      multiclass: true,
+      profession: Boolean(selectedProfession),
+      system: Boolean(selectedArchetypeSystem),
+      attributes: availablePoints === 0,
+      skills:
+        selectedActiveSkills.length === MAX_ACTIVE_SKILLS &&
+        selectedPassiveSkills.length === MAX_PASSIVE_SKILLS,
+      perks:
+        selectedPerkIds.length >= (creationPerkLimits?.minPicks || 0) &&
+        selectedPerkIds.length <=
+          (creationPerkLimits?.maxPicks || Number.MAX_SAFE_INTEGER),
+      "starter-tree": !advancedUnlocked || selectedStarterTreeIds.length === 1,
+      alignment: Boolean(selectedAlignmentId),
+      review: canFinalize,
+    }),
+    [
+      MAX_ACTIVE_SKILLS,
+      MAX_PASSIVE_SKILLS,
+      advancedUnlocked,
+      availablePoints,
+      canFinalize,
+      characterName,
+      creationPerkLimits?.maxPicks,
+      creationPerkLimits?.minPicks,
+      selectedActiveSkills.length,
+      selectedAlignmentId,
+      selectedArchetypeSystem,
+      selectedClass,
+      selectedOrigin,
+      selectedPassiveSkills.length,
+      selectedPerkIds.length,
+      selectedProfession,
+      selectedRace,
+      selectedStarterTreeIds.length,
+    ],
+  );
+  const syncProgress = useMemo(
+    () => calculateCreationSyncProgress(creationFlow, completionById),
+    [completionById, creationFlow],
+  );
+
+  useEffect(() => {
+    emitCreationTelemetry(
+      createTelemetryEvent("character_create_step_viewed", {
+        data: {
+          stepId: getCreationActiveStepId(creationFlow, currentStep),
+          stepIndex: currentSequenceIndex + 1,
+          stepCount: creationFlow.length,
+        },
+      }),
+    );
+  }, [creationFlow, currentSequenceIndex, currentStep, emitCreationTelemetry]);
 
   const handleFinalize = useCallback(async () => {
     setWizardError("");
@@ -367,10 +429,21 @@ export default function CharacterCreationMode({ onComplete }) {
 
     try {
       await onComplete(result.characterData);
+      emitCreationTelemetry(
+        createTelemetryEvent("character_create_finished", {
+          data: {
+            stepCount: creationFlow.length,
+            hasSecondaryClass: Boolean(result.characterData.secondaryClass),
+            perkCount: Array.isArray(result.characterData.perks)
+              ? result.characterData.perks.length
+              : 0,
+          },
+        }),
+      );
     } catch (error) {
       setWizardError(error?.message || "Character initialization failed.");
     }
-  }, [finalizeCharacter, onComplete]);
+  }, [creationFlow.length, emitCreationTelemetry, finalizeCharacter, onComplete]);
 
   const handleClick = useCallback((action) => {
     playSystemSound("click");
@@ -400,6 +473,15 @@ export default function CharacterCreationMode({ onComplete }) {
         label: `Class: ${selectedClass?.name || "pending"}`,
         active: Boolean(selectedClass),
       },
+      advancedUnlocked
+        ? {
+            label: `Multiclass: ${selectedSecondaryClass?.name || "optional"}`,
+            active: true,
+          }
+        : {
+            label: "Mode: basic path",
+            active: true,
+          },
       {
         label: `Profession: ${selectedProfession?.name || "pending"}`,
         active: Boolean(selectedProfession),
@@ -422,17 +504,41 @@ export default function CharacterCreationMode({ onComplete }) {
           selectedActiveSkills.length >= MAX_ACTIVE_SKILLS &&
           selectedPassiveSkills.length >= MAX_PASSIVE_SKILLS,
       },
+      {
+        label: `Perks: ${selectedPerkIds.length}/${creationPerkLimits?.maxPicks || 0}`,
+        active: completionById.perks,
+      },
+      advancedUnlocked
+        ? {
+            label: `Starter Tree: ${selectedStarterTreeIds[0] || "pending"}`,
+            active: completionById["starter-tree"],
+          }
+        : {
+            label: "Starter Tree: unlock after first character",
+            active: true,
+          },
+      {
+        label: `Alignment: ${selectedAlignmentId || "pending"}`,
+        active: Boolean(selectedAlignmentId),
+      },
     ],
     [
+      advancedUnlocked,
       availablePoints,
       characterName,
+      completionById,
+      creationPerkLimits?.maxPicks,
       gender,
       selectedOrigin,
       selectedActiveSkills.length,
+      selectedAlignmentId,
       selectedClass,
       selectedArchetypeSystem,
+      selectedPerkIds.length,
       selectedPassiveSkills.length,
       selectedRace,
+      selectedSecondaryClass?.name,
+      selectedStarterTreeIds,
       selectedProfession,
       MAX_ACTIVE_SKILLS,
       MAX_PASSIVE_SKILLS,
@@ -635,6 +741,13 @@ export default function CharacterCreationMode({ onComplete }) {
           rerollsRemaining={rerollsRemaining}
           onReroll={() => {
             setWizardError("");
+            emitCreationTelemetry(
+              createTelemetryEvent("character_create_randomize_used", {
+                data: {
+                  stepId: "attributes",
+                },
+              }),
+            );
             handleReroll();
           }}
         />
@@ -742,6 +855,7 @@ export default function CharacterCreationMode({ onComplete }) {
     characterName,
     currentStep,
     derivedStats,
+    emitCreationTelemetry,
     gender,
     handleClick,
     handleFinalize,
@@ -795,86 +909,18 @@ export default function CharacterCreationMode({ onComplete }) {
     typewriterText,
   ]);
 
-  const wizardSteps = useMemo(() => {
-    const stepDefs = [
-      {
-        id: "identity",
-        label: "Identity",
-        ok: Boolean(characterName?.trim()) && Boolean(selectedOrigin),
-      },
-      { id: "race", label: "Race", ok: Boolean(selectedRace) },
-      { id: "class", label: "Class", ok: Boolean(selectedClass) },
-      { id: "multiclass", label: "Multiclass", ok: true },
-      { id: "profession", label: "Profession", ok: Boolean(selectedProfession) },
-      { id: "system", label: "System", ok: Boolean(selectedArchetypeSystem) },
-      { id: "attributes", label: "Attributes", ok: availablePoints === 0 },
-      {
-        id: "skills",
-        label: "Skills",
-        ok:
-          selectedActiveSkills.length === MAX_ACTIVE_SKILLS &&
-          selectedPassiveSkills.length === MAX_PASSIVE_SKILLS,
-      },
-      {
-        id: "perks",
-        label: "Perks",
-        ok:
-          selectedPerkIds.length >= (creationPerkLimits?.minPicks || 0) &&
-          selectedPerkIds.length <= (creationPerkLimits?.maxPicks || Number.MAX_SAFE_INTEGER),
-      },
-      { id: "starter-tree", label: "Starter Tree", ok: selectedStarterTreeIds.length === 1 },
-      { id: "alignment", label: "Alignment", ok: Boolean(selectedAlignmentId) },
-      { id: "review", label: "Review", ok: canFinalize },
-    ];
+  const wizardSteps = useMemo(
+    () => buildCreationWizardSteps(creationFlow, currentStep, completionById),
+    [completionById, creationFlow, currentStep],
+  );
 
-    const currentIndex = Math.max(0, Number(currentStep || 1) - 1);
-    return stepDefs.map((s, idx) => {
-      const done = idx < currentIndex ? true : s.ok;
-      const locked = idx > currentIndex;
-      return { id: s.id, label: s.label, status: done ? "done" : locked ? "locked" : "open" };
-    });
-  }, [
-    MAX_ACTIVE_SKILLS,
-    MAX_PASSIVE_SKILLS,
-    availablePoints,
-    canFinalize,
-    characterName,
-    currentStep,
-    selectedOrigin,
-    selectedActiveSkills.length,
-    selectedArchetypeSystem,
-    selectedClass,
-    selectedPerkIds,
-    selectedStarterTreeIds,
-    selectedAlignmentId,
-    selectedPassiveSkills.length,
-    selectedProfession,
-    selectedRace,
-    creationPerkLimits?.maxPicks,
-    creationPerkLimits?.minPicks,
-  ]);
+  const activeStepId = useMemo(
+    () => getCreationActiveStepId(creationFlow, currentStep),
+    [creationFlow, currentStep],
+  );
 
-  const activeStepId = useMemo(() => {
-    const ids = [
-      "identity",
-      "race",
-      "class",
-      "multiclass",
-      "profession",
-      "system",
-      "attributes",
-      "skills",
-      "perks",
-      "starter-tree",
-      "alignment",
-      "review",
-    ];
-    const idx = Math.max(0, Math.min(ids.length - 1, Number(currentStep || 1) - 1));
-    return ids[idx];
-  }, [currentStep]);
-
-  const canBack = currentStep > steps.IDENTITY;
-  const canNext = currentStep < steps.REVIEW;
+  const canBack = currentSequenceIndex > 0;
+  const canNext = currentSequenceIndex < creationFlow.length - 1;
 
   const windows = [
     {
@@ -902,6 +948,15 @@ export default function CharacterCreationMode({ onComplete }) {
               return;
             }
             setWizardError("");
+            emitCreationTelemetry(
+              createTelemetryEvent("character_create_step_completed", {
+                data: {
+                  stepId: activeStepId,
+                  stepIndex: currentSequenceIndex + 1,
+                  stepCount: creationFlow.length,
+                },
+              }),
+            );
             nextStep();
           }}
           sidebar={

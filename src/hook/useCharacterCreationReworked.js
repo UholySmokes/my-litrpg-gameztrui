@@ -29,6 +29,20 @@ import { xpForNextLevel } from "../core/xpCurve.js";
 import {
   createCharacterCreationBlueprint,
   createCharacterCreationOutcome,
+<<<<<<< ours
+<<<<<<< ours
+=======
+=======
+>>>>>>> theirs
+  getCharacterCreationPerkLimits,
+  listCharacterCreationAlignments,
+  listCharacterCreationPerks,
+  listCharacterCreationSkillLoadouts,
+  listCharacterCreationStarterTrees,
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
   validateCharacterCreationBlueprint,
 } from "@voidverse/game-core";
 
@@ -816,10 +830,36 @@ export function useCharacterCreationReworked() {
         }),
         activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
         passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
+<<<<<<< ours
+<<<<<<< ours
+=======
+=======
+>>>>>>> theirs
+        secondaryClassId: selectedSecondaryClass?.id,
+        skillLoadoutId: selectedSkillLoadoutId,
+        perkIds: selectedPerkIds,
+        starterTreeIds: selectedStarterTreeIds,
+        alignmentId: selectedAlignmentId,
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
       },
       {
         requiredActiveSkillCount: MAX_ACTIVE_SKILLS,
         requiredPassiveSkillCount: MAX_PASSIVE_SKILLS,
+<<<<<<< ours
+<<<<<<< ours
+=======
+        minPerks: creationPerkLimits.minPicks,
+        maxPerks: creationPerkLimits.maxPicks,
+        requiresStarterTree: availableCreationStarterTrees.length > 0,
+>>>>>>> theirs
+=======
+        minPerks: creationPerkLimits.minPicks,
+        maxPerks: creationPerkLimits.maxPicks,
+        requiresStarterTree: availableCreationStarterTrees.length > 0,
+>>>>>>> theirs
       },
     );
     if (!blueprintValidation.valid) {
@@ -836,17 +876,47 @@ export function useCharacterCreationReworked() {
     gender,
     name,
     selectedActiveSkills,
+<<<<<<< ours
+<<<<<<< ours
+=======
+    selectedAlignmentId,
+>>>>>>> theirs
+=======
+    selectedAlignmentId,
+>>>>>>> theirs
     validateArchetype,
     validateAttributes,
     validateAlignment,
     validateClass,
     validateIdentity,
+<<<<<<< ours
+<<<<<<< ours
     selectedArchetypeSystem,
     selectedClass,
     selectedOrigin,
     selectedPassiveSkills,
     selectedProfession,
     selectedRace,
+=======
+=======
+>>>>>>> theirs
+    validateMulticlass,
+    validatePerks,
+    selectedArchetypeSystem,
+    selectedClass,
+    selectedSecondaryClass,
+    selectedOrigin,
+    selectedPassiveSkills,
+    selectedPerkIds,
+    selectedProfession,
+    selectedRace,
+    selectedSkillLoadoutId,
+    selectedStarterTreeIds,
+    validateStarterTree,
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
     validateProfession,
     validateRace,
     validateSkills,
@@ -984,17 +1054,40 @@ export function useCharacterCreationReworked() {
       gender,
       raceId: selectedRace?.id,
       classId: selectedClass?.id,
+<<<<<<< ours
+<<<<<<< ours
       secondaryClassId: null,
+=======
+      secondaryClassId: selectedSecondaryClass?.id || null,
+>>>>>>> theirs
+=======
+      secondaryClassId: selectedSecondaryClass?.id || null,
+>>>>>>> theirs
       originId: selectedOrigin?.id,
       professionId,
       archetypeSystemId: selectedArchetypeSystem?.id,
       attributes: derivedState.attributes,
+<<<<<<< ours
+<<<<<<< ours
       skillLoadoutId: null,
       activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
       passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
       perkIds: [],
       starterTreeIds: [],
       alignmentId: null,
+=======
+=======
+>>>>>>> theirs
+      skillLoadoutId: selectedSkillLoadoutId,
+      activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
+      passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
+      perkIds: selectedPerkIds,
+      starterTreeIds: selectedStarterTreeIds,
+      alignmentId: selectedAlignmentId,
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
     });
 
     const characterData = {
@@ -1002,12 +1095,27 @@ export function useCharacterCreationReworked() {
       gender: gender || null,
       race: normalizeEntityRef(selectedRace, "Unknown"),
       class: normalizeEntityRef(selectedClass, "None"),
+<<<<<<< ours
+<<<<<<< ours
       secondaryClass: null,
       origin: cloneOrigin(selectedOrigin),
       alignment: null,
       perks: [],
       starterTrees: [],
       skillLoadoutId: null,
+=======
+=======
+>>>>>>> theirs
+      secondaryClass: normalizeEntityRef(selectedSecondaryClass, "None"),
+      origin: cloneOrigin(selectedOrigin),
+      alignment: selectedAlignmentId,
+      perks: selectedPerkIds,
+      starterTrees: selectedStarterTreeIds,
+      skillLoadoutId: selectedSkillLoadoutId,
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
       characterCreationBlueprint: blueprint,
       archetypeSystem: selectedArchetypeSystem
         ? {

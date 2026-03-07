@@ -12,11 +12,13 @@ import CreationClassPanel from "../panels/creation/CreationClassPanel.jsx";
 import CreationProfessionPanel from "../panels/creation/CreationProfessionPanel.jsx";
 import CreationAttributesPanel from "../panels/creation/CreationAttributesPanel.jsx";
 import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
+import CreationChoicePanel from "../panels/creation/CreationChoicePanel.jsx";
 import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSystemPanel.jsx";
 import CreationArchetypeRecommendations from "../panels/creation/CreationArchetypeRecommendations.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 import CreationWizardShellPanel from "../panels/creation/CreationWizardShellPanel.jsx";
 import { ensureAttributeShape } from "../../constants/attributes.js";
+import { DataRegistry } from "../../data/DataRegistry.js";
 import { getRaceAbilitiesFor } from "../../systems/race/RaceAbilityRegistry.js";
 import { recommendArchetypeSystems } from "../../utils/archetypeRecommendations.js";
 
@@ -118,6 +120,7 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedOrigin,
     selectedRace,
     selectedClass,
+    selectedSecondaryClass,
     selectedArchetypeSystem,
     selectedProfession,
     name: characterName,
@@ -126,13 +129,23 @@ export default function CharacterCreationMode({ onComplete }) {
     remainingPoints,
     selectedActiveSkills,
     selectedPassiveSkills,
+    selectedPerkIds,
+    selectedStarterTreeIds,
+    selectedAlignmentId,
+    selectedSkillLoadoutId,
     availableActiveSkills,
     availablePassiveSkills,
     availableArchetypeSystems,
+    availableCreationPerks,
+    availableCreationStarterTrees,
+    availableCreationAlignments,
+    availableCreationSkillLoadouts,
+    creationPerkLimits,
     rerollsRemaining,
     handleOriginSelect,
     handleRaceSelect,
     handleClassSelect,
+    handleSecondaryClassSelect,
     handleArchetypeSystemSelect,
     handleProfessionSelect,
     setName,
@@ -142,6 +155,10 @@ export default function CharacterCreationMode({ onComplete }) {
     handleReroll,
     handleActiveSkillSelect,
     handlePassiveSkillToggle,
+    handlePerkToggle,
+    handleStarterTreeSelect,
+    handleAlignmentSelect,
+    handleSkillLoadoutSelect,
     nextStep,
     previousStep,
     finalizeCharacter,
@@ -548,6 +565,27 @@ export default function CharacterCreationMode({ onComplete }) {
         />
       );
     }
+    if (currentStep === steps.MULTICLASS) {
+      const classOptions = DataRegistry.getClasses()
+        .filter((entry) => Number(entry?.tier || 1) === 1)
+        .filter((entry) => entry.id !== selectedClass?.id);
+      return (
+        <CreationChoicePanel
+          title="Multiclass"
+          subtitle="Optional secondary class. Select none to stay single-classed."
+          options={classOptions}
+          selectedIds={selectedSecondaryClass?.id ? [selectedSecondaryClass.id] : []}
+          onToggle={(classId) => {
+            const next = classOptions.find((entry) => entry.id === classId) || null;
+            handleSecondaryClassSelect(next);
+          }}
+          allowNone={true}
+          onSelectNone={() => handleSecondaryClassSelect(null)}
+          noneLabel="None (Single Class)"
+          onAction={handleClick}
+        />
+      );
+    }
     if (currentStep === steps.PROFESSION) {
       return (
         <CreationProfessionPanel
@@ -604,20 +642,78 @@ export default function CharacterCreationMode({ onComplete }) {
     }
     if (currentStep === steps.SKILLS) {
       return (
-        <CreationSkillsPanel
-          selectedClass={selectedClass}
-          availableActiveSkills={availableActiveSkills}
-          availablePassiveSkills={availablePassiveSkills}
-          selectedActiveSkills={selectedActiveSkills}
-          selectedPassiveSkills={selectedPassiveSkills}
-          onActiveSelect={(skill) => {
-            setWizardError("");
-            handleActiveSkillSelect(skill);
-          }}
-          onPassiveToggle={(skill) => {
-            setWizardError("");
-            handlePassiveSkillToggle(skill);
-          }}
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          {availableCreationSkillLoadouts.length > 0 && (
+            <CreationChoicePanel
+              title="Skill Loadout"
+              subtitle="Optional preset loadout; manual picks below always apply."
+              options={availableCreationSkillLoadouts}
+              selectedIds={selectedSkillLoadoutId ? [selectedSkillLoadoutId] : []}
+              onToggle={handleSkillLoadoutSelect}
+              allowNone={true}
+              onSelectNone={() => handleSkillLoadoutSelect(null)}
+              noneLabel="None (Manual Selection)"
+              maxSelections={1}
+              onAction={handleClick}
+            />
+          )}
+          <CreationSkillsPanel
+            selectedClass={selectedClass}
+            availableActiveSkills={availableActiveSkills}
+            availablePassiveSkills={availablePassiveSkills}
+            selectedActiveSkills={selectedActiveSkills}
+            selectedPassiveSkills={selectedPassiveSkills}
+            onActiveSelect={(skill) => {
+              setWizardError("");
+              handleActiveSkillSelect(skill);
+            }}
+            onPassiveToggle={(skill) => {
+              setWizardError("");
+              handlePassiveSkillToggle(skill);
+            }}
+            onAction={handleClick}
+          />
+        </div>
+      );
+    }
+    if (currentStep === steps.PERKS) {
+      return (
+        <CreationChoicePanel
+          title="Perks"
+          subtitle="Choose your starting perks."
+          options={availableCreationPerks}
+          selectedIds={selectedPerkIds}
+          onToggle={handlePerkToggle}
+          minSelections={creationPerkLimits?.minPicks || 0}
+          maxSelections={creationPerkLimits?.maxPicks || 0}
+          onAction={handleClick}
+        />
+      );
+    }
+    if (currentStep === steps.STARTER_TREE) {
+      return (
+        <CreationChoicePanel
+          title="Starter Tree"
+          subtitle="Choose your initial progression tree."
+          options={availableCreationStarterTrees}
+          selectedIds={selectedStarterTreeIds}
+          onToggle={handleStarterTreeSelect}
+          minSelections={1}
+          maxSelections={1}
+          onAction={handleClick}
+        />
+      );
+    }
+    if (currentStep === steps.ALIGNMENT) {
+      return (
+        <CreationChoicePanel
+          title="Alignment"
+          subtitle="Select narrative alignment for roleplay tone."
+          options={availableCreationAlignments}
+          selectedIds={selectedAlignmentId ? [selectedAlignmentId] : []}
+          onToggle={handleAlignmentSelect}
+          minSelections={1}
+          maxSelections={1}
           onAction={handleClick}
         />
       );
@@ -658,24 +754,43 @@ export default function CharacterCreationMode({ onComplete }) {
     handleReroll,
     handleStatChange,
     handlePassiveSkillToggle,
+    handleSecondaryClassSelect,
+    handlePerkToggle,
+    handleStarterTreeSelect,
+    handleAlignmentSelect,
+    handleSkillLoadoutSelect,
     rerollsRemaining,
     selectedActiveSkills,
     selectedArchetypeSystem,
     selectedClass,
     selectedOrigin,
     selectedPassiveSkills,
+    selectedPerkIds,
+    selectedStarterTreeIds,
+    selectedAlignmentId,
+    selectedSkillLoadoutId,
+    selectedSecondaryClass?.id,
     selectedProfession,
     selectedRace,
+    availableCreationPerks,
+    availableCreationStarterTrees,
+    availableCreationAlignments,
+    availableCreationSkillLoadouts,
+    creationPerkLimits,
     selectionSummary,
     setGender,
     setName,
     steps.ARCHETYPE,
     steps.ATTRIBUTES,
     steps.CLASS,
+    steps.MULTICLASS,
+    steps.PERKS,
     steps.IDENTITY,
+    steps.ALIGNMENT,
     steps.PROFESSION,
     steps.RACE,
     steps.SKILLS,
+    steps.STARTER_TREE,
     syncProgress,
     typewriterText,
   ]);
@@ -689,6 +804,7 @@ export default function CharacterCreationMode({ onComplete }) {
       },
       { id: "race", label: "Race", ok: Boolean(selectedRace) },
       { id: "class", label: "Class", ok: Boolean(selectedClass) },
+      { id: "multiclass", label: "Multiclass", ok: true },
       { id: "profession", label: "Profession", ok: Boolean(selectedProfession) },
       { id: "system", label: "System", ok: Boolean(selectedArchetypeSystem) },
       { id: "attributes", label: "Attributes", ok: availablePoints === 0 },
@@ -699,6 +815,15 @@ export default function CharacterCreationMode({ onComplete }) {
           selectedActiveSkills.length === MAX_ACTIVE_SKILLS &&
           selectedPassiveSkills.length === MAX_PASSIVE_SKILLS,
       },
+      {
+        id: "perks",
+        label: "Perks",
+        ok:
+          selectedPerkIds.length >= (creationPerkLimits?.minPicks || 0) &&
+          selectedPerkIds.length <= (creationPerkLimits?.maxPicks || Number.MAX_SAFE_INTEGER),
+      },
+      { id: "starter-tree", label: "Starter Tree", ok: selectedStarterTreeIds.length === 1 },
+      { id: "alignment", label: "Alignment", ok: Boolean(selectedAlignmentId) },
       { id: "review", label: "Review", ok: canFinalize },
     ];
 
@@ -719,9 +844,14 @@ export default function CharacterCreationMode({ onComplete }) {
     selectedActiveSkills.length,
     selectedArchetypeSystem,
     selectedClass,
+    selectedPerkIds,
+    selectedStarterTreeIds,
+    selectedAlignmentId,
     selectedPassiveSkills.length,
     selectedProfession,
     selectedRace,
+    creationPerkLimits?.maxPicks,
+    creationPerkLimits?.minPicks,
   ]);
 
   const activeStepId = useMemo(() => {
@@ -729,10 +859,14 @@ export default function CharacterCreationMode({ onComplete }) {
       "identity",
       "race",
       "class",
+      "multiclass",
       "profession",
       "system",
       "attributes",
       "skills",
+      "perks",
+      "starter-tree",
+      "alignment",
       "review",
     ];
     const idx = Math.max(0, Math.min(ids.length - 1, Number(currentStep || 1) - 1));
@@ -807,4 +941,3 @@ export default function CharacterCreationMode({ onComplete }) {
 
   return <WindowManager mode="creation" windows={windows} forceFloating={true} />;
 }
-

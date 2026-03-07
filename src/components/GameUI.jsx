@@ -79,6 +79,11 @@ const hasCreatedCharacterSnapshot = (snapshotState) => {
   );
 };
 
+const getAutosavePromptMarker = (autosaveRecord) =>
+  String(
+    autosaveRecord?.updated_at || autosaveRecord?.created_at || autosaveRecord?.id || "",
+  );
+
 const readAutosavePromptCandidate = () => {
   if (typeof window === "undefined") return null;
   const rawAutosave = localStorage.getItem(LOCAL_AUTOSAVE_KEY);
@@ -88,7 +93,7 @@ const readAutosavePromptCandidate = () => {
   if (!isRecord(parsedAutosave)) return null;
   if (!hasCreatedCharacterSnapshot(parsedAutosave.game_state)) return null;
 
-  const marker = String(parsedAutosave.updated_at || parsedAutosave.created_at || "");
+  const marker = getAutosavePromptMarker(parsedAutosave);
   const dismissedMarker = sessionStorage.getItem(AUTOSAVE_PROMPT_DISMISS_KEY);
   if (marker && dismissedMarker === marker) return null;
 
@@ -288,9 +293,10 @@ export default function GameUI({ user }) {
     }
 
     const candidate = readAutosavePromptCandidate();
-    const candidateMarker = String(
-      candidate?.updated_at || candidate?.created_at || "",
-    );
+    if (!candidate) {
+      return null;
+    }
+    const candidateMarker = getAutosavePromptMarker(candidate);
 
     if (candidateMarker && candidateMarker === dismissedAutosavePromptMarker) {
       return null;
@@ -385,9 +391,10 @@ export default function GameUI({ user }) {
 
     setState(nextState);
     persistLocalAutosave(nextState, "Character Creation Checkpoint");
-    setDismissedAutosavePromptMarker(
-      String(autosavePrompt?.updated_at || autosavePrompt?.created_at || ""),
-    );
+    const autosaveMarker = getAutosavePromptMarker(autosavePrompt);
+    if (autosaveMarker) {
+      setDismissedAutosavePromptMarker(autosaveMarker);
+    }
 
     setIsTransitioning(true);
     if (transitionTimeoutRef.current) {
@@ -701,9 +708,7 @@ export default function GameUI({ user }) {
 
   const rememberAutosavePromptDismissal = useCallback((autosaveRecord) => {
     if (typeof window === "undefined") return;
-    const marker = String(
-      autosaveRecord?.updated_at || autosaveRecord?.created_at || "",
-    );
+    const marker = getAutosavePromptMarker(autosaveRecord);
     if (!marker) return;
     try {
       sessionStorage.setItem(AUTOSAVE_PROMPT_DISMISS_KEY, marker);
@@ -714,9 +719,10 @@ export default function GameUI({ user }) {
 
   const handleResumeAutosave = useCallback(() => {
     if (!isRecord(autosavePrompt?.game_state)) {
-      setDismissedAutosavePromptMarker(
-        String(autosavePrompt?.updated_at || autosavePrompt?.created_at || ""),
-      );
+      const autosaveMarker = getAutosavePromptMarker(autosavePrompt);
+      if (autosaveMarker) {
+        setDismissedAutosavePromptMarker(autosaveMarker);
+      }
       return;
     }
 
@@ -725,16 +731,18 @@ export default function GameUI({ user }) {
       closeSaveLoad: false,
     });
     rememberAutosavePromptDismissal(autosavePrompt);
-    setDismissedAutosavePromptMarker(
-      String(autosavePrompt?.updated_at || autosavePrompt?.created_at || ""),
-    );
+    const autosaveMarker = getAutosavePromptMarker(autosavePrompt);
+    if (autosaveMarker) {
+      setDismissedAutosavePromptMarker(autosaveMarker);
+    }
   }, [autosavePrompt, handleLoadState, rememberAutosavePromptDismissal]);
 
   const handleDismissAutosavePrompt = useCallback(() => {
     rememberAutosavePromptDismissal(autosavePrompt);
-    setDismissedAutosavePromptMarker(
-      String(autosavePrompt?.updated_at || autosavePrompt?.created_at || ""),
-    );
+    const autosaveMarker = getAutosavePromptMarker(autosavePrompt);
+    if (autosaveMarker) {
+      setDismissedAutosavePromptMarker(autosaveMarker);
+    }
   }, [autosavePrompt, rememberAutosavePromptDismissal]);
 
   const handleCombatEscape = () => {

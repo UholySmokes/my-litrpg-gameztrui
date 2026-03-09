@@ -2,9 +2,14 @@ import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 import fs from "fs";
 import os from "os";
 import path from "path";
+import { createRequire } from "module";
 
 import apiRouter from "../../functions/lib/api-router.js";
 import syncCore from "../../functions/lib/sync-core.js";
+
+const require = createRequire(import.meta.url);
+const syncStore = require("../../functions/lib/sync-store.js");
+const { SAVE_RESET_EPOCH } = require("../../shared/save-cutover.cjs");
 
 const { handleApiRequest } = apiRouter;
 
@@ -71,6 +76,14 @@ function createCommandEnvelope({
 	};
 }
 
+async function allowSyncForUser(ownerId) {
+	await syncStore.markMigrationVersion({
+		ownerId,
+		version: SAVE_RESET_EPOCH,
+		displayName: "Sync Replay Route Test",
+	});
+}
+
 describe("/api/sync/replay route", () => {
 	const originalSyncBackend = process.env.SYNC_DB_STORAGE;
 	const originalSyncPath = process.env.SYNC_DB_PATH;
@@ -103,6 +116,7 @@ describe("/api/sync/replay route", () => {
 	});
 
 	it("rejects replay requests without runId", async () => {
+		await allowSyncForUser("user-replay-0");
 		const req = {
 			method: "GET",
 			url: "/api/sync/replay",
@@ -117,6 +131,7 @@ describe("/api/sync/replay route", () => {
 	});
 
 	it("returns 404 when replay run does not exist", async () => {
+		await allowSyncForUser("user-replay-0");
 		const req = {
 			method: "GET",
 			url: "/api/sync/replay",
@@ -134,6 +149,7 @@ describe("/api/sync/replay route", () => {
 		const manifest = syncCore.getWorldManifest();
 		const user = "user-replay-1";
 		const runId = "run-replay-1";
+		await allowSyncForUser(user);
 
 		const firstReq = {
 			method: "POST",

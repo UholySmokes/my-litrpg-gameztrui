@@ -6,6 +6,7 @@
 import classAbilitiesData from "../../data/skills/class_abilities.json" with { type: "json" };
 import classAbilitySetsData from "../../data/skills/class_ability_sets.json" with { type: "json" };
 import { getClassLineage } from "../../data/registries/ClassDataRegistry.js";
+import { attachLatticeMetadata } from "../skills/LivingLatticeSystem.js";
 
 const toAbilityMap = (entries) => {
   const map = {};
@@ -77,8 +78,12 @@ const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) =
     templateMeta.ownerId = ownerId;
   }
 
-  return {
+  return attachLatticeMetadata({
     ...next,
+    type: next.type || (template.function === "passive" ? "passive" : "active"),
+    class: ownerId || next.class || "unbound",
+    ownerType: "class",
+    ownerId: ownerId || next.ownerId || "unbound",
     effects,
     template: {
       category: template.category || category || "Class Ability",
@@ -88,7 +93,7 @@ const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) =
       source: template.source || source || "ClassAbilityRegistry",
       ...(Object.keys(templateMeta).length > 0 ? { meta: templateMeta } : {}),
     },
-  };
+  });
 };
 
 function resolveAbilityIds(classId) {

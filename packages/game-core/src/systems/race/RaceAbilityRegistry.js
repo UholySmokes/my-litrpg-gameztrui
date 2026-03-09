@@ -68,7 +68,7 @@ const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) =
 
   return attachLatticeMetadata({
     ...next,
-    type: next.type || (next.damage || next.heal || next.resourceGain ? "active" : "passive"),
+    type: next.type || "active",
     ownerType: "race",
     ownerId: ownerId || next.ownerId || "unbound",
     effects,

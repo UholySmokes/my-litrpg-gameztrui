@@ -1,8 +1,8 @@
 // =================================================================
 // USE CHARACTER CREATION REWORKED HOOK
 // Enhanced character creation with expanded skill pools
-// - All compatible skills shown (class + race + general), select 3 active
-// - All compatible passive skills shown, select 6
+// - All compatible skills shown (class + race + general), select 4 active
+// - All compatible passive skills shown, select 12
 // - Talents are auto-assigned after creation based on class
 // - Persistent selections across rerolls
 // =================================================================
@@ -28,6 +28,8 @@ import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { buildCreationStepSequence } from "../core/characterCreationWizardFlow.js";
 import { xpForNextLevel } from "../core/xpCurve.js";
 import {
+  CHARACTER_CREATION_V1_ACTIVE_SKILL_COUNT,
+  CHARACTER_CREATION_V1_PASSIVE_SKILL_COUNT,
   createCharacterCreationBlueprint,
   createCharacterCreationOutcome,
   getCharacterCreationPerkLimits,
@@ -42,8 +44,8 @@ const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;
 const BASE_ATTRIBUTE_TOTAL = CANONICAL_ATTRIBUTES.length * BASE_ATTRIBUTE_VALUE;
 const INITIAL_REROLLS = 3;
-const MAX_ACTIVE_SKILLS = 3;
-const MAX_PASSIVE_SKILLS = 6;
+const MAX_ACTIVE_SKILLS = CHARACTER_CREATION_V1_ACTIVE_SKILL_COUNT;
+const MAX_PASSIVE_SKILLS = CHARACTER_CREATION_V1_PASSIVE_SKILL_COUNT;
 const BASE_CREATION_LEVEL = 1;
 
 function humanizeSkillId(value) {
@@ -635,7 +637,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setSelectedSkillLoadoutId(normalizedId || null);
   }, []);
 
-  // Handle active skill selection (toggle, max 3)
+  // Handle active skill selection (toggle, max 4)
   const handleActiveSkillSelect = useCallback((skill) => {
     if (!skill) return;
 
@@ -650,7 +652,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     });
   }, []);
 
-  // Handle passive skill selection (toggle, max 6)
+  // Handle passive skill selection (toggle, max 12)
   const handlePassiveSkillToggle = useCallback((skill) => {
     if (!skill) return;
 

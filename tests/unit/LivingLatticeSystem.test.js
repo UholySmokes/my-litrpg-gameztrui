@@ -2,10 +2,14 @@ import { describe, expect, it } from "@jest/globals";
 import { DataRegistry } from "@voidverse/game-core/data/DataRegistry.js";
 import { createStudiedSpell } from "@voidverse/game-core/systems/skills/SpellStudySystem.js";
 import {
+  LATTICE_LOADOUT_LIMITS,
   GRANDMA_VOID_MANDATORY_REJECTION_CLAUSE,
   GRANDMA_VOID_ORIGIN,
   attachLatticeMetadata,
   dedupeLatticeProgressEvents,
+  validateLatticeLoadout,
+  validateLatticeRankTransition,
+  validateLatticeSkillRecord,
   validateExternalAuthorityContract,
   validateLatticeProgressEvent,
 } from "@voidverse/game-core/systems/skills/LivingLatticeSystem.js";
@@ -181,5 +185,76 @@ describe("Living Lattice system", () => {
 
     expect(valid.valid).toBe(true);
     expect(valid.resolution).toBe("apply");
+  });
+
+  it("rejects illegal lattice family/source combinations", () => {
+    const result = validateLatticeSkillRecord({
+      id: "illegal-bloodline-study",
+      name: "Illegal Bloodline Study",
+      family: "bloodline",
+      sourceType: "study",
+      slotType: "active",
+      runtimeRole: "standard",
+      rank: "seed",
+      mastery: 0,
+      stability: 1,
+      affinityTags: ["bloodline"],
+      resourceType: "mana",
+      growthTriggers: ["live_use"],
+    });
+
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContain(
+      "Illegal family/source combination: bloodline cannot originate from study.",
+    );
+  });
+
+  it("rejects impossible rank jumps and missing gate requirements", () => {
+    const impossibleJump = validateLatticeRankTransition({
+      fromRank: "seed",
+      toRank: "knot",
+      mastery: 400,
+      validatedUses: 25,
+      milestoneFlags: ["counter_win"],
+    });
+    expect(impossibleJump.valid).toBe(false);
+    expect(impossibleJump.errors).toContain("Impossible rank jump from seed to knot.");
+
+    const missingGate = validateLatticeRankTransition({
+      fromRank: "knot",
+      toRank: "weave",
+      mastery: 470,
+      milestoneFlags: ["duel_clear"],
+    });
+    expect(missingGate.valid).toBe(false);
+    expect(missingGate.errors).toContain("Knot->Weave requires branchChoiceId or fusionRecordId.");
+  });
+
+  it("enforces reaction, concentration, ritual, and role-change loadout rules", () => {
+    const invalid = validateLatticeLoadout({
+      activeSkills: [
+        { id: "r1", lattice: { id: "r1", slotType: "active", runtimeRole: "reaction", family: "martial", affinityTags: [] } },
+        { id: "r2", lattice: { id: "r2", slotType: "active", runtimeRole: "reaction", family: "martial", affinityTags: [] } },
+        { id: "r3", lattice: { id: "r3", slotType: "active", runtimeRole: "reaction", family: "martial", affinityTags: [] } },
+        { id: "ritual_no_combat", lattice: { id: "ritual_no_combat", slotType: "active", runtimeRole: "ritual", family: "magic", affinityTags: [] } },
+      ],
+      passiveSkills: [
+        { id: "stance_1", lattice: { id: "stance_1", slotType: "passive", runtimeRole: "stance", family: "martial", affinityTags: [] } },
+        { id: "channel_1", lattice: { id: "channel_1", slotType: "passive", runtimeRole: "channel", family: "magic", affinityTags: [] } },
+      ],
+      roleChangeContext: "combat",
+      requestedRoleChanges: [{ skillId: "r1", nextRole: "reaction" }],
+      limits: LATTICE_LOADOUT_LIMITS,
+    });
+
+    expect(invalid.valid).toBe(false);
+    expect(invalid.errors).toContain("Reaction active limit exceeded (3/2).");
+    expect(invalid.errors).toContain("Concentration slot limit exceeded (2/1).");
+    expect(invalid.errors).toContain(
+      "Ritual skills are out-of-combat unless explicitly marked combat-valid.",
+    );
+    expect(invalid.errors).toContain(
+      "Runtime role changes require rest, loadout_swap, miracle, or contract context (received \"combat\").",
+    );
   });
 });

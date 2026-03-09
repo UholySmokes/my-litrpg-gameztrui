@@ -95,6 +95,8 @@ export default function CreationSkillsPanel({
   availablePassiveSkills,
   selectedActiveSkills,
   selectedPassiveSkills,
+  activeLimit = 4,
+  passiveLimit = 12,
   onActiveSelect,
   onPassiveToggle,
   onAction,
@@ -126,14 +128,14 @@ export default function CreationSkillsPanel({
               <span style={{
                 fontSize: "0.7rem",
                 fontFamily: "monospace",
-                color: activeCount >= 3 ? "#8CE99A" : "var(--holo-cyan)",
+                color: activeCount >= activeLimit ? "#8CE99A" : "var(--holo-cyan)",
                 fontWeight: "bold",
               }}>
-                {activeCount}/3 {activeCount >= 3 ? "\u2713" : ""}
+                {activeCount}/{activeLimit} {activeCount >= activeLimit ? "\u2713" : ""}
               </span>
             </div>
             <div style={{ fontSize: "0.6rem", color: "var(--text-dim)", marginBottom: "0.3rem" }}>
-              Combat abilities triggered during encounters. Select 3.
+              Combat abilities triggered during encounters. Select {activeLimit}.
             </div>
             <div
               style={{
@@ -170,14 +172,14 @@ export default function CreationSkillsPanel({
               <span style={{
                 fontSize: "0.7rem",
                 fontFamily: "monospace",
-                color: passiveCount >= 6 ? "#8CE99A" : "var(--holo-cyan)",
+                color: passiveCount >= passiveLimit ? "#8CE99A" : "var(--holo-cyan)",
                 fontWeight: "bold",
               }}>
-                {passiveCount}/6 {passiveCount >= 6 ? "\u2713" : ""}
+                {passiveCount}/{passiveLimit} {passiveCount >= passiveLimit ? "\u2713" : ""}
               </span>
             </div>
             <div style={{ fontSize: "0.6rem", color: "var(--text-dim)", marginBottom: "0.3rem" }}>
-              Always-on enhancements that shape your passive capabilities. Select 6.
+              Always-on enhancements that shape your passive capabilities. Select {passiveLimit}.
             </div>
             <div
               style={{

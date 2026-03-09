@@ -24,6 +24,11 @@ describe("Race ability exposure", () => {
       const ability = abilities[0];
       expect(ability.name).toBeTruthy();
       expect(ability.description).toBeTruthy();
+      expect(ability.ownerType).toBe("race");
+      expect(ability.ownerId).toBe(race.id);
+      expect(ability.lattice?.id).toBe(ability.id);
+      expect(ability.latticeFamily).toBe("bloodline");
+      expect(ability.grandmaVoidBoundaryId).toBe("grandma_void");
     });
   });
 });

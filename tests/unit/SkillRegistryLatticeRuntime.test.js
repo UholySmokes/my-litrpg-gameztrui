@@ -32,6 +32,17 @@ describe("SkillRegistry lattice runtime helpers", () => {
     );
   });
 
+  it("handles null or non-array activeSkills/passiveSkills without throwing", () => {
+    expect(() => getLatticeLoadoutSummary({ activeSkills: null, passiveSkills: null })).not.toThrow();
+    expect(() => getLatticeLoadoutSummary({ activeSkills: null, passiveSkills: [] })).not.toThrow();
+    expect(() => getLatticeLoadoutSummary({ activeSkills: [], passiveSkills: null })).not.toThrow();
+    expect(() => getLatticeBuildPressureForLoadout({ activeSkills: null, passiveSkills: null })).not.toThrow();
+
+    const summary = getLatticeLoadoutSummary({ activeSkills: null, passiveSkills: null });
+    expect(Array.isArray(summary.activeSkillIds)).toBe(true);
+    expect(Array.isArray(summary.passiveSkillIds)).toBe(true);
+  });
+
   it("builds loadout summaries and pressure from live skills", () => {
     const activeSkills = getAllSkills().filter((skill) => skill.type === "active").slice(0, 3);
     const passiveSkills = getAllSkills().filter((skill) => skill.type === "passive").slice(0, 2);

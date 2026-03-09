@@ -25,7 +25,16 @@ import { PROFESSIONS } from "../profession/ProfessionRegistry.js";
 import {
   attachLatticeMetadata,
   adaptToLatticeSkill,
+  summarizeLatticeLoadout,
+  computeLatticeBuildPressure,
+  validateLatticeProgressEvent,
+  dedupeLatticeProgressEvents,
+  computeLatticeMasteryGain,
+  validateExternalAuthorityContract,
+  normalizeNativeMiracle,
+  advanceNativeMiracleState,
 } from "./LivingLatticeSystem.js";
+import { getTalentMigrationLane } from "./TalentMigrationAudit.js";
 import {
   getAllRaceAbilityIds,
   getRaceAbilityById,
@@ -671,6 +680,140 @@ export function getLatticeSkillsForRace(raceId) {
     .filter(Boolean);
 }
 
+function resolveSkillReference(skillRef) {
+  if (!skillRef) return null;
+  if (typeof skillRef === "string") {
+    return getSkillById(skillRef) || getRaceAbilityById(skillRef) || getClassAbilityById(skillRef);
+  }
+  if (typeof skillRef === "object") {
+    if (skillRef.id) {
+      return skillRef.lattice
+        ? skillRef
+        : attachLatticeMetadata(skillRef);
+    }
+  }
+  return null;
+}
+
+function resolveSkillReferenceList(skillRefs = []) {
+  return (Array.isArray(skillRefs) ? skillRefs : [])
+    .map((skillRef) => resolveSkillReference(skillRef))
+    .filter(Boolean);
+}
+
+function getActiveTalentMigrationLanes(activeTalentIds = []) {
+  return (Array.isArray(activeTalentIds) ? activeTalentIds : [])
+    .filter((talentId) => typeof talentId === "string" && talentId.trim().length > 0)
+    .map((talentId) => ({
+      id: talentId,
+      lane: getTalentMigrationLane(talentId),
+    }));
+}
+
+export function getLatticeLoadoutSummary({
+  activeSkillIds = [],
+  passiveSkillIds = [],
+  activeSkills = [],
+  passiveSkills = [],
+  professionId = null,
+} = {}) {
+  const resolvedActiveSkills =
+    activeSkills.length > 0 ? resolveSkillReferenceList(activeSkills) : resolveSkillReferenceList(activeSkillIds);
+  const resolvedPassiveSkills =
+    passiveSkills.length > 0 ? resolveSkillReferenceList(passiveSkills) : resolveSkillReferenceList(passiveSkillIds);
+
+  return summarizeLatticeLoadout({
+    activeSkills: resolvedActiveSkills,
+    passiveSkills: resolvedPassiveSkills,
+    professionId,
+  });
+}
+
+export function getLatticeBuildPressureForLoadout({
+  activeSkillIds = [],
+  passiveSkillIds = [],
+  activeSkills = [],
+  passiveSkills = [],
+  professionId = null,
+  nativeMiracleUsedRecently = false,
+} = {}) {
+  const resolvedActiveSkills =
+    activeSkills.length > 0 ? resolveSkillReferenceList(activeSkills) : resolveSkillReferenceList(activeSkillIds);
+  const resolvedPassiveSkills =
+    passiveSkills.length > 0 ? resolveSkillReferenceList(passiveSkills) : resolveSkillReferenceList(passiveSkillIds);
+  const resolvedSkills = [...resolvedActiveSkills, ...resolvedPassiveSkills];
+
+  return {
+    loadout: getLatticeLoadoutSummary({
+      activeSkills: resolvedActiveSkills,
+      passiveSkills: resolvedPassiveSkills,
+      professionId,
+    }),
+    buildPressure: computeLatticeBuildPressure(resolvedSkills, {
+      nativeMiracleUsedRecently,
+    }),
+  };
+}
+
+export function validateSkillProgressEvent(event = {}, options = {}) {
+  const skill = resolveSkillReference(event.skillId);
+  if (!skill) {
+    return {
+      valid: false,
+      errors: [`Unknown skillId: ${JSON.stringify(event?.skillId)}`],
+      event,
+      skill: null,
+      masteryGain: 0,
+    };
+  }
+
+  const validation = validateLatticeProgressEvent(event, options);
+  if (!validation.valid) {
+    return {
+      ...validation,
+      skill: skill.lattice || adaptToLatticeSkill(skill),
+      masteryGain: 0,
+    };
+  }
+
+  return {
+    ...validation,
+    skill: skill.lattice || adaptToLatticeSkill(skill),
+    masteryGain: computeLatticeMasteryGain(validation.event, {
+      familyModifier: options.familyModifier ?? 1,
+      repetitionSaturation: options.repetitionSaturation ?? 0,
+    }),
+  };
+}
+
+export function processSkillProgressEvents(events = [], options = {}) {
+  const normalizedEvents = Array.isArray(events) ? events : [];
+  const deduped = dedupeLatticeProgressEvents(normalizedEvents, options);
+
+  return {
+    accepted: deduped.accepted.map((event) =>
+      validateSkillProgressEvent(event, {
+        ...options,
+        seenFingerprints: new Set(),
+      }),
+    ),
+    rejected: deduped.rejected,
+    seenFingerprints: deduped.seenFingerprints,
+  };
+}
+
+export function validateSkillContractMiracle(contract = {}, hostContext = {}) {
+  return validateExternalAuthorityContract(contract, hostContext);
+}
+
+export function getNativeMiracleState(miracle = {}) {
+  return normalizeNativeMiracle(miracle);
+}
+
+export function advanceSkillNativeMiracle(miracle = {}, options = {}) {
+  return advanceNativeMiracleState(miracle, options);
+}
+
 /**
  * Check if skill unlock conditions are met
  */
@@ -862,8 +1005,15 @@ export function getModifiedSkill(
 
   // Store bypasses on skill for combat system reference
   modifiedSkill.bypasses = { ...(modifiedSkill.bypasses || {}), ...bypasses };
+  modifiedSkill.activeTalentMigrationLanes = getActiveTalentMigrationLanes(activeTalentIds);
 
-  return modifiedSkill;
+  return attachLatticeMetadata(modifiedSkill, {
+    family: baseSkill.latticeFamily,
+    sourceType: baseSkill.latticeSourceType,
+    rank: baseSkill.lattice?.rank,
+    mastery: baseSkill.lattice?.mastery,
+    stability: baseSkill.lattice?.stability,
+  });
 }
 
 /**
@@ -959,6 +1109,8 @@ export function getSkillDisplayInfo(
       aoeMultiplier: modifiedSkill?.aoeMultiplier ?? 1,
     },
     bypasses: modifiedSkill?.bypasses || {},
+    activeTalentMigrationLanes:
+      modifiedSkill?.activeTalentMigrationLanes || getActiveTalentMigrationLanes(activeTalentIds),
     effects: skill.effects || [],
     lattice: skill.lattice || null,
     latticeFamily: skill.latticeFamily || null,

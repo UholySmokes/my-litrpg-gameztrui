@@ -7,6 +7,8 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { handleApiRequest } = require("../../functions/lib/api-router.js");
 const syncCore = require("../../functions/lib/sync-core.js");
+const syncStore = require("../../functions/lib/sync-store.js");
+const { SAVE_RESET_EPOCH } = require("../../shared/save-cutover.cjs");
 
 function tempPath(prefix) {
 	return path.join(
@@ -63,6 +65,14 @@ function createCommandEnvelope({
 			},
 		},
 	};
+}
+
+async function allowSyncForUser(ownerId) {
+	await syncStore.markMigrationVersion({
+		ownerId,
+		version: SAVE_RESET_EPOCH,
+		displayName: "Sync Command Route Test",
+	});
 }
 
 describe("/api/sync/command route", () => {
@@ -129,6 +139,7 @@ describe("/api/sync/command route", () => {
 	});
 
 	it("rejects malformed command payload", async () => {
+		await allowSyncForUser("user-command-1");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",
@@ -222,6 +233,7 @@ describe("/api/sync/command route", () => {
 		process.env.INTERNAL_CANARY_MODE = "enforce";
 		process.env.INTERNAL_CANARY_ALLOWLIST = "allowlisted-user";
 		process.env.RUNTIME_ROLLOUT_STAGE = "m11_canary";
+		await allowSyncForUser("allowlisted-user");
 
 		const manifest = syncCore.getWorldManifest();
 		const req = {
@@ -296,6 +308,7 @@ describe("/api/sync/command route", () => {
 		process.env.LIMITED_ROLLOUT_MODE = "enforce";
 		process.env.LIMITED_ROLLOUT_PERCENTAGE = "100";
 		process.env.RUNTIME_ROLLOUT_STAGE = "m12_limited";
+		await allowSyncForUser("user-rollout-full");
 
 		const manifest = syncCore.getWorldManifest();
 		const req = {
@@ -321,6 +334,7 @@ describe("/api/sync/command route", () => {
 		process.env.LIMITED_ROLLOUT_PERCENTAGE = "0";
 		process.env.LIMITED_ROLLOUT_ALLOWLIST = "rollout-allowlisted-user";
 		process.env.RUNTIME_ROLLOUT_STAGE = "m12_limited";
+		await allowSyncForUser("rollout-allowlisted-user");
 
 		const manifest = syncCore.getWorldManifest();
 		const req = {
@@ -343,6 +357,7 @@ describe("/api/sync/command route", () => {
 
 	it("accepts a valid command envelope", async () => {
 		const manifest = syncCore.getWorldManifest();
+		await allowSyncForUser("user-command-2");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",
@@ -366,6 +381,7 @@ describe("/api/sync/command route", () => {
 		const manifest = syncCore.getWorldManifest();
 		const user = "user-command-3";
 		const runId = "run-command-stale";
+		await allowSyncForUser(user);
 
 		const firstReq = {
 			method: "POST",
@@ -404,6 +420,7 @@ describe("/api/sync/command route", () => {
 		const manifest = syncCore.getWorldManifest();
 		const user = "user-command-4";
 		const runId = "run-command-replay";
+		await allowSyncForUser(user);
 		const payload = createCommandEnvelope({
 			id: "cmd-replay-1",
 			runId,
@@ -434,6 +451,7 @@ describe("/api/sync/command route", () => {
 	});
 
 	it("returns reconcile on content mismatch", async () => {
+		await allowSyncForUser("user-command-5");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",
@@ -454,6 +472,7 @@ describe("/api/sync/command route", () => {
 
 	it("rejects unsupported command verb", async () => {
 		const manifest = syncCore.getWorldManifest();
+		await allowSyncForUser("user-command-6");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",
@@ -487,6 +506,7 @@ describe("/api/sync/command route", () => {
 
 	it("rejects mismatched command verb and trigger type", async () => {
 		const manifest = syncCore.getWorldManifest();
+		await allowSyncForUser("user-command-7");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",

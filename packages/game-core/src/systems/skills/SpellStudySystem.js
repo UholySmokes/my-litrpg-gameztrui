@@ -6,6 +6,7 @@
 import { randomChoice } from "../../utils/DeterministicRandom.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 import { evolveSkill } from "./SkillEvolutionSystem.js";
+import { attachLatticeMetadata } from "./LivingLatticeSystem.js";
 
 const ESSENCE_ELEMENTS = [
   {
@@ -207,7 +208,7 @@ export const createStudiedSpell = ({ level = 1, existingIds } = {}) => {
   const baseId = `study_${chosenEssence.id}_${chosenForm.id}_${SimBridge.now()}`;
   const id = normalizeId(baseId, existingIds);
 
-  return {
+  return attachLatticeMetadata({
     id,
     name: `${chosenEssence.name} ${chosenForm.name}`,
     type: "active",
@@ -255,7 +256,10 @@ export const createStudiedSpell = ({ level = 1, existingIds } = {}) => {
     ...(chosenForm.aoe ? { aoe: chosenForm.aoe } : {}),
     canEvolve: true,
     canFuse: true,
-  };
+  }, {
+    family: "magic",
+    sourceType: "study",
+  });
 };
 
 export const improveStudiedSpell = (skill, { existingIds } = {}) => {
@@ -284,7 +288,7 @@ export const improveStudiedSpell = (skill, { existingIds } = {}) => {
     nextTags.add(`essence_${resolvedEssence}`);
   }
 
-  return {
+  return attachLatticeMetadata({
     ...evolved,
     isMagic: skill.isMagic ?? true,
     element: resolvedEssence || evolved.element || skill.element,
@@ -305,5 +309,8 @@ export const improveStudiedSpell = (skill, { existingIds } = {}) => {
         essenceModel: "twelve-prime",
       },
     },
-  };
+  }, {
+    family: "magic",
+    sourceType: "study",
+  });
 };

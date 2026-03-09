@@ -22,6 +22,15 @@ import {
 } from "../../data/registries/ClassDataRegistry.js";
 import { getAllClassAbilityIds, getClassAbilityById, getAbilityOwner } from "../class/ClassAbilityRegistry.js";
 import { PROFESSIONS } from "../profession/ProfessionRegistry.js";
+import {
+  attachLatticeMetadata,
+  adaptToLatticeSkill,
+} from "./LivingLatticeSystem.js";
+import {
+  getAllRaceAbilityIds,
+  getRaceAbilityById,
+  getRaceAbilitiesFor,
+} from "../race/RaceAbilityRegistry.js";
 
 // Class Skill Imports
 import knightActive from "../../data/skills/knight.active.json" with { type: "json" };
@@ -382,7 +391,7 @@ const normalizeSkillTemplate = (skill) => {
   const element = typeof next.element === "string" ? next.element : null;
   const template = next.template && typeof next.template === "object" ? next.template : {};
 
-  return {
+  return attachLatticeMetadata({
     ...next,
     ownerType,
     ownerId,
@@ -409,7 +418,7 @@ const normalizeSkillTemplate = (skill) => {
       source: template.source || "SkillRegistry",
       ...(template.meta && typeof template.meta === "object" ? { meta: template.meta } : {}),
     },
-  };
+  });
 };
 
 // =================================================================
@@ -616,6 +625,52 @@ export function getSkillById(skillId) {
   return skill ? normalizeSkillTemplate(skill) : null;
 }
 
+export function getLatticeSkillById(skillId) {
+  const skill = getSkillById(skillId) || getRaceAbilityById(skillId);
+  if (!skill) return null;
+  return skill.lattice && typeof skill.lattice === "object"
+    ? skill.lattice
+    : adaptToLatticeSkill(skill);
+}
+
+export function getAllLatticeSkills(options = {}) {
+  const includeRaceAbilities = options.includeRaceAbilities !== false;
+  const latticeSkills = getAllSkills()
+    .map((skill) => skill?.lattice || adaptToLatticeSkill(skill))
+    .filter(Boolean);
+
+  if (!includeRaceAbilities) {
+    return latticeSkills;
+  }
+
+  const raceLatticeSkills = getAllRaceAbilityIds()
+    .map((abilityId) => getRaceAbilityById(abilityId))
+    .filter(Boolean)
+    .map((ability) => ability.lattice || adaptToLatticeSkill(ability))
+    .filter(Boolean);
+
+  return [...latticeSkills, ...raceLatticeSkills];
+}
+
+export function getLatticeSkillsByClass(classId) {
+  const pool = getSkillsByClass(classId);
+  return {
+    active: pool.active
+      .map((skill) => skill?.lattice || adaptToLatticeSkill(skill))
+      .filter(Boolean),
+    passive: pool.passive
+      .map((skill) => skill?.lattice || adaptToLatticeSkill(skill))
+      .filter(Boolean),
+  };
+}
+
+export function getLatticeSkillsForRace(raceId) {
+  const abilities = getRaceAbilitiesFor(raceId) || [];
+  return abilities
+    .map((ability) => ability?.lattice || adaptToLatticeSkill(ability))
+    .filter(Boolean);
+}
+
 /**
  * Check if skill unlock conditions are met
  */
@@ -725,10 +780,19 @@ function checkSkillUnlockConditions(skill, gameState) {
  */
 export function getAvailableUniversalSkills(gameState) {
   const learnedSkillIds = gameState.player.abilities.map((a) => a.id);
-  return universalSkills.filter((skill) => {
-    if (learnedSkillIds.includes(skill.id)) return false; // Already learned
-    return checkSkillUnlockConditions(skill, gameState);
-  });
+  return universalSkills
+    .filter((skill) => {
+      if (learnedSkillIds.includes(skill.id)) return false; // Already learned
+      return checkSkillUnlockConditions(skill, gameState);
+    })
+    .map((skill) =>
+      normalizeSkillTemplate({
+        ...skill,
+        class: "universal",
+        ownerType: "universal",
+        ownerId: "universal",
+      }),
+    );
 }
 
 /**
@@ -736,10 +800,19 @@ export function getAvailableUniversalSkills(gameState) {
  */
 export function getLockedUniversalSkills(gameState) {
   const learnedSkillIds = gameState.player.abilities.map((a) => a.id);
-  return universalSkills.filter((skill) => {
-    if (learnedSkillIds.includes(skill.id)) return false; // Already learned
-    return !checkSkillUnlockConditions(skill, gameState);
-  });
+  return universalSkills
+    .filter((skill) => {
+      if (learnedSkillIds.includes(skill.id)) return false; // Already learned
+      return !checkSkillUnlockConditions(skill, gameState);
+    })
+    .map((skill) =>
+      normalizeSkillTemplate({
+        ...skill,
+        class: "universal",
+        ownerType: "universal",
+        ownerId: "universal",
+      }),
+    );
 }
 
 // =================================================================
@@ -887,5 +960,10 @@ export function getSkillDisplayInfo(
     },
     bypasses: modifiedSkill?.bypasses || {},
     effects: skill.effects || [],
+    lattice: skill.lattice || null,
+    latticeFamily: skill.latticeFamily || null,
+    runtimeRole: skill.runtimeRole || "standard",
+    originTruths: Array.isArray(skill.originTruths) ? skill.originTruths : [],
+    grandmaVoidBoundaryId: skill.grandmaVoidBoundaryId || null,
   };
 }

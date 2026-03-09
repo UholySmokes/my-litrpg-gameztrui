@@ -776,6 +776,8 @@ export default function CharacterCreationMode({
             availablePassiveSkills={availablePassiveSkills}
             selectedActiveSkills={selectedActiveSkills}
             selectedPassiveSkills={selectedPassiveSkills}
+            maxActiveSkills={MAX_ACTIVE_SKILLS}
+            maxPassiveSkills={MAX_PASSIVE_SKILLS}
             onActiveSelect={(skill) => {
               setWizardError("");
               handleActiveSkillSelect(skill);
@@ -891,6 +893,8 @@ export default function CharacterCreationMode({
     availableCreationAlignments,
     availableCreationSkillLoadouts,
     creationPerkLimits,
+    MAX_ACTIVE_SKILLS,
+    MAX_PASSIVE_SKILLS,
     selectionSummary,
     setGender,
     setName,

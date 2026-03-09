@@ -1035,7 +1035,7 @@ function validateCharacterCommand({ manifest, commit }) {
 
 function validateCommitAgainstState({ manifest, state, commit }) {
 	if (normalizeString(commit.commandType).toUpperCase() === CHARACTER_COMMAND_TYPE) {
-		return validateCharacterCommand({ manifest, state, commit });
+		return validateCharacterCommand({ manifest, commit });
 	}
 	return validateTriggerAgainstManifest({ manifest, state, commit });
 }

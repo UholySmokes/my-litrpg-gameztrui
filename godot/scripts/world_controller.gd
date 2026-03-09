@@ -169,7 +169,39 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 
 	# send character data to backend
 	if _sync_client and _sync_client.has_method("send_command"):
-		_sync_client.send_command("create_character", character_data)
+		_client_seq += 1
+		var command_response: Dictionary = await _sync_client.send_command(
+			"create_character",
+			character_data,
+			run_id,
+			_client_seq,
+			_content_version
+		)
+		var command_body := command_response.get("body", {})
+		if typeof(command_body) == TYPE_DICTIONARY:
+			var canonical_state := command_body.get("canonicalState", {})
+			if typeof(canonical_state) == TYPE_DICTIONARY:
+				_client_seq = maxi(_client_seq, int(canonical_state.get("seq", _client_seq)))
+		if not bool(command_response.get("http_ok", false)):
+			_enqueue_telemetry(
+				"character_create_sync_failed",
+				"warn",
+				"character_creation_command_failed",
+				{
+					"status": int(command_response.get("status", 0)),
+					"errorCode":
+						String(command_body.get("errorCode", command_response.get("error", "unknown"))),
+				}
+			)
+		else:
+			_enqueue_telemetry(
+				"character_create_synced",
+				"info",
+				"character_creation_command_accepted",
+				{
+					"seq": _client_seq,
+				}
+			)
 
 	_enqueue_telemetry(
 		"character_created",

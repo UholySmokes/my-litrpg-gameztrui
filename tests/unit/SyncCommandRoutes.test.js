@@ -67,6 +67,47 @@ function createCommandEnvelope({
 	};
 }
 
+function createCharacterCommandEnvelope({
+	id,
+	runId,
+	clientSeq,
+	contentVersion,
+	createdAt = "2026-03-10T10:00:00.000Z",
+	character,
+}) {
+	return {
+		id,
+		runId,
+		clientId: "godot-client-test",
+		clientSeq,
+		createdAt,
+		contentVersion,
+		command: {
+			type: "CHARACTER",
+			verb: "CREATE",
+			character: {
+				name: "Aela",
+				mode: "basic",
+				race: { id: "pure_human", name: "Pure Human" },
+				class: { id: "warrior", name: "Warrior" },
+				origin: { id: "street_urchin", name: "Street Urchin" },
+				alignment: { id: "neutral_good", name: "Neutral Good" },
+				archetype: { id: "balanced", name: "Balanced" },
+				attributes: {
+					str: 5,
+					agi: 5,
+					dex: 5,
+					int: 5,
+				},
+				activeSkills: ["slash"],
+				passiveSkills: ["toughness"],
+				perks: ["battle_focus"],
+				...(character && typeof character === "object" ? character : {}),
+			},
+		},
+	};
+}
+
 async function allowSyncForUser(ownerId) {
 	await syncStore.markMigrationVersion({
 		ownerId,
@@ -156,6 +197,44 @@ describe("/api/sync/command route", () => {
 		expect(res.statusCode).toBe(400);
 		expect(res.body.ok).toBe(false);
 		expect(res.body.errorCode).toBe("INVALID_COMMAND_ENVELOPE");
+	});
+
+	it("accepts character creation commands and mutates canonical roster state", async () => {
+		await allowSyncForUser("user-command-character-create");
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "user-command-character-create" },
+			body: createCharacterCommandEnvelope({
+				id: "cmd-character-create-1",
+				runId: "run-character-create-1",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(200);
+		expect(res.body.ok).toBe(true);
+		expect(res.body.accepted).toHaveLength(1);
+		expect(res.body.canonicalState.seq).toBe(1);
+		expect(res.body.canonicalState.entityStates.playerProfile).toEqual({
+			charactersCreated: 1,
+			advancedCreationUnlocked: true,
+			lastCreationMode: "basic",
+		});
+		expect(res.body.canonicalState.entityStates.activeCharacter).toEqual(
+			expect.objectContaining({
+				name: "Aela",
+				raceId: "pure_human",
+				classId: "warrior",
+				originId: "street_urchin",
+				alignmentId: "neutral_good",
+				archetypeSystemId: "balanced",
+			}),
+		);
+		expect(res.body.canonicalState.entityStates.characterRoster).toHaveLength(1);
 	});
 
 	it("requires authentication for command submission", async () => {

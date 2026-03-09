@@ -2,14 +2,17 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const {
-	SYNC_COMMAND_VERBS_V1,
+	TRIGGER_COMMAND_VERBS_V1,
+	CHARACTER_COMMAND_VERBS_V1,
 	COMMAND_VERB_POLICY_V1,
 } = require("./sync-command-contract");
 
-const TRIGGER_TYPES = Object.freeze([...SYNC_COMMAND_VERBS_V1]);
+const TRIGGER_TYPES = Object.freeze([...TRIGGER_COMMAND_VERBS_V1]);
 const SYNC_EVENT_TYPES = Object.freeze(["TRIGGER", "COMMAND"]);
 const SYNC_EVENT_TYPE_SET = new Set(SYNC_EVENT_TYPES);
 const TRIGGER_TYPE_SET = new Set(TRIGGER_TYPES);
+const CHARACTER_COMMAND_TYPE = "CHARACTER";
+const CHARACTER_COMMAND_CREATE_VERB = CHARACTER_COMMAND_VERBS_V1[0] || "CREATE";
 const BATCHABLE_TRIGGER_TYPE = "ENTER_TILE";
 const IMMEDIATE_TRIGGER_TYPES = new Set(
 	Object.keys(COMMAND_VERB_POLICY_V1).filter(
@@ -98,8 +101,11 @@ function normalizeSyncEvent(input) {
 	if (normalizeString(commit.commandType)) inferred = "COMMAND";
 
 	const eventType = normalizeEventType(explicit || inferred);
+	const commandVerb = normalizeString(
+		source.commandVerb || source.command_verb || command?.verb || commit.command?.verb,
+	);
 	const triggerType = normalizeString(
-		source.triggerType || source.trigger_type || commit.triggerType,
+		source.triggerType || source.trigger_type || commit.triggerType || commandVerb,
 	);
 
 	return {
@@ -382,6 +388,130 @@ function normalizeProgressionState(input) {
 	};
 }
 
+function normalizeUniqueIdList(values) {
+	if (!Array.isArray(values)) return [];
+	const output = [];
+	const seen = new Set();
+	for (const entry of values) {
+		const candidate = isRecord(entry)
+			? normalizeString(entry.id || entry.name)
+			: normalizeString(entry);
+		if (!candidate || seen.has(candidate)) continue;
+		seen.add(candidate);
+		output.push(candidate);
+	}
+	return output;
+}
+
+function normalizeCharacterRefId(value, fallback = "") {
+	const direct = normalizeString(fallback);
+	if (direct) return direct;
+	if (isRecord(value)) {
+		return normalizeString(value.id || value.name);
+	}
+	return normalizeString(value);
+}
+
+function normalizeCharacterAttributes(attributes) {
+	if (!isRecord(attributes)) return {};
+	const normalized = {};
+	for (const key of Object.keys(attributes)) {
+		const normalizedKey = normalizeString(key);
+		if (!normalizedKey || normalizedKey === "freePoints") continue;
+		const parsed = toInteger(attributes[key]);
+		if (!Number.isInteger(parsed)) continue;
+		normalized[normalizedKey] = parsed;
+	}
+	return normalized;
+}
+
+function normalizeCharacterCreatePayload(input) {
+	const source = isRecord(input) ? input : {};
+	const blueprint = isRecord(source.characterCreationBlueprint)
+		? source.characterCreationBlueprint
+		: isRecord(source.blueprint)
+			? source.blueprint
+			: {};
+	const mode = normalizeString(source.mode).toLowerCase() === "advanced" ? "advanced" : "basic";
+	const name = normalizeString(source.name || blueprint.name);
+	const gender = normalizeString(source.gender || blueprint.gender) || null;
+	const raceId = normalizeCharacterRefId(source.race, source.raceId || blueprint.raceId);
+	const classId = normalizeCharacterRefId(source.class, source.classId || blueprint.classId);
+	const secondaryClassId =
+		normalizeCharacterRefId(
+			source.secondaryClass,
+			source.secondaryClassId || blueprint.secondaryClassId,
+		) || null;
+	const originId = normalizeCharacterRefId(source.origin, source.originId || blueprint.originId);
+	const alignmentId =
+		normalizeCharacterRefId(source.alignment, source.alignmentId || blueprint.alignmentId) ||
+		null;
+	const archetypeSystemId =
+		normalizeCharacterRefId(
+			source.archetypeSystem || source.archetype,
+			source.archetypeSystemId || source.archetypeId || blueprint.archetypeSystemId,
+		) || null;
+	const professionId =
+		normalizeCharacterRefId(source.profession, source.professionId || blueprint.professionId) ||
+		null;
+	const skillLoadoutId =
+		normalizeCharacterRefId(source.skillLoadoutId, blueprint.skillLoadoutId) || null;
+	const activeSkillIds = normalizeUniqueIdList(
+		source.activeSkillIds || source.activeSkills || blueprint.activeSkillIds || blueprint.activeSkills,
+	);
+	const passiveSkillIds = normalizeUniqueIdList(
+		source.passiveSkillIds ||
+			source.passiveSkills ||
+			blueprint.passiveSkillIds ||
+			blueprint.passiveSkills,
+	);
+	const perkIds = normalizeUniqueIdList(source.perkIds || source.perks || blueprint.perkIds);
+	const starterTreeIds = normalizeUniqueIdList(
+		source.starterTreeIds || source.starterTrees || blueprint.starterTreeIds,
+	);
+	const attributes = normalizeCharacterAttributes(source.attributes || blueprint.attributes);
+	const blueprintVersion = Number.isInteger(toInteger(blueprint.version))
+		? toInteger(blueprint.version)
+		: 1;
+
+	return {
+		mode,
+		name,
+		gender,
+		raceId,
+		classId,
+		secondaryClassId,
+		originId,
+		alignmentId,
+		archetypeSystemId,
+		professionId,
+		skillLoadoutId,
+		activeSkillIds,
+		passiveSkillIds,
+		perkIds,
+		starterTreeIds,
+		attributes,
+		blueprint: {
+			version: blueprintVersion,
+			name,
+			gender,
+			raceId,
+			classId,
+			secondaryClassId,
+			originId,
+			professionId,
+			archetypeSystemId,
+			attributes,
+			skillLoadoutId,
+			activeSkillIds,
+			passiveSkillIds,
+			perkIds,
+			starterTreeIds,
+			alignmentId,
+		},
+	};
+}
+
 function withInventoryReward(inventory, { itemId, quantity }) {
 	const normalizedItemId = normalizeString(itemId);
 	const normalizedQty = toNonNegativeInteger(quantity, 0);
@@ -473,10 +603,12 @@ function normalizeCommitEnvelope(input) {
 	const createdAt = normalizeString(input.createdAt);
 	const createdAtMs = parseIsoTimestampMs(createdAt);
 	const contentVersion = normalizeString(input.contentVersion);
+	const commandPayload = isRecord(input.command) ? input.command : null;
+	const commandType = normalizeString(
+		input.commandType || commandPayload?.type,
+	).toUpperCase();
 	const triggerType = normalizeString(input.triggerType);
 	const triggerInput = isRecord(input.trigger) ? input.trigger : null;
-	const commandType = normalizeString(input.commandType).toUpperCase();
-	const commandPayload = isRecord(input.command) ? input.command : null;
 
 	if (!id) {
 		return {
@@ -518,6 +650,24 @@ function normalizeCommitEnvelope(input) {
 			ok: false,
 			errorCode: "INVALID_CONTENT_VERSION",
 			message: "contentVersion is required.",
+		};
+	}
+	if (commandType === CHARACTER_COMMAND_TYPE) {
+		return {
+			ok: true,
+			commit: {
+				id,
+				runId,
+				clientId,
+				clientSeq,
+				createdAt,
+				createdAtMs,
+				contentVersion,
+				triggerType: null,
+				trigger: null,
+				commandType,
+				command: commandPayload || null,
+			},
 		};
 	}
 	if (!TRIGGER_TYPE_SET.has(triggerType)) {
@@ -789,6 +939,119 @@ function validateTriggerAgainstManifest({ manifest, state, commit }) {
 	};
 }
 
+function validateCharacterCommand({ manifest, commit }) {
+	if (commit.contentVersion !== manifest.contentVersion) {
+		return {
+			ok: false,
+			errorCode: "CONTENT_VERSION_MISMATCH",
+			message: "Commit contentVersion does not match active manifest.",
+		};
+	}
+
+	if (normalizeString(commit.commandType).toUpperCase() !== CHARACTER_COMMAND_TYPE) {
+		return {
+			ok: false,
+			errorCode: "UNSUPPORTED_COMMAND_TYPE",
+			message: `Only ${CHARACTER_COMMAND_TYPE} command type is supported here.`,
+		};
+	}
+
+	const command = isRecord(commit.command) ? commit.command : null;
+	if (!command) {
+		return {
+			ok: false,
+			errorCode: "INVALID_COMMAND_PAYLOAD",
+			message: "command payload is required.",
+		};
+	}
+
+	const verb = normalizeString(command.verb).toUpperCase();
+	if (verb !== CHARACTER_COMMAND_CREATE_VERB) {
+		return {
+			ok: false,
+			errorCode: "UNSUPPORTED_COMMAND_VERB",
+			message: `Supported ${CHARACTER_COMMAND_TYPE} verbs: ${CHARACTER_COMMAND_VERBS_V1.join(", ")}.`,
+		};
+	}
+
+	const character = normalizeCharacterCreatePayload(command.character);
+	if (!character.name) {
+		return {
+			ok: false,
+			errorCode: "INVALID_CHARACTER_NAME",
+			message: "character.name is required.",
+		};
+	}
+	if (!character.raceId) {
+		return {
+			ok: false,
+			errorCode: "INVALID_CHARACTER_RACE",
+			message: "character race selection is required.",
+		};
+	}
+	if (!character.classId) {
+		return {
+			ok: false,
+			errorCode: "INVALID_CHARACTER_CLASS",
+			message: "character class selection is required.",
+		};
+	}
+	if (!character.originId) {
+		return {
+			ok: false,
+			errorCode: "INVALID_CHARACTER_ORIGIN",
+			message: "character origin selection is required.",
+		};
+	}
+	if (!character.alignmentId) {
+		return {
+			ok: false,
+			errorCode: "INVALID_CHARACTER_ALIGNMENT",
+			message: "character alignment selection is required.",
+		};
+	}
+	if (!character.archetypeSystemId) {
+		return {
+			ok: false,
+			errorCode: "INVALID_CHARACTER_ARCHETYPE",
+			message: "character archetype selection is required.",
+		};
+	}
+	if (Object.keys(character.attributes).length === 0) {
+		return {
+			ok: false,
+			errorCode: "INVALID_CHARACTER_ATTRIBUTES",
+			message: "character attributes are required.",
+		};
+	}
+
+	return {
+		ok: true,
+		commandType: CHARACTER_COMMAND_TYPE,
+		commandVerb: verb,
+		character,
+	};
+}
+
+function validateCommitAgainstState({ manifest, state, commit }) {
+	if (normalizeString(commit.commandType).toUpperCase() === CHARACTER_COMMAND_TYPE) {
+		return validateCharacterCommand({ manifest, state, commit });
+	}
+	return validateTriggerAgainstManifest({ manifest, state, commit });
+}
+
+function buildNextStateBase(state, commit) {
+	return {
+		...state,
+		entityStates: isRecord(state.entityStates) ? { ...state.entityStates } : {},
+		questFlags: isRecord(state.questFlags) ? { ...state.questFlags } : {},
+		cooldowns: isRecord(state.cooldowns) ? { ...state.cooldowns } : {},
+		seq: commit.clientSeq,
+		tick: Number.isInteger(state.tick) ? state.tick + 1 : 1,
+		contentVersion: commit.contentVersion,
+	};
+}
+
 function applyManifestTransition(nextState, triggerDef) {
 	if (!triggerDef.transition) return;
 	if (!triggerDef.transition.mapId) return;
@@ -806,19 +1069,70 @@ function applyQuestFlagPatch(nextState, patch) {
 	}
 }
 
-function applyCommitToState({ state, commit, triggerDef, resolvedTargetId }) {
-	const nextState = {
-		...state,
-		playerPos: {
-			x: commit.trigger.x,
-			y: commit.trigger.y,
+function applyCharacterCommandToState({ state, commit, character }) {
+	const nextState = buildNextStateBase(state, commit);
+	const existingRoster = Array.isArray(nextState.entityStates.characterRoster)
+		? nextState.entityStates.characterRoster.filter((entry) => isRecord(entry))
+		: [];
+	const characterRoster = existingRoster.map((entry) => ({ ...entry }));
+	const playerProfile = isRecord(nextState.entityStates.playerProfile)
+		? { ...nextState.entityStates.playerProfile }
+		: {};
+	const nextCharactersCreated = toNonNegativeInteger(playerProfile.charactersCreated, 0) + 1;
+
+	const rosterEntry = {
+		commitId: commit.id,
+		clientSeq: commit.clientSeq,
+		createdAt: commit.createdAt,
+		mode: character.mode,
+		name: character.name,
+		gender: character.gender,
+		raceId: character.raceId,
+		classId: character.classId,
+		secondaryClassId: character.secondaryClassId,
+		originId: character.originId,
+		professionId: character.professionId,
+		archetypeSystemId: character.archetypeSystemId,
+		alignmentId: character.alignmentId,
+		skillLoadoutId: character.skillLoadoutId,
+		activeSkillIds: [...character.activeSkillIds],
+		passiveSkillIds: [...character.passiveSkillIds],
+		perkIds: [...character.perkIds],
+		starterTreeIds: [...character.starterTreeIds],
+		attributes: { ...character.attributes },
+		blueprint: {
+			...character.blueprint,
+			activeSkillIds: [...character.blueprint.activeSkillIds],
+			passiveSkillIds: [...character.blueprint.passiveSkillIds],
+			perkIds: [...character.blueprint.perkIds],
+			starterTreeIds: [...character.blueprint.starterTreeIds],
+			attributes: { ...character.blueprint.attributes },
 		},
-		entityStates: isRecord(state.entityStates) ? { ...state.entityStates } : {},
-		questFlags: isRecord(state.questFlags) ? { ...state.questFlags } : {},
-		cooldowns: isRecord(state.cooldowns) ? { ...state.cooldowns } : {},
-		seq: commit.clientSeq,
-		tick: Number.isInteger(state.tick) ? state.tick + 1 : 1,
-		contentVersion: commit.contentVersion,
+	};
+
+	characterRoster.push(rosterEntry);
+	playerProfile.charactersCreated = nextCharactersCreated;
+	playerProfile.advancedCreationUnlocked = nextCharactersCreated >= 1;
+	playerProfile.lastCreationMode = character.mode;
+
+	nextState.entityStates.characterRoster = characterRoster;
+	nextState.entityStates.activeCharacter = { ...rosterEntry };
+	nextState.entityStates.playerProfile = playerProfile;
+	nextState.questFlags.character_created = true;
+	nextState.questFlags.character_creation_completed = true;
+	nextState.stateHash = hashCanonicalState(createHashPayload(nextState));
+	return nextState;
+}
+
+function applyCommitToState({ state, commit, triggerDef, resolvedTargetId, character }) {
+	if (normalizeString(commit.commandType).toUpperCase() === CHARACTER_COMMAND_TYPE) {
+		return applyCharacterCommandToState({ state, commit, character });
+	}
+
+	const nextState = buildNextStateBase(state, commit);
+	nextState.playerPos = {
+		x: commit.trigger.x,
+		y: commit.trigger.y,
 	};
 
 	applyQuestFlagPatch(nextState, triggerDef.setQuestFlags);
@@ -941,16 +1255,16 @@ function replayCommitLog({ manifest, runId, commits, initialState }) {
 			continue;
 		}
 
-		const triggerValidation = validateTriggerAgainstManifest({
+		const commitValidation = validateCommitAgainstState({
 			manifest: activeManifest,
 			state,
 			commit: normalized.commit,
 		});
-		if (!triggerValidation.ok) {
+		if (!commitValidation.ok) {
 			timeline.push({
 				accepted: false,
-				errorCode: triggerValidation.errorCode,
-				message: triggerValidation.message,
+				errorCode: commitValidation.errorCode,
+				message: commitValidation.message,
 				commit: normalized.commit,
 			});
 			continue;
@@ -959,8 +1273,9 @@ function replayCommitLog({ manifest, runId, commits, initialState }) {
 		state = applyCommitToState({
 			state,
 			commit: normalized.commit,
-			triggerDef: triggerValidation.triggerDef,
-			resolvedTargetId: triggerValidation.resolvedTargetId,
+			triggerDef: commitValidation.triggerDef,
+			resolvedTargetId: commitValidation.resolvedTargetId,
+			character: commitValidation.character,
 		});
 		timeline.push({
 			accepted: true,
@@ -1011,6 +1326,7 @@ module.exports = {
 	normalizeCommitBatchRequest,
 	buildInitialGameplayState,
 	validateTriggerAgainstManifest,
+	validateCommitAgainstState,
 	applyCommitToState,
 	replayCommitLog,
 	toPublicState,

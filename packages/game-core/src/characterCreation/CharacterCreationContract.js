@@ -1,3 +1,5 @@
+import { getCharacterCreationSkillSelectionLimits } from "./CharacterCreationOptionsRegistry.js";
+
 const BLUEPRINT_VERSION = 1;
 
 function normalizeId(value) {
@@ -77,9 +79,10 @@ export function createCharacterCreationBlueprint(input = {}) {
 export function validateCharacterCreationBlueprint(blueprint = {}, options = {}) {
   const errors = [];
   const source = createCharacterCreationBlueprint(blueprint);
+  const selectionLimits = getCharacterCreationSkillSelectionLimits();
   const {
-    requiredActiveSkillCount,
-    requiredPassiveSkillCount,
+    requiredActiveSkillCount = selectionLimits.requiredActiveSkillCount,
+    requiredPassiveSkillCount = selectionLimits.requiredPassiveSkillCount,
     minPerks,
     maxPerks,
     requiresStarterTree,

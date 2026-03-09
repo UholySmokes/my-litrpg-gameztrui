@@ -1,3 +1,14 @@
+export {
+  CREATION_SKILL_SELECTION_LIMITS,
+  buildCharacterCreationLatticeProfile,
+  buildCharacterCreationSkillPools,
+  getCharacterCreationSkillSelectionLimits,
+  resolveCharacterCreationSkillLoadout,
+  validateCharacterCreationSkillSelections,
+} from "./CharacterCreationSkillSelection.js";
+
+import { listCharacterCreationSkillLoadouts as listResolvedCharacterCreationSkillLoadouts } from "./CharacterCreationSkillSelection.js";
+
 const ALIGNMENTS = [
   { id: "lawful_good", name: "Lawful Good", description: "Order and compassion. You keep your word." },
   { id: "neutral_good", name: "Neutral Good", description: "Kindness first. Rules are tools, not chains." },
@@ -31,8 +42,6 @@ const STARTER_TREES_CONFIG = {
   ],
 };
 
-const SKILL_LOADOUTS = [];
-
 export function listCharacterCreationAlignments() {
   return ALIGNMENTS.map((entry) => ({ ...entry }));
 }
@@ -58,6 +67,6 @@ export function getCharacterCreationStarterTreeLimits() {
   };
 }
 
-export function listCharacterCreationSkillLoadouts() {
-  return SKILL_LOADOUTS.map((entry) => ({ ...entry }));
+export function listCharacterCreationSkillLoadouts(context = {}) {
+  return listResolvedCharacterCreationSkillLoadouts(context);
 }

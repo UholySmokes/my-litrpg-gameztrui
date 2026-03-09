@@ -1,14 +1,16 @@
 import { describe, expect, it } from "@jest/globals";
 import {
   createCharacterCreationBlueprint,
-  validateCharacterCreationBlueprint,
+  getCharacterCreationSkillSelectionLimits,
   listCharacterCreationAlignments,
   getCharacterCreationPerkLimits,
   listCharacterCreationStarterTrees,
+  validateCharacterCreationBlueprint,
 } from "@voidverse/game-core";
 
 describe("CharacterCreationContract", () => {
   it("accepts blueprint without gender", () => {
+    const limits = getCharacterCreationSkillSelectionLimits();
     const blueprint = createCharacterCreationBlueprint({
       name: "Aela",
       raceId: "neo_human",
@@ -21,13 +23,14 @@ describe("CharacterCreationContract", () => {
       passiveSkillIds: ["vigor", "resolve", "focus", "grit", "discipline", "instinct"],
     });
 
-    const result = validateCharacterCreationBlueprint(blueprint, {
-      requiredActiveSkillCount: 3,
-      requiredPassiveSkillCount: 6,
-    });
+    const result = validateCharacterCreationBlueprint(blueprint);
 
     expect(result.valid).toBe(true);
     expect(result.blueprint.gender).toBeNull();
+    expect(limits).toEqual({
+      requiredActiveSkillCount: 3,
+      requiredPassiveSkillCount: 6,
+    });
   });
 
   it("exposes alignment/perk/tree options for shared creation surfaces", () => {

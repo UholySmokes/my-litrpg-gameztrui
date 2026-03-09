@@ -5,6 +5,7 @@
 
 import raceAbilitiesData from "../../data/skills/race_abilities.json" with { type: "json" };
 import raceAbilitySetsData from "../../data/skills/race_ability_sets.json" with { type: "json" };
+import { attachLatticeMetadata } from "../skills/LivingLatticeSystem.js";
 
 const toAbilityMap = (entries) => {
   const map = {};
@@ -65,8 +66,11 @@ const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) =
     templateMeta.ownerId = ownerId;
   }
 
-  return {
+  return attachLatticeMetadata({
     ...next,
+    type: next.type || (next.damage || next.heal || next.resourceGain ? "active" : "passive"),
+    ownerType: "race",
+    ownerId: ownerId || next.ownerId || "unbound",
     effects,
     template: {
       category: template.category || category || "Race Ability",
@@ -76,7 +80,10 @@ const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) =
       source: template.source || source || "RaceAbilityRegistry",
       ...(Object.keys(templateMeta).length > 0 ? { meta: templateMeta } : {}),
     },
-  };
+  }, {
+    family: "bloodline",
+    sourceType: "race",
+  });
 };
 
 export function getRaceAbilitiesFor(raceId) {

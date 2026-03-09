@@ -11,6 +11,10 @@ import {
   collectBypassFlags,
   TALENT_COMPONENTS,
 } from "./TalentDefinitions.js";
+import {
+  getTalentMigrationAudit,
+  getTalentMigrationLane,
+} from "./TalentMigrationAudit.js";
 
 // Build rules from JSON registry (administrative layer)
 const REGISTRY_MAP = new Map(
@@ -281,6 +285,7 @@ export function getTalentInfo(talentId, playerLevel = 1) {
     magnitudeDescription: magnitudeDescription,
     isValid: isValidTalent(talentId),
     priority: rule?.priority || component?.priority || PRIORITY.NORMAL,
+    migrationLane: getTalentMigrationLane(talentId),
   };
 }
 
@@ -337,4 +342,6 @@ export const TalentDiagnostics = {
   getAllTalentInfo,
   getTalentsByPriority,
   getTalentsByType,
+  getTalentMigrationLane,
+  getTalentMigrationAudit,
 };

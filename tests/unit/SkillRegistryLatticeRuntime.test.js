@@ -99,6 +99,18 @@ describe("SkillRegistry lattice runtime helpers", () => {
     expect(invalidEvent.valid).toBe(false);
     expect(invalidEvent.errors[0]).toContain("Unknown skillId");
 
+    const nullEvent = validateSkillProgressEvent(null);
+    expect(nullEvent.valid).toBe(false);
+    expect(nullEvent.errors[0]).toContain("Unknown skillId");
+
+    const nonObjectEvent = validateSkillProgressEvent(42);
+    expect(nonObjectEvent.valid).toBe(false);
+    expect(nonObjectEvent.errors[0]).toContain("Unknown skillId");
+
+    const arrayEvent = validateSkillProgressEvent([]);
+    expect(arrayEvent.valid).toBe(false);
+    expect(arrayEvent.errors[0]).toContain("Unknown skillId");
+
     const processed = processSkillProgressEvents([
       {
         eventId: "evt-runtime-2",

@@ -764,18 +764,19 @@ export function getLatticeBuildPressureForLoadout({
 }
 
 export function validateSkillProgressEvent(event = {}, options = {}) {
-  const skill = resolveSkillReference(event.skillId);
+  const normalizedEvent = (event !== null && typeof event === 'object' && !Array.isArray(event)) ? event : {};
+  const skill = resolveSkillReference(normalizedEvent.skillId);
   if (!skill) {
     return {
       valid: false,
-      errors: [`Unknown skillId: ${JSON.stringify(event?.skillId)}`],
-      event,
+      errors: [`Unknown skillId: ${JSON.stringify(normalizedEvent.skillId)}`],
+      event: normalizedEvent,
       skill: null,
       masteryGain: 0,
     };
   }
 
-  const validation = validateLatticeProgressEvent(event, options);
+  const validation = validateLatticeProgressEvent(normalizedEvent, options);
   if (!validation.valid) {
     return {
       ...validation,

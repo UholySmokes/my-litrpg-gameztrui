@@ -718,9 +718,13 @@ export function getLatticeLoadoutSummary({
   professionId = null,
 } = {}) {
   const resolvedActiveSkills =
-    activeSkills.length > 0 ? resolveSkillReferenceList(activeSkills) : resolveSkillReferenceList(activeSkillIds);
+    Array.isArray(activeSkills) && activeSkills.length > 0
+      ? resolveSkillReferenceList(activeSkills)
+      : resolveSkillReferenceList(activeSkillIds);
   const resolvedPassiveSkills =
-    passiveSkills.length > 0 ? resolveSkillReferenceList(passiveSkills) : resolveSkillReferenceList(passiveSkillIds);
+    Array.isArray(passiveSkills) && passiveSkills.length > 0
+      ? resolveSkillReferenceList(passiveSkills)
+      : resolveSkillReferenceList(passiveSkillIds);
 
   return summarizeLatticeLoadout({
     activeSkills: resolvedActiveSkills,
@@ -738,9 +742,13 @@ export function getLatticeBuildPressureForLoadout({
   nativeMiracleUsedRecently = false,
 } = {}) {
   const resolvedActiveSkills =
-    activeSkills.length > 0 ? resolveSkillReferenceList(activeSkills) : resolveSkillReferenceList(activeSkillIds);
+    Array.isArray(activeSkills) && activeSkills.length > 0
+      ? resolveSkillReferenceList(activeSkills)
+      : resolveSkillReferenceList(activeSkillIds);
   const resolvedPassiveSkills =
-    passiveSkills.length > 0 ? resolveSkillReferenceList(passiveSkills) : resolveSkillReferenceList(passiveSkillIds);
+    Array.isArray(passiveSkills) && passiveSkills.length > 0
+      ? resolveSkillReferenceList(passiveSkills)
+      : resolveSkillReferenceList(passiveSkillIds);
   const resolvedSkills = [...resolvedActiveSkills, ...resolvedPassiveSkills];
 
   return {

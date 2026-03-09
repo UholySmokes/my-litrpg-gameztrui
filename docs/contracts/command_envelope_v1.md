@@ -22,15 +22,17 @@ Command envelope fields:
   "createdAt": "2026-02-23T10:00:00.000Z",
   "contentVersion": "sha256hex",
   "command": {
-    "type": "TRIGGER",
-    "verb": "ENTER_TILE",
-    "triggerType": "ENTER_TILE",
-    "trigger": {
-      "triggerId": "tile_intro_square",
-      "mapId": "map_village_square",
-      "x": 6,
-      "y": 8,
-      "targetId": "optional"
+    "type": "CHARACTER",
+    "verb": "CREATE",
+    "character": {
+      "name": "Aela",
+      "mode": "basic",
+      "race": { "id": "pure_human" },
+      "class": { "id": "warrior" },
+      "origin": { "id": "street_urchin" },
+      "alignment": { "id": "neutral_good" },
+      "archetype": { "id": "balanced" },
+      "attributes": { "str": 5, "agi": 5, "dex": 5, "int": 5 }
     }
   }
 }
@@ -44,10 +46,11 @@ Command envelope fields:
 - `clientSeq`: strictly increasing sequence expected by server.
 - `createdAt`: ISO-8601 timestamp from client.
 - `contentVersion`: active world/content hash expected by server.
-- `command.type`: command family (`TRIGGER` in v1 slice).
-- `command.verb`: canonical command verb for trigger execution (see `docs/contracts/command_verbs_v1.md`).
-- `command.triggerType`: optional compatibility alias for trigger verb; if present, must match `command.verb`.
-- `command.trigger`: deterministic trigger payload fields.
+- `command.type`: command family (`TRIGGER`, `CHARACTER`).
+- `command.verb`: canonical command verb within that family (see `docs/contracts/command_verbs_v1.md`).
+- `command.triggerType`: optional compatibility alias for `TRIGGER` verbs; if present, must match `command.verb`.
+- `command.trigger`: deterministic trigger payload fields for `TRIGGER` commands.
+- `command.character`: deterministic creation payload for `CHARACTER CREATE`.
 
 ### Supported v1 command verbs
 
@@ -58,6 +61,10 @@ Command envelope fields:
 3. `ZONE_EXIT`
 4. `ENCOUNTER_GATE`
 5. `SAVEPOINT`
+
+`CHARACTER` supports:
+
+1. `CREATE`
 
 Validation behavior:
 
@@ -78,13 +85,11 @@ Normalization target:
   "clientSeq": 1,
   "createdAt": "...",
   "contentVersion": "...",
-  "triggerType": "ENTER_TILE",
-  "trigger": {
-    "triggerId": "...",
-    "mapId": "...",
-    "x": 0,
-    "y": 0,
-    "targetId": null
+  "commandType": "CHARACTER",
+  "command": {
+    "type": "CHARACTER",
+    "verb": "CREATE",
+    "character": {}
   }
 }
 ```

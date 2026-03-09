@@ -717,10 +717,14 @@ export function getLatticeLoadoutSummary({
   passiveSkills = [],
   professionId = null,
 } = {}) {
+  const safeActiveSkills = Array.isArray(activeSkills) ? activeSkills : [];
+  const safePassiveSkills = Array.isArray(passiveSkills) ? passiveSkills : [];
+  const safeActiveSkillIds = Array.isArray(activeSkillIds) ? activeSkillIds : [];
+  const safePassiveSkillIds = Array.isArray(passiveSkillIds) ? passiveSkillIds : [];
   const resolvedActiveSkills =
-    activeSkills.length > 0 ? resolveSkillReferenceList(activeSkills) : resolveSkillReferenceList(activeSkillIds);
+    safeActiveSkills.length > 0 ? resolveSkillReferenceList(safeActiveSkills) : resolveSkillReferenceList(safeActiveSkillIds);
   const resolvedPassiveSkills =
-    passiveSkills.length > 0 ? resolveSkillReferenceList(passiveSkills) : resolveSkillReferenceList(passiveSkillIds);
+    safePassiveSkills.length > 0 ? resolveSkillReferenceList(safePassiveSkills) : resolveSkillReferenceList(safePassiveSkillIds);
 
   return summarizeLatticeLoadout({
     activeSkills: resolvedActiveSkills,
@@ -737,10 +741,14 @@ export function getLatticeBuildPressureForLoadout({
   professionId = null,
   nativeMiracleUsedRecently = false,
 } = {}) {
+  const safeActiveSkills = Array.isArray(activeSkills) ? activeSkills : [];
+  const safePassiveSkills = Array.isArray(passiveSkills) ? passiveSkills : [];
+  const safeActiveSkillIds = Array.isArray(activeSkillIds) ? activeSkillIds : [];
+  const safePassiveSkillIds = Array.isArray(passiveSkillIds) ? passiveSkillIds : [];
   const resolvedActiveSkills =
-    activeSkills.length > 0 ? resolveSkillReferenceList(activeSkills) : resolveSkillReferenceList(activeSkillIds);
+    safeActiveSkills.length > 0 ? resolveSkillReferenceList(safeActiveSkills) : resolveSkillReferenceList(safeActiveSkillIds);
   const resolvedPassiveSkills =
-    passiveSkills.length > 0 ? resolveSkillReferenceList(passiveSkills) : resolveSkillReferenceList(passiveSkillIds);
+    safePassiveSkills.length > 0 ? resolveSkillReferenceList(safePassiveSkills) : resolveSkillReferenceList(safePassiveSkillIds);
   const resolvedSkills = [...resolvedActiveSkills, ...resolvedPassiveSkills];
 
   return {

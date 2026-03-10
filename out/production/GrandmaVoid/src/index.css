@@ -1,0 +1,172 @@
+@import "./components/AdminTools.css";
+
+:root {
+  /* Backgrounds */
+  --bg-deep: #050a10;
+  --bg-glass: rgba(5, 16, 26, 0.6);
+  --bg-panel: rgba(5, 16, 26, 0.82);
+
+  /* Interface Colors */
+  --holo-cyan: #00f3ff;
+  --holo-alert: #ff2a6d;
+  --holo-gold: #ffd700;
+  --holo-blue: #4361ee;
+  --holo-green: #34d399;
+  --holo-gray: #7b7bad;
+  --holo-dark: #05080c;
+  --holo-primary: var(--holo-cyan);
+  --holo-secondary: #0f6a74;
+  --holo-accent: #7aebff;
+
+  /* Effects */
+  --glow-strong: 0 0 18px rgba(0, 243, 255, 0.35);
+  --glow-subtle: 0 0 6px rgba(0, 243, 255, 0.18);
+  --border-glass: 1px solid rgba(0, 243, 255, 0.22);
+  --glow-border: 0 0 12px rgba(0, 243, 255, 0.22);
+  --glass-blur: blur(12px);
+
+  /* Fonts */
+  --font-hud: 'Unbounded', sans-serif;
+  --font-text: 'Spline Sans', sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
+
+  /* Text */
+  --text-main: #e0e6ed;
+  --text-dim: rgba(224, 230, 237, 0.65);
+  --text-muted: var(--text-dim);
+  --button-bg: rgba(0, 243, 255, 0.08);
+  --button-selected: rgba(255, 215, 0, 0.18);
+  --border-radius: 14px;
+  
+  /* NEW: Spacing System */
+  --spacing-xs: 0.25rem;    /* 4px */
+  --spacing-sm: 0.5rem;     /* 8px */
+  --spacing-md: 1rem;       /* 16px */
+  --spacing-lg: 1.5rem;     /* 24px */
+  --spacing-xl: 2rem;       /* 32px */
+  --spacing-2xl: 3rem;      /* 48px */
+
+  /* NEW: Typography Scale */
+  --text-xs: 0.65rem;       /* 10.4px */
+  --text-sm: 0.75rem;       /* 12px */
+  --text-base: 0.875rem;    /* 14px */
+  --text-lg: 1rem;          /* 16px */
+  --text-xl: 1.125rem;      /* 18px */
+  --text-2xl: 1.25rem;      /* 20px */
+  --text-3xl: 1.5rem;       /* 24px */
+
+  /* NEW: Border Radius Scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* NEW: Opacity Scale */
+  --opacity-dim: 0.65;
+  --opacity-subtle: 0.85;
+  --opacity-full: 1;
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: dark;
+  /* -moz-osx-font-smoothing: grayscale; */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-text);
+  overflow: hidden;
+  position: relative;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--holo-gold);
+  outline-offset: 2px;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Scanlines Overlay */
+.scanlines {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.2)
+  );
+  background-size: 100% 4px;
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  pointer-events: none; /* Let clicks pass through */
+  z-index: 999;
+  opacity: 0.08;
+}
+
+/* Glitch Effect */
+.glitch {
+  animation: glitch 0.2s;
+}
+
+@keyframes glitch {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  10% {
+    filter: hue-rotate(90deg) saturate(150%);
+    transform: translateX(-2px);
+  }
+  20% {
+    filter: hue-rotate(180deg) saturate(150%);
+    transform: translateX(2px);
+  }
+  30% {
+    filter: hue-rotate(270deg) saturate(150%);
+    transform: translateX(-1px);
+  }
+  40% {
+    filter: hue-rotate(360deg) saturate(150%);
+    transform: translateX(1px);
+  }
+  100% {
+    filter: hue-rotate(0deg);
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "priest_heal",
+    "name": "Heal",
+    "type": "active",
+    "class": "priest",
+    "description": "A basic healing spell that restores health to an ally.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 0
+  },
+  {
+    "id": "priest_flash_heal",
+    "name": "Flash Heal",
+    "type": "active",
+    "class": "priest",
+    "description": "A fast but expensive heal for emergencies.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 0
+  },
+  {
+    "id": "priest_renew",
+    "name": "Renew",
+    "type": "active",
+    "class": "priest",
+    "description": "Place a heal over time effect on an ally.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 0
+  },
+  {
+    "id": "priest_prayer_of_healing",
+    "name": "Prayer of Healing",
+    "type": "active",
+    "class": "priest",
+    "description": "Heal all nearby party members.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 8
+  },
+  {
+    "id": "priest_power_word_shield",
+    "name": "Power Word: Shield",
+    "type": "active",
+    "class": "priest",
+    "description": "Shield an ally, absorbing damage.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 4
+  },
+  {
+    "id": "priest_smite",
+    "name": "Smite",
+    "type": "active",
+    "class": "priest",
+    "description": "Smite an enemy with holy fire.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 0
+  },
+  {
+    "id": "priest_holy_fire",
+    "name": "Holy Fire",
+    "type": "active",
+    "class": "priest",
+    "description": "Blast an enemy with holy fire that burns over time.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 10
+  },
+  {
+    "id": "priest_shadow_word_pain",
+    "name": "Shadow Word: Pain",
+    "type": "active",
+    "class": "priest",
+    "description": "Afflict the enemy with shadow damage over time.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 0
+  },
+  {
+    "id": "priest_mind_blast",
+    "name": "Mind Blast",
+    "type": "active",
+    "class": "priest",
+    "description": "Blast the enemy mind with shadow energy.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 8
+  },
+  {
+    "id": "priest_resurrection",
+    "name": "Resurrection",
+    "type": "active",
+    "class": "priest",
+    "description": "Bring a fallen ally back to life.",
+    "level": 1,
+    "manaCost": 50,
+    "cooldown": 600
+  },
+  {
+    "id": "priest_dispel_magic",
+    "name": "Dispel Magic",
+    "type": "active",
+    "class": "priest",
+    "description": "Remove a magical effect from friend or foe.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 8
+  },
+  {
+    "id": "priest_mass_dispel",
+    "name": "Mass Dispel",
+    "type": "active",
+    "class": "priest",
+    "description": "Dispel magic effects from all nearby targets.",
+    "level": 1,
+    "manaCost": 40,
+    "cooldown": 45
+  },
+  {
+    "id": "priest_psychic_scream",
+    "name": "Psychic Scream",
+    "type": "active",
+    "class": "priest",
+    "description": "Cause nearby enemies to flee in fear.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 30
+  },
+  {
+    "id": "priest_fade",
+    "name": "Fade",
+    "type": "active",
+    "class": "priest",
+    "description": "Fade into the shadows, reducing threat.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 30
+  },
+  {
+    "id": "priest_guardian_spirit",
+    "name": "Guardian Spirit",
+    "type": "active",
+    "class": "priest",
+    "description": "Spirit watches over ally, preventing death once.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 180
+  },
+  {
+    "id": "priest_divine_hymn",
+    "name": "Divine Hymn",
+    "type": "active",
+    "class": "priest",
+    "description": "Channel a hymn that heals all nearby allies.",
+    "level": 1,
+    "manaCost": 45,
+    "cooldown": 180
+  },
+  {
+    "id": "priest_pain_suppression",
+    "name": "Pain Suppression",
+    "type": "active",
+    "class": "priest",
+    "description": "Reduce all damage taken by an ally significantly.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 180
+  },
+  {
+    "id": "priest_leap_of_faith",
+    "name": "Leap of Faith",
+    "type": "active",
+    "class": "priest",
+    "description": "Pull an ally to your location.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 90
+  },
+  {
+    "id": "priest_holy_word_serenity",
+    "name": "Holy Word: Serenity",
+    "type": "active",
+    "class": "priest",
+    "description": "A powerful single-target heal with long cooldown.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 60
+  },
+  {
+    "id": "priest_spirit_of_redemption",
+    "name": "Spirit of Redemption",
+    "type": "active",
+    "class": "priest",
+    "description": "Upon death, become a spirit and heal freely for a time.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 0
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "spirit_beast_special",
+    "name": "Predator Pounce",
+    "description": "Leap in with a savage stun.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

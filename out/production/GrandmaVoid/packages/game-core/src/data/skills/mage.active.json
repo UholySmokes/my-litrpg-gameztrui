@@ -1,0 +1,244 @@
+[
+  {
+    "id": "mage_fireball",
+    "name": "Fireball",
+    "type": "active",
+    "class": "mage",
+    "description": "Launch explosive fire projectile.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 2,
+    "effects": [
+      {
+        "id": "burn",
+        "duration": 3,
+        "target": "enemy"
+      }
+    ]
+  },
+  {
+    "id": "mage_ice_bolt",
+    "name": "Ice Bolt",
+    "type": "active",
+    "class": "mage",
+    "description": "Freezing bolt that slows enemies.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 2,
+    "effects": [
+      {
+        "id": "slow",
+        "duration": 2,
+        "target": "enemy"
+      },
+      {
+        "id": "frostbite",
+        "duration": 3,
+        "target": "enemy"
+      }
+    ]
+  },
+  {
+    "id": "mage_lightning",
+    "name": "Lightning",
+    "type": "active",
+    "class": "mage",
+    "description": "Chain lightning between enemies.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 4,
+    "effects": [
+      {
+        "id": "shock",
+        "duration": 2,
+        "target": "enemy"
+      }
+    ]
+  },
+  {
+    "id": "mage_teleport",
+    "name": "Teleport",
+    "type": "active",
+    "class": "mage",
+    "description": "Instantly move to nearby location.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 8
+  },
+  {
+    "id": "mage_barrier",
+    "name": "Barrier",
+    "type": "active",
+    "class": "mage",
+    "description": "Create protective magic shield.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 10
+  },
+  {
+    "id": "mage_meteor",
+    "name": "Meteor",
+    "type": "active",
+    "class": "mage",
+    "description": "Summon meteor from sky.",
+    "level": 1,
+    "manaCost": 50,
+    "cooldown": 30
+  },
+  {
+    "id": "mage_blizzard",
+    "name": "Blizzard",
+    "type": "active",
+    "class": "mage",
+    "description": "Area ice damage over time.",
+    "level": 1,
+    "manaCost": 40,
+    "cooldown": 20
+  },
+  {
+    "id": "mage_chain_lightning",
+    "name": "Chain Lightning",
+    "type": "active",
+    "class": "mage",
+    "description": "Lightning jumps between multiple enemies.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 12
+  },
+  {
+    "id": "mage_mana_shield",
+    "name": "Mana Shield",
+    "type": "active",
+    "class": "mage",
+    "description": "Convert mana to health protection.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 15
+  },
+  {
+    "id": "mage_polymorph",
+    "name": "Polymorph",
+    "type": "active",
+    "class": "mage",
+    "description": "Transform enemy into harmless creature.",
+    "level": 1,
+    "manaCost": 45,
+    "cooldown": 25
+  },
+  {
+    "id": "mage_time_slow",
+    "name": "Time Slow",
+    "type": "active",
+    "class": "mage",
+    "description": "Slow time in area around you.",
+    "level": 1,
+    "manaCost": 60,
+    "cooldown": 45,
+    "effects": [
+      {
+        "id": "slow",
+        "duration": 5,
+        "target": "enemy",
+        "aoe": true
+      }
+    ]
+  },
+  {
+    "id": "mage_arcane_missiles",
+    "name": "Arcane Missiles",
+    "type": "active",
+    "class": "mage",
+    "description": "Rapid fire magic projectiles.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 3
+  },
+  {
+    "id": "mage_frost_nova",
+    "name": "Frost Nova",
+    "type": "active",
+    "class": "mage",
+    "description": "Freeze all nearby enemies.",
+    "level": 1,
+    "manaCost": 28,
+    "cooldown": 10,
+    "effects": [
+      {
+        "id": "freeze",
+        "duration": 3,
+        "target": "enemy",
+        "aoe": true
+      }
+    ]
+  },
+  {
+    "id": "mage_fire_wall",
+    "name": "Fire Wall",
+    "type": "active",
+    "class": "mage",
+    "description": "Create wall of fire blocking path.",
+    "level": 1,
+    "manaCost": 32,
+    "cooldown": 15
+  },
+  {
+    "id": "mage_mana_blast",
+    "name": "Mana Blast",
+    "type": "active",
+    "class": "mage",
+    "description": "Powerful single target magic attack.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 5
+  },
+  {
+    "id": "mage_telekinetic_push",
+    "name": "Telekinetic Push",
+    "type": "active",
+    "class": "mage",
+    "description": "Push enemies away with force.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 6
+  },
+  {
+    "id": "mage_arcane_explosion",
+    "name": "Arcane Explosion",
+    "type": "active",
+    "class": "mage",
+    "description": "Explosive arcane damage in area.",
+    "level": 1,
+    "manaCost": 38,
+    "cooldown": 12
+  },
+  {
+    "id": "mage_ice_lance",
+    "name": "Ice Lance",
+    "type": "active",
+    "class": "mage",
+    "description": "Piercing ice attack.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 4
+  },
+  {
+    "id": "mage_flame_strike",
+    "name": "Flame Strike",
+    "type": "active",
+    "class": "mage",
+    "description": "Column of fire from above.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 8
+  },
+  {
+    "id": "mage_arcane_intellect",
+    "name": "Arcane Intellect",
+    "type": "active",
+    "class": "mage",
+    "description": "Boost intelligence temporarily.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 20
+  }
+]

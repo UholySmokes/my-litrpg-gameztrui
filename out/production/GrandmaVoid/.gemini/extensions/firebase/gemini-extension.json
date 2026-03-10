@@ -1,0 +1,11 @@
+{
+  "name": "firebase",
+  "version": "0.0.1",
+  "mcpServers": {
+    "firebase": {
+      "command": "npx",
+      "args": ["-y", "firebase-tools", "mcp", "--dir", "d:\Apps\my-litrpg-gameztrui"]
+    }
+  },
+  "contextFileName": "FIREBASE.md"
+}

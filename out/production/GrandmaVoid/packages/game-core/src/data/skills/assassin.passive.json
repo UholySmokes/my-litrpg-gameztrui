@@ -1,0 +1,306 @@
+[
+  {
+    "id": "assassin_critical_strike",
+    "name": "Critical Strike",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Increased critical hit chance.",
+    "level": 1
+  },
+  {
+    "id": "assassin_stealth_mastery",
+    "name": "Stealth Mastery",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Better stealth and detection avoidance.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_immunity",
+    "name": "Poison Immunity",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Immune to all poisons.",
+    "level": 1
+  },
+  {
+    "id": "assassin_backstab_mastery",
+    "name": "Backstab Mastery",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Backstabs deal more damage.",
+    "level": 1
+  },
+  {
+    "id": "assassin_dagger_proficiency",
+    "name": "Dagger Proficiency",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Mastery with daggers and knives.",
+    "level": 1
+  },
+  {
+    "id": "assassin_shadow_affinity",
+    "name": "Shadow Affinity",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Natural connection to shadows.",
+    "level": 1
+  },
+  {
+    "id": "assassin_bleed_mastery",
+    "name": "Bleed Mastery",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Bleeding effects last longer.",
+    "level": 1
+  },
+  {
+    "id": "assassin_movement_speed",
+    "name": "Movement Speed",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Increased movement speed.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_mastery",
+    "name": "Poison Mastery",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Poisons are more effective.",
+    "level": 1
+  },
+  {
+    "id": "assassin_evasion",
+    "name": "Evasion",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Chance to dodge attacks.",
+    "level": 1
+  },
+  {
+    "id": "assassin_silent_footsteps",
+    "name": "Silent Footsteps",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Move silently at all times.",
+    "level": 1
+  },
+  {
+    "id": "assassin_death_dealer",
+    "name": "Death Dealer",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Bonus damage to low health enemies.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_resistance",
+    "name": "Poison Resistance",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Resist poison damage.",
+    "level": 1
+  },
+  {
+    "id": "assassin_critical_damage",
+    "name": "Critical Damage",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Critical hits deal more damage.",
+    "level": 1
+  },
+  {
+    "id": "assassin_shadow_walk",
+    "name": "Shadow Walk",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Can walk through shadows.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_application",
+    "name": "Poison Application",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Apply poison faster.",
+    "level": 1
+  },
+  {
+    "id": "assassin_stealth_duration",
+    "name": "Stealth Duration",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Stealth lasts longer.",
+    "level": 1
+  },
+  {
+    "id": "assassin_backstab_range",
+    "name": "Backstab Range",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Can backstab from wider angle.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_stack",
+    "name": "Poison Stack",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Poisons can stack multiple times.",
+    "level": 1
+  },
+  {
+    "id": "assassin_evasion_mastery",
+    "name": "Evasion Mastery",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Better dodge chance.",
+    "level": 1
+  },
+  {
+    "id": "assassin_shadow_cloak",
+    "name": "Shadow Cloak",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Passive stealth when not moving.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_cloud",
+    "name": "Poison Cloud Passive",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Leave poison trail behind.",
+    "level": 1
+  },
+  {
+    "id": "assassin_critical_chance",
+    "name": "Critical Chance",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Higher critical hit rate.",
+    "level": 1
+  },
+  {
+    "id": "assassin_shadow_merge",
+    "name": "Shadow Merge",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Become one with shadows.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_venom",
+    "name": "Poison Venom",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Deadlier poison effects.",
+    "level": 1
+  },
+  {
+    "id": "assassin_stealth_speed",
+    "name": "Stealth Speed",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Move faster while stealthed.",
+    "level": 1
+  },
+  {
+    "id": "assassin_backstab_crit",
+    "name": "Backstab Crit",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Backstabs always critical.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_master",
+    "name": "Poison Master",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Master of all poisons.",
+    "level": 1
+  },
+  {
+    "id": "assassin_shadow_form",
+    "name": "Shadow Form",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Partial shadow transformation.",
+    "level": 1
+  },
+  {
+    "id": "assassin_evasion_expert",
+    "name": "Evasion Expert",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Expert level dodging.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_affinity",
+    "name": "Poison Affinity",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Natural poison resistance and usage.",
+    "level": 1
+  },
+  {
+    "id": "assassin_shadow_mastery",
+    "name": "Shadow Mastery",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Complete shadow control.",
+    "level": 1
+  },
+  {
+    "id": "assassin_critical_mastery",
+    "name": "Critical Mastery",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Master critical strikes.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_expertise",
+    "name": "Poison Expertise",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Expert poison knowledge.",
+    "level": 1
+  },
+  {
+    "id": "assassin_shadow_expert",
+    "name": "Shadow Expert",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Expert shadow manipulation.",
+    "level": 1
+  },
+  {
+    "id": "assassin_evasion_perfection",
+    "name": "Evasion Perfection",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Perfect evasion skills.",
+    "level": 1
+  },
+  {
+    "id": "assassin_poison_perfection",
+    "name": "Poison Perfection",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Perfect poison application.",
+    "level": 1
+  },
+  {
+    "id": "assassin_shadow_perfection",
+    "name": "Shadow Perfection",
+    "type": "passive",
+    "class": "assassin",
+    "description": "Perfect shadow control.",
+    "level": 1
+  }
+]

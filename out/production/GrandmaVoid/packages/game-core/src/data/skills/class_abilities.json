@@ -1,0 +1,1801 @@
+[
+  {
+    "id": "war_cry",
+    "name": "War Cry",
+    "description": "A rallying shout that generates rage and boosts damage.",
+    "cost": 0,
+    "costType": "rage",
+    "cooldown": 6,
+    "target": "self",
+    "resourceGain": {
+      "type": "rage",
+      "amount": 25
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 3,
+        "magnitude": 0.15
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "resource",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "shield_block",
+    "name": "Shield Block",
+    "description": "Raise your shield to absorb incoming damage.",
+    "cost": 15,
+    "costType": "rage",
+    "cooldown": 3,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 2,
+        "magnitude": 30
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "stance_offensive",
+    "name": "Offensive Stance",
+    "description": "Adopt an aggressive stance, trading defense for damage.",
+    "cost": 0,
+    "costType": "none",
+    "cooldown": 2,
+    "target": "self",
+    "setStance": "offensive",
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 3,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "stance_defensive",
+    "name": "Defensive Stance",
+    "description": "Adopt a defensive stance for added protection.",
+    "cost": 0,
+    "costType": "none",
+    "cooldown": 2,
+    "target": "self",
+    "setStance": "defensive",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 35
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "enrage",
+    "name": "Enrage",
+    "description": "Enter a frenzy for 2 turns, boosting damage but lowering defense.",
+    "cost": 50,
+    "costType": "rage",
+    "cooldown": 5,
+    "target": "self",
+    "setEnrage": {
+      "turns": 2,
+      "damageMultiplier": 1.4,
+      "defenseMultiplier": 0.85
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "reckless_blow",
+    "name": "Reckless Blow",
+    "description": "A crushing strike that hits hard but recoils damage.",
+    "cost": 30,
+    "costType": "rage",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.6,
+      "isMagic": false
+    },
+    "selfDamagePercentOfDamage": 0.2,
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "bloodlust",
+    "name": "Bloodlust",
+    "description": "Accelerate into a killing frenzy, gaining haste.",
+    "cost": 40,
+    "costType": "rage",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 3,
+        "magnitude": 0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "rampage",
+    "name": "Rampage",
+    "description": "A multi-hit onslaught that heals with each strike.",
+    "cost": 60,
+    "costType": "rage",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1.4,
+      "isMagic": false
+    },
+    "lifesteal": 0.25,
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "taunt",
+    "name": "Taunt",
+    "description": "Force the enemy's attention onto you.",
+    "cost": 15,
+    "costType": "rage",
+    "cooldown": 6,
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "taunt",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "fortify",
+    "name": "Fortify",
+    "description": "Harden your armor with pure willpower.",
+    "cost": 25,
+    "costType": "rage",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 55
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "shield_bash",
+    "name": "Shield Bash",
+    "description": "Bash the enemy and stun them.",
+    "cost": 20,
+    "costType": "rage",
+    "cooldown": 4,
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "phalanx_wall",
+    "name": "Phalanx Wall",
+    "description": "Erect an impenetrable barrier and reflect attacks.",
+    "cost": 40,
+    "costType": "rage",
+    "cooldown": 12,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 60
+      },
+      {
+        "target": "self",
+        "id": "reflect",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "quick_strike",
+    "name": "Quick Strike",
+    "description": "A fast, low-cost attack that builds combo.",
+    "cost": 15,
+    "costType": "energy",
+    "cooldown": 1,
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": false
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "evade",
+    "name": "Evade",
+    "description": "Slip away and increase evasion briefly.",
+    "cost": 30,
+    "costType": "energy",
+    "cooldown": 4,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "vanish",
+    "name": "Vanish",
+    "description": "Enter stealth during combat for a short duration.",
+    "cost": 40,
+    "costType": "energy",
+    "cooldown": 10,
+    "target": "self",
+    "stealth": {
+      "duration": 2
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "cheap_shot",
+    "name": "Cheap Shot",
+    "description": "A dirty strike that weakens the target's defenses.",
+    "cost": 20,
+    "costType": "energy",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "shadow_step",
+    "name": "Shadow Step",
+    "description": "Teleport behind the target for a devastating ambush.",
+    "cost": 35,
+    "costType": "energy",
+    "cooldown": 5,
+    "damage": {
+      "multiplier": 1.5,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 1,
+        "magnitude": -0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "poison_blade",
+    "name": "Poison Blade",
+    "description": "Coat your weapon with lethal toxin.",
+    "cost": 25,
+    "costType": "energy",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "poison",
+        "duration": 4,
+        "magnitude": 5
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "death_mark",
+    "name": "Death Mark",
+    "description": "Mark the target for death — bonus damage to marked targets.",
+    "cost": 30,
+    "costType": "energy",
+    "cooldown": 6,
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 3,
+        "magnitude": 0.15
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "execute",
+    "name": "Execute",
+    "description": "A lethal finisher that destroys weakened targets.",
+    "cost": 50,
+    "costType": "energy",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1.8,
+      "isMagic": false
+    },
+    "executeThreshold": 0.3,
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "smoke_bomb",
+    "name": "Smoke Bomb",
+    "description": "Deploy a smoke cloud that confuses the enemy and grants evasion.",
+    "cost": 30,
+    "costType": "energy",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.25
+      },
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "caltrops",
+    "name": "Caltrops",
+    "description": "Scatter caltrops that slow and damage over time.",
+    "cost": 25,
+    "costType": "energy",
+    "cooldown": 6,
+    "damage": {
+      "multiplier": 0.8,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 3,
+        "magnitude": -0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "misdirect",
+    "name": "Misdirect",
+    "description": "Trick the enemy into attacking thin air.",
+    "cost": 35,
+    "costType": "energy",
+    "cooldown": 10,
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "rigged_trap",
+    "name": "Rigged Trap",
+    "description": "Set a concealed trap that stuns and damages.",
+    "cost": 40,
+    "costType": "energy",
+    "cooldown": 12,
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "fireball",
+    "name": "Fireball",
+    "description": "Hurl a burning sphere that scorches the enemy.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 3,
+        "magnitude": 8
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "ice_lance",
+    "name": "Ice Lance",
+    "description": "A piercing lance of frost that slows the target.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "lightning_bolt",
+    "name": "Lightning Bolt",
+    "description": "Chain lightning that disrupts focus.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 4,
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": true,
+      "element": "lightning"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "shock",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "mana_shield",
+    "name": "Mana Shield",
+    "description": "Convert mana into a protective ward.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 45
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "meteor_storm",
+    "name": "Meteor Storm",
+    "description": "Rain destruction from above, hitting all foes.",
+    "cost": 50,
+    "costType": "mana",
+    "cooldown": 10,
+    "damage": {
+      "multiplier": 1.5,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "aoe": {
+      "maxTargets": 3,
+      "damageMultiplier": 1
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 3,
+        "magnitude": 10
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "arcane_singularity",
+    "name": "Arcane Singularity",
+    "description": "Collapse space to root and damage the target.",
+    "cost": 40,
+    "costType": "mana",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1.35,
+      "isMagic": true
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "root",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "mana_surge",
+    "name": "Mana Surge",
+    "description": "Overload your reserves for a burst of speed.",
+    "cost": 0,
+    "costType": "mana",
+    "cooldown": 15,
+    "target": "self",
+    "resourceGain": {
+      "type": "mana",
+      "amount": 40
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "resource",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "spell_echo",
+    "name": "Spell Echo",
+    "description": "Your next spell fires twice.",
+    "cost": 35,
+    "costType": "mana",
+    "cooldown": 12,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 2,
+        "magnitude": 0.25
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "flame_blade",
+    "name": "Flame Blade",
+    "description": "Imbue your strike with fire.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "frost_blade",
+    "name": "Frost Blade",
+    "description": "Imbue your strike with frost.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "arcane_strike",
+    "name": "Arcane Strike",
+    "description": "A precise arcane-infused melee attack.",
+    "cost": 15,
+    "costType": "mana",
+    "cooldown": 2,
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "arcane_burst",
+    "name": "Arcane Burst",
+    "description": "Unleash a volatile blast at close range.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1.45,
+      "isMagic": true
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "heal",
+    "name": "Heal",
+    "description": "Restore a portion of your health with divine light.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 2,
+    "target": "self",
+    "heal": {
+      "percent": 0.2
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "holy_smite",
+    "name": "Holy Smite",
+    "description": "Smite the enemy with radiant power.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "holy"
+    },
+    "bonusVsTags": {
+      "tags": [
+        "Undead"
+      ],
+      "multiplier": 1.5
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "divine_shield",
+    "name": "Divine Shield",
+    "description": "Imbue yourself with protective holy light.",
+    "cost": 40,
+    "costType": "mana",
+    "cooldown": 12,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 55
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "prayer",
+    "name": "Prayer",
+    "description": "Whisper a prayer that cleanses debuffs.",
+    "cost": 15,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "self",
+    "cleanse": {
+      "types": [
+        "DEBUFF",
+        "DOT"
+      ]
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "holy_strike",
+    "name": "Holy Strike",
+    "description": "Strike with holy power that sears the unholy.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 2,
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": false,
+      "element": "holy"
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "lay_on_hands",
+    "name": "Lay on Hands",
+    "description": "Massive heal with a long recovery time.",
+    "cost": 0,
+    "costType": "mana",
+    "cooldown": 30,
+    "target": "self",
+    "heal": {
+      "percent": 0.5
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "hammer_of_justice",
+    "name": "Hammer of Justice",
+    "description": "Stun the enemy with a holy strike.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 15,
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "aura_of_protection",
+    "name": "Aura of Protection",
+    "description": "Radiate a protective aura that shields and heals over time.",
+    "cost": 35,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "self",
+    "heal": {
+      "percent": 0.15
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 30
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "greater_heal",
+    "name": "Greater Heal",
+    "description": "A powerful restorative surge.",
+    "cost": 40,
+    "costType": "mana",
+    "cooldown": 3,
+    "target": "self",
+    "heal": {
+      "percent": 0.4
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "mass_cleanse",
+    "name": "Mass Cleanse",
+    "description": "Purify all ailments with a holy word.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "cleanse": {
+      "types": [
+        "DEBUFF",
+        "DOT",
+        "CONTROL"
+      ]
+    },
+    "heal": {
+      "percent": 0.1
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "divine_intervention",
+    "name": "Divine Intervention",
+    "description": "Call upon the divine to prevent death once.",
+    "cost": 60,
+    "costType": "mana",
+    "cooldown": 30,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 1,
+        "magnitude": 100
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "holy_nova",
+    "name": "Holy Nova",
+    "description": "Radiant burst that damages foes and heals you.",
+    "cost": 35,
+    "costType": "mana",
+    "cooldown": 6,
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": true,
+      "element": "holy"
+    },
+    "heal": {
+      "percent": 0.15
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "flurry",
+    "name": "Flurry",
+    "description": "Rapid strikes that scale with combo flow.",
+    "cost": 20,
+    "costType": "chi",
+    "cooldown": 2,
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": false
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "palm_strike",
+    "name": "Palm Strike",
+    "description": "A focused blow that stuns the target.",
+    "cost": 25,
+    "costType": "chi",
+    "cooldown": 4,
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "meditation",
+    "name": "Meditate",
+    "description": "Center yourself to restore chi in combat.",
+    "cost": 0,
+    "costType": "chi",
+    "cooldown": 5,
+    "target": "self",
+    "resourceGain": {
+      "type": "chi",
+      "amount": 30
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "resource",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "sweeping_kick",
+    "name": "Sweeping Kick",
+    "description": "A wide sweep that trips the enemy, slowing them.",
+    "cost": 15,
+    "costType": "chi",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.05,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "stumble_strike",
+    "name": "Stumble Strike",
+    "description": "An erratic lunge that confuses the target.",
+    "cost": 20,
+    "costType": "chi",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "drunken_sway",
+    "name": "Drunken Sway",
+    "description": "Sway unpredictably, gaining evasion and counter-attack potential.",
+    "cost": 25,
+    "costType": "chi",
+    "cooldown": 6,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 3,
+        "magnitude": 0.25
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "counter_flow",
+    "name": "Counter Flow",
+    "description": "Redirect enemy momentum into a devastating counter.",
+    "cost": 30,
+    "costType": "chi",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1.5,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "reflect",
+        "duration": 1,
+        "magnitude": 0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "barrel_roll",
+    "name": "Barrel Roll",
+    "description": "Tumble through the enemy, damaging and repositioning.",
+    "cost": 35,
+    "costType": "chi",
+    "cooldown": 10,
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "iron_palm",
+    "name": "Iron Palm",
+    "description": "A crushing palm strike that shatters armor.",
+    "cost": 25,
+    "costType": "chi",
+    "cooldown": 4,
+    "damage": {
+      "multiplier": 1.4,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 3,
+        "magnitude": 0.15
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "chi_burst",
+    "name": "Chi Burst",
+    "description": "Release stored chi in a devastating burst.",
+    "cost": 50,
+    "costType": "chi",
+    "cooldown": 10,
+    "damage": {
+      "multiplier": 1.8,
+      "isMagic": false
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "iron_body",
+    "name": "Iron Body",
+    "description": "Reinforce your body with chi, gaining a shield.",
+    "cost": 30,
+    "costType": "chi",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 50
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "pressure_point",
+    "name": "Pressure Point",
+    "description": "Target vital points to stun and weaken.",
+    "cost": 35,
+    "costType": "chi",
+    "cooldown": 6,
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      },
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "aimed_shot",
+    "name": "Aimed Shot",
+    "description": "A precise shot that hits hard with high accuracy.",
+    "cost": 30,
+    "costType": "focus",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.5,
+      "isMagic": false
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "multi_shot",
+    "name": "Multi-Shot",
+    "description": "Loose a spread to strike multiple foes.",
+    "cost": 25,
+    "costType": "focus",
+    "cooldown": 4,
+    "damage": {
+      "multiplier": 0.85,
+      "isMagic": false
+    },
+    "aoe": {
+      "maxTargets": 3,
+      "damageMultiplier": 0.85
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "hunters_mark",
+    "name": "Hunter's Mark",
+    "description": "Mark your prey, increasing damage against them.",
+    "cost": 15,
+    "costType": "focus",
+    "cooldown": 6,
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 4,
+        "magnitude": 0.15
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "natures_grasp",
+    "name": "Nature's Grasp",
+    "description": "Entangle the target with vines, rooting them.",
+    "cost": 25,
+    "costType": "focus",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 0.9,
+      "isMagic": true,
+      "element": "nature"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "root",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "command_roar",
+    "name": "Command Roar",
+    "description": "A domineering roar that draws enemy focus.",
+    "cost": 25,
+    "costType": "focus",
+    "cooldown": 6,
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "taunt",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "pack_assault",
+    "name": "Pack Assault",
+    "description": "Command your pack to strike together.",
+    "cost": 35,
+    "costType": "focus",
+    "cooldown": 5,
+    "damage": {
+      "multiplier": 1.35,
+      "isMagic": false
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "beast_bond",
+    "name": "Beast Bond",
+    "description": "Share focus with your companion, healing and strengthening.",
+    "cost": 30,
+    "costType": "focus",
+    "cooldown": 10,
+    "target": "self",
+    "heal": {
+      "percent": 0.2
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 3,
+        "magnitude": 0.15
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "alpha_guard",
+    "name": "Alpha Guard",
+    "description": "A protective stance that hardens your defenses.",
+    "cost": 25,
+    "costType": "focus",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 40
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "rapid_fire",
+    "name": "Rapid Fire",
+    "description": "A burst of quick shots.",
+    "cost": 40,
+    "costType": "focus",
+    "cooldown": 5,
+    "damage": {
+      "multiplier": 1.4,
+      "isMagic": false
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "trick_shot",
+    "name": "Trick Shot",
+    "description": "A ricocheting shot that hits around defenses.",
+    "cost": 30,
+    "costType": "focus",
+    "cooldown": 4,
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "overwatch",
+    "name": "Overwatch",
+    "description": "Set up a killzone — gain haste and damage.",
+    "cost": 35,
+    "costType": "focus",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 3,
+        "magnitude": 0.2
+      },
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "kill_shot",
+    "name": "Kill Shot",
+    "description": "A precise finisher that executes weakened targets.",
+    "cost": 50,
+    "costType": "focus",
+    "cooldown": 12,
+    "damage": {
+      "multiplier": 2,
+      "isMagic": false
+    },
+    "executeThreshold": 0.25,
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

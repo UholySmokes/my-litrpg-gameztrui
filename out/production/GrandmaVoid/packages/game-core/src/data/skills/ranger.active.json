@@ -1,0 +1,202 @@
+[
+  {
+    "id": "ranger_aimed_shot",
+    "name": "Aimed Shot",
+    "type": "active",
+    "class": "ranger",
+    "description": "A carefully aimed shot that deals heavy damage.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 12
+  },
+  {
+    "id": "ranger_arcane_shot",
+    "name": "Arcane Shot",
+    "type": "active",
+    "class": "ranger",
+    "description": "Fire an arrow infused with arcane energy.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 0
+  },
+  {
+    "id": "ranger_multi_shot",
+    "name": "Multi-Shot",
+    "type": "active",
+    "class": "ranger",
+    "description": "Fire arrows at multiple enemies simultaneously.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 6
+  },
+  {
+    "id": "ranger_explosive_trap",
+    "name": "Explosive Trap",
+    "type": "active",
+    "class": "ranger",
+    "description": "Place a trap that explodes when triggered.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 30
+  },
+  {
+    "id": "ranger_freezing_trap",
+    "name": "Freezing Trap",
+    "type": "active",
+    "class": "ranger",
+    "description": "Place a trap that freezes enemies.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 30
+  },
+  {
+    "id": "ranger_call_pet",
+    "name": "Call Pet",
+    "type": "active",
+    "class": "ranger",
+    "description": "Summon your animal companion to fight alongside you.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 10
+  },
+  {
+    "id": "ranger_mend_pet",
+    "name": "Mend Pet",
+    "type": "active",
+    "class": "ranger",
+    "description": "Heal your pet over time.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 10
+  },
+  {
+    "id": "ranger_bestial_wrath",
+    "name": "Bestial Wrath",
+    "type": "active",
+    "class": "ranger",
+    "description": "Your pet enters a rage, dealing increased damage.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 90
+  },
+  {
+    "id": "ranger_kill_command",
+    "name": "Kill Command",
+    "type": "active",
+    "class": "ranger",
+    "description": "Command your pet to savagely attack.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "ranger_disengage",
+    "name": "Disengage",
+    "type": "active",
+    "class": "ranger",
+    "description": "Leap backwards away from danger.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 20
+  },
+  {
+    "id": "ranger_feign_death",
+    "name": "Feign Death",
+    "type": "active",
+    "class": "ranger",
+    "description": "Play dead to escape combat.",
+    "level": 1,
+    "manaCost": 5,
+    "cooldown": 30
+  },
+  {
+    "id": "ranger_camouflage",
+    "name": "Camouflage",
+    "type": "active",
+    "class": "ranger",
+    "description": "Blend into surroundings, becoming harder to detect.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 60
+  },
+  {
+    "id": "ranger_barrage",
+    "name": "Barrage",
+    "type": "active",
+    "class": "ranger",
+    "description": "Rapidly fire at all enemies in a cone.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 20
+  },
+  {
+    "id": "ranger_black_arrow",
+    "name": "Black Arrow",
+    "type": "active",
+    "class": "ranger",
+    "description": "Fire a shadow-infused arrow that deals damage over time.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 24
+  },
+  {
+    "id": "ranger_counter_shot",
+    "name": "Counter Shot",
+    "type": "active",
+    "class": "ranger",
+    "description": "Interrupt an enemy spellcast.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 24
+  },
+  {
+    "id": "ranger_snake_trap",
+    "name": "Snake Trap",
+    "type": "active",
+    "class": "ranger",
+    "description": "Release venomous snakes that attack enemies.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 30
+  },
+  {
+    "id": "ranger_aspect_of_cheetah",
+    "name": "Aspect of the Cheetah",
+    "type": "active",
+    "class": "ranger",
+    "description": "Take on cheetah aspects for increased speed.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 0
+  },
+  {
+    "id": "ranger_rapid_fire",
+    "name": "Rapid Fire",
+    "type": "active",
+    "class": "ranger",
+    "description": "Fire a quick burst of shots at high speed.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 120
+  },
+  {
+    "id": "ranger_stampede",
+    "name": "Stampede",
+    "type": "active",
+    "class": "ranger",
+    "description": "Summon all your pets to attack together.",
+    "level": 1,
+    "manaCost": 40,
+    "cooldown": 300
+  },
+  {
+    "id": "ranger_masters_call",
+    "name": "Masters Call",
+    "type": "active",
+    "class": "ranger",
+    "description": "Your pet frees you from movement impairment.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 45
+  }
+]

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "monk_jab",
+    "name": "Jab",
+    "type": "active",
+    "class": "monk",
+    "description": "A quick strike that generates chi.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 0
+  },
+  {
+    "id": "monk_tiger_palm",
+    "name": "Tiger Palm",
+    "type": "active",
+    "class": "monk",
+    "description": "Strike with the palm, ignoring armor.",
+    "level": 1,
+    "manaCost": 5,
+    "cooldown": 0
+  },
+  {
+    "id": "monk_blackout_kick",
+    "name": "Blackout Kick",
+    "type": "active",
+    "class": "monk",
+    "description": "A powerful kick that consumes chi.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 0
+  },
+  {
+    "id": "monk_rising_sun_kick",
+    "name": "Rising Sun Kick",
+    "type": "active",
+    "class": "monk",
+    "description": "A devastating kick that weakens the enemy.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 8
+  },
+  {
+    "id": "monk_fists_of_fury",
+    "name": "Fists of Fury",
+    "type": "active",
+    "class": "monk",
+    "description": "Channel a flurry of punches at all enemies in front.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 24
+  },
+  {
+    "id": "monk_spinning_crane_kick",
+    "name": "Spinning Crane Kick",
+    "type": "active",
+    "class": "monk",
+    "description": "Spin in place, kicking all nearby enemies.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 0
+  },
+  {
+    "id": "monk_roll",
+    "name": "Roll",
+    "type": "active",
+    "class": "monk",
+    "description": "Roll forward quickly to evade or close distance.",
+    "level": 1,
+    "manaCost": 5,
+    "cooldown": 20
+  },
+  {
+    "id": "monk_flying_serpent_kick",
+    "name": "Flying Serpent Kick",
+    "type": "active",
+    "class": "monk",
+    "description": "Leap through the air and kick where you land.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 25
+  },
+  {
+    "id": "monk_touch_of_death",
+    "name": "Touch of Death",
+    "type": "active",
+    "class": "monk",
+    "description": "Instantly kill an enemy with less health than you.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 120
+  },
+  {
+    "id": "monk_paralysis",
+    "name": "Paralysis",
+    "type": "active",
+    "class": "monk",
+    "description": "Incapacitate an enemy with a pressure point strike.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 15
+  },
+  {
+    "id": "monk_expel_harm",
+    "name": "Expel Harm",
+    "type": "active",
+    "class": "monk",
+    "description": "Heal yourself and deal damage to a nearby enemy.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 15
+  },
+  {
+    "id": "monk_fortifying_brew",
+    "name": "Fortifying Brew",
+    "type": "active",
+    "class": "monk",
+    "description": "Drink a brew that increases health and reduces damage.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 180
+  },
+  {
+    "id": "monk_zen_meditation",
+    "name": "Zen Meditation",
+    "type": "active",
+    "class": "monk",
+    "description": "Meditate to reduce damage taken.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 180
+  },
+  {
+    "id": "monk_transcendence",
+    "name": "Transcendence",
+    "type": "active",
+    "class": "monk",
+    "description": "Leave a spirit behind you can return to.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 45
+  },
+  {
+    "id": "monk_detox",
+    "name": "Detox",
+    "type": "active",
+    "class": "monk",
+    "description": "Remove poison and disease effects.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 8
+  },
+  {
+    "id": "monk_soothing_mist",
+    "name": "Soothing Mist",
+    "type": "active",
+    "class": "monk",
+    "description": "Channel healing mist at an ally.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 0
+  },
+  {
+    "id": "monk_enveloping_mist",
+    "name": "Enveloping Mist",
+    "type": "active",
+    "class": "monk",
+    "description": "Wrap an ally in healing mist over time.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 0
+  },
+  {
+    "id": "monk_renewing_mist",
+    "name": "Renewing Mist",
+    "type": "active",
+    "class": "monk",
+    "description": "Place a mist that jumps between injured allies.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 8
+  },
+  {
+    "id": "monk_storm_earth_fire",
+    "name": "Storm, Earth, and Fire",
+    "type": "active",
+    "class": "monk",
+    "description": "Split into three spirits that attack different targets.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 90
+  },
+  {
+    "id": "monk_touch_of_karma",
+    "name": "Touch of Karma",
+    "type": "active",
+    "class": "monk",
+    "description": "Absorb damage and redirect it to the enemy.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 90
+  }
+]

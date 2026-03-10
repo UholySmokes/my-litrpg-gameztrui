@@ -1,0 +1,32 @@
+[
+  {
+    "id": "chaos_touched_special",
+    "name": "Chaos Twist",
+    "description": "Unstable force that scrambles the target.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-03-03T17:18:39.661Z",
+  "generatedAt": "2026-03-10T00:44:19.336Z",
   "source": "dist\\runtime-config.js",
   "profile": "local",
   "buildId": "godot-dev",

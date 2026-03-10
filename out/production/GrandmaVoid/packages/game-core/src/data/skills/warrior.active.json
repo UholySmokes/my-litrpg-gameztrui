@@ -1,0 +1,232 @@
+[
+  {
+    "id": "warrior_execute",
+    "name": "Execute",
+    "type": "active",
+    "class": "warrior",
+    "description": "A devastating blow that deals massive damage to low health enemies.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 8
+  },
+  {
+    "id": "warrior_battle_cry",
+    "name": "Battle Cry",
+    "type": "active",
+    "class": "warrior",
+    "description": "Let loose a fierce cry that increases your damage for a short time.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 20
+  },
+  {
+    "id": "warrior_slam",
+    "name": "Slam",
+    "type": "active",
+    "class": "warrior",
+    "description": "Slam your weapon into the ground, damaging all nearby enemies.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 6
+  },
+  {
+    "id": "warrior_heroic_strike",
+    "name": "Heroic Strike",
+    "type": "active",
+    "class": "warrior",
+    "description": "A powerful strike infused with combat experience.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 3
+  },
+  {
+    "id": "warrior_rend",
+    "name": "Rend",
+    "type": "active",
+    "class": "warrior",
+    "description": "Tear into the enemy causing them to bleed over time.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5,
+    "effects": [
+      {
+        "id": "bleed",
+        "duration": 4,
+        "target": "enemy"
+      }
+    ]
+  },
+  {
+    "id": "warrior_overpower",
+    "name": "Overpower",
+    "type": "active",
+    "class": "warrior",
+    "description": "Exploit an opening to deal increased damage that cannot be blocked.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 4
+  },
+  {
+    "id": "warrior_mortal_strike",
+    "name": "Mortal Strike",
+    "type": "active",
+    "class": "warrior",
+    "description": "A vicious strike that reduces healing received by the target.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 10
+  },
+  {
+    "id": "warrior_thunder_clap",
+    "name": "Thunder Clap",
+    "type": "active",
+    "class": "warrior",
+    "description": "Slam the ground creating a shockwave that damages and slows enemies.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 8,
+    "effects": [
+      {
+        "id": "slow",
+        "duration": 3,
+        "target": "enemy",
+        "aoe": true
+      }
+    ]
+  },
+  {
+    "id": "warrior_hamstring",
+    "name": "Hamstring",
+    "type": "active",
+    "class": "warrior",
+    "description": "Maim the enemy, significantly reducing their movement speed.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 6,
+    "effects": [
+      {
+        "id": "slow",
+        "duration": 4,
+        "target": "enemy"
+      }
+    ]
+  },
+  {
+    "id": "warrior_sweeping_strikes",
+    "name": "Sweeping Strikes",
+    "type": "active",
+    "class": "warrior",
+    "description": "Your attacks hit an additional nearby enemy for a duration.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 15
+  },
+  {
+    "id": "warrior_pummel",
+    "name": "Pummel",
+    "type": "active",
+    "class": "warrior",
+    "description": "Interrupt an enemy spellcast and lock them out of that school.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 12
+  },
+  {
+    "id": "warrior_intimidating_shout",
+    "name": "Intimidating Shout",
+    "type": "active",
+    "class": "warrior",
+    "description": "Cause enemies to flee in fear for a short duration.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 45,
+    "effects": [
+      {
+        "id": "fear",
+        "duration": 3,
+        "target": "enemy",
+        "aoe": true
+      }
+    ]
+  },
+  {
+    "id": "warrior_recklessness",
+    "name": "Recklessness",
+    "type": "active",
+    "class": "warrior",
+    "description": "Enter a reckless state where all attacks critically strike.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 90
+  },
+  {
+    "id": "warrior_colossus_smash",
+    "name": "Colossus Smash",
+    "type": "active",
+    "class": "warrior",
+    "description": "Smash through enemy armor, making them vulnerable to damage.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 20
+  },
+  {
+    "id": "warrior_bladestorm",
+    "name": "Bladestorm",
+    "type": "active",
+    "class": "warrior",
+    "description": "Become a whirlwind of blades, hitting all enemies around you.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 30
+  },
+  {
+    "id": "warrior_rallying_cry",
+    "name": "Rallying Cry",
+    "type": "active",
+    "class": "warrior",
+    "description": "Rally your allies, temporarily increasing everyones maximum health.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 60
+  },
+  {
+    "id": "warrior_commanding_shout",
+    "name": "Commanding Shout",
+    "type": "active",
+    "class": "warrior",
+    "description": "Shout commands that increase your party attack power.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 30
+  },
+  {
+    "id": "warrior_shattering_throw",
+    "name": "Shattering Throw",
+    "type": "active",
+    "class": "warrior",
+    "description": "Throw your weapon to shatter enemy magical shields.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 45
+  },
+  {
+    "id": "warrior_avatar",
+    "name": "Avatar",
+    "type": "active",
+    "class": "warrior",
+    "description": "Transform into an unstoppable force, immune to movement impairing effects.",
+    "level": 1,
+    "manaCost": 40,
+    "cooldown": 120
+  },
+  {
+    "id": "warrior_deadly_calm",
+    "name": "Deadly Calm",
+    "type": "active",
+    "class": "warrior",
+    "description": "Enter a state of focus where abilities cost no rage for a duration.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 60
+  }
+]

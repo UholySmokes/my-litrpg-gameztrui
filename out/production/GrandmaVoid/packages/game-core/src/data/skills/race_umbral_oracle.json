@@ -1,0 +1,32 @@
+[
+  {
+    "id": "umbral_oracle_special",
+    "name": "Void Prophecy",
+    "description": "A prophetic strike that clouds the mind.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

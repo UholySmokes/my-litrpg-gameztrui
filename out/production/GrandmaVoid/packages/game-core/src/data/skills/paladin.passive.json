@@ -1,0 +1,322 @@
+[
+  {
+    "id": "paladin_sanctity_of_battle",
+    "name": "Sanctity of Battle",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Haste reduces the cooldown of core abilities.",
+    "level": 1
+  },
+  {
+    "id": "paladin_sword_of_light",
+    "name": "Sword of Light",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Two-handed weapon damage increased.",
+    "level": 1
+  },
+  {
+    "id": "paladin_divine_purpose",
+    "name": "Divine Purpose",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Abilities have a chance to make next spender free.",
+    "level": 1
+  },
+  {
+    "id": "paladin_art_of_war",
+    "name": "Art of War",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Auto attacks can reset Exorcism cooldown.",
+    "level": 1
+  },
+  {
+    "id": "paladin_shield_of_the_righteous",
+    "name": "Shield of the Righteous",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Shield abilities provide bonus armor.",
+    "level": 1
+  },
+  {
+    "id": "paladin_grand_crusader",
+    "name": "Grand Crusader",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Avenger Shield cooldown can reset on dodge or parry.",
+    "level": 1
+  },
+  {
+    "id": "paladin_guarded_by_the_light",
+    "name": "Guarded by the Light",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Word of Glory also shields you.",
+    "level": 1
+  },
+  {
+    "id": "paladin_sacred_shield",
+    "name": "Sacred Shield",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Periodic shield that absorbs damage.",
+    "level": 1
+  },
+  {
+    "id": "paladin_infusion_of_light",
+    "name": "Infusion of Light",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Holy Shock criticals improve next heal.",
+    "level": 1
+  },
+  {
+    "id": "paladin_illumination",
+    "name": "Illumination",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Critical heals refund mana.",
+    "level": 1
+  },
+  {
+    "id": "paladin_beacon_of_light",
+    "name": "Beacon of Light",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Heals on others also heal your beacon target.",
+    "level": 1
+  },
+  {
+    "id": "paladin_daybreak",
+    "name": "Daybreak",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Holy Shock can hit multiple targets.",
+    "level": 1
+  },
+  {
+    "id": "paladin_divine_favor",
+    "name": "Divine Favor",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Periodically, your next heal is guaranteed to crit.",
+    "level": 1
+  },
+  {
+    "id": "paladin_sanctified_wrath",
+    "name": "Sanctified Wrath",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Avenging Wrath lasts longer.",
+    "level": 1
+  },
+  {
+    "id": "paladin_selfless_healer",
+    "name": "Selfless Healer",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Judgment empowers your next heal.",
+    "level": 1
+  },
+  {
+    "id": "paladin_divine_storm_healing",
+    "name": "Divine Storm Healing",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Divine Storm also heals nearby allies.",
+    "level": 1
+  },
+  {
+    "id": "paladin_long_arm_of_the_law",
+    "name": "Long Arm of the Law",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Judgment increases movement speed.",
+    "level": 1
+  },
+  {
+    "id": "paladin_speed_of_light",
+    "name": "Speed of Light",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Periodically gain a burst of movement speed.",
+    "level": 1
+  },
+  {
+    "id": "paladin_pursuit_of_justice",
+    "name": "Pursuit of Justice",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Holy Power charges increase movement speed.",
+    "level": 1
+  },
+  {
+    "id": "paladin_eternal_glory",
+    "name": "Eternal Glory",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Word of Glory has a chance to not consume Holy Power.",
+    "level": 1
+  },
+  {
+    "id": "paladin_tower_of_radiance",
+    "name": "Tower of Radiance",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Healing beacon target generates Holy Power.",
+    "level": 1
+  },
+  {
+    "id": "paladin_divine_plea",
+    "name": "Divine Plea",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Periodically regenerate a large amount of mana.",
+    "level": 1
+  },
+  {
+    "id": "paladin_glyph_of_blessed_life",
+    "name": "Blessed Life",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Taking damage has a chance to generate Holy Power.",
+    "level": 1
+  },
+  {
+    "id": "paladin_judgments_of_the_pure",
+    "name": "Judgments of the Pure",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Judgment increases haste.",
+    "level": 1
+  },
+  {
+    "id": "paladin_crusade",
+    "name": "Crusade",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Each Holy Power spent increases damage and healing.",
+    "level": 1
+  },
+  {
+    "id": "paladin_wrath_of_the_lightbringer",
+    "name": "Wrath of the Lightbringer",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Damage and range of abilities increased.",
+    "level": 1
+  },
+  {
+    "id": "paladin_righteous_vengeance",
+    "name": "Righteous Vengeance",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Critical strikes apply a holy damage DoT.",
+    "level": 1
+  },
+  {
+    "id": "paladin_divine_steed",
+    "name": "Divine Steed",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Summon a holy steed for rapid movement.",
+    "level": 1
+  },
+  {
+    "id": "paladin_templar_precision",
+    "name": "Templar Precision",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Templars Verdict has increased critical chance.",
+    "level": 1
+  },
+  {
+    "id": "paladin_holy_avenger",
+    "name": "Holy Avenger",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Holy Power generators produce extra Holy Power.",
+    "level": 1
+  },
+  {
+    "id": "paladin_seraphim",
+    "name": "Seraphim",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Consuming Holy Power grants all secondary stats briefly.",
+    "level": 1
+  },
+  {
+    "id": "paladin_light_of_dawn",
+    "name": "Light of Dawn",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Word of Glory can heal additional allies.",
+    "level": 1
+  },
+  {
+    "id": "paladin_fist_of_justice",
+    "name": "Fist of Justice",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Hammer of Justice cooldown reduced.",
+    "level": 1
+  },
+  {
+    "id": "paladin_repentance",
+    "name": "Repentance",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Gain ability to incapacitate humanoids.",
+    "level": 1
+  },
+  {
+    "id": "paladin_blinding_light",
+    "name": "Blinding Light",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Gain ability to blind all nearby enemies.",
+    "level": 1
+  },
+  {
+    "id": "paladin_holy_prism",
+    "name": "Holy Prism",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Gain a skill that heals or damages based on target.",
+    "level": 1
+  },
+  {
+    "id": "paladin_lights_hammer",
+    "name": "Lights Hammer",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Gain ability to place a healing zone.",
+    "level": 1
+  },
+  {
+    "id": "paladin_execution_sentence",
+    "name": "Execution Sentence",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Gain a delayed damage or healing ability.",
+    "level": 1
+  },
+  {
+    "id": "paladin_shield_of_virtue",
+    "name": "Shield of Virtue",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Avenger Shield silences and interrupts.",
+    "level": 1
+  },
+  {
+    "id": "paladin_bastion_of_glory",
+    "name": "Bastion of Glory",
+    "type": "passive",
+    "class": "paladin",
+    "description": "Shield of the Righteous stacks increase self-healing.",
+    "level": 1
+  }
+]

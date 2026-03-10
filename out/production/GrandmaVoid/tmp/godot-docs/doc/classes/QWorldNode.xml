@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="QWorldNode" inherits="Node2D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_body_node">
+			<return type="QWorldNode" />
+			<param index="0" name="body_node" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="add_collision_exception">
+			<return type="QWorldNode" />
+			<param index="0" name="bodyA" type="Object" />
+			<param index="1" name="bodyB" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="add_joint">
+			<return type="QWorldNode" />
+			<param index="0" name="joint_object" type="QJointObject" />
+			<description>
+			</description>
+		</method>
+		<method name="add_raycast">
+			<return type="QWorldNode" />
+			<param index="0" name="raycast_object" type="QRaycastObject" />
+			<description>
+			</description>
+		</method>
+		<method name="add_spring">
+			<return type="QWorldNode" />
+			<param index="0" name="spring_object" type="QSpringObject" />
+			<description>
+			</description>
+		</method>
+		<method name="get_bodies_hit_by_point">
+			<return type="Array" />
+			<param index="0" name="point" type="Vector2" />
+			<param index="1" name="max_body_count" type="int" />
+			<param index="2" name="only_rigid_bodies" type="bool" />
+			<param index="3" name="layers_bit" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_body_at">
+			<return type="QBodyNode" />
+			<param index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_body_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_body_index">
+			<return type="int" />
+			<param index="0" name="body_node" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="get_collisions">
+			<return type="Array" />
+			<param index="0" name="bodyA" type="Object" />
+			<param index="1" name="bodyB" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="get_enabled">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="get_joint_at">
+			<return type="QJointObject" />
+			<param index="0" name="_unnamed_arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_joint_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_joint_index">
+			<return type="int" />
+			<param index="0" name="joint_object" type="QJointObject" />
+			<description>
+			</description>
+		</method>
+		<method name="get_particles_close_to_point">
+			<return type="Array" />
+			<param index="0" name="point" type="Vector2" />
+			<param index="1" name="distance" type="float" />
+			<param index="2" name="max_particle_count" type="int" />
+			<param index="3" name="except_rigid_bodies" type="bool" />
+			<param index="4" name="layers_bit" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_raycast_at">
+			<return type="QRaycastObject" />
+			<param index="0" name="_unnamed_arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_raycast_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_raycast_index">
+			<return type="int" />
+			<param index="0" name="raycast_object" type="QRaycastObject" />
+			<description>
+			</description>
+		</method>
+		<method name="get_sleeping_position_tolerance">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_sleeping_rotation_tolerance">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spring_at">
+			<return type="QSpringObject" />
+			<param index="0" name="_unnamed_arg0" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spring_count">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_spring_index">
+			<return type="int" />
+			<param index="0" name="spring_object" type="QSpringObject" />
+			<description>
+			</description>
+		</method>
+		<method name="raycast_to">
+			<return type="Array" />
+			<param index="0" name="position" type="Vector2" />
+			<param index="1" name="ray_vector" type="Vector2" />
+			<param index="2" name="collidable_layers_bit" type="int" />
+			<param index="3" name="enable_containing_bodies" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_body_at">
+			<return type="QWorldNode" />
+			<param index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_body_node">
+			<return type="QWorldNode" />
+			<param index="0" name="body_node" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_collision_exception">
+			<return type="QWorldNode" />
+			<param index="0" name="bodyA" type="Object" />
+			<param index="1" name="bodyB" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_joint">
+			<return type="QWorldNode" />
+			<param index="0" name="joint_object" type="QJointObject" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_joint_at">
+			<return type="QWorldNode" />
+			<param index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_matching_collision_exception">
+			<return type="QWorldNode" />
+			<param index="0" name="body" type="Object" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_raycast">
+			<return type="QWorldNode" />
+			<param index="0" name="raycast_object" type="QRaycastObject" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_raycast_at">
+			<return type="QWorldNode" />
+			<param index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_spring">
+			<return type="QWorldNode" />
+			<param index="0" name="spring_object" type="QSpringObject" />
+			<description>
+			</description>
+		</method>
+		<method name="remove_spring_at">
+			<return type="QWorldNode" />
+			<param index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_broadphase_enabled">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_enabled">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_gravity">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="set_iteration_count">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_sleeping_enabled">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_sleeping_position_tolerance">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_sleeping_rotation_tolerance">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_soft_body_collision_hysteresis">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_spatial_hashing_cell_size">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_spatial_hashing_enabled">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_time_scale">
+			<return type="QWorldNode" />
+			<param index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="update_world">
+			<return type="QWorldNode" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="debug_renderer" type="bool" setter="set_debug_renderer_enabled" getter="get_debug_renderer_enabled" default="true">
+		</member>
+		<member name="enable_broadphase" type="bool" setter="set_broadphase_enabled" getter="get_broadphase_enabled" default="true">
+		</member>
+		<member name="enable_debug_mouse_interactions" type="bool" setter="set_debug_mouse_interactions_enabled" getter="get_debug_mouse_interactions_enabled" default="false">
+		</member>
+		<member name="enable_sleeping" type="bool" setter="set_sleeping_enabled" getter="get_sleeping_enabled" default="true">
+		</member>
+		<member name="enable_spatial_hashing" type="bool" setter="set_spatial_hashing_enabled" getter="get_spatial_hashing_enabled" default="false">
+		</member>
+		<member name="gravity" type="Vector2" setter="set_gravity" getter="get_gravity" default="Vector2(0, 0.2)">
+		</member>
+		<member name="iteration_count" type="int" setter="set_iteration_count" getter="get_iteration_count" default="4">
+		</member>
+		<member name="soft_body_collision_hysteresis" type="float" setter="set_soft_body_collision_hysteresis" getter="get_soft_body_collision_hysteresis" default="0.2">
+		</member>
+		<member name="spatial_hashing_cell_size" type="float" setter="set_spatial_hashing_cell_size" getter="get_spatial_hashing_cell_size" default="128.0">
+		</member>
+		<member name="time_scale" type="float" setter="set_time_scale" getter="get_time_scale" default="1.0">
+		</member>
+	</members>
+</class>

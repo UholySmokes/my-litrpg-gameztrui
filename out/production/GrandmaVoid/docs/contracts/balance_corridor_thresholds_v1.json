@@ -1,0 +1,17 @@
+{
+  "version": "balance_corridor_thresholds_v1",
+  "updatedAt": "2026-03-03T00:00:00.000Z",
+  "thresholds": {
+    "classTierBaseStatSpreadMax": {
+      "1": 0,
+      "2": 0,
+      "3": 10
+    },
+    "raceStatBonusSpreadMax": 12,
+    "minFavoredRaceCoverageRatio": 0.55,
+    "minFavoredClassCoverageRatio": 0.6,
+    "questXpMinAllowed": 25,
+    "questXpMaxAllowed": 200
+  }
+}
+

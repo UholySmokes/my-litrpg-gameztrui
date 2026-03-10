@@ -1,0 +1,252 @@
+const { getAgentDefinition, listFirebaseAgents, normalizeAgentId } = require("./definitions");
+
+const DEFAULT_MODEL = "gemini-2.5-flash";
+const DEFAULT_LOCATION = "global";
+
+let runtimePromise = null;
+
+function parseNumber(value, fallback) {
+	const parsed = Number(value);
+	return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function parseTemperature(value, fallback) {
+	const parsed = parseNumber(value, fallback);
+	if (!Number.isFinite(parsed)) return fallback;
+	return Math.max(0, Math.min(2, parsed));
+}
+
+function parseCsvList(value) {
+	if (typeof value !== "string") return [];
+	return value
+		.split(",")
+		.map((entry) => entry.trim())
+		.filter(Boolean);
+}
+
+function resolveAllowedModels() {
+	const configured = parseCsvList(process.env.GENKIT_ALLOWED_MODELS || "");
+	if (configured.length > 0) return configured;
+
+	const fallback = new Set([DEFAULT_MODEL]);
+	const envDefault = (process.env.GEMINI_MODEL || "").trim();
+	if (envDefault) fallback.add(envDefault);
+	return Array.from(fallback);
+}
+
+function resolveProjectId() {
+	const direct =
+		(process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || process.env.FIREBASE_PROJECT_ID || "").trim();
+	if (direct) return direct;
+
+	const firebaseConfigRaw = (process.env.FIREBASE_CONFIG || "").trim();
+	if (!firebaseConfigRaw) return "";
+
+	try {
+		if (firebaseConfigRaw.startsWith("{")) {
+			const parsed = JSON.parse(firebaseConfigRaw);
+			const fromJson = typeof parsed?.projectId === "string" ? parsed.projectId.trim() : "";
+			if (fromJson) return fromJson;
+		}
+	} catch {
+		// Ignore invalid FIREBASE_CONFIG payload and continue with empty result.
+	}
+
+	return "";
+}
+
+function toJsonString(value) {
+	if (typeof value === "string") return value;
+	if (typeof value === "undefined") return "";
+	try {
+		return JSON.stringify(value, null, 2);
+	} catch {
+		return String(value);
+	}
+}
+
+function blockFromValue(label, value) {
+	const text = toJsonString(value);
+	if (!text || !text.trim()) return "";
+	return `<${label}>\n${text}`;
+}
+
+function buildInputPrompt(agentId, input) {
+	const payload =
+		input && typeof input === "object" && !Array.isArray(input)
+			? input
+			: { input };
+
+	const blocks = [];
+	if (agentId === "narrator") {
+		blocks.push(blockFromValue("GAME_STATE", payload.game_state ?? payload));
+	}
+	if (agentId === "combat") {
+		blocks.push(blockFromValue("COMBAT_STATE", payload.combat_state ?? payload));
+	}
+	if (agentId === "dialogue") {
+		blocks.push(blockFromValue("NPC_CONTEXT", payload.npc_context ?? payload));
+	}
+	if (agentId === "world") {
+		blocks.push(blockFromValue("WORLD_CONTEXT", payload.world_context ?? payload));
+	}
+	if (agentId === "system") {
+		blocks.push(blockFromValue("GAME_STATE", payload.game_state ?? payload));
+		blocks.push(blockFromValue("QUERY", payload.player_query ?? payload.query));
+	}
+	if (agentId === "quest") {
+		blocks.push(blockFromValue("GAME_STATE", payload.game_state ?? payload.world_state));
+		blocks.push(
+			blockFromValue(
+				"PLAYER_REQUEST",
+				payload.player_request ?? payload.request ?? payload.prompt,
+			),
+		);
+	}
+	if (agentId === "content_smith") {
+		blocks.push(
+			blockFromValue(
+				"CONTENT_REQUEST",
+				payload.content_request ?? payload.request ?? payload.prompt,
+			),
+		);
+		blocks.push(blockFromValue("WORLD_CONTEXT", payload.world_context ?? payload));
+	}
+
+	const filtered = blocks.filter(Boolean);
+	if (filtered.length) return filtered.join("\n\n");
+	return blockFromValue("INPUT", payload);
+}
+
+function tryParseStructured(text) {
+	const raw = typeof text === "string" ? text.trim() : "";
+	if (!raw) return undefined;
+	if (!raw.startsWith("{") && !raw.startsWith("[")) return undefined;
+	try {
+		return JSON.parse(raw);
+	} catch {
+		return undefined;
+	}
+}
+
+async function initializeRuntime() {
+	const [{ genkit }, { vertexAI, googleAI }] = await Promise.all([
+		import("genkit"),
+		import("@genkit-ai/google-genai"),
+	]);
+
+	const location = process.env.GENKIT_VERTEX_LOCATION || DEFAULT_LOCATION;
+	const apiKey =
+		(process.env.GOOGLE_GENAI_API_KEY || process.env.GOOGLE_API_KEY || "").trim();
+	const projectId = resolveProjectId();
+	const useGoogleAI = Boolean(apiKey);
+	let plugin;
+	let modelResolver;
+
+	if (useGoogleAI) {
+		plugin = googleAI({ apiKey });
+		modelResolver = (modelName) => googleAI.model(modelName);
+	} else {
+		const pluginOptions = { location };
+		if (projectId) pluginOptions.projectId = projectId;
+		plugin = vertexAI(pluginOptions);
+		modelResolver = (modelName) => vertexAI.model(modelName);
+	}
+
+	const ai = genkit({
+		plugins: [plugin],
+	});
+
+	return {
+		ai,
+		modelResolver,
+		backend: useGoogleAI ? "google-ai-studio" : "vertex-ai",
+	};
+}
+
+async function getRuntime() {
+	if (!runtimePromise) runtimePromise = initializeRuntime();
+	return runtimePromise;
+}
+
+async function runFirebaseAgent({
+	agent,
+	input,
+	model,
+	temperature,
+	topP,
+}) {
+	const normalizedAgent = normalizeAgentId(agent);
+	const definition = getAgentDefinition(normalizedAgent);
+	if (!definition) {
+		const error = new Error(`Unknown agent: ${String(agent || "")}`);
+		error.status = 400;
+		error.code = "INVALID_AGENT";
+		error.allowedAgents = listFirebaseAgents().map((x) => x.id);
+		throw error;
+	}
+
+	const requestedModel = (typeof model === "string" && model.trim()) || "";
+	const activeModel = requestedModel || process.env.GEMINI_MODEL || DEFAULT_MODEL;
+	const allowedModels = resolveAllowedModels();
+	if (!allowedModels.includes(activeModel)) {
+		const error = new Error(
+			`Model '${activeModel}' is not allowed. Configure GENKIT_ALLOWED_MODELS to permit it.`,
+		);
+		error.status = 400;
+		error.code = "MODEL_NOT_ALLOWED";
+		error.allowedModels = allowedModels;
+		throw error;
+	}
+
+	const activeTemperature = parseTemperature(
+		temperature,
+		parseTemperature(process.env.GEMINI_TEMPERATURE, definition.temperature),
+	);
+	const activeTopP = Math.max(0, Math.min(1, parseNumber(topP, 1)));
+	const inputPrompt = buildInputPrompt(definition.id, input);
+	const fullPrompt = `${definition.instructions}\n\nINPUT\n${inputPrompt}`;
+
+	const { ai, modelResolver, backend } = await getRuntime();
+	const { response, stream } = ai.generateStream({
+		model: modelResolver(activeModel),
+		prompt: fullPrompt,
+		config: {
+			temperature: activeTemperature,
+			topP: activeTopP,
+		},
+	});
+
+	let streamedText = "";
+	for await (const chunk of stream) {
+		const part = typeof chunk?.text === "string" ? chunk.text : "";
+		if (part) streamedText += part;
+	}
+
+	const final = await response;
+	const finalText = (typeof final?.text === "string" && final.text.trim())
+		? final.text.trim()
+		: streamedText.trim();
+
+	if (!finalText) {
+		const error = new Error("Model returned empty output.");
+		error.status = 502;
+		error.code = "NON_TEXT_OUTPUT";
+		throw error;
+	}
+
+	return {
+		agent: definition.id,
+		agentName: definition.name,
+		model: activeModel,
+		temperature: activeTemperature,
+		backend,
+		text: finalText,
+		structured: tryParseStructured(finalText),
+	};
+}
+
+module.exports = {
+	listFirebaseAgents,
+	runFirebaseAgent,
+};

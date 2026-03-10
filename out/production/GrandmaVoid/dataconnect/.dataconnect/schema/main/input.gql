@@ -1,0 +1,5066 @@
+"""
+✨ `DiscoveryList_KeyOutput` returns the primary key fields of table type `DiscoveryList`.
+
+It has the same format as `DiscoveryList_Key`, but is only used as mutation return value.
+"""
+scalar DiscoveryList_KeyOutput
+"""
+✨ `DiscoveryListItem_KeyOutput` returns the primary key fields of table type `DiscoveryListItem`.
+
+It has the same format as `DiscoveryListItem_Key`, but is only used as mutation return value.
+"""
+scalar DiscoveryListItem_KeyOutput
+"""
+✨ `GameEntity_KeyOutput` returns the primary key fields of table type `GameEntity`.
+
+It has the same format as `GameEntity_Key`, but is only used as mutation return value.
+"""
+scalar GameEntity_KeyOutput
+"""
+✨ `GameSession_KeyOutput` returns the primary key fields of table type `GameSession`.
+
+It has the same format as `GameSession_Key`, but is only used as mutation return value.
+"""
+scalar GameSession_KeyOutput
+"""
+✨ `Review_KeyOutput` returns the primary key fields of table type `Review`.
+
+It has the same format as `Review_Key`, but is only used as mutation return value.
+"""
+scalar Review_KeyOutput
+"""
+✨ `RunEvent_KeyOutput` returns the primary key fields of table type `RunEvent`.
+
+It has the same format as `RunEvent_Key`, but is only used as mutation return value.
+"""
+scalar RunEvent_KeyOutput
+"""
+✨ `RunSession_KeyOutput` returns the primary key fields of table type `RunSession`.
+
+It has the same format as `RunSession_Key`, but is only used as mutation return value.
+"""
+scalar RunSession_KeyOutput
+"""
+✨ `SaveSlot_KeyOutput` returns the primary key fields of table type `SaveSlot`.
+
+It has the same format as `SaveSlot_Key`, but is only used as mutation return value.
+"""
+scalar SaveSlot_KeyOutput
+"""
+✨ `StoryMemory_KeyOutput` returns the primary key fields of table type `StoryMemory`.
+
+It has the same format as `StoryMemory_Key`, but is only used as mutation return value.
+"""
+scalar StoryMemory_KeyOutput
+"""
+✨ `UserProfile_KeyOutput` returns the primary key fields of table type `UserProfile`.
+
+It has the same format as `UserProfile_Key`, but is only used as mutation return value.
+"""
+scalar UserProfile_KeyOutput
+"""
+✨ Generated data input type for table 'DiscoveryList'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input DiscoveryList_Data {
+  """
+  ✨ Generated from Field `DiscoveryList`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `DiscoveryList`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `DiscoveryList`.`userId` of type `String!`
+  """
+  userId: String
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `DiscoveryList`.`userId` of type `String!`)
+  """
+  userId_expr: String_Expr
+  """
+  ✨ Generated from Field `DiscoveryList`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Key
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `DiscoveryList`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `DiscoveryList`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `DiscoveryList`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `DiscoveryList`.`description` of type `String`
+  """
+  description: String
+  """
+  ✨ `_expr` server value variant of `description` (✨ Generated from Field `DiscoveryList`.`description` of type `String`)
+  """
+  description_expr: String_Expr
+  """
+  ✨ Generated from Field `DiscoveryList`.`isPublic` of type `Boolean!`
+  """
+  isPublic: Boolean
+  """
+  ✨ `_expr` server value variant of `isPublic` (✨ Generated from Field `DiscoveryList`.`isPublic` of type `Boolean!`)
+  """
+  isPublic_expr: Boolean_Expr
+  """
+  ✨ Generated from Field `DiscoveryList`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `DiscoveryList`.`name` of type `String!`)
+  """
+  name_expr: String_Expr
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `DiscoveryList`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `DiscoveryList`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `DiscoveryList`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+}
+"""
+✨ Generated filter input type for table 'DiscoveryList'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input DiscoveryList_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [DiscoveryList_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: DiscoveryList_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [DiscoveryList_Filter!]
+  """
+  ✨ Generated from Field `DiscoveryList`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`userId` of type `String!`
+  """
+  userId: String_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`description` of type `String`
+  """
+  description: String_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`isPublic` of type `Boolean!`
+  """
+  isPublic: Boolean_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`discoveryListItems_on_discoveryList` of type `[DiscoveryListItem!]!`
+  """
+  discoveryListItems_on_discoveryList: DiscoveryListItem_ListFilter
+  """
+  ✨ Generated from Field `DiscoveryList`.`gameEntities_via_DiscoveryListItem` of type `[GameEntity!]!`
+  """
+  gameEntities_via_DiscoveryListItem: GameEntity_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'DiscoveryList'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input DiscoveryList_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [DiscoveryList_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: DiscoveryList_Filter
+}
+"""
+✨ Generated having input type for table 'DiscoveryList'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input DiscoveryList_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [DiscoveryList_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: DiscoveryList_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [DiscoveryList_Having!]
+  """
+  ✨ Generated from Field `DiscoveryList`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`description_count` of type `Int!`
+  """
+  description_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`isPublic_count` of type `Int!`
+  """
+  isPublic_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'DiscoveryList'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input DiscoveryList_Key {
+  """
+  ✨ Generated from Field `DiscoveryList`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `DiscoveryList`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'DiscoveryList'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input DiscoveryList_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: DiscoveryList_Filter
+}
+"""
+✨ Generated order input type for table 'DiscoveryList'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input DiscoveryList_Order {
+  """
+  ✨ Generated from Field `DiscoveryList`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`userId` of type `String!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Order
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`description` of type `String`
+  """
+  description: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`isPublic` of type `Boolean!`
+  """
+  isPublic: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`description_count` of type `Int!`
+  """
+  description_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`isPublic_count` of type `Int!`
+  """
+  isPublic_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryList`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'DiscoveryListItem'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input DiscoveryListItem_Data {
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryListId` of type `UUID!`
+  """
+  discoveryListId: UUID
+  """
+  ✨ `_expr` server value variant of `discoveryListId` (✨ Generated from Field `DiscoveryListItem`.`discoveryListId` of type `UUID!`)
+  """
+  discoveryListId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntityId` of type `UUID!`
+  """
+  gameEntityId: UUID
+  """
+  ✨ `_expr` server value variant of `gameEntityId` (✨ Generated from Field `DiscoveryListItem`.`gameEntityId` of type `UUID!`)
+  """
+  gameEntityId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryList` of type `DiscoveryList!`
+  """
+  discoveryList: DiscoveryList_Key
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntity` of type `GameEntity!`
+  """
+  gameEntity: GameEntity_Key
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `DiscoveryListItem`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `DiscoveryListItem`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `DiscoveryListItem`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`note` of type `String`
+  """
+  note: String
+  """
+  ✨ `_expr` server value variant of `note` (✨ Generated from Field `DiscoveryListItem`.`note` of type `String`)
+  """
+  note_expr: String_Expr
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position` of type `Int!`
+  """
+  position: Int
+  """
+  ✨ `_expr` server value variant of `position` (✨ Generated from Field `DiscoveryListItem`.`position` of type `Int!`)
+  """
+  position_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `position` (✨ Generated from Field `DiscoveryListItem`.`position` of type `Int!`)
+  """
+  position_update: [Int_Update!]
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `DiscoveryListItem`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `DiscoveryListItem`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `DiscoveryListItem`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+}
+"""
+✨ Generated filter input type for table 'DiscoveryListItem'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input DiscoveryListItem_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [DiscoveryListItem_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: DiscoveryListItem_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [DiscoveryListItem_Filter!]
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryListId` of type `UUID!`
+  """
+  discoveryListId: UUID_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntityId` of type `UUID!`
+  """
+  gameEntityId: UUID_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryList` of type `DiscoveryList!`
+  """
+  discoveryList: DiscoveryList_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntity` of type `GameEntity!`
+  """
+  gameEntity: GameEntity_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`note` of type `String`
+  """
+  note: String_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position` of type `Int!`
+  """
+  position: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+}
+"""
+✨ Generated first-row input type for table 'DiscoveryListItem'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input DiscoveryListItem_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [DiscoveryListItem_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: DiscoveryListItem_Filter
+}
+"""
+✨ Generated having input type for table 'DiscoveryListItem'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input DiscoveryListItem_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [DiscoveryListItem_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: DiscoveryListItem_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [DiscoveryListItem_Having!]
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryListId_count` of type `Int!`
+  """
+  discoveryListId_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntityId_count` of type `Int!`
+  """
+  gameEntityId_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`note_count` of type `Int!`
+  """
+  note_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_count` of type `Int!`
+  """
+  position_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_sum` of type `Int`
+  """
+  position_sum: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_avg` of type `Float`
+  """
+  position_avg: Float_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_min` of type `Int`
+  """
+  position_min: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_max` of type `Int`
+  """
+  position_max: Int_Filter
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'DiscoveryListItem'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input DiscoveryListItem_Key {
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryListId` of type `UUID!`
+  """
+  discoveryListId: UUID
+  """
+  ✨ `_expr` server value variant of `discoveryListId` (✨ Generated from Field `DiscoveryListItem`.`discoveryListId` of type `UUID!`)
+  """
+  discoveryListId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntityId` of type `UUID!`
+  """
+  gameEntityId: UUID
+  """
+  ✨ `_expr` server value variant of `gameEntityId` (✨ Generated from Field `DiscoveryListItem`.`gameEntityId` of type `UUID!`)
+  """
+  gameEntityId_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'DiscoveryListItem'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input DiscoveryListItem_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: DiscoveryListItem_Filter
+}
+"""
+✨ Generated order input type for table 'DiscoveryListItem'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input DiscoveryListItem_Order {
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryListId` of type `UUID!`
+  """
+  discoveryListId: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntityId` of type `UUID!`
+  """
+  gameEntityId: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryList` of type `DiscoveryList!`
+  """
+  discoveryList: DiscoveryList_Order
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntity` of type `GameEntity!`
+  """
+  gameEntity: GameEntity_Order
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`note` of type `String`
+  """
+  note: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position` of type `Int!`
+  """
+  position: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`discoveryListId_count` of type `Int!`
+  """
+  discoveryListId_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`gameEntityId_count` of type `Int!`
+  """
+  gameEntityId_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`note_count` of type `Int!`
+  """
+  note_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_count` of type `Int!`
+  """
+  position_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_sum` of type `Int`
+  """
+  position_sum: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_avg` of type `Float`
+  """
+  position_avg: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_min` of type `Int`
+  """
+  position_min: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`position_max` of type `Int`
+  """
+  position_max: OrderDirection
+  """
+  ✨ Generated from Field `DiscoveryListItem`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'GameEntity'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input GameEntity_Data {
+  """
+  ✨ Generated from Field `GameEntity`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `GameEntity`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `GameEntity`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `GameEntity`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `GameEntity`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `GameEntity`.`description` of type `String`
+  """
+  description: String
+  """
+  ✨ `_expr` server value variant of `description` (✨ Generated from Field `GameEntity`.`description` of type `String`)
+  """
+  description_expr: String_Expr
+  """
+  ✨ Generated from Field `GameEntity`.`entityType` of type `String!`
+  """
+  entityType: String
+  """
+  ✨ `_expr` server value variant of `entityType` (✨ Generated from Field `GameEntity`.`entityType` of type `String!`)
+  """
+  entityType_expr: String_Expr
+  """
+  ✨ Generated from Field `GameEntity`.`imageUrl` of type `String`
+  """
+  imageUrl: String
+  """
+  ✨ `_expr` server value variant of `imageUrl` (✨ Generated from Field `GameEntity`.`imageUrl` of type `String`)
+  """
+  imageUrl_expr: String_Expr
+  """
+  ✨ Generated from Field `GameEntity`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `GameEntity`.`name` of type `String!`)
+  """
+  name_expr: String_Expr
+  """
+  ✨ Generated from Field `GameEntity`.`rarity` of type `String`
+  """
+  rarity: String
+  """
+  ✨ `_expr` server value variant of `rarity` (✨ Generated from Field `GameEntity`.`rarity` of type `String`)
+  """
+  rarity_expr: String_Expr
+  """
+  ✨ Generated from Field `GameEntity`.`starSystem` of type `String`
+  """
+  starSystem: String
+  """
+  ✨ `_expr` server value variant of `starSystem` (✨ Generated from Field `GameEntity`.`starSystem` of type `String`)
+  """
+  starSystem_expr: String_Expr
+  """
+  ✨ Generated from Field `GameEntity`.`statsJson` of type `String`
+  """
+  statsJson: String
+  """
+  ✨ `_expr` server value variant of `statsJson` (✨ Generated from Field `GameEntity`.`statsJson` of type `String`)
+  """
+  statsJson_expr: String_Expr
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `GameEntity`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `GameEntity`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `GameEntity`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+}
+"""
+✨ Generated filter input type for table 'GameEntity'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input GameEntity_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [GameEntity_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: GameEntity_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [GameEntity_Filter!]
+  """
+  ✨ Generated from Field `GameEntity`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`description` of type `String`
+  """
+  description: String_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`entityType` of type `String!`
+  """
+  entityType: String_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`imageUrl` of type `String`
+  """
+  imageUrl: String_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`rarity` of type `String`
+  """
+  rarity: String_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`starSystem` of type `String`
+  """
+  starSystem: String_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`statsJson` of type `String`
+  """
+  statsJson: String_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`discoveryListItems_on_gameEntity` of type `[DiscoveryListItem!]!`
+  """
+  discoveryListItems_on_gameEntity: DiscoveryListItem_ListFilter
+  """
+  ✨ Generated from Field `GameEntity`.`reviews_on_gameEntity` of type `[Review!]!`
+  """
+  reviews_on_gameEntity: Review_ListFilter
+  """
+  ✨ Generated from Field `GameEntity`.`discoveryLists_via_DiscoveryListItem` of type `[DiscoveryList!]!`
+  """
+  discoveryLists_via_DiscoveryListItem: DiscoveryList_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'GameEntity'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input GameEntity_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [GameEntity_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: GameEntity_Filter
+}
+"""
+✨ Generated having input type for table 'GameEntity'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input GameEntity_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [GameEntity_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: GameEntity_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [GameEntity_Having!]
+  """
+  ✨ Generated from Field `GameEntity`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`description_count` of type `Int!`
+  """
+  description_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`entityType_count` of type `Int!`
+  """
+  entityType_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`imageUrl_count` of type `Int!`
+  """
+  imageUrl_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`rarity_count` of type `Int!`
+  """
+  rarity_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`starSystem_count` of type `Int!`
+  """
+  starSystem_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`statsJson_count` of type `Int!`
+  """
+  statsJson_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'GameEntity'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input GameEntity_Key {
+  """
+  ✨ Generated from Field `GameEntity`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `GameEntity`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'GameEntity'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input GameEntity_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: GameEntity_Filter
+}
+"""
+✨ Generated order input type for table 'GameEntity'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input GameEntity_Order {
+  """
+  ✨ Generated from Field `GameEntity`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`description` of type `String`
+  """
+  description: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`entityType` of type `String!`
+  """
+  entityType: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`imageUrl` of type `String`
+  """
+  imageUrl: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`rarity` of type `String`
+  """
+  rarity: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`starSystem` of type `String`
+  """
+  starSystem: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`statsJson` of type `String`
+  """
+  statsJson: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`description_count` of type `Int!`
+  """
+  description_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`entityType_count` of type `Int!`
+  """
+  entityType_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`imageUrl_count` of type `Int!`
+  """
+  imageUrl_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`rarity_count` of type `Int!`
+  """
+  rarity_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`starSystem_count` of type `Int!`
+  """
+  starSystem_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`statsJson_count` of type `Int!`
+  """
+  statsJson_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `GameEntity`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'GameSession'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input GameSession_Data {
+  """
+  ✨ Generated from Field `GameSession`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `GameSession`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `GameSession`.`userId` of type `String!`
+  """
+  userId: String
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `GameSession`.`userId` of type `String!`)
+  """
+  userId_expr: String_Expr
+  """
+  ✨ Generated from Field `GameSession`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Key
+  """
+  ✨ Generated from Field `GameSession`.`activities` of type `[String]`
+  """
+  activities: [String!]
+  """
+  ✨ `_update` server value variant of `activities` (✨ Generated from Field `GameSession`.`activities` of type `[String]`)
+  """
+  activities_update: [String_ListUpdate!]
+  """
+  ✨ Generated from Field `GameSession`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `GameSession`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `GameSession`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `GameSession`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `GameSession`.`notes` of type `String`
+  """
+  notes: String
+  """
+  ✨ `_expr` server value variant of `notes` (✨ Generated from Field `GameSession`.`notes` of type `String`)
+  """
+  notes_expr: String_Expr
+  """
+  ✨ Generated from Field `GameSession`.`planetVisited` of type `String`
+  """
+  planetVisited: String
+  """
+  ✨ `_expr` server value variant of `planetVisited` (✨ Generated from Field `GameSession`.`planetVisited` of type `String`)
+  """
+  planetVisited_expr: String_Expr
+  """
+  ✨ Generated from Field `GameSession`.`runId` of type `String`
+  """
+  runId: String
+  """
+  ✨ `_expr` server value variant of `runId` (✨ Generated from Field `GameSession`.`runId` of type `String`)
+  """
+  runId_expr: String_Expr
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime` of type `Date`
+  """
+  sessionEndTime: Date
+  """
+  ✨ `_date` server value variant of `sessionEndTime` (✨ Generated from Field `GameSession`.`sessionEndTime` of type `Date`)
+  """
+  sessionEndTime_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `sessionEndTime` (✨ Generated from Field `GameSession`.`sessionEndTime` of type `Date`)
+  """
+  sessionEndTime_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `sessionEndTime` (✨ Generated from Field `GameSession`.`sessionEndTime` of type `Date`)
+  """
+  sessionEndTime_update: [Date_Update!]
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime` of type `Date!`
+  """
+  sessionStartTime: Date
+  """
+  ✨ `_date` server value variant of `sessionStartTime` (✨ Generated from Field `GameSession`.`sessionStartTime` of type `Date!`)
+  """
+  sessionStartTime_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `sessionStartTime` (✨ Generated from Field `GameSession`.`sessionStartTime` of type `Date!`)
+  """
+  sessionStartTime_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `sessionStartTime` (✨ Generated from Field `GameSession`.`sessionStartTime` of type `Date!`)
+  """
+  sessionStartTime_update: [Date_Update!]
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `GameSession`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `GameSession`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `GameSession`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+}
+"""
+✨ Generated filter input type for table 'GameSession'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input GameSession_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [GameSession_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: GameSession_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [GameSession_Filter!]
+  """
+  ✨ Generated from Field `GameSession`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `GameSession`.`userId` of type `String!`
+  """
+  userId: String_Filter
+  """
+  ✨ Generated from Field `GameSession`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Filter
+  """
+  ✨ Generated from Field `GameSession`.`activities` of type `[String]`
+  """
+  activities: String_ListFilter
+  """
+  ✨ Generated from Field `GameSession`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`notes` of type `String`
+  """
+  notes: String_Filter
+  """
+  ✨ Generated from Field `GameSession`.`planetVisited` of type `String`
+  """
+  planetVisited: String_Filter
+  """
+  ✨ Generated from Field `GameSession`.`runId` of type `String`
+  """
+  runId: String_Filter
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime` of type `Date`
+  """
+  sessionEndTime: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime` of type `Date!`
+  """
+  sessionStartTime: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`reviews_on_gameSession` of type `[Review!]!`
+  """
+  reviews_on_gameSession: Review_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'GameSession'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input GameSession_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [GameSession_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: GameSession_Filter
+}
+"""
+✨ Generated having input type for table 'GameSession'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input GameSession_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [GameSession_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: GameSession_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [GameSession_Having!]
+  """
+  ✨ Generated from Field `GameSession`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`notes_count` of type `Int!`
+  """
+  notes_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`planetVisited_count` of type `Int!`
+  """
+  planetVisited_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`runId_count` of type `Int!`
+  """
+  runId_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime_count` of type `Int!`
+  """
+  sessionEndTime_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime_count` of type `Int!`
+  """
+  sessionStartTime_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `GameSession`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime_min` of type `Date`
+  """
+  sessionEndTime_min: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime_min` of type `Date`
+  """
+  sessionStartTime_min: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime_max` of type `Date`
+  """
+  sessionEndTime_max: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime_max` of type `Date`
+  """
+  sessionStartTime_max: Date_Filter
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'GameSession'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input GameSession_Key {
+  """
+  ✨ Generated from Field `GameSession`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `GameSession`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'GameSession'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input GameSession_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: GameSession_Filter
+}
+"""
+✨ Generated order input type for table 'GameSession'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input GameSession_Order {
+  """
+  ✨ Generated from Field `GameSession`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`userId` of type `String!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Order
+  """
+  ✨ Generated from Field `GameSession`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`notes` of type `String`
+  """
+  notes: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`planetVisited` of type `String`
+  """
+  planetVisited: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`runId` of type `String`
+  """
+  runId: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime` of type `Date`
+  """
+  sessionEndTime: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime` of type `Date!`
+  """
+  sessionStartTime: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`notes_count` of type `Int!`
+  """
+  notes_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`planetVisited_count` of type `Int!`
+  """
+  planetVisited_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`runId_count` of type `Int!`
+  """
+  runId_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime_count` of type `Int!`
+  """
+  sessionEndTime_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime_count` of type `Int!`
+  """
+  sessionStartTime_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime_min` of type `Date`
+  """
+  sessionEndTime_min: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime_min` of type `Date`
+  """
+  sessionStartTime_min: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`sessionEndTime_max` of type `Date`
+  """
+  sessionEndTime_max: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`sessionStartTime_max` of type `Date`
+  """
+  sessionStartTime_max: OrderDirection
+  """
+  ✨ Generated from Field `GameSession`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Review'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Review_Data {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Review`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Review`.`gameEntityId` of type `UUID!`
+  """
+  gameEntityId: UUID
+  """
+  ✨ `_expr` server value variant of `gameEntityId` (✨ Generated from Field `Review`.`gameEntityId` of type `UUID!`)
+  """
+  gameEntityId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Review`.`gameSessionId` of type `UUID`
+  """
+  gameSessionId: UUID
+  """
+  ✨ `_expr` server value variant of `gameSessionId` (✨ Generated from Field `Review`.`gameSessionId` of type `UUID`)
+  """
+  gameSessionId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `Review`.`userId` of type `String!`
+  """
+  userId: String
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Review`.`userId` of type `String!`)
+  """
+  userId_expr: String_Expr
+  """
+  ✨ Generated from Field `Review`.`gameEntity` of type `GameEntity!`
+  """
+  gameEntity: GameEntity_Key
+  """
+  ✨ Generated from Field `Review`.`gameSession` of type `GameSession`
+  """
+  gameSession: GameSession_Key
+  """
+  ✨ Generated from Field `Review`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Key
+  """
+  ✨ Generated from Field `Review`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `Review`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Review`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Review`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `Review`.`isPublic` of type `Boolean!`
+  """
+  isPublic: Boolean
+  """
+  ✨ `_expr` server value variant of `isPublic` (✨ Generated from Field `Review`.`isPublic` of type `Boolean!`)
+  """
+  isPublic_expr: Boolean_Expr
+  """
+  ✨ Generated from Field `Review`.`privateShareLink` of type `String`
+  """
+  privateShareLink: String
+  """
+  ✨ `_expr` server value variant of `privateShareLink` (✨ Generated from Field `Review`.`privateShareLink` of type `String`)
+  """
+  privateShareLink_expr: String_Expr
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: Int
+  """
+  ✨ `_expr` server value variant of `rating` (✨ Generated from Field `Review`.`rating` of type `Int!`)
+  """
+  rating_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `rating` (✨ Generated from Field `Review`.`rating` of type `Int!`)
+  """
+  rating_update: [Int_Update!]
+  """
+  ✨ Generated from Field `Review`.`text` of type `String`
+  """
+  text: String
+  """
+  ✨ `_expr` server value variant of `text` (✨ Generated from Field `Review`.`text` of type `String`)
+  """
+  text_expr: String_Expr
+  """
+  ✨ Generated from Field `Review`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `Review`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `Review`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `Review`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+}
+"""
+✨ Generated filter input type for table 'Review'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Review_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Review_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Review_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Review_Filter!]
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`gameEntityId` of type `UUID!`
+  """
+  gameEntityId: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`gameSessionId` of type `UUID`
+  """
+  gameSessionId: UUID_Filter
+  """
+  ✨ Generated from Field `Review`.`userId` of type `String!`
+  """
+  userId: String_Filter
+  """
+  ✨ Generated from Field `Review`.`gameEntity` of type `GameEntity!`
+  """
+  gameEntity: GameEntity_Filter
+  """
+  ✨ Generated from Field `Review`.`gameSession` of type `GameSession`
+  """
+  gameSession: GameSession_Filter
+  """
+  ✨ Generated from Field `Review`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Filter
+  """
+  ✨ Generated from Field `Review`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `Review`.`isPublic` of type `Boolean!`
+  """
+  isPublic: Boolean_Filter
+  """
+  ✨ Generated from Field `Review`.`privateShareLink` of type `String`
+  """
+  privateShareLink: String_Filter
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`text` of type `String`
+  """
+  text: String_Filter
+  """
+  ✨ Generated from Field `Review`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+}
+"""
+✨ Generated first-row input type for table 'Review'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Review_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Review_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Review_Filter
+}
+"""
+✨ Generated having input type for table 'Review'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Review_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Review_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Review_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Review_Having!]
+  """
+  ✨ Generated from Field `Review`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`gameEntityId_count` of type `Int!`
+  """
+  gameEntityId_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`gameSessionId_count` of type `Int!`
+  """
+  gameSessionId_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`isPublic_count` of type `Int!`
+  """
+  isPublic_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`privateShareLink_count` of type `Int!`
+  """
+  privateShareLink_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_count` of type `Int!`
+  """
+  rating_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`text_count` of type `Int!`
+  """
+  text_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_sum` of type `Int`
+  """
+  rating_sum: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_avg` of type `Float`
+  """
+  rating_avg: Float_Filter
+  """
+  ✨ Generated from Field `Review`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_min` of type `Int`
+  """
+  rating_min: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `Review`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `Review`.`rating_max` of type `Int`
+  """
+  rating_max: Int_Filter
+  """
+  ✨ Generated from Field `Review`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'Review'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Review_Key {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Review`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'Review'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Review_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Review_Filter
+}
+"""
+✨ Generated order input type for table 'Review'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Review_Order {
+  """
+  ✨ Generated from Field `Review`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`gameEntityId` of type `UUID!`
+  """
+  gameEntityId: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`gameSessionId` of type `UUID`
+  """
+  gameSessionId: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`userId` of type `String!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`gameEntity` of type `GameEntity!`
+  """
+  gameEntity: GameEntity_Order
+  """
+  ✨ Generated from Field `Review`.`gameSession` of type `GameSession`
+  """
+  gameSession: GameSession_Order
+  """
+  ✨ Generated from Field `Review`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Order
+  """
+  ✨ Generated from Field `Review`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`isPublic` of type `Boolean!`
+  """
+  isPublic: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`privateShareLink` of type `String`
+  """
+  privateShareLink: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating` of type `Int!`
+  """
+  rating: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`text` of type `String`
+  """
+  text: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`gameEntityId_count` of type `Int!`
+  """
+  gameEntityId_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`gameSessionId_count` of type `Int!`
+  """
+  gameSessionId_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`isPublic_count` of type `Int!`
+  """
+  isPublic_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`privateShareLink_count` of type `Int!`
+  """
+  privateShareLink_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_count` of type `Int!`
+  """
+  rating_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`text_count` of type `Int!`
+  """
+  text_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_sum` of type `Int`
+  """
+  rating_sum: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_avg` of type `Float`
+  """
+  rating_avg: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_min` of type `Int`
+  """
+  rating_min: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`rating_max` of type `Int`
+  """
+  rating_max: OrderDirection
+  """
+  ✨ Generated from Field `Review`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'RunEvent'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input RunEvent_Data {
+  """
+  ✨ Generated from Field `RunEvent`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `RunEvent`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`userId` of type `String!`
+  """
+  userId: String
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `RunEvent`.`userId` of type `String!`)
+  """
+  userId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Key
+  """
+  ✨ Generated from Field `RunEvent`.`accepted` of type `Boolean!`
+  """
+  accepted: Boolean
+  """
+  ✨ `_expr` server value variant of `accepted` (✨ Generated from Field `RunEvent`.`accepted` of type `Boolean!`)
+  """
+  accepted_expr: Boolean_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`clientId` of type `String!`
+  """
+  clientId: String
+  """
+  ✨ `_expr` server value variant of `clientId` (✨ Generated from Field `RunEvent`.`clientId` of type `String!`)
+  """
+  clientId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq` of type `Int!`
+  """
+  clientSeq: Int
+  """
+  ✨ `_expr` server value variant of `clientSeq` (✨ Generated from Field `RunEvent`.`clientSeq` of type `Int!`)
+  """
+  clientSeq_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `clientSeq` (✨ Generated from Field `RunEvent`.`clientSeq` of type `Int!`)
+  """
+  clientSeq_update: [Int_Update!]
+  """
+  ✨ Generated from Field `RunEvent`.`commitId` of type `String!`
+  """
+  commitId: String
+  """
+  ✨ `_expr` server value variant of `commitId` (✨ Generated from Field `RunEvent`.`commitId` of type `String!`)
+  """
+  commitId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`contentVersion` of type `String`
+  """
+  contentVersion: String
+  """
+  ✨ `_expr` server value variant of `contentVersion` (✨ Generated from Field `RunEvent`.`contentVersion` of type `String`)
+  """
+  contentVersion_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `RunEvent`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `RunEvent`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `RunEvent`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `RunEvent`.`errorCode` of type `String`
+  """
+  errorCode: String
+  """
+  ✨ `_expr` server value variant of `errorCode` (✨ Generated from Field `RunEvent`.`errorCode` of type `String`)
+  """
+  errorCode_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`eventType` of type `String`
+  """
+  eventType: String
+  """
+  ✨ `_expr` server value variant of `eventType` (✨ Generated from Field `RunEvent`.`eventType` of type `String`)
+  """
+  eventType_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`message` of type `String`
+  """
+  message: String
+  """
+  ✨ `_expr` server value variant of `message` (✨ Generated from Field `RunEvent`.`message` of type `String`)
+  """
+  message_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`runId` of type `String!`
+  """
+  runId: String
+  """
+  ✨ `_expr` server value variant of `runId` (✨ Generated from Field `RunEvent`.`runId` of type `String!`)
+  """
+  runId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`seq` of type `Int`
+  """
+  seq: Int
+  """
+  ✨ `_expr` server value variant of `seq` (✨ Generated from Field `RunEvent`.`seq` of type `Int`)
+  """
+  seq_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `seq` (✨ Generated from Field `RunEvent`.`seq` of type `Int`)
+  """
+  seq_update: [Int_Update!]
+  """
+  ✨ Generated from Field `RunEvent`.`stateHash` of type `String`
+  """
+  stateHash: String
+  """
+  ✨ `_expr` server value variant of `stateHash` (✨ Generated from Field `RunEvent`.`stateHash` of type `String`)
+  """
+  stateHash_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`tick` of type `Int`
+  """
+  tick: Int
+  """
+  ✨ `_expr` server value variant of `tick` (✨ Generated from Field `RunEvent`.`tick` of type `Int`)
+  """
+  tick_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `tick` (✨ Generated from Field `RunEvent`.`tick` of type `Int`)
+  """
+  tick_update: [Int_Update!]
+  """
+  ✨ Generated from Field `RunEvent`.`triggerPayloadJson` of type `String!`
+  """
+  triggerPayloadJson: String
+  """
+  ✨ `_expr` server value variant of `triggerPayloadJson` (✨ Generated from Field `RunEvent`.`triggerPayloadJson` of type `String!`)
+  """
+  triggerPayloadJson_expr: String_Expr
+  """
+  ✨ Generated from Field `RunEvent`.`triggerType` of type `String!`
+  """
+  triggerType: String
+  """
+  ✨ `_expr` server value variant of `triggerType` (✨ Generated from Field `RunEvent`.`triggerType` of type `String!`)
+  """
+  triggerType_expr: String_Expr
+}
+"""
+✨ Generated filter input type for table 'RunEvent'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input RunEvent_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [RunEvent_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: RunEvent_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [RunEvent_Filter!]
+  """
+  ✨ Generated from Field `RunEvent`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`userId` of type `String!`
+  """
+  userId: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`accepted` of type `Boolean!`
+  """
+  accepted: Boolean_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`clientId` of type `String!`
+  """
+  clientId: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq` of type `Int!`
+  """
+  clientSeq: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`commitId` of type `String!`
+  """
+  commitId: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`contentVersion` of type `String`
+  """
+  contentVersion: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`errorCode` of type `String`
+  """
+  errorCode: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`eventType` of type `String`
+  """
+  eventType: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`message` of type `String`
+  """
+  message: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`runId` of type `String!`
+  """
+  runId: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`seq` of type `Int`
+  """
+  seq: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`stateHash` of type `String`
+  """
+  stateHash: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`tick` of type `Int`
+  """
+  tick: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`triggerPayloadJson` of type `String!`
+  """
+  triggerPayloadJson: String_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`triggerType` of type `String!`
+  """
+  triggerType: String_Filter
+}
+"""
+✨ Generated first-row input type for table 'RunEvent'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input RunEvent_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [RunEvent_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: RunEvent_Filter
+}
+"""
+✨ Generated having input type for table 'RunEvent'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input RunEvent_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [RunEvent_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: RunEvent_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [RunEvent_Having!]
+  """
+  ✨ Generated from Field `RunEvent`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`accepted_count` of type `Int!`
+  """
+  accepted_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`clientId_count` of type `Int!`
+  """
+  clientId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_count` of type `Int!`
+  """
+  clientSeq_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`commitId_count` of type `Int!`
+  """
+  commitId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`contentVersion_count` of type `Int!`
+  """
+  contentVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`errorCode_count` of type `Int!`
+  """
+  errorCode_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`eventType_count` of type `Int!`
+  """
+  eventType_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`message_count` of type `Int!`
+  """
+  message_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`runId_count` of type `Int!`
+  """
+  runId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`seq_count` of type `Int!`
+  """
+  seq_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`stateHash_count` of type `Int!`
+  """
+  stateHash_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`tick_count` of type `Int!`
+  """
+  tick_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`triggerPayloadJson_count` of type `Int!`
+  """
+  triggerPayloadJson_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`triggerType_count` of type `Int!`
+  """
+  triggerType_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_sum` of type `Int`
+  """
+  clientSeq_sum: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`seq_sum` of type `Int`
+  """
+  seq_sum: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`tick_sum` of type `Int`
+  """
+  tick_sum: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_avg` of type `Float`
+  """
+  clientSeq_avg: Float_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`seq_avg` of type `Float`
+  """
+  seq_avg: Float_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`tick_avg` of type `Float`
+  """
+  tick_avg: Float_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_min` of type `Int`
+  """
+  clientSeq_min: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`seq_min` of type `Int`
+  """
+  seq_min: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`tick_min` of type `Int`
+  """
+  tick_min: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_max` of type `Int`
+  """
+  clientSeq_max: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`seq_max` of type `Int`
+  """
+  seq_max: Int_Filter
+  """
+  ✨ Generated from Field `RunEvent`.`tick_max` of type `Int`
+  """
+  tick_max: Int_Filter
+}
+"""
+✨ Generated key input type for table 'RunEvent'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input RunEvent_Key {
+  """
+  ✨ Generated from Field `RunEvent`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `RunEvent`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'RunEvent'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input RunEvent_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: RunEvent_Filter
+}
+"""
+✨ Generated order input type for table 'RunEvent'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input RunEvent_Order {
+  """
+  ✨ Generated from Field `RunEvent`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`userId` of type `String!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Order
+  """
+  ✨ Generated from Field `RunEvent`.`accepted` of type `Boolean!`
+  """
+  accepted: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`clientId` of type `String!`
+  """
+  clientId: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq` of type `Int!`
+  """
+  clientSeq: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`commitId` of type `String!`
+  """
+  commitId: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`contentVersion` of type `String`
+  """
+  contentVersion: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`errorCode` of type `String`
+  """
+  errorCode: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`eventType` of type `String`
+  """
+  eventType: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`message` of type `String`
+  """
+  message: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`runId` of type `String!`
+  """
+  runId: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`seq` of type `Int`
+  """
+  seq: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`stateHash` of type `String`
+  """
+  stateHash: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`tick` of type `Int`
+  """
+  tick: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`triggerPayloadJson` of type `String!`
+  """
+  triggerPayloadJson: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`triggerType` of type `String!`
+  """
+  triggerType: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`accepted_count` of type `Int!`
+  """
+  accepted_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`clientId_count` of type `Int!`
+  """
+  clientId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_count` of type `Int!`
+  """
+  clientSeq_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`commitId_count` of type `Int!`
+  """
+  commitId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`contentVersion_count` of type `Int!`
+  """
+  contentVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`errorCode_count` of type `Int!`
+  """
+  errorCode_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`eventType_count` of type `Int!`
+  """
+  eventType_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`message_count` of type `Int!`
+  """
+  message_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`runId_count` of type `Int!`
+  """
+  runId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`seq_count` of type `Int!`
+  """
+  seq_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`stateHash_count` of type `Int!`
+  """
+  stateHash_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`tick_count` of type `Int!`
+  """
+  tick_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`triggerPayloadJson_count` of type `Int!`
+  """
+  triggerPayloadJson_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`triggerType_count` of type `Int!`
+  """
+  triggerType_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_sum` of type `Int`
+  """
+  clientSeq_sum: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`seq_sum` of type `Int`
+  """
+  seq_sum: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`tick_sum` of type `Int`
+  """
+  tick_sum: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_avg` of type `Float`
+  """
+  clientSeq_avg: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`seq_avg` of type `Float`
+  """
+  seq_avg: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`tick_avg` of type `Float`
+  """
+  tick_avg: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_min` of type `Int`
+  """
+  clientSeq_min: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`seq_min` of type `Int`
+  """
+  seq_min: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`tick_min` of type `Int`
+  """
+  tick_min: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`clientSeq_max` of type `Int`
+  """
+  clientSeq_max: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`seq_max` of type `Int`
+  """
+  seq_max: OrderDirection
+  """
+  ✨ Generated from Field `RunEvent`.`tick_max` of type `Int`
+  """
+  tick_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'RunSession'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input RunSession_Data {
+  """
+  ✨ Generated from Field `RunSession`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `RunSession`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `RunSession`.`userId` of type `String!`
+  """
+  userId: String
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `RunSession`.`userId` of type `String!`)
+  """
+  userId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Key
+  """
+  ✨ Generated from Field `RunSession`.`contentVersion` of type `String!`
+  """
+  contentVersion: String
+  """
+  ✨ `_expr` server value variant of `contentVersion` (✨ Generated from Field `RunSession`.`contentVersion` of type `String!`)
+  """
+  contentVersion_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `RunSession`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `RunSession`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `RunSession`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `RunSession`.`entityStatesJson` of type `String!`
+  """
+  entityStatesJson: String
+  """
+  ✨ `_expr` server value variant of `entityStatesJson` (✨ Generated from Field `RunSession`.`entityStatesJson` of type `String!`)
+  """
+  entityStatesJson_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`lastClientId` of type `String`
+  """
+  lastClientId: String
+  """
+  ✨ `_expr` server value variant of `lastClientId` (✨ Generated from Field `RunSession`.`lastClientId` of type `String`)
+  """
+  lastClientId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`lastCommitId` of type `String`
+  """
+  lastCommitId: String
+  """
+  ✨ `_expr` server value variant of `lastCommitId` (✨ Generated from Field `RunSession`.`lastCommitId` of type `String`)
+  """
+  lastCommitId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`mapId` of type `String!`
+  """
+  mapId: String
+  """
+  ✨ `_expr` server value variant of `mapId` (✨ Generated from Field `RunSession`.`mapId` of type `String!`)
+  """
+  mapId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`playerPosJson` of type `String!`
+  """
+  playerPosJson: String
+  """
+  ✨ `_expr` server value variant of `playerPosJson` (✨ Generated from Field `RunSession`.`playerPosJson` of type `String!`)
+  """
+  playerPosJson_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`questFlagsJson` of type `String!`
+  """
+  questFlagsJson: String
+  """
+  ✨ `_expr` server value variant of `questFlagsJson` (✨ Generated from Field `RunSession`.`questFlagsJson` of type `String!`)
+  """
+  questFlagsJson_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`runId` of type `String!`
+  """
+  runId: String
+  """
+  ✨ `_expr` server value variant of `runId` (✨ Generated from Field `RunSession`.`runId` of type `String!`)
+  """
+  runId_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`runSeed` of type `String`
+  """
+  runSeed: String
+  """
+  ✨ `_expr` server value variant of `runSeed` (✨ Generated from Field `RunSession`.`runSeed` of type `String`)
+  """
+  runSeed_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`saveSlotId` of type `UUID`
+  """
+  saveSlotId: UUID
+  """
+  ✨ `_expr` server value variant of `saveSlotId` (✨ Generated from Field `RunSession`.`saveSlotId` of type `UUID`)
+  """
+  saveSlotId_expr: UUID_Expr
+  """
+  ✨ Generated from Field `RunSession`.`seq` of type `Int!`
+  """
+  seq: Int
+  """
+  ✨ `_expr` server value variant of `seq` (✨ Generated from Field `RunSession`.`seq` of type `Int!`)
+  """
+  seq_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `seq` (✨ Generated from Field `RunSession`.`seq` of type `Int!`)
+  """
+  seq_update: [Int_Update!]
+  """
+  ✨ Generated from Field `RunSession`.`stateHash` of type `String!`
+  """
+  stateHash: String
+  """
+  ✨ `_expr` server value variant of `stateHash` (✨ Generated from Field `RunSession`.`stateHash` of type `String!`)
+  """
+  stateHash_expr: String_Expr
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion` of type `Int!`
+  """
+  stateVersion: Int
+  """
+  ✨ `_expr` server value variant of `stateVersion` (✨ Generated from Field `RunSession`.`stateVersion` of type `Int!`)
+  """
+  stateVersion_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `stateVersion` (✨ Generated from Field `RunSession`.`stateVersion` of type `Int!`)
+  """
+  stateVersion_update: [Int_Update!]
+  """
+  ✨ Generated from Field `RunSession`.`tick` of type `Int!`
+  """
+  tick: Int
+  """
+  ✨ `_expr` server value variant of `tick` (✨ Generated from Field `RunSession`.`tick` of type `Int!`)
+  """
+  tick_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `tick` (✨ Generated from Field `RunSession`.`tick` of type `Int!`)
+  """
+  tick_update: [Int_Update!]
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `RunSession`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `RunSession`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `RunSession`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `RunSession`.`worldId` of type `String!`
+  """
+  worldId: String
+  """
+  ✨ `_expr` server value variant of `worldId` (✨ Generated from Field `RunSession`.`worldId` of type `String!`)
+  """
+  worldId_expr: String_Expr
+}
+"""
+✨ Generated filter input type for table 'RunSession'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input RunSession_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [RunSession_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: RunSession_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [RunSession_Filter!]
+  """
+  ✨ Generated from Field `RunSession`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `RunSession`.`userId` of type `String!`
+  """
+  userId: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Filter
+  """
+  ✨ Generated from Field `RunSession`.`contentVersion` of type `String!`
+  """
+  contentVersion: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `RunSession`.`entityStatesJson` of type `String!`
+  """
+  entityStatesJson: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`lastClientId` of type `String`
+  """
+  lastClientId: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`lastCommitId` of type `String`
+  """
+  lastCommitId: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`mapId` of type `String!`
+  """
+  mapId: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`playerPosJson` of type `String!`
+  """
+  playerPosJson: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`questFlagsJson` of type `String!`
+  """
+  questFlagsJson: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`runId` of type `String!`
+  """
+  runId: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`runSeed` of type `String`
+  """
+  runSeed: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`saveSlotId` of type `UUID`
+  """
+  saveSlotId: UUID_Filter
+  """
+  ✨ Generated from Field `RunSession`.`seq` of type `Int!`
+  """
+  seq: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`stateHash` of type `String!`
+  """
+  stateHash: String_Filter
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion` of type `Int!`
+  """
+  stateVersion: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`tick` of type `Int!`
+  """
+  tick: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `RunSession`.`worldId` of type `String!`
+  """
+  worldId: String_Filter
+}
+"""
+✨ Generated first-row input type for table 'RunSession'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input RunSession_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [RunSession_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: RunSession_Filter
+}
+"""
+✨ Generated having input type for table 'RunSession'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input RunSession_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [RunSession_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: RunSession_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [RunSession_Having!]
+  """
+  ✨ Generated from Field `RunSession`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`contentVersion_count` of type `Int!`
+  """
+  contentVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`entityStatesJson_count` of type `Int!`
+  """
+  entityStatesJson_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`lastClientId_count` of type `Int!`
+  """
+  lastClientId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`lastCommitId_count` of type `Int!`
+  """
+  lastCommitId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`mapId_count` of type `Int!`
+  """
+  mapId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`playerPosJson_count` of type `Int!`
+  """
+  playerPosJson_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`questFlagsJson_count` of type `Int!`
+  """
+  questFlagsJson_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`runId_count` of type `Int!`
+  """
+  runId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`runSeed_count` of type `Int!`
+  """
+  runSeed_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`saveSlotId_count` of type `Int!`
+  """
+  saveSlotId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`seq_count` of type `Int!`
+  """
+  seq_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`stateHash_count` of type `Int!`
+  """
+  stateHash_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_count` of type `Int!`
+  """
+  stateVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`tick_count` of type `Int!`
+  """
+  tick_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`worldId_count` of type `Int!`
+  """
+  worldId_count: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`seq_sum` of type `Int`
+  """
+  seq_sum: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_sum` of type `Int`
+  """
+  stateVersion_sum: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`tick_sum` of type `Int`
+  """
+  tick_sum: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`seq_avg` of type `Float`
+  """
+  seq_avg: Float_Filter
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_avg` of type `Float`
+  """
+  stateVersion_avg: Float_Filter
+  """
+  ✨ Generated from Field `RunSession`.`tick_avg` of type `Float`
+  """
+  tick_avg: Float_Filter
+  """
+  ✨ Generated from Field `RunSession`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `RunSession`.`seq_min` of type `Int`
+  """
+  seq_min: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_min` of type `Int`
+  """
+  stateVersion_min: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`tick_min` of type `Int`
+  """
+  tick_min: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `RunSession`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `RunSession`.`seq_max` of type `Int`
+  """
+  seq_max: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_max` of type `Int`
+  """
+  stateVersion_max: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`tick_max` of type `Int`
+  """
+  tick_max: Int_Filter
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'RunSession'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input RunSession_Key {
+  """
+  ✨ Generated from Field `RunSession`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `RunSession`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'RunSession'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input RunSession_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: RunSession_Filter
+}
+"""
+✨ Generated order input type for table 'RunSession'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input RunSession_Order {
+  """
+  ✨ Generated from Field `RunSession`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`userId` of type `String!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Order
+  """
+  ✨ Generated from Field `RunSession`.`contentVersion` of type `String!`
+  """
+  contentVersion: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`entityStatesJson` of type `String!`
+  """
+  entityStatesJson: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`lastClientId` of type `String`
+  """
+  lastClientId: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`lastCommitId` of type `String`
+  """
+  lastCommitId: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`mapId` of type `String!`
+  """
+  mapId: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`playerPosJson` of type `String!`
+  """
+  playerPosJson: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`questFlagsJson` of type `String!`
+  """
+  questFlagsJson: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`runId` of type `String!`
+  """
+  runId: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`runSeed` of type `String`
+  """
+  runSeed: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`saveSlotId` of type `UUID`
+  """
+  saveSlotId: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`seq` of type `Int!`
+  """
+  seq: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`stateHash` of type `String!`
+  """
+  stateHash: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion` of type `Int!`
+  """
+  stateVersion: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`tick` of type `Int!`
+  """
+  tick: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`worldId` of type `String!`
+  """
+  worldId: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`contentVersion_count` of type `Int!`
+  """
+  contentVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`entityStatesJson_count` of type `Int!`
+  """
+  entityStatesJson_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`lastClientId_count` of type `Int!`
+  """
+  lastClientId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`lastCommitId_count` of type `Int!`
+  """
+  lastCommitId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`mapId_count` of type `Int!`
+  """
+  mapId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`playerPosJson_count` of type `Int!`
+  """
+  playerPosJson_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`questFlagsJson_count` of type `Int!`
+  """
+  questFlagsJson_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`runId_count` of type `Int!`
+  """
+  runId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`runSeed_count` of type `Int!`
+  """
+  runSeed_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`saveSlotId_count` of type `Int!`
+  """
+  saveSlotId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`seq_count` of type `Int!`
+  """
+  seq_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`stateHash_count` of type `Int!`
+  """
+  stateHash_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_count` of type `Int!`
+  """
+  stateVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`tick_count` of type `Int!`
+  """
+  tick_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`worldId_count` of type `Int!`
+  """
+  worldId_count: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`seq_sum` of type `Int`
+  """
+  seq_sum: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_sum` of type `Int`
+  """
+  stateVersion_sum: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`tick_sum` of type `Int`
+  """
+  tick_sum: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`seq_avg` of type `Float`
+  """
+  seq_avg: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_avg` of type `Float`
+  """
+  stateVersion_avg: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`tick_avg` of type `Float`
+  """
+  tick_avg: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`seq_min` of type `Int`
+  """
+  seq_min: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_min` of type `Int`
+  """
+  stateVersion_min: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`tick_min` of type `Int`
+  """
+  tick_min: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`seq_max` of type `Int`
+  """
+  seq_max: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`stateVersion_max` of type `Int`
+  """
+  stateVersion_max: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`tick_max` of type `Int`
+  """
+  tick_max: OrderDirection
+  """
+  ✨ Generated from Field `RunSession`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'SaveSlot'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input SaveSlot_Data {
+  """
+  ✨ Generated from Field `SaveSlot`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `SaveSlot`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`userId` of type `String!`
+  """
+  userId: String
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `SaveSlot`.`userId` of type `String!`)
+  """
+  userId_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Key
+  """
+  ✨ Generated from Field `SaveSlot`.`contentVersion` of type `String`
+  """
+  contentVersion: String
+  """
+  ✨ `_expr` server value variant of `contentVersion` (✨ Generated from Field `SaveSlot`.`contentVersion` of type `String`)
+  """
+  contentVersion_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`entityStatesJson` of type `String`
+  """
+  entityStatesJson: String
+  """
+  ✨ `_expr` server value variant of `entityStatesJson` (✨ Generated from Field `SaveSlot`.`entityStatesJson` of type `String`)
+  """
+  entityStatesJson_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`gameStateJson` of type `String!`
+  """
+  gameStateJson: String
+  """
+  ✨ `_expr` server value variant of `gameStateJson` (✨ Generated from Field `SaveSlot`.`gameStateJson` of type `String!`)
+  """
+  gameStateJson_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`locationId` of type `String!`
+  """
+  locationId: String
+  """
+  ✨ `_expr` server value variant of `locationId` (✨ Generated from Field `SaveSlot`.`locationId` of type `String!`)
+  """
+  locationId_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`mapId` of type `String`
+  """
+  mapId: String
+  """
+  ✨ `_expr` server value variant of `mapId` (✨ Generated from Field `SaveSlot`.`mapId` of type `String`)
+  """
+  mapId_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`
+  """
+  playerLevel: Int
+  """
+  ✨ `_expr` server value variant of `playerLevel` (✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`)
+  """
+  playerLevel_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `playerLevel` (✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`)
+  """
+  playerLevel_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName` of type `String!`
+  """
+  playerName: String
+  """
+  ✨ `_expr` server value variant of `playerName` (✨ Generated from Field `SaveSlot`.`playerName` of type `String!`)
+  """
+  playerName_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`playerPosJson` of type `String`
+  """
+  playerPosJson: String
+  """
+  ✨ `_expr` server value variant of `playerPosJson` (✨ Generated from Field `SaveSlot`.`playerPosJson` of type `String`)
+  """
+  playerPosJson_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`questFlagsJson` of type `String`
+  """
+  questFlagsJson: String
+  """
+  ✨ `_expr` server value variant of `questFlagsJson` (✨ Generated from Field `SaveSlot`.`questFlagsJson` of type `String`)
+  """
+  questFlagsJson_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`runId` of type `String`
+  """
+  runId: String
+  """
+  ✨ `_expr` server value variant of `runId` (✨ Generated from Field `SaveSlot`.`runId` of type `String`)
+  """
+  runId_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName` of type `String!`
+  """
+  saveName: String
+  """
+  ✨ `_expr` server value variant of `saveName` (✨ Generated from Field `SaveSlot`.`saveName` of type `String!`)
+  """
+  saveName_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`seq` of type `Int`
+  """
+  seq: Int
+  """
+  ✨ `_expr` server value variant of `seq` (✨ Generated from Field `SaveSlot`.`seq` of type `Int`)
+  """
+  seq_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `seq` (✨ Generated from Field `SaveSlot`.`seq` of type `Int`)
+  """
+  seq_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash` of type `String`
+  """
+  stateHash: String
+  """
+  ✨ `_expr` server value variant of `stateHash` (✨ Generated from Field `SaveSlot`.`stateHash` of type `String`)
+  """
+  stateHash_expr: String_Expr
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`
+  """
+  stateVersion: Int
+  """
+  ✨ `_expr` server value variant of `stateVersion` (✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`)
+  """
+  stateVersion_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `stateVersion` (✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`)
+  """
+  stateVersion_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`tick` of type `Int`
+  """
+  tick: Int
+  """
+  ✨ `_expr` server value variant of `tick` (✨ Generated from Field `SaveSlot`.`tick` of type `Int`)
+  """
+  tick_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `tick` (✨ Generated from Field `SaveSlot`.`tick` of type `Int`)
+  """
+  tick_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`
+  """
+  turnCount: Int
+  """
+  ✨ `_expr` server value variant of `turnCount` (✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`)
+  """
+  turnCount_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `turnCount` (✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`)
+  """
+  turnCount_update: [Int_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `SaveSlot`.`worldId` of type `String!`
+  """
+  worldId: String
+  """
+  ✨ `_expr` server value variant of `worldId` (✨ Generated from Field `SaveSlot`.`worldId` of type `String!`)
+  """
+  worldId_expr: String_Expr
+}
+"""
+✨ Generated filter input type for table 'SaveSlot'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input SaveSlot_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [SaveSlot_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: SaveSlot_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [SaveSlot_Filter!]
+  """
+  ✨ Generated from Field `SaveSlot`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`userId` of type `String!`
+  """
+  userId: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`contentVersion` of type `String`
+  """
+  contentVersion: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`entityStatesJson` of type `String`
+  """
+  entityStatesJson: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`gameStateJson` of type `String!`
+  """
+  gameStateJson: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`locationId` of type `String!`
+  """
+  locationId: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`mapId` of type `String`
+  """
+  mapId: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`
+  """
+  playerLevel: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName` of type `String!`
+  """
+  playerName: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerPosJson` of type `String`
+  """
+  playerPosJson: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`questFlagsJson` of type `String`
+  """
+  questFlagsJson: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`runId` of type `String`
+  """
+  runId: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName` of type `String!`
+  """
+  saveName: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq` of type `Int`
+  """
+  seq: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash` of type `String`
+  """
+  stateHash: String_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`
+  """
+  stateVersion: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick` of type `Int`
+  """
+  tick: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`
+  """
+  turnCount: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`worldId` of type `String!`
+  """
+  worldId: String_Filter
+}
+"""
+✨ Generated first-row input type for table 'SaveSlot'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input SaveSlot_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [SaveSlot_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: SaveSlot_Filter
+}
+"""
+✨ Generated having input type for table 'SaveSlot'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input SaveSlot_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [SaveSlot_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: SaveSlot_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [SaveSlot_Having!]
+  """
+  ✨ Generated from Field `SaveSlot`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`contentVersion_count` of type `Int!`
+  """
+  contentVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`entityStatesJson_count` of type `Int!`
+  """
+  entityStatesJson_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`gameStateJson_count` of type `Int!`
+  """
+  gameStateJson_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`locationId_count` of type `Int!`
+  """
+  locationId_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`mapId_count` of type `Int!`
+  """
+  mapId_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_count` of type `Int!`
+  """
+  playerLevel_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName_count` of type `Int!`
+  """
+  playerName_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerPosJson_count` of type `Int!`
+  """
+  playerPosJson_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`questFlagsJson_count` of type `Int!`
+  """
+  questFlagsJson_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`runId_count` of type `Int!`
+  """
+  runId_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName_count` of type `Int!`
+  """
+  saveName_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_count` of type `Int!`
+  """
+  seq_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash_count` of type `Int!`
+  """
+  stateHash_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_count` of type `Int!`
+  """
+  stateVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_count` of type `Int!`
+  """
+  tick_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_count` of type `Int!`
+  """
+  turnCount_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`worldId_count` of type `Int!`
+  """
+  worldId_count: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_sum` of type `Int`
+  """
+  playerLevel_sum: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_sum` of type `Int`
+  """
+  seq_sum: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_sum` of type `Int`
+  """
+  stateVersion_sum: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_sum` of type `Int`
+  """
+  tick_sum: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_sum` of type `Int`
+  """
+  turnCount_sum: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_avg` of type `Float`
+  """
+  playerLevel_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_avg` of type `Float`
+  """
+  seq_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_avg` of type `Float`
+  """
+  stateVersion_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_avg` of type `Float`
+  """
+  tick_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_avg` of type `Float`
+  """
+  turnCount_avg: Float_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_min` of type `Int`
+  """
+  playerLevel_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_min` of type `Int`
+  """
+  seq_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_min` of type `Int`
+  """
+  stateVersion_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_min` of type `Int`
+  """
+  tick_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_min` of type `Int`
+  """
+  turnCount_min: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_max` of type `Int`
+  """
+  playerLevel_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_max` of type `Int`
+  """
+  seq_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_max` of type `Int`
+  """
+  stateVersion_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_max` of type `Int`
+  """
+  tick_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_max` of type `Int`
+  """
+  turnCount_max: Int_Filter
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'SaveSlot'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input SaveSlot_Key {
+  """
+  ✨ Generated from Field `SaveSlot`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `SaveSlot`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'SaveSlot'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input SaveSlot_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: SaveSlot_Filter
+}
+"""
+✨ Generated order input type for table 'SaveSlot'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input SaveSlot_Order {
+  """
+  ✨ Generated from Field `SaveSlot`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`userId` of type `String!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Order
+  """
+  ✨ Generated from Field `SaveSlot`.`contentVersion` of type `String`
+  """
+  contentVersion: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`entityStatesJson` of type `String`
+  """
+  entityStatesJson: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`gameStateJson` of type `String!`
+  """
+  gameStateJson: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`locationId` of type `String!`
+  """
+  locationId: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`mapId` of type `String`
+  """
+  mapId: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel` of type `Int!`
+  """
+  playerLevel: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName` of type `String!`
+  """
+  playerName: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerPosJson` of type `String`
+  """
+  playerPosJson: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`questFlagsJson` of type `String`
+  """
+  questFlagsJson: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`runId` of type `String`
+  """
+  runId: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName` of type `String!`
+  """
+  saveName: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq` of type `Int`
+  """
+  seq: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash` of type `String`
+  """
+  stateHash: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion` of type `Int`
+  """
+  stateVersion: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick` of type `Int`
+  """
+  tick: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount` of type `Int!`
+  """
+  turnCount: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`worldId` of type `String!`
+  """
+  worldId: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`contentVersion_count` of type `Int!`
+  """
+  contentVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`entityStatesJson_count` of type `Int!`
+  """
+  entityStatesJson_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`gameStateJson_count` of type `Int!`
+  """
+  gameStateJson_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`locationId_count` of type `Int!`
+  """
+  locationId_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`mapId_count` of type `Int!`
+  """
+  mapId_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_count` of type `Int!`
+  """
+  playerLevel_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerName_count` of type `Int!`
+  """
+  playerName_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerPosJson_count` of type `Int!`
+  """
+  playerPosJson_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`questFlagsJson_count` of type `Int!`
+  """
+  questFlagsJson_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`runId_count` of type `Int!`
+  """
+  runId_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`saveName_count` of type `Int!`
+  """
+  saveName_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_count` of type `Int!`
+  """
+  seq_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateHash_count` of type `Int!`
+  """
+  stateHash_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_count` of type `Int!`
+  """
+  stateVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_count` of type `Int!`
+  """
+  tick_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_count` of type `Int!`
+  """
+  turnCount_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`worldId_count` of type `Int!`
+  """
+  worldId_count: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_sum` of type `Int`
+  """
+  playerLevel_sum: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_sum` of type `Int`
+  """
+  seq_sum: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_sum` of type `Int`
+  """
+  stateVersion_sum: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_sum` of type `Int`
+  """
+  tick_sum: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_sum` of type `Int`
+  """
+  turnCount_sum: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_avg` of type `Float`
+  """
+  playerLevel_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_avg` of type `Float`
+  """
+  seq_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_avg` of type `Float`
+  """
+  stateVersion_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_avg` of type `Float`
+  """
+  tick_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_avg` of type `Float`
+  """
+  turnCount_avg: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_min` of type `Int`
+  """
+  playerLevel_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_min` of type `Int`
+  """
+  seq_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_min` of type `Int`
+  """
+  stateVersion_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_min` of type `Int`
+  """
+  tick_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_min` of type `Int`
+  """
+  turnCount_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`playerLevel_max` of type `Int`
+  """
+  playerLevel_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`seq_max` of type `Int`
+  """
+  seq_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`stateVersion_max` of type `Int`
+  """
+  stateVersion_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`tick_max` of type `Int`
+  """
+  tick_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`turnCount_max` of type `Int`
+  """
+  turnCount_max: OrderDirection
+  """
+  ✨ Generated from Field `SaveSlot`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'StoryMemory'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input StoryMemory_Data {
+  """
+  ✨ Generated from Field `StoryMemory`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `StoryMemory`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+  """
+  ✨ Generated from Field `StoryMemory`.`userId` of type `String!`
+  """
+  userId: String
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `StoryMemory`.`userId` of type `String!`)
+  """
+  userId_expr: String_Expr
+  """
+  ✨ Generated from Field `StoryMemory`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Key
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `StoryMemory`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `StoryMemory`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `StoryMemory`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq` of type `Int`
+  """
+  lastSeq: Int
+  """
+  ✨ `_expr` server value variant of `lastSeq` (✨ Generated from Field `StoryMemory`.`lastSeq` of type `Int`)
+  """
+  lastSeq_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `lastSeq` (✨ Generated from Field `StoryMemory`.`lastSeq` of type `Int`)
+  """
+  lastSeq_update: [Int_Update!]
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryJson` of type `String!`
+  """
+  memoryJson: String
+  """
+  ✨ `_expr` server value variant of `memoryJson` (✨ Generated from Field `StoryMemory`.`memoryJson` of type `String!`)
+  """
+  memoryJson_expr: String_Expr
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryKey` of type `String!`
+  """
+  memoryKey: String
+  """
+  ✨ `_expr` server value variant of `memoryKey` (✨ Generated from Field `StoryMemory`.`memoryKey` of type `String!`)
+  """
+  memoryKey_expr: String_Expr
+  """
+  ✨ Generated from Field `StoryMemory`.`runId` of type `String!`
+  """
+  runId: String
+  """
+  ✨ `_expr` server value variant of `runId` (✨ Generated from Field `StoryMemory`.`runId` of type `String!`)
+  """
+  runId_expr: String_Expr
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `StoryMemory`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `StoryMemory`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `StoryMemory`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+}
+"""
+✨ Generated filter input type for table 'StoryMemory'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input StoryMemory_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [StoryMemory_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: StoryMemory_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [StoryMemory_Filter!]
+  """
+  ✨ Generated from Field `StoryMemory`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`userId` of type `String!`
+  """
+  userId: String_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq` of type `Int`
+  """
+  lastSeq: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryJson` of type `String!`
+  """
+  memoryJson: String_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryKey` of type `String!`
+  """
+  memoryKey: String_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`runId` of type `String!`
+  """
+  runId: String_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+}
+"""
+✨ Generated first-row input type for table 'StoryMemory'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input StoryMemory_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [StoryMemory_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: StoryMemory_Filter
+}
+"""
+✨ Generated having input type for table 'StoryMemory'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input StoryMemory_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [StoryMemory_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: StoryMemory_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [StoryMemory_Having!]
+  """
+  ✨ Generated from Field `StoryMemory`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_count` of type `Int!`
+  """
+  lastSeq_count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryJson_count` of type `Int!`
+  """
+  memoryJson_count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryKey_count` of type `Int!`
+  """
+  memoryKey_count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`runId_count` of type `Int!`
+  """
+  runId_count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_sum` of type `Int`
+  """
+  lastSeq_sum: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_avg` of type `Float`
+  """
+  lastSeq_avg: Float_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_min` of type `Int`
+  """
+  lastSeq_min: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_max` of type `Int`
+  """
+  lastSeq_max: Int_Filter
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'StoryMemory'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input StoryMemory_Key {
+  """
+  ✨ Generated from Field `StoryMemory`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `StoryMemory`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr
+}
+"""
+✨ Generated list filter input type for table 'StoryMemory'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input StoryMemory_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: StoryMemory_Filter
+}
+"""
+✨ Generated order input type for table 'StoryMemory'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input StoryMemory_Order {
+  """
+  ✨ Generated from Field `StoryMemory`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`userId` of type `String!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`user` of type `UserProfile!`
+  """
+  user: UserProfile_Order
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq` of type `Int`
+  """
+  lastSeq: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryJson` of type `String!`
+  """
+  memoryJson: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryKey` of type `String!`
+  """
+  memoryKey: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`runId` of type `String!`
+  """
+  runId: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_count` of type `Int!`
+  """
+  lastSeq_count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryJson_count` of type `Int!`
+  """
+  memoryJson_count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`memoryKey_count` of type `Int!`
+  """
+  memoryKey_count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`runId_count` of type `Int!`
+  """
+  runId_count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_sum` of type `Int`
+  """
+  lastSeq_sum: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_avg` of type `Float`
+  """
+  lastSeq_avg: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_min` of type `Int`
+  """
+  lastSeq_min: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`lastSeq_max` of type `Int`
+  """
+  lastSeq_max: OrderDirection
+  """
+  ✨ Generated from Field `StoryMemory`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'UserProfile'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input UserProfile_Data {
+  """
+  ✨ Generated from Field `UserProfile`.`id` of type `String!`
+  """
+  id: String
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `UserProfile`.`id` of type `String!`)
+  """
+  id_expr: String_Expr
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`
+  """
+  createdAt: Date
+  """
+  ✨ `_date` server value variant of `createdAt` (✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`)
+  """
+  createdAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`)
+  """
+  createdAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`)
+  """
+  createdAt_update: [Date_Update!]
+  """
+  ✨ Generated from Field `UserProfile`.`displayName` of type `String`
+  """
+  displayName: String
+  """
+  ✨ `_expr` server value variant of `displayName` (✨ Generated from Field `UserProfile`.`displayName` of type `String`)
+  """
+  displayName_expr: String_Expr
+  """
+  ✨ Generated from Field `UserProfile`.`email` of type `String`
+  """
+  email: String
+  """
+  ✨ `_expr` server value variant of `email` (✨ Generated from Field `UserProfile`.`email` of type `String`)
+  """
+  email_expr: String_Expr
+  """
+  ✨ Generated from Field `UserProfile`.`inGameHandle` of type `String`
+  """
+  inGameHandle: String
+  """
+  ✨ `_expr` server value variant of `inGameHandle` (✨ Generated from Field `UserProfile`.`inGameHandle` of type `String`)
+  """
+  inGameHandle_expr: String_Expr
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin` of type `Date`
+  """
+  lastLogin: Date
+  """
+  ✨ `_date` server value variant of `lastLogin` (✨ Generated from Field `UserProfile`.`lastLogin` of type `Date`)
+  """
+  lastLogin_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `lastLogin` (✨ Generated from Field `UserProfile`.`lastLogin` of type `Date`)
+  """
+  lastLogin_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `lastLogin` (✨ Generated from Field `UserProfile`.`lastLogin` of type `Date`)
+  """
+  lastLogin_update: [Date_Update!]
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion` of type `Int`
+  """
+  migrationVersion: Int
+  """
+  ✨ `_expr` server value variant of `migrationVersion` (✨ Generated from Field `UserProfile`.`migrationVersion` of type `Int`)
+  """
+  migrationVersion_expr: Int_Expr
+  """
+  ✨ `_update` server value variant of `migrationVersion` (✨ Generated from Field `UserProfile`.`migrationVersion` of type `Int`)
+  """
+  migrationVersion_update: [Int_Update!]
+  """
+  ✨ Generated from Field `UserProfile`.`photoUrl` of type `String`
+  """
+  photoUrl: String
+  """
+  ✨ `_expr` server value variant of `photoUrl` (✨ Generated from Field `UserProfile`.`photoUrl` of type `String`)
+  """
+  photoUrl_expr: String_Expr
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date
+  """
+  ✨ `_date` server value variant of `updatedAt` (✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_date: Date_Relative
+  """
+  ✨ `_expr` server value variant of `updatedAt` (✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_expr: Date_Expr
+  """
+  ✨ `_update` server value variant of `updatedAt` (✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`)
+  """
+  updatedAt_update: [Date_Update!]
+}
+"""
+✨ Generated filter input type for table 'UserProfile'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input UserProfile_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [UserProfile_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: UserProfile_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [UserProfile_Filter!]
+  """
+  ✨ Generated from Field `UserProfile`.`id` of type `String!`
+  """
+  id: String_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`
+  """
+  createdAt: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`displayName` of type `String`
+  """
+  displayName: String_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`email` of type `String`
+  """
+  email: String_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`inGameHandle` of type `String`
+  """
+  inGameHandle: String_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin` of type `Date`
+  """
+  lastLogin: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion` of type `Int`
+  """
+  migrationVersion: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`photoUrl` of type `String`
+  """
+  photoUrl: String_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`
+  """
+  updatedAt: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`discoveryLists_on_user` of type `[DiscoveryList!]!`
+  """
+  discoveryLists_on_user: DiscoveryList_ListFilter
+  """
+  ✨ Generated from Field `UserProfile`.`gameSessions_on_user` of type `[GameSession!]!`
+  """
+  gameSessions_on_user: GameSession_ListFilter
+  """
+  ✨ Generated from Field `UserProfile`.`reviews_on_user` of type `[Review!]!`
+  """
+  reviews_on_user: Review_ListFilter
+  """
+  ✨ Generated from Field `UserProfile`.`runEvents_on_user` of type `[RunEvent!]!`
+  """
+  runEvents_on_user: RunEvent_ListFilter
+  """
+  ✨ Generated from Field `UserProfile`.`runSessions_on_user` of type `[RunSession!]!`
+  """
+  runSessions_on_user: RunSession_ListFilter
+  """
+  ✨ Generated from Field `UserProfile`.`saveSlots_on_user` of type `[SaveSlot!]!`
+  """
+  saveSlots_on_user: SaveSlot_ListFilter
+  """
+  ✨ Generated from Field `UserProfile`.`storyMemories_on_user` of type `[StoryMemory!]!`
+  """
+  storyMemories_on_user: StoryMemory_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'UserProfile'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input UserProfile_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [UserProfile_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: UserProfile_Filter
+}
+"""
+✨ Generated having input type for table 'UserProfile'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input UserProfile_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [UserProfile_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: UserProfile_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [UserProfile_Having!]
+  """
+  ✨ Generated from Field `UserProfile`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`displayName_count` of type `Int!`
+  """
+  displayName_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`email_count` of type `Int!`
+  """
+  email_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`inGameHandle_count` of type `Int!`
+  """
+  inGameHandle_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin_count` of type `Int!`
+  """
+  lastLogin_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_count` of type `Int!`
+  """
+  migrationVersion_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`photoUrl_count` of type `Int!`
+  """
+  photoUrl_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_sum` of type `Int`
+  """
+  migrationVersion_sum: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_avg` of type `Float`
+  """
+  migrationVersion_avg: Float_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin_min` of type `Date`
+  """
+  lastLogin_min: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_min` of type `Int`
+  """
+  migrationVersion_min: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin_max` of type `Date`
+  """
+  lastLogin_max: Date_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_max` of type `Int`
+  """
+  migrationVersion_max: Int_Filter
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: Date_Filter
+}
+"""
+✨ Generated key input type for table 'UserProfile'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input UserProfile_Key {
+  """
+  ✨ Generated from Field `UserProfile`.`id` of type `String!`
+  """
+  id: String
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `UserProfile`.`id` of type `String!`)
+  """
+  id_expr: String_Expr
+}
+"""
+✨ Generated list filter input type for table 'UserProfile'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input UserProfile_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: UserProfile_Filter
+}
+"""
+✨ Generated order input type for table 'UserProfile'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input UserProfile_Order {
+  """
+  ✨ Generated from Field `UserProfile`.`id` of type `String!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt` of type `Date!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`displayName` of type `String`
+  """
+  displayName: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`email` of type `String`
+  """
+  email: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`inGameHandle` of type `String`
+  """
+  inGameHandle: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin` of type `Date`
+  """
+  lastLogin: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion` of type `Int`
+  """
+  migrationVersion: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`photoUrl` of type `String`
+  """
+  photoUrl: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt` of type `Date!`
+  """
+  updatedAt: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`displayName_count` of type `Int!`
+  """
+  displayName_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`email_count` of type `Int!`
+  """
+  email_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`inGameHandle_count` of type `Int!`
+  """
+  inGameHandle_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin_count` of type `Int!`
+  """
+  lastLogin_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_count` of type `Int!`
+  """
+  migrationVersion_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`photoUrl_count` of type `Int!`
+  """
+  photoUrl_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_count` of type `Int!`
+  """
+  updatedAt_count: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_sum` of type `Int`
+  """
+  migrationVersion_sum: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_avg` of type `Float`
+  """
+  migrationVersion_avg: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_min` of type `Date`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin_min` of type `Date`
+  """
+  lastLogin_min: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_min` of type `Int`
+  """
+  migrationVersion_min: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_min` of type `Date`
+  """
+  updatedAt_min: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`createdAt_max` of type `Date`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`lastLogin_max` of type `Date`
+  """
+  lastLogin_max: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`migrationVersion_max` of type `Int`
+  """
+  migrationVersion_max: OrderDirection
+  """
+  ✨ Generated from Field `UserProfile`.`updatedAt_max` of type `Date`
+  """
+  updatedAt_max: OrderDirection
+}

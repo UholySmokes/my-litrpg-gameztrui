@@ -1,0 +1,223 @@
+
+# LitRPG persistence queries.
+
+query GetMyProfile @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    displayName
+    migrationVersion
+    createdAt
+    updatedAt
+  }
+}
+
+query ListMySaveSlots @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    displayName
+    saveSlots: saveSlots_on_user {
+      id
+      saveName
+      playerName
+      playerLevel
+      worldId
+      locationId
+      mapId
+      playerPosJson
+      entityStatesJson
+      questFlagsJson
+      turnCount
+      contentVersion
+      stateVersion
+      runId
+      seq
+      tick
+      stateHash
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query GetMySaveSlot($id: UUID!) @auth(level: USER) {
+  saveSlot(key: { id: $id }) {
+    id
+    saveName
+    gameStateJson
+    playerName
+    playerLevel
+    worldId
+    locationId
+    mapId
+    playerPosJson
+    entityStatesJson
+    questFlagsJson
+    turnCount
+    contentVersion
+    stateVersion
+    runId
+    seq
+    tick
+    stateHash
+    createdAt
+    updatedAt
+  }
+}
+
+query ListMyRunSnapshots($runId: String!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    snapshots: saveSlots_on_user(where: { runId: { eq: $runId } }) {
+      id
+      saveName
+      playerName
+      playerLevel
+      worldId
+      locationId
+      turnCount
+      seq
+      tick
+      stateHash
+      updatedAt
+    }
+  }
+}
+
+query GetMyRunSessionByRunId($runId: String!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    runSessions: runSessions_on_user(where: { runId: { eq: $runId } }) {
+      id
+      runId
+      worldId
+      mapId
+      playerPosJson
+      entityStatesJson
+      questFlagsJson
+      seq
+      tick
+      stateHash
+      contentVersion
+      stateVersion
+      saveSlotId
+      runSeed
+      lastCommitId
+      lastClientId
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query GetMyRunEventByCommitId($runId: String!, $commitId: String!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    events: runEvents_on_user(where: { runId: { eq: $runId }, commitId: { eq: $commitId } }) {
+      id
+      runId
+      eventType
+      commitId
+      clientId
+      clientSeq
+      triggerType
+      triggerPayloadJson
+      accepted
+      errorCode
+      message
+      seq
+      tick
+      stateHash
+      contentVersion
+      createdAt
+    }
+  }
+}
+
+query ListMyRunEventsSince($runId: String!, $afterSeq: Int!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    events: runEvents_on_user(where: { runId: { eq: $runId }, clientSeq: { gt: $afterSeq } }) {
+      id
+      runId
+      eventType
+      commitId
+      clientId
+      clientSeq
+      triggerType
+      triggerPayloadJson
+      accepted
+      errorCode
+      message
+      seq
+      tick
+      stateHash
+      contentVersion
+      createdAt
+    }
+  }
+}
+
+query ListAllMyRunSessions @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    runSessions: runSessions_on_user {
+      id
+      runId
+      worldId
+      mapId
+      playerPosJson
+      entityStatesJson
+      questFlagsJson
+      seq
+      tick
+      stateHash
+      contentVersion
+      stateVersion
+      saveSlotId
+      runSeed
+      lastCommitId
+      lastClientId
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query ListAllMyRunEvents @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    events: runEvents_on_user {
+      id
+      runId
+      eventType
+      commitId
+      clientId
+      clientSeq
+      triggerType
+      triggerPayloadJson
+      accepted
+      errorCode
+      message
+      seq
+      tick
+      stateHash
+      contentVersion
+      createdAt
+    }
+  }
+}
+
+query ListMyStoryMemories($runId: String!) @auth(level: USER) {
+  userProfile(key: { id_expr: "auth.uid" }) {
+    id
+    memories: storyMemories_on_user(where: { runId: { eq: $runId } }) {
+      id
+      runId
+      memoryKey
+      memoryJson
+      lastSeq
+      createdAt
+      updatedAt
+    }
+  }
+}

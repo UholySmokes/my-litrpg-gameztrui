@@ -1,0 +1,1899 @@
+[
+  {
+    "id": "skill_voidspark",
+    "name": "Voidspark",
+    "type": "passive",
+    "class": "universal",
+    "description": "A survivable seed of Void-purity, filtered through space and time. Required to endure and shape true Void workings.",
+    "level": 1,
+    "isMagic": true,
+    "tags": ["void", "voidspark", "magic"],
+    "template": {
+      "category": "Voidverse Magic",
+      "function": "utility",
+      "elements": ["space"],
+      "synergies": [
+        "Unlocks Void techniques that would otherwise be lethal.",
+        "Pairs with Spell Study and Essence Weaving (space/time patterns).",
+        "Acts as a safety filter: reduces the narrative risk of raw Void exposure."
+      ],
+      "source": "voidverse_magic_system"
+    },
+    "unlockConditions": {
+      "level": 15,
+      "location": null,
+      "quest": null,
+      "item": null,
+      "skillPrerequisites": []
+    }
+  },
+  {
+    "id": "universal_meditation",
+    "name": "Meditation",
+    "type": "passive",
+    "class": "universal",
+    "description": "Restore mana and health while meditating.",
+    "level": 1,
+    "unlockConditions": {
+      "level": 5,
+      "location": "temple",
+      "quest": null,
+      "item": null,
+      "skillPrerequisites": []
+    }
+  },
+  {
+    "id": "universal_herbalism",
+    "name": "Herbalism",
+    "type": "passive",
+    "class": "universal",
+    "description": "Identify and harvest medicinal herbs.",
+    "level": 1,
+    "template": {
+      "category": "Crafting & Creation Skills",
+      "function": "crafting",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Pairs with Alchemy (herbs are core potion ingredients).",
+        "Works with Cooking/survival; herb knowledge lets you enhance meals and avoid poisonous plants.",
+        "Combined with druidic magic, you can grow rare herbs faster and amplify their potency for powerful remedies or poisons."
+      ],
+      "source": "docx_non_combat_abilities_spells"
+    },
+    "unlockConditions": {
+      "level": 3,
+      "location": null,
+      "quest": null,
+      "item": "herbalism_kit",
+      "skillPrerequisites": []
+    }
+  },
+  {
+    "id": "universal_blacksmithing",
+    "name": "Blacksmithing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Craft and repair weapons and armor.",
+    "level": 1,
+    "template": {
+      "category": "Crafting & Creation Skills",
+      "function": "crafting",
+      "elements": [],
+      "synergies": [
+        "Pairs with Enchanting: forge high-quality gear, then enchant it for greater effect.",
+        "Works with Mining (to gather ores) and Engineering (complex items).",
+        "Well-crafted items can serve as ritual components and withstand magical strain better than crude work."
+      ],
+      "source": "docx_non_combat_abilities_spells"
+    },
+    "unlockConditions": {
+      "level": 10,
+      "location": "forge",
+      "quest": "learn_blacksmithing",
+      "item": null,
+      "skillPrerequisites": []
+    }
+  },
+  {
+    "id": "universal_flame_strike",
+    "name": "Flame Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Strike delivers a focused hit. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 3
+  },
+  {
+    "id": "universal_flame_burst",
+    "name": "Flame Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Burst erupts in a short-range blast. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_flame_lance",
+    "name": "Flame Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Lance fires a piercing line attack. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_flame_wave",
+    "name": "Flame Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Wave sweeps outward in a wide arc. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_flame_pulse",
+    "name": "Flame Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Pulse emits a rhythmic shock. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_flame_nova",
+    "name": "Flame Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Nova detonates in an expanding ring. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_flame_torrent",
+    "name": "Flame Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Torrent unleashes a sustained stream. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_flame_step",
+    "name": "Flame Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Step blinks forward into an attack. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_flame_cleave",
+    "name": "Flame Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Cleave cuts through multiple foes. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_flame_spear",
+    "name": "Flame Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Flame Spear launches a long-range thrust. It scorches targets with fire.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_frost_strike",
+    "name": "Frost Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Strike delivers a focused hit. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_frost_burst",
+    "name": "Frost Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Burst erupts in a short-range blast. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_frost_lance",
+    "name": "Frost Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Lance fires a piercing line attack. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_frost_wave",
+    "name": "Frost Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Wave sweeps outward in a wide arc. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_frost_pulse",
+    "name": "Frost Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Pulse emits a rhythmic shock. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_frost_nova",
+    "name": "Frost Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Nova detonates in an expanding ring. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 9
+  },
+  {
+    "id": "universal_frost_torrent",
+    "name": "Frost Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Torrent unleashes a sustained stream. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_frost_step",
+    "name": "Frost Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Step blinks forward into an attack. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_frost_cleave",
+    "name": "Frost Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Cleave cuts through multiple foes. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_frost_spear",
+    "name": "Frost Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Frost Spear launches a long-range thrust. It chills targets and slows them.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_storm_strike",
+    "name": "Storm Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Strike delivers a focused hit. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_storm_burst",
+    "name": "Storm Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Burst erupts in a short-range blast. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_storm_lance",
+    "name": "Storm Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Lance fires a piercing line attack. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_storm_wave",
+    "name": "Storm Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Wave sweeps outward in a wide arc. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_storm_pulse",
+    "name": "Storm Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Pulse emits a rhythmic shock. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_storm_nova",
+    "name": "Storm Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Nova detonates in an expanding ring. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 21,
+    "cooldown": 9
+  },
+  {
+    "id": "universal_storm_torrent",
+    "name": "Storm Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Torrent unleashes a sustained stream. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 19,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_storm_step",
+    "name": "Storm Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Step blinks forward into an attack. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_storm_cleave",
+    "name": "Storm Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Cleave cuts through multiple foes. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 17,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_storm_spear",
+    "name": "Storm Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Storm Spear launches a long-range thrust. It crackles with lightning and staggers foes.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_stone_strike",
+    "name": "Stone Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Strike delivers a focused hit. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_stone_burst",
+    "name": "Stone Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Burst erupts in a short-range blast. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_stone_lance",
+    "name": "Stone Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Lance fires a piercing line attack. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_stone_wave",
+    "name": "Stone Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Wave sweeps outward in a wide arc. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_stone_pulse",
+    "name": "Stone Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Pulse emits a rhythmic shock. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_stone_nova",
+    "name": "Stone Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Nova detonates in an expanding ring. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 10
+  },
+  {
+    "id": "universal_stone_torrent",
+    "name": "Stone Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Torrent unleashes a sustained stream. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 9
+  },
+  {
+    "id": "universal_stone_step",
+    "name": "Stone Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Step blinks forward into an attack. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_stone_cleave",
+    "name": "Stone Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Cleave cuts through multiple foes. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_stone_spear",
+    "name": "Stone Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Stone Spear launches a long-range thrust. It crushes foes with heavy force.",
+    "level": 1,
+    "manaCost": 17,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_gale_strike",
+    "name": "Gale Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Strike delivers a focused hit. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 9,
+    "cooldown": 3
+  },
+  {
+    "id": "universal_gale_burst",
+    "name": "Gale Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Burst erupts in a short-range blast. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_gale_lance",
+    "name": "Gale Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Lance fires a piercing line attack. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_gale_wave",
+    "name": "Gale Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Wave sweeps outward in a wide arc. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_gale_pulse",
+    "name": "Gale Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Pulse emits a rhythmic shock. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_gale_nova",
+    "name": "Gale Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Nova detonates in an expanding ring. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 19,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_gale_torrent",
+    "name": "Gale Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Torrent unleashes a sustained stream. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 17,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_gale_step",
+    "name": "Gale Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Step blinks forward into an attack. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_gale_cleave",
+    "name": "Gale Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Cleave cuts through multiple foes. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_gale_spear",
+    "name": "Gale Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Gale Spear launches a long-range thrust. It drives a wind gust that pushes back.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_shadow_strike",
+    "name": "Shadow Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Strike delivers a focused hit. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_shadow_burst",
+    "name": "Shadow Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Burst erupts in a short-range blast. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_shadow_lance",
+    "name": "Shadow Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Lance fires a piercing line attack. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_shadow_wave",
+    "name": "Shadow Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Wave sweeps outward in a wide arc. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_shadow_pulse",
+    "name": "Shadow Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Pulse emits a rhythmic shock. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_shadow_nova",
+    "name": "Shadow Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Nova detonates in an expanding ring. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 9
+  },
+  {
+    "id": "universal_shadow_torrent",
+    "name": "Shadow Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Torrent unleashes a sustained stream. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_shadow_step",
+    "name": "Shadow Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Step blinks forward into an attack. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_shadow_cleave",
+    "name": "Shadow Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Cleave cuts through multiple foes. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_shadow_spear",
+    "name": "Shadow Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Shadow Spear launches a long-range thrust. It drains light and weakens defenses.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_radiant_strike",
+    "name": "Radiant Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Strike delivers a focused hit. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_radiant_burst",
+    "name": "Radiant Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Burst erupts in a short-range blast. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_radiant_lance",
+    "name": "Radiant Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Lance fires a piercing line attack. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_radiant_wave",
+    "name": "Radiant Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Wave sweeps outward in a wide arc. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_radiant_pulse",
+    "name": "Radiant Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Pulse emits a rhythmic shock. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_radiant_nova",
+    "name": "Radiant Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Nova detonates in an expanding ring. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 21,
+    "cooldown": 9
+  },
+  {
+    "id": "universal_radiant_torrent",
+    "name": "Radiant Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Torrent unleashes a sustained stream. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 19,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_radiant_step",
+    "name": "Radiant Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Step blinks forward into an attack. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_radiant_cleave",
+    "name": "Radiant Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Cleave cuts through multiple foes. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 17,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_radiant_spear",
+    "name": "Radiant Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Radiant Spear launches a long-range thrust. It burns with holy light and cleanses.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_venom_strike",
+    "name": "Venom Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Strike delivers a focused hit. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 3
+  },
+  {
+    "id": "universal_venom_burst",
+    "name": "Venom Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Burst erupts in a short-range blast. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_venom_lance",
+    "name": "Venom Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Lance fires a piercing line attack. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_venom_wave",
+    "name": "Venom Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Wave sweeps outward in a wide arc. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_venom_pulse",
+    "name": "Venom Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Pulse emits a rhythmic shock. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_venom_nova",
+    "name": "Venom Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Nova detonates in an expanding ring. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_venom_torrent",
+    "name": "Venom Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Torrent unleashes a sustained stream. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_venom_step",
+    "name": "Venom Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Step blinks forward into an attack. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_venom_cleave",
+    "name": "Venom Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Cleave cuts through multiple foes. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_venom_spear",
+    "name": "Venom Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Venom Spear launches a long-range thrust. It applies a lingering poison.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_iron_strike",
+    "name": "Iron Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Strike delivers a focused hit. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 11,
+    "cooldown": 4
+  },
+  {
+    "id": "universal_iron_burst",
+    "name": "Iron Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Burst erupts in a short-range blast. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_iron_lance",
+    "name": "Iron Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Lance fires a piercing line attack. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_iron_wave",
+    "name": "Iron Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Wave sweeps outward in a wide arc. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_iron_pulse",
+    "name": "Iron Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Pulse emits a rhythmic shock. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_iron_nova",
+    "name": "Iron Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Nova detonates in an expanding ring. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 21,
+    "cooldown": 9
+  },
+  {
+    "id": "universal_iron_torrent",
+    "name": "Iron Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Torrent unleashes a sustained stream. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 19,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_iron_step",
+    "name": "Iron Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Step blinks forward into an attack. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_iron_cleave",
+    "name": "Iron Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Cleave cuts through multiple foes. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 17,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_iron_spear",
+    "name": "Iron Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Iron Spear launches a long-range thrust. It shatters armor with brute force.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_astral_strike",
+    "name": "Astral Strike",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Strike delivers a focused hit. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 5
+  },
+  {
+    "id": "universal_astral_burst",
+    "name": "Astral Burst",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Burst erupts in a short-range blast. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_astral_lance",
+    "name": "Astral Lance",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Lance fires a piercing line attack. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_astral_wave",
+    "name": "Astral Wave",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Wave sweeps outward in a wide arc. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_astral_pulse",
+    "name": "Astral Pulse",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Pulse emits a rhythmic shock. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_astral_nova",
+    "name": "Astral Nova",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Nova detonates in an expanding ring. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 10
+  },
+  {
+    "id": "universal_astral_torrent",
+    "name": "Astral Torrent",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Torrent unleashes a sustained stream. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 9
+  },
+  {
+    "id": "universal_astral_step",
+    "name": "Astral Step",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Step blinks forward into an attack. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 13,
+    "cooldown": 6
+  },
+  {
+    "id": "universal_astral_cleave",
+    "name": "Astral Cleave",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Cleave cuts through multiple foes. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 8
+  },
+  {
+    "id": "universal_astral_spear",
+    "name": "Astral Spear",
+    "type": "active",
+    "class": "universal",
+    "description": "Astral Spear launches a long-range thrust. It pierces shields with arcane force.",
+    "level": 1,
+    "manaCost": 17,
+    "cooldown": 7
+  },
+  {
+    "id": "universal_arcane_instinct",
+    "name": "Arcane Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_discipline",
+    "name": "Arcane Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_momentum",
+    "name": "Arcane Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_focus",
+    "name": "Arcane Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_precision",
+    "name": "Arcane Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_ward",
+    "name": "Arcane Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_vitality",
+    "name": "Arcane Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_insight",
+    "name": "Arcane Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_edge",
+    "name": "Arcane Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_arcane_harmony",
+    "name": "Arcane Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Arcane Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_instinct",
+    "name": "Martial Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_discipline",
+    "name": "Martial Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_momentum",
+    "name": "Martial Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_focus",
+    "name": "Martial Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_precision",
+    "name": "Martial Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_ward",
+    "name": "Martial Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_vitality",
+    "name": "Martial Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_insight",
+    "name": "Martial Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_edge",
+    "name": "Martial Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_martial_harmony",
+    "name": "Martial Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Martial Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_instinct",
+    "name": "Shadow Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_discipline",
+    "name": "Shadow Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_momentum",
+    "name": "Shadow Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_focus",
+    "name": "Shadow Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_precision",
+    "name": "Shadow Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_ward",
+    "name": "Shadow Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_vitality",
+    "name": "Shadow Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_insight",
+    "name": "Shadow Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_edge",
+    "name": "Shadow Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_shadow_harmony",
+    "name": "Shadow Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Shadow Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_instinct",
+    "name": "Radiant Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_discipline",
+    "name": "Radiant Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_momentum",
+    "name": "Radiant Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_focus",
+    "name": "Radiant Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_precision",
+    "name": "Radiant Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_ward",
+    "name": "Radiant Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_vitality",
+    "name": "Radiant Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_insight",
+    "name": "Radiant Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_edge",
+    "name": "Radiant Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_radiant_harmony",
+    "name": "Radiant Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Radiant Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_instinct",
+    "name": "Verdant Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_discipline",
+    "name": "Verdant Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_momentum",
+    "name": "Verdant Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_focus",
+    "name": "Verdant Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_precision",
+    "name": "Verdant Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_ward",
+    "name": "Verdant Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_vitality",
+    "name": "Verdant Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_insight",
+    "name": "Verdant Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_edge",
+    "name": "Verdant Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_verdant_harmony",
+    "name": "Verdant Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Verdant Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_instinct",
+    "name": "Stalwart Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_discipline",
+    "name": "Stalwart Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_momentum",
+    "name": "Stalwart Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_focus",
+    "name": "Stalwart Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_precision",
+    "name": "Stalwart Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_ward",
+    "name": "Stalwart Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_vitality",
+    "name": "Stalwart Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_insight",
+    "name": "Stalwart Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_edge",
+    "name": "Stalwart Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_stalwart_harmony",
+    "name": "Stalwart Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Stalwart Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_instinct",
+    "name": "Swift Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_discipline",
+    "name": "Swift Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_momentum",
+    "name": "Swift Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_focus",
+    "name": "Swift Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_precision",
+    "name": "Swift Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_ward",
+    "name": "Swift Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_vitality",
+    "name": "Swift Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_insight",
+    "name": "Swift Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_edge",
+    "name": "Swift Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_swift_harmony",
+    "name": "Swift Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Swift Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_instinct",
+    "name": "Cunning Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_discipline",
+    "name": "Cunning Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_momentum",
+    "name": "Cunning Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_focus",
+    "name": "Cunning Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_precision",
+    "name": "Cunning Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_ward",
+    "name": "Cunning Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_vitality",
+    "name": "Cunning Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_insight",
+    "name": "Cunning Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_edge",
+    "name": "Cunning Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_cunning_harmony",
+    "name": "Cunning Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Cunning Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_instinct",
+    "name": "Resilient Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_discipline",
+    "name": "Resilient Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_momentum",
+    "name": "Resilient Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_focus",
+    "name": "Resilient Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_precision",
+    "name": "Resilient Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_ward",
+    "name": "Resilient Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_vitality",
+    "name": "Resilient Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_insight",
+    "name": "Resilient Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_edge",
+    "name": "Resilient Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_resilient_harmony",
+    "name": "Resilient Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Resilient Harmony balances offense and defense after ability use.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_instinct",
+    "name": "Adept Instinct",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Instinct improves reaction speed and evasion.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_discipline",
+    "name": "Adept Discipline",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Discipline reduces cooldown variance and steadies output.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_momentum",
+    "name": "Adept Momentum",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Momentum rewards movement with damage bonuses.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_focus",
+    "name": "Adept Focus",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Focus increases accuracy and critical stability.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_precision",
+    "name": "Adept Precision",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Precision tightens hit consistency for ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_ward",
+    "name": "Adept Ward",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Ward adds minor damage reduction.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_vitality",
+    "name": "Adept Vitality",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Vitality raises max health and regeneration.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_insight",
+    "name": "Adept Insight",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Insight boosts mana efficiency and resource gain.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_edge",
+    "name": "Adept Edge",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Edge adds bleed chance on melee hits.",
+    "level": 1
+  },
+  {
+    "id": "universal_adept_harmony",
+    "name": "Adept Harmony",
+    "type": "passive",
+    "class": "universal",
+    "description": "Adept Harmony balances offense and defense after ability use.",
+    "level": 1
+  }
+]

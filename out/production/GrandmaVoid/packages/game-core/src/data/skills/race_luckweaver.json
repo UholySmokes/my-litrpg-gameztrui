@@ -1,0 +1,27 @@
+[
+  {
+    "id": "luckweaver_special",
+    "name": "Fortune Twist",
+    "description": "Bend probability for a lucky surge.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "randomBuff": true,
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "id": "phoenix_reborn_special",
+    "name": "Ashen Nova",
+    "description": "Explode in flame and reignite your vitality.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "aoe": {
+      "maxTargets": 2,
+      "damageMultiplier": 0.85
+    },
+    "heal": {
+      "percent": 0.15
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

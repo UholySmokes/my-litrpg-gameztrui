@@ -1,0 +1,32 @@
+[
+  {
+    "id": "mechanical_construct_special",
+    "name": "Overclock Core",
+    "description": "Push your systems beyond safe limits.",
+    "cost": 24,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.3
+      },
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 2,
+        "magnitude": 35
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

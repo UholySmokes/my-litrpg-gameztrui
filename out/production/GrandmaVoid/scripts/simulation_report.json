@@ -1,0 +1,610 @@
+{
+  "timestamp": "2026-01-06T03:19:50.195Z",
+  "totalSimulations": 100,
+  "successCount": 100,
+  "failureCount": 0,
+  "successRate": 100,
+  "errors": [],
+  "results": [
+    {
+      "simulation": 1,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 2,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 3,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 4,
+      "success": true,
+      "levelReached": 3,
+      "duration": 4
+    },
+    {
+      "simulation": 5,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 6,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 7,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 8,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 9,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 10,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 11,
+      "success": true,
+      "levelReached": 3,
+      "duration": 4
+    },
+    {
+      "simulation": 12,
+      "success": true,
+      "levelReached": 3,
+      "duration": 5
+    },
+    {
+      "simulation": 13,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 14,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 15,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 16,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 17,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 18,
+      "success": true,
+      "levelReached": 3,
+      "duration": 5
+    },
+    {
+      "simulation": 19,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 20,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 21,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 22,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 23,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 24,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 25,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 26,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 27,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 28,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 29,
+      "success": true,
+      "levelReached": 3,
+      "duration": 4
+    },
+    {
+      "simulation": 30,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 31,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 32,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 33,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 34,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 35,
+      "success": true,
+      "levelReached": 3,
+      "duration": 3
+    },
+    {
+      "simulation": 36,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 37,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 38,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 39,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 40,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 41,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 42,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 43,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 44,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 45,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 46,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 47,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 48,
+      "success": true,
+      "levelReached": 3,
+      "duration": 28
+    },
+    {
+      "simulation": 49,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 50,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 51,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 52,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 53,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 54,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 55,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 56,
+      "success": true,
+      "levelReached": 3,
+      "duration": 5
+    },
+    {
+      "simulation": 57,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 58,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 59,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 60,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 61,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 62,
+      "success": true,
+      "levelReached": 3,
+      "duration": 3
+    },
+    {
+      "simulation": 63,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 64,
+      "success": true,
+      "levelReached": 3,
+      "duration": 0
+    },
+    {
+      "simulation": 65,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 66,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 67,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 68,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 69,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 70,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 71,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 72,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 73,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 74,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 75,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 76,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 77,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 78,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 79,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    },
+    {
+      "simulation": 80,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 81,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 82,
+      "success": true,
+      "levelReached": 3,
+      "duration": 0
+    },
+    {
+      "simulation": 83,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 84,
+      "success": true,
+      "levelReached": 3,
+      "duration": 3
+    },
+    {
+      "simulation": 85,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 86,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 87,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 88,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 89,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 90,
+      "success": true,
+      "levelReached": 3,
+      "duration": 0
+    },
+    {
+      "simulation": 91,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 92,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 93,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 94,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 95,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 96,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 97,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 98,
+      "success": true,
+      "levelReached": 3,
+      "duration": 1
+    },
+    {
+      "simulation": 99,
+      "success": true,
+      "levelReached": 3,
+      "duration": 4
+    },
+    {
+      "simulation": 100,
+      "success": true,
+      "levelReached": 3,
+      "duration": 2
+    }
+  ]
+}

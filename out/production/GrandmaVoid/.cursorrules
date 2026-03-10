@@ -1,0 +1,314 @@
+# Cursor Rules - LitRPG Game Development Standards
+
+This file defines coding standards, patterns, and rules for AI-assisted development.
+
+---
+
+## Critical Rules
+
+### 1. Never Hardcode Game Balance Values
+
+**WRONG:**
+```javascript
+const critChance = luck / 100;
+const damage = baseDamage * 1.5;
+const escapeChance = 0.3 + agility / 100;
+```
+
+**CORRECT:**
+```javascript
+const critChance = luck * state.config.baseLuckCritChance;
+const damage = baseDamage * state.config.criticalHitMultiplier;
+const escapeChance = state.config.baseEscapeChance + (agility * state.config.agilityEscapeBonus);
+```
+
+### 2. Always Reference Documentation
+
+Before implementing game mechanics:
+1. Check `system_specs.md` for formulas
+2. Check `current_state.md` for existing implementations
+3. Use values from `state.config`
+
+### 3. Immutable State Updates
+
+**WRONG:**
+```javascript
+state.player.hp.current -= damage;
+return state;
+```
+
+**CORRECT:**
+```javascript
+return {
+  ...state,
+  player: {
+    ...state.player,
+    hp: {
+      ...state.player.hp,
+      current: state.player.hp.current - damage
+    }
+  }
+};
+```
+
+---
+
+## Code Patterns
+
+### State Update Functions
+
+All game logic functions must:
+- Take `state` as first parameter
+- Return a new state object (never mutate)
+- Be pure functions (no side effects)
+
+```javascript
+export function functionName(state, ...params) {
+  // Validate inputs
+  if (!state || !params) {
+    return state;
+  }
+  
+  // Create new state with changes
+  return {
+    ...state,
+    // changes here
+  };
+}
+```
+
+### Skill Definition Structure
+
+Active skills:
+```javascript
+{
+  id: 'class_skill_name',           // lowercase, underscore separated
+  name: 'Skill Name',               // Title Case
+  type: 'active',
+  class: 'className',               // lowercase class identifier
+  description: 'One sentence.',     // Clear, concise description
+  level: 1,
+  manaCost: 15,                     // Range: 5-50
+  cooldown: 5                       // Range: 2-120
+}
+```
+
+Passive skills:
+```javascript
+{
+  id: 'class_passive_name',
+  name: 'Passive Name',
+  type: 'passive',
+  class: 'className',
+  description: 'Effect description.',
+  level: 1
+}
+```
+
+### Component Structure
+
+React components follow this pattern:
+```jsx
+import React from 'react';
+import './ComponentName.css'; // if needed
+
+export function ComponentName({ prop1, prop2 }) {
+  // Hooks first
+  const [state, setState] = useState(initialValue);
+  
+  // Effects
+  useEffect(() => {
+    // effect logic
+  }, [dependencies]);
+  
+  // Handlers
+  const handleAction = () => {
+    // handler logic
+  };
+  
+  // Render
+  return (
+    <div className="component-name">
+      {/* JSX */}
+    </div>
+  );
+}
+```
+
+---
+
+## Naming Conventions
+
+### Files
+- Components: `PascalCase.jsx` (e.g., `GameUI.jsx`)
+- Hooks: `camelCase.js` (e.g., `useGameState.js`)
+- Data files: `camelCaseData.js` (e.g., `enemyData.js`)
+- Logic files: `camelCase.js` (e.g., `gamelogic.js`)
+
+### Variables and Functions
+- Functions: `camelCase` (e.g., `calculateDamage`)
+- Constants: `SCREAMING_SNAKE_CASE` (e.g., `MAX_INVENTORY_SIZE`)
+- Config keys: `camelCase` (e.g., `criticalHitMultiplier`)
+
+### IDs
+- Skill IDs: `class_skill_name` (e.g., `knight_charge`)
+- Item IDs: `adjective_noun` (e.g., `rusty_sword`)
+- Enemy IDs: `enemy_name` (e.g., `goblin_warrior`)
+
+---
+
+## Data Handling
+
+### Numbers
+- Use integers for game values when possible
+- Use `Math.floor()` for division results
+- Use `Math.max(0, value)` for values that can't go negative
+- Use `Math.min(max, value)` for values with caps
+
+### Arrays
+- Never mutate arrays directly
+- Use spread operator: `[...array]`
+- Use `filter`, `map`, `find` instead of loops when possible
+
+### Objects
+- Never mutate objects directly
+- Use spread operator for shallow copies
+- Use `JSON.parse(JSON.stringify(obj))` only for deep clones when necessary
+
+---
+
+## Error Handling
+
+### Defensive Coding
+```javascript
+// Always check for existence
+const value = state.player?.attributes?.luck || state.config.baseAttributeValue;
+
+// Validate function inputs
+if (!state || !itemId) {
+  return state;
+}
+
+// Bounds checking
+const newHp = Math.max(0, Math.min(state.player.hp.max, newHpValue));
+```
+
+### Console Logging
+- Use `console.log()` for development debugging
+- Use `console.warn()` for recoverable issues
+- Use `console.error()` for critical failures
+- Remove debug logs before committing (or wrap in debug flag)
+
+---
+
+## Game-Specific Rules
+
+### Combat
+
+1. Damage cannot reduce HP below 0
+2. Always check if target is already dead before applying damage
+3. Critical hits use `criticalHitMultiplier` from config
+4. Defense reduces damage by `defenseReductionFactor` × defense value
+
+### Skills
+
+1. All skills must have unique IDs within the entire database
+2. Mana cost range: 5-50 (ultimates can go higher)
+3. Cooldown range: 2-120 (seconds/turns)
+4. Every class needs exactly 20 active and 40 passive skills
+
+### Items
+
+1. Stackable items (consumables) increase quantity
+2. Equipment items are individual
+3. Using an item with quantity 1 removes it from inventory
+4. Equipment must be moved to slot, not copied
+
+### Leveling
+
+1. Level up restores HP and Mana to max
+2. Add `attributePointsPerLevel` free points
+3. Set `justLeveledUp` flag for UI
+4. Carry overflow XP to next level
+
+---
+
+## File Import Order
+
+```javascript
+// 1. React and external libraries
+import React, { useState, useEffect } from 'react';
+
+// 2. Internal services/utilities
+import { gameFunction } from '../lib/gamelogic';
+import { getData } from '../lib/gameData';
+
+// 3. Components
+import { ChildComponent } from './ChildComponent';
+
+// 4. Styles
+import './styles.css';
+```
+
+---
+
+## Comments
+
+### When to Comment
+- Complex calculations
+- Non-obvious business logic
+- Workarounds for known issues
+- TODO items
+
+### Comment Style
+```javascript
+// Single line for brief explanations
+
+/**
+ * Multi-line for function documentation
+ * @param {object} state - The current game state
+ * @param {number} amount - Amount of XP to add
+ * @returns {object} New game state with updated XP
+ */
+
+// TODO: Implement feature X
+// FIXME: Bug in calculation
+// HACK: Workaround for issue Y
+```
+
+---
+
+## Testing Checklist
+
+Before considering a feature complete:
+- [ ] No hardcoded magic numbers
+- [ ] State updates are immutable
+- [ ] Edge cases handled (null, undefined, empty)
+- [ ] Error states don't crash the game
+- [ ] UI updates reflect state changes
+- [ ] Console has no errors
+- [ ] Config values used where appropriate
+
+---
+
+## Anchor Files Reference
+
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| `system_specs.md` | Game rules and formulas | Before implementing any game mechanic |
+| `current_state.md` | Feature tracking | Before adding new features |
+| `.cursorrules` | Coding standards | During all development |
+| `state.config` | Runtime constants | For all game balance values |
+
+---
+
+## Don'ts
+
+- ❌ Don't import anchor files (`.md`) in code
+- ❌ Don't hardcode numeric values for game balance
+- ❌ Don't mutate state directly
+- ❌ Don't skip null checks
+- ❌ Don't create circular dependencies
+- ❌ Don't duplicate skill IDs across classes
+- ❌ Don't add features without updating `current_state.md`
+- ❌ Don't change formulas without updating `system_specs.md`

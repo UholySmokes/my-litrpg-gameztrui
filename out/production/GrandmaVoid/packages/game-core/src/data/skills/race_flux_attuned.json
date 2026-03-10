@@ -1,0 +1,27 @@
+[
+  {
+    "id": "flux_attuned_special",
+    "name": "Flux Shift",
+    "description": "Recalibrate elemental absorption and guard up.",
+    "cost": 24,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 2,
+        "magnitude": 35
+      }
+    ],
+    "setAbsorption": true,
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

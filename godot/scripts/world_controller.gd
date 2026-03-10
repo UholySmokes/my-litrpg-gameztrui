@@ -177,10 +177,13 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 			_client_seq,
 			_content_version
 		)
-		var command_body := command_response.get("body", {})
-		if typeof(command_body) == TYPE_DICTIONARY:
-			var canonical_state := command_body.get("canonicalState", {})
-			if typeof(canonical_state) == TYPE_DICTIONARY:
+		var command_body: Dictionary = {}
+		var command_body_value: Variant = command_response.get("body", {})
+		if typeof(command_body_value) == TYPE_DICTIONARY:
+			command_body = command_body_value
+			var canonical_state_value: Variant = command_body.get("canonicalState", {})
+			if typeof(canonical_state_value) == TYPE_DICTIONARY:
+				var canonical_state: Dictionary = canonical_state_value
 				_client_seq = maxi(_client_seq, int(canonical_state.get("seq", _client_seq)))
 		if not bool(command_response.get("http_ok", false)):
 			_enqueue_telemetry(

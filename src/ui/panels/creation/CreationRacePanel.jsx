@@ -1,6 +1,10 @@
-import { DataRegistry } from "../../../data/DataRegistry.js";
-import { getRaceAbilitySummariesFor } from "../../../systems/race/RaceAbilityRegistry.js";
+import {
+  getCharacterCreationRaceAbilitySummaries,
+  getCharacterCreationRaces,
+} from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 import { CANONICAL_ATTRIBUTES } from "../../../constants/attributes.js";
+
+const CREATION_RACES = getCharacterCreationRaces();
 
 function StatModifierBar({ label, value }) {
   const isPositive = value > 0;
@@ -50,7 +54,7 @@ export default function CreationRacePanel({
   onRaceSelect,
   onAction,
 }) {
-  const races = DataRegistry.getRaces();
+  const races = CREATION_RACES;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -79,7 +83,7 @@ export default function CreationRacePanel({
       >
         {races.map((race) => {
           const isSelected = selectedRace?.id === race.id;
-          const raceAbilities = getRaceAbilitySummariesFor(race.id) || [];
+          const raceAbilities = getCharacterCreationRaceAbilitySummaries(race.id);
           const activeAbility = raceAbilities[0] || null;
           const passiveAbility = race.passiveAbility;
           const raceSkillNames = Array.from(

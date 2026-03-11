@@ -1,6 +1,7 @@
-import { DataRegistry } from "../../../data/DataRegistry.js";
+import { getCharacterCreationOrigins } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 
 const genderOptions = ["male", "female", "other"];
+const CREATION_ORIGINS = getCharacterCreationOrigins();
 
 export default function CreationIdentityPanel({
   characterName,
@@ -11,7 +12,7 @@ export default function CreationIdentityPanel({
   onOriginSelect,
   onAction,
 }) {
-  const origins = DataRegistry.getOrigins();
+  const origins = CREATION_ORIGINS;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>

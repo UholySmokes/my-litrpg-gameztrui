@@ -9,7 +9,6 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
-import { ARCHETYPE_SYSTEMS } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import {
   assignTalentsForClass,
   getTalentById,
@@ -25,21 +24,29 @@ import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { buildCreationStepSequence } from "../core/characterCreationWizardFlow.js";
 import { xpForNextLevel } from "../core/xpCurve.js";
 import {
-  buildCharacterCreationLatticeProfile,
-  buildCharacterCreationSkillPools as buildSharedCharacterCreationSkillPools,
   createCharacterCreationBlueprint,
   createCharacterCreationOutcome,
+  validateCharacterCreationBlueprint,
+} from "@voidverse/game-core/characterCreation/CharacterCreationContract.js";
+import {
+  buildCharacterCreationLatticeProfile,
+  buildCharacterCreationSkillPools as buildSharedCharacterCreationSkillPools,
   getCharacterCreationSkillSelectionLimits,
-  getSkillById,
+  resolveCharacterCreationSkillLoadout,
+  validateCharacterCreationSkillSelections,
+} from "@voidverse/game-core/characterCreation/CharacterCreationSkillSelection.js";
+import {
+  getCharacterCreationArchetypeSystemById,
+  getCharacterCreationArchetypeSystems,
+  getCharacterCreationSkillSummaryById,
+} from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
+import {
   getCharacterCreationPerkLimits,
   listCharacterCreationAlignments,
   listCharacterCreationPerks,
   listCharacterCreationSkillLoadouts,
   listCharacterCreationStarterTrees,
-  resolveCharacterCreationSkillLoadout,
-  validateCharacterCreationSkillSelections,
-  validateCharacterCreationBlueprint,
-} from "@voidverse/game-core";
+} from "@voidverse/game-core/characterCreation/CharacterCreationOptionsRegistry.js";
 
 const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;
@@ -63,6 +70,7 @@ const CREATION_STEPS = Object.freeze({
   ALIGNMENT: 11,
   REVIEW: 12,
 });
+const AVAILABLE_ARCHETYPE_SYSTEMS = getCharacterCreationArchetypeSystems();
 
 function humanizeSkillId(value) {
   return String(value || "")
@@ -339,8 +347,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   }, []);
 
   const handleArchetypeSystemSelect = useCallback((systemId) => {
-    const system =
-      ARCHETYPE_SYSTEMS.find((entry) => entry.id === systemId) || null;
+    const system = getCharacterCreationArchetypeSystemById(systemId);
     setSelectedArchetypeSystem((prev) =>
       prev?.id === system?.id ? null : system,
     );
@@ -748,7 +755,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       const tier1Skills = selectedProfession.tierUnlocks[1].skills || [];
       professionSkills.push(
         ...tier1Skills.map((skillId) => {
-          const existingSkill = getSkillById(skillId);
+          const existingSkill = getCharacterCreationSkillSummaryById(skillId);
           if (existingSkill) return existingSkill;
           return {
             id: skillId,
@@ -929,7 +936,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     remainingPoints,
     availableActiveSkills,
     availablePassiveSkills,
-    availableArchetypeSystems: ARCHETYPE_SYSTEMS,
+    availableArchetypeSystems: AVAILABLE_ARCHETYPE_SYSTEMS,
     availableCreationPerks,
     availableCreationStarterTrees,
     availableCreationAlignments,

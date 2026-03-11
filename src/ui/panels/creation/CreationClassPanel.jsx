@@ -1,5 +1,7 @@
-import { DataRegistry } from "../../../data/DataRegistry.js";
-import { getClassAbilitySummariesFor } from "../../../systems/class/ClassAbilityRegistry.js";
+import {
+  getCharacterCreationClassAbilitySummaries,
+  getCharacterCreationClassesByTier,
+} from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 
 const RESOURCE_COLORS = {
   rage: "#FF6B6B",
@@ -9,6 +11,7 @@ const RESOURCE_COLORS = {
   energy: "#FFD700",
   mana: "#845EF7",
 };
+const CREATION_CLASSES = getCharacterCreationClassesByTier(1);
 
 function ResourceBadge({ resource }) {
   if (!resource) return null;
@@ -59,9 +62,7 @@ export default function CreationClassPanel({
   onClassSelect,
   onAction,
 }) {
-  const classes = DataRegistry.getClasses().filter(
-    (cls) => Number(cls?.tier || 1) === 1,
-  );
+  const classes = CREATION_CLASSES;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -93,7 +94,7 @@ export default function CreationClassPanel({
           const resource = cls.resourceSystem || cls.resource || null;
           const archetype = cls.archetype || null;
           const classSkills = Array.isArray(cls.skills) ? cls.skills : [];
-          const classAbilities = getClassAbilitySummariesFor(cls.id) || [];
+          const classAbilities = getCharacterCreationClassAbilitySummaries(cls.id);
           const mergedSkillNames = Array.from(
             new Set(
               [...classSkills, ...classAbilities]

@@ -23,6 +23,8 @@ import {
   getItemsByType as getItemsByTypeFromRegistry,
   getItemsByRarity as getItemsByRarityFromRegistry,
   getEquipmentBySlot as getEquipmentBySlotFromRegistry,
+  getItemSummaries as getItemSummariesFromRegistry,
+  getItemSummaryById as getItemSummaryByIdFromRegistry,
 } from "./registries/ItemDataRegistry.js";
 import { enemies } from "./registries/EnemyDataRegistry.js";
 import { gachaPools } from "./gachaData.js";
@@ -45,6 +47,14 @@ export class DataRegistry {
 
   static getItems() {
     return itemDatabase || {};
+  }
+
+  static getItemSummaries() {
+    return getItemSummariesFromRegistry();
+  }
+
+  static getItemSummaryById(id) {
+    return getItemSummaryByIdFromRegistry(id);
   }
 
   static getItemsByType(type) {

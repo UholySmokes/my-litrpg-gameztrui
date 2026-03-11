@@ -8,7 +8,7 @@
 // =================================================================
 
 import { useState, useCallback, useMemo } from "react";
-import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
+import { getProfessionSummaryById } from "../systems/profession/ProfessionContentPack.js";
 import {
   assignTalentsForClass,
   getTalentById,
@@ -342,7 +342,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
 
   // Handle profession selection
   const handleProfessionSelect = useCallback((profId) => {
-    setSelectedProfession(PROFESSIONS[profId]);
+    setSelectedProfession(getProfessionSummaryById(profId));
     setSelectedSkillLoadoutId(null);
   }, []);
 
@@ -749,10 +749,12 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     const professionSkills = [];
     if (
       selectedProfession &&
-      selectedProfession.tierUnlocks &&
-      selectedProfession.tierUnlocks[1]
+      (Array.isArray(selectedProfession.tier1Skills) ||
+        selectedProfession.tierUnlocks?.[1])
     ) {
-      const tier1Skills = selectedProfession.tierUnlocks[1].skills || [];
+      const tier1Skills = Array.isArray(selectedProfession.tier1Skills)
+        ? selectedProfession.tier1Skills
+        : selectedProfession.tierUnlocks?.[1]?.skills || [];
       professionSkills.push(
         ...tier1Skills.map((skillId) => {
           const existingSkill = getCharacterCreationSkillSummaryById(skillId);

@@ -4,6 +4,17 @@ import {
 } from "../systems/skills/LivingLatticeSystem.js";
 import { getCharacterCreationSkillReferenceById } from "./CharacterCreationContentPack.js";
 
+function hasCompleteLatticeView(skillRef) {
+  return Boolean(
+    skillRef &&
+      typeof skillRef === "object" &&
+      skillRef.lattice &&
+      typeof skillRef.lattice === "object" &&
+      typeof skillRef.lattice.id === "string" &&
+      skillRef.lattice.id === skillRef.id,
+  );
+}
+
 export function resolveCharacterCreationSkillReference(skillRef) {
   if (!skillRef) return null;
   if (typeof skillRef === "string") {
@@ -11,7 +22,9 @@ export function resolveCharacterCreationSkillReference(skillRef) {
   }
   if (typeof skillRef === "object") {
     if (!skillRef.id) return null;
-    return skillRef.lattice ? skillRef : attachLatticeMetadata(skillRef);
+    return hasCompleteLatticeView(skillRef)
+      ? skillRef
+      : attachLatticeMetadata(skillRef, skillRef.lattice || {});
   }
   return null;
 }

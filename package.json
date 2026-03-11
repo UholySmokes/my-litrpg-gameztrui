@@ -74,6 +74,7 @@
     "validate:worldbuild": "node scripts/run-worldbuild-integrity-check.mjs",
     "validate:worldbuild:strict": "node scripts/run-worldbuild-integrity-check.mjs --strict",
     "validate:worldbuild:update-baseline": "node scripts/run-worldbuild-integrity-check.mjs --update-baseline",
+    "generate:creation-content-pack": "node scripts/generate-character-creation-content-pack.mjs",
     "generate:godot-config": "node scripts/generate-godot-config.js",
     "generate:godot-config:prod": "node scripts/generate-godot-config.js --profile production",
     "android:preflight": "node scripts/android-preflight.mjs",

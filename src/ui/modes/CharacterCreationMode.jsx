@@ -29,8 +29,10 @@ import {
   createTelemetryEvent,
   postTelemetryBatch,
 } from "../../core/telemetryClient.js";
-import { DataRegistry } from "../../data/DataRegistry.js";
-import { getRaceAbilitiesFor } from "../../systems/race/RaceAbilityRegistry.js";
+import {
+  getCharacterCreationClassesByTier,
+  getCharacterCreationRaceAbilitySummaries,
+} from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 import { recommendArchetypeSystems } from "../../utils/archetypeRecommendations.js";
 
 let audioContext = null;
@@ -95,6 +97,7 @@ const RACE_ASCII = {
     |  \\_____/  |
     +-----------+`,
 };
+const CREATION_TIER_ONE_CLASSES = getCharacterCreationClassesByTier(1);
 
 const playSystemSound = (sound) => {
   if (typeof window === "undefined") return;
@@ -285,7 +288,7 @@ export default function CharacterCreationMode({
       selectedRace?.description || "Choose a race to view genetic bonuses.";
     const racePassiveAbility = selectedRace?.passiveAbility || null;
     const raceActiveAbility = selectedRace
-      ? getRaceAbilitiesFor(selectedRace.id)?.[0] || null
+      ? getCharacterCreationRaceAbilitySummaries(selectedRace.id)[0] || null
       : null;
     const className = selectedClass?.name || "Class not selected";
     const classDescription =
@@ -672,8 +675,7 @@ export default function CharacterCreationMode({
       );
     }
     if (currentStep === steps.MULTICLASS) {
-      const classOptions = DataRegistry.getClasses()
-        .filter((entry) => Number(entry?.tier || 1) === 1)
+      const classOptions = CREATION_TIER_ONE_CLASSES
         .filter((entry) => entry.id !== selectedClass?.id);
       return (
         <CreationChoicePanel

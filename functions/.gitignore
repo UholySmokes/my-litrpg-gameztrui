@@ -10,15 +10,19 @@ lib/**/*.js.map
 !lib/saves.js
 !lib/narrate-runs-store.js
 !lib/sync-core.js
+!lib/sync-core/*.js
 !lib/sync-command-contract.js
 !lib/sync-store.js
 !lib/sync-snapshots.js
 !lib/sync.js
+!lib/route-latency.js
 !lib/sync-dataconnect-store.js
 !lib/telemetry.js
 !lib/bulk-generation-service.js
 !lib/bulk-generation-handlers.js
 !lib/bulk-gen-store.js
+!lib/bulk-gen-store-normalization.js
+!lib/bulk-gen-observability.js
 
 # TypeScript v1 declaration files
 typings/

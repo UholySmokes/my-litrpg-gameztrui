@@ -1,17 +1,13 @@
-import {
-  getAllSkillSummaries,
-  getLatticeLoadoutSummary,
-  getSkillById,
-} from "../systems/skills/SkillRegistry.js";
-import {
-  getClassAbilitiesFor,
-  getClassAbilityById,
-} from "../systems/class/ClassAbilityRegistry.js";
-import {
-  getRaceAbilitiesFor,
-  getRaceAbilityById,
-} from "../systems/race/RaceAbilityRegistry.js";
 import { getTalentMigrationLane } from "../systems/skills/TalentMigrationAudit.js";
+import {
+  getCharacterCreationClassAbilitySummaries,
+  getCharacterCreationRaceAbilitySummaries,
+  getCharacterCreationSkillSummaries,
+} from "./CharacterCreationContentPack.js";
+import {
+  getCharacterCreationLatticeLoadoutSummary,
+  resolveCharacterCreationSkillReference,
+} from "./CharacterCreationLatticeSummary.js";
 
 const BASE_CREATION_LEVEL = 1;
 
@@ -468,21 +464,6 @@ function buildRuntimeRoleSuggestions(skills = []) {
     .slice(0, 3);
 }
 
-function resolveSkillReference(skillRef) {
-  if (!skillRef) return null;
-  if (typeof skillRef === "object") {
-    return enrichSkillForCreation(skillRef);
-  }
-  if (typeof skillRef === "string") {
-    return enrichSkillForCreation(
-      getSkillById(skillRef) ||
-        getClassAbilityById(skillRef) ||
-        getRaceAbilityById(skillRef),
-    );
-  }
-  return null;
-}
-
 export function getCharacterCreationSkillSelectionLimits() {
   return { ...CREATION_SKILL_SELECTION_LIMITS };
 }
@@ -496,7 +477,7 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
   const raceId = normalizeId(typeof race === "string" ? race : race?.id);
   const skillCatalog = Array.isArray(allSkills)
     ? allSkills
-    : getAllSkillSummaries();
+    : getCharacterCreationSkillSummaries();
   const skillIndex = buildSkillIndex(skillCatalog);
 
   const classSkillEntries = Array.isArray(cls?.skills)
@@ -510,7 +491,7 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
         .filter(Boolean);
 
   const classAbilityEntries = normalizeAbilityEntries(
-    getClassAbilitiesFor(classId) || [],
+    getCharacterCreationClassAbilitySummaries(classId),
     { source: "class", defaultType: "active" },
   );
   const classPools = splitSkillsByType([
@@ -580,7 +561,7 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
     }
 
     raceSkillEntries.push(
-      ...normalizeAbilityEntries(getRaceAbilitiesFor(raceId) || [], {
+      ...normalizeAbilityEntries(getCharacterCreationRaceAbilitySummaries(raceId), {
         source: "race",
         defaultType: "active",
       }),
@@ -779,7 +760,7 @@ export function validateCharacterCreationSkillSelections(
     professionId: normalizeId(professionId),
     pools,
     loadout,
-    loadoutSummary: getLatticeLoadoutSummary({
+    loadoutSummary: getCharacterCreationLatticeLoadoutSummary({
       activeSkills: resolvedActiveSkills,
       passiveSkills: resolvedPassiveSkills,
       professionId,
@@ -796,12 +777,12 @@ export function buildCharacterCreationLatticeProfile({
 } = {}) {
   const resolvedActiveSkills = uniqueSkills(
     (Array.isArray(activeSkills) ? activeSkills : [])
-      .map((entry) => resolveSkillReference(entry))
+      .map((entry) => resolveCharacterCreationSkillReference(entry))
       .filter(Boolean),
   );
   const resolvedPassiveSkills = uniqueSkills(
     (Array.isArray(passiveSkills) ? passiveSkills : [])
-      .map((entry) => resolveSkillReference(entry))
+      .map((entry) => resolveCharacterCreationSkillReference(entry))
       .filter(Boolean),
   );
   const normalizedLoadout =
@@ -825,7 +806,7 @@ export function buildCharacterCreationLatticeProfile({
       ...resolvedActiveSkills,
       ...resolvedPassiveSkills,
     ]),
-    loadoutSummary: getLatticeLoadoutSummary({
+    loadoutSummary: getCharacterCreationLatticeLoadoutSummary({
       activeSkills: resolvedActiveSkills,
       passiveSkills: resolvedPassiveSkills,
       professionId,

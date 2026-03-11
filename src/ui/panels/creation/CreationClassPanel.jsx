@@ -1,5 +1,5 @@
 import { DataRegistry } from "../../../data/DataRegistry.js";
-import { getClassAbilitiesFor } from "../../../systems/class/ClassAbilityRegistry.js";
+import { getClassAbilitySummariesFor } from "../../../systems/class/ClassAbilityRegistry.js";
 
 const RESOURCE_COLORS = {
   rage: "#FF6B6B",
@@ -93,7 +93,7 @@ export default function CreationClassPanel({
           const resource = cls.resourceSystem || cls.resource || null;
           const archetype = cls.archetype || null;
           const classSkills = Array.isArray(cls.skills) ? cls.skills : [];
-          const classAbilities = getClassAbilitiesFor(cls.id) || [];
+          const classAbilities = getClassAbilitySummariesFor(cls.id) || [];
           const mergedSkillNames = Array.from(
             new Set(
               [...classSkills, ...classAbilities]

@@ -1,5 +1,5 @@
 import { DataRegistry } from "../../../data/DataRegistry.js";
-import { getRaceAbilitiesFor } from "../../../systems/race/RaceAbilityRegistry.js";
+import { getRaceAbilitySummariesFor } from "../../../systems/race/RaceAbilityRegistry.js";
 import { CANONICAL_ATTRIBUTES } from "../../../constants/attributes.js";
 
 function StatModifierBar({ label, value }) {
@@ -79,7 +79,7 @@ export default function CreationRacePanel({
       >
         {races.map((race) => {
           const isSelected = selectedRace?.id === race.id;
-          const raceAbilities = getRaceAbilitiesFor(race.id) || [];
+          const raceAbilities = getRaceAbilitySummariesFor(race.id) || [];
           const activeAbility = raceAbilities[0] || null;
           const passiveAbility = race.passiveAbility;
           const raceSkillNames = Array.from(

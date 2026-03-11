@@ -9,6 +9,8 @@ export default defineConfig([
     'dist',
     'build',
     'coverage',
+    'out',
+    'out/**',
     'functions/node_modules',
     'src/dataconnect-generated',
     'functions/src/dataconnect-admin-generated',

@@ -1,4 +1,4 @@
-// =================================================================
+﻿// =================================================================
 // ARCHETYPE SYSTEM REGISTRY
 // LitRPG framework selection (Systems / Authorities / Privileges /
 // Paths / Overlays / Frameworks)
@@ -228,7 +228,7 @@ function normalizeTag(tag) {
 }
 
 function truncateText(value, limit) {
-  const normalized = normalizeWhitespace(value).replace(/[��“”]/g, "\"");
+  const normalized = normalizeWhitespace(value).replace(/[“”â€œâ€]/g, "\"");
   if (!normalized) return "";
   if (normalized.length <= limit) return normalized;
   const clipped = normalized.slice(0, Math.max(0, limit - 1)).trimEnd();
@@ -261,11 +261,11 @@ function sanitizeList(values, { field } = {}) {
     let line = truncateText(raw, FIELD_TEXT_LIMITS.listItem);
     if (!line) continue;
 
-    if (line.includes("...") || line.includes("…")) {
-      if (line.length < 140 || line.endsWith("...") || line.endsWith("…")) {
+    if (line.includes("...") || line.includes("â€¦")) {
+      if (line.length < 140 || line.endsWith("...") || line.endsWith("â€¦")) {
         continue;
       }
-      line = line.replace(/\.{3,}|…+/g, ".").replace(/\s+\./g, ".").trim();
+      line = line.replace(/\.{3,}|â€¦+/g, ".").replace(/\s+\./g, ".").trim();
     }
 
     if (PLACEHOLDER_PATTERNS.some((pattern) => pattern.test(line))) continue;
@@ -832,16 +832,111 @@ export let ARCHETYPE_SYSTEMS = ARCHETYPE_DEFINITIONS.map(
   (definition) => new ArchetypeSystem(definition),
 );
 
+const buildArchetypeSystemSummary = (system) => {
+  if (!system || typeof system !== "object" || typeof system.id !== "string") {
+    return null;
+  }
+
+  return {
+    id: system.id,
+    name: system.name || system.id,
+    category: system.category || "Unknown",
+    summary: system.summary || "",
+    description: system.description || "",
+    narrativeTone: system.narrativeTone || "neutral",
+    color: system.color || null,
+    icon: system.icon || null,
+    resource:
+      system.resource && typeof system.resource === "object"
+        ? {
+            name: system.resource.name || null,
+            color: system.resource.color || null,
+          }
+        : null,
+    tags: Array.isArray(system.tags)
+      ? system.tags.filter((tag) => typeof tag === "string")
+      : [],
+    coreLoopPreview: Array.isArray(system.coreLoop)
+      ? system.coreLoop.slice(0, 3)
+      : [],
+    narrativeHooksPreview: Array.isArray(system.narrativeHooks)
+      ? system.narrativeHooks.slice(0, 2)
+      : [],
+    questHooksPreview: Array.isArray(system.questHooks)
+      ? system.questHooks.slice(0, 2)
+      : [],
+    quality:
+      system.quality && typeof system.quality === "object"
+        ? {
+            depthScore: toNumber(system.quality.depthScore, 0),
+            detailScore: toNumber(system.quality.detailScore, 0),
+            totalHooks: toNumber(system.quality.totalHooks, 0),
+          }
+        : null,
+  };
+};
+
+const cloneArchetypeSystemSummary = (summary) => {
+  if (!summary) return null;
+  return {
+    ...summary,
+    resource: summary.resource ? { ...summary.resource } : null,
+    tags: [...summary.tags],
+    coreLoopPreview: [...summary.coreLoopPreview],
+    narrativeHooksPreview: [...summary.narrativeHooksPreview],
+    questHooksPreview: [...summary.questHooksPreview],
+    quality: summary.quality ? { ...summary.quality } : null,
+  };
+};
+
+let ARCHETYPE_SYSTEM_INDEX = new Map();
+let ARCHETYPE_CATEGORY_INDEX = new Map();
+let ARCHETYPE_SYSTEM_SUMMARIES = [];
+let ARCHETYPE_SUMMARY_INDEX = new Map();
+let ARCHETYPE_SUMMARY_CATEGORY_INDEX = new Map();
+
+const rebuildArchetypeIndexes = () => {
+  ARCHETYPE_SYSTEM_INDEX = new Map();
+  ARCHETYPE_CATEGORY_INDEX = new Map();
+  ARCHETYPE_SYSTEM_SUMMARIES = [];
+  ARCHETYPE_SUMMARY_INDEX = new Map();
+  ARCHETYPE_SUMMARY_CATEGORY_INDEX = new Map();
+
+  ARCHETYPE_SYSTEMS.forEach((system) => {
+    if (!system?.id) return;
+    ARCHETYPE_SYSTEM_INDEX.set(system.id, system);
+
+    const category = system.category || "Unknown";
+    if (!ARCHETYPE_CATEGORY_INDEX.has(category)) {
+      ARCHETYPE_CATEGORY_INDEX.set(category, []);
+    }
+    ARCHETYPE_CATEGORY_INDEX.get(category).push(system);
+
+    const summary = buildArchetypeSystemSummary(system);
+    if (!summary) return;
+
+    ARCHETYPE_SYSTEM_SUMMARIES.push(summary);
+    ARCHETYPE_SUMMARY_INDEX.set(summary.id, summary);
+    if (!ARCHETYPE_SUMMARY_CATEGORY_INDEX.has(category)) {
+      ARCHETYPE_SUMMARY_CATEGORY_INDEX.set(category, []);
+    }
+    ARCHETYPE_SUMMARY_CATEGORY_INDEX.get(category).push(summary);
+  });
+};
+
+rebuildArchetypeIndexes();
+
 export function setArchetypeDefinitions(nextDefinitions) {
   if (!Array.isArray(nextDefinitions)) return;
   ARCHETYPE_DEFINITIONS = createRegistryDefinitions(nextDefinitions);
   ARCHETYPE_SYSTEMS = ARCHETYPE_DEFINITIONS.map(
     (definition) => new ArchetypeSystem(definition),
   );
+  rebuildArchetypeIndexes();
 }
 
 export function getArchetypeSystemById(id) {
-  return ARCHETYPE_SYSTEMS.find((system) => system.id === id) || null;
+  return ARCHETYPE_SYSTEM_INDEX.get(id) || null;
 }
 
 /**
@@ -851,7 +946,7 @@ export function getArchetypeSystemById(id) {
  */
 export function getArchetypesByCategory(category) {
   if (!category) return [];
-  return ARCHETYPE_SYSTEMS.filter((system) => system.category === category);
+  return [...(ARCHETYPE_CATEGORY_INDEX.get(category) || [])];
 }
 
 /**
@@ -859,10 +954,7 @@ export function getArchetypesByCategory(category) {
  * @returns {string[]}
  */
 export function getArchetypeCategories() {
-  const categories = new Set(
-    ARCHETYPE_SYSTEMS.map((system) => system.category).filter(Boolean),
-  );
-  return [...categories].sort((left, right) => {
+  return [...ARCHETYPE_CATEGORY_INDEX.keys()].sort((left, right) => {
     const leftIndex = CATEGORY_ORDER.indexOf(left);
     const rightIndex = CATEGORY_ORDER.indexOf(right);
     if (leftIndex === -1 && rightIndex === -1) return left.localeCompare(right);
@@ -874,6 +966,23 @@ export function getArchetypeCategories() {
 
 export function getAllArchetypeSystems() {
   return ARCHETYPE_SYSTEMS;
+}
+
+export function getAllArchetypeSystemSummaries() {
+  return ARCHETYPE_SYSTEM_SUMMARIES.map((summary) =>
+    cloneArchetypeSystemSummary(summary),
+  );
+}
+
+export function getArchetypeSystemSummaryById(id) {
+  return cloneArchetypeSystemSummary(ARCHETYPE_SUMMARY_INDEX.get(id) || null);
+}
+
+export function getArchetypeSystemSummariesByCategory(category) {
+  if (!category) return [];
+  return (ARCHETYPE_SUMMARY_CATEGORY_INDEX.get(category) || []).map((summary) =>
+    cloneArchetypeSystemSummary(summary),
+  );
 }
 
 export function getArchetypeQualityReport() {
@@ -912,3 +1021,4 @@ export function getArchetypeQualityReport() {
     ids: ARCHETYPE_DEFINITIONS.map((definition) => definition.id),
   };
 }
+

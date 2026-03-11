@@ -51,6 +51,10 @@ import {
   STREAM_PLACEHOLDER_TEXT,
   inferMood,
 } from "./narrativeSuggestions.js";
+import {
+  buildFallbackNarrative,
+  resolveArchetypeSystemLabel,
+} from "./fallbackNarrative.js";
 
 const OPENING_SCENE_SKILL_TEMPLATES = {
   skill_voidspark: {
@@ -1086,30 +1090,14 @@ function _buildActionSuggestions(state) {
   return [...FIXED_ACTION_SUGGESTIONS, ...normalizedContext];
 }
 
-function resolveArchetypeSystemLabel(player = {}) {
-  const raw = player.archetypeSystem;
-  if (!raw) return null;
-  if (typeof raw === "string") return raw;
-  if (typeof raw === "object" && !Array.isArray(raw)) {
-    return raw.name || raw.id || null;
-  }
-  return null;
-}
-
-function pickVariant(options, seed) {
-  if (!Array.isArray(options) || options.length === 0) return "";
-  const safeSeed = Number.isFinite(seed) ? seed : Date.now();
-  const index = Math.abs(Math.floor(safeSeed)) % options.length;
-  return options[index];
-}
-
-function buildFallbackNarrative({
+function LegacyBuildFallbackNarrative({
   userInput,
   actionResult,
   state,
   isInitial = false,
   variantSeed,
 }) {
+  const pickVariant = () => "";
   const player = state?.player || {};
   const systemLabel = resolveArchetypeSystemLabel(player);
   const location =

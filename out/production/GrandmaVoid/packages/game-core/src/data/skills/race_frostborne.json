@@ -1,0 +1,32 @@
+[
+  {
+    "id": "frostborne_special",
+    "name": "Glacial Prison",
+    "description": "Freeze the target in place.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "freeze",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

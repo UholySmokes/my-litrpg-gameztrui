@@ -1,0 +1,27 @@
+[
+  {
+    "id": "bloodwoven_special",
+    "name": "Crimson Rite",
+    "description": "A ritual strike that feeds your wounds.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "lifesteal": 0.3,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

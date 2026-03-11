@@ -1,0 +1,32 @@
+[
+  {
+    "id": "pure_human_special",
+    "name": "Adaptive Surge",
+    "description": "Sharpen instincts to boost might and speed.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 2,
+        "magnitude": 0.15
+      },
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

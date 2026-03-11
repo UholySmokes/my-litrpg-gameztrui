@@ -1,0 +1,202 @@
+[
+  {
+    "id": "warlock_shadow_bolt",
+    "name": "Shadow Bolt",
+    "type": "active",
+    "class": "warlock",
+    "description": "Fire a bolt of shadow magic at an enemy.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 0
+  },
+  {
+    "id": "warlock_corruption",
+    "name": "Corruption",
+    "type": "active",
+    "class": "warlock",
+    "description": "Corrupt an enemy, dealing shadow damage over time.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 0
+  },
+  {
+    "id": "warlock_curse_agony",
+    "name": "Curse of Agony",
+    "type": "active",
+    "class": "warlock",
+    "description": "Curse that deals increasing damage over time.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 0
+  },
+  {
+    "id": "warlock_summon_imp",
+    "name": "Summon Imp",
+    "type": "active",
+    "class": "warlock",
+    "description": "Summon an imp to cast fire bolts.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 10
+  },
+  {
+    "id": "warlock_summon_voidwalker",
+    "name": "Summon Voidwalker",
+    "type": "active",
+    "class": "warlock",
+    "description": "Summon a voidwalker to tank enemies.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 10
+  },
+  {
+    "id": "warlock_summon_succubus",
+    "name": "Summon Succubus",
+    "type": "active",
+    "class": "warlock",
+    "description": "Summon a succubus to seduce and damage.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 10
+  },
+  {
+    "id": "warlock_summon_felhunter",
+    "name": "Summon Felhunter",
+    "type": "active",
+    "class": "warlock",
+    "description": "Summon a felhunter to interrupt and devour magic.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 10
+  },
+  {
+    "id": "warlock_fear",
+    "name": "Fear",
+    "type": "active",
+    "class": "warlock",
+    "description": "Cause an enemy to flee in terror.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 0
+  },
+  {
+    "id": "warlock_drain_life",
+    "name": "Drain Life",
+    "type": "active",
+    "class": "warlock",
+    "description": "Drain health from the enemy to yourself.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 0
+  },
+  {
+    "id": "warlock_drain_soul",
+    "name": "Drain Soul",
+    "type": "active",
+    "class": "warlock",
+    "description": "Drain the soul of a dying enemy for resources.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 0
+  },
+  {
+    "id": "warlock_immolate",
+    "name": "Immolate",
+    "type": "active",
+    "class": "warlock",
+    "description": "Burn an enemy with fel fire over time.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 0
+  },
+  {
+    "id": "warlock_conflagrate",
+    "name": "Conflagrate",
+    "type": "active",
+    "class": "warlock",
+    "description": "Instantly damage an immolated target.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 12
+  },
+  {
+    "id": "warlock_chaos_bolt",
+    "name": "Chaos Bolt",
+    "type": "active",
+    "class": "warlock",
+    "description": "Fire a devastating bolt that always critically strikes.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 0
+  },
+  {
+    "id": "warlock_rain_of_fire",
+    "name": "Rain of Fire",
+    "type": "active",
+    "class": "warlock",
+    "description": "Call down fire on an area.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 8
+  },
+  {
+    "id": "warlock_banish",
+    "name": "Banish",
+    "type": "active",
+    "class": "warlock",
+    "description": "Banish a demon or elemental from the fight.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 30
+  },
+  {
+    "id": "warlock_demonic_circle",
+    "name": "Demonic Circle",
+    "type": "active",
+    "class": "warlock",
+    "description": "Place a circle you can teleport back to.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 30
+  },
+  {
+    "id": "warlock_dark_pact",
+    "name": "Dark Pact",
+    "type": "active",
+    "class": "warlock",
+    "description": "Sacrifice demon health for a shield.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 60
+  },
+  {
+    "id": "warlock_soul_fire",
+    "name": "Soul Fire",
+    "type": "active",
+    "class": "warlock",
+    "description": "Launch a massive bolt of soul fire.",
+    "level": 1,
+    "manaCost": 45,
+    "cooldown": 45
+  },
+  {
+    "id": "warlock_summon_infernal",
+    "name": "Summon Infernal",
+    "type": "active",
+    "class": "warlock",
+    "description": "Summon a massive infernal that crashes down.",
+    "level": 1,
+    "manaCost": 50,
+    "cooldown": 180
+  },
+  {
+    "id": "warlock_ritual_of_doom",
+    "name": "Ritual of Doom",
+    "type": "active",
+    "class": "warlock",
+    "description": "Summon a doomguard at the cost of a sacrifice.",
+    "level": 1,
+    "manaCost": 60,
+    "cooldown": 600
+  }
+]

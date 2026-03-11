@@ -48,6 +48,48 @@ function commit({
 	};
 }
 
+function characterCommit({
+	id,
+	runId,
+	clientSeq,
+	createdAt,
+	contentVersion,
+	character = {},
+}) {
+	return {
+		id,
+		runId,
+		clientId: "godot-client-1",
+		clientSeq,
+		createdAt,
+		contentVersion,
+		commandType: "CHARACTER",
+		command: {
+			type: "CHARACTER",
+			verb: "CREATE",
+			character: {
+				name: "Aela",
+				mode: "basic",
+				race: { id: "pure_human", name: "Pure Human" },
+				class: { id: "warrior", name: "Warrior" },
+				origin: { id: "street_urchin", name: "Street Urchin" },
+				alignment: { id: "neutral_good", name: "Neutral Good" },
+				archetype: { id: "balanced", name: "Balanced" },
+				attributes: {
+					str: 5,
+					agi: 5,
+					dex: 5,
+					int: 5,
+				},
+				activeSkills: ["slash"],
+				passiveSkills: ["toughness"],
+				perks: ["battle_focus"],
+				...(character && typeof character === "object" ? character : {}),
+			},
+		},
+	};
+}
+
 describe("sync process commit stream", () => {
 	const oldSyncBackend = process.env.SYNC_DB_STORAGE;
 	const oldSyncPath = process.env.SYNC_DB_PATH;
@@ -230,6 +272,65 @@ describe("sync process commit stream", () => {
 		expect(result.results.every((entry) => entry.accepted)).toBe(true);
 		expect(result.canonicalState.seq).toBe(5);
 		expect(result.canonicalState.mapId).toBe("map_village_square");
+	});
+
+	it("accepts character creation commands and stores deterministic roster state", async () => {
+		const manifest = syncCore.getWorldManifest();
+		const runId = "run-character-create-1";
+
+		const result = await sync.processCommitStream({
+			ownerId: "user-character-create-1",
+			manifest,
+			commits: [
+				characterCommit({
+					id: "character-create-1",
+					runId,
+					clientSeq: 1,
+					createdAt: "2026-03-10T10:00:00.000Z",
+					contentVersion: manifest.contentVersion,
+				}),
+			],
+		});
+
+		expect(result.ok).toBe(true);
+		expect(result.reconcileRequired).toBe(false);
+		expect(result.results[0]).toEqual(
+			expect.objectContaining({
+				id: "character-create-1",
+				clientSeq: 1,
+				accepted: true,
+			}),
+		);
+		expect(result.canonicalState.entityStates.playerProfile).toEqual({
+			charactersCreated: 1,
+			advancedCreationUnlocked: true,
+			lastCreationMode: "basic",
+		});
+		expect(result.canonicalState.entityStates.activeCharacter).toEqual(
+			expect.objectContaining({
+				name: "Aela",
+				raceId: "pure_human",
+				classId: "warrior",
+				originId: "street_urchin",
+			}),
+		);
+		expect(result.canonicalState.entityStates.characterRoster).toHaveLength(1);
+
+		const replay = syncCore.replayCommitLog({
+			manifest,
+			runId,
+			commits: [
+				characterCommit({
+					id: "character-create-1",
+					runId,
+					clientSeq: 1,
+					createdAt: "2026-03-10T10:00:00.000Z",
+					contentVersion: manifest.contentVersion,
+				}),
+			],
+		});
+		expect(replay.timeline[0].accepted).toBe(true);
+		expect(replay.state.stateHash).toBe(result.canonicalState.stateHash);
 	});
 
 	it("returns reject-and-reconcile for invalid trigger and keeps canonical tip", async () => {

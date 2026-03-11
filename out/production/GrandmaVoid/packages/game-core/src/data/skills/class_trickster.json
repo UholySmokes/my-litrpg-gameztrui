@@ -1,0 +1,106 @@
+[
+  {
+    "id": "smoke_bomb",
+    "name": "Smoke Bomb",
+    "description": "Deploy a smoke cloud that confuses the enemy and grants evasion.",
+    "cost": 30,
+    "costType": "energy",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.25
+      },
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "caltrops",
+    "name": "Caltrops",
+    "description": "Scatter caltrops that slow and damage over time.",
+    "cost": 25,
+    "costType": "energy",
+    "cooldown": 6,
+    "damage": {
+      "multiplier": 0.8,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 3,
+        "magnitude": -0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "misdirect",
+    "name": "Misdirect",
+    "description": "Trick the enemy into attacking thin air.",
+    "cost": 35,
+    "costType": "energy",
+    "cooldown": 10,
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "rigged_trap",
+    "name": "Rigged Trap",
+    "description": "Set a concealed trap that stuns and damages.",
+    "cost": 40,
+    "costType": "energy",
+    "cooldown": 12,
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

@@ -1,0 +1,1122 @@
+extend type Mutation {
+  """
+  ✨ Insert a single `DiscoveryList` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  discoveryList_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: DiscoveryList_Data!
+  ): DiscoveryList_KeyOutput! @fdc_generated(from: "DiscoveryList", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `DiscoveryListItem` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  discoveryListItem_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: DiscoveryListItem_Data!
+  ): DiscoveryListItem_KeyOutput! @fdc_generated(from: "DiscoveryListItem", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `GameEntity` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  gameEntity_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: GameEntity_Data!
+  ): GameEntity_KeyOutput! @fdc_generated(from: "GameEntity", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `GameSession` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  gameSession_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: GameSession_Data!
+  ): GameSession_KeyOutput! @fdc_generated(from: "GameSession", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Review` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  review_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Review_Data!
+  ): Review_KeyOutput! @fdc_generated(from: "Review", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `RunEvent` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  runEvent_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: RunEvent_Data!
+  ): RunEvent_KeyOutput! @fdc_generated(from: "RunEvent", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `RunSession` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  runSession_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: RunSession_Data!
+  ): RunSession_KeyOutput! @fdc_generated(from: "RunSession", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `SaveSlot` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  saveSlot_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: SaveSlot_Data!
+  ): SaveSlot_KeyOutput! @fdc_generated(from: "SaveSlot", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `StoryMemory` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  storyMemory_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: StoryMemory_Data!
+  ): StoryMemory_KeyOutput! @fdc_generated(from: "StoryMemory", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `UserProfile` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userProfile_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: UserProfile_Data!
+  ): UserProfile_KeyOutput! @fdc_generated(from: "UserProfile", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert `DiscoveryList` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  discoveryList_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [DiscoveryList_Data!]!
+  ): [DiscoveryList_KeyOutput!]! @fdc_generated(from: "DiscoveryList", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `DiscoveryListItem` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  discoveryListItem_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [DiscoveryListItem_Data!]!
+  ): [DiscoveryListItem_KeyOutput!]! @fdc_generated(from: "DiscoveryListItem", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `GameEntity` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  gameEntity_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [GameEntity_Data!]!
+  ): [GameEntity_KeyOutput!]! @fdc_generated(from: "GameEntity", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `GameSession` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  gameSession_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [GameSession_Data!]!
+  ): [GameSession_KeyOutput!]! @fdc_generated(from: "GameSession", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Review` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  review_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Review_Data!]!
+  ): [Review_KeyOutput!]! @fdc_generated(from: "Review", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `RunEvent` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  runEvent_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [RunEvent_Data!]!
+  ): [RunEvent_KeyOutput!]! @fdc_generated(from: "RunEvent", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `RunSession` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  runSession_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [RunSession_Data!]!
+  ): [RunSession_KeyOutput!]! @fdc_generated(from: "RunSession", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `SaveSlot` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  saveSlot_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [SaveSlot_Data!]!
+  ): [SaveSlot_KeyOutput!]! @fdc_generated(from: "SaveSlot", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `StoryMemory` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  storyMemory_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [StoryMemory_Data!]!
+  ): [StoryMemory_KeyOutput!]! @fdc_generated(from: "StoryMemory", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `UserProfile` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  userProfile_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [UserProfile_Data!]!
+  ): [UserProfile_KeyOutput!]! @fdc_generated(from: "UserProfile", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert or update a single `DiscoveryList` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `DiscoveryList`.
+  """
+  discoveryList_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: DiscoveryList_Data!
+  ): DiscoveryList_KeyOutput! @fdc_generated(from: "DiscoveryList", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `DiscoveryListItem` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `DiscoveryListItem`.
+  """
+  discoveryListItem_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: DiscoveryListItem_Data!
+  ): DiscoveryListItem_KeyOutput! @fdc_generated(from: "DiscoveryListItem", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `GameEntity` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `GameEntity`.
+  """
+  gameEntity_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: GameEntity_Data!
+  ): GameEntity_KeyOutput! @fdc_generated(from: "GameEntity", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `GameSession` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `GameSession`.
+  """
+  gameSession_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: GameSession_Data!
+  ): GameSession_KeyOutput! @fdc_generated(from: "GameSession", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Review` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Review`.
+  """
+  review_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Review_Data!
+  ): Review_KeyOutput! @fdc_generated(from: "Review", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `RunEvent` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `RunEvent`.
+  """
+  runEvent_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: RunEvent_Data!
+  ): RunEvent_KeyOutput! @fdc_generated(from: "RunEvent", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `RunSession` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `RunSession`.
+  """
+  runSession_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: RunSession_Data!
+  ): RunSession_KeyOutput! @fdc_generated(from: "RunSession", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `SaveSlot` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `SaveSlot`.
+  """
+  saveSlot_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: SaveSlot_Data!
+  ): SaveSlot_KeyOutput! @fdc_generated(from: "SaveSlot", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `StoryMemory` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `StoryMemory`.
+  """
+  storyMemory_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: StoryMemory_Data!
+  ): StoryMemory_KeyOutput! @fdc_generated(from: "StoryMemory", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `UserProfile` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserProfile`.
+  """
+  userProfile_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: UserProfile_Data!
+  ): UserProfile_KeyOutput! @fdc_generated(from: "UserProfile", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update `DiscoveryList` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `DiscoveryList`.
+  """
+  discoveryList_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [DiscoveryList_Data!]!
+  ): [DiscoveryList_KeyOutput!]! @fdc_generated(from: "DiscoveryList", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `DiscoveryListItem` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `DiscoveryListItem`.
+  """
+  discoveryListItem_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [DiscoveryListItem_Data!]!
+  ): [DiscoveryListItem_KeyOutput!]! @fdc_generated(from: "DiscoveryListItem", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `GameEntity` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `GameEntity`.
+  """
+  gameEntity_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [GameEntity_Data!]!
+  ): [GameEntity_KeyOutput!]! @fdc_generated(from: "GameEntity", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `GameSession` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `GameSession`.
+  """
+  gameSession_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [GameSession_Data!]!
+  ): [GameSession_KeyOutput!]! @fdc_generated(from: "GameSession", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Review` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Review`.
+  """
+  review_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Review_Data!]!
+  ): [Review_KeyOutput!]! @fdc_generated(from: "Review", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `RunEvent` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `RunEvent`.
+  """
+  runEvent_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [RunEvent_Data!]!
+  ): [RunEvent_KeyOutput!]! @fdc_generated(from: "RunEvent", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `RunSession` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `RunSession`.
+  """
+  runSession_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [RunSession_Data!]!
+  ): [RunSession_KeyOutput!]! @fdc_generated(from: "RunSession", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `SaveSlot` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `SaveSlot`.
+  """
+  saveSlot_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [SaveSlot_Data!]!
+  ): [SaveSlot_KeyOutput!]! @fdc_generated(from: "SaveSlot", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `StoryMemory` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `StoryMemory`.
+  """
+  storyMemory_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [StoryMemory_Data!]!
+  ): [StoryMemory_KeyOutput!]! @fdc_generated(from: "StoryMemory", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `UserProfile` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `UserProfile`.
+  """
+  userProfile_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [UserProfile_Data!]!
+  ): [UserProfile_KeyOutput!]! @fdc_generated(from: "UserProfile", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Update a single `DiscoveryList` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `DiscoveryList` or `null` if not found.
+  """
+  discoveryList_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: DiscoveryList_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: DiscoveryList_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: DiscoveryList_Data!
+  ): DiscoveryList_KeyOutput @fdc_generated(from: "DiscoveryList", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `DiscoveryListItem` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `DiscoveryListItem` or `null` if not found.
+  """
+  discoveryListItem_update(
+    """
+    The key used to identify the object.
+    """
+    key: DiscoveryListItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: DiscoveryListItem_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: DiscoveryListItem_Data!
+  ): DiscoveryListItem_KeyOutput @fdc_generated(from: "DiscoveryListItem", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `GameEntity` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `GameEntity` or `null` if not found.
+  """
+  gameEntity_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: GameEntity_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: GameEntity_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: GameEntity_Data!
+  ): GameEntity_KeyOutput @fdc_generated(from: "GameEntity", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `GameSession` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `GameSession` or `null` if not found.
+  """
+  gameSession_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: GameSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: GameSession_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: GameSession_Data!
+  ): GameSession_KeyOutput @fdc_generated(from: "GameSession", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Review` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Review` or `null` if not found.
+  """
+  review_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Review_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Review_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Review_Data!
+  ): Review_KeyOutput @fdc_generated(from: "Review", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `RunEvent` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `RunEvent` or `null` if not found.
+  """
+  runEvent_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: RunEvent_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: RunEvent_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: RunEvent_Data!
+  ): RunEvent_KeyOutput @fdc_generated(from: "RunEvent", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `RunSession` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `RunSession` or `null` if not found.
+  """
+  runSession_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: RunSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: RunSession_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: RunSession_Data!
+  ): RunSession_KeyOutput @fdc_generated(from: "RunSession", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `SaveSlot` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `SaveSlot` or `null` if not found.
+  """
+  saveSlot_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: SaveSlot_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: SaveSlot_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: SaveSlot_Data!
+  ): SaveSlot_KeyOutput @fdc_generated(from: "SaveSlot", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `StoryMemory` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `StoryMemory` or `null` if not found.
+  """
+  storyMemory_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: StoryMemory_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: StoryMemory_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: StoryMemory_Data!
+  ): StoryMemory_KeyOutput @fdc_generated(from: "StoryMemory", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `UserProfile` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `UserProfile` or `null` if not found.
+  """
+  userProfile_update(
+    """
+    The unique ID of the object.
+    """
+    id: String
+
+    """
+    ✨ `_expr` server value variant of `id` (The unique ID of the object.)
+    """
+    id_expr: String_Expr
+
+    """
+    The key used to identify the object.
+    """
+    key: UserProfile_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserProfile_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: UserProfile_Data!
+  ): UserProfile_KeyOutput @fdc_generated(from: "UserProfile", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update `DiscoveryList` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  discoveryList_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: DiscoveryList_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: DiscoveryList_Data!
+  ): Int! @fdc_generated(from: "DiscoveryList", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `DiscoveryListItem` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  discoveryListItem_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: DiscoveryListItem_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: DiscoveryListItem_Data!
+  ): Int! @fdc_generated(from: "DiscoveryListItem", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `GameEntity` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  gameEntity_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: GameEntity_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: GameEntity_Data!
+  ): Int! @fdc_generated(from: "GameEntity", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `GameSession` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  gameSession_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: GameSession_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: GameSession_Data!
+  ): Int! @fdc_generated(from: "GameSession", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Review` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  review_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Review_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Review_Data!
+  ): Int! @fdc_generated(from: "Review", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `RunEvent` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  runEvent_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: RunEvent_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: RunEvent_Data!
+  ): Int! @fdc_generated(from: "RunEvent", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `RunSession` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  runSession_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: RunSession_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: RunSession_Data!
+  ): Int! @fdc_generated(from: "RunSession", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `SaveSlot` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  saveSlot_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: SaveSlot_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: SaveSlot_Data!
+  ): Int! @fdc_generated(from: "SaveSlot", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `StoryMemory` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  storyMemory_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: StoryMemory_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: StoryMemory_Data!
+  ): Int! @fdc_generated(from: "StoryMemory", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `UserProfile` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  userProfile_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: UserProfile_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: UserProfile_Data!
+  ): Int! @fdc_generated(from: "UserProfile", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Delete a single `DiscoveryList` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  discoveryList_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: DiscoveryList_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: DiscoveryList_FirstRow
+  ): DiscoveryList_KeyOutput @fdc_generated(from: "DiscoveryList", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `DiscoveryListItem` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  discoveryListItem_delete(
+    """
+    The key used to identify the object.
+    """
+    key: DiscoveryListItem_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: DiscoveryListItem_FirstRow
+  ): DiscoveryListItem_KeyOutput @fdc_generated(from: "DiscoveryListItem", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `GameEntity` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  gameEntity_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: GameEntity_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: GameEntity_FirstRow
+  ): GameEntity_KeyOutput @fdc_generated(from: "GameEntity", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `GameSession` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  gameSession_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: GameSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: GameSession_FirstRow
+  ): GameSession_KeyOutput @fdc_generated(from: "GameSession", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Review` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  review_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Review_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Review_FirstRow
+  ): Review_KeyOutput @fdc_generated(from: "Review", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `RunEvent` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  runEvent_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: RunEvent_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: RunEvent_FirstRow
+  ): RunEvent_KeyOutput @fdc_generated(from: "RunEvent", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `RunSession` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  runSession_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: RunSession_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: RunSession_FirstRow
+  ): RunSession_KeyOutput @fdc_generated(from: "RunSession", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `SaveSlot` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  saveSlot_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: SaveSlot_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: SaveSlot_FirstRow
+  ): SaveSlot_KeyOutput @fdc_generated(from: "SaveSlot", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `StoryMemory` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  storyMemory_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: StoryMemory_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: StoryMemory_FirstRow
+  ): StoryMemory_KeyOutput @fdc_generated(from: "StoryMemory", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `UserProfile` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  userProfile_delete(
+    """
+    The unique ID of the object.
+    """
+    id: String
+
+    """
+    ✨ `_expr` server value variant of `id` (The unique ID of the object.)
+    """
+    id_expr: String_Expr
+
+    """
+    The key used to identify the object.
+    """
+    key: UserProfile_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: UserProfile_FirstRow
+  ): UserProfile_KeyOutput @fdc_generated(from: "UserProfile", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete `DiscoveryList` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  discoveryList_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: DiscoveryList_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryList", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `DiscoveryListItem` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  discoveryListItem_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: DiscoveryListItem_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "DiscoveryListItem", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `GameEntity` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  gameEntity_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: GameEntity_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "GameEntity", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `GameSession` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  gameSession_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: GameSession_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "GameSession", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Review` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  review_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Review_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Review", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `RunEvent` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  runEvent_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: RunEvent_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "RunEvent", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `RunSession` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  runSession_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: RunSession_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "RunSession", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `SaveSlot` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  saveSlot_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: SaveSlot_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "SaveSlot", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `StoryMemory` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  storyMemory_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: StoryMemory_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "StoryMemory", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `UserProfile` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  userProfile_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: UserProfile_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "UserProfile", purpose: DELETE_MULTIPLE)
+}

@@ -1,0 +1,93 @@
+[
+  {
+    "id": "quick_strike",
+    "name": "Quick Strike",
+    "description": "A fast, low-cost attack that builds combo.",
+    "cost": 15,
+    "costType": "energy",
+    "cooldown": 1,
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": false
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "evade",
+    "name": "Evade",
+    "description": "Slip away and increase evasion briefly.",
+    "cost": 30,
+    "costType": "energy",
+    "cooldown": 4,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "vanish",
+    "name": "Vanish",
+    "description": "Enter stealth during combat for a short duration.",
+    "cost": 40,
+    "costType": "energy",
+    "cooldown": 10,
+    "target": "self",
+    "stealth": {
+      "duration": 2
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "cheap_shot",
+    "name": "Cheap Shot",
+    "description": "A dirty strike that weakens the target's defenses.",
+    "cost": 20,
+    "costType": "energy",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1,
+      "isMagic": false
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "attack",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

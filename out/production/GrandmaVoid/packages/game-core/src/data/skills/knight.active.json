@@ -1,0 +1,238 @@
+[
+  {
+    "id": "knight_charge",
+    "name": "Charge",
+    "type": "active",
+    "class": "knight",
+    "description": "Rush forward and strike with increased damage.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 3
+  },
+  {
+    "id": "knight_shield_bash",
+    "name": "Shield Bash",
+    "type": "active",
+    "class": "knight",
+    "description": "Bash enemy with shield, stunning them.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 5,
+    "effects": [
+      {
+        "id": "stun",
+        "duration": 1
+      }
+    ]
+  },
+  {
+    "id": "knight_taunt",
+    "name": "Taunt",
+    "type": "active",
+    "class": "knight",
+    "description": "Force enemies to attack you, protecting allies.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 8
+  },
+  {
+    "id": "knight_armor_boost",
+    "name": "Armor Boost",
+    "type": "active",
+    "class": "knight",
+    "description": "Temporarily increase defense significantly.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 10
+  },
+  {
+    "id": "knight_cleave",
+    "name": "Cleave",
+    "type": "active",
+    "class": "knight",
+    "description": "Sweeping attack hitting multiple enemies.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 4,
+    "effects": [
+      {
+        "id": "bleed",
+        "duration": 3,
+        "target": "enemy"
+      }
+    ]
+  },
+  {
+    "id": "knight_retribution",
+    "name": "Retribution",
+    "type": "active",
+    "class": "knight",
+    "description": "Counter-attack when taking damage.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 6
+  },
+  {
+    "id": "knight_guardian_stance",
+    "name": "Guardian Stance",
+    "type": "active",
+    "class": "knight",
+    "description": "Enter defensive stance reducing all damage.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 15
+  },
+  {
+    "id": "knight_heroic_leap",
+    "name": "Heroic Leap",
+    "type": "active",
+    "class": "knight",
+    "description": "Leap to target location dealing area damage.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 12
+  },
+  {
+    "id": "knight_second_wind",
+    "name": "Second Wind",
+    "type": "active",
+    "class": "knight",
+    "description": "Restore health when below 30% HP.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 60
+  },
+  {
+    "id": "knight_war_cry",
+    "name": "War Cry",
+    "type": "active",
+    "class": "knight",
+    "description": "Buff allies and debuff enemies with battle cry.",
+    "level": 1,
+    "manaCost": 28,
+    "cooldown": 20,
+    "effects": [
+      {
+        "id": "might",
+        "duration": 3,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "knight_iron_will",
+    "name": "Iron Will",
+    "type": "active",
+    "class": "knight",
+    "description": "Become immune to status effects temporarily.",
+    "level": 1,
+    "manaCost": 40,
+    "cooldown": 30
+  },
+  {
+    "id": "knight_whirlwind",
+    "name": "Whirlwind",
+    "type": "active",
+    "class": "knight",
+    "description": "Spin attack hitting all nearby enemies.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 8
+  },
+  {
+    "id": "knight_shield_wall",
+    "name": "Shield Wall",
+    "type": "active",
+    "class": "knight",
+    "description": "Create barrier protecting area from projectiles.",
+    "level": 1,
+    "manaCost": 45,
+    "cooldown": 25
+  },
+  {
+    "id": "knight_judgment",
+    "name": "Judgment",
+    "type": "active",
+    "class": "knight",
+    "description": "Divine strike dealing extra damage to evil enemies.",
+    "level": 1,
+    "manaCost": 32,
+    "cooldown": 15,
+    "tags": [
+      "Holy_Damage"
+    ]
+  },
+  {
+    "id": "knight_phalanx",
+    "name": "Phalanx Formation",
+    "type": "active",
+    "class": "knight",
+    "description": "Formation that increases party defense.",
+    "level": 1,
+    "manaCost": 50,
+    "cooldown": 40
+  },
+  {
+    "id": "knight_rend",
+    "name": "Rend",
+    "type": "active",
+    "class": "knight",
+    "description": "Bleeding attack that deals damage over time.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 6,
+    "effects": [
+      {
+        "id": "bleed",
+        "duration": 3
+      }
+    ]
+  },
+  {
+    "id": "knight_concussive_blow",
+    "name": "Concussive Blow",
+    "type": "active",
+    "class": "knight",
+    "description": "Heavy strike that can stun enemies.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 10,
+    "effects": [
+      {
+        "id": "stun",
+        "duration": 2,
+        "chance": 0.6
+      }
+    ]
+  },
+  {
+    "id": "knight_battle_standard",
+    "name": "Battle Standard",
+    "type": "active",
+    "class": "knight",
+    "description": "Plant banner that buffs nearby allies.",
+    "level": 1,
+    "manaCost": 38,
+    "cooldown": 45
+  },
+  {
+    "id": "knight_intercept",
+    "name": "Intercept",
+    "type": "active",
+    "class": "knight",
+    "description": "Quickly move to intercept attack on ally.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 12
+  },
+  {
+    "id": "knight_last_stand",
+    "name": "Last Stand",
+    "type": "active",
+    "class": "knight",
+    "description": "When near death, gain massive power boost.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 120
+  }
+]

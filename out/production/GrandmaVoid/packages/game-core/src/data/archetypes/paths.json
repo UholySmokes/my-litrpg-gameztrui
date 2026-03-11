@@ -1,0 +1,319 @@
+[
+  {
+    "id": "divinity_pathway",
+    "name": "Divinity Pathway",
+    "category": "Path",
+    "summary": "Structured ascension with rites, domains, and divine authority.",
+    "description": "A formal path to godhood, structured around divine domains, sacred rites, and ascending tiers of authority. This pathway turns faith, deeds, and dominion into a quantifiable measure of divinity, allowing a mortal to climb the ladder of cosmic power and become a true deity.",
+    "coreLoop": [
+      "Select a core 'Domain' (e.g., Harvest, Justice, Secrets, Storms) that defines your divine portfolio.",
+      "Gather 'Acolytes' and convert 'Faith' from mortals by performing deeds aligned with your Domain.",
+      "Spend Faith to perform 'Sacred Rites,' unlocking minor boons and progressing towards the next Divine Tier.",
+      "Complete a 'Trial of Ascension'—a major test of your worthiness—to rise to a new Tier of Divinity (e.g., Demigod, Lesser God, True God)."
+    ],
+    "progression": [
+      "At higher Tiers, your Domain's influence becomes a passive, regional law (e.g., a God of Justice's domain naturally exposes lies).",
+      "Unlock 'Divine Manifestations,' allowing you to create avatars, bestow blessings on champions, or pronounce curses.",
+      "Gain the ability to establish your own 'Divine Realm'—a pocket dimension shaped by your will and Domain.",
+      "Absorb or merge with other minor domains to expand your divine portfolio and power."
+    ],
+    "narrativeHooks": [
+      "Existing gods of the pantheon view you as an upstart rival, a potential ally, or a useful pawn.",
+      "Your personality and physical form begin to subtly transform, reflecting the nature of your chosen Domain.",
+      "You are plagued by the prayers of your followers, feeling their joy, suffering, and endless demands.",
+      "Philosophers and heretics may arise to challenge the legitimacy of your newfound godhood."
+    ],
+    "questHooks": [
+      "An older, forgotten deity of a similar Domain awakens to challenge you for supremacy.",
+      "A rival god attempts to 'poison' your domain by spreading a conflicting ideology among your followers.",
+      "Find and reclaim a 'Lost Artifact' of your Domain to unlock a powerful, forgotten aspect of your authority.",
+      "Your most devout champion is in peril, and saving them requires a direct, personal intervention that risks exposing your divine nature."
+    ],
+    "tags": [
+      "divine",
+      "ritual",
+      "ascension",
+      "faith",
+      "domain"
+    ],
+    "statModifiers": {
+      "wisdom": 3,
+      "vitality": 2
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#96F2D7"
+    },
+    "narrativeTone": {
+      "voice": "mystical and philosophical",
+      "vocabulary": [
+        "formal",
+        "godhood",
+        "structured",
+        "around",
+        "divine"
+      ],
+      "sentenceStyle": "metaphorical, flowery prose"
+    },
+    "archetypePassives": [
+      {
+        "id": "divinity_pathway_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "id": "monster_evolution_path",
+    "name": "Monster Evolution Path (Beast Progression)",
+    "category": "Path",
+    "summary": "Here the character either starts as a monster or gains the ability to evolve in stages like a monster (common in isek...",
+    "description": "Here the character either starts as a monster or gains the ability to evolve in stages like a monster (common in isekai where MC might be a slime, goblin, etc., who evolves into higher forms). The mechanics mimic RPG monster evolution: accumulate enough energy or meet criteria -> evolve into a stronger species. Each evolution yields enormous stat boosts and often a change in form and available skills. Progression is level-based with evolution checkpoints instead of class changes. For example, a character who began as a lowly goblin might evolve at level 10 to Hobgoblin (gaining intelligence...",
+    "coreLoop": [
+      "Here the character either starts as a monster or gains the ability to evolve in stages like a monster.",
+      "This creates abilities by virtue of species traits: maybe as a slime they had absorb and split abilities, then as a Demon Slime Dragon they gain flight, breath attack, etc.",
+      "It synergizes with devouring/absorption systems - typically monsters grow by eating other creatures, so an MC with a monster evolution path often has a built-in devour mechanic to..."
+    ],
+    "progression": [
+      "The mechanics mimic RPG monster evolution: accumulate enough energy or meet criteria -> evolve into a stronger species.",
+      "Progression is level-based with evolution checkpoints instead of class changes.",
+      "For example, a character who began as a lowly goblin might evolve at level 10 to Hobgoblin, then at 20 to Ogre, at 30 to Ogre King, and perhaps eventually to Demon Lord or a new..."
+    ],
+    "narrativeHooks": [
+      "The flavor is very much about transformation and often surprises - the character literally changes physically, causing others to underestimate or misidentify them at first.",
+      "Each evolution yields enormous stat boosts and often a change in form and available skills.",
+      "One person experiencing the full lifecycle of multiple creatures accumulates a Swiss-army-knife of powers."
+    ],
+    "questHooks": [
+      "Secure a key resource that stabilizes the Monster Evolution Path and removes its main limitation.",
+      "Defeat a rival who wields a competing version of the Monster Evolution Path.",
+      "Use the Monster Evolution Path to resolve a crisis ordinary powers cannot solve."
+    ],
+    "tags": [
+      "evolution",
+      "beast",
+      "soulbound-evolution"
+    ],
+    "statModifiers": {
+      "wisdom": 3,
+      "vitality": 2
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#96F2D7"
+    },
+    "narrativeTone": {
+      "voice": "mystical and philosophical",
+      "vocabulary": [
+        "character",
+        "either",
+        "starts",
+        "monster",
+        "ability"
+      ],
+      "sentenceStyle": "metaphorical, flowery prose"
+    },
+    "archetypePassives": [
+      {
+        "id": "monster_evolution_path_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "id": "cultivation_ascension_path",
+    "name": "Cultivation Ascension Path (Realm Breaker)",
+    "category": "Path",
+    "summary": "This archetype adopts the style of xianxia/ cultivation novels: the character has a personal cultivation system with...",
+    "description": "This archetype adopts the style of xianxia/ cultivation novels: the character has a personal cultivation system with realms/stages (Qi Gathering, Foundation, Core, Nascent Soul, etc. or other such tiers) that grant qualitative boosts at each breakthrough. It's a cheat in worlds that normally use a level or class system - effectively the character is operating on a different progression mechanic in parallel. The function involves intense training, meditation, absorbing spiritual energy, and overcoming \"bottlenecks\" (sometimes represented by tribulations or tests) to ascend to the next realm....",
+    "coreLoop": [
+      "It's a cheat in worlds that normally use a level or class system - effectively the character is operating on a different progression mechanic in parallel.",
+      "The function involves intense training, meditation, absorbing spiritual energy, and overcoming \"bottlenecks\" to ascend to the next realm.",
+      "Progression is thus milestone-based: reaching a new cultivation realm might be akin to jumping 20 character levels in one go, plus unlocking new abilities like flight, longevity,..."
+    ],
+    "progression": [
+      "Rarity: In a world that isn't originally a xianxia setting, the MC might be the only cultivator, making them an anomaly that can eventually ascend beyond mortal ken.",
+      "This archetype adopts the style of xianxia/ cultivation novels: the character has a personal cultivation system with realms/stages that grant qualitative boosts at each...",
+      "Each breakthrough multiplies their power, far more than a normal level-up would."
+    ],
+    "narrativeHooks": [
+      "The thematic flavor is often mystical and disciplined; the character might carry a cultivation technique manual or have an inner visualization of meridians and a core.",
+      "Acquisition could be through transmigration, finding a secret manual or a legendary mentor, or awakening a dormant spiritual root.",
+      "This cheat can overlay on a normal class - e.g. they could be a level 30 warrior but also a \"Core Formation cultivator,\" making them drastically stronger than other level 30..."
+    ],
+    "questHooks": [
+      "Secure a key resource that stabilizes the Cultivation Ascension Path and removes its main limitation.",
+      "Defeat a rival who wields a competing version of the Cultivation Ascension Path.",
+      "Use the Cultivation Ascension Path to resolve a crisis ordinary powers cannot solve."
+    ],
+    "tags": [
+      "cultivation",
+      "ascension",
+      "soulbound-evolution"
+    ],
+    "statModifiers": {
+      "wisdom": 3,
+      "vitality": 2
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#96F2D7"
+    },
+    "narrativeTone": {
+      "voice": "mystical and philosophical",
+      "vocabulary": [
+        "archetype",
+        "adopts",
+        "xianxia",
+        "cultivation",
+        "novels"
+      ],
+      "sentenceStyle": "metaphorical, flowery prose"
+    },
+    "archetypePassives": [
+      {
+        "id": "cultivation_ascension_path_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "id": "corruption_empowerment",
+    "name": "Corruption Empowerment (Dark Alignment Path)",
+    "category": "Path",
+    "summary": "The character grows stronger the more they embrace darkness or corruption.",
+    "description": "The character grows stronger the more they embrace darkness or corruption. This might be represented by a Corruption meter or stat that rises when they perform ruthless, selfish, or evil acts, or when they channel dark energies. The mechanic is double-edged: each increase in corruption yields immediate power boosts - maybe increased strength, access to dark spells, demonic transformations - but at the cost of side effects like losing humanity, attracting holy retribution, or mental instability. Progression is choice-branching; the character can push the corruption deliberately to reach new ...",
+    "coreLoop": [
+      "This might be represented by a Corruption meter or stat that rises when they perform ruthless, selfish, or evil acts, or when they channel dark energies.",
+      "Progression is choice-branching; the character can push the corruption deliberately to reach new plateaus of power.",
+      "They might also gain passive perks like not needing sleep or feeling no pain as they become less human."
+    ],
+    "progression": [
+      "The character grows stronger the more they embrace darkness or corruption.",
+      "The mechanic is double-edged: each increase in corruption yields immediate power boosts - maybe increased strength, access to dark spells, demonic transformations - but at the...",
+      "For example, hitting 25% corruption might unlock a \"Demon Form I\" with minor physical enhancements; 50% unlocks \"Demon Form II\" or a powerful forbidden spell, and so on up to..."
+    ],
+    "narrativeHooks": [
+      "The thematic flavor is edgy and intense - it's about power at a price.",
+      "The world likely views corruption as a one-way road to villainy, so an anti-hero protagonist might struggle with using it.",
+      "It also synergizes with fear systems: NPCs or enemies might fear a highly corrupted character, giving them an intimidation aura."
+    ],
+    "questHooks": [
+      "Secure a key resource that stabilizes the Corruption Empowerment and removes its main limitation.",
+      "Defeat a rival who wields a competing version of the Corruption Empowerment.",
+      "Use the Corruption Empowerment to resolve a crisis ordinary powers cannot solve."
+    ],
+    "tags": [
+      "soulbound-evolution",
+      "system",
+      "archetype"
+    ],
+    "statModifiers": {
+      "wisdom": 3,
+      "vitality": 2
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#96F2D7"
+    },
+    "narrativeTone": {
+      "voice": "mystical and philosophical",
+      "vocabulary": [
+        "character",
+        "stronger",
+        "embrace",
+        "darkness",
+        "corruption"
+      ],
+      "sentenceStyle": "metaphorical, flowery prose"
+    },
+    "archetypePassives": [
+      {
+        "id": "corruption_empowerment_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "id": "purity_s_blessing",
+    "name": "Purity's Blessing (Light Alignment Path)",
+    "category": "Path",
+    "summary": "Conversely, this archetype grants power through purity, virtue, and righteousness.",
+    "description": "Conversely, this archetype grants power through purity, virtue, and righteousness. The character essentially has a halo system where maintaining moral integrity or performing noble deeds fuels their strength. The function could be a Virtue meter that increases with acts of kindness, courage, or self-sacrifice. As it rises, they might receive divine blessings - e.g. passive healing factor, holy aura that repels darkness, or miraculous intervention abilities (like prayers being answered by actual buffs). Progression is narrative and behavioral: hitting thresholds of virtue might coincide with...",
+    "coreLoop": [
+      "This archetype influences abilities by granting primarily defensive and supportive powers initially and later potent offensive ones against evil foes.",
+      "It synergizes with faith systems: maybe the character gets stronger with prayer or when in holy sites.",
+      "Also, any sin/corruption in enemies becomes a weakness; the more corrupt the foe, the more damage the pure character can do, essentially flipping the usual \"evil gets strong\"..."
+    ],
+    "progression": [
+      "The function could be a Virtue meter that increases with acts of kindness, courage, or self-sacrifice.",
+      "Progression is narrative and behavioral: hitting thresholds of virtue might coincide with proving themselves worthy in a trial or resisting a major temptation.",
+      "At high levels of purity, the character might literally glow or become angelic - unlocking something like Wings of Light or Saint's Wrath skill that smites evil effortlessly."
+    ],
+    "narrativeHooks": [
+      "The thematic flavor is uplifting and heroic.",
+      "Rarity: True purity is rare in gritty worlds, so the system might have almost forgotten this feature.",
+      "Method of acquisition can be fate, or maybe a result of character choice."
+    ],
+    "questHooks": [
+      "Secure a key resource that stabilizes the Purity's Blessing and removes its main limitation.",
+      "Defeat a rival who wields a competing version of the Purity's Blessing.",
+      "Use the Purity's Blessing to resolve a crisis ordinary powers cannot solve."
+    ],
+    "tags": [
+      "sin",
+      "soulbound-evolution",
+      "system",
+      "archetype"
+    ],
+    "statModifiers": {
+      "wisdom": 3,
+      "vitality": 2
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#96F2D7"
+    },
+    "narrativeTone": {
+      "voice": "mystical and philosophical",
+      "vocabulary": [
+        "conversely",
+        "archetype",
+        "grants",
+        "through",
+        "purity"
+      ],
+      "sentenceStyle": "metaphorical, flowery prose"
+    },
+    "archetypePassives": [
+      {
+        "id": "purity_s_blessing_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ]
+  }
+]

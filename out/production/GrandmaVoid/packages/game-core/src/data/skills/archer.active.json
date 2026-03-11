@@ -1,0 +1,202 @@
+[
+  {
+    "id": "archer_steady_shot",
+    "name": "Steady Shot",
+    "type": "active",
+    "class": "archer",
+    "description": "A carefully aimed shot that deals reliable damage.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 0
+  },
+  {
+    "id": "archer_piercing_arrow",
+    "name": "Piercing Arrow",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire an arrow that penetrates multiple enemies.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 8
+  },
+  {
+    "id": "archer_explosive_arrow",
+    "name": "Explosive Arrow",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire an arrow that explodes on impact.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 12
+  },
+  {
+    "id": "archer_rain_of_arrows",
+    "name": "Rain of Arrows",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire a volley of arrows into the air to rain down on enemies.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 15
+  },
+  {
+    "id": "archer_headshot",
+    "name": "Headshot",
+    "type": "active",
+    "class": "archer",
+    "description": "Aim for the head for massive critical damage.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 20
+  },
+  {
+    "id": "archer_triple_shot",
+    "name": "Triple Shot",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire three arrows in quick succession.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 6
+  },
+  {
+    "id": "archer_poison_arrow",
+    "name": "Poison Arrow",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire an arrow coated with deadly poison.",
+    "level": 1,
+    "manaCost": 14,
+    "cooldown": 10
+  },
+  {
+    "id": "archer_ice_arrow",
+    "name": "Ice Arrow",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire an arrow that freezes the target.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 12
+  },
+  {
+    "id": "archer_fire_arrow",
+    "name": "Fire Arrow",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire an arrow that ignites the target.",
+    "level": 1,
+    "manaCost": 16,
+    "cooldown": 12
+  },
+  {
+    "id": "archer_marking_shot",
+    "name": "Marking Shot",
+    "type": "active",
+    "class": "archer",
+    "description": "Mark a target, increasing all damage they take.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 15
+  },
+  {
+    "id": "archer_evasive_roll",
+    "name": "Evasive Roll",
+    "type": "active",
+    "class": "archer",
+    "description": "Roll to the side to dodge attacks.",
+    "level": 1,
+    "manaCost": 8,
+    "cooldown": 10
+  },
+  {
+    "id": "archer_concussive_shot",
+    "name": "Concussive Shot",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire a shot that dazes the target.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 8
+  },
+  {
+    "id": "archer_snipe",
+    "name": "Snipe",
+    "type": "active",
+    "class": "archer",
+    "description": "Take careful aim for a powerful long-range shot.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 30
+  },
+  {
+    "id": "archer_scatter_shot",
+    "name": "Scatter Shot",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire a spread of arrows hitting multiple targets.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 10
+  },
+  {
+    "id": "archer_fleet_foot",
+    "name": "Fleet Foot",
+    "type": "active",
+    "class": "archer",
+    "description": "Increase movement speed temporarily.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 30
+  },
+  {
+    "id": "archer_trick_shot",
+    "name": "Trick Shot",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire an arrow that ricochets between enemies.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 15
+  },
+  {
+    "id": "archer_silencing_shot",
+    "name": "Silencing Shot",
+    "type": "active",
+    "class": "archer",
+    "description": "Fire an arrow that silences spellcasters.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 24
+  },
+  {
+    "id": "archer_volley",
+    "name": "Volley",
+    "type": "active",
+    "class": "archer",
+    "description": "Rapidly fire arrows at all enemies in sight.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 25
+  },
+  {
+    "id": "archer_arrow_storm",
+    "name": "Arrow Storm",
+    "type": "active",
+    "class": "archer",
+    "description": "Create a devastating storm of arrows.",
+    "level": 1,
+    "manaCost": 45,
+    "cooldown": 120
+  },
+  {
+    "id": "archer_kill_shot",
+    "name": "Kill Shot",
+    "type": "active",
+    "class": "archer",
+    "description": "Execute a low health enemy with a lethal shot.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 10
+  }
+]

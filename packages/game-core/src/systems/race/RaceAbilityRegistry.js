@@ -34,6 +34,9 @@ const ABILITIES = toAbilityMap(raceAbilitiesData);
 const RACE_ABILITY_SETS = normalizeAbilitySetMap(raceAbilitySetsData);
 const ALL_RACE_ABILITY_IDS = Object.keys(ABILITIES);
 
+const copyStringArray = (values) =>
+  Array.isArray(values) ? values.filter((value) => typeof value === "string") : [];
+
 const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) => {
   if (!ability || typeof ability !== "object") return ability;
 
@@ -86,6 +89,38 @@ const normalizeAbilityTemplate = (ability, { category, source, ownerId } = {}) =
   });
 };
 
+const summarizeAbility = (ability) => {
+  if (!ability || typeof ability !== "object" || typeof ability.id !== "string") {
+    return null;
+  }
+
+  const template =
+    ability.template && typeof ability.template === "object"
+      ? ability.template
+      : {};
+  const slotType = ability.slotType || ability.type || "active";
+
+  return {
+    id: ability.id,
+    name: ability.name || ability.id,
+    description: ability.description || "No description available.",
+    type: ability.type || slotType,
+    slotType,
+    ownerType: ability.ownerType || "race",
+    ownerId: ability.ownerId || "unbound",
+    costType: ability.costType || null,
+    cost: Number.isFinite(ability.cost) ? ability.cost : 0,
+    cooldown: Number.isFinite(ability.cooldown) ? ability.cooldown : 0,
+    resource: ability.costType || null,
+    template: {
+      category: template.category || "Race Ability",
+      function: template.function || null,
+      elements: copyStringArray(template.elements),
+      source: template.source || "RaceAbilityRegistry",
+    },
+  };
+};
+
 export function getRaceAbilitiesFor(raceId) {
   if (!raceId) return null;
   const ids = RACE_ABILITY_SETS[raceId];
@@ -106,6 +141,16 @@ export function getRaceAbilityById(abilityId) {
     category: "Race Ability",
     ownerId: "unbound",
   });
+}
+
+export function getRaceAbilitySummariesFor(raceId) {
+  return (getRaceAbilitiesFor(raceId) || [])
+    .map((ability) => summarizeAbility(ability))
+    .filter(Boolean);
+}
+
+export function getRaceAbilitySummaryById(abilityId) {
+  return summarizeAbility(getRaceAbilityById(abilityId));
 }
 
 export function isRaceAbilityAllowed(raceId, abilityId) {

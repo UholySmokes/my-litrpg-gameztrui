@@ -1,5 +1,5 @@
 import {
-  getAllSkills,
+  getAllSkillSummaries,
   getLatticeLoadoutSummary,
   getSkillById,
 } from "../systems/skills/SkillRegistry.js";
@@ -494,7 +494,9 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
   }
 
   const raceId = normalizeId(typeof race === "string" ? race : race?.id);
-  const skillCatalog = Array.isArray(allSkills) ? allSkills : getAllSkills();
+  const skillCatalog = Array.isArray(allSkills)
+    ? allSkills
+    : getAllSkillSummaries();
   const skillIndex = buildSkillIndex(skillCatalog);
 
   const classSkillEntries = Array.isArray(cls?.skills)

@@ -1,1 +1,1 @@
-export { useNarrative } from "./narrative/useNarrativeCore.js";
+export { useNarrative } from "./narrative/useNarrativeRuntime.js";

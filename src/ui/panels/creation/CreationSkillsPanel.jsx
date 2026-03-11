@@ -1,9 +1,14 @@
 const SOURCE_COLORS = {
   class: "#00F3FF",
   race: "#96F2D7",
+  bloodline: "#96F2D7",
   general: "#E599F7",
   universal: "#E599F7",
+  study: "#74C0FC",
+  cultivation: "#94D82D",
   profession: "#FFD43B",
+  relic: "#FFA94D",
+  story: "#FF8787",
   system: "#ADB5BD",
 };
 
@@ -30,11 +35,39 @@ function SourceBadge({ source }) {
   );
 }
 
+function MetaBadge({ label, color = "var(--text-dim)" }) {
+  if (!label) return null;
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        padding: "0.08rem 0.3rem",
+        borderRadius: "3px",
+        fontSize: "0.5rem",
+        fontWeight: "bold",
+        letterSpacing: "0.5px",
+        textTransform: "uppercase",
+        color,
+        background: `${color}15`,
+        border: `1px solid ${color}33`,
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
 function SkillCard({ skill, isSelected, onClick, showDescription = false }) {
   const source =
+    skill.latticeSourceType ||
     skill.source ||
     skill.ownerType ||
     "general";
+  const family = skill.creationLabels?.family || skill.latticeFamily || null;
+  const runtimeRole =
+    skill.runtimeRole && skill.runtimeRole !== "standard"
+      ? skill.creationLabels?.runtimeRole || skill.runtimeRole
+      : null;
   const element = skill.element || null;
   const damage = skill.stats?.damage || null;
   const manaCost = skill.stats?.manaCost || null;
@@ -72,11 +105,23 @@ function SkillCard({ skill, isSelected, onClick, showDescription = false }) {
             </span>
           )}
           <SourceBadge source={source} />
+          <MetaBadge label={family} color="#74C0FC" />
+          <MetaBadge label={runtimeRole} color="#FFD43B" />
         </div>
       </div>
       {(showDescription || isSelected) && (
-        <div style={{ fontSize: "0.6rem", opacity: 0.8, lineHeight: "1.35" }}>
-          {skill.description || "Details unavailable."}
+        <div style={{ display: "grid", gap: "0.2rem" }}>
+          <div style={{ fontSize: "0.6rem", opacity: 0.8, lineHeight: "1.35" }}>
+            {skill.description || "Details unavailable."}
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}>
+            <span style={{ fontSize: "0.52rem", color: "var(--text-dim)" }}>
+              Slot: {skill.creationLabels?.slotType || skill.slotType || skill.type || "Unknown"}
+            </span>
+            <span style={{ fontSize: "0.52rem", color: "var(--text-dim)" }}>
+              Source: {skill.creationLabels?.sourceType || source}
+            </span>
+          </div>
         </div>
       )}
       {(damage || manaCost) && (
@@ -95,8 +140,8 @@ export default function CreationSkillsPanel({
   availablePassiveSkills,
   selectedActiveSkills,
   selectedPassiveSkills,
-  activeLimit = 4,
-  passiveLimit = 12,
+  maxActiveSkills = 3,
+  maxPassiveSkills = 6,
   onActiveSelect,
   onPassiveToggle,
   onAction,
@@ -128,14 +173,14 @@ export default function CreationSkillsPanel({
               <span style={{
                 fontSize: "0.7rem",
                 fontFamily: "monospace",
-                color: activeCount >= activeLimit ? "#8CE99A" : "var(--holo-cyan)",
+                color: activeCount >= maxActiveSkills ? "#8CE99A" : "var(--holo-cyan)",
                 fontWeight: "bold",
               }}>
-                {activeCount}/{activeLimit} {activeCount >= activeLimit ? "\u2713" : ""}
+                {activeCount}/{maxActiveSkills} {activeCount >= maxActiveSkills ? "\u2713" : ""}
               </span>
             </div>
             <div style={{ fontSize: "0.6rem", color: "var(--text-dim)", marginBottom: "0.3rem" }}>
-              Combat abilities triggered during encounters. Select {activeLimit}.
+              Combat abilities triggered during encounters. Select {maxActiveSkills}.
             </div>
             <div
               style={{
@@ -172,14 +217,14 @@ export default function CreationSkillsPanel({
               <span style={{
                 fontSize: "0.7rem",
                 fontFamily: "monospace",
-                color: passiveCount >= passiveLimit ? "#8CE99A" : "var(--holo-cyan)",
+                color: passiveCount >= maxPassiveSkills ? "#8CE99A" : "var(--holo-cyan)",
                 fontWeight: "bold",
               }}>
-                {passiveCount}/{passiveLimit} {passiveCount >= passiveLimit ? "\u2713" : ""}
+                {passiveCount}/{maxPassiveSkills} {passiveCount >= maxPassiveSkills ? "\u2713" : ""}
               </span>
             </div>
             <div style={{ fontSize: "0.6rem", color: "var(--text-dim)", marginBottom: "0.3rem" }}>
-              Always-on enhancements that shape your passive capabilities. Select {passiveLimit}.
+              Always-on enhancements that shape your passive capabilities. Select {maxPassiveSkills}.
             </div>
             <div
               style={{

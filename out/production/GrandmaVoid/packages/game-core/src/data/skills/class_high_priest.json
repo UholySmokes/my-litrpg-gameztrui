@@ -1,0 +1,99 @@
+[
+  {
+    "id": "greater_heal",
+    "name": "Greater Heal",
+    "description": "A powerful restorative surge.",
+    "cost": 40,
+    "costType": "mana",
+    "cooldown": 3,
+    "target": "self",
+    "heal": {
+      "percent": 0.4
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "mass_cleanse",
+    "name": "Mass Cleanse",
+    "description": "Purify all ailments with a holy word.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "cleanse": {
+      "types": [
+        "DEBUFF",
+        "DOT",
+        "CONTROL"
+      ]
+    },
+    "heal": {
+      "percent": 0.1
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "divine_intervention",
+    "name": "Divine Intervention",
+    "description": "Call upon the divine to prevent death once.",
+    "cost": 60,
+    "costType": "mana",
+    "cooldown": 30,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 1,
+        "magnitude": 100
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "holy_nova",
+    "name": "Holy Nova",
+    "description": "Radiant burst that damages foes and heals you.",
+    "cost": 35,
+    "costType": "mana",
+    "cooldown": 6,
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": true,
+      "element": "holy"
+    },
+    "heal": {
+      "percent": 0.15
+    },
+    "effects": [],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "fae_touched_special",
+    "name": "Glamour",
+    "description": "Weave a glamour that confuses the target.",
+    "cost": 22,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

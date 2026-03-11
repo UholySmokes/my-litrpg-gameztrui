@@ -1,11 +1,12 @@
 // ProfessionUI.jsx - Crafting and profession management interface
 import React, { useEffect, useRef, useState } from "react";
 import {
-  PROFESSIONS,
-  getRecipesForProfession,
-  getTierFromXp,
-  getFullProfessionRank,
-} from "../systems/profession/ProfessionRegistry.js";
+  getProfessionRecipeSummaries,
+  getProfessionRankFromXp,
+  getProfessionSummaries,
+  getProfessionSummaryById,
+  getProfessionTierFromXp,
+} from "../systems/profession/ProfessionContentPack.js";
 
 export default function ProfessionUI({
   isOpen,
@@ -61,6 +62,8 @@ export default function ProfessionUI({
   }
 
   const playerProfessions = gameState.player.professions || {};
+  const professionList = getProfessionSummaries();
+  const selectedProfessionSummary = getProfessionSummaryById(selectedProfession);
 
   const handleCraft = (recipe) => {
     if (onCraft) {
@@ -86,7 +89,7 @@ export default function ProfessionUI({
 
   const getProfessionLevel = (professionId) => {
     const xp = getProfessionXp(professionId);
-    return getFullProfessionRank(xp);
+    return getProfessionRankFromXp(xp);
   };
 
   const panel = (
@@ -135,7 +138,8 @@ export default function ProfessionUI({
                   gap: "0.5rem",
                 }}
               >
-                {Object.entries(PROFESSIONS).map(([id, profession]) => {
+                {professionList.map((profession) => {
+                  const id = profession.id;
                   const level = getProfessionLevel(id);
                   const xp = getProfessionXp(id);
 
@@ -195,7 +199,7 @@ export default function ProfessionUI({
                       marginBottom: "0.5rem",
                     }}
                   >
-                    {PROFESSIONS[selectedProfession].name} Recipes
+                    {selectedProfessionSummary?.name} Recipes
                   </h3>
                   <div
                     style={{
@@ -205,9 +209,9 @@ export default function ProfessionUI({
                       gap: "0.75rem",
                     }}
                   >
-                    {getRecipesForProfession(
+                    {getProfessionRecipeSummaries(
                       selectedProfession,
-                      getTierFromXp(getProfessionXp(selectedProfession)).tier,
+                      getProfessionTierFromXp(getProfessionXp(selectedProfession))?.tier || 1,
                     ).map((recipe) => {
                       const craftable = canCraft(recipe);
 

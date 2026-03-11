@@ -1,0 +1,101 @@
+[
+  {
+    "tier": 1,
+    "name": "Novice",
+    "subRanks": [
+      "Low Novice",
+      "Mid Novice",
+      "High Novice"
+    ],
+    "xpRequired": 0,
+    "skillPoints": 1
+  },
+  {
+    "tier": 2,
+    "name": "Apprentice",
+    "subRanks": [
+      "Low Apprentice",
+      "Mid Apprentice",
+      "High Apprentice"
+    ],
+    "xpRequired": 500,
+    "skillPoints": 2
+  },
+  {
+    "tier": 3,
+    "name": "Journeyman",
+    "subRanks": [
+      "Low Journeyman",
+      "Mid Journeyman",
+      "High Journeyman"
+    ],
+    "xpRequired": 2000,
+    "skillPoints": 3
+  },
+  {
+    "tier": 4,
+    "name": "Adept",
+    "subRanks": [
+      "Low Adept",
+      "Mid Adept",
+      "High Adept"
+    ],
+    "xpRequired": 5000,
+    "skillPoints": 4
+  },
+  {
+    "tier": 5,
+    "name": "Expert",
+    "subRanks": [
+      "Low Expert",
+      "Mid Expert",
+      "High Expert"
+    ],
+    "xpRequired": 12000,
+    "skillPoints": 5
+  },
+  {
+    "tier": 6,
+    "name": "Master",
+    "subRanks": [
+      "Low Master",
+      "Mid Master",
+      "High Master"
+    ],
+    "xpRequired": 25000,
+    "skillPoints": 6
+  },
+  {
+    "tier": 7,
+    "name": "Grandmaster",
+    "subRanks": [
+      "Low Grandmaster",
+      "Mid Grandmaster",
+      "High Grandmaster"
+    ],
+    "xpRequired": 50000,
+    "skillPoints": 8
+  },
+  {
+    "tier": 8,
+    "name": "Artisan",
+    "subRanks": [
+      "Low Artisan",
+      "Mid Artisan",
+      "High Artisan"
+    ],
+    "xpRequired": 100000,
+    "skillPoints": 10
+  },
+  {
+    "tier": 9,
+    "name": "Mythical",
+    "subRanks": [
+      "Mythical Initiate",
+      "Mythical Adept",
+      "Mythical Sovereign"
+    ],
+    "xpRequired": 250000,
+    "skillPoints": 15
+  }
+]

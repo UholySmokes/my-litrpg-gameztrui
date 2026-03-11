@@ -1,7 +1,7 @@
 import {
-  PROFESSION_CATEGORIES,
-  PROFESSIONS,
-} from "../../../systems/profession/ProfessionRegistry.js";
+  getProfessionCategories,
+  getProfessionSummaries,
+} from "../../../systems/profession/ProfessionContentPack.js";
 
 function StatChip({ label }) {
   if (!label) return null;
@@ -22,8 +22,11 @@ function StatChip({ label }) {
 }
 
 function getProfessionT1Skills(profession) {
-  const tier1 = profession?.tierUnlocks?.[1];
-  const skills = Array.isArray(tier1?.skills) ? tier1.skills : [];
+  const skills = Array.isArray(profession?.tier1Skills)
+    ? profession.tier1Skills
+    : Array.isArray(profession?.tierUnlocks?.[1]?.skills)
+      ? profession.tierUnlocks[1].skills
+      : [];
   return skills.slice(0, 6);
 }
 
@@ -32,8 +35,8 @@ export default function CreationProfessionPanel({
   onProfessionSelect,
   onAction,
 }) {
-  const professionList = Object.values(PROFESSIONS || {}).filter(Boolean);
-  const categories = Object.values(PROFESSION_CATEGORIES || {}).filter(Boolean);
+  const professionList = getProfessionSummaries();
+  const categories = getProfessionCategories();
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>

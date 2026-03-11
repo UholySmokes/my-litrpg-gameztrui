@@ -1,6 +1,6 @@
-import { getCharacterCreationSkillSelectionLimits } from "./CharacterCreationOptionsRegistry.js";
-
 const BLUEPRINT_VERSION = 1;
+export const CHARACTER_CREATION_V1_ACTIVE_SKILL_COUNT = 4;
+export const CHARACTER_CREATION_V1_PASSIVE_SKILL_COUNT = 12;
 
 function normalizeId(value) {
   if (typeof value !== "string") return null;
@@ -79,14 +79,19 @@ export function createCharacterCreationBlueprint(input = {}) {
 export function validateCharacterCreationBlueprint(blueprint = {}, options = {}) {
   const errors = [];
   const source = createCharacterCreationBlueprint(blueprint);
-  const selectionLimits = getCharacterCreationSkillSelectionLimits();
   const {
-    requiredActiveSkillCount = selectionLimits.requiredActiveSkillCount,
-    requiredPassiveSkillCount = selectionLimits.requiredPassiveSkillCount,
+    requiredActiveSkillCount,
+    requiredPassiveSkillCount,
     minPerks,
     maxPerks,
     requiresStarterTree,
   } = options;
+  const activeSkillCount = Number.isFinite(requiredActiveSkillCount)
+    ? requiredActiveSkillCount
+    : CHARACTER_CREATION_V1_ACTIVE_SKILL_COUNT;
+  const passiveSkillCount = Number.isFinite(requiredPassiveSkillCount)
+    ? requiredPassiveSkillCount
+    : CHARACTER_CREATION_V1_PASSIVE_SKILL_COUNT;
 
   if (!source.name) errors.push("Name is required.");
   if (!source.raceId) errors.push("Race is required.");
@@ -98,11 +103,11 @@ export function validateCharacterCreationBlueprint(blueprint = {}, options = {})
     errors.push("Attributes are required.");
   }
 
-  if (Number.isFinite(requiredActiveSkillCount) && source.activeSkillIds.length !== requiredActiveSkillCount) {
-    errors.push(`Must select exactly ${requiredActiveSkillCount} active skills.`);
+  if (source.activeSkillIds.length !== activeSkillCount) {
+    errors.push(`Must select exactly ${activeSkillCount} active skills.`);
   }
-  if (Number.isFinite(requiredPassiveSkillCount) && source.passiveSkillIds.length !== requiredPassiveSkillCount) {
-    errors.push(`Must select exactly ${requiredPassiveSkillCount} passive skills.`);
+  if (source.passiveSkillIds.length !== passiveSkillCount) {
+    errors.push(`Must select exactly ${passiveSkillCount} passive skills.`);
   }
 
   if (Number.isFinite(minPerks) && source.perkIds.length < minPerks) {

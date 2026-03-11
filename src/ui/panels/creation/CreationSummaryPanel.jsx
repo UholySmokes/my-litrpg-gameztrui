@@ -5,6 +5,8 @@ export default function CreationSummaryPanel({
   selectionSummary,
   selectedActiveSkills,
   selectedPassiveSkills,
+  activeLimit = 4,
+  passiveLimit = 12,
   typewriterText,
   syncProgress,
   canFinalize,
@@ -200,7 +202,7 @@ export default function CreationSummaryPanel({
                 marginBottom: "0.25rem",
               }}
             >
-              ACTIVE SKILLS ({selectedActiveSkills.length}/3)
+              ACTIVE SKILLS ({selectedActiveSkills.length}/{activeLimit})
             </div>
             <ul
               style={{
@@ -222,7 +224,7 @@ export default function CreationSummaryPanel({
                 })
               ) : (
                 <li style={{ color: "var(--text-dim)" }}>
-                  Select 3 active skills.
+                  Select {activeLimit} active skills.
                 </li>
               )}
             </ul>
@@ -235,7 +237,7 @@ export default function CreationSummaryPanel({
                 marginBottom: "0.25rem",
               }}
             >
-              PASSIVE SKILLS ({selectedPassiveSkills.length}/6)
+              PASSIVE SKILLS ({selectedPassiveSkills.length}/{passiveLimit})
             </div>
             <ul
               style={{
@@ -257,7 +259,7 @@ export default function CreationSummaryPanel({
                 })
               ) : (
                 <li style={{ color: "var(--text-dim)" }}>
-                  Select 6 passive skills.
+                  Select {passiveLimit} passive skills.
                 </li>
               )}
             </ul>

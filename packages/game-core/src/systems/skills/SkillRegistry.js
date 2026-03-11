@@ -717,14 +717,10 @@ export function getLatticeLoadoutSummary({
   passiveSkills = [],
   professionId = null,
 } = {}) {
-  const safeActiveSkills = Array.isArray(activeSkills) ? activeSkills : [];
-  const safePassiveSkills = Array.isArray(passiveSkills) ? passiveSkills : [];
-  const safeActiveSkillIds = Array.isArray(activeSkillIds) ? activeSkillIds : [];
-  const safePassiveSkillIds = Array.isArray(passiveSkillIds) ? passiveSkillIds : [];
   const resolvedActiveSkills =
-    safeActiveSkills.length > 0 ? resolveSkillReferenceList(safeActiveSkills) : resolveSkillReferenceList(safeActiveSkillIds);
+    activeSkills.length > 0 ? resolveSkillReferenceList(activeSkills) : resolveSkillReferenceList(activeSkillIds);
   const resolvedPassiveSkills =
-    safePassiveSkills.length > 0 ? resolveSkillReferenceList(safePassiveSkills) : resolveSkillReferenceList(safePassiveSkillIds);
+    passiveSkills.length > 0 ? resolveSkillReferenceList(passiveSkills) : resolveSkillReferenceList(passiveSkillIds);
 
   return summarizeLatticeLoadout({
     activeSkills: resolvedActiveSkills,
@@ -741,14 +737,10 @@ export function getLatticeBuildPressureForLoadout({
   professionId = null,
   nativeMiracleUsedRecently = false,
 } = {}) {
-  const safeActiveSkills = Array.isArray(activeSkills) ? activeSkills : [];
-  const safePassiveSkills = Array.isArray(passiveSkills) ? passiveSkills : [];
-  const safeActiveSkillIds = Array.isArray(activeSkillIds) ? activeSkillIds : [];
-  const safePassiveSkillIds = Array.isArray(passiveSkillIds) ? passiveSkillIds : [];
   const resolvedActiveSkills =
-    safeActiveSkills.length > 0 ? resolveSkillReferenceList(safeActiveSkills) : resolveSkillReferenceList(safeActiveSkillIds);
+    activeSkills.length > 0 ? resolveSkillReferenceList(activeSkills) : resolveSkillReferenceList(activeSkillIds);
   const resolvedPassiveSkills =
-    safePassiveSkills.length > 0 ? resolveSkillReferenceList(safePassiveSkills) : resolveSkillReferenceList(safePassiveSkillIds);
+    passiveSkills.length > 0 ? resolveSkillReferenceList(passiveSkills) : resolveSkillReferenceList(passiveSkillIds);
   const resolvedSkills = [...resolvedActiveSkills, ...resolvedPassiveSkills];
 
   return {
@@ -764,19 +756,18 @@ export function getLatticeBuildPressureForLoadout({
 }
 
 export function validateSkillProgressEvent(event = {}, options = {}) {
-  const normalizedEvent = (event !== null && typeof event === 'object' && !Array.isArray(event)) ? event : {};
-  const skill = resolveSkillReference(normalizedEvent.skillId);
+  const skill = resolveSkillReference(event.skillId);
   if (!skill) {
     return {
       valid: false,
-      errors: [`Unknown skillId: ${JSON.stringify(normalizedEvent.skillId)}`],
-      event: normalizedEvent,
+      errors: [`Unknown skillId: ${JSON.stringify(event?.skillId)}`],
+      event,
       skill: null,
       masteryGain: 0,
     };
   }
 
-  const validation = validateLatticeProgressEvent(normalizedEvent, options);
+  const validation = validateLatticeProgressEvent(event, options);
   if (!validation.valid) {
     return {
       ...validation,

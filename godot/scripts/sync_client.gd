@@ -25,46 +25,6 @@ func command(envelope: Dictionary) -> Dictionary:
 	return await _authorized_json_request(sync_command_path, HTTPClient.METHOD_POST, envelope)
 
 
-func send_command(
-	command_name: String,
-	payload: Dictionary,
-	run_id: String,
-	client_seq: int,
-	content_version: String
-) -> Dictionary:
-	var normalized_name := command_name.strip_edges().to_lower()
-	var command_body := {}
-	match normalized_name:
-		"create_character":
-			command_body = {
-				"type": "CHARACTER",
-				"verb": "CREATE",
-				"character": payload if typeof(payload) == TYPE_DICTIONARY else {},
-			}
-		_:
-			return {
-				"http_ok": false,
-				"status": 0,
-				"body": {
-					"ok": false,
-					"errorCode": "UNSUPPORTED_COMMAND_NAME",
-					"message": "Unsupported command name: %s" % command_name,
-				},
-				"error": "unsupported_command_name",
-			}
-
-	var envelope := {
-		"id": "%s-%d" % [run_id, client_seq],
-		"runId": run_id,
-		"clientId": client_id,
-		"clientSeq": client_seq,
-		"createdAt": _iso_now(),
-		"contentVersion": content_version,
-		"command": command_body,
-	}
-	return await command(envelope)
-
-
 func commit_batch(commits: Array) -> Dictionary:
 	return await _authorized_json_request(sync_commit_batch_path, HTTPClient.METHOD_POST, {
 		"commits": commits,
@@ -163,7 +123,3 @@ func _request_json(
 		"body": parsed_body,
 		"raw": raw_body,
 	}
-
-
-func _iso_now() -> String:
-	return "%sZ" % Time.get_datetime_string_from_system(true, true)

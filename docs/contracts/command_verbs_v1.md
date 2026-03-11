@@ -5,7 +5,7 @@ Last updated: 2026-02-24
 
 ## 1. Scope
 
-This document locks the initial command verb set used by:
+This document locks the initial `TRIGGER` command verb set used by:
 
 - `POST /api/sync/command` payload validation.
 - Sync core trigger normalization and replay.
@@ -21,15 +21,11 @@ This document locks the initial command verb set used by:
 4. `ENCOUNTER_GATE`
 5. `SAVEPOINT`
 
-`command.type = "CHARACTER"` supports only:
-
-1. `CREATE`
-
 ## 3. Envelope Consistency Rules
 
 - `command.verb` is required for v1 command clients.
-- If `command.type = "TRIGGER"` and `command.triggerType` is present, it must equal `command.verb`.
-- If top-level `triggerType` is present, it must equal `command.verb` for `TRIGGER` commands.
+- If `command.triggerType` is present, it must equal `command.verb`.
+- If top-level `triggerType` is present, it must equal `command.verb`.
 - Unsupported verb values are rejected with `UNSUPPORTED_COMMAND_VERB`.
 - Mismatched verb/trigger values are rejected with `COMMAND_VERB_TRIGGER_MISMATCH`.
 
@@ -42,7 +38,6 @@ Verb policy used by sync batching/reconcile behavior:
 - `ZONE_EXIT`: `batchable = false`, `immediate = true`
 - `ENCOUNTER_GATE`: `batchable = false`, `immediate = true`
 - `SAVEPOINT`: `batchable = false`, `immediate = true`
-- `CREATE` (`CHARACTER`): `batchable = false`, `immediate = true`
 
 ## 5. Change Control
 

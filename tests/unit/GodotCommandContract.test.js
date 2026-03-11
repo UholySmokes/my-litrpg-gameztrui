@@ -53,22 +53,6 @@ describe("godot command + config contract", () => {
 		expect(world).toContain('envelope["command"] = {');
 	});
 
-	it("ships character creation through the canonical command path", () => {
-		const sync = readGodotAsset("godot/scripts/sync_client.gd");
-		const world = readGodotAsset("godot/scripts/world_controller.gd");
-
-		expect(sync).toContain("func send_command(");
-		expect(sync).toContain('"type": "CHARACTER"');
-		expect(sync).toContain('"verb": "CREATE"');
-		expect(sync).toContain('"character": payload');
-		expect(sync).toContain('"command": command_body');
-		expect(world).toContain('if _sync_client and _sync_client.has_method("send_command"):');
-		expect(world).toContain('_sync_client.send_command(');
-		expect(world).toContain('"create_character"');
-		expect(world).toContain('"character_creation_command_failed"');
-		expect(world).toContain('"character_creation_command_accepted"');
-	});
-
 	it("keeps generated Godot config paths relative to apiBaseUrl", () => {
 		const configJson = JSON.parse(readGodotAsset("godot/data/config.json"));
 		expect(configJson.apiBaseUrl).toBeTruthy();

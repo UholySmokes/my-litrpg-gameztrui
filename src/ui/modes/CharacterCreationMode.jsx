@@ -776,8 +776,8 @@ export default function CharacterCreationMode({
             availablePassiveSkills={availablePassiveSkills}
             selectedActiveSkills={selectedActiveSkills}
             selectedPassiveSkills={selectedPassiveSkills}
-            maxActiveSkills={MAX_ACTIVE_SKILLS}
-            maxPassiveSkills={MAX_PASSIVE_SKILLS}
+            activeLimit={MAX_ACTIVE_SKILLS}
+            passiveLimit={MAX_PASSIVE_SKILLS}
             onActiveSelect={(skill) => {
               setWizardError("");
               handleActiveSkillSelect(skill);
@@ -839,6 +839,8 @@ export default function CharacterCreationMode({
         selectionSummary={selectionSummary}
         selectedActiveSkills={selectedActiveSkills}
         selectedPassiveSkills={selectedPassiveSkills}
+        activeLimit={MAX_ACTIVE_SKILLS}
+        passiveLimit={MAX_PASSIVE_SKILLS}
         typewriterText={typewriterText}
         syncProgress={syncProgress}
         canFinalize={canFinalize}
@@ -875,6 +877,8 @@ export default function CharacterCreationMode({
     handleStarterTreeSelect,
     handleAlignmentSelect,
     handleSkillLoadoutSelect,
+    MAX_ACTIVE_SKILLS,
+    MAX_PASSIVE_SKILLS,
     rerollsRemaining,
     selectedActiveSkills,
     selectedArchetypeSystem,
@@ -893,8 +897,6 @@ export default function CharacterCreationMode({
     availableCreationAlignments,
     availableCreationSkillLoadouts,
     creationPerkLimits,
-    MAX_ACTIVE_SKILLS,
-    MAX_PASSIVE_SKILLS,
     selectionSummary,
     setGender,
     setName,

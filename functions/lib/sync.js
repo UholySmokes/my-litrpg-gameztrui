@@ -11,7 +11,7 @@ const {
 	normalizeCommitEnvelope,
 	normalizeCommitBatchRequest,
 	buildInitialGameplayState,
-	validateCommitAgainstState,
+	validateTriggerAgainstManifest,
 	applyCommitToState,
 	toPublicState,
 	hashCanonicalState,
@@ -444,16 +444,16 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 			continue;
 		}
 
-		const commitValidation = validateCommitAgainstState({
+		const triggerValidation = validateTriggerAgainstManifest({
 			manifest,
 			state,
 			commit,
 		});
-		if (!commitValidation.ok) {
+		if (!triggerValidation.ok) {
 			const reject = buildRejectResult({
 				commit,
-				errorCode: commitValidation.errorCode,
-				message: commitValidation.message,
+				errorCode: triggerValidation.errorCode,
+				message: triggerValidation.message,
 			});
 			await syncStore.appendEvent({
 				ownerId,
@@ -477,9 +477,8 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 		state = applyCommitToState({
 			state,
 			commit,
-			triggerDef: commitValidation.triggerDef,
-			resolvedTargetId: commitValidation.resolvedTargetId,
-			character: commitValidation.character,
+			triggerDef: triggerValidation.triggerDef,
+			resolvedTargetId: triggerValidation.resolvedTargetId,
 		});
 
 		await syncStore.putRun({
@@ -699,7 +698,7 @@ function normalizeCommandBody(rawBody, manifest) {
 		normalizeString(command.verb) ||
 		normalizeString(command.triggerType) ||
 		normalizeString(body.triggerType);
-	const commandVerb = normalizeSyncCommandVerb(rawCommandVerb, commandType);
+	const commandVerb = normalizeSyncCommandVerb(rawCommandVerb);
 	if (!commandVerb) {
 		return {
 			ok: false,
@@ -707,6 +706,32 @@ function normalizeCommandBody(rawBody, manifest) {
 			message: `Supported command verbs: ${SYNC_COMMAND_VERBS_V1.join(", ")}.`,
 		};
 	}
+
+	const explicitTriggerType = normalizeString(command.triggerType).toUpperCase();
+	if (explicitTriggerType && explicitTriggerType !== commandVerb) {
+		return {
+			ok: false,
+			errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
+			message: "command.verb must match command.triggerType for TRIGGER commands.",
+		};
+	}
+
+	const bodyTriggerType = normalizeString(body.triggerType).toUpperCase();
+	if (bodyTriggerType && bodyTriggerType !== commandVerb) {
+		return {
+			ok: false,
+			errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
+			message: "command.verb must match triggerType envelope value.",
+		};
+	}
+
+	const triggerType = commandVerb;
+	const trigger =
+		command.trigger && typeof command.trigger === "object"
+			? command.trigger
+			: body.trigger && typeof body.trigger === "object"
+				? body.trigger
+				: null;
 
 	const envelope = {
 		id: body.id,
@@ -716,62 +741,16 @@ function normalizeCommandBody(rawBody, manifest) {
 		createdAt: body.createdAt,
 		contentVersion:
 			normalizeString(body.contentVersion) || manifest.contentVersion,
+		triggerType,
+		trigger,
 		commandType,
 		command: {
 			...command,
 			type: commandType,
 			verb: commandVerb,
+			triggerType,
 		},
 	};
-
-	if (commandType === "TRIGGER") {
-		const explicitTriggerType = normalizeString(command.triggerType).toUpperCase();
-		if (explicitTriggerType && explicitTriggerType !== commandVerb) {
-			return {
-				ok: false,
-				errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
-				message: "command.verb must match command.triggerType for TRIGGER commands.",
-			};
-		}
-
-		const bodyTriggerType = normalizeString(body.triggerType).toUpperCase();
-		if (bodyTriggerType && bodyTriggerType !== commandVerb) {
-			return {
-				ok: false,
-				errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
-				message: "command.verb must match triggerType envelope value.",
-			};
-		}
-
-		const trigger =
-			command.trigger && typeof command.trigger === "object"
-				? command.trigger
-				: body.trigger && typeof body.trigger === "object"
-					? body.trigger
-					: null;
-		envelope.triggerType = commandVerb;
-		envelope.trigger = trigger;
-		envelope.command.triggerType = commandVerb;
-		return normalizeCommitEnvelope(envelope);
-	}
-
-	if (commandType === "CHARACTER") {
-		const character =
-			command.character && typeof command.character === "object"
-				? command.character
-				: body.character && typeof body.character === "object"
-					? body.character
-					: null;
-		if (!character) {
-			return {
-				ok: false,
-				errorCode: "INVALID_CHARACTER_PAYLOAD",
-				message: "command.character object is required for CHARACTER commands.",
-			};
-		}
-		envelope.command.character = character;
-		return normalizeCommitEnvelope(envelope);
-	}
 
 	return normalizeCommitEnvelope(envelope);
 }

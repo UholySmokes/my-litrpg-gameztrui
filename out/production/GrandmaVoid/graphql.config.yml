@@ -1,7 +1,0 @@
-schema:
-  - "dataconnect/schema/**/*.gql"
-  - "dataconnect/.dataconnect/schema/**/*.gql"
-documents:
-  - "dataconnect/example/**/*.gql"
-  - "dataconnect/seed_data.gql"
-

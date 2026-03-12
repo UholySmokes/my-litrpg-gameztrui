@@ -1,0 +1,722 @@
+[
+  {
+    "id": "infinite_mana_regen",
+    "name": "Infinite Mana Regeneration",
+    "description": "Mana regenerates endlessly and ignores depletion.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "mana_cost_zero",
+    "name": "Zero Mana Cost",
+    "description": "All skills ignore mana costs.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "cooldown_removal",
+    "name": "Cooldown Removal",
+    "description": "Abilities recharge instantly with no cooldown.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "damage_immunity",
+    "name": "Damage Immunity",
+    "description": "Negate incoming damage from all sources.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "death_immunity",
+    "name": "Death Immunity",
+    "description": "Lethal hits are canceled and leave you at 1 HP.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "critical_guarantee",
+    "name": "Guaranteed Critical",
+    "description": "Your critical hits always trigger.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "hundred_percent_drop",
+    "name": "100% Drop Rate",
+    "description": "All enemies drop loot without fail.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "override_drop_quality",
+    "name": "Legendary Drop Override",
+    "description": "Forces dropped items to roll at legendary quality.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "status_immunity",
+    "name": "Status Immunity",
+    "description": "You cannot be afflicted by negative statuses.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "remove_stat_cap",
+    "name": "Stat Cap Removal",
+    "description": "Ignore all soft and hard stat caps.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "control_rng",
+    "name": "RNG Control",
+    "description": "Bend randomness to favor your outcomes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "auto_combat_ai",
+    "name": "Auto-Combat AI",
+    "description": "Automatic combat routines execute optimal actions.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "experience_multiplier",
+    "name": "Experience Multiplier",
+    "description": "Gain massively increased experience from all sources.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "enchanter",
+    "name": "Enchanter",
+    "description": "Enhances charm potency and duration.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "stealth_mastery",
+    "name": "Stealth Mastery",
+    "description": "Improves stealth uptime and backstab windows.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "arcane_surge",
+    "name": "Arcane Surge",
+    "description": "Arcane Surge boosts spell power after casting.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "arcane_focus",
+    "name": "Arcane Focus",
+    "description": "Arcane Focus sharpens casting precision and reduces mana waste.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "arcane_weave",
+    "name": "Arcane Weave",
+    "description": "Arcane Weave extends spell duration through mana threading.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "arcane_prism",
+    "name": "Arcane Prism",
+    "description": "Arcane Prism splits damage into secondary echoes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "arcane_echo",
+    "name": "Arcane Echo",
+    "description": "Arcane Echo repeats a weaker copy of the last spell.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "arcane_orbit",
+    "name": "Arcane Orbit",
+    "description": "Arcane Orbit maintains a rotating mana ward.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "arcane_catalyst",
+    "name": "Arcane Catalyst",
+    "description": "Arcane Catalyst accelerates charge time for spells.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "mystic_surge",
+    "name": "Mystic Surge",
+    "description": "Mystic Surge boosts spell power after casting.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "mystic_focus",
+    "name": "Mystic Focus",
+    "description": "Mystic Focus sharpens casting precision and reduces mana waste.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "mystic_weave",
+    "name": "Mystic Weave",
+    "description": "Mystic Weave extends spell duration through mana threading.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "mystic_prism",
+    "name": "Mystic Prism",
+    "description": "Mystic Prism splits damage into secondary echoes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "mystic_echo",
+    "name": "Mystic Echo",
+    "description": "Mystic Echo repeats a weaker copy of the last spell.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "mystic_orbit",
+    "name": "Mystic Orbit",
+    "description": "Mystic Orbit maintains a rotating mana ward.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "mystic_catalyst",
+    "name": "Mystic Catalyst",
+    "description": "Mystic Catalyst accelerates charge time for spells.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "runic_surge",
+    "name": "Runic Surge",
+    "description": "Runic Surge boosts spell power after casting.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "runic_focus",
+    "name": "Runic Focus",
+    "description": "Runic Focus sharpens casting precision and reduces mana waste.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "runic_weave",
+    "name": "Runic Weave",
+    "description": "Runic Weave extends spell duration through mana threading.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "runic_prism",
+    "name": "Runic Prism",
+    "description": "Runic Prism splits damage into secondary echoes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "runic_echo",
+    "name": "Runic Echo",
+    "description": "Runic Echo repeats a weaker copy of the last spell.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "runic_orbit",
+    "name": "Runic Orbit",
+    "description": "Runic Orbit maintains a rotating mana ward.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "runic_catalyst",
+    "name": "Runic Catalyst",
+    "description": "Runic Catalyst accelerates charge time for spells.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "iron_discipline",
+    "name": "Iron Discipline",
+    "description": "Iron Discipline improves stance control and damage mitigation.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "iron_instinct",
+    "name": "Iron Instinct",
+    "description": "Iron Instinct raises counter timing and reaction speed.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "iron_fury",
+    "name": "Iron Fury",
+    "description": "Iron Fury builds momentum for heavier strikes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "iron_mastery",
+    "name": "Iron Mastery",
+    "description": "Iron Mastery increases weapon proficiency and accuracy.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "iron_resolve",
+    "name": "Iron Resolve",
+    "description": "Iron Resolve hardens will against disruption.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "iron_edge",
+    "name": "Iron Edge",
+    "description": "Iron Edge adds a bleeding edge to melee attacks.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "iron_momentum",
+    "name": "Iron Momentum",
+    "description": "Iron Momentum converts movement into bonus damage.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "steel_discipline",
+    "name": "Steel Discipline",
+    "description": "Steel Discipline improves stance control and damage mitigation.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "steel_instinct",
+    "name": "Steel Instinct",
+    "description": "Steel Instinct raises counter timing and reaction speed.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "steel_fury",
+    "name": "Steel Fury",
+    "description": "Steel Fury builds momentum for heavier strikes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "steel_mastery",
+    "name": "Steel Mastery",
+    "description": "Steel Mastery increases weapon proficiency and accuracy.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "steel_resolve",
+    "name": "Steel Resolve",
+    "description": "Steel Resolve hardens will against disruption.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "steel_edge",
+    "name": "Steel Edge",
+    "description": "Steel Edge adds a bleeding edge to melee attacks.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "steel_momentum",
+    "name": "Steel Momentum",
+    "description": "Steel Momentum converts movement into bonus damage.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "war_discipline",
+    "name": "War Discipline",
+    "description": "War Discipline improves stance control and damage mitigation.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "war_instinct",
+    "name": "War Instinct",
+    "description": "War Instinct raises counter timing and reaction speed.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "war_fury",
+    "name": "War Fury",
+    "description": "War Fury builds momentum for heavier strikes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "war_mastery",
+    "name": "War Mastery",
+    "description": "War Mastery increases weapon proficiency and accuracy.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "war_resolve",
+    "name": "War Resolve",
+    "description": "War Resolve hardens will against disruption.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "war_edge",
+    "name": "War Edge",
+    "description": "War Edge adds a bleeding edge to melee attacks.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "war_momentum",
+    "name": "War Momentum",
+    "description": "War Momentum converts movement into bonus damage.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "shadow_step",
+    "name": "Shadow Step",
+    "description": "Shadow Step enhances repositioning and backstrike angles.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "shadow_veil",
+    "name": "Shadow Veil",
+    "description": "Shadow Veil improves stealth uptime and fade recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "shadow_gambit",
+    "name": "Shadow Gambit",
+    "description": "Shadow Gambit rewards risk with critical bursts.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "shadow_hunger",
+    "name": "Shadow Hunger",
+    "description": "Shadow Hunger converts damage into minor leech.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "shadow_silence",
+    "name": "Shadow Silence",
+    "description": "Shadow Silence reduces enemy casting speed.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "shadow_shroud",
+    "name": "Shadow Shroud",
+    "description": "Shadow Shroud adds brief damage avoidance on entry.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "shadow_pursuit",
+    "name": "Shadow Pursuit",
+    "description": "Shadow Pursuit extends chase duration and executes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "umbral_step",
+    "name": "Umbral Step",
+    "description": "Umbral Step enhances repositioning and backstrike angles.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "umbral_veil",
+    "name": "Umbral Veil",
+    "description": "Umbral Veil improves stealth uptime and fade recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "umbral_gambit",
+    "name": "Umbral Gambit",
+    "description": "Umbral Gambit rewards risk with critical bursts.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "umbral_hunger",
+    "name": "Umbral Hunger",
+    "description": "Umbral Hunger converts damage into minor leech.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "umbral_silence",
+    "name": "Umbral Silence",
+    "description": "Umbral Silence reduces enemy casting speed.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "umbral_shroud",
+    "name": "Umbral Shroud",
+    "description": "Umbral Shroud adds brief damage avoidance on entry.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "umbral_pursuit",
+    "name": "Umbral Pursuit",
+    "description": "Umbral Pursuit extends chase duration and executes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "night_step",
+    "name": "Night Step",
+    "description": "Night Step enhances repositioning and backstrike angles.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "night_veil",
+    "name": "Night Veil",
+    "description": "Night Veil improves stealth uptime and fade recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "night_gambit",
+    "name": "Night Gambit",
+    "description": "Night Gambit rewards risk with critical bursts.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "night_hunger",
+    "name": "Night Hunger",
+    "description": "Night Hunger converts damage into minor leech.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "night_silence",
+    "name": "Night Silence",
+    "description": "Night Silence reduces enemy casting speed.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "night_shroud",
+    "name": "Night Shroud",
+    "description": "Night Shroud adds brief damage avoidance on entry.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "night_pursuit",
+    "name": "Night Pursuit",
+    "description": "Night Pursuit extends chase duration and executes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "divine_grace",
+    "name": "Divine Grace",
+    "description": "Divine Grace increases healing output and recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "divine_edict",
+    "name": "Divine Edict",
+    "description": "Divine Edict reinforces debuffs with holy authority.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "divine_beacon",
+    "name": "Divine Beacon",
+    "description": "Divine Beacon marks allies for protective bonuses.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "divine_aegis",
+    "name": "Divine Aegis",
+    "description": "Divine Aegis adds a layered defensive barrier.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "divine_judgment",
+    "name": "Divine Judgment",
+    "description": "Divine Judgment amplifies damage against corrupted foes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "divine_vow",
+    "name": "Divine Vow",
+    "description": "Divine Vow boosts stats while keeping oaths.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "divine_halo",
+    "name": "Divine Halo",
+    "description": "Divine Halo emits a light aura that weakens dark effects.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "radiant_grace",
+    "name": "Radiant Grace",
+    "description": "Radiant Grace increases healing output and recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "radiant_edict",
+    "name": "Radiant Edict",
+    "description": "Radiant Edict reinforces debuffs with holy authority.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "radiant_beacon",
+    "name": "Radiant Beacon",
+    "description": "Radiant Beacon marks allies for protective bonuses.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "radiant_aegis",
+    "name": "Radiant Aegis",
+    "description": "Radiant Aegis adds a layered defensive barrier.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "radiant_judgment",
+    "name": "Radiant Judgment",
+    "description": "Radiant Judgment amplifies damage against corrupted foes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "radiant_vow",
+    "name": "Radiant Vow",
+    "description": "Radiant Vow boosts stats while keeping oaths.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "radiant_halo",
+    "name": "Radiant Halo",
+    "description": "Radiant Halo emits a light aura that weakens dark effects.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "sanctified_grace",
+    "name": "Sanctified Grace",
+    "description": "Sanctified Grace increases healing output and recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "sanctified_edict",
+    "name": "Sanctified Edict",
+    "description": "Sanctified Edict reinforces debuffs with holy authority.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "sanctified_beacon",
+    "name": "Sanctified Beacon",
+    "description": "Sanctified Beacon marks allies for protective bonuses.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "sanctified_aegis",
+    "name": "Sanctified Aegis",
+    "description": "Sanctified Aegis adds a layered defensive barrier.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "sanctified_judgment",
+    "name": "Sanctified Judgment",
+    "description": "Sanctified Judgment amplifies damage against corrupted foes.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "sanctified_vow",
+    "name": "Sanctified Vow",
+    "description": "Sanctified Vow boosts stats while keeping oaths.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "sanctified_halo",
+    "name": "Sanctified Halo",
+    "description": "Sanctified Halo emits a light aura that weakens dark effects.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "verdant_bloom",
+    "name": "Verdant Bloom",
+    "description": "Verdant Bloom accelerates regeneration over time.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "verdant_fury",
+    "name": "Verdant Fury",
+    "description": "Verdant Fury adds feral damage bursts after dodges.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "verdant_ward",
+    "name": "Verdant Ward",
+    "description": "Verdant Ward reduces elemental damage taken.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "verdant_cycle",
+    "name": "Verdant Cycle",
+    "description": "Verdant Cycle balances resource recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "verdant_pulse",
+    "name": "Verdant Pulse",
+    "description": "Verdant Pulse releases a healing pulse on kill.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "verdant_root",
+    "name": "Verdant Root",
+    "description": "Verdant Root stabilizes stance and reduces knockback.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "verdant_tide",
+    "name": "Verdant Tide",
+    "description": "Verdant Tide flows between offense and defense with rhythm.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "primal_bloom",
+    "name": "Primal Bloom",
+    "description": "Primal Bloom accelerates regeneration over time.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "primal_fury",
+    "name": "Primal Fury",
+    "description": "Primal Fury adds feral damage bursts after dodges.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "primal_ward",
+    "name": "Primal Ward",
+    "description": "Primal Ward reduces elemental damage taken.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "primal_cycle",
+    "name": "Primal Cycle",
+    "description": "Primal Cycle balances resource recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "primal_pulse",
+    "name": "Primal Pulse",
+    "description": "Primal Pulse releases a healing pulse on kill.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "primal_root",
+    "name": "Primal Root",
+    "description": "Primal Root stabilizes stance and reduces knockback.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "primal_tide",
+    "name": "Primal Tide",
+    "description": "Primal Tide flows between offense and defense with rhythm.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "wild_bloom",
+    "name": "Wild Bloom",
+    "description": "Wild Bloom accelerates regeneration over time.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "wild_fury",
+    "name": "Wild Fury",
+    "description": "Wild Fury adds feral damage bursts after dodges.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "wild_ward",
+    "name": "Wild Ward",
+    "description": "Wild Ward reduces elemental damage taken.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "wild_cycle",
+    "name": "Wild Cycle",
+    "description": "Wild Cycle balances resource recovery.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "wild_pulse",
+    "name": "Wild Pulse",
+    "description": "Wild Pulse releases a healing pulse on kill.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "wild_root",
+    "name": "Wild Root",
+    "description": "Wild Root stabilizes stance and reduces knockback.",
+    "bucket": "ex_rank"
+  },
+  {
+    "id": "wild_tide",
+    "name": "Wild Tide",
+    "description": "Wild Tide flows between offense and defense with rhythm.",
+    "bucket": "ex_rank"
+  }
+]

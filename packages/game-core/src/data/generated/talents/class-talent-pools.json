@@ -1,0 +1,133 @@
+{
+  "__default__": [
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "berserker": [
+    "martial_precision",
+    "iron_resolve",
+    "battle_rhythm",
+    "poisoned_edge",
+    "radiant_charge",
+    "feral_instinct",
+    "primal_fury",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "druid": [
+    "verdant_pulse",
+    "tracker_instinct",
+    "spirit_echo",
+    "inner_balance",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "knight": [
+    "martial_precision",
+    "iron_resolve",
+    "battle_rhythm",
+    "divine_bulwark",
+    "radiant_charge",
+    "inner_balance",
+    "primal_fury",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "mage": [
+    "arcane_flow",
+    "spellweaver",
+    "mana_attunement",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "monk": [
+    "iron_resolve",
+    "divine_bulwark",
+    "spirit_echo",
+    "inner_balance",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "necromancer": [
+    "grave_tether",
+    "bonecraft",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "paladin": [
+    "martial_precision",
+    "iron_resolve",
+    "battle_rhythm",
+    "divine_bulwark",
+    "radiant_charge",
+    "sacred_focus",
+    "inner_balance",
+    "primal_fury",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "priest": [
+    "mana_attunement",
+    "divine_bulwark",
+    "radiant_charge",
+    "sacred_focus",
+    "verdant_pulse",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "ranger": [
+    "martial_precision",
+    "shadow_veil",
+    "verdant_pulse",
+    "tracker_instinct",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "rogue": [
+    "martial_precision",
+    "shadow_veil",
+    "ghost_step",
+    "poisoned_edge",
+    "tracker_instinct",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "sorcerer": [
+    "arcane_flow",
+    "spellweaver",
+    "mana_attunement",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "warlock": [
+    "grave_tether",
+    "bonecraft",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ],
+  "warrior": [
+    "martial_precision",
+    "iron_resolve",
+    "battle_rhythm",
+    "divine_bulwark",
+    "radiant_charge",
+    "inner_balance",
+    "primal_fury",
+    "wayfarer",
+    "system_favor",
+    "oathbound"
+  ]
+}

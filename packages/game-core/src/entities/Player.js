@@ -11,15 +11,15 @@ import {
   getClassById as getClassByIdFromRegistry,
 } from "../systems/class/ClassRegistry.js";
 import {
-  exRankTalents as talentsFromRegistry,
-  getTalentById as getTalentByIdFromRegistry,
-  getRandomTalents as getRandomTalentsFromRegistry,
-} from "../systems/skills/TalentDefinitions.js";
+  getExRankTalentSummaries,
+  getTalentById as getTalentByIdFromPack,
+  getRandomTalents as getRandomTalentsFromPack,
+} from "../systems/skills/TalentContentPack.js";
 
 // Re-export for backward compatibility with lazy evaluation
 export const races = () => racesFromRegistry;
 export const classes = () => classesFromRegistry;
-export const exRankTalents = () => talentsFromRegistry;
+export const exRankTalents = () => getExRankTalentSummaries();
 
 export function getRaceById(id) {
   return getRaceByIdFromRegistry(id);
@@ -30,11 +30,11 @@ export function getClassById(id) {
 }
 
 export function getTalentById(id) {
-  return getTalentByIdFromRegistry(id);
+  return getTalentByIdFromPack(id);
 }
 
 export function getRandomTalents(count = 3) {
-  return getRandomTalentsFromRegistry(count);
+  return getRandomTalentsFromPack(count);
 }
 
 /**

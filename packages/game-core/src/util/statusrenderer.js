@@ -7,7 +7,7 @@ import {
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
 import { getEffectiveAttributes, getTitleById } from "../core/titleLogic.js";
-import { getTalentById } from "../entities/Player.js";
+import { getTalentById } from "../systems/skills/TalentContentPack.js";
 
 export function renderStatusBlock(player, config) {
   const name = player.name || "Unknown";

@@ -12,7 +12,7 @@ import { getProfessionSummaryById } from "../systems/profession/ProfessionConten
 import {
   assignTalentsForClass,
   getTalentById,
-} from "../systems/skills/TalentDefinitions.js";
+} from "../systems/skills/TalentContentPack.js";
 
 import {
   CANONICAL_ATTRIBUTES,

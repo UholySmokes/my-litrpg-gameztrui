@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 
 export function useGameUiWindowController() {
+  const [gameUiMode, setGameUiMode] = useState("window");
   const [showShop, setShowShop] = useState(false);
   const [showGacha, setShowGacha] = useState(false);
   const [showTitleSystem, setShowTitleSystem] = useState(false);
@@ -90,6 +91,9 @@ export function useGameUiWindowController() {
       ),
     [showReplayInspector, toggleWindow],
   );
+  const handleToggleTextMode = useCallback(() => {
+    setGameUiMode((current) => (current === "window" ? "text" : "window"));
+  }, []);
 
   const quickActionsProps = useMemo(
     () => ({
@@ -100,7 +104,9 @@ export function useGameUiWindowController() {
       onToggleSaveLoad: handleToggleSaveLoad,
       onToggleShop: handleToggleShop,
       onToggleStatus: handleToggleStatus,
+      onToggleTextMode: handleToggleTextMode,
       onToggleTitles: handleToggleTitles,
+      isTextMode: gameUiMode === "text",
     }),
     [
       handleToggleCraft,
@@ -110,7 +116,9 @@ export function useGameUiWindowController() {
       handleToggleSaveLoad,
       handleToggleShop,
       handleToggleStatus,
+      handleToggleTextMode,
       handleToggleTitles,
+      gameUiMode,
     ],
   );
 
@@ -126,6 +134,7 @@ export function useGameUiWindowController() {
     showShop,
     showStatusOverlay,
     showTitleSystem,
+    gameUiMode,
     handleCloseEquipmentSelect,
     handleCloseGacha,
     handleCloseProfessions,

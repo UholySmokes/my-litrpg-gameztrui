@@ -134,6 +134,7 @@ export default function GameUI({ user }) {
   });
 
   const {
+    gameUiMode,
     equipmentSelectSlot,
     focusWindowRequest,
     quickActionsProps,
@@ -321,6 +322,7 @@ export default function GameUI({ user }) {
       addSystemMessage,
       user,
       focusWindowRequest,
+      uiMode: gameUiMode,
     }),
     [
       addSystemMessage,
@@ -328,6 +330,7 @@ export default function GameUI({ user }) {
       chatLog,
       equipmentSelectSlot,
       focusWindowRequest,
+      gameUiMode,
       handleAllocateAttributePoint,
       handleClassAbilityUse,
       handleCloseEquipmentSelect,

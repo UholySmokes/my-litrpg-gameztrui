@@ -16,6 +16,7 @@ import ProfessionUI from "../../components/ProfessionUI.jsx";
 import StatusOverlay from "../../components/StatusOverlay.jsx";
 import SaveLoadUI from "../../components/SaveLoadUI.jsx";
 import ReplayInspector from "../../components/ReplayInspector.jsx";
+import TextRpgMode from "./TextRpgMode.jsx";
 
 function deriveStoryWindowContext(latestEntry) {
   const narrativeText = String(latestEntry?.text || "").toLowerCase();
@@ -123,6 +124,7 @@ export default function GameMode({
   addSystemMessage = () => {},
   user = null,
   focusWindowRequest = null,
+  uiMode = "window",
 }) {
   const equipmentSelectLabel = equipmentSelectSlot
     ? equipmentSelectSlot.charAt(0).toUpperCase() + equipmentSelectSlot.slice(1)
@@ -457,6 +459,23 @@ export default function GameMode({
         ]
       : []),
   ];
+
+  if (uiMode === "text") {
+    return (
+      <TextRpgMode
+        player={player}
+        narrativeEntries={narrativeEntries}
+        suggestions={suggestions}
+        onSuggestionSelect={onSuggestionSelect}
+        userInput={userInput}
+        onInputChange={onInputChange}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        error={error}
+        inputRef={inputRef}
+      />
+    );
+  }
 
   return (
     <WindowManager

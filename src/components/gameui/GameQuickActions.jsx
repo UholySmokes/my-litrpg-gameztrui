@@ -7,7 +7,9 @@ export default function GameQuickActions({
   onToggleSaveLoad,
   onToggleShop,
   onToggleStatus,
+  onToggleTextMode,
   onToggleTitles,
+  isTextMode,
 }) {
   return (
     <div className="command-deck__quick-actions">
@@ -31,6 +33,9 @@ export default function GameQuickActions({
       </button>
       <button type="button" className="holo-button" onClick={onToggleSaveLoad}>
         Save and Load
+      </button>
+      <button type="button" className="holo-button" onClick={onToggleTextMode}>
+        {isTextMode ? "Window Mode" : "Text RPG"}
       </button>
       {isDevBuild ? (
         <button

@@ -38,6 +38,14 @@ const FIELD_TARGETS = {
   questHooks: 3,
 };
 
+const SUPPORT_FIELD_TARGETS = {
+  possibleUses: 2,
+  limits: 2,
+  costs: 2,
+  worldCompatibility: 2,
+  factionReactions: 2,
+};
+
 const FIELD_TEXT_LIMITS = {
   summary: 120,
   description: 600,
@@ -66,6 +74,25 @@ const DEFAULT_RESOURCES = {
   Privilege: { name: "Leverage", color: "#8CE99A" },
   Overlay: { name: "Instability", color: "#FF8787" },
 };
+
+const VALID_RARITIES = new Set([
+  "common",
+  "uncommon",
+  "rare",
+  "epic",
+  "legendary",
+  "mythic",
+  "unique",
+]);
+
+const VALID_STABILITIES = new Set([
+  "stable",
+  "volatile",
+  "unstable",
+  "corrupted",
+  "forbidden",
+]);
+
 
 const IMPACT_BASE = {
   System: {
@@ -251,6 +278,163 @@ function buildCategoryTemplates(category, name) {
   };
 }
 
+function buildSupportTemplates(category, name) {
+  const templates = {
+    System: {
+      possibleUses: [
+        `${name} supports a run-defining growth plan with category-spanning payoff.`,
+        `${name} can anchor combat, quest routing, and long-horizon progression decisions.`,
+      ],
+      limits: [
+        `${name} remains bounded by explicit costs, counterplay, and the Void hierarchy.`,
+        `${name} rewards focused use more than careless omnidirectional play.`,
+      ],
+      costs: [
+        `${name} creates pressure through commitment, exposure, or resource burden.`,
+        `${name} pushes the bearer toward a specific worldview that can become a liability.`,
+      ],
+      worldCompatibility: [
+        `${name} is treated as a legendary System beneath Void and Grandmother Void.`,
+        `${name} is powerful enough to alter institutions without replacing cosmic law.`,
+      ],
+      factionReactions: [
+        `Ambitious factions will seek to recruit, regulate, or weaponize ${name}.`,
+        `Orthodox powers will monitor ${name} for signs of uncontrolled escalation.`,
+      ],
+      rarity: "legendary",
+      stability: "stable",
+      selectionWeight: 18,
+    },
+    Authority: {
+      possibleUses: [
+        `${name} dominates a bounded domain, force, lineage, or command relationship.`,
+        `${name} excels in conflicts where legitimacy and local law matter more than raw output.`,
+      ],
+      limits: [
+        `${name} must stay within scope and can be contested by stronger or cleaner law.`,
+        `${name} loses leverage when forced outside its rightful domain or target class.`,
+      ],
+      costs: [
+        `${name} creates visibility, political consequence, and resistance from rival claimants.`,
+        `${name} burdens the bearer with responsibility for what they command.`,
+      ],
+      worldCompatibility: [
+        `${name} is recognized as a high-order Authority rather than a full System.`,
+        `${name} remains subordinate to broader cosmic law and Void-level order.`,
+      ],
+      factionReactions: [
+        `Rulers and institutions will treat ${name} as a political event, not just a combat trait.`,
+        `Rival elites will test whether ${name} deserves recognition or suppression.`,
+      ],
+      rarity: "legendary",
+      stability: "stable",
+      selectionWeight: 14,
+    },
+    Path: {
+      possibleUses: [
+        `${name} rewards long-form transformation through staged thresholds and breakthroughs.`,
+        `${name} excels in runs built around identity change, discipline, and earned evolution.`,
+      ],
+      limits: [
+        `${name} depends on thresholds, bottlenecks, and compatibility with the next stage.`,
+        `${name} can stall or distort the bearer if a transformation is forced too early.`,
+      ],
+      costs: [
+        `${name} demands time, risk, and irreversible change in body, soul, or social standing.`,
+        `${name} often narrows future choices as each stage defines the bearer more strongly.`,
+      ],
+      worldCompatibility: [
+        `${name} is a transformational Path rather than a sovereign Authority or full System.`,
+        `${name} remains governed by staged ascension beneath the higher cosmic order.`,
+      ],
+      factionReactions: [
+        `Observers will track ${name} by its visible stages, mutations, and breakthrough signs.`,
+        `Mentors, sects, and hunters will react strongly once ${name} reveals its trajectory.`,
+      ],
+      rarity: "epic",
+      stability: "volatile",
+      selectionWeight: 12,
+    },
+    Framework: {
+      possibleUses: [
+        `${name} organizes growth through structure, routing, storage, or recursive optimization.`,
+        `${name} shines in long-run planning, management play, and cross-system efficiency.`,
+      ],
+      limits: [
+        `${name} depends on maintained structure and can underperform in pure improvisational bursts.`,
+        `${name} is strongest when its processes are given time, space, or infrastructure to work.`,
+      ],
+      costs: [
+        `${name} taxes the bearer through upkeep, planning burden, and structural dependency.`,
+        `${name} can become a liability if its loops are disrupted or overextended.`,
+      ],
+      worldCompatibility: [
+        `${name} is a Framework that shapes progression flow without replacing cosmic law.`,
+        `${name} is respected as infrastructure-grade power rather than direct sovereignty.`,
+      ],
+      factionReactions: [
+        `Strategic factions will value ${name} for its compounding and organizational leverage.`,
+        `Saboteurs will target the structures that let ${name} produce outsized value.`,
+      ],
+      rarity: "epic",
+      stability: "stable",
+      selectionWeight: 11,
+    },
+    Privilege: {
+      possibleUses: [
+        `${name} grants narrow but unfair access to routes, insights, or exceptions others cannot claim.`,
+        `${name} is strongest when used subtly and timed around key narrative or tactical pivots.`,
+      ],
+      limits: [
+        `${name} loses safety once exposure rises or enemies begin accounting for the exception.`,
+        `${name} remains an asymmetric edge, not a whole-system replacement for normal growth.`,
+      ],
+      costs: [
+        `${name} invites suspicion, envy, and retaliation when its unfair edge becomes visible.`,
+        `${name} can distort decision-making by tempting the bearer to rely on hidden shortcuts.`,
+      ],
+      worldCompatibility: [
+        `${name} is classified as a Privilege: rare, deniable, and narrower than a true System.`,
+        `${name} exploits exceptions within the world rather than rewriting the world itself.`,
+      ],
+      factionReactions: [
+        `Clever rivals will try to expose or bait ${name} into becoming visible.`,
+        `Secretive powers may prize ${name} more than public institutions ever would.`,
+      ],
+      rarity: "rare",
+      stability: "volatile",
+      selectionWeight: 9,
+    },
+    Overlay: {
+      possibleUses: [
+        `${name} creates short windows of impossible leverage by exploiting unstable rule seams.`,
+        `${name} works best for desperate reversals, technical abuse, and hunted anomaly play.`,
+      ],
+      limits: [
+        `${name} escalates instability and can collapse if pushed too often or too publicly.`,
+        `${name} never outranks deeper law and is vulnerable to patching, audits, or backlash.`,
+      ],
+      costs: [
+        `${name} burdens the bearer with strain, detection risk, and growing system hostility.`,
+        `${name} trades clean reliability for stolen moments of illegal advantage.`,
+      ],
+      worldCompatibility: [
+        `${name} is classified as an Overlay: parasitic, unstable, and beneath lawful structures.`,
+        `${name} distorts local mechanics without superseding Void-level order.`,
+      ],
+      factionReactions: [
+        `Enforcers and anomaly hunters will treat ${name} as something to contain or erase.`,
+        `Desperate opportunists may covet ${name} even while fearing the fallout around it.`,
+      ],
+      rarity: "mythic",
+      stability: "unstable",
+      selectionWeight: 6,
+    },
+  };
+
+  return templates[category] || templates.System;
+}
+
 function ensureExtensiveList(field, values, context) {
   const cleaned = sanitizeList(values, { field });
   const templates = buildCategoryTemplates(context.category, context.name)[field];
@@ -269,6 +453,27 @@ function ensureExtensiveList(field, values, context) {
   }
 
   return cleaned;
+}
+
+function ensureSupportList(field, values, context) {
+  const cleaned = sanitizeList(values, { field });
+  const templates = buildSupportTemplates(context.category, context.name)[field] || [];
+  const target = SUPPORT_FIELD_TARGETS[field] || 1;
+  let index = 0;
+
+  while (cleaned.length < target && templates.length > 0) {
+    const next = templates[index % templates.length];
+    if (!cleaned.includes(next)) cleaned.push(next);
+    index += 1;
+  }
+
+  return cleaned.slice(0, Math.max(target, cleaned.length));
+}
+
+function ensureSupportScalar(rawValue, fallbackValue, validSet) {
+  const normalized = normalizeWhitespace(rawValue).toLowerCase();
+  if (normalized && validSet.has(normalized)) return normalized;
+  return fallbackValue;
 }
 
 function ensureTags(tags, category, name) {
@@ -523,6 +728,7 @@ function normalizeSingleDefinition(rawDefinition, index) {
       `${name} provides a category-specific progression framework with branching upgrades and systemic consequences.`,
     FIELD_TEXT_LIMITS.description,
   );
+  const supportTemplates = buildSupportTemplates(category, name);
 
   const normalized = {
     id,
@@ -535,6 +741,37 @@ function normalizeSingleDefinition(rawDefinition, index) {
     narrativeHooks: ensureExtensiveList("narrativeHooks", rawDefinition?.narrativeHooks, { category, name }),
     questHooks: ensureExtensiveList("questHooks", rawDefinition?.questHooks, { category, name }),
     tags: ensureTags(rawDefinition?.tags, category, name),
+    possibleUses: ensureSupportList("possibleUses", rawDefinition?.possibleUses, {
+      category,
+      name,
+    }),
+    limits: ensureSupportList("limits", rawDefinition?.limits, { category, name }),
+    costs: ensureSupportList("costs", rawDefinition?.costs, { category, name }),
+    worldCompatibility: ensureSupportList(
+      "worldCompatibility",
+      rawDefinition?.worldCompatibility,
+      { category, name },
+    ),
+    factionReactions: ensureSupportList(
+      "factionReactions",
+      rawDefinition?.factionReactions,
+      { category, name },
+    ),
+    rarity: ensureSupportScalar(
+      rawDefinition?.rarity,
+      supportTemplates.rarity,
+      VALID_RARITIES,
+    ),
+    stability: ensureSupportScalar(
+      rawDefinition?.stability,
+      supportTemplates.stability,
+      VALID_STABILITIES,
+    ),
+    selectionWeight: clamp(
+      toNumber(rawDefinition?.selectionWeight, supportTemplates.selectionWeight),
+      0,
+      100,
+    ),
     statModifiers: ensureStatModifiers(rawDefinition?.statModifiers, category),
     archetypeResource: ensureResource(rawDefinition?.archetypeResource, category),
     archetypePassives: ensurePassives(rawDefinition?.archetypePassives, id),
@@ -764,6 +1001,8 @@ const buildArchetypeSystemSummary = (system) => {
     category: system.category || "Unknown",
     summary: system.summary || "",
     description: system.description || "",
+    rarity: system.rarity || null,
+    stability: system.stability || null,
     narrativeTone: system.narrativeTone || "neutral",
     color: system.color || null,
     icon: system.icon || null,
@@ -786,6 +1025,17 @@ const buildArchetypeSystemSummary = (system) => {
     questHooksPreview: Array.isArray(system.questHooks)
       ? system.questHooks.slice(0, 2)
       : [],
+    possibleUsesPreview: Array.isArray(system.possibleUses)
+      ? system.possibleUses.slice(0, 2)
+      : [],
+    limitsPreview: Array.isArray(system.limits) ? system.limits.slice(0, 2) : [],
+    costsPreview: Array.isArray(system.costs) ? system.costs.slice(0, 2) : [],
+    worldCompatibilityPreview: Array.isArray(system.worldCompatibility)
+      ? system.worldCompatibility.slice(0, 2)
+      : [],
+    factionReactionsPreview: Array.isArray(system.factionReactions)
+      ? system.factionReactions.slice(0, 2)
+      : [],
     quality:
       system.quality && typeof system.quality === "object"
         ? {
@@ -806,6 +1056,11 @@ const cloneArchetypeSystemSummary = (summary) => {
     coreLoopPreview: [...summary.coreLoopPreview],
     narrativeHooksPreview: [...summary.narrativeHooksPreview],
     questHooksPreview: [...summary.questHooksPreview],
+    possibleUsesPreview: [...summary.possibleUsesPreview],
+    limitsPreview: [...summary.limitsPreview],
+    costsPreview: [...summary.costsPreview],
+    worldCompatibilityPreview: [...summary.worldCompatibilityPreview],
+    factionReactionsPreview: [...summary.factionReactionsPreview],
     quality: summary.quality ? { ...summary.quality } : null,
   };
 };

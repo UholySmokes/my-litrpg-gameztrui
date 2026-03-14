@@ -762,6 +762,8 @@ This is the maintained todo list for the design and implementation-prep phase. I
 - [x] Hydrate normalized archetype entries with canonical support fields and category-aware fallback values.
 - [x] Extend compact archetype summaries with preview fields for prompt and UI consumers.
 - [x] Expose richer system-framework context in prompt assembly without requiring full-definition payloads.
+- [x] Rewrite the first wave of starter System source entries to the strict canon contract.
+- [ ] Rewrite the remaining starter System source entries to the strict canon contract.
 - [x] Confirm repo-wide scope instead of Godot-only scope.
 - [x] Confirm that Systems are the strongest structured powers beneath Void and Grandmother Void.
 - [x] Lock the six-category hierarchy: System, Authority, Path, Framework, Privilege, Overlay.

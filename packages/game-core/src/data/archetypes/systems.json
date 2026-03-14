@@ -133,17 +133,17 @@
     "id": "exchange_shop_core",
     "name": "Exchange Shop Core",
     "category": "System",
-    "summary": "Convert points into items, skills, and rare bloodlines.",
-    "description": "A transactional system that rewards objectives with points used to purchase power directly.",
+    "summary": "Convert recognized achievement into curated power, gear, and contraband.",
+    "description": "Exchange Shop Core is a transactional System. It converts recognized achievement into private purchasing authority. The real currency is system-validated value, not ordinary coin. The bearer buys tools, catalysts, manuals, and rare stock from a hidden market. The System rewards planning more than reckless direct force. It creates debt pressure, visibility, and black-market entanglement. It remains powerful but bounded beneath Void law.",
     "coreLoop": [
       "Complete objectives to earn exchange points.",
       "Purchase upgrades or rare items from the core.",
       "Unlock hidden inventory tiers through milestones."
     ],
     "progression": [
-      "Inventory expands from common tiers to mythic.",
-      "Exchange multipliers unlock with reputation.",
-      "Unlock further potential in progression (Placeholder)."
+      "Stock expands from survival tools to relic-grade contraband and premium manuals.",
+      "Exchange rates improve when the bearer clears risk-tiered directives without defaulting on obligations.",
+      "Black-market tiers unlock restricted wares, faction-exclusive goods, and debt-backed emergency purchases."
     ],
     "narrativeHooks": [
       "System offers bargain contracts with consequences.",
@@ -153,6 +153,31 @@
       "Complete a high-risk commission for premium stock.",
       "Settle a debt contract to unlock new tiers."
     ],
+    "possibleUses": [
+      "Buy specific survival tools instead of waiting for random drops.",
+      "Convert dangerous quest success into catalysts, relic fragments, or manuals.",
+      "Trigger procurement arcs built around forbidden stock and counterfeit markets.",
+      "Support deterministic reward conversion and premium inventory rotations."
+    ],
+    "limits": [
+      "The shop only recognizes validated value and cannot print consequence-free power from nothing.",
+      "High-tier purchases create visibility, debt exposure, and political backlash."
+    ],
+    "costs": [
+      "The bearer is pressured to treat people, risks, and victories like ledger entries.",
+      "Impossible purchases attract auditors, smugglers, and institutions that want the supply chain."
+    ],
+    "worldCompatibility": [
+      "This System is viewed as a taboo treasury or contraband law beneath Void and Grandmother Void.",
+      "It bends acquisition and reward structure without overruling higher cosmic order."
+    ],
+    "factionReactions": [
+      "Merchants, syndicates, and nobles will try to trace the source of impossible stock.",
+      "Orthodox factions will suspect the bearer of smuggling, heresy, or treasury theft."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 18,
     "tags": [
       "economy",
       "trade",
@@ -313,17 +338,17 @@
     "id": "class_fusion_nexus",
     "name": "Class Fusion Nexus",
     "category": "System",
-    "summary": "Hybridize class trees into unique doctrines.",
-    "description": "A nexus that allows partial class merging, granting access to cross-class doctrines.",
+    "summary": "Fuse class doctrines into unstable but powerful hybrid paths.",
+    "description": "Class Fusion Nexus is a hybridization System. It merges class doctrines into new composite paths. The bearer does not simply multiclass in the ordinary sense. Instead, class logic, resource models, and traits are combined into a fresh doctrine. The System rewards theorycraft, compatibility testing, and disciplined build planning. It becomes dangerous when incompatible classes fight for control inside the same body. It remains potent but bounded by stabilization, branch lock-in, and cosmic law.",
     "coreLoop": [
       "Identify compatible class doctrines.",
       "Fuse class traits to form a hybrid path.",
       "Stabilize hybrid identities through trials."
     ],
     "progression": [
-      "Hybrid ranks unlock unique class passives.",
-      "Fusion compatibility expands with milestones.",
-      "Unlock further potential in progression (Placeholder)."
+      "Hybrid ranks unlock doctrine-specific passives that no single class can claim.",
+      "Compatibility research expands the number of legal fusion pairs and resource interactions.",
+      "Advanced tiers unlock capstone fusions that permanently reshape the bearer's build identity."
     ],
     "narrativeHooks": [
       "Class guilds react to your hybrid doctrine.",
@@ -333,6 +358,31 @@
       "Earn approval from rival class guilds.",
       "Defeat a hybrid challenger to claim a fusion seal."
     ],
+    "possibleUses": [
+      "Build hybrid trees that combine offensive, defensive, and utility doctrines in one route.",
+      "Trigger guild, academy, and doctrinal conflict around class purity.",
+      "Create progression quests focused on stabilizing or perfecting dangerous fusions.",
+      "Support compatibility matrices, fusion recipes, and branch-preview UI."
+    ],
+    "limits": [
+      "Not every class pair is compatible, and malformed fusions can fail violently.",
+      "Each successful fusion narrows future identity choices as the hybrid doctrine hardens."
+    ],
+    "costs": [
+      "The bearer must pay time, seals, and real risk to keep conflicting class laws from tearing each other apart.",
+      "Class institutions will treat visible fusion as theft, blasphemy, or a destabilizing precedent."
+    ],
+    "worldCompatibility": [
+      "This System rewrites class progression beneath the Void hierarchy without replacing cosmic law.",
+      "It is treated as revolutionary because it creates doctrines the world did not expect to exist."
+    ],
+    "factionReactions": [
+      "Guilds and sects will compete to control, ban, or reverse-engineer the hybrid doctrine.",
+      "Rival hybrids and class purists will test whether the bearer deserves recognition or elimination."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 16,
     "tags": [
       "class",
       "hybrid",
@@ -373,17 +423,17 @@
     "id": "devourer_core",
     "name": "Devourer Core",
     "category": "System",
-    "summary": "Consume monsters and skills to convert into growth.",
-    "description": "A core system that converts defeated enemies and skills into permanent power, with risk of corruption.",
+    "summary": "Consume prey, traits, and essence to fuel predatory evolution.",
+    "description": "Devourer Core is a predatory System. It converts defeated prey into essence, traits, and growth. The reward loop favors dangerous hunts over safe repetition. The bearer can refine kills into resistances, mutations, and skill fragments. The same appetite also invites corruption, instinct drift, and social terror. Strong gains require cleansing, restraint, and deliberate refinement. It remains powerful but bounded by impurity, backlash, and higher law.",
     "coreLoop": [
       "Devour defeated foes to gain essence.",
       "Convert essence into stats, skills, or traits.",
       "Purge corruption by completing cleansing rites."
     ],
     "progression": [
-      "Devour tiers unlock higher conversion ratios.",
-      "Corruption thresholds add narrative consequences.",
-      "Unlock further potential in progression (Placeholder)."
+      "Devour tiers unlock stronger conversion ratios and higher-quality trait extraction.",
+      "Corruption thresholds force new refinement methods, social consequences, and mutation branches.",
+      "Predator milestones unlock lineage assimilation, resistance farming, and controlled evolution paths."
     ],
     "narrativeHooks": [
       "Corruption bleeds into dialogue and tone.",
@@ -393,6 +443,31 @@
       "Acquire a cleansing relic to control corruption.",
       "Hunt a corrupted beast to unlock a new devour tier."
     ],
+    "possibleUses": [
+      "Farm specific enemy types for traits, resistances, and mutation fuel.",
+      "Drive taboo story arcs built around hunger, purification, and public fear.",
+      "Support corruption meters, devour recipes, and refinement rites in progression systems.",
+      "Create high-risk growth spikes when the bearer chooses prey stronger than they should survive."
+    ],
+    "limits": [
+      "Power gained without refinement carries impurity, appetite drift, and unstable mutation pressure.",
+      "Sanctified zones, scarce prey, or political scrutiny can choke the feeding loop."
+    ],
+    "costs": [
+      "The bearer risks losing social legitimacy and self-control every time growth is taken through consumption.",
+      "Strong prey leaves behind corruption signatures that demand cleansing or containment."
+    ],
+    "worldCompatibility": [
+      "This System is feared as monstrous because it converts life into growth beneath, not above, the Void hierarchy.",
+      "It amplifies predatory reward law without granting unrestricted creation or immunity to consequence."
+    ],
+    "factionReactions": [
+      "Hunters, churches, and states will debate whether the bearer is an asset, a weapon, or an execution target.",
+      "Taboo researchers and monster factions will pursue the bearer for weaponization or kinship."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 17,
     "tags": [
       "devour",
       "growth",
@@ -433,17 +508,17 @@
     "id": "exp_multiplier_matrix",
     "name": "EXP Multiplier Matrix",
     "category": "System",
-    "summary": "Experience gains compound into runaway growth.",
-    "description": "A growth engine that multiplies earned experience on a schedule, rewarding streaks and risky achievements.",
+    "summary": "Compound earned growth through streaks, tempo, and escalating risk.",
+    "description": "EXP Multiplier Matrix is a compounding growth System. It multiplies earned progress when the bearer sustains momentum. The engine rewards streaks, risk, and clean execution. Safe grinding matters less than chaining meaningful victories. The same momentum can collapse if the bearer retreats, fails, or stalls. Enemies who understand the pattern will try to interrupt the streak at any cost. It remains powerful but bounded by volatility, burnout, and counterplay.",
     "coreLoop": [
       "Earn EXP through combat, crafting, or quests.",
       "Maintain streaks to raise the multiplier.",
       "Bank amplified gains into permanent stat ladders."
     ],
     "progression": [
-      "Multiplier tiers unlock at milestone streaks.",
-      "Overflow EXP converts into rare traits.",
-      "Unlock further potential in progression (Placeholder)."
+      "Multiplier tiers unlock at risk-weighted streak thresholds instead of passive grind totals.",
+      "Overflow EXP converts into side rewards, rare traits, or specialized momentum perks.",
+      "Banking milestones unlock safer cash-out options, while deep streak tiers unlock dangerous bonus scaling."
     ],
     "narrativeHooks": [
       "Rivals notice your impossible leveling curve.",
@@ -453,6 +528,31 @@
       "Hold a multiplier streak through a siege.",
       "Sacrifice a streak to rescue an ally for a bonus tier."
     ],
+    "possibleUses": [
+      "Reward clean combat, quest chains, and uninterrupted crafting runs with explosive growth.",
+      "Create tense choices between banking a streak and pushing for one more multiplier tier.",
+      "Support momentum meters, collapse triggers, and anti-exploit pacing rules.",
+      "Drive narratives where enemies attack rhythm, morale, and timing instead of raw HP."
+    ],
+    "limits": [
+      "The multiplier only amplifies earned progress and cannot create meaning from nothing.",
+      "Broken streaks, forced retreats, and interruption effects can erase short-term advantage fast."
+    ],
+    "costs": [
+      "The bearer is pressured toward overextension because the best growth windows also carry the highest risk.",
+      "Maintaining momentum attracts attention from rivals who specialize in disruption and attrition."
+    ],
+    "worldCompatibility": [
+      "This System is an acceleration engine beneath Void law, not a free override of all progression rules.",
+      "It is feared because it turns ordinary success into runaway anomaly growth if left unchecked."
+    ],
+    "factionReactions": [
+      "Strategists and commanders will try to break the bearer's tempo before it compounds again.",
+      "Institutions will classify the bearer as a scaling threat once the leveling curve becomes public."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 17,
     "tags": [
       "growth",
       "multiplier",
@@ -493,17 +593,17 @@
     "id": "infinite_skill_points",
     "name": "Infinite Skill Points",
     "category": "System",
-    "summary": "Skill points never run out; mastery becomes inevitable.",
-    "description": "An allocation system that continuously grants points and removes hard caps, enabling eventual mastery of every discipline.",
+    "summary": "Open endless allocation potential across every discipline and tree.",
+    "description": "Infinite Skill Points is an allocation System. It removes the normal ceiling on long-term skill investment. The bearer can keep buying into disciplines that others must abandon. Breadth becomes possible without making execution instantly perfect. The System rewards experimentation, hybrid planning, and unusual synergies. It also punishes scattered thinking when the bearer invests faster than they can truly apply. It remains powerful but bounded by time, mastery lag, and battlefield reality.",
     "coreLoop": [
       "Earn skill points through milestones.",
       "Allocate freely across disciplines.",
       "Unlock mastery nodes that bend class limits."
     ],
     "progression": [
-      "Point gain accelerates with build diversity.",
-      "Mastery nodes unlock cross-skill synergies.",
-      "Unlock further potential in progression (Placeholder)."
+      "Point income scales with meaningful progression, not idle inflation alone.",
+      "Mastery nodes unlock cross-discipline synergies and deep branch specialization.",
+      "Late tiers open long-tail investment routes that let broad builds stay relevant into endgame."
     ],
     "narrativeHooks": [
       "Teachers fear your omnidirectional growth.",
@@ -513,6 +613,31 @@
       "Complete a multi-discipline trial in one run.",
       "Reset a tree to unlock a forbidden mastery node."
     ],
+    "possibleUses": [
+      "Support broad hybrid builds that ordinary characters could never afford to maintain.",
+      "Create school, guild, and academy tension around someone who refuses specialization limits.",
+      "Power large skill trees and long-tail investment mechanics without hard build dead ends.",
+      "Turn late-game progression into choice density instead of pure stat inflation."
+    ],
+    "limits": [
+      "Unlimited point potential does not remove mastery lag, slot pressure, or execution limits.",
+      "Breadth becomes a trap if the bearer buys too much before learning what actually matters."
+    ],
+    "costs": [
+      "The bearer spends attention, time, and strategic clarity every time a new lane opens.",
+      "Institutions built on specialization will resent, regulate, or attempt to monopolize the System."
+    ],
+    "worldCompatibility": [
+      "This System expands mortal progression beneath the Void hierarchy without granting instant omnitalent status.",
+      "It is treated as civilization-distorting because it denies the normal scarcity model of mastery."
+    ],
+    "factionReactions": [
+      "Teachers, guilds, and militaries will try to force the bearer into a narrower doctrine they can predict.",
+      "Rivals will attack the gap between the bearer's total potential and their current practical mastery."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 16,
     "tags": [
       "skills",
       "mastery",
@@ -553,17 +678,17 @@
     "id": "loot_guarantee_protocol",
     "name": "Loot Guarantee Protocol",
     "category": "System",
-    "summary": "Every victory yields guaranteed drops and upgrade lines.",
-    "description": "A deterministic loot protocol that converts victories into predictable resources, removing RNG from progression.",
+    "summary": "Turn meaningful victories into reliable loot, conversion value, and upgrade routes.",
+    "description": "Loot Guarantee Protocol is a deterministic reward System. It ensures meaningful victories always produce useful advancement material. The bearer still has to win, survive, and secure the field. The cheat is reliability, not effortless abundance. Duplicate drops can be routed into upgrade value instead of dead waste. This reshapes farming, market behavior, and long-term planning. It remains powerful but bounded by enemy quality, encounter type, and logistical risk.",
     "coreLoop": [
       "Defeat enemies to trigger guaranteed drops.",
       "Convert duplicates into upgrades.",
       "Unlock higher-tier tables through milestones."
     ],
     "progression": [
-      "Guarantees expand from commons to mythics.",
-      "Drop chains unlock bonus sets and relics.",
-      "Unlock further potential in progression (Placeholder)."
+      "Guaranteed tables improve from baseline salvage to relic-grade progression material.",
+      "Duplicate conversion unlocks efficient upgrade routes, pity-like milestones, and set completion logic.",
+      "Advanced tiers tie guaranteed rewards to elite clears, no-loss runs, and target-specific farming chains."
     ],
     "narrativeHooks": [
       "Economies bend around your reliable supply.",
@@ -573,6 +698,31 @@
       "Defend a caravan of guaranteed drops.",
       "Clear a dungeon without opening chests."
     ],
+    "possibleUses": [
+      "Make farming less frustrating by ensuring every real win advances the build somehow.",
+      "Support duplicate conversion, deterministic drops, and lower-RNG progression pacing.",
+      "Create black-market and military storylines around a human supply chain that never truly whiffs.",
+      "Reward target farming and clean clears without removing danger from the run."
+    ],
+    "limits": [
+      "Guaranteed reward quality still depends on the encounter, and weak prey cannot drop endgame value.",
+      "Reliable loot does not protect the bearer from being robbed, ambushed, or outscaled."
+    ],
+    "costs": [
+      "Consistent profit attracts thieves, tax collectors, armies, and opportunists faster than scarcity ever would.",
+      "The bearer may start choosing fights for payout quality instead of wiser long-term priorities."
+    ],
+    "worldCompatibility": [
+      "This System organizes reward law beneath Void order instead of creating value from nothing.",
+      "It is feared because it undermines markets, rarity expectations, and grind-based gatekeeping."
+    ],
+    "factionReactions": [
+      "Loot brokers, guild quartermasters, and warlords will try to bind the bearer into supply contracts.",
+      "Predators and raiders will track the bearer as a walking cache of predictable high-value goods."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 15,
     "tags": [
       "loot",
       "economy",
@@ -613,17 +763,17 @@
     "id": "skill_copy_interface",
     "name": "Skill Copy Interface",
     "category": "System",
-    "summary": "Observe, copy, and slot enemy abilities instantly.",
-    "description": "A mimic interface that records techniques and installs them as temporary or permanent skills.",
+    "summary": "Observe, model, and install foreign techniques into usable slots.",
+    "description": "Skill Copy Interface is an adaptive System. It records observed techniques and installs them into controlled slots. The bearer does not gain perfect mastery from a single glance. Observation quality, slot strain, and compatibility all matter. The System rewards encounter diversity, analysis, and survival against unusual opponents. Copied techniques begin unstable until the bearer refines them through use. It remains powerful but bounded by capacity, integration work, and stronger anti-copy defenses.",
     "coreLoop": [
       "Observe skills in combat.",
       "Copy into limited slots.",
       "Stabilize copied skills with practice."
     ],
     "progression": [
-      "Slot count expands with mastery.",
-      "Copied skills evolve into superior versions.",
-      "Unlock further potential in progression (Placeholder)."
+      "Slot count and observation depth expand with mastery, composure, and interface growth.",
+      "Copied techniques can evolve into personalized versions once the bearer truly integrates them.",
+      "High tiers unlock better anti-overload handling, longer retention, and stronger permanent conversions."
     ],
     "narrativeHooks": [
       "Rivals fear their signatures used against them.",
@@ -633,6 +783,31 @@
       "Copy a legendary technique without being noticed.",
       "Defeat a mimic to stabilize a slot permanently."
     ],
+    "possibleUses": [
+      "Turn enemy encounters into build opportunities instead of isolated fights.",
+      "Support slot systems, temporary copies, permanent conversion, and compatibility checks.",
+      "Drive tournament, infiltration, and forbidden-technique storylines where witnessing a move is the true prize.",
+      "Reward adaptable players who survive long enough to build a wide technical library."
+    ],
+    "limits": [
+      "Copied skills begin imperfect and can overload the bearer if too many unstable slots are active at once.",
+      "Sealed arts, bloodline techniques, and higher Authorities can distort or reject unauthorized copying."
+    ],
+    "costs": [
+      "The bearer must risk exposure and repeated practice to turn a raw copy into reliable power.",
+      "Stealing signatures creates personal enemies who refuse to let their techniques remain borrowed."
+    ],
+    "worldCompatibility": [
+      "This System bends learning law beneath Void order without granting absolute ownership of all skills.",
+      "It is treated as heretical or miraculous because it compresses observation into structured acquisition."
+    ],
+    "factionReactions": [
+      "Schools, clans, and duelists will guard their signature arts more aggressively once the interface is known.",
+      "Opportunists will test, bait, or exploit the bearer's hunger for rare techniques."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 18,
     "tags": [
       "copy",
       "skills",
@@ -733,17 +908,17 @@
     "id": "talent_evolution_engine",
     "name": "Talent Evolution Engine",
     "category": "System",
-    "summary": "Talents mutate into superior ranks over time.",
-    "description": "A refinement engine that evolves talents through repeated use and catalyst infusion.",
+    "summary": "Refine talents into higher ranks through use, catalysts, and branching mutation.",
+    "description": "Talent Evolution Engine is a refinement System. It upgrades innate gifts into stronger and stranger forms. The bearer begins with talents that can mutate under use and pressure. Catalysts, repeated exertion, and branch choice determine the final shape. Each evolution grants power but also narrows future identity. Outside forces will try to direct, steal, or weaponize the most promising branches. It remains powerful but bounded by catalyst scarcity, branch lock-in, and growth pain.",
     "coreLoop": [
       "Use talents to build evolution progress.",
       "Gather catalysts to trigger upgrades.",
       "Choose branching evolutions at thresholds."
     ],
     "progression": [
-      "Evolution trees split into specialized laws.",
-      "Catalysts become rarer and more potent.",
-      "Unlock further potential in progression (Placeholder)."
+      "Evolution trees split into specialized laws, combat roles, and lineage-adjacent mutations.",
+      "Catalysts become rarer, more dangerous, and more decisive at higher tiers.",
+      "Late evolutions unlock signature branches that permanently define how the talent expresses power."
     ],
     "narrativeHooks": [
       "Scholars and predators converge on your growth.",
@@ -753,6 +928,31 @@
       "Secure a catalyst node under siege.",
       "Evolve a talent during a time-locked ritual."
     ],
+    "possibleUses": [
+      "Drive branching passive trees and visible mutation milestones tied to playstyle.",
+      "Create catalyst hunts, talent-poaching arcs, and ritual evolution set pieces.",
+      "Support milestone-based upgrades where repeated use matters as much as rare material input.",
+      "Force hard choices between incompatible future talent identities."
+    ],
+    "limits": [
+      "Every major evolution closes off competing branches and raises the cost of reversing course.",
+      "Talents that evolve too quickly can destabilize the bearer or mutate in the wrong direction."
+    ],
+    "costs": [
+      "The bearer must endure painful refinement, scarce catalysts, and permanent identity tradeoffs.",
+      "Visible talent growth attracts clans, laboratories, hunters, and mentors with conflicting agendas."
+    ],
+    "worldCompatibility": [
+      "This System accelerates talent mutation beneath Void order without granting free unlimited growth.",
+      "It is treated as miraculous or threatening because it can rewrite the meaning of natural aptitude."
+    ],
+    "factionReactions": [
+      "Scholars, nobles, and predators will compete to claim the bearer before a rare branch matures.",
+      "Families and sects will treat each evolution as proof of destiny, theft, or dangerous anomaly."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 16,
     "tags": [
       "evolution",
       "talent",
@@ -793,17 +993,17 @@
     "id": "shadow_companion_core",
     "name": "Shadow Companion Core",
     "category": "System",
-    "summary": "An autonomous shadow hunts, eats, and evolves.",
-    "description": "A companion core that spawns a shadow entity to scout, devour energy, and scale with you.",
+    "summary": "Bond a hungry shadow that scouts, fights, and evolves beside you.",
+    "description": "Shadow Companion Core is a bonded companion System. It births a shadow entity that scouts, hunts, and grows beside the bearer. The shadow is a parallel body, not a cosmetic familiar. It can observe, devour, split pressure, and merge for sudden synergy. The same autonomy makes trust and control part of the progression loop. Hunger, instinct drift, and overgrowth can turn the companion into a real threat. It remains powerful but bounded by feeding, synchronization, and binding discipline.",
     "coreLoop": [
       "Assign shadow tasks (scout, hunt, devour).",
       "Feed it essence to grow its form.",
       "Merge powers for synergy upgrades."
     ],
     "progression": [
-      "Shadow forms unlock stealth and combat variants.",
-      "Shared skill trees enable combo abilities.",
-      "Unlock further potential in progression (Placeholder)."
+      "Shadow forms unlock stealth, combat, scouting, and specialist hunting variants.",
+      "Shared growth trees enable synchronized combo abilities, split pressure, and merge bursts.",
+      "Late tiers unlock deeper autonomy, larger feeding demands, and more dangerous companion evolutions."
     ],
     "narrativeHooks": [
       "The shadow develops a personality.",
@@ -813,6 +1013,31 @@
       "Bind a rogue shadow to stabilize growth.",
       "Complete a shadow merge ritual without interruption."
     ],
+    "possibleUses": [
+      "Support stealth scouting, split-target pressure, and positional trickery in combat.",
+      "Create companion-trust arcs, rogue-shadow crises, and rituals that deepen or stabilize the bond.",
+      "Drive hunger meters, autonomy states, and merge-based synergy abilities in systems code.",
+      "Let the bearer solve problems through delegated action instead of acting alone every time."
+    ],
+    "limits": [
+      "The shadow must be fed, synchronized, and managed or it drifts toward dangerous autonomous behavior.",
+      "Growing the companion too quickly can outpace the bearer's ability to direct or contain it."
+    ],
+    "costs": [
+      "Every gain in companion autonomy increases the risk of disobedience, predation, or social suspicion.",
+      "The bearer must share resources, attention, and emotional bandwidth with a hunger-driven second self."
+    ],
+    "worldCompatibility": [
+      "This System creates a bonded shadow partner beneath Void law without granting consequence-free permanent summons.",
+      "It is treated as eerie and suspect because the companion blurs the line between tool, person, and omen predator."
+    ],
+    "factionReactions": [
+      "Assassins, spirit scholars, and fearful authorities will watch the companion more than the bearer at first.",
+      "Some powers will covet the shadow as a weapon, while others will demand it be sealed or exorcised."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 15,
     "tags": [
       "companion",
       "shadow",
@@ -1093,17 +1318,17 @@
     "id": "alchemy_compound_loop",
     "name": "Alchemy Compound Loop",
     "category": "System",
-    "summary": "Alchemy outputs compound faster than costs.",
-    "description": "A compounding loop that multiplies alchemy outputs through recursive refinement.",
+    "summary": "Compound alchemical output through recursive refinement and catalyst discipline.",
+    "description": "Alchemy Compound Loop is a recursive crafting System. It turns refined output into fuel for later refinement. The bearer compounds yield through sequencing, catalysts, and laboratory control. Good planning matters as much as raw ingredients. The same loop can destabilize into contamination or explosive backlash. States and syndicates fear what happens when supply growth becomes self-feeding. It remains powerful but bounded by inputs, stability thresholds, and workshop risk.",
     "coreLoop": [
       "Brew batches of potions or pills.",
       "Reinvest outputs to amplify yields.",
       "Unlock rare formulas through compounding."
     ],
     "progression": [
-      "Compounding ratios increase per tier.",
-      "Catalyst chains enable mythic brews.",
-      "Unlock further potential in progression (Placeholder)."
+      "Compounding ratios improve as the bearer stabilizes longer recursive refinement chains.",
+      "Catalyst ladders unlock rarer brews, cleaner loops, and stronger production branches.",
+      "Late tiers add workshop upgrades, contamination control, and loop-safe mythic synthesis routes."
     ],
     "narrativeHooks": [
       "Alchemists seek your formulas.",
@@ -1113,6 +1338,31 @@
       "Acquire a catalyst to start a loop.",
       "Contain an alchemical backlash safely."
     ],
+    "possibleUses": [
+      "Support production chains, catalyst farming, and recursive crafting economies.",
+      "Create laboratory sabotage arcs, siege-supply stories, and ingredient monopoly conflicts.",
+      "Reward preparation-heavy players who want power through infrastructure instead of pure combat.",
+      "Drive systems for contamination risk, yield multipliers, and workshop-state management."
+    ],
+    "limits": [
+      "The loop still requires real ingredients, time, and stable equipment to avoid collapse.",
+      "Aggressive compounding can poison stock, trigger backlash, or exhaust scarce catalysts."
+    ],
+    "costs": [
+      "The bearer must manage contamination, storage, and political attention around abnormal production volume.",
+      "Each successful loop raises the stakes of a later failure because more value is tied into the chain."
+    ],
+    "worldCompatibility": [
+      "This System multiplies alchemical efficiency beneath Void order without creating free matter from nothing.",
+      "It is treated as dangerous because it threatens medicine, war supply, and trade balance at once."
+    ],
+    "factionReactions": [
+      "Guilds, armies, and smugglers will all want control over the bearer's output routes.",
+      "Rivals will target catalysts, workshops, and formulas before they challenge the bearer directly."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 15,
     "tags": [
       "alchemy",
       "crafting",
@@ -2517,17 +2767,17 @@
     "id": "time_loop_regressor",
     "name": "Time-Loop Regressor (Return by Death)",
     "category": "System",
-    "summary": "This archetype lets a character \"save scum\" reality via temporal resets.",
-    "description": "This archetype lets a character \"save scum\" reality via temporal resets. When killed (or under certain conditions), they loop back to an earlier point (a save point), retaining memories. The unique mechanic is the ability to retry events, essentially making death a learning tool rather than an end. Progression structure is narrative: the character gains no XP from loops, but their knowledge accumulates, allowing them to solve impossible scenarios by trial and error. The flavor is often suspenseful or tragic - they remember failures and deaths that never happened for others. This power influ...",
+    "summary": "Retry catastrophic branches by returning with memory intact.",
+    "description": "Time-Loop Regressor is a retry System. It anchors the bearer to a repeating failure horizon. Death or collapse returns them to an earlier branch with memory intact. Growth comes from retained knowledge rather than repeated XP farming. The loop rewards investigation, endurance, and route optimization. It also inflicts trauma, isolation, and timing loss on the bearer. It remains powerful but bounded by trigger conditions, psychological strain, and fate resistance.",
     "coreLoop": [
-      "This archetype lets a character \"save scum\" reality via temporal resets.",
-      "When killed, they loop back to an earlier point, retaining memories.",
-      "Progression structure is narrative: the character gains no XP from loops, but their knowledge accumulates, allowing them to solve impossible scenarios by trial and error."
+      "Trigger a loop through death, collapse, or another anchored failure condition.",
+      "Retain memory of failed branches, enemy patterns, and hidden truths.",
+      "Re-enter the same crisis with better timing, choices, and route knowledge."
     ],
     "progression": [
-      "The unique mechanic is the ability to retry events, essentially making death a learning tool rather than an end.",
-      "This power influences abilities indirectly: they can anticipate enemy moves, uncover future skills or weaknesses, and prepare countermeasures that seem preternatural to observers.",
-      "It synergizes with strategic and deductive skill sets - keen intellect or deduction becomes a superpower when you have many lives to figure things out."
+      "Loop depth improves the amount of retained knowledge and the precision of route optimization.",
+      "Higher tiers unlock cleaner recall, better anchor stability, and rarer branch-specific countermeasures.",
+      "Advanced stages let the bearer carry forward sharper insight while the emotional burden grows heavier."
     ],
     "narrativeHooks": [
       "The flavor is often suspenseful or tragic - they remember failures and deaths that never happened for others.",
@@ -2535,10 +2785,35 @@
       "The Time-Loop Regressor marks you as unusual, drawing attention from allies and enemies."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Time-Loop Regressor and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Time-Loop Regressor.",
-      "Use the Time-Loop Regressor to resolve a crisis ordinary powers cannot solve."
+      "Identify the hidden trigger that keeps forcing the same disaster branch to repeat.",
+      "Save a key ally before the loop cost leaves the bearer too unstable to continue.",
+      "Break a rival regressor's prepared route before they learn yours."
     ],
+    "possibleUses": [
+      "Support knowledge-based progression, route mastery, and retry-driven problem solving.",
+      "Create tragic rescue arcs, conspiracy unraveling, and impossible boss-learning sequences.",
+      "Power retained-knowledge flags, loop counters, and repeated-encounter dialogue changes.",
+      "Reward players who turn failure data into cleaner future decisions."
+    ],
+    "limits": [
+      "The System does not grant free victory and only works under specific reset conditions.",
+      "Loops preserve memory, not perfect outcomes, and stronger fate effects can resist clean repetition."
+    ],
+    "costs": [
+      "The bearer pays through trauma, isolation, and the loneliness of carrying dead timelines alone.",
+      "Repeated looping can cost opportunities, trust, and emotional stability even when the route improves."
+    ],
+    "worldCompatibility": [
+      "This System bends local causality beneath Void order without granting unrestricted control over time itself.",
+      "It is treated as an anomaly because memory survives branches that the rest of the world never lived."
+    ],
+    "factionReactions": [
+      "Entities that sense broken timelines will notice the bearer long before ordinary people do.",
+      "Allies may trust the bearer's impossible foresight while enemies try to jam or trap the reset pattern."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 14,
     "tags": [
       "loop",
       "regression",
@@ -2641,17 +2916,17 @@
     "id": "save_point_system",
     "name": "Save Point System (Checkpoint Revival)",
     "category": "System",
-    "summary": "Here the system itself gives \"save/load\" points like a video game.",
-    "description": "Here the system itself gives \"save/load\" points like a video game. At certain milestones or at will (with limitations), the user can record a snapshot of their state and restart from that checkpoint on death or command. The mechanics ensure any progress beyond the save is lost, but also that fatal mistakes can be undone. Unlike uncontrolled time loops, this can be strategic: the character might intentionally create a save before challenging a boss, then retry multiple times. Progression remains level-based but with far less risk - they can attempt dangerous quests for high reward, knowing t...",
+    "summary": "Lock strategic checkpoints and restore from them under hard limits.",
+    "description": "Save Point System is a checkpoint System. It lets the bearer establish and restore bounded save states. Progress beyond the chosen save can be discarded after failure. Unlike uncontrolled loops, the checkpoint is deliberate and strategic. The bearer can rehearse bosses, routes, and dangerous missions from a chosen anchor. Bad save placement can become its own trap. It remains powerful but bounded by anchor rules, denial zones, and irreversible loss beyond the save.",
     "coreLoop": [
-      "At certain milestones or at will, the user can record a snapshot of their state and restart from that checkpoint on death or command.",
-      "The mechanics ensure any progress beyond the save is lost, but also that fatal mistakes can be undone.",
-      "Unlike uncontrolled time loops, this can be strategic: the character might intentionally create a save before challenging a boss, then retry multiple times."
+      "Establish a checkpoint at a safe or strategically chosen anchor point.",
+      "Push into dangerous content from that save knowing later progress may be discarded.",
+      "Restore after a fatal mistake or failed route and try again with better execution."
     ],
     "progression": [
-      "Progression remains level-based but with far less risk - they can attempt dangerous quests for high reward, knowing they can reload on failure.",
-      "Here the system itself gives \"save/load\" points like a video game.",
-      "New abilities aren't directly granted, but the influence on growth is huge: the character can tackle things solo that normally require a party or high level, because a failed run..."
+      "Checkpoint quality improves with better anchors, cleaner restores, and stronger state stability.",
+      "Advanced stages unlock rarer save windows, safer restores, and more strategic branch testing.",
+      "High tiers add anti-corruption safeguards while preserving the risk of bad checkpoint placement."
     ],
     "narrativeHooks": [
       "The flavor is very \"gamer-esque\" - the world might literally present UI buttons or a feeling of deja vu when reloading.",
@@ -2659,10 +2934,35 @@
       "Synergy is high with high-difficulty, high-reward systems since they can brute-force via repetition, and with knowledge skills."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Save Point System and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Save Point System.",
-      "Use the Save Point System to resolve a crisis ordinary powers cannot solve."
+      "Find a legal anchor site in hostile territory before a major boss or siege begins.",
+      "Break a corrupted checkpoint before it traps the bearer in a losing branch.",
+      "Choose whether to preserve a hard-earned save or risk it for a cleaner future route."
     ],
+    "possibleUses": [
+      "Support explicit checkpoint strategy, boss rehearsal, and branch testing before major commitments.",
+      "Create tense stories about when to lock a save and what is worth sacrificing after it.",
+      "Power restore-state logic, anchor validation, and save-denial zone mechanics.",
+      "Reward careful planning while still leaving room for catastrophic human error."
+    ],
+    "limits": [
+      "Only authorized anchors can hold a save, and corrupted or forbidden zones can deny the mechanic entirely.",
+      "Anything beyond the selected checkpoint is disposable and may vanish after a restore."
+    ],
+    "costs": [
+      "The bearer pays through lost progress, bad anchor choices, and the temptation to over-optimize life itself.",
+      "Public knowledge of the checkpoint anomaly invites enemies who will target anchors instead of the bearer."
+    ],
+    "worldCompatibility": [
+      "This System restores bounded state beneath Void order without granting open dominion over time.",
+      "It is viewed as anti-fate cheating because it makes deliberate failure less final than the world expects."
+    ],
+    "factionReactions": [
+      "Prophets, assassins, and tyrants will all care deeply about where the bearer can and cannot anchor a save.",
+      "Allies may treat the bearer as strangely fearless until they learn what progress each restore truly costs."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 13,
     "tags": [
       "checkpoint",
       "reincarnation-temporal",

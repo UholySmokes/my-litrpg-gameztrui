@@ -133,26 +133,57 @@
     "id": "exchange_shop_core",
     "name": "Exchange Shop Core",
     "category": "System",
-    "summary": "Convert points into items, skills, and rare bloodlines.",
-    "description": "A transactional system that rewards objectives with points used to purchase power directly.",
+    "summary": "A reward-conversion System that turns deeds, risks, and rare accomplishments into direct purchasing power.",
+    "description": "Exchange Shop Core is a transaction-based System that converts completed deeds, dangerous milestones, and exceptional discoveries into a private currency the bearer can spend on structured rewards. Unlike ordinary markets, the shop does not care about coin, noble rank, or merchant law, because it values narrative weight, accomplishment, and system-recognized scarcity. This makes it one of the clearest cheat-style Systems in the setting, since the host can bypass normal supply chains and buy tools, resources, techniques, or relic seeds that should be inaccessible. The real strength of the System is not convenience, but timing, because it lets the bearer translate victory directly into the exact form of leverage they currently lack. A desperate survivor can buy medicine, a besieged fighter can buy ammunition, and a scholar can buy rare references without waiting for the world to cooperate. Its progression lies in stock depth, category unlocks, premium contracts, and the quality of deeds required to open deeper inventory. The shop remains beneath Void and Grandmother Void because it still obeys cost, stock logic, and access thresholds rather than generating infinite power for free. Even so, kingdoms fear it because a person who can reliably convert achievement into tailored advantage becomes very hard to starve, corner, or economically predict.",
     "coreLoop": [
-      "Complete objectives to earn exchange points.",
-      "Purchase upgrades or rare items from the core.",
-      "Unlock hidden inventory tiers through milestones."
+      "Complete objectives, risks, contracts, and milestones to generate exchange currency recognized only by the System.",
+      "Spend that currency on the precise item, material, service, or progression aid most useful to the current crisis.",
+      "Unlock deeper stock categories by proving higher worth, broader influence, and stronger purchase authority."
     ],
     "progression": [
-      "Inventory expands from common tiers to mythic.",
-      "Exchange multipliers unlock with reputation.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression grants practical survival stock such as medicines, utility tools, manuals, and upgrade fodder.",
+      "Mid progression opens controlled access to bloodline fragments, refined materials, elite contracts, and specialized build support.",
+      "Late progression transforms the shop into a strategic arsenal where purchases can reshape wars, factions, and long-term progression routes."
     ],
     "narrativeHooks": [
-      "System offers bargain contracts with consequences.",
-      "NPC merchants react to your unusual supply chain."
+      "The shop feels less like a storefront and more like a cosmic account ledger that judges what the bearer has truly earned.",
+      "Merchants, quartermasters, and black markets react with alarm when the host produces impossible goods without traceable sourcing.",
+      "Premium stock often hints at deeper inventories tied to dangerous worlds, sealed powers, or morally costly bargains."
+    ],
+    "possibleUses": [
+      "In survival and exploration play, Exchange Shop Core is extraordinary because it turns success into immediate access to whatever the party lacks most. A trapped group can purchase medicine, rope, heat wards, portable rations, or a niche tool that no nearby settlement could realistically provide. This keeps momentum high in dangerous arcs without needing to hand-wave logistics. It also supports clever planning because players can save currency for anticipated threats instead of spending blindly.",
+      "In combat, the System shines by letting the bearer acquire tailored counters instead of raw generic strength every time. They can buy anti-poison kits for one boss, anti-armor rounds for another, or a temporary contract item that solves a battlefield problem no class skill covers cleanly. That makes the System feel tactical rather than merely rich. It also produces great tension because a bad purchase at the wrong time can leave the bearer underprepared.",
+      "In crafting and economy arcs, Exchange Shop Core can be used to secure catalysts, manuals, stabilizers, rare reagents, or machine components that would otherwise take months of faction work to source. This makes it a natural engine for hybrid builds that depend on rare inputs. It also disrupts regional markets, which creates political consequences rather than letting the System remain a private convenience only. The narrator can use that pressure to generate guild hostility, smuggling offers, and taxation conflicts.",
+      "In long-form story structure, the System is excellent for temptation design because every deeper tier implies a more dangerous or ethically complicated stock list. The bearer may be offered miracle items, forbidden materials, cursed bargains, or one-time powers whose price is not purely numerical. That makes the shop narratively sticky instead of just useful. It also gives every major arc a satisfying reward language the player can understand immediately."
+    ],
+    "limits": [
+      "The shop does not grant anything for free, and premium stock remains locked until the bearer has completed deeds of the appropriate weight and risk.",
+      "Inventory is context-sensitive rather than all-providing, so the host may not be able to buy exactly what they want at the exact moment they imagine it.",
+      "Using the shop too openly exposes the bearer to scrutiny from merchants, rulers, smugglers, and hostile system scholars."
+    ],
+    "costs": [
+      "Every strong purchase consumes hard-earned exchange currency that could have solved a different future crisis, creating constant opportunity cost.",
+      "Deeper inventory access often requires dangerous commissions, taboo achievements, or morally questionable bargaining conditions.",
+      "A host who relies on the shop too heavily may weaken normal alliances, trade habits, and local trust because nobody understands where their resources come from."
+    ],
+    "worldCompatibility": [
+      "Exchange Shop Core functions as a lawful reward-conversion engine inside the world's existing progression structure and remains bounded beneath Void and Grandmother Void.",
+      "It is compatible with quests, economy, crafting, faction, and survival systems because all of them can generate meaningful currency inputs or purchase targets.",
+      "The System is treated as a destabilizing rarity because it bypasses scarcity without eliminating cost, which makes it powerful but still bounded."
+    ],
+    "factionReactions": [
+      "Guild merchants and nobles want to control, tax, or monopolize the bearer's impossible access to stock.",
+      "Black markets and smugglers see the host as either a rival threat or the greatest supplier they could ever court.",
+      "Scholars of system economics become fixated on whether the shop draws from hidden stores, alternate worlds, or a cosmic debt network."
     ],
     "questHooks": [
-      "Complete a high-risk commission for premium stock.",
-      "Settle a debt contract to unlock new tiers."
+      "Win a catastrophe-grade commission whose completion unlocks the first forbidden premium shelf.",
+      "Track down the vanished holders of a previous shop ledger to learn why their account was forcibly closed.",
+      "Choose whether to purchase a miracle cure, a siege relic, or a bloodline fragment when only one can be afforded before a looming crisis."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3,
     "tags": [
       "economy",
       "trade",
@@ -313,26 +344,57 @@
     "id": "class_fusion_nexus",
     "name": "Class Fusion Nexus",
     "category": "System",
-    "summary": "Hybridize class trees into unique doctrines.",
-    "description": "A nexus that allows partial class merging, granting access to cross-class doctrines.",
+    "summary": "A hybridization System that fuses class lineages into original doctrines unavailable through normal advancement.",
+    "description": "Class Fusion Nexus is a synthesis-oriented System that allows the bearer to merge otherwise separate class doctrines into new composite identities. In most cultures, class progression is designed around specialization, lineage loyalty, and institutional gatekeeping, which means crossing too many paths usually causes failure, dilution, or outright soul rejection. This System bypasses that rigidity by creating controlled fusion rules that let multiple classes coexist inside a single developing doctrine. Its power lies in producing combinations the world has no ready answer for, such as a ritual knight-smith, a shadow healer, or a scout-mage whose class interactions create wholly new tactical behavior. The host does not merely multiclass more efficiently, but forges integrated class laws with emergent passives, unique branches, and altered resource flow. Because of that, the System rewards experimentation, comparative study, and repeated trial more than blind grinding. It remains bounded by compatibility, strain, and doctrinal instability, so reckless fusion can still cripple the host or fracture their identity. In lore, Class Fusion Nexus is feared because it undermines the authority of guilds, temples, and houses that maintain power by defining which class combinations are allowed to exist.",
     "coreLoop": [
-      "Identify compatible class doctrines.",
-      "Fuse class traits to form a hybrid path.",
-      "Stabilize hybrid identities through trials."
+      "Study class doctrines, trait lines, and resource models to identify combinations with real structural compatibility.",
+      "Fuse selected class elements into a hybrid doctrine that creates new passive interactions and active routes.",
+      "Stabilize the resulting identity through trials, use, and correction before the fusion becomes self-destructive."
     ],
     "progression": [
-      "Hybrid ranks unlock unique class passives.",
-      "Fusion compatibility expands with milestones.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression supports small crossovers such as shared passives, altered skill costs, or dual-discipline techniques.",
+      "Mid progression enables true doctrine synthesis where two or more class lines generate original branches that no trainer can teach directly.",
+      "Late progression creates signature hybrid archetypes powerful enough to found schools, threaten guild monopolies, or redefine battlefield roles."
     ],
     "narrativeHooks": [
-      "Class guilds react to your hybrid doctrine.",
-      "Hybrid identity shifts narrative perception."
+      "Every successful fusion challenges the legitimacy of institutions that insist the world's roles are fixed and properly sorted.",
+      "Mentors may become fascinated, offended, or terrified when the bearer proves their lifelong doctrine can be recombined.",
+      "A hybrid class can change how people perceive the bearer socially, because nobody is certain which faction should claim or punish them."
+    ],
+    "possibleUses": [
+      "In combat, Class Fusion Nexus enables role compression by letting the bearer cover two or more functions with one coherent build. A hybrid class can heal while dueling, scout while laying ritual traps, or tank while feeding mana into area control techniques. This is especially valuable in smaller parties or solo runs where normal class limits are punishing. It also creates memorable boss counters because the host can develop answers outside standard class expectation.",
+      "In progression design, the System is ideal for branching mastery because every major milestone can produce a new doctrine rather than a simple stat increase. That keeps advancement exciting deep into a campaign, since each fusion choice changes future identity instead of just tuning numbers. It also gives narrators a clean way to show the cost of experimentation through failed prototypes and unstable temporary blends. Players feel like they are inventing a path, not simply selecting from a menu built by someone else.",
+      "In factional play, Class Fusion Nexus is excellent for conflict generation because guilds, churches, armies, and noble houses all have reasons to care about who controls hybrid doctrine. The bearer can become a wanted research subject, a revolutionary teacher, or a heretic depending on the region. This supports academy arcs, secret-lab arcs, sect rivalries, and world-order reforms. It also ensures the System matters outside combat.",
+      "In crafting and long-term worldbuilding, hybrid classes can justify new professions, schools, or economies that would not exist otherwise. A fusion of beastmaster and geomancer might reshape frontier colonization, while a healer-assassin doctrine could destabilize court politics. That makes the System useful for settlement arcs and narrative futures, not just immediate fights. It also provides a believable reason for later disciples, rivals, and counterfeit imitators to emerge."
+    ],
+    "limits": [
+      "Not all class lines are compatible, and forcing incompatible doctrines together can cause resource collapse, role confusion, or permanent soul strain.",
+      "The strongest fusions require real understanding of both inputs, so the host cannot safely merge classes they barely comprehend.",
+      "Hybrid identities can trigger legal, religious, or institutional backlash in societies built around fixed class legitimacy."
+    ],
+    "costs": [
+      "Every fusion choice closes other possible evolutions, creating meaningful build tradeoffs rather than universal access to everything.",
+      "Stabilizing a new doctrine demands training, testing, and surviving the awkward period where the hybrid is not yet reliable.",
+      "The bearer attracts rivals, recruiters, and would-be dissecting scholars who want either ownership of the fusion method or proof that it should be banned."
+    ],
+    "worldCompatibility": [
+      "Class Fusion Nexus works by synthesizing recognized progression structures and therefore cannot supersede Void, Grandmother Void, or the world's highest laws.",
+      "It is highly compatible with class, profession, quest, and faction systems because all of them already care about doctrine identity and role definition.",
+      "The System is unusual because it bends progression grammar itself, but it still requires lawful compatibility rather than arbitrary omnipotence."
+    ],
+    "factionReactions": [
+      "Guilds and sects react defensively because hybrid doctrines threaten training monopolies and rank hierarchies.",
+      "Experimental academies and frontier powers see the bearer as a living breakthrough worth protecting or stealing.",
+      "Traditionalists often brand the host a doctrinal corrupter even when the fusion results are objectively effective."
     ],
     "questHooks": [
-      "Earn approval from rival class guilds.",
-      "Defeat a hybrid challenger to claim a fusion seal."
+      "Recover a lost fusion codex from a collapsed academy before rival guilds erase its existence.",
+      "Survive a tribunal where three class orders try to decide whether your latest doctrine is legal, sacred, or heretical.",
+      "Defeat a failed hybrid prototype whose unstable doctrine reveals what happens when fusion is forced without restraint."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "class",
       "hybrid",
@@ -373,26 +435,57 @@
     "id": "devourer_core",
     "name": "Devourer Core",
     "category": "System",
-    "summary": "Consume monsters and skills to convert into growth.",
-    "description": "A core system that converts defeated enemies and skills into permanent power, with risk of corruption.",
+    "summary": "A predatory growth System that converts consumed essence, traits, and fragments of power into permanent evolution.",
+    "description": "Devourer Core is an assimilation-based System that allows the bearer to consume essence from defeated creatures, shattered skills, or rare materials and convert the result into lasting growth. It is one of the most dangerous protagonist cheats because it turns victory itself into biological, spiritual, and tactical nourishment. Rather than granting flat loot alone, the System lets the host absorb useful fragments such as resistances, sensory upgrades, trait echoes, or mutated stat patterns. Its promise is intoxicating because every powerful enemy might become raw material for the next evolution. At the same time, Devourer Core is feared across the setting because predation leaves marks on the eater, and careless assimilation can twist instinct, appetite, identity, or moral restraint. Progression therefore depends not only on consumption, but on digestion, selection, refinement, and the ability to reject what should not be made part of the self. The System remains below Void and Grandmother Void because it cannot consume the highest laws of existence; it can only metabolize what reality allows to be taken and processed. Even within that boundary, entire factions would consider it an existential threat because a patient devourer turns every battlefield into a harvest.",
     "coreLoop": [
-      "Devour defeated foes to gain essence.",
-      "Convert essence into stats, skills, or traits.",
-      "Purge corruption by completing cleansing rites."
+      "Consume defeated foes, broken abilities, or valuable biological and spiritual matter to harvest usable essence.",
+      "Refine that essence into chosen gains such as traits, resistances, stat growth, or evolutive mutations.",
+      "Manage corruption, appetite, and identity pressure so accumulated power does not devour the bearer in return."
     ],
     "progression": [
-      "Devour tiers unlock higher conversion ratios.",
-      "Corruption thresholds add narrative consequences.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression unlocks simple assimilation such as minor resistances, nutrient efficiency, and low-grade trait inheritance.",
+      "Mid progression enables selective devouring, trait extraction, and cleaner conversion of rare prey into targeted upgrades.",
+      "Late progression creates true predator evolution where the bearer can design themselves through curated consumption at terrible strategic and moral risk."
     ],
     "narrativeHooks": [
-      "Corruption bleeds into dialogue and tone.",
-      "Factions react to your devourer reputation."
+      "The System always raises the question of what part of the host remains truly their own after too many victories become meals.",
+      "Witnesses rarely react with calm when they realize the bearer grows stronger by consuming what falls before them.",
+      "Predator myths, cleansing cults, and desperate warlords all have reasons to track a Devourer once rumors begin spreading."
+    ],
+    "possibleUses": [
+      "In combat, Devourer Core is brutally effective because it lets the host turn dangerous encounters into permanent growth instead of temporary reward. Beating a venomous monster can become poison resistance, defeating a burrowing horror can improve subterranean sense, and consuming a fire-born predator can seed thermal resilience. This gives the System a strong adaptive feel that rewards hunting specific prey. It also makes revenge arcs and escalating boss chains especially satisfying.",
+      "In survival and exploration play, the System can be used to adapt to hostile regions by selectively consuming creatures or materials native to that environment. A desert arc might grant heat tolerance, a swamp arc disease resistance, and an abyssal arc pressure adaptation if the host survives the acquisition process. This makes environmental progression feel earned rather than arbitrary. It also lets the narrator build region-specific hunting objectives with clear payoff.",
+      "In crafting and research arcs, Devourer Core can function as a living analysis engine because the host learns what power fragments actually do when absorbed and processed. That knowledge can inform alchemy, monster handling, antidote design, or the creation of anti-beast equipment. The bearer becomes valuable not just as a weapon, but as a source of dangerous insight. This opens doors for guild contracts and unethical experimentation alike.",
+      "In narrative structure, the System excels at temptation and corruption themes because every gain comes with the question of what should and should not be consumed. Allies may argue over feeding on fallen enemies, rare bloodlines, or sentient prey. Enemies may bait the bearer with power they know is poisonous in the long run. That moral pressure gives the System long-term dramatic weight beyond simple scaling."
+    ],
+    "limits": [
+      "Not everything edible to the System is safe to absorb, and incompatible essence can cause corruption, madness, mutation, or wasted growth.",
+      "The host must defeat, secure, or otherwise obtain viable prey or fragments before assimilation, so the System does not create power out of emptiness.",
+      "Repeated predatory use marks the bearer socially and spiritually, increasing hostility from civilizations that regard consumption-based growth as monstrous."
+    ],
+    "costs": [
+      "Assimilation can distort instinct, hunger, temperament, and self-concept if the host devours recklessly or too often.",
+      "Purging bad intake requires rituals, medicine, support, or painful self-restraint that slows momentum at the worst moments.",
+      "The stronger the prey, the greater the reward and the greater the risk of backlash, contamination, or internal rebellion from what was consumed."
+    ],
+    "worldCompatibility": [
+      "Devourer Core operates within the world's life, soul, and essence systems and cannot consume Void, Grandmother Void, or absolute cosmic structure.",
+      "It is compatible with monster, survival, crafting, and evolution loops because all of them provide viable prey, samples, or refinement contexts.",
+      "The System is usually classified as calamity-prone because its power curve depends on what the host is willing and able to eat."
+    ],
+    "factionReactions": [
+      "Monster hunters and frontier powers may value the bearer as an adaptive weapon while privately planning containment.",
+      "Civilized orders, purification sects, and sacred lineages often see the System as abominable even when it serves a useful purpose.",
+      "Predatory cults and warlords are drawn to the bearer because they believe Devourer Core justifies conquest as a growth strategy."
     ],
     "questHooks": [
-      "Acquire a cleansing relic to control corruption.",
-      "Hunt a corrupted beast to unlock a new devour tier."
+      "Choose whether to consume the heart of a calamity beast knowing it could grant immense growth or permanently stain your soul.",
+      "Track down a lost purification rite before accumulated corruption pushes the System into a feral state.",
+      "Hunt a trait-rich apex predator whose evolution pattern is the missing key to your next devour tier."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "devour",
       "growth",
@@ -433,26 +526,57 @@
     "id": "exp_multiplier_matrix",
     "name": "EXP Multiplier Matrix",
     "category": "System",
-    "summary": "Experience gains compound into runaway growth.",
-    "description": "A growth engine that multiplies earned experience on a schedule, rewarding streaks and risky achievements.",
+    "summary": "A compounding growth System that amplifies earned experience through streaks, risk, and disciplined momentum.",
+    "description": "EXP Multiplier Matrix is a momentum-driven System that increases the value of earned experience whenever the bearer sustains performance under pressure. Instead of handing out free power, it magnifies the reward of real action by stacking efficiency on top of already dangerous effort. That makes it one of the purest progression cheats in the setting, because the host still has to fight, complete quests, craft, or survive, but gains more from every success than anyone else would. Its strongest fantasy is acceleration: once the bearer establishes a streak, each subsequent achievement becomes more valuable and helps fuel the next leap forward. The System therefore rewards courage, tempo control, and disciplined pacing rather than idle safety. It is also fragile in a meaningful way, because broken streaks, poor decision-making, or overreaching can collapse the multiplier and waste enormous potential. In lore terms, the Matrix is terrifying because it turns consistency into compounding destiny, allowing a capable host to widen the gap between themselves and the world at a rate institutions cannot easily model. It remains beneath Void and Grandmother Void because all gains still originate in finite action, but it makes those actions echo far louder than normal.",
     "coreLoop": [
-      "Earn EXP through combat, crafting, or quests.",
-      "Maintain streaks to raise the multiplier.",
-      "Bank amplified gains into permanent stat ladders."
+      "Earn real experience through combat, quests, crafting, survival, and high-pressure accomplishments.",
+      "Maintain streaks, risk exposure, and performance quality to raise the active multiplier instead of letting momentum collapse.",
+      "Convert amplified experience into faster levels, stronger builds, and earlier access to growth thresholds."
     ],
     "progression": [
-      "Multiplier tiers unlock at milestone streaks.",
-      "Overflow EXP converts into rare traits.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early tiers reward simple consistency and let the host feel noticeably ahead of peers with similar effort.",
+      "Mid tiers add conditional amplification for harder content, efficient clears, elite enemies, or stacked challenge modifiers.",
+      "Late tiers create runaway progression potential, but only for hosts disciplined enough to preserve momentum without burning out or dying."
     ],
     "narrativeHooks": [
-      "Rivals notice your impossible leveling curve.",
-      "System audits trigger when growth spikes."
+      "Observers often mistake the bearer for a monster or chosen hero because their growth curve stops resembling normal advancement math.",
+      "The Matrix creates natural tension around streak protection, since every interruption can feel like a personal disaster.",
+      "Systems, auditors, rivals, and jealous factions all take interest when the multiplier becomes visible through impossible level spikes."
+    ],
+    "possibleUses": [
+      "In progression-heavy campaigns, EXP Multiplier Matrix is ideal because it makes every win feel like a setup for a bigger future win. A capable player can transform steady competence into runaway advancement without the story needing to grant arbitrary blessings. This creates satisfying momentum arcs where preparation and discipline matter as much as bravery. It is especially strong in tower climbs, dungeons, war campaigns, and tournament ladders.",
+      "In combat design, the System encourages high-risk decision-making because difficult battles, elite hunts, and challenge modifiers can dramatically improve return on effort. The bearer is tempted to take harder fights than they should because the reward efficiency is so alluring. That makes encounter choice itself part of the gameplay fantasy. It also gives the narrator a natural reason to present escalating opportunities and dangerous gambles.",
+      "In noncombat play, the Matrix can amplify crafting, ritual study, exploration achievements, and difficult social victories if the system logic recognizes them as meaningful experience sources. This broadens the System beyond pure grinding and supports clever protagonists who accelerate through excellence in multiple domains. It also helps a story feel less combat-locked. The same cheat can power a genius inventor, ruthless dungeon climber, or crisis-solving leader.",
+      "In story terms, the System is great for rivalry because opponents who initially dismiss the bearer slowly realize they are running out of time. Every delay lets the multiplier user widen the gap a little more. This supports chase arcs, revenge setups, and faction panic beautifully. It also turns setbacks into dramatic beats because losing a streak hurts in a way readers immediately understand."
+    ],
+    "limits": [
+      "The Matrix amplifies earned experience only, so inactivity, cowardice, or low-impact routine cannot sustain its full value.",
+      "Streak management creates vulnerability because the host is incentivized to keep pushing even when rest or retreat would be safer.",
+      "If the bearer misjudges a challenge and dies, cripples themselves, or is forced into downtime, the multiplier may collapse at the worst possible time."
+    ],
+    "costs": [
+      "The System creates constant psychological pressure to optimize every action for growth, which can erode caution, relationships, and long-term judgment.",
+      "Maintaining top multipliers often requires risky pacing, minimal downtime, or acceptance of compounding fatigue.",
+      "Visible exponential growth attracts audits, jealous rivals, predatory patrons, and enemies who decide to strike before the next level spike arrives."
+    ],
+    "worldCompatibility": [
+      "EXP Multiplier Matrix works inside the existing experience economy and cannot bypass Void, Grandmother Void, or the requirement that advancement still be earned.",
+      "It is compatible with combat, crafting, quest, survival, and challenge-modifier systems because all of them can feed recognized experience inputs.",
+      "Most powers classify it as high-threat but lawful because it multiplies progression instead of creating impossible gains from nothing."
+    ],
+    "factionReactions": [
+      "Military powers and climbing factions aggressively recruit the bearer once they recognize how much value the multiplier creates in sustained campaigns.",
+      "Rivals and jealous elites become fixated on breaking the host's streak before the growth curve becomes irreversible.",
+      "System scholars and auditors may investigate whether the Matrix is an exploit, a divine experiment, or a lawful anomaly."
     ],
     "questHooks": [
-      "Hold a multiplier streak through a siege.",
-      "Sacrifice a streak to rescue an ally for a bonus tier."
+      "Maintain a collapsing multiplier streak through a siege where every smart retreat risks losing months of acceleration.",
+      "Choose whether to sacrifice your highest recorded multiplier in order to save an ally whose death would haunt the entire campaign.",
+      "Clear an elite gauntlet designed by system auditors who want to learn whether your growth curve can be broken by pressure."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 3,
     "tags": [
       "growth",
       "multiplier",
@@ -493,26 +617,57 @@
     "id": "infinite_skill_points",
     "name": "Infinite Skill Points",
     "category": "System",
-    "summary": "Skill points never run out; mastery becomes inevitable.",
-    "description": "An allocation system that continuously grants points and removes hard caps, enabling eventual mastery of every discipline.",
+    "summary": "A limitless allocation System that keeps generating upgrade currency until specialization itself becomes optional.",
+    "description": "Infinite Skill Points is a progression System that continuously produces upgrade currency beyond the world's expected limits, allowing the bearer to keep investing in talents long after normal builds would run dry. In an ordinary system-governed society, skill points are the language of sacrifice, because every allocation closes other roads and forces identity through scarcity. This System tears open that scarcity model by ensuring the host can keep buying ranks, unlocks, and branch nodes far beyond standard budgets. The power fantasy is not instant perfection, but eventual comprehensiveness: the bearer can become dangerous in many directions instead of living with permanent blind spots. That makes the System especially threatening in long-form stories, because time itself becomes an ally to anyone who can keep acquiring points without a true ceiling. Still, it is not a free victory button, because skill ranks require meaningful purchase order, supporting stats, practical experience, and enough discipline not to drown in options. The bearer can absolutely misbuild, overextend, or become trapped in endless optimization if they treat infinite currency as infinite wisdom. In lore, the System is feared because it breaks the social contract of specialization and allows one person to encroach on the traditional territory of entire guild ecosystems.",
     "coreLoop": [
-      "Earn skill points through milestones.",
-      "Allocate freely across disciplines.",
-      "Unlock mastery nodes that bend class limits."
+      "Generate skill points through milestones, level gains, achievements, and compounding system logic beyond normal caps.",
+      "Invest those points across multiple disciplines instead of being forced into one narrow specialization lane.",
+      "Use the expanding point economy to remove weaknesses, unlock hybrid synergies, and eventually reshape build identity."
     ],
     "progression": [
-      "Point gain accelerates with build diversity.",
-      "Mastery nodes unlock cross-skill synergies.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression feels like unusual flexibility, letting the host patch weak spots while peers are still making painful tradeoffs.",
+      "Mid progression unlocks mastery nodes, cross-tree interactions, and dual-discipline packages that normal point budgets could never sustain.",
+      "Late progression creates terrifying breadth, where the bearer can maintain several near-elite competencies at once and pivot builds rapidly."
     ],
     "narrativeHooks": [
-      "Teachers fear your omnidirectional growth.",
-      "Guilds attempt to lock you into a single path."
+      "Teachers and guilds quickly realize the bearer is violating the scarcity rules that justify their entire training philosophy.",
+      "The System's real tension comes from choice overload, because infinite currency still demands judgment about order, synergy, and timing.",
+      "Observers may mistake the bearer for a genius when the deeper truth is that their build budget simply never runs out."
+    ],
+    "possibleUses": [
+      "In combat, Infinite Skill Points is powerful because it lets the bearer remove glaring weaknesses that most builds must accept forever. A frontline fighter can buy emergency movement, a healer can invest in battlefield survival, and a mage can develop weapon competence instead of dying whenever spells fail. This makes the System ideal for solo or small-party protagonists who cannot rely on perfect team coverage. It also supports dramatic build pivots after major story events.",
+      "In progression design, the System keeps campaigns fresh because every new discipline remains genuinely accessible. The bearer is not locked out of crafting, diplomacy, stealth, summoning, or ritual work simply because they spent their early points elsewhere. That encourages experimentation and makes knowledge acquisition feel rewarding instead of frustrating. It also gives the narrator a natural reason for the protagonist to keep learning across different arcs.",
+      "In faction and academy play, Infinite Skill Points is disruptive because institutions assume competence must be rationed. The host can quietly master guild-exclusive tricks, cross-train through multiple schools, and undermine the authority of gatekeepers who profit from scarcity. This creates great story pressure around secrecy, recruitment, and resentment. Rivals hate discovering that their protected edge is only temporary.",
+      "In long-form storytelling, the System is excellent for competence fantasy because it supports the dream of eventually becoming good at nearly everything without making the early game trivial. The bearer still needs time, sequence, and experience to make those points matter. That keeps growth satisfying instead of hollow. It also creates interesting personality questions about whether anyone should have the ability to optimize every part of themselves forever."
+    ],
+    "limits": [
+      "Infinite points do not replace the need for real practice, compatible stats, and context, so buying ranks alone will not make the host flawless overnight.",
+      "The System tempts the bearer into endless branching, which can delay mastery if they keep starting new trees without finishing important ones.",
+      "Social systems built on specialization may retaliate when one person starts encroaching on too many protected domains at once."
+    ],
+    "costs": [
+      "Choice overload becomes a real burden because every unlocked discipline creates more paths competing for attention and sequencing.",
+      "Supporting too many skill lines at once can strain time, resources, gear, and identity even when the point supply itself remains abundant.",
+      "The host attracts jealousy, suspicion, and institutional resistance once their breadth becomes impossible to dismiss as natural talent."
+    ],
+    "worldCompatibility": [
+      "Infinite Skill Points expands the world's skill-allocation economy but does not override Void, Grandmother Void, or the requirement that ranks still connect to meaningful systems.",
+      "It is compatible with class, skill-tree, crafting, social, and combat frameworks because all of them already rely on investment logic.",
+      "The System is considered dangerous because it weakens one of civilization's core assumptions: that excellence must always be rationed."
+    ],
+    "factionReactions": [
+      "Guilds and academies want to recruit, restrict, or dissect the bearer before their breadth destabilizes carefully guarded hierarchies.",
+      "Rivals fear that any advantage they hold today may disappear once the host invests into the same domain tomorrow.",
+      "Pragmatic leaders value the System because a single infinitely allocative expert can solve problems that usually require entire teams."
     ],
     "questHooks": [
-      "Complete a multi-discipline trial in one run.",
-      "Reset a tree to unlock a forbidden mastery node."
+      "Clear a gauntlet designed to force mastery of four unrelated disciplines in a single uninterrupted run.",
+      "Decide whether to spend a massive reserve on immediate battlefield survival or save it for a forbidden mastery lattice that could redefine your build.",
+      "Break into a sealed academy vault whose techniques were hidden specifically because no ordinary student could afford to learn them all."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3,
     "tags": [
       "skills",
       "mastery",
@@ -553,26 +708,57 @@
     "id": "loot_guarantee_protocol",
     "name": "Loot Guarantee Protocol",
     "category": "System",
-    "summary": "Every victory yields guaranteed drops and upgrade lines.",
-    "description": "A deterministic loot protocol that converts victories into predictable resources, removing RNG from progression.",
+    "summary": "A deterministic reward System that forces meaningful drops from victories instead of leaving progression to luck.",
+    "description": "Loot Guarantee Protocol is a deterministic acquisition System that ensures meaningful rewards follow qualifying victories instead of relying on pure chance. In most game-like worlds, loot is an engine of hope and frustration, because effort can still produce nothing useful if probability turns hostile. This System breaks that model by converting success into reliable drops, upgrade fragments, or advancement materials according to readable logic. The result is not that every reward is perfect, but that no significant victory feels empty. That makes the bearer terrifyingly efficient over long campaigns, since they waste less time grinding for missing components and can plan around predictable resource flow. The System favors preparation and farming discipline because the host can pursue exact targets instead of praying for them. It remains bounded by encounter difficulty, reward tables, and qualifying conditions, so the bearer still has to win meaningful fights to claim meaningful spoils. In lore, the Protocol is disruptive because it bends economies, ruins rarity assumptions, and threatens every power structure built around controlling uncertain resource access.",
     "coreLoop": [
-      "Defeat enemies to trigger guaranteed drops.",
-      "Convert duplicates into upgrades.",
-      "Unlock higher-tier tables through milestones."
+      "Defeat qualifying enemies, clear objectives, or complete challenges to trigger deterministic reward drops.",
+      "Convert repeated drops and fragments into upgrades instead of suffering dead progression from bad luck.",
+      "Unlock richer tables by proving the ability to clear harder content consistently."
     ],
     "progression": [
-      "Guarantees expand from commons to mythics.",
-      "Drop chains unlock bonus sets and relics.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression guarantees basic materials, reliable gear paths, and enough structure to keep advancement smooth.",
+      "Mid progression introduces target farming, set completion logic, and premium conversion routes for duplicates and overflow drops.",
+      "Late progression turns the bearer into a nightmare for scarcity economies because they can methodically harvest what others only hope to see."
     ],
     "narrativeHooks": [
-      "Economies bend around your reliable supply.",
-      "Loot brokers attempt to monopolize your drops."
+      "The System changes how the bearer views danger, because every hard-won victory promises a concrete return instead of vague possibility.",
+      "Merchants, raiders, and dungeon brokers cannot decide whether the bearer is the perfect partner or the end of their business model.",
+      "Once the Protocol becomes visible, people start asking whether fate itself is being audited and rewritten around the host."
+    ],
+    "possibleUses": [
+      "In combat-heavy campaigns, Loot Guarantee Protocol is invaluable because it removes the demoralizing gap between success and progress. Clearing a hard dungeon or defeating a dangerous boss always advances the build in some useful direction, which keeps pace strong and satisfying. This is especially effective for roguelike loops, raid structures, and grind-heavy progression arcs. It makes every victory feel like it mattered materially.",
+      "In economy and crafting play, the System stabilizes resource planning because the bearer can forecast inputs instead of gambling on drop luck. Blacksmiths, alchemists, and engineers love deterministic supply if they can access it, while merchants and brokers may hate what it does to scarcity pricing. That tension is narratively rich because reliability is almost as disruptive as abundance. It gives the narrator a reason to make economics part of the story rather than background noise.",
+      "In party dynamics, the Protocol is useful because it reduces resentment around bad RNG and lets groups divide spoils more intelligently. A leader with this System can plan builds, assign hunts, and set expectations with unusual precision. This supports organized faction campaigns and professional adventuring rather than pure improvisation. It also makes the bearer politically valuable.",
+      "In story terms, the Protocol is ideal for arcs about control, fairness, and the politics of certainty. Enemies who built monopolies on rare drops suddenly have a direct threat to their entire model. Allies may become dependent on the bearer's reliability. That gives the System consequences beyond stronger gear."
+    ],
+    "limits": [
+      "The Protocol guarantees meaningful rewards only from qualifying victories, so trivial farming cannot endlessly print premium loot.",
+      "Guaranteed drops still follow structured tables, which means the host cannot demand any item they imagine without hunting the right source.",
+      "Predictable resource flow makes the bearer visible to thieves, tax collectors, monopolists, and factions that fear market destabilization."
+    ],
+    "costs": [
+      "The host is incentivized toward highly efficient farming behavior that can turn life into optimization if left unchecked, creating a serious psychological risk.",
+      "Reliable drops attract dependents, patrons, and parasites who see the bearer as a supply engine rather than a person.",
+      "The strongest tables may require harsh challenge conditions, contested territory, or public feats that paint a target on the host."
+    ],
+    "worldCompatibility": [
+      "Loot Guarantee Protocol modifies reward distribution inside the world's existing drop economy and cannot override Void, Grandmother Void, or universal scarcity altogether.",
+      "It is compatible with combat, dungeon, raid, crafting, and economy systems because all of them consume or generate structured loot outcomes.",
+      "The Protocol is lawful but disruptive, making it one of the clearest examples of a System that changes logistics more than metaphysics."
+    ],
+    "factionReactions": [
+      "Dungeon guilds and militaries value the bearer as a precision farming asset for sustained campaigns.",
+      "Merchants, brokers, and monopolists fear the System because it erodes the profit margin created by uncertainty.",
+      "Criminal organizations may target the bearer as a walking source of reliable high-value goods."
     ],
     "questHooks": [
-      "Defend a caravan of guaranteed drops.",
-      "Clear a dungeon without opening chests."
+      "Clear a boss route under special conditions to unlock a hidden deterministic table that no guild believes is real.",
+      "Protect a shipment of guaranteed war materials while rival merchants try to destroy proof that the Protocol exists.",
+      "Choose whether to use your best deterministic haul for personal growth, public relief, or factional leverage during a regional crisis."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3,
     "tags": [
       "loot",
       "economy",
@@ -613,26 +799,57 @@
     "id": "skill_copy_interface",
     "name": "Skill Copy Interface",
     "category": "System",
-    "summary": "Observe, copy, and slot enemy abilities instantly.",
-    "description": "A mimic interface that records techniques and installs them as temporary or permanent skills.",
+    "summary": "A mimicry System that records observed techniques and converts them into usable skills through analysis and adaptation.",
+    "description": "Skill Copy Interface is an observation-driven System that records witnessed abilities and translates them into usable techniques for the bearer. It is not simple theft, because the copied result must still be interpreted, slotted, and stabilized inside the host's own build. That makes the System far more interesting than raw duplication, since every copied skill passes through a layer of analysis that can preserve, distort, or improve what was seen. The bearer becomes dangerous not only because they accumulate techniques, but because every powerful opponent risks becoming future material. This creates a predatory learning loop where battle itself doubles as education. The Interface remains bounded by slot capacity, compatibility, exposure quality, and the bearer's ability to survive long enough to study what they want. It also cannot perfectly reproduce every divine, bloodline, or Void-adjacent power without translation loss or severe strain. In lore, the System is feared because signature techniques are a major source of status, and the bearer threatens to turn private mastery into public imitation at scale.",
     "coreLoop": [
-      "Observe skills in combat.",
-      "Copy into limited slots.",
-      "Stabilize copied skills with practice."
+      "Observe techniques, spells, or combat patterns closely enough for the Interface to capture their operating structure.",
+      "Install copied abilities into limited slots where they can be tested, translated, and adapted to the host's body and build.",
+      "Refine copied skills through practice until they become stable, improved, or permanently integrated."
     ],
     "progression": [
-      "Slot count expands with mastery.",
-      "Copied skills evolve into superior versions.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression allows short-term copying of straightforward techniques with strict slot limits and imperfect fidelity.",
+      "Mid progression unlocks cleaner capture, stronger stabilization, and the ability to merge copied skills with existing disciplines.",
+      "Late progression turns the Interface into a terrifying archive of solved enemy techniques, custom variants, and counter-style mastery."
     ],
     "narrativeHooks": [
-      "Rivals fear their signatures used against them.",
-      "Mentors demand secrecy around your interface."
+      "Every visible copy creates paranoia, because rivals no longer know whether using their signature move simply feeds the bearer.",
+      "Teachers, bloodline houses, and secret schools react strongly to the idea that their exclusive art can be observed and replicated.",
+      "The bearer is constantly tempted to chase stronger enemies not just to win, but to harvest what they know."
+    ],
+    "possibleUses": [
+      "In combat, Skill Copy Interface is excellent because it rewards observation, positioning, and survival under pressure instead of just brute force. The bearer can turn enemy strengths into future tools, which makes every difficult duel feel valuable even when it is dangerous. This creates strong escalation arcs where the protagonist gradually builds a terrifying mixed arsenal from those who tried to kill them. It also produces great mind games because opponents may hesitate to reveal their best techniques.",
+      "In training and academy arcs, the System allows the host to learn from demonstrations, sparring sessions, and ceremonial displays at a pace no ordinary student can match. That makes it useful even when the story is not in active combat. A clever bearer can quietly assemble a versatile skill base from exposure alone. This also creates social tension when teachers realize imitation is happening faster than formal instruction would allow.",
+      "In buildcraft, the Interface is powerful because copied abilities can be tested, compared, and hybridized with the host's existing tools. That lets a player prototype styles quickly instead of fully committing after every single discovery. It also supports adaptation-heavy protagonists who want a counter for many enemy types. The System is therefore as much about flexibility as it is about theft.",
+      "In narrative terms, Skill Copy Interface is ideal for rivalry, obsession, and identity conflict because it blurs the line between admiration, learning, and violation. Enemies may feel robbed, mentors may feel surpassed, and the bearer may struggle to define what is truly theirs. This gives the System emotional depth rather than making it a pure convenience. It also creates clean hooks for duels, grudges, and forbidden arts."
+    ],
+    "limits": [
+      "The Interface needs sufficient observation quality, which means hidden, instantaneous, or heavily encrypted techniques may not copy cleanly at all.",
+      "Copied skills still face compatibility limits with the host's body, resources, temperament, and existing build structure.",
+      "Slot pressure forces hard decisions about what to keep, discard, or stabilize permanently, especially in long campaigns."
+    ],
+    "costs": [
+      "Using copied skills before proper stabilization can cause backlash, weak output, or dangerous partial failures under pressure.",
+      "The bearer attracts intense hostility from masters, bloodline heirs, and secret orders that consider imitation a form of theft or sacrilege.",
+      "Chasing new copies can become addictive, pushing the host toward reckless fights simply because every powerful enemy looks like a future upgrade."
+    ],
+    "worldCompatibility": [
+      "Skill Copy Interface functions within the world's skill grammar and cannot override Void, Grandmother Void, or replicate every ontological law without loss.",
+      "It is compatible with combat, academy, rivalry, and skill-tree systems because all of them provide structured techniques to observe and translate.",
+      "The System is treated as dangerous but lawful mimicry so long as copied power still passes through bounded slots, compatibility, and stabilization."
+    ],
+    "factionReactions": [
+      "Elite schools and bloodline houses view the bearer as either an unprecedented prodigy or a strategic theft engine that must be contained.",
+      "Rivals become unusually secretive and may change tactics simply to deny the Interface good data.",
+      "Pragmatic commanders see the host as a counter-specialist capable of turning enemy doctrines against themselves."
     ],
     "questHooks": [
-      "Copy a legendary technique without being noticed.",
-      "Defeat a mimic to stabilize a slot permanently."
+      "Witness a legendary technique in battle and survive long enough for the Interface to record it before its owner notices.",
+      "Track down a prior copy-user whose shattered slots contain warnings about techniques that should never be replicated.",
+      "Defeat an enemy school that has started killing witnesses simply to keep its signature doctrine from entering your library."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 3,
     "tags": [
       "copy",
       "skills",
@@ -733,26 +950,57 @@
     "id": "talent_evolution_engine",
     "name": "Talent Evolution Engine",
     "category": "System",
-    "summary": "Talents mutate into superior ranks over time.",
-    "description": "A refinement engine that evolves talents through repeated use and catalyst infusion.",
+    "summary": "An evolution System that upgrades innate talents into stronger, rarer, and more specialized forms over time.",
+    "description": "Talent Evolution Engine is a refinement System that treats innate talents as unfinished seeds rather than fixed end states. In most worlds, a person is born with certain gifts, affinities, or natural ceilings, and those facts quietly determine how far they are expected to go. This System rejects that fatalism by allowing talents to mature, branch, and ascend through use, catalysts, stress, and carefully chosen breakthroughs. Its strength lies in compounding what is already personal, because instead of replacing the host's gifts it transforms them into sharper and stranger versions of themselves. A minor fire affinity might become infernal script control, dull intuition might evolve into battlefield foresight, and simple endurance might branch into curse tolerance or immortal recovery. That makes the bearer unusually coherent as a protagonist, since their power growth feels like an intensification of identity rather than a pile of unrelated upgrades. The Engine is still bounded by catalyst availability, branch choice, and the risk that a bad evolution locks in a path with painful tradeoffs. In lore, it is feared because it breaks the social power of pedigree and turns underestimated people into long-term threats once their dormant gifts begin mutating upward.",
     "coreLoop": [
-      "Use talents to build evolution progress.",
-      "Gather catalysts to trigger upgrades.",
-      "Choose branching evolutions at thresholds."
+      "Use natural talents repeatedly so the System can measure stress, efficiency, and hidden potential under real conditions.",
+      "Gather catalysts, environments, and breakthrough triggers needed to push those talents into higher evolutionary states.",
+      "Choose among branching mutations whose benefits and liabilities permanently reshape the host's future."
     ],
     "progression": [
-      "Evolution trees split into specialized laws.",
-      "Catalysts become rarer and more potent.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression reveals dormant talent ranks and allows low-risk refinements that make existing gifts noticeably sharper.",
+      "Mid progression opens branching evolutions where each major choice creates stronger specialization and more meaningful tradeoffs.",
+      "Late progression lets humble gifts mature into lineage-shaking talents that can rival hereditary privileges and institutional secrets."
     ],
     "narrativeHooks": [
-      "Scholars and predators converge on your growth.",
-      "Lineage disputes erupt over evolved talents."
+      "The System is a direct challenge to worlds that treat bloodline prestige as destiny, because weak gifts can become frightening through evolution.",
+      "Every evolution choice says something about who the bearer is willing to become in order to keep growing.",
+      "Families, sects, and predators all react intensely once they realize the host's gifts are no longer fixed."
+    ],
+    "possibleUses": [
+      "In combat, Talent Evolution Engine is excellent because it lets a protagonist deepen a personal strength into something increasingly distinct and dangerous. Instead of learning random powers, the host sharpens core advantages until they become signature win conditions. This makes fights feel thematically coherent and rewards investment in identity. It also supports dramatic awakenings under pressure.",
+      "In progression design, the Engine is ideal for long campaigns because every major arc can deliver a new mutation, specialization, or breakthrough tied to lived experience. That keeps growth emotionally resonant instead of menu-like. Players are not just buying upgrades, they are deciding what their innate nature becomes. This is especially strong for chosen-one, underdog, and bloodline-rebellion narratives.",
+      "In faction and lineage storytelling, the System creates immediate drama because evolved talent can overturn inheritance logic and succession expectations. A weak child can become terrifying, a spare heir can eclipse the favorite, and a commoner can manifest qualities noble houses believed belonged only to them. This supports court intrigue, sect politics, and family conflict beautifully. It also gives scholars and hunters a reason to care about the bearer.",
+      "In crafting and support play, evolved talents can reshape how the bearer interacts with tools, environments, and other systems. A refined perception talent may transform investigation, an evolved resonance talent may improve relic use, and a matured endurance gift may unlock brutal ritual routes. This broadens the System beyond direct damage. It also gives the narrator room to surprise the player with unexpected utility branches."
+    ],
+    "limits": [
+      "Talents can only evolve along lines supported by the host's actual nature, experiences, and catalyst conditions, so not every desired branch is available.",
+      "Major evolutions often close off alternative futures, making each breakthrough a real commitment rather than a reversible curiosity.",
+      "Badly timed or poorly understood evolution attempts can warp a talent into something unstable, painful, or strategically narrow."
+    ],
+    "costs": [
+      "Catalysts for higher evolutions are rare, dangerous, or politically contested, which turns talent growth into a struggle over resources and timing.",
+      "Every branch choice carries opportunity cost because strengthening one identity can permanently weaken access to another.",
+      "Visible evolution attracts scrutiny from lineages, researchers, and predators who want either ownership of the process or elimination of the threat."
+    ],
+    "worldCompatibility": [
+      "Talent Evolution Engine deepens existing gifts inside the world's lawful progression structure and cannot supersede Void, Grandmother Void, or the need for bounded growth paths.",
+      "It is compatible with bloodline, class, skill, crafting, and faction systems because evolved talents influence how all those layers behave.",
+      "Most societies classify it as a destabilizing miracle because it erodes the assumption that birth talent should remain fixed."
+    ],
+    "factionReactions": [
+      "Bloodline houses fear the bearer because evolved common gifts can rival carefully preserved hereditary advantages.",
+      "Researchers, alchemists, and sects become obsessed with obtaining catalysts, samples, or apprenticeship claims over the host.",
+      "Predators and opportunists may try to capture the bearer during vulnerable breakthrough windows when a talent is mutating."
     ],
     "questHooks": [
-      "Secure a catalyst node under siege.",
-      "Evolve a talent during a time-locked ritual."
+      "Secure a catalyst grove under siege before rival bloodline houses harvest the material needed for your next evolution.",
+      "Choose between two mutually exclusive breakthrough branches while trapped inside a ritual that will collapse if you hesitate.",
+      "Investigate why a prior bearer of the Engine vanished after forcing an evolution no sane teacher would have approved."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 3,
     "tags": [
       "evolution",
       "talent",
@@ -793,26 +1041,57 @@
     "id": "shadow_companion_core",
     "name": "Shadow Companion Core",
     "category": "System",
-    "summary": "An autonomous shadow hunts, eats, and evolves.",
-    "description": "A companion core that spawns a shadow entity to scout, devour energy, and scale with you.",
+    "summary": "A bonded companion System that manifests a living shadow able to scout, devour, protect, and evolve alongside its host.",
+    "description": "Shadow Companion Core is a symbiotic System that manifests a living shadow bound to the bearer's life, growth, and emotional state. Unlike ordinary familiars, this companion is not merely summoned help, but an extension of the host that can develop independent habits, predatory instincts, and specialized forms over time. Its power comes from parallel agency: while the host fights, negotiates, or studies, the shadow can scout, stalk, sabotage, carry messages, guard resources, or feed on ambient essence. The bond becomes especially dangerous because both sides can grow from shared victories and exchange traits through carefully managed synchronization. That creates a progression fantasy built around partnership rather than solo accumulation. However, the shadow is still its own evolving entity, which means neglect, overfeeding, or emotional corruption can twist it into a liability. The System remains bounded by synchronization strain, feeding limits, and the fact that a shadow strong enough to help meaningfully is also strong enough to become difficult to govern. In the setting, Shadow Companion Core is feared because it creates a hidden second actor in every scene, and people rarely realize how much the host can do until the darkness itself starts acting with intent.",
     "coreLoop": [
-      "Assign shadow tasks (scout, hunt, devour).",
-      "Feed it essence to grow its form.",
-      "Merge powers for synergy upgrades."
+      "Direct the shadow toward scouting, hunting, sabotage, guarding, or devouring tasks that support the host's wider goals.",
+      "Feed it essence, experience, and emotional resonance so it can evolve into stronger and more specialized forms.",
+      "Synchronize host and companion abilities to unlock fusion techniques, shared senses, and coordinated tactics."
     ],
     "progression": [
-      "Shadow forms unlock stealth and combat variants.",
-      "Shared skill trees enable combo abilities.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression grants simple scouting, concealment, and opportunistic feeding behavior with limited independence.",
+      "Mid progression unlocks specialized forms such as assassin, guardian, infiltrator, or devourer variants with distinct utility.",
+      "Late progression turns the bond into a terrifying dual-presence engine where host and shadow can pressure different layers of a conflict at once."
     ],
     "narrativeHooks": [
-      "The shadow develops a personality.",
-      "Factions fear its unchecked hunger."
+      "The shadow often develops a personality that reflects the host's buried impulses, fears, or suppressed desires in uncomfortable ways.",
+      "Witnesses are never certain whether the host controls the shadow completely or whether the bond is slowly becoming mutual possession.",
+      "Hidden cults, assassins, and monster hunters all project their own fears onto a power that lets darkness itself act independently."
+    ],
+    "possibleUses": [
+      "In combat, Shadow Companion Core is excellent because it creates layered pressure instead of single-point offense. The host can distract an enemy while the shadow attacks from an unseen angle, steals positioning, or devours exposed energy. This makes coordinated fights feel sharp and tactical rather than simply stronger. It also supports ambush and anti-caster play especially well.",
+      "In exploration and infiltration, the System is extremely useful because the shadow can slip through cracks, follow targets, test trapped routes, and observe without exposing the host directly. That makes it ideal for ruins, urban intrigue, and assassin-heavy arcs. It also helps a cautious protagonist gather information before committing. The narrator gains a believable stealth tool without needing to make the main character physically omnipresent.",
+      "In survival and progression play, the shadow can act as a scavenger, watcher, night guard, or essence harvester while the host rests or focuses elsewhere. This gives the System a strong off-turn value that many combat powers lack. Over time, that utility compounds into a serious logistical advantage. It also creates tension about how much independence the host should grant their companion.",
+      "In narrative terms, Shadow Companion Core is rich because the bond can feel like friendship, temptation, dependency, or self-confrontation depending on how it evolves. The shadow can become confidant, weapon, witness, or future betrayer. That makes the System memorable beyond mechanics alone. It also gives the story a recurring secondary character built directly into progression."
+    ],
+    "limits": [
+      "The shadow requires feeding, management, and trust calibration, so neglecting it can lead to rebellion, weakness, or distorted behavior.",
+      "Strong synchronization is beneficial but dangerous, because emotional instability or corruption in one partner can bleed into the other.",
+      "Bright sanctified zones, anti-shadow wards, and hostile light-based authorities can sharply constrain the System's best functions."
+    ],
+    "costs": [
+      "Maintaining the bond costs time, essence, emotional discipline, and sometimes morally uncomfortable feeding choices.",
+      "If the shadow is injured, starved, or destabilized, the host may suffer backlash through shared senses or damaged synchronization.",
+      "Visible use of a predatory shadow companion attracts fear, suspicion, and targeted countermeasures from factions that specialize in hunting anomalies."
+    ],
+    "worldCompatibility": [
+      "Shadow Companion Core manifests through lawful bonds between host, shade, and ambient essence while remaining bounded beneath Void and Grandmother Void.",
+      "It is compatible with stealth, combat, investigation, summoning-adjacent, and corruption systems because all of them interact naturally with a living shadow partner.",
+      "The System is classified as high-risk but coherent because its strength depends on bond management rather than unlimited independent power."
+    ],
+    "factionReactions": [
+      "Assassin orders and covert factions see the bearer as a natural asset or dangerous competitor.",
+      "Priestly and purification groups often regard the System as spiritually suspect even when the shadow behaves loyally.",
+      "Curious scholars want to determine whether the companion is a soul fragment, an external entity, or a mirror-born predator."
     ],
     "questHooks": [
-      "Bind a rogue shadow to stabilize growth.",
-      "Complete a shadow merge ritual without interruption."
+      "Track down a rogue shadow strain before it bonds with someone else and teaches your companion a predatory mutation you cannot control.",
+      "Decide whether to deepen synchronization during an eclipse ritual that could either perfect the bond or erase the boundary between you.",
+      "Infiltrate a sanctified fortress where your shadow is weakest to recover the only manual that explains advanced companion evolution."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 3,
     "tags": [
       "companion",
       "shadow",
@@ -1093,26 +1372,57 @@
     "id": "alchemy_compound_loop",
     "name": "Alchemy Compound Loop",
     "category": "System",
-    "summary": "Alchemy outputs compound faster than costs.",
-    "description": "A compounding loop that multiplies alchemy outputs through recursive refinement.",
+    "summary": "A recursive crafting System that compounds alchemical output faster than ordinary costs and recovery curves allow.",
+    "description": "Alchemy Compound Loop is a production-oriented System that multiplies alchemical output through recursive refinement, reinvestment, and compounding process efficiency. Instead of treating each brew as a single finished product, the System encourages the bearer to fold results back into subsequent cycles so that every successful batch improves the next. This creates a progression fantasy built on momentum, technique, and scaling productivity rather than direct combat alone. A competent alchemist with this System can turn modest ingredients into disproportionate value over time, especially once catalysts, stabilizers, and formula chains begin stacking together. The real danger is that compounding makes planning more important than raw scarcity, so the bearer becomes frighteningly efficient with materials that should not have lasted. However, recursive production is never free, and bad loops can create contamination, explosive instability, or entire stockpiles of flawed output. The System remains bounded by recipe knowledge, catalyst quality, safe handling, and the host's judgment about when to reinvest and when to cash out a batch. In world terms, it is disruptive because it can upend medicine, war supply, poison markets, and cultivation support simply by making one careful operator far more productive than any guild expects.",
     "coreLoop": [
-      "Brew batches of potions or pills.",
-      "Reinvest outputs to amplify yields.",
-      "Unlock rare formulas through compounding."
+      "Brew base products, extracts, pills, or reagents with clean enough quality to serve as future components instead of one-off consumables.",
+      "Reinvest a portion of the output into recursive loops that improve efficiency, purity, volume, or catalyst behavior in the next batch.",
+      "Unlock higher-order formulas and compound chains once the System recognizes stable, reproducible loop control."
     ],
     "progression": [
-      "Compounding ratios increase per tier.",
-      "Catalyst chains enable mythic brews.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression improves yield and purity enough that basic medicine, stimulants, and utility brews become unusually reliable.",
+      "Mid progression unlocks chained refinement where one output becomes the quality multiplier for the next stage of production.",
+      "Late progression creates industrial-scale alchemical leverage, allowing the bearer to support armies, sects, or entire cities if resources and safety hold."
     ],
     "narrativeHooks": [
-      "Alchemists seek your formulas.",
-      "Overcompounding risks explosive failure."
+      "Other crafters quickly realize the bearer is not just talented, but operating under a production logic that should be impossible to sustain safely.",
+      "Every successful loop raises the temptation to push one more cycle and risk catastrophic instability for an even better return.",
+      "The System naturally attracts interest from healers, poisoners, armies, cultivators, and anyone else who profits from scalable concoctions."
+    ],
+    "possibleUses": [
+      "In crafting play, Alchemy Compound Loop is exceptional because it turns every successful batch into a springboard for future efficiency. That makes it perfect for players who enjoy building production engines instead of only chasing direct combat spikes. It also keeps ingredient gathering meaningful because even modest resources can produce outsized results when routed well. The system rewards knowledge and discipline as much as materials.",
+      "In survival and support arcs, the System can provide healing stock, antidotes, stimulants, fuel gels, warding dusts, and battlefield compounds in volumes other characters cannot match. This makes the bearer indispensable during sieges, expeditions, plagues, or prolonged dungeon crawls. It also allows the party to prepare strategically instead of relying on whatever random supplies are nearby. The resulting pace feels smart and deliberate.",
+      "In economy and settlement play, recursive alchemy can reshape trade by making one workshop produce enough value to disrupt local pricing and power balances. A town protected by such a crafter may suddenly become healthier, richer, or more militarily resilient than neighboring regions expect. That invites taxes, espionage, sabotage, and acquisition attempts. The System therefore generates politics naturally.",
+      "In narrative terms, the Loop is ideal for temptation and hubris because the line between genius compounding and reckless overextension is thin. The bearer is always one choice away from chasing an extra refinement that could create miracle medicine or catastrophic backlash. This gives even downtime scenes tension. It also makes rivals, inspectors, and apprentices dramatically relevant."
+    ],
+    "limits": [
+      "Recursive alchemy magnifies mistakes as efficiently as successes, so a flawed input or rushed process can poison an entire loop chain.",
+      "The System still depends on real formulas, catalysts, and material quality, meaning ignorance cannot be brute-forced by enthusiasm alone.",
+      "Large-scale compounding draws regulatory, criminal, and military attention because whoever controls scalable alchemy controls medicine and war supply."
+    ],
+    "costs": [
+      "Maintaining stable loop chains costs time, workspace discipline, specialized vessels, and constant monitoring of contamination risk.",
+      "The more aggressively the bearer compounds output, the greater the danger of waste, backlash, or explosive failure if one variable slips.",
+      "Scalable alchemical success attracts dependency and political pressure from factions that want the bearer producing for their agenda."
+    ],
+    "worldCompatibility": [
+      "Alchemy Compound Loop enhances lawful alchemical process rather than superseding Void, Grandmother Void, or the requirement that matter must still be transformed through real steps.",
+      "It is compatible with crafting, support, economy, medicine, poison, and cultivation systems because all of them rely on transformable material chains.",
+      "The System is disruptive but grounded, since its strength comes from recursive efficiency instead of creation from nothing."
+    ],
+    "factionReactions": [
+      "Healer guilds, military quartermasters, and cultivator sects all want preferential access to the bearer's production capacity.",
+      "Poisoners, smugglers, and industrial rivals may attempt theft or sabotage once they realize how valuable the loop logic is.",
+      "Regulators and scholars become anxious about what happens if one unstable lab gains too much recursive output too quickly."
     ],
     "questHooks": [
-      "Acquire a catalyst to start a loop.",
-      "Contain an alchemical backlash safely."
+      "Recover a lost catalyst set from a poisoned ruin before a rival workshop uses it to build a more reckless compound loop than yours.",
+      "Contain a runaway refinement cascade in your own lab without losing the batch that could end a regional plague.",
+      "Negotiate which faction receives your first mass-production run when three different crises demand the same scarce alchemical output."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "alchemy",
       "crafting",
@@ -2517,28 +2827,57 @@
     "id": "time_loop_regressor",
     "name": "Time-Loop Regressor (Return by Death)",
     "category": "System",
-    "summary": "This archetype lets a character \"save scum\" reality via temporal resets.",
-    "description": "This archetype lets a character \"save scum\" reality via temporal resets. When killed (or under certain conditions), they loop back to an earlier point (a save point), retaining memories. The unique mechanic is the ability to retry events, essentially making death a learning tool rather than an end. Progression structure is narrative: the character gains no XP from loops, but their knowledge accumulates, allowing them to solve impossible scenarios by trial and error. The flavor is often suspenseful or tragic - they remember failures and deaths that never happened for others. This power influ...",
+    "summary": "A regression System that returns the bearer to a prior point after death while preserving memory and accumulated hard-won knowledge.",
+    "description": "Time-Loop Regressor is a causality-twisting System that returns the bearer to a prior anchor after death or other designated failure conditions while preserving memory of the discarded timeline. It is one of the most psychologically intense Systems in the setting because its greatest resource is not power, but repetition purchased through suffering. The bearer can test strategies, uncover betrayals, map impossible routes, and learn enemy patterns across timelines that no one else remembers. That makes the System incredibly strong in stories built around inevitability, mystery, and impossible scenarios. However, it does not hand out free levels or raw stats for dying, and repeated loops can grind at identity, sanity, and relationships because only one person carries the weight of erased tragedies. The System is also bounded by anchor rules, reset conditions, and the fact that knowledge alone does not solve every problem. If the host lacks the strength, allies, or courage to act on what they know, another loop only deepens the burden. In lore, this is one of the most feared Systems because it makes fate negotiable for a single person while leaving everyone else trapped in consequences they never get to remember.",
     "coreLoop": [
-      "This archetype lets a character \"save scum\" reality via temporal resets.",
-      "When killed, they loop back to an earlier point, retaining memories.",
-      "Progression structure is narrative: the character gains no XP from loops, but their knowledge accumulates, allowing them to solve impossible scenarios by trial and error."
+      "Advance through the timeline until death, collapse, or a triggering failure condition forces a regression to the active anchor point.",
+      "Retain memory of prior outcomes so each repeated attempt reveals new tactics, secrets, and hidden causal structure.",
+      "Use accumulated knowledge to improve decisions, recruit allies earlier, or solve scenarios that were unwinnable on the first pass."
     ],
     "progression": [
-      "The unique mechanic is the ability to retry events, essentially making death a learning tool rather than an end.",
-      "This power influences abilities indirectly: they can anticipate enemy moves, uncover future skills or weaknesses, and prepare countermeasures that seem preternatural to observers.",
-      "It synergizes with strategic and deductive skill sets - keen intellect or deduction becomes a superpower when you have many lives to figure things out."
+      "Early progression is mostly informational, letting the bearer exploit foreknowledge in short, survivable loops.",
+      "Mid progression improves anchor quality, memory retention, and the ability to preserve more detail from longer or more complex failed timelines.",
+      "Late progression turns the System into a strategic terror, because the host can coordinate entire arcs around disasters no one else has lived through even once."
     ],
     "narrativeHooks": [
-      "The flavor is often suspenseful or tragic - they remember failures and deaths that never happened for others.",
-      "Rarity is extreme; typically granted by a deity or cosmic entity to \"challenge fate\" or caused by a world glitch, and it often comes with rules.",
-      "The Time-Loop Regressor marks you as unusual, drawing attention from allies and enemies."
+      "The System is inherently tragic because the bearer becomes the sole witness to timelines full of deaths, betrayals, and intimacies that no longer exist.",
+      "People around the host may sense uncanny intuition without understanding that every correct guess was paid for with prior failure.",
+      "The longer the campaign goes on, the more the question of whether life still feels real to the regressor starts haunting every victory."
+    ],
+    "possibleUses": [
+      "In tactical and mystery-driven arcs, Time-Loop Regressor is extraordinary because it turns impossible information problems into solvable ones through iteration. The bearer can identify traitors, learn boss mechanics, map lethal routes, and test conversation paths without permanently losing the campaign to one mistake. This is especially strong in court intrigue, horror, and puzzle-heavy storytelling. It gives the narrator a clean framework for escalating knowledge while keeping stakes high.",
+      "In combat, the System does not directly grant more damage, but it creates frightening battlefield precision. The host can learn exactly when an enemy reveals their trump card, where a hidden sniper is positioned, or which ally breaks first under pressure. That lets apparently underpowered characters defeat stronger opponents through repeated correction. It also supports stylish comeback scenes because preparation feels fully earned.",
+      "In social play, the bearer can use loops to understand personalities, negotiation traps, romance dynamics, and faction fault lines that would normally take years to study. This allows deep manipulation or unusually compassionate intervention depending on the character's morality. It also raises disturbing ethical questions about relationships built on knowledge others never consented to share across repeated timelines. That moral complexity makes the System narratively rich.",
+      "In long-form storytelling, Time-Loop Regressor excels because it makes failure itself productive while preserving emotional cost. Each loop can reveal truth, but it also accumulates trauma, isolation, and fatigue. That balance keeps the System from feeling like a cheap undo button. It turns perseverance into both power and burden."
+    ],
+    "limits": [
+      "The System is bound to specific anchors, trigger conditions, and reset windows, so the bearer cannot freely rewind any moment they desire.",
+      "Foreknowledge does not replace lacking stats, allies, or materials, which means some solutions remain impossible until other growth catches up.",
+      "Repeated looping can destabilize memory, empathy, and selfhood if the host treats erased timelines as disposable."
+    ],
+    "costs": [
+      "Every useful loop demands real suffering, because the bearer must often die, fail, or watch others die before the information becomes actionable.",
+      "The host carries emotional burdens no one else remembers, creating isolation that can poison trust and intimacy over time.",
+      "Trying to force better outcomes too aggressively can lead to obsession, reckless sacrifice, and a fractured sense of reality."
+    ],
+    "worldCompatibility": [
+      "Time-Loop Regressor bends local causality through bounded anchors and cannot surpass Void, Grandmother Void, or erase the highest laws governing existence.",
+      "It is compatible with mystery, strategy, combat, diplomacy, and survival systems because all of them become richer when failure can teach without being forgotten.",
+      "The System is regarded as terrifyingly rare because it alters the practical meaning of death without making the bearer truly immortal."
+    ],
+    "factionReactions": [
+      "Prophets, fate cults, and temporal scholars may regard the bearer as either a sacred irregularity or a threat to causal order.",
+      "Close allies may eventually become unsettled by the host's impossible foresight and eerily timed interventions.",
+      "Powerful enemies who suspect regression often shift toward information denial, decoys, and traps meant to poison the value of future loops."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Time-Loop Regressor and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Time-Loop Regressor.",
-      "Use the Time-Loop Regressor to resolve a crisis ordinary powers cannot solve."
+      "Die repeatedly in a collapsing timeline until you learn which hidden decision actually prevents the city from falling.",
+      "Track a rival regressor who is also iterating the same crisis and has reached a radically different moral conclusion than you.",
+      "Decide whether to preserve an anchor that saves thousands later or break it now to rescue one person you cannot bear to lose again."
     ],
+    "rarity": "unique",
+    "stability": "volatile",
+    "selectionWeight": 1,
     "tags": [
       "loop",
       "regression",
@@ -2641,28 +2980,57 @@
     "id": "save_point_system",
     "name": "Save Point System (Checkpoint Revival)",
     "category": "System",
-    "summary": "Here the system itself gives \"save/load\" points like a video game.",
-    "description": "Here the system itself gives \"save/load\" points like a video game. At certain milestones or at will (with limitations), the user can record a snapshot of their state and restart from that checkpoint on death or command. The mechanics ensure any progress beyond the save is lost, but also that fatal mistakes can be undone. Unlike uncontrolled time loops, this can be strategic: the character might intentionally create a save before challenging a boss, then retry multiple times. Progression remains level-based but with far less risk - they can attempt dangerous quests for high reward, knowing t...",
+    "summary": "A checkpoint System that records bounded save states and lets the bearer revive from them after catastrophic failure.",
+    "description": "Save Point System is a checkpoint-based recovery System that allows the bearer to record bounded states of progress and return to them after death or qualifying collapse. Unlike uncontrolled regression, this System is strategic because the host decides when and where to anchor risk within specific rules. That means every save becomes a tactical choice about what progress is worth preserving and what uncertainty must still be accepted. The System is powerful because it dramatically lowers the price of experimentation, making high-risk attempts, solo raids, and impossible training routes more plausible. It also changes how the bearer thinks, since preparation, inventory timing, and checkpoint discipline become part of their combat and exploration skill. However, it is never free of consequence, because everything beyond the last save can be lost, including consumables, temporary alliances, and emotional progress with people who no longer remember the same path. The System remains bounded by checkpoint limits, cooldowns, save conditions, and the danger of becoming reckless because failure feels reversible. In world terms, it is feared as a gamer-like anomaly that makes the bearer far harder to permanently stop while still leaving them trapped inside the logic of their own chosen anchors.",
     "coreLoop": [
-      "At certain milestones or at will, the user can record a snapshot of their state and restart from that checkpoint on death or command.",
-      "The mechanics ensure any progress beyond the save is lost, but also that fatal mistakes can be undone.",
-      "Unlike uncontrolled time loops, this can be strategic: the character might intentionally create a save before challenging a boss, then retry multiple times."
+      "Establish a valid checkpoint before entering danger, escalation, or costly experimentation.",
+      "Push into high-risk content knowing catastrophic failure can trigger restoration to the last preserved state.",
+      "Use repeated attempts to optimize routes, refine tactics, and decide when a newer checkpoint is worth replacing an older safer one."
     ],
     "progression": [
-      "Progression remains level-based but with far less risk - they can attempt dangerous quests for high reward, knowing they can reload on failure.",
-      "Here the system itself gives \"save/load\" points like a video game.",
-      "New abilities aren't directly granted, but the influence on growth is huge: the character can tackle things solo that normally require a party or high level, because a failed run..."
+      "Early progression grants sparse, conservative save opportunities that mainly protect against fatal miscalculation.",
+      "Mid progression improves checkpoint quality, restoration fidelity, and the bearer's ability to stage deliberate retry plans around major encounters.",
+      "Late progression turns the System into a campaign-defining tool for raid practice, ruin exploration, and crisis management, though misuse still carries steep cost."
     ],
     "narrativeHooks": [
-      "The flavor is very \"gamer-esque\" - the world might literally present UI buttons or a feeling of deja vu when reloading.",
-      "It's exceedingly rare, essentially making the user a singular anomaly in the world's causality.",
-      "Synergy is high with high-difficulty, high-reward systems since they can brute-force via repetition, and with knowledge skills."
+      "The System gives the bearer a deeply unnatural relationship with risk, because mistakes can be reversed only if they were anticipated correctly.",
+      "Companions may never know how many failed runs, broken plans, and dead ends were discarded before a successful attempt finally stuck.",
+      "The presence of explicit save logic makes the setting feel more game-like around the host without removing the tragedy of what gets erased."
+    ],
+    "possibleUses": [
+      "In combat and raid play, Save Point System is excellent because it allows structured repetition against fights that would normally be one-and-done disasters. The bearer can save before a boss, learn patterns, adjust builds, and keep trying until execution catches up with knowledge. This makes high-difficulty content playable without making it free. It also rewards planning in a very visible way.",
+      "In exploration, the System is invaluable for trapped ruins, unstable dungeons, and unknown environments where a single mistake would normally end an expedition. A careful player can place checkpoints before hazard clusters, deep dives, or negotiations with dangerous entities. That creates satisfying tension around route design and checkpoint timing. It also makes long-form delves much more strategic.",
+      "In growth and experimentation arcs, Save Point System supports risky training, dangerous cultivation methods, cursed artifact testing, and prototype magic that would otherwise be too costly to attempt. The bearer can push harder than anyone else because failure does not always mean permanent ruin. This encourages innovation and audacity. It also gives the narrator a clean way to support trial-and-error problem solving.",
+      "In narrative terms, the System is powerful because it creates regret mechanics with agency. The bearer can save people, but only if they anticipated the need to create the right checkpoint before disaster struck. That means foresight matters as much as courage. The emotional tension between what can and cannot be reloaded keeps the power grounded."
+    ],
+    "limits": [
+      "The System only restores to valid checkpoints, so poor preparation can leave the bearer reviving too early, too late, or with the wrong resources preserved.",
+      "Progress beyond the last save is truly lost, which means experimentation still carries heavy opportunity cost and emotional risk.",
+      "Checkpoints may have cooldowns, placement rules, instability zones, or anti-save environments that prevent casual abuse."
+    ],
+    "costs": [
+      "Every new save risks overwriting a safer fallback, forcing the host to judge whether more progress is worth greater exposure.",
+      "Repeated reload logic can make the bearer reckless, detached, or manipulative if they begin treating discarded outcomes as unreal.",
+      "The System encourages high-risk behavior that still consumes time, supplies, and emotional energy even when death itself can be reversed."
+    ],
+    "worldCompatibility": [
+      "Save Point System operates through bounded checkpoint logic and remains beneath Void, Grandmother Void, and the highest laws governing causality.",
+      "It is compatible with combat, exploration, experimentation, and challenge-heavy systems because all of them benefit from controlled retry structure.",
+      "The System is classified as a severe anomaly because it makes failure negotiable without granting unrestricted temporal control."
+    ],
+    "factionReactions": [
+      "Raid leaders, explorers, and war planners covet the bearer as someone who can test lethal content without conventional finality.",
+      "Temporal scholars and fate cults become alarmed because checkpoint logic suggests localized exceptions to normal consequence flow.",
+      "Allies may value the host's reliability while quietly fearing what repeated unseen failures are doing to their judgment."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Save Point System and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Save Point System.",
-      "Use the Save Point System to resolve a crisis ordinary powers cannot solve."
+      "Choose whether to overwrite a safe checkpoint in order to save deeper progress inside a ruin that has started rewriting its own layout.",
+      "Race a rival checkpoint user through a boss labyrinth where each of you is learning the fight from different restored states.",
+      "Discover why an ancient save beacon keeps restoring a doomed fortress to the hour before its fall and whether shutting it down counts as mercy or betrayal."
     ],
+    "rarity": "unique",
+    "stability": "volatile",
+    "selectionWeight": 1,
     "tags": [
       "checkpoint",
       "reincarnation-temporal",
@@ -4456,28 +4824,52 @@
     "id": "limitless_leveler",
     "name": "Limitless Leveler (No Level Cap)",
     "category": "System",
-    "summary": "This archetype simply removes the safety net: the character has no maximum level or stat cap, whereas the world's...",
-    "description": "This archetype simply removes the safety net: the character has no maximum level or stat cap, whereas the world's inhabitants do. In many RPG worlds, once someone hits level 100 (or a stat hits 999) that's the peak, and further growth is minimal or stops. The MC, however, can keep going indefinitely. The mechanic might not be obvious at first until they surpass what should be a natural limit and keep getting stronger. Perhaps the system UI literally shows \"Level 101\" for them when others stop at 100, or their attributes break the usual bounds (leading to disbelief from others). Progression ...",
+    "summary": "A ceiling-breaking system that removes conventional level limits and lets the bearer continue growing beyond every accepted cap in the world.",
+    "description": "Limitless Leveler is a true cap-breaking System that severs the bearer from the world's normal maximum level, stat ceiling, and advancement lockpoints. In most regions of the setting, classes, species, and training methods are all built around the assumption that growth eventually stalls, either because the soul cannot hold more pressure or because reality stops acknowledging further gains. This System breaks that assumption and keeps accepting earned growth long after everyone else has hit their terminal plateau. Its danger is not merely that numbers keep rising, but that the host can continue converting experience, trials, and victories into meaningful progression while rivals are already trapped inside maintenance and decline. The System does not grant instant supremacy, because every additional tier still has to be won through combat, hardship, training, or risk. Instead, it grants inevitability to anyone patient enough to survive long enough for the compounding effect to matter. In lore terms, this is one of the clearest signs that the bearer has touched a structure stronger than kingdoms, bloodlines, and institutional progression law, while still remaining beneath Void and Grandmother Void. Factions treat it as both miracle and catastrophe because a person with no upper cap eventually forces every balance of power to answer a frightening question: what happens when growth itself stops obeying the world's agreed limits?",
     "coreLoop": [
-      "The MC, however, can keep going indefinitely.",
-      "Perhaps the system UI literally shows \"Level 101\" for them when others stop at 100, or their attributes break the usual bounds.",
-      "This could be because they have a special class or an \"infinite growth\" trait."
+      "Keep gaining real advancement after ordinary caps, class walls, and soul saturation thresholds should have stopped further growth.",
+      "Convert grinding, milestones, victories, and specialized training into continued level and stat expansion when peers can only plateau.",
+      "Leverage the psychological and political shock of impossible progression to destabilize enemies who rely on fixed rank assumptions."
     ],
     "progression": [
-      "Progression is straightforward: continue grinding and accumulating power without end.",
-      "Also works with multiplier skills or tiered boosts: an ability that increases damage by 50% becomes broken when base damage is astronomical.",
-      "Or maybe a \"Protagonist Halo\" that literally means their growth is unbounded so they can face an unbounded threat eventually."
+      "Early stages mainly reveal themselves when normal training continues to produce gains after the host should have plateaued.",
+      "Mid stages let the host break soft caps in multiple subsystems at once, such as class rank, attribute density, or skill potency scaling.",
+      "Late stages turn the System into a strategic threat because each extended campaign makes the bearer harder to contain than the last."
     ],
-    "narrativeHooks": [
-      "The thematic flavor is usually about transcendence or an abnormality - like the MC might be suspected to be not mortal or blessed by the god of growth.",
-      "This archetype simply removes the safety net: the character has no maximum level or stat cap, whereas the world's inhabitants do.",
-      "In many RPG worlds, once someone hits level 100 that's the peak, and further growth is minimal or stops."
+    "possibleUses": [
+      "In combat, Limitless Leveler allows the host to outgrow established power brackets instead of merely matching them, which makes drawn-out rivalries especially dangerous for anyone facing them repeatedly. It is ideal for campaign arcs where the protagonist survives impossible odds early, then returns later with enough accumulated growth to overturn a previously invincible enemy. It also supports boss escalation because the same character can continue pushing strength, speed, durability, mana density, or command radius far beyond normal military planning assumptions. That makes it one of the best Systems for stories where persistence, training obsession, and long-term revenge matter.",
+      "Outside direct battle, the System can be used to exceed noncombat ceilings such as crafting precision, ritual endurance, scholarly processing, diplomatic charisma, or leadership command load. A ruler with this System could become terrifying not because they swing the strongest weapon, but because they continue improving at governance, logistics, and policy interpretation forever. Explorers can use it to keep raising environmental tolerance and expedition efficiency beyond what ordinary adventurers can sustain. Trainers and mentors can also weaponize it by turning every failure into another input for further growth.",
+      "For quest design, Limitless Leveler creates excellent milestone chains centered on surpassing sacred ranks, forbidden towers, sealed trial records, or world-recognized advancement walls. Each time the bearer breaks a cap, the world gains a reason to react, whether through awe, fear, worship, or suppression. This gives the narrator a natural loop for rumor escalation, faction alarm, and increasingly high-tier invitations or assassination attempts. It also pairs cleanly with tournament, war, cultivation, and survival arcs where measurable progress matters.",
+      "In social and political play, the System works as a destabilizer of hierarchy because nobles, churches, and academies often justify power by claiming that advancement has known limits. A capless figure threatens succession plans, caste systems, and national deterrence doctrine just by continuing to improve in public. That makes this System useful for rebellion stories, world-order reform arcs, and paranoia-driven diplomacy. It also gives the narrator a strong basis for propaganda, bounty notices, containment policy, and mythmaking."
+    ],
+    "limits": [
+      "The System removes caps, but it does not remove the need to earn growth through action, practice, danger, or meaningful experience, so a passive host gains little from its promise.",
+      "Rapid overgrowth can destabilize body, soul, equipment, and relationships if the host advances faster than their support structures can adapt.",
+      "The more visibly the bearer exceeds accepted thresholds, the more likely major factions are to classify them as an existential threat that must be controlled or destroyed."
+    ],
+    "costs": [
+      "The host is pressured into relentless forward motion because stagnation wastes the greatest advantage the System offers and invites enemies to close the gap.",
+      "Each new tier raises the burden on maintenance, training time, gear quality, and resource consumption, making ordinary lifestyles increasingly impossible.",
+      "Publicly revealing impossible growth often triggers social isolation, political panic, invasive study attempts, and higher-risk trials that the bearer cannot easily refuse."
+    ],
+    "worldCompatibility": [
+      "Limitless Leveler remains bounded beneath Void, Grandmother Void, and the setting's highest metaphysical laws even while letting the bearer keep progressing within reality's surviving structure.",
+      "It is fully compatible with cultivation, class, stat, and skill systems because it modifies progression ceilings rather than replacing all underlying mechanics.",
+      "World institutions interpret it as an anomaly-grade System, which means churches, empires, and research factions will attempt to classify, weaponize, or suppress it."
+    ],
+    "factionReactions": [
+      "Militaries and monarchies see the bearer as either the ultimate strategic asset or the seed of a future coup.",
+      "Academies and scholar-orders become obsessed with documenting how the System bypasses accepted advancement limits.",
+      "Religious and cosmic factions may split between treating the host as a chosen sign of destiny and condemning them as an unlawful escalation event."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Limitless Leveler and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Limitless Leveler.",
-      "Use the Limitless Leveler to resolve a crisis ordinary powers cannot solve."
+      "Break through a sacred advancement wall in public and survive the political storm that follows your impossible new level.",
+      "Track down the remains of an earlier capless bearer to learn why endless growth still ended in disaster for them.",
+      "Choose whether to keep grinding safely or enter a warzone where accelerated growth could save thousands at catastrophic personal risk."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "absorption-mimicry",
       "system",
@@ -4829,28 +5221,52 @@
     "id": "summoner_supreme",
     "name": "Summoner Supreme (Permanent Summons & Control)",
     "category": "System",
-    "summary": "The character's summoning system is amped to cheat level: any creature they summon can be made permanent (doesn't tim...",
-    "description": "The character's summoning system is amped to cheat level: any creature they summon can be made permanent (doesn't time out) and/or they can summon far more creatures simultaneously than normal. The mechanic might be a special grimoire or crest that \"contracts\" summoned beings into lasting companions. Typically, summoners in RPGs call creatures for a short duration or one at a time. This MC perhaps can open multiple gates or maintain multiple summonings indefinitely - essentially building a small personal army of summoned spirits, elementals, or outsiders. Progression is about forming contra...",
+    "summary": "A supreme contract System that turns temporary summons into lasting assets and lets the bearer build a permanent ecosystem of bound allies.",
+    "description": "Summoner Supreme is a high-order contract System that elevates summoning from temporary spellcraft into a durable economy of bound companions, specialist entities, and scalable battlefield presence. Where ordinary summoners borrow a creature for a moment, this System allows the host to stabilize, deepen, and maintain relationships with summoned beings across long stretches of time. Every successful contract becomes more than a combat trick, because it can mature into infrastructure, reconnaissance, labor, protection, ritual support, or army composition. The System is powerful because it multiplies agency rather than only increasing the host's personal stats, allowing one character to act through an expanding roster of aligned entities. Its deeper progression lies in contract quality, command bandwidth, compatibility, upkeep discipline, and trust management, not merely raw mana. That means a careless bearer can still fail badly if they overextend, mistreat intelligent summons, or build a roster with no coherent doctrine. In setting terms, this System is terrifying because it creates a portable faction around a single person, letting the bearer project influence into places they could never reach alone. It remains beneath Void and Grandmother Void because every bond still depends on law, cost, consent, or coercion inside reality rather than rewriting the cosmic order itself.",
     "coreLoop": [
-      "The character's summoning system is amped to cheat level: any creature they summon can be made permanent and/or they can summon far more creatures simultaneously than normal.",
-      "The mechanic might be a special grimoire or crest that \"contracts\" summoned beings into lasting companions.",
-      "Typically, summoners in RPGs call creatures for a short duration or one at a time."
+      "Form, stabilize, and deepen summon contracts so each successful binding becomes a reusable long-term asset rather than a disposable cast.",
+      "Build a roster with specialized roles such as scouts, defenders, crafters, ritual assistants, and elite battlefield anchors.",
+      "Expand command capacity and bond sophistication so multiple permanent summons can operate together without collapsing into chaos."
     ],
     "progression": [
-      "Progression is about forming contracts with stronger summons.",
-      "Also works with buff skills: a buff that increases allies' power is super valuable because the MC often has multiple allied summons out, so one buff hits many targets.",
-      "Or a gift from the Summoner Spirit King unlocking \"Summon Mastery\" beyond typical limits."
+      "Early growth focuses on maintaining one or two stable summons without exhausting the host's energy, attention, or authority.",
+      "Mid growth adds layered formations, bonded evolution, and contract specialization based on terrain, faction, and campaign need.",
+      "Late growth transforms the host into a one-person command structure able to deploy semi-autonomous summon networks across war, travel, industry, and ritual conflict."
     ],
-    "narrativeHooks": [
-      "This MC perhaps can open multiple gates or maintain multiple summonings indefinitely - essentially building a small personal army of summoned spirits, elementals, or outsiders.",
-      "The flavor is like being a general of celestial/infernal beings who normally are transient.",
-      "Each contract gives them the ability to call that being whenever, maybe even multiples of the same type."
+    "possibleUses": [
+      "In combat, Summoner Supreme is ideal for battlefield control because the host can deploy durable frontliners, flying observers, ranged casters, and utility units in coordinated patterns. This lets one character contest multiple fronts at once, protect allies while attacking, and maintain pressure after ordinary summoning timers would have ended. It also supports attrition warfare, because experienced summons can preserve battlefield knowledge across encounters and become increasingly efficient with repeated use. When written well, the System makes a fight feel like command play rather than simple spell spam.",
+      "In exploration, permanent summons are enormously useful for scouting ruins, mapping dangerous biomes, carrying supplies, testing traps, and securing camps while the main party rests. An intelligent summon can become a translator, guide, or cultural intermediary when entering strange regions. Specialized elemental or spirit summons can also bypass environmental hazards that would stop mortal bodies. This gives the narrator a flexible tool for making travel smarter instead of merely shorter.",
+      "In settlement and economy play, the System supports construction, patrol networks, messenger chains, ritual assistance, harvest support, and disaster response. A host with the right roster can defend a village, maintain wards, move goods, and gather information without personally standing in every place at once. This makes the bearer politically important long before they become individually overwhelming. It also supports kingdom-building arcs because summons can become the skeleton of a portable administration.",
+      "In story terms, Summoner Supreme creates strong interpersonal drama because every contract can become a relationship with terms, loyalty, resentment, expectation, or evolving identity. Intelligent summons may demand respect, freedom, upgrades, revenge, or purpose beyond being treated as tools. That gives quests a natural structure around contract renegotiation, rescue, rebellion, and recruitment. It also lets the narrator develop a memorable cast around the System instead of keeping it as an abstract mechanic."
+    ],
+    "limits": [
+      "Every permanent summon consumes command bandwidth, maintenance effort, and metaphysical space, so a bloated roster can become unmanageable even before energy runs out.",
+      "Intelligent or prideful summons may resist orders, renegotiate terms, or leave if treated as disposable assets.",
+      "The System is strongest when the host curates synergy; mismatched summons, hostile environments, or anti-contract domains can sharply reduce its effectiveness."
+    ],
+    "costs": [
+      "Maintaining permanent contracts requires energy, ritual upkeep, negotiation, offerings, or emotional labor depending on the nature of the bound entities.",
+      "Losing a long-term summon can inflict backlash, morale collapse, or strategic failure because the roster functions as accumulated capital rather than expendable ammunition.",
+      "A large summon network makes the host highly visible to factions that fear private armies, planar contamination, or illegal contract power."
+    ],
+    "worldCompatibility": [
+      "Summoner Supreme remains within world law by binding entities through contracts, circles, pacts, or lawful coercive structures rather than rewriting existence outright.",
+      "It is compatible with companion, faction, quest, and territory systems because summons can persist as recognized actors rather than temporary effects only.",
+      "The strongest contracts still cannot override Void, Grandmother Void, or entities whose ontological rank exceeds the System's lawful reach."
+    ],
+    "factionReactions": [
+      "Spirit courts, beast clans, and planar orders scrutinize the bearer to judge whether their contracts are honorable, predatory, or illegal.",
+      "States and guilds covet the System because a permanent summon network can replace expensive military and logistical infrastructure.",
+      "Anti-summoning sects and territorial powers may see the host as a walking invasion risk even when their intent is peaceful."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Summoner Supreme and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Summoner Supreme.",
-      "Use the Summoner Supreme to resolve a crisis ordinary powers cannot solve."
+      "Negotiate a contract summit between hostile summon factions before your growing roster triggers a planar war.",
+      "Rescue a bound companion from a rival summoner who is trying to sever and overwrite your oldest contract.",
+      "Decide whether to accept a legendary summon whose power would transform your roster but strain every other pact you maintain."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3,
     "tags": [
       "summoning",
       "summoning-companion",
@@ -5269,28 +5685,52 @@
     "id": "omniscient_archive",
     "name": "Omniscient Archive (All-Knowledge Library)",
     "category": "System",
-    "summary": "The character possesses or can access a vast repository of knowledge (books, scrolls, an AI database) that gives them...",
-    "description": "The character possesses or can access a vast repository of knowledge (books, scrolls, an AI database) that gives them information on virtually anything. The mechanic might allow them to query this archive when faced with a problem: e.g., monster weaknesses, ancient spell formulas, historical secrets. In effect, it's like having a combination of Google and a magical encyclopedia in their head or at hand. Progression could come as they decode more of the library (maybe initially it's partially locked or in cipher, unlocking with each quest arc). The flavor often includes a literal library dim...",
+    "summary": "A transcendent knowledge System that grants structured access to hidden truths, technical models, and historical memory far beyond normal scholarship.",
+    "description": "Omniscient Archive is a knowledge-dominant System that gives the bearer access to an evolving repository of classified, forgotten, symbolic, and technical information. It does not make the host truly all-knowing, but it dramatically lowers the distance between a question and an actionable answer. The Archive may manifest as a living library, internal index, spectral assistant, memory palace, or impossible codex that surfaces insight in response to context, danger, and intent. Its greatest strength is not trivia, but synthesis: it links monster physiology to tactics, relic inscriptions to ritual safety, bloodline politics to diplomatic risk, and ancient history to present opportunity. The System becomes world-shaping because knowledge is leverage in every domain, and the bearer can often solve problems before others even understand them. However, the Archive is still a System rather than a cosmic absolute, which means access quality depends on clearance, interpretation, pressure, and the host's willingness to bear dangerous truths. Many answers arrive with strategic consequences, social burdens, or moral costs because some knowledge destabilizes anyone who carries it. In lore, this places the bearer just beneath the strongest active structures in existence: they do not rule reality, but they can often understand enough of it to wound those who believe they cannot be opposed.",
     "coreLoop": [
-      "The character possesses or can access a vast repository of knowledge that gives them information on virtually anything.",
-      "The mechanic might allow them to query this archive when faced with a problem: e.g., monster weaknesses, ancient spell formulas, historical secrets.",
-      "It synergizes with nearly everything: combined with their creativity, they can become masters in multiple fields."
+      "Query the Archive during conflict, study, exploration, and negotiation to surface hidden data that changes decision quality.",
+      "Translate raw information into practical tactics, safer rituals, optimized builds, or political leverage before others can react.",
+      "Unlock deeper shelves, cleaner indexing, and more dangerous classes of truth as the bearer proves capacity and pays the required burden."
     ],
     "progression": [
-      "Progression could come as they decode more of the library.",
-      "In effect, it's like having a combination of Google and a magical encyclopedia in their head or at hand.",
-      "This cheat creates abilities by enabling the MC to solve problems easily that stump others."
+      "Early progression grants better retrieval speed, broader reference coverage, and the ability to answer concrete tactical questions under stress.",
+      "Mid progression unlocks predictive synthesis, hidden histories, ritual analysis, and cross-domain pattern recognition that ordinary experts cannot match.",
+      "Late progression opens sealed knowledge strata whose answers can change wars, expose false religions, or reframe entire epochs of recorded history."
     ],
-    "narrativeHooks": [
-      "The flavor often includes a literal library dimension or a grimoire that updates itself.",
-      "Once used, it's more subtle than direct damage cheat but ensures the MC rarely makes mistakes or gets caught off guard.",
-      "For example, villain reliant on hidden phylactery?"
+    "possibleUses": [
+      "In combat, Omniscient Archive is invaluable for identifying hidden resistances, attack rhythms, sacrificial mechanics, cursed weak points, and the correct order of battlefield priorities. A bearer who can diagnose a monster, formation, or relic in real time often wins before the exchange becomes a contest of raw power. This makes the System especially effective in boss fights, raid design, and puzzle-combat scenarios. It rewards preparation, interpretation, and decisive action instead of brute forcing every encounter.",
+      "In exploration, the Archive can decode ruins, identify trapped architectures, map historical migration routes, and reveal why an area became corrupted or sacred. It is especially strong in ancient-world storytelling because it can connect scattered clues into a coherent picture long before scholars or treasure hunters would normally understand the stakes. That lets the narrator turn information into tension rather than exposition. The party knows more, earlier, and therefore carries heavier responsibility.",
+      "In crafting, magic, and research play, the System can surface forgotten recipes, ritual safeguards, material compatibilities, and optimization pathways that dramatically reduce experimentation failure. A smith can forge safer relics, a mage can refine cleaner circles, and an alchemist can avoid fatal interactions simply because the Archive closes gaps in their understanding. This does not replace craftsmanship, but it accelerates mastery by preventing blind errors. It also supports hybrid builds because knowledge naturally bridges disciplines.",
+      "In intrigue and faction play, Omniscient Archive is devastating because secrets are the currency of empires, cults, and bloodlines. The bearer can discover inheritance fraud, suppressed treaties, false prophecies, infiltration routes, and ideological contradictions that destabilize entrenched institutions. That makes the System ideal for conspiracy arcs, diplomacy-heavy campaigns, and morally charged revelations. It also ensures the narrator always has a strong reason for enemies to fear, court, or hunt the protagonist."
+    ],
+    "limits": [
+      "The Archive does not guarantee perfect answers; some records are incomplete, sealed, misleading, or dangerous to interpret without context.",
+      "The host can drown in information, misread significance, or freeze under decision overload if they mistake access for wisdom.",
+      "Some truths are socially explosive, spiritually corruptive, or politically fatal to possess, making knowledge itself a recurring risk."
+    ],
+    "costs": [
+      "Deep queries may demand time, concentration, symbolic keys, memory burden, or exposure to traumatic historical truth.",
+      "The more forbidden the answer, the more likely the host is to attract censors, archivists, inquisitors, or entities guarding that knowledge.",
+      "Living with near-impossible awareness can isolate the bearer from ordinary people who would rather not know what the Archive reveals."
+    ],
+    "worldCompatibility": [
+      "Omniscient Archive operates by surfacing structured truth inside the world's remaining laws and records, not by superseding Void or Grandmother Void.",
+      "It integrates naturally with quest, lore, crafting, ritual, faction, and tactical systems because knowledge is useful across every gameplay layer.",
+      "The System is often treated as a taboo strategic asset, since too much verified information can destabilize religion, nobility, and sealed-world protocols."
+    ],
+    "factionReactions": [
+      "Scholar orders and artificer guilds crave access to the bearer, whether through alliance, patronage, confinement, or dissection.",
+      "Governments and cults fear the System because it can expose buried crimes, false doctrine, and classified weapons research.",
+      "Ancient custodians, librarians, and memory-keepers may test the bearer harshly before allowing deeper access to protected truths."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Omniscient Archive and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Omniscient Archive.",
-      "Use the Omniscient Archive to resolve a crisis ordinary powers cannot solve."
+      "Recover a sealed catalog index before censors destroy the only map leading to the Archive's forbidden shelves.",
+      "Choose whether to reveal a buried historical truth that could stop a war or preserve it to avoid collapsing an entire faith.",
+      "Hunt a rival archivist whose stolen query keys let them weaponize the same class of knowledge against you."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 2,
     "tags": [
       "knowledge",
       "crafting-knowledge",
@@ -5332,28 +5772,52 @@
     "id": "instant_comprehension",
     "name": "Instant Comprehension (Learning Accelerator)",
     "category": "System",
-    "summary": "The character can instantly or rapidly understand and master new skills or complex concepts, skipping the usual...",
-    "description": "The character can instantly or rapidly understand and master new skills or complex concepts, skipping the usual learning curve. The mechanic might be like a super-intuition or a \"Great Sage\" voice in their head analyzing and explaining things to them in a split second. Progression isn't so much needed because from the get-go they learn things in hours that take others years. Maybe it gets even faster as their mind expands. The flavor is often a calm, analytical persona or literally having a sage AI/spirit guiding them (as seen in Slime Tensei - Great Sage skill). This cheat creates abilitie...",
+    "summary": "A cognition-acceleration System that compresses study, pattern recognition, and technical mastery into impossibly short windows without removing the need for real inputs.",
+    "description": "Instant Comprehension is a cognition-focused System that allows the bearer to grasp principles, structures, and operating logic at a speed far beyond normal minds. It does not magically create mastery from nothing, but it turns exposure, observation, and partial instruction into unusually deep understanding with extraordinary efficiency. The System shines when the host encounters a new martial form, spell model, machine, ritual script, or social pattern and rapidly extracts the governing rules behind it. That makes the bearer dangerous in any world where expertise normally takes years, because they can begin competing in disciplines they only just discovered. Its progression lies not only in speed, but in fidelity: early on the host learns quickly, while later stages allow them to understand hidden architecture, optimization paths, and failure states almost on contact. Because it accelerates real comprehension rather than delivering empty flavor text, it combines especially well with archives, copying mechanics, crafting, and experimentation-heavy play. The burden is that the host sees complexity everywhere and may lose patience with ordinary learning tempos, social rituals, and institutional gatekeeping. In the wider lore, the System is feared as a cheat of cultivated brilliance, one that does not break the world's laws directly but shortens the road to mastery so dramatically that it can resemble a miracle.",
     "coreLoop": [
-      "The character can instantly or rapidly understand and master new skills or complex concepts, skipping the usual learning curve.",
-      "Progression isn't so much needed because from the get-go they learn things in hours that take others years.",
-      "This cheat creates abilities by enabling the MC to quickly pick up any weapon, any magic, any craft after just a bit of observation or trial - essentially making them a universal..."
+      "Observe a technique, concept, tool, or pattern and rapidly derive the core rules needed to reproduce or adapt it.",
+      "Use accelerated understanding to shorten training cycles, reduce failed experiments, and pivot between disciplines with minimal downtime.",
+      "Layer new insights on top of prior knowledge so the System compounds across magic, combat, research, crafting, and social interpretation."
     ],
     "progression": [
-      "The mechanic might be like a super-intuition or a \"Great Sage\" voice in their head analyzing and explaining things to them in a split second.",
-      "Maybe it gets even faster as their mind expands.",
-      "It synergizes with the copy skill cheats: copying others is even more effective because they immediately glean the underlying principles and possibly improve them."
+      "Early progression lets the host learn clean fundamentals after brief exposure and identify obvious mistakes before they become lethal.",
+      "Mid progression grants structural analysis, adaptation, and improvement, allowing the host not just to copy methods but refine them for their own build.",
+      "Late progression supports near-instant decoding of advanced systems, provided the host has enough context and can bear the cognitive strain."
     ],
-    "narrativeHooks": [
-      "The flavor is often a calm, analytical persona or literally having a sage AI/spirit guiding them.",
-      "Essentially, it trivializes the usual \"learning from mistakes\" as they rarely make mistakes - they intuit correct method on first try.",
-      "Also with archive knowledge: if they see a text or formula, they instantly grok it and can apply it."
+    "possibleUses": [
+      "In combat, Instant Comprehension allows the bearer to study an opponent's stance, mana routing, breath timing, or skill structure and adapt far faster than expected. This makes duels especially dynamic because the host can begin a fight disadvantaged and end it with a workable answer to techniques that should have taken months to decode. It is also excellent for raid and boss encounters where understanding mechanics quickly matters as much as raw power. The narrator can use it to justify smart pivots, counters, and improvised combo play without making them feel arbitrary.",
+      "In magic and crafting systems, the System drastically shortens the gap between exposure and competent execution. A mage can parse a foreign circle, a blacksmith can infer why an alloy failed, and an alchemist can identify instability before a batch explodes. That makes research arcs move with satisfying speed while still preserving causality and effort. It is particularly strong when paired with archives, laboratories, manuals, or master-apprentice scenes.",
+      "In exploration and puzzle content, Instant Comprehension helps decode ancient scripts, mechanism logic, ward behavior, and environmental patterns before the party wastes too many lives testing blind guesses. This allows ruins and mystery spaces to remain threatening while rewarding intelligence instead of brute sacrifice. It also supports survival stories because the host can quickly learn how a hostile biome behaves. The System therefore improves both pace and tactical credibility.",
+      "In social and political storytelling, accelerated comprehension lets the bearer read institutional patterns, negotiation structures, etiquette traps, and ideological contradictions unusually quickly. They can spot how a court operates, which lie matters, and which rule is actually carrying the conversation. This does not make them infallible, but it gives them a serious edge in alien cultures, elite academies, and factional maneuvering. That breadth makes the System one of the most flexible protagonist cheats in the setting."
+    ],
+    "limits": [
+      "The System still requires real exposure, examples, or information to work with; it cannot derive full mastery from total ignorance.",
+      "Speed of understanding does not automatically grant body conditioning, mana reserves, social trust, or field experience equal to veteran practitioners.",
+      "Highly alien, encrypted, or Void-adjacent phenomena may resist comprehension or impose backlash when the host tries to analyze them too aggressively."
+    ],
+    "costs": [
+      "Accelerated cognition can create mental fatigue, overstimulation, insomnia, and emotional detachment if the host never slows down enough to integrate what they learn.",
+      "Institutions built on scarcity, tuition, or gatekeeping often react with hostility when the bearer masters protected disciplines too quickly.",
+      "The host may become trapped in an optimization mindset that strains relationships and encourages reckless experimentation under the illusion that understanding equals safety."
+    ],
+    "worldCompatibility": [
+      "Instant Comprehension operates within the world's knowledge structures by accelerating learning while remaining bounded beneath Void, Grandmother Void, and the fundamental cost of existence.",
+      "It is compatible with combat, crafting, magic, diplomacy, and research loops because all of them reward faster, deeper pattern recognition.",
+      "Most factions classify it as an elite but dangerous System because it can reproduce institutional advantages without respecting traditional apprenticeship timelines."
+    ],
+    "factionReactions": [
+      "Academies, secret orders, and master artisans alternate between desperately recruiting the bearer and trying to restrict their access.",
+      "Rivals fear the System because every encounter risks turning their signature technique into the host's next solved problem.",
+      "Companions may admire the host's brilliance while also worrying that they are accelerating past ordinary human pace and empathy."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Instant Comprehension and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Instant Comprehension.",
-      "Use the Instant Comprehension to resolve a crisis ordinary powers cannot solve."
+      "Decode a hostile academy's living examination before it kills everyone who cannot learn fast enough to keep up.",
+      "Choose whether to study a forbidden discipline that could save the region but permanently change how your mind works.",
+      "Pursue a rival prodigy whose answers are too perfect, forcing you to decide whether they are a peer, a fraud, or your future."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3,
     "tags": [
       "learning",
       "crafting-knowledge",

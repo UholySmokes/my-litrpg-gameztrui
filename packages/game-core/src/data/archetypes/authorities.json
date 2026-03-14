@@ -272,26 +272,57 @@
     "id": "elemental_throne",
     "name": "Elemental Throne",
     "category": "Authority",
-    "summary": "Rule-level elemental control with a chosen element.",
-    "description": "A throne authority that binds you to a chosen element, granting law-level manipulation and resistances.",
+    "summary": "A sovereign elemental Authority that grants lawful command over a chosen force such as flame, storm, frost, stone, or tide.",
+    "description": "Elemental Throne is an Authority that grants sovereign command over one or more elemental domains at the level of law rather than technique. It belongs in the Authority category because it is about legitimate dominion over an existing force, not about building a full progression engine from scratch. The bearer does not simply cast stronger fire, water, storm, stone, or frost arts, but is recognized by reality as someone who can command how those forces answer within their rightful scope. Its progression bias favors territorial control, environment shaping, and overwhelming leverage inside element-rich spaces rather than broad all-purpose versatility. The main tradeoff is scope pressure, because the Authority is strongest where its element is present, ritualized, or politically acknowledged and weaker where the environment is hostile or nullified. In the world, Elemental Throne produces immediate geopolitical consequences because cities, sects, armies, and disasters are all shaped by elemental availability. It also creates rivalry with other sovereign holders, because two elemental rulers meeting in the same contested space turns the encounter into a clash of recognized command rather than a normal duel. It remains lore-safe because commanding an element is still narrower than commanding all reality, and because Void-adjacent nullification, higher cosmic law, and domain conflict can still contest the throne.",
     "coreLoop": [
-      "Choose an element and bind it to your throne.",
-      "Complete element-specific trials for authority shards.",
-      "Project elemental laws to reshape encounters."
+      "Bind a chosen element to the throne and establish the rituals, symbols, or claims that let it recognize your command.",
+      "Accumulate authority through elemental trials, territorial contests, and lawful acts of dominion over relevant environments.",
+      "Project elemental command to reshape terrain, intensify allied affinity, and suppress hostile use of the same force within your scope."
     ],
     "progression": [
-      "Authority shards unlock multi-element resonance.",
-      "Elemental law tiers add battlefield reshaping.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression secures basic command, resistance, and environmental leverage tied to one clearly favored element.",
+      "Mid progression unlocks stronger law statements such as localized immunity, pressure zones, or punitive reactions against intruders.",
+      "Late progression creates region-scale dominion where climate, terrain flow, and strategic space begin bending toward the throne's element."
     ],
     "narrativeHooks": [
-      "Elemental factions recognize your claim.",
-      "Rivals attempt to fracture your element bond."
+      "Elemental factions, shrines, and cultic orders respond immediately because a throne-holder changes the balance of regional survival and disaster.",
+      "The bearer is never just a mage in the public eye, but a claimant to elemental legitimacy whose restraint or pride can affect whole communities.",
+      "Rival elemental authorities turn meetings into ideological clashes over which form of nature has the right to dominate a contested space."
+    ],
+    "possibleUses": [
+      "In gameplay, Elemental Throne is excellent for field control because the bearer can turn ordinary terrain into favored ground. Flame can deny movement, storm can distort ranged combat, frost can slow armies, and stone can harden a defensive position into a fortress. This makes positioning and biome choice matter far more than usual. It also gives every element a distinct strategic identity.",
+      "In narrative and quest design, the Authority can drive drought relief, flood crises, volcanic succession wars, or shrine politics around who gets to command a region's survival resource. A throne-holder may be begged for aid, challenged for legitimacy, or blamed for natural violence even when they are not directly responsible. That makes elemental power socially heavy rather than purely flashy. It also creates clear reasons for factions to negotiate instead of immediately attack.",
+      "In implementation terms, Elemental Throne maps cleanly to biome affinity, domain contests, resistance layers, and regional modifiers. Different areas can either empower or constrain the Authority based on their natural and ritual state. This gives designers room to create elemental home-field advantage without making the bearer uniformly dominant everywhere. The result is power that feels impressive but contestable.",
+      "In long-form progression, the Authority is strong because it lets a character evolve from dangerous specialist to environmental sovereign. Their growth can visibly change cities, battlefields, pilgrimage routes, and weather patterns over time. That produces satisfying world impact. It also ensures later arcs feel larger than the personal duel scale."
+    ],
+    "limits": [
+      "The Authority is strongest where its element is present, nourished, or ritually recognized, and weaker in hostile, nullified, or sealed environments.",
+      "Command over one domain does not automatically translate into equal command over every other natural force or magical interaction.",
+      "Competing authorities, anti-element seals, and higher law zones can contest or partially refuse the throne's claims."
+    ],
+    "costs": [
+      "Sustaining major elemental declarations consumes fuel, attention, and political responsibility because whole populations may become dependent on the bearer.",
+      "Using the throne carelessly can trigger ecological backlash, collateral destruction, or retaliatory fear from people living inside the altered environment.",
+      "Publicly claiming elemental dominion invites rivalry from sects, nations, and old spirits that previously treated the element as theirs to govern."
+    ],
+    "worldCompatibility": [
+      "Elemental Throne commands an existing natural domain and remains bounded beneath Void, Grandmother Void, and all higher cosmic law.",
+      "It is compatible with biome, weather, faction, ritual, and siege systems because each of those layers already cares about elemental control.",
+      "The Authority is lawful but narrow, which keeps it terrifying in context without turning it into universal authorship."
+    ],
+    "factionReactions": [
+      "Elemental sects, shrine custodians, and climate-dependent states all move quickly to claim alliance, tribute, or control over the bearer.",
+      "Rival throne-holders and spirit courts regard the rise of a new sovereign as a challenge that must be negotiated or crushed.",
+      "Common populations may worship, fear, or resent the bearer depending on whether their command stabilizes life or turns nature into a weapon."
     ],
     "questHooks": [
-      "Purify a corrupted elemental node.",
-      "Defeat a rival element lord to claim a shard."
+      "Purify a corrupted elemental node before a rival throne-holder turns the disaster into proof that your command is illegitimate.",
+      "Negotiate with a starving city that wants your elemental aid while knowing every display of power strengthens political claims over you.",
+      "Defeat or outmaneuver a competing elemental sovereign in a contested region where the terrain itself is choosing sides."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 2,
     "tags": [
       "elemental",
       "law",
@@ -332,26 +363,57 @@
     "id": "bloodline_unlock_prism",
     "name": "Bloodline Unlock Prism",
     "category": "Authority",
-    "summary": "Sealed lineage awakens into divine inheritance.",
-    "description": "A prism that fractures ancestral seals, granting bloodline abilities and authority shards.",
+    "summary": "A lineage Authority that forces sealed ancestral power into active inheritance, awakening dormant claims and dangerous legitimacy.",
+    "description": "Bloodline Unlock Prism is an Authority that forces sealed lineage potential into visible and dangerous activation. It belongs in the Authority category because it grants command over inherited essence and ancestral permission rather than functioning as a total self-contained System. The bearer can awaken dormant traits, ancestral memories, lineage techniques, or sealed mutations that would otherwise remain buried across generations. Its progression bias favors inheritance control, selective awakening, and political leverage over blood-bound institutions rather than neutral independent growth. The main tradeoff is volatility, because awakened blood does not always align with the current personality, social position, or bodily stability of the host. In the world, Bloodline Unlock Prism is feared by dynasties and clans because it can expose secret heirs, shatter succession plans, and weaponize hereditary power that institutions were carefully suppressing. It also creates ethical ambiguity because awakening a bloodline can feel like salvation, coercion, desecration, or theft depending on consent and consequence. It remains lore-safe because it does not create lineages from nothing, but instead forces open what already exists and therefore inherits all the burdens, curses, debts, and rival claims attached to that lineage.",
     "coreLoop": [
-      "Find bloodline seals in ancient zones.",
-      "Break seals through trials.",
-      "Claim inherited powers and authority shards."
+      "Identify dormant lineage seals, ancestral locks, or inherited restrictions hidden in the host or related bloodlines.",
+      "Break or refract those seals through trials, catalysts, or ancestral confrontations that prove the right to awaken them.",
+      "Stabilize the awakened inheritance long enough to claim powers, memories, mutations, and blood-bound authority without collapse."
     ],
     "progression": [
-      "Shard tiers unlock lineage forms.",
-      "Resonance increases stats and resistances.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression reveals minor dormant traits and confirms whether a lineage has truly recognized the bearer as a valid vessel.",
+      "Mid progression unlocks ancestral techniques, hereditary transformations, and dangerous resonance with clan relics or old oaths.",
+      "Late progression turns the bearer into a political and biological crisis capable of reviving bloodline powers that entire houses thought extinct."
     ],
     "narrativeHooks": [
-      "Ancient clans recognize your claim.",
-      "Bloodline debts and vows resurface."
+      "Every awakened bloodline reopens buried obligations, feuds, and succession arguments that were safer when the inheritance stayed sealed.",
+      "The Prism makes ancestry a live battlefield rather than a passive fact, forcing the bearer to decide which heritage is worth embracing.",
+      "Clans, cults, and opportunists all project their own agenda onto an Authority that can make hidden heirs suddenly matter."
+    ],
+    "possibleUses": [
+      "In gameplay, Bloodline Unlock Prism is powerful because it can reveal dormant passives, lineage trees, sealed transformations, and ancestry-specific combat tools that would otherwise stay inaccessible. This creates a satisfying sense of excavation rather than arbitrary acquisition. Players feel like they are opening something ancient and already latent inside the world. It also encourages interesting build identities rooted in heritage.",
+      "In narrative and political arcs, the Authority is excellent because it turns family history into active conflict. A hidden descendant can suddenly become a threat to succession, a cursed bloodline can awaken at the worst moment, and a supposedly extinct house can return through one bearer. This generates court intrigue, kidnappings, coverups, and desperate alliance-making naturally. It makes ancestry matter in the present rather than only in lore exposition.",
+      "In implementation, Bloodline Unlock Prism maps well to dormant-trait states, lineage tags, awakening thresholds, and faction reaction tables tied to heritage. It can also support mutation branches, ancestral memory unlocks, and relic compatibility gates. That makes it mechanically rich without needing to behave like a full System. The Authority remains focused on command over inheritance.",
+      "In character drama, the Prism is strong because awakened blood is never neutral. It may bring pride, shame, rage, instinctive cravings, or old voices into the host's life. This gives the power emotional consequence rather than only granting flashy abilities. It also keeps consent and identity at the center of bloodline stories."
+    ],
+    "limits": [
+      "The Authority can only awaken what truly exists in a lineage, so false claims, fabricated ancestry, and empty symbolism offer little stable return.",
+      "Awakened blood may be incompatible with the host's body, personality, or current life circumstances, creating instability instead of clean empowerment.",
+      "Lineage politics, curses, and hereditary debts arrive with the power, meaning every successful awakening can create a larger crisis."
+    ],
+    "costs": [
+      "Breaking ancestral seals often requires dangerous catalysts, family relics, forbidden rites, or confrontations with those who want the bloodline suppressed.",
+      "Awakening one heritage can provoke rivals, jealous heirs, and secret custodians who were safer while the old power remained dormant.",
+      "The bearer risks losing personal autonomy if ancestral memory, instinct, or obligation begins steering their decisions too strongly."
+    ],
+    "worldCompatibility": [
+      "Bloodline Unlock Prism forces open existing hereditary structure while remaining bounded beneath Void, Grandmother Void, and all higher cosmic law.",
+      "It is compatible with lineage, relic, faction, mutation, and succession systems because each already depends on blood-bound legitimacy.",
+      "The Authority is narrow but explosive, since it commands inheritance rather than inventing new reality from nothing."
+    ],
+    "factionReactions": [
+      "Dynasties and clans respond immediately because the Prism can reveal hidden heirs, invalidate succession, or resurrect buried rival claims.",
+      "Researchers and cultists want access to the bearer as proof that ancient blood can be reopened under controlled conditions.",
+      "Commoners and frontier powers may see the Authority as either liberation from noble monopoly or a terrifying revival of old tyranny."
     ],
     "questHooks": [
-      "Recover a family relic to open a seal.",
-      "Survive a lineage tribunal to stabilize a shard."
+      "Recover the one relic capable of opening your next ancestral seal before a rival branch destroys it to preserve their claim.",
+      "Survive a lineage tribunal where awakening your bloodline could either legitimize you or condemn your entire house.",
+      "Choose whether to unlock a cursed inheritance that offers needed power while reviving a feud your family buried generations ago."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "bloodline",
       "awakening",
@@ -392,26 +454,57 @@
     "id": "domain_expansion_protocol",
     "name": "Domain Expansion Protocol",
     "category": "Authority",
-    "summary": "Project a personal domain that overwrites enemy rules.",
-    "description": "A territory law protocol that imposes buffs, debuffs, and rule shifts inside its expanding radius.",
+    "summary": "A spatial Authority that projects a bounded field where the bearer's governing law becomes locally dominant.",
+    "description": "Domain Expansion Protocol is an Authority that allows the bearer to project a bounded field where their governing law becomes locally dominant. It belongs in the Authority category because it is a direct assertion of sanctioned local rule rather than a broad permanent progression framework. The bearer establishes a personal zone in which favored mechanics intensify, hostile mechanics weaken, and the logic of confrontation is partially rewritten around their nature. Its progression bias favors prepared engagements, spatial control, and mastery of local conditions rather than constant passive superiority everywhere. The main tradeoff is cost and commitment, because a real domain demands fuel, exposes intent, and creates a battle of presence that stronger opponents can contest or collapse. In the world, Domain Expansion Protocol is treated as elite and terrifying because it turns space itself into argument, theology, or pressure. It also carries social symbolism, since domains reveal what sort of ruler the bearer is by showing the environment they impose on others. It remains lore-safe because the Protocol creates bounded dominance, not universal authorship, and because domains still fail against stronger law, disrupted anchors, or environments that refuse clean occupation.",
     "coreLoop": [
-      "Activate a domain to set local rules.",
-      "Hold the domain to accumulate law points.",
-      "Expand radius by investing authority shards."
+      "Expand a bounded domain around the bearer or an anchor point to impose chosen local rules over the battlefield or meeting space.",
+      "Feed the domain with fuel, attention, and lawful coherence so it remains active long enough to shape conflict meaningfully.",
+      "Refine rule slots, anchor stability, and symbolic identity so the domain becomes harder to contest and more specialized in function."
     ],
     "progression": [
-      "Domain tiers unlock rule slots and triggers.",
-      "Composite rules allow layered effects.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression grants small, expensive domains suited to duels, traps, and emergency control over a limited area.",
+      "Mid progression unlocks layered rules, anchor objects, and identity-specific environmental shifts that affect allies and enemies differently.",
+      "Late progression creates terrifying law-fields capable of redefining sieges, sacred grounds, and large-scale confrontations for brief decisive windows."
     ],
     "narrativeHooks": [
-      "Your presence changes the tone of the area.",
-      "Rival domain users contest your claim."
+      "A revealed domain says something intimate and political about its owner, because people can literally stand inside the law they want the world to follow.",
+      "Rival domain users turn encounters into ideological and spatial clashes rather than normal exchanges of force.",
+      "The Authority makes every chosen battleground feel consequential, since location becomes part of identity and not just scenery."
+    ],
+    "possibleUses": [
+      "In gameplay, Domain Expansion Protocol is ideal for area control because it lets the bearer create local advantage instead of relying on constant global superiority. A domain can strengthen allies, weaken intruders, alter movement rules, or attach punishments to specific actions. This makes battlefield placement, timing, and anchor choice matter deeply. It also gives boss fights and duels a memorable signature phase.",
+      "In narrative and quest design, the Authority is excellent for sieges of meaning, courtroom duels, sacred-ground violations, and ritual confrontations where location itself carries ideology. A meeting can become a weapon the moment one side expands a domain. This turns setting and power into the same thing. It also creates strong visual and thematic storytelling.",
+      "In implementation, Domain Expansion Protocol maps cleanly to zone-state modifiers, anchor objects, contested-area checks, and rule-slot systems. Designers can create explicit counters through anchor disruption, superior law, movement denial, or fuel exhaustion. That keeps the Authority strong without becoming unanswerable. It also encourages build diversity through different domain identities.",
+      "In longer arcs, the Protocol is valuable because it scales from personal duels to territorial politics. A small training field domain today can become a city-block law-field tomorrow. That visible expansion feels satisfying and easy to dramatize. It also supports leadership stories where the environment starts reflecting the ruler."
+    ],
+    "limits": [
+      "Domains demand setup, fuel, and commitment, so the bearer is vulnerable if they expand at the wrong place, wrong time, or without a stable anchor.",
+      "A domain is strongest within its own defined scope and can be resisted, collapsed, or bypassed by stronger law, mobility, or environmental refusal.",
+      "Overly broad or contradictory rule sets destabilize the field and make the Authority harder to sustain under pressure."
+    ],
+    "costs": [
+      "Expanding a domain announces intent loudly, which sacrifices surprise and invites immediate counterplay from prepared opponents.",
+      "Large or complex domains consume serious energy, symbolic preparation, and mental focus that cannot be maintained indefinitely without strain.",
+      "Because a domain reflects the bearer's law, failure inside it can become psychologically and politically devastating."
+    ],
+    "worldCompatibility": [
+      "Domain Expansion Protocol imposes bounded local law while remaining beneath Void, Grandmother Void, and all higher cosmic structure.",
+      "It is compatible with combat, siege, ritual, faction, and territory systems because each already depends on contested space and control.",
+      "The Authority is elite but limited, which keeps it terrifying in prepared engagements without making it the only answer to every problem."
+    ],
+    "factionReactions": [
+      "Military powers and dueling sects treat the bearer as extremely dangerous because prepared ground suddenly becomes a force multiplier of law itself.",
+      "Sacred institutions react strongly to unauthorized domains expanded over shrines, courts, tombs, or treaty sites.",
+      "Rival authorities study the bearer's field carefully, because knowing what law they impose is the first step toward surviving it."
     ],
     "questHooks": [
-      "Win a domain duel to steal a rule slot.",
-      "Stabilize a domain fracture after overuse."
+      "Win a domain duel in a sacred location where the environment may reject both combatants if either imposes the wrong law too aggressively.",
+      "Repair a fractured anchor network before your collapsing domain turns an allied stronghold into hostile terrain.",
+      "Choose which rule to encode into your next expansion knowing that every future battle will reveal something irreversible about your Authority."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "domain",
       "law",
@@ -452,26 +545,57 @@
     "id": "summon_dominion_seal",
     "name": "Summon Dominion Seal",
     "category": "Authority",
-    "summary": "Summoned beings become permanent subjects.",
-    "description": "A dominion seal that converts summons into permanent vassals with growth trees.",
+    "summary": "A contract Authority that elevates summoned beings into recognized subjects under lawful dominion.",
+    "description": "Summon Dominion Seal is an Authority that elevates summoning contracts into recognized sovereign command over bound entities. It belongs in the Authority category because it is fundamentally about the right to command and stabilize summoned beings, not merely about having many summons. The bearer can impose hierarchy, permanence, discipline, and contract order upon entities that would otherwise remain temporary, unruly, or loosely negotiated. Its progression bias favors command bandwidth, contract law, and scaled legion structure rather than raw individual combat brilliance. The main tradeoff is obligation, because permanent dominion over summoned beings creates legal, metaphysical, and moral burdens that simple conjurers never have to carry. In the world, Summon Dominion Seal is militarily alarming because it can turn pacts into institutions and temporary assets into standing forces. It also invites scrutiny from churches, empires, and spirit courts that care deeply about whether bound beings are servants, citizens, weapons, or prisoners. It remains lore-safe because dominion is still limited by contract compatibility, command capacity, and resistance from stronger beings that refuse clean subordination.",
     "coreLoop": [
-      "Summon creatures through trials.",
-      "Seal them into your dominion.",
-      "Evolve vassals with shared experience."
+      "Establish lawful contracts with summoned entities and reinforce them with seals that define rank, obligation, and duration.",
+      "Expand command structure so more bound beings can operate under coherent hierarchy without collapsing into chaos or revolt.",
+      "Develop the dominion through better upkeep, trust management, and command law until the roster functions like a durable institution."
     ],
     "progression": [
-      "Dominion slots increase with rank.",
-      "Vassal evolution unlocks unique traits.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression stabilizes a handful of summons into reliable subjects with basic obedience, maintenance, and recall behavior.",
+      "Mid progression unlocks formations, rank distinctions, and specialized contract clauses that let the dominion function strategically.",
+      "Late progression creates true summon governance where the bearer's seal can anchor a living court, legion, or multi-role support network."
     ],
     "narrativeHooks": [
-      "Summoned factions test your dominion.",
-      "Vassals develop rivalries and loyalties."
+      "The Authority constantly asks whether command is stewardship or exploitation, because permanent subjects are harder to ignore morally than temporary spells.",
+      "Bound beings develop loyalties, rivalries, and political expectations once the dominion starts functioning like a society instead of a spell list.",
+      "Spirit courts, empires, and anti-slavery factions all judge the bearer differently depending on how that command is exercised."
+    ],
+    "possibleUses": [
+      "In gameplay, Summon Dominion Seal is excellent for players who want enduring roster play instead of temporary summon bursts. Bound subjects can be organized into scouts, guardians, crafters, ritual assistants, and elite combat units. This creates strong strategic depth because the dominion becomes a composition problem rather than a single-skill answer. It also rewards long-term care and planning.",
+      "In narrative and quest design, the Authority is rich because it naturally produces rights disputes, rebellions, promotions, succession conflicts, and diplomacy with nonhuman groups. The bearer may need to justify why their command is legitimate to the very beings they rely on. That makes the power socially legible and morally complicated. It also supports companion-focused storytelling beautifully.",
+      "In implementation, Summon Dominion Seal maps well to contract states, upkeep, command capacity, obedience thresholds, and multi-entity progression data. That gives it a clear mechanical footprint distinct from a broader summoning System. The Authority is about command law, not just quantity. This distinction helps preserve category clarity across the repo.",
+      "In worldbuilding, the Seal can reshape military doctrine, labor structure, and interspecies politics because stable summoned populations become institutions instead of flash effects. Cities may court the bearer as a defender, while spiritual cultures may see the dominion as occupation. This keeps the Authority consequential at scale. It also gives the narrator many reasons to care how the roster is treated."
+    ],
+    "limits": [
+      "Dominion is constrained by command capacity, contract compatibility, and the willingness or weakness of beings being bound.",
+      "More subjects do not automatically mean better control, and a poorly run dominion can fracture into rebellion, neglect, or destructive inefficiency.",
+      "Powerful summons, sacred entities, and politically protected spirits may resist or contest the seal instead of submitting cleanly."
+    ],
+    "costs": [
+      "Permanent command creates upkeep burdens in energy, ritual maintenance, discipline, and moral accountability that casual summoners never face.",
+      "Abusing subjects breeds resentment, rebellion, and reputational damage that can become structural vulnerabilities during major crises.",
+      "A visible dominion attracts scrutiny from governments, faiths, and planar powers that do not want private summon states forming unchecked."
+    ],
+    "worldCompatibility": [
+      "Summon Dominion Seal governs bounded contract hierarchy while remaining beneath Void, Grandmother Void, and all higher law.",
+      "It is compatible with summoning, faction, logistics, combat, and companion systems because each benefits from stable command structure.",
+      "The Authority is lawful but politically volatile, which keeps it impressive without making every spirit in existence automatically obedient."
+    ],
+    "factionReactions": [
+      "Spirit courts and planar authorities judge the bearer based on whether their dominion resembles stewardship, empire, or enslavement.",
+      "States and military powers covet the Authority because stable bound forces can replace expensive infrastructure and standing troops.",
+      "Summoners without dominion fear being eclipsed by a command model that makes their temporary pacts look primitive."
     ],
     "questHooks": [
-      "Seal a legendary summon without losing control.",
-      "Resolve a vassal rebellion peacefully."
+      "Seal a legendary summon whose loyalty could elevate your dominion or shatter it if the contract terms are unjust.",
+      "Resolve a vassal rebellion without proving your enemies right about the Seal being indistinguishable from tyranny.",
+      "Defend your right to maintain a summon court when both human empires and spirit authorities claim the dominion should not exist."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "summon",
       "dominion",
@@ -512,26 +636,57 @@
     "id": "true_damage_override",
     "name": "True Damage Override",
     "category": "Authority",
-    "summary": "Bypass defenses with absolute damage laws.",
-    "description": "An authority override that converts attacks into true damage within strict limits.",
+    "summary": "An injury-law Authority that forces select strikes to bypass ordinary mitigation, resistance, and defensive interpretation.",
+    "description": "True Damage Override is an Authority that compels inflicted harm to bypass ordinary layers of mitigation, reduction, and interpretation. It belongs in the Authority category because it is a narrow but terrifying command over the law of injury rather than a whole-system identity. The bearer is recognized as someone whose strikes can reach beneath armor logic, resistance math, and conventional defensive excuses. Its progression bias favors decisive execution, anti-boss utility, and pressure against over-fortified enemies rather than broad sustain or utility. The main tradeoff is scarcity and exposure, because an Authority this sharp should be rationed, telegraphed, or bound to windows that enemies can learn to fear and counterplay. In the world, True Damage Override is regarded as a breaker of sacred protections, fortress doctrines, and immortal complacency. It is also politically destabilizing because institutions built on invulnerability suddenly have to consider assassination, rebellion, and deterrence differently. It remains lore-safe because bypassing ordinary defense is not the same as bypassing all existence, and stronger cosmic law, nullification, timing disruption, and authority conflict can still prevent clean application.",
     "coreLoop": [
-      "Charge override meters in combat.",
-      "Apply true damage windows to key strikes.",
-      "Manage backlash from overuse."
+      "Build or preserve override windows through pressure, setup, or lawful conditions that permit the Authority to assert itself.",
+      "Spend those windows on carefully chosen strikes that bypass normal defensive layers rather than wasting them on trivial targets.",
+      "Manage backlash, telegraphing, and counterplay so the Authority remains feared instead of becoming predictable and punishable."
     ],
     "progression": [
-      "Override tiers widen the true damage window.",
-      "Backlash penalties shrink with mastery.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression grants brief, rationed moments where a strike can cut through targets relying too heavily on defense math.",
+      "Mid progression improves timing control, target selection, and the ability to align the Override with specialized weapons or doctrines.",
+      "Late progression turns the Authority into a strategic execution threat that can reshape how elites, tanks, and immortality users approach every fight."
     ],
     "narrativeHooks": [
-      "Tank elites fear your rule-breaking strikes.",
-      "System auditors flag your abnormal damage."
+      "The Authority frightens people not because it always hits hardest, but because it makes cherished layers of safety suddenly negotiable.",
+      "Fortress-minded elites, immortal lineages, and sacred guardians react strongly once they realize their defenses may not mean what they thought.",
+      "Every use of the Override raises moral and political stakes because it feels closer to judgment than ordinary violence."
+    ],
+    "possibleUses": [
+      "In gameplay, True Damage Override is ideal for puncturing heavily fortified bosses, shield specialists, and enemies whose gimmick is surviving everything. It gives the player a clean answer to overbuilt defenses without turning every attack into automatic dominance. This keeps encounters tense while preventing invulnerability from becoming tedious. It also makes timing and target priority matter a lot.",
+      "In narrative terms, the Authority is excellent for destabilizing old power structures. A tyrant protected by sacred armor, a dragon relying on scale immunity, or a saint sheltered by layered wards suddenly has to fear someone who can reach through those assumptions. That creates fear, paranoia, and preemptive violence naturally. It also gives rebellions and assassination plots much sharper stakes.",
+      "In implementation, True Damage Override maps well to charged windows, tagged strike states, mitigation-bypass flags, and counterplay conditions. Designers can keep it fair by binding it to exposure, cooldown, or explicit setup rules instead of making it passive at all times. This preserves the Authority feel without flattening combat variety. It also creates readable pressure for both sides.",
+      "In long-form progression, the Authority stays interesting because it is not about getting bigger numbers forever. It is about deciding when harm gets to mean something absolute within a bounded context. That distinction keeps it sharp and elegant. It also prevents the fantasy from collapsing into generic damage inflation."
+    ],
+    "limits": [
+      "Override applications must remain rationed, conditional, or window-bound, because constant bypass would erase the Authority's tactical identity and invite collapse of balance.",
+      "Stronger law, timing disruption, nullification, and authority conflict can all contest whether a given strike is truly permitted to bypass defense.",
+      "The Authority is best against over-fortified targets and offers less value when opponents are already fragile, evasive, or hard to touch at all."
+    ],
+    "costs": [
+      "Each meaningful use exposes intent, burns scarce opportunity, and may create backlash or exhaustion if forced too often in one engagement.",
+      "Public knowledge of the Authority changes how everyone fights the bearer, leading to focused counters, ambushes, and political hostility.",
+      "The moral cost can be severe because using bypass harm against protected or revered figures often carries consequences beyond the battlefield."
+    ],
+    "worldCompatibility": [
+      "True Damage Override alters the local law of injury while remaining bounded beneath Void, Grandmother Void, and all higher cosmic structure.",
+      "It is compatible with boss, duel, raid, and anti-fortification systems because each already depends on how damage is interpreted.",
+      "The Authority is terrifyingly narrow rather than universal, which preserves its identity as command over injury rather than all reality."
+    ],
+    "factionReactions": [
+      "Fortress sects, immortal houses, and elite guardians fear the bearer because their signature defenses stop feeling reliable.",
+      "Military powers and assassins both covet the Authority, though for very different strategic reasons.",
+      "Sacred orders may brand the bearer unlawful simply because their existence undermines protection doctrines used to justify hierarchy."
     ],
     "questHooks": [
-      "Break a boss shield using true damage.",
-      "Survive a backlash event without healing."
+      "Pierce the protection law of an untouchable tyrant whose regime exists only because everyone believes they cannot be harmed.",
+      "Survive a backlash sequence after forcing too many Overrides in one battle and decide whether the victory was worth the damage to your own body.",
+      "Track down an older Authority bearer whose technique notes reveal when true harm becomes judgment and why that distinction matters."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "damage",
       "law",
@@ -572,26 +727,57 @@
     "id": "absolute_defense_citadel",
     "name": "Absolute Defense Citadel",
     "category": "Authority",
-    "summary": "Nullify damage below a set threshold.",
-    "description": "A citadel authority that sets a minimum damage threshold and converts lesser hits into energy.",
+    "summary": "A protection-law Authority that imposes superior defense within declared thresholds, stances, or protected conditions.",
+    "description": "Absolute Defense Citadel is an Authority that imposes a superior law of protection within defined conditions. It belongs in the Authority category because it grants narrow command over negation and preservation rather than a whole progression economy. The bearer can nullify, blunt, or refuse incoming force beneath certain thresholds or against certain recognized classes of harm. Its progression bias favors endurance, siege resilience, ally protection, and formation-based play rather than burst offense. The main tradeoff is rigidity, because absolute defense depends on stance, fuel, territory, or declared conditions that clever enemies can route around instead of simply overpowering head-on. In the world, Absolute Defense Citadel makes its bearer a living fortress, something armies must plan around instead of hoping to crack by attrition alone. It also creates social gravity because people gather around certainty of survival, turning the bearer into a symbol, commander, or sacred shield whether they want that burden or not. It remains lore-safe because the Citadel protects within law rather than above all law, and because direct counters such as override effects, seal sabotage, displacement, or resource exhaustion can still break its apparent absoluteness.",
     "coreLoop": [
-      "Raise the defense threshold through trials.",
-      "Absorb weaker hits into energy reserves.",
-      "Spend stored energy on counters or buffs."
+      "Establish defensive conditions such as stance, formation, territory, or declared shelter that allow the Citadel to assert its law.",
+      "Negate or blunt qualifying harm while converting preserved stability into endurance, control, or measured counterpressure.",
+      "Choose what to protect and when, because the Authority is strongest where commitment and positioning are deliberate."
     ],
     "progression": [
-      "Threshold tiers expand your safe zone.",
-      "Conversion ratios improve with mastery.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression grants small but reliable zones of negation that let the bearer survive and shield others against ordinary pressure.",
+      "Mid progression improves threshold law, directional barriers, and conversion of defended momentum into tactical advantage.",
+      "Late progression turns the Authority into a siege-defining fortress state whose presence can anchor armies, refugees, or sacred last stands."
     ],
     "narrativeHooks": [
-      "Enemies change tactics to pierce your citadel.",
-      "Allies rely on your impregnable defense."
+      "The Authority naturally attracts dependents because people build hope around anyone who can make survival feel certain.",
+      "Enemies quickly learn that defeating the bearer is less about brute force and more about breaking the conditions that let the Citadel stand.",
+      "Every defense choice becomes moral because protecting one front absolutely may leave another exposed to destruction."
+    ],
+    "possibleUses": [
+      "In gameplay, Absolute Defense Citadel is excellent for hold-the-line objectives, escort missions, and survival scenarios where enduring matters more than killing fast. The bearer can create shelter, blunt overwhelming attacks, and keep a formation alive long enough for the rest of the plan to function. This gives defensive play a real heroic identity instead of making it feel passive. It also creates dramatic moments when the line almost breaks.",
+      "In narrative and quest design, the Authority is perfect for siege legends, evacuation arcs, sacred last stands, and moral dilemmas about who is allowed inside the defended circle. People will remember the bearer as either savior or gatekeeper depending on those decisions. That makes defense emotionally charged rather than purely mechanical. It also produces strong leadership pressure.",
+      "In implementation, the Citadel maps well to threshold rules, protected-area states, directional barriers, fuel-bound defense, and allied shelter mechanics. Designers can build explicit counters through displacement, sabotage, bypass laws, or forcing the bearer to defend too many angles. This preserves balance while keeping the Authority impressive. It also helps encounters stay dynamic around a very strong defensive fantasy.",
+      "In long-form progression, the Authority scales from personal survival to regional symbol. A character who once shielded a party corridor may later protect a district, fortress, or caravan nation. That expansion feels natural and visible. It also ensures the power matters outside isolated combat scenes."
+    ],
+    "limits": [
+      "The Citadel depends on declared conditions, stance, anchor, or fuel, so it cannot protect everything in every direction at all times.",
+      "Enemies with displacement, bypass law, sabotage tools, or superior authority can route around the defense instead of battering it directly.",
+      "Absolute protection in one zone often creates neglect somewhere else, making prioritization a permanent burden."
+    ],
+    "costs": [
+      "Sustained defense consumes serious energy, attention, and often the bearer's freedom of movement because holding the law steady is demanding.",
+      "Becoming a living shelter attracts dependents and expectations that can turn every battle into a referendum on who deserved protection.",
+      "If the Citadel fails publicly, the psychological and political fallout can be as damaging as the physical breach."
+    ],
+    "worldCompatibility": [
+      "Absolute Defense Citadel governs bounded preservation while remaining beneath Void, Grandmother Void, and all higher law.",
+      "It is compatible with siege, escort, protection, ritual, and formation systems because each depends on what can be kept safe and for how long.",
+      "The Authority is rigid rather than universal, which keeps it powerful in the right context without making it a blanket answer to every threat."
+    ],
+    "factionReactions": [
+      "Refugees, commanders, and sacred institutions rally around the bearer because dependable shelter becomes strategically priceless.",
+      "Siege specialists, assassins, and bypass-law users obsess over finding the exact conditions that let the Citadel crack.",
+      "Political powers may try to claim or conscript the bearer once their defensive value becomes impossible to ignore."
     ],
     "questHooks": [
-      "Hold a chokepoint without losing HP.",
-      "Store enough energy to unleash a counter burst."
+      "Hold a chokepoint long enough for civilians to escape while learning which condition your enemies are secretly trying to break.",
+      "Decide who may enter your defended circle during a siege when the Citadel cannot safely shelter everyone at once.",
+      "Recover the shattered seal of a prior Citadel bearer to learn how an apparently absolute defense was once breached."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 2,
     "tags": [
       "defense",
       "threshold",
@@ -633,26 +819,57 @@
     "id": "divine_artifact_bond",
     "name": "Divine Artifact Bond",
     "category": "Authority",
-    "summary": "A single artifact grows with you forever.",
-    "description": "A bond that fuses you with a divine artifact, scaling its power and unlocking new forms.",
+    "summary": "A relic-lineage Authority that fuses legitimacy, growth, and command to a single artifact-grade instrument.",
+    "description": "Divine Artifact Bond is an Authority that fuses the bearer's legitimacy and growth to a single relic-grade artifact. It belongs in the Authority category because the core fantasy is recognized dominion through bond and inheritance, not a sprawling self-contained System. The artifact is not just gear, but a co-sovereign instrument whose awakening stages redefine what kinds of command the bearer can exercise. Its progression bias favors loyalty, synchronized growth, and singular mastery over broad equipment flexibility. The main tradeoff is dependence, because losing, damaging, corrupting, or politically contesting the bonded artifact threatens the bearer's standing and combat identity at once. In the world, Divine Artifact Bond attracts worshippers, thieves, bureaucrats, historians, and rival claimants because any relic this important sits inside a chain of legitimacy older than the current wielder. It also creates questions of succession and personhood, since the bearer may be judged less as an individual and more as the present voice of the artifact's line. It remains lore-safe because the bond grants authority through a bounded relic lineage, not through direct supremacy over the whole cosmic order, and because the artifact itself can refuse, sleep, fracture, or demand terms.",
     "coreLoop": [
-      "Bind to a divine artifact.",
-      "Feed it essence and achievements.",
-      "Unlock awakened forms and abilities."
+      "Deepen the bond with a single relic-grade artifact through deeds, resonance, and mutual recognition rather than treating it as replaceable equipment.",
+      "Feed the artifact essence, oaths, and achievement so its dormant authority states can awaken in sequence.",
+      "Learn to wield the bond as a shared command structure where bearer and artifact each shape what the other can become."
     ],
     "progression": [
-      "Artifact stages unlock new skill sets.",
-      "Bond resonance adds passive authority.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression grants basic resonance, unique techniques, and the first signs that the artifact is more sovereign partner than tool.",
+      "Mid progression awakens relic states, inherited laws, and stricter terms governing who may wield, repair, or question the bond.",
+      "Late progression turns bearer and artifact into a recognized lineage node whose actions can influence nations, faiths, and relic politics."
     ],
     "narrativeHooks": [
-      "The artifact judges your actions.",
-      "Collectors and gods pursue your bond."
+      "The artifact remembers older wielders, older wars, and older claims, so bonding with it means inheriting history rather than starting clean.",
+      "Observers may treat the bearer as a mouthpiece, usurper, chosen heir, or temporary caretaker depending on the relic's reputation.",
+      "Every deepening of the bond raises the question of whether the wielder is shaping the artifact or being shaped by it."
+    ],
+    "possibleUses": [
+      "In gameplay, Divine Artifact Bond is excellent for players who want one iconic weapon, seal, banner, or relic to anchor their entire identity. The artifact can unlock new modes, exclusive skills, and law-bound techniques as the relationship deepens. This makes progression feel personal and ceremonial instead of inventory-driven. It also supports strong visual storytelling.",
+      "In narrative and quest design, the Authority is rich because every artifact has history, claimants, and doctrine attached to it. The bearer may be tested by priests, hunted by collectors, challenged by false heirs, or judged by the artifact itself. This turns gear into politics immediately. It also lets relic restoration and succession become major story pillars.",
+      "In implementation, Divine Artifact Bond maps well to bonded-item state, awakening milestones, alignment checks, and exclusive unlock tables. Because the power sits in a single artifact relationship, it stays distinct from a broader System even while supporting lots of growth. That category clarity matters. It also makes save-state and UI representation straightforward.",
+      "In long-form arcs, the Authority supports legacy storytelling beautifully. The artifact can remember promises, carry scars, and impose terms that outlast the current bearer. This makes every advancement feel historically significant. It also gives the narrator a reliable second voice in the protagonist's journey."
+    ],
+    "limits": [
+      "The bearer is heavily dependent on one artifact line, so loss, theft, corruption, or incompatibility can cripple their authority state.",
+      "Awakening stronger relic stages usually requires worthy deeds, repaired memory, or fulfilled oath conditions rather than simple grinding.",
+      "The artifact may refuse certain uses, claimants, or moral directions, limiting freedom when the bond becomes deeper and more lawful."
+    ],
+    "costs": [
+      "Investing in the bond means sacrificing flexibility, because every resource committed to the relic is a resource not spent elsewhere.",
+      "The political visibility of a major divine artifact attracts relentless interest from thieves, faiths, claimants, and institutions of legitimacy.",
+      "If the artifact is damaged or angered, the bearer may suffer both functional weakness and an identity crisis tied to public expectation."
+    ],
+    "worldCompatibility": [
+      "Divine Artifact Bond channels authority through a bounded relic lineage while remaining beneath Void, Grandmother Void, and all higher cosmic law.",
+      "It is compatible with relic, oath, faction, succession, and combat systems because all of them care about recognized instruments of legitimacy.",
+      "The Authority is singular rather than universal, which keeps it potent without dissolving the importance of every other tool and relationship."
+    ],
+    "factionReactions": [
+      "Religious orders, historians, and governments all move quickly once a relic-grade artifact chooses or reawakens a bearer.",
+      "Collectors, thieves, and rival heirs see the bond as a prize that could redefine their own legitimacy if stolen or broken.",
+      "Ordinary people often project mythic expectations onto the bearer because carrying the artifact makes them a public symbol whether they want it or not."
     ],
     "questHooks": [
-      "Complete an artifact trial to awaken a form.",
-      "Repair a fractured bond under fire."
+      "Complete an awakening trial that reveals whether the artifact truly chose you or is only tolerating your use temporarily.",
+      "Recover missing relic-memory fragments before a rival claimant can use them to challenge your legitimacy.",
+      "Decide whether to restore a damaged artifact law that would make you stronger but bind you to an older oath you do not agree with."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "artifact",
       "bond",
@@ -692,26 +909,57 @@
     "id": "dragon_obedience_aura",
     "name": "Dragon Obedience Aura",
     "category": "Authority",
-    "summary": "High-tier creatures submit to your aura.",
-    "description": "An aura authority that forces dragons and apex beasts into submission or alliance.",
+    "summary": "A draconic hierarchy Authority that compels dragons and related apex beings to recognize precedence, caution, or conditional obedience.",
+    "description": "Dragon Obedience Aura is an Authority that compels high-order draconic beings to recognize hierarchy, caution, or negotiated submission. It belongs in the Authority category because it is a command right over a storied power class rather than a broad all-purpose System. The bearer does not automatically own all dragons, but radiates a law of precedence that can force hesitation, challenge-response ritual, or conditional obedience in beings that ordinarily answer to no one. Its progression bias favors social intimidation, monster control, and strategic dominance over rare apex encounters rather than universal usefulness in mundane fights. The main tradeoff is backlash, because dragons are proud, ancient, and politically entangled creatures whose coerced obedience generates grudges, tests, and retaliatory plots. In the world, Dragon Obedience Aura is legendary because even partial control over dragon behavior alters war, trade, religion, and ecology. It also remains morally unstable, since there is a meaningful difference between rightful command, temporary restraint, and abusive enslavement. It remains lore-safe because the Authority works on a specific exalted class of beings with their own resistance tiers, ancient laws, and superior exceptions rather than acting as a generic domination power.",
     "coreLoop": [
-      "Awaken the obedience aura.",
-      "Subjugate or befriend apex creatures.",
-      "Convert obedience into battle assets."
+      "Project draconic precedence to force hesitation, submission checks, or ritual acknowledgment from dragons and related apex beings.",
+      "Use challenge, negotiation, or disciplined dominance to convert that opening into pacts, restraint, or conditional obedience.",
+      "Manage the political and emotional aftermath because every dragon commanded today is a memory-bearing power tomorrow."
     ],
     "progression": [
-      "Aura rank expands creature tiers.",
-      "Obedient beasts unlock unique boons.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early progression affects lesser drakes, dragonkin, and weakened apex creatures through intimidation and ritual challenge states.",
+      "Mid progression extends pressure to true dragons, mount eligibility, and battlefield suppression windows against draconic threats.",
+      "Late progression turns the Aura into a diplomatic and military crisis tool because elder dragons must at least acknowledge the bearer's presence."
     ],
     "narrativeHooks": [
-      "Dragon clans react to your rising presence.",
-      "Beast lords challenge your authority."
+      "Every successful command creates memory, and dragons are the kind of beings who remember slights for centuries.",
+      "The Authority constantly blurs the line between rightful dominance, negotiated respect, and deeply dangerous humiliation.",
+      "Dragon clans, hatcheries, and beast lords all react differently depending on whether the bearer commands with restraint or predation."
+    ],
+    "possibleUses": [
+      "In gameplay, Dragon Obedience Aura is excellent against rare apex encounters because it creates suppression windows, negotiation checks, and temporary control effects where ordinary parties would only have brute force. This makes dragon fights feel more layered than damage races. It also rewards courage and status play. The Authority becomes especially memorable in boss design.",
+      "In narrative and quest design, the Aura can drive hatchery politics, draconic diplomacy, monster-rights disputes, and wars built around whether dragons can be commanded at all. The bearer may become mediator, tyrant, or blasphemous usurper depending on how they use the power. That makes every successful use politically expensive. It also ensures the Authority matters far beyond combat.",
+      "In implementation, Dragon Obedience Aura maps well to species tags, rank-based resistance, ritual challenge states, mount or pact unlocks, and faction reputation with dragon-aligned powers. This keeps the Authority narrow and technically legible. It also creates strong counters through elder resistance, anti-domination rites, or kin retaliation. The result is dramatic without feeling generic.",
+      "In long-form progression, the Authority is compelling because it changes the protagonist's relationship to some of the world's most prestigious beings. A person who once merely survived a drake may later speak terms to elder wyrms. That evolution feels mythic and socially visible. It also gives the narrator strong leverage for awe and fear."
+    ],
+    "limits": [
+      "The Aura applies to a narrow exalted class of creatures and offers much less value outside draconic or apex-monster contexts.",
+      "Older, stronger, or specially protected dragons may resist, reinterpret, or resent the Authority instead of obeying cleanly.",
+      "Forcing obedience recklessly creates long-term backlash because dragons remember humiliation, build coalitions, and retaliate strategically."
+    ],
+    "costs": [
+      "Every serious use risks escalating dragon politics, beast-lord hostility, or religious outrage from cultures that revere draconic autonomy.",
+      "The bearer must constantly judge whether command, restraint, or diplomacy is the wiser path because misuse can turn one victory into a blood feud.",
+      "Maintaining the Aura's legitimacy may require ritual courage, public challenge, or visible dominance that exposes the bearer to extreme danger."
+    ],
+    "worldCompatibility": [
+      "Dragon Obedience Aura asserts narrow hierarchy over draconic beings while remaining beneath Void, Grandmother Void, and all higher law.",
+      "It is compatible with monster, faction, diplomacy, mount, and boss systems because each can meaningfully react to command over apex creatures.",
+      "The Authority is legendary but specific, which preserves its potency without turning it into universal mind control."
+    ],
+    "factionReactions": [
+      "Dragon clans and hatchery orders react intensely because the bearer alters one of the oldest prestige hierarchies in the world.",
+      "Kingdoms and militaries covet the Authority as a deterrent against dragon attack or as a route to mounted supremacy.",
+      "Religious groups split between worshipful awe and condemnation depending on whether they see the Aura as rightful mandate or sacrilegious domination."
     ],
     "questHooks": [
-      "Win a duel against a drake matriarch.",
-      "Calm a rampaging dragon without killing it."
+      "Calm a rampaging dragon without killing it and decide whether saving the region is worth creating a lifelong draconic enemy.",
+      "Enter a hatchery court where every word is a challenge-response ritual and one false command could start a war.",
+      "Face an elder wyrm who agrees to obey only if you first prove that your Authority is something more than humiliation dressed as law."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 1,
     "tags": [
       "dragon",
       "dominion",
@@ -1189,28 +1437,57 @@
     "id": "dark_covenant",
     "name": "Dark Covenant (Accursed Blessing)",
     "category": "Authority",
-    "summary": "Not all blessings come from benevolent sources; this archetype is a pact or blessing from a dark or chaotic god.",
-    "description": "Not all blessings come from benevolent sources; this archetype is a pact or blessing from a dark or chaotic god. It functions as a \"cheat\" with a sinister edge: the character gains forbidden powers - maybe demonic energy, curses, or monstrous transformations - that far exceed normal limits, but at the cost of moral or physical corruption. Mechanically, the character might have a Corruption meter or risk losing humanity each time they draw on the power. Progression could be branching: the more they embrace the dark gift (e.g. by performing sacrifices or using forbidden spells), the stronger ...",
+    "summary": "A bargain-bound Authority that grants forbidden blessings through an active relationship with dark, predatory, or accursed powers.",
+    "description": "Dark Covenant is an Authority founded on sanctioned exchange with ominous, forbidden, or predatory powers. It belongs in the Authority category because it grants a recognized right to invoke and enforce dark terms within a bounded relationship rather than building an entire independent progression engine. The bearer receives blessings, force multipliers, or law-bending clauses, but only through a living contract with appetite, debt, and metaphysical enforcement. Its progression bias favors decisive bargains, short-term leverage, and morally dangerous efficiency rather than clean sustainable advancement. The main tradeoff is obligation, because every gift implies counter-demand, and the covenant grows more intimate and expensive as the bearer leans on it. In the world, Dark Covenant is feared because it creates results too useful to ignore and costs too terrible to normalize. It is also politically ambiguous, since some cultures see it as blasphemy while others treat it as an old and respectable technology of survival. It remains lore-safe because the covenant always binds both parties inside terms, and because even powerful accursed patrons operate below the Void ceiling and can be resisted, out-negotiated, or starved.",
     "coreLoop": [
-      "Not all blessings come from benevolent sources; this archetype is a pact or blessing from a dark or chaotic god.",
-      "It functions as a \"cheat\" with a sinister edge: the character gains forbidden powers - maybe demonic energy, curses, or monstrous transformations - that far exceed normal limits,...",
-      "Interestingly, it can synergize with holy systems as an antagonist: a Dark-blessed character might nullify regular holy magic unless it's extremely potent."
+      "Invoke contract clauses that trade permission, sacrifice, debt, or taboo offerings for immediate accursed power.",
+      "Manage the covenant relationship so the patron's hunger, personality, and demands remain exploitable rather than overwhelming.",
+      "Choose which bargains to accept, delay, reinterpret, or resist as the Authority grows stronger and more invasive."
     ],
     "progression": [
-      "Progression could be branching: the more they embrace the dark gift, the stronger their cheat abilities get - potentially unlocking evolution into a higher fiend or unlocking...",
-      "Mechanically, the character might have a Corruption meter or risk losing humanity each time they draw on the power.",
-      "This \"blessing\"influences abilities by granting things typically impossible - like immortality via undeath, shadow teleportation, life- drain attacks, or a literal devil form that..."
+      "Early progression grants controlled blessings, curse clauses, and limited patron interventions that feel powerful but survivable.",
+      "Mid progression deepens the relationship into a true covenant with named terms, escalating debt, and patron-specific manifestations of authority.",
+      "Late progression creates terrifying leverage where one bargain can swing a war, save a city, or doom a soul depending on what the bearer agrees to pay."
     ],
     "narrativeHooks": [
-      "The thematic flavor is dark fantasy: stormy auras, eldritch symbols, perhaps a constant battle of will between the character and the influencing dark deity.",
-      "It synergizes with other curse-based or blood magic systems; for example, if vampirism exists, a Dark Covenant might amplify those traits immensely.",
-      "Rarity is high because sane folks don't ask dark gods for favors - often it's bestowed in desperation, or tricked into it by an artifact."
+      "The Authority always forces the question of whether survival purchased through darkness is wisdom, weakness, or the beginning of surrender.",
+      "Patrons are never neutral sources of power, which means every miracle risks becoming a negotiation scene disguised as combat utility.",
+      "Observers may fear the bearer less for what they can do now than for what they might be asked to become later."
+    ],
+    "possibleUses": [
+      "In gameplay, Dark Covenant is excellent for high-tension choice design because power comes with attached terms instead of clean cooldowns. The bearer can take a dangerous bargain for immediate survival, mobility, damage, curse immunity, or monstrous transformation while knowing the patron will demand something later. This makes every surge feel dramatic instead of routine. It also supports distinct covenant styles based on the patron involved.",
+      "In narrative and quest design, the Authority is rich because it naturally creates debt arcs, loophole hunts, patron interventions, and moral arguments over acceptable price. The protagonist may save a town and still lose trust because of what they had to promise in return. That keeps dark power socially real. It also prevents the blessing from becoming just another buff source.",
+      "In implementation, Dark Covenant maps well to pact-state tracking, owed costs, triggered clauses, corruption pressure, and relationship logic with sentient powers. This gives designers a clean structure for patron identity and repayment cadence. It also distinguishes the Authority from generic cursed transformation kits. The mechanics stay anchored in contract law and consequence.",
+      "In long-form progression, the Authority remains compelling because it can evolve into partnership, addiction, rivalry, manipulation, or attempted emancipation from the patron. Every stronger clause increases leverage and danger at the same time. That preserves tension even when the power is impressive. It also gives the narrator an enduring antagonist or uneasy ally built directly into the kit."
+    ],
+    "limits": [
+      "The Authority only functions through a living contract, so if the patron is starved, blocked, out-negotiated, or severed, access can collapse abruptly.",
+      "Every blessing arrives with scope and terms, meaning the bearer cannot simply take dark power without also accepting conditions and exposure.",
+      "Patrons are clever, hungry, or ideological, so careless bargains may win the moment while sabotaging the future."
+    ],
+    "costs": [
+      "Every meaningful use creates debt, corruption pressure, sacrifice demand, or social stain that must eventually be faced instead of ignored.",
+      "The stronger the blessing, the less likely its price is to remain abstract; bodies, loyalties, oaths, and entire communities can become collateral.",
+      "Public knowledge of the covenant invites fear, holy retaliation, opportunistic manipulation, and scrutiny from anyone who knows dark patrons never give freely."
+    ],
+    "worldCompatibility": [
+      "Dark Covenant governs bounded exchange with accursed powers while remaining beneath Void, Grandmother Void, and all higher law.",
+      "It is compatible with curse, sacrifice, relationship, corruption, and desperation systems because each already depends on negotiated price and consequence.",
+      "The Authority is potent but constrained, since every blessing is mediated by terms rather than granted as unanswerable cosmic supremacy."
+    ],
+    "factionReactions": [
+      "Holy orders, purification sects, and fearful communities often treat the bearer as a contamination risk even when the covenant saves lives.",
+      "Pragmatic rulers, warlords, and desperate survivors may tolerate or even sponsor the Authority when results matter more than purity.",
+      "Cults and rival patrons become intensely interested because anyone carrying a dark covenant is proof that bargains with the abyss can be made to work."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Dark Covenant and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Dark Covenant.",
-      "Use the Dark Covenant to resolve a crisis ordinary powers cannot solve."
+      "Renegotiate a covenant clause before the promised price comes due in a way that would destroy someone you were trying to protect.",
+      "Track down a prior covenant bearer whose failed bargains left loopholes, warnings, and enemies still hunting the contract line.",
+      "Choose whether to accept an emergency patron gift that can save the region now but will bind you to a darker long-term obligation."
     ],
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 1,
     "tags": [
       "curse",
       "sin",

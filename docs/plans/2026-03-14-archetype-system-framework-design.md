@@ -776,7 +776,11 @@ This is the maintained todo list for the design and implementation-prep phase. I
 - [x] Draft detailed descriptions and possible uses for the starter `Framework` category set.
 - [x] Draft detailed descriptions and possible uses for the starter `Privilege` category set.
 - [x] Draft detailed descriptions and possible uses for the starter `Overlay` category set.
-- [ ] Rewrite or expand individual entry descriptions to meet the new standard.
+- [ ] Rewrite or expand individual entry descriptions to meet the new standard across the full repo library.
+- [x] Rewrite the starter `System` source set in `systems.json` to the new authoring standard and validate all 16 starter entries cleanly.
+- [ ] Rewrite the starter `Path`, `Framework`, `Privilege`, and `Overlay` source sets to the new authoring standard.
+- [x] Rewrite the full starter `Authority` source set in `authorities.json` and validate all 9 starter authority entries cleanly.
+- [ ] Raise repo-wide strict authoring validation above the current `25 / 143` fully compliant entries.
 - [x] Add category-aware validation rules for lore compatibility and placeholder detection.
 - [ ] Convert the proposed new overlay expansion drafts into canonical data entries and implementation tasks.
 - [x] Map all current runtime consumers of `archetypeSystem` and classify required changes.

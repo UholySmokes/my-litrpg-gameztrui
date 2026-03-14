@@ -65,6 +65,7 @@
     "simulate:nightly": "node sim_gamestart_fixed.js --runs 100 --seed 424242 --logs false",
     "validate:registries": "node scripts/validate-registries.mjs",
     "validate:archetypes": "node scripts/validate-archetypes.mjs",
+    "validate:archetypes:authoring": "node scripts/validate-archetypes.mjs --mode authoring",
     "validate:runtime-contract": "node scripts/check-runtime-contract.mjs",
     "validate:env-examples": "node scripts/check-env-example-coverage.mjs",
     "validate:player-loot": "node scripts/validate-player-facing-loot.mjs",

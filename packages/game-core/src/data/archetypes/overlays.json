@@ -3,34 +3,38 @@
     "id": "glitch_exploit_overlay",
     "name": "Glitch Exploit Overlay",
     "category": "Overlay",
-    "summary": "Speedrunner-style rule exploits with growing risk.",
-    "description": "An overlay that detects exploitable rule gaps and allows temporary bypasses at increasing risk.",
+    "summary": "An instability-driven Overlay that abuses cracks, timing faults, and unintended rule gaps for temporary advantage at escalating risk.",
+    "description": "Glitch Exploit Overlay is an Overlay that reveals and weaponizes cracks, timing faults, and unintended edge cases in the world's normal operating rules. It belongs in the Overlay category because it does not own law the way an Authority does or organize progression the way a Framework does, but instead rides on top of existing structures and abuses their instability. The bearer sees moments where systems can be clipped, delayed, duplicated, bypassed, or desynchronized for temporary advantage. Its progression bias favors improvisation, opportunism, and calculated abuse of unstable windows rather than clean repeatable mastery. The main tradeoff is backlash, because every exploit deepens instability, increases detection risk, and makes future failures more catastrophic if the world starts correcting around the bearer. In the world, Glitch Exploit Overlay should feel profoundly wrong even to people who do not understand it, as though causality and interface etiquette are being violated at the edges. It should also attract hunters, auditors, and cosmic immune responses that exist specifically to patch anomalies before they spread. It remains lore-safe because the Overlay never truly supersedes deeper law; it only distorts local behavior temporarily, and stronger structures can still collapse or punish the exploit.",
     "coreLoop": [
-      "Identify rule gaps during encounters.",
-      "Spend exploit charges to bend mechanics.",
-      "Manage instability to avoid system backlash."
+      "Identify a crack, timing fault, or misaligned rule interaction in the current situation before the world fully corrects it.",
+      "Spend that exploit window on a temporary bypass, duplication, desync, or illegal movement the base rules should not have allowed.",
+      "Manage instability and detection so the gain from one exploit does not trigger catastrophic correction before the next choice matters."
     ],
     "progression": [
-      "Exploit tiers unlock deeper rule access.",
-      "Instability thresholds add narrative consequences.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth reveals basic exploit windows and grants narrow rule-bending bursts that can save the bearer in sharp moments.",
+      "Mid progression expands into chained abuse patterns, stronger anomaly literacy, and better handling of correction backlash.",
+      "Late progression makes the bearer terrifyingly slippery, but only so long as the world has not fully decided to patch them out."
     ],
     "narrativeHooks": [
-      "System warnings appear when exploits accumulate.",
-      "Authority figures investigate abnormal events."
+      "The Overlay makes even ordinary victories feel stolen, because success arrives through seams the world clearly wanted closed.",
+      "Auditors, enforcers, and system cults treat the bearer less like a criminal and more like a contagious breach.",
+      "It naturally creates tension between desperate need and the fear that every exploit teaches reality how to hate you better."
     ],
     "questHooks": [
-      "Stabilize a glitch node to regain control.",
-      "Outrun enforcement agents seeking exploiters."
+      "Use a forbidden exploit to stop an execution, then outrun the enforcers who know a correction wave is already building around you.",
+      "Break into a sealed zone by clipping through a fault in its law and discover why the fault existed in the first place.",
+      "Choose whether to trigger a city-wide bypass that saves thousands now but may teach the world to patch over all future mercy routes."
     ],
     "tags": [
       "exploit",
       "risk",
-      "system"
+      "system",
+      "instability"
     ],
     "statModifiers": {
-      "strength": 3,
-      "agility": 2
+      "agility": 2,
+      "luck": 1,
+      "intelligence": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -57,6 +61,337 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Glitch Exploit Overlay can support rule-bending bursts, collision cheats, exploit charges, and instability-based power spikes. It is strongest when the player feels like they are stealing moments the system never intended to grant. That gives the category a sharp identity. It also creates great risk-reward combat tempo.",
+      "In narrative and quests, it enables manhunt arcs, secret patch-cult investigations, and tense choices about whether one impossible exploit is worth accelerating systemic backlash. Characters can survive by cheating reality and then spend whole chapters paying for that decision. That gives the Overlay real story gravity. It is especially strong in system-horror framing.",
+      "In implementation, it maps well to instability meters, exploit windows, enforcement spawns, and temporary bypass states on existing mechanics. Those hooks are reusable across combat, traversal, and quest logic. They also give the narrator concrete language for wrongness and correction pressure. That keeps the category vivid and mechanical.",
+      "Its limitation-aware use comes from making each exploit feel like stolen time rather than rightful power, because the category should always carry the threat of the world noticing. The player should never feel fully safe while using it. That preserves the Overlay identity. The best version feels brilliant, illegal, and doomed."
+    ],
+    "limits": [
+      "Exploit windows are temporary and context-bound, so the Overlay cannot guarantee the same bypass in every scene or against every system.",
+      "Repeated abuse increases instability and makes local correction faster, harsher, and easier for enemies to predict or weaponize.",
+      "It is weakest against hard-anchored structures, null fields, and enforcement systems built specifically to patch anomaly behavior."
+    ],
+    "costs": [
+      "Every exploit deepens instability, attracts auditors, and increases the chance that future correction will be violent or irreversible.",
+      "The bearer risks relying on stolen advantage so heavily that ordinary lawful action starts feeling too slow or too honest to survive by.",
+      "Allies may fear proximity because systemic backlash rarely punishes only the exploiter once reality starts snapping back."
+    ],
+    "worldCompatibility": [
+      "Glitch Exploit Overlay remains beneath Void, Grandmother Void, and deeper law because it distorts local behavior without replacing the foundations of reality.",
+      "It is compatible with combat, traversal, and system-horror play because it expresses instability, detection risk, and illegal temporary leverage.",
+      "Its strongest value depends on cracks, timing, and correction pressure, which keeps the Overlay dangerous without turning into sovereign lawbreaking."
+    ],
+    "rarity": "mythic",
+    "stability": "corrupted",
+    "selectionWeight": 2
+  },
+  {
+    "id": "rollback_overlay",
+    "name": "Rollback Overlay",
+    "category": "Overlay",
+    "summary": "A desperate Overlay that steals a tiny slice of recent reality back after harm, at the cost of strain and temporal contamination.",
+    "description": "Rollback Overlay is an Overlay that permits the bearer to revert an extremely small slice of recent reality after a harmful outcome. It belongs in the Overlay category because it is a desperate exploit layered over normal causality rather than a legitimate time System or Framework. The bearer does not rewind lives, timelines, or whole scenes, but instead steals a few moments back from finalized action to correct a misstep, dodge a strike, or alter a decision window. Its progression bias favors clutch survival, precision, and extreme pressure response over long-term stable planning. The main tradeoff is strain, because each rollback scrapes against already-committed reality and should accumulate disorientation, paradox residue, or local instability. In the world, Rollback Overlay should be nearly impossible to prove but terrifying to suspect, especially for duelists, assassins, and enforcers who know they landed the killing blow. It should also remain visibly unhealthy for the bearer, since repeated micro-reversions should create flicker, nausea, memory splitting, or existential slippage. It remains lore-safe because it exploits a tiny local seam in event finalization rather than granting true sovereign control over time, and because deeper law can jam, punish, or refuse the rollback.",
+    "coreLoop": [
+      "Suffer or detect a harmful outcome severe enough to justify spending a tiny rollback window on immediate correction.",
+      "Revert only the most recent actionable slice of local reality and use that stolen second chance for a better response.",
+      "Absorb the strain, residue, and disorientation that follow every attempt to peel finalized events back off the world."
+    ],
+    "progression": [
+      "Early growth grants one-beat reversals that can save the bearer from a single bad dodge, strike, or spoken mistake.",
+      "Mid progression expands rollback precision, residue tolerance, and the ability to preserve coherence across repeated clutch corrections.",
+      "Late progression makes the bearer horrifying in close pressure situations, but increasingly unstable everywhere else."
+    ],
+    "narrativeHooks": [
+      "Enemies who should have won start doubting their senses, which makes the bearer feel more uncanny with every impossible survival.",
+      "The Overlay turns regret into a tactical resource, but also a psychological poison, because every saved second reminds you what nearly happened.",
+      "It naturally creates scenes where reality itself seems reluctant to admit what just occurred."
+    ],
+    "possibleUses": [
+      "In gameplay, Rollback Overlay can support one-beat reversals, tiny action undos, clutch parries, and near-death recovery windows. It gives survival play a distinctly illegal feel. That makes pressure-heavy combat much more dramatic. It also creates elegant limits through charge count and strain.",
+      "In narrative and quests, it enables eerie 'that should have killed you' moments, paranoia in enemies, and stories about the cost of surviving by peeling seconds back off reality. Characters can become addicted to correction or terrified of what each saved instant is doing to them. That gives the Overlay emotional weight. It is strongest when every use feels a little unhealthy.",
+      "In implementation, it can drive micro-rewind charges, rollback strain meters, and state reversion limited to tightly scoped recent actions. Those hooks are concrete, bounded, and testable. They also pair well with narrator descriptions of flicker, overlap, and temporal nausea. That keeps the category distinct from regression Systems.",
+      "Its limitation-aware use comes from keeping it surgical and expensive, because once the rewind becomes broad or casual it stops feeling like an overlay exploit and becomes a different category entirely. The player should still fear the next hit. That preserves tension. The best version feels miraculous and corrosive."
+    ],
+    "limits": [
+      "Rollback windows are extremely small and cannot rewrite whole scenes, restore whole timelines, or casually erase major consequences.",
+      "Repeated use rapidly increases strain, residue, and the risk that deeper law simply refuses the next attempted correction.",
+      "It is weakest against wide-area inevitabilities, layered kill zones, and outcomes where no better answer existed even one second earlier."
+    ],
+    "costs": [
+      "Each rollback scrapes against finalized reality and leaves behind temporal nausea, memory splitting, or paradox-like contamination.",
+      "The bearer risks becoming dependent on last-second correction and losing the discipline to avoid lethal errors in the first place.",
+      "Witnesses, hunters, and enforcers who suspect the exploit often escalate immediately because normal proof standards stop feeling useful."
+    ],
+    "worldCompatibility": [
+      "Rollback Overlay remains beneath Void, Grandmother Void, and deeper law because it steals tiny local reversions instead of owning time.",
+      "It is compatible with duels, assassinations, and near-death play because it expresses strain-heavy clutch correction rather than long-run timeline control.",
+      "Its strongest value depends on narrow windows, bodily survival, and residue tolerance, which keeps the Overlay surgical and unstable."
+    ],
+    "questHooks": [
+      "Survive a duel no one believes you could have survived and decide whether proving the truth is worth revealing the exploit.",
+      "Use the last safe rollback charge to save an ally, knowing the next correction may tear your memory apart.",
+      "Track down the thing in reality that keeps jamming your reversions before one failed rollback becomes permanent death."
+    ],
+    "tags": [
+      "rollback",
+      "exploit",
+      "temporal",
+      "strain"
+    ],
+    "rarity": "mythic",
+    "stability": "forbidden",
+    "selectionWeight": 1,
+    "statModifiers": {
+      "agility": 2,
+      "luck": 1,
+      "vitality": 1
+    }
+  },
+  {
+    "id": "phantom_inventory_overlay",
+    "name": "Phantom Inventory Overlay",
+    "category": "Overlay",
+    "summary": "An unstable storage Overlay that hides contraband and emergency assets in illegal slots outside normal inventory accounting.",
+    "description": "Phantom Inventory Overlay is an Overlay that creates unstable hidden storage slots outside normal inventory accounting. It belongs in the Overlay category because it piggybacks on item-state logic and creates illegal storage behavior instead of granting a lawful storage domain like a Framework would. The bearer can tuck items into inaccessible, partially real inventory spaces that bypass weight, seals, inspections, or slot rules for limited periods. Its progression bias favors smuggling, emergency reserve play, and impossible preparedness rather than honorable transparent logistics. The main tradeoff is loss risk, because phantom slots should drift, corrupt, or collapse unpredictably when overloaded or observed too closely. In the world, Phantom Inventory Overlay should be the nightmare of quartermasters, jailers, customs officers, and thieves because it breaks the assumptions that make item control possible. It should also feel spiritually suspect, as if objects placed into these slots are only half guaranteed to return in the same state. It remains lore-safe because the storage is unstable and parasitic on existing item logic, not a true self-owned pocket world, and because audits, null fields, or instability spikes can eject or erase what is hidden there.",
+    "coreLoop": [
+      "Slip an item into an illegal phantom slot that temporarily bypasses normal inventory, weight, seal, or inspection logic.",
+      "Hold that hidden asset only as long as the slot remains coherent enough to retrieve it without collapse or corruption.",
+      "Choose when the risk of keeping contraband hidden is greater than the risk of pulling it back into lawful space."
+    ],
+    "progression": [
+      "Early growth grants a few unstable hidden slots suitable for contraband, emergency consumables, or small illicit tools.",
+      "Mid progression improves slot coherence, retrieval reliability, and the ability to hold stranger or heavier objects briefly.",
+      "Late progression makes the bearer terrifyingly prepared, but only if they can live with the constant fear that the wrong item may vanish forever."
+    ],
+    "narrativeHooks": [
+      "Every hidden slot turns the simple act of carrying something into a low-grade horror about whether the item still exists correctly.",
+      "The Overlay makes authorities paranoid because it breaks every assumption that keeps prisons, customs, and vault inspections meaningful.",
+      "It naturally creates scenes where trust in your own reserves becomes as fragile as trust in the world around you."
+    ],
+    "possibleUses": [
+      "In gameplay, Phantom Inventory Overlay can support contraband slots, emergency hidden consumables, rule-bending carry capacity, and smuggling-focused builds. It gives preparedness a nerve-wracking illegal edge. That makes item play much more dramatic. It also creates strong risk around retrieval timing.",
+      "In narrative and quests, it enables prison escapes, customs evasion, stolen-relic concealment, and tense scenes where an item may or may not still exist when retrieved. Characters can hide the one thing that matters and then learn the slot is no longer trustworthy. That is excellent tension. It also makes quartermasters and jailers memorable enemies.",
+      "In implementation, it can map to unstable hidden-slot containers, decay chances, audit events, and risk-weighted item retrieval. Those hooks are concrete and easy to add on top of inventory logic. They also give the narrator strong moments of dread around hidden resources. That keeps the Overlay practical and flavorful.",
+      "Its limitation-aware use comes from making hidden storage useful but nerve-wracking, because the fantasy depends on the player never fully trusting what the Overlay is holding. The value is real, but so is the fear. That preserves the category. The best version feels clever and haunted."
+    ],
+    "limits": [
+      "Phantom slots are unstable and cannot safely replace a real inventory, especially for overloaded, sacred, or heavily audited items.",
+      "Null fields, item audits, and direct observation pressure can force ejection, corruption, or deletion of what is being hidden.",
+      "The Overlay is strongest for selective smuggling and emergency reserve play, not for maintaining whole lawful stockpiles indefinitely."
+    ],
+    "costs": [
+      "Anything stored illegally risks drift, corruption, delayed retrieval, or total disappearance if slot stability collapses at the wrong moment.",
+      "The bearer grows dependent on hidden preparedness that may fail exactly when it matters most.",
+      "Using the Overlay invites harsher inspection, stronger prison protocol, and escalating suspicion from anyone responsible for item control."
+    ],
+    "worldCompatibility": [
+      "Phantom Inventory Overlay remains beneath Void, Grandmother Void, and deeper law because it parasitizes item logic instead of creating true sovereign space.",
+      "It is compatible with smuggling, prison breaks, contraband, and emergency reserve play because it expresses unstable hidden access rather than lawful storage.",
+      "Its strongest value depends on instability, audit pressure, and retrieval risk, which keeps the Overlay tense and narrow."
+    ],
+    "questHooks": [
+      "Smuggle a relic through an inspection regime so severe that failure means the slot, the item, and possibly your hand all vanish together.",
+      "Break someone out of prison using tools hidden in phantom slots you are no longer sure can still return cleanly.",
+      "Choose whether to keep a cursed object hidden a little longer or pull it out now before the slot mutates it into something worse."
+    ],
+    "tags": [
+      "inventory",
+      "exploit",
+      "smuggling",
+      "instability"
+    ],
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 2,
+    "statModifiers": {
+      "agility": 1,
+      "luck": 2
+    }
+  },
+  {
+    "id": "null_cost_overlay",
+    "name": "Null Cost Overlay",
+    "category": "Overlay",
+    "summary": "A debt-heavy Overlay that suppresses apparent activation cost in the moment and makes reality collect payment later with interest.",
+    "description": "Null Cost Overlay is an Overlay that intermittently suppresses the normal cost of abilities, movement, or activation at the moment of use. It belongs in the Overlay category because it is a temporary exploit of accounting logic rather than a lawful increase in reserves, regeneration, or authority. The bearer can force a skill, cast, or maneuver through with zero apparent payment, slipping past the usual cost check before reality catches up. Its progression bias favors burst turns, illegal combos, and impossible action chains rather than sustainable throughput. The main tradeoff is deferred debt, because costs denied in the moment should return later as backlash, exhaustion spikes, broken channels, or attracted enforcement. In the world, Null Cost Overlay should appear as impossible efficiency and therefore immediately alarm anyone who understands resource discipline. It should also provoke envy and fear, since every trained fighter knows how much power depends on what cannot normally be done for free. It remains lore-safe because the cost is not truly erased, only displaced, and because the ledger of reality should always demand settlement eventually.",
+    "coreLoop": [
+      "Trigger an action that should cost more than you can presently afford and force it through by nulling the immediate payment check.",
+      "Exploit the sudden zero-cost window for a burst, combo chain, or emergency maneuver no lawful resource state should have permitted.",
+      "Survive the deferred debt when reality collects later as backlash, exhaustion, channel damage, or enforcement attention."
+    ],
+    "progression": [
+      "Early growth allows rare emergency null-cost activations that save the bearer at the price of painful delayed repayment.",
+      "Mid progression expands combo potential, debt management, and the ability to choose when backlash lands rather than whether it exists.",
+      "Late progression creates terrifying burst turns, but only for a bearer willing to wager their next few minutes, hours, or days on one moment."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes impossible efficiency look beautiful right up until the debt arrives and ruins the illusion.",
+      "Observers who understand resource law react with instant fear because they know the only honest answer to free power is 'it is not free.'",
+      "It naturally creates scenes where triumph is delayed disaster rather than uncomplicated success."
+    ],
+    "possibleUses": [
+      "In gameplay, Null Cost Overlay can support zero-cost casts, illegal combo turns, emergency movement bursts, and last-stand sequences that ignore normal resource limits. It makes desperation play spectacular. That creates memorable clutch turns. It also builds strong follow-up consequences into combat pacing.",
+      "In narrative and quests, it creates moments of impossible output followed by ugly consequences, plus investigations by observers who know the math no longer adds up. Characters can win a battle and lose the next day, save a life and shatter their own channels, or terrify allies by spending debt like future pain is someone else's problem. That is excellent drama. It also reinforces the Overlay identity as stolen advantage.",
+      "In implementation, it can drive deferred-cost queues, backlash events, exploit-triggered state flags, and delayed channel strain on existing resource systems. Those hooks are easy to layer on top of mana, stamina, cooldown, or action-economy logic. They also give the narrator strong language for borrowed victory. That keeps the mechanic grounded and reusable.",
+      "Its limitation-aware use comes from making 'free' power feel terrifyingly temporary, because the player should always know the debt is coming. The question is never whether payment exists, only when and how brutal it will be. That preserves tension. The best version feels intoxicating and dangerous."
+    ],
+    "limits": [
+      "Nulling cost does not erase payment, and the Overlay cannot sustain long-term throughput without drowning the bearer in deferred debt.",
+      "Severe actions create proportionally severe backlash, so using the exploit on top-tier abilities can cripple or expose the bearer afterward.",
+      "It is weakest in attrition fights where repeated repayment will kill the bearer before the short-term gain matters."
+    ],
+    "costs": [
+      "Every free-seeming action adds future debt that reality collects through exhaustion, backlash, broken channels, or hunted anomalies.",
+      "The bearer risks losing long-term judgment by preferring immediate impossible output over survivable pacing.",
+      "Allies and enemies alike may start tracking you by the aftermath, because free power always leaves a bill no one can quite ignore."
+    ],
+    "worldCompatibility": [
+      "Null Cost Overlay remains beneath Void, Grandmother Void, and deeper law because it displaces payment instead of erasing the ledger of reality.",
+      "It is compatible with mana, stamina, cooldown, and action-economy systems because it expresses unstable cost bypass rather than lawful abundance.",
+      "Its strongest value depends on deferred debt and backlash timing, which keeps the Overlay explosive without becoming infinite throughput."
+    ],
+    "questHooks": [
+      "Spend a ruinous burst to save someone now and decide later whether the future debt you triggered was worth their survival.",
+      "Track down the creditor-like enforcement pattern that keeps finding you after every impossible free cast.",
+      "Use the Overlay one last time in a battle you can only win by borrowing more future pain than your body should survive."
+    ],
+    "tags": [
+      "cost",
+      "exploit",
+      "debt",
+      "burst"
+    ],
+    "rarity": "mythic",
+    "stability": "forbidden",
+    "selectionWeight": 1,
+    "statModifiers": {
+      "strength": 1,
+      "vitality": 1,
+      "luck": 1
+    }
+  },
+  {
+    "id": "corrupted_ui_overlay",
+    "name": "Corrupted UI Overlay",
+    "category": "Overlay",
+    "summary": "A contamination-heavy Overlay that leaks hidden prompts, malformed menus, and forbidden interface artifacts behind reality's presentation layer.",
+    "description": "Corrupted UI Overlay is an Overlay that exposes forbidden prompts, hidden menus, developer-like labels, and broken interface artifacts that should never be visible to a normal participant. It belongs in the Overlay category because it is an epistemic exploit on top of system presentation rather than a complete truth-granting System. The bearer sees scraps of the machinery behind choices, including debug states, suppressed options, danger labels, and malformed prompts that reveal how the world is trying to route them. Its progression bias favors meta-awareness, exploit literacy, and intervention in decision architecture rather than direct physical domination. The main tradeoff is contamination, because seeing the world this way can fracture immersion, identity stability, and trust in apparently natural events. In the world, Corrupted UI Overlay should read as unnerving and blasphemous because the bearer appears to notice the scaffolding behind fate, law, and narrative structure. It should also be dangerous to rely on completely, since broken prompts can mislabel reality, expose decoys, or tempt the bearer into traps disguised as backend truth. It remains lore-safe because it only leaks presentation and routing artifacts from deeper systems rather than granting actual authorship over them.",
+    "coreLoop": [
+      "Notice a malformed prompt, hidden label, or suppressed menu fragment that leaks routing logic behind the current situation.",
+      "Exploit that leaked presentation artifact to make a better choice, uncover a secret branch, or avoid a trap the surface layer hid.",
+      "Resist contamination from treating every visible thing as interface rather than reality, because the Overlay can teach the wrong habits fast."
+    ],
+    "progression": [
+      "Early growth reveals small warning fragments, broken prompts, and occasional hidden choice metadata around unstable events.",
+      "Mid progression expands menu leakage, lets the bearer parse more backend-like labels, and improves survival against false-positive artifacts.",
+      "Late progression makes the bearer terrifyingly literate in broken presentation, but increasingly estranged from normal perception and certainty."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes reality feel written, and that feeling is as dangerous psychologically as any enemy.",
+      "Others may see you as prophetic, mad, or blasphemous depending on how much of the hidden scaffold you dare to describe aloud.",
+      "It naturally creates scenes where the menu lies and the lie matters more than the truth."
+    ],
+    "possibleUses": [
+      "In gameplay, Corrupted UI Overlay can surface hidden prompts, debug-like warnings, malformed choices, and unusual metadata around encounters or quests. It gives discovery a haunted technical flavor. That makes decisions feel uncanny and charged. It also creates room for false-positive risk rather than clean certainty.",
+      "In narrative and quests, it enables uncanny fourth-wall-adjacent moments, system horror, and investigations into who or what is writing the menus behind reality. Characters can save themselves by reading the wrongness correctly or ruin themselves by trusting a leaked label that was never meant as guidance. That ambiguity is where the Overlay lives. It works best when truth and interface diverge.",
+      "In implementation, it can drive alternate prompt rendering, hidden-state leaks, warning badges, and deliberate misleading artifact events to keep the overlay risky. Those hooks fit prompt assembly, UI affordances, and quest state well. They also give the narrator a structured way to portray system corruption without collapsing into parody. That keeps the category strong.",
+      "Its limitation-aware use comes from preserving ambiguity, because if every leaked menu were perfectly reliable the Overlay would feel less like corruption and more like a polished feature. The player should gain strange insight and fresh doubt at the same time. That preserves the horror. The best version feels revelatory and untrustworthy."
+    ],
+    "limits": [
+      "Leaked prompts and labels are incomplete, unstable, and sometimes actively misleading, so the bearer cannot treat them as perfect truth.",
+      "The Overlay reveals presentation artifacts rather than control authority, meaning it cannot simply rewrite the options it exposes.",
+      "Heavy corruption, decoy interfaces, and deliberate false menus can make reliance on the Overlay more dangerous than ignorance."
+    ],
+    "costs": [
+      "Repeated use fractures trust in normal reality and can leave the bearer unable to tell when something is natural, staged, or only half-rendered.",
+      "Speaking too openly about leaked interface truth can attract cults, enforcers, or panic from people who were never meant to see the scaffold.",
+      "The bearer risks becoming dependent on broken prompts and losing the ability to act confidently without hidden labels telling them what might happen, which turns contamination into a real instability spiral."
+    ],
+    "worldCompatibility": [
+      "Corrupted UI Overlay remains beneath Void, Grandmother Void, and deeper law because it leaks presentation artifacts rather than granting authorship over reality.",
+      "It is compatible with UI-driven narration, quest choices, and system-horror play because it expresses unstable access to routing and labels.",
+      "Its strongest value depends on ambiguity, false positives, and contamination, which keeps the Overlay eerie without becoming a truth System."
+    ],
+    "questHooks": [
+      "Follow a malformed prompt into a hidden branch that may save the city or prove the Overlay has finally started lying more than helping.",
+      "Decide whether to tell your allies what the broken menu called them and risk shattering the last trust holding your group together.",
+      "Track the source of a corrupted warning badge that keeps appearing before disasters and learn why it was never meant for mortals to read."
+    ],
+    "tags": [
+      "ui",
+      "exploit",
+      "corruption",
+      "meta"
+    ],
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 2,
+    "statModifiers": {
+      "intelligence": 2,
+      "luck": 1
+    }
+  },
+  {
+    "id": "latency_slip_overlay",
+    "name": "Latency Slip Overlay",
+    "category": "Overlay",
+    "summary": "A timing-distortion Overlay that creates tiny desynchronizations in action flow, turning precision and awkwardness into the same weapon.",
+    "description": "Latency Slip Overlay is an Overlay that creates tiny desynchronizations between the bearer and the surrounding flow of action. It belongs in the Overlay category because it is a timing exploit layered atop normal motion and perception rather than a true authority over speed or time. The bearer can act just slightly early, just slightly late, or just slightly out of phase with expected impact windows, producing uncanny evasion and interruption behavior. Its progression bias favors dueling, counterplay, and technical outmaneuvering over large-scale battlefield command. The main tradeoff is instability of rhythm, because slipping too far out of sync should damage coordination, strain the body, and make allied timing harder as well as enemy timing. In the world, Latency Slip Overlay should feel unnatural and infuriating to opponents because the bearer seems to 'lag' out of punishment or land interrupts a fraction outside fair reaction space. It should also stay socially and tactically awkward, since people do not like fighting, training, or even walking beside someone whose timing feels subtly broken. It remains lore-safe because it bends temporal relation at the margins rather than granting complete speed supremacy, and because field effects, heavy area control, or synchronization pressure can still pin it down.",
+    "coreLoop": [
+      "Induce a slight timing slip that puts your action just outside the opponents expected reaction window without fully leaving normal flow.",
+      "Use that desync to dodge, interrupt, or land technical counterplay that should have been barely impossible under ordinary rhythm.",
+      "Manage the bodily and social awkwardness of fighting out of phase before the slip becomes more hindrance than advantage."
+    ],
+    "progression": [
+      "Early growth grants small off-beat evasions and timing distortions that help in duels and ambush breaks.",
+      "Mid progression expands interrupt potential, desync control, and the ability to chain a few slips without immediately losing body rhythm.",
+      "Late progression makes the bearer maddening to pin down one-on-one, but increasingly awkward in coordinated group action and prolonged fights."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes the bearer feel wrong to stand near, because rhythm is one of the first social contracts it quietly breaks.",
+      "Opponents grow angry in a special way when they realize they are losing to timing that feels legal only by technicality.",
+      "It naturally creates scenes where elegance and awkwardness become the same motion from different points of view."
+    ],
+    "possibleUses": [
+      "In gameplay, Latency Slip Overlay can support off-beat dodges, interrupt frames, phase-shift timing bonuses, and duel-focused reaction tech. It gives precision play a distinctly unstable flavor. That makes one-on-one encounters memorable. It also creates meaningful counter-tech opportunities.",
+      "In narrative and quests, it enables uncanny sparring scenes, complaints that the player 'moves wrong,' and tension when allied coordination starts slipping too. Characters can become unbeatable in a duel and unbearable in formation. That tradeoff is excellent fiction. It also keeps the Overlay from feeling like clean speed power.",
+      "In implementation, it maps to timing-offset states, reaction modifiers, desync buildup, and counter-tech that punishes repeated temporal slippage. Those hooks fit combat timing systems naturally. They also give the narrator strong descriptive tools for unfair-looking motion. That keeps the category distinctive.",
+      "Its limitation-aware use comes from making the advantage subtle, technical, and increasingly awkward the harder it is pushed. The player should gain precision and lose harmony. That preserves tradeoff. The best version feels unfair and slightly broken."
+    ],
+    "limits": [
+      "Latency slips are narrow timing distortions, not true speed supremacy, and they fail badly against broad area control or synchronized pressure.",
+      "Repeated desync strains the body and wrecks rhythm, eventually harming the bearer's own execution and allied coordination.",
+      "The Overlay is strongest in technical exchanges and much weaker when chaos, crowding, or environmental saturation leave no clean timing lane."
+    ],
+    "costs": [
+      "Every sustained slip damages coordination, making teamwork, ritual timing, and even ordinary movement more awkward the longer the exploit runs.",
+      "The bearer risks isolating themselves socially and tactically because few people enjoy training or fighting beside someone whose timing feels wrong.",
+      "Chasing perfect desync can turn the body into its own enemy when the Overlay pushes rhythm past what flesh can safely tolerate."
+    ],
+    "worldCompatibility": [
+      "Latency Slip Overlay remains beneath Void, Grandmother Void, and deeper law because it distorts timing margins rather than owning time.",
+      "It is compatible with duels, reaction play, and counter-tech because it expresses unstable desynchronization instead of lawful speed authority.",
+      "Its strongest value depends on narrow timing windows, bodily strain, and coordination loss, which keeps the Overlay technical and bounded."
+    ],
+    "questHooks": [
+      "Win a duel against an opponent who learns your rhythm faster than you can afford to keep slipping it.",
+      "Hold formation during a raid even though the Overlay wants to save you by breaking the timing that keeps everyone else alive.",
+      "Choose whether to deepen the desync enough to survive an impossible ambush, knowing you may not be able to move normally afterward."
+    ],
+    "tags": [
+      "latency",
+      "exploit",
+      "timing",
+      "desync"
+    ],
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 2,
+    "statModifiers": {
+      "agility": 2,
+      "intelligence": 1
+    }
   }
 ]

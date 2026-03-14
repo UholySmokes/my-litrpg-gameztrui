@@ -3,30 +3,33 @@
     "id": "extra_privilege",
     "name": "Extra Privilege",
     "category": "Privilege",
-    "summary": "Low-profile meta knowledge and hidden-route access.",
-    "description": "A stealth privilege that grants insight into hidden routes, but demands subtle play to avoid detection.",
+    "summary": "A deniable Privilege that grants hidden-route access, buried options, and favorable edge cases inside the world's existing structures.",
+    "description": "Extra Privilege is a Privilege that grants low-profile access to hidden routes, buried options, and unfairly favorable edge cases in the world's normal decision space. It belongs in the Privilege category because it is precise, asymmetrical, and exception-based rather than a full dominant engine of growth. The bearer does not gain open omniscience or sovereignty, but instead repeatedly notices opportunities that should have remained invisible to ordinary participants. Its progression bias favors subtle play, opportunistic leverage, and selective advantage rather than spectacular direct power. The main tradeoff is exposure, because privileges that rely on remaining deniable become weaker and more dangerous once other actors realize they are being exploited. In the world, Extra Privilege should feel like suspicious luck to outsiders and like a quiet private doorway to the bearer. It should also remain socially volatile, because factions tolerate unfairness better when they cannot prove it than when they can document a pattern. It remains lore-safe because it creates hidden access within existing structures rather than rewriting the structures themselves, and because discovery should trigger countermeasures, audits, or retaliation.",
     "coreLoop": [
-      "Reveal hidden options during narrative events.",
-      "Exploit low-suspicion paths to gain rare rewards.",
-      "Balance visibility to preserve privilege strength."
+      "Notice a hidden route, buried option, or favorable edge case that ordinary participants would not realize exists.",
+      "Exploit that opening quietly enough to gain leverage, safety, or reward without turning the advantage into public evidence.",
+      "Manage exposure so the Privilege stays deniable instead of provoking audits, retaliation, or hard counters."
     ],
     "progression": [
-      "Privilege levels unlock deeper hidden routes.",
-      "High exposure reduces privilege effectiveness.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks small hidden choices, side caches, and subtle route deviations that improve survival or reward efficiency.",
+      "Mid progression expands into deeper detours, privileged interactions, and more reliable access to low-visibility opportunity windows.",
+      "Late progression makes the bearer frighteningly hard to corner, but only if they resist the urge to flaunt every unfair edge they find."
     ],
     "narrativeHooks": [
-      "System narration hints at unseen routes.",
-      "Rivals become aware if privilege exposure spikes."
+      "Outsiders experience your success as suspicious luck long before they can explain the pattern behind it.",
+      "The Privilege becomes socially dangerous the moment rivals decide your fortune is not fortune at all, but theft from the rules everyone else lives under.",
+      "It naturally creates tension between careful survival and the temptation to abuse every hidden opening while you still can."
     ],
     "questHooks": [
-      "Complete a covert quest without detection.",
-      "Erase evidence to restore privilege level."
+      "Use a hidden route to save someone from a doomed scene without revealing how you knew the route existed at all.",
+      "Erase evidence of repeated favorable outcomes before a rival faction proves your luck is a pattern worth killing over.",
+      "Choose whether to expose one secret edge publicly because silence would protect you and doom everyone else."
     ],
     "tags": [
       "stealth",
       "meta",
-      "insight"
+      "insight",
+      "exception"
     ],
     "statModifiers": {
       "luck": 3,
@@ -57,40 +60,68 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Extra Privilege can unlock hidden dialogue options, stealth routes, side caches, and low-visibility bonus rewards. It is strongest when the player feels like they are seeing seams in the world rather than being handed free gifts. That makes exploration and social play feel sharper. It also creates strong incentives for timing and restraint.",
+      "In narrative and quests, it supports secret detours, improbable survival scenes, and tension around whether the player can keep benefiting without attracting notice. Characters can slip through political traps, survive impossible odds, or find the one unofficial door left open on purpose. That gives the Privilege a great thriller energy. It also creates excellent suspicion arcs once the pattern becomes visible.",
+      "In implementation, it maps well to hidden-choice flags, exposure counters, privileged route tags, and suspicion-driven degradation states. Those hooks are lightweight and easy to layer onto existing content. They also help the narrator explain uncanny luck without pretending the player has a full System. That keeps the category clean.",
+      "Its limitation-aware use comes from ensuring that the best benefit comes from careful timing, not from loudly abusing every hidden edge the moment it appears. Once the bearer becomes obvious, the world should start hardening against them. That keeps the Privilege asymmetrical instead of dominant. The strongest version feels deniable and sly."
+    ],
+    "limits": [
+      "The Privilege reveals narrow openings rather than creating new law, so it cannot solve every blocked path or impossible scenario.",
+      "Repeated public abuse increases suspicion and causes routes, caches, and social loopholes to close or turn into traps.",
+      "Its advantage is strongest in systems with room for ambiguity and weakest in absolute lockdown, overwhelming force, or openly audited environments."
+    ],
+    "costs": [
+      "The bearer must constantly manage exposure, because the value of deniable unfairness collapses once it is treated as proven exploitation.",
+      "Relying on secret edges can erode trust, especially when allies start wondering why fortune keeps favoring one person so precisely.",
+      "The Privilege tempts the bearer into opportunism, making it easy to overvalue hidden advantages over honest or stable long-term plans."
+    ],
+    "worldCompatibility": [
+      "Extra Privilege operates inside existing structures and remains beneath Void, Grandmother Void, and the deepest laws that govern the world.",
+      "It is compatible with stealth, intrigue, exploration, and survival systems because it grants access and exceptions rather than broad dominion.",
+      "Its strongest value comes from deniability, timing, and ambiguity, which keeps the Privilege sharp without turning it into a System."
+    ],
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 4
   },
   {
     "id": "class_unique_covenant",
     "name": "Class Unique Covenant",
     "category": "Privilege",
-    "summary": "Only you can wield a unique class path.",
-    "description": "A covenant that grants a one-of-one class with exclusive skills and immunity to class theft.",
+    "summary": "A singular-class Privilege that binds the bearer to a one-of-one class line no ordinary claimant may legally or metaphysically hold.",
+    "description": "Class Unique Covenant is a Privilege that binds the bearer to a one-of-one class path unavailable to ordinary claimants. It belongs in the Privilege category because it is a narrow entitlement to exclusivity, not a complete replacement for every other progression rule. The bearer receives a protected class identity with unique skills, sigils, and inheritance rights that cannot be copied or normally stolen. Its progression bias favors defending legitimacy, proving worth, and deepening a singular lane instead of broad system-level dominance. The main tradeoff is visibility, because a unique class becomes a beacon for challengers, thieves, guilds, and institutions that want to regulate or possess it. In the world, Class Unique Covenant should be treated as a living seal of status and danger, especially in cultures where classes define social hierarchy as much as combat role. It should also create pressure of expectation, since every failure by the bearer can be interpreted as a failure of the covenant's supposed singular worth. It remains lore-safe because uniqueness is still bounded to one class line and one inheritance channel, and because challengers, oathbreaks, or covenant decay can still threaten it.",
     "coreLoop": [
-      "Pass covenant trials to claim the class.",
-      "Unlock exclusive class laws.",
-      "Defend the covenant from usurpers."
+      "Claim or preserve a one-of-one class line through covenant trials, legitimacy checks, and protected inheritance rights.",
+      "Deepen that singular class through sigils, exclusive techniques, and covenant-recognized class milestones.",
+      "Defend the covenant from challengers, thieves, and institutions that want to break, regulate, or possess what only you may hold."
     ],
     "progression": [
-      "Class sigils unlock exclusive passives.",
-      "Covenant stages add personal class perks.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth establishes legitimacy, unlocks the first exclusive class features, and proves the bearer can survive public scrutiny.",
+      "Mid progression expands into sigil inheritance, anti-theft protections, and deeper one-lineage specialization.",
+      "Late progression turns the class into a political and metaphysical issue, because its sole bearer becomes the only gateway to its future."
     ],
     "narrativeHooks": [
-      "Class guilds pursue your covenant.",
-      "Usurpers attempt to steal your class seal."
+      "People do not merely judge your strength; they judge whether you deserve a privilege no one else was allowed to receive.",
+      "Every challenger can frame themselves as either a usurper or the rightful correction to a covenant the world thinks was misbestowed.",
+      "The Privilege naturally creates identity pressure because losing faith in the class can start looking like covenant decay rather than ordinary doubt."
     ],
     "questHooks": [
-      "Complete a solo trial without allies.",
-      "Defeat a covenant challenger for a new sigil."
+      "Defeat a covenant challenger who might honestly deserve the class more than you do and decide what legitimacy means afterward.",
+      "Recover a lost sigil that proves your claim before a guild court brands your covenant fraudulent.",
+      "Choose whether to let the class die with you or rewrite the covenant so someone else can inherit what was meant to remain singular."
     ],
     "tags": [
       "class",
       "unique",
-      "privilege"
+      "privilege",
+      "covenant"
     ],
     "statModifiers": {
-      "luck": 3,
-      "agility": 2
+      "luck": 2,
+      "charisma": 1,
+      "agility": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -117,40 +148,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Class Unique Covenant can support exclusive class trees, sigil unlocks, anti-theft protections, and challenger trial encounters. It gives a player a strong identity lane without turning that lane into universal dominance. That makes build definition sharper. It also creates great stakes around class-specific growth.",
+      "In narrative and quests, it enables class usurpation attempts, guild politics, and internal conflict over whether the bearer deserves a privilege no one else can receive. Characters can defend legitimacy, reject the burden, or try to redefine what the class is for. That makes the Privilege richer than a simple rare title. It can support both prestige and persecution arcs.",
+      "In implementation, it fits exclusive-class state, covenant integrity checks, sigil progression, and class-claim challenge events. Those hooks are easy to connect to character creation, class UI, and long-term progression flags. They also give the narrator strong language for expectation, status, and singular burden. That keeps the category coherent.",
+      "Its limitation-aware use comes from making uniqueness a mixed blessing, because being the only valid bearer also means becoming the only obvious target. The more valuable the covenant becomes, the more pressure it attracts. That preserves the Privilege shape. The best version feels singular and costly, not universally superior."
+    ],
+    "limits": [
+      "The covenant only protects one class lane, so the bearer still depends on ordinary growth, skill, and survival outside that narrow exclusivity.",
+      "Legitimacy can be contested by challengers, oathbreaks, corruption, or institutional refusal to recognize the class claim.",
+      "The Privilege does not make the bearer automatically worthy of the class; it only binds them to its exclusive inheritance channel."
+    ],
+    "costs": [
+      "Uniqueness creates visibility, political demand, and predation from any group that wants the covenant controlled or transferred.",
+      "Every public failure reflects back onto the class itself, increasing pressure on the bearer to embody an ideal they may not have chosen.",
+      "Defending singular legitimacy can become a life-consuming burden that narrows freedom more than ordinary class progression ever would."
+    ],
+    "worldCompatibility": [
+      "Class Unique Covenant remains beneath Void, Grandmother Void, and the highest law because it grants exclusivity within one class line rather than universal sovereignty.",
+      "It is compatible with class systems, guild politics, inheritance law, and challenger arcs because it formalizes narrow entitlement and legitimacy.",
+      "Its power is bounded by one lane, one covenant, and one bearer, which keeps the Privilege exceptional without becoming a full System engine."
+    ],
+    "rarity": "mythic",
+    "stability": "stable",
+    "selectionWeight": 2
   },
   {
     "id": "information_vision_array",
     "name": "Information Vision Array",
     "category": "Privilege",
-    "summary": "See stats, weaknesses, and hidden routes.",
-    "description": "An analysis array that surfaces enemy data, loot vectors, and secret paths in real time.",
+    "summary": "A scan-focused Privilege that reveals bounded layers of stats, weaknesses, hidden routes, and structural truth beyond ordinary perception.",
+    "description": "Information Vision Array is a Privilege that reveals targeted layers of stats, weakness data, hidden routes, and structural insight beyond normal perception. It belongs in the Privilege category because it grants a narrow but highly efficient information advantage rather than governing the entire world's knowledge flow. The bearer can scan a target, site, or object and surface the specific details that matter most for survival, exploitation, or strategic planning. Its progression bias favors preparation, clean execution, and low-waste decision making instead of blind improvisation. The main tradeoff is interpretation burden, because more visible information does not automatically produce better judgment and can overwhelm or mislead under pressure. In the world, Information Vision Array should feel uncanny because the bearer appears to know more than they should about guarded things, hidden flaws, and concealed pathways. It should also attract resistance from secret-keepers, illusionists, and factions whose power depends on information asymmetry. It remains lore-safe because it reveals patterned truth within bounded scans instead of granting total knowledge, and because strong concealment, false data, and higher law can still interfere.",
     "coreLoop": [
-      "Scan targets to reveal stats and weaknesses.",
-      "Expose hidden routes and loot caches.",
-      "Exploit data for combat advantages."
+      "Scan a target, object, or environment to surface the most actionable hidden data available within the Arrays current limits.",
+      "Interpret that data fast enough to turn knowledge into cleaner tactics, route choices, or survival decisions.",
+      "Manage scan cost, concealment resistance, and information overload so insight remains useful instead of destabilizing."
     ],
     "progression": [
-      "Deep scans unlock predictive overlays.",
-      "Information tiers reveal rare drop logic.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth reveals basic weaknesses, route indicators, and quality or danger tags on scanned targets and spaces.",
+      "Mid progression expands scan depth, predictive overlays, and better distinction between true signals and false or planted data.",
+      "Late progression makes the bearer terrifyingly efficient at preparation, but only if they can still judge what matters under pressure."
     ],
     "narrativeHooks": [
-      "Enemies feel watched and adjust tactics.",
-      "Secret factions notice your awareness."
+      "The Array turns secrecy itself into a contested battlefield, because any faction living on hidden truth starts treating you as a threat.",
+      "People often mistake the Privilege for impossible genius, which creates both awe and fear around your choices.",
+      "It naturally raises the question of whether seeing more truth makes someone wiser or simply harder to deceive."
     ],
     "questHooks": [
-      "Identify a hidden weakness before a duel.",
-      "Map a secret route through a sealed zone."
+      "Scan a sacred relic that everyone reveres and decide whether exposing its hidden flaw will save lives or start a war.",
+      "Map a concealed route through a zone layered with deliberate false signals designed to kill overconfident analysts.",
+      "Choose whether to reveal what you saw in an ally's sealed gear when sharing that truth could shatter the trust holding your group together."
     ],
     "tags": [
       "information",
       "analysis",
-      "secrets"
+      "secrets",
+      "scan"
     ],
     "statModifiers": {
-      "luck": 3,
-      "agility": 2
+      "intelligence": 3,
+      "luck": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -176,40 +234,68 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Information Vision Array can support scanning, weakness highlighting, secret-route discovery, and loot or trap analysis. It helps players act with intent instead of fumbling through uncertainty. That makes planning-focused play styles much stronger. It also creates good hooks for concealment counters and scan depth upgrades.",
+      "In narrative and quests, it enables detective arcs, anti-illusion scenes, and dangerous moments where seeing too much too quickly creates new enemies. Characters can uncover lies, expose flaws in sacred relics, or learn truths that powerful groups expected to stay buried. That gives the Privilege real story pressure. It is strongest when information itself becomes dangerous.",
+      "In implementation, it can power inspect actions, reveal tiers, scan costs, and concealment-versus-detection contests. Those hooks fit naturally into exploration, combat, crafting, and quest systems. They also give the narrator concrete structured outputs to describe rather than generic intuition. That keeps the benefit crisp and testable.",
+      "Its limitation-aware use comes from keeping the Privilege sharp but bounded, because if every mystery were instantly solved the category would stop feeling like a privilege and start feeling like a System. The player should still need judgment, timing, and courage. That preserves tension. The best version rewards insight, not omniscience."
+    ],
+    "limits": [
+      "The Array reveals bounded layers of relevant truth, not everything about a target, and can still be deceived by superior concealment or false data.",
+      "More information can overwhelm the bearer in fast or chaotic situations if they cannot prioritize what matters immediately.",
+      "Scans work best on patterned structures and may struggle with anomaly states, contradictory self-belief, or intentionally scrambled systems."
+    ],
+    "costs": [
+      "High-value scans attract attention from the exact factions, illusionists, and secret-keepers most threatened by exposed information.",
+      "The bearer risks paralysis or overconfidence if they mistake revealed data for guaranteed understanding.",
+      "Repeated reliance on the Array can distance the bearer from ordinary trust and intuition, because they grow used to proof no one else can see."
+    ],
+    "worldCompatibility": [
+      "Information Vision Array remains beneath Void, Grandmother Void, and the highest laws because it grants bounded revelation rather than universal knowledge.",
+      "It is compatible with scanning, investigation, trapfinding, and anti-illusion play because it expresses narrow but efficient information privilege.",
+      "Its strongest use still depends on interpretation and limited scan windows, which keeps the Privilege precise instead of category-breaking."
+    ],
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 4
   },
   {
     "id": "mind_reading_exploit",
     "name": "Mind-Reading Exploit",
     "category": "Privilege",
-    "summary": "Surface thoughts into tactical advantage.",
-    "description": "A cognition exploit that reads surface intent and predicts actions during critical moments.",
+    "summary": "A taboo Privilege that exposes surface intent and decision pressure in crucial moments without granting total mental domination.",
+    "description": "Mind-Reading Exploit is a Privilege that surfaces intent, surface thought, or immediate decision pressure at crucial moments. It belongs in the Privilege category because it offers an unfair angle on cognition without becoming total psychic domination. The bearer does not own minds, but can exploit brief windows of readability to predict movement, expose lies, and understand motive faster than ordinary intuition should allow. Its progression bias favors duels, negotiations, and high-tension social moments where one glimpse of intent changes everything. The main tradeoff is social poison, because being able to read too much too often destabilizes trust and can isolate the bearer from ordinary intimacy. In the world, Mind-Reading Exploit should feel invasive and taboo even when used for good reasons, since very few cultures remain comfortable around someone who can peel back intent. It should also meet natural counters such as trained discipline, mind shields, contradictory self-belief, and creatures whose thought patterns are not humanly legible. It remains lore-safe because it is a short-window exploit of readable cognition, not unrestricted ownership of consciousness, and because misuse should invite psychic backlash, paranoia, or retaliation.",
     "coreLoop": [
-      "Focus to read intentions in combat.",
-      "Predict enemy actions before they trigger.",
-      "Exploit revealed motives for social leverage."
+      "Catch a brief readable window in an enemy, ally, or target mind during stress, decision pressure, or focused attention.",
+      "Turn that glimpse of surface intent into better timing, cleaner dialogue leverage, or sharper prediction of immediate action.",
+      "Avoid overuse and social fallout so the Privilege remains an edge instead of becoming the reason no one trusts you."
     ],
     "progression": [
-      "Range and clarity improve with use.",
-      "Detection resistance increases with mastery.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth improves the clarity of short intent flashes during obvious stress or combat commitment windows.",
+      "Mid progression expands into negotiation pressure reads, lie detection support, and stronger resistance against basic mental noise.",
+      "Late progression makes the bearer terrifying in duels and tense conversations, but also increasingly alien in ordinary relationships."
     ],
     "narrativeHooks": [
-      "NPCs react to your unsettling insight.",
-      "Telepaths attempt to block your exploit."
+      "The Privilege turns honesty into a complicated concept because you can hear thoughts people never meant to make into speech.",
+      "Even justified use can leave the bearer socially isolated, since very few people feel safe around someone who reads what should remain private.",
+      "It naturally creates scenes where the truth is not comforting, only actionable."
     ],
     "questHooks": [
-      "Read a commander's intent to prevent an ambush.",
-      "Survive a duel against a mind shielded foe."
+      "Catch the one surface thought that reveals an assassination plan before the speaker commits to silence forever.",
+      "Win a negotiation by reading intent at the exact moment it fractures, then decide whether anyone involved can still trust you afterward.",
+      "Face an enemy whose contradictory beliefs make every read dangerous because the wrong surface thought is the bait, not the truth."
     ],
     "tags": [
       "mind",
       "prediction",
-      "social"
+      "social",
+      "intent"
     ],
     "statModifiers": {
-      "luck": 3,
-      "agility": 2
+      "intelligence": 2,
+      "luck": 1,
+      "charisma": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -236,40 +322,68 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Mind-Reading Exploit can support intent reveals, dodge timing, dialogue advantage, and ambush prevention. It gives social and combat play a shared precision tool without making either mode automatic. That makes it flexible and dangerous. It also creates great interaction with mental defense counters.",
+      "In narrative and quests, it enables interrogation tension, duel mind games, and relationship strain caused by knowing what was never meant to be spoken. Characters can save lives with one invasive read or ruin intimacy by relying on knowledge no one consented to share. That moral messiness is where the Privilege shines. It is strongest when truth and trust stop aligning cleanly.",
+      "In implementation, it works with intent tags, prediction windows, mental defense checks, and selective dialogue surfacing. Those hooks are narrow enough to stay privilege-scale while still affecting major scenes. They also offer clear counterplay through discipline, shielding, and nonhuman cognition. That keeps the category honest.",
+      "Its limitation-aware use comes from making insight powerful but awkward, because using it well should change outcomes without dissolving every social mystery in the setting. The bearer should still misread, overreach, or pay a social price. That preserves drama. The best version feels invasive, useful, and costly all at once."
+    ],
+    "limits": [
+      "The Privilege only catches surface intent or stress-spiked cognition, not complete private histories or full mental ownership.",
+      "Disciplined minds, shielding techniques, contradictory self-belief, and nonhuman thought patterns can reduce or corrupt the read.",
+      "It is strongest in sharp moments of pressure and much weaker in diffuse, low-stakes, or emotionally muddled situations."
+    ],
+    "costs": [
+      "Repeated use poisons trust, because even allies become guarded when they suspect their unspoken thoughts are not truly private around you.",
+      "Psychic backlash, paranoia, or emotional contamination can build when the bearer reads too deeply or too often.",
+      "The Privilege tempts the bearer to substitute invasive certainty for patient understanding, which can distort both judgment and relationships."
+    ],
+    "worldCompatibility": [
+      "Mind-Reading Exploit remains beneath Void, Grandmother Void, and the highest laws because it steals moments of readability rather than dominating consciousness.",
+      "It is compatible with duels, intrigue, interrogation, and social conflict because it grants a narrow but unfair cognition angle.",
+      "Its strongest value depends on timing, pressure, and readable minds, which keeps the Privilege sharp without becoming psychic sovereignty."
+    ],
+    "rarity": "epic",
+    "stability": "volatile",
+    "selectionWeight": 3
   },
   {
     "id": "villain_pov_advantage",
     "name": "Villain POV Advantage",
     "category": "Privilege",
-    "summary": "Antagonist toolkit grants ruthless advantages.",
-    "description": "A privilege that unlocks intimidation, resource seizure, and plot disruption routes.",
+    "summary": "A morally unstable Privilege that unlocks ruthless options, intimidation leverage, and antagonist-style strategic framing others resist using.",
+    "description": "Villain POV Advantage is a Privilege that grants access to ruthless options, intimidation leverage, and antagonistic strategic framing that ordinary protagonists hesitate to use. It belongs in the Privilege category because it is a narrative-position advantage and a menu of efficient exceptions, not a complete dark System. The bearer sees how resource seizure, fear, hostage logic, timing cruelty, and asymmetrical escalation can solve problems that heroic conventions leave open. Its progression bias favors pressure, deterrence, and exploitation of enemy hesitation rather than broad lawful legitimacy. The main tradeoff is reputation, because every efficient villain-coded choice compounds suspicion, infamy, and organized opposition even when it works. In the world, Villain POV Advantage should feel like seeing the same board from the side of people who stop asking permission. It should also remain morally unstable, because the advantage often comes from recognizing practical routes that are effective precisely because decent people resist using them. It remains lore-safe because it does not grant automatic victory, only access to darker strategic options and stronger returns on fear, coercion, and disruption.",
     "coreLoop": [
-      "Exploit villain options in encounters.",
-      "Harvest fear and respect into power.",
-      "Invest infamy into dark perks."
+      "Recognize a ruthless option that heroic or lawful framing would normally leave off the table.",
+      "Use intimidation, disruption, coercion, or resource seizure to solve the problem faster than cleaner methods would allow.",
+      "Pay the resulting social and narrative debt as infamy, retaliation, and legitimacy erosion accumulate around you."
     ],
     "progression": [
-      "Infamy tiers unlock stronger methods.",
-      "Villain perks reshape reputation mechanics.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks minor intimidation routes, coercive leverage, and low-tier gains from fear-based pressure.",
+      "Mid progression expands into infamy-driven perks, stronger disruption options, and more efficient exploitation of enemy hesitation.",
+      "Late progression makes the bearer frighteningly effective in crisis, but also increasingly defined by the enemies and debts their methods create."
     ],
     "narrativeHooks": [
-      "Heroes actively target your operations.",
-      "Underworld factions seek your alliance."
+      "The Privilege constantly asks whether efficiency is courage, corruption, or simply the first step toward becoming what you hate.",
+      "People may admire your results while privately fearing the logic you used to achieve them.",
+      "Every darkly practical victory makes later mercy harder to prove."
     ],
     "questHooks": [
-      "Seize a hero resource without being discovered.",
-      "Defeat a rival villain for a perk slot."
+      "Seize a resource the hero faction refuses to touch and decide whether the resulting victory was worth becoming the story's villain in public.",
+      "Break an enemy coalition through fear and coercion before it matures into war, then face what your allies think you became to do it.",
+      "Reject the clean efficient option once and watch the Privilege punish you by showing exactly how many lives the darker route would have saved."
     ],
     "tags": [
       "villain",
       "infamy",
-      "meta"
+      "meta",
+      "coercion"
     ],
     "statModifiers": {
-      "luck": 3,
-      "agility": 2
+      "charisma": 2,
+      "luck": 1,
+      "agility": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -296,40 +410,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Villain POV Advantage can unlock intimidation routes, seize-resource options, infamy-based perks, and dark encounter solutions. It gives players access to efficient but corrosive problem-solving tools. That makes moral choice mechanically meaningful. It also supports antihero runs without needing a full corruption System.",
+      "In narrative and quests, it supports underworld alliances, antihero drift, and situations where the most efficient answer threatens the player's long-term legitimacy. Characters can save the day in ways that make the aftermath worse, or gain short-term power that poisons future trust. That gives the Privilege real dramatic teeth. It works best when the player is never allowed to pretend the cost is invisible.",
+      "In implementation, it can drive alternative choice branches, infamy-resource systems, fear-based modifiers, and morality-aware consequence handling. Those hooks fit questing, faction reputation, and dialogue systems well. They also give the narrator a clear way to mark the difference between heroic and villain-coded success. That keeps the category narrow and legible.",
+      "Its limitation-aware use comes from ensuring that villain efficiency always creates social and narrative debt, because otherwise it becomes a bland optimal path instead of a real Privilege with teeth. The player should gain leverage and lose legitimacy at the same time. That preserves tradeoff. The best version feels effective, corrosive, and tempting."
+    ],
+    "limits": [
+      "The Privilege offers darker options, not guaranteed success, and still depends on the bearer having the courage and leverage to use them.",
+      "Fear and coercion work poorly against enemies who cannot be shamed, threatened, or strategically pressured in human ways.",
+      "Its strongest routes often damage long-term legitimacy, making the bearer weaker in alliances, trust, and lawful institutions."
+    ],
+    "costs": [
+      "Every ruthless choice compounds suspicion, infamy, and organized opposition even when it produces an immediate tactical win.",
+      "The bearer risks moral drift by learning to prefer the most efficient answer even when a cleaner one would preserve humanity or trust.",
+      "Allies may stay for the results and leave when they finally understand the logic that achieved them."
+    ],
+    "worldCompatibility": [
+      "Villain POV Advantage remains beneath Void, Grandmother Void, and higher law because it grants strategic exceptions rather than dark sovereignty.",
+      "It is compatible with intrigue, underworld politics, coercion, and fear-based play because it expresses narrow narrative leverage.",
+      "Its value depends on social consequence, infamy, and enemy hesitation, which keeps the Privilege potent without becoming a full villain System."
+    ],
+    "rarity": "epic",
+    "stability": "volatile",
+    "selectionWeight": 3
   },
   {
     "id": "danger_sense_array",
     "name": "Danger Sense Array",
     "category": "Privilege",
-    "summary": "Auto-detect lethal threats before they land.",
-    "description": "A sensor array that flags ambushes and grants evasive triggers during critical windows.",
+    "summary": "A survival Privilege that flags lethal intent and incoming disaster moments before ordinary perception can fully respond.",
+    "description": "Danger Sense Array is a Privilege that flags imminent lethal threats before ordinary perception can fully register them. It belongs in the Privilege category because it is a narrow survival exception, not a complete combat system or dominion power. The bearer receives warnings, intuition spikes, or microsecond predictive flashes that allow evasive action in moments where everyone else would already be dead. Its progression bias favors survival, counter-ambush play, and risk management rather than direct offensive escalation. The main tradeoff is false confidence, because sensing danger does not guarantee the body, positioning, or resources needed to escape it cleanly. In the world, Danger Sense Array should make the bearer infuriating to assassins, fate-readers, and ambush specialists who rely on surprise maintaining absolute value. It should also create tension with allies, because people may start relying on the bearer to sense what no normal scout could have caught in time. It remains lore-safe because it warns of danger rather than preventing it outright, and because saturation, misdirection, void-noise, or overwhelming area threats can still break through.",
     "coreLoop": [
-      "Detect lethal events in advance.",
-      "Trigger auto-evade charges.",
-      "Invest in sensors to widen warning windows."
+      "Catch warning spikes just before a lethal strike, trap, or disaster fully resolves into unavoidable harm.",
+      "Spend that narrow window on evasion, counterplay, triage, or choosing which danger matters most right now.",
+      "Avoid mistaking warning for safety, because the Privilege only buys reaction time, not guaranteed survival."
     ],
     "progression": [
-      "Warning windows expand with upgrades.",
-      "Auto-dodge charges recharge faster.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth grants brief warning flashes against obvious lethal intent, ambushes, and immediate physical threats.",
+      "Mid progression expands the warning window, threat classification, and the ability to distinguish false signals from true kill pressure.",
+      "Late progression makes the bearer maddeningly hard to surprise, but still vulnerable to saturation, area denial, and impossible positioning."
     ],
     "narrativeHooks": [
-      "Fate-seers struggle to trap you.",
-      "Enemies adopt unpredictable tactics."
+      "The Array makes ordinary safety feel temporary, because the world keeps revealing how many ways death was already on its way.",
+      "Allies may become dangerously dependent on the bearer's warnings instead of learning to read danger for themselves.",
+      "Assassins and fate-readers hate what they cannot cleanly surprise."
     ],
     "questHooks": [
-      "Survive an assassination attempt without damage.",
-      "Calibrate the array in a storm zone."
+      "Survive an assassination chain by acting on warnings too fast for anyone else to understand what nearly happened.",
+      "Choose who to save when the Array fires for two lethal threats at once and your body can only answer one in time.",
+      "Calibrate the Privilege inside a void-noise storm where every warning could be true, false, or intentionally poisoned."
     ],
     "tags": [
       "survival",
       "warning",
-      "evasion"
+      "evasion",
+      "reaction"
     ],
     "statModifiers": {
-      "luck": 3,
-      "agility": 2
+      "agility": 2,
+      "luck": 2
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -356,42 +497,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Danger Sense Array can support warning prompts, auto-evade windows, ambush detection, and survival-oriented reaction mechanics. It gives defense and positioning a dramatic edge without becoming passive invulnerability. That makes combat feel tense instead of trivial. It also creates room for threat classification and reaction-resource design.",
+      "In narrative and quests, it enables assassination foils, desperate escapes, and scenes where the player has only an instant to choose who gets saved. Characters can survive what should have been impossible and still suffer because the warning came too late to protect everyone. That keeps the Privilege emotionally alive. It is strongest when it forces hard triage rather than easy survival.",
+      "In implementation, it maps to hazard telegraphs, reaction-charge systems, threat classification, and anti-ambush modifiers. Those hooks can serve combat, exploration, and stealth content equally well. They also give the narrator concrete ways to describe preimpact dread. That helps the Privilege stay narrow and vivid.",
+      "Its limitation-aware use comes from making the warning meaningful but not magical, because sensing the fatal strike is only half as useful as having a way to answer it. The player should still die when outpositioned, exhausted, or overwhelmed. That preserves stakes. The best version feels sharp, stressful, and lifesaving."
+    ],
+    "limits": [
+      "The Array warns of danger but does not guarantee the speed, mobility, or resources needed to survive what it senses.",
+      "Overwhelming area threats, signal saturation, void-noise, and deliberate misdirection can swamp or distort the warning feed.",
+      "Its greatest value lies in reaction windows, so it offers little advantage when a catastrophe leaves no possible answer."
+    ],
+    "costs": [
+      "Repeated exposure to imminent-lethality signals can erode calm judgment and leave the bearer living in a state of constant anticipatory stress.",
+      "Allies may lean too heavily on the Privilege, which turns one survival exception into a dangerous social crutch.",
+      "The bearer's confidence can become reckless if they start treating warning as proof they can always survive."
+    ],
+    "worldCompatibility": [
+      "Danger Sense Array remains beneath Void, Grandmother Void, and higher law because it grants forewarning rather than dominion over fate or combat.",
+      "It is compatible with survival, scouting, anti-ambush, and reaction-based play because it expresses a narrow lethal-threat exception.",
+      "Its power remains bounded by timing, positioning, and response capacity, which keeps the Privilege lifesaving without becoming invulnerability."
+    ],
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 4
   },
   {
     "id": "instant_comprehension_grant",
     "name": "Instant Comprehension Grant",
     "category": "Privilege",
-    "summary": "Learn laws, languages, and techniques instantly, skipping decades of study.",
-    "description": "A privilege that allows for the instantaneous understanding of complex information, from ancient languages to the fundamental laws of reality, by merely observing or touching them.",
+    "summary": "A rapid-learning Privilege that collapses exposure into functional understanding for bounded concepts, techniques, and texts.",
+    "description": "Instant Comprehension Grant is a Privilege that collapses the delay between exposure and functional understanding for highly specific concepts, techniques, and texts. It belongs in the Privilege category because it is a potent exception to normal learning friction, but still narrower and less identity-defining than a full knowledge-oriented System. The bearer can encounter a law, language, form, or mechanism and grasp its essentials with impossible speed. Its progression bias favors rapid adaptation, curiosity, and opportunistic learning under pressure rather than slow institutional study. The main tradeoff is embodiment lag, because understanding a thing is not the same as having the body, resources, or context to execute it safely at full depth. In the world, Instant Comprehension Grant should inspire admiration and fear because it undermines every hierarchy built on exclusive learning and long initiation. It should also provoke hoarding behavior from institutions that realize their secrets can be absorbed from one brief encounter. It remains lore-safe because the Privilege accelerates comprehension within contact and conceptual limits rather than granting automatic mastery of every truth in existence.",
     "coreLoop": [
-      "Encounter a new concept, text, or technique.",
-      "Trigger the 'Comprehension Grant' to instantly absorb and understand it.",
-      "Apply the newly learned knowledge immediately."
+      "Encounter a technique, language, law, or mechanism and trigger a rapid comprehension event while the concept is still in reach.",
+      "Convert that sudden understanding into immediate utility, translation, or tactical adaptation before the opportunity passes.",
+      "Deal with the gap between knowing and embodying, because insight arrives faster than the body, resources, or context needed to wield it well."
     ],
     "progression": [
-      "Reduce the 'cooldown' or 'focus' required between comprehension grants.",
-      "Evolve the ability from simple understanding to 'Conceptual Assimilation', allowing you to modify the learned concept.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth grants rapid understanding of texts, simple techniques, and clearly structured mechanisms after direct exposure.",
+      "Mid progression expands into more abstract concepts, faster integration, and better retention under stress or incomplete contact.",
+      "Late progression makes the bearer terrifyingly quick to learn, but still unable to skip the hard work of embodiment and context."
     ],
     "narrativeHooks": [
-      "You become a polymath of impossible genius, but your rapid growth isolates you.",
-      "Guardians of ancient knowledge see you as a grave threat who bypasses their sacred traditions of slow learning."
+      "The Privilege makes teachers, libraries, and guarded traditions nervous because centuries of gatekeeping can collapse in one encounter.",
+      "Rapid understanding can become isolating when the bearer begins leaping over learning journeys that once defined whole communities.",
+      "It naturally creates scenes where genius arrives before wisdom, and that difference matters."
     ],
     "questHooks": [
-      "Instantly master a lost martial art mid-duel to defeat its last practitioner.",
-      "Decipher an entire library of alien text in seconds to avert a planetary disaster."
+      "Grasp a forbidden manual fast enough to survive the scene, then decide whether keeping that understanding is worth who it will draw to you.",
+      "Translate a dead language before the ruin collapses even though true mastery of what you read may take years you do not have.",
+      "Choose whether to teach what you suddenly learned or hide it because the people who guarded it will kill to keep the old hierarchy intact."
     ],
     "tags": [
       "learning",
       "knowledge",
       "comprehension",
-      "privilege",
-      "fast-growth"
+      "privilege"
     ],
     "statModifiers": {
-      "luck": 3,
-      "agility": 2
+      "intelligence": 3,
+      "luck": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -418,6 +584,30 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Instant Comprehension Grant can support instant recipe learning, rapid language decoding, emergency technique uptake, and reduced training thresholds after exposure. It rewards curiosity and pressure play at the same time. That makes discovery feel exciting instead of purely archival. It also pairs well with lore-heavy content and sudden crisis adaptation.",
+      "In narrative and quests, it enables forbidden-manual incidents, academy tension, and moments where the player learns something world-changing faster than anyone can stop them. Characters can impress mentors, terrify gatekeepers, or trigger political panic simply by understanding too quickly. That gives the Privilege social reach. It is strongest when knowledge itself is contested territory.",
+      "In implementation, it can power observation-based unlocks, concept tags, compressed learning timers, and execution-versus-understanding checks. Those hooks fit crafting, language, combat technique, and puzzle systems without demanding a whole separate System layer. They also let the narrator distinguish comprehension from mastery clearly. That keeps the category honest.",
+      "Its limitation-aware use comes from preserving the difference between knowing and mastering, because that gap is what keeps the Privilege brilliant without making it category-breaking. The player should still need practice, tools, and experience to realize what they suddenly understand. That preserves progression. The best version feels dazzling and incomplete at once."
+    ],
+    "limits": [
+      "The Privilege accelerates understanding only after meaningful exposure and does not conjure knowledge from total absence.",
+      "Comprehension does not automatically grant muscle memory, cultivation depth, legal permission, or the physical capacity to execute what was learned.",
+      "Highly abstract, corrupted, or shielded concepts can still resist or partially distort the granted understanding."
+    ],
+    "costs": [
+      "Rapid learning threatens every hierarchy built on initiation, which means institutions often respond with hoarding, censorship, or violence.",
+      "The bearer can overestimate their readiness by mistaking understanding for mastery, especially in dangerous techniques or ritual law.",
+      "Learning too fast can produce alienation, because shared slow-study cultures do not always welcome someone who leaps past their rites."
+    ],
+    "worldCompatibility": [
+      "Instant Comprehension Grant remains beneath Void, Grandmother Void, and higher law because it accelerates learning within contact limits rather than total truth access.",
+      "It is compatible with language, crafting, manuals, and adaptive combat because it expresses a narrow exception to learning friction.",
+      "Its strongest value still depends on exposure, interpretation, and later embodiment, which keeps the Privilege brilliant without turning into a knowledge System."
+    ],
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 3
   }
 ]

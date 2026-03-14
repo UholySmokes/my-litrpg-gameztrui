@@ -224,17 +224,17 @@
     "id": "gacha_reliquary",
     "name": "Gacha Reliquary",
     "category": "System",
-    "summary": "RNG relic pulls that scale into artifact-grade rewards.",
-    "description": "A luck-bound relic system that grants randomized gear and artifacts through progressive pull tiers.",
+    "summary": "A relic-draw System that converts danger, mythic fragments, and pity momentum into escalating artifact access.",
+    "description": "Gacha Reliquary is a System that turns relic acquisition into a governed draw economy rather than random treasure luck alone. It belongs in the System category because it supplies its own progression loop, reward pacing, duplicate conversion logic, and long-term chase incentives across many parts of the game. The bearer earns draws through danger, quests, faction resonance, and reliquary-specific currencies that feed a private artifact pipeline. Every pull is uncertain in the moment, but the System steadily shapes outcomes through pity, set logic, dupe fusion, and resonance milestones. Its progression bias favors accumulation, curation, and calculated risk-taking rather than only immediate combat efficiency. The main tradeoff is compulsion, because the System is designed to keep the bearer chasing one more pull, one more set bonus, or one more rarity break even when restraint would be wiser. In the world, Gacha Reliquary should feel wondrous and socially disruptive because it turns history-laden relics into a strange economy of chance, obsession, and private privilege. It remains lore-safe because relics still come from bounded mythic pools, real resonance histories, and explicit pity or fusion rules rather than from infinite nothingness.",
     "coreLoop": [
       "Earn relic tokens through quests and battles.",
       "Pull from tiers that unlock stronger artifacts.",
       "Fuse duplicates into guaranteed upgrades."
     ],
     "progression": [
-      "Pity counters unlock guaranteed relic tiers.",
-      "Relic sets grant systemic bonuses.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks basic draw tiers, visible pity tracking, and reliable duplicate fusion into modest guaranteed upgrades.",
+      "Mid progression expands the reliquary into themed pools, stronger set resonance, and better conversion paths for unwanted pulls.",
+      "Late progression turns the bearer into a terrifying curator of mythic loadouts whose collection can answer many kinds of crisis if managed well."
     ],
     "narrativeHooks": [
       "Relics are tied to mythic histories and factions.",
@@ -278,7 +278,31 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Gacha Reliquary can support draw currencies, pity counters, set bonuses, duplicate fusion, and collection-driven progression. It gives artifact chasing a full engine instead of relying on loose loot tables. That makes long-term equipment progression easier to pace and more emotionally sticky. It also creates strong side goals for players who like building around rare finds.",
+      "In narrative and quests, it enables relic cults, collector rivalries, black-market draws, and stories where an impossible pull changes social status overnight. The bearer can become known as a miraculous chosen finder or a dangerous hoarder of mythic history. They may also discover that every draw pool is curated by factions with agendas. That gives the System strong world texture.",
+      "In implementation, it maps well to rarity tables, pity metadata, set-state tracking, duplicate conversion, and unlockable pool tiers. Those hooks fit inventory, progression, quests, and narrator context without needing to redesign core combat. They also give the UI a natural reason to surface suspense, milestones, and collection status. That makes the System practical as well as flashy.",
+      "Its limitation-aware use comes from keeping draws meaningful but never free. The player should feel the thrill of chance while still having to manage currencies, pool access, and obsession risk. That preserves the system fantasy without letting it dissolve into infinite artifact vending. The strongest version feels like a dangerous shrine to possibility."
+    ],
+    "limits": [
+      "The reliquary can only draw from unlocked pools tied to real relic lineages, discovered tiers, or specific currencies the bearer has earned.",
+      "High-value pulls remain gated by pity, resonance, and progression state, so raw spamming cannot skip every stage of growth.",
+      "Collection strength can become lopsided if the bearer chases rarity at the expense of usable builds or resource discipline."
+    ],
+    "costs": [
+      "Draws consume currencies, fragments, or opportunities that could otherwise be spent on guaranteed progress elsewhere.",
+      "The System encourages compulsive risk-taking and can trap the bearer in unhealthy chase cycles around one desired relic or set.",
+      "Mythic pulls attract faction attention, theft pressure, and expectation from anyone who recognizes what the reliquary has granted."
+    ],
+    "worldCompatibility": [
+      "Gacha Reliquary remains beneath Void, Grandmother Void, and the highest laws of existence because it dispenses from bounded relic pools rather than creating unlimited artifacts ex nihilo.",
+      "It is compatible with artifact histories, collection gameplay, and faction economies because it structures access to real relic lineages through a private draw engine.",
+      "Its power stays coherent because it depends on currencies, pity state, and unlocked pools instead of unrestricted item generation."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 3
   },
   {
     "id": "skill_synthesis_lattice",
@@ -1132,17 +1156,17 @@
     "id": "stat_purchase_contract",
     "name": "Stat Purchase Contract",
     "category": "System",
-    "summary": "Purchase raw attributes and talents with contract points.",
-    "description": "A contract-based system that converts kills, tasks, and debts into points used to buy stats and talents.",
+    "summary": "A transactional System that converts contracts, debt, and earned credit into direct stat and talent acquisition.",
+    "description": "Stat Purchase Contract is a System that lets the bearer buy growth outright through a governed economy of obligation and reward. It belongs in the System category because it defines its own mission loop, point conversion logic, talent market, and escalation structure instead of functioning like a mere shop interface. The bearer accepts contracts, completes terms, and receives contract credit that can be spent on attributes, talent unlocks, or temporary purchased edges. Growth becomes brutally legible because the System turns risk and compliance into immediate measurable advancement. Its progression bias favors efficiency, bargaining, and carefully chosen investments rather than vague organic development. The main tradeoff is debt logic, because the System is happiest when the bearer keeps signing, borrowing, and leveraging tomorrow's burden for today's strength. In the world, Stat Purchase Contract should feel both seductive and predatory because it offers the clearest possible route to power while normalizing the idea that every improvement has a creditor. It remains lore-safe because every purchased gain is backed by completed or outstanding contracts, explicit cost, and escalating collection pressure rather than free stat creation.",
     "coreLoop": [
       "Accept contracts with escalating difficulty.",
       "Earn contract points through completion.",
       "Purchase stats, talents, or temporary boosts."
     ],
     "progression": [
-      "Contract tiers unlock premium stat bundles.",
-      "Debt clauses grant bonus points at higher risk.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth opens low-tier contract markets, basic stat purchases, and modest debt clauses that tempt the bearer into faster starts.",
+      "Mid progression expands into premium bundles, talent packages, and high-risk leverage that can vault a build forward at real future cost.",
+      "Late progression turns the bearer into a fearsome credit predator who can finance impossible growth so long as they survive what comes to collect."
     ],
     "narrativeHooks": [
       "Contract brokers compete for your signature.",
@@ -1186,23 +1210,47 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Stat Purchase Contract can support mission boards, point wallets, stat purchases, debt clauses, and short-term leased power. It gives progression a marketplace engine instead of only XP bars and loot. That makes build shaping extremely direct and strategically interesting. It also creates strong risk-reward choices around overleveraging for a difficult fight.",
+      "In narrative and quests, it enables broker networks, debt collector antagonists, exploitative patrons, and stories about what kind of person emerges when growth becomes a purchasable obligation. The bearer can climb rapidly by signing what others fear. They can also discover that the contract economy was designed to keep them owned. That gives the System real social teeth.",
+      "In implementation, it maps well to contract chains, credit balances, debt states, purchased stat nodes, and collection events. Those hooks fit quest systems, progression UI, and narrator pressure without requiring a rewrite of combat fundamentals. They also create natural sync points for faction response and escalation. That makes the System highly reusable.",
+      "Its limitation-aware use comes from making every gain carry a paper trail. The player should feel empowered by clarity and stressed by the obligations that clarity creates. That preserves the fantasy of transactional growth without making stats a free vending machine. The strongest version feels like weaponized ambition under contract law."
+    ],
+    "limits": [
+      "Stats and talents can only be purchased within unlocked contract tiers, approved categories, and credit limits set by the System's current standing.",
+      "Heavy debt, failed clauses, or broken reputation can freeze or distort future purchases until the bearer restores solvency.",
+      "Direct purchases cannot substitute for every kind of mastery, especially where skill execution, social trust, or domain access still matter."
+    ],
+    "costs": [
+      "Every purchase consumes credit or pushes the bearer deeper into debt structures that can later demand brutal repayment.",
+      "Dangerous clauses, premium bundles, and emergency boosts often come with hidden hooks, penalties, or collector attention.",
+      "The System tempts the bearer to reduce every challenge into a financing problem, which can corrode judgment and human priorities."
+    ],
+    "worldCompatibility": [
+      "Stat Purchase Contract remains beneath Void, Grandmother Void, and the highest laws of being because all purchased growth is backed by explicit obligation and bounded system credit.",
+      "It is compatible with quest economies, debt mechanics, and build planning because it structures growth through contracts rather than unrestricted self-modification.",
+      "Its power stays coherent because every gain has a creditor, a tier gate, or a repayment condition instead of appearing from nowhere."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 3
   },
   {
     "id": "check_in_rewards_ledger",
     "name": "Check-In Rewards Ledger",
     "category": "System",
-    "summary": "Daily check-ins stack into absurd milestones.",
-    "description": "A ledger that grants escalating rewards for consistent check-ins; missing a day weakens the streak.",
+    "summary": "A persistence System that compounds disciplined check-ins into streak rewards, milestone caches, and growing passive privilege.",
+    "description": "Check-In Rewards Ledger is a System that turns consistency itself into an escalating source of power. It belongs in the System category because it defines its own recurring reward loop, streak logic, milestone payouts, and passive-growth structure rather than acting like a minor daily bonus. The bearer checks in through qualifying acts of survival, ritual, presence, or system acknowledgment and receives rewards for sustaining continuity. What begins as small maintenance value becomes a serious progression engine once streaks unlock multipliers, milestone caches, and passive advantages that outsiders cannot easily replicate. Its progression bias favors discipline, routine, and survival planning rather than explosive short-term gambles. The main tradeoff is brittleness, because the System creates real pressure around missed windows and can distort the bearer's priorities toward preserving streaks at all costs. In the world, Check-In Rewards Ledger should feel absurdly unfair to observers because mundane consistency somehow blooms into impossible advantage over time. It remains lore-safe because rewards are bounded by streak rules, milestone structure, and qualifying participation rather than by infinite free handouts.",
     "coreLoop": [
       "Check in daily to claim rewards.",
       "Maintain streaks for multiplier bonuses.",
       "Redeem milestone caches for rare items."
     ],
     "progression": [
-      "Streak tiers unlock exclusive rewards.",
-      "Milestones grant permanent passive buffs.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth makes short streaks genuinely useful through consumables, small caches, and quality-of-life passive bonuses.",
+      "Mid progression unlocks major milestone rewards, stronger passive compounding, and protective mechanics that help preserve long routines under pressure.",
+      "Late progression turns the bearer into a disciplined anomaly whose absurd consistency has quietly snowballed into serious structural power."
     ],
     "narrativeHooks": [
       "The system taunts you when you miss a day.",
@@ -1246,7 +1294,31 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Check-In Rewards Ledger can support daily or run-based streaks, milestone rewards, passive accumulation, and emergency cache planning. It gives routine a real progression fantasy instead of treating consistency as invisible labor. That makes survival and discipline feel valuable in their own right. It also creates interesting tension between immediate risk and long-term streak preservation.",
+      "In narrative and quests, it enables sabotage plots, harsh travel arcs, obsessive routine behavior, and rivals who realize that breaking one streak might hurt more than winning a fair fight. The bearer can become weirdly formidable simply by never stopping. They can also become trapped by a system that punishes interruption harder than failure. That gives the Ledger surprising emotional bite.",
+      "In implementation, it maps well to streak counters, reward calendars, milestone tables, and miss-state penalties. Those hooks can feed UI reminders, save data, event generation, and narrator mood without invasive systemic changes. They also create natural reasons for travel risk, safehouse value, and disruption mechanics. That makes the System easy to thread through multiple game layers.",
+      "Its limitation-aware use comes from making continuity precious and fragile. The player should feel rewarded for discipline and anxious when life or crisis threatens a streak. That preserves the fantasy of compounding consistency without turning it into passive background inflation. The strongest version feels like routine forged into power."
+    ],
+    "limits": [
+      "Rewards scale only through valid streak continuity, milestone thresholds, and qualifying check-in conditions defined by the Ledger.",
+      "Missing windows, broken conditions, or fraudulent check-ins can reset or sharply reduce accumulated momentum.",
+      "Ledger growth is broad but not always immediately tactical, so it can lag behind faster systems in sudden crisis if the bearer relies on it alone."
+    ],
+    "costs": [
+      "The System pressures the bearer to structure life around preserving streaks, even when better human choices might require interruption.",
+      "Missed check-ins can feel materially and psychologically punishing because the Ledger trains attachment to continuity itself.",
+      "Long streaks attract sabotage from rivals who understand that breaking the routine may hurt more than direct confrontation."
+    ],
+    "worldCompatibility": [
+      "Check-In Rewards Ledger remains beneath Void, Grandmother Void, and the highest cosmic order because it compounds bounded participation rewards rather than granting unconditioned abundance.",
+      "It is compatible with survival play, travel planning, routine rituals, and milestone systems because it structures continuity as a progression engine.",
+      "Its power stays coherent because rewards depend on streak state, qualifying actions, and explicit milestone ladders instead of free passive infinity."
+    ],
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 4
   },
   {
     "id": "afk_growth_reactor",
@@ -1821,17 +1893,17 @@
     "id": "luck_monetization_engine",
     "name": "Luck Monetization Engine",
     "category": "System",
-    "summary": "Convert luck into drops, gold, and fate events.",
-    "description": "A monetization engine that translates luck into tangible outcomes and tradeable tokens.",
+    "summary": "A speculative System that turns stored luck into tokens, tradable outcomes, and fate-priced opportunities.",
+    "description": "Luck Monetization Engine is a System that captures, prices, and converts probabilistic advantage into an explicit economy. It belongs in the System category because it defines its own resource loop, exchange logic, fate event market, and growth incentives rather than acting as a simple luck stat booster. The bearer accumulates luck through survival, choices, streaks, and rare opportunity windows, then refines it into spendable tokens or directed favorable outcomes. Randomness stops being purely atmospheric and becomes a resource the player can bank, speculate on, or liquidate at the worst possible moment. Its progression bias favors opportunism, risk management, and the weaponization of good fortune rather than straightforward force. The main tradeoff is volatility, because monetized luck can distort judgment, attract predation, and leave the bearer catastrophically exposed when they overextract future fortune for present gain. In the world, Luck Monetization Engine should feel uncanny and a little immoral because it implies that coincidence itself can be bought, sold, and timed. It remains lore-safe because luck remains bounded by stored probability, exchange tiers, and fate backlash rather than turning into infinite wish fulfillment.",
     "coreLoop": [
       "Accumulate luck through actions.",
       "Convert luck into tokens or drops.",
       "Spend tokens on fate events."
     ],
     "progression": [
-      "Exchange tiers unlock rarer outcomes.",
-      "Luck cap expands with prestige.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth allows the bearer to bank minor luck surpluses and convert them into modest tokens or small favorable outcomes.",
+      "Mid progression expands exchange tiers, speculative luck strategies, and the ability to spend stored fortune on rarer events or market-facing opportunities.",
+      "Late progression turns the bearer into a terrifying fortune speculator whose best moves can bend whole scenes simply by spending probability at the right second."
     ],
     "narrativeHooks": [
       "Merchants seek your luck tokens.",
@@ -1875,7 +1947,31 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Luck Monetization Engine can support stored-luck meters, token exchanges, disaster mitigation, and high-risk opportunity spends. It gives luck a real progression engine instead of leaving it as hidden background math. That makes fortunate play readable and buildable. It also creates strong strategic tension around when to save versus cash out.",
+      "In narrative and quests, it enables rigged-seeming victories, fate markets, merchant obsession, and the fear that someone has learned how to treat chance like currency. The bearer can avert catastrophe by paying with tomorrow's good fortune. They can also trigger suspicion or cosmic resentment by becoming too visibly lucky too often. That gives the System strong story texture.",
+      "In implementation, it maps well to hidden-probability buffers, token wallets, event modifiers, and backlash states when luck is overspent. Those hooks fit economy, quests, UI, and narrator framing without invasive engine changes. They also make gambling, commerce, and fate-heavy content much richer. That makes the System both flavorful and practical.",
+      "Its limitation-aware use comes from making fortune finite and strategically dangerous. The player should feel clever when spending luck well and uneasy when draining tomorrow to solve today. That preserves the fantasy of monetized fortune without collapsing it into permanent success on demand. The strongest version feels like financializing coincidence under pressure."
+    ],
+    "limits": [
+      "Luck can only be stored and exchanged up to bounded caps determined by current engine tier, recent variance, and fate tolerance.",
+      "Overspending fortune can leave the bearer in a statistical drought where even ordinary risks become unusually dangerous.",
+      "Some sovereign events, fixed laws, and anti-fate domains resist monetized luck entirely or only at terrible exchange rates."
+    ],
+    "costs": [
+      "Every major conversion of luck into tokens or outcomes drains future probability that might have been needed elsewhere.",
+      "Visible fortune manipulation attracts merchants, gamblers, cults, and predators who want access to the same engine or its output.",
+      "The System tempts the bearer to price everything in odds and value extraction, which can corrode trust and ordinary judgment."
+    ],
+    "worldCompatibility": [
+      "Luck Monetization Engine remains beneath Void, Grandmother Void, and the highest cosmic order because it trades in bounded probability rather than unlimited miracle creation.",
+      "It is compatible with commerce, fate events, gambling, and crisis mitigation because it structures fortune as a priced progression resource.",
+      "Its power stays coherent because every favorable outcome is backed by stored luck, exchange tiers, and backlash risk instead of endless free success."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 3
   },
   {
     "id": "martial_attribute_nexus",
@@ -2311,17 +2407,17 @@
     "id": "achievement_title_system",
     "name": "Achievement Title System",
     "category": "System",
-    "summary": "Gain permanent passive buffs from completing noteworthy milestones.",
-    "description": "A system that awards 'Titles' for completing specific, often difficult, achievements. Each equipped Title provides a unique and permanent passive bonus.",
+    "summary": "A recognition-driven System that turns notable feats into equipable titles, passive authority, and compounding milestone identity.",
+    "description": "Achievement Title System is a System that converts meaningful accomplishment into permanent identity-backed power. It belongs in the System category because it defines its own achievement tracking, title unlock logic, equip limits, and compound milestone progression rather than serving as a mere reputation badge. The bearer earns titles by doing difficult, hidden, or culturally significant things that the System chooses to recognize as worthy of formal naming. Each title changes not only stats or passives but the narrative and social weight the bearer carries into future scenes. Its progression bias favors challenge variety, milestone hunting, and carefully chosen title loadouts rather than one narrow grind path. The main tradeoff is visibility, because titles make feats legible to the world and can lock the bearer into expectations, rivalries, or unwanted attention. In the world, Achievement Title System should feel unnerving because it suggests that reality is cataloging people by what they have proven, not merely by what they claim. It remains lore-safe because titles arise from bounded recognized feats, slot limits, and compound conditions rather than from free permanent empowerment with no test behind it.",
     "coreLoop": [
       "Complete hidden or difficult objectives to unlock Achievements.",
       "Claim the associated Title from the system.",
       "Equip a limited number of Titles to activate their passive buffs."
     ],
     "progression": [
-      "Increase the number of Title slots you can have active at once.",
-      "Unlock 'Compound Titles' by equipping a specific set of related Titles, granting a powerful extra bonus.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks basic title recognition, a small number of active slots, and modest but flavorful passives tied to real accomplishments.",
+      "Mid progression expands into rarer achievements, more specialized title synergies, and compound titles that reward coherent feat histories.",
+      "Late progression turns the bearer into a walking archive of proven impossibilities whose equipped names can reshape expectations before a battle even begins."
     ],
     "narrativeHooks": [
       "Your Titles may appear visibly to others, altering your reputation.",
@@ -2366,7 +2462,31 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Achievement Title System can support hidden goals, slot-limited passive loadouts, compound title builds, and achievement-specific quest incentives. It gives completionist play a true power engine instead of only meta bragging rights. That makes variety of action mechanically valuable. It also creates strong reasons to pursue unusual or risky feats.",
+      "In narrative and quests, it enables reputation shock, title-based gatekeeping, impossible-feat myths, and worlds where what you have done is literally visible in what you are called. The bearer can be welcomed, feared, or challenged based on equipped identity alone. They may also struggle to escape titles that no longer reflect who they want to be. That gives the System emotional and social depth.",
+      "In implementation, it maps well to achievement definitions, title inventories, active slot state, and synergy checks. Those hooks fit UI, quests, combat modifiers, and narrator phrasing without destabilizing core mechanics. They also encourage designers to make content memorable enough to deserve formal recognition. That makes the System efficient and expressive.",
+      "Its limitation-aware use comes from keeping recognition earned and loadouts constrained. The player should feel rewarded for real feats and forced to make meaningful choices about which identities to carry at once. That preserves the fantasy of named accomplishment without making every old achievement permanently stack forever. The strongest version feels like wearing your legend under active constraints."
+    ],
+    "limits": [
+      "Titles only unlock from real recognized feats, hidden criteria, or milestone combinations the bearer has genuinely completed.",
+      "Active title slots are limited, so even a vast collection requires deliberate selection rather than infinite passive stacking.",
+      "Some titles bring stigma, challenge attraction, or social complications that can outweigh their raw mechanical value in certain contexts."
+    ],
+    "costs": [
+      "Pursuing difficult titles often demands risky behavior, niche challenges, or detours that may be irrational in the short term.",
+      "Visible recognition attracts rivals, expectations, and institutions that now treat the bearer according to proven legend rather than present intent.",
+      "Compound title chasing can trap the bearer in performative accomplishment loops where identity becomes subordinate to completion pressure."
+    ],
+    "worldCompatibility": [
+      "Achievement Title System remains beneath Void, Grandmother Void, and the highest cosmic order because it recognizes bounded proven feats rather than granting free boundless power.",
+      "It is compatible with questing, reputation, challenge content, and build crafting because it structures accomplishment into equipable progression identity.",
+      "Its power stays coherent because titles depend on earned criteria, slot limits, and synergy conditions instead of infinite passive accumulation."
+    ],
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 4
   },
   {
     "id": "mentor_symbiosis_link",
@@ -4900,69 +5020,6 @@
     "archetypePassives": [
       {
         "id": "limitless_leveler_passive_1",
-        "trigger": "passive",
-        "effect": "stat_boost",
-        "amount": 1
-      }
-    ]
-  },
-  {
-    "id": "infinite_skill_points_2",
-    "name": "Infinite Skill Points (Max All Skills)",
-    "category": "System",
-    "summary": "The character effectively has no limit on skill points or a way to obtain unlimited skill upgrades, letting them max...",
-    "description": "The character effectively has no limit on skill points or a way to obtain unlimited skill upgrades, letting them max out every ability or stat given enough time. For example, in a typical RPG you might only get 100 skill points total, forcing choices; this MC either gains far more or each level gives an absurd amount of points, so they can buy every talent in the tree. The mechanic might literally show their skill point counter increasing beyond expected, or a glitch where points spent don't decrease the pool. Progression then is just about reaching high levels or doing quests to farm skill...",
-    "coreLoop": [
-      "For example, in a typical RPG you might only get 100 skill points total, forcing choices; this MC either gains far more or each level gives an absurd amount of points, so they can...",
-      "It ties into the notion of \"why not both?\" - they don't have to specialize, they can specialize in all fields.",
-      "It also works well with gear that scales off skills: because if they max all skills, any gear that improves with skill rank benefits fully."
-    ],
-    "progression": [
-      "Progression then is just about reaching high levels or doing quests to farm skill points, and dumping them to eliminate all weaknesses.",
-      "If there's a multi-branch skill tree, they effectively go both, unlocking ultimate spells of all elements.",
-      "The character effectively has no limit on skill points or a way to obtain unlimited skill upgrades, letting them max out every ability or stat given enough time."
-    ],
-    "narrativeHooks": [
-      "The thematic flavor is one of complete mastery - a prodigy who is good at everything.",
-      "The mechanic might literally show their skill point counter increasing beyond expected, or a glitch where points spent don't decrease the pool.",
-      "In story, maybe they show unusual cross-discipline talent."
-    ],
-    "questHooks": [
-      "Secure a key resource that stabilizes the Infinite Skill Points and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Infinite Skill Points.",
-      "Use the Infinite Skill Points to resolve a crisis ordinary powers cannot solve."
-    ],
-    "tags": [
-      "skill",
-      "absorption-mimicry",
-      "system",
-      "archetype"
-    ],
-    "statModifiers": {
-      "intelligence": 3,
-      "wisdom": 2
-    },
-    "archetypeResource": {
-      "name": "System Energy",
-      "startValue": 0,
-      "maxValue": 100,
-      "regenRate": 1,
-      "color": "#00F3FF"
-    },
-    "narrativeTone": {
-      "voice": "analytical and precise",
-      "vocabulary": [
-        "character",
-        "effectively",
-        "points",
-        "obtain",
-        "unlimited"
-      ],
-      "sentenceStyle": "structured, data-driven observations"
-    },
-    "archetypePassives": [
-      {
-        "id": "infinite_skill_points_2_passive_1",
         "trigger": "passive",
         "effect": "stat_boost",
         "amount": 1

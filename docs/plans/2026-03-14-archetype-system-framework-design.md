@@ -778,11 +778,15 @@ This is the maintained todo list for the design and implementation-prep phase. I
 - [x] Draft detailed descriptions and possible uses for the starter `Overlay` category set.
 - [ ] Rewrite or expand individual entry descriptions to meet the new standard across the full repo library.
 - [x] Rewrite the starter `System` source set in `systems.json` to the new authoring standard and validate all 16 starter entries cleanly.
-- [ ] Rewrite the starter `Path`, `Framework`, `Privilege`, and `Overlay` source sets to the new authoring standard.
+- [x] Rewrite the starter `Framework`, `Privilege`, and `Overlay` source sets to the new authoring standard.
+- [x] Rewrite the starter `Path` source set in `paths.json` and validate all 5 starter path entries cleanly.
 - [x] Rewrite the full starter `Authority` source set in `authorities.json` and validate all 9 starter authority entries cleanly.
-- [ ] Raise repo-wide strict authoring validation above the current `25 / 143` fully compliant entries.
+- [x] Rewrite the remaining non-starter `Framework` entries so the full `Framework` category validates `16 / 16` in strict authoring mode.
+- [x] Rewrite the remaining non-starter `Authority` entries so the full `Authority` category validates `27 / 27` in strict authoring mode.
+- [x] Rewrite the first non-starter `System` cluster (`gacha_reliquary`, `stat_purchase_contract`, `check_in_rewards_ledger`, `luck_monetization_engine`, `achievement_title_system`) to the new authoring standard.
+- [ ] Raise repo-wide strict authoring validation above the current `82 / 147` fully compliant entries.
 - [x] Add category-aware validation rules for lore compatibility and placeholder detection.
-- [ ] Convert the proposed new overlay expansion drafts into canonical data entries and implementation tasks.
+- [x] Convert the proposed new overlay expansion drafts into canonical data entries and implementation tasks.
 - [x] Map all current runtime consumers of `archetypeSystem` and classify required changes.
 - [x] Design the character-creation presentation changes for the main web flow.
 - [x] Design the Godot subset and migration strategy so it aligns with the repo canon.
@@ -792,6 +796,6 @@ This is the maintained todo list for the design and implementation-prep phase. I
 - [x] Define save normalization and migration rules for old archetype/system data.
 - [x] Produce the implementation-plan document that breaks this into shippable coding tasks.
 
-## Recommended next design section
+## Recommended next implementation slice
 
-The next section should be the detailed per-entry schema and content contract for all individual framework entries. After that, the next section should be the shippable implementation plan broken into data, validation, UI, runtime integration, migration, and testing workstreams.
+The only remaining strict-authoring backlog is the broader `System` library, now reduced to `65` invalid entries. The next efficient pass should continue by fantasy cluster, with the strongest candidates being the remaining economy-support systems, then the copy/devour/growth systems, and finally the role- or world-facing systems so the rewrite stays canon-consistent instead of scattering tone.

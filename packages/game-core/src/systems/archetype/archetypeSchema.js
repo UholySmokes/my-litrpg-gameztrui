@@ -76,7 +76,7 @@ const CATEGORY_REQUIREMENTS = {
   },
 };
 
-const ShortTextArray = z.array(z.string().min(1).max(240)).min(1).max(6);
+const LongTextArray = z.array(z.string().min(1).max(2400)).min(1).max(6);
 
 const NarrativeToneSchema = z.object({
   voice: z.string(),
@@ -110,12 +110,12 @@ export const ArchetypeSchema = z.object({
     }),
   }),
 
-  summary: z.string().min(1, "Summary is required").max(120, "Summary must be 120 characters or less"),
+  summary: z.string().min(1, "Summary is required").max(220, "Summary must be 220 characters or less"),
 
   description: z
     .string()
     .min(1, "Description is required")
-    .max(600, "Description must be 600 characters or less"),
+    .max(4000, "Description must be 4000 characters or less"),
 
   coreLoop: z
     .array(z.string().min(1, "Core loop item cannot be empty").max(200, "Core loop item must be 200 characters or less"))
@@ -130,7 +130,8 @@ export const ArchetypeSchema = z.object({
   narrativeHooks: z
     .array(z.string().min(1, "Narrative hook cannot be empty").max(200, "Narrative hook must be 200 characters or less"))
     .min(2, "Narrative hooks must have at least 2 items")
-    .max(4, "Narrative hooks must have at most 4 items"),
+    .max(4, "Narrative hooks must have at most 4 items")
+    .optional(),
 
   questHooks: z
     .array(z.string().min(1, "Quest hook cannot be empty").max(200, "Quest hook must be 200 characters or less"))
@@ -142,13 +143,13 @@ export const ArchetypeSchema = z.object({
     .min(2, "Tags must have at least 2 items")
     .max(6, "Tags must have at most 6 items"),
 
-  possibleUses: ShortTextArray.optional(),
-  limits: ShortTextArray.optional(),
-  costs: ShortTextArray.optional(),
-  worldCompatibility: ShortTextArray.optional(),
-  counterplay: ShortTextArray.optional(),
-  progressionStages: ShortTextArray.optional(),
-  factionReactions: ShortTextArray.optional(),
+  possibleUses: LongTextArray.optional(),
+  limits: LongTextArray.optional(),
+  costs: LongTextArray.optional(),
+  worldCompatibility: LongTextArray.optional(),
+  counterplay: LongTextArray.optional(),
+  progressionStages: LongTextArray.optional(),
+  factionReactions: LongTextArray.optional(),
   activationModel: z.string().min(1).max(160).optional(),
   resourceModel: ResourceModelSchema.optional(),
   rarity: z.enum(RARITY_VALUES).optional(),

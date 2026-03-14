@@ -47,9 +47,9 @@ const SUPPORT_FIELD_TARGETS = {
 };
 
 const FIELD_TEXT_LIMITS = {
-  summary: 120,
-  description: 600,
-  listItem: 200,
+  summary: 220,
+  description: 4000,
+  listItem: 2400,
   name: 100,
 };
 
@@ -800,8 +800,13 @@ function normalizeSingleDefinition(rawDefinition, index) {
   );
 
   // Final structural validation against schema (after normalization).
+  // If the richer source entry is already runtime-valid, prefer keeping it
+  // available over silently dropping it due to normalization heuristics.
   const validation = validateArchetype(normalized);
-  if (!validation.valid) return null;
+  if (!validation.valid) {
+    const sourceValidation = validateArchetype(rawDefinition);
+    if (!sourceValidation.valid) return null;
+  }
   return normalized;
 }
 

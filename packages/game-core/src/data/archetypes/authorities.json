@@ -3,8 +3,8 @@
     "id": "dragon_blood_authority",
     "name": "Dragon Blood Authority",
     "category": "Authority",
-    "summary": "Primeval supremacy with flight, breath, and dominance laws.",
-    "description": "An ancient, dormant authority that awakens your draconic lineage. This is not merely power, but a mandate to rule. It grants an oppressive, 'rule-level' presence over lesser beings, mastery over a chosen draconic element, and the potential to achieve the terrifying form of a true dragon.",
+    "summary": "A draconic Authority that imposes bloodline dominance, elemental command, and lair-bound territorial pressure.",
+    "description": "Dragon Blood Authority is an Authority that awakens a ruling-grade draconic lineage inside the bearer. It belongs in the Authority category because it grants command over draconic pressure, bloodline hierarchy, elemental expression, and territorial dominance within a defined mythic scope. The bearer does not merely gain dragon-themed strength, but acquires the right to impose presence, fear, and precedence on lesser beings touched by that same ancient order. Its progression bias favors purity, hoard-building, lair establishment, and elemental mastery rather than flexible all-purpose utility. The Authority becomes most terrifying when the bearer operates from an established domain where draconic instinct, treasure gravity, and elemental atmosphere all reinforce command. The main tradeoff is hunger of lineage, because greed, pride, wrath, and territorial obsession grow stronger as the blood awakens. In the world, Dragon Blood Authority should draw awe, hatred, and hereditary challenge because dragons and dragon-slayers both understand that a ruling bloodline has surfaced. It remains lore-safe because its dominion is still bounded by blood purity, lair strength, elemental affinity, rival dragons, and the fact that every draconic mandate remains beneath Void and Grandmother Void.",
     "coreLoop": [
       "Exert your 'Draconic Pressure' aura to terrify or subjugate creatures, with effectiveness based on your Blood Purity.",
       "Hunt powerful elemental or magical beasts and 'Devour' their hearts to increase your Blood Purity.",
@@ -62,14 +62,38 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Dragon Blood Authority can support fear auras, lair buffs, blood-purity progression, elemental breath techniques, and dominance checks against monsters or bloodline rivals. It gives dragon fantasy real command semantics instead of only bigger claws and fire. That makes both combat and territory play feel mythically coherent. It also creates a strong bridge between transformation, treasure, and local sovereignty.",
+      "In narrative and quests, it enables succession duels, dragon court politics, monster-subjugation arcs, and ugly choices about whether to become more majestic or more monstrous. The bearer can claim a volcano, glacier, storm peak, or buried ruin as a true lair and force the region to reckon with that fact. They can also become the target of every oath-bound dragon hunter nearby. That tension gives the Authority a strong mythic weight.",
+      "In implementation, it maps well to bloodline rank, pressure aura checks, elemental alignment, lair ownership, and territorial-law modifiers. Those hooks can feed monster AI, regional events, faction hostility, and narrator summaries without requiring a separate dragon-only subsystem for every feature. It also integrates naturally with treasure, dungeon, and rival-boss content. That makes it a durable high-tier authority for long campaigns.",
+      "Its limitation-aware use comes from tying the strongest draconic expression to lineage discipline and territorial investment. The player should feel fearsome everywhere but overwhelming only where their blood, hoard, and domain are truly established. That preserves the grandeur of dragons without turning the bearer into a portable apocalypse on day one. The Authority should feel ancient, proud, and heavily contested."
+    ],
+    "limits": [
+      "Command pressure is strongest against beings vulnerable to draconic hierarchy and far less absolute against unrelated sovereigns, saints, or anti-dragon specialists.",
+      "Elemental dominance is bounded by the chosen bloodline affinity, blood purity, and the quality of the lair or domain reinforcing it.",
+      "The Authority weakens when the bearer is dispossessed, spiritually diluted, or forced to fight far from any established draconic seat."
+    ],
+    "costs": [
+      "Awakening the bloodline intensifies greed, pride, wrath, and possessiveness, creating real social and psychological strain.",
+      "Maintaining a worthy hoard and lair consumes enormous resources and paints a target on everything the bearer claims.",
+      "Rival dragons, knightly orders, and bloodline cults treat the Authority as a challenge that must be tested, stolen, or destroyed."
+    ],
+    "worldCompatibility": [
+      "Dragon Blood Authority rules inside a draconic hierarchy and remains beneath Void, Grandmother Void, and the highest cosmic law.",
+      "It is compatible with bloodline conflict, territorial play, monster dominance, and elemental combat because it governs a recognizable mythic domain.",
+      "Its power stays coherent because it depends on purity, lair reinforcement, and domain contest, not on unconditional supremacy over all life."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "constellation_mandate",
     "name": "Constellation Mandate",
     "category": "Authority",
-    "summary": "Celestial laws descend through star-aligned oaths.",
-    "description": "A pact-bound authority that ties your soul to the silent, cosmic gods—the Constellations. By aligning with them, you can draw down their 'Law Fragments' and wield celestial power that is alien to the terrestrial world. Your power waxes and wanes with the movements of the stars themselves.",
+    "summary": "A celestial Authority that binds the bearer to star-law mandates, patron constellations, and night-bound dominion.",
+    "description": "Constellation Mandate is an Authority that binds the bearer to one or more ruling constellations and the celestial laws they sponsor. It belongs in the Authority category because it grants command through star-oaths, mandate fragments, and domain-specific celestial right rather than through generic spellcasting. The bearer becomes a recognized vessel for ordered starlight, able to invoke named aspects of the heavens and impose them on the battlefield or ritual space. Its progression bias favors alignment, oath fidelity, open-sky positioning, and the disciplined interpretation of celestial signs. The Authority grows strongest when the bearer acts in harmony with patron stars, accepted restrictions, and the moral or tactical shape of the chosen constellation. The main tradeoff is dependence on alignment, because celestial power can dim under eclipse, oath fracture, false charts, or environments that sever the sky. In the world, Constellation Mandate should feel sacred, remote, and politically dangerous because prophecy, navigation, and divine legitimacy all bend around who truly speaks for the stars. It remains lore-safe because the heavens grant bounded mandates rather than total authorship of fate, and because even the brightest constellation remains beneath Void and Grandmother Void.",
     "coreLoop": [
       "Perform a 'Stargazing Ritual' to align with a new Constellation, accepting its Mandate (a passive buff and a restriction).",
       "Draw 'Starlight' into your body, a resource that regenerates faster at night and under an open sky.",
@@ -128,14 +152,38 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Constellation Mandate can support night-scaling abilities, patron-aspect invocations, star-route mobility, and mandate restrictions that trade freedom for stronger celestial effects. It gives celestial play a lawful backbone instead of making it only astral-flavored magic. That helps star powers feel ordered and authoritative. It also creates meaningful day-night and environment-dependent tension.",
+      "In narrative and quests, it enables observatory sieges, lost-star recoveries, omen politics, and conflict between earthly rulers and celestial right. The bearer can become the living proof of a prophecy or the problem that makes prophecy politically explosive. They may also be forced to choose between two incompatible constellations that each demand loyalty. That gives the Authority a rich ceremonial and cosmic tone.",
+      "In implementation, it fits patron tags, mandate clauses, sky-visibility checks, starlight resource flow, and constellation trial events. Those hooks can enrich combat timing, travel, quest generation, and narrator framing without requiring a full astronomy sim. They also create elegant seasonal or environmental modifiers when the project wants them. That makes the Authority broad in use but still structurally clear.",
+      "Its limitation-aware use comes from making celestial right conditional rather than ever-present. The player should feel exalted under the proper sky and challenged when cut off from it or when oath terms become inconvenient. That preserves the dignity of star authority without flattening every situation into free radiant superiority. The best version feels like carrying heaven's signature, not heaven itself."
+    ],
+    "limits": [
+      "Mandate strength depends on constellation alignment, oath integrity, and access to sky-linked channels of celestial power.",
+      "Each constellation imposes restrictions that narrow how the bearer can act without losing favor or efficacy.",
+      "Solar corruption, eclipse phenomena, anti-astral zones, or falsified star law can all interfere with invocation quality."
+    ],
+    "costs": [
+      "The bearer must obey patron restrictions, complete stellar trials, and accept that some choices will weaken one mandate to empower another.",
+      "High visibility under prophecy and omen culture makes secrecy difficult and turns political attention into a constant burden.",
+      "Using too much celestial force in the wrong place can attract abyssal predators, rival seers, or divine scrutiny."
+    ],
+    "worldCompatibility": [
+      "Constellation Mandate channels celestial law within a bounded star hierarchy and remains beneath Void, Grandmother Void, and the deepest structure of the heavens.",
+      "It is compatible with prophecy, navigation, celestial ritual, and night-combat systems because it grants command over a defined astral domain.",
+      "Its power remains coherent because it is alignment-gated, oath-bound, and contestable by rival mandates or broken skies."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "weapon_law_authority",
     "name": "Weapon Law Authority",
     "category": "Authority",
-    "summary": "Master a weapon so completely you rewrite the laws of combat.",
-    "description": "An authority that elevates mastery of a single weapon type from mere skill into a form of localized, absolute law. Your chosen weapon ceases to be just an object; it becomes a conceptual tool that dictates the rules of engagement, reality itself bending to accommodate its supremacy.",
+    "summary": "A martial Authority that makes one weapon doctrine locally sovereign and forces combat to answer to its law.",
+    "description": "Weapon Law Authority is an Authority that elevates mastery of one weapon doctrine into a ruling combat law. It belongs in the Authority category because it grants command over a specific battlefield principle, allowing the bearer to impose precedence, shape engagement terms, and invalidate weaker opposing styles inside its domain. The chosen weapon ceases to be a mere tool and becomes the visible seal of a law such as finality, penetration, severance, or unbroken defense. Its progression bias favors perfection of doctrine, impossible feats, and the disciplined narrowing of purpose rather than broad versatility. The Authority becomes most dangerous when the bearer declares a clear rule and forces the fight into terrain or timing that honors that rule. The main tradeoff is specialization, because a doctrine sharp enough to dominate one axis can leave obvious blind spots on another. In the world, Weapon Law Authority should unsettle old masters, war gods, and military schools because it suggests that technique has crossed into recognized rule-making. It remains lore-safe because the bearer only governs a bounded combat law, not all violence, and because stronger domains, counter-doctrines, or disrupted conditions can still break the advantage.",
     "coreLoop": [
       "Declare a 'Weapon Doctrine' (e.g., 'The Unbroken Spear,' 'The All-Piercing Arrow,' 'The Final Blade').",
       "Achieve 'Weapon Feats' (e.g., parrying a mountain-crushing blow, striking a target through a storm) to accumulate 'Law Fragments'.",
@@ -196,14 +244,38 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Weapon Law Authority can support declared doctrines, conceptual strikes, domain stances, relic-weapon growth, and matchup-specific battlefield control. It gives martial builds an endgame fantasy beyond plain damage scaling. That makes mastery feel like a law the fight has to respect. It also creates great boss and duelist identity.",
+      "In narrative and quests, it enables school rivalries, impossible-feat pilgrimages, cursed-weapon reforging, and arguments over who has the right to define legitimate combat. The bearer can found a doctrine, inherit one, or destroy one by proving it false in public. They may also attract challengers who do not want the world reordered by a single weapon truth. That gives the Authority strong cultural weight.",
+      "In implementation, it maps well to doctrine states, weapon-class tags, stance buffs, domain fields, and conceptual-hit riders. Those hooks can feed combat logic, weapon progression, quest triggers, and narrator phrasing without rewriting the entire battle engine. They also make weapon choice matter narratively as well as mechanically. That makes the Authority efficient to integrate deeply.",
+      "Its limitation-aware use comes from honoring specialization. The player should feel oppressive inside their doctrine and pressured outside it or against counters built to deny its conditions. That preserves the authority fantasy while keeping other styles relevant. The strongest version feels like martial sovereignty with edges, not universal combat omniscience."
+    ],
+    "limits": [
+      "The Authority only fully dominates within the bearer's chosen weapon doctrine and loses leverage when forced outside that conceptual lane.",
+      "Counter-doctrines, disarm pressure, anti-domain effects, and situations where the weapon cannot be properly brought to bear can break command.",
+      "Conceptual strikes require authentic mastery and feat-backed legitimacy, not just a named doctrine and confidence."
+    ],
+    "costs": [
+      "The bearer must pour years of discipline, sacrifice, and identity into one weapon truth, often at the cost of flexibility.",
+      "Every famous victory invites stronger challengers who want to break, steal, or discredit the doctrine in public.",
+      "A damaged, cursed, or conceptually broken weapon can wound the bearer's authority far more deeply than ordinary gear loss."
+    ],
+    "worldCompatibility": [
+      "Weapon Law Authority governs a bounded combat law and remains beneath Void, Grandmother Void, and any higher structures that define war and existence.",
+      "It is compatible with martial schools, relic weapons, duel systems, and doctrine-heavy progression because it commands a specific field of combat meaning.",
+      "Its power stays coherent because it depends on mastery, legitimacy, and battlefield conditions rather than unrestricted control over all conflict."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "territory_core_dominion",
     "name": "Territory Core Dominion",
     "category": "Authority",
-    "summary": "A base-building authority that transforms a location into a personal kingdom with its own laws.",
-    "description": "An authority that allows you to claim a 'Territory Core,' turning a physical location—be it a fortress, a forest, or a floating island—into a sovereign domain. Within this domain, your will becomes law, allowing you to alter the environment, buff allies, and hinder enemies on a fundamental level.",
+    "summary": "A territorial Authority that makes a claimed core site answer to the bearer's law, projects, and regional will.",
+    "description": "Territory Core Dominion is an Authority that grants sovereign command over a claimed territory anchored by a living core. It belongs in the Authority category because it allows the bearer to legislate local conditions, project edicts, and shape a bounded domain as a political and metaphysical reality. The territory is not just property, but a recognized seat where the bearer's rule can influence growth, defense, loyalty, and environmental behavior. Its progression bias favors settlement building, border defense, infrastructure, and policy choices rather than nomadic heroics. The Authority becomes most potent when the core is fed, the population or resource web is stable, and the bearer is physically or spiritually present within the domain. The main tradeoff is exposure, because land can be invaded, subjects can rebel, and every border invites both administration and war. In the world, Territory Core Dominion should feel like the birth of a minor state or supernatural principality because nearby powers immediately have to decide whether to trade, kneel, raid, or contain it. It remains lore-safe because dominion ends at contested borders, depends on a core and functioning territory, and never outranks Void, Grandmother Void, or the highest cosmic law.",
     "coreLoop": [
       "Plant a 'Core Seed' in a location to claim it as your Dominion.",
       "Generate 'Sovereignty' by building structures, attracting residents, or completing 'Dominion Projects'.",
@@ -266,7 +338,31 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Territory Core Dominion can support border effects, edict systems, settlement buffs, project-based expansion, and homeland power spikes. It gives territory ownership real command semantics instead of treating bases as static upgrade menus. That makes land worth defending for more than resource numbers. It also creates strong strategic asymmetry between home and hostile ground.",
+      "In narrative and quests, it enables founding arcs, refugee politics, regional wars, trade negotiations, and moral choices about what sort of law a domain should enforce. The bearer can build a haven, a fortress-state, a cult territory, or a predatory machine. Each direction changes how neighbors and inhabitants respond. That gives the Authority long-form political weight.",
+      "In implementation, it maps to territory claims, core integrity, edict payloads, resident modifiers, and regional conflict events. Those hooks naturally feed world simulation, quests, faction reputation, and narrator summaries without inventing a separate kingdom system for every feature. They also pair well with dungeon, settlement, and economy mechanics already in the repo. That makes the Authority highly reusable.",
+      "Its limitation-aware use comes from keeping sovereignty local and contestable. The player should feel almost regal within the domain and sharply more vulnerable once cut off from its support. That preserves the fantasy of rulership while preventing the authority from acting like a portable world override. The best version feels like a hard-won throne rooted in land and people."
+    ],
+    "limits": [
+      "Dominion power is bounded by claimed borders, core integrity, local infrastructure, and the degree of actual control the bearer maintains.",
+      "Edicts weaken under rebellion, invasion, sabotage, or when the territory outgrows the bearer's administrative capacity.",
+      "Projecting shards of dominion beyond the core domain is possible only in reduced and temporary forms."
+    ],
+    "costs": [
+      "Running a territory demands constant resources, governance, defense, and compromise instead of pure adventure freedom.",
+      "Every border decision creates enemies, dependents, and obligations that can spiral into war or humanitarian disaster.",
+      "If the core is damaged, polluted, or stolen, the bearer suffers strategic collapse and often personal backlash."
+    ],
+    "worldCompatibility": [
+      "Territory Core Dominion governs a bounded regional seat and remains beneath Void, Grandmother Void, and the highest law that defines ownership of reality itself.",
+      "It is compatible with settlement systems, frontier politics, edict gameplay, and territorial conflict because it commands a concrete local domain.",
+      "Its power remains coherent because it is rooted in borders, cores, infrastructure, and contestable sovereignty rather than limitless imperial command."
+    ],
+    "rarity": "mythic",
+    "stability": "stable",
+    "selectionWeight": 2
   },
   {
     "id": "elemental_throne",
@@ -1000,17 +1096,17 @@
     "id": "critical_strike_mandate",
     "name": "Critical Strike Mandate",
     "category": "Authority",
-    "summary": "Guarantees critical hits, making damage output unfair.",
-    "description": "An authority that rewrites the laws of probability, fixing critical strike chances to your advantage. Damage becomes a matter of when, not if.",
+    "summary": "A precision Authority that declares certain blows decisive and bends probability toward lethal certainty within strict conditions.",
+    "description": "Critical Strike Mandate is an Authority that governs the law of decisive impact rather than damage in general. It belongs in the Authority category because it grants command over a narrow combat truth: under the right conditions, the bearer may declare that a strike lands as a telling, law-backed critical event. The Authority does not mean every attack becomes unfair, but that the bearer can accumulate certainty and then spend it to force decisive moments past ordinary probability. Its progression bias favors setup, accuracy, timing, and ruthless finish windows rather than endless sustained output. The bearer becomes most frightening against targets who rely on armor, durability, or a belief that attrition will always outlast burst precision. The main tradeoff is narrowness, because a mandate over decisive hits is strongest when the bearer can create clean openings and much weaker against chaos, denial, or dispersed battlefields. In the world, Critical Strike Mandate should feel like a duelist's horror and an executioner's miracle because it makes rare killing moments feel chosen rather than lucky. It remains lore-safe because certainty must be charged, declared, and earned inside combat conditions, and because no precision law exceeds Void, Grandmother Void, or perfect invulnerability enforced by stronger powers.",
     "coreLoop": [
       "Land hits to charge the 'Certainty' meter.",
       "Expend Certainty to guarantee a critical strike.",
       "Chain criticals to enter a 'Shatter' state, boosting critical damage."
     ],
     "progression": [
-      "Increase the cap of the Certainty meter.",
-      "Unlock passive abilities that automatically trigger guaranteed criticals under specific conditions.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth improves certainty generation, exposes weak-point conditions more clearly, and lets the bearer prepare one reliable decisive window per encounter.",
+      "Mid progression unlocks chained precision states, law-backed shatter effects, and conditional finishers that punish overconfident tanks or duelists.",
+      "Late progression turns the bearer into a feared execution specialist who can define one strike as the battle's true point of no return."
     ],
     "narrativeHooks": [
       "Enemies with high defense become trivial, shifting the balance of power.",
@@ -1056,23 +1152,47 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Critical Strike Mandate can support certainty meters, forced critical windows, armor-breaking finishers, and boss patterns built around preparing one devastating hit. It gives crit fantasy a lawful identity instead of leaving it as passive random chance. That makes burst builds more intentional and expressive. It also creates strong tension around timing and resource spend.",
+      "In narrative and quests, it enables execution duels, artifact shattering, assassination arcs, and terrifying reputations built on a few impossible finishing blows. The bearer can become famous not for how often they strike but for how final the right strike becomes. They may also be targeted by fate-keepers, bodyguard orders, and immortal beings who hate anything that makes endings more reliable. That gives the Authority sharp dramatic clarity.",
+      "In implementation, it maps cleanly to certainty charge, declared-crit actions, condition checks, and post-critical states such as shatter, stagger, or law fracture. Those hooks fit existing combat systems far better than a vague luck rewrite would. They also create readable UI and narrator language around when a decisive window is opening. That makes the Authority practical as well as flashy.",
+      "Its limitation-aware use comes from making certainty something built and spent, not a permanent passive cheat. The player should feel lethal when they earn a window and vulnerable when they waste one. That preserves the authority fantasy without erasing defensive play or encounter pacing. The strongest version feels like ruling one instant of combat, not every second of it."
+    ],
+    "limits": [
+      "The mandate only reaches full force when the bearer builds certainty through clean hits, conditions, or disciplined setup.",
+      "Targets that scatter damage, erase openings, or refuse stable engagement can greatly reduce the Authority's efficiency.",
+      "A decisive hit still requires delivery, so range denial, concealment, bad footing, and stronger anti-precision law can disrupt it."
+    ],
+    "costs": [
+      "Charging certainty pressures the bearer to stay aggressive and precise, which can lead to overcommitment against bait or traps.",
+      "Declaring a decisive blow often leaves the bearer exposed if it is read, blocked, or redirected by a prepared enemy.",
+      "The Authority draws the attention of fate-keepers, duelists, and defensive specialists who exist to deny finality."
+    ],
+    "worldCompatibility": [
+      "Critical Strike Mandate governs decisive impact within combat and remains beneath Void, Grandmother Void, and stronger laws that can nullify or redirect death.",
+      "It is compatible with weapon builds, duels, boss encounters, and execution-style progression because it commands a narrow but potent combat truth.",
+      "Its power remains coherent because it depends on certainty buildup, conditions, and clean finishing windows rather than free permanent critical supremacy."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "demonic_heritage_throne",
     "name": "Demonic Heritage Throne",
     "category": "Authority",
-    "summary": "Claim a demonic lineage, granting hellish authority and powers.",
-    "description": "An authority that awakens a dormant demonic bloodline, bestowing a throne of hellish power, command over lesser demons, and access to forbidden arts.",
+    "summary": "An infernal Authority that crowns a bloodline claimant with command over demons, sin-charged law, and hellish rank.",
+    "description": "Demonic Heritage Throne is an Authority that awakens a ruling infernal bloodline and seats the bearer in a contested hellish hierarchy. It belongs in the Authority category because it grants command over lesser demons, sin-aligned edicts, and infernal precedence within a specific heritage or throne line. The bearer becomes more than a corrupt spellcaster; they become a claimant whose words can bind, tempt, elevate, or punish beings recognized by demonic law. Its progression bias favors rank ascent, domain sin refinement, and ruthless command rather than broad neutral utility. The Authority grows strongest where corruption, contracts, or hell-linked territory reinforce the throne's legitimacy. The main tradeoff is contamination, because infernal rule feeds on temptation, cruelty, compromise, and the gradual erosion of clean human motive. In the world, Demonic Heritage Throne should trigger fear, cult devotion, and immediate holy response because people understand that a throne claimant can turn local suffering into a power base. It remains lore-safe because even a demonic throne is still bound to lineage, contract, rank, and contested dominion, and because every infernal crown remains beneath Void and Grandmother Void.",
     "coreLoop": [
       "Embrace demonic temptations to unlock 'Infernal Seals'.",
       "Use 'Demonic Edicts' to command, bind, or banish supernatural entities.",
       "Consume mortal sins or chaos to fuel your demonic abilities."
     ],
     "progression": [
-      "Ascend the demonic hierarchy, from a minor fiend to a Duke of Hell.",
-      "Your throne gains influence over a specific domain of sin (e.g., Deceit, Wrath).",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth secures a recognized infernal claim, minor command over lesser demons, and a first sin-domain that shapes the throne's voice.",
+      "Mid progression expands into contract enforcement, greater-rank command disputes, and local hell-zone influence that can stain territory or institutions.",
+      "Late progression seats the bearer as a terrifying court power whose infernal decrees reshape whole factions through fear, vice, and obligation."
     ],
     "narrativeHooks": [
       "Angelic or holy orders actively hunt you down.",
@@ -1118,31 +1238,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Demonic Heritage Throne can support infernal command skills, sin-domain edicts, demon binding, corruption zones, and rank-based authority growth. It gives demonic fantasy a proper hierarchy and command structure instead of only dark spells and horns. That makes infernal progression feel political as well as violent. It also supports summoning, corruption, and territorial content cleanly.",
+      "In narrative and quests, it enables hell-court intrigue, sacred-site corruption, succession wars, contract tragedies, and the question of whether power taken from damnation can ever be used cleanly. The bearer can build a throne through fear, bargains, or grim necessity. They can also become trapped by the exact sin-domain they thought they controlled. That gives the Authority strong internal and external conflict.",
+      "In implementation, it maps well to contract states, demon hierarchy tags, corruption pressure, throne rank, and sin-domain modifiers. Those hooks can feed faction response, summon behavior, quest generation, and narrator tone without requiring every infernal feature to be bespoke. They also create clear synergy with holy opposition and taboo systems. That makes the Authority both flavorful and structurally efficient.",
+      "Its limitation-aware use comes from making infernal command costly to the soul and politically unstable. The player should feel commanding inside corrupted or infernal contexts and meaningfully contested outside them. That preserves the menace of a throne without turning demonic heritage into generic top-tier freedom. The strongest version feels like ruling a dangerous court that is always trying to rule you back."
+    ],
+    "limits": [
+      "Command is strongest over demons, corrupted spaces, and sin-aligned subjects, and far less absolute against unrelated sovereigns or purified domains.",
+      "The throne line can be challenged by rival claimants, superior infernal ranks, broken contracts, or holy suppression.",
+      "Infernal authority weakens when the bearer rejects the obligations, bargains, and symbolic acts that legitimize the bloodline."
+    ],
+    "costs": [
+      "Every ascent in infernal rank increases temptation pressure, moral corrosion, and the chance that the bearer becomes shaped by the throne's vice.",
+      "Using demonic edicts openly invites holy retaliation, social panic, and opportunistic cult attention.",
+      "Contracts and corruptive bargains create long-tail debts that can trap allies, territory, and even the bearer's future self."
+    ],
+    "worldCompatibility": [
+      "Demonic Heritage Throne governs infernal hierarchy within a bounded hell-linked order and remains beneath Void, Grandmother Void, and the deepest cosmic law.",
+      "It is compatible with demon politics, corruption zones, contract systems, and holy-opposition arcs because it commands a specific infernal domain.",
+      "Its power remains coherent because it is lineage-bound, contestable, vice-fed, and highly vulnerable to stronger spiritual opposition or broken legitimacy."
+    ],
+    "rarity": "mythic",
+    "stability": "corrupted",
+    "selectionWeight": 2
   },
   {
     "id": "damage_reflection_field",
     "name": "Damage Reflection Field",
     "category": "Authority",
-    "summary": "Attackers kill themselves on a field that reflects a portion of all incoming damage.",
-    "description": "An authority that generates a persistent field around you, automatically reflecting a percentage of any damage taken back at the attacker, often with added effects.",
+    "summary": "A retributive Authority that turns incoming harm into lawful backlash within a bounded field of punishment.",
+    "description": "Damage Reflection Field is an Authority that governs retaliatory return rather than simple defense. It belongs in the Authority category because it gives the bearer command over a bounded law of retribution inside a defined defensive field. Harm that enters this field can be judged, mirrored, intensified, or transmuted back toward its source according to the Authority's rules. Its progression bias favors endurance, timing, and punishment of overcommitment rather than pure mitigation or passive tanking. The bearer becomes strongest against enemies who rely on burst damage, arrogance, or mindless repetition of force. The main tradeoff is exposure, because reflection requires enduring real pressure and can be overwhelmed by dispersion, denial, or attacks that never fully enter the field's judgment. In the world, Damage Reflection Field should feel unnerving because it makes violence morally and mechanically unsafe for those who deliver it carelessly. It remains lore-safe because the field only governs harm within its jurisdiction, can be counterplayed, and stays beneath Void, Grandmother Void, and stronger laws of immunity and negation.",
     "coreLoop": [
-      "Take damage from an enemy.",
-      "A percentage of that damage is instantly reflected back.",
-      "Charge a 'Retribution Meter' with reflected damage to unleash a full-power counter."
+      "Establish the field of retribution and bait enemies into committing meaningful force inside its lawful boundary.",
+      "Convert judged incoming damage into reflected punishment, retrition charge, or empowered counter-effects based on how recklessly the enemy attacked.",
+      "Release stored retribution at the right moment before the field collapses under pressure, denial, or misread threat profiles."
     ],
     "progression": [
-      "Increase the percentage of damage reflected.",
-      "Add secondary effects to the reflected damage, such as lifesteal, stun, or armor shred.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth improves reflection efficiency, field clarity, and the bearer's ability to convert straightforward attacks into safe retaliation.",
+      "Mid progression unlocks rider effects such as stun, shred, burnback, or judgment marks on attackers who keep violating the field.",
+      "Late progression turns the bearer into a terrifying punitive fortress whose enemies can destroy themselves simply by refusing to respect its law."
     ],
     "narrativeHooks": [
-      "Enemies with high burst damage become your greatest weapon.",
-      "You are a nightmare for assassins and glass cannons."
+      "Assassins and burst specialists begin to treat you as a walking nightmare because their best weapons become evidence against them.",
+      "Allies may mistake your punishment field for invulnerability until they see what it costs to hold the line for too long.",
+      "The Authority constantly asks whether retribution is justice, deterrence, or simply another hunger for violence dressed in cleaner language."
     ],
     "questHooks": [
-      "Defeat an enemy using only the damage they dealt to you.",
-      "Protect a target by having enemies defeat themselves against your reflection field."
+      "Defeat a duel champion using only reflected punishment after they publicly swore no defense could ever stop their style.",
+      "Hold a gate by forcing a superior enemy force to break itself against your field long enough for evacuation to finish.",
+      "Learn whether a legendary mirror relic amplifies your Authority or secretly judges you by the same pain you return to others."
     ],
     "tags": [
       "reflection",
@@ -1180,31 +1326,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Damage Reflection Field can support reactive defense builds, punish counters, retribution charge, and anti-burst encounter tech. It gives tank play a lawful identity beyond large health bars. That makes incoming damage a decision point rather than only a failure state. It also creates great matchups against arrogant glass-cannon enemies.",
+      "In narrative and quests, it enables martyr stands, duels of patience, escort missions, and uncomfortable questions about how much pain a protector should be willing to absorb to punish an attacker. The bearer can save others by becoming a wall that hits back. They can also become addicted to letting enemies destroy themselves on principle. That gives the Authority strong dramatic tension.",
+      "In implementation, it maps well to reflected-damage rules, attack qualification tags, field uptime, and retribution-charge states. Those hooks fit existing combat logic without needing a separate subsystem for every retaliatory effect. They also create readable UI and narrator language around punishment windows. That makes the Authority easy to integrate cleanly.",
+      "Its limitation-aware use comes from requiring real contact with danger. The player should feel powerful when they correctly read enemy aggression and punished when they treat reflection like unconditional immunity. That preserves the authority fantasy while keeping encounter variety healthy. The strongest version feels like judgment under fire, not lazy invincibility."
+    ],
+    "limits": [
+      "Only attacks that meaningfully enter the field's judged boundary can be reflected or converted into retribution value.",
+      "Distributed damage, indirect effects, denial tools, and anti-reflection techniques can sharply reduce the Authority's efficiency.",
+      "The field can collapse if the bearer takes too much unprocessed pressure or misjudges which forms of harm it can lawfully answer."
+    ],
+    "costs": [
+      "Reflection requires taking real pressure, which can exhaust, wound, or destabilize the bearer even when the punishment is successful.",
+      "Holding the field at high intensity consumes energy and attention that would otherwise go to offense or mobility.",
+      "Overreliance on retribution can push the bearer toward a reactive mindset that lets enemies choose too much of the battle's tempo."
+    ],
+    "worldCompatibility": [
+      "Damage Reflection Field governs a bounded law of retributive harm and remains beneath Void, Grandmother Void, and stronger immunity or negation orders.",
+      "It is compatible with defensive combat, punish mechanics, escort scenarios, and dueling because it commands a narrow retaliatory domain.",
+      "Its power stays coherent because it depends on field jurisdiction, incoming force, and counterplay instead of universal damage denial."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "law_comprehension_codex",
     "name": "Law Comprehension Codex",
     "category": "Authority",
-    "summary": "Understand and manipulate the fundamental laws of the world like tools.",
-    "description": "An authority that grants you an intuitive and growing understanding of the world's underlying rules—from physics to magic. You can bend or even locally rewrite these laws.",
+    "summary": "A jurisprudential Authority that traces local laws, interprets their clauses, and imposes bounded rule edits within understood domains.",
+    "description": "Law Comprehension Codex is an Authority that grants the bearer ruling-grade understanding of how specific laws in the world are structured and enforced. It belongs in the Authority category because it governs command through interpreted law, lawful override windows, and domain-limited rule precedence rather than through generic intelligence or reality editing. The bearer learns to trace a phenomenon, identify the governing clause behind it, and then exploit or temporarily amend that clause where they have earned standing. Its progression bias favors study, precision, and local dominion over a known rule set rather than reckless omnidirectional power. The Authority is strongest when the bearer has properly read a site, artifact, ritual, or enemy technique before trying to intervene. The main tradeoff is interpretive burden, because misunderstanding the active law can lead to failed commands, catastrophic backlash, or accidental empowerment of the very rule being challenged. In the world, Law Comprehension Codex should terrify scholars, judges, mages, and primordial guardians because it turns knowledge into a form of jurisdiction. It remains lore-safe because the Codex only governs laws that can be traced, understood, and locally contested, and because no interpreted clause can outrank Void, Grandmother Void, or the highest cosmic order.",
     "coreLoop": [
-      "Observe a natural or magical phenomenon to 'Trace' its underlying Law.",
-      "Gain 'Law Fragments' which can be slotted to grant passive immunities or abilities.",
-      "Expend massive energy to temporarily 'Overrule' a local law (e.g., 'Gravity: Off')."
+      "Trace a natural, magical, or social phenomenon until the Codex identifies the governing law fragment behind it.",
+      "Accumulate lawful standing and fragments so the bearer can issue a bounded amendment, suspension, or counter-clause inside that domain.",
+      "Exploit the edited law before correction pressure, hostile guardians, or missing context collapse the advantage."
     ],
     "progression": [
-      "Combine Law Fragments to understand and manipulate more complex, 'Conceptual' laws (e.g., Law of Death, Law of Time).",
-      "Establish a 'Domain' where your understanding allows you to set the rules permanently.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth improves law tracing, fragment storage, and safe intervention in narrow local rules such as motion, heat, or ritual sequencing.",
+      "Mid progression unlocks codified domains, chained clause edits, and stronger standing against magical, contractual, or battlefield laws.",
+      "Late progression turns the bearer into a feared juris-architect who can make even mighty powers obey the letter of a law they failed to read closely enough."
     ],
     "narrativeHooks": [
-      "Reality seems to glitch or warp around you during intense moments.",
-      "Primordial beings and guardians of reality see you as either a potential savior or a cosmic threat."
+      "Reality does not merely warp around you; it starts revealing which clauses people have trusted without ever understanding.",
+      "Judges, archivists, and primordial custodians all have reasons to either recruit you or bury the Codex before it destabilizes their order.",
+      "The deeper your understanding grows, the harder it becomes to pretend the world was ever held together by simple rules."
     ],
     "questHooks": [
-      "Fix a 'broken' law in a corrupted region.",
-      "Win a fight by rewriting a fundamental law your opponent relies on, like the Law of Inertia."
+      "Repair a corrupted region by identifying which foundational law was broken and who benefits from keeping it unstable.",
+      "Win a battle against a stronger foe by forcing their signature technique to obey an older clause it normally ignores.",
+      "Steal a sealed page of the Codex from a guardian court that insists mortals must never learn how law is actually written."
     ],
     "tags": [
       "law",
@@ -1242,33 +1414,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Law Comprehension Codex can support trace-and-edit mechanics, domain-specific counters, lawful immunities, and localized rule manipulation. It gives high-intellect play a command fantasy instead of only passive analysis. That makes solving encounters feel procedural and sovereign at the same time. It also works across combat, puzzles, rituals, and environmental hazards.",
+      "In narrative and quests, it enables tribunal drama, broken-zone restoration, ancient-rule archaeology, and morally dangerous questions about who gets to revise what everyone else calls natural law. The bearer can save people by restoring the proper rule or become feared for proving that stability was always negotiable. That creates strong philosophical tension. It also gives the narrator a precise language for wonder and dread.",
+      "In implementation, it maps well to tagged law domains, traceable phenomena, local amendment windows, and correction backlash. Those hooks can enrich ritual systems, encounter scripting, dungeon hazards, and prompt context without requiring unrestricted reality editing everywhere. They also let designers decide exactly which content is law-readable. That makes the Authority powerful but tractable to ship.",
+      "Its limitation-aware use comes from requiring comprehension before command. The player should feel brilliant when they read a system correctly and punished when they guess wrong. That preserves the dignity of law as something interpreted and contested rather than casually rewritten on impulse. The strongest version feels like jurisdiction earned through study, not free reality authorship."
+    ],
+    "limits": [
+      "Only traced and sufficiently understood laws can be challenged, amended, or suspended by the Codex.",
+      "Complex conceptual laws require fragments, standing, and preparation that cannot be improvised in every scene.",
+      "Guarded domains, sovereign authorities, and misunderstood clauses can all reject the bearer's command outright."
+    ],
+    "costs": [
+      "Tracing and editing law consumes immense focus, energy, and interpretive risk, especially against layered or ancient rules.",
+      "Every intervention attracts correction pressure, scrutiny from guardians, and the possibility of rule backlash if the edit is unstable.",
+      "The bearer risks becoming emotionally detached as more of the world starts to look like clauses to be parsed instead of lives to be lived."
+    ],
+    "worldCompatibility": [
+      "Law Comprehension Codex governs bounded domains of interpreted law and remains beneath Void, Grandmother Void, and the deepest cosmic structure.",
+      "It is compatible with ritual systems, contracts, hazard logic, and domain contests because it commands readable rules rather than unrestricted existence.",
+      "Its power remains coherent because it depends on tracing, standing, and local jurisdiction instead of universal permission to edit reality."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 1
   },
   {
     "id": "divine_champion",
     "name": "Divine Champion (God's Chosen)",
     "category": "Authority",
-    "summary": "In this archetype, a deity or pantheon grants the character a unique blessing or class mark that elevates them above...",
-    "description": "In this archetype, a deity or pantheon grants the character a unique blessing or class mark that elevates them above mortal limits. The function often manifests as a holy seal or title (like \"Champion of Zeus\" or \"Apostle of Light\") that bestows special powers: e.g. heightened base stats, a sacred elemental affinity, or miracle-like abilities. Progression can be level-based (the blessing grows stronger as the character levels) or faith- based (deeper devotion or accomplishing divine trials unlocks new tiers of power). The thematic flavor is often righteous or epic - the chosen one radiates ...",
+    "summary": "A consecrated Authority that appoints the bearer as a god-backed champion with domain-limited miracles, command, and holy legitimacy.",
+    "description": "Divine Champion is an Authority that marks the bearer as a chosen combat and judgment instrument of a deity or pantheon. It belongs in the Authority category because it grants command through sanctioned holy office, domain-backed miracles, and the right to act in a god's name within bounded sacred scope. The bearer does not simply receive blessings, but becomes a recognized champion whose title carries real metaphysical weight with allies, enemies, relics, and rites. Its progression bias favors devotion, trial completion, public legitimacy, and faithful action rather than private self-optimization. The Authority grows strongest when the champion acts within the moral, ritual, or jurisdictional lane of their patron's sphere. The main tradeoff is burden, because divine office comes with vows, scrutiny, and the constant risk of misrepresenting a higher will. In the world, Divine Champion should command reverence, envy, and political alarm because a god-backed mortal can overturn earthly balances without being a god themselves. It remains lore-safe because the champion's power is office-bound, patron-limited, and revocable, and because even divine appointment remains beneath Void and Grandmother Void.",
     "coreLoop": [
-      "Progression can be level-based or faith- based.",
-      "This blessing influences abilities by enabling holy or divine skills unavailable to others - healing that raises the dead, invulnerable auras against evil, or legendary tier...",
-      "It can also synergize with prophecy systems."
+      "Act under the champion's seal to invoke miracles, rally allies, and enforce the patron's sacred right within situations the office recognizes.",
+      "Complete divine trials, uphold vows, and resolve patron-aligned crises to deepen legitimacy and widen the office's lawful reach.",
+      "Manage public worship, rival clergy, and the cost of being the mortal face of a power far larger than yourself."
     ],
     "progression": [
-      "In this archetype, a deity or pantheon grants the character a unique blessing or class mark that elevates them above mortal limits.",
-      "The function often manifests as a holy seal or title that bestows special powers: e.g. heightened base stats, a sacred elemental affinity, or miracle-like abilities.",
-      "Acquisition is extremely limited: typically via a sacred ritual or summon, where the gods themselves anoint the character."
+      "Early growth grants the champion's seal, minor miracles, and recognized authority in the patron's first sphere such as war, judgment, healing, or flame.",
+      "Mid progression expands into relic command, group blessing fields, and stronger miracle law when the champion acts under rite or sanction.",
+      "Late progression turns the bearer into a world-shaping sacred officer whose arrival can sanctify battlefields, rally nations, or condemn blasphemous powers."
     ],
     "narrativeHooks": [
-      "The thematic flavor is often righteous or epic - the chosen one radiates an aura of destiny and bears a mission.",
-      "As such, only one hero or a handful per era hold this status, making it a coveted but heavy burden.",
-      "The Divine Champion marks you as unusual, drawing attention from allies and enemies."
+      "Priests and rulers alike must decide whether you are a savior, a political threat, or the most expensive ally they have ever seen.",
+      "Your victories are never fully private because every miracle becomes evidence for or against the patron you represent.",
+      "The more clearly you hear divine purpose, the harder it becomes to separate your own desires from the office speaking through you."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Divine Champion and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Divine Champion.",
-      "Use the Divine Champion to resolve a crisis ordinary powers cannot solve."
+      "Prove your office in a public trial where rival faiths are waiting for one failed miracle to discredit the god behind you.",
+      "Recover a relic that will either strengthen your patron's authority in the world or expose why your appointment was contested from the start.",
+      "Choose whether to obey a divine command that would save a kingdom at the cost of betraying someone innocent."
     ],
     "tags": [
       "divine",
@@ -1305,33 +1501,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Divine Champion can support miracle skills, sanctified zones, relic permissions, ally-rally effects, and patron-domain command actions. It gives holy builds a real office fantasy instead of only light-themed abilities. That makes devotion feel positional and social as well as magical. It also gives designers a clean way to gate sacred interactions by legitimacy.",
+      "In narrative and quests, it enables faith politics, public trials, sacred warfare, and the tension of being used as proof that a god still intervenes. The bearer can inspire whole regions or destabilize them just by appearing under the right seal. They can also be crushed by expectations no ordinary mortal was built to carry. That gives the Authority strong emotional and institutional weight.",
+      "In implementation, it maps well to patron domains, vow states, sanction flags, miracle permissions, and relic recognition. Those hooks can feed faction systems, combat buffs, story checks, and narrator voice without requiring a full theology sim. They also create space for revocation, doubt, and contested legitimacy. That makes the Authority highly expressive while still manageable.",
+      "Its limitation-aware use comes from keeping power tied to office and patron scope. The player should feel incredible when acting as a true champion and meaningfully constrained when their god's domain or vows do not justify intervention. That preserves divine gravitas without reducing the setting to constant holy override. The strongest version feels like sanctioned command, not blank-check sainthood."
+    ],
+    "limits": [
+      "Champion power is bounded by patron domain, vow integrity, and whether the current situation falls within the office's recognized sacred scope.",
+      "Miracles weaken when the bearer acts in bad faith, breaks sanction, or tries to force authority into matters their patron does not lawfully govern.",
+      "Relics, temples, and allied faithful may reject or question a champion whose legitimacy has become disputed."
+    ],
+    "costs": [
+      "Divine office imposes vows, ritual obligations, and constant moral scrutiny from both worshippers and enemies.",
+      "Public miracle use escalates political tension because every visible intervention changes who seems favored by the heavens.",
+      "Failure, doubt, or misrepresentation can trigger revocation, crisis of faith, or devastating backlash from disappointed believers."
+    ],
+    "worldCompatibility": [
+      "Divine Champion governs patron-backed sacred office and remains beneath Void, Grandmother Void, and the highest order that even gods must answer to.",
+      "It is compatible with faith politics, relic systems, miracle combat, and public-legitimacy arcs because it commands a bounded holy domain.",
+      "Its power stays coherent because it depends on office, vows, sanction, and patron scope rather than unrestricted holy superiority."
+    ],
+    "rarity": "mythic",
+    "stability": "stable",
+    "selectionWeight": 2
   },
   {
     "id": "heaven_s_mandate",
     "name": "Heaven's Mandate (Fate's Favorite)",
     "category": "Authority",
-    "summary": "Here the world or fate itself selects the individual for greatness, granting them an abstract but potent advantage...",
-    "description": "Here the world or fate itself selects the individual for greatness, granting them an abstract but potent advantage often called \"Heaven's Blessing\" or \"Mandate of Heaven.\" The mechanics are subtle: the character might have dramatically increased luck, natural talent in all things, or the world's system bending rules slightly in their favor (e.g. easier leveling, critical events always aligning for them). It's akin to a permanent, systemic buff that others cannot acquire. Progression is often accelerated and story-driven - as the character rises in prominence (becoming a king or the stronges...",
+    "summary": "A fate-crowned Authority that marks the bearer as heaven-backed within a narrow but terrifying regime of legitimacy, fortune, and succession.",
+    "description": "Heaven's Mandate is an Authority that marks the bearer as a recognized favorite of fate, order, or heavenly legitimacy. It belongs in the Authority category because it grants command through sanctioned precedence, karmic endorsement, and the right to occupy a role that the world itself has partially acknowledged. The bearer does not simply get lucky, but benefits from a regime of legitimacy that nudges events, loyalty, and opportunity toward their continued rise. Its progression bias favors rulership, public prominence, karmic accumulation, and the ability to keep acting like someone heaven still endorses. The Authority is strongest when the bearer stands at the center of succession, governance, or civilizational turning points where legitimacy matters as much as force. The main tradeoff is visibility, because heaven-backed figures attract rebellion, envy, prophecy, and every rival who wants to prove fate has chosen incorrectly. In the world, Heaven's Mandate should feel imperial and destabilizing because once one claimant is marked, everyone else must decide whether to submit, resist, or steal the omen. It remains lore-safe because the Mandate only governs legitimacy, fortune, and role reinforcement inside bounded worldly structures, and because even heaven's favorite remains beneath Void and Grandmother Void.",
     "coreLoop": [
-      "It's akin to a permanent, systemic buff that others cannot acquire.",
-      "This creates abilities indirectly by smoothing the path: they stumble on legendary swords in a cave by \"accident,\" or survive impossible odds because fate won't let them die early.",
-      "However, it can conflict with dark powers."
+      "Accumulate karmic legitimacy through victories, rulership acts, omens, and public confirmations that reinforce heaven's apparent endorsement.",
+      "Spend that legitimacy to survive crises, sway succession struggles, or make key opportunities align in your favor when your claim is under pressure.",
+      "Preserve the Mandate by acting in ways that keep heaven's endorsement believable to the world and to the deeper order behind it."
     ],
     "progression": [
-      "Here the world or fate itself selects the individual for greatness, granting them an abstract but potent advantage often called \"Heaven's Blessing\" or \"Mandate of Heaven.\" The...",
-      "Progression is often accelerated and story-driven - as the character rises in prominence, the Mandate grows stronger, reinforcing their right to rule or succeed.",
-      "Acquisition is not by choice; it's inherent, perhaps identified by a birthmark or an auspicious omen at birth."
+      "Early growth manifests as improbable survival, auspicious timing, and subtle legitimacy pressure that makes others hesitate before opposing the bearer openly.",
+      "Mid progression expands into stronger karmic favor, role reinforcement, and domain effects over court, army, or sect once the bearer is publicly established.",
+      "Late progression turns the bearer into a terrifying claimant whose rise seems cosmically ratified until someone can prove heaven has withdrawn its hand."
     ],
     "narrativeHooks": [
-      "The flavor is almost destiny or imperial; in xianxia terms, it's like having immense karmic fortune such that the heavens endorse you.",
-      "Synergy is high with karmic or fate-based systems - for example, if there's a fate meter or destiny energy, theirs is maxed out, giving them bonus cultivation speed or immunity to...",
-      "In narratives, usually only one protagonist or emperor carries Heaven's Mandate at a time, making it a singular cheat that sets them on a collision course with anyone defying fate."
+      "Every lucky turn in your favor becomes politically meaningful once people decide heaven is making statements through your life.",
+      "Rebels, prophets, and rival heirs all gain reasons to expose your failures as evidence that the Mandate was never truly yours.",
+      "The more destiny bends toward you, the more dangerous it becomes to confuse endorsement with virtue."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Heaven's Mandate and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Heaven's Mandate.",
-      "Use the Heaven's Mandate to resolve a crisis ordinary powers cannot solve."
+      "Hold a collapsing realm together long enough to prove heaven has not withdrawn its favor from your rule.",
+      "Confront a rival claimant whose omens are stronger than yours but whose heart may be far less fit to rule.",
+      "Recover a lost regalia that can either confirm your legitimacy or expose that the Mandate has been contested all along."
     ],
     "tags": [
       "fate",
@@ -1368,33 +1588,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Heaven's Mandate can support legitimacy meters, karmic fortune swings, succession bonuses, and crisis survival effects tied to public standing. It gives destiny play a rulership-facing authority instead of only passive luck. That makes prominence and political momentum mechanically meaningful. It also creates a strong bridge between narrative position and practical advantage.",
+      "In narrative and quests, it enables imperial drama, omen wars, dynastic conflict, and the constant question of whether fate is recognizing merit or merely accelerating power. The bearer can stabilize a realm by visibly embodying the Mandate or destroy one by clinging to it after heaven has turned cold. That creates a very sharp moral and political edge. It also fits the repo's larger cosmic hierarchy cleanly.",
+      "In implementation, it maps well to public-legitimacy state, karmic modifiers, succession events, and fate-weighted quest routing. Those hooks can enrich kingdom play, faction response, narrator tone, and crisis systems without turning every scene into random luck math. They also create elegant reasons for certain NPCs to defect, submit, or rebel. That makes the Authority broad but controlled.",
+      "Its limitation-aware use comes from keeping fate support conditional and visible. The player should feel favored while still fearing the moment heaven's silence becomes obvious. That preserves the grandeur of the Mandate without making it an untouchable plot shield. The strongest version feels like carrying the burden of legitimacy under a hostile sky."
+    ],
+    "limits": [
+      "The Mandate is strongest in contexts where legitimacy, succession, and public recognition matter, and far less absolute in purely private or chaotic conflict.",
+      "Heavenly favor can erode if the bearer becomes tyrannical, loses ritual standing, or fails too publicly for the claim to remain credible.",
+      "Rival claimants, counter-omens, and institutions that reject the Mandate can meaningfully contest its effects."
+    ],
+    "costs": [
+      "Every gain in legitimacy creates political enemies, prophetic scrutiny, and pressure to embody a role larger than the self.",
+      "Relying on the Mandate too heavily can hollow out ordinary trust, because allies may start following heaven's sign instead of the bearer as a person.",
+      "The collapse of heavenly favor is devastating because it turns every prior omen into fuel for rebellion and doubt."
+    ],
+    "worldCompatibility": [
+      "Heaven's Mandate governs legitimacy, karmic favor, and worldly succession while remaining beneath Void, Grandmother Void, and the highest cosmic order.",
+      "It is compatible with rulership arcs, dynastic conflict, omen systems, and fate-weighted progression because it commands a bounded regime of heavenly endorsement.",
+      "Its power stays coherent because it depends on recognition, conduct, and public crisis rather than unrestricted plot immunity."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "celestial_pact",
     "name": "Celestial Pact (Divine Contract System)",
     "category": "Authority",
-    "summary": "This archetype involves directly contracting with a higher being - maybe a minor god, an archangel, or a cosmic spirit.",
-    "description": "This archetype involves directly contracting with a higher being - maybe a minor god, an archangel, or a cosmic spirit. The character enters a pact where they serve as the deity's mortal instrument in exchange for powers. The function operates like a patron system: the deity grants specific boons (say, fire authority from a Sun God or judgment powers from a Justice Goddess) and in return the character might have quests or behavioral tenets to uphold. Progression is semi-story and choice-based: fulfilling the deity's mandates (cleansing a demon nest, converting followers) could level up the ...",
+    "summary": "A contract-bound Authority that lets the bearer exercise a patron's celestial jurisdiction through vows, service, and negotiated divine law.",
+    "description": "Celestial Pact is an Authority that binds the bearer to a higher celestial being through a formal contract of service and delegated jurisdiction. It belongs in the Authority category because it grants command through patron-backed clauses, divine obligations, and lawful access to a specific heavenly domain rather than through generic blessing alone. The bearer becomes a mortal instrument who can invoke their patron's sanctioned powers within the scope of the pact. Its progression bias favors obedience, negotiated favor, visible service, and the careful management of duties rather than free personal ambition. The Authority is strongest when the bearer honors contract terms, fulfills patron errands, and acts within the pact's recognized sphere. The main tradeoff is dependency, because power is mediated by relationship, behavior, and the patron's willingness to continue investing authority into the mortal vessel. In the world, Celestial Pact should feel both sacred and unsettling because it makes a person into a living embassy for a higher being. It remains lore-safe because the pact delegates bounded authority, remains contestable or revocable, and keeps the bearer beneath Void and Grandmother Void.",
     "coreLoop": [
-      "This archetype involves directly contracting with a higher being - maybe a minor god, an archangel, or a cosmic spirit.",
-      "The character enters a pact where they serve as the deity's mortal instrument in exchange for powers.",
-      "This pact creates abilities thematically tied to the patron: e.g. a Pact with the Storm Lord might grant weather manipulation or thunder summoning."
+      "Receive authority through a living contract that specifies the patron's domain, the bearer's obligations, and the lawful shape of granted miracles.",
+      "Fulfill pact duties, complete patron missions, and cultivate renown or worship so the contract deepens rather than stagnates.",
+      "Invoke the pact's granted jurisdiction in moments where the patron's authority is recognized and the bearer is willing to pay the relational price."
     ],
     "progression": [
-      "Progression is semi-story and choice-based: fulfilling the deity's mandates could level up the blessing or unlock new facets of it.",
-      "The function operates like a patron system: the deity grants specific boons and in return the character might have quests or behavioral tenets to uphold.",
-      "Sometimes there's a renown meter - the more faith or offerings the character accumulates, the more the patron invests power in them."
+      "Early growth grants a binding contract, first-tier boons, and a clear set of duties that define what the pact will and will not support.",
+      "Mid progression expands into stronger delegated judgments, patron channels, and the ability to negotiate amendments or deepen clauses in the relationship.",
+      "Late progression turns the bearer into a terrifying pact envoy whose presence can bring a slice of a higher being's order into mortal affairs."
     ],
     "narrativeHooks": [
-      "The flavor is reverent and sometimes conflict-rich.",
-      "Rarity: While there may be many priests, an actual personal pact of this magnitude is rare - perhaps one champion per deity.",
-      "It synergizes well with elemental magic and with any faith system - for instance, the character could draw strength from followers' prayers if the pact allows channeling worship."
+      "Every visible miracle reminds everyone nearby that your patron has interests in this world and has chosen you as an instrument for them.",
+      "The more authority you wield, the more you must ask whether the pact is a partnership, a leash, or something more intimate and dangerous than either.",
+      "Other churches, pacts, and celestial intermediaries all have opinions about who should be allowed to negotiate with heaven directly."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Celestial Pact and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Celestial Pact.",
-      "Use the Celestial Pact to resolve a crisis ordinary powers cannot solve."
+      "Renegotiate a pact clause before your patron's latest demand destroys the last part of your life that still feels human.",
+      "Outmaneuver a rival envoy whose contract covers the same domain but interprets divine duty in the opposite way.",
+      "Recover a lost covenant tablet that proves your patron once promised more mercy than their current clergy are willing to allow."
     ],
     "tags": [
       "divine",
@@ -1431,7 +1675,31 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Celestial Pact can support contract clauses, duty-driven quest rewards, delegated miracles, and patron-specific authority actions. It gives divine service a negotiable structure instead of only a vague blessing. That makes the relationship itself a source of power and tension. It also supports strong variation between different patrons without changing the core category.",
+      "In narrative and quests, it enables envoy drama, contract renegotiation, faith schisms, and intimate conflict between devotion and autonomy. The bearer can use the pact to save cities or become trapped by escalating holy demands. They may also discover that their patron's true agenda is nothing like what the church teaches. That creates rich interpersonal and theological stakes.",
+      "In implementation, it maps well to pact clauses, duty completion, patron favor, revocation states, and domain-specific miracle payloads. Those hooks can feed quest systems, narrative prompts, faction politics, and ritual gating without requiring a bespoke pipeline for every deity. They also create meaningful failure states when the pact sours. That makes the Authority robust and reusable.",
+      "Its limitation-aware use comes from making power relational and conditional. The player should feel mighty when the pact is honored and deeply constrained when its obligations cut against convenience or conscience. That preserves the authority fantasy while keeping the higher being genuinely higher. The best version feels like wielding borrowed jurisdiction under a living contract."
+    ],
+    "limits": [
+      "The pact only authorizes actions within the patron's delegated domain and can refuse support outside its lawful clauses.",
+      "Broken duties, theological conflict, or a damaged relationship with the patron can sharply reduce access to power.",
+      "Rival contracts, anti-divine zones, and institutions that reject the pact's legitimacy can meaningfully contest its effects."
+    ],
+    "costs": [
+      "The bearer owes service, obedience, and often public representation to a patron whose priorities may not align with mortal comfort.",
+      "Using pact authority openly creates factional conflict because each miracle advances not only the bearer but the patron's agenda.",
+      "Renegotiation, revocation, or breach can carry spiritual penalties far harsher than ordinary resource depletion."
+    ],
+    "worldCompatibility": [
+      "Celestial Pact governs delegated divine jurisdiction through contract and remains beneath Void, Grandmother Void, and the highest cosmic order.",
+      "It is compatible with patron quests, miracle systems, theology conflict, and religious politics because it commands a bounded celestial office.",
+      "Its power remains coherent because it depends on clauses, duties, favor, and contestable legitimacy rather than unrestricted holy access."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "dark_covenant",
@@ -1528,27 +1796,27 @@
     "id": "star_scion_matrix",
     "name": "Star-Scion Matrix (Constellation Bond)",
     "category": "Authority",
-    "summary": "In some worlds, power is drawn from celestial bodies or concepts.",
-    "description": "In some worlds, power is drawn from celestial bodies or concepts. This archetype features a character whose soul is linked to a star, constellation, or cosmic principle, granting them cosmic-level cheat abilities. The function manifests as an astral blessing: for example, being the Scion of the North Star might give unerring navigation, fate guidance, and beams of starlight power. Being tied to a warlike constellation (like Orion) might boost combat prowess under the night sky. Progression is often event-based and cyclic: as celestial events occur (solstices, eclipses, planetary alignments)...",
+    "summary": "A starline Authority that seats the bearer beneath a specific celestial body or constellation and lets its law descend through them.",
+    "description": "Star-Scion Matrix is an Authority that links the bearer's soul to a specific star, constellation, or celestial principle with ruling significance. It belongs in the Authority category because it grants command through starline inheritance, astral precedence, and direct descent of a bounded celestial law. The bearer becomes a scion, not merely a mage, meaning their bond carries recognized weight with omens, navigators, cults, and other sky-touched powers. Its progression bias favors celestial timing, identity alignment, and the disciplined cultivation of a star-specific office rather than broad generic spell growth. The Authority is strongest when the bearer's actions resonate with the bonded star's symbolic nature and the current sky supports that resonance. The main tradeoff is cyclic vulnerability, because eclipses, adverse alignments, daylight conditions, or starline corruption can sharply alter performance. In the world, Star-Scion Matrix should feel aristocratic and cosmic at once because it makes the bearer a living extension of a star's will or meaning. It remains lore-safe because the Authority governs a bounded celestial lineage and remains beneath Void, Grandmother Void, and the highest law of the heavens.",
     "coreLoop": [
-      "This bond creates abilities that feel \"larger\" than life - meteor showers, immunity to mundane elements, or even influence over fate lines.",
-      "It can also synergize with prophecy and fate systems, as stars often symbolize destiny.",
-      "In some worlds, power is drawn from celestial bodies or concepts."
+      "Cultivate resonance with the bonded star or constellation until its law can descend through the scion in stable, named expressions.",
+      "Use celestial events, night conditions, and symbolic acts aligned with the starline to deepen command and unlock stronger manifestations.",
+      "Protect the star bond from eclipse, corruption, rival scions, and misalignment that would turn inherited law against the bearer."
     ],
     "progression": [
-      "Progression is often event-based and cyclic: as celestial events occur, the character's powers spike or new abilities awaken.",
-      "There's also a level-based component where they climb a structured \"Divine Path\" associated with their star - each step unlocking more of its authority.",
-      "This archetype features a character whose soul is linked to a star, constellation, or cosmic principle, granting them cosmic-level cheat abilities."
+      "Early growth grants an identifiable starline bond, a first descended aspect, and practical influence over travel, combat, or fate in the star's lane.",
+      "Mid progression expands into stronger aspect descent, star-path travel, and more explicit authority over those who recognize the same celestial order.",
+      "Late progression turns the bearer into a radiant scion whose presence can make whole factions read the sky differently around them."
     ],
     "narrativeHooks": [
-      "The function manifests as an astral blessing: for example, being the Scion of the North Star might give unerring navigation, fate guidance, and beams of starlight power.",
-      "The theme is cosmic and fate- oriented; these characters often have a destiny intertwined with cosmic balance.",
-      "Being tied to a warlike constellation might boost combat prowess under the night sky."
+      "Every celestial event becomes personal once your life is visibly chained to the mood and motion of one starline.",
+      "Rival scions, astrologers, and omencasters may see you as heir, usurper, or catastrophic omen depending on what your star means to them.",
+      "The more deeply the Matrix descends, the harder it becomes to tell where your ambitions end and your star's pattern begins."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Star-Scion Matrix and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Star-Scion Matrix.",
-      "Use the Star-Scion Matrix to resolve a crisis ordinary powers cannot solve."
+      "Reignite a dimming starline before your authority collapses and your enemies claim the sky has abandoned you.",
+      "Contest a rival scion during a rare conjunction that will decide whose interpretation of the same constellation becomes dominant.",
+      "Retrieve a fallen fragment of your bonded star from a crater cult that believes no mortal should carry that much sky inside them."
     ],
     "tags": [
       "celestial",
@@ -1584,33 +1852,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Star-Scion Matrix can support starline resonance, celestial event spikes, descended aspects, and role-specific sky authority. It gives cosmic builds a lineage-and-office identity instead of only broad astral spectacle. That makes timing and symbolism matter mechanically. It also creates strong seasonal and environmental flavor.",
+      "In narrative and quests, it enables omen wars, fallen-star expeditions, lineage drama, and characters whose destinies are publicly legible in the night sky. The bearer can become a cherished sign of hope or a feared harbinger depending on what their star historically means. They may also discover that their starline has obligations older than any nation. That gives the Authority rich mythic texture.",
+      "In implementation, it maps well to celestial alignment tags, event modifiers, aspect unlocks, and rivalry hooks between scions. Those hooks can feed encounter bonuses, travel systems, quest generation, and narrator framing without requiring a full astronomy sandbox. They also pair neatly with prophecy and constellation content. That makes the Authority flexible but still concrete.",
+      "Its limitation-aware use comes from making sky favor cyclical and interpretive. The player should feel amplified under the right heavens and markedly strained when misaligned or eclipsed. That preserves the prestige of star descent without turning the bond into uninterrupted cosmic dominance. The strongest version feels like carrying a star's office through changing skies."
+    ],
+    "limits": [
+      "Starline power depends on resonance, timing, and the specific celestial body or constellation that legitimizes the bearer.",
+      "Eclipses, corrupted skies, hostile alignments, and broken symbolic conduct can all disrupt descent quality.",
+      "The Matrix does not grant equal command over every celestial principle; it remains bound to the bonded star's nature and inherited lane."
+    ],
+    "costs": [
+      "Maintaining resonance demands ritual care, symbolic discipline, and adaptation to celestial cycles the bearer cannot control.",
+      "Publicly visible sky-omens make secrecy difficult and attract rivals, cults, and institutions invested in controlling celestial legitimacy.",
+      "A damaged starline bond can destabilize identity, fate, and magic all at once because so much of the self is now tied to a higher pattern."
+    ],
+    "worldCompatibility": [
+      "Star-Scion Matrix governs bounded celestial lineage and remains beneath Void, Grandmother Void, and the deepest order of the heavens.",
+      "It is compatible with omens, celestial events, prophecy systems, and night-biased combat because it commands a specific astral office.",
+      "Its power stays coherent because it depends on resonance, alignment, and star-specific legitimacy rather than universal cosmic control."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 3
   },
   {
     "id": "summoned_hero",
     "name": "Summoned Hero (System-Mandated Savior)",
     "category": "Authority",
-    "summary": "This archetype is classic in isekai: the character is summoned by the world's system or its rulers as the Hero, and...",
-    "description": "This archetype is classic in isekai: the character is summoned by the world's system or its rulers as the Hero, and that title itself carries cheat-level perks. The function is that upon arrival (or awakening), the system assigns them the \"Hero\" role, conferring high base stats, rapid leveling, and exclusive skills (like Hero's Aura that boosts allies or Demon Bane that harms only evil beings). Progression is a mix of normal leveling and story gating - e.g. each major Demon Lord defeated might unlock a sealed Hero ability or an evolution of their class. The thematic flavor is aspirational a...",
+    "summary": "A world-sanctioned Authority that appoints the bearer as a recognized hero and grants narrow but terrifying savior-grade legitimacy.",
+    "description": "Summoned Hero is an Authority that installs the bearer into a world-recognized role of sanctioned salvation. It belongs in the Authority category because it grants command through title, mandate, and role legitimacy rather than through a free-floating System of personal growth alone. The bearer is not simply powerful; they become the authorized hero for a specific crisis, enemy class, or era-defining threat. Its progression bias favors heroic milestones, public victories, and fulfilling the role's sanctioned duties rather than unrestricted self-direction. The Authority becomes most potent against the threat profile it was summoned or anointed to answer, which keeps its savior-grade power from dissolving into generic supremacy. The main tradeoff is burden of role, because everyone from kings to commoners begins projecting expectation, gratitude, fear, and control onto the person carrying the title. In the world, Summoned Hero should feel both inspirational and destabilizing because once a world has named its savior, many institutions stop behaving as if ordinary politics still apply. It remains lore-safe because the hero's title governs a bounded role with specific enemies, rites, and duties, and because even a sanctioned savior remains beneath Void and Grandmother Void.",
     "coreLoop": [
-      "This archetype is classic in isekai: the character is summoned by the world's system or its rulers as the Hero, and that title itself carries cheat-level perks.",
-      "The role creates new abilities via mandated quests; for example, only the Hero can wield the holy sword, or the system feeds them special quest rewards like legendary equipment...",
-      "Rarity: Usually only one Summoned Hero exists at a time."
+      "Answer hero-mandated threats, complete role-defining quests, and prove to the world that the title's legitimacy is not misplaced.",
+      "Convert major victories into stronger hero rights such as relic access, ally-rally effects, and sharper advantages against the sanctioned enemy profile.",
+      "Balance personal will against the crushing expectations of rulers, systems, and civilians who all think the hero exists for their salvation first."
     ],
     "progression": [
-      "Progression is a mix of normal leveling and story gating - e.g. each major Demon Lord defeated might unlock a sealed Hero ability or an evolution of their class.",
-      "The function is that upon arrival, the system assigns them the \"Hero\" role, conferring high base stats, rapid leveling, and exclusive skills.",
-      "Synergy is obvious with holy/divine systems, and it pairs with kingdom management or war systems."
+      "Early growth grants the hero title, access to role-locked relics or skills, and strong leverage against the first crisis the summoning was meant to solve.",
+      "Mid progression expands into broader hero rights, visible aura effects, and milestone unlocks tied to defeating designated calamities or lords.",
+      "Late progression turns the bearer into a living symbol whose title can rally armies, terrify villain factions, and reshape whole wars around their presence."
     ],
     "narrativeHooks": [
-      "The thematic flavor is aspirational and burdensome: they literally have a destiny tag visible in their status, which NPCs or enemies might recognize, giving narrative weight.",
-      "This status is acquired at the moment of summoning - the world's laws imprint the role on them.",
-      "It's essentially a built-in cheat to ensure the hero can stand up to catastrophes, making them level absurdly faster than any native person."
+      "The title turns every victory into public myth and every failure into a political emergency that no one will let stay private.",
+      "People saved by the hero may worship, resent, or try to own the person behind the role once their survival starts depending on it.",
+      "The deeper you grow into the title, the more dangerous it becomes to ask whether the world wanted a savior or only a weapon."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Summoned Hero and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Summoned Hero.",
-      "Use the Summoned Hero to resolve a crisis ordinary powers cannot solve."
+      "Choose whether to keep obeying the summons after learning the world lied about who the true enemy was.",
+      "Recover a role-locked relic before a rival claimant proves the hero title can be transferred or stolen.",
+      "Defeat the designated calamity only to discover that fulfilling the role may erase the part of you that ever wanted to go home."
     ],
     "tags": [
       "summoning",
@@ -1647,33 +1939,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Summoned Hero can support role-locked quests, anti-calamity bonuses, relic permissions, hero aura skills, and milestone-based authority growth. It gives isekai savior fantasy a lawful structure instead of only fast leveling and generic chosen-one perks. That makes the role readable to both systems and NPCs. It also supports strong factional reactions by title alone.",
+      "In narrative and quests, it enables summon politics, false-hero disputes, kingdom manipulation, and the pain of realizing salvation can be a coercive job. The bearer can become beloved, exploited, or both at once. They may also decide the title itself is a prison even while others still need what it grants. That gives the Authority excellent dramatic range.",
+      "In implementation, it maps well to title flags, calamity-specific bonuses, role milestones, relic access, and world-recognition events. Those hooks can feed quest systems, combat modifiers, UI labels, and narrator framing without demanding a separate hero-only engine. They also create great synergy with kingdoms, war arcs, and villain factions. That makes the Authority highly practical to integrate.",
+      "Its limitation-aware use comes from keeping the hero title tied to designated threats and public role legitimacy. The player should feel empowered when confronting the crisis they were named for and much less absolute outside that lane. That preserves the savior fantasy while preventing it from flattening the rest of the setting. The strongest version feels like sanctioned heroism under pressure, not generic protagonist invincibility."
+    ],
+    "limits": [
+      "Hero-grade authority is strongest against the sanctioned threat class, role-defined crises, and situations where the title is publicly or ritually recognized.",
+      "Outside the role's lane, the bearer retains strength and prestige but loses much of the title's special command weight.",
+      "False summoning, rival claimants, title corruption, or public delegitimization can all weaken the authority dramatically."
+    ],
+    "costs": [
+      "Carrying the hero title invites impossible expectations from rulers, allies, and populations who now view the bearer as a public solution.",
+      "Every visible use of hero authority intensifies political attempts to direct, own, or sacrifice the person behind the role.",
+      "If the role proves fraudulent, misguided, or morally compromised, the backlash can be social, spiritual, and existential all at once."
+    ],
+    "worldCompatibility": [
+      "Summoned Hero governs a bounded savior office and remains beneath Void, Grandmother Void, and the highest order that defines destiny and world law.",
+      "It is compatible with summoning plots, calamity arcs, relic gating, and public-legitimacy systems because it commands a specific role rather than free universal privilege.",
+      "Its power stays coherent because it depends on title, threat profile, milestones, and recognition instead of unrestricted protagonist supremacy."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "territory_lord_interface",
     "name": "Territory Lord Interface (Base-Building Sovereign)",
     "category": "Authority",
-    "summary": "This archetype gives the character a strategy-game-like UI to build and enhance territory, turning city-building into...",
-    "description": "This archetype gives the character a strategy-game-like UI to build and enhance territory, turning city-building into a personal power source. The system might present a \"territory management\" screen only to them, where they can spend resources or mana to instantly erect structures (walls, workshops, magical towers) and assign NPCs to jobs with efficiency bonuses. The unique twist: improvements in the territory directly buff the character and their army. For example, building a Spirit Well might permanently increase the Lord's mana regeneration or unlock a local aura that strengthens all al...",
+    "summary": "A governance Authority that lets the bearer issue lordly commands through a territory-management interface tied to lawful domain growth.",
+    "description": "Territory Lord Interface is an Authority that converts rulership and land stewardship into a direct command layer the bearer can access. It belongs in the Authority category because it grants jurisdiction over buildings, projects, labor assignment, and local edicts inside a recognized territory. The bearer does not merely manage a city more efficiently, but gains the lawful right to impose structured development priorities that reshape local productivity and defense. Its progression bias favors planning, logistics, and institutional growth rather than free-roaming heroics. The Authority is strongest where the bearer truly holds recognized land, resources, and subjects willing or forced to live under its interface. The main tradeoff is dependence on governance, because neglected territory, bad policy, corruption, or resource starvation can turn the interface from miracle into administrative disaster. In the world, Territory Lord Interface should feel revolutionary because it gives one ruler simulation-grade leverage over real settlements and warfronts. It remains lore-safe because the interface only commands a bounded territory and its lawful projects, and because even its best governance remains beneath Void and Grandmother Void.",
     "coreLoop": [
-      "The system might present a \"territory management\" screen only to them, where they can spend resources or mana to instantly erect structures and assign NPCs to jobs with efficiency...",
-      "This creates abilities such as summoning militia from thin air, teleporting between owned outposts, or invoking the \"Law of the Land\" buff that penalizes enemies on their turf.",
-      "It's rare for an adventurer to have; usually only monarchs or dungeon masters hold comparable power, and even then, they lack the game-like efficiency the cheat user has."
+      "Claim or maintain a lawful territory, then use the interface to assign projects, structures, labor priorities, and regional bonuses.",
+      "Convert territory output into stronger lordly authority, better infrastructure, and more ambitious projects that reshape local life.",
+      "Balance prosperity, defense, and legitimacy so the same tools that can build a kingdom do not instead automate collapse."
     ],
     "progression": [
-      "For example, building a Spirit Well might permanently increase the Lord's mana regeneration or unlock a local aura that strengthens all allies in the region.",
-      "Progression is measured in city tiers or tech levels rather than pure XP - as their domain advances from a village to a kingdom, they receive class promotions or new skills.",
-      "This archetype gives the character a strategy-game-like UI to build and enhance territory, turning city-building into a personal power source."
+      "Early growth unlocks basic build orders, resource-routing panels, and local buffs that make a small settlement meaningfully easier to protect and grow.",
+      "Mid progression expands into specialized districts, militia logistics, outpost links, and stronger law-of-the-land effects across the domain.",
+      "Late progression turns the bearer into a terrifying territorial executive who can scale a frontier holding into a fortified polity at unnatural speed."
     ],
     "narrativeHooks": [
-      "The thematic flavor mixes leadership with a bit of simulation-game feel.",
-      "The unique twist: improvements in the territory directly buff the character and their army.",
-      "The character is essentially playing a SimCity/Civilization inside the narrative, with the world's system legitimizing it."
+      "To your people the interface looks like miraculous governance, while rivals see it as a cheating machine for statecraft.",
+      "Every improvement to the land changes what kind of ruler you are becoming, because optimization always has a human cost somewhere.",
+      "The better the territory runs, the less room there is to pretend your political decisions are merely personal preferences."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Territory Lord Interface and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Territory Lord Interface.",
-      "Use the Territory Lord Interface to resolve a crisis ordinary powers cannot solve."
+      "Stabilize a starving domain before the same interface that made it prosper also makes its collapse impossibly efficient.",
+      "Break a rival lord's project chain before their engineered border towns become an unassailable machine state.",
+      "Choose whether to spend your next major build phase on walls, hospitals, shrines, or extraction knowing one neglected need will erupt later."
     ],
     "tags": [
       "dominion",
@@ -1710,33 +2026,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Territory Lord Interface can support build queues, project unlocks, law-of-the-land buffs, and territory-linked army or economy bonuses. It gives rulership a real command identity instead of only menu management. That makes settlements and borders strategically meaningful. It also ties local development back to the character's authority in a satisfying way.",
+      "In narrative and quests, it enables frontier governance, city-building politics, rationing crises, and the temptation to optimize people like resources. The bearer can save a region through disciplined planning or become feared for what their efficient rule demands. That gives the Authority strong social texture. It also naturally supports long arcs of expansion and backlash.",
+      "In implementation, it maps well to domain projects, regional modifiers, structure tiers, labor allocation, and outpost networks. Those hooks can enrich economy, quests, faction reputation, and narrator summaries without requiring a brand-new grand strategy game inside the repo. They also integrate cleanly with existing territory and dungeon-adjacent systems. That makes the Authority highly shippable.",
+      "Its limitation-aware use comes from keeping the interface dependent on real land and real governance. The player should feel brilliant at home and exposed once removed from the machine they built. That preserves the fantasy of lawful lordship rather than letting it become portable omnipotence. The strongest version feels like command rooted in institutions, not magic menus detached from consequence."
+    ],
+    "limits": [
+      "The interface only reaches full authority inside recognized territory with functioning infrastructure, resources, and local control.",
+      "Projects can fail, stall, or backfire if labor, morale, logistics, or legitimacy are mismanaged.",
+      "Rapid expansion creates administrative drag that can outpace the bearer's ability to govern what they have built."
+    ],
+    "costs": [
+      "Every territory gain multiplies responsibility, defense burden, and the number of people harmed if policy goes wrong.",
+      "Building fast consumes resources and may create dependency on systems that collapse if the lord is absent or defeated.",
+      "Political enemies, corruption, and sabotage become constant pressure once the interface starts producing visible advantage."
+    ],
+    "worldCompatibility": [
+      "Territory Lord Interface governs bounded settlement administration and remains beneath Void, Grandmother Void, and the highest order of reality and sovereignty.",
+      "It is compatible with domain management, economy, militia logistics, and frontier politics because it commands a specific civic territory.",
+      "Its power stays coherent because it depends on land, resources, legitimacy, and administrative capacity rather than free instant kingdom creation anywhere."
+    ],
+    "rarity": "mythic",
+    "stability": "stable",
+    "selectionWeight": 2
   },
   {
     "id": "domain_sovereign",
     "name": "Domain Sovereign (Personal Domain Expansion)",
     "category": "Authority",
-    "summary": "The character can project a personal domain - a bounded field where their will or rules dominate, essentially rewriti...",
-    "description": "The character can project a personal domain - a bounded field where their will or rules dominate, essentially rewriting local physics or game mechanics. This archetype is akin to having a reality marble or domain expansion technique on a permanent basis. The function might start small (a few meters aura) and grow with level or mastery. Within their domain, they can, for example, dictate that fire doesn't burn them, or they always strike first, or simpler: significantly boost their power and weaken others. It's like a mobile \"home field advantage\" cheat. Progression may involve unlocking dom...",
+    "summary": "A bounded-field Authority that lets the bearer impose a personal domain whose laws locally outrank ordinary combat assumptions.",
+    "description": "Domain Sovereign is an Authority that allows the bearer to project a bounded personal domain governed by their own declared law. It belongs in the Authority category because it grants command over a specific field of space where the bearer's rule has precedence, rather than granting unrestricted control over reality at large. Inside that domain, conditions can be modified to reflect the sovereign's principle, such as priority of motion, heat tolerance, sensory distortion, or suppression of enemy technique lanes. Its progression bias favors territorial timing, decisive activation, and the sharpening of one governing law rather than broad utility across every situation. The Authority is strongest when the bearer can force enemies to remain inside the field long enough for its rule to matter. The main tradeoff is boundedness, because the domain costs heavily to establish, can be contested by stronger fields, and loses much of its terror once opponents escape or refuse the terms. In the world, Domain Sovereign should feel awe-inspiring because it visibly announces that someone has become a local ruler of conditions. It remains lore-safe because the domain is spatially bounded, law-limited, and still subordinate to Void, Grandmother Void, and stronger sovereign orders.",
     "coreLoop": [
-      "The character can project a personal domain - a bounded field where their will or rules dominate, essentially rewriting local physics or game mechanics.",
-      "Within their domain, they can, for example, dictate that fire doesn't burn them, or they always strike first, or simpler: significantly boost their power and weaken others.",
-      "Progression may involve unlocking domain tiers or new \"laws\" they can impose as the domain expands."
+      "Declare or unfold a bounded domain whose governing law favors the bearer and pressures enemies to fight on its terms.",
+      "Exploit the domain's altered rules before opponents can break, escape, or overwrite the field with stronger authority.",
+      "Refine the governing law over time so the domain becomes sharper, more recognizable, and more difficult to contest."
     ],
     "progression": [
-      "Eventually, a top-tier Domain Sovereign could cover an entire battlefield with their influence, essentially turning any fight into their game.",
-      "It could even be a mutation of a normal ability that the system \"evolved\" because the character broke limits.",
-      "This archetype is akin to having a reality marble or domain expansion technique on a permanent basis."
+      "Early growth grants a small but reliable domain with one clean law that changes how a duel or skirmish must be fought.",
+      "Mid progression expands field stability, layered law effects, and the ability to carry the domain into more hostile or crowded battle spaces.",
+      "Late progression turns the bearer into a terrifying battlefield sovereign whose activation can redefine the meaning of terrain itself for everyone nearby."
     ],
     "narrativeHooks": [
-      "The flavor is often awe-inspiring and intimidating: when they activate their domain, the environment might visually change indicating reality is now under their control.",
-      "The function might start small and grow with level or mastery.",
-      "It's like a mobile \"home field advantage\" cheat."
+      "When your domain opens, witnesses feel the world become someone else's courtroom, temple, or killing ground for a few terrible moments.",
+      "Rivals who survive it will obsess over learning exactly what law you imposed and how to deny it next time.",
+      "The more absolute your field feels, the more dangerous it becomes to believe your rule should continue once the boundary ends."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Domain Sovereign and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Domain Sovereign.",
-      "Use the Domain Sovereign to resolve a crisis ordinary powers cannot solve."
+      "Win a clash between rival domains where the outcome will determine whose local law becomes dominant in a sacred battleground.",
+      "Stabilize a domain principle that keeps mutating under pressure before it tears your own battlefield advantage apart.",
+      "Choose whether to teach disciples your domain law, knowing each student risks diluting or corrupting the sovereign idea behind it."
     ],
     "tags": [
       "dominion",
@@ -1773,33 +2113,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Domain Sovereign can support activation windows, zone control, law modifiers, and duel-centric battlefield shifts. It gives personal territory play a clean authority identity separate from settlement systems. That makes timing and positioning matter sharply. It also creates strong boss-fight spectacle without losing mechanical readability.",
+      "In narrative and quests, it enables showdown scenes, doctrine clashes, sacred-site contests, and stories where one person's field changes the emotional weight of a whole encounter. The bearer can become famous for a domain that announces exactly what kind of ruler they are in miniature. They may also become feared for relying on private law too much. That gives the Authority strong visual and philosophical punch.",
+      "In implementation, it maps well to zone effects, activation states, law payloads, contest checks, and domain counters. Those hooks can enrich combat, narration, and progression with bounded logic rather than vague reality bending. They also scale nicely from duels to larger encounters. That makes the Authority practical to integrate while still feeling high tier.",
+      "Its limitation-aware use comes from keeping the field bounded and contestable. The player should feel dominant once the domain is established and immediately pressured when enemies refuse or break the terms. That preserves the sovereignty fantasy without letting it turn into perpetual control of every scene. The strongest version feels like temporary local rulership won through force and clarity."
+    ],
+    "limits": [
+      "The domain only governs within its active boundary and loses leverage rapidly when enemies escape, suppress, or outlast it.",
+      "Each sovereign law must be narrow enough to remain coherent, which prevents the bearer from stacking every advantage at once.",
+      "Stronger domains, anti-field tools, and poor activation timing can all blunt or shatter the authority's effect."
+    ],
+    "costs": [
+      "Opening a domain consumes significant energy, focus, and often leaves the bearer exposed if the field fails to take hold.",
+      "Maintaining layered law inside the domain strains body and will, especially against many targets or contested spaces.",
+      "The more often the bearer solves problems through private law, the more isolated and inflexible they can become outside the field."
+    ],
+    "worldCompatibility": [
+      "Domain Sovereign governs bounded local lawfields and remains beneath Void, Grandmother Void, and stronger sovereign structures.",
+      "It is compatible with duel systems, battlefield control, and authority clashes because it commands a spatially limited personal domain.",
+      "Its power stays coherent because it depends on boundary, law focus, activation cost, and contest rather than unrestricted rule over reality."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "nature_s_avatar",
     "name": "Nature's Avatar (World Elemental Integration)",
     "category": "Authority",
-    "summary": "This archetype merges the character's being with a fundamental element or spirit of the world, essentially making the...",
-    "description": "This archetype merges the character's being with a fundamental element or spirit of the world, essentially making them a walking force of nature. The system might recognize them with a title like \"Spirit Sovereign\" or \"Elemental Chosen.\" Mechanically, they get extraordinary control over one or more aspects of nature - e.g. command over plants, animals, and weather if tied to nature broadly, or total mastery of a specific element like water or wind. This goes beyond a normal mage's elemental magic: a Nature's Avatar might cause forest-wide effects with a thought or gain strength from the lan...",
+    "summary": "An elemental-biospheric Authority that makes the bearer a recognized voice of land, weather, and living ecological force.",
+    "description": "Nature's Avatar is an Authority that binds the bearer to a major biospheric or elemental order of the world. It belongs in the Authority category because it grants command over a natural domain such as forest, storm, river, growth, or beast ecology rather than broad generic spell access. The bearer becomes a recognized mouthpiece of that domain, able to summon, calm, reshape, or intensify its living processes. Its progression bias favors harmony, place-attunement, and reciprocal stewardship rather than extractive power for its own sake. The Authority is strongest where the chosen domain is vibrant, present, and not violently severed from itself by corruption or artificial suppression. The main tradeoff is reciprocity, because abusing the domain for selfish force can weaken the bond or make the natural order itself turn hostile. In the world, Nature's Avatar should feel primal, numinous, and politically dangerous because entire regions may begin to answer more readily to one person than to local rulers. It remains lore-safe because the Authority governs one ecological lane at a time, depends on living systems, and remains beneath Void and Grandmother Void.",
     "coreLoop": [
-      "This goes beyond a normal mage's elemental magic: a Nature's Avatar might cause forest-wide effects with a thought or gain strength from the land itself.",
-      "Progression is often evolutionary or fame-based: as the character earns the recognition of elemental spirits or the favor of nature deities, their bond deepens.",
-      "This archetype creates new abilities such as summoning elemental avatars, instantly terraforming terrain, or communicating with the world's consciousness for guidance."
+      "Attune to the chosen natural domain and act in ways that deepen mutual recognition between bearer and land, weather, beast, or element.",
+      "Command the domain through invocation, shaping, and communion once local natural systems recognize your right to speak for them.",
+      "Preserve the bond by balancing protection, use, and sacrifice so the same world-force that empowers you does not reject you."
     ],
     "progression": [
-      "They might physically evolve and unlock world-level spells like calling a meteor or great flood.",
-      "This archetype merges the character's being with a fundamental element or spirit of the world, essentially making them a walking force of nature.",
-      "The system might recognize them with a title like \"Spirit Sovereign\" or \"Elemental Chosen.\" Mechanically, they get extraordinary control over one or more aspects of nature - e.g...."
+      "Early growth grants local communion, modest environmental shaping, and a first true sign that nature recognizes your authority.",
+      "Mid progression expands into regional weather or biome influence, spirit recognition, and stronger command over creatures or elemental flows in your lane.",
+      "Late progression turns the bearer into a terrifying ecological sovereign whose arrival can change the mood and function of whole landscapes."
     ],
     "narrativeHooks": [
-      "The flavor is primal and often benevolent.",
-      "It also complements alchemy or crafting, as they can obtain rare herbs or materials by nurturing the environment at will.",
-      "Acquisition can be at birth, or via a fateful event like absorbing an ancient Spirit King or bonding with a World Tree."
+      "Settlers, druids, and states all fear different things when the land starts listening to one person's voice.",
+      "The more deeply you merge with the domain, the harder it becomes to decide where your own desires end and the world's begin.",
+      "Every miracle of rain, bloom, flood, or wildfire leaves a political footprint because someone always benefits and someone always pays."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Nature's Avatar and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Nature's Avatar.",
-      "Use the Nature's Avatar to resolve a crisis ordinary powers cannot solve."
+      "Heal a wounded biome before rival powers convince the land that civilization only knows how to cut and burn.",
+      "Choose whether to unleash a devastating natural correction against invaders even though innocents will be caught inside it.",
+      "Win the right to command an ancient spirit host that will obey only someone who proves they can protect more than they consume."
     ],
     "tags": [
       "divine-mandate",
@@ -1835,33 +2199,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Nature's Avatar can support terrain shaping, weather command, beast influence, region-based buffs, and spirit-backed utility. It gives elemental or druidic play a true command fantasy rather than only a larger spell list. That makes environment matter more than backdrop art. It also creates strong synergy with travel, survival, and zone identity.",
+      "In narrative and quests, it enables drought-breaking miracles, sacred-grove conflicts, ecological revenge arcs, and moral questions about whether nature's justice is too blunt for human societies. The bearer can save a region by aligning with it or terrify one by speaking for storms and roots that do not negotiate like people do. That creates strong mythic and political texture. It also pairs well with the repo's world-lore scale.",
+      "In implementation, it maps well to biome tags, weather state, spirit favor, beast allegiance, and environmental modifiers. Those hooks can feed combat, gathering, quests, and narrator summaries without requiring a planet simulator. They also make regions feel alive in response to the player's authority. That keeps the feature powerful and implementable.",
+      "Its limitation-aware use comes from tying power to living systems and reciprocity. The player should feel incredible in resonant environments and meaningfully strained in dead zones, cities hostile to the domain, or after exploitative choices. That preserves nature as a relationship instead of a passive battery. The strongest version feels like being answered by the world, not owning it outright."
+    ],
+    "limits": [
+      "The Authority is strongest only within the bearer's attuned ecological lane and in places where that living system is genuinely present.",
+      "Corruption, blight, industrial suppression, dead zones, and hostile climates can sharply reduce command quality.",
+      "Abusing the domain for pure extraction or cruelty can damage favor and cause spirits, beasts, or the land itself to resist."
+    ],
+    "costs": [
+      "Using large-scale natural force can devastate settlements, harvests, and allies if the bearer chooses power over restraint.",
+      "Maintaining the bond often requires stewardship, offerings, or sacrifices that conflict with human convenience and politics.",
+      "The deeper the bond grows, the more the bearer risks identity drift toward the instincts and priorities of the domain."
+    ],
+    "worldCompatibility": [
+      "Nature's Avatar governs a bounded ecological or elemental order and remains beneath Void, Grandmother Void, and the deepest law of existence.",
+      "It is compatible with biome systems, weather, spirit relations, and elemental combat because it commands a living natural domain.",
+      "Its power stays coherent because it depends on reciprocity, environment, and domain presence rather than unrestricted elemental ownership."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "law_manipulator",
     "name": "Law Manipulator (World Rule Bender)",
     "category": "Authority",
-    "summary": "A step beyond personal domains or elemental control, this archetype gives the character the ability to comprehend and...",
-    "description": "A step beyond personal domains or elemental control, this archetype gives the character the ability to comprehend and manipulate the fundamental laws of the world - essentially the \"source code\" of reality. The system might reveal hidden Law skills (like Law of Flames, Law of Time) to them once they reach extreme mastery in a field. The function is that they can impose or alter a law within a certain scope: e.g. under their influence, gravity might triple for everyone but themselves, or the \"fire damage\" rule might be temporarily removed such that flames won't harm them at all. Unlike a Dom...",
+    "summary": "A high-order Authority that lets the bearer impose specific world-rule distortions within tightly bounded lawful scope.",
+    "description": "Law Manipulator is an Authority that grants the bearer command over a small set of fundamental world rules within limited scope. It belongs in the Authority category because it governs specific laws such as weight, heat, motion, or sequence through narrow sovereign intervention rather than open-ended reality authorship. The bearer is not omniscient about law, but gains the right to impose or distort chosen rules inside a battlefield, ritual, or prepared zone. Its progression bias favors enlightenment, clarity of principle, and disciplined restriction rather than stacking every possible cheat at once. The Authority becomes strongest when the bearer understands exactly which law must bend and where the bend will matter most. The main tradeoff is precision burden, because the wrong law, the wrong scope, or the wrong timing can waste power or catastrophically destabilize the scene. In the world, Law Manipulator should feel terrifyingly intellectual because it makes a person's understanding into a direct command over what others assumed was fixed. It remains lore-safe because the Authority operates through bounded law selection, contest, and cost, and remains beneath Void and Grandmother Void.",
     "coreLoop": [
-      "The function is that they can impose or alter a law within a certain scope: e.g. under their influence, gravity might triple for everyone but themselves, or the \"fire damage\" rule...",
-      "Unlike a Domain, Law manipulation can be more surgical and can persist or have global effects if powerful enough.",
-      "The thematic flavor is arcane and intellectual; these individuals often come off as genius magi or godlike scholars."
+      "Select the governing law that matters most to the current conflict or ritual instead of trying to dominate every variable at once.",
+      "Impose a bounded distortion in a defined scope where the chosen law now favors the bearer or punishes the unprepared.",
+      "Manage backlash, counter-law pressure, and the risk that the altered rule will harm allies or terrain if held too long."
     ],
     "progression": [
-      "Progression is usually by enlightenment or discovery: the character meditates or researches to unlock one law at a time.",
-      "If they have a class, they might ascend beyond class limits by stepping into law domain.",
-      "A step beyond personal domains or elemental control, this archetype gives the character the ability to comprehend and manipulate the fundamental laws of the world - essentially..."
+      "Early growth grants one or two modest law distortions with strict scope, duration, and cost boundaries.",
+      "Mid progression expands into sharper distortions, better law pairing, and stronger resistance against enemies who rely on one fixed rule too heavily.",
+      "Late progression turns the bearer into a feared law duelist who wins not by overpowering reality, but by choosing exactly which rule everyone must suddenly survive."
     ],
     "narrativeHooks": [
-      "The system might reveal hidden Law skills to them once they reach extreme mastery in a field.",
-      "Early on they might accidentally tap a minor law.",
-      "Later they fully master larger concepts."
+      "People stop calling you powerful and start calling you dangerous once they realize you can make certainty itself feel conditional.",
+      "Every new law you claim changes how scholars, rulers, and other authorities classify you, because some rules are more taboo to touch than others.",
+      "The more elegantly you solve problems through rule distortion, the more temptation there is to treat all resistance as merely incorrect physics."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Law Manipulator and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Law Manipulator.",
-      "Use the Law Manipulator to resolve a crisis ordinary powers cannot solve."
+      "Steal a forbidden law-principle from an archive that executed the last person who tried to bind it.",
+      "Survive a duel against another law-bearer where victory goes to whoever defines the battlefield's governing rule first.",
+      "Decide whether to seal a dangerous law forever or keep it because too many future crises may demand its use."
     ],
     "tags": [
       "law",
@@ -1898,33 +2286,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Law Manipulator can support scoped rule changes, field distortions, law-based counters, and puzzle or ritual solutions built around one decisive principle. It gives late-game intellect builds a sharp authority identity. That makes battles feel like contests of understanding rather than only stat comparison. It also works well for boss mechanics and forbidden-tech progressions.",
+      "In narrative and quests, it enables forbidden-research arcs, battlefield jurisprudence, magical accidents, and the fear that some people should simply not be allowed to edit what everyone else calls reality. The bearer can save lives by choosing the right law or ruin them by forcing the wrong one. That creates excellent tension between brilliance and hubris. It also complements the repo's cosmic hierarchy cleanly.",
+      "In implementation, it maps well to selectable law effects, scope metadata, counters, and distortion timers. Those hooks can feed combat, hazards, rituals, and narrator framing without requiring the game to support unrestricted simulation edits. They also let designers control which laws are even available. That keeps the Authority powerful and bounded.",
+      "Its limitation-aware use comes from making selection and scope matter more than raw scale. The player should feel rewarded for choosing the correct rule and punished for treating law command like a universal answer. That preserves the authority fantasy without collapsing it into free reality hacking. The strongest version feels surgical, dangerous, and earned."
+    ],
+    "limits": [
+      "Only a limited number of laws can be actively manipulated, and each has strict scope, duration, and stability constraints.",
+      "Poor law selection or environmental mismatch can make a manipulation nearly useless or actively harmful.",
+      "Stronger sovereign fields, anti-law measures, and unstable terrain can resist or distort the imposed rule in return."
+    ],
+    "costs": [
+      "Every manipulation burns focus and energy while inviting backlash if the world pushes the bent rule back into place.",
+      "Complex or taboo laws create heavier strain, greater instability, and more dangerous collateral consequences.",
+      "Repeated success encourages dangerous overconfidence because the bearer may start mistaking lawful precision for universal superiority."
+    ],
+    "worldCompatibility": [
+      "Law Manipulator governs a bounded set of contestable world rules and remains beneath Void, Grandmother Void, and the highest cosmic order.",
+      "It is compatible with rituals, battlefield control, puzzle design, and authority duels because it commands scoped law distortion rather than unrestricted existence editing.",
+      "Its power stays coherent because it depends on law selection, scope, cost, and counterplay instead of universal control over reality."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 1
   },
   {
     "id": "blood_pact_warlock",
     "name": "Blood Pact Warlock (Contracted Power)",
     "category": "Authority",
-    "summary": "This archetype involves entering a blood pact or contract with a powerful being - such as a demon, eldritch being, or...",
-    "description": "This archetype involves entering a blood pact or contract with a powerful being - such as a demon, eldritch being, or ancient spirit - to borrow its power on demand. Distinct from the Celestial Pact (which is often divine and benevolent), this one is more transactional or dangerous. The function is that the character can call upon the patron's abilities as their own. For example, a blood pact with a Demon Duke might let the warlock cast hellfire spells or summon demonic minions far beyond a normal mage's scope. In return, the character might owe services or have a time limit on usage before...",
+    "summary": "A dark-contract Authority that grants the bearer borrowed command through blood-sealed obligations, patron claims, and dangerous power rights.",
+    "description": "Blood Pact Warlock is an Authority that binds the bearer to a patron through blood-sealed obligation and dangerous contractual power. It belongs in the Authority category because it grants command through the legal and symbolic force of a blood pact, not merely by borrowing spells from something stronger. The bearer becomes an authorized vessel for a patron's dark jurisdiction, able to command pact-granted effects, entities, and sanctions within the contract's scope. Its progression bias favors negotiation, sacrifice, and increasingly severe exchanges of self or service rather than clean personal growth. The Authority is strongest when the pact is active, the debt is current, and the patron's sphere overlaps with the crisis at hand. The main tradeoff is corrosive dependency, because every stronger use deepens entanglement with a will that expects repayment. In the world, Blood Pact Warlock should feel feared and fascinating because it turns private desperation into a recognizable form of dark office. It remains lore-safe because the authority is contract-bound, contestable, and purchased at escalating cost, and because even blood law remains beneath Void and Grandmother Void.",
     "coreLoop": [
-      "This archetype involves entering a blood pact or contract with a powerful being - such as a demon, eldritch being, or ancient spirit - to borrow its power on demand.",
-      "Distinct from the Celestial Pact, this one is more transactional or dangerous.",
-      "The function is that the character can call upon the patron's abilities as their own."
+      "Invoke the blood pact to access domain-specific commands, power rights, and patron-backed manifestations that ordinary casters cannot sustain.",
+      "Renegotiate or deepen the pact through sacrifice, service, or risk when greater authority is needed than the current contract permits.",
+      "Manage debt, corruption, and patron pressure so each use does not quietly transfer more of your life than you intended to spend."
     ],
     "progression": [
-      "Progression can occur by renegotiating the pact at higher tiers - offering more of themselves to unlock correspondingly higher powers from the patron.",
-      "It can also synergize in a narrative sense with morality systems: every use might tilt them towards evil or chaos alignment, which in trait-based progression could unlock further...",
-      "For example, a blood pact with a Demon Duke might let the warlock cast hellfire spells or summon demonic minions far beyond a normal mage's scope."
+      "Early growth grants a dangerous but usable pact mark, first-tier authority effects, and a clear debt structure the bearer must survive.",
+      "Mid progression expands into stronger patron manifestations, enforcement clauses, and partial command over beings or spaces touched by the same blood law.",
+      "Late progression turns the bearer into a feared contract sovereign whose words can bind, punish, or unleash horrors at the cost of becoming harder to call wholly mortal."
     ],
     "narrativeHooks": [
-      "The thematic flavor is darkly empowering - the character might have visible runes or a mark from the pact, and when they invoke it, their eyes glow with the patron's energy.",
-      "It's rare because few survive the process or can keep their sanity afterward - the character's cheat is that they manage to wield this double- edged power without immediate...",
-      "In return, the character might owe services or have a time limit on usage before a price is due."
+      "Every pact mark on your body is a sentence in a contract others can learn to fear, read, or exploit.",
+      "People near you must guess whether they are dealing with a desperate mortal using dark office or a person already halfway replaced by the patron's claim.",
+      "The more elegant your command becomes, the more frightening it is that power now speaks in a language written with your own blood."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Blood Pact Warlock and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Blood Pact Warlock.",
-      "Use the Blood Pact Warlock to resolve a crisis ordinary powers cannot solve."
+      "Break or rewrite one clause of the pact before your patron cashes it in during the worst possible crisis.",
+      "Hunt a rival warlock whose contract exposes a weakness in your own authority's legal foundation.",
+      "Choose whether to buy enough power to save a city tonight even though tomorrow's debt may ruin everything you value."
     ],
     "tags": [
       "blood",
@@ -1960,6 +2372,30 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Blood Pact Warlock can support debt-backed power surges, pact clauses, patron manifestations, and dark-command actions unavailable to ordinary casters. It gives warlock fantasy a true authority structure instead of only dangerous spellcasting. That makes every activation feel contractual and loaded. It also creates strong synergy with corruption, summons, and taboo systems.",
+      "In narrative and quests, it enables bargain horror, patron politics, cursed rescues, and choices where the clean option simply does not exist anymore. The bearer can save lives by paying with their own future or doom others by pretending the debt is manageable. That creates excellent moral pressure. It also keeps dark power intimate and personal instead of abstractly evil.",
+      "In implementation, it maps well to contract states, debt counters, patron domains, clause unlocks, and backlash events. Those hooks can enrich combat, quests, and narrator framing without requiring a unique subsystem for every dark patron. They also create readable escalation paths for corruption and repayment. That makes the Authority strong and implementable.",
+      "Its limitation-aware use comes from making every gain owed. The player should feel brilliant and frightened whenever the pact solves a problem too cleanly. That preserves the dark-contract fantasy while keeping the patron meaningfully above the bearer. The strongest version feels like commanding borrowed doom under a signature written in blood."
+    ],
+    "limits": [
+      "The pact only authorizes the powers and commands explicitly supported by the current contract and patron domain.",
+      "Broken payment schedules, rival legal claims, or damaged blood seals can sharply weaken or invalidate the authority.",
+      "Holy suppression, anti-contract rites, and patrons with stronger claim can interfere with the warlock's right to command."
+    ],
+    "costs": [
+      "Every significant use deepens debt, corruption, or service obligation owed to the patron.",
+      "Escalating the pact may demand blood, memory, lifespan, loyalty, or acts the bearer cannot later undo.",
+      "The visible signs of dark authority create fear, isolation, and constant risk that others will try to exploit or purge the contract."
+    ],
+    "worldCompatibility": [
+      "Blood Pact Warlock governs dark contractual authority and remains beneath Void, Grandmother Void, and the highest cosmic law.",
+      "It is compatible with patron systems, corruption arcs, summon control, and taboo magic because it commands a bounded blood-sealed office.",
+      "Its power stays coherent because it depends on clauses, debt, patron scope, and contestable legitimacy rather than free evil omnipotence."
+    ],
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 3
   }
 ]

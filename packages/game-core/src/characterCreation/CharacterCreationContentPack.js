@@ -82,6 +82,17 @@ const ARCHETYPE_SYSTEM_INDEX = new Map(
     .map((entry) => [entry.id, entry]),
 );
 
+function isSelectableCreationSystem(entry, platform = "") {
+  const ordering =
+    entry?.characterCreation && typeof entry.characterCreation === "object"
+      ? entry.characterCreation.ordering || {}
+      : {};
+  if (!ordering || ordering.selectable !== true) return false;
+  if (!platform) return true;
+  const platforms = Array.isArray(ordering.platforms) ? ordering.platforms : [];
+  return platforms.includes(platform);
+}
+
 export function getCharacterCreationClasses() {
   return cloneList(classesData);
 }
@@ -156,7 +167,7 @@ export function getCharacterCreationSkillReferenceById(skillId) {
 }
 
 export function getCharacterCreationArchetypeSystems() {
-  return cloneList(archetypeSystemsData);
+  return cloneList((Array.isArray(archetypeSystemsData) ? archetypeSystemsData : []).filter((entry) => isSelectableCreationSystem(entry)));
 }
 
 export function getCharacterCreationArchetypeSystemsByCategory(category) {
@@ -168,5 +179,6 @@ export function getCharacterCreationArchetypeSystemsByCategory(category) {
 
 export function getCharacterCreationArchetypeSystemById(systemId) {
   if (!systemId) return null;
-  return cloneValue(ARCHETYPE_SYSTEM_INDEX.get(systemId) || null);
+  const entry = ARCHETYPE_SYSTEM_INDEX.get(systemId) || null;
+  return isSelectableCreationSystem(entry) ? cloneValue(entry) : null;
 }

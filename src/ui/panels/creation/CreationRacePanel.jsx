@@ -1,10 +1,7 @@
 import {
   getCharacterCreationRaceAbilitySummaries,
-  getCharacterCreationRaces,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 import { CANONICAL_ATTRIBUTES } from "../../../constants/attributes.js";
-
-const CREATION_RACES = getCharacterCreationRaces();
 
 function StatModifierBar({ label, value }) {
   const isPositive = value > 0;
@@ -51,10 +48,12 @@ function AbilityTag({ label, name, description, color }) {
 
 export default function CreationRacePanel({
   selectedRace,
+  races = [],
+  recommendedRaceIds = [],
   onRaceSelect,
   onAction,
 }) {
-  const races = CREATION_RACES;
+  const recommended = new Set(recommendedRaceIds);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -127,9 +126,14 @@ export default function CreationRacePanel({
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontWeight: "bold", letterSpacing: "1px" }}>{race.name.toUpperCase()}</span>
-                {isSelected && (
-                  <span style={{ fontSize: "0.55rem", color: "var(--holo-gold)", fontWeight: "bold" }}>SELECTED</span>
-                )}
+                <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
+                  {recommended.has(race.id) ? (
+                    <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>SYSTEM MATCH</span>
+                  ) : null}
+                  {isSelected && (
+                    <span style={{ fontSize: "0.55rem", color: "var(--holo-gold)", fontWeight: "bold" }}>SELECTED</span>
+                  )}
+                </div>
               </div>
               <div style={{ fontSize: "0.7rem", opacity: 0.8, lineHeight: "1.35" }}>
                 {race.description}

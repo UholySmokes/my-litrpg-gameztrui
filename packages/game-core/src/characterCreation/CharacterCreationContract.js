@@ -1,6 +1,6 @@
 import { getCharacterCreationSkillSelectionLimits } from "./CharacterCreationOptionsRegistry.js";
 
-const BLUEPRINT_VERSION = 1;
+const BLUEPRINT_VERSION = 2;
 
 function normalizeId(value) {
   if (typeof value !== "string") return null;

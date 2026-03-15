@@ -7,6 +7,8 @@ const SOURCE_COLORS = {
   study: "#74C0FC",
   cultivation: "#94D82D",
   profession: "#FFD43B",
+  granted: "#8CE99A",
+  locked: "#FF8787",
   relic: "#FFA94D",
   story: "#FF8787",
   system: "#ADB5BD",
@@ -138,6 +140,10 @@ export default function CreationSkillsPanel({
   selectedClass,
   availableActiveSkills,
   availablePassiveSkills,
+  grantedActiveSkills = [],
+  grantedPassiveSkills = [],
+  blockedSkillIds = [],
+  selectedSystem = null,
   selectedActiveSkills,
   selectedPassiveSkills,
   maxActiveSkills = 3,
@@ -148,6 +154,7 @@ export default function CreationSkillsPanel({
 }) {
   const activeCount = selectedActiveSkills?.length || 0;
   const passiveCount = selectedPassiveSkills?.length || 0;
+  const blockedSet = new Set(blockedSkillIds || []);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -162,8 +169,39 @@ export default function CreationSkillsPanel({
       >
         Skill Selection
       </div>
+      {selectedSystem ? (
+        <div style={{ fontSize: "0.68rem", color: "var(--text-dim)", lineHeight: "1.45" }}>
+          {selectedSystem.name} is actively shaping this pool. Granted skills are free bonuses and locked skills have been removed from the elective list.
+        </div>
+      ) : null}
       {selectedClass ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          {(grantedActiveSkills.length > 0 || grantedPassiveSkills.length > 0) && (
+            <div
+              style={{
+                border: "1px solid rgba(140, 233, 154, 0.25)",
+                background: "rgba(140, 233, 154, 0.08)",
+                borderRadius: "6px",
+                padding: "0.75rem",
+                display: "grid",
+                gap: "0.5rem",
+              }}
+            >
+              <div style={{ color: "#8CE99A", fontWeight: "bold", fontSize: "0.75rem" }}>
+                SYSTEM-GRANTED SKILLS
+              </div>
+              {grantedActiveSkills.length > 0 ? (
+                <div style={{ fontSize: "0.65rem", color: "var(--text-main)" }}>
+                  <strong>Active:</strong> {grantedActiveSkills.map((skill) => skill.name || skill.id).join(", ")}
+                </div>
+              ) : null}
+              {grantedPassiveSkills.length > 0 ? (
+                <div style={{ fontSize: "0.65rem", color: "var(--text-main)" }}>
+                  <strong>Passive:</strong> {grantedPassiveSkills.map((skill) => skill.name || skill.id).join(", ")}
+                </div>
+              ) : null}
+            </div>
+          )}
           {/* Active Skills Section */}
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
@@ -194,7 +232,10 @@ export default function CreationSkillsPanel({
               {(availableActiveSkills || []).map((skill) => (
                 <SkillCard
                   key={skill.id}
-                  skill={skill}
+                  skill={{
+                    ...skill,
+                    source: blockedSet.has(skill.id) ? "locked" : skill.source,
+                  }}
                   isSelected={(selectedActiveSkills || []).some((s) => s.id === skill.id)}
                   onClick={() => onAction?.(() => onActiveSelect(skill))}
                   showDescription={true}
@@ -238,7 +279,10 @@ export default function CreationSkillsPanel({
               {(availablePassiveSkills || []).map((skill) => (
                 <SkillCard
                   key={skill.id}
-                  skill={skill}
+                  skill={{
+                    ...skill,
+                    source: blockedSet.has(skill.id) ? "locked" : skill.source,
+                  }}
                   isSelected={(selectedPassiveSkills || []).some((s) => s.id === skill.id)}
                   onClick={() => onAction?.(() => onPassiveToggle(skill))}
                   showDescription={false}

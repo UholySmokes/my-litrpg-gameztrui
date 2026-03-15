@@ -1,6 +1,5 @@
 import {
   getCharacterCreationClassAbilitySummaries,
-  getCharacterCreationClassesByTier,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 
 const RESOURCE_COLORS = {
@@ -11,8 +10,6 @@ const RESOURCE_COLORS = {
   energy: "#FFD700",
   mana: "#845EF7",
 };
-const CREATION_CLASSES = getCharacterCreationClassesByTier(1);
-
 function ResourceBadge({ resource }) {
   if (!resource) return null;
   const color = RESOURCE_COLORS[resource] || "var(--holo-cyan)";
@@ -59,10 +56,12 @@ function ArchetypeBadge({ archetype }) {
 
 export default function CreationClassPanel({
   selectedClass,
+  classes = [],
+  recommendedClassIds = [],
   onClassSelect,
   onAction,
 }) {
-  const classes = CREATION_CLASSES;
+  const recommended = new Set(recommendedClassIds);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -135,6 +134,9 @@ export default function CreationClassPanel({
                 <span style={{ fontWeight: "bold", letterSpacing: "1px" }}>{cls.name.toUpperCase()}</span>
                 <div style={{ display: "flex", gap: "0.3rem", alignItems: "center" }}>
                   {resource && <ResourceBadge resource={resource} />}
+                  {recommended.has(cls.id) && (
+                    <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>SYSTEM MATCH</span>
+                  )}
                   {isSelected && (
                     <span style={{ fontSize: "0.55rem", color: "var(--holo-gold)", fontWeight: "bold" }}>SELECTED</span>
                   )}

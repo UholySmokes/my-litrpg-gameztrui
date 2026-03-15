@@ -1,0 +1,31 @@
+[
+  {
+    "id": "mirageborn_special",
+    "name": "Mirage Split",
+    "description": "Divide into mirages to confuse the foe.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "enemy",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.25
+      },
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

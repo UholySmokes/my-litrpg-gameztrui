@@ -1,0 +1,322 @@
+[
+  {
+    "id": "berserker_endless_rage",
+    "name": "Endless Rage",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Rage decays slower.",
+    "level": 1
+  },
+  {
+    "id": "berserker_unending_fury",
+    "name": "Unending Fury",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Generate more rage from attacks.",
+    "level": 1
+  },
+  {
+    "id": "berserker_rampage_recovery",
+    "name": "Rampage Recovery",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Rampage heals you for each hit.",
+    "level": 1
+  },
+  {
+    "id": "berserker_fresh_meat",
+    "name": "Fresh Meat",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Bonus damage against full health targets.",
+    "level": 1
+  },
+  {
+    "id": "berserker_battle_frenzy",
+    "name": "Battle Frenzy",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Attack speed increases during combat.",
+    "level": 1
+  },
+  {
+    "id": "berserker_warpaint",
+    "name": "Warpaint",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Damage reduction while enraged.",
+    "level": 1
+  },
+  {
+    "id": "berserker_inner_rage",
+    "name": "Inner Rage",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Deal increased damage while enraged.",
+    "level": 1
+  },
+  {
+    "id": "berserker_furious",
+    "name": "Furious",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Enrage effect is more powerful.",
+    "level": 1
+  },
+  {
+    "id": "berserker_bloody_knuckles",
+    "name": "Bloody Knuckles",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Unarmed attacks are empowered.",
+    "level": 1
+  },
+  {
+    "id": "berserker_meat_shield",
+    "name": "Meat Shield",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Your bulk provides natural armor.",
+    "level": 1
+  },
+  {
+    "id": "berserker_undying_rage",
+    "name": "Undying Rage",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Cannot die while enraged (briefly).",
+    "level": 1
+  },
+  {
+    "id": "berserker_taste_for_blood",
+    "name": "Taste for Blood",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Killing enemies extends enrage.",
+    "level": 1
+  },
+  {
+    "id": "berserker_ruthless",
+    "name": "Ruthless",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Critical strike chance increased.",
+    "level": 1
+  },
+  {
+    "id": "berserker_carnage",
+    "name": "Carnage",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Rampage generates additional rage.",
+    "level": 1
+  },
+  {
+    "id": "berserker_massacre",
+    "name": "Massacre",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Execute can reset on kills.",
+    "level": 1
+  },
+  {
+    "id": "berserker_frothing",
+    "name": "Frothing Berserker",
+    "type": "passive",
+    "class": "berserker",
+    "description": "At max rage, deal significantly more damage.",
+    "level": 1
+  },
+  {
+    "id": "berserker_outburst",
+    "name": "Outburst",
+    "type": "passive",
+    "class": "berserker",
+    "description": "When rage is full, release burst damage.",
+    "level": 1
+  },
+  {
+    "id": "berserker_bloodsurge",
+    "name": "Bloodsurge",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Bloodthirst criticals trigger free Wild Strike.",
+    "level": 1
+  },
+  {
+    "id": "berserker_reckless_fury",
+    "name": "Reckless Fury",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Ignore pain while attacking.",
+    "level": 1
+  },
+  {
+    "id": "berserker_dual_wield_spec",
+    "name": "Dual Wield Specialization",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Off-hand damage increased.",
+    "level": 1
+  },
+  {
+    "id": "berserker_two_handed_spec",
+    "name": "Two-Handed Specialization",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Two-handed damage increased.",
+    "level": 1
+  },
+  {
+    "id": "berserker_flurry",
+    "name": "Flurry",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Critical hits increase attack speed.",
+    "level": 1
+  },
+  {
+    "id": "berserker_single_minded",
+    "name": "Single-Minded Fury",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Dual wielding one-handers grants bonus damage.",
+    "level": 1
+  },
+  {
+    "id": "berserker_war_machine",
+    "name": "War Machine",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Kills grant rage and movement speed.",
+    "level": 1
+  },
+  {
+    "id": "berserker_anger_management",
+    "name": "Anger Management",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Rage generation from damage taken.",
+    "level": 1
+  },
+  {
+    "id": "berserker_blood_frenzy",
+    "name": "Blood Frenzy",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Bleeding targets give you more rage.",
+    "level": 1
+  },
+  {
+    "id": "berserker_sudden_death",
+    "name": "Sudden Death",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Execute usable at any health occasionally.",
+    "level": 1
+  },
+  {
+    "id": "berserker_storm_of_swords",
+    "name": "Storm of Swords",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Whirlwind generates rage.",
+    "level": 1
+  },
+  {
+    "id": "berserker_dragon_roar",
+    "name": "Dragon Roar",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Shouts deal damage and knock back.",
+    "level": 1
+  },
+  {
+    "id": "berserker_juggernaut",
+    "name": "Juggernaut",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Immune to stuns while charging.",
+    "level": 1
+  },
+  {
+    "id": "berserker_indomitable",
+    "name": "Indomitable",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Reduced stun duration.",
+    "level": 1
+  },
+  {
+    "id": "berserker_enraged_regeneration",
+    "name": "Enraged Regeneration",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Heal while enraged.",
+    "level": 1
+  },
+  {
+    "id": "berserker_impending_victory",
+    "name": "Impending Victory",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Killing blows heal you.",
+    "level": 1
+  },
+  {
+    "id": "berserker_second_wind",
+    "name": "Second Wind",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Regenerate when stunned.",
+    "level": 1
+  },
+  {
+    "id": "berserker_wrecking_crew",
+    "name": "Wrecking Crew",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Critical strikes deal extra damage.",
+    "level": 1
+  },
+  {
+    "id": "berserker_precision",
+    "name": "Precision",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Even wild attacks hit true.",
+    "level": 1
+  },
+  {
+    "id": "berserker_commanding_presence",
+    "name": "Commanding Presence",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Shouts are more effective.",
+    "level": 1
+  },
+  {
+    "id": "berserker_intimidating_presence",
+    "name": "Intimidating Presence",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Enemies deal less damage to you.",
+    "level": 1
+  },
+  {
+    "id": "berserker_unstoppable_force",
+    "name": "Unstoppable Force",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Cannot be slowed.",
+    "level": 1
+  },
+  {
+    "id": "berserker_avatar_of_war",
+    "name": "Avatar of War",
+    "type": "passive",
+    "class": "berserker",
+    "description": "Become an embodiment of battle.",
+    "level": 1
+  }
+]

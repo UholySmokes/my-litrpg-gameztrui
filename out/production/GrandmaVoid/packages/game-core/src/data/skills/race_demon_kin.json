@@ -1,0 +1,27 @@
+[
+  {
+    "id": "demon_kin_special",
+    "name": "Abyssal Siphon",
+    "description": "Drain life with a dark strike.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "lifesteal": 0.4,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

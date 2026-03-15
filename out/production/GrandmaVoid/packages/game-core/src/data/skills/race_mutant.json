@@ -1,0 +1,20 @@
+[
+  {
+    "id": "mutant_special",
+    "name": "Mutation Spike",
+    "description": "Trigger a volatile mutation buff.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "randomBuff": true,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

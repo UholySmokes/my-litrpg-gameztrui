@@ -1,0 +1,26 @@
+[
+  {
+    "id": "crafting",
+    "name": "Crafting",
+    "description": "Transform raw materials into finished items.",
+    "icon": "🔨"
+  },
+  {
+    "id": "gathering",
+    "name": "Gathering",
+    "description": "Collect raw materials from the environment.",
+    "icon": "🌿"
+  },
+  {
+    "id": "cooking",
+    "name": "Cooking & Provisioning",
+    "description": "Create consumables that provide temporary buffs.",
+    "icon": "🍽️"
+  },
+  {
+    "id": "service",
+    "name": "Service & Support",
+    "description": "Provide unique services and create special items.",
+    "icon": "📜"
+  }
+]

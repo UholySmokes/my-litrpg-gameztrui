@@ -14,7 +14,7 @@ import {
   getZoneById,
   resolveLocationId,
 } from "../world/WorldDataRegistry.js";
-import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
+import { resolvePlayerArchetypeSystem } from "../systems/archetype/resolvePlayerArchetypeSystem.js";
 import { toNumber } from "../utils/shared.js";
 import {
   PROMPT_MODES,
@@ -130,20 +130,6 @@ function resolveEntityLabel(value, fallback = "None") {
   return fallback;
 }
 
-function resolveArchetypeSystem(player = {}) {
-  const raw = player.system ?? player.archetypeSystem;
-  if (!raw) return null;
-  if (typeof raw === "string") {
-    return getArchetypeSystemById(raw) || { id: raw, name: raw };
-  }
-  if (typeof raw === "object" && !Array.isArray(raw)) {
-    const maybeId = raw.id || raw.archetypeId || raw.definition?.id;
-    const resolved = maybeId ? getArchetypeSystemById(maybeId) : null;
-    return resolved || raw.definition || raw;
-  }
-  return null;
-}
-
 export function resolvePromptMode(gameState, actionResult) {
   const actionType = actionResult?.actionType;
   const inCombat = Boolean(
@@ -169,7 +155,7 @@ export function resolvePromptMode(gameState, actionResult) {
  * @returns {string} The complete prompt string
  */
 export function assemblePrompt(gameState, userInput, actionResult) {
-  const archetypeSystem = resolveArchetypeSystem(gameState?.player);
+  const archetypeSystem = resolvePlayerArchetypeSystem(gameState?.player);
   const dialogueIntent = detectDialogueIntent(userInput);
   const resolvedActionResult =
     actionResult && typeof actionResult === "object"
@@ -444,9 +430,19 @@ function buildMagicContextLines(player = {}, world = {}) {
 function buildContextSection(gameState) {
   const player = gameState?.player || {};
   const world = gameState?.world || {};
-  const archetypeSystem = resolveArchetypeSystem(player);
+  const archetypeSystem = resolvePlayerArchetypeSystem(player);
   const systemLines = [];
   const magicLines = buildMagicContextLines(player, world);
+  const takeSystemPreview = (previewKey, fullKey, count = 2) => {
+    if (!archetypeSystem || typeof archetypeSystem !== "object") return [];
+    if (Array.isArray(archetypeSystem[previewKey])) {
+      return archetypeSystem[previewKey].slice(0, count);
+    }
+    if (Array.isArray(archetypeSystem[fullKey])) {
+      return archetypeSystem[fullKey].slice(0, count);
+    }
+    return [];
+  };
   if (archetypeSystem) {
     const systemName = archetypeSystem.name || archetypeSystem.id || "Unknown";
     const category = archetypeSystem.category
@@ -457,11 +453,53 @@ function buildContextSection(gameState) {
     if (summary) {
       systemLines.push(`System Summary: ${summary}`);
     }
+    const profile = [archetypeSystem.rarity, archetypeSystem.stability]
+      .filter((value) => typeof value === "string" && value.trim().length > 0)
+      .join(" / ");
+    if (profile) {
+      systemLines.push(`System Profile: ${profile}`);
+    }
+    const coreLoopPreview = takeSystemPreview("coreLoopPreview", "coreLoop", 2);
+    if (coreLoopPreview.length) {
+      systemLines.push(`System Core Loop: ${coreLoopPreview.join(" | ")}`);
+    }
+    const possibleUses = takeSystemPreview("possibleUsesPreview", "possibleUses", 2);
+    if (possibleUses.length) {
+      systemLines.push(`System Possible Uses: ${possibleUses.join(" | ")}`);
+    }
+    const limits = takeSystemPreview("limitsPreview", "limits", 2);
+    if (limits.length) {
+      systemLines.push(`System Limits: ${limits.join(" | ")}`);
+    }
+    const costs = takeSystemPreview("costsPreview", "costs", 2);
+    if (costs.length) {
+      systemLines.push(`System Costs: ${costs.join(" | ")}`);
+    }
+    const worldClassification = takeSystemPreview(
+      "worldCompatibilityPreview",
+      "worldCompatibility",
+      2,
+    );
+    if (worldClassification.length) {
+      systemLines.push(
+        `System World Classification: ${worldClassification.join(" | ")}`,
+      );
+    }
     const narrativeHooks = Array.isArray(archetypeSystem.narrativeHooks)
       ? archetypeSystem.narrativeHooks.slice(0, 2)
       : [];
     if (narrativeHooks.length) {
       systemLines.push(`System Narrative Hooks: ${narrativeHooks.join(" | ")}`);
+    }
+    const factionReactions = takeSystemPreview(
+      "factionReactionsPreview",
+      "factionReactions",
+      2,
+    );
+    if (factionReactions.length) {
+      systemLines.push(
+        `System Faction Reactions: ${factionReactions.join(" | ")}`,
+      );
     }
   }
 
@@ -765,7 +803,7 @@ export function buildInitialPrompt(gameState = {}) {
     typeof player.class === "string"
       ? player.class
       : player.class?.name || "Drifter";
-  const archetypeSystem = resolveArchetypeSystem(player);
+  const archetypeSystem = resolvePlayerArchetypeSystem(player);
   const systemName = archetypeSystem?.name || "Unbound";
   const systemCategory = archetypeSystem?.category
     ? ` (${archetypeSystem.category})`

@@ -1,0 +1,7 @@
+const SAVE_RESET_EPOCH = 2;
+const GAME_STATE_VERSION = 2;
+
+module.exports = {
+  SAVE_RESET_EPOCH,
+  GAME_STATE_VERSION,
+};

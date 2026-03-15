@@ -1,9 +1,16 @@
 const SOURCE_COLORS = {
   class: "#00F3FF",
   race: "#96F2D7",
+  bloodline: "#96F2D7",
   general: "#E599F7",
   universal: "#E599F7",
+  study: "#74C0FC",
+  cultivation: "#94D82D",
   profession: "#FFD43B",
+  granted: "#8CE99A",
+  locked: "#FF8787",
+  relic: "#FFA94D",
+  story: "#FF8787",
   system: "#ADB5BD",
 };
 
@@ -30,11 +37,39 @@ function SourceBadge({ source }) {
   );
 }
 
+function MetaBadge({ label, color = "var(--text-dim)" }) {
+  if (!label) return null;
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        padding: "0.08rem 0.3rem",
+        borderRadius: "3px",
+        fontSize: "0.5rem",
+        fontWeight: "bold",
+        letterSpacing: "0.5px",
+        textTransform: "uppercase",
+        color,
+        background: `${color}15`,
+        border: `1px solid ${color}33`,
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
 function SkillCard({ skill, isSelected, onClick, showDescription = false }) {
   const source =
+    skill.latticeSourceType ||
     skill.source ||
     skill.ownerType ||
     "general";
+  const family = skill.creationLabels?.family || skill.latticeFamily || null;
+  const runtimeRole =
+    skill.runtimeRole && skill.runtimeRole !== "standard"
+      ? skill.creationLabels?.runtimeRole || skill.runtimeRole
+      : null;
   const element = skill.element || null;
   const damage = skill.stats?.damage || null;
   const manaCost = skill.stats?.manaCost || null;
@@ -72,11 +107,23 @@ function SkillCard({ skill, isSelected, onClick, showDescription = false }) {
             </span>
           )}
           <SourceBadge source={source} />
+          <MetaBadge label={family} color="#74C0FC" />
+          <MetaBadge label={runtimeRole} color="#FFD43B" />
         </div>
       </div>
       {(showDescription || isSelected) && (
-        <div style={{ fontSize: "0.6rem", opacity: 0.8, lineHeight: "1.35" }}>
-          {skill.description || "Details unavailable."}
+        <div style={{ display: "grid", gap: "0.2rem" }}>
+          <div style={{ fontSize: "0.6rem", opacity: 0.8, lineHeight: "1.35" }}>
+            {skill.description || "Details unavailable."}
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem" }}>
+            <span style={{ fontSize: "0.52rem", color: "var(--text-dim)" }}>
+              Slot: {skill.creationLabels?.slotType || skill.slotType || skill.type || "Unknown"}
+            </span>
+            <span style={{ fontSize: "0.52rem", color: "var(--text-dim)" }}>
+              Source: {skill.creationLabels?.sourceType || source}
+            </span>
+          </div>
         </div>
       )}
       {(damage || manaCost) && (
@@ -93,14 +140,21 @@ export default function CreationSkillsPanel({
   selectedClass,
   availableActiveSkills,
   availablePassiveSkills,
+  grantedActiveSkills = [],
+  grantedPassiveSkills = [],
+  blockedSkillIds = [],
+  selectedSystem = null,
   selectedActiveSkills,
   selectedPassiveSkills,
+  maxActiveSkills = 3,
+  maxPassiveSkills = 6,
   onActiveSelect,
   onPassiveToggle,
   onAction,
 }) {
   const activeCount = selectedActiveSkills?.length || 0;
   const passiveCount = selectedPassiveSkills?.length || 0;
+  const blockedSet = new Set(blockedSkillIds || []);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -115,8 +169,39 @@ export default function CreationSkillsPanel({
       >
         Skill Selection
       </div>
+      {selectedSystem ? (
+        <div style={{ fontSize: "0.68rem", color: "var(--text-dim)", lineHeight: "1.45" }}>
+          {selectedSystem.name} is actively shaping this pool. Granted skills are free bonuses and locked skills have been removed from the elective list.
+        </div>
+      ) : null}
       {selectedClass ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          {(grantedActiveSkills.length > 0 || grantedPassiveSkills.length > 0) && (
+            <div
+              style={{
+                border: "1px solid rgba(140, 233, 154, 0.25)",
+                background: "rgba(140, 233, 154, 0.08)",
+                borderRadius: "6px",
+                padding: "0.75rem",
+                display: "grid",
+                gap: "0.5rem",
+              }}
+            >
+              <div style={{ color: "#8CE99A", fontWeight: "bold", fontSize: "0.75rem" }}>
+                SYSTEM-GRANTED SKILLS
+              </div>
+              {grantedActiveSkills.length > 0 ? (
+                <div style={{ fontSize: "0.65rem", color: "var(--text-main)" }}>
+                  <strong>Active:</strong> {grantedActiveSkills.map((skill) => skill.name || skill.id).join(", ")}
+                </div>
+              ) : null}
+              {grantedPassiveSkills.length > 0 ? (
+                <div style={{ fontSize: "0.65rem", color: "var(--text-main)" }}>
+                  <strong>Passive:</strong> {grantedPassiveSkills.map((skill) => skill.name || skill.id).join(", ")}
+                </div>
+              ) : null}
+            </div>
+          )}
           {/* Active Skills Section */}
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
@@ -126,14 +211,14 @@ export default function CreationSkillsPanel({
               <span style={{
                 fontSize: "0.7rem",
                 fontFamily: "monospace",
-                color: activeCount >= 3 ? "#8CE99A" : "var(--holo-cyan)",
+                color: activeCount >= maxActiveSkills ? "#8CE99A" : "var(--holo-cyan)",
                 fontWeight: "bold",
               }}>
-                {activeCount}/3 {activeCount >= 3 ? "\u2713" : ""}
+                {activeCount}/{maxActiveSkills} {activeCount >= maxActiveSkills ? "\u2713" : ""}
               </span>
             </div>
             <div style={{ fontSize: "0.6rem", color: "var(--text-dim)", marginBottom: "0.3rem" }}>
-              Combat abilities triggered during encounters. Select 3.
+              Combat abilities triggered during encounters. Select {maxActiveSkills}.
             </div>
             <div
               style={{
@@ -147,7 +232,10 @@ export default function CreationSkillsPanel({
               {(availableActiveSkills || []).map((skill) => (
                 <SkillCard
                   key={skill.id}
-                  skill={skill}
+                  skill={{
+                    ...skill,
+                    source: blockedSet.has(skill.id) ? "locked" : skill.source,
+                  }}
                   isSelected={(selectedActiveSkills || []).some((s) => s.id === skill.id)}
                   onClick={() => onAction?.(() => onActiveSelect(skill))}
                   showDescription={true}
@@ -170,14 +258,14 @@ export default function CreationSkillsPanel({
               <span style={{
                 fontSize: "0.7rem",
                 fontFamily: "monospace",
-                color: passiveCount >= 6 ? "#8CE99A" : "var(--holo-cyan)",
+                color: passiveCount >= maxPassiveSkills ? "#8CE99A" : "var(--holo-cyan)",
                 fontWeight: "bold",
               }}>
-                {passiveCount}/6 {passiveCount >= 6 ? "\u2713" : ""}
+                {passiveCount}/{maxPassiveSkills} {passiveCount >= maxPassiveSkills ? "\u2713" : ""}
               </span>
             </div>
             <div style={{ fontSize: "0.6rem", color: "var(--text-dim)", marginBottom: "0.3rem" }}>
-              Always-on enhancements that shape your passive capabilities. Select 6.
+              Always-on enhancements that shape your passive capabilities. Select {maxPassiveSkills}.
             </div>
             <div
               style={{
@@ -191,7 +279,10 @@ export default function CreationSkillsPanel({
               {(availablePassiveSkills || []).map((skill) => (
                 <SkillCard
                   key={skill.id}
-                  skill={skill}
+                  skill={{
+                    ...skill,
+                    source: blockedSet.has(skill.id) ? "locked" : skill.source,
+                  }}
                   isSelected={(selectedPassiveSkills || []).some((s) => s.id === skill.id)}
                   onClick={() => onAction?.(() => onPassiveToggle(skill))}
                   showDescription={false}

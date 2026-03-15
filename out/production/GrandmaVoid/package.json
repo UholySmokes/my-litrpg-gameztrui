@@ -1,0 +1,172 @@
+{
+  "name": "my-litrpg-game",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "npx kill-port 5173 && vite --host 127.0.0.1 --port 5173 --strictPort",
+    "dev:api": "npx kill-port 5000 5001 4000 4400 4500 && firebase emulators:start --only hosting,functions",
+    "dev:stack": "concurrently -k -n api,web -c blue,green \"npm run dev:api\" \"npm run dev\"",
+    "build": "vite build",
+    "build:tooling": "node scripts/build-profile.mjs tooling",
+    "build:pwa": "node scripts/build-profile.mjs pwa",
+    "postbuild": "node scripts/generate-runtime-config.js && node scripts/generate-godot-config.js",
+    "lint": "eslint .",
+    "lint:src": "eslint src packages functions tests scripts shared vite.config.js eslint.config.js",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:ci": "node --experimental-vm-modules node_modules/jest/bin/jest.js --no-cache --runInBand",
+    "test:smoke": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/unit/WebGameplayGate.test.js tests/unit/SyncReplayService.test.js tests/unit/SyncReplayRoute.test.js tests/unit/ApiRouterSyncRoutes.test.js tests/unit/SchemaValidation.test.js tests/unit/SkillSchemaValidation.test.js --runInBand",
+    "check": "npm run lint && npm run typecheck && npm run validate:runtime-contract && npm run validate:env-examples && npm run validate:registries && npm run validate:archetypes && npm run test:smoke",
+    "check:inner-loop": "npm run lint:src && npm run typecheck && npm run test:smoke && npm run report:optimization:baseline",
+    "check:functions": "npm --prefix functions ci && npm --prefix functions run typecheck",
+    "check:godot:smoke": "npm run generate:godot-config && npm run test:godot:headless",
+    "audit:security:root": "npm audit --audit-level=moderate",
+    "audit:security:functions": "npm --prefix functions audit --audit-level=moderate",
+    "audit:security": "npm run audit:security:root && npm run audit:security:functions",
+    "test:firestore-rules": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/security/firestoreRules.test.js --runInBand --no-cache",
+    "test:firestore-rules:emulator": "node scripts/run-firestore-rules-emulator.mjs",
+    "test:performance": "node --experimental-vm-modules node_modules/jest/bin/jest.js tests/performanceEffects.test.js",
+    "test:godot:headless": "node scripts/run-godot-headless.mjs",
+    "test:godot:perf": "node scripts/run-godot-perf-probe.mjs",
+    "test:rollback:parity": "node scripts/run-rollback-parity-check.mjs",
+    "test:rollback:parity:update": "node scripts/run-rollback-parity-check.mjs --update-baseline",
+    "test:staging:endpoint-probe": "node scripts/run-staging-endpoint-probe.mjs",
+    "test:telemetry:smoke": "node scripts/run-telemetry-ingest-smoke.mjs",
+    "test:staging:soak-smoke": "node scripts/run-staging-soak-smoke.mjs",
+    "test:pwa:installability": "node scripts/test-pwa-installability.mjs",
+    "test:rollout:rollback": "node scripts/verify-m12-live-rollback.mjs",
+    "test:ga:readiness": "node scripts/run-m13-ga-readiness-suite.mjs",
+    "report:staging:signoff": "node scripts/generate-staging-signoff-packet.mjs",
+    "report:canary:m11": "node scripts/generate-m11-canary-report.mjs",
+    "report:canary:alerts": "node scripts/generate-m11-alert-tuning-report.mjs",
+    "report:rollout:m12": "node scripts/generate-m12-rollout-gate-checklist.mjs",
+    "report:ga:enablement": "node scripts/generate-m13-full-enablement-audit.mjs",
+    "report:ga:handoff": "node scripts/generate-m13-ga-handoff-package.mjs",
+    "report:ga:closeout": "node scripts/generate-m13-phase-closeout-dossier.mjs",
+    "report:ga:playbook": "node scripts/generate-m13-post-launch-playbook.mjs",
+    "report:ga:review": "node scripts/generate-m13-ga-review-notes.mjs",
+    "report:ga:rollout-logs": "node scripts/generate-m13-rollout-logs-summary.mjs",
+    "report:ga:signoff": "node scripts/generate-m13-signoff-register.mjs",
+    "report:worldbuild:placeholders": "node scripts/generate-placeholder-item-curation-report.mjs",
+    "report:optimization:baseline": "npm run build:tooling && node scripts/generate-optimization-baseline.mjs",
+    "log:canary:drill": "node scripts/log-m11-oncall-drill.mjs",
+    "simulate": "node sim_gamestart_fixed.js",
+    "simulate:quick": "node sim_gamestart_fixed.js --runs 10 --logs false",
+    "simulate:csv": "node sim_gamestart_fixed.js --format csv",
+    "simulate:full": "node sim_gamestart_fixed.js --runs 100",
+    "simulate:nightly": "node sim_gamestart_fixed.js --runs 100 --seed 424242 --logs false",
+    "validate:registries": "node scripts/validate-registries.mjs",
+    "validate:archetypes": "node scripts/validate-archetypes.mjs",
+    "validate:runtime-contract": "node scripts/check-runtime-contract.mjs",
+    "validate:env-examples": "node scripts/check-env-example-coverage.mjs",
+    "validate:player-loot": "node scripts/validate-player-facing-loot.mjs",
+    "validate:placeholder-curation": "node scripts/validate-placeholder-curation-thresholds.mjs",
+    "validate:balance-corridors": "node scripts/validate-balance-corridors.mjs",
+    "validate:skill-owner-schema": "node scripts/validate-skill-owner-schema.mjs",
+    "validate:worldbuild": "node scripts/run-worldbuild-integrity-check.mjs",
+    "validate:worldbuild:strict": "node scripts/run-worldbuild-integrity-check.mjs --strict",
+    "validate:worldbuild:update-baseline": "node scripts/run-worldbuild-integrity-check.mjs --update-baseline",
+    "generate:godot-config": "node scripts/generate-godot-config.js",
+    "generate:godot-config:prod": "node scripts/generate-godot-config.js --profile production",
+    "android:preflight": "node scripts/android-preflight.mjs",
+    "android:signing:configure": "node scripts/configure-android-signing.mjs",
+    "android:export:internal": "node scripts/export-godot-android.mjs --preset \"Android Internal Debug\" --mode debug --output \"build/android/internal-debug.apk\"",
+    "android:export:release": "node scripts/export-godot-android.mjs --preset \"Android Release Candidate\" --mode release --output \"build/android/release-candidate.aab\"",
+    "generate:godot-assets:placeholder": "powershell -ExecutionPolicy Bypass -File scripts/generate-godot-placeholder-assets.ps1"
+  },
+  "dependencies": {
+    "@dataconnect/generated": "file:src/dataconnect-generated",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.52.0",
+    "@opentelemetry/resources": "^1.25.1",
+    "@opentelemetry/sdk-node": "^0.52.0",
+    "@opentelemetry/semantic-conventions": "^1.25.1",
+    "@voidverse/game-core": "workspace:*",
+    "@voidverse/game-schemas": "workspace:*",
+    "dotenv": "^17.2.4",
+    "firebase": "^12.9.0",
+    "js-yaml": "^4.1.1",
+    "openai": "^6.25.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
+    "@eslint/js": "^9.39.1",
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "@jest/globals": "^30.2.0",
+    "@playwright/test": "^1.58.2",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "babel-jest": "^30.2.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "firebase-tools": "^15.8.0",
+    "globals": "^16.5.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^30.2.0",
+    "kill-port": "^2.0.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4"
+  },
+  "overrides": {
+    "tar": "7.5.10",
+    "test-exclude": "^7.0.1",
+    "readdir-glob": {
+      "minimatch": "5.1.8"
+    },
+    "superstatic": {
+      "minimatch": "6.2.2"
+    },
+    "cacache": {
+      "minimatch": "10.2.3"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup-dev-auth-env.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/tests/skillEffects.test.js",
+      "<rootDir>/tests/endToEndEffects.test.js",
+      "<rootDir>/tests/magnitudeCapsFusion.test.js",
+      "<rootDir>/out/",
+      "<rootDir>/.trae/",
+      "/node_modules/"
+    ],
+    "transform": {
+      "^.+\\.[tj]sx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@voidverse/game-core$": "<rootDir>/packages/game-core/src/index.js",
+      "^@voidverse/game-core/(.*)$": "<rootDir>/packages/game-core/src/$1",
+      "^@voidverse/game-schemas$": "<rootDir>/packages/game-schemas/src/index.js",
+      "^@voidverse/game-schemas/(.*)$": "<rootDir>/packages/game-schemas/src/$1",
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/tests/__mocks__/fileMock.js"
+    },
+    "modulePathIgnorePatterns": [
+      "<rootDir>/backups/",
+      "<rootDir>/out/",
+      "<rootDir>/.trae/",
+      "<rootDir>/src/dataconnect-generated/",
+      "<rootDir>/api/src/dataconnect-generated/",
+      "<rootDir>/packages/game-core/src/dataconnect-generated/",
+      "<rootDir>/packages/game-schemas/src/dataconnect-generated/"
+    ]
+  }
+}

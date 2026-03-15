@@ -3,28 +3,27 @@
     "id": "fate_selection_engine",
     "name": "Fate Selection Engine",
     "category": "Framework",
-    "summary": "Choice-driven destiny rewrites with escalating stakes.",
-    "description": "A metaphysical engine that maps destiny into a decision lattice. At pivotal moments, it presents three mutually exclusive 'Fate Clauses'—each a potential future. Choosing one grants immediate, tangible power and begins subtly rewriting reality to align with that path, while the rejected futures become 'Lost Fates'.",
+    "summary": "A destiny-routing Framework that turns pivotal choices into binding clauses, rejected futures, and escalating fate debt.",
+    "description": "Fate Selection Engine is a Framework that translates major choices into a structured lattice of allowable destiny outcomes. It belongs in the Framework category because it organizes how fate is presented, locked, and compounded rather than granting absolute authority over destiny itself. At narrative fulcrums, the bearer is offered a bounded set of Fate Clauses that each carry immediate advantage and long-tail consequences. Accepted clauses become active rails that slightly bias events, allies, and opportunities toward a chosen pattern of becoming. Rejected clauses do not vanish, but persist as Lost Fates that may later return as regret, temptation, or weaponized alternate possibility. Its progression bias favors commitment, pattern recognition, and long-range planning rather than spontaneous all-purpose dominance. The main tradeoff is fate debt, because forcing too many outcomes creates contradiction pressure, hostile prophecy, and escalating cost when reality must reconcile what was chosen against what was denied. It remains lore-safe because the Framework stays beneath Void, Grandmother Void, and the deepest laws of causality, and because even strong clauses can be resisted, sabotaged, or shattered by stronger powers and terrible choices.",
     "coreLoop": [
-      "Reach a 'Narrative Fulcrum' (e.g., a major boss fight, a critical choice).",
-      "The Engine presents three Fate Clauses, like 'The Tyrant's Peace,' 'The Martyr's Victory,' or 'The Trickster's Escape.'",
-      "Select one Clause, instantly gaining a related buff or ability, and locking in its long-term narrative trajectory.",
-      "Witness the immediate and long-term consequences as the world warps around your choice."
+      "Reach a real narrative fulcrum where the Engine is willing to reveal multiple bounded Fate Clauses.",
+      "Commit to one clause to gain its immediate advantage while generating Lost Fates from the options you refused.",
+      "Exploit the chosen destiny pattern while managing the debt, prophecy pressure, and alternate-future backlash it creates."
     ],
     "progression": [
-      "Accumulate enough aligned choices to trigger a 'Destiny Cascade,' a permanent, regional law change (e.g., 'Kindness is rewarded with fortune').",
-      "Learn to harness 'Lost Fates,' calling upon the ghosts of rejected futures for a powerful, one-time ability at the cost of accruing 'Fate Debt.'",
-      "Achieve 'Nexus Consciousness,' allowing you to glimpse the three choices an enemy will have, and act to force their hand."
+      "Early growth sharpens clause clarity, reveals better consequence previews, and allows minor use of Lost Fates without immediate collapse.",
+      "Mid progression unlocks Destiny Cascades, clause chaining, and selective manipulation of enemy decision pressure around known fulcrums.",
+      "Late progression turns the bearer into a strategic nightmare who can shape campaigns by committing to one future while weaponizing the ghosts of the others."
     ],
     "narrativeHooks": [
-      "Prophets and seers either revere you as a messiah of choice or despise you as a perversion of determinism.",
-      "You may encounter 'Echoes of Regret'—manifestations of the paths you didn't choose, who may help or hinder you.",
-      "Your body and equipment slowly transform to reflect your dominant fate choices."
+      "Prophets and seers either revere you as a chosen hinge of history or condemn you as a vandal of proper destiny.",
+      "Rejected futures can return as Echoes of Regret that tempt, accuse, or briefly aid the bearer when reality thins.",
+      "Your appearance, allies, and surrounding omens gradually shift to reflect the clauses you keep choosing over and over."
     ],
     "questHooks": [
-      "A rival 'Fate-Bearer' has chosen a conflicting destiny; you must either force them to abandon their path or erase them from the timeline.",
-      "Resolve a 'Paradox Knot' where two of your chosen fates create a contradictory reality.",
-      "Hunt for a 'Seed of Choice' to unlock a fourth, hidden Fate Clause option at the next Fulcrum."
+      "A rival fate-bearer has chosen a clause that would doom your city unless you break their pattern before it matures.",
+      "Resolve a paradox knot where two earlier commitments now demand mutually exclusive sacrifices from the same people.",
+      "Seek a buried Seed of Choice that can reveal a hidden fourth clause at the next world-shaping fulcrum."
     ],
     "tags": [
       "choice",
@@ -62,40 +61,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Fate Selection Engine can support branch-based rewards, major-choice buffs, destiny debt, and rejected-future abilities that make commitment itself a resource. It gives the player a reason to care about turning points beyond simple dialogue flavor. That makes story decisions mechanically legible without collapsing them into a morality meter. It also creates a strong progression fantasy for players who enjoy planning several scenes ahead.",
+      "In narrative and quests, it enables prophecy wars, regret-driven echoes, doomed rescue arcs, and rivals who weaponize the path you did not choose. The bearer can save a city by embracing one destiny while sacrificing another equally real future. That pressure makes big wins feel costly instead of free. It also gives the narrator a clean language for foreboding, inevitability, and consequence.",
+      "In implementation, it maps well to choice checkpoints, clause payloads, lost-fate state, fulfillment counters, and contradiction or debt meters. Those hooks can feed prompts, quest logic, faction reactions, and conditional scene generation without inventing an entirely separate destiny simulator. The Framework is also easy to summarize because each active clause explains what kind of future the player is forcing. That makes it practical across UI, saves, and narration.",
+      "Its limitation-aware use comes from making the player commit to bounded options instead of authoring destiny freely. The best version feels powerful because it sharpens decisions, not because it nullifies uncertainty. Rejected futures should remain hauntingly relevant so every choice leaves a scar. That keeps the Framework in the fate-routing lane instead of drifting into unrestricted timeline control."
+    ],
+    "limits": [
+      "The Engine only offers clauses at genuine narrative fulcrums, so it cannot be spammed during every ordinary action or conversation.",
+      "Fate Clauses bias probability and opportunity but do not guarantee success against stronger law, superior force, or disastrous execution.",
+      "Lost Fates become more dangerous the more they are ignored, exploited, or accumulated without resolution."
+    ],
+    "costs": [
+      "Every forced outcome accumulates fate debt that can manifest as prophecy backlash, paradox pressure, hostile echoes, or misfortune.",
+      "Choosing one clause permanently closes or distorts other futures, which creates real social and emotional collateral damage.",
+      "Seers, cults, auditors, and enemy strategists become more interested in the bearer as their destiny pattern becomes readable."
+    ],
+    "worldCompatibility": [
+      "Fate Selection Engine routes bounded destiny inside existing world law and remains beneath Void, Grandmother Void, and the deepest causal order.",
+      "It is compatible with prophecy, quest branching, omen systems, and narrator consequence tracking because it structures decision flow rather than brute force.",
+      "Its strongest effects depend on real turning points, real sacrifices, and real contradiction risk, which keeps the Framework powerful but lore-safe."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "dungeon_admin_protocol",
     "name": "Dungeon Admin Protocol",
     "category": "Framework",
-    "summary": "Rule-setting access inside a controllable dungeon space.",
-    "description": "An administrative overlay that grants limited control over a dungeon instance, including spawn and reward logic.",
+    "summary": "A governance Framework that grants bounded administrative control over a dungeon so its rooms, spawn laws, and reward logic can be managed like infrastructure.",
+    "description": "Dungeon Admin Protocol is a Framework that grants structured administrative control over a bounded dungeon environment. It belongs in the Framework category because it organizes spawn logic, room law, reward routing, and local permissions rather than acting as a top-tier personal cheat by itself. The bearer gains tools to inspect, tune, authorize, deny, or reconfigure limited aspects of a dungeon as if managing a hostile but usable growth machine. Its progression bias favors infrastructure mastery, area shaping, and long-term dungeon optimization rather than straightforward dueling strength. The main tradeoff is locality, because the Framework is strongest inside recognized dungeon spaces and only indirectly useful once the bearer steps away from their managed territory. In the world, Dungeon Admin Protocol should be treated as strategic state power because dungeons produce wealth, danger, migration, and military value at scale. It should also create political paranoia, since anyone who can alter dungeon behavior can destabilize economies, manipulate adventurer routes, or hide atrocities behind procedural walls. It remains lore-safe because administrative power is bounded by dungeon class, permissions, corruption levels, and higher forces that can revoke or contest management rights.",
     "coreLoop": [
-      "Bind to a dungeon core.",
-      "Set rule modifiers for monsters and rewards.",
-      "Harvest resources from dungeon cycles."
+      "Bind to a valid dungeon node, core, or management layer that recognizes you as a lawful or stolen administrator.",
+      "Reconfigure room rules, spawn behaviors, and reward priorities to shape how the dungeon generates risk, traffic, and profit.",
+      "Defend, refine, and politically justify your administration as factions respond to the dungeon you are building."
     ],
     "progression": [
-      "Admin privileges expand with dungeon rank.",
-      "Custom encounters unlock rare reward pools.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks inspection tools, room permissions, and narrow spawn-routing changes inside one manageable dungeon sector.",
+      "Mid progression expands into reward-table tuning, event scripting, corruption control, and limited regional dungeon policy.",
+      "Late progression turns the bearer into a feared dungeon governor whose managed labyrinth can reshape trade, war, and migration patterns."
     ],
     "narrativeHooks": [
-      "Dungeon entities treat you as a sovereign.",
-      "Factions seek access to your controlled space."
+      "Dungeon-born entities may treat you as a reformer, tyrant, or false sovereign depending on how you set the rules of survival.",
+      "Rival guilds and frontier powers will quickly realize that your local management choices can decide who gets rich and who disappears.",
+      "Every administrative decree leaves a moral fingerprint, because a dungeon can be optimized for training, profit, cruelty, or all three."
     ],
     "questHooks": [
-      "Stabilize a dungeon breach to gain admin access.",
-      "Design an elite trial for a faction alliance."
+      "Break a corrupt guild monopoly by proving the current dungeon administration has been falsifying death and reward records.",
+      "Hold together a frontier settlement by rewriting one collapsing dungeon sector before its resource flow turns into a famine.",
+      "Decide whether to lock down a dungeon for public safety or keep it open because too many lives now depend on its output."
     ],
     "tags": [
       "dungeon",
       "admin",
-      "rule-control"
+      "rule-control",
+      "infrastructure"
     ],
     "statModifiers": {
       "intelligence": 3,
-      "agility": 2
+      "wisdom": 2
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -122,40 +148,68 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Dungeon Admin Protocol can support room customization, spawn tuning, dungeon events, reward-table routing, and defensive architecture inside a chosen dungeon. It gives the player meaningful levers for shaping difficulty, economics, and traffic rather than simply clearing rooms in a fixed order. That makes the dungeon feel like a managed machine instead of a static map. It also opens support-oriented power fantasies that do not rely on personal combat dominance.",
+      "In narrative and quests, it enables governance drama, dungeon reform arcs, infiltration of hostile administrations, and moral decisions about whether a dungeon should be humane, profitable, or lethal. The bearer can negotiate with guilds, shelter refugees, manipulate raider behavior, or build a death maze for enemies. That range lets one Framework support both benevolent and monstrous story paths. It is especially strong in frontier or city-state plots where dungeon policy affects everyday life.",
+      "In implementation, it maps naturally to dungeon-state configs, room-rule modifiers, admin permissions, event scripts, and system messages tied to local control. Those hooks can feed encounter generation, reward tables, faction reputation, and zone management without inventing a separate subsystem for every dungeon. It also creates a clean place to hang dungeon audits, ownership disputes, and corruption checks. That makes it one of the easiest Frameworks to integrate deeply across the repo.",
+      "Its limitation-aware use comes from making this Framework incredible inside its jurisdiction and merely clever outside it. Players should feel brilliant when operating in prepared territory and vulnerable when forced into neutral ground. That contrast preserves category clarity and prevents the Framework from overshadowing true Systems. The best version feels like strategic statecraft, not portable omnipotence."
+    ],
+    "limits": [
+      "Administrative reach is bounded by recognized dungeon infrastructure, permissions, and the integrity of the managed core or node.",
+      "Strong interventions can be contested by rival administrators, corrupted systems, superior dungeon classes, or external sovereign powers.",
+      "The Framework loses much of its edge outside prepared dungeon territory, where only planning insight and stored assets remain useful."
+    ],
+    "costs": [
+      "Maintaining custom room law, spawn routing, and reward balance consumes attention, resources, and political capital at all times.",
+      "Bad administrative choices can create humanitarian disasters, economic dependency, or dungeon ecologies that rebel against their manager.",
+      "The bearer becomes a visible target for factions that want control of the same dungeon wealth, routes, and hidden space."
+    ],
+    "worldCompatibility": [
+      "Dungeon Admin Protocol governs bounded dungeon procedure and cannot override Void, Grandmother Void, or the highest laws that authorize reality itself.",
+      "It is fully compatible with guild politics, frontier settlement, dungeon simulation, and quest-routing systems because it organizes local progression flow.",
+      "Its strongest effects require existing dungeon infrastructure, which keeps the Framework powerful, legible, and lore-safe within world rules."
+    ],
+    "rarity": "mythic",
+    "stability": "stable",
+    "selectionWeight": 2
   },
   {
     "id": "heirline_reward_protocol",
     "name": "Heirline Reward Protocol",
     "category": "Framework",
-    "summary": "Legacy growth tied to family, clan, or lineage success.",
-    "description": "A lineage framework that converts clan prosperity and heirs into sustained power scaling.",
+    "summary": "A lineage Framework that converts family achievement, inheritance duty, and clan prestige into structured progression rewards.",
+    "description": "Heirline Reward Protocol is a Framework that converts lineage success, inheritance obligations, and family achievement into structured progression rewards. It belongs in the Framework category because it governs how legacy milestones are recognized and distributed rather than granting direct sovereign command or a complete independent System. The bearer is plugged into a living inheritance ledger where clan victories, recovered artifacts, fulfilled vows, and preserved bloodline assets can all compound into future advantage. Its progression bias favors stewardship, dynasty-building, and intergenerational planning rather than purely solitary heroics. The main tradeoff is burden, because every gain is entangled with expectations from predecessors, descendants, and collateral relatives who believe they deserve a share of the same legacy. In the world, Heirline Reward Protocol should be politically explosive because it turns family history into measurable force and makes succession disputes mechanically meaningful. It should also create tension between merit and birth, since lineage reward can uplift a worthy heir or become a gilded prison for someone who never wanted the chain. It remains lore-safe because it organizes inherited value already present in the social and metaphysical world instead of creating aristocratic destiny from nothing.",
     "coreLoop": [
-      "Expand a family or clan network.",
-      "Earn lineage milestones through prosperity.",
-      "Spend legacy points on buffs and authority."
+      "Secure lineage milestones through vows kept, holdings restored, heirs protected, and family relics recovered or legitimized.",
+      "Convert those milestones into legacy rewards, privileges, and long-horizon house advantages through the living inheritance ledger.",
+      "Manage succession politics and family expectations so the line grows stronger instead of tearing itself apart."
     ],
     "progression": [
-      "Heir milestones unlock unique lineage boons.",
-      "Clan influence expands to regional dominion.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks basic inheritance boons, family-vault access, and recognition of personal deeds as line-strengthening acts.",
+      "Mid progression expands into house doctrines, collateral branch management, and regional prestige that feeds future rewards.",
+      "Late progression turns the bearer into a dynastic nexus whose choices can uplift or doom generations of descendants and dependents."
     ],
     "narrativeHooks": [
-      "Family politics and rival houses shape your arc.",
-      "Legacy decisions affect future narrative branches."
+      "Ancestors, heirs, and rival claimants all have reasons to interpret your success as part of their own inheritance story.",
+      "Every victory can trigger fresh succession conflict because the Protocol makes legacy visible enough for opportunists to quantify it.",
+      "The Framework constantly asks whether the bearer is building a home, a throne, or a prison for the people who come after them."
     ],
     "questHooks": [
-      "Secure alliances to increase lineage prestige.",
-      "Protect a key heir during a succession crisis."
+      "Win a succession crisis without destroying the very relatives whose claims keep the house legitimate.",
+      "Recover an ancestral vault whose contents will either save your line or prove it never deserved to survive.",
+      "Choose whether a bastard branch will be brought into the legacy ledger or erased for political stability."
     ],
     "tags": [
       "legacy",
       "family",
-      "politics"
+      "politics",
+      "inheritance"
     ],
     "statModifiers": {
-      "intelligence": 3,
-      "agility": 2
+      "intelligence": 2,
+      "charisma": 2,
+      "wisdom": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -182,40 +236,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Heirline Reward Protocol can power clan milestone bonuses, inheritance unlocks, house-based progression trees, and legacy resource banks. It gives long campaigns a way to make families mechanically relevant instead of treating bloodline as flavor text. That is useful for noble politics, kingdom management, and multigenerational play. It also rewards stewardship rather than only personal kill efficiency.",
+      "In narrative and quests, it supports succession conflicts, ancestral debt arcs, restoration of fallen houses, and painful decisions between personal freedom and family obligation. The bearer can save a dynasty, reject it, or reshape it around a new code. That flexibility keeps the Framework from feeling locked to aristocratic propaganda. It can carry both tragic and triumphant family stories.",
+      "In implementation, it works well with lineage tags, inherited milestone tables, family reputation systems, legacy vault state, and descendant tracking. Those hooks can feed character creation, world events, quest branching, and post-death inheritance logic. It also offers a clear place for persistent social consequences that outlive one adventure. That makes it especially useful for the narrator and save systems.",
+      "Its limitation-aware use comes from ensuring that every reward tied to the line also carries social expectations and conflict. Power from the house should drag obligations, scrutiny, and rival claims behind it. That prevents the Framework from becoming free stat inflation with a fancy surname. The strongest fantasy here is earned legacy under pressure, not easy noble privilege."
+    ],
+    "limits": [
+      "The Protocol requires a recognized lineage, inheritance chain, or adopted equivalent that the world can mechanically and socially acknowledge.",
+      "Rewards are diluted or destabilized when the family is fractured, disinherited, culturally erased, or stripped of its core assets.",
+      "Personal excellence alone cannot fully replace dynasty work, because the Framework measures continuity, stewardship, and shared legacy."
+    ],
+    "costs": [
+      "Every inheritance gain increases obligations to relatives, retainers, ancestors, and factions that now expect the bearer to act for the line.",
+      "The Framework turns family politics into hard power, which means betrayal, succession crises, and marriage alliances become much more dangerous.",
+      "Legacy dependence can trap the bearer in institutions and roles they would otherwise outgrow or abandon."
+    ],
+    "worldCompatibility": [
+      "Heirline Reward Protocol structures inheritance already present in society and metaphysics, and cannot bypass Void, Grandmother Void, or the highest cosmic law.",
+      "It is compatible with noble politics, house management, ancestry magic, and long-form statecraft because it organizes multigenerational progression.",
+      "Its strongest loops require real houses, heirs, relics, and remembered obligations, which keeps the Framework grounded in the world instead of arbitrary destiny."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "underworld_savefile",
     "name": "Underworld Save File",
     "category": "Framework",
-    "summary": "Carry past-life power into a new round.",
-    "description": "A persistence framework that stores a hidden save state, enabling power retrieval through underworld rituals.",
+    "summary": "A death-linked persistence Framework that carries selected memory, debt, and power fragments across terminated life segments.",
+    "description": "Underworld Save File is a Framework that preserves a structured continuity record across death, descent, and return. It belongs in the Framework category because it manages persistence and transfer rules rather than directly ruling combat, knowledge, or reality on its own. The bearer gains an underworld-linked archive of state that determines what fragments of power, memory, debt, or penalty can cross from one terminated life-segment into the next. Its progression bias favors high-risk exploration and mortality negotiation because death becomes a costly checkpointing process instead of a total hard stop. The main tradeoff is contamination, since every passage through death leaves residue, attracts underworld attention, and risks carrying back more than intended. In the world, Underworld Save File should be secretive and feared because cultures rarely remain calm around proof that death has bookkeeping. It should also create legal and theological disputes about identity, ownership, and whether a returned person is continuous, copied, or indebted. It remains lore-safe because it does not abolish death, but merely formalizes what can survive it under underworld jurisdiction and at underworld cost.",
     "coreLoop": [
-      "Discover save anchors in the underworld.",
-      "Unlock past-life abilities through rites.",
-      "Defend anchors against underworld predators."
+      "Anchor a valid save state through underworld-recognized rites, places, debts, or contractual markers before a fatal descent or high-risk attempt.",
+      "On death or qualifying termination, preserve only the fragments the archive can legally carry back through underworld channels.",
+      "Return with retained memory, residue, and obligations while deciding whether the cost of another passage is still worth paying."
     ],
     "progression": [
-      "Save depth tiers unlock stronger legacy powers.",
-      "Anchor integrity dictates retrieval speed.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth improves save integrity, memory carry-over, and the reliability of small retained advantages after return.",
+      "Mid progression unlocks deeper archive layers, selective fragment preservation, and bargaining leverage with underworld intermediaries.",
+      "Late progression turns the bearer into a notorious mortality negotiator whose returns carry power, debt, and scrutiny in equal measure."
     ],
     "narrativeHooks": [
-      "Underworld entities bargain for your legacy.",
-      "Past-life echoes influence narrative choices."
+      "Every return forces the question of whether you came back whole or merely close enough to keep pretending continuity exists.",
+      "Underworld officials, grave powers, and death cults all have reasons to audit what you took across a boundary that should not be casually crossed.",
+      "Loved ones may welcome your survival while quietly wondering what else walked back through the gate with you."
     ],
     "questHooks": [
-      "Recover a lost anchor from a corrupted crypt.",
-      "Complete a ritual trial to stabilize a save shard."
+      "Recover a corrupted anchor before the next death writes your name into an underworld ledger you can never repay.",
+      "Prove to a hostile priesthood that your returned ally is continuous enough to keep their inheritance and vows.",
+      "Choose which fragment of a doomed life you will carry back when the archive refuses to preserve everything."
     ],
     "tags": [
       "legacy",
       "underworld",
-      "persistence"
+      "persistence",
+      "death-ledger"
     ],
     "statModifiers": {
-      "intelligence": 3,
-      "agility": 2
+      "intelligence": 2,
+      "wisdom": 2
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -242,40 +323,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Underworld Save File can support death persistence, retained traits, underworld penalties, and repeat-attempt structures with cumulative spiritual consequences. It gives failure a structured aftermath instead of a simple reload fantasy. That makes high-risk exploration and boss retries feel costly but playable. It is especially strong in games that want death to matter without ending the run outright.",
+      "In narrative and quests, it enables necropolis bargains, identity crises, underworld audits, and haunting questions about what returned with the player. Characters can owe grave debts, hide their continuity status, or be hunted by people who know they died already. That tension keeps every return emotionally alive. It also supports darker theology and law around resurrection, burial, and personhood.",
+      "In implementation, it can drive death-state serialization, persistence filters, penalty accumulation, and underworld faction response systems. Those hooks fit well with autosave, run metadata, failure analysis, and narrator recap systems already present in the repo. It also creates clean boundaries for what is retained, corrupted, or forfeited after death. That is useful for balancing retries without hand-waving consequences.",
+      "Its limitation-aware use comes from making each return useful but tainted, so the player never mistakes survival bookkeeping for a free reset button. The archive should help, but it should also accumulate residue, scrutiny, and cost. That pressure keeps the Framework distinct from true regression Systems. The best version feels like negotiable mortality, not cheap immortality."
+    ],
+    "limits": [
+      "Only state fragments validated by the underworld archive can cross back, so most losses, relationships, and material conditions remain gone.",
+      "Anchors can fail, be corrupted, or be legally contested by death powers that deny the bearer a clean return.",
+      "Repeated use increases residue and underworld visibility, making each additional cycle more dangerous and less stable."
+    ],
+    "costs": [
+      "Every return accrues spiritual contamination, debt, or claimable residue that grave powers may later demand payment for.",
+      "The bearer must live with uncertainty about identity continuity and the social consequences of being someone who has already died.",
+      "High-value saves often require rituals, offerings, or bargains that place fresh moral and logistical burdens on future runs."
+    ],
+    "worldCompatibility": [
+      "Underworld Save File operates inside death-administration and cannot negate Void, Grandmother Void, or the highest laws that govern existence and finality.",
+      "It is compatible with death loops, necropolis politics, spiritual contracts, and failure-persistence systems because it formalizes selective return.",
+      "Its power is bounded by archive legality, anchor integrity, and underworld jurisdiction, which keeps the Framework dangerous but coherent."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 1
   },
   {
     "id": "system_architect",
     "name": "System Architect",
     "category": "Framework",
-    "summary": "Build systems that patch reality like software.",
-    "description": "A meta-framework that grants system-design privileges, allowing you to construct limited subsystems.",
+    "summary": "A meta-Framework that lets the bearer design, patch, and maintain bounded subsystems inside reality without becoming a supreme lawgiver.",
+    "description": "System Architect is a Framework that allows the bearer to design, patch, or reconfigure limited structured mechanics inside reality. It belongs in the Framework category because its strength lies in organizing and rewriting subsystems rather than serving as a single overwhelming personal power fantasy. The bearer can create rulesets, interfaces, triggers, or bounded progression modules that affect items, zones, contracts, or subordinate entities. Its progression bias favors design literacy, modular thinking, and infrastructure leverage over direct raw force. The main tradeoff is complexity, because every created structure must be maintained, balanced, and defended against exploitation, corruption, or unintended emergence. In the world, System Architect should be seen as profoundly dangerous because it makes the bearer not just a user of systems but a local maker of them. It should also remain rare and controversial, since anyone who can patch reality invites fear of bugs, abuse, and private lawmaking. It remains lore-safe because architectural edits are bounded in scope, subject to stronger existing law, and vulnerable to collapse when poorly specified or opposed by higher Authorities and Systems.",
     "coreLoop": [
-      "Draft subsystem blueprints within safe constraints.",
-      "Deploy modules to alter gameplay rules locally.",
-      "Balance stability, cost, and narrative debt."
+      "Draft bounded rule modules, interfaces, or trigger graphs that can be safely attached to zones, items, contracts, or subordinate structures.",
+      "Deploy, monitor, and rebalance those modules as real usage reveals exploits, instability, and unintended behavior.",
+      "Harvest leverage from well-designed infrastructure while paying the ongoing maintenance cost of being your own local system engineer."
     ],
     "progression": [
-      "Subsystem slots unlock with mastery milestones.",
-      "Stability upgrades reduce systemic backlash.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks small utility modules, simple triggers, and safer template-based subsystem designs.",
+      "Mid progression expands module slots, causal resilience, and the ability to compose multiple rule objects into coherent local ecosystems.",
+      "Late progression lets the bearer build feared custom infrastructures whose elegance or failure can alter whole regions and institutions."
     ],
     "narrativeHooks": [
-      "System auditors track your modifications.",
-      "NPCs experience side effects of your changes."
+      "Every clever patch carries the threat that someone else will exploit it harder than you expected or harder than you can survive.",
+      "Institutions fear you because you do not simply use the world as written; you are one of the few people capable of authoring local mechanics.",
+      "The Framework naturally creates hubris stories, because elegant design and catastrophic overreach live very close together."
     ],
     "questHooks": [
-      "Recover a system kernel for new module slots.",
-      "Debug a failed module before it cascades."
+      "Patch a failing civic defense lattice before a city discovers its trusted laws were held together by one unstable module.",
+      "Hunt a rival architect whose private subsystem has turned a border region into a self-escalating exploit.",
+      "Choose whether to publish a design that could save thousands if copied or destroy it before worse hands weaponize it."
     ],
     "tags": [
       "meta",
       "design",
-      "system"
+      "system",
+      "infrastructure"
     ],
     "statModifiers": {
-      "intelligence": 3,
-      "agility": 2
+      "intelligence": 4,
+      "wisdom": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -302,31 +410,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, System Architect can enable custom subsystems, crafted rulesets, programmable traps, and player-shaped progression modules for controlled domains or assets. It supports a builder fantasy that still feels technical and bounded. That makes it a strong fit for players who enjoy setup, optimization, and indirect leverage. It also creates a natural bridge between content authoring and in-world power.",
+      "In narrative and quests, it supports reality-patch incidents, emergent loophole disasters, and conflicts with institutions that want to regulate who may write system law. The bearer can build miracles, create accidents, or trigger procedural nightmares depending on how disciplined they are. That keeps the Framework morally flexible and dramatically potent. It also makes rivals think like auditors, hackers, and censors instead of only warriors.",
+      "In implementation, it provides hooks for modular rule objects, trigger graphs, bounded scripting-style effects, and content pipeline generation. Those hooks can serve both narrative systems and gameplay systems without inventing a second language for every special case. It is one of the clearest Frameworks for repo-wide reuse. The narrator, quest logic, and save normalization all benefit from its explicit structure.",
+      "Its limitation-aware use comes from the need to maintain every design, because a clever but unstable system can ruin the bearer faster than it empowers them. The player should feel responsible for what they build. That keeps the Framework from reading as unrestricted reality-coding magic. The best version rewards elegant architecture under pressure."
+    ],
+    "limits": [
+      "Architected modules must remain bounded in scope and cannot supersede stronger preexisting cosmic law, major Systems, or sovereign Authorities.",
+      "Poorly specified rules invite exploits, runaway interactions, or collapse when exposed to hostile or chaotic environments.",
+      "The bearer can only sustain a limited number of live subsystems before maintenance overhead and instability become unmanageable."
+    ],
+    "costs": [
+      "Every deployed subsystem demands continuous testing, patching, and oversight to stop edge cases from turning into disasters.",
+      "Making private local law attracts regulators, rivals, and users who want access to your designs or want them destroyed.",
+      "Complex architecture can consume so much time and focus that the bearer falls behind in direct personal growth or immediate battlefield readiness."
+    ],
+    "worldCompatibility": [
+      "System Architect composes bounded local mechanics and cannot override Void, Grandmother Void, or the deepest laws that hold reality together.",
+      "It is compatible with traps, crafting logic, contracts, local zone rules, and progression routing because it explicitly organizes structured behavior.",
+      "Its output remains lore-safe because every patch depends on scope, maintenance, and preexisting lawful substrate rather than spontaneous supremacy."
+    ],
+    "rarity": "unique",
+    "stability": "volatile",
+    "selectionWeight": 1
   },
   {
     "id": "undead_legion_evolution",
     "name": "Undead Legion Evolution",
     "category": "Framework",
-    "summary": "An undead army that levels like a roster.",
-    "description": "A legion framework that treats undead as units with ranks, traits, and promotions.",
+    "summary": "A military Framework that treats undead forces as an evolving roster of units, doctrines, and ranked promotions.",
+    "description": "Undead Legion Evolution is a Framework that manages necromantic forces as a scalable roster instead of a pile of disposable corpses. It belongs in the Framework category because it organizes recruitment, promotion, doctrine, and unit specialization rather than simply granting raw death magic by itself. The bearer gains structured control over how undead are raised, assigned, upgraded, and preserved across campaigns. Its progression bias favors logistics, force composition, and attrition management instead of lone-hero combat supremacy. The dead become more dangerous over time not only because there are more of them, but because the legion learns, stratifies, and mutates around battlefield need. The main tradeoff is maintenance pressure, because command load, supply substitutes, corruption, and morale reactions all scale with the size and sophistication of the host. In the world, Undead Legion Evolution should trigger terror, opportunism, and holy retaliation because a disciplined undead army threatens borders, labor systems, burial custom, and the legitimacy of the living. It remains lore-safe because the legion is still bounded by command capacity, corpse quality, territory, anti-undead opposition, and the spiritual consequences of fielding the dead as infrastructure.",
     "coreLoop": [
-      "Raise undead and assign roles.",
-      "Evolve units through battles.",
-      "Promote elites into specialized tiers."
+      "Raise or recover valid dead, assign them into a structured roster, and define doctrines that shape how the legion fights.",
+      "Feed the host through battle results, corpse quality, salvage, and command investment so units can evolve beyond base forms.",
+      "Manage scale, loyalty drift, and public backlash as the army becomes more useful and more horrifying to everyone around it."
     ],
     "progression": [
-      "Rank tiers unlock elite undead.",
-      "Legion doctrines add systemic bonuses.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks stable unit roles, better corpse conversion, and simple doctrine bonuses for disciplined formations.",
+      "Mid progression expands into officer cadres, elite branches, campaign memory, and battlefield adaptation across repeated theaters of war.",
+      "Late progression turns the legion into a horrifying war machine whose dead are promoted, specialized, and redeployed with industrial precision."
     ],
     "narrativeHooks": [
-      "Necropolis factions court your legion.",
-      "Holy orders mobilize against you."
+      "Necropolis factions court your legion as proof that death can be organized more efficiently than life.",
+      "Holy orders mobilize against you because every promotion inside the host is evidence that burial has failed to end service.",
+      "The living around you are forced to decide whether your army is a shield against extinction or a desecration that should never be normalized."
     ],
     "questHooks": [
-      "Reclaim a tomb to expand capacity.",
-      "Defend the legion during a purge."
+      "Reclaim a tomb complex whose ancient dead can either become your elite cadre or awaken as enemies that reject command.",
+      "Defend the legion during a holy purge while deciding which settlements you are willing to sacrifice to preserve the host.",
+      "Break an internal rebellion sparked by undead officers who have accumulated enough memory to question why they still serve."
     ],
     "tags": [
       "undead",
@@ -362,40 +496,68 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Undead Legion Evolution can support roster progression, promoted unit classes, doctrine trees, battlefield roles, and necromantic campaign persistence. It gives summoning and army play real structure instead of making every undead minion interchangeable. That makes large-scale encounters more legible and more rewarding to tune. It also supports a strong commander fantasy without requiring the player to win every fight personally.",
+      "In narrative and quests, it enables siege arcs, desecration politics, desperate frontier defense, and moral conflict over whether useful dead are still people. The bearer can save a nation with an army no living kingdom could field in time. They can also become the exact horror every temple warned about. That ambiguity gives the Framework rich tone and durable consequences.",
+      "In implementation, it maps cleanly to unit templates, promotion tracks, doctrine flags, corpse quality, officer memory, and legion-capacity systems. Those hooks can feed combat, world simulation, faction hostility, and narrator summaries without inventing unrelated necromancy subsystems for each feature. It also pairs naturally with dungeon content, mass battles, and settlement pressure. That makes it one of the more integrative army frameworks in the repo.",
+      "Its limitation-aware use comes from making scale expensive and socially explosive. Every stronger legion should require more corpses, more command bandwidth, and more willingness to endure being hated. The player should feel brilliant when the host operates well and terrified when it starts acting like an institution of death larger than they can ethically justify. That keeps the Framework strategic, grim, and bounded."
+    ],
+    "limits": [
+      "Legion quality is constrained by corpse stock, command capacity, doctrine coherence, and the availability of secure territory for mustering and repair.",
+      "Elite undead and persistent officers become harder to control as they accumulate memory, identity residue, or exposure to rival influences.",
+      "Holy sites, anti-necromantic fields, purification campaigns, and mass public resistance can sharply reduce the Framework's efficiency."
+    ],
+    "costs": [
+      "Running the legion consumes resources, ritual effort, and constant command attention even when no battle is underway.",
+      "Every campaign intensifies social horror, diplomatic isolation, and the risk that allies begin treating the bearer as a greater threat than the enemy.",
+      "Necromantic misuse can damage souls, provoke spiritual backlash, or create undead actors whose loyalty degrades under pressure."
+    ],
+    "worldCompatibility": [
+      "Undead Legion Evolution organizes necromantic military infrastructure and cannot override Void, Grandmother Void, or the higher law that defines life and death.",
+      "It is compatible with war arcs, settlement defense, corpse logistics, and doctrine-based progression because it structures an army rather than a sovereign cosmic cheat.",
+      "Its power remains grounded in bodies, command, territory, and backlash, which keeps the Framework huge in scale but coherent within world rules."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "revival_bounty_exchange",
     "name": "Revival Bounty Exchange",
     "category": "Framework",
-    "summary": "Death funds power through revival bounties.",
-    "description": "A revival economy that grants credits after fatality, letting you buy survival clauses and counters.",
+    "summary": "A grim reward Framework that converts verified revivals, failed hunts, and death-risk contracts into escalating comeback value.",
+    "description": "Revival Bounty Exchange is a Framework that turns mortal risk and repeated revival into an accumulating reward economy. It belongs in the Framework category because it structures the conversion of death-adjacent events into progression value rather than granting a direct death-cheat in isolation. The bearer gains access to bounties, claims, or escalating payout logic tied to revivals, failed hunts, retaliatory returns, and survivorship accounting. Its progression bias favors audacity, comeback play, and high-risk contracts where most people would never accept the odds. The main tradeoff is predation, because systems that reward returning from death invite enemies, sponsors, and institutions that want to monetize the bearer's suffering. In the world, Revival Bounty Exchange should feel grim and transactional, the kind of framework that war fronts, criminal syndicates, and divine gamblers all find useful for ugly reasons. It should also create ethical instability, since allies may start treating death as an economic event rather than a catastrophe. It remains lore-safe because the Framework pays on events and verified returns, not on free infinite failure, and because every cycle can still accumulate trauma, cost, and retaliation.",
     "coreLoop": [
-      "Die and collect bounty credits.",
-      "Purchase survival clauses and counters.",
-      "Return stronger with tailored safeguards."
+      "Accept or trigger risk-heavy contracts whose payout logic activates only if the bearer returns from verified lethal or near-lethal failure.",
+      "Convert revival records into bounty currency, survival clauses, and targeted comeback advantages tailored to the threat that killed you.",
+      "Decide whether another payout cycle is worth the growing attention of predators, sponsors, and people pricing your suffering."
     ],
     "progression": [
-      "Bounty tiers unlock advanced clauses.",
-      "Fatality records grant unique traits.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth grants modest revival claims, narrow comeback bonuses, and the ability to monetize survival against specific threats.",
+      "Mid progression expands into chained bounties, retaliatory contract logic, and specialized clauses that answer repeated causes of death.",
+      "Late progression turns the bearer into a notorious death-market asset whose returns are tracked, priced, and exploited across factions."
     ],
     "narrativeHooks": [
-      "Rumors spread of your impossible survival.",
-      "Death-aligned powers take interest."
+      "The more often you come back, the more the world stops seeing a miracle and starts seeing a business model.",
+      "Allies may gradually reveal whether they value your life or merely the payout logic that follows your return.",
+      "The Framework makes every death a question of who profits, who pays, and whether survival is still yours to define."
     ],
     "questHooks": [
-      "Die to a specific boss to unlock a clause.",
-      "Spend bounty to save an ally from death."
+      "Survive a contract that promises legendary payout only if you return from a death every patron expects to be permanent.",
+      "Expose a betting ring that has started engineering your revivals for profit without your consent.",
+      "Choose whether to cash out a life-defining comeback or reject the reward because accepting it would legitimize a monstrous market."
     ],
     "tags": [
       "revival",
       "economy",
-      "retry"
+      "retry",
+      "contract"
     ],
     "statModifiers": {
-      "intelligence": 3,
-      "agility": 2
+      "vitality": 2,
+      "wisdom": 1,
+      "luck": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -422,40 +584,68 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Revival Bounty Exchange can support risk-reward contracts, escalating payout chains after failed runs, and death-linked comeback bonuses. It gives dangerous content a strong economic identity. That can make boss retries and doomed missions feel strategically distinct from ordinary grinding. It also supports darker progression fantasies built on stubborn return instead of clean victory.",
+      "In narrative and quests, it enables mercenary exploitation arcs, resurrection betting rings, and moral pressure from people who profit when the player survives the hard way. Characters can willingly enter brutal contracts, reject the market around them, or become trapped by the expectation that they are always worth reviving. That gives the Framework a sharp social edge. It also creates memorable friction between pragmatism and dignity.",
+      "In implementation, it can power revival counters, bounty tables, contract states, comeback clauses, and anti-abuse gating around repeated deaths. Those hooks are useful for narrative runtime, quest systems, and any future death-economy features. They also let us differentiate kinds of failure instead of treating every death identically. That improves both balance and story texture.",
+      "Its limitation-aware use comes from preventing players from seeing death as pure upside, because the payouts should never erase the pain and strategic damage of failure. The Framework should help people survive desperate arcs, not farm infinite value from carelessness. That balance preserves grim tension. The strongest version feels transactional and dangerous, not goofy or consequence-free."
+    ],
+    "limits": [
+      "Payouts require verified lethal-risk events or contractual thresholds, so ordinary inconvenience and trivial deaths should not meaningfully qualify.",
+      "Revival value declines when patterns become obviously self-farmed, publicly discredited, or stripped of real danger by outside interference.",
+      "The Framework does not guarantee resurrection; it only structures reward when a qualifying return actually occurs."
+    ],
+    "costs": [
+      "Each payout cycle publicizes the bearer's mortality profile and invites predators, sponsors, and institutions to value them as an economic instrument.",
+      "Repeated death and return still inflict trauma, strategic disruption, and relationship damage even when compensation is generous.",
+      "The market logic around the Framework can corrupt allies, employers, and even the bearer into viewing human catastrophe as calculable inventory."
+    ],
+    "worldCompatibility": [
+      "Revival Bounty Exchange monetizes verified survival events and cannot overcome Void, Grandmother Void, or the deeper laws governing death and return.",
+      "It is compatible with war fronts, contract systems, death-risk quests, and comeback design because it organizes how risk is priced and rewarded.",
+      "Its strongest loops still depend on real danger, real return, and real consequence, which keeps the Framework grounded and nontrivial."
+    ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "dungeon_farming_loop",
     "name": "Dungeon Farming Loop",
     "category": "Framework",
-    "summary": "Infinite spawns turn dungeons into leveling engines.",
-    "description": "A looping dungeon protocol that restarts encounters for sustained farming with escalating risk.",
+    "summary": "A repeat-clear Framework that turns dungeons into optimized extraction loops for leveling, resources, and compounding efficiency.",
+    "description": "Dungeon Farming Loop is a Framework that organizes dungeons into repeatable extraction, leveling, and refinement cycles. It belongs in the Framework category because it optimizes a progression environment and its outputs rather than granting singular authority over all growth. The bearer learns how to route runs, identify efficient floors, cultivate controlled respawn ecosystems, and compound dungeon yields over time. Its progression bias favors route discipline, resource consistency, and repeatable optimization rather than heroic one-off breakthroughs. The main tradeoff is predictability, because optimized loops invite ambush, burnout, market saturation, and the stagnation that comes from farming what is safe instead of confronting what is transformative. In the world, Dungeon Farming Loop should be economically powerful because stable dungeon extraction can feed guilds, war machines, and entire frontier towns. It should also create political conflict, since monopolizing a dungeon loop is very different from merely clearing a dungeon once. It remains lore-safe because the Framework does not force infinite value into existence, but instead improves how existing dungeon ecosystems are cycled, harvested, and defended.",
     "coreLoop": [
-      "Clear a dungeon loop.",
-      "Restart the loop with increased difficulty.",
-      "Harvest compounding rewards."
+      "Map an efficient dungeon route, clear it on repeat, and measure yield in experience, loot, time cost, and environmental strain.",
+      "Refine the loop through controlled resets, route discipline, and selective risk-taking that improves output without collapsing the ecosystem.",
+      "Decide when to continue compounding safe value and when to break the loop because optimization has started becoming stagnation."
     ],
     "progression": [
-      "Loop depth unlocks rare drop pools.",
-      "Safe reset tokens expand farming windows.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth improves route visibility, reset timing, and modest efficiency gains across repeated clears of familiar content.",
+      "Mid progression unlocks loop depth bonuses, adaptive route presets, and better handling of ecological backlash from overfarming.",
+      "Late progression creates frighteningly efficient extraction engines that can feed entire factions while painting the bearer as a monopolist."
     ],
     "narrativeHooks": [
-      "Dungeons recognize and adapt to you.",
-      "Loop anomalies threaten to trap you inside."
+      "People living near a profitable loop may depend on your routines even as the dungeon itself starts adapting to being treated like farmland.",
+      "What begins as discipline can slowly turn into obsession, especially when safe repetition starts feeling more rational than uncertain growth.",
+      "The Framework naturally creates conflict between optimization, ecology, and the human cost of industrialized danger."
     ],
     "questHooks": [
-      "Survive a ten-loop streak without resting.",
-      "Stabilize a loop to prevent a collapse."
+      "Break a profitable loop on purpose because the dungeon ecology is beginning to mutate into something the frontier cannot survive.",
+      "Win a guild war over access to a route whose repeated clear value is worth more than several border towns.",
+      "Choose whether to keep farming the safe path or dive deeper when a rival starts growing faster by risking what you have ignored."
     ],
     "tags": [
       "dungeon",
       "loop",
-      "farm"
+      "farm",
+      "optimization"
     ],
     "statModifiers": {
-      "intelligence": 3,
-      "agility": 2
+      "intelligence": 2,
+      "agility": 1,
+      "wisdom": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -482,40 +672,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Dungeon Farming Loop can support route presets, farm efficiency metrics, respawn timing, and compounding reward structures across repeated clears. It gives grinding a visible strategic identity instead of leaving it as a vague player habit. That makes farming balance easier to reason about. It also creates room for deliberate anti-degeneracy mechanics.",
+      "In narrative and quests, it enables guild disputes, labor exploitation stories, loop sabotage, and crises caused by overfarmed dungeon ecologies. The bearer can be praised for keeping a frontier alive or blamed for turning danger into an extractive industry. That moral ambiguity helps the Framework feel grounded. It also supports stories about when efficiency becomes cowardice.",
+      "In implementation, it maps well to run-history data, efficiency bonuses, diminishing-return checks, encounter-refresh systems, and zone pressure variables. Those hooks fit naturally with quest logic, loot balancing, and economy simulation. They also give the narrator concrete signals for describing repetition, mastery, and decay. That makes the Framework a strong cross-system scaffold.",
+      "Its limitation-aware use comes from requiring players to decide when optimization has become stagnation and when they must leave the profitable loop to keep truly advancing. The best rewards should come with mounting ecological, political, or strategic cost. That prevents endless safe farming from being the only correct answer. The resulting tension keeps the Framework healthy."
+    ],
+    "limits": [
+      "Output is bounded by real dungeon ecology, reset behavior, and diminishing returns, so no route should remain infinitely optimal forever.",
+      "Overfarmed loops attract ambushes, institutional control, monster adaptation, and local resentment from people excluded from the resource flow.",
+      "The Framework helps extract value from known spaces but offers little direct advantage in chaotic first-contact exploration."
+    ],
+    "costs": [
+      "Sustained loop optimization consumes time, attention, and often the goodwill of anyone harmed by monopolized access or environmental wear.",
+      "Repeated safe farming can stunt broader growth by training the bearer to prioritize certainty over transformation.",
+      "High-value loops turn the bearer into a target for taxation, sabotage, and factional capture once the profits become too obvious to hide."
+    ],
+    "worldCompatibility": [
+      "Dungeon Farming Loop optimizes existing dungeon cycles and cannot violate Void, Grandmother Void, or the upper laws that define scarcity and reality.",
+      "It is compatible with economy systems, loot pacing, guild politics, and frontier survival because it structures repeatable extraction behavior.",
+      "Its power stays bounded by real dungeon outputs, real adaptation, and real competition, keeping the Framework strong but not world-breaking."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "blueprint_forge_library",
     "name": "Blueprint Forge Library",
     "category": "Framework",
-    "summary": "Blueprints accumulate into a manufacturable arsenal.",
-    "description": "A forge library that stores and upgrades blueprints, enabling mass production of gear.",
+    "summary": "A crafting Framework that stores, improves, and manufactures schematics so power can scale through reproducible design.",
+    "description": "Blueprint Forge Library is a Framework that accumulates, organizes, and manufactures power through schematics rather than inspiration alone. It belongs in the Framework category because it structures creation, replication, and scaling across many outputs instead of behaving like one craft cheat. The bearer gains a catalog of blueprints that can be discovered, reverse-engineered, improved, and instantiated through the right facilities and materials. Its progression bias favors preparation, acquisition of patterns, and industrial leverage rather than improvisational raw combat superiority. The main tradeoff is dependency on inputs, because blueprints are only as useful as the materials, tools, labor, and protected space available to realize them. In the world, Blueprint Forge Library should be coveted by states, guilds, and black markets because it threatens artisan monopolies and makes reproducible excellence possible. It should also create intellectual-property conflict in settings where secret designs are part of power, religion, or lineage sovereignty. It remains lore-safe because the Framework still requires legitimate schematics and manufacturable conditions, and because copied or stolen designs can carry flaws, curses, or legal consequences.",
     "coreLoop": [
-      "Scan items to store blueprints.",
-      "Forge copies and upgrade patterns.",
-      "Automate fabrication through nodes."
+      "Acquire, scan, reverse-engineer, or inherit blueprints and store them in an indexed forge library with quality history attached.",
+      "Secure the materials, facilities, and labor needed to produce, refine, or fuse those patterns into real usable outputs.",
+      "Scale from isolated craftsmanship into reproducible production while defending your designs from theft, corruption, and sabotage."
     ],
     "progression": [
-      "Library tiers unlock legendary patterns.",
-      "Blueprint fusion creates hybrid gear.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth unlocks basic pattern storage, recipe recall, and quality-preserving reproduction of known designs.",
+      "Mid progression expands into blueprint fusion, process optimization, and workshop networks that can mass-produce elite equipment.",
+      "Late progression makes the bearer an industrial threat whose catalog can shift military balance, trade policy, and sacred manufacturing monopolies."
     ],
     "narrativeHooks": [
-      "Empires vie for your fabrication rights.",
-      "Counterfeiters attempt to steal patterns."
+      "A single recovered pattern can change the fate of a city if it enables tools, weapons, or medicines no one else can reliably reproduce.",
+      "Every stored design is a future political incident waiting to happen once states and guilds realize what you can manufacture at scale.",
+      "The Framework naturally asks whether craft should remain sacred, personal, and rare or become distributable infrastructure."
     ],
     "questHooks": [
-      "Recover a lost legendary blueprint.",
-      "Defend a forge node under siege."
+      "Recover a sacred forge pattern before a state turns it into a weapon platform the original makers would call sacrilege.",
+      "Decide whether to publish a medicine blueprint that saves thousands and also destroys the guild that guarded it for centuries.",
+      "Stop a counterfeit ring whose flawed copies are killing people while ruining trust in the very designs you spread."
     ],
     "tags": [
       "crafting",
       "blueprints",
-      "industry"
+      "industry",
+      "manufacturing"
     ],
     "statModifiers": {
       "intelligence": 3,
-      "agility": 2
+      "wisdom": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -542,40 +759,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Blueprint Forge Library can support recipe unlocks, modular crafting, reproducible gear lines, and workshop build queues. It turns crafting progression into a searchable and scalable system. That makes it much easier to support both artisan fantasy and industrial fantasy in one framework. It also creates strong hooks for materials, facilities, and quality inheritance.",
+      "In narrative and quests, it enables industrial espionage, prototype disasters, lost-forge expeditions, and fights over who is allowed to mass-produce sacred designs. The bearer can uplift a region, crash a market, or trigger holy outrage simply by deciding what to replicate. That gives the Framework wide social reach. It also supports stories about labor, monopoly, and the ethics of reproducibility.",
+      "In implementation, it works well with blueprint inventories, recipe versioning, quality inheritance, facility-dependent crafting states, and item lineage metadata. Those hooks can feed loot, economy, town-building, and faction systems without inventing separate logic for every workshop. They also pair well with narrator summaries because crafted output has visible provenance. That makes the Framework highly reusable.",
+      "Its limitation-aware use comes from ensuring that possessing a design is not the same as being able to realize it safely and at scale. Materials, labor, and protected infrastructure should always matter. That stops the Framework from feeling like infinite free crafting. The best version rewards logistical mastery rather than menu-click alchemy."
+    ],
+    "limits": [
+      "Blueprint value is capped by available materials, tools, labor quality, and the physical facilities needed to realize a given design.",
+      "Copied, stolen, or poorly understood patterns can produce flawed, cursed, or politically illegal outputs instead of stable success.",
+      "The Framework accelerates reproducibility, but it cannot fully replace hands-on craft knowledge in hostile or improvised conditions."
+    ],
+    "costs": [
+      "Building production capacity demands workshops, supply lines, trusted labor, and security against theft or sabotage.",
+      "Mass manufacturability attracts state pressure, guild hostility, and moral scrutiny when rare sacred designs become replicable commodities.",
+      "Poor process control can multiply mistakes at industrial scale, turning one bad design choice into a regional catastrophe."
+    ],
+    "worldCompatibility": [
+      "Blueprint Forge Library organizes manufacturable knowledge and cannot supersede Void, Grandmother Void, or the highest constraints on matter and law.",
+      "It is compatible with crafting, economy, logistics, and faction conflict because it structures how designs become repeatable material power.",
+      "Its strongest outcomes still depend on real inputs and real industry, keeping the Framework potent without becoming a free creation cheat."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "regression_memory_cache",
     "name": "Regression Memory Cache",
     "category": "Framework",
-    "summary": "Memories from failed timelines fuel a new run.",
-    "description": "A cache that stores regression memories, providing foresight and stat refunds on restart.",
+    "summary": "A replay Framework that stores usable residue from failed timelines so future attempts can start with retained knowledge and route leverage.",
+    "description": "Regression Memory Cache is a Framework that stores the usable residue of failed timelines for later runs. It belongs in the Framework category because it manages information retention and replay leverage rather than directly causing the regression event itself. The bearer gains an indexed cache of lessons, flags, patterns, and partial optimizations harvested from discarded outcomes. Its progression bias favors analysis, selective recall, and gradual route perfection over brute force or dramatic one-time awakenings. The main tradeoff is fragmentation, because memory extracted from failed branches can become incomplete, emotionally distorted, or dangerously overtrusted when context is missing. In the world, Regression Memory Cache should be almost impossible for outsiders to diagnose cleanly, making the bearer appear eerily prepared, paranoid, or prophetic. It should also create inner conflict, since living with the sediment of many failures can make the present feel both precious and unreal. It remains lore-safe because the Cache preserves informational value rather than granting unrestricted dominion over time, and because wrong conclusions from old loops can still kill the bearer in the current branch.",
     "coreLoop": [
-      "Record failures and regrets in the cache.",
-      "Reload with retained memory bonuses.",
-      "Spend memory points to alter outcomes."
+      "Extract patterns, warnings, and route knowledge from failed timelines, discarded runs, or collapsed branches before they vanish completely.",
+      "Index that residue into a cache that can be queried later for tactical hints, decision support, and selective carry-forward leverage.",
+      "Use remembered fragments to improve the next attempt while managing the distortion that comes from incomplete and painful evidence."
     ],
     "progression": [
-      "Memory slots expand with resets.",
-      "Retained bonuses grow with each regression.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth improves memory retention, route annotation, and the reliability of small practical hints from failed outcomes.",
+      "Mid progression expands cache depth, selective recall, and the ability to preserve more nuanced social or tactical information.",
+      "Late progression makes the bearer terrifyingly efficient at iterating solutions, but also increasingly burdened by the emotional sediment of many losses."
     ],
     "narrativeHooks": [
-      "Deja-vu ripples alter relationships.",
-      "Fate watchers attempt to stop your loops."
+      "You can feel haunted by tragedies that no one else remembers, which makes every present-tense victory emotionally unstable.",
+      "Outsiders may mistake your caution for prophecy when it is really the refined aftermath of repeated failure.",
+      "The Framework constantly tests whether your certainty comes from wisdom or from clinging too hard to obsolete branches."
     ],
     "questHooks": [
-      "Regress to prevent a city collapse.",
-      "Unlock a memory branch by repeating a trial."
+      "Save someone who only dies in branches no one else believes existed and decide how much proof you owe the living.",
+      "Destroy a cache shard that contains the perfect tactical answer because keeping it will break what is left of your emotional coherence.",
+      "Hunt a rival who has learned how to poison your remembered patterns with false residues from engineered failures."
     ],
     "tags": [
       "regression",
       "memory",
-      "retry"
+      "retry",
+      "analysis"
     ],
     "statModifiers": {
       "intelligence": 3,
-      "agility": 2
+      "wisdom": 2
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -602,40 +846,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Regression Memory Cache can support retained hints, route annotations, boss-pattern persistence, and limited carry-forward optimization after failures. It gives retry-heavy content a coherent memory model. That makes repeated attempts feel intentional rather than meta-gaming. It also pairs well with mystery, survival, and branching content.",
+      "In narrative and quests, it enables deja-vu tension, gradually perfected rescues, and haunting scenes where the player remembers tragedies no one else has lived. Characters can act too early, trust the wrong cached conclusion, or become paralyzed by information from branches that are no longer relevant. That keeps the Framework from feeling infallible. It is strongest when memory is useful and emotionally expensive at the same time.",
+      "In implementation, it can power retained flag sets, replay metadata, knowledge unlocks, and contextual hint systems. Those hooks fit neatly into prompt assembly, quest continuity, and future long-term memory systems for the narrator. They also help differentiate informational persistence from full timeline reset mechanics. That makes the Framework an excellent architectural middle layer.",
+      "Its limitation-aware use comes from making cached memory helpful but not infallible, because stale certainty should remain one of the Framework's central risks. The player should gain leverage, not guaranteed correctness. That keeps decision-making alive. The best version rewards analysis without replacing judgment."
+    ],
+    "limits": [
+      "The Cache preserves fragments rather than whole timelines, so context loss and false confidence are constant risks.",
+      "If no qualifying failure or branch residue exists, the Framework has very little fresh value to contribute.",
+      "Overreliance on remembered patterns can become fatal when current conditions drift away from the old branch that taught the lesson."
+    ],
+    "costs": [
+      "Every useful memory is usually purchased through failure, regret, or witnessing events the current world no longer remembers.",
+      "Maintaining too much residue can destabilize mood, identity, and trust in the present moment.",
+      "Selective recall itself becomes a burden, because the bearer must constantly decide which painful fragments are worth carrying forward."
+    ],
+    "worldCompatibility": [
+      "Regression Memory Cache preserves informational residue and remains beneath Void, Grandmother Void, and the highest laws governing causality.",
+      "It is compatible with retry structures, branching quests, mystery arcs, and narrator memory because it manages retained knowledge rather than total time control.",
+      "Its leverage remains bounded by memory quality, branch relevance, and the host's ability to act on what is remembered."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "meta_reincarnation_map",
     "name": "Meta Reincarnation Map",
     "category": "Framework",
-    "summary": "Reincarnate with a full meta map of the world.",
-    "description": "A map that preserves knowledge of locations, quests, and outcomes across reincarnations.",
+    "summary": "A navigational Framework that reveals rebirth routes, world-line probabilities, and long-view positioning across future lives.",
+    "description": "Meta Reincarnation Map is a Framework that reveals and organizes the broader structure of world transitions, rebirth routes, and destination logic. It belongs in the Framework category because it provides navigational and structural insight across reincarnation processes rather than acting as a self-sufficient power source. The bearer gains a conceptual map of where souls, lives, roles, and world-lines can lead under specific conditions, making rebirth less blind and more tactical. Its progression bias favors planning across lives, long-view optimization, and intentional identity positioning rather than immediate brute-force gain. The main tradeoff is detachment, because seeing lives as nodes on a map can erode ordinary emotional investment in the current existence. In the world, Meta Reincarnation Map should be treated as blasphemous, sacred, or administratively priceless depending on how local cultures interpret rebirth. It should also create strategic terror, since someone who can navigate future lives intentionally is much harder to permanently defeat. It remains lore-safe because the Map reveals routes and probabilities under existing world law rather than allowing the bearer to invent reincarnation outcomes freely.",
     "coreLoop": [
-      "Unlock map nodes through exploration.",
-      "Plan optimal routes with foreknowledge.",
-      "Exploit outcome flags to skip failures."
+      "Reveal reincarnation routes, future-life vectors, and conditional soul destinations that would otherwise remain hidden after death.",
+      "Plan present actions around those routes so the next life, next role, or next world-line begins under better conditions.",
+      "Balance long-view optimization against the emotional and moral danger of treating the current life as merely one node in a larger chart."
     ],
     "progression": [
-      "Map layers expand to factions and events.",
-      "Outcome prediction improves with iterations.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth reveals broad route classes, key transition conditions, and limited previews of likely rebirth outcomes.",
+      "Mid progression adds finer branch detail, carry-over positioning, and the ability to recognize sabotage or opportunity across reincarnation chains.",
+      "Late progression makes the bearer frighteningly difficult to erase because death becomes a strategic pivot instead of a blind ending."
     ],
     "narrativeHooks": [
-      "History changes as you dodge traps early.",
-      "Archivists seek your reincarnation map."
+      "The Framework tempts the bearer to become colder, because every painful present can be rationalized as setup for a better later incarnation.",
+      "Religions and bureaucracies built on controlling rebirth have every reason to fear someone carrying an unsanctioned map of the process.",
+      "Every choice becomes heavier when you know it may alter not just your fate now, but the shape of several future lives."
     ],
     "questHooks": [
-      "Reach a hidden node before rivals.",
-      "Rewrite a doomed quest route."
+      "Choose whether to spend this life opening a better next route or refuse that logic because someone needs you now.",
+      "Steal back a reincarnation path that a soul bureaucracy quietly reassigned to a more politically useful candidate.",
+      "Break a cult that treats your future-life map as a public resource rather than a burden only you should carry."
     ],
     "tags": [
       "reincarnation",
       "meta",
-      "map"
+      "map",
+      "soul-route"
     ],
     "statModifiers": {
       "intelligence": 3,
-      "agility": 2
+      "wisdom": 2
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -662,40 +933,68 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Meta Reincarnation Map can support rebirth planning, future-life unlock paths, and selection of different start conditions or inheritance traces. It gives multi-run structure a clear navigational fantasy. That makes reincarnation progression easier to explain and easier to balance. It also supports long campaigns that stretch beyond one mortal arc.",
+      "In narrative and quests, it enables soul-route disputes, reincarnation sabotage, and difficult choices about whether the current life should be spent or preserved. Characters can choose sacrifice, cling to a beloved present, or play an unnerving multi-life strategy. That creates strong emotional conflict. It also makes spiritual institutions much more interesting opponents.",
+      "In implementation, it can drive reincarnation metadata, branch previews, carry-over selection, and multi-run progression systems. Those hooks fit naturally with save migration, narrator summaries, and any future long-memory features. They also distinguish route knowledge from actual guaranteed control. That architectural separation keeps the Framework clean.",
+      "Its limitation-aware use comes from making each mapped route a tradeoff rather than a guaranteed upgrade, because a better future life may demand catastrophic sacrifice in the present one. The map should clarify consequence, not erase it. That preserves tension. The strongest version feels strategic and haunting rather than exploitable and cheap."
+    ],
+    "limits": [
+      "The Map reveals lawful routes and probabilities, not absolute guarantees, so hostile intervention and changing context can still derail the ideal future.",
+      "Its greatest value often matures only across death, which means the present-life bearer cannot cash out every advantage immediately.",
+      "Obsessing over future incarnations can lead to fatal detachment from urgent present obligations and relationships."
+    ],
+    "costs": [
+      "Using the Framework well requires accepting difficult tradeoffs about which life, body, or future role deserves protection at a given moment.",
+      "The bearer risks becoming emotionally estranged from ordinary mortality and from people who do not see existence as a navigable sequence.",
+      "Knowledge of rebirth routes attracts institutions that want access to the Map or want its bearer erased before the knowledge spreads."
+    ],
+    "worldCompatibility": [
+      "Meta Reincarnation Map reveals lawful rebirth structure and cannot override Void, Grandmother Void, or the highest order governing souls and worlds.",
+      "It is compatible with reincarnation arcs, multi-run progression, spiritual bureaucracy, and lineage carry-over because it organizes route knowledge.",
+      "Its power stays bounded by probability, lawful route access, and sacrifice, which keeps it profound without turning it into free future editing."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 1
   },
   {
     "id": "time_dilation_training",
     "name": "Time Dilation Training",
     "category": "Framework",
-    "summary": "Train for years in minutes.",
-    "description": "A time-dilation framework that opens training pockets with accelerated time flow.",
+    "summary": "A training Framework that compresses years of disciplined practice into brief external time without granting free mastery.",
+    "description": "Time Dilation Training is a Framework that compresses extensive training intervals into externally brief periods. It belongs in the Framework category because it structures growth time and training access rather than granting direct instant mastery on its own. The bearer gains pockets, chambers, or protocol states where effort can be multiplied against outside chronology, allowing years of repetition or study to occur in minutes, hours, or days. Its progression bias favors preparation, discipline, and long-form technique refinement over spontaneous battlefield improvisation. The main tradeoff is isolation, because training too far out of sync with ordinary life can damage relationships, judgment, and the body's ability to reintegrate under real-world pressure. In the world, Time Dilation Training should be one of the most coveted support frameworks because it changes what can be learned before a deadline without necessarily changing what can be survived afterward. It should also remain dangerous because accelerated training magnifies obsession, bad habits, and mental strain along with real progress. It remains lore-safe because all gains are still earned through effort and because compressed time is bounded, resource-gated, and vulnerable to disruption, collapse, or unsustainable overuse.",
     "coreLoop": [
-      "Enter a training pocket realm.",
-      "Train under accelerated time.",
-      "Exit with condensed growth gains."
+      "Enter a valid dilation chamber, ritual pocket, or training protocol where subjective time expands far beyond external chronology.",
+      "Spend that expanded interval on real practice, study, conditioning, or controlled experimentation instead of expecting free downloaded mastery.",
+      "Re-enter the ordinary world with condensed gains while handling fatigue, disorientation, and the social cost of accelerated personal change."
     ],
     "progression": [
-      "Dilation ratio increases per tier.",
-      "Pocket stability improves with mastery.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth offers short safe sessions and modest acceleration ratios that improve practice efficiency before major deadlines.",
+      "Mid progression expands session length, chamber stability, and the complexity of disciplines that can be trained under dilation.",
+      "Late progression lets the bearer prepare at terrifying speed, but only if they can survive the mental and logistical strain of living off-sync."
     ],
     "narrativeHooks": [
-      "Years of memories compress into minutes.",
-      "Rivals fear your impossible improvement pace."
+      "The bearer can return from a single night carrying the emotional weight of months or years that no one else experienced.",
+      "People may admire your impossible improvement pace while never understanding the loneliness and distortion that produced it.",
+      "The Framework naturally asks whether mastery gained in isolation still counts when real life keeps moving without you."
     ],
     "questHooks": [
-      "Survive a decade of pocket training in one run.",
-      "Stabilize a collapsing pocket realm."
+      "Survive an emergency training pocket that offers enough time to prepare if it does not break your mind first.",
+      "Choose whether to spend your last safe dilation cycle on yourself or on training someone else who might outgrow you.",
+      "Keep a collapsing chamber stable long enough to finish the technique that is the only thing standing between your faction and ruin."
     ],
     "tags": [
       "time",
       "training",
-      "acceleration"
+      "acceleration",
+      "discipline"
     ],
     "statModifiers": {
-      "intelligence": 3,
-      "agility": 2
+      "intelligence": 2,
+      "wisdom": 1,
+      "vitality": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -722,40 +1021,67 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Time Dilation Training can support training rooms, accelerated mastery timers, deadline preparation arcs, and structured practice loops outside normal world pacing. It gives training content a concrete spatial and temporal identity. That makes progression feel earned rather than hand-waved. It also creates clean opportunities for fatigue, focus, and stability systems.",
+      "In narrative and quests, it enables one-night prep stories, isolation costs, and the eerie aftermath of returning changed after very little outside time has passed. The bearer can save a city by preparing in time or lose people because they stopped understanding normal chronology. That emotional duality makes the Framework strong. It is especially effective in mentor, tournament, or siege arcs.",
+      "In implementation, it maps cleanly to training-state toggles, accelerated progression formulas, fatigue systems, and limited-use chambers or rituals. Those hooks are modular and easy to connect to stat growth, skill mastery, and narrative pacing. They also provide an elegant way to gate rapid advancement through stability and upkeep. That keeps the feature manageable.",
+      "Its limitation-aware use comes from ensuring that more training time is not a free substitute for live experience, social growth, or battlefield adaptation. The player should come out sharper, but not automatically complete. That preserves the value of real encounters. The best version rewards discipline without invalidating the outside world."
+    ],
+    "limits": [
+      "Acceleration only multiplies genuine effort, so lazy or misdirected training still wastes the expanded interval.",
+      "Dilation chambers and protocols have stability caps, access costs, and recovery requirements that prevent permanent off-screen hypergrowth.",
+      "Techniques learned in isolation may fail under live pressure if the bearer never tests them against real opponents or chaotic conditions."
+    ],
+    "costs": [
+      "Extended subjective time creates loneliness, reintegration strain, and widening social distance from people still living at normal pace.",
+      "Accelerated practice can amplify bad habits, obsession, or mental fracture just as efficiently as it amplifies real skill.",
+      "Reliable dilation infrastructure is expensive, vulnerable to disruption, and often controlled by institutions that demand loyalty or payment."
+    ],
+    "worldCompatibility": [
+      "Time Dilation Training compresses effort under bounded conditions and cannot override Void, Grandmother Void, or the upper laws governing time and existence.",
+      "It is compatible with mastery systems, tournament prep, sect training, and crisis countdowns because it organizes when growth can occur.",
+      "Its strongest effects still depend on discipline, access, and recovery, keeping the Framework potent without turning it into free instant learning."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "inner_world_reliquary",
     "name": "Inner World Reliquary",
     "category": "Framework",
-    "summary": "A pocket realm to store armies and resources.",
-    "description": "An inner world that expands over time, serving as a sanctuary, forge, and army vault.",
+    "summary": "A storage and sanctuary Framework that builds a persistent internal world for assets, dependents, and hidden infrastructure.",
+    "description": "Inner World Reliquary is a Framework that creates a persistent internal space for storing resources, constructs, dependents, and metaphysical infrastructure. It belongs in the Framework category because it is about containment, organization, and scalable internal logistics rather than direct domination of the outside world. The bearer gains an inner domain where goods, armies, relics, cultivation chambers, or spiritual growth structures can be housed, preserved, and managed. Its progression bias favors accumulation, mobility of assets, and hidden preparation rather than immediate transparent power. The main tradeoff is maintenance, because an inner world can decay, rebel, overcrowd, or become a single catastrophic point of failure if neglected or breached. In the world, Inner World Reliquary should be treated as wondrous and terrifying because it collapses logistics, secrecy, and strategic reserve into one body-bound vault. It should also carry existential implications, since people or treasures stored inside another being raise questions about sovereignty, safety, and ownership. It remains lore-safe because internal storage is still bounded by capacity, stability, and breach risk, and because an inner world is not the same thing as independent creation beyond reality's laws.",
     "coreLoop": [
-      "Expand the inner realm with resources.",
-      "Store troops, materials, and relics.",
-      "Cultivate inside to gain buffs."
+      "Expand and stabilize an internal domain that can store resources, structures, dependents, and specialized facilities beyond ordinary carrying capacity.",
+      "Use that inner space to preserve value, prepare hidden reserves, and move strategic assets through hostile territory without obvious exposure.",
+      "Maintain ecological, political, and spatial order inside the reliquary so convenience does not become concentrated catastrophic risk."
     ],
     "progression": [
-      "Realm tiers unlock fields, forges, and workshops.",
-      "Spatial upgrades increase storage capacity.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth grants modest hidden storage, simple sanctuary space, and basic environmental stabilization for important assets.",
+      "Mid progression expands the domain into workshops, cultivation sectors, barracks, or dependent habitats with real internal administration needs.",
+      "Late progression turns the bearer into a walking logistics empire whose greatest strength and greatest vulnerability occupy the same hidden world."
     ],
     "narrativeHooks": [
-      "The inner world develops its own ecosystem.",
-      "Rivals attempt to breach your sanctuary."
+      "What begins as storage can slowly become a society, forcing the bearer to decide whether they are sheltering, ruling, or imprisoning what lives inside.",
+      "Every secret reserve inside the reliquary makes the outside world underestimate how much force, wealth, or grief the bearer is carrying.",
+      "The Framework makes breaches deeply personal because an attack on the inner world is an attack on everything the bearer chose to protect."
     ],
     "questHooks": [
-      "Stabilize a realm rift before collapse.",
-      "Defend the reliquary during a raid."
+      "Seal a breach before the hidden population inside your reliquary spills into a world that does not know they exist.",
+      "Decide which treasure or dependent must be abandoned because the inner world cannot sustain everything you tried to protect.",
+      "Survive an invasion by enemies who realize the fastest way to break you is to enter the place you thought was safest."
     ],
     "tags": [
       "realm",
       "storage",
-      "sanctuary"
+      "sanctuary",
+      "logistics"
     ],
     "statModifiers": {
-      "intelligence": 3,
-      "agility": 2
+      "vitality": 2,
+      "intelligence": 2
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -780,40 +1106,68 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Inner World Reliquary can support expanded storage, hidden reserves, mobile bases, contained companion spaces, and staged deployment of internal assets. It gives logistics a mythic but still bounded expression. That is useful for travel-heavy campaigns and high-stakes preparation. It also supports strong visual and narrative identity.",
+      "In narrative and quests, it enables smuggling, sanctuary-building, breach catastrophes, and deeply personal stakes when the player's inner world is threatened. The bearer can protect refugees, hide armies, or become morally compromised by what they choose to keep inside themselves. That makes the Framework emotionally rich. It also creates excellent siege and infiltration stories.",
+      "In implementation, it can drive pocket-zone state, capacity rules, stored-entity lists, mobile-base systems, and breach or upkeep mechanics. Those hooks fit neatly with inventory, companions, crafting, and narrative summary systems. They also create a reusable place to model hidden infrastructure. That makes the Framework valuable beyond pure flavor.",
+      "Its limitation-aware use comes from the fact that storing more value internally increases convenience and concentrates risk in the same place. The player should feel safer and more exposed at the same time. That tension keeps the Framework distinct from infinite inventory wish fulfillment. The strongest version feels like strategic containment under pressure."
+    ],
+    "limits": [
+      "Capacity, stability, and ecological balance all cap how much value the reliquary can safely contain at one time.",
+      "Breach, corruption, or overload can turn the inner world into a single devastating failure point instead of a sanctuary.",
+      "Stored assets remain hard to deploy instantly if the bearer is disrupted, sealed, or attacked before proper release conditions are met."
+    ],
+    "costs": [
+      "The inner world demands upkeep, governance, and stabilization, especially once living beings, volatile relics, or production facilities are moved inside.",
+      "Concentrating too much value internally makes the bearer a prime target for thieves, invaders, and factions seeking a one-strike jackpot.",
+      "The psychological cost can be severe, because the bearer slowly starts carrying a private territory whose losses are impossible to compartmentalize."
+    ],
+    "worldCompatibility": [
+      "Inner World Reliquary creates bounded internal logistics and cannot surpass Void, Grandmother Void, or the upper laws that define space and existence.",
+      "It is compatible with storage systems, companion support, hidden bases, and cultivation infrastructure because it organizes contained value.",
+      "Its power remains grounded in capacity, upkeep, and breach risk, which keeps the Framework vast in fantasy but coherent in-world."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   },
   {
     "id": "quest_chain_compounding",
     "name": "Quest Chain Compounding",
     "category": "Framework",
-    "summary": "Quest chains compound rewards faster than difficulty.",
-    "description": "A chain system where each completed quest increases rewards exponentially if the chain remains unbroken.",
+    "summary": "A progression Framework that amplifies reward quality when related objectives are linked into coherent escalating chains.",
+    "description": "Quest Chain Compounding is a Framework that increases reward quality and progression efficiency when related quests are linked into coherent escalating chains. It belongs in the Framework category because it organizes progression flow and payout structure rather than acting as a direct combat or reality-bending power. The bearer becomes exceptionally good at turning one completed objective into the setup for a more valuable next objective, creating momentum through structure instead of through raw personal might. Its progression bias favors planning, continuity, and strategic sequencing over random task completion. The main tradeoff is lock-in, because committing too hard to one chain can blind the bearer to urgent side threats, rival opportunities, or human consequences outside the reward loop. In the world, Quest Chain Compounding should be subtle but potent, especially in settings where institutions, gods, or systems issue tasks that most people treat one at a time. It should also create suspicion because the bearer appears to progress too efficiently through narrative and political complexity, as though the world itself were yielding combo routes. It remains lore-safe because the Framework rewards coherence inside existing objective structures rather than inventing reward-worthy destiny from nothing.",
     "coreLoop": [
-      "Accept a chained sequence of quests.",
-      "Complete within time to preserve the chain.",
-      "Claim compounding rewards at milestones."
+      "Link one completed objective to the next most synergistic follow-up so effort compounds instead of resetting after every quest turn-in.",
+      "Maintain chain continuity through deadlines, branching choices, and controlled escalation to unlock better payouts and strategic momentum.",
+      "Decide when to preserve the chain and when to break it because the world is asking for compassion, flexibility, or a different priority."
     ],
     "progression": [
-      "Chain tiers unlock relic rewards.",
-      "Failure penalties shrink with mastery.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth improves chain visibility, follow-up suggestion quality, and modest reward multipliers for coherent quest sequencing.",
+      "Mid progression expands into branch-sensitive compounding, campaign-length chains, and reduced loss when one link in the route collapses.",
+      "Late progression makes the bearer frighteningly efficient at converting whole arcs of effort into stacked momentum across regions and factions."
     ],
     "narrativeHooks": [
-      "NPCs begin offering chain-exclusive tasks.",
-      "Failure reshapes reputation in major ways."
+      "The Framework can make life feel alarmingly optimized, as if every act of kindness, violence, or diplomacy is one node in a reward lattice.",
+      "Rivals may try to interrupt your chains not because they can beat you directly, but because they know breaking momentum is the real attack.",
+      "It naturally raises moral questions about whether optimization is helping the world or hollowing out the reasons to act at all."
     ],
     "questHooks": [
-      "Complete five chained quests without resting.",
-      "Sacrifice a chain to save a critical NPC."
+      "Break a perfect quest chain to save someone the system never marked as reward-relevant and live with what momentum you lose.",
+      "Stop a rival compounding route before their optimized campaign hands them a region worth more than any one battlefield victory.",
+      "Decide whether to finish the final profitable link or sabotage your own chain because completing it would crown the wrong faction."
     ],
     "tags": [
       "quests",
       "compound",
-      "rewards"
+      "rewards",
+      "momentum"
     ],
     "statModifiers": {
-      "intelligence": 3,
-      "agility": 2
+      "intelligence": 2,
+      "wisdom": 1,
+      "luck": 1
     },
     "archetypeResource": {
       "name": "System Energy",
@@ -840,31 +1194,57 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Quest Chain Compounding can support linked objective bonuses, escalating reward ladders, and route-planning incentives across quest hubs or campaigns. It makes structure itself a source of power. That is useful for players who like planning and momentum rather than isolated tasks. It also creates a clean way to reward engagement with the quest graph.",
+      "In narrative and quests, it enables pressure-cooker mission chains, rival interruption arcs, and stories about whether optimization is eroding compassion. The bearer can save a region through perfect sequencing or fail morally by treating people like nodes in a combo route. That tension gives the Framework real dramatic bite. It also helps the narrator explain why some characters always seem one step ahead.",
+      "In implementation, it fits chain metadata, reward multipliers, dependency graphs, momentum counters, and branching-quest continuity tracking. Those hooks can enrich the quest manager without forcing a rewrite of every quest definition. They also pair well with narrator summaries and system messaging. That makes the Framework highly practical.",
+      "Its limitation-aware use comes from making every chain valuable but narrowing, because the best reward route is not always the best moral or strategic route. The player should occasionally want to break a profitable chain for a human reason. That preserves agency and tone. The strongest version rewards coherence without punishing conscience out of existence."
+    ],
+    "limits": [
+      "Compounding only works across genuinely related objectives, so random disconnected task spam should not build serious momentum.",
+      "The Framework is vulnerable to interruption, branching chaos, and urgent crises that force the bearer off the ideal route.",
+      "Overcommitting to one chain can leave the player unprepared for unrelated threats or social damage outside the optimized path."
+    ],
+    "costs": [
+      "Maintaining chain momentum pressures the bearer to prioritize sequence efficiency even when people need help outside the reward route.",
+      "Breaking a profitable chain can feel materially painful, which creates real temptation to become callous or compulsively optimization-driven.",
+      "High-value chains attract sabotage from rivals who understand that disrupting continuity may matter more than winning a fair fight."
+    ],
+    "worldCompatibility": [
+      "Quest Chain Compounding organizes existing objective structure and remains beneath Void, Grandmother Void, and the deeper laws that define worthy causality.",
+      "It is compatible with quest graphs, faction campaigns, divine errands, and progression pacing because it structures continuity rather than brute force.",
+      "Its strongest rewards still require real quests, real continuity, and real risk, which keeps the Framework subtle but balanced."
+    ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 3
   },
   {
     "id": "reality_edit_interface",
     "name": "Reality Edit Interface",
     "category": "Framework",
-    "summary": "Make minor, localized edits to reality that can lead to major outcomes.",
-    "description": "A framework that provides a limited interface to 'edit' small details of the immediate environment or object properties, constrained by a strict energy and causality cost.",
+    "summary": "A causality-editing Framework that applies bounded local parameter changes and forces the bearer to live with the consequences.",
+    "description": "Reality Edit Interface is a Framework that exposes a narrow operational layer for editing small local properties of objects, spaces, and interactions. It belongs in the Framework category because it provides a bounded interface and accounting model for changes rather than granting limitless authorship over reality. The bearer can identify editable parameters such as friction, brittleness, pressure, balance, or symbolic state and then spend causality charge to nudge them out of normal alignment. Its progression bias favors precision, preparation, and indirect problem solving instead of overwhelming frontal force. Small edits can produce dramatic outcomes, but only when the bearer understands context well enough to exploit the cascade they are about to start. The main tradeoff is causality stress, because reality resists repeated tampering and begins to charge interest in the form of paradox residue, correction events, and hostile attention. In the world, Reality Edit Interface should feel uncanny and deeply alarming because ordinary witnesses see impossible coincidences while experts realize someone is touching the hidden sliders beneath the surface. It remains lore-safe because edits stay local, expensive, and vulnerable to stronger law, anti-edit fields, or simply the bearer misreading which variable actually matters.",
     "coreLoop": [
-      "Identify a small, editable parameter in your vicinity (e.g., 'friction=0.1', 'sword.brittleness=0.9').",
-      "Expend 'Causality Charge' to apply the edit.",
-      "Witness and exploit the cascading consequences of the small change."
+      "Identify a local parameter that the interface can lawfully expose and decide whether changing it is worth the causality charge.",
+      "Apply the edit inside a bounded scope and immediately adapt to the chain reaction it creates in the environment, object, or encounter.",
+      "Manage residue, correction pressure, and enemy scrutiny before repeated edits turn a clever exploit into a catastrophic paradox."
     ],
     "progression": [
-      "Increase your maximum Causality Charge and the number of parameters you can edit simultaneously.",
-      "Unlock 'Conceptual Edits', allowing you to alter abstract properties like 'hope' or 'luck' in a small area.",
-      "Unlock further potential in progression (Placeholder)."
+      "Early growth increases causality charge, improves parameter visibility, and allows safe manipulation of physical properties in a tightly bounded area.",
+      "Mid progression unlocks chained edits, environment-level tuning, and carefully limited conceptual adjustments such as fear, luck, or symbolic weight.",
+      "Late progression turns the bearer into a terrifying tactician who can unravel stronger foes by touching a few decisive variables at exactly the wrong moment."
     ],
     "narrativeHooks": [
-      "You cause a series of improbable, 'Final Destination'-style accidents for your enemies.",
-      "Guardians of time and fate hunt you for creating paradoxes."
+      "You can engineer disasters that look like coincidence until too many impossible outcomes point back to your hand.",
+      "Guardians of time, law, and ritual order hunt you because every edit suggests the world is more editable than they want anyone to know.",
+      "The Framework steadily tempts the bearer to treat people and places as parameter sets instead of as lives and histories."
     ],
     "questHooks": [
-      "Defeat a god-like entity by editing the 'divinity' property of their artifact to 'null'.",
-      "Prevent a castle's collapse by editing the 'structural_integrity' of a single falling stone."
+      "Collapse an enemy fortress by finding the one structural or symbolic parameter whose failure will cascade through the whole defense network.",
+      "Save a city by editing the wrongness out of a ritual accident before the causality debt rolls forward into mass catastrophe.",
+      "Steal a forbidden grammar of edits from a guardian archive that insists no mortal should ever see the world rendered as variables."
     ],
     "tags": [
       "reality-bending",
@@ -902,39 +1282,63 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Reality Edit Interface can support environmental manipulation, trap setup, object sabotage, temporary property edits, and carefully scoped conceptual debuffs. It rewards players who notice leverage points instead of only chasing bigger numbers. That creates a powerful tactical identity across combat, stealth, and puzzle play. It also makes knowledge of the scene matter more than raw stats alone.",
+      "In narrative and quests, it enables improbable assassinations, miracle-like rescues, ritual corrections, and eerie scenes where one tiny change topples a much larger structure. The bearer can defeat stronger enemies by understanding what is fragile in them or around them. They can also catastrophically overreach if they treat every problem as a variable to be forced. That tension gives the Framework sharp dramatic teeth.",
+      "In implementation, it maps well to tagged properties, scoped edit actions, causality charge, deferred backlash, and correction-event hooks layered on existing systems. Those pieces can feed encounter scripting, object interactions, prompt context, and risk messaging without requiring a universal simulation rewrite. It also gives designers a clear place to store what can and cannot be edited on key content. That makes the Framework implementable even though its fantasy sounds broad.",
+      "Its limitation-aware use comes from keeping edits local, interpretable, and costly. The player should feel clever because they found the right seam, not because they can rewrite anything they dislike. Strong use should look like technical causality abuse under pressure. That preserves the category line between bounded interface and godlike reality authorship."
+    ],
+    "limits": [
+      "Only bounded local parameters can be edited directly, and many protected, sacred, or sovereign properties are outside the interface entirely.",
+      "The bearer must correctly identify what variable matters, because a clever but mistaken edit can waste charge or trigger a worse cascade.",
+      "Repeated edits in the same scene increase correction pressure and make future changes less stable and more dangerous."
+    ],
+    "costs": [
+      "Every edit consumes causality charge and leaves residue that can surface later as backlash, paradox, or hostile scrutiny.",
+      "Broad or concept-level edits are especially expensive and can harm allies, bystanders, or the environment if the cascade is misjudged.",
+      "Using the interface too often encourages a detached mindset that treats reality as an editable board rather than a lived world."
+    ],
+    "worldCompatibility": [
+      "Reality Edit Interface manipulates local parameters inside existing law and remains beneath Void, Grandmother Void, and the highest structures that define reality itself.",
+      "It is compatible with traps, rituals, puzzles, environmental combat, and narrator consequence systems because it routes edits through scoped variables and explicit cost.",
+      "Its strongest effects require context mastery, bounded targets, and acceptance of correction risk, which keeps the Framework potent without becoming unrestricted authorship."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 1
   },
   {
     "id": "dungeon_core_mastery",
     "name": "Dungeon Core Mastery (Living Dungeon System)",
     "category": "Framework",
-    "summary": "In this archetype, the character becomes a Dungeon Core or otherwise integrates with a dungeon's control system.",
-    "description": "In this archetype, the character becomes a Dungeon Core or otherwise integrates with a dungeon's control system. The world itself treats them not as an adventurer, but as the manager of a dungeon, giving them cheat-like authority over an area. The function provides an interface to create rooms, spawn monsters, set traps, and absorb mana or life force from intruders. Essentially, they level up their dungeon rather than (or alongside) themselves. Progression is territory-based: as their dungeon grows in complexity or defeats raiders, the core gains upgrades - new monster races to summon, high...",
+    "summary": "A living-dungeon Framework that binds the bearer to a core and turns territorial growth into rooms, monsters, traps, and layered infrastructure.",
+    "description": "Dungeon Core Mastery is a Framework that fuses the bearer with a dungeon core or an equivalent living control nexus. It belongs in the Framework category because it organizes territorial growth, room logic, spawning, and dungeon infrastructure instead of functioning as a free-floating System usable anywhere. The bearer becomes responsible for shaping an enclosed ecosystem of danger, reward, mana flow, and defensive design. Its progression bias favors territory building, trap architecture, resource routing, and monster curation rather than portable personal supremacy. The dungeon grows as an organism and institution, meaning advancement is measured in complexity, throughput, survivability, and the quality of what the core can sustain. The main tradeoff is immobility and exposure, because the heart of the Framework is tied to a site that enemies can invade, corrupt, starve, or besiege. In the world, Dungeon Core Mastery should be treated as both an economic engine and a strategic threat because a mature living dungeon can shape migration, wealth, frontier survival, and regional war. It remains lore-safe because the Framework is powerful only through managed territory, mana intake, infrastructure, and defendable growth, not through unrestricted authority over the wider world.",
     "coreLoop": [
-      "The function provides an interface to create rooms, spawn monsters, set traps, and absorb mana or life force from intruders.",
-      "Progression is territory-based: as their dungeon grows in complexity or defeats raiders, the core gains upgrades - new monster races to summon, higher dungeon rank increasing the...",
-      "Eventually, the dungeon can expand into a multi-floor labyrinth that would normally take centuries to form naturally."
+      "Shape rooms, routes, traps, monster ecology, and reward flow so the dungeon grows stronger when intruders engage with it.",
+      "Convert mana, harvested resources, and invasion outcomes into structural upgrades, new sectors, and improved core functions.",
+      "Defend the heart of the dungeon while deciding whether the territory will become a proving ground, a refuge, a factory, or a predatory maze."
     ],
     "progression": [
-      "In this archetype, the character becomes a Dungeon Core or otherwise integrates with a dungeon's control system.",
-      "The world itself treats them not as an adventurer, but as the manager of a dungeon, giving them cheat-like authority over an area.",
-      "Essentially, they level up their dungeon rather than themselves."
+      "Early growth grants simple room templates, low-tier monster spawning, basic trap logic, and enough control to keep the core alive.",
+      "Mid progression expands into multi-floor specialization, elite encounters, environmental themes, and internal production or crafting sectors.",
+      "Late progression turns the dungeon into a living polity whose economy, defenses, and reputation can influence an entire region."
     ],
     "narrativeHooks": [
-      "The thematic flavor is strategic and defensive: the character might literally be a crystal in the dungeon, or have a split existence controlling a dungeon remotely.",
-      "It synergizes heavily with summoning and crafting; for instance, using rare materials to craft boss monsters, or forging magical traps.",
-      "This creates new abilities like dungeon-exclusive spells or environmental manipulation."
+      "People who enter your domain are forced to decide whether they are raiders, pilgrims, workers, or prey, and your layout answers that question for them.",
+      "The dungeon slowly becomes a mirror of the bearer's values, whether that means disciplined trial, ecological weirdness, ruthless extraction, or shelter behind teeth.",
+      "Every expansion raises the same uncomfortable question: are you building a home, a weapon, or a machine that has already outgrown your right to guide it?"
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Dungeon Core Mastery and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Dungeon Core Mastery.",
-      "Use the Dungeon Core Mastery to resolve a crisis ordinary powers cannot solve."
+      "Secure a stabilizing heart-material before your core fractures under the stress of recent expansion.",
+      "Defeat or absorb a rival living dungeon whose growth model is poisoning the frontier around both your territories.",
+      "Use the dungeon itself to shelter a region through disaster while deciding how much danger outsiders must survive to earn that safety."
     ],
     "tags": [
       "dungeon",
-      "divine-mandate",
-      "system",
-      "archetype"
+      "core",
+      "territory",
+      "infrastructure"
     ],
     "statModifiers": {
       "intelligence": 3,
@@ -965,6 +1369,30 @@
         "effect": "stat_boost",
         "amount": 1
       }
-    ]
+    ],
+    "possibleUses": [
+      "In gameplay, Dungeon Core Mastery can support room building, trap placement, monster spawning, invasion routing, and territory-based progression loops. It gives dungeon play a true growth framework instead of treating a dungeon as just a combat backdrop. That is useful for strategy-minded players who want to build layered defenses and economies. It also creates strong asymmetry between home-territory power and expedition vulnerability.",
+      "In narrative and quests, it enables frontier survival arcs, rival-core wars, settlement dependence, and moral choices about how a living dungeon should treat those who enter it. The bearer can become a local guardian, tyrant, provider, or catastrophe. That flexibility makes the Framework story-rich without losing coherence. It also naturally supports long regional plots because a dungeon changes everything around it.",
+      "In implementation, it fits dungeon-state graphs, room templates, encounter tables, mana-income loops, core integrity, and territory upgrades. Those hooks already align with multiple parts of the repo, including quests, rewards, generation, faction response, and narrator summaries. It also pairs well with crafting and summoning without needing to subsume them. That makes it one of the most integration-friendly infrastructure frameworks available.",
+      "Its limitation-aware use comes from tying nearly all of its greatness to place. Away from the dungeon, the bearer should retain insight, prepared assets, and partial support, but not the full oppressive advantage of the core itself. That contrast keeps the fantasy strategic instead of all-purpose. The strongest version feels like being the heart of a dangerous ecosystem, not carrying an infinite portable fortress in your pocket."
+    ],
+    "limits": [
+      "The Framework is anchored to a real core site, so its strongest powers cannot be projected indefinitely beyond the managed dungeon territory.",
+      "Growth depends on mana flow, materials, invasion pressure, and the ability to protect core infrastructure from siege, corruption, or theft.",
+      "A poorly designed dungeon can become unstable, economically useless, politically targeted, or internally hostile to its own purpose."
+    ],
+    "costs": [
+      "Maintaining a living dungeon consumes constant resources, planning time, and defense effort even when no immediate crisis is visible.",
+      "Every expansion makes the bearer more strategically valuable and therefore more likely to attract guild assault, state intervention, or rival-core predation.",
+      "The moral cost can be severe, because the dungeon must decide how much suffering, risk, and exploitation it is willing to build into its own growth loop."
+    ],
+    "worldCompatibility": [
+      "Dungeon Core Mastery organizes territorial growth inside existing world law and cannot surpass Void, Grandmother Void, or the higher structures that authorize reality.",
+      "It is compatible with dungeon simulation, settlement pressure, encounter generation, and regional politics because it structures a bounded growth engine.",
+      "Its power remains grounded in place, infrastructure, upkeep, and siege vulnerability, which keeps the Framework massive in influence but clearly bounded."
+    ],
+    "rarity": "mythic",
+    "stability": "volatile",
+    "selectionWeight": 2
   }
 ]

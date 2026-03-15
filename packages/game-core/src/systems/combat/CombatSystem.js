@@ -1,16 +1,11 @@
-import { addItem } from "../inventory/InventorySystem.js";
-import { addXp } from "../leveling/LevelingManager.js";
 import {
   createEnemy,
   getEnemySkillById,
-  calculateEnemyDrops,
 } from "../../entities/Enemy.js";
 import { getSkillById } from "../skills/SkillRegistry.js";
-import { calculateGainedXP } from "../../core/xpCurve.js";
 import {
   hasRaceTag,
   EFFECT_TAGS as RACE_EFFECT_TAGS,
-  getRaceEntityTags,
   getRaceRebirth,
   canRaceRebirth,
   getRandomStartBuff,
@@ -26,28 +21,47 @@ import {
   resolveBypasses,
   applyCostOverride,
   applyCooldownOverride,
-  applyCritOverride,
-  applyCritMultiplier,
   applyDropOverrides,
   getMagnitudeCaps,
-  applyMagnitudeDamageCap,
 } from "../skills/TalentManager.js";
 import { getModifiedSkill } from "../skills/SkillRegistry.js";
 import { effectApplicationSystem } from "../effects/EffectApplicationSystem.js";
 import { consumeMana } from "../magic/ManaSystem.js";
 import { calculateManaCost } from "../magic/ManaBalance.js";
 import { emit } from "../../core/EventBus.js";
-import { getSetBonuses } from "../items/SetBonusSystem.js";
-
+import {
+  allowsZeroDamage,
+  applyHealToPlayer,
+  applyResourceGain,
+  applyShieldAbsorptionToEnemy,
+  applySummonToPlayer,
+  consumeAbilityCost,
+  getDodgeChance,
+  getMissChance,
+  getReflectPercent,
+  processEnemyTurnEffects,
+  processEntityTurnEffects,
+  removeEffectsByIds,
+  removeEffectsByTypes,
+  resolveAbilityTargets,
+} from "./combatPreparation.js";
+import {
+  calculateDamage,
+  calculateDamagePipeline,
+} from "./combatResolution.js";
+import {
+  endCombatPhase,
+  handleEnemyDefeatPhase,
+} from "./combatAftermath.js";
+const handleEnemyDefeat = handleEnemyDefeatPhase;
+const endCombat = endCombatPhase;
 export function applyCastingInterruptionFromDamage(state, damageApplied) {
   const casting = state?.player?.magic?.casting;
   const prepared = state?.player?.magic?.prepared;
   if (!casting || typeof casting !== "object" || !prepared) return state;
-
   const hpMax = state.player?.hp?.max || 0;
   const dmg = Math.max(0, Number(damageApplied) || 0);
   if (dmg <= 0) return state;
-
   const resonance = Math.max(0, Math.min(100, Number(state.player?.magic?.resonance?.current) || 0));
   const mindPct = hpMax > 0
     ? Math.max(0, Math.min(1, (Number(state.player?.magic?.stability?.mind?.current) || 0) / (Number(state.player?.magic?.stability?.mind?.max) || 100)))
@@ -62,7 +76,6 @@ export function applyCastingInterruptionFromDamage(state, damageApplied) {
       state.player?.magic?.anchors?.area ||
       state.player?.magic?.anchors?.itemId,
   );
-
   const guaranteed = damageRatio >= 0.2;
   const chance = guaranteed
     ? 1
@@ -73,33 +86,26 @@ export function applyCastingInterruptionFromDamage(state, damageApplied) {
           0.12 + 0.9 * damageRatio + 0.25 * (resonance / 100) - 0.35 * control - (anchored ? 0.1 : 0),
         ),
       );
-
   if (!(random() < chance)) return state;
-
   const outcomeRoll = random();
   const outcome =
     outcomeRoll < 0.55 ? "fizzle" : outcomeRoll < 0.85 ? "partial" : "backlash";
-
   const log = state.combat?.log ? [...state.combat.log] : [];
   if (outcome === "fizzle") {
-    log.push("⚡ Your casting is interrupted; the working fizzles.");
+    log.push("Cast interrupted: the working fizzles.");
   } else if (outcome === "partial") {
-    log.push("⚡ Your casting is interrupted; the working spills out prematurely.");
+    log.push("Cast interrupted: the working spills out prematurely.");
   } else {
-    log.push("⚡ Your casting is interrupted; backlash tears through you.");
+    log.push("Cast interrupted: backlash tears through you.");
   }
-
   const mindMax = Number(state.player?.magic?.stability?.mind?.max) || 100;
   const cogMax = Number(state.player?.magic?.stability?.cognitive?.max) || 100;
   const bodyMax = Number(state.player?.magic?.stability?.body?.max) || 100;
-
   const mindLoss = outcome === "backlash" ? Math.max(2, Math.floor(dmg * 0.6)) : Math.max(1, Math.floor(dmg * 0.2));
   const cogLoss = outcome === "partial" ? Math.max(1, Math.floor(dmg * 0.25)) : outcome === "backlash" ? Math.max(2, Math.floor(dmg * 0.5)) : Math.max(0, Math.floor(dmg * 0.1));
   const bodyLoss = outcome === "backlash" ? Math.max(2, Math.floor(dmg * 0.4)) : outcome === "partial" ? Math.max(1, Math.floor(dmg * 0.15)) : 0;
-
   const nextResonance = Math.max(0, Math.min(100, resonance + (outcome === "backlash" ? 12 : outcome === "partial" ? 8 : 5)));
   const resonanceState = nextResonance >= 75 ? "shrieking" : nextResonance >= 50 ? "ringing" : nextResonance >= 25 ? "humming" : "quiet";
-
   return {
     ...state,
     player: {
@@ -141,7 +147,6 @@ export function applyCastingInterruptionFromDamage(state, damageApplied) {
 import {
   gainRage,
   processRageDecay,
-  getRageMultipliers,
 } from "../class/RageSystem.js";
 import {
   handleStealthAttack,
@@ -170,24 +175,14 @@ import {
 } from "../effects/CharmSystem.js";
 import { processTimeEffects } from "../world/TimeSystem.js";
 import { checkItemProc, applyChainLightning } from "../items/ItemProcSystem.js";
-import {
-  ensureAttributeShape,
-  getAttributeValue,
-} from "../../utils/AttributeMath.js";
-import {
-  getProgressionModifiers,
-  scalePositiveReward,
-  toNumber,
-} from "../../utils/shared.js";
+import { getAttributeValue } from "../../utils/AttributeMath.js";
 import {
   getEffectiveAttributes,
   getTitleBonuses,
 } from "../titles/TitleSystem.js";
 import { random, randomChoice } from "../../utils/DeterministicRandom.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
-
 const DEBUG_LOGGING_ENABLED = false;
-
 const getLaneDistance = (combatState, enemyIndex) => {
   const playerLane = combatState?.lanes?.player;
   const enemyLane = combatState?.lanes?.enemies?.[enemyIndex];
@@ -196,7 +191,6 @@ const getLaneDistance = (combatState, enemyIndex) => {
   }
   return Math.abs(playerLane - enemyLane);
 };
-
 const applyLaneModifier = (
   damageResult,
   laneDistance,
@@ -214,391 +208,12 @@ const applyLaneModifier = (
     : [`Lane gap ${laneDistance}: x${multiplier}`];
   return { ...damageResult, damage: nextDamage, messages };
 };
-
-const toNumberSafe = (value, fallback = 0) =>
-  Number.isFinite(value) ? value : fallback;
-
-const getResourceValue = (player, type) => {
-  if (!player) return 0;
-  const resources = player.resources || {};
-  switch (type) {
-    case "mana":
-      return toNumberSafe(player.mana?.current, 0);
-    case "energy":
-      return toNumberSafe(resources.energy ?? player.energy, 0);
-    case "focus":
-      return toNumberSafe(
-        resources.focus ?? player.focus?.current ?? player.focus,
-        0,
-      );
-    case "rage":
-      return toNumberSafe(resources.rage ?? player.rage, 0);
-    case "chi":
-      return toNumberSafe(resources.chi ?? player.chi, 0);
-    case "shards":
-      return toNumberSafe(player.soulShards, 0);
-    case "hp":
-      return toNumberSafe(player.hp?.current, 0);
-    default:
-      return 0;
-  }
-};
-
-const setResourceValue = (player, type, value) => {
-  const resources = { ...(player.resources || {}) };
-  const next = { ...player };
-
-  switch (type) {
-    case "mana":
-      return {
-        ...next,
-        mana: {
-          ...(player.mana || { current: value, max: value }),
-          current: value,
-        },
-      };
-    case "energy":
-      resources.energy = value;
-      return { ...next, resources, energy: value };
-    case "focus": {
-      resources.focus = value;
-      const focus =
-        player.focus && typeof player.focus === "object"
-          ? { ...player.focus, current: value }
-          : value;
-      return { ...next, resources, focus };
-    }
-    case "rage":
-      resources.rage = value;
-      return { ...next, resources, rage: value };
-    case "chi":
-      resources.chi = value;
-      return { ...next, resources, chi: value };
-    case "shards":
-      return { ...next, soulShards: value };
-    case "hp":
-      return {
-        ...next,
-        hp: {
-          ...(player.hp || { current: value, max: value }),
-          current: value,
-        },
-      };
-    default:
-      return next;
-  }
-};
-
-const applyResourceGain = (player, gain) => {
-  if (!gain?.type || !Number.isFinite(gain.amount)) return player;
-  const current = getResourceValue(player, gain.type);
-  let nextValue = current + gain.amount;
-  if (gain.type === "mana" && player.mana?.max) {
-    nextValue = Math.min(player.mana.max, nextValue);
-  }
-  if (gain.type === "hp" && player.hp?.max) {
-    nextValue = Math.min(player.hp.max, nextValue);
-  }
-  return setResourceValue(player, gain.type, nextValue);
-};
-
-const applyHealToPlayer = (player, heal) => {
-  if (!heal || !player?.hp) return player;
-  const maxHp = player.hp.max || 0;
-  const flat = Number.isFinite(heal.flat) ? heal.flat : 0;
-  const percent = Number.isFinite(heal.percent) ? heal.percent : 0;
-  const amount = Math.max(0, Math.floor(flat + maxHp * percent));
-  if (amount <= 0) return player;
-  const nextHp = Math.min(maxHp, player.hp.current + amount);
-  return {
-    ...player,
-    hp: {
-      ...player.hp,
-      current: nextHp,
-    },
-  };
-};
-
-const clampChance = (value, max = 0.95) => {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return 0;
-  return Math.max(0, Math.min(max, n));
-};
-
-const getMissChance = (entity) =>
-  clampChance(getEffectTagMagnitude(entity, "MISS_CHANCE"), 0.95);
-const getDodgeChance = (entity) =>
-  clampChance(getEffectTagMagnitude(entity, "DODGE_BOOST"), 0.75);
-const getReflectPercent = (entity) =>
-  clampChance(getEffectTagMagnitude(entity, "DAMAGE_REFLECT"), 0.75);
-
-const absorbDamageWithShields = (effects, incoming) => {
-  const list = Array.isArray(effects) ? effects : [];
-  let remaining = Math.max(0, Math.floor(Number(incoming) || 0));
-  if (remaining <= 0) return { effects: list, remaining, absorbed: 0 };
-
-  const nextEffects = [];
-  let absorbed = 0;
-
-  for (const effect of list) {
-    const isShield =
-      effect?.id === "shield" || effect?.tags?.includes("DAMAGE_ABSORB");
-    if (!isShield) {
-      nextEffects.push(effect);
-      continue;
-    }
-
-    const magnitude = Math.max(0, Math.floor(Number(effect.magnitude) || 0));
-    if (magnitude <= 0 || remaining <= 0) {
-      nextEffects.push(effect);
-      continue;
-    }
-
-    const absorb = Math.min(magnitude, remaining);
-    remaining -= absorb;
-    absorbed += absorb;
-
-    const leftover = magnitude - absorb;
-    if (leftover > 0) {
-      nextEffects.push({ ...effect, magnitude: leftover });
-    }
-    // Fully consumed shield effects are removed.
-  }
-
-  return { effects: nextEffects, remaining, absorbed };
-};
-
-const applyShieldAbsorptionToEnemy = (enemy, incomingDamage) => {
-  if (!enemy || incomingDamage <= 0) {
-    return { enemy, damage: incomingDamage, absorbed: 0 };
-  }
-  const effects = Array.isArray(enemy.effects) ? enemy.effects : [];
-  const { effects: nextEffects, remaining, absorbed } = absorbDamageWithShields(
-    effects,
-    incomingDamage,
-  );
-  if (absorbed <= 0) {
-    return { enemy, damage: incomingDamage, absorbed: 0 };
-  }
-  return { enemy: { ...enemy, effects: nextEffects }, damage: remaining, absorbed };
-};
-
-const processEntityTurnEffects = (entity) => {
-  const effects = Array.isArray(entity?.effects) ? entity.effects : [];
-  if (!entity?.hp || effects.length === 0) {
-    return { entity, messages: [], damageTaken: 0, healed: 0 };
-  }
-
-  let messages = [];
-  let totalDotDamage = 0;
-  let totalHealAmount = 0;
-
-  // Tick before decrement (start-of-turn behavior)
-  for (const effect of effects) {
-    if (effect.type === "DOT") {
-      const dmg = Math.max(0, Math.floor(Number(effect.magnitude) || 0));
-      if (dmg > 0) {
-        totalDotDamage += dmg;
-        messages.push(
-          `${entity.name} takes ${dmg} ${effect.element || "damage"} from ${effect.name}!`,
-        );
-      }
-    }
-
-    if (effect.type === "HOT") {
-      let healAmount = Math.max(0, Math.floor(Number(effect.magnitude) || 0));
-      if (healAmount <= 0) continue;
-
-      // Undead: healing is damage (kept consistent with EffectSystem.js)
-      if (
-        hasEffectTag(entity, "HEAL_IS_DMG") ||
-        entity.race?.id === "undead_awakened"
-      ) {
-        totalDotDamage += healAmount;
-        messages.push(
-          `${entity.name} is UNDEAD! Healing deals ${healAmount} damage instead!`,
-        );
-        continue;
-      }
-
-      if (hasEffectTag(entity, "HEAL_MALUS")) {
-        healAmount = Math.floor(healAmount * 0.5);
-        messages.push(`${entity.name} is resistant to healing!`);
-      }
-
-      if (healAmount > 0) {
-        totalHealAmount += healAmount;
-        messages.push(
-          `${entity.name} recovers ${healAmount} HP from ${effect.name}!`,
-        );
-      }
-    }
-  }
-
-  // Decrement and expire
-  const nextEffects = effects
-    .map((effect) => ({
-      ...effect,
-      remainingDuration: (effect.remainingDuration ?? effect.duration ?? 0) - 1,
-    }))
-    .filter((effect) => {
-      if ((effect.remainingDuration ?? 0) <= 0) {
-        messages.push(`${effect.name} fades from ${entity.name}.`);
-        return false;
-      }
-      return true;
-    });
-
-  const nextHp = Math.min(
-    entity.hp.max,
-    Math.max(0, entity.hp.current - totalDotDamage + totalHealAmount),
-  );
-
-  return {
-    entity: {
-      ...entity,
-      hp: { ...entity.hp, current: nextHp },
-      effects: nextEffects,
-    },
-    messages,
-    damageTaken: totalDotDamage,
-    healed: totalHealAmount,
-  };
-};
-
-const processEnemyTurnEffects = (enemy) => {
-  if (!enemy?.stats?.hp) {
-    return { enemy, messages: [], damageTaken: 0, healed: 0 };
-  }
-  const proxy = {
-    ...enemy,
-    hp: enemy.stats.hp,
-    effects: enemy.effects,
-    name: enemy.name,
-  };
-  const result = processEntityTurnEffects(proxy);
-  return {
-    enemy: {
-      ...enemy,
-      stats: {
-        ...enemy.stats,
-        hp: result.entity.hp,
-      },
-      effects: result.entity.effects,
-    },
-    messages: result.messages,
-    damageTaken: result.damageTaken,
-    healed: result.healed,
-  };
-};
-
-const removeEffectsByTypes = (target, types = []) => {
-  if (!target?.effects || types.length === 0) return target;
-  return {
-    ...target,
-    effects: target.effects.filter((effect) => !types.includes(effect.type)),
-  };
-};
-
-const removeEffectsByIds = (target, ids = []) => {
-  if (!target?.effects || ids.length === 0) return target;
-  const removeSet = new Set(ids);
-  return {
-    ...target,
-    effects: target.effects.filter((effect) => !removeSet.has(effect.id)),
-  };
-};
-
-const applySummonToPlayer = (player, summon) => {
-  if (!summon?.type) return player;
-  const stamp = SimBridge.now();
-  const base = {
-    id: `${summon.type}_${stamp}`,
-    name: summon.name || "Summon",
-    duration: summon.duration || 3,
-    ...(summon.stats ? { stats: summon.stats } : {}),
-    ...(summon.abilities ? { abilities: summon.abilities } : {}),
-    ...(summon.element ? { element: summon.element } : {}),
-    armed: summon.type === "trap",
-  };
-
-  switch (summon.type) {
-    case "demon":
-      return { ...player, activeDemon: base };
-    case "undead": {
-      const undead = [...(player.undead || []), base];
-      return { ...player, undead };
-    }
-    case "totem": {
-      const totems = [...(player.totems || []), base];
-      return { ...player, totems };
-    }
-    case "trap": {
-      const traps = [...(player.traps || []), base];
-      return { ...player, traps };
-    }
-    default:
-      return player;
-  }
-};
-
-const consumeAbilityCost = (player, ability) => {
-  const costType = ability.costType || "none";
-  if (costType === "none") return { success: true, player };
-
-  if (costType === "hp") {
-    const maxHp = player.hp?.max || 0;
-    const percent = Number.isFinite(ability.hpCostPercent)
-      ? ability.hpCostPercent
-      : 0;
-    const flat = Number.isFinite(ability.cost) ? ability.cost : 0;
-    const amount = Math.max(0, Math.floor(maxHp * percent + flat));
-    if (player.hp.current - amount <= maxHp * 0.1) {
-      return { success: false, player, reason: "HP too low" };
-    }
-    return {
-      success: true,
-      player: setResourceValue(player, "hp", player.hp.current - amount),
-    };
-  }
-
-  const current = getResourceValue(player, costType);
-  const cost = Number.isFinite(ability.cost) ? ability.cost : 0;
-  if (current < cost) {
-    return { success: false, player, reason: "Insufficient resources" };
-  }
-  return {
-    success: true,
-    player: setResourceValue(player, costType, current - cost),
-  };
-};
-
-const collectLivingEnemyIndices = (combatState) =>
-  (combatState?.enemies || [])
-    .map((enemy, index) => ({ enemy, index }))
-    .filter(({ enemy }) => enemy?.stats?.hp?.current > 0)
-    .map(({ index }) => index);
-
-const resolveAbilityTargets = (combatState, enemyIndex, ability) => {
-  if (ability.target === "self") return [];
-  const living = collectLivingEnemyIndices(combatState);
-  if (living.length === 0) return [];
-  const primary = living.includes(enemyIndex) ? enemyIndex : living[0];
-  if (!ability.aoe) return [primary];
-
-  const maxTargets = ability.aoe.maxTargets || living.length;
-  const ordered = [primary, ...living.filter((idx) => idx !== primary)];
-  return ordered.slice(0, maxTargets);
-};
-
 const resolveSkillDefinition = (state, skillInput) => {
   if (!skillInput) return null;
   if (typeof skillInput === "object") return skillInput;
-
   const skillId = skillInput;
   const registrySkill = getSkillById(skillId);
   if (registrySkill) return registrySkill;
-
   const player = state?.player;
   const pools = [];
   if (Array.isArray(player?.activeSkills)) {
@@ -610,25 +225,8 @@ const resolveSkillDefinition = (state, skillInput) => {
   if (Array.isArray(player?.abilities)) {
     pools.push(...player.abilities);
   }
-
   return pools.find((skill) => skill?.id === skillId) || null;
 };
-
-const allowsZeroDamage = (skill) => {
-  if (!skill || typeof skill !== "object") return false;
-  if (skill.allowZeroDamage) return true;
-  if (skill.nonDamaging) return true;
-  if (skill.damage && typeof skill.damage === "object") {
-    if (skill.damage.allowZeroDamage) return true;
-    const multiplier = Number(skill.damage.multiplier);
-    if (Number.isFinite(multiplier) && multiplier <= 0) return true;
-    const base = Number(skill.damage.base);
-    if (Number.isFinite(base) && base <= 0 && multiplier === 0) return true;
-  }
-  const tags = Array.isArray(skill.tags) ? skill.tags : [];
-  return tags.includes("non_damaging") || tags.includes("no_damage");
-};
-
 const ELEMENTAL_REACTIONS = [
   {
     element: "fire",
@@ -713,7 +311,6 @@ const ELEMENTAL_REACTIONS = [
     message: "Elemental Reaction: Eclipse!",
   },
 ];
-
 const applyElementalReactions = ({ attacker, defender, element, damage }) => {
   if (!element || !defender) {
     return { damage, defender, messages: [] };
@@ -723,20 +320,16 @@ const applyElementalReactions = ({ attacker, defender, element, damage }) => {
   let updatedDamage = damage;
   let updatedDefender = defender;
   const messages = [];
-
   for (const reaction of ELEMENTAL_REACTIONS) {
     if (reaction.element !== elementKey) continue;
     const hasRequired = reaction.requires.some((id) => activeIds.has(id));
     if (!hasRequired) continue;
-
     updatedDamage = Math.floor(updatedDamage * reaction.multiplier);
     messages.push(reaction.message);
-
     if (reaction.remove?.length) {
       updatedDefender = removeEffectsByIds(updatedDefender, reaction.remove);
       reaction.remove.forEach((id) => activeIds.delete(id));
     }
-
     if (reaction.addEffects?.length) {
       updatedDefender = effectApplicationSystem.applyEffects(
         updatedDefender,
@@ -746,10 +339,8 @@ const applyElementalReactions = ({ attacker, defender, element, damage }) => {
     }
     break;
   }
-
   return { damage: updatedDamage, defender: updatedDefender, messages };
 };
-
 /**
  * Applies damage to the player. If HP drops to 0 or below, checks for death prevention mechanics.
  * Handles: Death Save (Undead), Phoenix Rebirth, and sets isDead flag.
@@ -763,18 +354,15 @@ function takeDamage(state, amount) {
   let damageToApply = amount;
   const shieldEffects =
     state.player.effects?.filter((effect) => effect.id === "shield") || [];
-
   if (shieldEffects.length > 0) {
     let totalShieldAbsorb = 0;
     const remainingEffects = [];
-
     for (const shield of shieldEffects) {
       const absorbAmount = Math.min(
         shield.magnitude,
         damageToApply - totalShieldAbsorb,
       );
       totalShieldAbsorb += absorbAmount;
-
       // Reduce shield magnitude or remove if depleted
       if (shield.magnitude > absorbAmount) {
         remainingEffects.push({
@@ -783,12 +371,9 @@ function takeDamage(state, amount) {
         });
       }
       // If shield is fully absorbed, don't add it back
-
       if (totalShieldAbsorb >= damageToApply) break;
     }
-
     damageToApply = Math.max(0, damageToApply - totalShieldAbsorb);
-
     // Update player effects
     state = {
       ...state,
@@ -802,11 +387,10 @@ function takeDamage(state, amount) {
         ],
       },
     };
-
     // Log shield absorption
     if (totalShieldAbsorb > 0) {
       const combatLog = state.combat?.log ? [...state.combat.log] : [];
-      combatLog.push(`🛡️ Shield absorbs ${totalShieldAbsorb} damage!`);
+      combatLog.push(`ðŸ›¡ï¸ Shield absorbs ${totalShieldAbsorb} damage!`);
       state = {
         ...state,
         combat: state.combat
@@ -815,22 +399,18 @@ function takeDamage(state, amount) {
       };
     }
   }
-
   // Calculate new HP, ensuring it doesn't go below 0
   let newHp = Math.max(0, state.player.hp.current - damageToApply);
   let isDead = newHp <= 0;
   let combatLog = state.combat?.log ? [...state.combat.log] : [];
   let playerUpdates = {};
-
   const raceId = state.player.race?.id || state.player.race;
-
   // === RAGE GAIN ON DAMAGE (Berserker) ===
   const classId = state.player.class?.id || state.player.class;
   if ((classId === "berserker" || classId === "bloodline_vanguard") && amount > 0) {
     const rageAmount = Math.floor(amount / 10) * 15; // Scale with damage taken
     playerUpdates.rageGained = rageAmount;
   }
-
   // === DEATH PREVENTION MECHANICS ===
   if (isDead) {
     // 1. Check for Death Save (Undead Awakened) - Survive with 1 HP once per battle
@@ -839,16 +419,14 @@ function takeDamage(state, amount) {
       isDead = false;
       playerUpdates.deathSaveUsed = true;
       combatLog.push(
-        `💀 UNDYING WILL! ${state.player.name} refuses to die and clings to life with 1 HP!`,
+        `ðŸ’€ UNDYING WILL! ${state.player.name} refuses to die and clings to life with 1 HP!`,
       );
       emit("combat:deathSave", { player: state.player.name });
     }
-
     // 2. Check for Phoenix Rebirth
     if (isDead && raceId === "phoenix_reborn") {
       const lastRebirth = state.player.lastRebirthTime || 0;
       const rebirthCheck = canRaceRebirth(raceId, lastRebirth);
-
       if (rebirthCheck.canRebirth) {
         const rebirth = getRaceRebirth(raceId);
         const reviveHp = Math.floor(
@@ -858,13 +436,12 @@ function takeDamage(state, amount) {
         isDead = false;
         playerUpdates.lastRebirthTime = SimBridge.now();
         combatLog.push(
-          `🔥 RISE FROM ASHES! ${state.player.name} is reborn in flames with ${reviveHp} HP!`,
+          `ðŸ”¥ RISE FROM ASHES! ${state.player.name} is reborn in flames with ${reviveHp} HP!`,
         );
         emit("combat:rebirth", { player: state.player.name, hp: reviveHp });
       }
     }
   }
-
   // Create a new state with the updated HP
   let newState = {
     ...state,
@@ -884,7 +461,6 @@ function takeDamage(state, amount) {
         }
       : state.combat,
   };
-
   // Apply rage gain if berserker
   if (playerUpdates.rageGained) {
     newState.player = gainRage(
@@ -898,22 +474,17 @@ function takeDamage(state, amount) {
       player: playerWithoutRageGained,
     };
   }
-
   if (newState.player.isDead) {
     console.log(`${newState.player.name} has been defeated!`);
   }
-
   const damageApplied = Math.max(0, initialHp - newHp);
-
   newState = applyCastingInterruptionFromDamage(newState, damageApplied);
-
   return {
     success: true,
     state: newState,
     damage: damageApplied,
   };
 }
-
 /**
  * Start combat with enemies
  * Handles race-specific combat start effects (Mutant buffs, Elemental absorption)
@@ -922,7 +493,6 @@ export function startCombat(state, enemyIds) {
   if (!enemyIds || enemyIds.length === 0) {
     return state;
   }
-
   const enemies = enemyIds
     .map((id) => createEnemy(id))
     .filter((e) => e !== null)
@@ -930,20 +500,16 @@ export function startCombat(state, enemyIds) {
       ...enemy,
       lane: index % 3,
     }));
-
   if (enemies.length === 0) {
     return state;
   }
-
   const raceId = state.player.race?.id || state.player.race;
   let combatLog = [
     `Combat started! You face ${enemies.map((e) => e.name).join(", ")}.`,
   ];
   let playerUpdates = {};
   let combatEffects = [];
-
   // === COMBAT START RACE EFFECTS ===
-
   // Mutant: Random buff at combat start
   if (hasRaceTag(raceId, "START_BUFF_RANDOM") || raceId === "mutant") {
     const buff = getRandomStartBuff();
@@ -957,27 +523,24 @@ export function startCombat(state, enemyIds) {
       tags: ["MUTATION_BUFF"],
     });
     combatLog.push(
-      `🧬 ADAPTIVE MUTATION: ${buff.name} activated! (${buff.stat} +${Math.round(buff.value * 100)}% for ${buff.duration} turns)`,
+      `ðŸ§¬ ADAPTIVE MUTATION: ${buff.name} activated! (${buff.stat} +${Math.round(buff.value * 100)}% for ${buff.duration} turns)`,
     );
     emit("combat:mutationBuff", { buff: buff.name });
   }
-
   // Elemental Attuned: Random element absorption
   if (hasRaceTag(raceId, "ABSORB_RANDOM") || raceId === "elemental_attuned") {
     const absorption = getRandomElementAbsorption();
     playerUpdates.currentAbsorption = absorption;
-    combatLog.push(`⚡ ELEMENTAL FLUX: ${absorption.message}`);
+    combatLog.push(`Elemental Flux: ${absorption.message}`);
     emit("combat:elementalFlux", {
       absorbed: absorption.absorbed,
       weakTo: absorption.weakTo,
     });
   }
-
   // Reset death save for new combat (Undead)
   if (hasRaceTag(raceId, "DEATH_SAVE")) {
     playerUpdates.deathSaveUsed = false;
   }
-
   return {
     ...state,
     player: {
@@ -1001,7 +564,6 @@ export function startCombat(state, enemyIds) {
     },
   };
 }
-
 /**
  * Player attacks an enemy
  * Uses config values for damage calculation
@@ -1010,16 +572,13 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   if (state.combat.status !== "active") {
     return { success: false, reason: "Not in combat", state };
   }
-
   if (enemyIndex < 0 || enemyIndex >= state.combat.enemies.length) {
     return { success: false, reason: "Invalid enemy", state };
   }
-
   const enemy = state.combat.enemies[enemyIndex];
   if (enemy.stats.hp.current <= 0) {
     return { success: false, reason: "Enemy already defeated", state };
   }
-
   // Start-of-turn effect ticks (process once per player turn, regardless of action retries)
   if (
     state.combat.turn === "player" &&
@@ -1041,7 +600,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       },
     };
   }
-
   // Hard CC: player cannot act this turn
   if (hasEffectTag(state.player, "SKIP_TURN")) {
     const newLog = [
@@ -1061,13 +619,11 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       },
     };
   }
-
   let updatedPlayer = state.player;
   let updatedEnemy = enemy;
   let damageResult = null;
   let skillCooldownUpdate = null;
   let laneAllowZero = false;
-
   if (skillId) {
     const skillKey = typeof skillId === "string" ? skillId : skillId?.id;
     const existingCooldown = skillKey
@@ -1080,12 +636,10 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         state,
       };
     }
-
     const skill = resolveSkillDefinition(state, skillId);
     if (!skill) {
       return { success: false, reason: "Skill not found", state };
     }
-
     // Silence/disarm checks (player side)
     if (skill.isMagic && hasEffectTag(state.player, "BLOCK_MAGIC")) {
       return { success: false, reason: "Silenced", state };
@@ -1098,7 +652,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       return { success: false, reason: "Disarmed", state };
     }
     laneAllowZero = allowsZeroDamage(skill);
-
     const skillResult = executeSkill(
       updatedPlayer,
       updatedEnemy,
@@ -1112,7 +665,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         state,
       };
     }
-
     updatedPlayer = skillResult.updatedAttacker || updatedPlayer;
     updatedEnemy = skillResult.updatedDefender || updatedEnemy;
     const reactionMessages = Array.isArray(skillResult.reactionMessages)
@@ -1126,13 +678,11 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         ...reactionMessages,
       ],
     };
-
     const cd = skillResult.cooldown || 0;
     const resolvedSkillId = skill?.id || skillKey;
     if (cd > 0 && resolvedSkillId) {
       skillCooldownUpdate = { skillId: resolvedSkillId, cooldown: cd };
     }
-
     if (skillResult.backfireDamage && skillResult.backfireDamage > 0) {
       const backfireLog = [
         ...state.combat.log,
@@ -1166,7 +716,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     // Get config values (with fallbacks)
     const strToDamageMultiplier = state.config?.strToDamageMultiplier || 2;
     const baseAttributeValue = state.config?.baseAttributeValue || 5;
-
     // Get player stats using config multipliers
     const titleBonuses = getTitleBonuses(state.player);
     const attackBonus = Number.isFinite(titleBonuses.attack)
@@ -1188,7 +737,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         attackBonus,
       attributes: effectivePlayerAttributes,
     };
-
     // Calculate damage, passing config for all calculations
     damageResult = calculateDamage(
       playerStats,
@@ -1197,12 +745,10 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       state.config,
     );
   }
-
   const laneDistance = getLaneDistance(state.combat, enemyIndex);
   damageResult = applyLaneModifier(damageResult, laneDistance, {
     allowZeroDamage: laneAllowZero,
   });
-
   // === CHECK FOR CONFUSE EFFECT ===
   const resolvedState =
     updatedPlayer === state.player
@@ -1211,7 +757,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
           ...state,
           player: updatedPlayer,
         };
-
   // Generic miss chance from effects like Blind/Obscured/Fear
   {
     const missChance = getMissChance(resolvedState.player);
@@ -1221,12 +766,10 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         ...damageResult.messages,
         "Attack misses!",
       ];
-
       let nextState = {
         ...resolvedState,
         combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
       };
-
       if (skillCooldownUpdate) {
         nextState = {
           ...nextState,
@@ -1266,7 +809,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         },
         selfDamage,
       );
-
       let nextState = selfDamageResult.state;
       if (skillCooldownUpdate) {
         nextState = {
@@ -1298,12 +840,10 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         ...damageResult.messages,
         "Confused! You attack wildly and miss!",
       ];
-
       let nextState = {
         ...resolvedState,
         combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
       };
-
       if (skillCooldownUpdate) {
         nextState = {
           ...nextState,
@@ -1323,7 +863,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       };
     }
   }
-
   // Defender dodge chance from effects like Blur
   {
     const dodgeChance = getDodgeChance(resolvedState.combat.enemies[enemyIndex]);
@@ -1333,12 +872,10 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         ...damageResult.messages,
         `${resolvedState.combat.enemies[enemyIndex].name} dodges the attack!`,
       ];
-
       let nextState = {
         ...resolvedState,
         combat: { ...resolvedState.combat, log: combatLog, turn: "enemy" },
       };
-
       if (skillCooldownUpdate) {
         nextState = {
           ...nextState,
@@ -1351,11 +888,9 @@ export function playerAttack(state, enemyIndex, skillId = null) {
           },
         };
       }
-
       return { success: true, damage: 0, state: nextState };
     }
   }
-
   // Enemy shield absorption (enemy shields use the same effect template as player shields)
   let absorbedByShield = 0;
   let effectiveDamage = damageResult.damage;
@@ -1367,7 +902,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     shieldedEnemy = shieldResult.enemy;
   }
   damageResult.damage = effectiveDamage;
-
   // Apply damage
   const newEnemyHp = Math.max(
     0,
@@ -1384,16 +918,14 @@ export function playerAttack(state, enemyIndex, skillId = null) {
         }
       : e,
   );
-
   const newLog = [
     ...resolvedState.combat.log,
     ...(absorbedByShield > 0
-      ? [`🛡️ ${shieldedEnemy.name}'s shield absorbs ${absorbedByShield} damage!`]
+      ? [`ðŸ›¡ï¸ ${shieldedEnemy.name}'s shield absorbs ${absorbedByShield} damage!`]
       : []),
     damageResult.messages.join(" ") ||
       `You dealt ${damageResult.damage} damage to ${shieldedEnemy.name}.`,
   ];
-
   // === RAGE GAIN ON HIT (Berserker) ===
   let rageGainAmount = 0;
   const classId = resolvedState.player.class?.id || resolvedState.player.class;
@@ -1403,7 +935,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   ) {
     rageGainAmount = 10; // Base rage per hit
   }
-
   let newState = {
     ...resolvedState,
     combat: {
@@ -1413,7 +944,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       turn: "enemy",
     },
   };
-
   if (skillCooldownUpdate) {
     newState = {
       ...newState,
@@ -1426,7 +956,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       },
     };
   }
-
   // Reflect damage back to the attacker (based on damage actually dealt after shields)
   {
     const reflectPercent = getReflectPercent(shieldedEnemy);
@@ -1444,12 +973,10 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       newState = reflectResult.state;
     }
   }
-
   // Apply rage gain if berserker
   if (rageGainAmount > 0) {
     newState.player = gainRage(newState.player, rageGainAmount, "hit_enemy");
   }
-
   // Apply chi gain and combo for monk
   const monkClassId = newState.player.class?.id || newState.player.class;
   if (
@@ -1465,13 +992,12 @@ export function playerAttack(state, enemyIndex, skillId = null) {
           ...newState.combat,
           log: [
             ...newState.combat.log,
-            `☯️ Combo x${newState.player.comboCount}! (${comboMult}x damage)`,
+        `Combo x${newState.player.comboCount}! (${comboMult}x damage)`,
           ],
         },
       };
     }
   }
-
   // Handle stealth attack (ambush bonus, break stealth)
   if (newState.player.isStealthed) {
     const stealthResult = handleStealthAttack(newState, damageResult.damage);
@@ -1480,7 +1006,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       // Ambush damage already applied in damageResult
     }
   }
-
   // Check for item procs
   const weapon = newState.player.equipment?.weapon;
   if (weapon?.uniquePassive?.proc) {
@@ -1498,7 +1023,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
           log: [...newState.combat.log, ...procResult.messages],
         },
       };
-
       // Apply chain lightning if triggered
       if (procResult.chainTargets > 0) {
         const chainDamage = Math.floor(damageResult.damage * 0.5);
@@ -1509,7 +1033,6 @@ export function playerAttack(state, enemyIndex, skillId = null) {
           procResult.chainTargets,
         );
       }
-
       // Apply lifesteal if triggered
       if (procResult.healed > 0) {
         newState = {
@@ -1528,15 +1051,12 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       }
     }
   }
-
   // Check if enemy is defeated
   if (newEnemyHp <= 0) {
     newState = handleEnemyDefeat(newState, enemyIndex);
   }
-
   return { success: true, damage: damageResult.damage, state: newState };
 }
-
 const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
   const costResult = consumeAbilityCost(state.player, ability);
   if (!costResult.success) {
@@ -1546,19 +1066,16 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       state,
     };
   }
-
   let updatedPlayer = costResult.player;
   let updatedEnemies = [...state.combat.enemies];
   let combatLog = [
     ...state.combat.log,
     `${updatedPlayer.name} uses ${ability.name}!`,
   ];
-
   // Stance updates
   if (ability.setStance) {
     updatedPlayer = { ...updatedPlayer, currentStance: ability.setStance };
   }
-
   // Enrage updates
   if (ability.setEnrage) {
     updatedPlayer = {
@@ -1571,7 +1088,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       },
     };
   }
-
   if (ability.setAbsorption) {
     const absorption = getRandomElementAbsorption();
     updatedPlayer = { ...updatedPlayer, currentAbsorption: absorption };
@@ -1581,7 +1097,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       weakTo: absorption.weakTo,
     });
   }
-
   if (ability.randomBuff) {
     const buff = getRandomStartBuff();
     const currentEffects = updatedPlayer.effects || [];
@@ -1606,7 +1121,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       )}% for ${buff.duration} turns)`,
     );
   }
-
   let newState = {
     ...state,
     player: updatedPlayer,
@@ -1616,7 +1130,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       log: combatLog,
     },
   };
-
   // Stealth handling
   if (ability.stealth?.duration) {
     const stealthResult = applyVanish(newState, ability.stealth.duration);
@@ -1627,12 +1140,10 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       combatLog = newState.combat.log;
     }
   }
-
   // Cleanse self
   if (ability.cleanse?.types?.length) {
     updatedPlayer = removeEffectsByTypes(updatedPlayer, ability.cleanse.types);
   }
-
   // Heal, resource gain, summons
   if (ability.heal) {
     updatedPlayer = applyHealToPlayer(updatedPlayer, ability.heal);
@@ -1643,7 +1154,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
   if (ability.summon) {
     updatedPlayer = applySummonToPlayer(updatedPlayer, ability.summon);
   }
-
   // Apply self effects
   const selfEffects = Array.isArray(ability.effects)
     ? ability.effects.filter((effect) => effect.target === "self")
@@ -1655,21 +1165,17 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       updatedPlayer,
     );
   }
-
   // Resolve targets
   const targetIndices = resolveAbilityTargets(
     newState.combat,
     enemyIndex,
     ability,
   );
-
   let totalDamage = 0;
   let randomDebuffApplied = false;
-
   for (const targetIndex of targetIndices) {
     const enemy = updatedEnemies[targetIndex];
     if (!enemy || enemy.stats?.hp?.current <= 0) continue;
-
     // Purge enemy buffs
     if (ability.purge?.target === "enemy" && ability.purge.types?.length) {
       updatedEnemies[targetIndex] = removeEffectsByTypes(
@@ -1677,7 +1183,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
         ability.purge.types,
       );
     }
-
     if (ability.randomDebuff && !randomDebuffApplied) {
       const debuff = getRandomDebuff();
       const currentEffects = updatedEnemies[targetIndex].effects || [];
@@ -1701,7 +1206,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       );
       randomDebuffApplied = true;
     }
-
     let damage = 0;
     if (ability.damage) {
       const skillProxy = {
@@ -1720,7 +1224,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
         state.config,
       );
       damage = result.damage;
-
       if (ability.executeThreshold) {
         const hpPercent =
           updatedEnemies[targetIndex].stats.hp.current /
@@ -1729,7 +1232,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
           damage = Math.floor(damage * 1.5);
         }
       }
-
       if (ability.bonusVsTags?.tags?.length) {
         const tagSet = new Set(ability.bonusVsTags.tags);
         const enemyTags = [
@@ -1742,14 +1244,11 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
           );
         }
       }
-
       if (ability.aoe?.damageMultiplier) {
         damage = Math.floor(damage * ability.aoe.damageMultiplier);
       }
-
       const laneDistance = getLaneDistance(newState.combat, targetIndex);
       damage = applyLaneModifier({ damage, messages: [] }, laneDistance).damage;
-
       // Defender dodge chance from effects like Blur
       {
         const dodgeChance = getDodgeChance(updatedEnemies[targetIndex]);
@@ -1758,7 +1257,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
           continue;
         }
       }
-
       const reactionResult = applyElementalReactions({
         attacker: updatedPlayer,
         defender: updatedEnemies[targetIndex],
@@ -1770,7 +1268,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       if (reactionResult.messages.length > 0) {
         combatLog.push(...reactionResult.messages);
       }
-
       if (updatedPlayer.isStealthed) {
         const stealthResult = handleStealthAttack(
           {
@@ -1786,20 +1283,18 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
         combatLog = newState.combat.log;
         damage = stealthResult.damage;
       }
-
       // Enemy shield absorption
       if (damage > 0) {
         const before = updatedEnemies[targetIndex];
         const shieldResult = applyShieldAbsorptionToEnemy(before, damage);
         if (shieldResult.absorbed > 0) {
           combatLog.push(
-            `🛡️ ${before.name}'s shield absorbs ${shieldResult.absorbed} damage!`,
+            `ðŸ›¡ï¸ ${before.name}'s shield absorbs ${shieldResult.absorbed} damage!`,
           );
         }
         updatedEnemies[targetIndex] = shieldResult.enemy;
         damage = shieldResult.damage;
       }
-
       totalDamage += damage;
       const nextHp = Math.max(
         0,
@@ -1814,7 +1309,6 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       };
       combatLog.push(`${ability.name} hits ${enemy.name} for ${damage} damage.`);
     }
-
     const targetEffects = Array.isArray(ability.effects)
       ? ability.effects.filter((effect) => effect.target !== "self")
       : [];
@@ -1826,13 +1320,11 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
       );
     }
   }
-
   if (ability.lifesteal && totalDamage > 0) {
     updatedPlayer = applyHealToPlayer(updatedPlayer, {
       flat: Math.floor(totalDamage * ability.lifesteal),
     });
   }
-
   newState = {
     ...newState,
     player: updatedPlayer,
@@ -1850,24 +1342,20 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
           : newState.combat[cooldownKey] || {},
     },
   };
-
   if (ability.selfDamagePercentOfDamage && totalDamage > 0) {
     const recoil = Math.floor(totalDamage * ability.selfDamagePercentOfDamage);
     if (recoil > 0) {
       newState = takeDamage(newState, recoil);
     }
   }
-
   // Handle enemy defeats
   targetIndices.forEach((idx) => {
     if (newState.combat.enemies[idx]?.stats?.hp?.current <= 0) {
       newState = handleEnemyDefeat(newState, idx);
     }
   });
-
   return { success: true, damage: totalDamage, state: newState };
 };
-
 /**
  * Player uses a class ability
  */
@@ -1875,7 +1363,6 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
   if (state.combat.status !== "active") {
     return { success: false, reason: "Not in combat", state };
   }
-
   // Start-of-turn effect ticks (process once per player turn)
   if (
     state.combat.turn === "player" &&
@@ -1897,7 +1384,6 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
       },
     };
   }
-
   // Hard CC: player cannot act this turn
   if (hasEffectTag(state.player, "SKIP_TURN")) {
     const newLog = [...state.combat.log, `${state.player.name} is unable to act!`];
@@ -1910,18 +1396,15 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
       },
     };
   }
-
   const player = state.player;
   const classId = player.class?.id || player.class;
   if (!isClassAbilityAllowed(classId, abilityId)) {
     return { success: false, reason: "Ability not available", state };
   }
-
   const ability = getClassAbilityById(abilityId);
   if (!ability) {
     return { success: false, reason: "Ability not found", state };
   }
-
   // Silence/disarm checks (player side)
   if (ability.damage?.isMagic && hasEffectTag(player, "BLOCK_MAGIC")) {
     return { success: false, reason: "Silenced", state };
@@ -1929,7 +1412,6 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
   if (ability.damage && !ability.damage.isMagic && hasEffectTag(player, "BLOCK_PHYSICAL")) {
     return { success: false, reason: "Disarmed", state };
   }
-
   const currentCooldown = state.combat?.classAbilityCooldowns?.[abilityId] || 0;
   if (currentCooldown > 0) {
     return {
@@ -1938,10 +1420,8 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
       state,
     };
   }
-
   return performAbilityUse(state, enemyIndex, ability, "classAbilityCooldowns");
 }
-
 /**
  * Player uses a race ability
  */
@@ -1949,7 +1429,6 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
   if (state.combat.status !== "active") {
     return { success: false, reason: "Not in combat", state };
   }
-
   // Start-of-turn effect ticks (process once per player turn)
   if (
     state.combat.turn === "player" &&
@@ -1971,7 +1450,6 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
       },
     };
   }
-
   // Hard CC: player cannot act this turn
   if (hasEffectTag(state.player, "SKIP_TURN")) {
     const newLog = [...state.combat.log, `${state.player.name} is unable to act!`];
@@ -1984,18 +1462,15 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
       },
     };
   }
-
   const player = state.player;
   const raceId = player.race?.id || player.race;
   if (!isRaceAbilityAllowed(raceId, abilityId)) {
     return { success: false, reason: "Ability not available", state };
   }
-
   const ability = getRaceAbilityById(abilityId);
   if (!ability) {
     return { success: false, reason: "Ability not found", state };
   }
-
   // Silence/disarm checks (player side)
   if (ability.damage?.isMagic && hasEffectTag(player, "BLOCK_MAGIC")) {
     return { success: false, reason: "Silenced", state };
@@ -2003,7 +1478,6 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
   if (ability.damage && !ability.damage.isMagic && hasEffectTag(player, "BLOCK_PHYSICAL")) {
     return { success: false, reason: "Disarmed", state };
   }
-
   const currentCooldown = state.combat?.raceAbilityCooldowns?.[abilityId] || 0;
   if (currentCooldown > 0) {
     return {
@@ -2012,10 +1486,8 @@ export function playerUseRaceAbility(state, enemyIndex, abilityId) {
       state,
     };
   }
-
   return performAbilityUse(state, enemyIndex, ability, "raceAbilityCooldowns");
 }
-
 /**
  * Enemy attacks player
  */
@@ -2023,21 +1495,17 @@ function enemyAttack(state, enemyIndex) {
   if (state.combat.status !== "active") {
     return state;
   }
-
   if (enemyIndex < 0 || enemyIndex >= state.combat.enemies.length) {
     return state;
   }
-
   let enemy = state.combat.enemies[enemyIndex];
   if (enemy.stats.hp.current <= 0) {
     return state;
   }
-
   // Start-of-turn effect ticks for this enemy (DoT/HoT, duration decay)
   {
     const tick = processEnemyTurnEffects(enemy);
     const tickMessages = Array.isArray(tick.messages) ? tick.messages : [];
-
     if (tickMessages.length > 0 || tick.enemy !== enemy) {
       const newEnemies = [...state.combat.enemies];
       newEnemies[enemyIndex] = tick.enemy;
@@ -2052,7 +1520,6 @@ function enemyAttack(state, enemyIndex) {
       enemy = tick.enemy;
     }
   }
-
   // Enemy died from effects before acting
   if (enemy.stats.hp.current <= 0) {
     return {
@@ -2063,7 +1530,6 @@ function enemyAttack(state, enemyIndex) {
       },
     };
   }
-
   // === CHARMED ENEMY: Attacks other enemies instead ===
   const hasCharmEffect = Array.isArray(enemy.effects)
     ? enemy.effects.some((effect) => effect.id === "charm")
@@ -2072,7 +1538,6 @@ function enemyAttack(state, enemyIndex) {
     const acting = enemy.isCharmed ? enemy : { ...enemy, isCharmed: true };
     return processCharmedEnemyAction(state, acting);
   }
-
   // If player is currently untargetable, enemies waste the action.
   if (hasEffectTag(state.player, "UNTARGETABLE")) {
     return {
@@ -2083,7 +1548,6 @@ function enemyAttack(state, enemyIndex) {
       },
     };
   }
-
   // Hard CC: enemy cannot act
   if (hasEffectTag(enemy, "SKIP_TURN")) {
     return {
@@ -2094,7 +1558,6 @@ function enemyAttack(state, enemyIndex) {
       },
     };
   }
-
   // Generic miss chance from effects like Blind/Obscured/Fear
   {
     const missChanceRaw = getEffectTagMagnitude(enemy, "MISS_CHANCE");
@@ -2109,7 +1572,6 @@ function enemyAttack(state, enemyIndex) {
       };
     }
   }
-
   // === CHECK ILLUSION TARGET ===
   const illusionTarget = checkIllusionTarget(state.player);
   if (illusionTarget) {
@@ -2126,7 +1588,6 @@ function enemyAttack(state, enemyIndex) {
       illusionTarget.id,
     );
   }
-
   // Simple AI: use random skill or basic attack
   const magicBlocked = hasEffectTag(enemy, "BLOCK_MAGIC");
   const physicalBlocked = hasEffectTag(enemy, "BLOCK_PHYSICAL");
@@ -2142,14 +1603,12 @@ function enemyAttack(state, enemyIndex) {
       (!skill.manaCost || enemy.stats.mana.current >= skill.manaCost)
     );
   });
-
   let skill = null;
   if (availableSkills.length > 0 && random() < 0.5) {
     const skillId = randomChoice(availableSkills);
     if (skillId) {
       skill = getEnemySkillById(skillId);
     }
-
     // Update cooldowns and mana
     const newEnemies = [...state.combat.enemies];
     newEnemies[enemyIndex] = {
@@ -2166,7 +1625,6 @@ function enemyAttack(state, enemyIndex) {
         [skillId]: skill.cooldown || 0,
       },
     };
-
     // Update state with new enemy
     state = {
       ...state,
@@ -2176,7 +1634,6 @@ function enemyAttack(state, enemyIndex) {
       },
     };
   }
-
   // If disarmed, cannot perform a basic weapon attack
   if (!skill && hasEffectTag(enemy, "BLOCK_PHYSICAL")) {
     return {
@@ -2187,7 +1644,6 @@ function enemyAttack(state, enemyIndex) {
       },
     };
   }
-
   // Defender dodge chance from effects like Blur
   {
     const dodgeChance = getDodgeChance(state.player);
@@ -2201,7 +1657,6 @@ function enemyAttack(state, enemyIndex) {
       };
     }
   }
-
   // Calculate damage using config values
   const baseAttributeValue = state.config?.baseAttributeValue || 5;
   const effectiveAttributes = getEffectiveAttributes(
@@ -2221,15 +1676,12 @@ function enemyAttack(state, enemyIndex) {
   );
   const laneDistance = getLaneDistance(state.combat, enemyIndex);
   damageResult = applyLaneModifier(damageResult, laneDistance);
-
   const critText = damageResult.isCritical ? " (CRITICAL!)" : "";
   const skillText = skill ? ` using ${skill.name}` : "";
-
   const newLog = [
     ...state.combat.log,
     `${enemy.name} attacks you${skillText} for ${damageResult.damage} damage${critText}!`,
   ];
-
   const attackResult = takeDamage(
     {
       ...state,
@@ -2240,9 +1692,7 @@ function enemyAttack(state, enemyIndex) {
     },
     damageResult.damage,
   );
-
   let nextState = attackResult.state;
-
   // Reflect damage back to the enemy (based on damage taken after shields)
   {
     const reflectPercent = getReflectPercent(nextState.player);
@@ -2254,14 +1704,12 @@ function enemyAttack(state, enemyIndex) {
         let absorbedByShield = 0;
         let dealt = reflectDamage;
         let reflectedEnemy = enemyBefore;
-
         if (dealt > 0) {
           const shieldResult = applyShieldAbsorptionToEnemy(reflectedEnemy, dealt);
           absorbedByShield = shieldResult.absorbed;
           dealt = shieldResult.damage;
           reflectedEnemy = shieldResult.enemy;
         }
-
         const nextHp = Math.max(0, reflectedEnemy.stats.hp.current - dealt);
         const nextEnemies = [...nextState.combat.enemies];
         nextEnemies[enemyIndex] = {
@@ -2271,18 +1719,16 @@ function enemyAttack(state, enemyIndex) {
             hp: { ...reflectedEnemy.stats.hp, current: nextHp },
           },
         };
-
         const reflectLog = [
           ...nextState.combat.log,
           `${nextState.player.name} reflects ${reflectDamage} damage back!`,
           ...(absorbedByShield > 0
             ? [
-                `🛡️ ${reflectedEnemy.name}'s shield absorbs ${absorbedByShield} reflected damage!`,
+                `ðŸ›¡ï¸ ${reflectedEnemy.name}'s shield absorbs ${absorbedByShield} reflected damage!`,
               ]
             : []),
           `${reflectedEnemy.name} takes ${dealt} reflected damage!`,
         ];
-
         nextState = {
           ...nextState,
           combat: {
@@ -2305,10 +1751,8 @@ function enemyAttack(state, enemyIndex) {
       }
     }
   }
-
   return { ...attackResult, state: nextState };
 }
-
 /**
  * Process all enemy turns
  */
@@ -2316,15 +1760,12 @@ export function processEnemyTurns(state) {
   if (state.combat.status !== "active" || state.combat.turn !== "enemy") {
     return state;
   }
-
   let newState = state;
-
   // Process each alive enemy
   state.combat.enemies.forEach((enemy, index) => {
     if (enemy.stats.hp.current > 0) {
       const result = enemyAttack(newState, index);
       newState = result?.state ?? result;
-
       // Update cooldowns
       const updatedEnemy = newState.combat.enemies[index];
       if (updatedEnemy && updatedEnemy.skillCooldowns) {
@@ -2334,13 +1775,11 @@ export function processEnemyTurns(state) {
             newCooldowns[skillId] = updatedEnemy.skillCooldowns[skillId] - 1;
           }
         });
-
         const newEnemies = [...newState.combat.enemies];
         newEnemies[index] = {
           ...updatedEnemy,
           skillCooldowns: newCooldowns,
         };
-
         newState = {
           ...newState,
           combat: {
@@ -2351,16 +1790,13 @@ export function processEnemyTurns(state) {
       }
     }
   });
-
   // Check if player is dead
   if (newState.player.isDead) {
     return endCombat(newState, "defeat");
   }
-
   // === BERSERK MODE CHECK (Beast Kin) ===
   const raceId = newState.player.race?.id || newState.player.race;
   const hpPercent = newState.player.hp.current / newState.player.hp.max;
-
   if (
     (hasRaceTag(raceId, "BERSERK_MODE") || raceId === "beast_kin") &&
     hpPercent < 0.5
@@ -2369,20 +1805,17 @@ export function processEnemyTurns(state) {
     const aliveEnemies = newState.combat.enemies
       .map((e, idx) => ({ enemy: e, index: idx }))
       .filter((e) => e.enemy.stats.hp.current > 0);
-
     if (aliveEnemies.length > 0 && !newState.player.berserkAttackedThisTurn) {
       const target = randomChoice(aliveEnemies);
       const berserkLog = [
         ...newState.combat.log,
-        `🔴 BLOOD FRENZY! ${newState.player.name} loses control and attacks wildly!`,
+        `ðŸ”´ BLOOD FRENZY! ${newState.player.name} loses control and attacks wildly!`,
       ];
-
       newState = {
         ...newState,
         player: { ...newState.player, berserkAttackedThisTurn: true },
         combat: { ...newState.combat, log: berserkLog },
       };
-
       // Execute auto-attack
       const attackResult = playerAttack(newState, target.index, null);
       if (attackResult.success) {
@@ -2398,7 +1831,6 @@ export function processEnemyTurns(state) {
       };
     }
   }
-
   // === MUTANT RANDOM DEBUFF CHECK ===
   if (
     (hasRaceTag(raceId, "RANDOM_DEBUFF") || raceId === "mutant") &&
@@ -2408,9 +1840,8 @@ export function processEnemyTurns(state) {
     const currentEffects = newState.player.effects || [];
     const debuffLog = [
       ...newState.combat.log,
-      `🧬 CELLULAR INSTABILITY: ${debuff.name} triggered! (${debuff.stat} ${Math.round(debuff.value * 100)}% for ${debuff.duration} turns)`,
+      `ðŸ§¬ CELLULAR INSTABILITY: ${debuff.name} triggered! (${debuff.stat} ${Math.round(debuff.value * 100)}% for ${debuff.duration} turns)`,
     ];
-
     newState = {
       ...newState,
       player: {
@@ -2432,13 +1863,11 @@ export function processEnemyTurns(state) {
     };
     emit("combat:mutationDebuff", { debuff: debuff.name });
   }
-
   // === RAGE DECAY (Berserker) ===
   const classId = newState.player.class?.id || newState.player.class;
   if (classId === "berserker" || classId === "bloodline_vanguard") {
     newState.player = processRageDecay(newState.player);
   }
-
   // === MONK COMBO RESET ON DAMAGE ===
   if (
     (classId === "monk" || classId === "grandmaster") &&
@@ -2449,21 +1878,16 @@ export function processEnemyTurns(state) {
       newState.player = resetCombo(newState.player, "took damage");
     }
   }
-
   // === STEALTH DETECTION CHECK ===
   if (newState.player.isStealthed) {
     newState = processStealthDetection(newState);
   }
-
   // === CHARM DURATION DECAY ===
   newState = processCharmDuration(newState);
-
   // === TIME-BASED EFFECTS (Sun regen, etc.) ===
   newState = processTimeEffects(newState);
-
   // === VANISH DURATION DECAY ===
   newState = processVanishDuration(newState);
-
   // === ENRAGE DURATION DECAY ===
   if (newState.player.enrageTurnsRemaining) {
     const remaining = newState.player.enrageTurnsRemaining - 1;
@@ -2481,7 +1905,6 @@ export function processEnemyTurns(state) {
       };
     }
   }
-
   // Decrement player skill cooldowns (combat skills)
   if (newState.combat?.skillCooldowns) {
     const nextCooldowns = {};
@@ -2497,7 +1920,6 @@ export function processEnemyTurns(state) {
       },
     };
   }
-
   // Decrement class ability cooldowns
   if (newState.combat?.classAbilityCooldowns) {
     const nextCooldowns = {};
@@ -2515,7 +1937,6 @@ export function processEnemyTurns(state) {
       },
     };
   }
-
   // Decrement race ability cooldowns
   if (newState.combat?.raceAbilityCooldowns) {
     const nextCooldowns = {};
@@ -2533,7 +1954,6 @@ export function processEnemyTurns(state) {
       },
     };
   }
-
   // Award defeats for enemies that died during the enemy turn (DoT ticks, charm, etc.)
   if (Array.isArray(newState.combat?.enemies)) {
     for (let idx = newState.combat.enemies.length - 1; idx >= 0; idx -= 1) {
@@ -2543,7 +1963,6 @@ export function processEnemyTurns(state) {
       }
     }
   }
-
   // Switch back to player turn
   return {
     ...newState,
@@ -2554,179 +1973,6 @@ export function processEnemyTurns(state) {
     },
   };
 }
-
-/**
- * Handle enemy defeat
- */
-function handleEnemyDefeat(state, enemyIndex) {
-  const enemy = state.combat.enemies[enemyIndex];
-  const drops = calculateEnemyDrops(enemy);
-  const progression = getProgressionModifiers(state.player);
-  const titleBonuses = getTitleBonuses(state.player);
-  const goldGain = Number.isFinite(titleBonuses.goldGain)
-    ? titleBonuses.goldGain
-    : 0;
-  const titleAdjustedGold =
-    drops.gold > 0 ? Math.max(0, Math.ceil(drops.gold * (1 + goldGain))) : 0;
-  const goldEarned = scalePositiveReward(
-    titleAdjustedGold,
-    progression.goldGainMultiplier,
-    "ceil",
-  );
-
-  const lootFactor = Math.max(
-    1,
-    1 + Math.max(0, toNumber(progression.lootQualityBonus, 0)),
-  );
-  const adjustedItems = Array.isArray(drops.items)
-    ? drops.items.map((item) => {
-        if (!item || typeof item !== "object") return item;
-        const baseQuantity = Math.max(1, Math.floor(toNumber(item.quantity, 1)));
-        if (lootFactor <= 1) return { ...item, quantity: baseQuantity };
-        const scaled = baseQuantity * lootFactor;
-        const guaranteed = Math.max(1, Math.floor(scaled));
-        const fractional = scaled - guaranteed;
-        const bonus = fractional > 0 && random() < fractional ? 1 : 0;
-        return { ...item, quantity: guaranteed + bonus };
-      })
-    : [];
-
-  // Add drops to player
-  let newState = state;
-
-  // Update progress (kills, gold earned)
-  {
-    const progressSource =
-      newState.player.progress &&
-      typeof newState.player.progress === "object" &&
-      newState.player.progress !== null
-        ? newState.player.progress
-        : {};
-    const killsByEnemyIdSource =
-      progressSource.killsByEnemyId &&
-      typeof progressSource.killsByEnemyId === "object" &&
-      progressSource.killsByEnemyId !== null
-        ? progressSource.killsByEnemyId
-        : {};
-    const killsByEnemyId = { ...killsByEnemyIdSource };
-    if (enemy?.id) {
-      killsByEnemyId[enemy.id] = (killsByEnemyId[enemy.id] || 0) + 1;
-    }
-
-    newState = {
-      ...newState,
-      player: {
-        ...newState.player,
-        progress: {
-          ...progressSource,
-          totalKills: (progressSource.totalKills || 0) + 1,
-          killsByEnemyId,
-          totalGoldEarned: (progressSource.totalGoldEarned || 0) + goldEarned,
-        },
-      },
-    };
-  }
-
-  // Add gold
-  if (goldEarned > 0) {
-    newState = {
-      ...newState,
-      player: {
-        ...newState.player,
-        gold: (newState.player.gold || 0) + goldEarned,
-        currency: {
-          ...newState.player.currency,
-          goldCoins: (newState.player.currency?.goldCoins || 0) + goldEarned,
-        },
-      },
-    };
-  }
-
-  // Add items
-  adjustedItems.forEach((item) => {
-    newState = addItem(newState, item);
-  });
-
-  // Add XP
-  // Use Level-Delta logic to calculate actual XP gained
-  const baseXp = calculateGainedXP(
-    state.player.level,
-    enemy.level,
-    drops.xp,
-    state.config,
-  );
-  const xpGained = scalePositiveReward(
-    baseXp,
-    progression.xpGainMultiplier,
-    "ceil",
-  );
-  newState = addXp(newState, xpGained);
-
-  const itemCount = adjustedItems.reduce(
-    (sum, item) => sum + Math.max(1, Math.floor(toNumber(item?.quantity, 1))),
-    0,
-  );
-
-  // Remove enemy from combat
-  const newEnemies = newState.combat.enemies.filter(
-    (_, idx) => idx !== enemyIndex,
-  );
-
-  const newLog = [
-    ...newState.combat.log,
-    `${enemy.name} defeated! Gained ${xpGained} XP (Base: ${drops.xp}), ${goldEarned} gold, and ${itemCount} item(s).`,
-  ];
-
-  newState = {
-    ...newState,
-    combat: {
-      ...newState.combat,
-      enemies: newEnemies,
-      log: newLog,
-    },
-  };
-
-  // Check if all enemies defeated
-  if (
-    newEnemies.length === 0 ||
-    newEnemies.every((e) => e.stats.hp.current <= 0)
-  ) {
-    return endCombat(newState, "victory");
-  }
-
-  return newState;
-}
-
-/**
- * End combat
- */
-function endCombat(state, result) {
-  const newLog = [...state.combat.log];
-
-  if (result === "victory") {
-    newLog.push("Victory! All enemies defeated!");
-  } else if (result === "defeat") {
-    newLog.push("Defeat! You have been knocked unconscious.");
-  } else if (result === "escape") {
-    newLog.push("You successfully escaped from combat!");
-  }
-
-  return {
-    ...state,
-    combat: {
-      status:
-        result === "victory"
-          ? "victory"
-          : result === "defeat"
-            ? "defeat"
-            : "inactive",
-      turn: "player",
-      enemies: [],
-      log: newLog,
-    },
-  };
-}
-
 /**
  * Escape from combat
  * Uses config values for escape chance calculation
@@ -2735,7 +1981,6 @@ export function escapeCombat(state) {
   if (state.combat.status !== "active") {
     return { success: false, reason: "Not in combat", state };
   }
-
   // Check if any enemy prevents fleeing
   const cannotFlee = state.combat.enemies.some((enemy) =>
     hasEffectTag(enemy, "NO_FLEE"),
@@ -2755,12 +2000,10 @@ export function escapeCombat(state) {
       },
     };
   }
-
   // Get config values (with fallbacks for safety)
   const baseEscapeChance = state.config?.baseEscapeChance || 0.3;
   const agilityEscapeBonus = state.config?.agilityEscapeBonus || 0.01;
   const baseAttributeValue = state.config?.baseAttributeValue || 5;
-
   // Escape chance based on agility using config values
   const effectiveAttributes = getEffectiveAttributes(
     state.player,
@@ -2770,7 +2013,6 @@ export function escapeCombat(state) {
     getAttributeValue(effectiveAttributes, "agility") || baseAttributeValue;
   const escapeChance = baseEscapeChance + agility * agilityEscapeBonus;
   const escaped = random() < escapeChance;
-
   if (escaped) {
     return {
       success: true,
@@ -2792,527 +2034,10 @@ export function escapeCombat(state) {
     };
   }
 }
-
-function calculateDamage(attacker, defender, skill = null, config = {}) {
-  let damage = 0;
-  let isCritical = false;
-  let messages = [];
-
-  // Determine attacker stats
-  const isPlayer = !!attacker.race; // Simple check if attacker is player
-  const statsSource = attacker.attributes || attacker.stats;
-  const normalizedStats = ensureAttributeShape(statsSource, 10);
-  const stats = {
-    strength: getAttributeValue(normalizedStats, "strength") || 10,
-    dexterity: getAttributeValue(normalizedStats, "dexterity") || 10,
-    intelligence: getAttributeValue(normalizedStats, "intelligence") || 10,
-    luck: getAttributeValue(normalizedStats, "luck") || 10,
-  };
-
-  // --- 1. Base Damage Calculation ---
-  // Physical damage scales with STR, Magical with INT
-  const isMagic = skill ? skill.isMagic : false; // Assume skills define if they are magic
-  const minDamage = allowsZeroDamage(skill) ? 0 : 1;
-  const scalingStat = isMagic ? stats.intelligence : stats.strength;
-
-  // Base damage from stat (fallback when no explicit attack value is provided)
-  const baseAttack = Math.floor(scalingStat * 2);
-  const attackValue = Number(attacker?.attack);
-  damage = !skill && Number.isFinite(attackValue) ? attackValue : baseAttack;
-
-  // Apply skill damage (supports numeric or { base, multiplier } shapes)
-  if (skill && skill.damage !== undefined && skill.damage !== null) {
-    if (typeof skill.damage === "number") {
-      damage += skill.damage;
-    } else if (typeof skill.damage === "object") {
-      const baseOverride = Number(skill.damage.base);
-      if (Number.isFinite(baseOverride)) {
-        damage = baseOverride;
-      }
-      const multiplier = Number(skill.damage.multiplier);
-      if (Number.isFinite(multiplier)) {
-        damage = Math.floor(damage * multiplier);
-      }
-    }
-  }
-
-  // Talent system compatibility: allow a separate damageMultiplier to scale damage
-  if (skill && Number.isFinite(skill.damageMultiplier)) {
-    damage = Math.floor(damage * skill.damageMultiplier);
-  }
-
-  const setBonuses = isPlayer ? getSetBonuses(attacker.equipment || {}) : {};
-  const physicalBonus = toNumberSafe(setBonuses.physicalDamage, 0);
-  const spellBonus = toNumberSafe(setBonuses.spellDamage, 0);
-  const elementalBonus = toNumberSafe(setBonuses.elementalDamage, 0);
-
-  if (!isMagic && physicalBonus) {
-    damage = Math.floor(damage * (1 + physicalBonus));
-    messages.push(`Set Bonus: +${Math.round(physicalBonus * 100)}% Physical`);
-  }
-  if (isMagic && spellBonus) {
-    damage = Math.floor(damage * (1 + spellBonus));
-    messages.push(`Set Bonus: +${Math.round(spellBonus * 100)}% Spell`);
-  }
-  if (skill?.element && elementalBonus) {
-    damage = Math.floor(damage * (1 + elementalBonus));
-    messages.push(`Set Bonus: +${Math.round(elementalBonus * 100)}% Elemental`);
-  }
-
-  if (skill) {
-    messages.push(`${attacker.name} uses ${skill.name}!`);
-  } else {
-    messages.push(`${attacker.name} attacks!`);
-  }
-
-  // --- Status Effect Damage Modifiers ---
-  // Might Buff (+20% Phys Dmg per stack)
-  if (!isMagic && hasEffectTag(attacker, "DMG_BOOST_PHYSICAL")) {
-    const boost = getEffectTagMagnitude(attacker, "DMG_BOOST_PHYSICAL");
-    damage = Math.floor(damage * (1 + boost));
-    messages.push(`Might: +${Math.round(boost * 100)}% Damage`);
-  }
-
-  // --- 2. Racial Modifiers (Attacker) ---
-  if (isPlayer && attacker.race) {
-    const raceId = attacker.race.id;
-
-    // Damage Boosts
-    if (skill) {
-      if (
-        skill.element === "fire" &&
-        hasRaceTag(raceId, RACE_EFFECT_TAGS.DMG_BOOST_FIRE)
-      ) {
-        damage *= 1.2;
-        messages.push("Racial Bonus: Fire Damage +20%");
-      }
-      if (
-        skill.element === "ice" &&
-        hasRaceTag(raceId, RACE_EFFECT_TAGS.DMG_BOOST_ICE)
-      ) {
-        damage *= 1.2;
-        messages.push("Racial Bonus: Ice Damage +20%");
-      }
-      // ... add other element boosts similarly
-    }
-
-    // Special Traits
-    if (hasRaceTag(raceId, "LOW_HP_DMG_BOOST")) {
-      const hpPercent = attacker.hp.current / attacker.hp.max;
-      if (hpPercent < 0.5) {
-        damage *= 1.2;
-        messages.push("Racial Bonus: Blood Frenzy! Damage +20%");
-      }
-    }
-  }
-
-  // --- 3. Apply Rage Multipliers (Berserker) ---
-  const classId = attacker.class?.id || attacker.class;
-  if (classId === "berserker" && attacker.isEnraged) {
-    const rageMultipliers = getRageMultipliers(attacker);
-    damage = Math.floor(damage * rageMultipliers.damage);
-    messages.push(`⚡ ENRAGED! Damage x${rageMultipliers.damage}`);
-  }
-
-  // --- 3b. Apply Combo Multiplier (Monk) ---
-  if (classId === "monk" || classId === "grandmaster") {
-    const comboMult = getComboMultiplier(attacker);
-    if (comboMult > 1.0) {
-      damage = Math.floor(damage * comboMult);
-      messages.push(
-        `☯️ Combo x${attacker.comboCount || 1}! Damage x${comboMult}`,
-      );
-    }
-  }
-
-  // --- 3c. Apply Stealth Ambush Multiplier ---
-  if (attacker.isStealthed) {
-    damage = Math.floor(damage * 2.0);
-    messages.push(`🗡️ AMBUSH! Damage x2.0`);
-    const backstabBonus = toNumberSafe(setBonuses.backstabDamage, 0);
-    if (backstabBonus) {
-      damage = Math.floor(damage * (1 + backstabBonus));
-      messages.push(`Set Bonus: Backstab +${Math.round(backstabBonus * 100)}%`);
-    }
-  }
-
-  // --- 4. Critical Hit Calculation ---
-  const luck = stats.luck || 5;
-  let critChance = luck * 0.01;
-  const talentBypasses = resolveBypasses(attacker.talents || []);
-  critChance = applyCritOverride(critChance, talentBypasses);
-  critChance += toNumberSafe(setBonuses.critChance, 0);
-
-  // Racial Crit Bonus
-  if (
-    isPlayer &&
-    attacker.race &&
-    hasRaceTag(attacker.race.id, RACE_EFFECT_TAGS.DMG_BOOST_CRIT)
-  ) {
-    critChance += 0.05;
-  }
-
-  // Status Effect Crit Bonus
-  if (hasEffectTag(attacker, "DMG_BOOST_CRIT")) {
-    critChance += getEffectTagMagnitude(attacker, "DMG_BOOST_CRIT");
-  }
-
-  // Cap crit chance at 50% (soft cap)
-  critChance = Math.min(critChance, 0.5);
-
-  if (random() < critChance) {
-    isCritical = true;
-    let critMultiplier = applyCritMultiplier(1.5, talentBypasses);
-    critMultiplier += toNumberSafe(setBonuses.critDamage, 0);
-
-    // Racial Crit Damage Bonus
-    if (
-      isPlayer &&
-      attacker.race &&
-      hasRaceTag(attacker.race.id, "CRIT_DMG_BOOST")
-    ) {
-      critMultiplier = 1.7; // 20% boost to multiplier
-    }
-
-    damage = Math.floor(damage * critMultiplier);
-    messages.push("Critical Hit!");
-  }
-
-  // --- 4. Defense & Resistance (Defender) ---
-  const defenseReductionFactor = config?.defenseReductionFactor ?? 0.5;
-  const defenseInput = Number(defender?.defense ?? defender?.stats?.defense);
-  const defenseValue = Number.isFinite(defenseInput)
-    ? defenseInput
-    : Number(
-        getAttributeValue(
-          defender?.attributes || defender?.stats || { str: 10 },
-          "strength",
-        ) || 0,
-      );
-  const defense = Math.floor(defenseValue * defenseReductionFactor);
-
-  // Apply Racial Defenses (if Defender is Player)
-  let finalDefense = defense;
-  const defenseDown = getEffectTagMagnitude(defender, "DEFENSE_DOWN");
-  if (defenseDown) {
-    finalDefense = Math.max(0, Math.floor(finalDefense * (1 - defenseDown)));
-    messages.push(`Defense Down: -${Math.round(defenseDown * 100)}%`);
-  }
-  if (!isPlayer && defender.race) {
-    // If defender is player (in enemy turn) or PvP
-    // Note: Currently simple logic assumes 'attacker.race' means player.
-    // In a full system, we'd check defender too.
-    // For now, assuming PvE where defender is enemy (no race traits usually)
-    // OR Defender is player (Enemy Turn)
-  }
-
-  // Calculate final damage
-  let finalDamage = Math.max(minDamage, damage - finalDefense);
-
-  // --- 5. Racial Resistances/Weaknesses (Defender) ---
-  // We need to know if defender has racial traits.
-  // Assuming 'defender' object has 'race' property if it's a player.
-  const element = skill ? skill.element : "physical";
-  if (defender.race) {
-    const defRaceId = defender.race.id;
-
-    // Weaknesses (+50% Damage Taken)
-    if (
-      element === "fire" &&
-      hasRaceTag(defRaceId, RACE_EFFECT_TAGS.WEAK_FIRE)
-    ) {
-      finalDamage *= 1.5;
-      messages.push("Weakness: Fire! (+50% Dmg)");
-    }
-    if (
-      element === "lightning" &&
-      hasRaceTag(defRaceId, RACE_EFFECT_TAGS.WEAK_LIGHTNING)
-    ) {
-      finalDamage *= 1.5;
-      messages.push("Weakness: Lightning! (+50% Dmg)");
-    }
-
-    // Resistances (-20% Damage Taken)
-    if (
-      element === "fire" &&
-      hasRaceTag(defRaceId, RACE_EFFECT_TAGS.RESIST_FIRE)
-    ) {
-      finalDamage *= 0.8;
-      messages.push("Resisted: Fire (-20% Dmg)");
-    }
-
-    // Immunities (0 Damage)
-    if (
-      skill &&
-      skill.effect === "bleed" &&
-      hasRaceTag(defRaceId, RACE_EFFECT_TAGS.IMMUNE_BLEED)
-    ) {
-      messages.push("Immune to Bleed!");
-      // Logic to prevent bleed application would go here
-    }
-
-    // Chance to Negate (Void Walker)
-    if (hasRaceTag(defRaceId, "DMG_NEGATE_CHANCE")) {
-      if (random() < 0.2) {
-        finalDamage = 0;
-        messages.push("Void Step: Damage Negated!");
-      }
-    }
-
-    // Elemental Attuned: Dynamic absorption/weakness based on current combat state
-    if (hasRaceTag(defRaceId, "ABSORB_RANDOM") && defender.currentAbsorption) {
-      const absorption = defender.currentAbsorption;
-      if (element === absorption.absorbed) {
-        // Absorb damage as healing
-        finalDamage = -Math.floor(finalDamage * 0.5); // Negative = heal
-        messages.push(`Elemental Flux: Absorbed ${element}! Healed instead!`);
-      } else if (element === absorption.weakTo) {
-        // Double damage from opposite element
-        finalDamage *= 2;
-        messages.push(`Elemental Flux: Weak to ${element}! (+100% Dmg)`);
-      }
-    }
-  }
-
-  // --- 6. Status Vulnerability/Weakness ---
-  const vulnerable = getEffectTagMagnitude(defender, "VULNERABLE");
-  if (vulnerable && finalDamage > 0) {
-    finalDamage = Math.floor(finalDamage * (1 + vulnerable));
-    messages.push(`Vulnerable: +${Math.round(vulnerable * 100)}%`);
-  }
-
-  if (element === "physical" && hasEffectTag(defender, "WEAK_PHYSICAL")) {
-    finalDamage = Math.floor(finalDamage * 1.25);
-    messages.push("Weakness: Physical (+25% Dmg)");
-  }
-
-  finalDamage = Math.floor(finalDamage);
-
-  const result = {
-    damage: finalDamage,
-    isCritical,
-    messages,
-  };
-  emit("combat:log", {
-    type: "damage",
-    attacker: attacker.name,
-    defender: defender.name,
-    result,
-  });
-  return result;
-}
-
-function calculateDamagePipeline(
-  attacker,
-  defender,
-  skill = null,
-  config = {},
-) {
-  const log = [];
-  const isMagic = skill ? skill.isMagic : false;
-  const minDamage = allowsZeroDamage(skill) ? 0 : 1;
-  const defenseReductionFactor = config?.defenseReductionFactor ?? 0.5;
-  const strToDamageMultiplier = config?.strToDamageMultiplier ?? 2;
-  const titleBonuses = getTitleBonuses(attacker);
-  const attackBonus = Number.isFinite(titleBonuses.attack)
-    ? titleBonuses.attack
-    : 0;
-  const magicBonus = Number.isFinite(titleBonuses.magic)
-    ? titleBonuses.magic
-    : 0;
-  const skillPower = Number.isFinite(titleBonuses.skillPower)
-    ? titleBonuses.skillPower
-    : 0;
-
-  const statsSource = attacker.attributes ||
-    attacker.stats || {
-      str: 10,
-      int: 10,
-      luck: 10,
-    };
-  const stats =
-    attacker && attacker.attributes
-      ? getEffectiveAttributes(attacker, config)
-      : statsSource;
-
-  const strength = Number(getAttributeValue(stats, "strength") || 0);
-  const intelligence = Number(getAttributeValue(stats, "intelligence") || 0);
-  const weaponAttack = Number(attacker?.equipment?.weapon?.stats?.attack ?? 0);
-
-  let base = Math.floor(
-    isMagic
-      ? intelligence * 2 + magicBonus
-      : strength * strToDamageMultiplier + weaponAttack + attackBonus,
-  );
-
-  if (skill && skill.damage !== undefined && skill.damage !== null) {
-    if (typeof skill.damage === "number") {
-      base += skill.damage;
-    } else if (typeof skill.damage === "object") {
-      const baseOverride = Number(skill.damage.base);
-      if (Number.isFinite(baseOverride)) {
-        base = baseOverride;
-      }
-      const multiplier = Number(skill.damage.multiplier);
-      if (Number.isFinite(multiplier)) {
-        base = Math.floor(base * multiplier);
-      }
-    }
-  }
-
-  // Talent system compatibility: allow a separate damageMultiplier to scale damage
-  if (skill && Number.isFinite(skill.damageMultiplier)) {
-    base = Math.floor(base * skill.damageMultiplier);
-  }
-  log.push({
-    stage: "RAW",
-    value: base,
-    reason: "Base stat scaling + skill damage",
-  });
-
-  // Apply magnitude-based damage caps early in pipeline
-  const attackerLevel = attacker.level || 1;
-  const activeTalents = attacker.talents || [];
-  let magnitudeCaps = null;
-
-  // Check for magnitude-based talents
-  for (const talentId of activeTalents) {
-    const caps = getMagnitudeCaps(talentId, attackerLevel);
-    if (caps && caps.damageCap > 0) {
-      magnitudeCaps = caps;
-      break; // Use the first magnitude talent found
-    }
-  }
-
-  // Attacker multipliers
-  let afterAttackers = base;
-  const attackerReasons = [];
-  const attackerTags = [];
-  const defenderTags = [];
-
-  // Aggregate tags
-  if (skill?.tags) attackerTags.push(...skill.tags);
-  if (attacker.race?.id)
-    attackerTags.push(...getRaceEntityTags(attacker.race.id));
-  if (defender.race?.id)
-    defenderTags.push(...getRaceEntityTags(defender.race.id));
-  if (!isMagic && hasEffectTag(attacker, "DMG_BOOST_PHYSICAL")) {
-    const boost = getEffectTagMagnitude(attacker, "DMG_BOOST_PHYSICAL");
-    afterAttackers = Math.floor(afterAttackers * (1 + boost));
-    attackerReasons.push(`Might (+${Math.round(boost * 100)}%)`);
-  }
-  if (
-    skill?.element === "fire" &&
-    hasRaceTag(attacker.race?.id, RACE_EFFECT_TAGS.DMG_BOOST_FIRE)
-  ) {
-    afterAttackers = Math.floor(afterAttackers * 1.2);
-    attackerReasons.push("Racial: Fire +20%");
-  }
-  if (skill && skillPower) {
-    afterAttackers = Math.floor(afterAttackers * (1 + skillPower));
-    attackerReasons.push(
-      `Title: Skill Power +${Math.round(skillPower * 100)}%`,
-    );
-  }
-
-  // Tag-based matchup bonuses (e.g., Holy vs Undead)
-  if (attackerTags.includes("Holy_Damage") && defenderTags.includes("Undead")) {
-    afterAttackers = Math.floor(afterAttackers * 2);
-    attackerReasons.push("Bonus due to [Holy vs Undead]");
-  }
-  log.push({
-    stage: "ATTACKER_MULTIPLIERS",
-    value: afterAttackers,
-    reason: attackerReasons.join("; ") || "None",
-  });
-
-  // Defender mitigation
-  const defStatsSource = defender.attributes || defender.stats || { str: 10 };
-  const defStats =
-    defender && defender.attributes
-      ? getEffectiveAttributes(defender, config)
-      : defStatsSource;
-  const defenseInput = Number(defender?.defense ?? defender?.stats?.defense);
-  const defenseValue = Number.isFinite(defenseInput)
-    ? defenseInput
-    : Number(getAttributeValue(defStats, "strength") || 0);
-  let defense = Math.floor(defenseValue * defenseReductionFactor);
-  const defReasons = [`Defense ${defense}`];
-  const defenseDown = getEffectTagMagnitude(defender, "DEFENSE_DOWN");
-  if (defenseDown) {
-    defense = Math.max(0, Math.floor(defense * (1 - defenseDown)));
-    defReasons.push(`Defense Down -${Math.round(defenseDown * 100)}%`);
-  }
-  let afterMitigation = Math.max(minDamage, afterAttackers - defense);
-  const element = skill ? skill.element : "physical";
-  if (
-    element === "fire" &&
-    hasRaceTag(defender.race?.id, RACE_EFFECT_TAGS.RESIST_FIRE)
-  ) {
-    afterMitigation = Math.floor(afterMitigation * 0.8);
-    defReasons.push("Resist: Fire -20%");
-  }
-  if (
-    element === "lightning" &&
-    hasRaceTag(defender.race?.id, RACE_EFFECT_TAGS.WEAK_LIGHTNING)
-  ) {
-    afterMitigation = Math.floor(afterMitigation * 1.5);
-    defReasons.push("Weak: Lightning +50%");
-  }
-
-  const vulnerable = getEffectTagMagnitude(defender, "VULNERABLE");
-  if (vulnerable && afterMitigation > 0) {
-    afterMitigation = Math.floor(afterMitigation * (1 + vulnerable));
-    defReasons.push(`Vulnerable +${Math.round(vulnerable * 100)}%`);
-  }
-
-  if (element === "physical" && hasEffectTag(defender, "WEAK_PHYSICAL")) {
-    afterMitigation = Math.floor(afterMitigation * 1.25);
-    defReasons.push("Weak: Physical +25%");
-  }
-  log.push({
-    stage: "DEFENDER_MITIGATION",
-    value: afterMitigation,
-    reason: defReasons.join("; "),
-  });
-
-  let final = Math.floor(afterMitigation);
-
-  // Apply magnitude-based damage caps
-  if (magnitudeCaps) {
-    const capped = applyMagnitudeDamageCap(final, magnitudeCaps);
-    if (capped !== final) {
-      log.push({
-        stage: "MAGNITUDE_CAP",
-        value: capped,
-        reason: `${magnitudeCaps.label} damage cap (${magnitudeCaps.damageCap})`,
-      });
-    }
-    final = capped;
-    emit("combat:log", {
-      type: "magnitude",
-      attacker: attacker.name,
-      label: magnitudeCaps.label,
-      cap: magnitudeCaps.damageCap,
-    });
-  }
-
-  log.push({ stage: "FINAL", value: final, reason: "Final clamped integer" });
-
-  emit("combat:log", {
-    type: "pipeline",
-    attacker: attacker.name,
-    defender: defender.name,
-    log,
-  });
-  return { damage: final, log };
-}
-
 export function executeSkill(attacker, defender, skillInput, config = {}) {
   let skill =
     typeof skillInput === "string" ? getSkillById(skillInput) : skillInput;
   if (!skill) return { damage: 0, messages: ["Skill not found"] };
-
   // If this is a registry skill, apply talent modifiers so skills and abilities
   // follow the same template expectations (cost/cd/damage multipliers, etc.).
   if (skill?.id && getSkillById(skill.id)) {
@@ -3323,20 +2048,16 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
     );
     if (modified) skill = modified;
   }
-
   const bypasses = resolveBypasses(attacker.talents || []);
   const cd = applyCooldownOverride(skill.cooldown || 0, bypasses);
-
   // Calculate mana cost using the new balance system
   const calculatedCost = calculateManaCost(skill, attacker.level || 1);
   const cost = applyCostOverride(calculatedCost, bypasses);
-
   // Validate and consume mana using the new system
   const consumption = consumeMana({ ...skill, manaCost: cost }, attacker, {
     showFeedback: false, // Feedback handled by UI
     scaleWithLevel: false, // Already scaled above
   });
-
   if (!consumption.success) {
     return {
       damage: 0,
@@ -3346,7 +2067,6 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
       insufficientMana: true,
     };
   }
-
   // Update attacker's mana
   let updatedAttacker = { ...attacker };
   if (
@@ -3361,7 +2081,6 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
       },
     };
   }
-
   // Skill-side utility hooks (keep parity with class/race ability templates)
   if (skill.cleanse?.types?.length) {
     updatedAttacker = removeEffectsByTypes(updatedAttacker, skill.cleanse.types);
@@ -3375,10 +2094,8 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
   if (skill.summon) {
     updatedAttacker = applySummonToPlayer(updatedAttacker, skill.summon);
   }
-
   let updatedDefender = defender;
   let gambleResult = null;
-
   // === CHAOS BORN GAMBLE CAST ===
   const raceId = updatedAttacker.race?.id || updatedAttacker.race;
   if (
@@ -3388,14 +2105,12 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
     gambleResult = rollGambleCast();
     emit("combat:gambleCast", { result: gambleResult });
   }
-
   const result = calculateDamagePipeline(
     updatedAttacker,
     updatedDefender,
     skill,
     config,
   );
-
   const reactionResult = applyElementalReactions({
     attacker: updatedAttacker,
     defender: updatedDefender,
@@ -3404,7 +2119,6 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
   });
   result.damage = reactionResult.damage;
   updatedDefender = reactionResult.defender;
-
   // Apply Chaos Born gamble modifier
   if (gambleResult) {
     if (gambleResult.success) {
@@ -3427,13 +2141,11 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
       });
     }
   }
-
   // Apply magnitude-based AoE caps if skill has AoE effects
   if (Array.isArray(skill.effects) && skill.effects.some((e) => e.aoe)) {
     const attackerLevel = updatedAttacker.level || 1;
     const activeTalents = updatedAttacker.talents || [];
     let magnitudeCaps = null;
-
     // Check for magnitude-based talents
     for (const talentId of activeTalents) {
       const caps = getMagnitudeCaps(talentId, attackerLevel);
@@ -3442,7 +2154,6 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
         break; // Use the first magnitude talent found
       }
     }
-
     if (magnitudeCaps) {
       emit("combat:log", {
         type: "aoe_magnitude",
@@ -3452,12 +2163,10 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
       });
     }
   }
-
   // Apply Effects
   if (Array.isArray(skill.effects)) {
     const selfEffects = skill.effects.filter((e) => e.target === "self");
     const targetEffects = skill.effects.filter((e) => e.target !== "self");
-
     if (selfEffects.length > 0) {
       updatedAttacker = effectApplicationSystem.applyEffects(
         updatedAttacker,
@@ -3465,7 +2174,6 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
         updatedAttacker,
       );
     }
-
     if (targetEffects.length > 0) {
       updatedDefender = effectApplicationSystem.applyEffects(
         updatedDefender,
@@ -3474,7 +2182,6 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
       );
     }
   }
-
   return {
     damage: result.damage,
     cooldown: cd,
@@ -3486,16 +2193,13 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
     reactionMessages: reactionResult.messages,
   };
 }
-
 export function applyTalentDropOverrides(attacker, drops) {
   const bypasses = resolveBypasses(attacker.talents || []);
   return (drops || []).map((d) => applyDropOverrides(d, bypasses));
 }
-
 // =================================================================
 // TALENT BYPASS UTILITIES
 // =================================================================
-
 /**
  * Check if attacker has a specific bypass flag from talents
  * @param {Object} attacker - The attacker (player or enemy)
@@ -3506,7 +2210,6 @@ export function hasTalentBypass(attacker, bypassKey) {
   const bypasses = resolveBypasses(attacker.talents || []);
   return !!bypasses[bypassKey];
 }
-
 /**
  * Get all active bypass flags for an attacker
  * @param {Object} attacker - The attacker (player or enemy)
@@ -3515,7 +2218,6 @@ export function hasTalentBypass(attacker, bypassKey) {
 export function getActiveBypasses(attacker) {
   return resolveBypasses(attacker.talents || []);
 }
-
 /**
  * Apply talent-modified damage with bypass checks
  * @param {number} baseDamage - The base damage amount
@@ -3526,23 +2228,18 @@ export function getActiveBypasses(attacker) {
 export function applyTalentDamageModifiers(baseDamage, attacker, defender) {
   const attackerBypasses = resolveBypasses(attacker.talents || []);
   const defenderBypasses = resolveBypasses(defender.talents || []);
-
   let modifiedDamage = baseDamage;
-
   // Attacker bypasses
   if (attackerBypasses.damageResistance) {
     // Ignore defender's damage resistance
     modifiedDamage = baseDamage; // No reduction applied
   }
-
   // Defender bypasses
   if (defenderBypasses.damageImmunity) {
     return 0; // Complete damage immunity
   }
-
   return modifiedDamage;
 }
-
 /**
  * Check if a status effect can be applied (considering talent immunities)
  * @param {string} effectId - The effect to apply
@@ -3551,7 +2248,6 @@ export function applyTalentDamageModifiers(baseDamage, attacker, defender) {
  */
 export function canApplyStatusEffect(effectId, target) {
   const bypasses = resolveBypasses(target.talents || []);
-
   // Status immunity blocks all negative status effects
   if (bypasses.statusImmune) {
     const negativeEffects = [
@@ -3572,15 +2268,12 @@ export function canApplyStatusEffect(effectId, target) {
       return false;
     }
   }
-
   // Purify on cast removes existing debuffs
   if (bypasses.purifyOnCast) {
     // This would be handled in effect application
   }
-
   return true;
 }
-
 /**
  * Get talent-modified skill for combat use
  * @param {string} skillId - The skill ID

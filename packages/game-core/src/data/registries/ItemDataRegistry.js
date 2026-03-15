@@ -8,6 +8,11 @@ import {
   PROFESSIONS,
   getRecipesForProfession,
 } from "../../systems/profession/ProfessionRegistry.js";
+import { buildRecipePlaceholderItems } from "./ItemPlaceholderCompiler.js";
+import {
+  createItemRegistryRuntime,
+  isGeneratedPlaceholderItem as isGeneratedPlaceholderItemFromRuntime,
+} from "./ItemRegistryRuntime.js";
 
 /**
  * Item Database - All items in the game with their complete definitions
@@ -702,210 +707,23 @@ export let itemDatabase = {
   },
 };
 
-function humanizeItemId(itemId) {
-  return String(itemId || "")
-    .split("_")
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
+Object.assign(
+  itemDatabase,
+  buildRecipePlaceholderItems({
+    itemDatabase,
+    professions: Object.values(PROFESSIONS || {}),
+    getRecipesForProfession,
+  }),
+);
 
-function inferPlaceholderRarity(tier) {
-  const safeTier = Number.isFinite(tier) ? Number(tier) : 1;
-  if (safeTier >= 9) return "legendary";
-  if (safeTier >= 7) return "epic";
-  if (safeTier >= 5) return "rare";
-  if (safeTier >= 3) return "uncommon";
-  return "common";
-}
-
-function inferPlaceholderType(itemId, { isResult = false } = {}) {
-  const normalized = String(itemId || "").toLowerCase();
-  if (!isResult) return "material";
-  if (
-    /(potion|elixir|tonic|meal|stew|bread|ale|wine|jerky|salve|antidote|ration|bandage|kit)/u.test(
-      normalized,
-    )
-  ) {
-    return "consumable";
-  }
-  if (
-    /(sword|blade|dagger|armor|robe|cloak|gloves|shield|ring|amulet|circlet|crown|tool|bow|helmet|charm|relic|catalyst)/u.test(
-      normalized,
-    )
-  ) {
-    return "equipment";
-  }
-  if (/(cache|ledger|glyph|scroll|map|token|seal|fragment|core|shard|rune)/u.test(normalized)) {
-    return "quest";
-  }
-  return "material";
-}
-
-function withPlaceholderProvenance(item, { professionId, recipeId, role }) {
-  const existingMeta =
-    item?.placeholderMeta && typeof item.placeholderMeta === "object"
-      ? item.placeholderMeta
-      : {};
-  const existingRefs = Array.isArray(existingMeta.references)
-    ? [...existingMeta.references]
-    : [];
-  const nextRef = {
-    professionId: String(professionId || ""),
-    recipeId: String(recipeId || ""),
-    role: String(role || "reference"),
-  };
-  const hasRef = existingRefs.some(
-    (ref) =>
-      ref?.professionId === nextRef.professionId &&
-      ref?.recipeId === nextRef.recipeId &&
-      ref?.role === nextRef.role,
-  );
-  if (!hasRef) {
-    existingRefs.push(nextRef);
-  }
-
-  const nextTags = Array.isArray(item?.tags) ? [...item.tags] : [];
-  if (!nextTags.includes("placeholder_generated")) {
-    nextTags.push("placeholder_generated");
-  }
-
-  return {
-    ...item,
-    tags: nextTags,
-    contentStatus: "placeholder",
-    placeholderMeta: {
-      generated: true,
-      source: "recipe_reference_closure",
-      references: existingRefs,
-    },
-  };
-}
-
-function buildRecipePlaceholderItems() {
-  const placeholders = {};
-  const professions = Object.values(PROFESSIONS || {});
-
-  const upsertPlaceholder = (itemId, payload, provenance) => {
-    if (itemDatabase[itemId]) return;
-    if (placeholders[itemId]) {
-      placeholders[itemId] = withPlaceholderProvenance(
-        placeholders[itemId],
-        provenance,
-      );
-      return;
-    }
-    placeholders[itemId] = withPlaceholderProvenance(payload, provenance);
-  };
-
-  for (const profession of professions) {
-    const recipes = getRecipesForProfession(profession.id, 9) || [];
-    for (const recipe of recipes) {
-      const tier = Number.isFinite(recipe?.tier) ? recipe.tier : 1;
-      const rarity = inferPlaceholderRarity(tier);
-      const baseValue = Math.max(5, 8 + tier * 12);
-
-      const ingredients = Array.isArray(recipe?.ingredients) ? recipe.ingredients : [];
-      for (const ingredient of ingredients) {
-        const ingredientId = ingredient?.id || ingredient?.itemId;
-        if (!ingredientId || itemDatabase[ingredientId]) {
-          continue;
-        }
-        upsertPlaceholder(
-          ingredientId,
-          {
-          id: ingredientId,
-          name: humanizeItemId(ingredientId),
-          type: inferPlaceholderType(ingredientId, { isResult: false }),
-          quantity: 1,
-          description: `Crafting reagent placeholder generated from recipe '${recipe.id}'.`,
-          rarity,
-          value: baseValue,
-          },
-          { professionId: profession.id, recipeId: recipe.id, role: "ingredient" },
-        );
-      }
-
-      const resultId = recipe?.result?.id || recipe?.result?.itemId;
-      if (resultId && !itemDatabase[resultId]) {
-        upsertPlaceholder(
-          resultId,
-          {
-          id: resultId,
-          name: humanizeItemId(resultId),
-          type: inferPlaceholderType(resultId, { isResult: true }),
-          quantity: 1,
-          description: `Crafted item placeholder generated from recipe '${recipe.id}'.`,
-          rarity,
-          value: baseValue + 10,
-          },
-          { professionId: profession.id, recipeId: recipe.id, role: "result" },
-        );
-      }
-    }
-  }
-
-  return placeholders;
-}
-
-Object.assign(itemDatabase, buildRecipePlaceholderItems());
-
-/**
- * Cached item lookup data.
- * Populated lazily on first lookup and cleared via resetItemCaches() if the
- * item database is modified at runtime.
- */
-let itemListCache = null;
-const itemsByTypeCache = new Map();
-const itemsByRarityCache = new Map();
-const equipmentBySlotCache = new Map();
-
-// Internal helper for cached lookup operations; returns the shared cache array.
-const getItemListCache = () => {
-  if (!itemListCache) {
-    itemListCache = Object.values(itemDatabase);
-  }
-  return itemListCache;
-};
-
-const getItemsByTypeCache = (type) => {
-  if (!itemsByTypeCache.has(type)) {
-    itemsByTypeCache.set(
-      type,
-      getItemListCache().filter((item) => item.type === type),
-    );
-  }
-  return itemsByTypeCache.get(type);
-};
-
-const getItemsByRarityCache = (rarity) => {
-  if (!itemsByRarityCache.has(rarity)) {
-    itemsByRarityCache.set(
-      rarity,
-      getItemListCache().filter((item) => item.rarity === rarity),
-    );
-  }
-  return itemsByRarityCache.get(rarity);
-};
-
-const getEquipmentBySlotCache = (slot) => {
-  if (!equipmentBySlotCache.has(slot)) {
-    equipmentBySlotCache.set(
-      slot,
-      getItemListCache().filter(
-        (item) => item.type === "equipment" && item.equipSlot === slot,
-      ),
-    );
-  }
-  return equipmentBySlotCache.get(slot);
-};
+let itemRuntime = createItemRegistryRuntime(itemDatabase);
 
 export function setItemDatabase(nextDatabase) {
   if (!nextDatabase || typeof nextDatabase !== "object" || Array.isArray(nextDatabase)) {
     return;
   }
   itemDatabase = nextDatabase;
-  resetItemCaches();
+  itemRuntime = createItemRegistryRuntime(itemDatabase);
 }
 
 /**
@@ -913,10 +731,7 @@ export function setItemDatabase(nextDatabase) {
  * Call this after mutating itemDatabase at runtime.
  */
 export function resetItemCaches() {
-  itemListCache = null;
-  itemsByTypeCache.clear();
-  itemsByRarityCache.clear();
-  equipmentBySlotCache.clear();
+  itemRuntime = createItemRegistryRuntime(itemDatabase);
 }
 
 /**
@@ -925,7 +740,7 @@ export function resetItemCaches() {
  * @returns {object|null} The item definition or null if not found
  */
 export function getItemData(itemId) {
-  return itemDatabase[itemId] || null;
+  return itemRuntime.getItemData(itemId);
 }
 
 /**
@@ -934,7 +749,7 @@ export function getItemData(itemId) {
  * @returns {Array} Items of specified type
  */
 export function getItemsByType(type) {
-  return getItemsByTypeCache(type).slice();
+  return itemRuntime.getItemsByType(type);
 }
 
 /**
@@ -943,7 +758,7 @@ export function getItemsByType(type) {
  * @returns {Array} Items of specified rarity
  */
 export function getItemsByRarity(rarity) {
-  return getItemsByRarityCache(rarity).slice();
+  return itemRuntime.getItemsByRarity(rarity);
 }
 
 /**
@@ -952,19 +767,25 @@ export function getItemsByRarity(rarity) {
  * @returns {Array} Equipment for the specified slot
  */
 export function getEquipmentBySlot(slot) {
-  return getEquipmentBySlotCache(slot).slice();
+  return itemRuntime.getEquipmentBySlot(slot);
 }
 
 export function getItems() {
-  return getItemListCache().slice();
+  return itemRuntime.getItems();
+}
+
+export function getItemSummaries() {
+  return itemRuntime.getItemSummaries();
+}
+
+export function getItemSummaryById(itemId) {
+  return itemRuntime.getItemSummaryById(itemId);
 }
 
 export function isGeneratedPlaceholderItem(item) {
-  return Boolean(item?.placeholderMeta?.generated === true);
+  return isGeneratedPlaceholderItemFromRuntime(item);
 }
 
 export function getGeneratedPlaceholderItemIds() {
-  return getItemListCache()
-    .filter((item) => isGeneratedPlaceholderItem(item))
-    .map((item) => item.id);
+  return itemRuntime.getGeneratedPlaceholderItemIds();
 }

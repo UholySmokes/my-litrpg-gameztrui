@@ -1,0 +1,33 @@
+[
+  {
+    "id": "sparkborn_special",
+    "name": "Arc Spark",
+    "description": "A crackling spark that jolts the foe.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "lightning"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "shock",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

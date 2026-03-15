@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.js",
+    "./characterCreation/*": "./src/characterCreation/*",
     "./constants/*": "./src/constants/*",
     "./core/*": "./src/core/*",
     "./data/*": "./src/data/*",

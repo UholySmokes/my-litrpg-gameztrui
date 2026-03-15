@@ -7,6 +7,8 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { handleApiRequest } = require("../../functions/lib/api-router.js");
 const syncCore = require("../../functions/lib/sync-core.js");
+const syncStore = require("../../functions/lib/sync-store.js");
+const { SAVE_RESET_EPOCH } = require("../../shared/save-cutover.cjs");
 
 function tempPath(prefix) {
 	return path.join(
@@ -70,6 +72,14 @@ async function postCommand({ userId, envelope }) {
 	return res;
 }
 
+async function allowSyncForUser(ownerId) {
+	await syncStore.markMigrationVersion({
+		ownerId,
+		version: SAVE_RESET_EPOCH,
+		displayName: "Sync Reconnect Storm Test",
+	});
+}
+
 describe("sync reconnect storm integrity", () => {
 	const originalSyncBackend = process.env.SYNC_DB_STORAGE;
 	const originalSyncPath = process.env.SYNC_DB_PATH;
@@ -106,6 +116,7 @@ describe("sync reconnect storm integrity", () => {
 		const userId = "user-reconnect-storm";
 		const runId = "run-reconnect-storm";
 		const uniqueCommitTotal = 20;
+		await allowSyncForUser(userId);
 		let nextSeq = 1;
 		let lastAcceptedSeq = 0;
 

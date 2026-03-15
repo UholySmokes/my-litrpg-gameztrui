@@ -107,6 +107,11 @@ When making changes:
 3. Add minimal Jest tests if behavior is non-trivial (e.g., schema validation, id sanitization, deterministic output under seeded `SimBridge`).
 4. Prefer the repo fast gate npm run check (see docs/WORKFLOW.md) before handoff.
 5. If you only need a targeted pass for generator work, run npm run lint + npm run test:smoke; when touching registry-backed content, also run npm run validate:registries and npm run validate:archetypes.
+6. If your change impacts generated content-pack inputs or consumers, regenerate the affected pack(s) before validation:
+   - `npm run generate:creation-content-pack`
+   - `npm run generate:profession-content-pack`
+   - `npm run generate:talent-content-pack`
+   Then run `npm run validate:registries` and `npm run validate:archetypes`.
 
 ## Guardrails
 

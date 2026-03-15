@@ -1,0 +1,202 @@
+[
+  {
+    "id": "bard_inspiring_melody",
+    "name": "Inspiring Melody",
+    "type": "active",
+    "class": "bard",
+    "description": "Play an inspiring tune that increases party damage.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 30
+  },
+  {
+    "id": "bard_soothing_song",
+    "name": "Soothing Song",
+    "type": "active",
+    "class": "bard",
+    "description": "Sing a gentle song that heals allies over time.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 15
+  },
+  {
+    "id": "bard_battle_hymn",
+    "name": "Battle Hymn",
+    "type": "active",
+    "class": "bard",
+    "description": "A powerful war song that boosts attack speed.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 45
+  },
+  {
+    "id": "bard_discordant_note",
+    "name": "Discordant Note",
+    "type": "active",
+    "class": "bard",
+    "description": "Strike a jarring note that damages and confuses enemies.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 0
+  },
+  {
+    "id": "bard_charm_person",
+    "name": "Charm Person",
+    "type": "active",
+    "class": "bard",
+    "description": "Use your charisma to charm a humanoid temporarily.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 60
+  },
+  {
+    "id": "bard_lullaby",
+    "name": "Lullaby",
+    "type": "active",
+    "class": "bard",
+    "description": "Sing enemies to sleep.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 30
+  },
+  {
+    "id": "bard_countersong",
+    "name": "Countersong",
+    "type": "active",
+    "class": "bard",
+    "description": "Counter enemy magical effects with your performance.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 20
+  },
+  {
+    "id": "bard_cutting_words",
+    "name": "Cutting Words",
+    "type": "active",
+    "class": "bard",
+    "description": "Distract an enemy, reducing their effectiveness.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 10
+  },
+  {
+    "id": "bard_thunderous_crescendo",
+    "name": "Thunderous Crescendo",
+    "type": "active",
+    "class": "bard",
+    "description": "Build to a powerful crescendo that stuns enemies.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 60
+  },
+  {
+    "id": "bard_dirge_of_doom",
+    "name": "Dirge of Doom",
+    "type": "active",
+    "class": "bard",
+    "description": "Play a mournful dirge that weakens all enemies.",
+    "level": 1,
+    "manaCost": 28,
+    "cooldown": 45
+  },
+  {
+    "id": "bard_song_of_rest",
+    "name": "Song of Rest",
+    "type": "active",
+    "class": "bard",
+    "description": "Play restful music that enhances regeneration out of combat.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 300
+  },
+  {
+    "id": "bard_song_of_heroism",
+    "name": "Song of Heroism",
+    "type": "active",
+    "class": "bard",
+    "description": "Inspire an ally to perform beyond their limits.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 120
+  },
+  {
+    "id": "bard_cacophony",
+    "name": "Cacophony",
+    "type": "active",
+    "class": "bard",
+    "description": "Create overwhelming noise that damages all nearby enemies.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 12
+  },
+  {
+    "id": "bard_hymn_of_restoration",
+    "name": "Hymn of Restoration",
+    "type": "active",
+    "class": "bard",
+    "description": "A holy hymn that heals all party members.",
+    "level": 1,
+    "manaCost": 40,
+    "cooldown": 90
+  },
+  {
+    "id": "bard_fascinate",
+    "name": "Fascinate",
+    "type": "active",
+    "class": "bard",
+    "description": "Captivate enemies with your performance.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 45
+  },
+  {
+    "id": "bard_ghostly_chorus",
+    "name": "Ghostly Chorus",
+    "type": "active",
+    "class": "bard",
+    "description": "Summon spectral voices to sing with you.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 60
+  },
+  {
+    "id": "bard_rallying_anthem",
+    "name": "Rallying Anthem",
+    "type": "active",
+    "class": "bard",
+    "description": "Shout an anthem that removes fear and charm effects.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 30
+  },
+  {
+    "id": "bard_blade_dance",
+    "name": "Blade Dance",
+    "type": "active",
+    "class": "bard",
+    "description": "Perform a dance with your blade, striking multiple times.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 8
+  },
+  {
+    "id": "bard_finale",
+    "name": "Finale",
+    "type": "active",
+    "class": "bard",
+    "description": "End your performance with a powerful burst of magic.",
+    "level": 1,
+    "manaCost": 45,
+    "cooldown": 180
+  },
+  {
+    "id": "bard_encore",
+    "name": "Encore",
+    "type": "active",
+    "class": "bard",
+    "description": "Repeat your last song at reduced effectiveness.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 30
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "nature_spirit_special",
+    "name": "Verdant Renewal",
+    "description": "Cleanse afflictions and heal through nature.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "self",
+    "heal": {
+      "percent": 0.3
+    },
+    "cleanse": {
+      "types": [
+        "DEBUFF",
+        "DOT"
+      ]
+    },
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

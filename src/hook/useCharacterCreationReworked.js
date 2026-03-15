@@ -7,16 +7,15 @@
 // - Persistent selections across rerolls
 // =================================================================
 
-import { useState, useCallback, useMemo } from "react";
-import { PROFESSIONS } from "../systems/profession/ProfessionRegistry.js";
-import { ARCHETYPE_SYSTEMS } from "../systems/archetype/ArchetypeSystemRegistry.js";
-import { getAllSkills, getSkillById } from "../systems/skills/SkillRegistry.js";
-import { getClassAbilitiesFor } from "../systems/class/ClassAbilityRegistry.js";
-import { getRaceAbilitiesFor } from "../systems/race/RaceAbilityRegistry.js";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import {
+  getProfessionSummaryById,
+  getProfessionSummaries,
+} from "../systems/profession/ProfessionContentPack.js";
 import {
   assignTalentsForClass,
   getTalentById,
-} from "../systems/skills/TalentDefinitions.js";
+} from "../systems/skills/TalentContentPack.js";
 
 import {
   CANONICAL_ATTRIBUTES,
@@ -30,21 +29,65 @@ import { xpForNextLevel } from "../core/xpCurve.js";
 import {
   createCharacterCreationBlueprint,
   createCharacterCreationOutcome,
+  validateCharacterCreationBlueprint,
+} from "@voidverse/game-core/characterCreation/CharacterCreationContract.js";
+import {
+  buildCharacterCreationLatticeProfile,
+  buildCharacterCreationSkillPools as buildSharedCharacterCreationSkillPools,
+  getCharacterCreationSkillSelectionLimits,
+  resolveCharacterCreationSkillLoadout,
+  validateCharacterCreationSkillSelections,
+} from "@voidverse/game-core/characterCreation/CharacterCreationSkillSelection.js";
+import {
+  getCharacterCreationArchetypeSystemById,
+  getCharacterCreationArchetypeSystems,
+  getCharacterCreationClassesByTier,
+  getCharacterCreationOrigins,
+  getCharacterCreationRaces,
+  getCharacterCreationSkillSummaryById,
+} from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
+import {
   getCharacterCreationPerkLimits,
   listCharacterCreationAlignments,
   listCharacterCreationPerks,
   listCharacterCreationSkillLoadouts,
   listCharacterCreationStarterTrees,
-  validateCharacterCreationBlueprint,
-} from "@voidverse/game-core";
+} from "@voidverse/game-core/characterCreation/CharacterCreationOptionsRegistry.js";
+import { resolveCharacterCreationOptionsBySystem } from "@voidverse/game-core/characterCreation/CharacterCreationSystemInfluence.js";
 
 const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;
 const BASE_ATTRIBUTE_TOTAL = CANONICAL_ATTRIBUTES.length * BASE_ATTRIBUTE_VALUE;
 const INITIAL_REROLLS = 3;
-const MAX_ACTIVE_SKILLS = 3;
-const MAX_PASSIVE_SKILLS = 6;
-const BASE_CREATION_LEVEL = 1;
+const {
+  requiredActiveSkillCount: MAX_ACTIVE_SKILLS,
+  requiredPassiveSkillCount: MAX_PASSIVE_SKILLS,
+} = getCharacterCreationSkillSelectionLimits();
+const CREATION_STEPS = Object.freeze({
+  NAME: 1,
+  ARCHETYPE: 2,
+  IDENTITY: 3,
+  RACE: 4,
+  CLASS: 5,
+  MULTICLASS: 6,
+  PROFESSION: 7,
+  ATTRIBUTES: 8,
+  SKILLS: 9,
+  PERKS: 10,
+  STARTER_TREE: 11,
+  ALIGNMENT: 12,
+  REVIEW: 13,
+});
+const AVAILABLE_ARCHETYPE_SYSTEMS = getCharacterCreationArchetypeSystems().sort((left, right) => {
+  const leftPriority = Number(left?.characterCreation?.ordering?.priority || 999);
+  const rightPriority = Number(right?.characterCreation?.ordering?.priority || 999);
+  if (leftPriority !== rightPriority) return leftPriority - rightPriority;
+  return String(left?.name || left?.id).localeCompare(String(right?.name || right?.id));
+});
+const AVAILABLE_CREATION_ORIGINS = getCharacterCreationOrigins();
+const AVAILABLE_CREATION_RACES = getCharacterCreationRaces();
+const AVAILABLE_CREATION_CLASSES = getCharacterCreationClassesByTier(1);
+const AVAILABLE_CREATION_PROFESSIONS = getProfessionSummaries();
 
 function humanizeSkillId(value) {
   return String(value || "")
@@ -87,6 +130,32 @@ function getAttributeBonuses(entity, preferredKey = "attributeBonuses") {
       {},
     0,
   );
+}
+
+function cloneValue(value) {
+  if (value == null) return value;
+  if (typeof globalThis.structuredClone === "function") {
+    return globalThis.structuredClone(value);
+  }
+  return JSON.parse(JSON.stringify(value));
+}
+
+function cloneList(values = []) {
+  return Array.isArray(values) ? values.map((entry) => cloneValue(entry)) : [];
+}
+
+function containsById(list, id) {
+  return Array.isArray(list) && list.some((entry) => entry?.id === id);
+}
+
+function uniqueById(values = []) {
+  const seen = new Set();
+  return values.filter((entry) => {
+    const id = entry?.id;
+    if (!id || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
 }
 
 export function buildCharacterCreationAttributes({
@@ -147,330 +216,21 @@ export function buildCharacterCreationDerivedState({
   };
 }
 
-function dedupeSkills(skills = []) {
-  const seen = new Set();
-  return skills.filter((skill) => {
-    const id = skill?.id;
-    if (!id || seen.has(id)) return false;
-    seen.add(id);
-    return true;
-  });
-}
-
-function normalizeSkillEntry(entry, fallbackType, skillIndex) {
-  if (!entry) return null;
-  if (typeof entry === "string") {
-    const resolved = skillIndex?.get(entry);
-    if (!resolved) return null;
-    if (fallbackType && resolved.type !== fallbackType) {
-      return { ...resolved, type: fallbackType };
-    }
-    return resolved;
-  }
-  if (typeof entry === "object") {
-    if (!entry.id) return null;
-    if (fallbackType && !entry.type) {
-      return { ...entry, type: fallbackType };
-    }
-    return entry;
-  }
-  return null;
-}
-
-function collectSkillEntries(entries, fallbackType, skillIndex, source) {
-  if (!Array.isArray(entries)) return [];
-  const results = [];
-  for (const entry of entries) {
-    const normalized = normalizeSkillEntry(entry, fallbackType, skillIndex);
-    if (normalized?.id) {
-      const id = String(normalized.id).trim();
-      if (!id) continue;
-      results.push({
-        ...normalized,
-        id,
-        name: normalized.name || humanizeSkillId(id),
-        description:
-          normalized.description || "No description available.",
-        source:
-          normalized.source ||
-          source ||
-          normalized.class ||
-          normalized.race ||
-          "general",
-      });
-    }
-  }
-  return results;
-}
-
-function splitSkillsByType(skills = []) {
-  const active = [];
-  const passive = [];
-  for (const skill of skills) {
-    if (!skill) continue;
-    if (skill.type === "passive") {
-      passive.push(skill);
-    } else {
-      active.push(skill);
-    }
-  }
-  return { active, passive };
-}
-
-function isSkillUnlockedAtCreation(skill) {
-  if (!skill) return false;
-  const conditions = skill.unlockConditions;
-  if (!conditions) return true;
-  if (conditions.level && conditions.level > BASE_CREATION_LEVEL) return false;
-  if (conditions.quest || conditions.item) return false;
-  if (conditions.location) return false;
-  if (
-    Array.isArray(conditions.skillPrerequisites) &&
-    conditions.skillPrerequisites.length > 0
-  ) {
-    return false;
-  }
-  return true;
-}
-
-function normalizeAbilityEntries(
-  entries = [],
-  { source, defaultType = "active", fallbackName, fallbackDescription } = {},
-) {
-  if (!Array.isArray(entries)) return [];
-  const normalized = [];
-  for (const ability of entries) {
-    if (!ability || typeof ability !== "object") continue;
-    const rawId = ability.id || fallbackName;
-    const id = String(rawId || "").trim();
-    if (!id) continue;
-    normalized.push({
-      ...ability,
-      id,
-      name: ability.name || humanizeSkillId(id),
-      description:
-        ability.description ||
-        fallbackDescription ||
-        "No description available.",
-      type: ability.type || defaultType,
-      source: ability.source || source || "general",
-      stats:
-        ability.stats && typeof ability.stats === "object"
-          ? ability.stats
-          : {
-              damage: ability.damage?.multiplier ?? null,
-              manaCost: ability.cost ?? null,
-              costType: ability.costType || null,
-            },
-    });
-  }
-  return normalized;
-}
-
-function isGeneralSkillCompatible(skill, classId, raceId) {
-  if (!skill) return false;
-  if (!isSkillUnlockedAtCreation(skill)) return false;
-  if (Array.isArray(skill.allowedClasses) && skill.allowedClasses.length) {
-    if (!classId || !skill.allowedClasses.includes(classId)) return false;
-  }
-  if (Array.isArray(skill.requiredClasses) && skill.requiredClasses.length) {
-    if (!classId || !skill.requiredClasses.includes(classId)) return false;
-  }
-  if (typeof skill.requiredClass === "string" && skill.requiredClass) {
-    if (!classId || skill.requiredClass !== classId) return false;
-  }
-  if (Array.isArray(skill.allowedRaces) && skill.allowedRaces.length) {
-    if (!raceId || !skill.allowedRaces.includes(raceId)) return false;
-  }
-  if (Array.isArray(skill.requiredRaces) && skill.requiredRaces.length) {
-    if (!raceId || !skill.requiredRaces.includes(raceId)) return false;
-  }
-  if (typeof skill.requiredRace === "string" && skill.requiredRace) {
-    if (!raceId || skill.requiredRace !== raceId) return false;
-  }
-
-  return true;
-}
-
-export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) {
-  if (!cls) return { active: [], passive: [] };
-
-  let skillCatalog = Array.isArray(allSkills) ? allSkills : [];
-  if (!Array.isArray(allSkills)) {
-    try {
-      skillCatalog = getAllSkills();
-    } catch {
-      skillCatalog = [];
-    }
-  }
-
-  const skillIndex = new Map(
-    skillCatalog
-      .filter((skill) => skill?.id)
-      .map((skill) => [skill.id, skill]),
-  );
-
-  const classSkillEntries = Array.isArray(cls.skills)
-    ? collectSkillEntries(cls.skills, null, skillIndex, "class")
-    : skillCatalog
-        .filter(
-          (skill) =>
-            skill?.ownerType === "class" &&
-            skill?.ownerId === cls.id &&
-            isSkillUnlockedAtCreation(skill),
-        )
-        .map((skill) =>
-          collectSkillEntries([skill], skill.type || null, skillIndex, "class")[0],
-        )
-        .filter(Boolean);
-
-  const classAbilityEntries = normalizeAbilityEntries(
-    getClassAbilitiesFor(cls.id) || [],
-    { source: "class", defaultType: "active" },
-  );
-  const classPools = splitSkillsByType([
-    ...classSkillEntries,
-    ...classAbilityEntries,
-  ]);
-
-  const raceSkillEntries = [];
-  if (race) {
-    const raceTaggedSkills = skillCatalog
-      .filter((skill) => {
-        if (!isSkillUnlockedAtCreation(skill)) return false;
-        if (skill?.race === race.id) return true;
-        if (skill?.requiredRace === race.id) return true;
-        if (
-          Array.isArray(skill?.requiredRaces) &&
-          skill.requiredRaces.includes(race.id)
-        ) {
-          return true;
-        }
-        if (
-          Array.isArray(skill?.allowedRaces) &&
-          skill.allowedRaces.includes(race.id)
-        ) {
-          return true;
-        }
-        return false;
-      })
-      .map((skill) =>
-        collectSkillEntries([skill], skill.type || null, skillIndex, "race")[0],
-      )
-      .filter(Boolean);
-
-    raceSkillEntries.push(...raceTaggedSkills);
-    raceSkillEntries.push(
-      ...collectSkillEntries(race.skills, null, skillIndex, "race"),
-    );
-    raceSkillEntries.push(
-      ...collectSkillEntries(race.activeSkills, "active", skillIndex, "race"),
-    );
-    raceSkillEntries.push(
-      ...collectSkillEntries(race.passiveSkills, "passive", skillIndex, "race"),
-    );
-
-    if (race.passiveAbility) {
-      const passiveTraitId =
-        race.passiveAbility.id || `${race.id || "race"}_passive_trait`;
-      raceSkillEntries.push(
-        ...normalizeAbilityEntries(
-          [
-            {
-              ...race.passiveAbility,
-              id: passiveTraitId,
-            },
-          ],
-          {
-            source: "race",
-            defaultType: "passive",
-            fallbackDescription: "Innate racial trait.",
-          },
-        ),
-      );
-    }
-
-    if (race.activeAbility) {
-      const activeTraitId =
-        race.activeAbility.id || `${race.id || "race"}_active_trait`;
-      raceSkillEntries.push(
-        ...normalizeAbilityEntries(
-          [
-            {
-              ...race.activeAbility,
-              id: activeTraitId,
-            },
-          ],
-          {
-            source: "race",
-            defaultType: "active",
-            fallbackDescription: "Innate racial technique.",
-          },
-        ),
-      );
-    }
-
-    raceSkillEntries.push(
-      ...normalizeAbilityEntries(getRaceAbilitiesFor(race.id) || [], {
-        source: "race",
-        defaultType: "active",
-      }),
-    );
-  }
-  const racePools = splitSkillsByType(raceSkillEntries);
-
-  const generalEntries = skillCatalog.filter(
-    (skill) =>
-      skill?.ownerType === "universal" && skill?.ownerId === "universal",
-  );
-  const generalPools = splitSkillsByType(
-    generalEntries
-      .filter((skill) => isGeneralSkillCompatible(skill, cls?.id, race?.id))
-      .map((skill) =>
-        collectSkillEntries([skill], skill.type || null, skillIndex, "general")[0],
-      )
-      .filter(Boolean),
-  );
-
-  return {
-    active: dedupeSkills([
-      ...classPools.active,
-      ...racePools.active,
-      ...generalPools.active,
-    ]),
-    passive: dedupeSkills([
-      ...classPools.passive,
-      ...racePools.passive,
-      ...generalPools.passive,
-    ]),
-  };
+export function buildCharacterCreationSkillPools(cls, race, options = {}) {
+  return buildSharedCharacterCreationSkillPools(cls, race, options);
 }
 
 export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(CREATION_STEPS.NAME);
   const [showBootSequence, setShowBootSequence] = useState(true);
   const [rerollsRemaining, setRerollsRemaining] = useState(INITIAL_REROLLS);
 
-  const STEPS = {
-    IDENTITY: 1,
-    RACE: 2,
-    CLASS: 3,
-    MULTICLASS: 4,
-    PROFESSION: 5,
-    ARCHETYPE: 6,
-    ATTRIBUTES: 7,
-    SKILLS: 8,
-    PERKS: 9,
-    STARTER_TREE: 10,
-    ALIGNMENT: 11,
-    REVIEW: 12,
-  };
+  const STEPS = CREATION_STEPS;
   const stepSequence = useMemo(
     () => buildCreationStepSequence(STEPS, advancedUnlocked).map((entry) => entry.step),
     [STEPS, advancedUnlocked],
   );
 
-  // Step 1: Identity & Origin
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [selectedOrigin, setSelectedOrigin] = useState(null);
@@ -482,57 +242,163 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   const [selectedStarterTreeIds, setSelectedStarterTreeIds] = useState([]);
   const [selectedAlignmentId, setSelectedAlignmentId] = useState(null);
   const [selectedSkillLoadoutId, setSelectedSkillLoadoutId] = useState(null);
-
-  const creationPerkLimits = getCharacterCreationPerkLimits();
-  const availableCreationPerks = listCharacterCreationPerks();
-  const availableCreationAlignments = listCharacterCreationAlignments();
-  const availableCreationStarterTrees = listCharacterCreationStarterTrees();
-  const availableCreationSkillLoadouts = listCharacterCreationSkillLoadouts();
-
-  // Skill Pools - Available skills to choose from
-  const [availableActiveSkills, setAvailableActiveSkills] = useState([]);
-  const [availablePassiveSkills, setAvailablePassiveSkills] = useState([]);
-
-  // Selected Skills - Persistent across rerolls
-  const [selectedActiveSkills, setSelectedActiveSkills] = useState([]);
-  const [selectedPassiveSkills, setSelectedPassiveSkills] = useState([]);
-
-  // Step 2: Profession
   const [selectedProfession, setSelectedProfession] = useState(null);
 
-  // Step 3: Attribute Allocation
+  const creationPerkLimits = getCharacterCreationPerkLimits();
+  const availableCreationAlignments = listCharacterCreationAlignments();
+  const [selectedActiveSkills, setSelectedActiveSkills] = useState([]);
+  const [selectedPassiveSkills, setSelectedPassiveSkills] = useState([]);
   const [attributePoints, setAttributePoints] = useState(() =>
     createAttributeBaseline(BASE_ATTRIBUTE_VALUE),
   );
 
-  // Initial content seeded via lazy state initializers to avoid cascading renders
-
-  const buildSkillPools = useCallback((cls, race) => {
-    return buildCharacterCreationSkillPools(cls, race);
-  }, []);
-
-  // Generate skill pools for the selected class + race
-  const generateSkillPools = useCallback(
-    (cls, race) => {
-      const pools = buildSkillPools(cls, race);
-      setAvailableActiveSkills(pools.active);
-      setAvailablePassiveSkills(pools.passive);
-      setSelectedActiveSkills((prev) =>
-        prev.filter((skill) => pools.active.some((s) => s.id === skill.id)),
-      );
-      setSelectedPassiveSkills((prev) =>
-        prev.filter((skill) => pools.passive.some((s) => s.id === skill.id)),
-      );
-    },
-    [buildSkillPools],
+  const systemOptionState = useMemo(
+    () =>
+      resolveCharacterCreationOptionsBySystem({
+        systemId: selectedArchetypeSystem?.id || null,
+        origins: AVAILABLE_CREATION_ORIGINS,
+        races: AVAILABLE_CREATION_RACES,
+        classes: AVAILABLE_CREATION_CLASSES,
+        professions: AVAILABLE_CREATION_PROFESSIONS,
+        perks: listCharacterCreationPerks(),
+        starterTrees: listCharacterCreationStarterTrees(),
+      }),
+    [selectedArchetypeSystem?.id],
   );
+
+  const availableOrigins = useMemo(
+    () => cloneList(systemOptionState.origins?.options || []),
+    [systemOptionState.origins?.options],
+  );
+  const availableRaces = useMemo(
+    () => cloneList(systemOptionState.races?.options || []),
+    [systemOptionState.races?.options],
+  );
+  const availableClasses = useMemo(
+    () => cloneList(systemOptionState.classes?.options || []),
+    [systemOptionState.classes?.options],
+  );
+  const availableSecondaryClasses = useMemo(
+    () =>
+      cloneList(systemOptionState.secondaryClasses?.options || []).filter(
+        (entry) => entry?.id !== selectedClass?.id,
+      ),
+    [selectedClass?.id, systemOptionState.secondaryClasses?.options],
+  );
+  const availableProfessions = useMemo(
+    () => cloneList(systemOptionState.professions?.options || []),
+    [systemOptionState.professions?.options],
+  );
+  const availableCreationPerks = useMemo(
+    () => cloneList(systemOptionState.perks?.options || []),
+    [systemOptionState.perks?.options],
+  );
+  const availableCreationStarterTrees = useMemo(
+    () => cloneList(systemOptionState.starterTrees?.options || []),
+    [systemOptionState.starterTrees?.options],
+  );
+
+  const recommendedOriginIds = systemOptionState.origins?.recommendedIds || [];
+  const recommendedRaceIds = systemOptionState.races?.recommendedIds || [];
+  const recommendedClassIds = systemOptionState.classes?.recommendedIds || [];
+  const recommendedProfessionIds =
+    systemOptionState.professions?.recommendedIds || [];
+  const systemAttributeBias = systemOptionState.attributeBias || {
+    primary: [],
+    secondary: [],
+  };
+
+  const skillPools = useMemo(
+    () =>
+      buildCharacterCreationSkillPools(selectedClass, selectedRace, {
+        professionId: selectedProfession?.id || null,
+        systemId: selectedArchetypeSystem?.id || null,
+      }),
+    [
+      selectedArchetypeSystem?.id,
+      selectedClass,
+      selectedProfession?.id,
+      selectedRace,
+    ],
+  );
+
+  const availableActiveSkills = useMemo(
+    () => skillPools.active || [],
+    [skillPools.active],
+  );
+  const availablePassiveSkills = useMemo(
+    () => skillPools.passive || [],
+    [skillPools.passive],
+  );
+  const grantedActiveSkills = useMemo(
+    () => skillPools.grantedActive || [],
+    [skillPools.grantedActive],
+  );
+  const grantedPassiveSkills = useMemo(
+    () => skillPools.grantedPassive || [],
+    [skillPools.grantedPassive],
+  );
+  const blockedSkillIds = useMemo(
+    () => skillPools.blockedSkillIds || [],
+    [skillPools.blockedSkillIds],
+  );
+  const slotBonuses = skillPools.slotBonuses || { active: 0, passive: 0 };
+  const effectiveMaxActiveSkills = MAX_ACTIVE_SKILLS + (slotBonuses.active || 0);
+  const effectiveMaxPassiveSkills =
+    MAX_PASSIVE_SKILLS + (slotBonuses.passive || 0);
+
+  const availableCreationSkillLoadouts = useMemo(
+    () =>
+      listCharacterCreationSkillLoadouts({
+        cls: selectedClass,
+        race: selectedRace,
+        professionId: selectedProfession?.id || null,
+        systemId: selectedArchetypeSystem?.id || null,
+        pools: skillPools,
+      }),
+    [
+      selectedArchetypeSystem?.id,
+      selectedClass,
+      selectedProfession?.id,
+      selectedRace,
+      skillPools,
+    ],
+  );
+
+  const resolveSelectedSkillValidation = useCallback(() => {
+    return validateCharacterCreationSkillSelections(
+      {
+        cls: selectedClass,
+        race: selectedRace,
+        professionId: selectedProfession?.id || null,
+        systemId: selectedArchetypeSystem?.id || null,
+        activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
+        passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
+        skillLoadoutId: selectedSkillLoadoutId,
+      },
+      {
+        requiredActiveSkillCount: effectiveMaxActiveSkills,
+        requiredPassiveSkillCount: effectiveMaxPassiveSkills,
+      },
+    );
+  }, [
+    effectiveMaxActiveSkills,
+    effectiveMaxPassiveSkills,
+    selectedArchetypeSystem?.id,
+    selectedClass,
+    selectedRace,
+    selectedProfession?.id,
+    selectedActiveSkills,
+    selectedPassiveSkills,
+    selectedSkillLoadoutId,
+  ]);
 
   const handleReroll = useCallback(() => {
     if (rerollsRemaining <= 0) return;
 
     setRerollsRemaining((prev) => Math.max(0, prev - 1));
 
-    setCurrentStep(1);
+    setCurrentStep(CREATION_STEPS.NAME);
     setShowBootSequence(false);
     setName("");
     setGender("");
@@ -548,8 +414,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setSelectedSkillLoadoutId(null);
     setSelectedActiveSkills([]);
     setSelectedPassiveSkills([]);
-    setAvailableActiveSkills([]);
-    setAvailablePassiveSkills([]);
     setAttributePoints(createAttributeBaseline(BASE_ATTRIBUTE_VALUE));
   }, [rerollsRemaining]);
 
@@ -565,42 +429,32 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   const remainingPoints =
     INITIAL_FREE_POINTS - (totalAllocated - BASE_ATTRIBUTE_TOTAL);
 
-  // Handle race selection
-  const handleRaceSelect = useCallback(
-    (race) => {
-      setSelectedRace(race);
-      if (selectedClass) {
-        generateSkillPools(selectedClass, race);
-      }
-    },
-    [generateSkillPools, selectedClass],
-  );
+  const handleRaceSelect = useCallback((race) => {
+    setSelectedRace(race || null);
+    setSelectedSkillLoadoutId(null);
+  }, []);
 
-  // Handle class selection
-  const handleClassSelect = useCallback(
-    (cls) => {
-      setSelectedClass(cls);
-      setSelectedSecondaryClass((prev) =>
-        prev?.id && prev.id === cls?.id ? null : prev,
-      );
-      setSelectedActiveSkills([]);
-      setSelectedPassiveSkills([]);
-      generateSkillPools(cls, selectedRace);
-    },
-    [generateSkillPools, selectedRace],
-  );
+  const handleClassSelect = useCallback((cls) => {
+    setSelectedClass(cls || null);
+    setSelectedSecondaryClass((prev) =>
+      prev?.id && prev.id === cls?.id ? null : prev,
+    );
+    setSelectedSkillLoadoutId(null);
+  }, []);
 
-  // Handle profession selection
-  const handleProfessionSelect = useCallback((profId) => {
-    setSelectedProfession(PROFESSIONS[profId]);
+  const handleProfessionSelect = useCallback((professionRef) => {
+    const profession =
+      typeof professionRef === "string"
+        ? getProfessionSummaryById(professionRef)
+        : professionRef;
+    setSelectedProfession(profession || null);
+    setSelectedSkillLoadoutId(null);
   }, []);
 
   const handleArchetypeSystemSelect = useCallback((systemId) => {
-    const system =
-      ARCHETYPE_SYSTEMS.find((entry) => entry.id === systemId) || null;
-    setSelectedArchetypeSystem((prev) =>
-      prev?.id === system?.id ? null : system,
-    );
+    const system = getCharacterCreationArchetypeSystemById(systemId);
+    setSelectedArchetypeSystem(system || null);
+    setSelectedSkillLoadoutId(null);
   }, []);
 
   const handleSecondaryClassSelect = useCallback((classRef) => {
@@ -632,38 +486,66 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
 
   const handleSkillLoadoutSelect = useCallback((loadoutId) => {
     const normalizedId = typeof loadoutId === "string" ? loadoutId.trim() : "";
-    setSelectedSkillLoadoutId(normalizedId || null);
-  }, []);
+    if (!normalizedId) {
+      setSelectedSkillLoadoutId(null);
+      return;
+    }
+
+    const resolvedLoadout = resolveCharacterCreationSkillLoadout(normalizedId, {
+      cls: selectedClass,
+      race: selectedRace,
+      professionId: selectedProfession?.id || null,
+      systemId: selectedArchetypeSystem?.id || null,
+      pools: skillPools,
+    });
+
+    if (!resolvedLoadout) {
+      setSelectedSkillLoadoutId(null);
+      return;
+    }
+
+    setSelectedSkillLoadoutId(resolvedLoadout.id);
+    setSelectedActiveSkills(resolvedLoadout.activeSkills);
+    setSelectedPassiveSkills(resolvedLoadout.passiveSkills);
+  }, [
+    selectedArchetypeSystem?.id,
+    selectedClass,
+    selectedProfession?.id,
+    selectedRace,
+    skillPools,
+  ]);
 
   // Handle active skill selection (toggle, max 3)
   const handleActiveSkillSelect = useCallback((skill) => {
     if (!skill) return;
+    setSelectedSkillLoadoutId(null);
 
     setSelectedActiveSkills((prev) => {
       const exists = prev.find((s) => s.id === skill.id);
       if (exists) {
         return prev.filter((s) => s.id !== skill.id);
       } else {
-        if (prev.length >= MAX_ACTIVE_SKILLS) return prev;
+        if (prev.length >= effectiveMaxActiveSkills) return prev;
         return [...prev, skill];
       }
     });
-  }, []);
+  }, [effectiveMaxActiveSkills]);
 
   // Handle passive skill selection (toggle, max 6)
   const handlePassiveSkillToggle = useCallback((skill) => {
     if (!skill) return;
+    setSelectedSkillLoadoutId(null);
 
     setSelectedPassiveSkills((prev) => {
       const exists = prev.find((s) => s.id === skill.id);
       if (exists) {
         return prev.filter((s) => s.id !== skill.id);
       } else {
-        if (prev.length >= MAX_PASSIVE_SKILLS) return prev;
+        if (prev.length >= effectiveMaxPassiveSkills) return prev;
         return [...prev, skill];
       }
     });
-  }, []);
+  }, [effectiveMaxPassiveSkills]);
 
   // Check if skill is selected
   const isSkillSelected = useCallback(
@@ -684,6 +566,128 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   const getAvailablePassiveSkills = useCallback(() => {
     return availablePassiveSkills;
   }, [availablePassiveSkills]);
+
+  useEffect(() => {
+    if (selectedOrigin && !containsById(availableOrigins, selectedOrigin.id)) {
+      setSelectedOrigin(null);
+    }
+  }, [availableOrigins, selectedOrigin]);
+
+  useEffect(() => {
+    if (selectedRace && !containsById(availableRaces, selectedRace.id)) {
+      setSelectedRace(null);
+    }
+  }, [availableRaces, selectedRace]);
+
+  useEffect(() => {
+    if (selectedClass && !containsById(availableClasses, selectedClass.id)) {
+      setSelectedClass(null);
+    }
+  }, [availableClasses, selectedClass]);
+
+  useEffect(() => {
+    if (!advancedUnlocked) {
+      if (selectedSecondaryClass) setSelectedSecondaryClass(null);
+      return;
+    }
+    if (
+      selectedSecondaryClass &&
+      !containsById(availableSecondaryClasses, selectedSecondaryClass.id)
+    ) {
+      setSelectedSecondaryClass(null);
+    }
+  }, [
+    advancedUnlocked,
+    availableSecondaryClasses,
+    selectedSecondaryClass,
+  ]);
+
+  useEffect(() => {
+    if (
+      selectedProfession &&
+      !containsById(availableProfessions, selectedProfession.id)
+    ) {
+      setSelectedProfession(null);
+    }
+  }, [availableProfessions, selectedProfession]);
+
+  useEffect(() => {
+    const allowedIds = new Set(
+      availableCreationPerks.map((entry) => entry?.id).filter(Boolean),
+    );
+    setSelectedPerkIds((prev) => {
+      const next = prev.filter((entry) => allowedIds.has(entry));
+      return next.length === prev.length ? prev : next;
+    });
+  }, [availableCreationPerks]);
+
+  useEffect(() => {
+    if (!advancedUnlocked) {
+      if (selectedStarterTreeIds.length > 0) setSelectedStarterTreeIds([]);
+      return;
+    }
+    const allowedIds = new Set(
+      availableCreationStarterTrees.map((entry) => entry?.id).filter(Boolean),
+    );
+    setSelectedStarterTreeIds((prev) => {
+      const next = prev.filter((entry) => allowedIds.has(entry)).slice(0, 1);
+      return next.length === prev.length && next[0] === prev[0] ? prev : next;
+    });
+  }, [
+    advancedUnlocked,
+    availableCreationStarterTrees,
+    selectedStarterTreeIds.length,
+  ]);
+
+  useEffect(() => {
+    if (
+      selectedAlignmentId &&
+      !availableCreationAlignments.some((entry) => entry?.id === selectedAlignmentId)
+    ) {
+      setSelectedAlignmentId(null);
+    }
+  }, [availableCreationAlignments, selectedAlignmentId]);
+
+  useEffect(() => {
+    if (
+      selectedSkillLoadoutId &&
+      !availableCreationSkillLoadouts.some(
+        (entry) => entry?.id === selectedSkillLoadoutId,
+      )
+    ) {
+      setSelectedSkillLoadoutId(null);
+    }
+  }, [availableCreationSkillLoadouts, selectedSkillLoadoutId]);
+
+  useEffect(() => {
+    const activeIds = new Set(availableActiveSkills.map((entry) => entry?.id).filter(Boolean));
+    setSelectedActiveSkills((prev) => {
+      const next = uniqueById(prev.filter((entry) => activeIds.has(entry?.id))).slice(
+        0,
+        effectiveMaxActiveSkills,
+      );
+      return next.length === prev.length &&
+        next.every((entry, index) => entry?.id === prev[index]?.id)
+        ? prev
+        : next;
+    });
+  }, [availableActiveSkills, effectiveMaxActiveSkills]);
+
+  useEffect(() => {
+    const passiveIds = new Set(
+      availablePassiveSkills.map((entry) => entry?.id).filter(Boolean),
+    );
+    setSelectedPassiveSkills((prev) => {
+      const next = uniqueById(prev.filter((entry) => passiveIds.has(entry?.id))).slice(
+        0,
+        effectiveMaxPassiveSkills,
+      );
+      return next.length === prev.length &&
+        next.every((entry, index) => entry?.id === prev[index]?.id)
+        ? prev
+        : next;
+    });
+  }, [availablePassiveSkills, effectiveMaxPassiveSkills]);
 
   // Handle attribute allocation
   const allocateAttributePoint = useCallback((attribute) => {
@@ -711,11 +715,15 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     });
   }, []);
 
-  const validateIdentity = useCallback(() => {
+  const validateNameStep = useCallback(() => {
     if (!name.trim()) return { valid: false, error: "Name is required" };
+    return { valid: true };
+  }, [name]);
+
+  const validateIdentity = useCallback(() => {
     if (!selectedOrigin) return { valid: false, error: "Origin is required" };
     return { valid: true };
-  }, [name, selectedOrigin]);
+  }, [selectedOrigin]);
 
   const validateRace = useCallback(() => {
     if (!selectedRace) return { valid: false, error: "Race is required" };
@@ -754,20 +762,16 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   }, [remainingPoints]);
 
   const validateSkills = useCallback(() => {
-    if (selectedActiveSkills.length !== MAX_ACTIVE_SKILLS) {
+    const selectionValidation = resolveSelectedSkillValidation();
+    if (!selectionValidation.valid) {
       return {
         valid: false,
-        error: `Must select exactly ${MAX_ACTIVE_SKILLS} active skills`,
+        error: selectionValidation.errors[0],
+        errors: selectionValidation.errors,
       };
     }
-    if (selectedPassiveSkills.length !== MAX_PASSIVE_SKILLS) {
-      return {
-        valid: false,
-        error: `Must select exactly ${MAX_PASSIVE_SKILLS} passive skills`,
-      };
-    }
-    return { valid: true };
-  }, [selectedActiveSkills, selectedPassiveSkills]);
+    return { valid: true, selection: selectionValidation };
+  }, [resolveSelectedSkillValidation]);
 
   const validatePerks = useCallback(() => {
     const min = creationPerkLimits.minPicks || 0;
@@ -795,12 +799,13 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
 
   const validateReview = useCallback(() => {
     const checks = [
+      validateNameStep,
+      validateArchetype,
       validateIdentity,
       validateRace,
       validateClass,
       ...(advancedUnlocked ? [validateMulticlass] : []),
       validateProfession,
-      validateArchetype,
       validateAttributes,
       validateSkills,
       validatePerks,
@@ -836,8 +841,8 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         alignmentId: selectedAlignmentId,
       },
       {
-        requiredActiveSkillCount: MAX_ACTIVE_SKILLS,
-        requiredPassiveSkillCount: MAX_PASSIVE_SKILLS,
+        requiredActiveSkillCount: effectiveMaxActiveSkills,
+        requiredPassiveSkillCount: effectiveMaxPassiveSkills,
         minPerks: creationPerkLimits.minPicks,
         maxPerks: creationPerkLimits.maxPicks,
         requiresStarterTree:
@@ -856,6 +861,8 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   }, [
     advancedUnlocked,
     attributePoints,
+    effectiveMaxActiveSkills,
+    effectiveMaxPassiveSkills,
     gender,
     name,
     selectedActiveSkills,
@@ -878,6 +885,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     selectedSkillLoadoutId,
     selectedStarterTreeIds,
     validateStarterTree,
+    validateNameStep,
     validateProfession,
     validateRace,
     validateSkills,
@@ -888,6 +896,10 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
 
   const validateCurrentStep = useCallback(() => {
     switch (currentStep) {
+      case STEPS.NAME:
+        return validateNameStep();
+      case STEPS.ARCHETYPE:
+        return validateArchetype();
       case STEPS.IDENTITY:
         return validateIdentity();
       case STEPS.RACE:
@@ -898,8 +910,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         return validateMulticlass();
       case STEPS.PROFESSION:
         return validateProfession();
-      case STEPS.ARCHETYPE:
-        return validateArchetype();
       case STEPS.ATTRIBUTES:
         return validateAttributes();
       case STEPS.SKILLS:
@@ -915,6 +925,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         return validateReview();
     }
   }, [
+    STEPS.NAME,
     STEPS.ARCHETYPE,
     STEPS.ATTRIBUTES,
     STEPS.CLASS,
@@ -928,6 +939,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     STEPS.SKILLS,
     STEPS.STARTER_TREE,
     currentStep,
+    validateNameStep,
     validateAlignment,
     validateArchetype,
     validateAttributes,
@@ -947,24 +959,32 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     if (!validation.valid) return validation;
     setCurrentStep((prev) => {
       const currentIndex = stepSequence.indexOf(prev);
-      if (currentIndex < 0) return stepSequence[0] || STEPS.IDENTITY;
+      if (currentIndex < 0) return stepSequence[0] || STEPS.NAME;
       return stepSequence[Math.min(stepSequence.length - 1, currentIndex + 1)];
     });
     return { valid: true };
-  }, [STEPS.IDENTITY, stepSequence, validateCurrentStep]);
+  }, [STEPS.NAME, stepSequence, validateCurrentStep]);
 
   const previousStep = useCallback(() => {
     setCurrentStep((prev) => {
       const currentIndex = stepSequence.indexOf(prev);
-      if (currentIndex <= 0) return stepSequence[0] || STEPS.IDENTITY;
+      if (currentIndex <= 0) return stepSequence[0] || STEPS.NAME;
       return stepSequence[currentIndex - 1];
     });
-  }, [STEPS.IDENTITY, stepSequence]);
+  }, [STEPS.NAME, stepSequence]);
 
   // Finalize character
   const finalizeCharacter = useCallback(() => {
     const validation = validateReview();
     if (!validation.valid) return validation;
+    const selectionValidation = resolveSelectedSkillValidation();
+    if (!selectionValidation.valid) {
+      return {
+        valid: false,
+        error: selectionValidation.errors[0],
+        errors: selectionValidation.errors,
+      };
+    }
 
     const derivedState = buildCharacterCreationDerivedState({
       attributePoints,
@@ -977,19 +997,19 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     const professionSkills = [];
     if (
       selectedProfession &&
-      selectedProfession.tierUnlocks &&
-      selectedProfession.tierUnlocks[1]
+      (Array.isArray(selectedProfession.tier1Skills) ||
+        selectedProfession.tierUnlocks?.[1])
     ) {
-      const tier1Skills = selectedProfession.tierUnlocks[1].skills || [];
+      const tier1Skills = Array.isArray(selectedProfession.tier1Skills)
+        ? selectedProfession.tier1Skills
+        : selectedProfession.tierUnlocks?.[1]?.skills || [];
       professionSkills.push(
         ...tier1Skills.map((skillId) => {
-          const existingSkill = getSkillById(skillId);
+          const existingSkill = getCharacterCreationSkillSummaryById(skillId);
           if (existingSkill) return existingSkill;
           return {
             id: skillId,
-            name: skillId
-              .replace(/_/g, " ")
-              .replace(/\b\w/g, (l) => l.toUpperCase()),
+            name: humanizeSkillId(skillId),
             type: "profession",
             description: `${selectedProfession.name} skill`,
             profession: selectedProfession.id,
@@ -998,12 +1018,17 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       );
     }
 
-    // Combine all abilities
-    const allAbilities = [
-      ...selectedActiveSkills,
-      ...selectedPassiveSkills,
+    const systemGrantedSkills = {
+      active: cloneList(skillPools.grantedActive || []),
+      passive: cloneList(skillPools.grantedPassive || []),
+    };
+    const allAbilities = uniqueById([
+      ...selectionValidation.activeSkills,
+      ...selectionValidation.passiveSkills,
+      ...systemGrantedSkills.active,
+      ...systemGrantedSkills.passive,
       ...professionSkills,
-    ];
+    ]);
 
     const professionId = selectedProfession?.id || null;
     const professionName = selectedProfession?.name || null;
@@ -1018,6 +1043,13 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     const talentLabel = assignedTalentNames.length
       ? assignedTalentNames.join(", ")
       : "None";
+    const latticeProfile = buildCharacterCreationLatticeProfile({
+      activeSkills: selectionValidation.activeSkills,
+      passiveSkills: selectionValidation.passiveSkills,
+      professionId,
+      loadout: selectionValidation.loadout,
+      talentIds: assignedTalentIds,
+    });
     const blueprint = createCharacterCreationBlueprint({
       name: name.trim(),
       gender,
@@ -1030,8 +1062,8 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       archetypeSystemId: selectedArchetypeSystem?.id,
       attributes: derivedState.attributes,
       skillLoadoutId: selectedSkillLoadoutId,
-      activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
-      passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
+      activeSkillIds: selectionValidation.activeSkillIds,
+      passiveSkillIds: selectionValidation.passiveSkillIds,
       perkIds: selectedPerkIds,
       starterTreeIds: advancedUnlocked ? selectedStarterTreeIds : [],
       alignmentId: selectedAlignmentId,
@@ -1051,19 +1083,17 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       starterTrees: advancedUnlocked ? selectedStarterTreeIds : [],
       skillLoadoutId: selectedSkillLoadoutId,
       characterCreationBlueprint: blueprint,
+      latticeProfile,
+      archetypeSystemId: selectedArchetypeSystem?.id || null,
       archetypeSystem: selectedArchetypeSystem
-        ? {
-            id: selectedArchetypeSystem.id,
-            name: selectedArchetypeSystem.name,
-            category: selectedArchetypeSystem.category,
-            summary: selectedArchetypeSystem.summary,
-            description: selectedArchetypeSystem.description,
-          }
+        ? cloneValue(selectedArchetypeSystem)
         : null,
       talent: talentLabel,
       talents: assignedTalentIds,
-      activeSkills: selectedActiveSkills,
-      passiveSkills: selectedPassiveSkills,
+      talentMigrationLanes: latticeProfile.talentMigrationLanes,
+      activeSkills: selectionValidation.activeSkills,
+      passiveSkills: selectionValidation.passiveSkills,
+      systemGrantedSkills,
       profession: professionId
         ? { id: professionId, name: professionName }
         : null,
@@ -1100,7 +1130,14 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
 
     const creationOutcome = createCharacterCreationOutcome({
       blueprint,
-      derivedState,
+      derivedState: {
+        ...derivedState,
+        latticeProfile,
+        activeSkills: selectionValidation.activeSkills,
+        passiveSkills: selectionValidation.passiveSkills,
+        systemGrantedSkills,
+        blockedSkillIds,
+      },
       seedData: {
         startingGold,
         startingSoulpoints,
@@ -1123,9 +1160,11 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     selectedStarterTreeIds,
     selectedAlignmentId,
     selectedArchetypeSystem,
-    selectedActiveSkills,
-    selectedPassiveSkills,
     selectedProfession,
+    resolveSelectedSkillValidation,
+    skillPools.grantedActive,
+    skillPools.grantedPassive,
+    blockedSkillIds,
   ]);
 
   // Skip boot sequence
@@ -1149,15 +1188,32 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     selectedActiveSkills,
     selectedPassiveSkills,
     selectedProfession,
+    selectedPerkIds,
+    selectedStarterTreeIds,
+    selectedAlignmentId,
+    selectedSkillLoadoutId,
     attributePoints,
     remainingPoints,
+    availableOrigins,
+    availableRaces,
+    availableClasses,
+    availableSecondaryClasses,
+    availableProfessions,
     availableActiveSkills,
     availablePassiveSkills,
-    availableArchetypeSystems: ARCHETYPE_SYSTEMS,
+    availableArchetypeSystems: AVAILABLE_ARCHETYPE_SYSTEMS,
     availableCreationPerks,
     availableCreationStarterTrees,
     availableCreationAlignments,
     availableCreationSkillLoadouts,
+    recommendedOriginIds,
+    recommendedRaceIds,
+    recommendedClassIds,
+    recommendedProfessionIds,
+    grantedActiveSkills,
+    grantedPassiveSkills,
+    blockedSkillIds,
+    systemAttributeBias,
     creationPerkLimits,
     rerollsRemaining,
 
@@ -1196,7 +1252,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
 
     // Constants
     stepSequence,
-    MAX_ACTIVE_SKILLS,
-    MAX_PASSIVE_SKILLS,
+    MAX_ACTIVE_SKILLS: effectiveMaxActiveSkills,
+    MAX_PASSIVE_SKILLS: effectiveMaxPassiveSkills,
   };
 }

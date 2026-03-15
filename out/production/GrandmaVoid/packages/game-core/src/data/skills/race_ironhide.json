@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ironhide_special",
+    "name": "Iron Carapace",
+    "description": "Brace for impact with hardened plating.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 65
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

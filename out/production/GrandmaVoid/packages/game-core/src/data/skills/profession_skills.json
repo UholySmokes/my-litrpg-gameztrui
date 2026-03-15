@@ -1,0 +1,1262 @@
+[
+  {
+    "id": "advanced_distillation",
+    "name": "Advanced Distillation",
+    "type": "passive",
+    "class": "universal",
+    "description": "Complex techniques for Distillation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "distillation"
+    ]
+  },
+  {
+    "id": "advanced_dyeing",
+    "name": "Advanced Dyeing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Complex techniques for Dyeing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "dyeing"
+    ]
+  },
+  {
+    "id": "advanced_mechanics",
+    "name": "Advanced Mechanics",
+    "type": "passive",
+    "class": "universal",
+    "description": "Complex techniques for Mechanics.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "mechanics"
+    ]
+  },
+  {
+    "id": "advanced_medicine",
+    "name": "Advanced Medicine",
+    "type": "passive",
+    "class": "universal",
+    "description": "Complex techniques for Medicine.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "medicine"
+    ]
+  },
+  {
+    "id": "arcane_engineering",
+    "name": "Arcane Engineering",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Arcane Engineering.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "engineering"
+    ]
+  },
+  {
+    "id": "arcane_writing",
+    "name": "Arcane Writing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Arcane Writing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "writing"
+    ]
+  },
+  {
+    "id": "artifact_repair",
+    "name": "Artifact Repair",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Artifact Repair.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "repair"
+    ]
+  },
+  {
+    "id": "basic_brewing",
+    "name": "Basic Brewing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Brewing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "brewing"
+    ]
+  },
+  {
+    "id": "basic_brewing_drinks",
+    "name": "Basic Brewing Drinks",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Brewing Drinks.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "brewing"
+    ]
+  },
+  {
+    "id": "basic_butchery",
+    "name": "Basic Butchery",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Butchery.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "butchery"
+    ]
+  },
+  {
+    "id": "basic_construction",
+    "name": "Basic Construction",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Construction.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "construction"
+    ]
+  },
+  {
+    "id": "basic_cooking",
+    "name": "Basic Cooking",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Cooking.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "cooking"
+    ]
+  },
+  {
+    "id": "basic_cutting",
+    "name": "Basic Cutting",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Cutting.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "cutting"
+    ]
+  },
+  {
+    "id": "basic_dyeing",
+    "name": "Basic Dyeing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Dyeing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "dyeing"
+    ]
+  },
+  {
+    "id": "basic_enchanting",
+    "name": "Basic Enchanting",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Enchanting.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "enchanting"
+    ]
+  },
+  {
+    "id": "basic_engineering",
+    "name": "Basic Engineering",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Engineering.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "engineering"
+    ]
+  },
+  {
+    "id": "basic_farming",
+    "name": "Basic Farming",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Farming.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "farming"
+    ]
+  },
+  {
+    "id": "basic_first_aid",
+    "name": "Basic First Aid",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for First Aid.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "first"
+    ]
+  },
+  {
+    "id": "basic_fishing",
+    "name": "Basic Fishing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Fishing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "fishing"
+    ]
+  },
+  {
+    "id": "basic_herbalism",
+    "name": "Basic Herbalism",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Herbalism.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "herbalism"
+    ]
+  },
+  {
+    "id": "basic_inscription",
+    "name": "Basic Inscription",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Inscription.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "inscription"
+    ]
+  },
+  {
+    "id": "basic_logging",
+    "name": "Basic Logging",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Logging.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "logging"
+    ]
+  },
+  {
+    "id": "basic_maintenance",
+    "name": "Basic Maintenance",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Maintenance.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "maintenance"
+    ]
+  },
+  {
+    "id": "basic_mining",
+    "name": "Basic Mining",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Mining.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "mining"
+    ]
+  },
+  {
+    "id": "basic_sewing",
+    "name": "Basic Sewing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Sewing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "sewing"
+    ]
+  },
+  {
+    "id": "basic_skinning",
+    "name": "Basic Skinning",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Skinning.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "skinning"
+    ]
+  },
+  {
+    "id": "basic_smithing",
+    "name": "Basic Smithing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Smithing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "smithing"
+    ]
+  },
+  {
+    "id": "basic_teleportation",
+    "name": "Basic Teleportation",
+    "type": "passive",
+    "class": "universal",
+    "description": "Fundamental techniques for Teleportation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "teleportation"
+    ]
+  },
+  {
+    "id": "clean_carving",
+    "name": "Clean Carving",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Clean Carving.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "carving"
+    ]
+  },
+  {
+    "id": "clean_cuts",
+    "name": "Clean Cuts",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Clean Cuts.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "cuts"
+    ]
+  },
+  {
+    "id": "clockwork_mastery",
+    "name": "Clockwork Mastery",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Clockwork Mastery.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "mastery"
+    ]
+  },
+  {
+    "id": "crop_rotation",
+    "name": "Crop Rotation",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Crop Rotation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "rotation"
+    ]
+  },
+  {
+    "id": "deep_earth_mining",
+    "name": "Deep Earth Mining",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Deep Earth Mining.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "earth"
+    ]
+  },
+  {
+    "id": "deep_water_fishing",
+    "name": "Deep Water Fishing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Deep Water Fishing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "water"
+    ]
+  },
+  {
+    "id": "dimensional_anchor",
+    "name": "Dimensional Anchor",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Dimensional Anchor.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "anchor"
+    ]
+  },
+  {
+    "id": "durability_boost",
+    "name": "Durability Boost",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Durability Boost.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "boost"
+    ]
+  },
+  {
+    "id": "efficient_chopping",
+    "name": "Efficient Chopping",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Efficient Chopping.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "chopping"
+    ]
+  },
+  {
+    "id": "elemental_infusion",
+    "name": "Elemental Infusion",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Elemental Infusion.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "infusion"
+    ]
+  },
+  {
+    "id": "enchant_preservation",
+    "name": "Enchant Preservation",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Enchant Preservation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "preservation"
+    ]
+  },
+  {
+    "id": "enchanted_forging",
+    "name": "Enchanted Forging",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Enchanted Forging.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "forging"
+    ]
+  },
+  {
+    "id": "essence_cultivation",
+    "name": "Essence Cultivation",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Essence Cultivation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "cultivation"
+    ]
+  },
+  {
+    "id": "essence_extraction",
+    "name": "Essence Extraction",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Essence Extraction.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "extraction"
+    ]
+  },
+  {
+    "id": "essence_gathering",
+    "name": "Essence Gathering",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Essence Gathering.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "gathering"
+    ]
+  },
+  {
+    "id": "essence_socketing",
+    "name": "Essence Socketing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Essence Socketing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "socketing"
+    ]
+  },
+  {
+    "id": "ethereal_weaving",
+    "name": "Ethereal Weaving",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Ethereal Weaving.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "weaving"
+    ]
+  },
+  {
+    "id": "exotic_processing",
+    "name": "Exotic Processing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Exotic Processing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "processing"
+    ]
+  },
+  {
+    "id": "exotic_skinning",
+    "name": "Exotic Skinning",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Exotic Skinning.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "skinning"
+    ]
+  },
+  {
+    "id": "fermentation",
+    "name": "Fermentation",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Fermentation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "general"
+    ]
+  },
+  {
+    "id": "fine_stitching",
+    "name": "Fine Stitching",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Fine Stitching.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "stitching"
+    ]
+  },
+  {
+    "id": "fortification",
+    "name": "Fortification",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Fortification.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "general"
+    ]
+  },
+  {
+    "id": "gem_polishing",
+    "name": "Gem Polishing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Gem Polishing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "polishing"
+    ]
+  },
+  {
+    "id": "grand_architecture",
+    "name": "Grand Architecture",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Grand Architecture.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "architecture"
+    ]
+  },
+  {
+    "id": "legendary_butchery",
+    "name": "Legendary Butchery",
+    "type": "passive",
+    "class": "universal",
+    "description": "Legendary mastery of Butchery.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "butchery"
+    ]
+  },
+  {
+    "id": "legendary_customization",
+    "name": "Legendary Customization",
+    "type": "passive",
+    "class": "universal",
+    "description": "Legendary mastery of Customization.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "customization"
+    ]
+  },
+  {
+    "id": "legendary_farming",
+    "name": "Legendary Farming",
+    "type": "passive",
+    "class": "universal",
+    "description": "Legendary mastery of Farming.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "farming"
+    ]
+  },
+  {
+    "id": "legendary_harvesting",
+    "name": "Legendary Harvesting",
+    "type": "passive",
+    "class": "universal",
+    "description": "Legendary mastery of Harvesting.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "harvesting"
+    ]
+  },
+  {
+    "id": "legendary_logging",
+    "name": "Legendary Logging",
+    "type": "passive",
+    "class": "universal",
+    "description": "Legendary mastery of Logging.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "logging"
+    ]
+  },
+  {
+    "id": "legendary_smithing",
+    "name": "Legendary Smithing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Legendary mastery of Smithing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "smithing"
+    ]
+  },
+  {
+    "id": "life_sense",
+    "name": "Life Sense",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Life Sense.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "sense"
+    ]
+  },
+  {
+    "id": "lure_crafting",
+    "name": "Lure Crafting",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Lure Crafting.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "crafting"
+    ]
+  },
+  {
+    "id": "magical_brewing",
+    "name": "Magical Brewing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Magical Brewing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "brewing"
+    ]
+  },
+  {
+    "id": "magical_cuisine",
+    "name": "Magical Cuisine",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Magical Cuisine.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "cuisine"
+    ]
+  },
+  {
+    "id": "magical_glamour",
+    "name": "Magical Glamour",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Magical Glamour.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "glamour"
+    ]
+  },
+  {
+    "id": "magical_threading",
+    "name": "Magical Threading",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Magical Threading.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "threading"
+    ]
+  },
+  {
+    "id": "magical_wood_sense",
+    "name": "Magical Wood Sense",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Magical Wood Sense.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "wood"
+    ]
+  },
+  {
+    "id": "masonry",
+    "name": "Masonry",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Masonry.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "general"
+    ]
+  },
+  {
+    "id": "master_angling",
+    "name": "Master Angling",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Master Angling.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "angling"
+    ]
+  },
+  {
+    "id": "master_brewing",
+    "name": "Master Brewing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Master Brewing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "brewing"
+    ]
+  },
+  {
+    "id": "master_chef",
+    "name": "Master Chef",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Master Chef.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "chef"
+    ]
+  },
+  {
+    "id": "master_scribing",
+    "name": "Master Scribing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Master Scribing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "scribing"
+    ]
+  },
+  {
+    "id": "metal_hardening",
+    "name": "Metal Hardening",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Metal Hardening.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "hardening"
+    ]
+  },
+  {
+    "id": "miraculous_healing",
+    "name": "Miraculous Healing",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Miraculous Healing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "healing"
+    ]
+  },
+  {
+    "id": "mythical_agriculture",
+    "name": "Mythical Agriculture",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Agriculture.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "agriculture"
+    ]
+  },
+  {
+    "id": "mythical_brewing",
+    "name": "Mythical Brewing",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Brewing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "brewing"
+    ]
+  },
+  {
+    "id": "mythical_butchery",
+    "name": "Mythical Butchery",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Butchery.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "butchery"
+    ]
+  },
+  {
+    "id": "mythical_construction",
+    "name": "Mythical Construction",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Construction.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "construction"
+    ]
+  },
+  {
+    "id": "mythical_cooking",
+    "name": "Mythical Cooking",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Cooking.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "cooking"
+    ]
+  },
+  {
+    "id": "mythical_enchanting",
+    "name": "Mythical Enchanting",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Enchanting.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "enchanting"
+    ]
+  },
+  {
+    "id": "mythical_engineering",
+    "name": "Mythical Engineering",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Engineering.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "engineering"
+    ]
+  },
+  {
+    "id": "mythical_extraction",
+    "name": "Mythical Extraction",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Extraction.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "extraction"
+    ]
+  },
+  {
+    "id": "mythical_fishing",
+    "name": "Mythical Fishing",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Fishing.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "fishing"
+    ]
+  },
+  {
+    "id": "mythical_forging",
+    "name": "Mythical Forging",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Forging.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "forging"
+    ]
+  },
+  {
+    "id": "mythical_glamour",
+    "name": "Mythical Glamour",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Glamour.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "glamour"
+    ]
+  },
+  {
+    "id": "mythical_herbalism",
+    "name": "Mythical Herbalism",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Herbalism.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "herbalism"
+    ]
+  },
+  {
+    "id": "mythical_inscription",
+    "name": "Mythical Inscription",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Inscription.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "inscription"
+    ]
+  },
+  {
+    "id": "mythical_jewelcraft",
+    "name": "Mythical Jewelcraft",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Jewelcraft.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "jewelcraft"
+    ]
+  },
+  {
+    "id": "mythical_logging",
+    "name": "Mythical Logging",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Logging.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "logging"
+    ]
+  },
+  {
+    "id": "mythical_maintenance",
+    "name": "Mythical Maintenance",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Maintenance.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "maintenance"
+    ]
+  },
+  {
+    "id": "mythical_medicine",
+    "name": "Mythical Medicine",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Medicine.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "medicine"
+    ]
+  },
+  {
+    "id": "mythical_skinning",
+    "name": "Mythical Skinning",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Skinning.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "skinning"
+    ]
+  },
+  {
+    "id": "mythical_tailoring",
+    "name": "Mythical Tailoring",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Tailoring.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "tailoring"
+    ]
+  },
+  {
+    "id": "mythical_teleportation",
+    "name": "Mythical Teleportation",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Teleportation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "teleportation"
+    ]
+  },
+  {
+    "id": "mythical_transmutation",
+    "name": "Mythical Transmutation",
+    "type": "passive",
+    "class": "universal",
+    "description": "God-tier mastery of Transmutation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "transmutation"
+    ]
+  },
+  {
+    "id": "philosopher_methods",
+    "name": "Philosopher Methods",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Philosopher Methods.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "methods"
+    ]
+  },
+  {
+    "id": "plant_identification",
+    "name": "Plant Identification",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Plant Identification.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "identification"
+    ]
+  },
+  {
+    "id": "rare_ore_sense",
+    "name": "Rare Ore Sense",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Rare Ore Sense.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "ore"
+    ]
+  },
+  {
+    "id": "reality_weaving",
+    "name": "Reality Weaving",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Reality Weaving.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "weaving"
+    ]
+  },
+  {
+    "id": "seasoning",
+    "name": "Seasoning",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Seasoning.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "general"
+    ]
+  },
+  {
+    "id": "socket_creation",
+    "name": "Socket Creation",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Socket Creation.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "creation"
+    ]
+  },
+  {
+    "id": "soul_binding",
+    "name": "Soul Binding",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Soul Binding.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "binding"
+    ]
+  },
+  {
+    "id": "soul_inscription",
+    "name": "Soul Inscription",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Soul Inscription.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "inscription"
+    ]
+  },
+  {
+    "id": "stable_portals",
+    "name": "Stable Portals",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Stable Portals.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "portals"
+    ]
+  },
+  {
+    "id": "vein_detection",
+    "name": "Vein Detection",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Vein Detection.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "detection"
+    ]
+  },
+  {
+    "id": "waypoint_linking",
+    "name": "Waypoint Linking",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Waypoint Linking.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "linking"
+    ]
+  },
+  {
+    "id": "wound_treatment",
+    "name": "Wound Treatment",
+    "type": "passive",
+    "class": "universal",
+    "description": "Mastery of Wound Treatment.",
+    "level": 1,
+    "tags": [
+      "profession",
+      "treatment"
+    ]
+  }
+]

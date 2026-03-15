@@ -1,4 +1,4 @@
-// =================================================================
+﻿// =================================================================
 // ARCHETYPE SYSTEM REGISTRY
 // LitRPG framework selection (Systems / Authorities / Privileges /
 // Paths / Overlays / Frameworks)
@@ -11,88 +11,19 @@ import frameworksData from "../../data/archetypes/frameworks.json" with { type: 
 import privilegesData from "../../data/archetypes/privileges.json" with { type: "json" };
 import overlaysData from "../../data/archetypes/overlays.json" with { type: "json" };
 import { validateArchetype } from "./archetypeSchema.js";
-
-// -----------------------------------------------------------------
-// Category configuration: integrity baselines, stat affinities,
-// flavor text, and visual theming for each archetype category.
-// -----------------------------------------------------------------
-export const CATEGORY_CONFIG = {
-  System: {
-    integrity: 100,
-    label: "System",
-    color: "#00F3FF",
-    icon: "\u2699",
-    description:
-      "Structured progression frameworks with reliable, quantifiable growth mechanics.",
-    statAffinities: { intelligence: 3, wisdom: 2 },
-    narrativeTone: "analytical",
-  },
-  Authority: {
-    integrity: 95,
-    label: "Authority",
-    color: "#FFD700",
-    icon: "\u2655",
-    description:
-      "Sovereign mandates granting rule-level dominance over specific domains.",
-    statAffinities: { strength: 2, vitality: 2, charisma: 1 },
-    narrativeTone: "commanding",
-  },
-  Path: {
-    integrity: 92,
-    label: "Path",
-    color: "#96F2D7",
-    icon: "\u2726",
-    description: "Ritualized ascension routes that evolve your fundamental nature.",
-    statAffinities: { wisdom: 3, vitality: 1, luck: 1 },
-    narrativeTone: "mystical",
-  },
-  Framework: {
-    integrity: 90,
-    label: "Framework",
-    color: "#E599F7",
-    icon: "\u25A6",
-    description: "Meta-structural overlays that rewrite how game rules apply to you.",
-    statAffinities: { intelligence: 2, agility: 2, luck: 1 },
-    narrativeTone: "cerebral",
-  },
-  Privilege: {
-    integrity: 88,
-    label: "Privilege",
-    color: "#8CE99A",
-    icon: "\u2756",
-    description: "Covert advantages that grant hidden knowledge and stealth benefits.",
-    statAffinities: { agility: 3, luck: 2 },
-    narrativeTone: "conspiratorial",
-  },
-  Overlay: {
-    integrity: 85,
-    label: "Overlay",
-    color: "#FF8787",
-    icon: "\u26A0",
-    description: "Volatile system exploits with high reward and escalating instability.",
-    statAffinities: { strength: 3, agility: 2 },
-    narrativeTone: "chaotic",
-  },
-};
-
-const DEFAULT_CATEGORY_CONFIG = {
-  integrity: 85,
-  label: "Unknown",
-  color: "#AAAAAA",
-  icon: "\u2731",
-  description: "An unclassified archetype system.",
-  statAffinities: {},
-  narrativeTone: "neutral",
-};
-
-const CATEGORY_ORDER = [
-  "System",
-  "Authority",
-  "Path",
-  "Framework",
-  "Privilege",
-  "Overlay",
-];
+import {
+  CATEGORY_CONFIG,
+  CATEGORY_ORDER,
+  DEFAULT_CATEGORY_CONFIG,
+  getCategoryConfig,
+} from "./ArchetypeCategoryConfig.js";
+import { getArchetypeCharacterCreationProfile } from "./CharacterCreationSystemProfiles.js";
+export {
+  CATEGORY_CONFIG,
+  CATEGORY_ORDER,
+  DEFAULT_CATEGORY_CONFIG,
+  getCategoryConfig,
+} from "./ArchetypeCategoryConfig.js";
 
 const FIELD_MINIMUMS = {
   coreLoop: 3,
@@ -108,10 +39,18 @@ const FIELD_TARGETS = {
   questHooks: 3,
 };
 
+const SUPPORT_FIELD_TARGETS = {
+  possibleUses: 2,
+  limits: 2,
+  costs: 2,
+  worldCompatibility: 2,
+  factionReactions: 2,
+};
+
 const FIELD_TEXT_LIMITS = {
-  summary: 120,
-  description: 600,
-  listItem: 200,
+  summary: 220,
+  description: 4000,
+  listItem: 2400,
   name: 100,
 };
 
@@ -136,6 +75,25 @@ const DEFAULT_RESOURCES = {
   Privilege: { name: "Leverage", color: "#8CE99A" },
   Overlay: { name: "Instability", color: "#FF8787" },
 };
+
+const VALID_RARITIES = new Set([
+  "common",
+  "uncommon",
+  "rare",
+  "epic",
+  "legendary",
+  "mythic",
+  "unique",
+]);
+
+const VALID_STABILITIES = new Set([
+  "stable",
+  "volatile",
+  "unstable",
+  "corrupted",
+  "forbidden",
+]);
+
 
 const IMPACT_BASE = {
   System: {
@@ -228,7 +186,7 @@ function normalizeTag(tag) {
 }
 
 function truncateText(value, limit) {
-  const normalized = normalizeWhitespace(value).replace(/[��“”]/g, "\"");
+  const normalized = normalizeWhitespace(value).replace(/[“”â€œâ€]/g, "\"");
   if (!normalized) return "";
   if (normalized.length <= limit) return normalized;
   const clipped = normalized.slice(0, Math.max(0, limit - 1)).trimEnd();
@@ -261,11 +219,11 @@ function sanitizeList(values, { field } = {}) {
     let line = truncateText(raw, FIELD_TEXT_LIMITS.listItem);
     if (!line) continue;
 
-    if (line.includes("...") || line.includes("…")) {
-      if (line.length < 140 || line.endsWith("...") || line.endsWith("…")) {
+    if (line.includes("...") || line.includes("â€¦")) {
+      if (line.length < 140 || line.endsWith("...") || line.endsWith("â€¦")) {
         continue;
       }
-      line = line.replace(/\.{3,}|…+/g, ".").replace(/\s+\./g, ".").trim();
+      line = line.replace(/\.{3,}|â€¦+/g, ".").replace(/\s+\./g, ".").trim();
     }
 
     if (PLACEHOLDER_PATTERNS.some((pattern) => pattern.test(line))) continue;
@@ -321,6 +279,163 @@ function buildCategoryTemplates(category, name) {
   };
 }
 
+function buildSupportTemplates(category, name) {
+  const templates = {
+    System: {
+      possibleUses: [
+        `${name} supports a run-defining growth plan with category-spanning payoff.`,
+        `${name} can anchor combat, quest routing, and long-horizon progression decisions.`,
+      ],
+      limits: [
+        `${name} remains bounded by explicit costs, counterplay, and the Void hierarchy.`,
+        `${name} rewards focused use more than careless omnidirectional play.`,
+      ],
+      costs: [
+        `${name} creates pressure through commitment, exposure, or resource burden.`,
+        `${name} pushes the bearer toward a specific worldview that can become a liability.`,
+      ],
+      worldCompatibility: [
+        `${name} is treated as a legendary System beneath Void and Grandmother Void.`,
+        `${name} is powerful enough to alter institutions without replacing cosmic law.`,
+      ],
+      factionReactions: [
+        `Ambitious factions will seek to recruit, regulate, or weaponize ${name}.`,
+        `Orthodox powers will monitor ${name} for signs of uncontrolled escalation.`,
+      ],
+      rarity: "legendary",
+      stability: "stable",
+      selectionWeight: 18,
+    },
+    Authority: {
+      possibleUses: [
+        `${name} dominates a bounded domain, force, lineage, or command relationship.`,
+        `${name} excels in conflicts where legitimacy and local law matter more than raw output.`,
+      ],
+      limits: [
+        `${name} must stay within scope and can be contested by stronger or cleaner law.`,
+        `${name} loses leverage when forced outside its rightful domain or target class.`,
+      ],
+      costs: [
+        `${name} creates visibility, political consequence, and resistance from rival claimants.`,
+        `${name} burdens the bearer with responsibility for what they command.`,
+      ],
+      worldCompatibility: [
+        `${name} is recognized as a high-order Authority rather than a full System.`,
+        `${name} remains subordinate to broader cosmic law and Void-level order.`,
+      ],
+      factionReactions: [
+        `Rulers and institutions will treat ${name} as a political event, not just a combat trait.`,
+        `Rival elites will test whether ${name} deserves recognition or suppression.`,
+      ],
+      rarity: "legendary",
+      stability: "stable",
+      selectionWeight: 14,
+    },
+    Path: {
+      possibleUses: [
+        `${name} rewards long-form transformation through staged thresholds and breakthroughs.`,
+        `${name} excels in runs built around identity change, discipline, and earned evolution.`,
+      ],
+      limits: [
+        `${name} depends on thresholds, bottlenecks, and compatibility with the next stage.`,
+        `${name} can stall or distort the bearer if a transformation is forced too early.`,
+      ],
+      costs: [
+        `${name} demands time, risk, and irreversible change in body, soul, or social standing.`,
+        `${name} often narrows future choices as each stage defines the bearer more strongly.`,
+      ],
+      worldCompatibility: [
+        `${name} is a transformational Path rather than a sovereign Authority or full System.`,
+        `${name} remains governed by staged ascension beneath the higher cosmic order.`,
+      ],
+      factionReactions: [
+        `Observers will track ${name} by its visible stages, mutations, and breakthrough signs.`,
+        `Mentors, sects, and hunters will react strongly once ${name} reveals its trajectory.`,
+      ],
+      rarity: "epic",
+      stability: "volatile",
+      selectionWeight: 12,
+    },
+    Framework: {
+      possibleUses: [
+        `${name} organizes growth through structure, routing, storage, or recursive optimization.`,
+        `${name} shines in long-run planning, management play, and cross-system efficiency.`,
+      ],
+      limits: [
+        `${name} depends on maintained structure and can underperform in pure improvisational bursts.`,
+        `${name} is strongest when its processes are given time, space, or infrastructure to work.`,
+      ],
+      costs: [
+        `${name} taxes the bearer through upkeep, planning burden, and structural dependency.`,
+        `${name} can become a liability if its loops are disrupted or overextended.`,
+      ],
+      worldCompatibility: [
+        `${name} is a Framework that shapes progression flow without replacing cosmic law.`,
+        `${name} is respected as infrastructure-grade power rather than direct sovereignty.`,
+      ],
+      factionReactions: [
+        `Strategic factions will value ${name} for its compounding and organizational leverage.`,
+        `Saboteurs will target the structures that let ${name} produce outsized value.`,
+      ],
+      rarity: "epic",
+      stability: "stable",
+      selectionWeight: 11,
+    },
+    Privilege: {
+      possibleUses: [
+        `${name} grants narrow but unfair access to routes, insights, or exceptions others cannot claim.`,
+        `${name} is strongest when used subtly and timed around key narrative or tactical pivots.`,
+      ],
+      limits: [
+        `${name} loses safety once exposure rises or enemies begin accounting for the exception.`,
+        `${name} remains an asymmetric edge, not a whole-system replacement for normal growth.`,
+      ],
+      costs: [
+        `${name} invites suspicion, envy, and retaliation when its unfair edge becomes visible.`,
+        `${name} can distort decision-making by tempting the bearer to rely on hidden shortcuts.`,
+      ],
+      worldCompatibility: [
+        `${name} is classified as a Privilege: rare, deniable, and narrower than a true System.`,
+        `${name} exploits exceptions within the world rather than rewriting the world itself.`,
+      ],
+      factionReactions: [
+        `Clever rivals will try to expose or bait ${name} into becoming visible.`,
+        `Secretive powers may prize ${name} more than public institutions ever would.`,
+      ],
+      rarity: "rare",
+      stability: "volatile",
+      selectionWeight: 9,
+    },
+    Overlay: {
+      possibleUses: [
+        `${name} creates short windows of impossible leverage by exploiting unstable rule seams.`,
+        `${name} works best for desperate reversals, technical abuse, and hunted anomaly play.`,
+      ],
+      limits: [
+        `${name} escalates instability and can collapse if pushed too often or too publicly.`,
+        `${name} never outranks deeper law and is vulnerable to patching, audits, or backlash.`,
+      ],
+      costs: [
+        `${name} burdens the bearer with strain, detection risk, and growing system hostility.`,
+        `${name} trades clean reliability for stolen moments of illegal advantage.`,
+      ],
+      worldCompatibility: [
+        `${name} is classified as an Overlay: parasitic, unstable, and beneath lawful structures.`,
+        `${name} distorts local mechanics without superseding Void-level order.`,
+      ],
+      factionReactions: [
+        `Enforcers and anomaly hunters will treat ${name} as something to contain or erase.`,
+        `Desperate opportunists may covet ${name} even while fearing the fallout around it.`,
+      ],
+      rarity: "mythic",
+      stability: "unstable",
+      selectionWeight: 6,
+    },
+  };
+
+  return templates[category] || templates.System;
+}
+
 function ensureExtensiveList(field, values, context) {
   const cleaned = sanitizeList(values, { field });
   const templates = buildCategoryTemplates(context.category, context.name)[field];
@@ -339,6 +454,27 @@ function ensureExtensiveList(field, values, context) {
   }
 
   return cleaned;
+}
+
+function ensureSupportList(field, values, context) {
+  const cleaned = sanitizeList(values, { field });
+  const templates = buildSupportTemplates(context.category, context.name)[field] || [];
+  const target = SUPPORT_FIELD_TARGETS[field] || 1;
+  let index = 0;
+
+  while (cleaned.length < target && templates.length > 0) {
+    const next = templates[index % templates.length];
+    if (!cleaned.includes(next)) cleaned.push(next);
+    index += 1;
+  }
+
+  return cleaned.slice(0, Math.max(target, cleaned.length));
+}
+
+function ensureSupportScalar(rawValue, fallbackValue, validSet) {
+  const normalized = normalizeWhitespace(rawValue).toLowerCase();
+  if (normalized && validSet.has(normalized)) return normalized;
+  return fallbackValue;
 }
 
 function ensureTags(tags, category, name) {
@@ -593,6 +729,10 @@ function normalizeSingleDefinition(rawDefinition, index) {
       `${name} provides a category-specific progression framework with branching upgrades and systemic consequences.`,
     FIELD_TEXT_LIMITS.description,
   );
+  const supportTemplates = buildSupportTemplates(category, name);
+  const creationProfile =
+    rawDefinition?.characterCreation ||
+    getArchetypeCharacterCreationProfile(id);
 
   const normalized = {
     id,
@@ -605,10 +745,48 @@ function normalizeSingleDefinition(rawDefinition, index) {
     narrativeHooks: ensureExtensiveList("narrativeHooks", rawDefinition?.narrativeHooks, { category, name }),
     questHooks: ensureExtensiveList("questHooks", rawDefinition?.questHooks, { category, name }),
     tags: ensureTags(rawDefinition?.tags, category, name),
+    possibleUses: ensureSupportList("possibleUses", rawDefinition?.possibleUses, {
+      category,
+      name,
+    }),
+    limits: ensureSupportList("limits", rawDefinition?.limits, { category, name }),
+    costs: ensureSupportList("costs", rawDefinition?.costs, { category, name }),
+    worldCompatibility: ensureSupportList(
+      "worldCompatibility",
+      rawDefinition?.worldCompatibility,
+      { category, name },
+    ),
+    factionReactions: ensureSupportList(
+      "factionReactions",
+      rawDefinition?.factionReactions,
+      { category, name },
+    ),
+    rarity: ensureSupportScalar(
+      rawDefinition?.rarity,
+      supportTemplates.rarity,
+      VALID_RARITIES,
+    ),
+    stability: ensureSupportScalar(
+      rawDefinition?.stability,
+      supportTemplates.stability,
+      VALID_STABILITIES,
+    ),
+    selectionWeight: clamp(
+      toNumber(rawDefinition?.selectionWeight, supportTemplates.selectionWeight),
+      0,
+      100,
+    ),
     statModifiers: ensureStatModifiers(rawDefinition?.statModifiers, category),
     archetypeResource: ensureResource(rawDefinition?.archetypeResource, category),
     archetypePassives: ensurePassives(rawDefinition?.archetypePassives, id),
   };
+
+  if (creationProfile && typeof creationProfile === "object") {
+    normalized.characterCreation =
+      typeof globalThis.structuredClone === "function"
+        ? globalThis.structuredClone(creationProfile)
+        : JSON.parse(JSON.stringify(creationProfile));
+  }
 
   normalized.narrativeTone = ensureNarrativeTone(
     rawDefinition?.narrativeTone,
@@ -633,8 +811,13 @@ function normalizeSingleDefinition(rawDefinition, index) {
   );
 
   // Final structural validation against schema (after normalization).
+  // If the richer source entry is already runtime-valid, prefer keeping it
+  // available over silently dropping it due to normalization heuristics.
   const validation = validateArchetype(normalized);
-  if (!validation.valid) return null;
+  if (!validation.valid) {
+    const sourceValidation = validateArchetype(rawDefinition);
+    if (!sourceValidation.valid) return null;
+  }
   return normalized;
 }
 
@@ -674,15 +857,6 @@ function normalizeDefinitions(rawDefinitions) {
   });
 
   return Array.from(byId.values());
-}
-
-/**
- * Returns the category configuration for a given category string.
- * @param {string} category
- * @returns {object}
- */
-export function getCategoryConfig(category) {
-  return CATEGORY_CONFIG[category] || DEFAULT_CATEGORY_CONFIG;
 }
 
 class ArchetypeSystem {
@@ -726,6 +900,10 @@ class ArchetypeSystem {
         this.quality && typeof this.quality === "object"
           ? { ...this.quality }
           : {},
+      characterCreation:
+        this.characterCreation && typeof this.characterCreation === "object"
+          ? { ...this.characterCreation }
+          : null,
       state: { ...context },
       definition: this,
     };
@@ -832,16 +1010,172 @@ export let ARCHETYPE_SYSTEMS = ARCHETYPE_DEFINITIONS.map(
   (definition) => new ArchetypeSystem(definition),
 );
 
+const buildArchetypeSystemSummary = (system) => {
+  if (!system || typeof system !== "object" || typeof system.id !== "string") {
+    return null;
+  }
+
+  return {
+    id: system.id,
+    name: system.name || system.id,
+    category: system.category || "Unknown",
+    summary: system.summary || "",
+    description: system.description || "",
+    rarity: system.rarity || null,
+    stability: system.stability || null,
+    narrativeTone: system.narrativeTone || "neutral",
+    color: system.color || null,
+    icon: system.icon || null,
+    resource:
+      system.resource && typeof system.resource === "object"
+        ? {
+            name: system.resource.name || null,
+            color: system.resource.color || null,
+          }
+        : null,
+    tags: Array.isArray(system.tags)
+      ? system.tags.filter((tag) => typeof tag === "string")
+      : [],
+    coreLoopPreview: Array.isArray(system.coreLoop)
+      ? system.coreLoop.slice(0, 3)
+      : [],
+    narrativeHooksPreview: Array.isArray(system.narrativeHooks)
+      ? system.narrativeHooks.slice(0, 2)
+      : [],
+    questHooksPreview: Array.isArray(system.questHooks)
+      ? system.questHooks.slice(0, 2)
+      : [],
+    possibleUsesPreview: Array.isArray(system.possibleUses)
+      ? system.possibleUses.slice(0, 2)
+      : [],
+    limitsPreview: Array.isArray(system.limits) ? system.limits.slice(0, 2) : [],
+    costsPreview: Array.isArray(system.costs) ? system.costs.slice(0, 2) : [],
+    worldCompatibilityPreview: Array.isArray(system.worldCompatibility)
+      ? system.worldCompatibility.slice(0, 2)
+      : [],
+    factionReactionsPreview: Array.isArray(system.factionReactions)
+      ? system.factionReactions.slice(0, 2)
+      : [],
+    characterCreation:
+      system.characterCreation && typeof system.characterCreation === "object"
+        ? {
+            ...system.characterCreation,
+            ordering:
+              system.characterCreation.ordering &&
+              typeof system.characterCreation.ordering === "object"
+                ? { ...system.characterCreation.ordering }
+                : {},
+            optionRules:
+              system.characterCreation.optionRules &&
+              typeof system.characterCreation.optionRules === "object"
+                ? { ...system.characterCreation.optionRules }
+                : {},
+            attributeBias:
+              system.characterCreation.attributeBias &&
+              typeof system.characterCreation.attributeBias === "object"
+                ? { ...system.characterCreation.attributeBias }
+                : {},
+            skillRules:
+              system.characterCreation.skillRules &&
+              typeof system.characterCreation.skillRules === "object"
+                ? { ...system.characterCreation.skillRules }
+                : {},
+          }
+        : null,
+    quality:
+      system.quality && typeof system.quality === "object"
+        ? {
+            depthScore: toNumber(system.quality.depthScore, 0),
+            detailScore: toNumber(system.quality.detailScore, 0),
+            totalHooks: toNumber(system.quality.totalHooks, 0),
+          }
+        : null,
+  };
+};
+
+const cloneArchetypeSystemSummary = (summary) => {
+  if (!summary) return null;
+  return {
+    ...summary,
+    resource: summary.resource ? { ...summary.resource } : null,
+    tags: [...summary.tags],
+    coreLoopPreview: [...summary.coreLoopPreview],
+    narrativeHooksPreview: [...summary.narrativeHooksPreview],
+    questHooksPreview: [...summary.questHooksPreview],
+    possibleUsesPreview: [...summary.possibleUsesPreview],
+    limitsPreview: [...summary.limitsPreview],
+    costsPreview: [...summary.costsPreview],
+    worldCompatibilityPreview: [...summary.worldCompatibilityPreview],
+    factionReactionsPreview: [...summary.factionReactionsPreview],
+    characterCreation: summary.characterCreation
+      ? {
+          ...summary.characterCreation,
+          ordering: summary.characterCreation.ordering
+            ? { ...summary.characterCreation.ordering }
+            : {},
+          optionRules: summary.characterCreation.optionRules
+            ? { ...summary.characterCreation.optionRules }
+            : {},
+          attributeBias: summary.characterCreation.attributeBias
+            ? { ...summary.characterCreation.attributeBias }
+            : {},
+          skillRules: summary.characterCreation.skillRules
+            ? { ...summary.characterCreation.skillRules }
+            : {},
+        }
+      : null,
+    quality: summary.quality ? { ...summary.quality } : null,
+  };
+};
+
+let ARCHETYPE_SYSTEM_INDEX = new Map();
+let ARCHETYPE_CATEGORY_INDEX = new Map();
+let ARCHETYPE_SYSTEM_SUMMARIES = [];
+let ARCHETYPE_SUMMARY_INDEX = new Map();
+let ARCHETYPE_SUMMARY_CATEGORY_INDEX = new Map();
+
+const rebuildArchetypeIndexes = () => {
+  ARCHETYPE_SYSTEM_INDEX = new Map();
+  ARCHETYPE_CATEGORY_INDEX = new Map();
+  ARCHETYPE_SYSTEM_SUMMARIES = [];
+  ARCHETYPE_SUMMARY_INDEX = new Map();
+  ARCHETYPE_SUMMARY_CATEGORY_INDEX = new Map();
+
+  ARCHETYPE_SYSTEMS.forEach((system) => {
+    if (!system?.id) return;
+    ARCHETYPE_SYSTEM_INDEX.set(system.id, system);
+
+    const category = system.category || "Unknown";
+    if (!ARCHETYPE_CATEGORY_INDEX.has(category)) {
+      ARCHETYPE_CATEGORY_INDEX.set(category, []);
+    }
+    ARCHETYPE_CATEGORY_INDEX.get(category).push(system);
+
+    const summary = buildArchetypeSystemSummary(system);
+    if (!summary) return;
+
+    ARCHETYPE_SYSTEM_SUMMARIES.push(summary);
+    ARCHETYPE_SUMMARY_INDEX.set(summary.id, summary);
+    if (!ARCHETYPE_SUMMARY_CATEGORY_INDEX.has(category)) {
+      ARCHETYPE_SUMMARY_CATEGORY_INDEX.set(category, []);
+    }
+    ARCHETYPE_SUMMARY_CATEGORY_INDEX.get(category).push(summary);
+  });
+};
+
+rebuildArchetypeIndexes();
+
 export function setArchetypeDefinitions(nextDefinitions) {
   if (!Array.isArray(nextDefinitions)) return;
   ARCHETYPE_DEFINITIONS = createRegistryDefinitions(nextDefinitions);
   ARCHETYPE_SYSTEMS = ARCHETYPE_DEFINITIONS.map(
     (definition) => new ArchetypeSystem(definition),
   );
+  rebuildArchetypeIndexes();
 }
 
 export function getArchetypeSystemById(id) {
-  return ARCHETYPE_SYSTEMS.find((system) => system.id === id) || null;
+  return ARCHETYPE_SYSTEM_INDEX.get(id) || null;
 }
 
 /**
@@ -851,7 +1185,7 @@ export function getArchetypeSystemById(id) {
  */
 export function getArchetypesByCategory(category) {
   if (!category) return [];
-  return ARCHETYPE_SYSTEMS.filter((system) => system.category === category);
+  return [...(ARCHETYPE_CATEGORY_INDEX.get(category) || [])];
 }
 
 /**
@@ -859,10 +1193,7 @@ export function getArchetypesByCategory(category) {
  * @returns {string[]}
  */
 export function getArchetypeCategories() {
-  const categories = new Set(
-    ARCHETYPE_SYSTEMS.map((system) => system.category).filter(Boolean),
-  );
-  return [...categories].sort((left, right) => {
+  return [...ARCHETYPE_CATEGORY_INDEX.keys()].sort((left, right) => {
     const leftIndex = CATEGORY_ORDER.indexOf(left);
     const rightIndex = CATEGORY_ORDER.indexOf(right);
     if (leftIndex === -1 && rightIndex === -1) return left.localeCompare(right);
@@ -874,6 +1205,23 @@ export function getArchetypeCategories() {
 
 export function getAllArchetypeSystems() {
   return ARCHETYPE_SYSTEMS;
+}
+
+export function getAllArchetypeSystemSummaries() {
+  return ARCHETYPE_SYSTEM_SUMMARIES.map((summary) =>
+    cloneArchetypeSystemSummary(summary),
+  );
+}
+
+export function getArchetypeSystemSummaryById(id) {
+  return cloneArchetypeSystemSummary(ARCHETYPE_SUMMARY_INDEX.get(id) || null);
+}
+
+export function getArchetypeSystemSummariesByCategory(category) {
+  if (!category) return [];
+  return (ARCHETYPE_SUMMARY_CATEGORY_INDEX.get(category) || []).map((summary) =>
+    cloneArchetypeSystemSummary(summary),
+  );
 }
 
 export function getArchetypeQualityReport() {
@@ -912,3 +1260,4 @@ export function getArchetypeQualityReport() {
     ids: ARCHETYPE_DEFINITIONS.map((definition) => definition.id),
   };
 }
+

@@ -2,7 +2,7 @@ import {
   ensureAttributeShape,
   toCanonicalAttributeKey,
 } from "../constants/attributes.js";
-import { getCategoryConfig } from "../systems/archetype/ArchetypeSystemRegistry.js";
+import { getCategoryConfig } from "../systems/archetype/ArchetypeCategoryConfig.js";
 
 function addWeight(weights, key, value) {
   const canonical = toCanonicalAttributeKey(key);

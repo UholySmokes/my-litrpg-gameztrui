@@ -24,6 +24,13 @@ import {
 
 const MAX_HISTORY_ENTRIES = 20;
 const MAX_HISTORY_CHARS = 4000;
+const HISTORY_ENTRY_TYPES = new Set([
+  "narrative",
+  "system",
+  "status-update",
+  "user",
+  "action",
+]);
 const REPETITION_WINDOW = 6;
 const REPETITION_MIN_TERM_LENGTH = 5;
 const REPETITION_MIN_COUNT = 3;
@@ -642,7 +649,7 @@ export function buildHistorySection(gameState) {
     ? gameState.narrative.entries
     : [];
   const filteredHistory = narrativeEntries.filter((entry) =>
-    ["narrative", "system", "status-update"].includes(entry.type),
+    HISTORY_ENTRY_TYPES.has(entry?.type),
   );
   const mergedHistory = filteredHistory.sort((a, b) => {
     const timestampDelta = (a.timestamp || 0) - (b.timestamp || 0);
@@ -651,16 +658,37 @@ export function buildHistorySection(gameState) {
     if (sequenceDelta !== 0) return sequenceDelta;
     return String(a.id || "").localeCompare(String(b.id || ""));
   });
+  const formatHistoryEntry = (entry) => {
+    const entryText = String(entry?.text || "").trim();
+    if (!entryText) return null;
+    if (entry.type === "narrative") {
+      return `Narrator: ${entryText}`;
+    }
+    if (entry.type === "system") {
+      return `System: ${entryText}`;
+    }
+    if (entry.type === "status-update") {
+      return `Status: ${entryText}`;
+    }
+    if (entry.type === "user") {
+      const userText = entryText.replace(/^>\s*/, "").trim();
+      return userText ? `Player: ${userText}` : null;
+    }
+    if (entry.type === "action") {
+      return `Action: ${entryText}`;
+    }
+    return entryText;
+  };
   const recentHistory = [];
   let totalChars = 0;
   for (let i = mergedHistory.length - 1; i >= 0; i -= 1) {
-    const entry = mergedHistory[i];
-    const entryText = String(entry.text || "");
-    if (!entryText) continue;
+    const line = formatHistoryEntry(mergedHistory[i]);
+    if (!line) continue;
     if (recentHistory.length >= MAX_HISTORY_ENTRIES) break;
-    if (totalChars + entryText.length > MAX_HISTORY_CHARS) break;
-    totalChars += entryText.length;
-    recentHistory.unshift(entry);
+    const nextLineCost = line.length + (recentHistory.length > 0 ? 1 : 0);
+    if (totalChars + nextLineCost > MAX_HISTORY_CHARS) break;
+    totalChars += nextLineCost;
+    recentHistory.unshift(line);
   }
 
   if (recentHistory.length === 0) {
@@ -668,36 +696,8 @@ export function buildHistorySection(gameState) {
 ${gameState.narrative.summary || "The adventure has just begun."}`;
   }
 
-  const historyLines = recentHistory
-    .map((msg) => {
-      if (msg.type === "narrative") {
-        return `Narrator: ${msg.text}`;
-      }
-      if (msg.type === "system") {
-        return `System: ${msg.text}`;
-      }
-      if (msg.type === "status-update") {
-        return `Status: ${msg.text}`;
-      }
-      return msg.text;
-    })
-    .filter((line) => typeof line === "string" && line.trim().length > 0);
-
-  let historyText = historyLines.join("\n");
-  if (historyText.length > MAX_HISTORY_CHARS) {
-    const trimmed = [];
-    let total = 0;
-    for (let i = historyLines.length - 1; i >= 0; i -= 1) {
-      const line = historyLines[i];
-      if (total + line.length + 1 > MAX_HISTORY_CHARS) break;
-      trimmed.unshift(line);
-      total += line.length + 1;
-    }
-    historyText = trimmed.join("\n");
-  }
-
   return `=== RECENT HISTORY ===
-${historyText}`;
+${recentHistory.join("\n")}`;
 }
 
 /**

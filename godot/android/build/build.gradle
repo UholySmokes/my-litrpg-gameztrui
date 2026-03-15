@@ -290,6 +290,24 @@ task copyAndRenameBinary(type: Copy) {
     rename sourceFilename, exportFilename
 }
 
+afterEvaluate {
+    String exportEdition = getExportEdition()
+    String exportBuildType = getExportBuildType()
+    String exportFormat = getExportFormat()
+    String exportEditionCapitalized = exportEdition.capitalize()
+    String exportBuildTypeCapitalized = exportBuildType.capitalize()
+
+    String artifactTaskName = exportFormat == "aab"
+        ? "bundle${exportEditionCapitalized}${exportBuildTypeCapitalized}"
+        : "package${exportEditionCapitalized}${exportBuildTypeCapitalized}"
+
+    if (tasks.findByName(artifactTaskName) != null) {
+        tasks.named("copyAndRenameBinary").configure {
+            dependsOn(tasks.named(artifactTaskName))
+        }
+    }
+}
+
 /**
  * Used to validate the version of the Java SDK used for the Godot gradle builds.
  */

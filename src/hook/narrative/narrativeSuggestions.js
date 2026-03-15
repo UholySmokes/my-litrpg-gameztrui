@@ -26,6 +26,50 @@ export const DEFAULT_ACTION_SUGGESTIONS = [
   ...CONTEXT_SUGGESTION_FILLERS,
 ];
 
+function normalizeSingleActionSuggestion(suggestion) {
+  const label =
+    typeof suggestion === "string"
+      ? suggestion
+      : suggestion?.t || suggestion?.text || suggestion?.label || "";
+  const trimmed = String(label || "").trim();
+  if (!trimmed) return null;
+
+  const rawWeight =
+    typeof suggestion === "object" && Number.isFinite(suggestion?.w)
+      ? suggestion.w
+      : 1;
+
+  return {
+    t: trimmed,
+    w: Math.min(1, Math.max(0.35, rawWeight)),
+  };
+}
+
+export function normalizeActionSuggestions(suggestions = [], { maxItems = 6 } = {}) {
+  const normalized = (Array.isArray(suggestions) ? suggestions : [])
+    .map((suggestion) => normalizeSingleActionSuggestion(suggestion))
+    .filter(Boolean);
+  const seen = new Set();
+
+  return normalized.filter((suggestion) => {
+    const key = suggestion.t.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, maxItems);
+}
+
+export function resolveActionSuggestions({
+  preferredSuggestions,
+  fallbackSuggestions = DEFAULT_ACTION_SUGGESTIONS,
+} = {}) {
+  const preferred = normalizeActionSuggestions(preferredSuggestions);
+  if (preferred.length > 0) {
+    return preferred;
+  }
+  return normalizeActionSuggestions(fallbackSuggestions);
+}
+
 const MOOD_PATTERNS = [
   { mood: "tense", patterns: [/danger/i, /threat/i, /ambush/i, /attack/i, /dark/i, /enemy/i, /looming/i] },
   { mood: "triumphant", patterns: [/victory/i, /triumph/i, /succeed/i, /conquer/i, /glory/i, /reward/i] },

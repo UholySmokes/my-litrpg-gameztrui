@@ -8,9 +8,12 @@ import {
 } from "@voidverse/game-core/constants/attributes.js";
 import {
   getCharacterCreationArchetypeSystems,
+  getCharacterCreationClassAbilitySummaries,
   getCharacterCreationClassesByTier,
   getCharacterCreationOrigins,
+  getCharacterCreationRaceAbilitySummaries,
   getCharacterCreationRaces,
+  getCharacterCreationSkillSummaries,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 import {
   buildCharacterCreationSkillPools,
@@ -35,6 +38,38 @@ const OUTPUT_PATH = path.resolve(
 const GODOT_PLATFORM = "godot";
 const BASE_ATTRIBUTE_VALUE = 10;
 const FREE_POINTS = 15;
+const GODOT_ORIGIN_IDS = new Set([
+  "freehold_scrapper",
+  "ledger_apprentice",
+  "grove_exile",
+  "archive_runner",
+  "sandstep_scout",
+  "dreamwake_survivor",
+]);
+const GODOT_RACE_IDS = new Set([
+  "pure_human",
+  "neo_human",
+  "ancient_bloodline",
+  "spirit_beast",
+  "demon_kin",
+  "celestial_descendant",
+  "shadow_walker",
+  "dragon_blood",
+  "undead_awakened",
+  "phoenix_reborn",
+  "fae_touched",
+  "mechanical_construct",
+]);
+const GODOT_PROFESSION_IDS = new Set([
+  "blacksmithing",
+  "alchemy",
+  "enchanting",
+  "engineering",
+  "herbalism",
+  "mining",
+  "inscription",
+  "portal_creation",
+]);
 
 function cloneValue(value) {
   if (value == null) return value;
@@ -167,6 +202,38 @@ function simplifyLoadout(entry) {
   };
 }
 
+function extractSkillIds(entries = []) {
+  return uniqueIds(
+    entries
+      .map((entry) => (entry && typeof entry === "object" ? entry.id : entry))
+      .filter(Boolean),
+  );
+}
+
+function uniqueIds(entries = []) {
+  return [...new Set(entries.map((entry) => String(entry).trim()).filter(Boolean))];
+}
+
+function buildSkillIndex(races, classes) {
+  const skillMap = new Map();
+  const register = (entry) => {
+    if (!entry?.id || skillMap.has(entry.id)) return;
+    skillMap.set(entry.id, simplifySkill(entry));
+  };
+
+  getCharacterCreationSkillSummaries().forEach(register);
+  classes.forEach((entry) => {
+    getCharacterCreationClassAbilitySummaries(entry.id).forEach(register);
+  });
+  races.forEach((entry) => {
+    getCharacterCreationRaceAbilitySummaries(entry.id).forEach(register);
+    if (entry.passiveAbility?.id) register(entry.passiveAbility);
+    if (entry.activeAbility?.id) register(entry.activeAbility);
+  });
+
+  return Object.fromEntries([...skillMap.entries()].sort(([left], [right]) => left.localeCompare(right)));
+}
+
 function systemSupportsGodot(system) {
   const platforms = Array.isArray(system?.characterCreation?.ordering?.platforms)
     ? system.characterCreation.ordering.platforms
@@ -209,15 +276,13 @@ function buildSystemOptionState({
   };
 }
 
-function buildSkillPoolEntry(system, race, cls, profession) {
+function buildSkillPoolEntry(system, race, cls) {
   const pools = buildCharacterCreationSkillPools(cls, race, {
-    professionId: profession.id,
     systemId: system.id,
   });
   const loadouts = listCharacterCreationSkillLoadouts({
     cls,
     race,
-    professionId: profession.id,
     systemId: system.id,
     pools,
   });
@@ -226,12 +291,12 @@ function buildSkillPoolEntry(system, race, cls, profession) {
   const passiveBonus = Number(pools.slotBonuses?.passive || 0);
 
   return {
-    activeSkills: (pools.active || []).map(simplifySkill),
-    passiveSkills: (pools.passive || []).map(simplifySkill),
-    grantedActiveSkills: (pools.grantedActive || []).map(simplifySkill),
-    grantedPassiveSkills: (pools.grantedPassive || []).map(simplifySkill),
-    blockedSkillIds: [...(pools.blockedSkillIds || [])],
-    boostedSkillIds: [...(pools.boostedSkillIds || [])],
+    activeSkillIds: extractSkillIds(pools.active || []),
+    passiveSkillIds: extractSkillIds(pools.passive || []),
+    grantedActiveSkillIds: extractSkillIds(pools.grantedActive || []),
+    grantedPassiveSkillIds: extractSkillIds(pools.grantedPassive || []),
+    blockedSkillIds: uniqueIds(pools.blockedSkillIds || []),
+    boostedSkillIds: uniqueIds(pools.boostedSkillIds || []),
     loadouts: loadouts.map(simplifyLoadout),
     slotBonuses: {
       active: activeBonus,
@@ -244,15 +309,21 @@ function buildSkillPoolEntry(system, race, cls, profession) {
   };
 }
 
-function buildSignature(systemId, raceId, classId, professionId) {
-  return [systemId, raceId, classId, professionId].join("|");
+function buildSignature(systemId, raceId, classId) {
+  return [systemId, raceId, classId].join("|");
 }
 
 async function main() {
-  const origins = getCharacterCreationOrigins().map(simplifyOrigin);
-  const races = getCharacterCreationRaces().map(simplifyRace);
+  const origins = getCharacterCreationOrigins()
+    .filter((entry) => GODOT_ORIGIN_IDS.has(entry.id))
+    .map(simplifyOrigin);
+  const races = getCharacterCreationRaces()
+    .filter((entry) => GODOT_RACE_IDS.has(entry.id))
+    .map(simplifyRace);
   const classes = getCharacterCreationClassesByTier(1).map(simplifyClass);
-  const professions = getProfessionSummaries().map(simplifyProfession);
+  const professions = getProfessionSummaries()
+    .filter((entry) => GODOT_PROFESSION_IDS.has(entry.id))
+    .map(simplifyProfession);
   const selectableSystems = getCharacterCreationArchetypeSystems()
     .filter(systemSupportsGodot)
     .sort((left, right) => {
@@ -266,6 +337,7 @@ async function main() {
   const perks = listCharacterCreationPerks().map((entry) => ({ ...entry }));
   const starterTrees = listCharacterCreationStarterTrees().map((entry) => ({ ...entry }));
   const alignments = listCharacterCreationAlignments().map((entry) => ({ ...entry }));
+  const skillIndex = buildSkillIndex(races, classes);
 
   const systemOptionsById = {};
   const skillPoolsBySignature = {};
@@ -284,15 +356,8 @@ async function main() {
 
     for (const race of optionState.races) {
       for (const cls of optionState.classes) {
-        for (const profession of optionState.professions) {
-          const signature = buildSignature(system.id, race.id, cls.id, profession.id);
-          skillPoolsBySignature[signature] = buildSkillPoolEntry(
-            system,
-            race,
-            cls,
-            profession,
-          );
-        }
+        const signature = buildSignature(system.id, race.id, cls.id);
+        skillPoolsBySignature[signature] = buildSkillPoolEntry(system, race, cls);
       }
     }
   }
@@ -331,6 +396,7 @@ async function main() {
     systems: selectableSystems,
     systemOptionsById,
     skillPoolsBySignature,
+    skillIndex,
     attributes: {
       base: createAttributeBaseline(BASE_ATTRIBUTE_VALUE),
       freePoints: FREE_POINTS,

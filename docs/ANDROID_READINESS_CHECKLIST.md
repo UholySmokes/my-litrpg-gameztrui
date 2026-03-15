@@ -23,9 +23,14 @@
 
 ## 4) Godot Native Android
 - [x] `npm run generate:godot-config:prod`
+- [x] `npm run generate:godot-config:singleplayer`
 - [x] `npm run android:preflight`
-- [ ] `npm run android:export:internal` (blocked: Godot returns generic configuration errors, no artifact emitted)
-- [ ] `npm run android:export:release` (blocked: Godot returns generic configuration errors, no artifact emitted)
+- [x] `npm run test:godot:headless`
+- [x] `npm run android:export:singleplayer`
+- [ ] `npm run android:export:internal`
+- [ ] `npm run android:export:release`
+- [ ] Developer singleplayer APK installs on device/emulator and boots `Main.tscn` offline.
+- [ ] Offline character creation completes into local gameplay with local save/load and local story text.
 - [ ] Internal APK installs on device/emulator and boots `Main.tscn`.
 - [ ] Release candidate AAB builds with signing credentials.
 
@@ -38,5 +43,5 @@
 
 ## 6) Evidence Pack
 - [ ] CI run links for `app-quality`, `godot-headless`, and `godot-android-export`.
-- [ ] Artifact hashes + file sizes for APK and AAB.
-- [ ] Manual smoke notes (auth fallback, save/load, sync pull, one narrative cycle).
+- [ ] Artifact hashes + file sizes for singleplayer APK, internal APK, and release AAB.
+- [ ] Manual smoke notes (singleplayer local creation, local save/load, one story refresh, one map transition).

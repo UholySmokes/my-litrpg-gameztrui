@@ -117,7 +117,9 @@ describe("character creation content pack", () => {
   });
 
   it("keeps generated archetype systems aligned with the live registry", () => {
-    const liveSystems = getAllArchetypeSystems();
+    const liveSystems = getAllArchetypeSystems().filter(
+      (entry) => entry?.characterCreation?.ordering?.selectable === true,
+    );
     const packSystems = getCharacterCreationArchetypeSystems();
     const sample = liveSystems[0];
 
@@ -130,7 +132,13 @@ describe("character creation content pack", () => {
         name: sample.name,
         category: sample.category,
         coreLoop: sample.coreLoop,
-        progression: sample.progression,
+        possibleUses: sample.possibleUses,
+        limits: sample.limits,
+        costs: sample.costs,
+        worldCompatibility: sample.worldCompatibility,
+        rarity: sample.rarity,
+        stability: sample.stability,
+        characterCreation: sample.characterCreation,
       }),
     );
   });

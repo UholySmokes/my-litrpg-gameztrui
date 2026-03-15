@@ -527,8 +527,13 @@ export async function generateNarrativeStream(
       }
       const result = applyNarrationGuards({
         narrative: currentText || "Something happened.",
-        mood: "neutral",
-        suggestions: ["Look around", "Check inventory", "Continue"],
+        mood:
+          typeof pollData?.mood === "string" && pollData.mood.trim()
+            ? pollData.mood.trim()
+            : "neutral",
+        suggestions: Array.isArray(pollData?.suggestions)
+          ? pollData.suggestions.slice(0, 3)
+          : ["Look around", "Check inventory", "Continue"],
       });
       if (typeof onDone === "function") onDone(result);
       return result;

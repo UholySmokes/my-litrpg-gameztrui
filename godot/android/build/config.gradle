@@ -186,7 +186,7 @@ ext.getGodotPublishVersion = { ->
     return versionName
 }
 
-final String VALUE_SEPARATOR_REGEX = "\\|"
+final String VALUE_SEPARATOR_REGEX = "[\\|,]"
 
 // get the list of ABIs the project should be exported to
 ext.getExportEnabledABIs = { ->

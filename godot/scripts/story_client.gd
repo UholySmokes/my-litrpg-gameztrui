@@ -9,6 +9,7 @@ const FirebaseAuthClient := preload("res://scripts/firebase_auth_client.gd")
 @export var story_poll_path: String = "/story/poll"
 @export var poll_interval_seconds: float = 1.5
 @export var max_polls: int = 40
+@export var runtime_mode: String = "online"
 
 const DEFAULT_SUGGESTIONS := [
 	{"t": "look around", "w": 1.0},
@@ -53,10 +54,18 @@ const FALLBACK_BY_MODE := {
 
 
 func start(payload: Dictionary) -> Dictionary:
+	if _is_local_mode():
+		return _local_response(payload)
 	return await _authorized_json_request(story_start_path, HTTPClient.METHOD_POST, payload)
 
 
 func poll(thread_id: String, run_id: String, mode: String = "") -> Dictionary:
+	if _is_local_mode():
+		return _local_response({
+			"mode": mode,
+			"threadId": thread_id,
+			"runId": run_id,
+		})
 	if thread_id.strip_edges().is_empty() or run_id.strip_edges().is_empty():
 		return {
 			"http_ok": false,
@@ -80,6 +89,9 @@ func poll(thread_id: String, run_id: String, mode: String = "") -> Dictionary:
 
 func request_story(prompt: String, mode: String = "exploration", extra_payload: Dictionary = {}) -> Dictionary:
 	var normalized_mode := _normalize_mode(mode)
+	if _is_local_mode():
+		return _build_local_story_result(prompt, normalized_mode, extra_payload)
+
 	var payload: Dictionary = {
 		"prompt": prompt,
 		"mode": normalized_mode,
@@ -295,3 +307,88 @@ func _request_json(
 		"body": parsed_body,
 		"raw": raw_body,
 	}
+
+
+func _build_local_story_result(_prompt: String, mode: String, payload: Dictionary) -> Dictionary:
+	var map_id := String(payload.get("mapId", "map_village_square"))
+	var quest_flags: Dictionary = payload.get("questFlags", {})
+	var character: Dictionary = payload.get("character", {})
+	var system_summary := String(payload.get("systemSummary", "")).strip_edges()
+	if system_summary.is_empty():
+		var system_value: Variant = character.get("archetypeSystem", {})
+		if typeof(system_value) == TYPE_DICTIONARY:
+			var system_entry: Dictionary = system_value
+			system_summary = String(system_entry.get("summary", system_entry.get("name", "")))
+	var name := String(character.get("name", "Traveler")).strip_edges()
+	if name.is_empty():
+		name = "Traveler"
+
+	var narrative_lines: PackedStringArray = []
+	match map_id:
+		"map_training_glade":
+			narrative_lines.append("%s steps into the training glade and the air tightens around the next lesson." % name)
+		"map_ruined_outlook":
+			narrative_lines.append("%s reaches the ruined outlook where the world feels older and less forgiving." % name)
+		_:
+			narrative_lines.append("%s steadies their breath in the village square and measures the road ahead." % name)
+
+	if bool(quest_flags.get("quest_tutorial_started", false)):
+		narrative_lines.append("The guide's challenge still hangs over the run, pushing you toward the marked route.")
+	if bool(quest_flags.get("quest_tutorial_encounter_resolved", false)):
+		narrative_lines.append("The trial is behind you now, and the next choice belongs to you instead of the tutorial.")
+	if not system_summary.is_empty():
+		narrative_lines.append("Your System stays active in the background: %s" % system_summary)
+
+	var narrative := " ".join(narrative_lines)
+	var suggestions := _suggestions_for_local_story(map_id, mode, quest_flags)
+	return {
+		"ok": true,
+		"source": "local",
+		"mode": mode,
+		"status": "completed",
+		"narrative": narrative,
+		"mood": "focused",
+		"suggestions": suggestions,
+	}
+
+
+func _suggestions_for_local_story(map_id: String, mode: String, quest_flags: Dictionary) -> Array:
+	if mode == "dialogue":
+		return [
+			{"t": "ask about the route", "w": 1.0},
+			{"t": "report your status", "w": 0.9},
+			{"t": "leave the conversation", "w": 0.8},
+		]
+	if map_id == "map_training_glade" and not bool(quest_flags.get("quest_tutorial_encounter_resolved", false)):
+		return [
+			{"t": "enter the gate", "w": 1.0},
+			{"t": "review skills", "w": 0.9},
+			{"t": "return to the square", "w": 0.8},
+		]
+	if map_id == "map_ruined_outlook":
+		return [
+			{"t": "search the ruins", "w": 1.0},
+			{"t": "head back to the glade", "w": 0.9},
+			{"t": "save progress", "w": 0.8},
+		]
+	return DEFAULT_SUGGESTIONS.duplicate(true)
+
+
+func _local_response(payload: Dictionary) -> Dictionary:
+	return {
+		"http_ok": true,
+		"status": 200,
+		"body": {
+			"ok": true,
+			"done": true,
+			"status": "completed",
+			"threadId": "local-singleplayer",
+			"runId": String(payload.get("runId", "local-singleplayer")),
+			"narrative": "",
+			"suggestions": DEFAULT_SUGGESTIONS,
+		},
+	}
+
+
+func _is_local_mode() -> bool:
+	return runtime_mode.strip_edges().to_lower() == "singleplayer_local"

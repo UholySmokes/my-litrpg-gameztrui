@@ -1,1 +1,0 @@
-# Intentionally empty for now: user_agent/main.py uses Python standard library only.

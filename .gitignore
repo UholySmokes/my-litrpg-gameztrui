@@ -9,6 +9,7 @@ lerna-debug.log*
 
 dist
 *.local
+build/android/
 
 # Playwright artifacts
 playwright-report/
@@ -67,6 +68,7 @@ node_modules
 .vite/
 .eslintcache
 *.tsbuildinfo
+out/
 
 # Python
 __pycache__/
@@ -86,3 +88,5 @@ error/index.html
 
 # Godot Android/Gradle generated state
 godot/android/build/.gradle/
+godot/android/build/build/
+godot/android/build/local.properties

@@ -1,8 +1,5 @@
 extends Panel
 class_name CharacterCreationPanel
-## Overlay UI for character creation. Renders the current step's title,
-## options list, and navigation controls inside a CanvasLayer panel.
-## Works with CharacterCreationController to drive the flow.
 
 const CharacterCreationController := preload("res://scripts/character_creation_controller.gd")
 
@@ -14,12 +11,14 @@ const CharacterCreationController := preload("res://scripts/character_creation_c
 @onready var _name_input: LineEdit = %CreationNameInput
 
 var _controller: CharacterCreationController = null
-var _option_list: Array = []       # current selectable option entries
-var _selected_index: int = -1      # keyboard cursor within _option_list
-var _attr_keys: Array = []         # ordered attribute keys for attribute step
+var _current_step_id: String = ""
+var _current_step_data: Dictionary = {}
+var _option_list: Array = []
+var _selected_index: int = -1
+var _attr_keys: Array = []
 var _option_title: String = ""
-var _option_mode: String = "single" # "single" | "multi"
 var _option_intro: String = ""
+var _option_mode: String = "single"
 var _selected_option_id: String = ""
 var _selected_option_ids: Array = []
 
@@ -35,80 +34,117 @@ func bind_controller(ctrl: CharacterCreationController) -> void:
 	_name_input.hide()
 
 
-# ── signal handlers ────────────────────────────────────────────────
-
 func _on_step_changed(step_id: String, step_index: int, data: Dictionary) -> void:
+	_current_step_id = step_id
+	_current_step_data = data.duplicate(true)
 	_option_list.clear()
-	_selected_index = -1
 	_attr_keys.clear()
+	_selected_index = -1
 	_option_title = ""
-	_option_mode = "single"
 	_option_intro = ""
+	_option_mode = "single"
 	_selected_option_id = ""
 	_selected_option_ids.clear()
 	_name_input.hide()
 
-	var total: int = _controller.get_total_steps()
+	var total := _controller.get_total_steps()
 	_step_label.text = "Step %d / %d" % [step_index + 1, total]
 	_back_button.disabled = not _controller.can_go_back()
 
 	match step_id:
 		"mode":
-			_render_option_step("CREATION MODE", data.get("modes", []), { "id": String(data.get("mode", "")) })
+			_render_option_step(
+				"CREATION MODE",
+				"Choose how much planning you want to do up front.",
+				Array(data.get("modes", [])),
+				{"id": String(data.get("mode", ""))}
+			)
 		"name":
 			_render_name_step(data)
-		"race":
-			_render_option_step("Choose Your Race", data.get("races", []), data.get("selected", {}))
-		"class":
-			_render_option_step("Choose Your Class", data.get("classes", []), data.get("selected", {}))
-		"multiclass":
-			_render_option_step("MULTICLASS (ADVANCED)", data.get("options", []), data.get("selected", {}))
+		"system":
+			_render_option_step(
+				"SYSTEM / CHEAT",
+				"Choose your core System before the rest of creation. It will change the options and skills available later.",
+				Array(data.get("systems", [])),
+				Dictionary(data.get("selected", {}))
+			)
 		"origin":
-			_render_option_step("ORIGIN", data.get("origins", []), data.get("selected", {}))
+			_render_option_step(
+				"ORIGIN",
+				"Pick the background that fits your system and early route.",
+				Array(data.get("origins", [])),
+				Dictionary(data.get("selected", {})),
+				Array(data.get("recommendedIds", []))
+			)
+		"race":
+			_render_option_step(
+				"RACE",
+				"Choose a race. System recommendations are highlighted first.",
+				Array(data.get("races", [])),
+				Dictionary(data.get("selected", {})),
+				Array(data.get("recommendedIds", []))
+			)
+		"class":
+			_render_option_step(
+				"CLASS",
+				"Pick your main class. This combines with race, profession, and system to shape your starting skills.",
+				Array(data.get("classes", [])),
+				Dictionary(data.get("selected", {})),
+				Array(data.get("recommendedIds", []))
+			)
+		"multiclass":
+			_render_option_step(
+				"MULTICLASS",
+				"Advanced mode only. Choose a secondary class or stay focused on one path.",
+				Array(data.get("options", [])),
+				Dictionary(data.get("selected", {}))
+			)
+		"profession":
+			_render_option_step(
+				"PROFESSION",
+				"Choose the craft or trade that adds extra utility and starter skills.",
+				Array(data.get("professions", [])),
+				Dictionary(data.get("selected", {})),
+				Array(data.get("recommendedIds", []))
+			)
 		"attributes":
 			_render_attributes_step(data)
 		"skills":
-			_render_option_step("STARTER SKILLS", data.get("loadouts", []), { "id": String(data.get("selectedLoadoutId", "")) })
+			_render_skills_step(data)
 		"perks":
 			var perk_cfg: Dictionary = data.get("config", {})
-			_option_intro = "Pick %dâ€“%d perks. Enter toggles, Next continues." % [
-				int(perk_cfg.get("minPicks", 1)),
-				int(perk_cfg.get("maxPicks", 2)),
-			]
-			_render_multi_option_step("PERKS", Array(perk_cfg.get("options", [])), Array(data.get("selected", [])))
-		"archetype":
-			_render_option_step("ARCHETYPE SYSTEM", data.get("archetypes", []), data.get("selected", {}))
+			_render_multi_option_step(
+				"PERKS",
+				"Pick %d-%d perks. Enter toggles the highlighted entry and Next continues."
+				% [int(perk_cfg.get("minPicks", 1)), int(perk_cfg.get("maxPicks", 2))],
+				Array(perk_cfg.get("options", [])),
+				Array(data.get("selected", []))
+			)
 		"trees":
 			var tree_cfg: Dictionary = data.get("config", {})
-			_option_intro = "Choose one starter tree to plan early progression."
 			_render_option_step(
-				"STARTER TREE (ADVANCED)",
+				"STARTER TREE",
+				"Advanced mode only. Choose the branch you want to plan around first.",
 				Array(tree_cfg.get("options", [])),
-				{ "id": String((Array(data.get("selected", []))[0] if Array(data.get("selected", [])).size() > 0 else "")) }
+				{"id": String((Array(data.get("selected", []))[0] if Array(data.get("selected", [])).size() > 0 else ""))}
 			)
 		"alignment":
-			_render_option_step("ALIGNMENT", data.get("alignments", []), data.get("selected", {}))
+			_render_option_step(
+				"ALIGNMENT",
+				"Choose the moral axis your run starts from.",
+				Array(data.get("alignments", [])),
+				Dictionary(data.get("selected", {}))
+			)
 		"review":
 			_render_review_step(data)
 
 	_update_next_state()
 
 
-func _on_state_changed(character_data: Dictionary) -> void:
-	if not _controller:
+func _on_state_changed(_character_data: Dictionary) -> void:
+	if _controller == null or not visible:
 		return
-	if not visible:
-		return
-	var step_id: String = _controller.get_current_step()
-	match step_id:
-		"perks":
-			_selected_option_ids = Array(character_data.get("perks", []))
-			_refresh_options_display()
-			_update_next_state()
-		"attributes":
-			_refresh_attribute_display()
-		_:
-			pass
+	_on_step_changed(_controller.get_current_step(), _controller.get_step_index(), _controller.get_step_data())
 
 
 func _on_back_pressed() -> void:
@@ -132,23 +168,17 @@ func _on_name_changed(new_text: String) -> void:
 		_update_next_state()
 
 
-# ── keyboard input ─────────────────────────────────────────────────
-
 func _unhandled_key_input(event: InputEvent) -> void:
-	if not visible:
+	if not visible or _controller == null:
 		return
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
 
 	var key := (event as InputEventKey).keycode
-	var step_id: String = _controller.get_current_step() if _controller else ""
-
-	# Name step: let LineEdit handle input
-	if step_id == "name":
+	if _current_step_id == "name":
 		return
 
-	# Attribute step: arrow keys adjust attributes
-	if step_id == "attributes" and _attr_keys.size() > 0:
+	if _current_step_id == "attributes" and _attr_keys.size() > 0:
 		match key:
 			KEY_UP:
 				_selected_index = maxi(_selected_index - 1, 0)
@@ -158,18 +188,15 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				_refresh_attribute_display()
 			KEY_RIGHT:
 				if _selected_index >= 0 and _selected_index < _attr_keys.size():
-					_controller.allocate_attribute(_attr_keys[_selected_index], 1)
-					_refresh_attribute_display()
+					_controller.allocate_attribute(String(_attr_keys[_selected_index]), 1)
 			KEY_LEFT:
 				if _selected_index >= 0 and _selected_index < _attr_keys.size():
-					_controller.allocate_attribute(_attr_keys[_selected_index], -1)
-					_refresh_attribute_display()
+					_controller.allocate_attribute(String(_attr_keys[_selected_index]), -1)
 			KEY_ENTER, KEY_KP_ENTER:
 				_controller.next_step()
 		get_viewport().set_input_as_handled()
 		return
 
-	# Option steps (race, class, etc.)
 	if _option_list.size() > 0:
 		match key:
 			KEY_UP:
@@ -183,67 +210,47 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 
-	# Review step
-	if step_id == "review":
-		if key == KEY_ENTER or key == KEY_KP_ENTER:
-			_controller.next_step()
-			get_viewport().set_input_as_handled()
+	if _current_step_id == "review" and (key == KEY_ENTER or key == KEY_KP_ENTER):
+		_controller.next_step()
+		get_viewport().set_input_as_handled()
 
-
-# ── render helpers ─────────────────────────────────────────────────
 
 func _render_name_step(data: Dictionary) -> void:
-	_title_label.text = "IDENTITY"
+	_title_label.text = "NAME"
 	_name_input.show()
 	_name_input.text = String(data.get("currentName", ""))
 	_name_input.grab_focus()
 	_body_label.text = "Enter your character's name.\nPress Enter or Next to continue."
 
 
-func _render_option_step(title: String, options: Array, selected: Dictionary) -> void:
+func _render_option_step(
+	title: String,
+	intro: String,
+	options: Array,
+	selected: Dictionary,
+	recommended_ids: Array = []
+) -> void:
 	_option_title = title
-	_title_label.text = title
-	_option_list = options
-	var sel_id := String(selected.get("id", ""))
+	_option_intro = intro
 	_option_mode = "single"
-	_selected_option_id = sel_id
-	_selected_index = -1
-
-	var lines: PackedStringArray = []
-	for i in options.size():
-		var opt: Dictionary = options[i]
-		var opt_id := String(opt.get("id", ""))
-		var opt_name := String(opt.get("name", "???"))
-		var opt_desc := String(opt.get("description", ""))
-		var marker := ""
-		if opt_id == sel_id:
-			marker = " [SELECTED]"
-			_selected_index = i
-		elif i == 0 and _selected_index < 0:
-			_selected_index = 0
-
-		lines.append("%s%s" % [opt_name, marker])
-		if not opt_desc.is_empty():
-			lines.append("  %s" % opt_desc)
-
-		# Show passive if present
-		var passive: Dictionary = opt.get("passive", {})
-		if not passive.is_empty():
-			lines.append("  Passive: %s – %s" % [
-				String(passive.get("name", "")),
-				String(passive.get("description", "")),
-			])
-		lines.append("")
-
-	_body_label.text = "\n".join(lines)
+	_option_list = options.duplicate(true)
+	_selected_option_id = String(selected.get("id", ""))
+	_selected_index = 0 if _option_list.size() > 0 else -1
+	if not _selected_option_id.is_empty():
+		for index in _option_list.size():
+			var entry: Dictionary = _option_list[index]
+			if String(entry.get("id", "")) == _selected_option_id:
+				_selected_index = index
+				break
+	_current_step_data["recommendedIds"] = recommended_ids.duplicate()
 	_refresh_options_display()
 
 
-func _render_multi_option_step(title: String, options: Array, selected_ids: Array) -> void:
+func _render_multi_option_step(title: String, intro: String, options: Array, selected_ids: Array) -> void:
 	_option_title = title
-	_title_label.text = title
-	_option_list = options
+	_option_intro = intro
 	_option_mode = "multi"
+	_option_list = options.duplicate(true)
 	_selected_option_ids = selected_ids.duplicate()
 	_selected_index = 0 if _option_list.size() > 0 else -1
 	_refresh_options_display()
@@ -252,7 +259,6 @@ func _render_multi_option_step(title: String, options: Array, selected_ids: Arra
 func _render_attributes_step(data: Dictionary) -> void:
 	_title_label.text = "ATTRIBUTES"
 	var points: Dictionary = data.get("points", {})
-	var fp: int = int(data.get("freePoints", 0))
 	_attr_keys = Array(points.keys())
 	_attr_keys.sort()
 	_selected_index = 0 if _attr_keys.size() > 0 else -1
@@ -260,178 +266,337 @@ func _render_attributes_step(data: Dictionary) -> void:
 
 
 func _render_skills_step(data: Dictionary) -> void:
-	_title_label.text = "SKILLS"
-	var cfg: Dictionary = data.get("config", {})
-	var max_active: int = int(cfg.get("maxActiveSkills", 3))
-	var max_passive: int = int(cfg.get("maxPassiveSkills", 6))
-	_body_label.text = (
-		"Skill selection is simplified in the current build.\n" +
-		"You will unlock skills as you progress through the world.\n\n" +
-		"Max Active Slots: %d\nMax Passive Slots: %d\n\n" % [max_active, max_passive] +
-		"Press Next to continue."
-	)
+	_option_title = "SKILLS"
+	_option_intro = "Pick a loadout or build your own skill package. System and profession grants are fixed."
+	_option_mode = "skills"
+	_option_list.clear()
+
+	for raw in Array(data.get("loadouts", [])):
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var loadout: Dictionary = raw
+		_option_list.append({
+			"kind": "loadout",
+			"id": String(loadout.get("id", "")),
+			"entry": loadout,
+		})
+
+	for raw in Array(data.get("activeSkillOptions", [])):
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var skill: Dictionary = raw
+		_option_list.append({
+			"kind": "active",
+			"id": String(skill.get("id", "")),
+			"entry": skill,
+		})
+
+	for raw in Array(data.get("passiveSkillOptions", [])):
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var passive: Dictionary = raw
+		_option_list.append({
+			"kind": "passive",
+			"id": String(passive.get("id", "")),
+			"entry": passive,
+		})
+
+	_selected_index = 0 if _option_list.size() > 0 else -1
+	var selected_loadout_id := String(data.get("selectedLoadoutId", ""))
+	if not selected_loadout_id.is_empty():
+		for index in _option_list.size():
+			var row: Dictionary = _option_list[index]
+			if String(row.get("kind", "")) == "loadout" and String(row.get("id", "")) == selected_loadout_id:
+				_selected_index = index
+				break
+	_refresh_options_display()
 
 
 func _render_review_step(data: Dictionary) -> void:
 	_title_label.text = "REVIEW"
 	_next_button.text = "CONFIRM"
 	var lines: PackedStringArray = []
-	lines.append("Name:  %s" % String(data.get("name", "—")))
-
-	var race: Dictionary = data.get("race", {})
-	lines.append("Race:  %s" % String(race.get("name", "—")))
-
-	var cls: Dictionary = data.get("class", {})
-	lines.append("Class: %s  (%s)" % [String(cls.get("name", "—")), String(cls.get("resourceSystem", ""))])
+	lines.append("Name: %s" % _display_text(String(data.get("name", "")), "None"))
+	lines.append("Mode: %s" % String(data.get("mode", "basic")).capitalize())
 	lines.append("")
 
-	lines.append("── Attributes ──")
-	var attrs: Dictionary = data.get("attributes", {})
-	var keys := Array(attrs.keys())
-	keys.sort()
-	for k in keys:
-		lines.append("  %-14s %d" % [String(k).capitalize(), int(attrs[k])])
-	lines.append("  Free Points:   %d" % int(data.get("freePointsRemaining", 0)))
-	lines.append("")
-
-	lines.append("Mode:  %s" % String(data.get("mode", "basic")).capitalize())
+	lines.append("System: %s" % _entity_name(Dictionary(data.get("archetypeSystem", {}))))
+	lines.append("Origin: %s" % _entity_name(Dictionary(data.get("origin", {}))))
+	lines.append("Race: %s" % _entity_name(Dictionary(data.get("race", {}))))
+	lines.append("Class: %s" % _entity_name(Dictionary(data.get("class", {}))))
 
 	var secondary: Dictionary = data.get("secondaryClass", {})
 	if not secondary.is_empty():
-		lines.append("Multiclass: %s" % String(secondary.get("name", "")))
+		lines.append("Multiclass: %s" % _entity_name(secondary))
 
-	var origin: Dictionary = data.get("origin", {})
-	lines.append("Origin: %s" % String(origin.get("name", "")))
-
-	var arch: Dictionary = data.get("archetype", {})
-	lines.append("Archetype: %s" % String(arch.get("name", "")))
-
-	var alignment: Dictionary = data.get("alignment", {})
-	lines.append("Alignment: %s" % String(alignment.get("name", "")))
+	lines.append("Profession: %s" % _entity_name(Dictionary(data.get("profession", {}))))
+	lines.append("Alignment: %s" % _entity_name(Dictionary(data.get("alignment", {}))))
 	lines.append("")
 
-	var active: Array = Array(data.get("activeSkills", []))
-	var passive: Array = Array(data.get("passiveSkills", []))
-	if active.size() > 0 or passive.size() > 0:
-		lines.append("Starter Skills:")
-		if active.size() > 0:
-			lines.append("  Active:  %s" % ", ".join(active))
-		if passive.size() > 0:
-			lines.append("  Passive: %s" % ", ".join(passive))
-		lines.append("")
+	lines.append("Attributes:")
+	var attrs: Dictionary = data.get("attributes", {})
+	var keys := Array(attrs.keys())
+	keys.sort()
+	for key in keys:
+		lines.append("  %-12s %d" % [String(key).capitalize(), int(attrs[key])])
+	lines.append("  Free Points: %d" % int(data.get("freePointsRemaining", 0)))
+	lines.append("")
+
+	var active_skill_names := _skill_name_list(Array(data.get("activeSkills", [])))
+	var passive_skill_names := _skill_name_list(Array(data.get("passiveSkills", [])))
+	lines.append("Selected Active Skills: %s" % _join_or_none(active_skill_names))
+	lines.append("Selected Passive Skills: %s" % _join_or_none(passive_skill_names))
+
+	var system_granted: Dictionary = data.get("systemGrantedSkills", {})
+	lines.append(
+		"System Granted Skills: %s"
+		% _join_or_none(
+			_skill_name_list(Array(system_granted.get("active", [])))
+			+ _skill_name_list(Array(system_granted.get("passive", [])))
+		)
+	)
+
+	var profession_granted: Dictionary = data.get("professionGrantedSkills", {})
+	lines.append(
+		"Profession Granted Skills: %s"
+		% _join_or_none(
+			_skill_name_list(Array(profession_granted.get("active", [])))
+			+ _skill_name_list(Array(profession_granted.get("passive", [])))
+		)
+	)
 
 	var perks: Array = Array(data.get("perks", []))
-	lines.append("Perks: %s" % ("(none)" if perks.is_empty() else ", ".join(perks)))
+	lines.append("Perks: %s" % _join_or_none(perks))
 
 	var trees: Array = Array(data.get("trees", []))
-	if trees.size() > 0:
-		lines.append("Starter Tree: %s" % ", ".join(trees))
-	lines.append("")
-	lines.append("Press CONFIRM to begin your adventure.")
+	lines.append("Starter Trees: %s" % _join_or_none(trees))
 
 	_body_label.text = "\n".join(lines)
 
 
 func _refresh_options_display() -> void:
-	if _option_list.is_empty():
+	if _option_mode == "skills":
+		_refresh_skill_display()
 		return
 
-	if not _option_title.is_empty():
-		_title_label.text = _option_title
-
+	_title_label.text = _option_title
 	var lines: PackedStringArray = []
 	if not _option_intro.is_empty():
 		lines.append(_option_intro)
 		lines.append("")
-	for i in _option_list.size():
-		var opt: Dictionary = _option_list[i]
-		var opt_id := String(opt.get("id", ""))
-		var opt_name := String(opt.get("name", "???"))
-		var opt_desc := String(opt.get("description", ""))
-		var cursor := "▸ " if i == _selected_index else "  "
+
+	var recommended_ids := Array(_current_step_data.get("recommendedIds", []))
+	for index in _option_list.size():
+		var entry: Dictionary = _option_list[index]
+		var entry_id := String(entry.get("id", ""))
+		var cursor := "-> " if index == _selected_index else "   "
+		var selected_marker := ""
 		if _option_mode == "multi":
-			var tick := "[X] " if _selected_option_ids.has(opt_id) else "[ ] "
-			lines.append("%s%s%s" % [cursor, tick, opt_name])
-		else:
-			var marker := " [SELECTED]" if (not _selected_option_id.is_empty() and opt_id == _selected_option_id) else ""
-			lines.append("%s%s%s" % [cursor, opt_name, marker])
-		if not opt_desc.is_empty():
-			lines.append("    %s" % opt_desc)
-
-		var passive: Dictionary = opt.get("passive", {})
-		if not passive.is_empty():
-			lines.append("    Passive: %s" % String(passive.get("name", "")))
-
-		if opt.has("activeSkills"):
-			var active: Array = Array(opt.get("activeSkills", []))
-			if active.size() > 0:
-				lines.append("    Active:  %s" % ", ".join(active))
-		if opt.has("passiveSkills"):
-			var passive_sk: Array = Array(opt.get("passiveSkills", []))
-			if passive_sk.size() > 0:
-				lines.append("    Passive: %s" % ", ".join(passive_sk))
+			selected_marker = "[X] " if _selected_option_ids.has(entry_id) else "[ ] "
+		elif entry_id == _selected_option_id and not entry_id.is_empty():
+			selected_marker = "[SELECTED] "
+		var recommended_marker := " [RECOMMENDED]" if recommended_ids.has(entry_id) else ""
+		lines.append("%s%s%s%s" % [cursor, selected_marker, String(entry.get("name", "Unknown")), recommended_marker])
+		var description := String(entry.get("description", ""))
+		if not description.is_empty():
+			lines.append("    %s" % description)
+		if entry.has("summary") and not String(entry.get("summary", "")).is_empty():
+			lines.append("    Summary: %s" % String(entry.get("summary", "")))
+		if entry.has("category"):
+			lines.append("    Category: %s" % String(entry.get("category", "")))
 		lines.append("")
+
+	_body_label.text = "\n".join(lines)
+
+
+func _refresh_skill_display() -> void:
+	_title_label.text = _option_title
+	var data := _current_step_data
+	var selected_loadout_id := String(data.get("selectedLoadoutId", ""))
+	var selected_active_ids := Array(data.get("activeSkills", []))
+	var selected_passive_ids := Array(data.get("passiveSkills", []))
+	var required_active := int(data.get("requiredActiveSkills", 3))
+	var required_passive := int(data.get("requiredPassiveSkills", 6))
+	var slot_bonuses: Dictionary = data.get("slotBonuses", {})
+
+	var lines: PackedStringArray = []
+	lines.append(_option_intro)
+	lines.append(
+		"Required picks: %d active, %d passive. Slot bonuses: +%d active, +%d passive."
+		% [
+			required_active,
+			required_passive,
+			int(slot_bonuses.get("active", 0)),
+			int(slot_bonuses.get("passive", 0)),
+		]
+	)
+	lines.append("")
+	lines.append(
+		"Granted by System: %s"
+		% _join_or_none(
+			_skill_name_list(Array(data.get("grantedSystemActiveSkills", [])))
+			+ _skill_name_list(Array(data.get("grantedSystemPassiveSkills", [])))
+		)
+	)
+	lines.append(
+		"Granted by Profession: %s"
+		% _join_or_none(
+			_skill_name_list(Array(data.get("grantedProfessionActiveSkills", [])))
+			+ _skill_name_list(Array(data.get("grantedProfessionPassiveSkills", [])))
+		)
+	)
+	var blocked_skill_ids := Array(data.get("blockedSkillIds", []))
+	if blocked_skill_ids.size() > 0:
+		lines.append("Blocked by System: %s" % ", ".join(blocked_skill_ids))
+	lines.append("")
+
+	lines.append("Loadouts:")
+	for index in _option_list.size():
+		var row: Dictionary = _option_list[index]
+		if String(row.get("kind", "")) != "loadout":
+			continue
+		var loadout: Dictionary = row.get("entry", {})
+		var cursor := "-> " if index == _selected_index else "   "
+		var marker := "[SELECTED] " if String(row.get("id", "")) == selected_loadout_id else ""
+		lines.append("%s%s%s" % [cursor, marker, String(loadout.get("name", "Loadout"))])
+		if not String(loadout.get("description", "")).is_empty():
+			lines.append("    %s" % String(loadout.get("description", "")))
+	lines.append("")
+
+	lines.append("Elective Active Skills (%d/%d):" % [selected_active_ids.size(), required_active])
+	for index in _option_list.size():
+		var row: Dictionary = _option_list[index]
+		if String(row.get("kind", "")) != "active":
+			continue
+		var skill: Dictionary = row.get("entry", {})
+		var skill_id := String(row.get("id", ""))
+		var cursor := "-> " if index == _selected_index else "   "
+		var marker := "[X] " if selected_active_ids.has(skill_id) else "[ ] "
+		lines.append("%s%s%s" % [cursor, marker, String(skill.get("name", skill_id))])
+		if not String(skill.get("description", "")).is_empty():
+			lines.append("    %s" % String(skill.get("description", "")))
+	lines.append("")
+
+	lines.append("Elective Passive Skills (%d/%d):" % [selected_passive_ids.size(), required_passive])
+	for index in _option_list.size():
+		var row: Dictionary = _option_list[index]
+		if String(row.get("kind", "")) != "passive":
+			continue
+		var passive: Dictionary = row.get("entry", {})
+		var passive_id := String(row.get("id", ""))
+		var cursor := "-> " if index == _selected_index else "   "
+		var marker := "[X] " if selected_passive_ids.has(passive_id) else "[ ] "
+		lines.append("%s%s%s" % [cursor, marker, String(passive.get("name", passive_id))])
+		if not String(passive.get("description", "")).is_empty():
+			lines.append("    %s" % String(passive.get("description", "")))
 
 	_body_label.text = "\n".join(lines)
 
 
 func _refresh_attribute_display() -> void:
-	if not _controller:
+	if _controller == null:
 		return
-	var points: Dictionary = _controller.attribute_points
-	var fp: int = _controller.free_points
+	var data := _controller.get_step_data("attributes")
+	var points: Dictionary = data.get("points", {})
+	var free_points := int(data.get("freePoints", 0))
+	var bias: Dictionary = data.get("attributeBias", {})
 	var lines: PackedStringArray = []
-	lines.append("Free Points: %d" % fp)
-	lines.append("Use ◀ ▶ to adjust, ▲ ▼ to navigate.\n")
-	for i in _attr_keys.size():
-		var k: String = _attr_keys[i]
-		var val: int = int(points.get(k, 0))
-		var cursor := "▸ " if i == _selected_index else "  "
-		lines.append("%s%-14s  ◀ %2d ▶" % [cursor, k.capitalize(), val])
+	lines.append("Free Points: %d" % free_points)
+	lines.append("Use Left/Right to adjust and Up/Down to move.")
+	var primary := Array(bias.get("primary", []))
+	var secondary := Array(bias.get("secondary", []))
+	if primary.size() > 0:
+		lines.append("Primary Bias: %s" % ", ".join(primary))
+	if secondary.size() > 0:
+		lines.append("Secondary Bias: %s" % ", ".join(secondary))
+	lines.append("")
+	for index in _attr_keys.size():
+		var key := String(_attr_keys[index])
+		var cursor := "-> " if index == _selected_index else "   "
+		lines.append("%s%-12s %d" % [cursor, key.capitalize(), int(points.get(key, 0))])
 	_body_label.text = "\n".join(lines)
 	_update_next_state()
 
 
 func _confirm_option_selection() -> void:
-	if _selected_index < 0 or _selected_index >= _option_list.size():
+	if _controller == null or _selected_index < 0 or _selected_index >= _option_list.size():
 		return
-	var opt: Dictionary = _option_list[_selected_index]
-	var opt_id := String(opt.get("id", ""))
-	var step_id: String = _controller.get_current_step()
+	var step_id := _controller.get_current_step()
+	var row: Dictionary = _option_list[_selected_index]
+	var row_id := String(row.get("id", ""))
+
 	match step_id:
 		"mode":
-			_controller.set_creation_mode(opt_id)
+			_controller.set_creation_mode(row_id)
 			return
-		"race":
-			_controller.select_race(opt_id)
-		"class":
-			_controller.select_class(opt_id)
-		"multiclass":
-			_controller.select_secondary_class(opt_id)
+		"system":
+			_controller.select_system(row_id)
 		"origin":
-			_controller.select_origin(opt_id)
-		"skills":
-			_controller.select_skill_loadout(opt_id)
-		"perks":
-			_controller.toggle_perk(opt_id)
-			_selected_option_ids = _controller.selected_perks.duplicate()
-			_refresh_options_display()
-			_update_next_state()
-			return
-		"archetype":
-			_controller.select_archetype(opt_id)
-		"trees":
-			_controller.toggle_tree(opt_id)
+			_controller.select_origin(row_id)
+		"race":
+			_controller.select_race(row_id)
+		"class":
+			_controller.select_class(row_id)
+		"multiclass":
+			_controller.select_secondary_class(row_id)
+		"profession":
+			_controller.select_profession(row_id)
 		"alignment":
-			_controller.select_alignment(opt_id)
+			_controller.select_alignment(row_id)
+		"trees":
+			_controller.toggle_tree(row_id)
+		"perks":
+			_controller.toggle_perk(row_id)
+			return
+		"skills":
+			var kind := String(row.get("kind", ""))
+			if kind == "loadout":
+				_controller.select_skill_loadout(row_id)
+			elif kind == "active":
+				_controller.toggle_active_skill(row_id)
+			elif kind == "passive":
+				_controller.toggle_passive_skill(row_id)
+			return
+		_:
+			return
+
 	_update_next_state()
-	# Auto-advance after selection
 	_controller.next_step()
 
 
 func _update_next_state() -> void:
-	if not _controller:
+	if _controller == null:
 		return
-	var on_review: bool = _controller.get_current_step() == "review"
+	var on_review := _controller.get_current_step() == "review"
 	_next_button.text = "CONFIRM" if on_review else "NEXT"
 	_next_button.disabled = not _controller.can_go_next()
+
+
+func _entity_name(entry: Dictionary) -> String:
+	var value := String(entry.get("name", "")).strip_edges()
+	return value if not value.is_empty() else "None"
+
+
+func _display_text(value: String, fallback: String) -> String:
+	return value if not value.strip_edges().is_empty() else fallback
+
+
+func _skill_name_list(entries: Array) -> Array:
+	var names: Array = []
+	for raw in entries:
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var name := String((raw as Dictionary).get("name", "")).strip_edges()
+		if name.is_empty():
+			continue
+		names.append(name)
+	return names
+
+
+func _join_or_none(values: Array) -> String:
+	if values.is_empty():
+		return "None"
+	var names: PackedStringArray = []
+	for raw in values:
+		names.append(String(raw))
+	return ", ".join(names)

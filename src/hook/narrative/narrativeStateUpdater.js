@@ -92,8 +92,11 @@ export function createInitialNarrativeState(
     source = "ai",
     timestamp,
     maxEntries = 80,
+    mood,
   } = {},
 ) {
+  const resolvedMood =
+    typeof mood === "string" && mood.trim() ? mood.trim() : inferMood(narrativeText);
   const seededState = applyNarrativeEntryToState(
     currentState,
     {
@@ -101,7 +104,7 @@ export function createInitialNarrativeState(
       text: narrativeText,
       timestamp,
       source,
-      mood: inferMood(narrativeText),
+      mood: resolvedMood,
     },
     { maxEntries },
   );
@@ -115,7 +118,7 @@ export function createInitialNarrativeState(
         atCount: 1,
         updatedAt: timestamp,
       },
-      currentMood: inferMood(narrativeText),
+      currentMood: resolvedMood,
     },
   };
 }

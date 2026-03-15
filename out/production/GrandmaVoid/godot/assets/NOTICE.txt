@@ -1,3 +1,0 @@
-﻿Placeholder asset pack generated for roadmap M6 implementation.
-These files are internal temporary production placeholders until final art delivery replaces them.
-See docs/ART_ASSET_LIST.md for target deliverables and naming expansion.

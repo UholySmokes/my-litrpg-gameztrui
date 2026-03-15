@@ -40,6 +40,13 @@ describe("buildHistorySection", () => {
             sequence: 2,
           }),
           makeEntry({
+            id: "p",
+            type: "user",
+            text: "> inspect the gate",
+            timestamp: 2,
+            sequence: 2.5,
+          }),
+          makeEntry({
             id: "ignored",
             type: "combat",
             text: "Combat log",
@@ -55,6 +62,7 @@ describe("buildHistorySection", () => {
     expect(lines).toEqual([
       "System: System notice",
       "Narrator: Second event",
+      "Player: inspect the gate",
       "Narrator: Third event",
     ]);
     expect(history).not.toContain("Combat log");

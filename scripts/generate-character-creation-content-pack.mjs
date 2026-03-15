@@ -117,12 +117,26 @@ function projectArchetypeSystem(entry) {
     category: entry.category || "Unknown",
     summary: entry.summary || "",
     description: entry.description || "",
+    rarity: entry.rarity || null,
+    stability: entry.stability || null,
+    selectionWeight: Number.isFinite(entry.selectionWeight)
+      ? entry.selectionWeight
+      : null,
     coreLoop: Array.isArray(entry.coreLoop) ? [...entry.coreLoop] : [],
     progression: Array.isArray(entry.progression) ? [...entry.progression] : [],
     narrativeHooks: Array.isArray(entry.narrativeHooks)
       ? [...entry.narrativeHooks]
       : [],
     questHooks: Array.isArray(entry.questHooks) ? [...entry.questHooks] : [],
+    possibleUses: Array.isArray(entry.possibleUses) ? [...entry.possibleUses] : [],
+    limits: Array.isArray(entry.limits) ? [...entry.limits] : [],
+    costs: Array.isArray(entry.costs) ? [...entry.costs] : [],
+    worldCompatibility: Array.isArray(entry.worldCompatibility)
+      ? [...entry.worldCompatibility]
+      : [],
+    factionReactions: Array.isArray(entry.factionReactions)
+      ? [...entry.factionReactions]
+      : [],
     tags: Array.isArray(entry.tags) ? [...entry.tags] : [],
     archetypeResource:
       entry.archetypeResource && typeof entry.archetypeResource === "object"

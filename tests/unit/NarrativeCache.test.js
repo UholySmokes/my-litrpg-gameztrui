@@ -14,25 +14,77 @@ afterEach(() => {
 describe("initial narrative cache helpers", () => {
   it("builds a deterministic cache key across object and string refs", () => {
     const first = createInitialNarrativeCacheKey({
-      world: { vars: { startingSceneId: "start_fog_clan_ashes", current_quest_id: "quest_a" } },
+      world: {
+        vars: {
+          startingSceneId: "start_fog_clan_ashes",
+          current_quest_id: "quest_a",
+          openingSceneChoicePending: true,
+        },
+        location: { current: "starting_zone" },
+      },
       quests: { active: [{ id: "quest_b" }, { id: "quest_a" }] },
       player: {
+        name: "Ari",
         race: { id: "human" },
         class: { id: "knight" },
         profession: { id: "smith" },
+        archetypeSystem: { id: "authority", category: "Authority" },
+        activeSkills: [{ id: "guard_stance" }],
       },
     });
     const second = createInitialNarrativeCacheKey({
-      world: { vars: { startingSceneId: "start_fog_clan_ashes", current_quest_id: "quest_a" } },
+      world: {
+        vars: {
+          startingSceneId: "start_fog_clan_ashes",
+          current_quest_id: "quest_a",
+          openingSceneChoicePending: true,
+        },
+        location: "starting_zone",
+      },
       quests: { active: [{ id: "quest_a" }, { id: "quest_b" }] },
       player: {
+        name: "Ari",
         race: "human",
         class: "knight",
         profession: "smith",
+        archetypeSystem: { id: "authority", category: "Authority" },
+        activeSkills: [{ id: "guard_stance" }],
       },
     });
 
     expect(first).toBe(second);
+  });
+
+  it("differentiates cache keys when player identity or system identity changes", () => {
+    const base = {
+      world: {
+        vars: { startingSceneId: "start_fog_clan_ashes", current_quest_id: "quest_a" },
+        location: { current: "starting_zone" },
+      },
+      quests: { active: [{ id: "quest_a" }] },
+      player: {
+        name: "Ari",
+        race: { id: "human" },
+        class: { id: "knight" },
+        profession: { id: "smith" },
+        archetypeSystem: { id: "authority", category: "Authority" },
+      },
+    };
+
+    const otherName = createInitialNarrativeCacheKey({
+      ...base,
+      player: { ...base.player, name: "Bram" },
+    });
+    const otherSystem = createInitialNarrativeCacheKey({
+      ...base,
+      player: {
+        ...base.player,
+        archetypeSystem: { id: "overlay", category: "Overlay" },
+      },
+    });
+
+    expect(otherName).not.toBe(createInitialNarrativeCacheKey(base));
+    expect(otherSystem).not.toBe(createInitialNarrativeCacheKey(base));
   });
 
   it("stores and reads cached initial narrative responses", () => {

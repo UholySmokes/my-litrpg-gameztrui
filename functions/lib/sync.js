@@ -11,19 +11,20 @@ const {
 	normalizeCommitEnvelope,
 	normalizeCommitBatchRequest,
 	buildInitialGameplayState,
-	validateTriggerAgainstManifest,
+	validateCommitAgainstState,
 	applyCommitToState,
 	toPublicState,
 	hashCanonicalState,
 } = require("./sync-core");
 const {
 	SYNC_COMMAND_TYPES_V1,
-	SYNC_COMMAND_VERBS_V1,
+	getSupportedCommandVerbs,
 	normalizeSyncCommandType,
 	normalizeSyncCommandVerb,
 } = require("./sync-command-contract");
 const syncStore = require("./sync-store");
 const { persistRunSnapshot } = require("./sync-snapshots");
+const { withRouteLatency } = require("./route-latency");
 
 function normalizeString(value) {
 	return typeof value === "string" ? value.trim() : "";
@@ -49,6 +50,59 @@ function parseCommaSeparatedSet(value) {
 			.split(",")
 			.map((item) => normalizeString(item).toLowerCase())
 			.filter(Boolean),
+	);
+}
+
+function estimateJsonBytes(value) {
+	if (value === undefined) return 0;
+	try {
+		return Buffer.byteLength(JSON.stringify(value), "utf8");
+	} catch {
+		return 0;
+	}
+}
+
+function buildSyncRouteLatencyMeta(route, req) {
+	const body = req?.body && typeof req.body === "object" ? req.body : null;
+	const runId = normalizeString(req?.query?.runId || body?.runId);
+	const meta = {
+		route,
+		runId: runId || undefined,
+		payloadBytes: estimateJsonBytes(body) || undefined,
+	};
+
+	if (Array.isArray(body?.commits)) {
+		meta.commitCount = body.commits.length;
+	} else if (body) {
+		meta.commitCount = 1;
+	}
+
+	if (req?.query) {
+		if (Number.isFinite(Number(req.query.afterSeq))) {
+			meta.afterSeq = parseInteger(req.query.afterSeq, 0);
+		}
+		if (Number.isFinite(Number(req.query.limit))) {
+			meta.limit = parseInteger(req.query.limit, 0);
+		}
+		const includeRejected = normalizeString(req.query.includeRejected).toLowerCase();
+		if (includeRejected) {
+			meta.includeRejected = includeRejected === "true";
+		}
+	}
+
+	return meta;
+}
+
+async function runSyncRoute({ route, req, res }, work) {
+	return withRouteLatency(
+		{
+			scope: "sync",
+			route,
+			req,
+			res,
+			meta: () => buildSyncRouteLatencyMeta(route, req),
+		},
+		work,
 	);
 }
 
@@ -444,16 +498,16 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 			continue;
 		}
 
-		const triggerValidation = validateTriggerAgainstManifest({
+		const commitValidation = validateCommitAgainstState({
 			manifest,
 			state,
 			commit,
 		});
-		if (!triggerValidation.ok) {
+		if (!commitValidation.ok) {
 			const reject = buildRejectResult({
 				commit,
-				errorCode: triggerValidation.errorCode,
-				message: triggerValidation.message,
+				errorCode: commitValidation.errorCode,
+				message: commitValidation.message,
 			});
 			await syncStore.appendEvent({
 				ownerId,
@@ -477,8 +531,9 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 		state = applyCommitToState({
 			state,
 			commit,
-			triggerDef: triggerValidation.triggerDef,
-			resolvedTargetId: triggerValidation.resolvedTargetId,
+			triggerDef: commitValidation.triggerDef,
+			resolvedTargetId: commitValidation.resolvedTargetId,
+			character: commitValidation.character,
 		});
 
 		await syncStore.putRun({
@@ -560,93 +615,97 @@ function buildSyncResponse({ result, manifest }) {
 }
 
 async function commit(req, res) {
-	try {
-		const user = await requireUser(req, res);
-		if (!user) return;
-		if (!enforceCanaryAccess(res, user)) return;
-		if (!enforceLimitedRolloutAccess(res, user)) return;
-		const gate = await enforceProgressReset(res, { ownerId: user.id });
-		if (!gate.ok) return;
+	return runSyncRoute({ route: "commit", req, res }, async () => {
+		try {
+			const user = await requireUser(req, res);
+			if (!user) return;
+			if (!enforceCanaryAccess(res, user)) return;
+			if (!enforceLimitedRolloutAccess(res, user)) return;
+			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			if (!gate.ok) return;
 
-		const body = await readJsonBody(req);
-		const normalized = normalizeCommitEnvelope(body);
-		if (!normalized.ok) {
-			return json(res, 400, {
-				ok: false,
-				errorCode: normalized.errorCode,
-				message: normalized.message,
+			const body = await readJsonBody(req);
+			const normalized = normalizeCommitEnvelope(body);
+			if (!normalized.ok) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: normalized.errorCode,
+					message: normalized.message,
+				});
+			}
+
+			const manifest = getWorldManifest();
+			const result = await processCommitStream({
+				ownerId: user.id,
+				commits: [normalized.commit],
+				manifest,
 			});
-		}
 
-		const manifest = getWorldManifest();
-		const result = await processCommitStream({
-			ownerId: user.id,
-			commits: [normalized.commit],
-			manifest,
-		});
+			if (!result.ok) {
+				return json(res, 500, {
+					ok: false,
+					errorCode: result.errorCode || "COMMIT_FAILED",
+					message: result.message || "Commit processing failed.",
+				});
+			}
 
-		if (!result.ok) {
+			const response = buildSyncResponse({ result, manifest });
+			return json(res, response.ok ? 200 : 409, response);
+		} catch (error) {
 			return json(res, 500, {
 				ok: false,
-				errorCode: result.errorCode || "COMMIT_FAILED",
-				message: result.message || "Commit processing failed.",
+				errorCode: "UNEXPECTED_SYNC_ERROR",
+				message: String(error?.message || error || "Unknown error"),
 			});
 		}
-
-		const response = buildSyncResponse({ result, manifest });
-		return json(res, response.ok ? 200 : 409, response);
-	} catch (error) {
-		return json(res, 500, {
-			ok: false,
-			errorCode: "UNEXPECTED_SYNC_ERROR",
-			message: String(error?.message || error || "Unknown error"),
-		});
-	}
+	});
 }
 
 async function commitBatch(req, res) {
-	try {
-		const user = await requireUser(req, res);
-		if (!user) return;
-		if (!enforceCanaryAccess(res, user)) return;
-		if (!enforceLimitedRolloutAccess(res, user)) return;
-		const gate = await enforceProgressReset(res, { ownerId: user.id });
-		if (!gate.ok) return;
+	return runSyncRoute({ route: "commit-batch", req, res }, async () => {
+		try {
+			const user = await requireUser(req, res);
+			if (!user) return;
+			if (!enforceCanaryAccess(res, user)) return;
+			if (!enforceLimitedRolloutAccess(res, user)) return;
+			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			if (!gate.ok) return;
 
-		const body = await readJsonBody(req);
-		const normalized = normalizeCommitBatchRequest(body);
-		if (!normalized.ok) {
-			return json(res, 400, {
-				ok: false,
-				errorCode: normalized.errorCode,
-				message: normalized.message,
+			const body = await readJsonBody(req);
+			const normalized = normalizeCommitBatchRequest(body);
+			if (!normalized.ok) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: normalized.errorCode,
+					message: normalized.message,
+				});
+			}
+
+			const manifest = getWorldManifest();
+			const result = await processCommitStream({
+				ownerId: user.id,
+				commits: normalized.commits,
+				manifest,
 			});
-		}
 
-		const manifest = getWorldManifest();
-		const result = await processCommitStream({
-			ownerId: user.id,
-			commits: normalized.commits,
-			manifest,
-		});
+			if (!result.ok) {
+				return json(res, 500, {
+					ok: false,
+					errorCode: result.errorCode || "COMMIT_BATCH_FAILED",
+					message: result.message || "Commit batch processing failed.",
+				});
+			}
 
-		if (!result.ok) {
+			const response = buildSyncResponse({ result, manifest });
+			return json(res, response.ok ? 200 : 409, response);
+		} catch (error) {
 			return json(res, 500, {
 				ok: false,
-				errorCode: result.errorCode || "COMMIT_BATCH_FAILED",
-				message: result.message || "Commit batch processing failed.",
+				errorCode: "UNEXPECTED_SYNC_ERROR",
+				message: String(error?.message || error || "Unknown error"),
 			});
 		}
-
-		const response = buildSyncResponse({ result, manifest });
-		return json(res, response.ok ? 200 : 409, response);
-	} catch (error) {
-		return json(res, 500, {
-			ok: false,
-			errorCode: "UNEXPECTED_SYNC_ERROR",
-			message: String(error?.message || error || "Unknown error"),
-		});
-	}
+	});
 }
 
 function normalizeLegacyActionBody(rawBody, manifest) {
@@ -698,40 +757,14 @@ function normalizeCommandBody(rawBody, manifest) {
 		normalizeString(command.verb) ||
 		normalizeString(command.triggerType) ||
 		normalizeString(body.triggerType);
-	const commandVerb = normalizeSyncCommandVerb(rawCommandVerb);
+	const commandVerb = normalizeSyncCommandVerb(rawCommandVerb, commandType);
 	if (!commandVerb) {
 		return {
 			ok: false,
 			errorCode: "UNSUPPORTED_COMMAND_VERB",
-			message: `Supported command verbs: ${SYNC_COMMAND_VERBS_V1.join(", ")}.`,
+			message: `Supported command verbs: ${getSupportedCommandVerbs(commandType).join(", ")}.`,
 		};
 	}
-
-	const explicitTriggerType = normalizeString(command.triggerType).toUpperCase();
-	if (explicitTriggerType && explicitTriggerType !== commandVerb) {
-		return {
-			ok: false,
-			errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
-			message: "command.verb must match command.triggerType for TRIGGER commands.",
-		};
-	}
-
-	const bodyTriggerType = normalizeString(body.triggerType).toUpperCase();
-	if (bodyTriggerType && bodyTriggerType !== commandVerb) {
-		return {
-			ok: false,
-			errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
-			message: "command.verb must match triggerType envelope value.",
-		};
-	}
-
-	const triggerType = commandVerb;
-	const trigger =
-		command.trigger && typeof command.trigger === "object"
-			? command.trigger
-			: body.trigger && typeof body.trigger === "object"
-				? body.trigger
-				: null;
 
 	const envelope = {
 		id: body.id,
@@ -741,261 +774,315 @@ function normalizeCommandBody(rawBody, manifest) {
 		createdAt: body.createdAt,
 		contentVersion:
 			normalizeString(body.contentVersion) || manifest.contentVersion,
-		triggerType,
-		trigger,
 		commandType,
 		command: {
 			...command,
 			type: commandType,
 			verb: commandVerb,
-			triggerType,
 		},
 	};
+
+	if (commandType === "TRIGGER") {
+		const explicitTriggerType = normalizeString(command.triggerType).toUpperCase();
+		if (explicitTriggerType && explicitTriggerType !== commandVerb) {
+			return {
+				ok: false,
+				errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
+				message: "command.verb must match command.triggerType for TRIGGER commands.",
+			};
+		}
+
+		const bodyTriggerType = normalizeString(body.triggerType).toUpperCase();
+		if (bodyTriggerType && bodyTriggerType !== commandVerb) {
+			return {
+				ok: false,
+				errorCode: "COMMAND_VERB_TRIGGER_MISMATCH",
+				message: "command.verb must match triggerType envelope value.",
+			};
+		}
+
+		const trigger =
+			command.trigger && typeof command.trigger === "object"
+				? command.trigger
+				: body.trigger && typeof body.trigger === "object"
+					? body.trigger
+					: null;
+		envelope.triggerType = commandVerb;
+		envelope.trigger = trigger;
+		envelope.command.triggerType = commandVerb;
+		return normalizeCommitEnvelope(envelope);
+	}
+
+	if (commandType === "CHARACTER") {
+		const character =
+			command.character && typeof command.character === "object"
+				? command.character
+				: body.character && typeof body.character === "object"
+					? body.character
+					: null;
+		if (!character) {
+			return {
+				ok: false,
+				errorCode: "INVALID_CHARACTER_PAYLOAD",
+				message: "command.character object is required for CHARACTER commands.",
+			};
+		}
+		envelope.command.character = character;
+		return normalizeCommitEnvelope(envelope);
+	}
 
 	return normalizeCommitEnvelope(envelope);
 }
 
 async function action(req, res) {
-	try {
-		const user = await requireUser(req, res);
-		if (!user) return;
-		if (!enforceCanaryAccess(res, user)) return;
-		if (!enforceLimitedRolloutAccess(res, user)) return;
-		const gate = await enforceProgressReset(res, { ownerId: user.id });
-		if (!gate.ok) return;
+	return runSyncRoute({ route: "action", req, res }, async () => {
+		try {
+			const user = await requireUser(req, res);
+			if (!user) return;
+			if (!enforceCanaryAccess(res, user)) return;
+			if (!enforceLimitedRolloutAccess(res, user)) return;
+			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			if (!gate.ok) return;
 
-		const manifest = getWorldManifest();
-		const body = await readJsonBody(req);
-		const commitEnvelope = normalizeLegacyActionBody(body, manifest);
-		const normalized = normalizeCommitEnvelope(commitEnvelope);
-		if (!normalized.ok) {
-			return json(res, 400, {
-				ok: false,
-				errorCode: normalized.errorCode,
-				message: normalized.message,
+			const manifest = getWorldManifest();
+			const body = await readJsonBody(req);
+			const commitEnvelope = normalizeLegacyActionBody(body, manifest);
+			const normalized = normalizeCommitEnvelope(commitEnvelope);
+			if (!normalized.ok) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: normalized.errorCode,
+					message: normalized.message,
+				});
+			}
+
+			const result = await processCommitStream({
+				ownerId: user.id,
+				commits: [normalized.commit],
+				manifest,
 			});
-		}
+			if (!result.ok) {
+				return json(res, 500, {
+					ok: false,
+					errorCode: result.errorCode || "COMMIT_FAILED",
+					message: result.message || "Commit processing failed.",
+				});
+			}
 
-		const result = await processCommitStream({
-			ownerId: user.id,
-			commits: [normalized.commit],
-			manifest,
-		});
-		if (!result.ok) {
+			const response = buildSyncResponse({ result, manifest });
+			return json(res, response.ok ? 200 : 409, response);
+		} catch (error) {
 			return json(res, 500, {
 				ok: false,
-				errorCode: result.errorCode || "COMMIT_FAILED",
-				message: result.message || "Commit processing failed.",
+				errorCode: "UNEXPECTED_SYNC_ERROR",
+				message: String(error?.message || error || "Unknown error"),
 			});
 		}
-
-		const response = buildSyncResponse({ result, manifest });
-		return json(res, response.ok ? 200 : 409, response);
-	} catch (error) {
-		return json(res, 500, {
-			ok: false,
-			errorCode: "UNEXPECTED_SYNC_ERROR",
-			message: String(error?.message || error || "Unknown error"),
-		});
-	}
+	});
 }
 
 async function command(req, res) {
-	try {
-		const user = await requireUser(req, res);
-		if (!user) return;
-		if (!enforceCanaryAccess(res, user)) return;
-		if (!enforceLimitedRolloutAccess(res, user)) return;
-		const gate = await enforceProgressReset(res, { ownerId: user.id });
-		if (!gate.ok) return;
+	return runSyncRoute({ route: "command", req, res }, async () => {
+		try {
+			const user = await requireUser(req, res);
+			if (!user) return;
+			if (!enforceCanaryAccess(res, user)) return;
+			if (!enforceLimitedRolloutAccess(res, user)) return;
+			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			if (!gate.ok) return;
 
-		const manifest = getWorldManifest();
-		const body = await readJsonBody(req);
-		const normalized = normalizeCommandBody(body, manifest);
-		if (!normalized.ok) {
-			return json(res, 400, {
-				ok: false,
-				errorCode: normalized.errorCode,
-				message: normalized.message,
+			const manifest = getWorldManifest();
+			const body = await readJsonBody(req);
+			const normalized = normalizeCommandBody(body, manifest);
+			if (!normalized.ok) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: normalized.errorCode,
+					message: normalized.message,
+				});
+			}
+
+			const result = await processCommitStream({
+				ownerId: user.id,
+				commits: [normalized.commit],
+				manifest,
 			});
-		}
+			if (!result.ok) {
+				return json(res, 500, {
+					ok: false,
+					errorCode: result.errorCode || "COMMAND_FAILED",
+					message: result.message || "Command processing failed.",
+				});
+			}
 
-		const result = await processCommitStream({
-			ownerId: user.id,
-			commits: [normalized.commit],
-			manifest,
-		});
-		if (!result.ok) {
+			const response = buildSyncResponse({ result, manifest });
+			return json(res, response.ok ? 200 : 409, response);
+		} catch (error) {
 			return json(res, 500, {
 				ok: false,
-				errorCode: result.errorCode || "COMMAND_FAILED",
-				message: result.message || "Command processing failed.",
+				errorCode: "UNEXPECTED_SYNC_ERROR",
+				message: String(error?.message || error || "Unknown error"),
 			});
 		}
-
-		const response = buildSyncResponse({ result, manifest });
-		return json(res, response.ok ? 200 : 409, response);
-	} catch (error) {
-		return json(res, 500, {
-			ok: false,
-			errorCode: "UNEXPECTED_SYNC_ERROR",
-			message: String(error?.message || error || "Unknown error"),
-		});
-	}
+	});
 }
 
 async function pull(req, res) {
-	try {
-		const user = await requireUser(req, res);
-		if (!user) return;
-		if (!enforceCanaryAccess(res, user)) return;
-		if (!enforceLimitedRolloutAccess(res, user)) return;
-		const gate = await enforceProgressReset(res, { ownerId: user.id });
-		if (!gate.ok) return;
+	return runSyncRoute({ route: "pull", req, res }, async () => {
+		try {
+			const user = await requireUser(req, res);
+			if (!user) return;
+			if (!enforceCanaryAccess(res, user)) return;
+			if (!enforceLimitedRolloutAccess(res, user)) return;
+			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			if (!gate.ok) return;
 
-		const runId = normalizeString(req?.query?.runId);
-		if (!runId) {
-			return json(res, 400, {
+			const runId = normalizeString(req?.query?.runId);
+			if (!runId) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: "MISSING_RUN_ID",
+					message: "runId query parameter is required.",
+				});
+			}
+
+			const manifest = getWorldManifest();
+			const loaded = await loadRunState({
+				ownerId: user.id,
+				runId,
+				manifest,
+				allowCreate: false,
+			});
+			if (!loaded) {
+				return json(res, 404, {
+					ok: false,
+					errorCode: "RUN_NOT_FOUND",
+					message: "Run not found.",
+				});
+			}
+
+			const afterSeq = parseInteger(req?.query?.afterSeq, 0);
+			const limit = parseInteger(req?.query?.limit, 100);
+			const events = await syncStore.listEvents({
+				ownerId: user.id,
+				runId,
+				afterSeq,
+				limit,
+			});
+			return json(res, 200, {
+				ok: true,
+				runId,
+				contentVersion: manifest.contentVersion,
+				canonicalState: toPublicState(loaded.state),
+				events: events.map((event) => ({
+					commitId: event.commit_id,
+					clientSeq: event.client_seq,
+					eventType: event.event_type || event.eventType || "TRIGGER",
+					triggerType: event.trigger_type || event.triggerType || null,
+					accepted: event.accepted,
+					errorCode: event.error_code,
+					message: event.message,
+					stateHash: event.state_hash,
+					createdAt: event.created_at,
+				})),
+			});
+		} catch (error) {
+			return json(res, 500, {
 				ok: false,
-				errorCode: "MISSING_RUN_ID",
-				message: "runId query parameter is required.",
+				errorCode: "UNEXPECTED_SYNC_ERROR",
+				message: String(error?.message || error || "Unknown error"),
 			});
 		}
-
-		const manifest = getWorldManifest();
-		const loaded = await loadRunState({
-			ownerId: user.id,
-			runId,
-			manifest,
-			allowCreate: false,
-		});
-		if (!loaded) {
-			return json(res, 404, {
-				ok: false,
-				errorCode: "RUN_NOT_FOUND",
-				message: "Run not found.",
-			});
-		}
-
-		const afterSeq = parseInteger(req?.query?.afterSeq, 0);
-		const limit = parseInteger(req?.query?.limit, 100);
-		const events = await syncStore.listEvents({
-			ownerId: user.id,
-			runId,
-			afterSeq,
-			limit,
-		});
-		return json(res, 200, {
-			ok: true,
-			runId,
-			contentVersion: manifest.contentVersion,
-			canonicalState: toPublicState(loaded.state),
-			events: events.map((event) => ({
-				commitId: event.commit_id,
-				clientSeq: event.client_seq,
-				eventType: event.event_type || event.eventType || "TRIGGER",
-				triggerType: event.trigger_type || event.triggerType || null,
-				accepted: event.accepted,
-				errorCode: event.error_code,
-				message: event.message,
-				stateHash: event.state_hash,
-				createdAt: event.created_at,
-			})),
-		});
-	} catch (error) {
-		return json(res, 500, {
-			ok: false,
-			errorCode: "UNEXPECTED_SYNC_ERROR",
-			message: String(error?.message || error || "Unknown error"),
-		});
-	}
+	});
 }
 
 async function replay(req, res) {
-	try {
-		const user = await requireUser(req, res);
-		if (!user) return;
-		if (!enforceCanaryAccess(res, user)) return;
-		if (!enforceLimitedRolloutAccess(res, user)) return;
-		const gate = await enforceProgressReset(res, { ownerId: user.id });
-		if (!gate.ok) return;
+	return runSyncRoute({ route: "replay", req, res }, async () => {
+		try {
+			const user = await requireUser(req, res);
+			if (!user) return;
+			if (!enforceCanaryAccess(res, user)) return;
+			if (!enforceLimitedRolloutAccess(res, user)) return;
+			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			if (!gate.ok) return;
 
-		const runId = normalizeString(req?.query?.runId);
-		if (!runId) {
-			return json(res, 400, {
+			const runId = normalizeString(req?.query?.runId);
+			if (!runId) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: "MISSING_RUN_ID",
+					message: "runId query parameter is required.",
+				});
+			}
+
+			const manifest = getWorldManifest();
+			const loaded = await loadRunState({
+				ownerId: user.id,
+				runId,
+				manifest,
+				allowCreate: false,
+			});
+			if (!loaded) {
+				return json(res, 404, {
+					ok: false,
+					errorCode: "RUN_NOT_FOUND",
+					message: "Run not found.",
+				});
+			}
+
+			const afterSeq = Math.max(0, parseInteger(req?.query?.afterSeq, 0));
+			const limit = Math.max(1, Math.min(500, parseInteger(req?.query?.limit, 200)));
+			const includeRejected = parseBoolean(req?.query?.includeRejected, false);
+			const events = await syncStore.listEvents({
+				ownerId: user.id,
+				runId,
+				afterSeq,
+				limit,
+			});
+			const timeline = events
+				.map((event) => ({
+					commitId: event.commit_id,
+					clientSeq: event.client_seq,
+					seq: Number.isFinite(Number(event.seq)) ? Number(event.seq) : null,
+					tick: Number.isFinite(Number(event.tick)) ? Number(event.tick) : null,
+					eventType: event.event_type || event.eventType || "TRIGGER",
+					triggerType: event.trigger_type || event.triggerType || null,
+					accepted: event.accepted,
+					errorCode: event.error_code || null,
+					message: event.message || null,
+					stateHash: event.state_hash || null,
+					createdAt: event.created_at || null,
+				}))
+				.filter((event) => includeRejected || event.accepted);
+			const hashTimeline = timeline
+				.filter((event) => event.accepted && normalizeString(event.stateHash))
+				.map((event) => ({
+					seq: Number.isFinite(Number(event.seq))
+						? Number(event.seq)
+						: Number(event.clientSeq) || null,
+					tick: Number.isFinite(Number(event.tick))
+						? Number(event.tick)
+						: Number(event.clientSeq) || null,
+					stateHash: event.stateHash,
+				}))
+				.filter((event) => Number.isFinite(Number(event.seq)));
+
+			return json(res, 200, {
+				ok: true,
+				runId,
+				contentVersion: manifest.contentVersion,
+				canonicalState: toPublicState(loaded.state),
+				timeline,
+				hashTimeline,
+			});
+		} catch (error) {
+			return json(res, 500, {
 				ok: false,
-				errorCode: "MISSING_RUN_ID",
-				message: "runId query parameter is required.",
+				errorCode: "UNEXPECTED_SYNC_ERROR",
+				message: String(error?.message || error || "Unknown error"),
 			});
 		}
-
-		const manifest = getWorldManifest();
-		const loaded = await loadRunState({
-			ownerId: user.id,
-			runId,
-			manifest,
-			allowCreate: false,
-		});
-		if (!loaded) {
-			return json(res, 404, {
-				ok: false,
-				errorCode: "RUN_NOT_FOUND",
-				message: "Run not found.",
-			});
-		}
-
-		const afterSeq = Math.max(0, parseInteger(req?.query?.afterSeq, 0));
-		const limit = Math.max(1, Math.min(500, parseInteger(req?.query?.limit, 200)));
-		const includeRejected = parseBoolean(req?.query?.includeRejected, false);
-		const events = await syncStore.listEvents({
-			ownerId: user.id,
-			runId,
-			afterSeq,
-			limit,
-		});
-		const timeline = events
-			.map((event) => ({
-				commitId: event.commit_id,
-				clientSeq: event.client_seq,
-				seq: Number.isFinite(Number(event.seq)) ? Number(event.seq) : null,
-				tick: Number.isFinite(Number(event.tick)) ? Number(event.tick) : null,
-				eventType: event.event_type || event.eventType || "TRIGGER",
-				triggerType: event.trigger_type || event.triggerType || null,
-				accepted: event.accepted,
-				errorCode: event.error_code || null,
-				message: event.message || null,
-				stateHash: event.state_hash || null,
-				createdAt: event.created_at || null,
-			}))
-			.filter((event) => includeRejected || event.accepted);
-		const hashTimeline = timeline
-			.filter((event) => event.accepted && normalizeString(event.stateHash))
-			.map((event) => ({
-				seq: Number.isFinite(Number(event.seq))
-					? Number(event.seq)
-					: Number(event.clientSeq) || null,
-				tick: Number.isFinite(Number(event.tick))
-					? Number(event.tick)
-					: Number(event.clientSeq) || null,
-				stateHash: event.stateHash,
-			}))
-			.filter((event) => Number.isFinite(Number(event.seq)));
-
-		return json(res, 200, {
-			ok: true,
-			runId,
-			contentVersion: manifest.contentVersion,
-			canonicalState: toPublicState(loaded.state),
-			timeline,
-			hashTimeline,
-		});
-	} catch (error) {
-		return json(res, 500, {
-			ok: false,
-			errorCode: "UNEXPECTED_SYNC_ERROR",
-			message: String(error?.message || error || "Unknown error"),
-		});
-	}
+	});
 }
 
 module.exports = {

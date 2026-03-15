@@ -12,6 +12,7 @@ const CharacterCreationSummaryPanel := preload("res://scripts/character_creation
 const TILE_SIZE := 32
 const LOCAL_SAVE_PATH := "user://slice_save.json"
 const PLAYER_PROFILE_PATH := "user://player_profile.json"
+const CHARACTER_OPTIONS_PATH := "res://data/character_options.json"
 const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SAVEPOINT"]
 const PERF_SAMPLE_LIMIT := 240
 const PLAYER_SPRITE_PATH := "res://assets/characters/traveler_idle_down.png"
@@ -86,7 +87,7 @@ func _ready() -> void:
 		_cc_controller.set_preferred_creation_mode(String(_player_profile.get("last_creation_mode", "basic")))
 
 	# ── character creation gate ──
-	var cc_cfg: Dictionary = _manifest.get("characterCreation", {})
+	var cc_cfg: Dictionary = _load_character_creation_config()
 	var cc_required: bool = cc_cfg.get("required", false)
 	if cc_required and _cc_controller and _cc_panel:
 		_creating_character = true
@@ -153,7 +154,7 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 		_cc_summary_panel.visible = false
 
 	# optionally switch to the post-creation map
-	var cc_cfg: Dictionary = _manifest.get("characterCreation", {})
+	var cc_cfg: Dictionary = _load_character_creation_config()
 	var start_map: String = String(cc_cfg.get("startMapAfterCreation", _current_map_id))
 	if not start_map.is_empty():
 		_current_map_id = start_map
@@ -169,7 +170,42 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 
 	# send character data to backend
 	if _sync_client and _sync_client.has_method("send_command"):
-		_sync_client.send_command("create_character", character_data)
+		_client_seq += 1
+		var command_response: Dictionary = await _sync_client.send_command(
+			"create_character",
+			character_data,
+			run_id,
+			_client_seq,
+			_content_version
+		)
+		var command_body: Dictionary = {}
+		var command_body_value: Variant = command_response.get("body", {})
+		if typeof(command_body_value) == TYPE_DICTIONARY:
+			command_body = command_body_value
+			var canonical_state_value: Variant = command_body.get("canonicalState", {})
+			if typeof(canonical_state_value) == TYPE_DICTIONARY:
+				var canonical_state: Dictionary = canonical_state_value
+				_client_seq = maxi(_client_seq, int(canonical_state.get("seq", _client_seq)))
+		if not bool(command_response.get("http_ok", false)):
+			_enqueue_telemetry(
+				"character_create_sync_failed",
+				"warn",
+				"character_creation_command_failed",
+				{
+					"status": int(command_response.get("status", 0)),
+					"errorCode":
+						String(command_body.get("errorCode", command_response.get("error", "unknown"))),
+				}
+			)
+		else:
+			_enqueue_telemetry(
+				"character_create_synced",
+				"info",
+				"character_creation_command_accepted",
+				{
+					"seq": _client_seq,
+				}
+			)
 
 	_enqueue_telemetry(
 		"character_created",
@@ -909,7 +945,19 @@ func _normalize_api_path(path_value: String) -> String:
 
 
 func _load_manifest() -> Dictionary:
-	var file := FileAccess.open("res://data/world_manifest.json", FileAccess.READ)
+	return _load_json_dictionary("res://data/world_manifest.json")
+
+
+func _load_character_creation_config() -> Dictionary:
+	var options := _load_json_dictionary(CHARACTER_OPTIONS_PATH)
+	var config_value: Variant = options.get("characterCreation", {})
+	if typeof(config_value) == TYPE_DICTIONARY:
+		return config_value
+	return {}
+
+
+func _load_json_dictionary(path_value: String) -> Dictionary:
+	var file := FileAccess.open(path_value, FileAccess.READ)
 	if file == null:
 		return {}
 	var text := file.get_as_text()

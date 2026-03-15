@@ -32,8 +32,11 @@ Current world/movement projection needed by runtime clients.
   "mapId": "map_village_square",
   "playerPos": { "x": 6, "y": 8 },
   "entityStates": {
+    "activeCharacter": {},
+    "characterRoster": [],
     "combat": {},
     "encounter": {},
+    "playerProfile": {},
     "progression": {},
     "lastSavepoint": {}
   }
@@ -53,6 +56,12 @@ Deterministic gameplay progression state.
 ```
 
 Progression/combat details are defined in `docs/contracts/gameplay_progression_v1.md`.
+
+Character bootstrap details currently live under `worldProjection.entityStates`:
+
+- `activeCharacter`: most recently created/loaded character summary and normalized blueprint.
+- `characterRoster`: append-only roster entries created by canonical `CHARACTER CREATE` commands.
+- `playerProfile`: canonical `charactersCreated`, `advancedCreationUnlocked`, and `lastCreationMode`.
 
 ### `narrativeState`
 

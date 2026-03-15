@@ -1,6 +1,7 @@
 // ClassResourceBar.jsx
 // Displays class-specific resource bars (Rage, Chi, Focus, Energy, Soul Shards, etc.)
 import React from 'react';
+import { buildArchetypeSystemViewModel } from "./archetypeSystem/archetypeSystemViewModel.js";
 
 /**
  * Get class resource info based on player class
@@ -277,7 +278,7 @@ export default function ClassResourceBar({ player }) {
   if (!player) return null;
   
   const resource = getClassResource(player);
-  const archetypeResource = player.system?.resource;
+  const archetypeResource = buildArchetypeSystemViewModel(player)?.resource;
   
   // If neither exists, return null
   if (!resource && !archetypeResource) return null;

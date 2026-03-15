@@ -4,6 +4,7 @@ export function useGameUiWindowController() {
   const [showShop, setShowShop] = useState(false);
   const [showGacha, setShowGacha] = useState(false);
   const [showTitleSystem, setShowTitleSystem] = useState(false);
+  const [showArchetypeSystem, setShowArchetypeSystem] = useState(false);
   const [showProfessions, setShowProfessions] = useState(false);
   const [showStatusOverlay, setShowStatusOverlay] = useState(false);
   const [showSaveLoad, setShowSaveLoad] = useState(false);
@@ -44,6 +45,10 @@ export function useGameUiWindowController() {
   const handleCloseShop = useCallback(() => setShowShop(false), []);
   const handleCloseGacha = useCallback(() => setShowGacha(false), []);
   const handleCloseTitleSystem = useCallback(() => setShowTitleSystem(false), []);
+  const handleCloseArchetypeSystem = useCallback(
+    () => setShowArchetypeSystem(false),
+    [],
+  );
   const handleCloseProfessions = useCallback(() => setShowProfessions(false), []);
   const handleCloseStatusOverlay = useCallback(() => setShowStatusOverlay(false), []);
   const handleCloseSaveLoad = useCallback(() => setShowSaveLoad(false), []);
@@ -64,6 +69,15 @@ export function useGameUiWindowController() {
   const handleToggleGacha = useCallback(
     () => toggleWindow("gacha", showGacha, setShowGacha),
     [showGacha, toggleWindow],
+  );
+  const handleToggleArchetypeSystem = useCallback(
+    () =>
+      toggleWindow(
+        "archetypeSystem",
+        showArchetypeSystem,
+        setShowArchetypeSystem,
+      ),
+    [showArchetypeSystem, toggleWindow],
   );
   const handleToggleCraft = useCallback(
     () => toggleWindow("craft", showProfessions, setShowProfessions),
@@ -93,6 +107,7 @@ export function useGameUiWindowController() {
 
   const quickActionsProps = useMemo(
     () => ({
+      onToggleArchetypeSystem: handleToggleArchetypeSystem,
       onToggleCraft: handleToggleCraft,
       onToggleGacha: handleToggleGacha,
       onToggleQuests: handleToggleQuests,
@@ -103,6 +118,7 @@ export function useGameUiWindowController() {
       onToggleTitles: handleToggleTitles,
     }),
     [
+      handleToggleArchetypeSystem,
       handleToggleCraft,
       handleToggleGacha,
       handleToggleQuests,
@@ -118,6 +134,7 @@ export function useGameUiWindowController() {
     equipmentSelectSlot,
     focusWindowRequest,
     quickActionsProps,
+    showArchetypeSystem,
     showGacha,
     showProfessions,
     showQuests,
@@ -127,6 +144,7 @@ export function useGameUiWindowController() {
     showStatusOverlay,
     showTitleSystem,
     handleCloseEquipmentSelect,
+    handleCloseArchetypeSystem,
     handleCloseGacha,
     handleCloseProfessions,
     handleCloseQuests,
@@ -136,6 +154,7 @@ export function useGameUiWindowController() {
     handleCloseStatusOverlay,
     handleCloseTitleSystem,
     handleOpenEquipmentSlot,
+    handleToggleArchetypeSystem,
     setShowSaveLoad,
   };
 }

@@ -12,6 +12,7 @@ import CombatUI from "../../components/CombatUI.jsx";
 import ShopUI from "../../components/ShopUI.jsx";
 import GachaUI from "../../components/GachaUI.jsx";
 import TitleUI from "../../components/TitleUI.jsx";
+import ArchetypeSystemPanel from "../../components/ArchetypeSystemPanel.jsx";
 import ProfessionUI from "../../components/ProfessionUI.jsx";
 import StatusOverlay from "../../components/StatusOverlay.jsx";
 import SaveLoadUI from "../../components/SaveLoadUI.jsx";
@@ -92,6 +93,7 @@ export default function GameMode({
   onEscape,
   showShop = false,
   showGacha = false,
+  showArchetypeSystem = false,
   showTitleSystem = false,
   showProfessions = false,
   showStatusOverlay = false,
@@ -99,6 +101,8 @@ export default function GameMode({
   showReplayInspector = false,
   onCloseShop = () => {},
   onCloseGacha = () => {},
+  onCloseArchetypeSystem = () => {},
+  onOpenArchetypeSystem = () => {},
   onCloseTitleSystem = () => {},
   onCloseProfessions = () => {},
   onCloseStatusOverlay = () => {},
@@ -308,6 +312,22 @@ export default function GameMode({
           },
         ]
       : []),
+    ...(showArchetypeSystem
+      ? [
+          {
+            id: "archetypeSystem",
+            title: "System",
+            dockZone: "float",
+            position: { x: 280, y: 120 },
+            size: { w: 760, h: 600 },
+            minWidth: 520,
+            minHeight: 360,
+            openFullscreenOnce: true,
+            onClose: onCloseArchetypeSystem,
+            content: <ArchetypeSystemPanel player={player} />,
+          },
+        ]
+      : []),
     ...(showTitleSystem
       ? [
           {
@@ -385,6 +405,7 @@ export default function GameMode({
                 onEvolveClass={onEvolveClass}
                 onEvolveRace={onEvolveRace}
                 onStudySpell={onStudySpell}
+                onOpenArchetypeSystem={onOpenArchetypeSystem}
               />
             ),
           },

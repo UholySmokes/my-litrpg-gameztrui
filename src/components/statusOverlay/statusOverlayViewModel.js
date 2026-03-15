@@ -11,6 +11,7 @@ import { canEvolveSkill } from "../../systems/skills/SkillEvolutionSystem.js";
 import { canFuseSkills } from "../../systems/skills/SkillFusionSystem.js";
 import { isSpellSkill } from "../../systems/skills/SpellStudySystem.js";
 import { getTalentById } from "../../systems/skills/TalentContentPack.js";
+import { buildArchetypeSystemViewModel } from "../archetypeSystem/archetypeSystemViewModel.js";
 import {
   getProgressionModifiers,
   resolveClassEvolutionRequirement,
@@ -271,18 +272,8 @@ export function buildStatusOverlayViewModel({
     resolvedTalentNames.length > 0
       ? resolvedTalentNames.join(", ")
       : player?.talent || "None";
-  const archetypeSystemName =
-    typeof player?.archetypeSystem === "string"
-      ? player.archetypeSystem
-      : player?.archetypeSystem?.name || player?.archetypeSystem?.id || "None";
-  const archetypeSystemCategory =
-    typeof player?.archetypeSystem === "object"
-      ? player.archetypeSystem?.category
-      : null;
-  const archetypeSystemLabel =
-    archetypeSystemName !== "None" && archetypeSystemCategory
-      ? `${archetypeSystemName} (${archetypeSystemCategory})`
-      : archetypeSystemName;
+  const archetypeSystem = buildArchetypeSystemViewModel(player);
+  const archetypeSystemLabel = archetypeSystem?.label || "None";
   const secondaryClassLabel =
     typeof player?.secondaryClass === "string"
       ? player.secondaryClass
@@ -427,6 +418,7 @@ export function buildStatusOverlayViewModel({
       titleLabel,
       raceLabel,
       talentLabel,
+      archetypeSystem,
       archetypeSystemLabel,
       secondaryClassLabel,
       alignmentLabel,

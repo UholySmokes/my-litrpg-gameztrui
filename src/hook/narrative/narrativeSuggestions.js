@@ -1,4 +1,8 @@
 import { listOpeningSceneChoices } from "../../data/OpeningScenes.js";
+import {
+  getPlayerArchetypeSystemLabel,
+  resolvePlayerArchetypeSystem,
+} from "../../systems/archetype/resolvePlayerArchetypeSystem.js";
 import { toNumber } from "../../utils/shared.js";
 
 export const FIXED_ACTION_SUGGESTIONS = [
@@ -85,13 +89,7 @@ export function buildSummaryPrompt({ previousSummary, recentLines }) {
 }
 
 export function resolveArchetypeSystemLabel(player = {}) {
-  const raw = player.archetypeSystem;
-  if (!raw) return null;
-  if (typeof raw === "string") return raw;
-  if (typeof raw === "object" && !Array.isArray(raw)) {
-    return raw.name || raw.id || null;
-  }
-  return null;
+  return getPlayerArchetypeSystemLabel(player);
 }
 
 export function buildActionSuggestions(state) {
@@ -219,8 +217,7 @@ export function buildActionSuggestions(state) {
 
     const systemLabel = resolveArchetypeSystemLabel(player);
     if (systemLabel) {
-      const archetypeRaw = player.archetypeSystem;
-      const category = typeof archetypeRaw === "object" ? archetypeRaw?.category : null;
+      const category = resolvePlayerArchetypeSystem(player)?.category || null;
       const systemSuggestions = {
         System: { t: "check system status", w: 0.85 },
         Authority: { t: "exert authority", w: 0.85 },

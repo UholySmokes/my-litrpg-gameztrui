@@ -1,5 +1,6 @@
 export default function GameQuickActions({
   isDevBuild,
+  onToggleArchetypeSystem,
   onToggleCraft,
   onToggleGacha,
   onToggleQuests,
@@ -25,6 +26,9 @@ export default function GameQuickActions({
       </button>
       <button type="button" className="holo-button" onClick={onToggleStatus}>
         Status
+      </button>
+      <button type="button" className="holo-button" onClick={onToggleArchetypeSystem}>
+        System
       </button>
       <button type="button" className="holo-button" onClick={onToggleTitles}>
         Titles

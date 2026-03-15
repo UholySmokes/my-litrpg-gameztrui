@@ -4,6 +4,8 @@ import {
   getCharacterCreationRaceAbilitySummaries,
   getCharacterCreationSkillSummaries,
 } from "./CharacterCreationContentPack.js";
+import { resolveCharacterCreationSkillInfluence } from "./CharacterCreationSystemInfluence.js";
+import { getProfessionSummaryById } from "../systems/profession/ProfessionContentPack.js";
 import {
   getCharacterCreationLatticeLoadoutSummary,
   resolveCharacterCreationSkillReference,
@@ -468,7 +470,15 @@ export function getCharacterCreationSkillSelectionLimits() {
   return { ...CREATION_SKILL_SELECTION_LIMITS };
 }
 
-export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) {
+export function buildCharacterCreationSkillPools(
+  cls,
+  race,
+  {
+    professionId = null,
+    systemId = null,
+    allSkills,
+  } = {},
+) {
   const classId = normalizeId(typeof cls === "string" ? cls : cls?.id);
   if (!classId) {
     return { active: [], passive: [] };
@@ -569,6 +579,17 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
   }
 
   const racePools = splitSkillsByType(raceSkillEntries);
+  const professionSkillEntries = [];
+  const professionSummary = getProfessionSummaryById(professionId);
+  const tier1SkillIds = Array.isArray(professionSummary?.tier1Skills)
+    ? professionSummary.tier1Skills
+    : Array.isArray(professionSummary?.tierUnlocks?.[1]?.skills)
+      ? professionSummary.tierUnlocks[1].skills
+      : [];
+  professionSkillEntries.push(
+    ...collectSkillEntries(tier1SkillIds, null, skillIndex, "profession"),
+  );
+  const professionPools = splitSkillsByType(professionSkillEntries);
   const generalPools = splitSkillsByType(
     skillCatalog
       .filter((skill) => {
@@ -579,17 +600,32 @@ export function buildCharacterCreationSkillPools(cls, race, { allSkills } = {}) 
       .filter((skill) => isGeneralSkillCompatible(skill, classId, raceId)),
   );
 
-  return {
-    active: uniqueSkills([
+  const influence = resolveCharacterCreationSkillInfluence({
+    systemId,
+    activeSkills: uniqueSkills([
       ...classPools.active,
       ...racePools.active,
+      ...professionPools.active,
       ...generalPools.active,
     ]),
-    passive: uniqueSkills([
+    passiveSkills: uniqueSkills([
       ...classPools.passive,
       ...racePools.passive,
+      ...professionPools.passive,
       ...generalPools.passive,
     ]),
+  });
+
+  return {
+    active: influence.activeSkills,
+    passive: influence.passiveSkills,
+    grantedActive: influence.grantedActiveSkills,
+    grantedPassive: influence.grantedPassiveSkills,
+    blockedSkillIds: influence.blockedSkillIds,
+    boostedSkillIds: influence.boostedSkillIds,
+    slotBonuses: influence.slotBonuses,
+    systemId: normalizeId(systemId),
+    professionId: normalizeId(professionId),
   };
 }
 
@@ -597,32 +633,37 @@ export function listCharacterCreationSkillLoadouts({
   cls = null,
   race = null,
   professionId = null,
+  systemId = null,
   allSkills,
   pools = null,
 } = {}) {
   const resolvedPools =
-    pools || buildCharacterCreationSkillPools(cls, race, { allSkills });
+    pools || buildCharacterCreationSkillPools(cls, race, { professionId, systemId, allSkills });
   if (resolvedPools.active.length === 0 || resolvedPools.passive.length === 0) {
     return [];
   }
 
   const limits = getCharacterCreationSkillSelectionLimits();
+  const requiredActiveSkillCount =
+    limits.requiredActiveSkillCount + (resolvedPools.slotBonuses?.active || 0);
+  const requiredPassiveSkillCount =
+    limits.requiredPassiveSkillCount + (resolvedPools.slotBonuses?.passive || 0);
 
-  return LOADOUT_TEMPLATES.map((template) => {
+  const loadouts = LOADOUT_TEMPLATES.map((template) => {
     const activeSkills = pickSkillsForTemplate(
       resolvedPools.active,
-      limits.requiredActiveSkillCount,
+      requiredActiveSkillCount,
       template.activeProfile,
     );
     const passiveSkills = pickSkillsForTemplate(
       resolvedPools.passive,
-      limits.requiredPassiveSkillCount,
+      requiredPassiveSkillCount,
       template.passiveProfile,
     );
 
     if (
-      activeSkills.length !== limits.requiredActiveSkillCount ||
-      passiveSkills.length !== limits.requiredPassiveSkillCount
+      activeSkills.length !== requiredActiveSkillCount ||
+      passiveSkills.length !== requiredPassiveSkillCount
     ) {
       return null;
     }
@@ -651,6 +692,13 @@ export function listCharacterCreationSkillLoadouts({
       runtimeRoleSuggestions,
     };
   }).filter(Boolean);
+
+  return resolveCharacterCreationSkillInfluence({
+    systemId,
+    activeSkills: resolvedPools.active,
+    passiveSkills: resolvedPools.passive,
+    loadouts,
+  }).loadouts;
 }
 
 export function resolveCharacterCreationSkillLoadout(loadoutId, context = {}) {
@@ -668,6 +716,7 @@ export function validateCharacterCreationSkillSelections(
     cls = null,
     race = null,
     professionId = null,
+    systemId = null,
     activeSkillIds = [],
     passiveSkillIds = [],
     skillLoadoutId = null,
@@ -684,7 +733,11 @@ export function validateCharacterCreationSkillSelections(
     : limits.requiredPassiveSkillCount;
 
   const errors = [];
-  const pools = buildCharacterCreationSkillPools(cls, race, { allSkills });
+  const pools = buildCharacterCreationSkillPools(cls, race, {
+    professionId,
+    systemId,
+    allSkills,
+  });
   const activeMap = new Map(pools.active.map((skill) => [skill.id, skill]));
   const passiveMap = new Map(pools.passive.map((skill) => [skill.id, skill]));
 
@@ -740,10 +793,11 @@ export function validateCharacterCreationSkillSelections(
     ? resolveCharacterCreationSkillLoadout(normalizedLoadoutId, {
         cls,
         race,
-        professionId,
-        allSkills,
-        pools,
-      })
+      professionId,
+      systemId,
+      allSkills,
+      pools,
+    })
     : null;
 
   if (normalizedLoadoutId && !loadout) {
@@ -758,6 +812,7 @@ export function validateCharacterCreationSkillSelections(
     activeSkills: resolvedActiveSkills,
     passiveSkills: resolvedPassiveSkills,
     professionId: normalizeId(professionId),
+    systemId: normalizeId(systemId),
     pools,
     loadout,
     loadoutSummary: getCharacterCreationLatticeLoadoutSummary({

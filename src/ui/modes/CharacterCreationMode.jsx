@@ -6,6 +6,7 @@ import {
 import WindowManager from "../windowing/WindowManager.jsx";
 import NarrativeMemoryPanel from "../panels/NarrativeMemoryPanel.jsx";
 import CreationNarrativePanel from "../panels/CreationNarrativePanel.jsx";
+import CreationNamePanel from "../panels/creation/CreationNamePanel.jsx";
 import CreationIdentityPanel from "../panels/creation/CreationIdentityPanel.jsx";
 import CreationRacePanel from "../panels/creation/CreationRacePanel.jsx";
 import CreationClassPanel from "../panels/creation/CreationClassPanel.jsx";
@@ -14,7 +15,6 @@ import CreationAttributesPanel from "../panels/creation/CreationAttributesPanel.
 import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
 import CreationChoicePanel from "../panels/creation/CreationChoicePanel.jsx";
 import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSystemPanel.jsx";
-import CreationArchetypeRecommendations from "../panels/creation/CreationArchetypeRecommendations.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 import CreationWizardShellPanel from "../panels/creation/CreationWizardShellPanel.jsx";
 import { ensureAttributeShape } from "../../constants/attributes.js";
@@ -30,10 +30,8 @@ import {
   postTelemetryBatch,
 } from "../../core/telemetryClient.js";
 import {
-  getCharacterCreationClassesByTier,
   getCharacterCreationRaceAbilitySummaries,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
-import { recommendArchetypeSystems } from "../../utils/archetypeRecommendations.js";
 
 let audioContext = null;
 const SOUND_PROFILES = {
@@ -97,8 +95,6 @@ const RACE_ASCII = {
     |  \\_____/  |
     +-----------+`,
 };
-const CREATION_TIER_ONE_CLASSES = getCharacterCreationClassesByTier(1);
-
 const playSystemSound = (sound) => {
   if (typeof window === "undefined") return;
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -151,6 +147,11 @@ export default function CharacterCreationMode({
     selectedStarterTreeIds,
     selectedAlignmentId,
     selectedSkillLoadoutId,
+    availableOrigins,
+    availableRaces,
+    availableClasses,
+    availableSecondaryClasses,
+    availableProfessions,
     availableActiveSkills,
     availablePassiveSkills,
     availableArchetypeSystems,
@@ -158,6 +159,14 @@ export default function CharacterCreationMode({
     availableCreationStarterTrees,
     availableCreationAlignments,
     availableCreationSkillLoadouts,
+    recommendedOriginIds,
+    recommendedRaceIds,
+    recommendedClassIds,
+    recommendedProfessionIds,
+    grantedActiveSkills,
+    grantedPassiveSkills,
+    blockedSkillIds,
+    systemAttributeBias,
     creationPerkLimits,
     rerollsRemaining,
     handleOriginSelect,
@@ -212,7 +221,7 @@ export default function CharacterCreationMode({
   );
 
   const [typewriterText, setTypewriterText] = useState(
-    "Choose your origin, race, and class to generate a profile summary.",
+    "Choose a designation, then bind a System to shape the rest of creation.",
   );
   const [wizardError, setWizardError] = useState("");
   const emitCreationTelemetry = useCallback(
@@ -258,9 +267,11 @@ export default function CharacterCreationMode({
 
   useEffect(() => {
     const descriptionParts = [];
+    if (selectedArchetypeSystem?.summary) descriptionParts.push(selectedArchetypeSystem.summary);
     if (selectedOrigin?.description) descriptionParts.push(selectedOrigin.description);
     if (selectedClass?.description) descriptionParts.push(selectedClass.description);
     if (selectedRace?.description) descriptionParts.push(selectedRace.description);
+    if (selectedProfession?.description) descriptionParts.push(selectedProfession.description);
     const combinedDescription = descriptionParts.join(" ").trim();
     if (combinedDescription.length > 0) {
       setTypewriterText("");
@@ -275,8 +286,14 @@ export default function CharacterCreationMode({
       }, 15);
       return () => clearInterval(interval);
     }
-    setTypewriterText("Choose your origin, race, and class to generate a profile summary.");
-  }, [selectedClass, selectedOrigin, selectedRace]);
+    setTypewriterText("Choose a designation, then bind a System to shape the rest of creation.");
+  }, [
+    selectedArchetypeSystem?.summary,
+    selectedClass,
+    selectedOrigin,
+    selectedProfession?.description,
+    selectedRace,
+  ]);
 
   const selectionSummary = useMemo(() => {
     const originName = selectedOrigin?.name || "Origin not selected";
@@ -304,7 +321,7 @@ export default function CharacterCreationMode({
     const systemDescription =
       selectedArchetypeSystem?.summary ||
       selectedArchetypeSystem?.description ||
-      "Choose an archetype system to shape progression.";
+      "Choose a System to shape progression, recommendations, and skills.";
     const professionName = selectedProfession?.name || "Profession not selected";
     const professionDescription =
       selectedProfession?.description ||
@@ -312,6 +329,32 @@ export default function CharacterCreationMode({
     const professionSkills = Array.isArray(selectedProfession?.tierUnlocks?.[1]?.skills)
       ? selectedProfession.tierUnlocks[1].skills
       : null;
+    const systemMatchSummaryParts = [];
+    if (recommendedOriginIds.includes(selectedOrigin?.id)) {
+      systemMatchSummaryParts.push(`Origin harmonizes with ${selectedArchetypeSystem?.name}.`);
+    }
+    if (recommendedRaceIds.includes(selectedRace?.id)) {
+      systemMatchSummaryParts.push(`Race is a strong System match.`);
+    }
+    if (recommendedClassIds.includes(selectedClass?.id)) {
+      systemMatchSummaryParts.push(`Class is favored by the selected System.`);
+    }
+    if (recommendedProfessionIds.includes(selectedProfession?.id)) {
+      systemMatchSummaryParts.push(`Profession is boosted by the selected System.`);
+    }
+    if (systemAttributeBias?.primary?.length) {
+      systemMatchSummaryParts.push(
+        `Attribute bias: ${systemAttributeBias.primary.join(", ")} primary` +
+          (systemAttributeBias.secondary?.length
+            ? `, ${systemAttributeBias.secondary.join(", ")} secondary.`
+            : "."),
+      );
+    }
+    if (blockedSkillIds.length) {
+      systemMatchSummaryParts.push(
+        `${blockedSkillIds.length} elective skills were locked out by System rules.`,
+      );
+    }
     return {
       originName,
       originDescription,
@@ -329,11 +372,21 @@ export default function CharacterCreationMode({
       professionSkills,
       systemName,
       systemDescription,
+      systemMatchSummary: systemMatchSummaryParts.join(" "),
       activeSkills: selectedActiveSkills.length > 0 ? selectedActiveSkills : null,
       passiveSkills:
         selectedPassiveSkills.length > 0 ? selectedPassiveSkills : null,
+      grantedActiveSkills,
+      grantedPassiveSkills,
     };
   }, [
+    blockedSkillIds.length,
+    grantedActiveSkills,
+    grantedPassiveSkills,
+    recommendedClassIds,
+    recommendedOriginIds,
+    recommendedProfessionIds,
+    recommendedRaceIds,
     selectedRace,
     selectedClass,
     selectedArchetypeSystem,
@@ -341,6 +394,7 @@ export default function CharacterCreationMode({
     selectedProfession,
     selectedActiveSkills,
     selectedPassiveSkills,
+    systemAttributeBias,
   ]);
 
   const canFinalize = useMemo(() => {
@@ -349,12 +403,13 @@ export default function CharacterCreationMode({
   }, [validateReview]);
   const completionById = useMemo(
     () => ({
-      identity: Boolean(characterName?.trim()) && Boolean(selectedOrigin),
+      name: Boolean(characterName?.trim()),
+      system: Boolean(selectedArchetypeSystem),
+      identity: Boolean(selectedOrigin),
       race: Boolean(selectedRace),
       class: Boolean(selectedClass),
       multiclass: true,
       profession: Boolean(selectedProfession),
-      system: Boolean(selectedArchetypeSystem),
       attributes: availablePoints === 0,
       skills:
         selectedActiveSkills.length === MAX_ACTIVE_SKILLS &&
@@ -463,6 +518,10 @@ export default function CharacterCreationMode({
         label: `Designation: ${characterName?.trim() ? "set" : "pending"}`,
         active: Boolean(characterName?.trim()),
       },
+      {
+        label: `System: ${selectedArchetypeSystem?.name || "pending"}`,
+        active: Boolean(selectedArchetypeSystem),
+      },
       { label: `Gender: ${gender || "optional"}`, active: true },
       {
         label: `Origin: ${selectedOrigin?.name || "pending"}`,
@@ -490,10 +549,6 @@ export default function CharacterCreationMode({
         active: Boolean(selectedProfession),
       },
       {
-        label: `System: ${selectedArchetypeSystem?.name || "pending"}`,
-        active: Boolean(selectedArchetypeSystem),
-      },
-      {
         label: "Talents: auto-assigned after creation",
         active: Boolean(selectedClass),
       },
@@ -502,7 +557,7 @@ export default function CharacterCreationMode({
         active: availablePoints === 0,
       },
       {
-        label: `Skills: ${selectedActiveSkills.length}/${MAX_ACTIVE_SKILLS} active, ${selectedPassiveSkills.length}/${MAX_PASSIVE_SKILLS} passive`,
+        label: `Skills: ${selectedActiveSkills.length}/${MAX_ACTIVE_SKILLS} active, ${selectedPassiveSkills.length}/${MAX_PASSIVE_SKILLS} passive${grantedActiveSkills.length || grantedPassiveSkills.length ? ` + ${grantedActiveSkills.length + grantedPassiveSkills.length} granted` : ""}`,
         active:
           selectedActiveSkills.length >= MAX_ACTIVE_SKILLS &&
           selectedPassiveSkills.length >= MAX_PASSIVE_SKILLS,
@@ -532,6 +587,8 @@ export default function CharacterCreationMode({
       completionById,
       creationPerkLimits?.maxPicks,
       gender,
+      grantedActiveSkills.length,
+      grantedPassiveSkills.length,
       selectedOrigin,
       selectedActiveSkills.length,
       selectedAlignmentId,
@@ -550,6 +607,18 @@ export default function CharacterCreationMode({
 
   const creationMemoryEntries = useMemo(() => {
     const entries = [];
+    if (characterName?.trim()) {
+      entries.push({
+        timestamp: "name",
+        text: `Designation set: ${characterName.trim()}`,
+      });
+    }
+    if (selectedArchetypeSystem) {
+      entries.push({
+        timestamp: "system",
+        text: `System bound: ${selectedArchetypeSystem.name}`,
+      });
+    }
     if (selectedOrigin) {
       entries.push({
         timestamp: "origin",
@@ -578,10 +647,12 @@ export default function CharacterCreationMode({
         text: `Profession chosen: ${selectedProfession.name}`,
       });
     }
-    if (selectedArchetypeSystem) {
+    if (grantedActiveSkills.length || grantedPassiveSkills.length) {
       entries.push({
-        timestamp: "system",
-        text: `Archetype system: ${selectedArchetypeSystem.name}`,
+        timestamp: "system-grants",
+        text: `System grants: ${[...grantedActiveSkills, ...grantedPassiveSkills]
+          .map((skill) => skill.name || skill.id)
+          .join(", ")}`,
       });
     }
     if (selectedActiveSkills.length) {
@@ -602,6 +673,9 @@ export default function CharacterCreationMode({
     }
     return entries;
   }, [
+    characterName,
+    grantedActiveSkills,
+    grantedPassiveSkills,
     selectedActiveSkills,
     selectedClass,
     selectedArchetypeSystem,
@@ -616,32 +690,42 @@ export default function CharacterCreationMode({
       : null;
   const narrativeMemoryRef = useRef(null);
 
-  const archetypeRecommendations = useMemo(
-    () =>
-      recommendArchetypeSystems({
-        systems: availableArchetypeSystems,
-        race: selectedRace,
-        cls: selectedClass,
-        profession: selectedProfession,
-      }),
-    [availableArchetypeSystems, selectedRace, selectedClass, selectedProfession],
-  );
-
   const activePhase = useMemo(() => {
-    if (currentStep === steps.IDENTITY) {
+    if (currentStep === steps.NAME) {
       return (
-        <CreationIdentityPanel
+        <CreationNamePanel
           characterName={characterName}
           onNameChange={(value) => {
             setWizardError("");
             setName(value);
           }}
+        />
+      );
+    }
+    if (currentStep === steps.ARCHETYPE) {
+      return (
+        <CreationArchetypeSystemPanel
+          systems={availableArchetypeSystems}
+          selectedSystem={selectedArchetypeSystem}
+          onSystemSelect={(systemId) => {
+            setWizardError("");
+            handleArchetypeSystemSelect(systemId);
+          }}
+          onAction={handleClick}
+        />
+      );
+    }
+    if (currentStep === steps.IDENTITY) {
+      return (
+        <CreationIdentityPanel
           gender={gender}
           onGenderSelect={(value) => {
             setWizardError("");
             setGender(value);
           }}
           selectedOrigin={selectedOrigin}
+          origins={availableOrigins}
+          recommendedOriginIds={recommendedOriginIds}
           onOriginSelect={(origin) => {
             setWizardError("");
             handleOriginSelect(origin);
@@ -654,6 +738,8 @@ export default function CharacterCreationMode({
       return (
         <CreationRacePanel
           selectedRace={selectedRace}
+          races={availableRaces}
+          recommendedRaceIds={recommendedRaceIds}
           onRaceSelect={(race) => {
             setWizardError("");
             handleRaceSelect(race);
@@ -666,6 +752,8 @@ export default function CharacterCreationMode({
       return (
         <CreationClassPanel
           selectedClass={selectedClass}
+          classes={availableClasses}
+          recommendedClassIds={recommendedClassIds}
           onClassSelect={(cls) => {
             setWizardError("");
             handleClassSelect(cls);
@@ -675,8 +763,7 @@ export default function CharacterCreationMode({
       );
     }
     if (currentStep === steps.MULTICLASS) {
-      const classOptions = CREATION_TIER_ONE_CLASSES
-        .filter((entry) => entry.id !== selectedClass?.id);
+      const classOptions = availableSecondaryClasses;
       return (
         <CreationChoicePanel
           title="Multiclass"
@@ -698,35 +785,14 @@ export default function CharacterCreationMode({
       return (
         <CreationProfessionPanel
           selectedProfession={selectedProfession}
+          professions={availableProfessions}
+          recommendedProfessionIds={recommendedProfessionIds}
           onProfessionSelect={(profId) => {
             setWizardError("");
             handleProfessionSelect(profId);
           }}
           onAction={handleClick}
         />
-      );
-    }
-    if (currentStep === steps.ARCHETYPE) {
-      return (
-        <div>
-          <CreationArchetypeRecommendations
-            recommendations={archetypeRecommendations}
-            selectedSystemId={selectedArchetypeSystem?.id || null}
-            onSelect={(systemId) => {
-              setWizardError("");
-              handleArchetypeSystemSelect(systemId);
-            }}
-          />
-          <CreationArchetypeSystemPanel
-            systems={availableArchetypeSystems}
-            selectedSystem={selectedArchetypeSystem}
-            onSystemSelect={(systemId) => {
-              setWizardError("");
-              handleArchetypeSystemSelect(systemId);
-            }}
-            onAction={handleClick}
-          />
-        </div>
       );
     }
     if (currentStep === steps.ATTRIBUTES) {
@@ -774,8 +840,12 @@ export default function CharacterCreationMode({
           )}
           <CreationSkillsPanel
             selectedClass={selectedClass}
+            selectedSystem={selectedArchetypeSystem}
             availableActiveSkills={availableActiveSkills}
             availablePassiveSkills={availablePassiveSkills}
+            grantedActiveSkills={grantedActiveSkills}
+            grantedPassiveSkills={grantedPassiveSkills}
+            blockedSkillIds={blockedSkillIds}
             selectedActiveSkills={selectedActiveSkills}
             selectedPassiveSkills={selectedPassiveSkills}
             maxActiveSkills={MAX_ACTIVE_SKILLS}
@@ -841,6 +911,8 @@ export default function CharacterCreationMode({
         selectionSummary={selectionSummary}
         selectedActiveSkills={selectedActiveSkills}
         selectedPassiveSkills={selectedPassiveSkills}
+        maxActiveSkills={MAX_ACTIVE_SKILLS}
+        maxPassiveSkills={MAX_PASSIVE_SKILLS}
         typewriterText={typewriterText}
         syncProgress={syncProgress}
         canFinalize={canFinalize}
@@ -849,18 +921,25 @@ export default function CharacterCreationMode({
     );
   }, [
     allocationPoints,
-    archetypeRecommendations,
     asciiArt,
     availableActiveSkills,
     availableArchetypeSystems,
+    availableClasses,
+    availableOrigins,
     availablePassiveSkills,
     availablePoints,
+    availableProfessions,
+    availableRaces,
+    availableSecondaryClasses,
+    blockedSkillIds,
     canFinalize,
     characterName,
     currentStep,
     derivedStats,
     emitCreationTelemetry,
     gender,
+    grantedActiveSkills,
+    grantedPassiveSkills,
     handleClick,
     handleFinalize,
     handleActiveSkillSelect,
@@ -878,6 +957,10 @@ export default function CharacterCreationMode({
     handleAlignmentSelect,
     handleSkillLoadoutSelect,
     rerollsRemaining,
+    recommendedClassIds,
+    recommendedOriginIds,
+    recommendedProfessionIds,
+    recommendedRaceIds,
     selectedActiveSkills,
     selectedArchetypeSystem,
     selectedClass,
@@ -900,13 +983,14 @@ export default function CharacterCreationMode({
     selectionSummary,
     setGender,
     setName,
-    steps.ARCHETYPE,
     steps.ATTRIBUTES,
     steps.CLASS,
     steps.MULTICLASS,
     steps.PERKS,
     steps.IDENTITY,
     steps.ALIGNMENT,
+    steps.NAME,
+    steps.ARCHETYPE,
     steps.PROFESSION,
     steps.RACE,
     steps.SKILLS,

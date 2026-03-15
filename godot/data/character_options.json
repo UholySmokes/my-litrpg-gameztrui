@@ -1,592 +1,2286 @@
 {
-	"meta": {
-		"version": "1.1.0",
-		"generatedFrom": "packages/game-core/src/data/registries/{Race,Class}DataRegistry.js",
-		"note": "Subset of races/classes for Godot character creation. Tier-1 classes only. Origins/alignments/perks are Godot-only starter content."
-	},
-	"steps": [
-		"mode",
-		"name",
-		"race",
-		"class",
-		"multiclass",
-		"origin",
-		"attributes",
-		"skills",
-		"perks",
-		"archetype",
-		"trees",
-		"alignment",
-        "review"
-	],
-	"races": [
-		{
-			"id": "pure_human",
-			"name": "Pure Human",
-			"description": "Standard human with balanced potential across all areas.",
-			"statBonuses": {
-				"str": 2,
-				"agi": 2,
-				"dex": 2,
-				"int": 2,
-				"cha": 2,
-				"will": 2,
-				"luck": 2,
-				"soul": 1
-			},
-			"passive": {
-				"name": "Unlimited Potential",
-				"description": "Gain +10% Experience from all sources."
-			}
-		},
-		{
-			"id": "neo_human",
-			"name": "Neo-Human",
-			"description": "Human with cybernetic enhancements. Enhanced physical capabilities.",
-			"statBonuses": {
-				"str": 3,
-				"agi": 2,
-				"dex": 3,
-				"int": 1,
-				"cha": 0,
-				"will": 1,
-				"luck": 0,
-				"soul": 0
-			},
-			"passive": {
-				"name": "Targeting Array",
-				"description": "Accuracy is always 100%. Critical Hit Chance +5%."
-			}
-		},
-		{
-			"id": "ancient_bloodline",
-			"name": "Ancient Bloodline",
-			"description": "Descendant of an ancient powerful lineage. Natural affinity for cultivation.",
-			"statBonuses": {
-				"str": 1,
-				"agi": 1,
-				"dex": 1,
-				"int": 4,
-				"cha": 2,
-				"will": 2,
-				"luck": 2,
-				"soul": 3
-			},
-			"passive": {
-				"name": "Ancient Mana Core",
-				"description": "Mana Regeneration +50%."
-			}
-		},
-		{
-			"id": "spirit_beast",
-			"name": "Spirit Beast",
-			"description": "A creature with spiritual energy flowing through its veins.",
-			"statBonuses": {
-				"str": 4,
-				"agi": 4,
-				"dex": 2,
-				"int": 0,
-				"cha": -1,
-				"will": 2,
-				"luck": 1,
-				"soul": 1
-			},
-			"passive": {
-				"name": "Predator Reflexes",
-				"description": "Dodge Chance +10%."
-			}
-		},
-		{
-			"id": "demon_kin",
-			"name": "Demon Kin",
-			"description": "Mixed heritage with demonic ancestry. Dark power courses through you.",
-			"statBonuses": {
-				"str": 4,
-				"agi": 2,
-				"dex": 1,
-				"int": 2,
-				"cha": -1,
-				"will": 3,
-				"luck": -1,
-				"soul": 2
-			},
-			"passive": {
-				"name": "Siphoning Strikes",
-				"description": "Heal for 5% of damage dealt."
-			}
-		},
-		{
-			"id": "celestial_descendant",
-			"name": "Celestial Descendant",
-			"description": "Bloodline touched by celestial beings. Radiant energy within.",
-			"statBonuses": {
-				"str": 1,
-				"agi": 2,
-				"dex": 2,
-				"int": 3,
-				"cha": 4,
-				"will": 2,
-				"luck": 2,
-				"soul": 2
-			},
-			"passive": {
-				"name": "Celestial Radiance",
-				"description": "Healing effects +20%."
-			}
-		},
-		{
-			"id": "shadow_walker",
-			"name": "Shadow Walker",
-			"description": "Born from the void between realms. Natural stealth and darkness affinity.",
-			"statBonuses": {
-				"str": 1,
-				"agi": 5,
-				"dex": 4,
-				"int": 2,
-				"cha": 0,
-				"will": 2,
-				"luck": 1,
-				"soul": 2
-			},
-			"passive": {
-				"name": "Shadow Form",
-				"description": "20% chance to negate damage."
-			}
-		},
-		{
-			"id": "dragon_blood",
-			"name": "Dragon Blood",
-			"description": "Ancient dragon heritage. Immense physical and magical potential.",
-			"statBonuses": {
-				"str": 5,
-				"agi": 2,
-				"dex": 1,
-				"int": 3,
-				"cha": 2,
-				"will": 3,
-				"luck": 1,
-				"soul": 2
-			},
-			"passive": {
-				"name": "Draconic Resilience",
-				"description": "Phys/Magic Defense +15%."
-			}
-		},
-		{
-			"id": "undead_awakened",
-			"name": "Undead Awakened",
-			"description": "Risen from death with unnatural vitality and dark power.",
-			"statBonuses": {
-				"str": 3,
-				"agi": 1,
-				"dex": 1,
-				"int": 3,
-				"cha": -2,
-				"will": 4,
-				"luck": 0,
-				"soul": 3
-			},
-			"passive": {
-				"name": "Undying Will",
-				"description": "Survive with 1 HP once per battle."
-			}
-		},
-		{
-			"id": "phoenix_reborn",
-			"name": "Phoenix Reborn",
-			"description": "Reborn from fire with blazing power and eternal resilience.",
-			"statBonuses": {
-				"str": 2,
-				"agi": 3,
-				"dex": 2,
-				"int": 3,
-				"cha": 2,
-				"will": 3,
-				"luck": 1,
-				"soul": 2
-			},
-			"passive": {
-				"name": "Heart of Fire",
-				"description": "Fire Damage +20%."
-			}
-		},
-		{
-			"id": "fae_touched",
-			"name": "Fae Touched",
-			"description": "Kissed by fae magic, dancing between worlds with trickster grace.",
-			"statBonuses": {
-				"str": 0,
-				"agi": 3,
-				"dex": 3,
-				"int": 3,
-				"cha": 3,
-				"will": 1,
-				"luck": 3,
-				"soul": 1
-			},
-			"passive": {
-				"name": "Fae Trickery",
-				"description": "10% Evasion."
-			}
-		},
-		{
-			"id": "mechanical_construct",
-			"name": "Mechanical Construct",
-			"description": "Artificial being of gears and circuits. Pure logic, no soul.",
-			"statBonuses": {
-				"str": 4,
-				"agi": 1,
-				"dex": 3,
-				"int": 3,
-				"cha": -2,
-				"will": 0,
-				"luck": 0,
-				"soul": 0
-			},
-			"passive": {
-				"name": "System Overclock",
-				"description": "Attack Speed +10%."
-			}
-		}
-	],
-	"classes": [
-		{
-			"id": "warrior",
-			"name": "Warrior",
-			"description": "Beginner-friendly frontline fighter focused on direct melee combat.",
-			"resourceSystem": "rage",
-			"coreMechanics": [
-				"stance_system",
-				"block",
-                "weapon_mastery"
-			],
-			"baseStats": {
-				"strength": 3,
-				"dexterity": 1,
-				"intelligence": 0,
-				"wisdom": 0,
-				"constitution": 2,
-				"charisma": 0
-			}
-		},
-		{
-			"id": "rogue",
-			"name": "Rogue",
-			"description": "Beginner-friendly agile class built around stealth and burst windows.",
-			"resourceSystem": "energy",
-			"coreMechanics": [
-				"stealth",
-				"combo",
-				"lockpicking",
-                "traps"
-			],
-			"baseStats": {
-				"strength": 1,
-				"dexterity": 3,
-				"intelligence": 0,
-				"wisdom": 0,
-				"constitution": 1,
-				"charisma": 1
-			}
-		},
-		{
-			"id": "mage",
-			"name": "Mage",
-			"description": "Beginner-friendly caster class using straightforward elemental spells.",
-			"resourceSystem": "mana",
-			"coreMechanics": [
-				"spell_schools",
-                "arcane_mastery"
-			],
-			"baseStats": {
-				"strength": 0,
-				"dexterity": 1,
-				"intelligence": 3,
-				"wisdom": 2,
-				"constitution": 0,
-				"charisma": 0
-			}
-		},
-		{
-			"id": "cleric",
-			"name": "Cleric",
-			"description": "Beginner-friendly support class with healing and protective holy magic.",
-			"resourceSystem": "mana",
-			"coreMechanics": [
-				"divine_intervention",
-				"prayer_system",
-                "holy_magic"
-			],
-			"baseStats": {
-				"strength": 1,
-				"dexterity": 0,
-				"intelligence": 1,
-				"wisdom": 3,
-				"constitution": 1,
-				"charisma": 0
-			}
-		},
-		{
-			"id": "monk",
-			"name": "Monk",
-			"description": "Beginner-friendly martial class focused on combos and chi control.",
-			"resourceSystem": "chi",
-			"coreMechanics": [
-				"unarmed",
-				"meditation",
-				"combo_attacks",
-                "chi_system"
-			],
-			"baseStats": {
-				"strength": 1,
-				"dexterity": 2,
-				"intelligence": 0,
-				"wisdom": 2,
-				"constitution": 1,
-				"charisma": 0
-			}
-		},
-		{
-			"id": "ranger",
-			"name": "Ranger",
-			"description": "Beginner-friendly ranged class with tracking and companion support.",
-			"resourceSystem": "focus",
-			"coreMechanics": [
-				"aim",
-				"pet_companion",
-				"tracking",
-                "favored_enemy"
-			],
-			"baseStats": {
-				"strength": 1,
-				"dexterity": 2,
-				"intelligence": 0,
-				"wisdom": 1,
-				"constitution": 1,
-				"charisma": 1
-			}
-		}
-	],
-	"attributes": {
-		"base": {
-			"strength": 10,
-			"dexterity": 10,
-			"intelligence": 10,
-			"vitality": 10,
-			"wisdom": 10,
-			"luck": 10
-		},
-		"freePoints": 15,
-		"minValue": 1,
-		"maxValue": 30
-	},
-	"skills": {
-		"maxActiveSkills": 3,
-		"maxPassiveSkills": 6,
-		"minActiveSkills": 1,
-		"minPassiveSkills": 0,
-		"loadouts": [
-			{
-				"id": "blades",
-				"name": "Blades",
-				"description": "Melee starter kit: Slash + Toughness.",
-				"activeSkills": ["slash"],
-				"passiveSkills": ["toughness"]
-			},
-			{
-				"id": "marksman",
-				"name": "Marksman",
-				"description": "Ranged starter kit: Piercing Shot + Keen Eye.",
-				"activeSkills": ["piercing_shot"],
-				"passiveSkills": ["keen_eye"]
-			},
-			{
-				"id": "arcanist",
-				"name": "Arcanist",
-				"description": "Caster starter kit: Arcane Bolt + Mana Trickle.",
-				"activeSkills": ["arcane_bolt"],
-				"passiveSkills": ["mana_trickle"]
-			},
-			{
-				"id": "acolyte",
-				"name": "Acolyte",
-				"description": "Support starter kit: Holy Mend + Toughness.",
-				"activeSkills": ["holy_mend"],
-				"passiveSkills": ["toughness"]
-			},
-			{
-				"id": "shadow",
-				"name": "Shadow",
-				"description": "Mobility starter kit: Shadow Step + Fleet-Footed.",
-				"activeSkills": ["shadow_step"],
-				"passiveSkills": ["fleet_footed"]
-			}
-		],
-		"activeSkills": [
-			{
-				"id": "slash",
-				"name": "Slash",
-				"description": "A reliable melee strike. Low cooldown, good for learning timing."
-			},
-			{
-				"id": "piercing_shot",
-				"name": "Piercing Shot",
-				"description": "A ranged shot that ignores a portion of armor. Good vs tough enemies."
-			},
-			{
-				"id": "arcane_bolt",
-				"name": "Arcane Bolt",
-				"description": "A simple spell projectile. Scales with Intelligence."
-			},
-			{
-				"id": "holy_mend",
-				"name": "Holy Mend",
-				"description": "A small heal that stabilizes early fights."
-			},
-			{
-				"id": "shadow_step",
-				"name": "Shadow Step",
-				"description": "A short reposition that breaks line-of-sight briefly."
-			}
-		],
-		"passiveSkills": [
-			{
-				"id": "toughness",
-				"name": "Toughness",
-				"description": "+5% Max HP."
-			},
-			{
-				"id": "keen_eye",
-				"name": "Keen Eye",
-				"description": "+5% crit chance."
-			},
-			{
-				"id": "mana_trickle",
-				"name": "Mana Trickle",
-				"description": "+5% mana regeneration."
-			},
-			{
-				"id": "fleet_footed",
-				"name": "Fleet-Footed",
-				"description": "+5% move speed."
-			},
-			{
-				"id": "lucky_breaks",
-				"name": "Lucky Breaks",
-				"description": "Small chance to avoid a negative status effect."
-			}
-		]
-	},
-	"origins": [
-		{
-			"id": "street_urchin",
-			"name": "Street Urchin",
-			"description": "You grew up surviving on instincts, favors, and fast feet.",
-			"trait": {
-				"name": "Quick Hands",
-				"description": "+1 Dexterity (creation only). Better odds on early lockpicks."
-			}
-		},
-		{
-			"id": "apprentice_scholar",
-			"name": "Apprentice Scholar",
-			"description": "You studied scraps of forbidden knowledge and learned to read the world.",
-			"trait": {
-				"name": "Book-Learned",
-				"description": "+1 Intelligence (creation only). Unlocks extra lore prompts."
-			}
-		},
-		{
-			"id": "temple_acolyte",
-			"name": "Temple Acolyte",
-			"description": "You learned discipline, ritual, and the weight of vows.",
-			"trait": {
-				"name": "Rite of Shelter",
-				"description": "Start with a small protective blessing (placeholder)."
-			}
-		},
-		{
-			"id": "frontier_hunter",
-			"name": "Frontier Hunter",
-			"description": "You track, observe, and strike when the moment is right.",
-			"trait": {
-				"name": "Tracker",
-				"description": "+1 Wisdom (creation only). Better encounter scouting (placeholder)."
-			}
-		},
-		{
-			"id": "arena_recruit",
-			"name": "Arena Recruit",
-			"description": "You learned to fight for crowds and coin, under harsh rules.",
-			"trait": {
-				"name": "Crowd-Ready",
-				"description": "+1 Strength (creation only). Start with a basic combat consumable."
-			}
-		},
-		{
-			"id": "exiled_noble",
-			"name": "Exiled Noble",
-			"description": "You have manners, debts, and enemies with long memories.",
-			"trait": {
-				"name": "Commanding Presence",
-				"description": "+1 Charisma (creation only). Better early negotiation prompts."
-			}
-		}
-	],
-	"perks": {
-		"maxPicks": 2,
-		"minPicks": 1,
-		"options": [
-			{ "id": "iron_stomach", "name": "Iron Stomach", "description": "Consumables are 10% more effective." },
-			{ "id": "battle_focus", "name": "Battle Focus", "description": "+5% damage while above 80% HP." },
-			{ "id": "cautious", "name": "Cautious", "description": "+5% dodge while below 30% HP." },
-			{ "id": "scavenger", "name": "Scavenger", "description": "+10% gold from drops." },
-			{ "id": "ritualist", "name": "Ritualist", "description": "Story rituals have an extra outcome option (placeholder)." },
-			{ "id": "quick_learner", "name": "Quick Learner", "description": "+5% XP gain." },
-			{ "id": "sturdy_grip", "name": "Sturdy Grip", "description": "Reduced knockback and stagger (placeholder)." },
-			{ "id": "arcane_sense", "name": "Arcane Sense", "description": "Detect magical traces on maps (placeholder)." }
-		]
-	},
-	"archetypes": [
-		{
-			"id": "balanced",
-			"name": "Balanced",
-			"description": "A safe start that adapts to whatever you find."
-		},
-		{
-			"id": "glass_cannon",
-			"name": "Glass Cannon",
-			"description": "High damage, low safety. Best with careful positioning."
-		},
-		{
-			"id": "bulwark",
-			"name": "Bulwark",
-			"description": "High survivability. Wins long fights and protects allies."
-		},
-		{
-			"id": "trickster",
-			"name": "Trickster",
-			"description": "Evasion, crits, and opportunism. Strong with stealth and timing."
-		}
-	],
-	"trees": {
-		"maxPicks": 1,
-		"options": [
-			{ "id": "offense", "name": "Offense", "description": "Plan toward burst damage and crit synergies." },
-			{ "id": "defense", "name": "Defense", "description": "Plan toward mitigation, sustain, and resistances." },
-			{ "id": "utility", "name": "Utility", "description": "Plan toward mobility, control, and exploration perks." }
-		]
-	},
-	"alignments": [
-		{ "id": "lawful_good", "name": "Lawful Good", "description": "Order and compassion. You keep your word." },
-		{ "id": "neutral_good", "name": "Neutral Good", "description": "Kindness first. Rules are tools, not chains." },
-		{ "id": "chaotic_good", "name": "Chaotic Good", "description": "Freedom and mercy. You break cages." },
-		{ "id": "lawful_neutral", "name": "Lawful Neutral", "description": "Structure above all. The system must stand." },
-		{ "id": "true_neutral", "name": "True Neutral", "description": "Balance and pragmatism. Survive, adapt, endure." },
-		{ "id": "chaotic_neutral", "name": "Chaotic Neutral", "description": "Impulse and independence. You choose your own path." }
-	],
-	"characterCreation": {
-		"required": true,
-		"startMapAfterCreation": "map_village_square"
-	}
+  "meta": {
+    "version": "2.0.0",
+    "generatedAt": "2026-03-15T07:30:51.863Z",
+    "generatedFrom": [
+      "game-core/characterCreation",
+      "game-core/systems/archetype",
+      "game-core/systems/profession"
+    ],
+    "note": "Generated canonical Godot character-creation bundle for web/Godot parity."
+  },
+  "steps": [
+    "mode",
+    "name",
+    "system",
+    "origin",
+    "race",
+    "class",
+    "multiclass",
+    "profession",
+    "attributes",
+    "skills",
+    "perks",
+    "trees",
+    "alignment",
+    "review"
+  ],
+  "races": [
+    {
+      "id": "pure_human",
+      "name": "Pure Human",
+      "description": "A standard human with no special bloodline. Versatile and adaptable.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "human_potential",
+        "name": "Unlimited Potential",
+        "description": "Gain +10% Experience from all sources.",
+        "tags": [
+          "XP_BOOST"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "neo_human",
+      "name": "Neo-Human",
+      "description": "Human with cybernetic enhancements. Enhanced physical capabilities.",
+      "statBonuses": {
+        "strength": 3,
+        "agility": 2,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 1,
+        "luck": 0,
+        "soul": 0
+      },
+      "passiveAbility": {
+        "id": "cyber_optics",
+        "name": "Targeting Array",
+        "description": "Accuracy is always 100%. Critical Hit Chance +5%.",
+        "tags": [
+          "ALWAYS_HIT",
+          "DMG_BOOST_CRIT"
+        ],
+        "value": 0.05
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "ancient_bloodline",
+      "name": "Ancient Bloodline",
+      "description": "Descendant of an ancient powerful lineage. Natural affinity for cultivation.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 4,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "mana_mastery",
+        "name": "Ancient Mana Core",
+        "description": "Mana Regeneration +50%.",
+        "tags": [
+          "REGEN_MANA"
+        ],
+        "value": 0.5
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "spirit_beast",
+      "name": "Spirit Beast",
+      "description": "A creature with spiritual energy flowing through its veins.",
+      "statBonuses": {
+        "strength": 4,
+        "agility": 4,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": -1,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "feral_reflexes",
+        "name": "Predator Reflexes",
+        "description": "Dodge Chance +10%.",
+        "tags": [
+          "DODGE_BOOST"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "demon_kin",
+      "name": "Demon Kin",
+      "description": "Mixed heritage with demonic ancestry. Dark power courses through you.",
+      "statBonuses": {
+        "strength": 4,
+        "agility": 2,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": -1,
+        "willpower": 3,
+        "luck": -1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "blood_thirst",
+        "name": "Siphoning Strikes",
+        "description": "Heal for 5% of damage dealt.",
+        "tags": [
+          "LIFESTEAL"
+        ],
+        "value": 0.05
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "celestial_descendant",
+      "name": "Celestial Descendant",
+      "description": "Bloodline touched by celestial beings. Radiant energy within.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 4,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "divine_aura",
+        "name": "Celestial Radiance",
+        "description": "Healing effects +20%.",
+        "tags": [
+          "HEAL_BOOST"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "shadow_walker",
+      "name": "Shadow Walker",
+      "description": "Born from the void between realms. Natural stealth and darkness affinity.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 5,
+        "dexterity": 4,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "void_step",
+        "name": "Shadow Form",
+        "description": "20% chance to negate damage.",
+        "tags": [
+          "DMG_NEGATE_CHANCE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "dragon_blood",
+      "name": "Dragon Blood",
+      "description": "Ancient dragon heritage. Immense physical and magical potential.",
+      "statBonuses": {
+        "strength": 5,
+        "agility": 2,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "dragon_scales",
+        "name": "Draconic Resilience",
+        "description": "Phys/Magic Defense +15%.",
+        "tags": [
+          "DEF_BOOST_ALL"
+        ],
+        "value": 0.15
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "elemental_attuned",
+      "name": "Elemental Attuned",
+      "description": "Born with natural connection to elemental forces.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 4,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "elemental_harmony",
+        "name": "Elemental Flux",
+        "description": "Elemental Dmg +15%.",
+        "tags": [
+          "DMG_BOOST_ELEMENTAL"
+        ],
+        "value": 0.15
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "mutant",
+      "name": "Mutant",
+      "description": "Genetic mutation grants unique abilities. Unpredictable potential.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 1,
+        "luck": 3,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "unstable_genome",
+        "name": "Adaptive Mutation",
+        "description": "Gain random buff at start of battle.",
+        "tags": [
+          "START_BUFF_RANDOM"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "undead_awakened",
+      "name": "Undead Awakened",
+      "description": "Returned from death with consciousness. Death energy flows through you.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": -2,
+        "willpower": 4,
+        "luck": -1,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "deathless",
+        "name": "Undying Will",
+        "description": "Survive with 1 HP once per battle.",
+        "tags": [
+          "DEATH_SAVE"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "fae_touched",
+      "name": "Fae Touched",
+      "description": "Touched by fae magic. Natural charm and illusion affinity.",
+      "statBonuses": {
+        "strength": 0,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 4,
+        "willpower": 1,
+        "luck": 3,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "glamour",
+        "name": "Fae Trickery",
+        "description": "10% Evasion.",
+        "tags": [
+          "DODGE_BOOST"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "beast_kin",
+      "name": "Beast Kin",
+      "description": "Human with animalistic traits. Enhanced senses and physical prowess.",
+      "statBonuses": {
+        "strength": 4,
+        "agility": 4,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": -1,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "pack_tactics",
+        "name": "Savage Strikes",
+        "description": "Crit Dmg +20%.",
+        "tags": [
+          "CRIT_DMG_BOOST"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "mechanical_construct",
+      "name": "Mechanical Construct",
+      "description": "Living machine with artificial intelligence. Perfect precision.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 1,
+        "dexterity": 4,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": -2,
+        "willpower": 3,
+        "luck": 0,
+        "soul": -1
+      },
+      "passiveAbility": {
+        "id": "overclock",
+        "name": "System Overclock",
+        "description": "Attack Speed +10%.",
+        "tags": [
+          "SPEED_BOOST"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "void_walker",
+      "name": "Void Walker",
+      "description": "Born in the void between dimensions. Space-time manipulation potential.",
+      "statBonuses": {
+        "strength": 0,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "dimensional_shift",
+        "name": "Phase Shift",
+        "description": "Magic Penetration +10%.",
+        "tags": [
+          "PENETRATION_MAGIC"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "phoenix_reborn",
+      "name": "Phoenix Reborn",
+      "description": "Reborn from ashes. Fire affinity and resurrection potential.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "eternal_flame",
+        "name": "Heart of Fire",
+        "description": "Fire Damage +20%.",
+        "tags": [
+          "DMG_BOOST_FIRE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "nature_spirit",
+      "name": "Nature Spirit",
+      "description": "One with nature. Life energy and plant manipulation.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 3,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "photosynthesis",
+        "name": "Nature's Blessing",
+        "description": "Max HP +10%.",
+        "tags": [
+          "HP_BOOST"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "crystal_being",
+      "name": "Crystal Being",
+      "description": "Living crystal entity. Hard defense and energy storage.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": -1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 4,
+        "luck": 1,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "refraction",
+        "name": "Prismatic Shell",
+        "description": "Reflect 10% Magic Dmg.",
+        "tags": [
+          "REFLECT_MAGIC"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "chaos_born",
+      "name": "Chaos Born",
+      "description": "Born from chaos energy. Unpredictable and powerful.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 2,
+        "luck": 4,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "entropy",
+        "name": "Chaos Theory",
+        "description": "Damage variance 50-200%.",
+        "tags": [
+          "HIGH_VARIANCE"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "divine_scion",
+      "name": "Divine Scion",
+      "description": "Child of a minor deity. Blessed with divine favor.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 3,
+        "willpower": 2,
+        "luck": 3,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "godly_favor",
+        "name": "Divine Providence",
+        "description": "All Stats +5%.",
+        "tags": [
+          "STAT_BOOST_ALL"
+        ],
+        "value": 0.05
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "stormforged",
+      "name": "Stormforged",
+      "description": "Forged in perpetual storms, bodies crackle with charged steel.",
+      "statBonuses": {
+        "strength": 3,
+        "agility": 2,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "stormheart",
+        "name": "Stormheart",
+        "description": "Lightning Damage +15%.",
+        "tags": [
+          "DMG_BOOST_LIGHTNING"
+        ],
+        "value": 0.15
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "frostborne",
+      "name": "Frostborne",
+      "description": "Born of glacial realms, calm and enduring.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "glacial_focus",
+        "name": "Glacial Focus",
+        "description": "Ice Damage +20%.",
+        "tags": [
+          "DMG_BOOST_ICE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "emberkin",
+      "name": "Emberkin",
+      "description": "Children of living flame, their blood runs hot with power.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 2,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "cinder_blood",
+        "name": "Cinder Blood",
+        "description": "Fire Damage +20%.",
+        "tags": [
+          "DMG_BOOST_FIRE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "tidecaller",
+      "name": "Tidecaller",
+      "description": "Mystics of the sea, attuned to the pull of moons and tides.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "riptide_regen",
+        "name": "Riptide Regen",
+        "description": "Mana Regeneration +30%.",
+        "tags": [
+          "REGEN_MANA"
+        ],
+        "value": 0.3
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "sunborn",
+      "name": "Sunborn",
+      "description": "Radiant descendants of the dawn, fueled by solar vigor.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 3,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "solar_vigor",
+        "name": "Solar Vigor",
+        "description": "HP Regeneration +20%.",
+        "tags": [
+          "REGEN_HP"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "duskborne",
+      "name": "Duskborne",
+      "description": "Born at the edge of night, masters of twilight evasion.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 3,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "night_veil",
+        "name": "Night Veil",
+        "description": "Dodge Chance +12%.",
+        "tags": [
+          "DODGE_BOOST"
+        ],
+        "value": 0.12
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "ironroot",
+      "name": "Ironroot",
+      "description": "Deepwood guardians with bark-hard skin and unyielding will.",
+      "statBonuses": {
+        "strength": 3,
+        "agility": 0,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 4,
+        "luck": 0,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "stonebark",
+        "name": "Stonebark",
+        "description": "Physical Damage taken -20%.",
+        "tags": [
+          "RESIST_PHYSICAL"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "skybound",
+      "name": "Skybound",
+      "description": "High-altitude wanderers who move like wind across the sky.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 4,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 1,
+        "luck": 2,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "aerial_evasion",
+        "name": "Aerial Evasion",
+        "description": "Dodge Chance +15%.",
+        "tags": [
+          "DODGE_BOOST"
+        ],
+        "value": 0.15
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "bloodwoven",
+      "name": "Bloodwoven",
+      "description": "Warriors bound by crimson oaths that feed on battle.",
+      "statBonuses": {
+        "strength": 3,
+        "agility": 1,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "crimson_pact",
+        "name": "Crimson Pact",
+        "description": "Heal for 7% of damage dealt.",
+        "tags": [
+          "LIFESTEAL"
+        ],
+        "value": 0.07
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "starseer",
+      "name": "Starseer",
+      "description": "Celestial scholars who read fate in constellations.",
+      "statBonuses": {
+        "strength": 0,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 4,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 3,
+        "luck": 2,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "stellar_alignment",
+        "name": "Stellar Alignment",
+        "description": "Gain +10% Experience from all sources.",
+        "tags": [
+          "XP_BOOST"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "rune_sentinel",
+      "name": "Rune Sentinel",
+      "description": "Ancient wardens etched with runes of protection.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 1,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 4,
+        "luck": 0,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "rune_barrier",
+        "name": "Rune Barrier",
+        "description": "Physical Damage taken -15%.",
+        "tags": [
+          "RESIST_PHYSICAL"
+        ],
+        "value": 0.15
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "mirageborn",
+      "name": "Mirageborn",
+      "description": "Desert phantoms who thrive on illusion and fortune.",
+      "statBonuses": {
+        "strength": 0,
+        "agility": 3,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 1,
+        "luck": 3,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "gilded_mirage",
+        "name": "Gilded Mirage",
+        "description": "Gold gains +15%.",
+        "tags": [
+          "GOLD_BOOST"
+        ],
+        "value": 0.15
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "quakeborn",
+      "name": "Quakeborn",
+      "description": "Stone-blooded titans whose steps shake the ground.",
+      "statBonuses": {
+        "strength": 4,
+        "agility": 0,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 3,
+        "luck": 0,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "seismic_stride",
+        "name": "Seismic Stride",
+        "description": "Physical Damage taken -20%.",
+        "tags": [
+          "RESIST_PHYSICAL"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "venomtail",
+      "name": "Venomtail",
+      "description": "Swift hunters with venomous instincts and lethal precision.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 3,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "toxin_mastery",
+        "name": "Toxin Mastery",
+        "description": "Immune to Poison.",
+        "tags": [
+          "IMMUNE_POISON"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "auric_seraph",
+      "name": "Auric Seraph",
+      "description": "Golden-winged protectors infused with radiant grace.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 4,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "radiant_guard",
+        "name": "Radiant Guard",
+        "description": "Holy Resist +50%.",
+        "tags": [
+          "RESIST_HOLY"
+        ],
+        "value": 0.5
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "gloomshade",
+      "name": "Gloomshade",
+      "description": "Shadow-dwellers who vanish between breaths.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 4,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 2,
+        "luck": 2,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "umbral_slip",
+        "name": "Umbral Slip",
+        "description": "Dodge Chance +15%.",
+        "tags": [
+          "DODGE_BOOST"
+        ],
+        "value": 0.15
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "sandstrider",
+      "name": "Sandstrider",
+      "description": "Nomads who cross deserts with effortless speed.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 3,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 1,
+        "luck": 3,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "dune_runner",
+        "name": "Dune Runner",
+        "description": "Dodge Chance +10%.",
+        "tags": [
+          "DODGE_BOOST"
+        ],
+        "value": 0.1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "umbral_oracle",
+      "name": "Umbral Oracle",
+      "description": "Seers of the void who channel duskborn mana.",
+      "statBonuses": {
+        "strength": 0,
+        "agility": 1,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 4,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 4,
+        "luck": 1,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "dark_insight",
+        "name": "Dark Insight",
+        "description": "Mana Regeneration +25%.",
+        "tags": [
+          "REGEN_MANA"
+        ],
+        "value": 0.25
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "verdant_shaper",
+      "name": "Verdant Shaper",
+      "description": "Living sculptors of flora and life essence.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 2,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "verdant_growth",
+        "name": "Verdant Growth",
+        "description": "HP Regeneration +20%.",
+        "tags": [
+          "REGEN_HP"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "astral_nomad",
+      "name": "Astral Nomad",
+      "description": "Wanderers between stars who fold space with ease.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 4,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 3,
+        "luck": 2,
+        "soul": 4
+      },
+      "passiveAbility": {
+        "id": "rift_wanderer",
+        "name": "Rift Wanderer",
+        "description": "Teleport abilities cost 0 mana.",
+        "tags": [
+          "FREE_TELEPORT"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "riftborn",
+      "name": "Riftborn",
+      "description": "Born in fractured space, able to slip between blows.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 3,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 4
+      },
+      "passiveAbility": {
+        "id": "rift_phase",
+        "name": "Rift Phase",
+        "description": "20% chance to negate incoming damage.",
+        "tags": [
+          "DMG_NEGATE_CHANCE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "ashenblood",
+      "name": "Ashenblood",
+      "description": "Ember-tainted lineage with smoldering power.",
+      "statBonuses": {
+        "strength": 3,
+        "agility": 2,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "cinder_heart",
+        "name": "Cinder Heart",
+        "description": "Fire Damage +20%.",
+        "tags": [
+          "DMG_BOOST_FIRE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "glacierkin",
+      "name": "Glacierkin",
+      "description": "Cold-blooded heirs of glacial peaks and frozen depths.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 1,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "glacier_edge",
+        "name": "Glacier Edge",
+        "description": "Ice Damage +20%.",
+        "tags": [
+          "DMG_BOOST_ICE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "luckweaver",
+      "name": "Luckweaver",
+      "description": "Fate-bent wanderers who tug at probability threads.",
+      "statBonuses": {
+        "strength": 0,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 3,
+        "willpower": 2,
+        "luck": 4,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "fortunate_threads",
+        "name": "Fortunate Threads",
+        "description": "Critical Hit Chance +5%.",
+        "tags": [
+          "DMG_BOOST_CRIT"
+        ],
+        "value": 0.05
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "blood_frenzied",
+      "name": "Blood Frenzied",
+      "description": "War-bred berserkers who thrive at the edge of death.",
+      "statBonuses": {
+        "strength": 4,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": -1,
+        "willpower": 3,
+        "luck": 0,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "blood_fury",
+        "name": "Blood Fury",
+        "description": "Deal +20% damage below 50% HP.",
+        "tags": [
+          "LOW_HP_DMG_BOOST"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "grim_revenant",
+      "name": "Grim Revenant",
+      "description": "Death-marked survivors who refuse to fall.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 1,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": -2,
+        "willpower": 4,
+        "luck": 0,
+        "soul": 4
+      },
+      "passiveAbility": {
+        "id": "deathward",
+        "name": "Deathward",
+        "description": "Survive with 1 HP once per battle.",
+        "tags": [
+          "DEATH_SAVE"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "sparkborn",
+      "name": "Sparkborn",
+      "description": "Charged bloodlines that crackle with ignition.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 3,
+        "dexterity": 3,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "spark_guard",
+        "name": "Spark Guard",
+        "description": "Fire Resist +20%.",
+        "tags": [
+          "RESIST_FIRE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "whisper_fae",
+      "name": "Whisper Fae",
+      "description": "Soft-spoken fae who twist hearts and intentions.",
+      "statBonuses": {
+        "strength": 0,
+        "agility": 3,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 4,
+        "willpower": 1,
+        "luck": 2,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "soft_charm",
+        "name": "Soft Charm",
+        "description": "Charm effects are stronger.",
+        "tags": [
+          "CHARM_BOOST"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "shadow_veil",
+      "name": "Shadow Veil",
+      "description": "Shrouded walkers who blur between sight and silence.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 4,
+        "dexterity": 4,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 2,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "veil_steps",
+        "name": "Veil Steps",
+        "description": "Stealth effectiveness +50%.",
+        "tags": [
+          "STEALTH_BOOST"
+        ],
+        "value": 0.5
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "wild_mutant",
+      "name": "Wild Mutant",
+      "description": "Unstable evolution with bursts of random mutation.",
+      "statBonuses": {
+        "strength": 2,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 1,
+        "luck": 2,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "wild_start",
+        "name": "Wild Start",
+        "description": "Gain a random buff at the start of battle.",
+        "tags": [
+          "START_BUFF_RANDOM"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "flux_attuned",
+      "name": "Flux Attuned",
+      "description": "Elemental flux runs through their veins, shifting each battle.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 4,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 3
+      },
+      "passiveAbility": {
+        "id": "flux_absorption",
+        "name": "Flux Absorption",
+        "description": "Randomly absorb an element each battle.",
+        "tags": [
+          "ABSORB_RANDOM"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "ironhide",
+      "name": "Ironhide",
+      "description": "Iron-cored survivors with heavy endurance.",
+      "statBonuses": {
+        "strength": 4,
+        "agility": 0,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": -1,
+        "willpower": 4,
+        "luck": 0,
+        "soul": 1
+      },
+      "passiveAbility": {
+        "id": "ironhide",
+        "name": "Ironhide",
+        "description": "Immune to Bleed.",
+        "tags": [
+          "IMMUNE_BLEED"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "echo_spirit",
+      "name": "Echo Spirit",
+      "description": "Spectral lineage that flickers between planes.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 4,
+        "luck": 1,
+        "soul": 4
+      },
+      "passiveAbility": {
+        "id": "echo_step",
+        "name": "Echo Step",
+        "description": "20% chance to negate incoming damage.",
+        "tags": [
+          "DMG_NEGATE_CHANCE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "chaos_touched",
+      "name": "Chaos Touched",
+      "description": "Entropy-bent souls whose magic is unstable but potent.",
+      "statBonuses": {
+        "strength": 1,
+        "agility": 2,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 2,
+        "luck": 3,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "chaos_cast",
+        "name": "Chaos Cast",
+        "description": "Magic casts can backfire or amplify.",
+        "tags": [
+          "GAMBLE_CAST"
+        ],
+        "value": 1
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    },
+    {
+      "id": "sunforged",
+      "name": "Sunforged",
+      "description": "Forged under blazing suns, radiating heat and resolve.",
+      "statBonuses": {
+        "strength": 3,
+        "agility": 1,
+        "dexterity": 2,
+        "vitality": 0,
+        "intelligence": 2,
+        "wisdom": 0,
+        "charisma": 2,
+        "willpower": 3,
+        "luck": 1,
+        "soul": 2
+      },
+      "passiveAbility": {
+        "id": "solar_brand",
+        "name": "Solar Brand",
+        "description": "Fire Damage +20%.",
+        "tags": [
+          "DMG_BOOST_FIRE"
+        ],
+        "value": 0.2
+      },
+      "activeAbility": null,
+      "favoredBiome": ""
+    }
+  ],
+  "classes": [
+    {
+      "id": "warrior",
+      "name": "Warrior",
+      "description": "Beginner-friendly frontline fighter focused on direct melee combat.",
+      "tier": 1,
+      "resourceSystem": "rage",
+      "baseStats": {
+        "strength": 3,
+        "agility": 0,
+        "dexterity": 1,
+        "vitality": 2,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "coreMechanics": [
+        "stance_system",
+        "block",
+        "weapon_mastery"
+      ]
+    },
+    {
+      "id": "rogue",
+      "name": "Rogue",
+      "description": "Beginner-friendly agile class built around stealth and burst windows.",
+      "tier": 1,
+      "resourceSystem": "energy",
+      "baseStats": {
+        "strength": 1,
+        "agility": 0,
+        "dexterity": 3,
+        "vitality": 1,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "coreMechanics": [
+        "stealth",
+        "combo",
+        "lockpicking",
+        "traps"
+      ]
+    },
+    {
+      "id": "mage",
+      "name": "Mage",
+      "description": "Beginner-friendly caster class using straightforward elemental spells.",
+      "tier": 1,
+      "resourceSystem": "mana",
+      "baseStats": {
+        "strength": 0,
+        "agility": 0,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 3,
+        "wisdom": 2,
+        "charisma": 0,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "coreMechanics": [
+        "spell_schools",
+        "arcane_mastery"
+      ]
+    },
+    {
+      "id": "cleric",
+      "name": "Cleric",
+      "description": "Beginner-friendly support class with healing and protective holy magic.",
+      "tier": 1,
+      "resourceSystem": "mana",
+      "baseStats": {
+        "strength": 1,
+        "agility": 0,
+        "dexterity": 0,
+        "vitality": 1,
+        "intelligence": 1,
+        "wisdom": 3,
+        "charisma": 0,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "coreMechanics": [
+        "divine_intervention",
+        "prayer_system",
+        "holy_magic"
+      ]
+    },
+    {
+      "id": "monk",
+      "name": "Monk",
+      "description": "Beginner-friendly martial class focused on combos and chi control.",
+      "tier": 1,
+      "resourceSystem": "chi",
+      "baseStats": {
+        "strength": 1,
+        "agility": 0,
+        "dexterity": 2,
+        "vitality": 1,
+        "intelligence": 0,
+        "wisdom": 2,
+        "charisma": 0,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "coreMechanics": [
+        "unarmed",
+        "meditation",
+        "combo_attacks",
+        "chi_system"
+      ]
+    },
+    {
+      "id": "ranger",
+      "name": "Ranger",
+      "description": "Beginner-friendly ranged class with tracking and companion support.",
+      "tier": 1,
+      "resourceSystem": "focus",
+      "baseStats": {
+        "strength": 1,
+        "agility": 0,
+        "dexterity": 2,
+        "vitality": 1,
+        "intelligence": 0,
+        "wisdom": 1,
+        "charisma": 1,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "coreMechanics": [
+        "aim",
+        "pet_companion",
+        "tracking",
+        "favored_enemy"
+      ]
+    }
+  ],
+  "professions": [
+    {
+      "id": "blacksmithing",
+      "name": "Blacksmithing",
+      "description": "Forge weapons, armor, and tools from raw metals.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_smithing"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "alchemy",
+      "name": "Alchemy",
+      "description": "Brew potions, elixirs, and flasks with magical effects.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_brewing"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "enchanting",
+      "name": "Enchanting",
+      "description": "Apply magical effects to existing gear.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_enchanting"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "tailoring",
+      "name": "Tailoring",
+      "description": "Create cloth armor, bags, and banners.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_sewing"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "jewelcrafting",
+      "name": "Jewelcrafting",
+      "description": "Create rings, necklaces, and gem sockets.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_cutting"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "engineering",
+      "name": "Engineering",
+      "description": "Build gadgets, bombs, and mechanical mounts.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_engineering"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "construction",
+      "name": "Construction",
+      "description": "Build structures, fortifications, and housing.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_construction"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "mining",
+      "name": "Mining",
+      "description": "Extract ores, stones, and rare minerals.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_mining"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "herbalism",
+      "name": "Herbalism",
+      "description": "Gather plants, flowers, and fungi.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_herbalism"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "skinning",
+      "name": "Skinning & Tracking",
+      "description": "Harvest hides, pelts, and meats from creatures.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_skinning"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "logging",
+      "name": "Logging & Woodcutting",
+      "description": "Harvest timber, firewood, and specialty woods.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_logging"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "fishing",
+      "name": "Fishing",
+      "description": "Catch fish, aquatic reagents, and treasure.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_fishing"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "farming",
+      "name": "Farming & Agriculture",
+      "description": "Grow crops, produce, and raise animals.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_farming"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "cooking",
+      "name": "Cooking",
+      "description": "Prepare food that grants stat buffs and regeneration.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_cooking"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "brewing",
+      "name": "Brewing & Vinting",
+      "description": "Create drinks for mana regeneration and spirit buffs.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_brewing_drinks"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "butchery",
+      "name": "Butchery",
+      "description": "Process raw meat into cooking components.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_butchery"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "inscription",
+      "name": "Inscription & Scribing",
+      "description": "Create scrolls, glyphs, runes, and contracts.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_inscription"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "first_aid",
+      "name": "First Aid & Medicine",
+      "description": "Create bandages, healing kits, and cure status effects.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_first_aid"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "repair",
+      "name": "Repair & Maintenance",
+      "description": "Fix damaged gear and maintain equipment.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_maintenance"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "portal_creation",
+      "name": "Portal Creation",
+      "description": "Provide quick travel services through portals.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_teleportation"
+      ],
+      "tierUnlocks": {}
+    },
+    {
+      "id": "dyeing",
+      "name": "Dyeing & Customization",
+      "description": "Change the appearance of armor and items.",
+      "categoryId": "",
+      "tier1Skills": [
+        "basic_dyeing"
+      ],
+      "tierUnlocks": {}
+    }
+  ],
+  "origins": [
+    {
+      "id": "freehold_scrapper",
+      "name": "Freehold Scrapper",
+      "description": "Raised in salvage lanes and black-market alleys, you know how to turn scraps into leverage.",
+      "favoredBiome": "city",
+      "attributeBonuses": {
+        "strength": 0,
+        "agility": 0,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": -1,
+        "willpower": 0,
+        "luck": 1,
+        "soul": 0
+      },
+      "favoredQuestTags": [
+        "economy",
+        "crafting",
+        "quests"
+      ]
+    },
+    {
+      "id": "ledger_apprentice",
+      "name": "Ledger Apprentice",
+      "description": "You learned the city through invoices, audits, and the quiet violence of contracts.",
+      "favoredBiome": "city",
+      "attributeBonuses": {
+        "strength": -1,
+        "agility": 0,
+        "dexterity": 0,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 1,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "favoredQuestTags": [
+        "systems",
+        "factions",
+        "economy"
+      ]
+    },
+    {
+      "id": "salvage_adept",
+      "name": "Salvage Adept",
+      "description": "Collapsed districts and dead towers taught you to read danger, residue, and forgotten machinery.",
+      "favoredBiome": "ruins",
+      "attributeBonuses": {
+        "strength": 0,
+        "agility": 0,
+        "dexterity": 1,
+        "vitality": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": -1,
+        "willpower": 1,
+        "luck": 0,
+        "soul": 0
+      },
+      "favoredQuestTags": [
+        "magic-research",
+        "mystery",
+        "puzzle"
+      ]
+    },
+    {
+      "id": "grove_exile",
+      "name": "Grove Exile",
+      "description": "You came from the wild edges where roots, spores, and old pacts mattered more than coin.",
+      "favoredBiome": "wilds",
+      "attributeBonuses": {
+        "strength": 0,
+        "agility": 1,
+        "dexterity": 0,
+        "vitality": 0,
+        "intelligence": 0,
+        "wisdom": 1,
+        "charisma": -1,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "favoredQuestTags": [
+        "mystic",
+        "combat",
+        "atmosphere"
+      ]
+    },
+    {
+      "id": "deckhand_cadet",
+      "name": "Deckhand Cadet",
+      "description": "You grew up on catwalks and engine decks, trusting timing, grit, and altitude over comfort.",
+      "favoredBiome": "skydocks",
+      "attributeBonuses": {
+        "strength": 0,
+        "agility": 1,
+        "dexterity": 0,
+        "vitality": 1,
+        "intelligence": -1,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "favoredQuestTags": [
+        "action",
+        "tutorial",
+        "skills"
+      ]
+    },
+    {
+      "id": "archive_runner",
+      "name": "Archive Runner",
+      "description": "Courier, thief, and witness in the undercity, you survived by moving faster than secrets spread.",
+      "favoredBiome": "undercity",
+      "attributeBonuses": {
+        "strength": -1,
+        "agility": 0,
+        "dexterity": 0,
+        "vitality": 0,
+        "intelligence": 1,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 1,
+        "luck": 0,
+        "soul": 0
+      },
+      "favoredQuestTags": [
+        "mystery",
+        "magic-research",
+        "factions"
+      ]
+    },
+    {
+      "id": "tidebound_votary",
+      "name": "Tidebound Votary",
+      "description": "Stormglass shrines and oath-heavy harbors trained you to endure pressure and listen for omens.",
+      "favoredBiome": "coast",
+      "attributeBonuses": {
+        "strength": 0,
+        "agility": 0,
+        "dexterity": -1,
+        "vitality": 0,
+        "intelligence": 0,
+        "wisdom": 1,
+        "charisma": 0,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 1
+      },
+      "favoredQuestTags": [
+        "atmosphere",
+        "factions",
+        "mystic"
+      ]
+    },
+    {
+      "id": "sandstep_scout",
+      "name": "Sandstep Scout",
+      "description": "Caravan routes and mirage storms taught you to read false horizons and keep moving anyway.",
+      "favoredBiome": "desert",
+      "attributeBonuses": {
+        "strength": 0,
+        "agility": 1,
+        "dexterity": 0,
+        "vitality": -1,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 0,
+        "luck": 1,
+        "soul": 0
+      },
+      "favoredQuestTags": [
+        "mystery",
+        "puzzle",
+        "atmosphere"
+      ]
+    },
+    {
+      "id": "ashmarked_prospector",
+      "name": "Ashmarked Prospector",
+      "description": "You worked the caldera margins where every haul cost blood, breath, and a little patience.",
+      "favoredBiome": "volcanic",
+      "attributeBonuses": {
+        "strength": 1,
+        "agility": 0,
+        "dexterity": 0,
+        "vitality": 1,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": -1,
+        "willpower": 0,
+        "luck": 0,
+        "soul": 0
+      },
+      "favoredQuestTags": [
+        "combat",
+        "crafting",
+        "high-hook"
+      ]
+    },
+    {
+      "id": "dreamwake_survivor",
+      "name": "Dreamwake Survivor",
+      "description": "You returned from a place that edits memory. The world feels real enough, but never simple.",
+      "favoredBiome": "dreamscape",
+      "attributeBonuses": {
+        "strength": -1,
+        "agility": 0,
+        "dexterity": 0,
+        "vitality": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0,
+        "willpower": 1,
+        "luck": 0,
+        "soul": 1
+      },
+      "favoredQuestTags": [
+        "weird",
+        "high-hook",
+        "mystery"
+      ]
+    }
+  ],
+  "systems": [],
+  "systemOptionsById": {},
+  "skillPoolsBySignature": {},
+  "attributes": {
+    "base": {
+      "strength": 10,
+      "agility": 10,
+      "dexterity": 10,
+      "vitality": 10,
+      "intelligence": 10,
+      "wisdom": 10,
+      "charisma": 10,
+      "willpower": 10,
+      "luck": 10,
+      "soul": 10
+    },
+    "freePoints": 15,
+    "minValue": 1,
+    "maxValue": 30
+  },
+  "perks": {
+    "minPicks": 1,
+    "maxPicks": 2,
+    "options": [
+      {
+        "id": "iron_stomach",
+        "name": "Iron Stomach",
+        "description": "Consumables are 10% more effective."
+      },
+      {
+        "id": "battle_focus",
+        "name": "Battle Focus",
+        "description": "+5% damage while above 80% HP."
+      },
+      {
+        "id": "cautious",
+        "name": "Cautious",
+        "description": "+5% dodge while below 30% HP."
+      },
+      {
+        "id": "scavenger",
+        "name": "Scavenger",
+        "description": "+10% gold from drops."
+      },
+      {
+        "id": "ritualist",
+        "name": "Ritualist",
+        "description": "Story rituals have an extra outcome option (placeholder)."
+      },
+      {
+        "id": "quick_learner",
+        "name": "Quick Learner",
+        "description": "+5% XP gain."
+      },
+      {
+        "id": "sturdy_grip",
+        "name": "Sturdy Grip",
+        "description": "Reduced knockback and stagger (placeholder)."
+      },
+      {
+        "id": "arcane_sense",
+        "name": "Arcane Sense",
+        "description": "Detect magical traces on maps (placeholder)."
+      }
+    ]
+  },
+  "trees": {
+    "minPicks": 1,
+    "maxPicks": 1,
+    "options": [
+      {
+        "id": "offense",
+        "name": "Offense",
+        "description": "Plan toward burst damage and crit synergies."
+      },
+      {
+        "id": "defense",
+        "name": "Defense",
+        "description": "Plan toward mitigation, sustain, and resistances."
+      },
+      {
+        "id": "utility",
+        "name": "Utility",
+        "description": "Plan toward mobility, control, and exploration perks."
+      }
+    ]
+  },
+  "alignments": [
+    {
+      "id": "lawful_good",
+      "name": "Lawful Good",
+      "description": "Order and compassion. You keep your word."
+    },
+    {
+      "id": "neutral_good",
+      "name": "Neutral Good",
+      "description": "Kindness first. Rules are tools, not chains."
+    },
+    {
+      "id": "chaotic_good",
+      "name": "Chaotic Good",
+      "description": "Freedom and mercy. You break cages."
+    },
+    {
+      "id": "lawful_neutral",
+      "name": "Lawful Neutral",
+      "description": "Structure above all. The system must stand."
+    },
+    {
+      "id": "true_neutral",
+      "name": "True Neutral",
+      "description": "Balance and pragmatism. Survive, adapt, endure."
+    },
+    {
+      "id": "chaotic_neutral",
+      "name": "Chaotic Neutral",
+      "description": "Impulse and independence. You choose your own path."
+    }
+  ],
+  "characterCreation": {
+    "required": true,
+    "startMapAfterCreation": "map_village_square"
+  }
 }

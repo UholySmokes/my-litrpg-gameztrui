@@ -66,6 +66,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -153,6 +154,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -238,6 +240,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -323,6 +326,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -408,6 +412,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -492,6 +497,130 @@
       "resourceCapMultiplier": 0.15,
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
+    },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 30
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "ledger_apprentice",
+            "archive_runner",
+            "dreamwake_survivor"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "pure_human",
+            "ancient_bloodline",
+            "neo_human",
+            "celestial_descendant",
+            "dragon_blood",
+            "starseer"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "warrior",
+            "rogue",
+            "mage",
+            "cleric",
+            "monk",
+            "ranger",
+            "paladin",
+            "battlemage",
+            "spellbreaker",
+            "astral_archon",
+            "shadow_assassin"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "warrior",
+            "rogue",
+            "mage",
+            "cleric",
+            "monk",
+            "ranger",
+            "paladin",
+            "battlemage"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "inscription",
+            "enchanting",
+            "engineering",
+            "blacksmithing",
+            "portal_creation"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "quick_learner",
+            "arcane_sense",
+            "battle_focus"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "offense",
+            "utility",
+            "defense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "intelligence",
+          "wisdom",
+          "dexterity"
+        ],
+        "secondary": [
+          "strength",
+          "willpower"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [],
+        "grantPassiveIds": [
+          "universal_arcane_harmony"
+        ],
+        "allowSkillIds": [
+          "universal_arcane_discipline",
+          "universal_martial_discipline"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_arcane_harmony",
+          "universal_arcane_discipline",
+          "universal_martial_discipline"
+        ],
+        "allowLoadoutIds": [],
+        "denyLoadoutIds": [],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
     },
     "quality": {
       "depthScore": 100,
@@ -578,6 +707,130 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.1
     },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 20
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "freehold_scrapper",
+            "grove_exile",
+            "sandstep_scout",
+            "ashmarked_prospector"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "spirit_beast",
+            "demon_kin",
+            "mutant",
+            "beast_kin",
+            "blood_frenzied",
+            "wild_mutant",
+            "dragon_blood"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "berserker",
+            "monk",
+            "ranger",
+            "rogue",
+            "primal_overlord",
+            "war_reaver"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "berserker",
+            "monk",
+            "ranger",
+            "rogue"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "skinning",
+            "butchery",
+            "herbalism",
+            "mining"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "iron_stomach",
+            "battle_focus",
+            "scavenger",
+            "sturdy_grip"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "offense",
+            "defense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "strength",
+          "vitality",
+          "agility"
+        ],
+        "secondary": [
+          "wisdom",
+          "willpower"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [
+          "universal_venom_strike"
+        ],
+        "grantPassiveIds": [
+          "universal_martial_instinct"
+        ],
+        "allowSkillIds": [
+          "universal_venom_pulse",
+          "universal_shadow_strike",
+          "universal_martial_momentum"
+        ],
+        "denySkillIds": [
+          "universal_radiant_wave"
+        ],
+        "boostSkillIds": [
+          "universal_venom_strike",
+          "universal_venom_pulse",
+          "universal_shadow_strike",
+          "universal_martial_instinct"
+        ],
+        "allowLoadoutIds": [],
+        "denyLoadoutIds": [
+          "utility_matrix"
+        ],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
+    },
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -662,6 +915,116 @@
       "resourceCapMultiplier": 0.15,
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
+    },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 40
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "freehold_scrapper",
+            "ledger_apprentice",
+            "deckhand_cadet",
+            "salvage_adept"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "pure_human",
+            "neo_human",
+            "luckweaver",
+            "sunborn"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "warrior",
+            "rogue",
+            "mage",
+            "ranger",
+            "berserker"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "warrior",
+            "rogue",
+            "mage",
+            "ranger"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "mining",
+            "logging",
+            "herbalism",
+            "fishing",
+            "construction"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "quick_learner",
+            "scavenger",
+            "battle_focus"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "offense",
+            "utility"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "dexterity",
+          "vitality",
+          "luck"
+        ],
+        "secondary": [
+          "strength",
+          "willpower"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [],
+        "grantPassiveIds": [
+          "universal_martial_momentum"
+        ],
+        "allowSkillIds": [
+          "universal_martial_focus"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_martial_momentum",
+          "universal_martial_focus"
+        ],
+        "allowLoadoutIds": [],
+        "denyLoadoutIds": [],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
     },
     "quality": {
       "depthScore": 100,
@@ -748,6 +1111,117 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 50
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "archive_runner",
+            "dreamwake_survivor",
+            "salvage_adept"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "pure_human",
+            "ancient_bloodline",
+            "spirit_beast",
+            "celestial_descendant"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "mage",
+            "monk",
+            "rogue",
+            "ranger",
+            "archmage",
+            "shadow_assassin"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "mage",
+            "monk",
+            "rogue",
+            "ranger"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "inscription",
+            "enchanting",
+            "engineering",
+            "first_aid"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "quick_learner",
+            "arcane_sense",
+            "cautious"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "utility",
+            "offense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "intelligence",
+          "wisdom",
+          "dexterity"
+        ],
+        "secondary": [
+          "luck",
+          "willpower"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [],
+        "grantPassiveIds": [
+          "universal_arcane_discipline"
+        ],
+        "allowSkillIds": [
+          "universal_arcane_focus",
+          "universal_martial_focus"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_arcane_discipline",
+          "universal_arcane_focus",
+          "universal_martial_focus"
+        ],
+        "allowLoadoutIds": [],
+        "denyLoadoutIds": [],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
+    },
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -833,6 +1307,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -917,6 +1392,126 @@
       "resourceCapMultiplier": 0.15,
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
+    },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 10
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "archive_runner",
+            "ledger_apprentice",
+            "dreamwake_survivor"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "pure_human",
+            "ancient_bloodline",
+            "shadow_walker",
+            "celestial_descendant",
+            "starseer",
+            "umbral_oracle"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "rogue",
+            "mage",
+            "ranger",
+            "monk",
+            "archmage",
+            "spellbreaker"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "rogue",
+            "mage",
+            "monk",
+            "cleric",
+            "ranger"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "inscription",
+            "enchanting",
+            "engineering",
+            "herbalism",
+            "portal_creation"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "quick_learner",
+            "arcane_sense",
+            "battle_focus"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "utility",
+            "offense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "intelligence",
+          "dexterity",
+          "wisdom"
+        ],
+        "secondary": [
+          "luck",
+          "willpower"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [
+          "universal_shadow_step"
+        ],
+        "grantPassiveIds": [
+          "universal_arcane_insight"
+        ],
+        "allowSkillIds": [
+          "universal_astral_lance",
+          "universal_arcane_precision"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_shadow_step",
+          "universal_astral_lance",
+          "universal_arcane_insight",
+          "universal_arcane_precision"
+        ],
+        "allowLoadoutIds": [],
+        "denyLoadoutIds": [
+          "bloodline_edge"
+        ],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
     },
     "quality": {
       "depthScore": 100,
@@ -1003,6 +1598,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1086,6 +1682,123 @@
       "resourceCapMultiplier": 0.15,
       "classEvolutionStepReduction": 1,
       "riskScale": 0.02
+    },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 60
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "grove_exile",
+            "archive_runner",
+            "dreamwake_survivor",
+            "tidebound_votary"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "ancient_bloodline",
+            "dragon_blood",
+            "celestial_descendant",
+            "phoenix_reborn",
+            "fae_touched"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "monk",
+            "ranger",
+            "cleric",
+            "mage",
+            "paladin",
+            "high_priest",
+            "oracle_hierophant",
+            "beastmaster"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "monk",
+            "ranger",
+            "cleric",
+            "mage",
+            "paladin"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "enchanting",
+            "alchemy",
+            "inscription",
+            "herbalism"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "quick_learner",
+            "arcane_sense",
+            "battle_focus"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "utility",
+            "offense",
+            "defense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "wisdom",
+          "intelligence",
+          "charisma"
+        ],
+        "secondary": [
+          "soul",
+          "willpower"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [],
+        "grantPassiveIds": [
+          "skill_voidspark"
+        ],
+        "allowSkillIds": [
+          "universal_arcane_harmony",
+          "universal_arcane_vitality"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "skill_voidspark",
+          "universal_arcane_harmony",
+          "universal_arcane_vitality"
+        ],
+        "allowLoadoutIds": [],
+        "denyLoadoutIds": [],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
     },
     "quality": {
       "depthScore": 100,
@@ -1173,6 +1886,119 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 70
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "dreamwake_survivor",
+            "sandstep_scout",
+            "archive_runner"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "shadow_walker",
+            "duskborne",
+            "gloomshade",
+            "umbral_oracle",
+            "shadow_veil"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "rogue",
+            "ranger",
+            "shadow_assassin",
+            "trickster",
+            "night_reaper"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "rogue",
+            "ranger",
+            "shadow_assassin",
+            "trickster"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "skinning",
+            "inscription",
+            "portal_creation",
+            "repair"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "cautious",
+            "scavenger",
+            "arcane_sense"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "utility",
+            "offense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "dexterity",
+          "wisdom",
+          "luck"
+        ],
+        "secondary": [
+          "willpower",
+          "soul"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [
+          "universal_shadow_step"
+        ],
+        "grantPassiveIds": [],
+        "allowSkillIds": [
+          "universal_shadow_pulse",
+          "universal_shadow_cleave"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_shadow_step",
+          "universal_shadow_pulse",
+          "universal_shadow_cleave"
+        ],
+        "allowLoadoutIds": [],
+        "denyLoadoutIds": [
+          "class_core"
+        ],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
+    },
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1258,6 +2084,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1343,6 +2170,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1428,6 +2256,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1513,6 +2342,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1597,6 +2427,125 @@
       "resourceCapMultiplier": 0.15,
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
+    },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 80
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "ledger_apprentice",
+            "salvage_adept",
+            "ashmarked_prospector",
+            "grove_exile"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "neo_human",
+            "ancient_bloodline",
+            "fae_touched",
+            "mechanical_construct",
+            "crystal_being"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "mage",
+            "cleric",
+            "monk",
+            "battlemage",
+            "spellbreaker"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "mage",
+            "cleric",
+            "monk",
+            "battlemage"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "alchemy",
+            "herbalism",
+            "brewing",
+            "inscription",
+            "enchanting"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "iron_stomach",
+            "arcane_sense",
+            "quick_learner"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "utility",
+            "defense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "intelligence",
+          "dexterity",
+          "wisdom"
+        ],
+        "secondary": [
+          "vitality",
+          "luck"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [],
+        "grantPassiveIds": [
+          "universal_herbalism"
+        ],
+        "allowSkillIds": [
+          "universal_flame_pulse",
+          "universal_frost_pulse",
+          "universal_arcane_precision"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_herbalism",
+          "universal_flame_pulse",
+          "universal_frost_pulse",
+          "universal_arcane_precision"
+        ],
+        "allowLoadoutIds": [
+          "utility_matrix"
+        ],
+        "denyLoadoutIds": [
+          "bloodline_edge"
+        ],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
     },
     "quality": {
       "depthScore": 100,
@@ -1683,6 +2632,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1768,6 +2718,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1853,6 +2804,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -1938,6 +2890,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2023,6 +2976,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2106,6 +3060,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2191,6 +3146,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2277,6 +3233,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2363,6 +3320,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2449,6 +3407,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2535,6 +3494,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2621,6 +3581,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2708,6 +3669,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2794,6 +3756,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2880,6 +3843,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -2967,6 +3931,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3054,6 +4019,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3140,6 +4106,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3229,6 +4196,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.1
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3318,6 +4286,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3407,6 +4376,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3493,6 +4463,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3577,6 +4548,127 @@
       "resourceCapMultiplier": 0.15,
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
+    },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 100
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "archive_runner",
+            "dreamwake_survivor",
+            "deckhand_cadet",
+            "sandstep_scout"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "pure_human",
+            "neo_human",
+            "ancient_bloodline",
+            "umbral_oracle",
+            "starseer"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "rogue",
+            "mage",
+            "monk",
+            "ranger",
+            "oracle_hierophant",
+            "spellbreaker"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "rogue",
+            "mage",
+            "monk",
+            "ranger"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "inscription",
+            "repair",
+            "engineering",
+            "first_aid",
+            "portal_creation"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "cautious",
+            "quick_learner",
+            "arcane_sense",
+            "battle_focus"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "utility",
+            "offense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "intelligence",
+          "wisdom",
+          "willpower"
+        ],
+        "secondary": [
+          "luck",
+          "dexterity"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [],
+        "grantPassiveIds": [
+          "universal_arcane_instinct"
+        ],
+        "allowSkillIds": [
+          "universal_astral_step",
+          "universal_astral_pulse",
+          "universal_martial_focus"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_arcane_instinct",
+          "universal_astral_step",
+          "universal_astral_pulse",
+          "universal_martial_focus"
+        ],
+        "allowLoadoutIds": [
+          "utility_matrix"
+        ],
+        "denyLoadoutIds": [
+          "bloodline_edge"
+        ],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
     },
     "quality": {
       "depthScore": 100,
@@ -3663,6 +4755,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3747,6 +4840,124 @@
       "resourceCapMultiplier": 0.15,
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
+    },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 110
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "freehold_scrapper",
+            "dreamwake_survivor",
+            "sandstep_scout",
+            "archive_runner"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "pure_human",
+            "undead_awakened",
+            "phoenix_reborn",
+            "neo_human"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "warrior",
+            "cleric",
+            "guardian",
+            "paladin",
+            "bulwark_sentinel",
+            "monk"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "warrior",
+            "cleric",
+            "guardian",
+            "paladin"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "first_aid",
+            "repair",
+            "construction",
+            "farming",
+            "cooking"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "cautious",
+            "sturdy_grip",
+            "quick_learner"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "defense",
+            "utility"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "vitality",
+          "willpower",
+          "wisdom"
+        ],
+        "secondary": [
+          "luck",
+          "strength"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [],
+        "grantPassiveIds": [
+          "universal_martial_ward"
+        ],
+        "allowSkillIds": [
+          "universal_radiant_pulse",
+          "universal_arcane_ward"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_martial_ward",
+          "universal_radiant_pulse",
+          "universal_arcane_ward"
+        ],
+        "allowLoadoutIds": [
+          "class_core",
+          "utility_matrix"
+        ],
+        "denyLoadoutIds": [
+          "bloodline_edge"
+        ],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
     },
     "quality": {
       "depthScore": 100,
@@ -3833,6 +5044,129 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 120
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "deckhand_cadet",
+            "archive_runner",
+            "tidebound_votary",
+            "dreamwake_survivor"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "neo_human",
+            "fae_touched",
+            "celestial_descendant",
+            "shadow_walker",
+            "astral_nomad",
+            "riftborn"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "rogue",
+            "mage",
+            "ranger",
+            "monk",
+            "trickster",
+            "astral_archon",
+            "spellbreaker"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "rogue",
+            "mage",
+            "ranger",
+            "monk",
+            "trickster"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "portal_creation",
+            "engineering",
+            "inscription",
+            "fishing"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "arcane_sense",
+            "quick_learner",
+            "scavenger"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "utility",
+            "offense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "dexterity",
+          "intelligence",
+          "wisdom"
+        ],
+        "secondary": [
+          "luck",
+          "willpower"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [
+          "universal_astral_step"
+        ],
+        "grantPassiveIds": [
+          "universal_arcane_precision"
+        ],
+        "allowSkillIds": [
+          "universal_astral_lance",
+          "universal_gale_step"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_astral_step",
+          "universal_arcane_precision",
+          "universal_astral_lance",
+          "universal_gale_step"
+        ],
+        "allowLoadoutIds": [
+          "utility_matrix"
+        ],
+        "denyLoadoutIds": [
+          "class_core"
+        ],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
+    },
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -3918,6 +5252,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4003,6 +5338,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4088,6 +5424,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4173,6 +5510,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4257,6 +5595,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4342,6 +5681,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4426,6 +5766,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4511,6 +5852,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4596,6 +5938,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4681,6 +6024,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4766,6 +6110,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4852,6 +6197,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -4938,6 +6284,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5023,6 +6370,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5109,6 +6457,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5195,6 +6544,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5279,6 +6629,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5363,6 +6714,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5448,6 +6800,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5533,6 +6886,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5618,6 +6972,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5703,6 +7058,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5788,6 +7144,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5873,6 +7230,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -5958,6 +7316,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6042,6 +7401,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6126,6 +7486,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6210,6 +7571,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6294,6 +7656,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6377,6 +7740,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6462,6 +7826,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6547,6 +7912,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6631,6 +7997,125 @@
       "resourceCapMultiplier": 0.15,
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
+    },
+    "characterCreation": {
+      "ordering": {
+        "selectable": true,
+        "platforms": [
+          "web",
+          "godot"
+        ],
+        "priority": 90
+      },
+      "optionRules": {
+        "origin": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "grove_exile",
+            "tidebound_votary",
+            "dreamwake_survivor"
+          ]
+        },
+        "race": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "spirit_beast",
+            "nature_spirit",
+            "celestial_descendant",
+            "fae_touched",
+            "dragon_blood"
+          ]
+        },
+        "class": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "ranger",
+            "cleric",
+            "mage",
+            "beastmaster",
+            "oracle_hierophant",
+            "high_priest"
+          ]
+        },
+        "secondaryClass": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "ranger",
+            "cleric",
+            "mage",
+            "beastmaster"
+          ]
+        },
+        "profession": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "farming",
+            "fishing",
+            "herbalism",
+            "construction",
+            "portal_creation"
+          ]
+        },
+        "perks": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "arcane_sense",
+            "sturdy_grip",
+            "cautious"
+          ]
+        },
+        "starterTrees": {
+          "allowIds": [],
+          "denyIds": [],
+          "boostIds": [
+            "utility",
+            "defense"
+          ]
+        }
+      },
+      "attributeBias": {
+        "primary": [
+          "wisdom",
+          "charisma",
+          "willpower"
+        ],
+        "secondary": [
+          "soul",
+          "vitality"
+        ]
+      },
+      "skillRules": {
+        "grantActiveIds": [
+          "universal_gale_step"
+        ],
+        "grantPassiveIds": [
+          "universal_arcane_harmony"
+        ],
+        "allowSkillIds": [
+          "universal_radiant_wave",
+          "universal_gale_pulse"
+        ],
+        "denySkillIds": [],
+        "boostSkillIds": [
+          "universal_gale_step",
+          "universal_arcane_harmony",
+          "universal_radiant_wave",
+          "universal_gale_pulse"
+        ],
+        "allowLoadoutIds": [
+          "utility_matrix",
+          "bloodline_edge"
+        ],
+        "denyLoadoutIds": [],
+        "activeSlotBonus": 0,
+        "passiveSlotBonus": 0
+      }
     },
     "quality": {
       "depthScore": 100,
@@ -6717,6 +8202,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6802,6 +8288,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6887,6 +8374,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -6972,6 +8460,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7057,6 +8546,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7143,6 +8633,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7228,6 +8719,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7313,6 +8805,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.02
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7400,6 +8893,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7487,6 +8981,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7576,6 +9071,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7665,6 +9161,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7750,6 +9247,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7834,6 +9332,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -7919,6 +9418,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8004,6 +9504,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8089,6 +9590,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8174,6 +9676,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8257,6 +9760,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8342,6 +9846,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8428,6 +9933,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8514,6 +10020,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8600,6 +10107,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8686,6 +10194,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8772,6 +10281,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8858,6 +10368,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -8944,6 +10455,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9029,6 +10541,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9114,6 +10627,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9200,6 +10714,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9286,6 +10801,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9372,6 +10888,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9457,6 +10974,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9543,6 +11061,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9628,6 +11147,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.05
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9715,6 +11235,7 @@
       "classEvolutionStepReduction": 2,
       "riskScale": 0.03
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9801,6 +11322,7 @@
       "classEvolutionStepReduction": 2,
       "riskScale": 0.03
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9887,6 +11409,7 @@
       "classEvolutionStepReduction": 2,
       "riskScale": 0.03
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -9973,6 +11496,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.03
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10059,6 +11583,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.03
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10147,6 +11672,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10233,6 +11759,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10319,6 +11846,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10405,6 +11933,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10491,6 +12020,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10576,6 +12106,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10663,6 +12194,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10749,6 +12281,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10835,6 +12368,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -10921,6 +12455,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11007,6 +12542,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11093,6 +12629,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11177,6 +12714,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11263,6 +12801,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11350,6 +12889,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11436,6 +12976,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11522,6 +13063,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11607,6 +13149,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11692,6 +13235,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11778,6 +13322,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11864,6 +13409,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -11950,6 +13496,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -12035,6 +13582,7 @@
       "classEvolutionStepReduction": 0,
       "riskScale": 0.04
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -12121,6 +13669,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.22000000000000003
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -12209,6 +13758,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.14
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -12297,6 +13847,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.14
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -12385,6 +13936,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.14
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -12473,6 +14025,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.14
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,
@@ -12561,6 +14114,7 @@
       "classEvolutionStepReduction": 1,
       "riskScale": 0.14
     },
+    "characterCreation": null,
     "quality": {
       "depthScore": 100,
       "hasPlaceholderText": false,

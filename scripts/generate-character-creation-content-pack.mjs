@@ -136,6 +136,10 @@ function projectArchetypeSystem(entry) {
       entry.progressionImpact && typeof entry.progressionImpact === "object"
         ? clonePlain(entry.progressionImpact)
         : null,
+    characterCreation:
+      entry.characterCreation && typeof entry.characterCreation === "object"
+        ? clonePlain(entry.characterCreation)
+        : null,
     quality:
       entry.quality && typeof entry.quality === "object"
         ? clonePlain(entry.quality)

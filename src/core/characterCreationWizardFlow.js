@@ -1,10 +1,11 @@
 const STEP_DEFINITIONS = [
+  { id: "name", label: "Name", key: "NAME" },
+  { id: "system", label: "System", key: "ARCHETYPE" },
   { id: "identity", label: "Identity", key: "IDENTITY" },
   { id: "race", label: "Race", key: "RACE" },
   { id: "class", label: "Class", key: "CLASS" },
   { id: "multiclass", label: "Multiclass", key: "MULTICLASS" },
   { id: "profession", label: "Profession", key: "PROFESSION" },
-  { id: "system", label: "System", key: "ARCHETYPE" },
   { id: "attributes", label: "Attributes", key: "ATTRIBUTES" },
   { id: "skills", label: "Skills", key: "SKILLS" },
   { id: "perks", label: "Perks", key: "PERKS" },
@@ -30,7 +31,7 @@ export function findCreationStepIndex(sequence, currentStep) {
 }
 
 export function getCreationActiveStepId(sequence, currentStep) {
-  if (!Array.isArray(sequence) || sequence.length === 0) return "identity";
+  if (!Array.isArray(sequence) || sequence.length === 0) return "name";
   return sequence[findCreationStepIndex(sequence, currentStep)]?.id || sequence[0].id;
 }
 

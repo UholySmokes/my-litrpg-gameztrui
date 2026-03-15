@@ -17,6 +17,7 @@ import {
   DEFAULT_CATEGORY_CONFIG,
   getCategoryConfig,
 } from "./ArchetypeCategoryConfig.js";
+import { getArchetypeCharacterCreationProfile } from "./CharacterCreationSystemProfiles.js";
 export {
   CATEGORY_CONFIG,
   CATEGORY_ORDER,
@@ -729,6 +730,9 @@ function normalizeSingleDefinition(rawDefinition, index) {
     FIELD_TEXT_LIMITS.description,
   );
   const supportTemplates = buildSupportTemplates(category, name);
+  const creationProfile =
+    rawDefinition?.characterCreation ||
+    getArchetypeCharacterCreationProfile(id);
 
   const normalized = {
     id,
@@ -776,6 +780,13 @@ function normalizeSingleDefinition(rawDefinition, index) {
     archetypeResource: ensureResource(rawDefinition?.archetypeResource, category),
     archetypePassives: ensurePassives(rawDefinition?.archetypePassives, id),
   };
+
+  if (creationProfile && typeof creationProfile === "object") {
+    normalized.characterCreation =
+      typeof globalThis.structuredClone === "function"
+        ? globalThis.structuredClone(creationProfile)
+        : JSON.parse(JSON.stringify(creationProfile));
+  }
 
   normalized.narrativeTone = ensureNarrativeTone(
     rawDefinition?.narrativeTone,
@@ -889,6 +900,10 @@ class ArchetypeSystem {
         this.quality && typeof this.quality === "object"
           ? { ...this.quality }
           : {},
+      characterCreation:
+        this.characterCreation && typeof this.characterCreation === "object"
+          ? { ...this.characterCreation }
+          : null,
       state: { ...context },
       definition: this,
     };
@@ -1041,6 +1056,32 @@ const buildArchetypeSystemSummary = (system) => {
     factionReactionsPreview: Array.isArray(system.factionReactions)
       ? system.factionReactions.slice(0, 2)
       : [],
+    characterCreation:
+      system.characterCreation && typeof system.characterCreation === "object"
+        ? {
+            ...system.characterCreation,
+            ordering:
+              system.characterCreation.ordering &&
+              typeof system.characterCreation.ordering === "object"
+                ? { ...system.characterCreation.ordering }
+                : {},
+            optionRules:
+              system.characterCreation.optionRules &&
+              typeof system.characterCreation.optionRules === "object"
+                ? { ...system.characterCreation.optionRules }
+                : {},
+            attributeBias:
+              system.characterCreation.attributeBias &&
+              typeof system.characterCreation.attributeBias === "object"
+                ? { ...system.characterCreation.attributeBias }
+                : {},
+            skillRules:
+              system.characterCreation.skillRules &&
+              typeof system.characterCreation.skillRules === "object"
+                ? { ...system.characterCreation.skillRules }
+                : {},
+          }
+        : null,
     quality:
       system.quality && typeof system.quality === "object"
         ? {
@@ -1066,6 +1107,23 @@ const cloneArchetypeSystemSummary = (summary) => {
     costsPreview: [...summary.costsPreview],
     worldCompatibilityPreview: [...summary.worldCompatibilityPreview],
     factionReactionsPreview: [...summary.factionReactionsPreview],
+    characterCreation: summary.characterCreation
+      ? {
+          ...summary.characterCreation,
+          ordering: summary.characterCreation.ordering
+            ? { ...summary.characterCreation.ordering }
+            : {},
+          optionRules: summary.characterCreation.optionRules
+            ? { ...summary.characterCreation.optionRules }
+            : {},
+          attributeBias: summary.characterCreation.attributeBias
+            ? { ...summary.characterCreation.attributeBias }
+            : {},
+          skillRules: summary.characterCreation.skillRules
+            ? { ...summary.characterCreation.skillRules }
+            : {},
+        }
+      : null,
     quality: summary.quality ? { ...summary.quality } : null,
   };
 };

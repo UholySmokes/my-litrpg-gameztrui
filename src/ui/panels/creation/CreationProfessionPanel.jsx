@@ -1,6 +1,5 @@
 import {
   getProfessionCategories,
-  getProfessionSummaries,
 } from "../../../systems/profession/ProfessionContentPack.js";
 
 function StatChip({ label }) {
@@ -32,11 +31,14 @@ function getProfessionT1Skills(profession) {
 
 export default function CreationProfessionPanel({
   selectedProfession,
+  professions = [],
+  recommendedProfessionIds = [],
   onProfessionSelect,
   onAction,
 }) {
-  const professionList = getProfessionSummaries();
+  const professionList = professions;
   const categories = getProfessionCategories();
+  const recommended = new Set(recommendedProfessionIds);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -115,6 +117,11 @@ export default function CreationProfessionPanel({
                           </span>
                           <StatChip label={profession.primaryStat} />
                           <StatChip label={profession.secondaryStat} />
+                          {recommended.has(profession.id) ? (
+                            <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>
+                              SYSTEM MATCH
+                            </span>
+                          ) : null}
                         </div>
                         {isSelected && (
                           <span style={{ fontSize: "0.55rem", color: "var(--holo-gold)", fontWeight: "bold" }}>

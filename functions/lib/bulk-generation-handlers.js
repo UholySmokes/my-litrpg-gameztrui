@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const { json, readJsonBody } = require("./http");
 const auth = require("./auth");
 const bulkService = require("./bulk-generation-service");
+const { runBulkGenerationRoute } = require("./bulk-gen-observability");
 
 function normalizeString(value, fallback = "") {
 	return typeof value === "string" && value.trim() ? value.trim() : fallback;
@@ -85,194 +86,214 @@ function requireInternalToken(req, res) {
 }
 
 async function startRun(req, res) {
-	try {
-		const user = await requireOperatorUser(req, res);
-		if (!user) return;
-		const body = await readJsonBody(req);
-		const run = await bulkService.startBulkGenerationRun({
-			ownerId: user.id,
-			body,
-		});
-		return json(res, 200, {
-			ok: true,
-			runId: run.run_id,
-			status: run.status,
-			maxTasks: run.max_tasks,
-			maxEstimatedEur: run.max_estimated_eur,
-			expiresAt: run.expires_at,
-		});
-	} catch (error) {
-		const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
-		return json(res, status, {
-			ok: false,
-			errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
-			message: normalizeString(error?.message, "Could not start bulk generation run."),
-		});
-	}
+	return runBulkGenerationRoute({ route: "start", req, res }, async () => {
+		try {
+			const user = await requireOperatorUser(req, res);
+			if (!user) return;
+			const body = await readJsonBody(req);
+			req.body = body;
+			const run = await bulkService.startBulkGenerationRun({
+				ownerId: user.id,
+				body,
+			});
+			return json(res, 200, {
+				ok: true,
+				runId: run.run_id,
+				status: run.status,
+				maxTasks: run.max_tasks,
+				maxEstimatedEur: run.max_estimated_eur,
+				expiresAt: run.expires_at,
+			});
+		} catch (error) {
+			const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
+			return json(res, status, {
+				ok: false,
+				errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
+				message: normalizeString(error?.message, "Could not start bulk generation run."),
+			});
+		}
+	});
 }
 
 async function tickRun(req, res) {
-	try {
-		const method = String(req?.method || "").toUpperCase();
-		if (method !== "POST") {
-			return json(res, 405, {
+	return runBulkGenerationRoute({ route: "tick", req, res }, async () => {
+		try {
+			const method = String(req?.method || "").toUpperCase();
+			if (method !== "POST") {
+				return json(res, 405, {
+					ok: false,
+					errorCode: "METHOD_NOT_ALLOWED",
+					message: "tick endpoint requires POST.",
+				});
+			}
+			if (!hasValidInternalToken(req)) {
+				const user = await requireOperatorUser(req, res);
+				if (!user) return;
+			}
+			const body = await readJsonBody(req);
+			req.body = body;
+			const result = await bulkService.tickBulkGenerationRun({
+				runId: body?.runId,
+				workerId: body?.workerId || "manual",
+				limit: body?.limit,
+			});
+			return json(res, 200, result);
+		} catch (error) {
+			const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
+			return json(res, status, {
 				ok: false,
-				errorCode: "METHOD_NOT_ALLOWED",
-				message: "tick endpoint requires POST.",
+				errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
+				message: normalizeString(error?.message, "Bulk generation tick failed."),
 			});
 		}
-		if (!hasValidInternalToken(req)) {
-			const user = await requireOperatorUser(req, res);
-			if (!user) return;
-		}
-		const body = await readJsonBody(req);
-		const result = await bulkService.tickBulkGenerationRun({
-			runId: body?.runId,
-			workerId: body?.workerId || "manual",
-			limit: body?.limit,
-		});
-		return json(res, 200, result);
-	} catch (error) {
-		const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
-		return json(res, status, {
-			ok: false,
-			errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
-			message: normalizeString(error?.message, "Bulk generation tick failed."),
-		});
-	}
+	});
 }
 
 async function getRunStatus(req, res) {
-	try {
-		const user = await requireOperatorUser(req, res);
-		if (!user) return;
-		const runId = normalizeString(req?.query?.runId);
-		if (!runId) {
-			return json(res, 400, {
+	return runBulkGenerationRoute({ route: "status", req, res }, async () => {
+		try {
+			const user = await requireOperatorUser(req, res);
+			if (!user) return;
+			const runId = normalizeString(req?.query?.runId);
+			if (!runId) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: "MISSING_RUN_ID",
+					message: "runId query parameter is required.",
+				});
+			}
+			const status = await bulkService.getRunStatus(runId, req?.query?.outputLimit);
+			if (!status) {
+				return json(res, 404, {
+					ok: false,
+					errorCode: "RUN_NOT_FOUND",
+					message: "Run not found.",
+				});
+			}
+			return json(res, 200, {
+				ok: true,
+				run: status.run,
+				stats: status.stats,
+				outputs: status.outputs,
+			});
+		} catch (error) {
+			const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
+			return json(res, status, {
 				ok: false,
-				errorCode: "MISSING_RUN_ID",
-				message: "runId query parameter is required.",
+				errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
+				message: normalizeString(error?.message, "Could not fetch run status."),
 			});
 		}
-		const status = await bulkService.getRunStatus(runId, req?.query?.outputLimit);
-		if (!status) {
-			return json(res, 404, {
-				ok: false,
-				errorCode: "RUN_NOT_FOUND",
-				message: "Run not found.",
-			});
-		}
-		return json(res, 200, {
-			ok: true,
-			run: status.run,
-			stats: status.stats,
-			outputs: status.outputs,
-		});
-	} catch (error) {
-		const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
-		return json(res, status, {
-			ok: false,
-			errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
-			message: normalizeString(error?.message, "Could not fetch run status."),
-		});
-	}
+	});
 }
 
 async function pauseRun(req, res) {
-	try {
-		const user = await requireOperatorUser(req, res);
-		if (!user) return;
-		const body = await readJsonBody(req);
-		const runId = normalizeString(body?.runId);
-		if (!runId) {
-			return json(res, 400, {
+	return runBulkGenerationRoute({ route: "pause", req, res }, async () => {
+		try {
+			const user = await requireOperatorUser(req, res);
+			if (!user) return;
+			const body = await readJsonBody(req);
+			req.body = body;
+			const runId = normalizeString(body?.runId);
+			if (!runId) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: "MISSING_RUN_ID",
+					message: "runId is required.",
+				});
+			}
+			const run = await bulkService.pauseRun(runId, body?.reason);
+			if (!run) {
+				return json(res, 404, {
+					ok: false,
+					errorCode: "RUN_NOT_FOUND",
+					message: "Run not found.",
+				});
+			}
+			return json(res, 200, { ok: true, run });
+		} catch (error) {
+			const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
+			return json(res, status, {
 				ok: false,
-				errorCode: "MISSING_RUN_ID",
-				message: "runId is required.",
+				errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
+				message: normalizeString(error?.message, "Could not pause run."),
 			});
 		}
-		const run = await bulkService.pauseRun(runId, body?.reason);
-		if (!run) {
-			return json(res, 404, {
-				ok: false,
-				errorCode: "RUN_NOT_FOUND",
-				message: "Run not found.",
-			});
-		}
-		return json(res, 200, { ok: true, run });
-	} catch (error) {
-		const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
-		return json(res, status, {
-			ok: false,
-			errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
-			message: normalizeString(error?.message, "Could not pause run."),
-		});
-	}
+	});
 }
 
 async function resumeRun(req, res) {
-	try {
-		const user = await requireOperatorUser(req, res);
-		if (!user) return;
-		const body = await readJsonBody(req);
-		const runId = normalizeString(body?.runId);
-		if (!runId) {
-			return json(res, 400, {
+	return runBulkGenerationRoute({ route: "resume", req, res }, async () => {
+		try {
+			const user = await requireOperatorUser(req, res);
+			if (!user) return;
+			const body = await readJsonBody(req);
+			req.body = body;
+			const runId = normalizeString(body?.runId);
+			if (!runId) {
+				return json(res, 400, {
+					ok: false,
+					errorCode: "MISSING_RUN_ID",
+					message: "runId is required.",
+				});
+			}
+			const run = await bulkService.resumeRun(runId);
+			if (!run) {
+				return json(res, 404, {
+					ok: false,
+					errorCode: "RUN_NOT_FOUND",
+					message: "Run not found.",
+				});
+			}
+			return json(res, 200, { ok: true, run });
+		} catch (error) {
+			const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
+			return json(res, status, {
 				ok: false,
-				errorCode: "MISSING_RUN_ID",
-				message: "runId is required.",
+				errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
+				message: normalizeString(error?.message, "Could not resume run."),
 			});
 		}
-		const run = await bulkService.resumeRun(runId);
-		if (!run) {
-			return json(res, 404, {
-				ok: false,
-				errorCode: "RUN_NOT_FOUND",
-				message: "Run not found.",
-			});
-		}
-		return json(res, 200, { ok: true, run });
-	} catch (error) {
-		const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
-		return json(res, status, {
-			ok: false,
-			errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
-			message: normalizeString(error?.message, "Could not resume run."),
-		});
-	}
+	});
 }
 
 async function upsertStyle(req, res) {
-	try {
-		const user = await requireOperatorUser(req, res);
-		if (!user) return;
-		const body = await readJsonBody(req);
-		const profile = await bulkService.upsertStyleProfile(body);
-		return json(res, 200, { ok: true, profile });
-	} catch (error) {
-		const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
-		return json(res, status, {
-			ok: false,
-			errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
-			message: normalizeString(error?.message, "Could not update style profile."),
-		});
-	}
+	return runBulkGenerationRoute({ route: "style", req, res }, async () => {
+		try {
+			const user = await requireOperatorUser(req, res);
+			if (!user) return;
+			const body = await readJsonBody(req);
+			req.body = body;
+			const profile = await bulkService.upsertStyleProfile(body);
+			return json(res, 200, { ok: true, profile });
+		} catch (error) {
+			const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
+			return json(res, status, {
+				ok: false,
+				errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
+				message: normalizeString(error?.message, "Could not update style profile."),
+			});
+		}
+	});
 }
 
 async function budgetAlert(req, res) {
-	try {
-		if (!requireInternalToken(req, res)) return;
-		const body = await readJsonBody(req);
-		const result = await bulkService.handleBudgetAlert(body);
-		return json(res, 200, result);
-	} catch (error) {
-		const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
-		return json(res, status, {
-			ok: false,
-			errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
-			message: normalizeString(error?.message, "Could not process budget alert."),
-		});
-	}
+	return runBulkGenerationRoute({ route: "budget-alert", req, res }, async () => {
+		try {
+			if (!requireInternalToken(req, res)) return;
+			const body = await readJsonBody(req);
+			req.body = body;
+			const result = await bulkService.handleBudgetAlert(body);
+			return json(res, 200, result);
+		} catch (error) {
+			const status = Number.isFinite(Number(error?.status)) ? Number(error.status) : 500;
+			return json(res, status, {
+				ok: false,
+				errorCode: normalizeString(error?.code, "UNEXPECTED_ERROR"),
+				message: normalizeString(error?.message, "Could not process budget alert."),
+			});
+		}
+	});
 }
 
 module.exports = {

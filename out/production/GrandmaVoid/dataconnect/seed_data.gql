@@ -1,0 +1,26 @@
+mutation SeedLitRpgSaveData @transaction {
+  userProfile_insertMany(
+    data: [{ id: "dev-user-001", displayName: "Dev Traveler" }]
+  )
+  saveSlot_insertMany(
+    data: [
+      {
+        id: "11111111-1111-4111-8111-111111111111"
+        userId: "dev-user-001"
+        saveName: "Auto Save"
+        gameStateJson: "{\"config\":{},\"player\":{\"name\":\"Dev Traveler\",\"level\":1,\"xp\":{\"current\":0,\"max\":100},\"hp\":{\"current\":100,\"max\":100},\"mana\":{\"current\":50,\"max\":50},\"attributes\":{},\"inventory\":[],\"equipment\":{},\"abilities\":[],\"titles\":[],\"unlockedTitles\":[],\"equippedTitle\":null,\"activeSkills\":[],\"passiveSkills\":[]},\"quests\":{\"active\":[],\"completed\":[]},\"world\":{\"id\":\"origin\",\"location\":{\"current\":\"tutorial_clearing\",\"visited\":[\"tutorial_clearing\"],\"unlockedAreas\":[\"tutorial_clearing\"]},\"flags\":{},\"vars\":{},\"counters\":{},\"factionReputation\":{},\"time\":0,\"turnCount\":0}}"
+        playerName: "Dev Traveler"
+        playerLevel: 1
+        worldId: "origin"
+        locationId: "tutorial_clearing"
+        turnCount: 0
+        contentVersion: "core@seed"
+        stateVersion: 1
+        runId: "run-dev-001"
+        seq: 0
+        tick: 0
+        stateHash: "seed"
+      }
+    ]
+  )
+}

@@ -1,0 +1,88 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+dist
+*.local
+
+# Playwright artifacts
+playwright-report/
+test-results/
+.playwright-cli/
+.playwright-mcp/
+
+# Analysis reports (temporary)
+middleware-report.json
+*-analysis-*.json
+reports/
+!docs/reports/
+docs/reports/*
+!docs/reports/godot_map_traversal_perf_baseline_2026-02-24.md
+
+# Codex / editor temp
+tmpclaude-*
+tmp/godot/
+mcp
+
+# Local Godot CLI binaries (avoid committing large executables)
+tools/godot/
+
+# Bulk-gen scheduler scratch payloads (contain runIds/tokens)
+functions/tmp/
+
+# Temporary scratch files
+.tmp-*
+
+# Environment variables
+.env
+.env.local
+.env.production
+local.settings.json
+
+# Local file-backed DB (dev only)
+functions/.data/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+node_modules
+
+# Tooling caches
+.cache/
+.parcel-cache/
+.turbo/
+.vite/
+.eslintcache
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# GitHub Pages
+.nojekyll
+
+# Error pages
+error/index.html
+
+# Firebase CLI cache
+.firebase/hosting.*.cache
+
+# Godot Android/Gradle generated state
+godot/android/build/.gradle/

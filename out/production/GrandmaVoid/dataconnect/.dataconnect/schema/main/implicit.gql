@@ -1,0 +1,60 @@
+extend type DiscoveryList {
+  """
+  ✨ Implicit foreign key field based on `DiscoveryList`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "DiscoveryList.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type DiscoveryListItem {
+  """
+  ✨ Implicit foreign key field based on `DiscoveryListItem`.`discoveryList`. It must match the value of `DiscoveryList`.`id`. See `@ref` for how to customize it.
+  """
+  discoveryListId: UUID! @fdc_generated(from: "DiscoveryListItem.discoveryList", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `DiscoveryListItem`.`gameEntity`. It must match the value of `GameEntity`.`id`. See `@ref` for how to customize it.
+  """
+  gameEntityId: UUID! @fdc_generated(from: "DiscoveryListItem.gameEntity", purpose: IMPLICIT_REF_FIELD)
+}
+extend type GameSession {
+  """
+  ✨ Implicit foreign key field based on `GameSession`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "GameSession.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type Review {
+  """
+  ✨ Implicit foreign key field based on `Review`.`gameEntity`. It must match the value of `GameEntity`.`id`. See `@ref` for how to customize it.
+  """
+  gameEntityId: UUID! @fdc_generated(from: "Review.gameEntity", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Review`.`gameSession`. It must match the value of `GameSession`.`id`. See `@ref` for how to customize it.
+  """
+  gameSessionId: UUID @fdc_generated(from: "Review.gameSession", purpose: IMPLICIT_REF_FIELD)
+  """
+  ✨ Implicit foreign key field based on `Review`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "Review.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type RunEvent {
+  """
+  ✨ Implicit foreign key field based on `RunEvent`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "RunEvent.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type RunSession {
+  """
+  ✨ Implicit foreign key field based on `RunSession`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "RunSession.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type SaveSlot {
+  """
+  ✨ Implicit foreign key field based on `SaveSlot`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "SaveSlot.user", purpose: IMPLICIT_REF_FIELD)
+}
+extend type StoryMemory {
+  """
+  ✨ Implicit foreign key field based on `StoryMemory`.`user`. It must match the value of `UserProfile`.`id`. See `@ref` for how to customize it.
+  """
+  userId: String! @fdc_generated(from: "StoryMemory.user", purpose: IMPLICIT_REF_FIELD)
+}

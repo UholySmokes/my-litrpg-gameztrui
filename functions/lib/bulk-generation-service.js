@@ -3,6 +3,7 @@ const { getApps, initializeApp } = require("firebase-admin/app");
 const { getStorage } = require("firebase-admin/storage");
 const runtime = require("./firebase-agents/runtime");
 const store = require("./bulk-gen-store");
+const { measureBulkGenerationStage } = require("./bulk-gen-observability");
 
 const DEFAULT_QUEST_COUNT = 20000;
 const DEFAULT_LORE_COUNT = 8000;
@@ -550,85 +551,101 @@ async function ensureStyleProfiles(zoneIds) {
 }
 
 async function seedTasksIfNeeded(run, config) {
-	const meta = normalizeObject(run.meta);
-	const targetCounts = normalizeObject(meta.target_counts);
-	const queuedCounts = normalizeObject(meta.queued_counts);
-	const pendingNow = Number(run.pending_tasks) || 0;
-	const needed = Math.max(0, config.seedBufferSize - pendingNow);
-	if (needed === 0) return { seeded: 0, queuedCounts };
+	return measureBulkGenerationStage(
+		{
+			stage: "tasks.seed",
+			meta: ({ result }) => ({
+				runId: run.run_id,
+				pendingTasks: Number(run.pending_tasks) || 0,
+				seeded: Number(result?.seeded) || 0,
+				questQueued: Number(result?.queuedCounts?.quest_arc) || 0,
+				loreQueued: Number(result?.queuedCounts?.lore_book) || 0,
+				assetQueued: Number(result?.queuedCounts?.asset2d) || 0,
+			}),
+		},
+		async () => {
+			const meta = normalizeObject(run.meta);
+			const targetCounts = normalizeObject(meta.target_counts);
+			const queuedCounts = normalizeObject(meta.queued_counts);
+			const pendingNow = Number(run.pending_tasks) || 0;
+			const needed = Math.max(0, config.seedBufferSize - pendingNow);
+			if (needed === 0) return { seeded: 0, queuedCounts };
 
-	const seedValue = normalizeString(meta.seed, run.run_id);
-	const rng = createSeededRng(seedValue);
-	const zoneIds = Array.isArray(meta.zone_ids) && meta.zone_ids.length
-		? meta.zone_ids.map((zone) => normalizeString(zone, "global"))
-		: ["global"];
+			const seedValue = normalizeString(meta.seed, run.run_id);
+			const rng = createSeededRng(seedValue);
+			const zoneIds = Array.isArray(meta.zone_ids) && meta.zone_ids.length
+				? meta.zone_ids.map((zone) => normalizeString(zone, "global"))
+				: ["global"];
 
-	const tasks = [];
-	const nextQueuedCounts = {
-		quest_arc: Number(queuedCounts.quest_arc) || 0,
-		lore_book: Number(queuedCounts.lore_book) || 0,
-		asset2d: Number(queuedCounts.asset2d) || 0,
-	};
+			const tasks = [];
+			const nextQueuedCounts = {
+				quest_arc: Number(queuedCounts.quest_arc) || 0,
+				lore_book: Number(queuedCounts.lore_book) || 0,
+				asset2d: Number(queuedCounts.asset2d) || 0,
+			};
 
-	for (let cursor = 0; cursor < needed; cursor += 1) {
-		let chosenKind = "";
-		for (let step = 0; step < ASSET_KIND_CYCLE.length; step += 1) {
-			const candidate = ASSET_KIND_CYCLE[(cursor + step) % ASSET_KIND_CYCLE.length];
-			if (getRemainingCount(targetCounts, nextQueuedCounts, candidate) > 0) {
-				chosenKind = candidate;
-				break;
+			for (let cursor = 0; cursor < needed; cursor += 1) {
+				let chosenKind = "";
+				for (let step = 0; step < ASSET_KIND_CYCLE.length; step += 1) {
+					const candidate = ASSET_KIND_CYCLE[(cursor + step) % ASSET_KIND_CYCLE.length];
+					if (getRemainingCount(targetCounts, nextQueuedCounts, candidate) > 0) {
+						chosenKind = candidate;
+						break;
+					}
+				}
+				if (!chosenKind) break;
+
+				const index = nextQueuedCounts[chosenKind];
+				nextQueuedCounts[chosenKind] += 1;
+				const zoneId =
+					zoneIds[(Math.floor(rng() * 1000000) + index) % zoneIds.length] || "global";
+				const taskId = buildTaskId(run.run_id, chosenKind, index);
+				let task;
+				if (chosenKind === "quest_arc" || chosenKind === "lore_book") {
+					task = {
+						task_id: taskId,
+						run_id: run.run_id,
+						kind: chosenKind,
+						zone_id: zoneId,
+						status: "pending",
+						estimate_eur: estimateNarrativeCost(config),
+						payload: {
+							prompt: buildNarrativePrompt(chosenKind, zoneId, index),
+						},
+					};
+				} else {
+					const assetType = weightedAssetType(index);
+					task = {
+						task_id: taskId,
+						run_id: run.run_id,
+						kind: chosenKind,
+						zone_id: zoneId,
+						status: "pending",
+						estimate_eur: estimateAssetCost(config),
+						payload: {
+							asset_type: assetType,
+							seed: parseOptionalInteger(`${index}`, index + 1),
+						},
+					};
+				}
+				tasks.push(task);
 			}
-		}
-		if (!chosenKind) break;
 
-		const index = nextQueuedCounts[chosenKind];
-		nextQueuedCounts[chosenKind] += 1;
-		const zoneId = zoneIds[(Math.floor(rng() * 1000000) + index) % zoneIds.length] || "global";
-		const taskId = buildTaskId(run.run_id, chosenKind, index);
-		let task;
-		if (chosenKind === "quest_arc" || chosenKind === "lore_book") {
-			task = {
-				task_id: taskId,
-				run_id: run.run_id,
-				kind: chosenKind,
-				zone_id: zoneId,
-				status: "pending",
-				estimate_eur: estimateNarrativeCost(config),
-				payload: {
-					prompt: buildNarrativePrompt(chosenKind, zoneId, index),
-				},
+			if (tasks.length > 0) {
+				await store.createTasks(run.run_id, tasks);
+				await store.updateRun(run.run_id, {
+					meta: {
+						...meta,
+						queued_counts: nextQueuedCounts,
+					},
+				});
+			}
+			return {
+				seeded: tasks.length,
+				queuedCounts: nextQueuedCounts,
 			};
-		} else {
-			const assetType = weightedAssetType(index);
-			task = {
-				task_id: taskId,
-				run_id: run.run_id,
-				kind: chosenKind,
-				zone_id: zoneId,
-				status: "pending",
-				estimate_eur: estimateAssetCost(config),
-				payload: {
-					asset_type: assetType,
-					seed: parseOptionalInteger(`${index}`, index + 1),
-				},
-			};
-		}
-		tasks.push(task);
-	}
-
-	if (tasks.length > 0) {
-		await store.createTasks(run.run_id, tasks);
-		await store.updateRun(run.run_id, {
-			meta: {
-				...meta,
-				queued_counts: nextQueuedCounts,
-			},
-		});
-	}
-	return {
-		seeded: tasks.length,
-		queuedCounts: nextQueuedCounts,
-	};
+		},
+	);
 }
 
 async function evaluateRunGuard(run, config) {
@@ -828,46 +845,61 @@ function computeQuotaBackoffSeconds(task) {
 }
 
 async function processTask(task, run, config) {
-	try {
-		if (task.kind === "quest_arc" || task.kind === "lore_book") {
-			await processNarrativeTask(task, run, config);
-			return { ok: true, taskId: task.task_id, kind: task.kind };
-		}
-		if (task.kind === "asset2d") {
-			await processAssetTask(task, run, config);
-			return { ok: true, taskId: task.task_id, kind: task.kind };
-		}
-		throw new Error(`Unsupported task kind '${task.kind}'.`);
-	} catch (error) {
-		if (isRetryableQuotaError(error)) {
-			const deferSeconds = computeQuotaBackoffSeconds(task);
-			await store.rescheduleTask({
-				taskId: task.task_id,
-				lastError: normalizeString(error?.message, "Quota exhausted. Retrying later."),
-				deferSeconds,
-			});
-			return {
-				ok: false,
+	return measureBulkGenerationStage(
+		{
+			stage: "task.process",
+			meta: ({ result }) => ({
+				runId: run.run_id,
 				taskId: task.task_id,
 				kind: task.kind,
-				errorCode: "QUOTA_BACKOFF",
-				message: `Quota exhausted; rescheduled in ~${deferSeconds}s.`,
-			};
-		}
-		await store.setTaskResult({
-			taskId: task.task_id,
-			status: "failed",
-			lastError: normalizeString(error?.message, "Task failed."),
-			estimateEurDelta: 0,
-		});
-		return {
-			ok: false,
-			taskId: task.task_id,
-			kind: task.kind,
-			errorCode: normalizeString(error?.code, "TASK_FAILED"),
-			message: normalizeString(error?.message, "Task failed."),
-		};
-	}
+				zoneId: task.zone_id,
+				ok: result?.ok,
+				errorCode: result?.errorCode,
+			}),
+		},
+		async () => {
+			try {
+				if (task.kind === "quest_arc" || task.kind === "lore_book") {
+					await processNarrativeTask(task, run, config);
+					return { ok: true, taskId: task.task_id, kind: task.kind };
+				}
+				if (task.kind === "asset2d") {
+					await processAssetTask(task, run, config);
+					return { ok: true, taskId: task.task_id, kind: task.kind };
+				}
+				throw new Error(`Unsupported task kind '${task.kind}'.`);
+			} catch (error) {
+				if (isRetryableQuotaError(error)) {
+					const deferSeconds = computeQuotaBackoffSeconds(task);
+					await store.rescheduleTask({
+						taskId: task.task_id,
+						lastError: normalizeString(error?.message, "Quota exhausted. Retrying later."),
+						deferSeconds,
+					});
+					return {
+						ok: false,
+						taskId: task.task_id,
+						kind: task.kind,
+						errorCode: "QUOTA_BACKOFF",
+						message: `Quota exhausted; rescheduled in ~${deferSeconds}s.`,
+					};
+				}
+				await store.setTaskResult({
+					taskId: task.task_id,
+					status: "failed",
+					lastError: normalizeString(error?.message, "Task failed."),
+					estimateEurDelta: 0,
+				});
+				return {
+					ok: false,
+					taskId: task.task_id,
+					kind: task.kind,
+					errorCode: normalizeString(error?.code, "TASK_FAILED"),
+					message: normalizeString(error?.message, "Task failed."),
+				};
+			}
+		},
+	);
 }
 
 async function maybeCompleteRun(runId) {
@@ -889,82 +921,113 @@ async function maybeCompleteRun(runId) {
 }
 
 async function startBulkGenerationRun({ ownerId, body }) {
-	const config = buildConfig();
-	if (!config.enabled) {
-		const error = new Error("Bulk generation is disabled by BULK_GEN_ENABLED.");
-		error.status = 503;
-		error.code = "BULK_GEN_DISABLED";
-		throw error;
-	}
-	const run = buildRunShape(ownerId, normalizeObject(body), config);
-	await ensureStyleProfiles(run.meta.zone_ids);
-	const created = await store.createRun(run);
-	await store.appendSpendEvent({
-		run_id: created.run_id,
-		source: "run_start",
-		action: "allow",
-		estimated_cost_eur: 0,
-		remaining_credit_estimate_eur: Number(created.meta?.initial_credit_eur) || config.initialCreditsEur,
-		note: "Run created.",
-	});
-	return created;
+	return measureBulkGenerationStage(
+		{
+			stage: "run.start",
+			meta: ({ result }) => ({
+				runId: result?.run_id,
+				maxTasks: Number(result?.max_tasks) || 0,
+				zoneCount: Array.isArray(result?.meta?.zone_ids) ? result.meta.zone_ids.length : 0,
+				questCount: Number(result?.meta?.target_counts?.quest_arc) || 0,
+				loreCount: Number(result?.meta?.target_counts?.lore_book) || 0,
+				assetCount: Number(result?.meta?.target_counts?.asset2d) || 0,
+			}),
+		},
+		async () => {
+			const config = buildConfig();
+			if (!config.enabled) {
+				const error = new Error("Bulk generation is disabled by BULK_GEN_ENABLED.");
+				error.status = 503;
+				error.code = "BULK_GEN_DISABLED";
+				throw error;
+			}
+			const run = buildRunShape(ownerId, normalizeObject(body), config);
+			await ensureStyleProfiles(run.meta.zone_ids);
+			const created = await store.createRun(run);
+			await store.appendSpendEvent({
+				run_id: created.run_id,
+				source: "run_start",
+				action: "allow",
+				estimated_cost_eur: 0,
+				remaining_credit_estimate_eur:
+					Number(created.meta?.initial_credit_eur) || config.initialCreditsEur,
+				note: "Run created.",
+			});
+			return created;
+		},
+	);
 }
 
 async function tickBulkGenerationRun({ runId, workerId, limit }) {
-	const baseConfig = buildConfig();
-	const safeRunId = normalizeString(runId);
-	if (!safeRunId) {
-		const error = new Error("runId is required.");
-		error.status = 400;
-		error.code = "MISSING_RUN_ID";
-		throw error;
-	}
-	const run = await store.getRun(safeRunId);
-	if (!run) {
-		const error = new Error("Run not found.");
-		error.status = 404;
-		error.code = "RUN_NOT_FOUND";
-		throw error;
-	}
-	const config = applyGenerationProfile(
-		baseConfig,
-		normalizeObject(run.meta).generation_profile,
+	return measureBulkGenerationStage(
+		{
+			stage: "run.tick",
+			meta: ({ result }) => ({
+				runId: result?.runId || normalizeString(runId),
+				workerId: normalizeString(workerId, "scheduler"),
+				processed: Number(result?.processed) || 0,
+				seeded: Number(result?.seeded) || 0,
+				status: result?.status,
+				guardReason: result?.guardReason,
+			}),
+		},
+		async () => {
+			const baseConfig = buildConfig();
+			const safeRunId = normalizeString(runId);
+			if (!safeRunId) {
+				const error = new Error("runId is required.");
+				error.status = 400;
+				error.code = "MISSING_RUN_ID";
+				throw error;
+			}
+			const run = await store.getRun(safeRunId);
+			if (!run) {
+				const error = new Error("Run not found.");
+				error.status = 404;
+				error.code = "RUN_NOT_FOUND";
+				throw error;
+			}
+			const config = applyGenerationProfile(
+				baseConfig,
+				normalizeObject(run.meta).generation_profile,
+			);
+			const guard = await evaluateRunGuard(run, config);
+			if (guard.blocked) {
+				return {
+					ok: true,
+					runId: safeRunId,
+					status: guard.run?.status || "paused",
+					guardReason: guard.reason,
+					processed: 0,
+					seeded: 0,
+					results: [],
+				};
+			}
+
+			const seeded = await seedTasksIfNeeded(run, config);
+			const claimed = await store.claimPendingTasks({
+				runId: safeRunId,
+				workerId: normalizeString(workerId, "scheduler"),
+				limit: Math.max(1, Math.min(50, parseOptionalInteger(limit, config.defaultBatchSize))),
+				statuses: ["pending"],
+			});
+
+			const results = [];
+			for (const task of claimed) {
+				const result = await processTask(task, run, config);
+				results.push(result);
+			}
+			const finalRun = await maybeCompleteRun(safeRunId);
+			return {
+				ok: true,
+				runId: safeRunId,
+				status: finalRun?.status || run.status,
+				processed: claimed.length,
+				seeded: seeded.seeded,
+				results,
+			};
+		},
 	);
-	const guard = await evaluateRunGuard(run, config);
-	if (guard.blocked) {
-		return {
-			ok: true,
-			runId: safeRunId,
-			status: guard.run?.status || "paused",
-			guardReason: guard.reason,
-			processed: 0,
-			seeded: 0,
-			results: [],
-		};
-	}
-
-	const seeded = await seedTasksIfNeeded(run, config);
-	const claimed = await store.claimPendingTasks({
-		runId: safeRunId,
-		workerId: normalizeString(workerId, "scheduler"),
-		limit: Math.max(1, Math.min(50, parseOptionalInteger(limit, config.defaultBatchSize))),
-		statuses: ["pending"],
-	});
-
-	const results = [];
-	for (const task of claimed) {
-		const result = await processTask(task, run, config);
-		results.push(result);
-	}
-	const finalRun = await maybeCompleteRun(safeRunId);
-	return {
-		ok: true,
-		runId: safeRunId,
-		status: finalRun?.status || run.status,
-		processed: claimed.length,
-		seeded: seeded.seeded,
-		results,
-	};
 }
 
 async function pauseRun(runId, reason) {

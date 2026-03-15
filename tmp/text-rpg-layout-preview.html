@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text RPG Layout Preview</title>
+    <style>
+      :root {
+        --bg: #071019;
+        --panel: rgba(8, 20, 31, 0.88);
+        --panel-strong: rgba(5, 14, 22, 0.96);
+        --cyan: #67f4ff;
+        --cyan-dim: rgba(103, 244, 255, 0.18);
+        --gold: #ffd36e;
+        --rose: #ff6c8f;
+        --green: #78f1ae;
+        --text: #eff7ff;
+        --muted: #8aa6ba;
+        --line: rgba(103, 244, 255, 0.22);
+        --shadow: 0 20px 50px rgba(0, 0, 0, 0.42);
+        --radius: 20px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(103, 244, 255, 0.16), transparent 28%),
+          radial-gradient(circle at 85% 10%, rgba(255, 211, 110, 0.13), transparent 26%),
+          linear-gradient(180deg, #061018 0%, #040b12 100%);
+      }
+
+      .board {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 56px 40px 72px;
+      }
+
+      .eyebrow {
+        color: var(--cyan);
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 48px;
+        line-height: 1;
+      }
+
+      .lede {
+        max-width: 820px;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 36px;
+      }
+
+      .meta {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 34px;
+      }
+
+      .tag {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(7, 19, 30, 0.8);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.18fr 0.82fr;
+        gap: 28px;
+        align-items: start;
+      }
+
+      .frame {
+        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)), var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .frame::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border: 1px solid rgba(103, 244, 255, 0.1);
+        border-radius: 22px;
+        pointer-events: none;
+      }
+
+      .frame-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 26px 14px;
+        border-bottom: 1px solid rgba(103, 244, 255, 0.12);
+      }
+
+      .frame-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--cyan);
+      }
+
+      .desktop-shell {
+        padding: 24px;
+        min-height: 880px;
+      }
+
+      .desktop-layout {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr) 290px;
+        gap: 18px;
+      }
+
+      .panel {
+        background: var(--panel-strong);
+        border: 1px solid rgba(103, 244, 255, 0.16);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        color: var(--cyan);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+      }
+
+      .stat-card {
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(103, 244, 255, 0.06);
+        border: 1px solid rgba(103, 244, 255, 0.1);
+        margin-bottom: 10px;
+      }
+
+      .stat-label {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .stat-value {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .bar {
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.08);
+        overflow: hidden;
+        margin-top: 8px;
+      }
+
+      .bar span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+      }
+
+      .hp span { width: 72%; background: linear-gradient(90deg, #ff6c8f, #ffa68d); }
+      .mp span { width: 54%; background: linear-gradient(90deg, #67f4ff, #8ab2ff); }
+      .xp span { width: 88%; background: linear-gradient(90deg, #ffd36e, #ffef99); }
+
+      .story-card {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        gap: 16px;
+        min-height: 780px;
+      }
+
+      .story-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 14px;
+      }
+
+      .story-kicker {
+        color: var(--gold);
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      .story-title {
+        font-size: 30px;
+        margin: 0;
+      }
+
+      .story-subtitle {
+        color: var(--muted);
+        margin-top: 8px;
+        line-height: 1.5;
+        max-width: 720px;
+      }
+
+      .badge {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 108, 143, 0.24);
+        background: rgba(255, 108, 143, 0.08);
+        color: #ffc0d0;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .transcript {
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(103,244,255,0.04), rgba(103,244,255,0.01));
+        border: 1px solid rgba(103, 244, 255, 0.12);
+        padding: 18px;
+      }
+
+      .line {
+        margin-bottom: 18px;
+        line-height: 1.7;
+      }
+
+      .line:last-child {
+        margin-bottom: 0;
+      }
+
+      .speaker {
+        display: inline-block;
+        color: var(--cyan);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 11px;
+        margin-bottom: 8px;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .action {
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(103, 244, 255, 0.2);
+        background: rgba(11, 28, 43, 0.92);
+      }
+
+      .action strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+
+      .action span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .journal-list,
+      .loot-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .journal-item,
+      .loot-item {
+        border-radius: 16px;
+        padding: 12px 14px;
+        border: 1px solid rgba(103, 244, 255, 0.12);
+        background: rgba(103, 244, 255, 0.04);
+      }
+
+      .journal-item strong,
+      .loot-item strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .journal-item span,
+      .loot-item span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .mobile-shell {
+        padding: 28px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .phone {
+        width: 430px;
+        border-radius: 38px;
+        padding: 14px;
+        background: linear-gradient(180deg, #10151f, #050910);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      }
+
+      .phone-screen {
+        border-radius: 28px;
+        min-height: 880px;
+        background:
+          radial-gradient(circle at top, rgba(103,244,255,0.11), transparent 30%),
+          linear-gradient(180deg, #06121a, #04090f);
+        border: 1px solid rgba(103, 244, 255, 0.12);
+        overflow: hidden;
+      }
+
+      .mobile-top {
+        padding: 18px 18px 12px;
+        border-bottom: 1px solid rgba(103, 244, 255, 0.12);
+      }
+
+      .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mobile-kicker {
+        color: var(--gold);
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 11px;
+        margin-bottom: 8px;
+      }
+
+      .mobile-title {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .mobile-body {
+        padding: 16px 16px 20px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .mobile-mini {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .mini-card {
+        padding: 10px 12px;
+        border-radius: 14px;
+        background: rgba(103, 244, 255, 0.05);
+        border: 1px solid rgba(103, 244, 255, 0.12);
+      }
+
+      .mini-card label {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .mini-card strong {
+        font-size: 16px;
+      }
+
+      .mobile-transcript,
+      .mobile-actions,
+      .mobile-drawer {
+        padding: 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(103, 244, 255, 0.12);
+        background: rgba(6, 18, 28, 0.92);
+      }
+
+      .mobile-actions {
+        display: grid;
+        gap: 10px;
+      }
+
+      .mobile-action {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(103, 244, 255, 0.05);
+        border: 1px solid rgba(103, 244, 255, 0.12);
+      }
+
+      .drawer-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .drawer-tabs span {
+        padding: 8px 11px;
+        border-radius: 999px;
+        background: rgba(103, 244, 255, 0.08);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .drawer-tabs span.active {
+        background: rgba(255, 211, 110, 0.14);
+        color: #ffe7af;
+      }
+
+      .caption {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board">
+      <div class="eyebrow">Dev/Test Shell Preview</div>
+      <h1>Text RPG Default App Replacement</h1>
+      <div class="lede">
+        A calm, readable LitRPG shell that keeps the dramatic neon flavor, but
+        replaces the current cockpit-heavy interface with a transcript-first
+        experience that is easier to test on desktop and phone.
+      </div>
+      <div class="meta">
+        <div class="tag">Local Saves First</div>
+        <div class="tag">Online AI Narration</div>
+        <div class="tag">Phone-Friendly</div>
+        <div class="tag">Low-Clutter Combat/Story Loop</div>
+      </div>
+
+      <div class="grid">
+        <section class="frame">
+          <div class="frame-header">
+            <div class="frame-title">Desktop Layout</div>
+            <div class="tag">Three-Column Story Desk</div>
+          </div>
+          <div class="desktop-shell">
+            <div class="desktop-layout">
+              <aside class="panel">
+                <h2 class="section-title">Character Core</h2>
+                <div class="stat-card hp">
+                  <div class="stat-label">HP</div>
+                  <div class="stat-value">184 / 255</div>
+                  <div class="bar"><span></span></div>
+                </div>
+                <div class="stat-card mp">
+                  <div class="stat-label">Mana</div>
+                  <div class="stat-value">62 / 115</div>
+                  <div class="bar"><span></span></div>
+                </div>
+                <div class="stat-card xp">
+                  <div class="stat-label">Level 9 Progress</div>
+                  <div class="stat-value">88%</div>
+                  <div class="bar"><span></span></div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">Build</div>
+                  <div class="stat-value">Spellblade / Rift-Touched</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-label">Focus</div>
+                  <div class="stat-value" style="color: var(--green)">Aether Surge Ready</div>
+                </div>
+              </aside>
+
+              <main class="panel story-card">
+                <div class="story-header">
+                  <div>
+                    <div class="story-kicker">Ashfall District / Ruined Archive</div>
+                    <h2 class="story-title">The sealed shelves begin to whisper.</h2>
+                    <div class="story-subtitle">
+                      The app’s main stage becomes a novel-like feed with short,
+                      readable beats, visible state, and tactical choices below the
+                      narrative instead of spread across modal HUD windows.
+                    </div>
+                  </div>
+                  <div class="badge">AI Link Active</div>
+                </div>
+
+                <div class="transcript">
+                  <div class="line">
+                    <span class="speaker">System</span><br />
+                    Dust gathers in silver crescents across the archive floor. Your
+                    blade hums against its sheath as distant pages turn without wind.
+                  </div>
+                  <div class="line">
+                    <span class="speaker">Narrator</span><br />
+                    Three aisles ahead, a lantern of pale blue fire blooms behind a
+                    broken shelf. Something patient is studying you from the glow.
+                  </div>
+                  <div class="line">
+                    <span class="speaker">You</span><br />
+                    I steady my breathing, let mana settle into the runes on my palm,
+                    and take one deliberate step toward the light.
+                  </div>
+                </div>
+
+                <div class="actions">
+                  <div class="action">
+                    <strong>Probe the Presence</strong>
+                    <span>Open with cautious dialogue and see whether the archive spirit responds.</span>
+                  </div>
+                  <div class="action">
+                    <strong>Cast Arc Lance</strong>
+                    <span>Start combat immediately with ranged pressure and gain initiative.</span>
+                  </div>
+                  <div class="action">
+                    <strong>Read the Shelves</strong>
+                    <span>Search for lore, keywords, and hidden quest hooks before acting.</span>
+                  </div>
+                  <div class="action">
+                    <strong>Retreat to Cover</strong>
+                    <span>Reposition and conserve health while you gather more information.</span>
+                  </div>
+                </div>
+              </main>
+
+              <aside class="panel">
+                <h2 class="section-title">Journal and Pack</h2>
+                <div class="journal-list">
+                  <div class="journal-item">
+                    <strong>Quest: Echoes Below Glass</strong>
+                    <span>Find the speaker bound beneath the ruined archive and recover the codex fragment.</span>
+                  </div>
+                  <div class="journal-item">
+                    <strong>Temporary Status</strong>
+                    <span>Night Vision active. Soul Strain building. Blessing timer: 14 minutes.</span>
+                  </div>
+                </div>
+                <h2 class="section-title" style="margin-top: 20px;">Quick Pack</h2>
+                <div class="loot-list">
+                  <div class="loot-item">
+                    <strong>3x Ember Draught</strong>
+                    <span>Restores health over two turns.</span>
+                  </div>
+                  <div class="loot-item">
+                    <strong>Archive Key Fragment</strong>
+                    <span>Quest item etched with half a lunar sigil.</span>
+                  </div>
+                  <div class="loot-item">
+                    <strong>Worn Spell-Foil</strong>
+                    <span>Raises block chance against spectral attacks.</span>
+                  </div>
+                </div>
+              </aside>
+            </div>
+            <div class="caption">
+              Desktop keeps the player grounded with always-visible stats on the left
+              and context on the right, while the center column does nearly all of the
+              emotional work.
+            </div>
+          </div>
+        </section>
+
+        <section class="frame">
+          <div class="frame-header">
+            <div class="frame-title">Phone Layout</div>
+            <div class="tag">Single-Thumb Story Flow</div>
+          </div>
+          <div class="mobile-shell">
+            <div class="phone">
+              <div class="phone-screen">
+                <div class="mobile-top">
+                  <div class="mobile-kicker">Field Test Build</div>
+                  <div class="mobile-header">
+                    <div>
+                      <h2 class="mobile-title">Whispers in the Archive</h2>
+                    </div>
+                    <div class="badge">Signed In</div>
+                  </div>
+                </div>
+                <div class="mobile-body">
+                  <div class="mobile-mini">
+                    <div class="mini-card">
+                      <label>HP</label>
+                      <strong>184</strong>
+                    </div>
+                    <div class="mini-card">
+                      <label>Mana</label>
+                      <strong>62</strong>
+                    </div>
+                    <div class="mini-card">
+                      <label>Lvl</label>
+                      <strong>9</strong>
+                    </div>
+                  </div>
+
+                  <div class="mobile-transcript">
+                    <div class="line">
+                      <span class="speaker">Narrator</span><br />
+                      The lantern bends toward you like a living eye. Beneath it,
+                      old paper shifts with the sound of someone inhaling.
+                    </div>
+                    <div class="line">
+                      <span class="speaker">System</span><br />
+                      A hidden intellect has noticed you. Your next choice may start
+                      combat, dialogue, or a discovery chain.
+                    </div>
+                  </div>
+
+                  <div class="mobile-actions">
+                    <div class="mobile-action"><strong>Speak first</strong></div>
+                    <div class="mobile-action"><strong>Loose Arc Lance</strong></div>
+                    <div class="mobile-action"><strong>Inspect the aisle</strong></div>
+                  </div>
+
+                  <div class="mobile-drawer">
+                    <div class="drawer-tabs">
+                      <span class="active">Quest</span>
+                      <span>Bag</span>
+                      <span>Save</span>
+                    </div>
+                    <div class="line" style="margin-bottom: 0;">
+                      <span class="speaker">Current Goal</span><br />
+                      Reach the sealed lower stacks and secure the codex fragment
+                      before the archive spirit locks the path.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

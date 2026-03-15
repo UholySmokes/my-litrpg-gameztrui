@@ -1,0 +1,114 @@
+[
+  {
+    "id": "meteor_storm",
+    "name": "Meteor Storm",
+    "description": "Rain destruction from above, hitting all foes.",
+    "cost": 50,
+    "costType": "mana",
+    "cooldown": 10,
+    "damage": {
+      "multiplier": 1.5,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "aoe": {
+      "maxTargets": 3,
+      "damageMultiplier": 1
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 3,
+        "magnitude": 10
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "arcane_singularity",
+    "name": "Arcane Singularity",
+    "description": "Collapse space to root and damage the target.",
+    "cost": 40,
+    "costType": "mana",
+    "cooldown": 8,
+    "damage": {
+      "multiplier": 1.35,
+      "isMagic": true
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "root",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "mana_surge",
+    "name": "Mana Surge",
+    "description": "Overload your reserves for a burst of speed.",
+    "cost": 0,
+    "costType": "mana",
+    "cooldown": 15,
+    "target": "self",
+    "resourceGain": {
+      "type": "mana",
+      "amount": 40
+    },
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "resource",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "spell_echo",
+    "name": "Spell Echo",
+    "description": "Your next spell fires twice.",
+    "cost": 35,
+    "costType": "mana",
+    "cooldown": 12,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 2,
+        "magnitude": 0.25
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

@@ -1,0 +1,222 @@
+[
+  {
+    "id": "martial_precision",
+    "name": "Martial Precision",
+    "description": "Refine your strikes for steadier damage and sharper timing.",
+    "affinities": [
+      "martial",
+      "precision"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "iron_resolve",
+    "name": "Iron Resolve",
+    "description": "Harden your stance to sustain longer exchanges.",
+    "affinities": [
+      "martial",
+      "defense"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "battle_rhythm",
+    "name": "Battle Rhythm",
+    "description": "Chain actions with a practiced cadence to recover faster.",
+    "affinities": [
+      "martial"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "arcane_flow",
+    "name": "Arcane Flow",
+    "description": "Smooth your spellcasting to reduce strain and waste.",
+    "affinities": [
+      "arcane"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "spellweaver",
+    "name": "Spellweaver",
+    "description": "Tighten spell loops to shorten recovery between casts.",
+    "affinities": [
+      "arcane"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "mana_attunement",
+    "name": "Mana Attunement",
+    "description": "Align with ambient mana to stabilize your output.",
+    "affinities": [
+      "arcane",
+      "support"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "shadow_veil",
+    "name": "Shadow Veil",
+    "description": "Slip between sight lines and punish openings.",
+    "affinities": [
+      "shadow",
+      "precision"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "ghost_step",
+    "name": "Ghost Step",
+    "description": "Move with near-silent intent and strike with composure.",
+    "affinities": [
+      "shadow"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "poisoned_edge",
+    "name": "Poisoned Edge",
+    "description": "Lace your offense with lingering harm.",
+    "affinities": [
+      "shadow",
+      "feral"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "divine_bulwark",
+    "name": "Divine Bulwark",
+    "description": "Sustain allies with protective timing.",
+    "affinities": [
+      "divine",
+      "defense"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "radiant_charge",
+    "name": "Radiant Charge",
+    "description": "Drive forward with luminous force and resolve.",
+    "affinities": [
+      "divine",
+      "martial"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "sacred_focus",
+    "name": "Sacred Focus",
+    "description": "Center your rites for cleaner, steadier results.",
+    "affinities": [
+      "divine",
+      "support"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "grave_tether",
+    "name": "Grave Tether",
+    "description": "Anchor your power to lingering spirits.",
+    "affinities": [
+      "dark"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "bonecraft",
+    "name": "Bonecraft",
+    "description": "Shape the remains of battles into enduring force.",
+    "affinities": [
+      "dark"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "verdant_pulse",
+    "name": "Verdant Pulse",
+    "description": "Let growth magic cycle longer before fading.",
+    "affinities": [
+      "nature",
+      "support"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "tracker_instinct",
+    "name": "Tracker Instinct",
+    "description": "Read the field and strike true when it counts.",
+    "affinities": [
+      "nature",
+      "precision"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "spirit_echo",
+    "name": "Spirit Echo",
+    "description": "Let inner echoes reinforce your techniques.",
+    "affinities": [
+      "spirit"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "inner_balance",
+    "name": "Inner Balance",
+    "description": "Steady your rhythm to sustain momentum longer.",
+    "affinities": [
+      "spirit",
+      "defense"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "feral_instinct",
+    "name": "Feral Instinct",
+    "description": "Fight with sharpened reflex and raw pressure.",
+    "affinities": [
+      "feral"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "primal_fury",
+    "name": "Primal Fury",
+    "description": "Lean into aggression without losing control.",
+    "affinities": [
+      "feral",
+      "martial"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "wayfarer",
+    "name": "Wayfarer",
+    "description": "Endurance grows with every step forward.",
+    "affinities": [
+      "generic"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "system_favor",
+    "name": "System Favor",
+    "description": "A minor protocol grants efficient resource use.",
+    "affinities": [
+      "generic"
+    ],
+    "bucket": "standard"
+  },
+  {
+    "id": "oathbound",
+    "name": "Oathbound",
+    "description": "Sworn intent steadies your execution under pressure.",
+    "affinities": [
+      "generic",
+      "defense"
+    ],
+    "bucket": "standard"
+  }
+]

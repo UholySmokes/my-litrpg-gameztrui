@@ -1242,7 +1242,7 @@ export const STANDARD_TALENTS = [
   },
 ];
 
-const CLASS_TALENT_TAGS = {
+export const CLASS_TALENT_TAGS = {
   knight: ["martial", "defense"],
   warrior: ["martial", "defense"],
   berserker: ["martial", "feral"],
@@ -1258,7 +1258,7 @@ const CLASS_TALENT_TAGS = {
   druid: ["nature", "spirit"],
 };
 
-const TALENT_COUNT_TABLE = [
+export const TALENT_COUNT_TABLE = [
   { count: 10, chance: 0.00001 },
   { count: 4, chance: 0.01 },
   { count: 3, chance: 0.05 },

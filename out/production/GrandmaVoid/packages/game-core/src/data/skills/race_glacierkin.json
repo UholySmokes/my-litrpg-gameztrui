@@ -1,0 +1,33 @@
+[
+  {
+    "id": "glacierkin_special",
+    "name": "Permafrost Lance",
+    "description": "Drive a lance of ancient ice.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "frostbite",
+        "duration": 3,
+        "magnitude": 6
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

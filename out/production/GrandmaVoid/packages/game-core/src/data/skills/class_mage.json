@@ -1,0 +1,116 @@
+[
+  {
+    "id": "fireball",
+    "name": "Fireball",
+    "description": "Hurl a burning sphere that scorches the enemy.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 3,
+        "magnitude": 8
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "ice_lance",
+    "name": "Ice Lance",
+    "description": "A piercing lance of frost that slows the target.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 3,
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.3
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "lightning_bolt",
+    "name": "Lightning Bolt",
+    "description": "Chain lightning that disrupts focus.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 4,
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": true,
+      "element": "lightning"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "shock",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "spell",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  },
+  {
+    "id": "mana_shield",
+    "name": "Mana Shield",
+    "description": "Convert mana into a protective ward.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 45
+      }
+    ],
+    "template": {
+      "category": "Class Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "ClassAbilityRegistry"
+    }
+  }
+]

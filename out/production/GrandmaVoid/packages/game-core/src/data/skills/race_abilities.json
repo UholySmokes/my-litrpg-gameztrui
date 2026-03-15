@@ -1,0 +1,1610 @@
+[
+  {
+    "id": "pure_human_special",
+    "name": "Adaptive Surge",
+    "description": "Sharpen instincts to boost might and speed.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 2,
+        "magnitude": 0.15
+      },
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "neo_human_special",
+    "name": "Target Lock",
+    "description": "Calculate the strike and expose weak points.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "ancient_bloodline_special",
+    "name": "Arcane Reservoir",
+    "description": "Open your mana core and reinforce your defenses.",
+    "cost": 18,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 2,
+        "magnitude": 40
+      }
+    ],
+    "resourceGain": {
+      "type": "mana",
+      "amount": 45
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "resource",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "spirit_beast_special",
+    "name": "Predator Pounce",
+    "description": "Leap in with a savage stun.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "demon_kin_special",
+    "name": "Abyssal Siphon",
+    "description": "Drain life with a dark strike.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "lifesteal": 0.4,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "celestial_descendant_special",
+    "name": "Celestial Benediction",
+    "description": "Restore vitality and wrap yourself in light.",
+    "cost": 28,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 2,
+        "magnitude": 40
+      }
+    ],
+    "heal": {
+      "percent": 0.25
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "shadow_walker_special",
+    "name": "Umbral Veil",
+    "description": "Slip into shadow and evade retaliation.",
+    "cost": 24,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "stealth": {
+      "duration": 2
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "dragon_blood_special",
+    "name": "Drakefire Roar",
+    "description": "Unleash a fiery roar that scorches the line.",
+    "cost": 35,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 3,
+        "magnitude": 8
+      }
+    ],
+    "aoe": {
+      "maxTargets": 3,
+      "damageMultiplier": 0.85
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "elemental_attuned_special",
+    "name": "Prismatic Burst",
+    "description": "Detonate a surge of mixed elements.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "lightning"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 2,
+        "magnitude": 6
+      },
+      {
+        "target": "enemy",
+        "id": "frostbite",
+        "duration": 2,
+        "magnitude": 5
+      },
+      {
+        "target": "enemy",
+        "id": "shock",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "mutant_special",
+    "name": "Mutation Spike",
+    "description": "Trigger a volatile mutation buff.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "randomBuff": true,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "undead_awakened_special",
+    "name": "Grave Chill",
+    "description": "Entomb the foe in necrotic cold.",
+    "cost": 22,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "curse",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "fae_touched_special",
+    "name": "Glamour",
+    "description": "Weave a glamour that confuses the target.",
+    "cost": 22,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "beast_kin_special",
+    "name": "Blood Hunt",
+    "description": "Strike hard and unleash a brief frenzy.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "setEnrage": {
+      "turns": 2,
+      "damageMultiplier": 1.3,
+      "defenseMultiplier": 0.9
+    },
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "mechanical_construct_special",
+    "name": "Overclock Core",
+    "description": "Push your systems beyond safe limits.",
+    "cost": 24,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.3
+      },
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 2,
+        "magnitude": 35
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "void_walker_special",
+    "name": "Phase Rend",
+    "description": "Slice through space and slow the target.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "phoenix_reborn_special",
+    "name": "Ashen Nova",
+    "description": "Explode in flame and reignite your vitality.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "aoe": {
+      "maxTargets": 2,
+      "damageMultiplier": 0.85
+    },
+    "heal": {
+      "percent": 0.15
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "nature_spirit_special",
+    "name": "Verdant Renewal",
+    "description": "Cleanse afflictions and heal through nature.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "self",
+    "heal": {
+      "percent": 0.3
+    },
+    "cleanse": {
+      "types": [
+        "DEBUFF",
+        "DOT"
+      ]
+    },
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "heal",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "crystal_being_special",
+    "name": "Prismatic Guard",
+    "description": "Form a crystalline shield that reflects harm.",
+    "cost": 28,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 50
+      },
+      {
+        "target": "self",
+        "id": "reflect",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "chaos_born_special",
+    "name": "Entropy Lash",
+    "description": "A destabilizing strike that disorients the foe.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "divine_scion_special",
+    "name": "Divine Edict",
+    "description": "Call down judgment to stun the target.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": true,
+      "element": "holy"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "stormforged_special",
+    "name": "Thunder Drive",
+    "description": "Drive a bolt through armor.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "lightning"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "shock",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "frostborne_special",
+    "name": "Glacial Prison",
+    "description": "Freeze the target in place.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "freeze",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "emberkin_special",
+    "name": "Cinderstorm",
+    "description": "Scatter burning embers across the field.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 3,
+        "magnitude": 7
+      }
+    ],
+    "aoe": {
+      "maxTargets": 3,
+      "damageMultiplier": 0.85
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "tidecaller_special",
+    "name": "Riptide",
+    "description": "Crashing tide that slows the target.",
+    "cost": 24,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "sunborn_special",
+    "name": "Solar Aegis",
+    "description": "Radiant light fortifies your defense.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 45
+      },
+      {
+        "target": "self",
+        "id": "might",
+        "duration": 2,
+        "magnitude": 0.15
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "duskborne_special",
+    "name": "Twilight Step",
+    "description": "Blur into dusk and reposition.",
+    "cost": 24,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "stealth": {
+      "duration": 2
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "ironroot_special",
+    "name": "Stonebark Guard",
+    "description": "Harden into living bark and reflect hits.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 55
+      },
+      {
+        "target": "self",
+        "id": "reflect",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "skybound_special",
+    "name": "Gale Dash",
+    "description": "Ride the wind with speed and evasion.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.3
+      },
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.15
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "bloodwoven_special",
+    "name": "Crimson Rite",
+    "description": "A ritual strike that feeds your wounds.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "lifesteal": 0.3,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "starseer_special",
+    "name": "Stellar Alignment",
+    "description": "Align with the stars to refuel mana.",
+    "cost": 15,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "resourceGain": {
+      "type": "mana",
+      "amount": 35
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "resource",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "rune_sentinel_special",
+    "name": "Rune Cage",
+    "description": "Bind the target with sigils and weaken defense.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1,
+      "isMagic": true,
+      "element": "arcane"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "root",
+        "duration": 2
+      },
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "mirageborn_special",
+    "name": "Mirage Split",
+    "description": "Divide into mirages to confuse the foe.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "enemy",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.25
+      },
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "quakeborn_special",
+    "name": "Seismic Slam",
+    "description": "A ground-shattering blow that stuns.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.35,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "stun",
+        "duration": 1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "venomtail_special",
+    "name": "Venom Fang",
+    "description": "Inject a potent toxin.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.1,
+      "isMagic": true,
+      "element": "nature"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "poison",
+        "duration": 4,
+        "magnitude": 5
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "auric_seraph_special",
+    "name": "Radiant Descent",
+    "description": "Crash down in a burst of holy light.",
+    "cost": 32,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "holy"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "radiant_mark",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "aoe": {
+      "maxTargets": 2,
+      "damageMultiplier": 0.9
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "gloomshade_special",
+    "name": "Umbral Slice",
+    "description": "Cut through shadows to weaken defenses.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "sunder",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "sandstrider_special",
+    "name": "Dust Vortex",
+    "description": "Kick up a blinding storm of sand.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 2,
+        "magnitude": -0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "umbral_oracle_special",
+    "name": "Void Prophecy",
+    "description": "A prophetic strike that clouds the mind.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "verdant_shaper_special",
+    "name": "Thornburst",
+    "description": "Verdant thorns bind and pierce the foe.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "nature"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "root",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "astral_nomad_special",
+    "name": "Astral Step",
+    "description": "Slip through astral lanes to refuel.",
+    "cost": 18,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "resourceGain": {
+      "type": "mana",
+      "amount": 30
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "resource",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "riftborn_special",
+    "name": "Rift Lunge",
+    "description": "Pierce the enemy from a spatial tear.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 1,
+        "magnitude": -0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "ashenblood_special",
+    "name": "Ashen Blast",
+    "description": "A blast of smoldering ash.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 3,
+        "magnitude": 7
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "glacierkin_special",
+    "name": "Permafrost Lance",
+    "description": "Drive a lance of ancient ice.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.25,
+      "isMagic": true,
+      "element": "ice"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "frostbite",
+        "duration": 3,
+        "magnitude": 6
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "luckweaver_special",
+    "name": "Fortune Twist",
+    "description": "Bend probability for a lucky surge.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "haste",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "randomBuff": true,
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "blood_frenzied_special",
+    "name": "Frenzy Rush",
+    "description": "A reckless rush that stokes a frenzy.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": false,
+      "element": "physical"
+    },
+    "setEnrage": {
+      "turns": 2,
+      "damageMultiplier": 1.35,
+      "defenseMultiplier": 0.9
+    },
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "attack",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "grim_revenant_special",
+    "name": "Death's Echo",
+    "description": "Strike from beyond and siphon resolve.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "lifesteal": 0.35,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "sparkborn_special",
+    "name": "Arc Spark",
+    "description": "A crackling spark that jolts the foe.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "lightning"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "shock",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "whisper_fae_special",
+    "name": "Whispered Charm",
+    "description": "A silken whisper that enthralls the enemy.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "enemy",
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "charm",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "shadow_veil_special",
+    "name": "Veil Cloak",
+    "description": "Dissolve into shadow to avoid detection.",
+    "cost": 24,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "blur",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "stealth": {
+      "duration": 2
+    },
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "wild_mutant_special",
+    "name": "Wild Surge",
+    "description": "A volatile surge with unpredictable results.",
+    "cost": 22,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "self",
+    "randomBuff": true,
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "flux_attuned_special",
+    "name": "Flux Shift",
+    "description": "Recalibrate elemental absorption and guard up.",
+    "cost": 24,
+    "costType": "mana",
+    "cooldown": 9,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 2,
+        "magnitude": 35
+      }
+    ],
+    "setAbsorption": true,
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "ironhide_special",
+    "name": "Iron Carapace",
+    "description": "Brace for impact with hardened plating.",
+    "cost": 30,
+    "costType": "mana",
+    "cooldown": 10,
+    "target": "self",
+    "effects": [
+      {
+        "target": "self",
+        "id": "shield",
+        "duration": 3,
+        "magnitude": 65
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "utility",
+      "elements": [],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "echo_spirit_special",
+    "name": "Echo Strike",
+    "description": "A resonant strike that restores a sliver of health.",
+    "cost": 20,
+    "costType": "mana",
+    "cooldown": 6,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.15,
+      "isMagic": true,
+      "element": "holy"
+    },
+    "heal": {
+      "percent": 0.1
+    },
+    "effects": [],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "chaos_touched_special",
+    "name": "Chaos Twist",
+    "description": "Unstable force that scrambles the target.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.2,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "confuse",
+        "duration": 2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  },
+  {
+    "id": "sunforged_special",
+    "name": "Solar Hammer",
+    "description": "Bring down a blazing hammer blow.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 8,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": true,
+      "element": "fire"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "burn",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

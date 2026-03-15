@@ -1,0 +1,202 @@
+[
+  {
+    "id": "necro_raise_dead",
+    "name": "Raise Dead",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Raise a corpse as an undead minion.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 15
+  },
+  {
+    "id": "necro_shadow_bolt",
+    "name": "Shadow Bolt",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Launch a bolt of shadow energy at an enemy.",
+    "level": 1,
+    "manaCost": 12,
+    "cooldown": 0
+  },
+  {
+    "id": "necro_life_tap",
+    "name": "Life Tap",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Convert your health into mana.",
+    "level": 1,
+    "manaCost": 0,
+    "cooldown": 10
+  },
+  {
+    "id": "necro_drain_life",
+    "name": "Drain Life",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Drain health from an enemy to heal yourself.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 8
+  },
+  {
+    "id": "necro_corpse_explosion",
+    "name": "Corpse Explosion",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Cause a corpse to explode, damaging nearby enemies.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 6
+  },
+  {
+    "id": "necro_bone_armor",
+    "name": "Bone Armor",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Surround yourself with protective bones.",
+    "level": 1,
+    "manaCost": 22,
+    "cooldown": 30
+  },
+  {
+    "id": "necro_death_coil",
+    "name": "Death Coil",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Fires a coil of death that damages enemies or heals undead.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 5
+  },
+  {
+    "id": "necro_plague",
+    "name": "Plague",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Infect an enemy with a spreading disease.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 15
+  },
+  {
+    "id": "necro_summon_skeleton",
+    "name": "Summon Skeleton",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Summon a skeleton warrior to fight for you.",
+    "level": 1,
+    "manaCost": 30,
+    "cooldown": 20
+  },
+  {
+    "id": "necro_bone_spear",
+    "name": "Bone Spear",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Fire a spear made of bone that pierces enemies.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 4
+  },
+  {
+    "id": "necro_curse_weakness",
+    "name": "Curse of Weakness",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Curse enemies to deal less damage.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 20
+  },
+  {
+    "id": "necro_dark_pact",
+    "name": "Dark Pact",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Sacrifice minion health for a powerful attack.",
+    "level": 1,
+    "manaCost": 10,
+    "cooldown": 12
+  },
+  {
+    "id": "necro_army_of_dead",
+    "name": "Army of the Dead",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Raise a horde of undead to overwhelm enemies.",
+    "level": 1,
+    "manaCost": 50,
+    "cooldown": 300
+  },
+  {
+    "id": "necro_desecrate",
+    "name": "Desecrate",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Create a zone of death energy that damages enemies.",
+    "level": 1,
+    "manaCost": 25,
+    "cooldown": 15
+  },
+  {
+    "id": "necro_soul_harvest",
+    "name": "Soul Harvest",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Harvest souls from nearby enemies to empower yourself.",
+    "level": 1,
+    "manaCost": 20,
+    "cooldown": 45
+  },
+  {
+    "id": "necro_fear",
+    "name": "Fear",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Strike terror into an enemy, causing them to flee.",
+    "level": 1,
+    "manaCost": 18,
+    "cooldown": 30
+  },
+  {
+    "id": "necro_death_grip",
+    "name": "Death Grip",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Pull an enemy to your location with dark energy.",
+    "level": 1,
+    "manaCost": 15,
+    "cooldown": 25
+  },
+  {
+    "id": "necro_lichform",
+    "name": "Lichform",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Transform into a powerful lich temporarily.",
+    "level": 1,
+    "manaCost": 45,
+    "cooldown": 180
+  },
+  {
+    "id": "necro_revive",
+    "name": "Revive",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Bring a fallen ally back as an undead.",
+    "level": 1,
+    "manaCost": 40,
+    "cooldown": 600
+  },
+  {
+    "id": "necro_necrotic_blast",
+    "name": "Necrotic Blast",
+    "type": "active",
+    "class": "necromancer",
+    "description": "Release a blast of necrotic energy in all directions.",
+    "level": 1,
+    "manaCost": 35,
+    "cooldown": 20
+  }
+]

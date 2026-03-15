@@ -1,0 +1,5628 @@
+{
+  "byClass": {
+    "adamant_champion": [
+      {
+        "id": "flurry",
+        "name": "Flurry",
+        "description": "Rapid strikes that scale with combo flow.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "adamant_champion",
+        "costType": "chi",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "palm_strike",
+        "name": "Palm Strike",
+        "description": "A focused blow that stuns the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "adamant_champion",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "meditation",
+        "name": "Meditate",
+        "description": "Center yourself to restore chi in combat.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "adamant_champion",
+        "costType": "chi",
+        "cost": 0,
+        "cooldown": 5,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "sweeping_kick",
+        "name": "Sweeping Kick",
+        "description": "A wide sweep that trips the enemy, slowing them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "adamant_champion",
+        "costType": "chi",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "iron_palm",
+        "name": "Iron Palm",
+        "description": "A crushing palm strike that shatters armor.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "adamant_champion",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "chi_burst",
+        "name": "Chi Burst",
+        "description": "Release stored chi in a devastating burst.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "adamant_champion",
+        "costType": "chi",
+        "cost": 50,
+        "cooldown": 10,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "iron_body",
+        "name": "Iron Body",
+        "description": "Reinforce your body with chi, gaining a shield.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "adamant_champion",
+        "costType": "chi",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "pressure_point",
+        "name": "Pressure Point",
+        "description": "Target vital points to stun and weaken.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "adamant_champion",
+        "costType": "chi",
+        "cost": 35,
+        "cooldown": 6,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "archmage": [
+      {
+        "id": "fireball",
+        "name": "Fireball",
+        "description": "Hurl a burning sphere that scorches the enemy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "archmage",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "ice_lance",
+        "name": "Ice Lance",
+        "description": "A piercing lance of frost that slows the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "archmage",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "lightning_bolt",
+        "name": "Lightning Bolt",
+        "description": "Chain lightning that disrupts focus.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "archmage",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "lightning"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mana_shield",
+        "name": "Mana Shield",
+        "description": "Convert mana into a protective ward.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "archmage",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "meteor_storm",
+        "name": "Meteor Storm",
+        "description": "Rain destruction from above, hitting all foes.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "archmage",
+        "costType": "mana",
+        "cost": 50,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "arcane_singularity",
+        "name": "Arcane Singularity",
+        "description": "Collapse space to root and damage the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "archmage",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mana_surge",
+        "name": "Mana Surge",
+        "description": "Overload your reserves for a burst of speed.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "archmage",
+        "costType": "mana",
+        "cost": 0,
+        "cooldown": 15,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "spell_echo",
+        "name": "Spell Echo",
+        "description": "Your next spell fires twice.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "archmage",
+        "costType": "mana",
+        "cost": 35,
+        "cooldown": 12,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "astral_archon": [
+      {
+        "id": "fireball",
+        "name": "Fireball",
+        "description": "Hurl a burning sphere that scorches the enemy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "astral_archon",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "ice_lance",
+        "name": "Ice Lance",
+        "description": "A piercing lance of frost that slows the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "astral_archon",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "lightning_bolt",
+        "name": "Lightning Bolt",
+        "description": "Chain lightning that disrupts focus.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "astral_archon",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "lightning"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mana_shield",
+        "name": "Mana Shield",
+        "description": "Convert mana into a protective ward.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "astral_archon",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "meteor_storm",
+        "name": "Meteor Storm",
+        "description": "Rain destruction from above, hitting all foes.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "astral_archon",
+        "costType": "mana",
+        "cost": 50,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "arcane_singularity",
+        "name": "Arcane Singularity",
+        "description": "Collapse space to root and damage the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "astral_archon",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mana_surge",
+        "name": "Mana Surge",
+        "description": "Overload your reserves for a burst of speed.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "astral_archon",
+        "costType": "mana",
+        "cost": 0,
+        "cooldown": 15,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "spell_echo",
+        "name": "Spell Echo",
+        "description": "Your next spell fires twice.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "astral_archon",
+        "costType": "mana",
+        "cost": 35,
+        "cooldown": 12,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "battlemage": [
+      {
+        "id": "fireball",
+        "name": "Fireball",
+        "description": "Hurl a burning sphere that scorches the enemy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "battlemage",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "ice_lance",
+        "name": "Ice Lance",
+        "description": "A piercing lance of frost that slows the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "battlemage",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "lightning_bolt",
+        "name": "Lightning Bolt",
+        "description": "Chain lightning that disrupts focus.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "battlemage",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "lightning"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mana_shield",
+        "name": "Mana Shield",
+        "description": "Convert mana into a protective ward.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "battlemage",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "flame_blade",
+        "name": "Flame Blade",
+        "description": "Imbue your strike with fire.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "battlemage",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "frost_blade",
+        "name": "Frost Blade",
+        "description": "Imbue your strike with frost.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "battlemage",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "arcane_strike",
+        "name": "Arcane Strike",
+        "description": "A precise arcane-infused melee attack.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "battlemage",
+        "costType": "mana",
+        "cost": 15,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "arcane_burst",
+        "name": "Arcane Burst",
+        "description": "Unleash a volatile blast at close range.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "battlemage",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "beastmaster": [
+      {
+        "id": "aimed_shot",
+        "name": "Aimed Shot",
+        "description": "A precise shot that hits hard with high accuracy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "beastmaster",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 3,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "multi_shot",
+        "name": "Multi-Shot",
+        "description": "Loose a spread to strike multiple foes.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "beastmaster",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "hunters_mark",
+        "name": "Hunter's Mark",
+        "description": "Mark your prey, increasing damage against them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "beastmaster",
+        "costType": "focus",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "natures_grasp",
+        "name": "Nature's Grasp",
+        "description": "Entangle the target with vines, rooting them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "beastmaster",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "nature"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "command_roar",
+        "name": "Command Roar",
+        "description": "A domineering roar that draws enemy focus.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "beastmaster",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 6,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "pack_assault",
+        "name": "Pack Assault",
+        "description": "Command your pack to strike together.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "beastmaster",
+        "costType": "focus",
+        "cost": 35,
+        "cooldown": 5,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "beast_bond",
+        "name": "Beast Bond",
+        "description": "Share focus with your companion, healing and strengthening.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "beastmaster",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 10,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "alpha_guard",
+        "name": "Alpha Guard",
+        "description": "A protective stance that hardens your defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "beastmaster",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "berserker": [
+      {
+        "id": "war_cry",
+        "name": "War Cry",
+        "description": "A rallying shout that generates rage and boosts damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "berserker",
+        "costType": "rage",
+        "cost": 0,
+        "cooldown": 6,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shield_block",
+        "name": "Shield Block",
+        "description": "Raise your shield to absorb incoming damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "berserker",
+        "costType": "rage",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_offensive",
+        "name": "Offensive Stance",
+        "description": "Adopt an aggressive stance, trading defense for damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "berserker",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_defensive",
+        "name": "Defensive Stance",
+        "description": "Adopt a defensive stance for added protection.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "berserker",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "enrage",
+        "name": "Enrage",
+        "description": "Enter a frenzy for 2 turns, boosting damage but lowering defense.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "berserker",
+        "costType": "rage",
+        "cost": 50,
+        "cooldown": 5,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "reckless_blow",
+        "name": "Reckless Blow",
+        "description": "A crushing strike that hits hard but recoils damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "berserker",
+        "costType": "rage",
+        "cost": 30,
+        "cooldown": 3,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "bloodlust",
+        "name": "Bloodlust",
+        "description": "Accelerate into a killing frenzy, gaining haste.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "berserker",
+        "costType": "rage",
+        "cost": 40,
+        "cooldown": 10,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "rampage",
+        "name": "Rampage",
+        "description": "A multi-hit onslaught that heals with each strike.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "berserker",
+        "costType": "rage",
+        "cost": 60,
+        "cooldown": 8,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "bulwark_sentinel": [
+      {
+        "id": "war_cry",
+        "name": "War Cry",
+        "description": "A rallying shout that generates rage and boosts damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "bulwark_sentinel",
+        "costType": "rage",
+        "cost": 0,
+        "cooldown": 6,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shield_block",
+        "name": "Shield Block",
+        "description": "Raise your shield to absorb incoming damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "bulwark_sentinel",
+        "costType": "rage",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_offensive",
+        "name": "Offensive Stance",
+        "description": "Adopt an aggressive stance, trading defense for damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "bulwark_sentinel",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_defensive",
+        "name": "Defensive Stance",
+        "description": "Adopt a defensive stance for added protection.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "bulwark_sentinel",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "taunt",
+        "name": "Taunt",
+        "description": "Force the enemy's attention onto you.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "bulwark_sentinel",
+        "costType": "rage",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "fortify",
+        "name": "Fortify",
+        "description": "Harden your armor with pure willpower.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "bulwark_sentinel",
+        "costType": "rage",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shield_bash",
+        "name": "Shield Bash",
+        "description": "Bash the enemy and stun them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "bulwark_sentinel",
+        "costType": "rage",
+        "cost": 20,
+        "cooldown": 4,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "phalanx_wall",
+        "name": "Phalanx Wall",
+        "description": "Erect an impenetrable barrier and reflect attacks.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "bulwark_sentinel",
+        "costType": "rage",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "chaos_saboteur": [
+      {
+        "id": "quick_strike",
+        "name": "Quick Strike",
+        "description": "A fast, low-cost attack that builds combo.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "chaos_saboteur",
+        "costType": "energy",
+        "cost": 15,
+        "cooldown": 1,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "evade",
+        "name": "Evade",
+        "description": "Slip away and increase evasion briefly.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "chaos_saboteur",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "vanish",
+        "name": "Vanish",
+        "description": "Enter stealth during combat for a short duration.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "chaos_saboteur",
+        "costType": "energy",
+        "cost": 40,
+        "cooldown": 10,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "cheap_shot",
+        "name": "Cheap Shot",
+        "description": "A dirty strike that weakens the target's defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "chaos_saboteur",
+        "costType": "energy",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "smoke_bomb",
+        "name": "Smoke Bomb",
+        "description": "Deploy a smoke cloud that confuses the enemy and grants evasion.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "chaos_saboteur",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "caltrops",
+        "name": "Caltrops",
+        "description": "Scatter caltrops that slow and damage over time.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "chaos_saboteur",
+        "costType": "energy",
+        "cost": 25,
+        "cooldown": 6,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "misdirect",
+        "name": "Misdirect",
+        "description": "Trick the enemy into attacking thin air.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "chaos_saboteur",
+        "costType": "energy",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "rigged_trap",
+        "name": "Rigged Trap",
+        "description": "Set a concealed trap that stuns and damages.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "chaos_saboteur",
+        "costType": "energy",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "cleric": [
+      {
+        "id": "heal",
+        "name": "Heal",
+        "description": "Restore a portion of your health with divine light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "cleric",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_smite",
+        "name": "Holy Smite",
+        "description": "Smite the enemy with radiant power.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "cleric",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "divine_shield",
+        "name": "Divine Shield",
+        "description": "Imbue yourself with protective holy light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "cleric",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "prayer",
+        "name": "Prayer",
+        "description": "Whisper a prayer that cleanses debuffs.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "cleric",
+        "costType": "mana",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "dawn_vindicator": [
+      {
+        "id": "heal",
+        "name": "Heal",
+        "description": "Restore a portion of your health with divine light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "dawn_vindicator",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_smite",
+        "name": "Holy Smite",
+        "description": "Smite the enemy with radiant power.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "dawn_vindicator",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "divine_shield",
+        "name": "Divine Shield",
+        "description": "Imbue yourself with protective holy light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "dawn_vindicator",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "prayer",
+        "name": "Prayer",
+        "description": "Whisper a prayer that cleanses debuffs.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "dawn_vindicator",
+        "costType": "mana",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_strike",
+        "name": "Holy Strike",
+        "description": "Strike with holy power that sears the unholy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "dawn_vindicator",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "lay_on_hands",
+        "name": "Lay on Hands",
+        "description": "Massive heal with a long recovery time.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "dawn_vindicator",
+        "costType": "mana",
+        "cost": 0,
+        "cooldown": 30,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "hammer_of_justice",
+        "name": "Hammer of Justice",
+        "description": "Stun the enemy with a holy strike.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "dawn_vindicator",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 15,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "aura_of_protection",
+        "name": "Aura of Protection",
+        "description": "Radiate a protective aura that shields and heals over time.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "dawn_vindicator",
+        "costType": "mana",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "deadeye_commander": [
+      {
+        "id": "aimed_shot",
+        "name": "Aimed Shot",
+        "description": "A precise shot that hits hard with high accuracy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "deadeye_commander",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 3,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "multi_shot",
+        "name": "Multi-Shot",
+        "description": "Loose a spread to strike multiple foes.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "deadeye_commander",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "hunters_mark",
+        "name": "Hunter's Mark",
+        "description": "Mark your prey, increasing damage against them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "deadeye_commander",
+        "costType": "focus",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "natures_grasp",
+        "name": "Nature's Grasp",
+        "description": "Entangle the target with vines, rooting them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "deadeye_commander",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "nature"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "rapid_fire",
+        "name": "Rapid Fire",
+        "description": "A burst of quick shots.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "deadeye_commander",
+        "costType": "focus",
+        "cost": 40,
+        "cooldown": 5,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "trick_shot",
+        "name": "Trick Shot",
+        "description": "A ricocheting shot that hits around defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "deadeye_commander",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "overwatch",
+        "name": "Overwatch",
+        "description": "Set up a killzone — gain haste and damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "deadeye_commander",
+        "costType": "focus",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "kill_shot",
+        "name": "Kill Shot",
+        "description": "A precise finisher that executes weakened targets.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "deadeye_commander",
+        "costType": "focus",
+        "cost": 50,
+        "cooldown": 12,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "drunken_master": [
+      {
+        "id": "flurry",
+        "name": "Flurry",
+        "description": "Rapid strikes that scale with combo flow.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "drunken_master",
+        "costType": "chi",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "palm_strike",
+        "name": "Palm Strike",
+        "description": "A focused blow that stuns the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "drunken_master",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "meditation",
+        "name": "Meditate",
+        "description": "Center yourself to restore chi in combat.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "drunken_master",
+        "costType": "chi",
+        "cost": 0,
+        "cooldown": 5,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "sweeping_kick",
+        "name": "Sweeping Kick",
+        "description": "A wide sweep that trips the enemy, slowing them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "drunken_master",
+        "costType": "chi",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stumble_strike",
+        "name": "Stumble Strike",
+        "description": "An erratic lunge that confuses the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "drunken_master",
+        "costType": "chi",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "drunken_sway",
+        "name": "Drunken Sway",
+        "description": "Sway unpredictably, gaining evasion and counter-attack potential.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "drunken_master",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 6,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "counter_flow",
+        "name": "Counter Flow",
+        "description": "Redirect enemy momentum into a devastating counter.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "drunken_master",
+        "costType": "chi",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "barrel_roll",
+        "name": "Barrel Roll",
+        "description": "Tumble through the enemy, damaging and repositioning.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "drunken_master",
+        "costType": "chi",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "guardian": [
+      {
+        "id": "war_cry",
+        "name": "War Cry",
+        "description": "A rallying shout that generates rage and boosts damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "guardian",
+        "costType": "rage",
+        "cost": 0,
+        "cooldown": 6,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shield_block",
+        "name": "Shield Block",
+        "description": "Raise your shield to absorb incoming damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "guardian",
+        "costType": "rage",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_offensive",
+        "name": "Offensive Stance",
+        "description": "Adopt an aggressive stance, trading defense for damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "guardian",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_defensive",
+        "name": "Defensive Stance",
+        "description": "Adopt a defensive stance for added protection.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "guardian",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "taunt",
+        "name": "Taunt",
+        "description": "Force the enemy's attention onto you.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "guardian",
+        "costType": "rage",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "fortify",
+        "name": "Fortify",
+        "description": "Harden your armor with pure willpower.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "guardian",
+        "costType": "rage",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shield_bash",
+        "name": "Shield Bash",
+        "description": "Bash the enemy and stun them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "guardian",
+        "costType": "rage",
+        "cost": 20,
+        "cooldown": 4,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "phalanx_wall",
+        "name": "Phalanx Wall",
+        "description": "Erect an impenetrable barrier and reflect attacks.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "guardian",
+        "costType": "rage",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "high_priest": [
+      {
+        "id": "heal",
+        "name": "Heal",
+        "description": "Restore a portion of your health with divine light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "high_priest",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_smite",
+        "name": "Holy Smite",
+        "description": "Smite the enemy with radiant power.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "high_priest",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "divine_shield",
+        "name": "Divine Shield",
+        "description": "Imbue yourself with protective holy light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "high_priest",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "prayer",
+        "name": "Prayer",
+        "description": "Whisper a prayer that cleanses debuffs.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "high_priest",
+        "costType": "mana",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "greater_heal",
+        "name": "Greater Heal",
+        "description": "A powerful restorative surge.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "high_priest",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mass_cleanse",
+        "name": "Mass Cleanse",
+        "description": "Purify all ailments with a holy word.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "high_priest",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "divine_intervention",
+        "name": "Divine Intervention",
+        "description": "Call upon the divine to prevent death once.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "high_priest",
+        "costType": "mana",
+        "cost": 60,
+        "cooldown": 30,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_nova",
+        "name": "Holy Nova",
+        "description": "Radiant burst that damages foes and heals you.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "high_priest",
+        "costType": "mana",
+        "cost": 35,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "iron_fist": [
+      {
+        "id": "flurry",
+        "name": "Flurry",
+        "description": "Rapid strikes that scale with combo flow.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "iron_fist",
+        "costType": "chi",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "palm_strike",
+        "name": "Palm Strike",
+        "description": "A focused blow that stuns the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "iron_fist",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "meditation",
+        "name": "Meditate",
+        "description": "Center yourself to restore chi in combat.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "iron_fist",
+        "costType": "chi",
+        "cost": 0,
+        "cooldown": 5,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "sweeping_kick",
+        "name": "Sweeping Kick",
+        "description": "A wide sweep that trips the enemy, slowing them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "iron_fist",
+        "costType": "chi",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "iron_palm",
+        "name": "Iron Palm",
+        "description": "A crushing palm strike that shatters armor.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "iron_fist",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "chi_burst",
+        "name": "Chi Burst",
+        "description": "Release stored chi in a devastating burst.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "iron_fist",
+        "costType": "chi",
+        "cost": 50,
+        "cooldown": 10,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "iron_body",
+        "name": "Iron Body",
+        "description": "Reinforce your body with chi, gaining a shield.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "iron_fist",
+        "costType": "chi",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "pressure_point",
+        "name": "Pressure Point",
+        "description": "Target vital points to stun and weaken.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "iron_fist",
+        "costType": "chi",
+        "cost": 35,
+        "cooldown": 6,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "mage": [
+      {
+        "id": "fireball",
+        "name": "Fireball",
+        "description": "Hurl a burning sphere that scorches the enemy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "mage",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "ice_lance",
+        "name": "Ice Lance",
+        "description": "A piercing lance of frost that slows the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "mage",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "lightning_bolt",
+        "name": "Lightning Bolt",
+        "description": "Chain lightning that disrupts focus.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "mage",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "lightning"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mana_shield",
+        "name": "Mana Shield",
+        "description": "Convert mana into a protective ward.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "mage",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "monk": [
+      {
+        "id": "flurry",
+        "name": "Flurry",
+        "description": "Rapid strikes that scale with combo flow.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "monk",
+        "costType": "chi",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "palm_strike",
+        "name": "Palm Strike",
+        "description": "A focused blow that stuns the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "monk",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "meditation",
+        "name": "Meditate",
+        "description": "Center yourself to restore chi in combat.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "monk",
+        "costType": "chi",
+        "cost": 0,
+        "cooldown": 5,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "sweeping_kick",
+        "name": "Sweeping Kick",
+        "description": "A wide sweep that trips the enemy, slowing them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "monk",
+        "costType": "chi",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "night_reaper": [
+      {
+        "id": "quick_strike",
+        "name": "Quick Strike",
+        "description": "A fast, low-cost attack that builds combo.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "night_reaper",
+        "costType": "energy",
+        "cost": 15,
+        "cooldown": 1,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "evade",
+        "name": "Evade",
+        "description": "Slip away and increase evasion briefly.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "night_reaper",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "vanish",
+        "name": "Vanish",
+        "description": "Enter stealth during combat for a short duration.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "night_reaper",
+        "costType": "energy",
+        "cost": 40,
+        "cooldown": 10,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "cheap_shot",
+        "name": "Cheap Shot",
+        "description": "A dirty strike that weakens the target's defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "night_reaper",
+        "costType": "energy",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shadow_step",
+        "name": "Shadow Step",
+        "description": "Teleport behind the target for a devastating ambush.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "night_reaper",
+        "costType": "energy",
+        "cost": 35,
+        "cooldown": 5,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "poison_blade",
+        "name": "Poison Blade",
+        "description": "Coat your weapon with lethal toxin.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "night_reaper",
+        "costType": "energy",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "death_mark",
+        "name": "Death Mark",
+        "description": "Mark the target for death — bonus damage to marked targets.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "night_reaper",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 6,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "execute",
+        "name": "Execute",
+        "description": "A lethal finisher that destroys weakened targets.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "night_reaper",
+        "costType": "energy",
+        "cost": 50,
+        "cooldown": 8,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "oracle_hierophant": [
+      {
+        "id": "heal",
+        "name": "Heal",
+        "description": "Restore a portion of your health with divine light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "oracle_hierophant",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_smite",
+        "name": "Holy Smite",
+        "description": "Smite the enemy with radiant power.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "oracle_hierophant",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "divine_shield",
+        "name": "Divine Shield",
+        "description": "Imbue yourself with protective holy light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "oracle_hierophant",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "prayer",
+        "name": "Prayer",
+        "description": "Whisper a prayer that cleanses debuffs.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "oracle_hierophant",
+        "costType": "mana",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "greater_heal",
+        "name": "Greater Heal",
+        "description": "A powerful restorative surge.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "oracle_hierophant",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mass_cleanse",
+        "name": "Mass Cleanse",
+        "description": "Purify all ailments with a holy word.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "oracle_hierophant",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "divine_intervention",
+        "name": "Divine Intervention",
+        "description": "Call upon the divine to prevent death once.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "oracle_hierophant",
+        "costType": "mana",
+        "cost": 60,
+        "cooldown": 30,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_nova",
+        "name": "Holy Nova",
+        "description": "Radiant burst that damages foes and heals you.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "oracle_hierophant",
+        "costType": "mana",
+        "cost": 35,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "paladin": [
+      {
+        "id": "heal",
+        "name": "Heal",
+        "description": "Restore a portion of your health with divine light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "paladin",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_smite",
+        "name": "Holy Smite",
+        "description": "Smite the enemy with radiant power.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "paladin",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "divine_shield",
+        "name": "Divine Shield",
+        "description": "Imbue yourself with protective holy light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "paladin",
+        "costType": "mana",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "prayer",
+        "name": "Prayer",
+        "description": "Whisper a prayer that cleanses debuffs.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "paladin",
+        "costType": "mana",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "holy_strike",
+        "name": "Holy Strike",
+        "description": "Strike with holy power that sears the unholy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "paladin",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [
+            "holy"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "lay_on_hands",
+        "name": "Lay on Hands",
+        "description": "Massive heal with a long recovery time.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "paladin",
+        "costType": "mana",
+        "cost": 0,
+        "cooldown": 30,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "hammer_of_justice",
+        "name": "Hammer of Justice",
+        "description": "Stun the enemy with a holy strike.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "paladin",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 15,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "aura_of_protection",
+        "name": "Aura of Protection",
+        "description": "Radiate a protective aura that shields and heals over time.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "paladin",
+        "costType": "mana",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "primal_overlord": [
+      {
+        "id": "aimed_shot",
+        "name": "Aimed Shot",
+        "description": "A precise shot that hits hard with high accuracy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "primal_overlord",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 3,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "multi_shot",
+        "name": "Multi-Shot",
+        "description": "Loose a spread to strike multiple foes.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "primal_overlord",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "hunters_mark",
+        "name": "Hunter's Mark",
+        "description": "Mark your prey, increasing damage against them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "primal_overlord",
+        "costType": "focus",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "natures_grasp",
+        "name": "Nature's Grasp",
+        "description": "Entangle the target with vines, rooting them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "primal_overlord",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "nature"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "command_roar",
+        "name": "Command Roar",
+        "description": "A domineering roar that draws enemy focus.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "primal_overlord",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 6,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "pack_assault",
+        "name": "Pack Assault",
+        "description": "Command your pack to strike together.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "primal_overlord",
+        "costType": "focus",
+        "cost": 35,
+        "cooldown": 5,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "beast_bond",
+        "name": "Beast Bond",
+        "description": "Share focus with your companion, healing and strengthening.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "primal_overlord",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 10,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "alpha_guard",
+        "name": "Alpha Guard",
+        "description": "A protective stance that hardens your defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "primal_overlord",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "ranger": [
+      {
+        "id": "aimed_shot",
+        "name": "Aimed Shot",
+        "description": "A precise shot that hits hard with high accuracy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "ranger",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 3,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "multi_shot",
+        "name": "Multi-Shot",
+        "description": "Loose a spread to strike multiple foes.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "ranger",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "hunters_mark",
+        "name": "Hunter's Mark",
+        "description": "Mark your prey, increasing damage against them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "ranger",
+        "costType": "focus",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "natures_grasp",
+        "name": "Nature's Grasp",
+        "description": "Entangle the target with vines, rooting them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "ranger",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "nature"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "rogue": [
+      {
+        "id": "quick_strike",
+        "name": "Quick Strike",
+        "description": "A fast, low-cost attack that builds combo.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "rogue",
+        "costType": "energy",
+        "cost": 15,
+        "cooldown": 1,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "evade",
+        "name": "Evade",
+        "description": "Slip away and increase evasion briefly.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "rogue",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "vanish",
+        "name": "Vanish",
+        "description": "Enter stealth during combat for a short duration.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "rogue",
+        "costType": "energy",
+        "cost": 40,
+        "cooldown": 10,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "cheap_shot",
+        "name": "Cheap Shot",
+        "description": "A dirty strike that weakens the target's defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "rogue",
+        "costType": "energy",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "shadow_assassin": [
+      {
+        "id": "quick_strike",
+        "name": "Quick Strike",
+        "description": "A fast, low-cost attack that builds combo.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "shadow_assassin",
+        "costType": "energy",
+        "cost": 15,
+        "cooldown": 1,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "evade",
+        "name": "Evade",
+        "description": "Slip away and increase evasion briefly.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "shadow_assassin",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "vanish",
+        "name": "Vanish",
+        "description": "Enter stealth during combat for a short duration.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "shadow_assassin",
+        "costType": "energy",
+        "cost": 40,
+        "cooldown": 10,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "cheap_shot",
+        "name": "Cheap Shot",
+        "description": "A dirty strike that weakens the target's defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "shadow_assassin",
+        "costType": "energy",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shadow_step",
+        "name": "Shadow Step",
+        "description": "Teleport behind the target for a devastating ambush.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "shadow_assassin",
+        "costType": "energy",
+        "cost": 35,
+        "cooldown": 5,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "poison_blade",
+        "name": "Poison Blade",
+        "description": "Coat your weapon with lethal toxin.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "shadow_assassin",
+        "costType": "energy",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "death_mark",
+        "name": "Death Mark",
+        "description": "Mark the target for death — bonus damage to marked targets.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "shadow_assassin",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 6,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "execute",
+        "name": "Execute",
+        "description": "A lethal finisher that destroys weakened targets.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "shadow_assassin",
+        "costType": "energy",
+        "cost": 50,
+        "cooldown": 8,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "sharpshooter": [
+      {
+        "id": "aimed_shot",
+        "name": "Aimed Shot",
+        "description": "A precise shot that hits hard with high accuracy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "sharpshooter",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 3,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "multi_shot",
+        "name": "Multi-Shot",
+        "description": "Loose a spread to strike multiple foes.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "sharpshooter",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "hunters_mark",
+        "name": "Hunter's Mark",
+        "description": "Mark your prey, increasing damage against them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "sharpshooter",
+        "costType": "focus",
+        "cost": 15,
+        "cooldown": 6,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "natures_grasp",
+        "name": "Nature's Grasp",
+        "description": "Entangle the target with vines, rooting them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "sharpshooter",
+        "costType": "focus",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "nature"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "rapid_fire",
+        "name": "Rapid Fire",
+        "description": "A burst of quick shots.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "sharpshooter",
+        "costType": "focus",
+        "cost": 40,
+        "cooldown": 5,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "trick_shot",
+        "name": "Trick Shot",
+        "description": "A ricocheting shot that hits around defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "sharpshooter",
+        "costType": "focus",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "overwatch",
+        "name": "Overwatch",
+        "description": "Set up a killzone — gain haste and damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "sharpshooter",
+        "costType": "focus",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "kill_shot",
+        "name": "Kill Shot",
+        "description": "A precise finisher that executes weakened targets.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "sharpshooter",
+        "costType": "focus",
+        "cost": 50,
+        "cooldown": 12,
+        "resource": "focus",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "spellbreaker": [
+      {
+        "id": "fireball",
+        "name": "Fireball",
+        "description": "Hurl a burning sphere that scorches the enemy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "spellbreaker",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "ice_lance",
+        "name": "Ice Lance",
+        "description": "A piercing lance of frost that slows the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "spellbreaker",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "lightning_bolt",
+        "name": "Lightning Bolt",
+        "description": "Chain lightning that disrupts focus.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "spellbreaker",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "lightning"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "mana_shield",
+        "name": "Mana Shield",
+        "description": "Convert mana into a protective ward.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "spellbreaker",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "flame_blade",
+        "name": "Flame Blade",
+        "description": "Imbue your strike with fire.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "spellbreaker",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "frost_blade",
+        "name": "Frost Blade",
+        "description": "Imbue your strike with frost.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "spellbreaker",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 3,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "arcane_strike",
+        "name": "Arcane Strike",
+        "description": "A precise arcane-infused melee attack.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "spellbreaker",
+        "costType": "mana",
+        "cost": 15,
+        "cooldown": 2,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "arcane_burst",
+        "name": "Arcane Burst",
+        "description": "Unleash a volatile blast at close range.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "spellbreaker",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Class Ability",
+          "function": "spell",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "tempest_reveler": [
+      {
+        "id": "flurry",
+        "name": "Flurry",
+        "description": "Rapid strikes that scale with combo flow.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "tempest_reveler",
+        "costType": "chi",
+        "cost": 20,
+        "cooldown": 2,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "palm_strike",
+        "name": "Palm Strike",
+        "description": "A focused blow that stuns the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "tempest_reveler",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 4,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "meditation",
+        "name": "Meditate",
+        "description": "Center yourself to restore chi in combat.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "tempest_reveler",
+        "costType": "chi",
+        "cost": 0,
+        "cooldown": 5,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "sweeping_kick",
+        "name": "Sweeping Kick",
+        "description": "A wide sweep that trips the enemy, slowing them.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "tempest_reveler",
+        "costType": "chi",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stumble_strike",
+        "name": "Stumble Strike",
+        "description": "An erratic lunge that confuses the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "tempest_reveler",
+        "costType": "chi",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "drunken_sway",
+        "name": "Drunken Sway",
+        "description": "Sway unpredictably, gaining evasion and counter-attack potential.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "tempest_reveler",
+        "costType": "chi",
+        "cost": 25,
+        "cooldown": 6,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "counter_flow",
+        "name": "Counter Flow",
+        "description": "Redirect enemy momentum into a devastating counter.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "tempest_reveler",
+        "costType": "chi",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "barrel_roll",
+        "name": "Barrel Roll",
+        "description": "Tumble through the enemy, damaging and repositioning.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "tempest_reveler",
+        "costType": "chi",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "chi",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "trickster": [
+      {
+        "id": "quick_strike",
+        "name": "Quick Strike",
+        "description": "A fast, low-cost attack that builds combo.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "trickster",
+        "costType": "energy",
+        "cost": 15,
+        "cooldown": 1,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "evade",
+        "name": "Evade",
+        "description": "Slip away and increase evasion briefly.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "trickster",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 4,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "vanish",
+        "name": "Vanish",
+        "description": "Enter stealth during combat for a short duration.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "trickster",
+        "costType": "energy",
+        "cost": 40,
+        "cooldown": 10,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "cheap_shot",
+        "name": "Cheap Shot",
+        "description": "A dirty strike that weakens the target's defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "trickster",
+        "costType": "energy",
+        "cost": 20,
+        "cooldown": 3,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "smoke_bomb",
+        "name": "Smoke Bomb",
+        "description": "Deploy a smoke cloud that confuses the enemy and grants evasion.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "trickster",
+        "costType": "energy",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "caltrops",
+        "name": "Caltrops",
+        "description": "Scatter caltrops that slow and damage over time.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "trickster",
+        "costType": "energy",
+        "cost": 25,
+        "cooldown": 6,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "misdirect",
+        "name": "Misdirect",
+        "description": "Trick the enemy into attacking thin air.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "trickster",
+        "costType": "energy",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "rigged_trap",
+        "name": "Rigged Trap",
+        "description": "Set a concealed trap that stuns and damages.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "trickster",
+        "costType": "energy",
+        "cost": 40,
+        "cooldown": 12,
+        "resource": "energy",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "war_reaver": [
+      {
+        "id": "war_cry",
+        "name": "War Cry",
+        "description": "A rallying shout that generates rage and boosts damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "war_reaver",
+        "costType": "rage",
+        "cost": 0,
+        "cooldown": 6,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shield_block",
+        "name": "Shield Block",
+        "description": "Raise your shield to absorb incoming damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "war_reaver",
+        "costType": "rage",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_offensive",
+        "name": "Offensive Stance",
+        "description": "Adopt an aggressive stance, trading defense for damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "war_reaver",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_defensive",
+        "name": "Defensive Stance",
+        "description": "Adopt a defensive stance for added protection.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "war_reaver",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "enrage",
+        "name": "Enrage",
+        "description": "Enter a frenzy for 2 turns, boosting damage but lowering defense.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "war_reaver",
+        "costType": "rage",
+        "cost": 50,
+        "cooldown": 5,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "reckless_blow",
+        "name": "Reckless Blow",
+        "description": "A crushing strike that hits hard but recoils damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "war_reaver",
+        "costType": "rage",
+        "cost": 30,
+        "cooldown": 3,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "bloodlust",
+        "name": "Bloodlust",
+        "description": "Accelerate into a killing frenzy, gaining haste.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "war_reaver",
+        "costType": "rage",
+        "cost": 40,
+        "cooldown": 10,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "rampage",
+        "name": "Rampage",
+        "description": "A multi-hit onslaught that heals with each strike.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "war_reaver",
+        "costType": "rage",
+        "cost": 60,
+        "cooldown": 8,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "attack",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ],
+    "warrior": [
+      {
+        "id": "war_cry",
+        "name": "War Cry",
+        "description": "A rallying shout that generates rage and boosts damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "warrior",
+        "costType": "rage",
+        "cost": 0,
+        "cooldown": 6,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "shield_block",
+        "name": "Shield Block",
+        "description": "Raise your shield to absorb incoming damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "warrior",
+        "costType": "rage",
+        "cost": 15,
+        "cooldown": 3,
+        "resource": "rage",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_offensive",
+        "name": "Offensive Stance",
+        "description": "Adopt an aggressive stance, trading defense for damage.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "warrior",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      },
+      {
+        "id": "stance_defensive",
+        "name": "Defensive Stance",
+        "description": "Adopt a defensive stance for added protection.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "class",
+        "ownerId": "warrior",
+        "costType": "none",
+        "cost": 0,
+        "cooldown": 2,
+        "resource": "none",
+        "template": {
+          "category": "Class Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "ClassAbilityRegistry"
+        }
+      }
+    ]
+  },
+  "byId": {
+    "aimed_shot": {
+      "id": "aimed_shot",
+      "name": "Aimed Shot",
+      "description": "A precise shot that hits hard with high accuracy.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 30,
+      "cooldown": 3,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "alpha_guard": {
+      "id": "alpha_guard",
+      "name": "Alpha Guard",
+      "description": "A protective stance that hardens your defenses.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "arcane_burst": {
+      "id": "arcane_burst",
+      "name": "Arcane Burst",
+      "description": "Unleash a volatile blast at close range.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "arcane_singularity": {
+      "id": "arcane_singularity",
+      "name": "Arcane Singularity",
+      "description": "Collapse space to root and damage the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 40,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "arcane_strike": {
+      "id": "arcane_strike",
+      "name": "Arcane Strike",
+      "description": "A precise arcane-infused melee attack.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 15,
+      "cooldown": 2,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "aura_of_protection": {
+      "id": "aura_of_protection",
+      "name": "Aura of Protection",
+      "description": "Radiate a protective aura that shields and heals over time.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 35,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "heal",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "barrel_roll": {
+      "id": "barrel_roll",
+      "name": "Barrel Roll",
+      "description": "Tumble through the enemy, damaging and repositioning.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 35,
+      "cooldown": 10,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "beast_bond": {
+      "id": "beast_bond",
+      "name": "Beast Bond",
+      "description": "Share focus with your companion, healing and strengthening.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 30,
+      "cooldown": 10,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "heal",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "bloodlust": {
+      "id": "bloodlust",
+      "name": "Bloodlust",
+      "description": "Accelerate into a killing frenzy, gaining haste.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 40,
+      "cooldown": 10,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "caltrops": {
+      "id": "caltrops",
+      "name": "Caltrops",
+      "description": "Scatter caltrops that slow and damage over time.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 25,
+      "cooldown": 6,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "cheap_shot": {
+      "id": "cheap_shot",
+      "name": "Cheap Shot",
+      "description": "A dirty strike that weakens the target's defenses.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 20,
+      "cooldown": 3,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "chi_burst": {
+      "id": "chi_burst",
+      "name": "Chi Burst",
+      "description": "Release stored chi in a devastating burst.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 50,
+      "cooldown": 10,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "command_roar": {
+      "id": "command_roar",
+      "name": "Command Roar",
+      "description": "A domineering roar that draws enemy focus.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 25,
+      "cooldown": 6,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "counter_flow": {
+      "id": "counter_flow",
+      "name": "Counter Flow",
+      "description": "Redirect enemy momentum into a devastating counter.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 30,
+      "cooldown": 8,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "death_mark": {
+      "id": "death_mark",
+      "name": "Death Mark",
+      "description": "Mark the target for death — bonus damage to marked targets.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 30,
+      "cooldown": 6,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "divine_intervention": {
+      "id": "divine_intervention",
+      "name": "Divine Intervention",
+      "description": "Call upon the divine to prevent death once.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 60,
+      "cooldown": 30,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "divine_shield": {
+      "id": "divine_shield",
+      "name": "Divine Shield",
+      "description": "Imbue yourself with protective holy light.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 40,
+      "cooldown": 12,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "drunken_sway": {
+      "id": "drunken_sway",
+      "name": "Drunken Sway",
+      "description": "Sway unpredictably, gaining evasion and counter-attack potential.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 25,
+      "cooldown": 6,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "enrage": {
+      "id": "enrage",
+      "name": "Enrage",
+      "description": "Enter a frenzy for 2 turns, boosting damage but lowering defense.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 50,
+      "cooldown": 5,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "evade": {
+      "id": "evade",
+      "name": "Evade",
+      "description": "Slip away and increase evasion briefly.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 30,
+      "cooldown": 4,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "execute": {
+      "id": "execute",
+      "name": "Execute",
+      "description": "A lethal finisher that destroys weakened targets.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 50,
+      "cooldown": 8,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "fireball": {
+      "id": "fireball",
+      "name": "Fireball",
+      "description": "Hurl a burning sphere that scorches the enemy.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 3,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "fire"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "flame_blade": {
+      "id": "flame_blade",
+      "name": "Flame Blade",
+      "description": "Imbue your strike with fire.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 3,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "fire"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "flurry": {
+      "id": "flurry",
+      "name": "Flurry",
+      "description": "Rapid strikes that scale with combo flow.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 20,
+      "cooldown": 2,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "fortify": {
+      "id": "fortify",
+      "name": "Fortify",
+      "description": "Harden your armor with pure willpower.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "frost_blade": {
+      "id": "frost_blade",
+      "name": "Frost Blade",
+      "description": "Imbue your strike with frost.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 3,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "ice"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "greater_heal": {
+      "id": "greater_heal",
+      "name": "Greater Heal",
+      "description": "A powerful restorative surge.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 40,
+      "cooldown": 3,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "heal",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "hammer_of_justice": {
+      "id": "hammer_of_justice",
+      "name": "Hammer of Justice",
+      "description": "Stun the enemy with a holy strike.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 15,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "heal": {
+      "id": "heal",
+      "name": "Heal",
+      "description": "Restore a portion of your health with divine light.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 2,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "heal",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "holy_nova": {
+      "id": "holy_nova",
+      "name": "Holy Nova",
+      "description": "Radiant burst that damages foes and heals you.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 35,
+      "cooldown": 6,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "holy"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "holy_smite": {
+      "id": "holy_smite",
+      "name": "Holy Smite",
+      "description": "Smite the enemy with radiant power.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 3,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "holy"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "holy_strike": {
+      "id": "holy_strike",
+      "name": "Holy Strike",
+      "description": "Strike with holy power that sears the unholy.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 2,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [
+          "holy"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "hunters_mark": {
+      "id": "hunters_mark",
+      "name": "Hunter's Mark",
+      "description": "Mark your prey, increasing damage against them.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 15,
+      "cooldown": 6,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "ice_lance": {
+      "id": "ice_lance",
+      "name": "Ice Lance",
+      "description": "A piercing lance of frost that slows the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 3,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "ice"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "iron_body": {
+      "id": "iron_body",
+      "name": "Iron Body",
+      "description": "Reinforce your body with chi, gaining a shield.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 30,
+      "cooldown": 8,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "iron_palm": {
+      "id": "iron_palm",
+      "name": "Iron Palm",
+      "description": "A crushing palm strike that shatters armor.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 25,
+      "cooldown": 4,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "kill_shot": {
+      "id": "kill_shot",
+      "name": "Kill Shot",
+      "description": "A precise finisher that executes weakened targets.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 50,
+      "cooldown": 12,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "lay_on_hands": {
+      "id": "lay_on_hands",
+      "name": "Lay on Hands",
+      "description": "Massive heal with a long recovery time.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 0,
+      "cooldown": 30,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "heal",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "lightning_bolt": {
+      "id": "lightning_bolt",
+      "name": "Lightning Bolt",
+      "description": "Chain lightning that disrupts focus.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 4,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "lightning"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "mana_shield": {
+      "id": "mana_shield",
+      "name": "Mana Shield",
+      "description": "Convert mana into a protective ward.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "mana_surge": {
+      "id": "mana_surge",
+      "name": "Mana Surge",
+      "description": "Overload your reserves for a burst of speed.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 0,
+      "cooldown": 15,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "resource",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "mass_cleanse": {
+      "id": "mass_cleanse",
+      "name": "Mass Cleanse",
+      "description": "Purify all ailments with a holy word.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "heal",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "meditation": {
+      "id": "meditation",
+      "name": "Meditate",
+      "description": "Center yourself to restore chi in combat.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 0,
+      "cooldown": 5,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "resource",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "meteor_storm": {
+      "id": "meteor_storm",
+      "name": "Meteor Storm",
+      "description": "Rain destruction from above, hitting all foes.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 50,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "fire"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "misdirect": {
+      "id": "misdirect",
+      "name": "Misdirect",
+      "description": "Trick the enemy into attacking thin air.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 35,
+      "cooldown": 10,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "multi_shot": {
+      "id": "multi_shot",
+      "name": "Multi-Shot",
+      "description": "Loose a spread to strike multiple foes.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 25,
+      "cooldown": 4,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "natures_grasp": {
+      "id": "natures_grasp",
+      "name": "Nature's Grasp",
+      "description": "Entangle the target with vines, rooting them.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "spell",
+        "elements": [
+          "nature"
+        ],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "overwatch": {
+      "id": "overwatch",
+      "name": "Overwatch",
+      "description": "Set up a killzone — gain haste and damage.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 35,
+      "cooldown": 10,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "pack_assault": {
+      "id": "pack_assault",
+      "name": "Pack Assault",
+      "description": "Command your pack to strike together.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 35,
+      "cooldown": 5,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "palm_strike": {
+      "id": "palm_strike",
+      "name": "Palm Strike",
+      "description": "A focused blow that stuns the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 25,
+      "cooldown": 4,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "phalanx_wall": {
+      "id": "phalanx_wall",
+      "name": "Phalanx Wall",
+      "description": "Erect an impenetrable barrier and reflect attacks.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 40,
+      "cooldown": 12,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "poison_blade": {
+      "id": "poison_blade",
+      "name": "Poison Blade",
+      "description": "Coat your weapon with lethal toxin.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "prayer": {
+      "id": "prayer",
+      "name": "Prayer",
+      "description": "Whisper a prayer that cleanses debuffs.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 15,
+      "cooldown": 6,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "pressure_point": {
+      "id": "pressure_point",
+      "name": "Pressure Point",
+      "description": "Target vital points to stun and weaken.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 35,
+      "cooldown": 6,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "quick_strike": {
+      "id": "quick_strike",
+      "name": "Quick Strike",
+      "description": "A fast, low-cost attack that builds combo.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 15,
+      "cooldown": 1,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "rampage": {
+      "id": "rampage",
+      "name": "Rampage",
+      "description": "A multi-hit onslaught that heals with each strike.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 60,
+      "cooldown": 8,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "rapid_fire": {
+      "id": "rapid_fire",
+      "name": "Rapid Fire",
+      "description": "A burst of quick shots.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 40,
+      "cooldown": 5,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "reckless_blow": {
+      "id": "reckless_blow",
+      "name": "Reckless Blow",
+      "description": "A crushing strike that hits hard but recoils damage.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 30,
+      "cooldown": 3,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "rigged_trap": {
+      "id": "rigged_trap",
+      "name": "Rigged Trap",
+      "description": "Set a concealed trap that stuns and damages.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 40,
+      "cooldown": 12,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "shadow_step": {
+      "id": "shadow_step",
+      "name": "Shadow Step",
+      "description": "Teleport behind the target for a devastating ambush.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 35,
+      "cooldown": 5,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "shield_bash": {
+      "id": "shield_bash",
+      "name": "Shield Bash",
+      "description": "Bash the enemy and stun them.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 20,
+      "cooldown": 4,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "shield_block": {
+      "id": "shield_block",
+      "name": "Shield Block",
+      "description": "Raise your shield to absorb incoming damage.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 15,
+      "cooldown": 3,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "smoke_bomb": {
+      "id": "smoke_bomb",
+      "name": "Smoke Bomb",
+      "description": "Deploy a smoke cloud that confuses the enemy and grants evasion.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 30,
+      "cooldown": 8,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "spell_echo": {
+      "id": "spell_echo",
+      "name": "Spell Echo",
+      "description": "Your next spell fires twice.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 35,
+      "cooldown": 12,
+      "resource": "mana",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "stance_defensive": {
+      "id": "stance_defensive",
+      "name": "Defensive Stance",
+      "description": "Adopt a defensive stance for added protection.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "none",
+      "cost": 0,
+      "cooldown": 2,
+      "resource": "none",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "stance_offensive": {
+      "id": "stance_offensive",
+      "name": "Offensive Stance",
+      "description": "Adopt an aggressive stance, trading defense for damage.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "none",
+      "cost": 0,
+      "cooldown": 2,
+      "resource": "none",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "stumble_strike": {
+      "id": "stumble_strike",
+      "name": "Stumble Strike",
+      "description": "An erratic lunge that confuses the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 20,
+      "cooldown": 3,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "sweeping_kick": {
+      "id": "sweeping_kick",
+      "name": "Sweeping Kick",
+      "description": "A wide sweep that trips the enemy, slowing them.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "chi",
+      "cost": 15,
+      "cooldown": 3,
+      "resource": "chi",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "taunt": {
+      "id": "taunt",
+      "name": "Taunt",
+      "description": "Force the enemy's attention onto you.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 15,
+      "cooldown": 6,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "trick_shot": {
+      "id": "trick_shot",
+      "name": "Trick Shot",
+      "description": "A ricocheting shot that hits around defenses.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "focus",
+      "cost": 30,
+      "cooldown": 4,
+      "resource": "focus",
+      "template": {
+        "category": "Class Ability",
+        "function": "attack",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "vanish": {
+      "id": "vanish",
+      "name": "Vanish",
+      "description": "Enter stealth during combat for a short duration.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "energy",
+      "cost": 40,
+      "cooldown": 10,
+      "resource": "energy",
+      "template": {
+        "category": "Class Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    },
+    "war_cry": {
+      "id": "war_cry",
+      "name": "War Cry",
+      "description": "A rallying shout that generates rage and boosts damage.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "class",
+      "ownerId": "unbound",
+      "costType": "rage",
+      "cost": 0,
+      "cooldown": 6,
+      "resource": "rage",
+      "template": {
+        "category": "Class Ability",
+        "function": "resource",
+        "elements": [],
+        "source": "ClassAbilityRegistry"
+      }
+    }
+  }
+}

@@ -7,6 +7,8 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { handleApiRequest } = require("../../functions/lib/api-router.js");
 const syncCore = require("../../functions/lib/sync-core.js");
+const syncStore = require("../../functions/lib/sync-store.js");
+const { SAVE_RESET_EPOCH } = require("../../shared/save-cutover.cjs");
 
 function tempPath(prefix) {
 	return path.join(
@@ -63,6 +65,55 @@ function createCommandEnvelope({
 			},
 		},
 	};
+}
+
+function createCharacterCommandEnvelope({
+	id,
+	runId,
+	clientSeq,
+	contentVersion,
+	createdAt = "2026-03-10T10:00:00.000Z",
+	character,
+}) {
+	return {
+		id,
+		runId,
+		clientId: "godot-client-test",
+		clientSeq,
+		createdAt,
+		contentVersion,
+		command: {
+			type: "CHARACTER",
+			verb: "CREATE",
+			character: {
+				name: "Aela",
+				mode: "basic",
+				race: { id: "pure_human", name: "Pure Human" },
+				class: { id: "warrior", name: "Warrior" },
+				origin: { id: "street_urchin", name: "Street Urchin" },
+				alignment: { id: "neutral_good", name: "Neutral Good" },
+				archetype: { id: "balanced", name: "Balanced" },
+				attributes: {
+					str: 5,
+					agi: 5,
+					dex: 5,
+					int: 5,
+				},
+				activeSkills: ["slash"],
+				passiveSkills: ["toughness"],
+				perks: ["battle_focus"],
+				...(character && typeof character === "object" ? character : {}),
+			},
+		},
+	};
+}
+
+async function allowSyncForUser(ownerId) {
+	await syncStore.markMigrationVersion({
+		ownerId,
+		version: SAVE_RESET_EPOCH,
+		displayName: "Sync Command Route Test",
+	});
 }
 
 describe("/api/sync/command route", () => {
@@ -129,6 +180,7 @@ describe("/api/sync/command route", () => {
 	});
 
 	it("rejects malformed command payload", async () => {
+		await allowSyncForUser("user-command-1");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",
@@ -145,6 +197,44 @@ describe("/api/sync/command route", () => {
 		expect(res.statusCode).toBe(400);
 		expect(res.body.ok).toBe(false);
 		expect(res.body.errorCode).toBe("INVALID_COMMAND_ENVELOPE");
+	});
+
+	it("accepts character creation commands and mutates canonical roster state", async () => {
+		await allowSyncForUser("user-command-character-create");
+		const manifest = syncCore.getWorldManifest();
+		const req = {
+			method: "POST",
+			url: "/api/sync/command",
+			headers: { "x-dev-user-id": "user-command-character-create" },
+			body: createCharacterCommandEnvelope({
+				id: "cmd-character-create-1",
+				runId: "run-character-create-1",
+				clientSeq: 1,
+				contentVersion: manifest.contentVersion,
+			}),
+		};
+		const res = createRes();
+		await handleApiRequest(req, res);
+		expect(res.statusCode).toBe(200);
+		expect(res.body.ok).toBe(true);
+		expect(res.body.accepted).toHaveLength(1);
+		expect(res.body.canonicalState.seq).toBe(1);
+		expect(res.body.canonicalState.entityStates.playerProfile).toEqual({
+			charactersCreated: 1,
+			advancedCreationUnlocked: true,
+			lastCreationMode: "basic",
+		});
+		expect(res.body.canonicalState.entityStates.activeCharacter).toEqual(
+			expect.objectContaining({
+				name: "Aela",
+				raceId: "pure_human",
+				classId: "warrior",
+				originId: "street_urchin",
+				alignmentId: "neutral_good",
+				archetypeSystemId: "balanced",
+			}),
+		);
+		expect(res.body.canonicalState.entityStates.characterRoster).toHaveLength(1);
 	});
 
 	it("requires authentication for command submission", async () => {
@@ -222,6 +312,7 @@ describe("/api/sync/command route", () => {
 		process.env.INTERNAL_CANARY_MODE = "enforce";
 		process.env.INTERNAL_CANARY_ALLOWLIST = "allowlisted-user";
 		process.env.RUNTIME_ROLLOUT_STAGE = "m11_canary";
+		await allowSyncForUser("allowlisted-user");
 
 		const manifest = syncCore.getWorldManifest();
 		const req = {
@@ -296,6 +387,7 @@ describe("/api/sync/command route", () => {
 		process.env.LIMITED_ROLLOUT_MODE = "enforce";
 		process.env.LIMITED_ROLLOUT_PERCENTAGE = "100";
 		process.env.RUNTIME_ROLLOUT_STAGE = "m12_limited";
+		await allowSyncForUser("user-rollout-full");
 
 		const manifest = syncCore.getWorldManifest();
 		const req = {
@@ -321,6 +413,7 @@ describe("/api/sync/command route", () => {
 		process.env.LIMITED_ROLLOUT_PERCENTAGE = "0";
 		process.env.LIMITED_ROLLOUT_ALLOWLIST = "rollout-allowlisted-user";
 		process.env.RUNTIME_ROLLOUT_STAGE = "m12_limited";
+		await allowSyncForUser("rollout-allowlisted-user");
 
 		const manifest = syncCore.getWorldManifest();
 		const req = {
@@ -343,6 +436,7 @@ describe("/api/sync/command route", () => {
 
 	it("accepts a valid command envelope", async () => {
 		const manifest = syncCore.getWorldManifest();
+		await allowSyncForUser("user-command-2");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",
@@ -366,6 +460,7 @@ describe("/api/sync/command route", () => {
 		const manifest = syncCore.getWorldManifest();
 		const user = "user-command-3";
 		const runId = "run-command-stale";
+		await allowSyncForUser(user);
 
 		const firstReq = {
 			method: "POST",
@@ -404,6 +499,7 @@ describe("/api/sync/command route", () => {
 		const manifest = syncCore.getWorldManifest();
 		const user = "user-command-4";
 		const runId = "run-command-replay";
+		await allowSyncForUser(user);
 		const payload = createCommandEnvelope({
 			id: "cmd-replay-1",
 			runId,
@@ -434,6 +530,7 @@ describe("/api/sync/command route", () => {
 	});
 
 	it("returns reconcile on content mismatch", async () => {
+		await allowSyncForUser("user-command-5");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",
@@ -454,6 +551,7 @@ describe("/api/sync/command route", () => {
 
 	it("rejects unsupported command verb", async () => {
 		const manifest = syncCore.getWorldManifest();
+		await allowSyncForUser("user-command-6");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",
@@ -487,6 +585,7 @@ describe("/api/sync/command route", () => {
 
 	it("rejects mismatched command verb and trigger type", async () => {
 		const manifest = syncCore.getWorldManifest();
+		await allowSyncForUser("user-command-7");
 		const req = {
 			method: "POST",
 			url: "/api/sync/command",

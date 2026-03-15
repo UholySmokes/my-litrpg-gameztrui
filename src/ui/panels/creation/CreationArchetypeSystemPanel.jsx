@@ -13,10 +13,10 @@ export default function CreationArchetypeSystemPanel({
     null;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>Archetype System</div>
+      <div className={styles.container}>
+      <div className={styles.header}>System</div>
       <div className={styles.subtitle}>
-        Choose one system, authority, privilege, framework, or path.
+        Choose the core System that will shape the rest of creation.
       </div>
       <div className={styles.systemsList}>
         {(systems || []).map((system) => {
@@ -54,6 +54,15 @@ export default function CreationArchetypeSystemPanel({
           <div className={styles.detailsContent}>
             {(selectedEntry.progression || []).join(' ')}
           </div>
+          {selectedEntry.characterCreation?.attributeBias?.primary?.length ? (
+            <>
+              <div className={styles.detailsLabel}>CREATION BIAS</div>
+              <div className={styles.detailsContent}>
+                Primary: {selectedEntry.characterCreation.attributeBias.primary.join(', ')}.{" "}
+                Secondary: {(selectedEntry.characterCreation.attributeBias.secondary || []).join(', ') || 'none'}.
+              </div>
+            </>
+          ) : null}
         </div>
       )}
     </div>

@@ -3,32 +3,57 @@
     "id": "divinity_pathway",
     "name": "Divinity Pathway",
     "category": "Path",
-    "summary": "Structured ascension with rites, domains, and divine authority.",
-    "description": "A formal path to godhood, structured around divine domains, sacred rites, and ascending tiers of authority. This pathway turns faith, deeds, and dominion into a quantifiable measure of divinity, allowing a mortal to climb the ladder of cosmic power and become a true deity.",
+    "summary": "Structured ascension with rites, domains, worship, and the burdens of approaching godhood.",
+    "description": "Divinity Pathway is a Path that raises a mortal toward godhood through rites, domains, worship, and ascending sacred legitimacy. It belongs in the Path category because it is a structured route of apotheosis, not a ready-made divine Authority granted in full at the start. The bearer chooses or discovers a domain and then builds themselves into its proper vessel through deeds, followers, rites, and trials of worthiness. Its progression bias favors symbolic action, public consequence, and alignment between identity and portfolio rather than private isolated growth. The main tradeoff is burden, because every step toward divinity increases responsibility, scrutiny, and the danger of becoming trapped by the domain one is trying to embody. In the world, Divinity Pathway is explosive because rising gods challenge pantheons, priesthoods, and entire metaphysical balances of prayer and power. It is also psychologically transformative, since the bearer slowly stops living as a single person and starts living as a locus of expectation, doctrine, and sacred function. It remains lore-safe because the Path builds divinity through recognition, sacrifice, and domain coherence beneath the higher cosmic order rather than letting a mortal simply declare themselves supreme.",
     "coreLoop": [
-      "Select a core 'Domain' (e.g., Harvest, Justice, Secrets, Storms) that defines your divine portfolio.",
-      "Gather 'Acolytes' and convert 'Faith' from mortals by performing deeds aligned with your Domain.",
-      "Spend Faith to perform 'Sacred Rites,' unlocking minor boons and progressing towards the next Divine Tier.",
-      "Complete a 'Trial of Ascension'—a major test of your worthiness—to rise to a new Tier of Divinity (e.g., Demigod, Lesser God, True God)."
+      "Choose, inherit, or discover a divine portfolio and begin acting in ways that make the bearer a believable vessel for that sacred function.",
+      "Gather followers, rites, symbols, and domain-aligned deeds that convert public recognition into sacred legitimacy.",
+      "Cross ascending trials where worthiness, sacrifice, and domain coherence must survive pressure before the next divine tier becomes stable."
     ],
     "progression": [
-      "At higher Tiers, your Domain's influence becomes a passive, regional law (e.g., a God of Justice's domain naturally exposes lies).",
-      "Unlock 'Divine Manifestations,' allowing you to create avatars, bestow blessings on champions, or pronounce curses.",
-      "Gain the ability to establish your own 'Divine Realm'—a pocket dimension shaped by your will and Domain.",
-      "Absorb or merge with other minor domains to expand your divine portfolio and power."
+      "Early progression grants minor blessings, rites, and portfolio-linked signs that suggest divinity is possible but unproven.",
+      "Mid progression turns the bearer into an active sacred node whose domain begins altering followers, places, and expectations around them.",
+      "Late progression approaches true godhood, where avatars, regional sacred law, and domain burdens reshape both personal life and world order."
     ],
     "narrativeHooks": [
-      "Existing gods of the pantheon view you as an upstart rival, a potential ally, or a useful pawn.",
-      "Your personality and physical form begin to subtly transform, reflecting the nature of your chosen Domain.",
-      "You are plagued by the prayers of your followers, feeling their joy, suffering, and endless demands.",
-      "Philosophers and heretics may arise to challenge the legitimacy of your newfound godhood."
+      "The Path makes worship materially relevant, which means belief, doubt, reform, and heresy all become direct threats or resources.",
+      "Every rise in divine status changes the bearer's personality pressure because domains want to be embodied, not merely carried.",
+      "Pantheons, prophets, and philosophers all react strongly when a new god-path opens in a world that thought its sacred order was settled."
+    ],
+    "possibleUses": [
+      "In gameplay, Divinity Pathway is excellent for rites, faith economies, divine-tier unlocks, and portfolio-driven growth that feels larger than private combat. A bearer of justice, harvest, secrets, or storms should solve problems differently because their domain defines what kinds of miracles become natural. This creates strong thematic builds. It also makes progression feel public and symbolic rather than purely numerical.",
+      "In narrative and quest design, the Path is perfect for apotheosis arcs, church politics, heresy wars, sacred legitimacy trials, and the burden of followers who expect intervention. The bearer may save people and still be resented for what their new divinity demands. That makes godhood costly instead of glamorous. It also gives every advancement serious world impact.",
+      "In implementation, Divinity Pathway maps well to worship metrics, rite states, domain portfolios, blessing distribution, and divine-tier ladders. Designers can connect it to faction reputation, sacred sites, and doctrinal conflict without losing clarity. This keeps the Path distinct from a ready-made divine Authority. It is about becoming a god, not starting as one.",
+      "In long-form progression, the Path stays compelling because every sacred step changes what the bearer owes the world. They gain miracles, but they also become harder to live as a private person. That tension keeps divinity dramatic. It also gives the narrator clean leverage for both awe and tragedy."
+    ],
+    "limits": [
+      "Divinity grows through recognition, coherence, and sacrifice, so the bearer cannot sustain the Path if their domain becomes empty, contradictory, or faithless.",
+      "Each sacred step increases scrutiny from gods, priesthoods, rivals, and petitioners who now treat the bearer as a public institution.",
+      "A divine portfolio empowers but also confines, making it difficult to act too far outside the role one is claiming."
+    ],
+    "costs": [
+      "Godhood pressure consumes privacy, autonomy, and emotional simplicity because followers, symbols, and obligations attach to every rise in status.",
+      "Rites, offerings, temples, and sacred acts demand time and resources that could otherwise support more ordinary advancement.",
+      "Failure in public sacred moments can become doctrinal crisis, political collapse, or metaphysical backlash rather than mere embarrassment."
+    ],
+    "worldCompatibility": [
+      "Divinity Pathway advances through bounded apotheosis beneath Void, Grandmother Void, and all higher cosmic law.",
+      "It is compatible with faith, ritual, faction, sacred-site, and domain systems because all of them shape how divinity is recognized and sustained.",
+      "The Path is world-shaking but structured, which keeps godhood as something earned, contested, and limited rather than casually declared."
+    ],
+    "factionReactions": [
+      "Pantheons, priesthoods, and prophets react immediately because a rising god threatens old balances of prayer and sacred legitimacy.",
+      "Followers, skeptics, and heretics all project demands onto the bearer once their domain begins manifesting visibly.",
+      "Rulers may court, fear, or regulate the Path because new divinity can destabilize law, borders, and public belief."
     ],
     "questHooks": [
-      "An older, forgotten deity of a similar Domain awakens to challenge you for supremacy.",
-      "A rival god attempts to 'poison' your domain by spreading a conflicting ideology among your followers.",
-      "Find and reclaim a 'Lost Artifact' of your Domain to unlock a powerful, forgotten aspect of your authority.",
-      "Your most devout champion is in peril, and saving them requires a direct, personal intervention that risks exposing your divine nature."
+      "Decide whether to accept a flood of desperate worship that strengthens your Path but binds you to a domain role you are not ready to inhabit.",
+      "Recover a lost relic of your portfolio before an older god uses it to prove your ascension is illegitimate.",
+      "Stop a rival faith from poisoning your domain with a doctrine that would make your next divine tier impossible to stabilize."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 1,
     "tags": [
       "divine",
       "ritual",
@@ -50,13 +75,13 @@
     "narrativeTone": {
       "voice": "mystical and philosophical",
       "vocabulary": [
-        "formal",
-        "godhood",
-        "structured",
-        "around",
-        "divine"
+        "divine",
+        "rite",
+        "domain",
+        "worship",
+        "ascension"
       ],
-      "sentenceStyle": "metaphorical, flowery prose"
+      "sentenceStyle": "elevated, symbolic, reverent"
     },
     "archetypePassives": [
       {
@@ -71,28 +96,57 @@
     "id": "monster_evolution_path",
     "name": "Monster Evolution Path (Beast Progression)",
     "category": "Path",
-    "summary": "Here the character either starts as a monster or gains the ability to evolve in stages like a monster (common in isek...",
-    "description": "Here the character either starts as a monster or gains the ability to evolve in stages like a monster (common in isekai where MC might be a slime, goblin, etc., who evolves into higher forms). The mechanics mimic RPG monster evolution: accumulate enough energy or meet criteria -> evolve into a stronger species. Each evolution yields enormous stat boosts and often a change in form and available skills. Progression is level-based with evolution checkpoints instead of class changes. For example, a character who began as a lowly goblin might evolve at level 10 to Hobgoblin (gaining intelligence...",
+    "summary": "A transformation Path that advances through staged species evolution instead of ordinary class or level identity alone.",
+    "description": "Monster Evolution Path is a Path that turns the bearer's growth into staged species transformation rather than ordinary class advancement. It belongs in the Path category because its core promise is long-form metamorphosis, not one overwhelming cheat or one narrow command right. The bearer accumulates energy, traits, and qualifying conditions until they reach an evolution threshold and become a stronger lifeform with new instincts, abilities, and physical law. Its progression bias favors survival, adaptation, predation, and repeated thresholds of irreversible becoming rather than stable civilized optimization. The main tradeoff is alienation, because every successful evolution makes the bearer stronger while also increasing the social, biological, and psychological distance between their new form and their old identity. In the world, Monster Evolution Path is feared, exoticized, or hunted because it collapses the monster and hero ladders into one personal ascent. It also produces visible consequence, since each stage affects mobility, appetite, vulnerabilities, social access, and how different factions classify the bearer. It remains lore-safe because every ascent is still earned through energy, survival, and compatible evolution criteria, and because not all branches are stable, respected, or reversible.",
     "coreLoop": [
-      "Here the character either starts as a monster or gains the ability to evolve in stages like a monster.",
-      "This creates abilities by virtue of species traits: maybe as a slime they had absorb and split abilities, then as a Demon Slime Dragon they gain flight, breath attack, etc.",
-      "It synergizes with devouring/absorption systems - typically monsters grow by eating other creatures, so an MC with a monster evolution path often has a built-in devour mechanic to..."
+      "Accumulate evolution energy, traits, biomass, or qualifying conditions through survival, predation, adaptation, and environmental pressure.",
+      "Reach a threshold where the current body can no longer contain its own growth and must transform into a stronger species state.",
+      "Learn to live with the new form's instincts, capabilities, and vulnerabilities before pursuing the next irreversible stage."
     ],
     "progression": [
-      "The mechanics mimic RPG monster evolution: accumulate enough energy or meet criteria -> evolve into a stronger species.",
-      "Progression is level-based with evolution checkpoints instead of class changes.",
-      "For example, a character who began as a lowly goblin might evolve at level 10 to Hobgoblin, then at 20 to Ogre, at 30 to Ogre King, and perhaps eventually to Demon Lord or a new..."
+      "Early progression reveals that growth is species-gated, with low forms evolving into sharper predator or survival variants under real pressure.",
+      "Mid progression unlocks branch choices where evolution starts shaping role, instincts, and social readability as much as combat power.",
+      "Late progression creates apex or mythic forms whose bodies obey different physical assumptions than their original mortal stage."
     ],
     "narrativeHooks": [
-      "The flavor is very much about transformation and often surprises - the character literally changes physically, causing others to underestimate or misidentify them at first.",
-      "Each evolution yields enormous stat boosts and often a change in form and available skills.",
-      "One person experiencing the full lifecycle of multiple creatures accumulates a Swiss-army-knife of powers."
+      "Every evolution changes not just strength, but classification, making allies and enemies reconsider whether the bearer still belongs where they began.",
+      "Visible transformation invites fascination, fear, hunting, and exploitation from anyone who thinks monster growth should be caged or weaponized.",
+      "The Path creates constant identity tension because surviving the next stage may require embracing instincts that were once unthinkable."
+    ],
+    "possibleUses": [
+      "In gameplay, Monster Evolution Path is excellent for staged form unlocks, species branches, mutation decisions, and dramatic threshold moments. Every major transformation can change movement, senses, resistances, attack style, and available skills all at once. This keeps progression feeling huge and embodied rather than incremental. It also makes branch choice matter in a visible way.",
+      "In narrative and quest design, the Path is strong because each evolution changes how the world reads the bearer. A once-acceptable adventurer may become a hunted beast, a feared calamity, or a revered guardian depending on the form they take. That creates identity crises, prejudice arcs, and desperate hunts for catalysts or safe evolution grounds. The story gets new social stakes every time the body changes.",
+      "In implementation, Monster Evolution Path maps well to form-state data, evolution prerequisites, appearance-driven faction reactions, and branch preview systems. It also supports hunger, instinct, terrain affinity, and body-specific limitations in a clean way. This keeps the Path distinct from simple shapeshifting. The focus stays on becoming, not costume-swapping.",
+      "In long-form progression, the Path is compelling because it treats monstrousness as both opportunity and cost. Each successful stage can solve one survival problem while creating a larger civic, biological, or relational one. That keeps the fantasy sharp instead of purely empowering. It also gives the narrator a strong reason to care about every breakthrough."
+    ],
+    "limits": [
+      "Each evolution demands real criteria such as energy, prey, catalysts, environment, or stress, so the Path cannot skip stages through wishful thinking alone.",
+      "Higher forms increase alienation, appetite, visibility, and body-specific weaknesses even while granting dramatic new strengths.",
+      "Not every branch is reversible or stable, which means a bad evolution choice can lock the bearer into a difficult life."
+    ],
+    "costs": [
+      "Crossing a threshold often hurts, isolates, or permanently alters how the bearer can live among ordinary people.",
+      "Evolution pressure can intensify instinct, hunger, territoriality, or predation in ways that strain self-control and relationships.",
+      "Each stronger form attracts stronger hunters, exploiters, and factions that want either the bearer dead or captured for study."
+    ],
+    "worldCompatibility": [
+      "Monster Evolution Path advances through lawful species transformation while remaining beneath Void, Grandmother Void, and all higher cosmic law.",
+      "It is compatible with survival, mutation, monster, devour, and faction systems because all of them care about what kind of being the bearer is becoming.",
+      "The Path is powerful but embodied, which keeps it grounded in thresholds, biology, and world reaction rather than abstract supremacy."
+    ],
+    "factionReactions": [
+      "Hunter guilds, beast cults, and frontier settlements all react strongly once the bearer's evolution stages become visible.",
+      "Monster factions may see the bearer as kin, rival, or sacred anomaly depending on which branches they choose.",
+      "Civilized institutions often split between fearing the Path as a calamity route and coveting it as a weaponizable breakthrough."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Monster Evolution Path and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Monster Evolution Path.",
-      "Use the Monster Evolution Path to resolve a crisis ordinary powers cannot solve."
+      "Secure an evolution ground before hostile hunters or rival monsters force your next threshold under the worst possible conditions.",
+      "Choose between two incompatible species branches knowing one preserves social access while the other offers the power needed to survive.",
+      "Track down the remains of a failed apex evolution to learn which instincts consume bearers who climb too fast."
     ],
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
     "tags": [
       "evolution",
       "beast",
@@ -112,13 +166,13 @@
     "narrativeTone": {
       "voice": "mystical and philosophical",
       "vocabulary": [
-        "character",
-        "either",
-        "starts",
-        "monster",
-        "ability"
+        "evolution",
+        "threshold",
+        "beast",
+        "mutation",
+        "instinct"
       ],
-      "sentenceStyle": "metaphorical, flowery prose"
+      "sentenceStyle": "visceral, transformative, predatory"
     },
     "archetypePassives": [
       {
@@ -133,28 +187,57 @@
     "id": "cultivation_ascension_path",
     "name": "Cultivation Ascension Path (Realm Breaker)",
     "category": "Path",
-    "summary": "This archetype adopts the style of xianxia/ cultivation novels: the character has a personal cultivation system with...",
-    "description": "This archetype adopts the style of xianxia/ cultivation novels: the character has a personal cultivation system with realms/stages (Qi Gathering, Foundation, Core, Nascent Soul, etc. or other such tiers) that grant qualitative boosts at each breakthrough. It's a cheat in worlds that normally use a level or class system - effectively the character is operating on a different progression mechanic in parallel. The function involves intense training, meditation, absorbing spiritual energy, and overcoming \"bottlenecks\" (sometimes represented by tribulations or tests) to ascend to the next realm....",
+    "summary": "A realm-based refinement Path that advances through internal breakthroughs, tribulations, and disciplined ascension.",
+    "description": "Cultivation Ascension Path is a Path that advances the bearer through discrete realms of internal refinement, breakthrough, and spiritual authority. It belongs in the Path category because it reshapes the bearer through long discipline, bottlenecks, and metaphysical transformation rather than handing out instant supremacy. The bearer climbs through stages of energy gathering, refinement, consolidation, and transcendence, each of which changes what their body, soul, and will can support. Its progression bias favors discipline, isolation, preparation, and breakthrough timing over ordinary level-based convenience. The main tradeoff is bottleneck pressure, because higher realms demand rare resources, life-risking tribulations, and a level of self-mastery that raw talent alone cannot solve. In the world, Cultivation Ascension Path feels old, respected, and destabilizing, especially in settings where most people follow simpler class or level structures. It also creates an outsider effect in mixed systems, since a cultivator is often operating according to a different logic than local institutions can easily regulate. It remains lore-safe because every realm still demands internal refinement, external pressure, and survival of real tests rather than arbitrary ladder-climbing.",
     "coreLoop": [
-      "It's a cheat in worlds that normally use a level or class system - effectively the character is operating on a different progression mechanic in parallel.",
-      "The function involves intense training, meditation, absorbing spiritual energy, and overcoming \"bottlenecks\" to ascend to the next realm.",
-      "Progression is thus milestone-based: reaching a new cultivation realm might be akin to jumping 20 character levels in one go, plus unlocking new abilities like flight, longevity,..."
+      "Gather, circulate, and refine spiritual energy through disciplined practice instead of relying only on ordinary level progression.",
+      "Prepare for bottlenecks where body, soul, and will must all survive a breakthrough rather than merely collect enough points.",
+      "Cross each realm boundary through tribulation, internal stabilization, and a lasting change in what the bearer fundamentally is."
     ],
     "progression": [
-      "Rarity: In a world that isn't originally a xianxia setting, the MC might be the only cultivator, making them an anomaly that can eventually ascend beyond mortal ken.",
-      "This archetype adopts the style of xianxia/ cultivation novels: the character has a personal cultivation system with realms/stages that grant qualitative boosts at each...",
-      "Each breakthrough multiplies their power, far more than a normal level-up would."
+      "Early progression focuses on energy sense, circulation, foundation-building, and the painful correction of flawed habits.",
+      "Mid progression introduces real bottlenecks where tribulations, manuals, resources, and inner stability matter more than blind training volume.",
+      "Late progression creates realm shifts so dramatic that the bearer's lifespan, presence, and relationship to the world begin to change qualitatively."
     ],
     "narrativeHooks": [
-      "The thematic flavor is often mystical and disciplined; the character might carry a cultivation technique manual or have an inner visualization of meridians and a core.",
-      "Acquisition could be through transmigration, finding a secret manual or a legendary mentor, or awakening a dormant spiritual root.",
-      "This cheat can overlay on a normal class - e.g. they could be a level 30 warrior but also a \"Core Formation cultivator,\" making them drastically stronger than other level 30..."
+      "The Path makes patience and discipline narratively visible, because every breakthrough is the result of preparation rather than one dramatic lucky drop.",
+      "Mixed-system societies often treat cultivators as disruptive anomalies because their realm logic ignores local expectations about balanced advancement.",
+      "Every failed breakthrough leaves scars, debts, or cautionary stories, which makes ascension culture feel old and hard-earned."
+    ],
+    "possibleUses": [
+      "In gameplay, Cultivation Ascension Path is excellent for realm ladders, breakthrough events, meditation loops, and tribulation encounters. Each realm can unlock new capabilities, passive transformations, and qualitative jumps that feel different from normal level-up math. This makes progression weighty and ceremonial. It also rewards preparation more than grinding alone.",
+      "In narrative and quest design, the Path supports secluded training arcs, manual hunts, sect politics, spiritual resource wars, and breakthrough-under-pressure scenarios. A cultivator can disappear for months, re-emerge transformed, and immediately change faction expectations. That gives long arcs satisfying payoff. It also keeps training itself dramatically relevant.",
+      "In implementation, Cultivation Ascension Path maps cleanly to realm-state ladders, bottleneck requirements, tribulation triggers, refinement resources, and long-tail passive body changes. Designers can model instability, qi deviation, and breakthrough timing without losing clarity. This gives the Path a deep but structured identity. It also separates it cleanly from generic magic or stat systems.",
+      "In long-form progression, the Path is powerful because it treats mastery as a whole-being reconstruction. The bearer does not simply hit harder; they become someone capable of enduring a higher order of existence. That makes each stage feel earned. It also keeps late-game power rooted in discipline instead of convenience."
+    ],
+    "limits": [
+      "Every realm demands real internal stability, resources, and pressure, so rushing a breakthrough can cripple the bearer instead of advancing them.",
+      "Cultivation logic often requires time, solitude, and suitable conditions that are hard to maintain inside ordinary war or city life.",
+      "A cultivator operating in mixed systems may face institutional misunderstanding, legal hostility, or resource competition from people who do not accept their path."
+    ],
+    "costs": [
+      "Breakthrough attempts can maim, spiritually distort, or kill the bearer if attempted with flawed preparation or unstable foundations.",
+      "The Path consumes manuals, ingredients, safe environments, and long periods of practice that create opportunity cost in fast-moving stories.",
+      "Each higher realm increases distance from ordinary life, which strains relationships and can isolate the bearer socially and psychologically."
+    ],
+    "worldCompatibility": [
+      "Cultivation Ascension Path advances through lawful refinement beneath Void, Grandmother Void, and all higher cosmic law.",
+      "It is compatible with sect, resource, tribulation, meditation, and mixed-progression systems because all of them can react to realm-based advancement.",
+      "The Path is ancient and structured rather than arbitrary, which helps it coexist with other systems without replacing them outright."
+    ],
+    "factionReactions": [
+      "Sects, hermits, and old masters take the bearer seriously because every realm breakthrough signals real transformation and risk survived.",
+      "Mixed-system governments often distrust cultivators whose logic and power curves do not fit local control models.",
+      "Resource factions immediately care because anyone walking an ascension path changes the value of manuals, spirit sites, and tribulation-safe territory."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Cultivation Ascension Path and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Cultivation Ascension Path.",
-      "Use the Cultivation Ascension Path to resolve a crisis ordinary powers cannot solve."
+      "Find a safe breakthrough ground before your next realm tribulation arrives in the middle of a hostile campaign.",
+      "Choose whether to delay ascension for stability or force a breakthrough now because the world may not survive your caution.",
+      "Recover a forbidden manual fragment that can solve your bottleneck at the cost of changing what kind of cultivator you become."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 2,
     "tags": [
       "cultivation",
       "ascension",
@@ -174,13 +257,13 @@
     "narrativeTone": {
       "voice": "mystical and philosophical",
       "vocabulary": [
-        "archetype",
-        "adopts",
-        "xianxia",
-        "cultivation",
-        "novels"
+        "realm",
+        "breakthrough",
+        "refinement",
+        "tribulation",
+        "ascension"
       ],
-      "sentenceStyle": "metaphorical, flowery prose"
+      "sentenceStyle": "disciplined, meditative, old-world"
     },
     "archetypePassives": [
       {
@@ -195,32 +278,61 @@
     "id": "corruption_empowerment",
     "name": "Corruption Empowerment (Dark Alignment Path)",
     "category": "Path",
-    "summary": "The character grows stronger the more they embrace darkness or corruption.",
-    "description": "The character grows stronger the more they embrace darkness or corruption. This might be represented by a Corruption meter or stat that rises when they perform ruthless, selfish, or evil acts, or when they channel dark energies. The mechanic is double-edged: each increase in corruption yields immediate power boosts - maybe increased strength, access to dark spells, demonic transformations - but at the cost of side effects like losing humanity, attracting holy retribution, or mental instability. Progression is choice-branching; the character can push the corruption deliberately to reach new ...",
+    "summary": "A descent Path that trades stain, compromise, and identity erosion for escalating unlawful strength.",
+    "description": "Corruption Empowerment is a Path that turns moral compromise, dark exposure, and identity erosion into escalating personal power. It belongs in the Path category because it is not one momentary evil buff, but a cumulative route of becoming shaped by repeated descent. The bearer gains strength through corruption thresholds that unlock darker forms, harsher instincts, and increasingly unlawful capacities. Its progression bias favors short-term advantage, ruthless efficiency, and willingness to use stained tools that others reject. The main tradeoff is degradation, because each gain risks warping judgment, severing trust, and making the bearer less capable of turning back once they have gone too far. In the world, Corruption Empowerment is treated as both temptation and warning, especially by institutions that know how many useful protectors slowly became monsters through justified exceptions. It also generates fear-based social advantages, because the visibly corrupted are often stronger than expected even when they are already collapsing internally. It remains lore-safe because corruption power still follows an exchange logic of stain for strength, and because higher tiers draw purifiers, exorcists, rival abominations, and the consequences of what was traded away.",
     "coreLoop": [
-      "This might be represented by a Corruption meter or stat that rises when they perform ruthless, selfish, or evil acts, or when they channel dark energies.",
-      "Progression is choice-branching; the character can push the corruption deliberately to reach new plateaus of power.",
-      "They might also gain passive perks like not needing sleep or feeling no pain as they become less human."
+      "Accumulate stain through dark acts, corrupted environments, forbidden power use, or deliberate acceptance of tainted shortcuts.",
+      "Cross corruption thresholds that unlock new forms, instincts, resistances, and capacities unavailable to cleaner paths.",
+      "Decide whether each descent is worth the strength gained, knowing every stage changes what kind of person the bearer is becoming."
     ],
     "progression": [
-      "The character grows stronger the more they embrace darkness or corruption.",
-      "The mechanic is double-edged: each increase in corruption yields immediate power boosts - maybe increased strength, access to dark spells, demonic transformations - but at the...",
-      "For example, hitting 25% corruption might unlock a \"Demon Form I\" with minor physical enhancements; 50% unlocks \"Demon Form II\" or a powerful forbidden spell, and so on up to..."
+      "Early progression grants unsettling efficiency boosts and minor unlawful abilities that make compromise look dangerously rational.",
+      "Mid progression unlocks visible corruption states, fear pressure, and dark form branches that trade humanity for escalating leverage.",
+      "Late progression creates monstrous or abyssal identities where power is immense but returning to an ordinary moral life may no longer be realistic."
     ],
     "narrativeHooks": [
-      "The thematic flavor is edgy and intense - it's about power at a price.",
-      "The world likely views corruption as a one-way road to villainy, so an anti-hero protagonist might struggle with using it.",
-      "It also synergizes with fear systems: NPCs or enemies might fear a highly corrupted character, giving them an intimidation aura."
+      "The Path always asks how many justified exceptions it takes before the bearer becomes the thing they feared.",
+      "Visible corruption changes how every ally, priest, and rival reads the bearer long before they know the full story.",
+      "The most dangerous moments are often the ones where descent feels reasonable rather than obviously monstrous."
+    ],
+    "possibleUses": [
+      "In gameplay, Corruption Empowerment is strong because it makes desperate choices materially tempting. The bearer can take stain to unlock dark forms, brutal resistances, fear-based pressure, and taboo abilities that cleaner paths cannot access quickly. This makes survival and boss-fight decision-making tense and memorable. It also keeps power spikes tied to consequence.",
+      "In narrative and quest design, the Path is excellent for tragic antihero arcs, purge attempts, forbidden bargains, and trust breakdowns. Every new threshold can save the day while worsening the long-term social and spiritual damage. That gives the story genuine moral friction. It also makes redemption, refusal, or full descent meaningful instead of decorative.",
+      "In implementation, Corruption Empowerment maps well to corruption-state tracking, threshold unlocks, side-effect tables, hostile faction modifiers, and form-branch systems. This gives designers a clear way to model the power-cost exchange. It also helps keep the Path distinct from one-off cursed blessings. The structure is cumulative descent, not a single evil buff.",
+      "In long-form progression, the Path remains compelling because the price changes along with the bearer. Early stain may feel manageable, while later corruption reshapes instinct, voice, body, and worldview. That escalation keeps the fantasy sharp. It also ensures the strongest form may be the hardest one to live with."
+    ],
+    "limits": [
+      "Corruption power always comes with stain, so there is no fully clean way to extract its strongest benefits without changing the bearer.",
+      "Higher thresholds attract purifiers, rival abominations, and escalating side effects that can destabilize both tactics and relationships.",
+      "Some paths of descent close off return routes permanently, making restraint increasingly important the deeper the bearer goes."
+    ],
+    "costs": [
+      "Every major gain risks mental distortion, social exile, bodily mutation, or spiritual contamination that cannot be ignored forever.",
+      "The Path pressures the bearer toward ruthless optimization because corruption often rewards desperate or cruel efficiency.",
+      "Visible descent can destroy alliances, sacred access, and public legitimacy long before the power itself becomes uncontrollable."
+    ],
+    "worldCompatibility": [
+      "Corruption Empowerment advances through lawful stain-and-strength exchange while remaining beneath Void, Grandmother Void, and all higher cosmic law.",
+      "It is compatible with curse, fear, purification, mutation, and forbidden-magic systems because all of them react to visible descent.",
+      "The Path is dangerous but bounded, since every rise in power is inseparable from the consequence that enables it."
+    ],
+    "factionReactions": [
+      "Purifiers, churches, and lawful orders monitor the bearer aggressively because corruption paths rarely stay private for long.",
+      "Desperate rulers and dark factions may still court the bearer when the utility of tainted power outweighs moral alarm.",
+      "Former allies often become the most emotionally charged observers because they can see who the bearer used to be."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Corruption Empowerment and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Corruption Empowerment.",
-      "Use the Corruption Empowerment to resolve a crisis ordinary powers cannot solve."
+      "Choose whether to accept one more corruptive threshold because the clean solution will arrive too late to save the people in front of you.",
+      "Find a way to contain a new mutation before allies decide mercy means killing you before the next descent.",
+      "Track a fallen predecessor to learn which compromises gave them strength and which ones made return impossible."
     ],
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 2,
     "tags": [
       "soulbound-evolution",
-      "system",
-      "archetype"
+      "corruption",
+      "dark-alignment"
     ],
     "statModifiers": {
       "wisdom": 3,
@@ -236,13 +348,13 @@
     "narrativeTone": {
       "voice": "mystical and philosophical",
       "vocabulary": [
-        "character",
-        "stronger",
-        "embrace",
-        "darkness",
-        "corruption"
+        "corruption",
+        "threshold",
+        "descent",
+        "stain",
+        "mutation"
       ],
-      "sentenceStyle": "metaphorical, flowery prose"
+      "sentenceStyle": "tense, tragic, intimate"
     },
     "archetypePassives": [
       {
@@ -257,33 +369,61 @@
     "id": "purity_s_blessing",
     "name": "Purity's Blessing (Light Alignment Path)",
     "category": "Path",
-    "summary": "Conversely, this archetype grants power through purity, virtue, and righteousness.",
-    "description": "Conversely, this archetype grants power through purity, virtue, and righteousness. The character essentially has a halo system where maintaining moral integrity or performing noble deeds fuels their strength. The function could be a Virtue meter that increases with acts of kindness, courage, or self-sacrifice. As it rises, they might receive divine blessings - e.g. passive healing factor, holy aura that repels darkness, or miraculous intervention abilities (like prayers being answered by actual buffs). Progression is narrative and behavioral: hitting thresholds of virtue might coincide with...",
+    "summary": "A sanctifying Path that converts virtue, self-restraint, and righteous action into ascending states of holy transformation.",
+    "description": "Purity's Blessing is a Path that grants power through purity, virtue, and righteousness across repeated tests of conduct and self-restraint. It belongs in the Path category because it is not one static holy blessing, but a route of becoming shaped by chosen integrity over time. The bearer advances by acts of kindness, courage, mercy, discipline, and principled refusal, gradually transforming into someone more capable of channeling holy force without breaking. Its progression bias favors moral consistency, protective action, and resistance to corruption rather than raw selfish efficiency. The main tradeoff is burden, because maintaining purity in a brutal world often demands sacrifice, lost opportunities, and the refusal of shortcuts that would make other paths easier. In the world, Purity's Blessing is inspiring but uncomfortable, because people admire holiness right up until it starts judging how they live. It also creates friction with pragmatic allies who may want results without the cost of remaining clean. It remains lore-safe because sanctification still requires behavior, endurance, and trials beneath the higher cosmic order rather than granting unconditional supremacy for simply being called good.",
     "coreLoop": [
-      "This archetype influences abilities by granting primarily defensive and supportive powers initially and later potent offensive ones against evil foes.",
-      "It synergizes with faith systems: maybe the character gets stronger with prayer or when in holy sites.",
-      "Also, any sin/corruption in enemies becomes a weakness; the more corrupt the foe, the more damage the pure character can do, essentially flipping the usual \"evil gets strong\"..."
+      "Accumulate virtue through consistent righteous action, self-restraint, and chosen sacrifice rather than mere reputation.",
+      "Cross sanctification thresholds that grant stronger holy traits, purifying effects, and deeper alignment with light-based force.",
+      "Protect that purity under pressure, because temptation, compromise, and despair can slow or stain the next stage of the Path."
     ],
     "progression": [
-      "The function could be a Virtue meter that increases with acts of kindness, courage, or self-sacrifice.",
-      "Progression is narrative and behavioral: hitting thresholds of virtue might coincide with proving themselves worthy in a trial or resisting a major temptation.",
-      "At high levels of purity, the character might literally glow or become angelic - unlocking something like Wings of Light or Saint's Wrath skill that smites evil effortlessly."
+      "Early progression grants visible grace, resistance to stain, and supportive miracles that reward clean intent and disciplined behavior.",
+      "Mid progression unlocks stronger purifying effects, anti-corruption force, and sacred form changes tied to proven worth rather than rhetoric.",
+      "Late progression approaches saintly or angelic states where the bearer's very presence alters how corruption, fear, and despair behave around them."
     ],
     "narrativeHooks": [
-      "The thematic flavor is uplifting and heroic.",
-      "Rarity: True purity is rare in gritty worlds, so the system might have almost forgotten this feature.",
-      "Method of acquisition can be fate, or maybe a result of character choice."
+      "The Path is uplifting but demanding, because every rise in holiness asks whether the bearer can remain compassionate without becoming inflexible.",
+      "People often love the idea of purity more than the reality of being judged by someone who actually lives it.",
+      "The hardest tests usually come when the most efficient solution is also the one that would stain the bearer permanently."
+    ],
+    "possibleUses": [
+      "In gameplay, Purity's Blessing is excellent for defensive miracles, purification effects, anti-corruption pressure, and support abilities that grow into fearsome holy offense against stained enemies. This creates a satisfying progression from guardian to saintly threat. It also gives moral consistency real mechanical identity. The Path feels proactive rather than passive.",
+      "In narrative and quest design, the Path supports martyrdom choices, temptation trials, rescue arcs, sacred pilgrimage, and the social burden of being held to a higher standard. The bearer may inspire others while also making them uncomfortable. That tension keeps holiness from becoming bland. It also creates strong drama with pragmatic companions.",
+      "In implementation, Purity's Blessing maps well to virtue-state tracking, temptation checks, sanctification thresholds, corruption interaction rules, and sacred-site bonuses. Designers can model both reward and burden cleanly. This helps the Path stay distinct from a one-time divine buff. It is about lived righteousness becoming transformation.",
+      "In long-form progression, the Path is compelling because it makes goodness costly without making it naive. The bearer grows stronger by refusing some of the easiest answers available in a broken world. That gives every victory texture. It also makes falls from purity dramatically meaningful."
+    ],
+    "limits": [
+      "The Path depends on maintained virtue and self-restraint, so repeated compromise can stall, stain, or partially unravel progress.",
+      "Purity does not remove the need for courage, skill, or endurance, and saintly intent alone cannot solve every material problem.",
+      "Holiness can isolate the bearer from allies who feel judged, exposed, or threatened by the standards the Path imposes."
+    ],
+    "costs": [
+      "Remaining pure often means sacrificing expedient power, revenge, easy lies, or morally gray shortcuts that would solve problems faster.",
+      "The more sanctified the bearer becomes, the more personal failure or hypocrisy carries spiritual and social backlash.",
+      "Living as a visible source of holy force attracts both desperate dependence and focused hostility from corrupt powers."
+    ],
+    "worldCompatibility": [
+      "Purity's Blessing advances through lawful sanctification beneath Void, Grandmother Void, and all higher cosmic law.",
+      "It is compatible with faith, purification, corruption, support, and sacred-site systems because all of them respond to lived holiness.",
+      "The Path is uplifting but bounded, since every holy gain depends on behavior, testing, and the ability to remain clean under pressure."
+    ],
+    "factionReactions": [
+      "Churches, pilgrims, and desperate communities often rally around the bearer as a sign that clean power still exists.",
+      "Corrupt factions, demonic powers, and cynical institutions react aggressively because the Path threatens both their methods and their narratives.",
+      "Pragmatic allies may admire the bearer while quietly fearing that purity standards will one day condemn them too."
     ],
     "questHooks": [
-      "Secure a key resource that stabilizes the Purity's Blessing and removes its main limitation.",
-      "Defeat a rival who wields a competing version of the Purity's Blessing.",
-      "Use the Purity's Blessing to resolve a crisis ordinary powers cannot solve."
+      "Refuse a corrupt shortcut that would save lives now in order to preserve the sanctification needed for a greater future miracle.",
+      "Protect a pilgrimage route where every crisis is also a temptation test aimed at breaking your next threshold of purity.",
+      "Confront a fallen saint whose shattered Path shows exactly how righteous certainty can curdle into something cruel."
     ],
+    "rarity": "legendary",
+    "stability": "stable",
+    "selectionWeight": 1,
     "tags": [
-      "sin",
-      "soulbound-evolution",
-      "system",
-      "archetype"
+      "light-alignment",
+      "purification",
+      "virtue"
     ],
     "statModifiers": {
       "wisdom": 3,
@@ -299,13 +439,13 @@
     "narrativeTone": {
       "voice": "mystical and philosophical",
       "vocabulary": [
-        "conversely",
-        "archetype",
-        "grants",
-        "through",
-        "purity"
+        "purity",
+        "virtue",
+        "sanctification",
+        "light",
+        "mercy"
       ],
-      "sentenceStyle": "metaphorical, flowery prose"
+      "sentenceStyle": "hopeful, exacting, luminous"
     },
     "archetypePassives": [
       {

@@ -1,5 +1,6 @@
-import { DataRegistry } from "../../../data/DataRegistry.js";
-import { getRaceAbilitiesFor } from "../../../systems/race/RaceAbilityRegistry.js";
+import {
+  getCharacterCreationRaceAbilitySummaries,
+} from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 import { CANONICAL_ATTRIBUTES } from "../../../constants/attributes.js";
 
 function StatModifierBar({ label, value }) {
@@ -47,10 +48,12 @@ function AbilityTag({ label, name, description, color }) {
 
 export default function CreationRacePanel({
   selectedRace,
+  races = [],
+  recommendedRaceIds = [],
   onRaceSelect,
   onAction,
 }) {
-  const races = DataRegistry.getRaces();
+  const recommended = new Set(recommendedRaceIds);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -79,7 +82,7 @@ export default function CreationRacePanel({
       >
         {races.map((race) => {
           const isSelected = selectedRace?.id === race.id;
-          const raceAbilities = getRaceAbilitiesFor(race.id) || [];
+          const raceAbilities = getCharacterCreationRaceAbilitySummaries(race.id);
           const activeAbility = raceAbilities[0] || null;
           const passiveAbility = race.passiveAbility;
           const raceSkillNames = Array.from(
@@ -123,9 +126,14 @@ export default function CreationRacePanel({
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontWeight: "bold", letterSpacing: "1px" }}>{race.name.toUpperCase()}</span>
-                {isSelected && (
-                  <span style={{ fontSize: "0.55rem", color: "var(--holo-gold)", fontWeight: "bold" }}>SELECTED</span>
-                )}
+                <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
+                  {recommended.has(race.id) ? (
+                    <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>SYSTEM MATCH</span>
+                  ) : null}
+                  {isSelected && (
+                    <span style={{ fontSize: "0.55rem", color: "var(--holo-gold)", fontWeight: "bold" }}>SELECTED</span>
+                  )}
+                </div>
               </div>
               <div style={{ fontSize: "0.7rem", opacity: 0.8, lineHeight: "1.35" }}>
                 {race.description}

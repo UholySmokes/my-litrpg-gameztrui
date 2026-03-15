@@ -25,7 +25,16 @@ import { PROFESSIONS } from "../profession/ProfessionRegistry.js";
 import {
   attachLatticeMetadata,
   adaptToLatticeSkill,
+  summarizeLatticeLoadout,
+  computeLatticeBuildPressure,
+  validateLatticeProgressEvent,
+  dedupeLatticeProgressEvents,
+  computeLatticeMasteryGain,
+  validateExternalAuthorityContract,
+  normalizeNativeMiracle,
+  advanceNativeMiracleState,
 } from "./LivingLatticeSystem.js";
+import { getTalentMigrationLane } from "./TalentMigrationAudit.js";
 import {
   getAllRaceAbilityIds,
   getRaceAbilityById,
@@ -595,6 +604,133 @@ export function getAllSkills() {
   return allSkills;
 }
 
+const copyStringArray = (values) =>
+  Array.isArray(values) ? values.filter((value) => typeof value === "string") : [];
+
+const copyUnlockConditions = (conditions) => {
+  if (!conditions || typeof conditions !== "object" || Array.isArray(conditions)) {
+    return null;
+  }
+  return {
+    ...conditions,
+    skillPrerequisites: copyStringArray(conditions.skillPrerequisites),
+  };
+};
+
+const buildSkillSummary = (skill) => {
+  if (!skill || typeof skill !== "object" || typeof skill.id !== "string") {
+    return null;
+  }
+
+  const lattice =
+    skill.lattice && typeof skill.lattice === "object" ? skill.lattice : {};
+  const template =
+    skill.template && typeof skill.template === "object" ? skill.template : {};
+  const slotType = skill.slotType || lattice.slotType || skill.type || "active";
+  const runtimeRole = skill.runtimeRole || lattice.runtimeRole || "standard";
+  const affinityTags = Array.isArray(skill.affinityTags)
+    ? skill.affinityTags
+    : Array.isArray(lattice.affinityTags)
+      ? lattice.affinityTags
+      : [];
+  const latticeFamily = skill.latticeFamily || lattice.family || null;
+  const latticeSourceType = skill.latticeSourceType || lattice.sourceType || null;
+
+  return {
+    id: skill.id,
+    name: skill.name || skill.id,
+    description: skill.description || "No description available.",
+    type: skill.type || slotType,
+    slotType,
+    source: skill.source || skill.ownerType || "general",
+    ownerType: skill.ownerType || "system",
+    ownerId: skill.ownerId || skill.class || "unbound",
+    class: skill.class || null,
+    race: skill.race || null,
+    requiredClass: skill.requiredClass || null,
+    requiredClasses: copyStringArray(skill.requiredClasses),
+    allowedClasses: copyStringArray(skill.allowedClasses),
+    requiredRace: skill.requiredRace || null,
+    requiredRaces: copyStringArray(skill.requiredRaces),
+    allowedRaces: copyStringArray(skill.allowedRaces),
+    tags: copyStringArray(skill.tags),
+    affinityTags: copyStringArray(affinityTags),
+    runtimeRole,
+    latticeFamily,
+    latticeSourceType,
+    unlockConditions: copyUnlockConditions(skill.unlockConditions),
+    template: {
+      category: template.category || null,
+      function: template.function || null,
+      elements: copyStringArray(template.elements),
+      source: template.source || null,
+    },
+    lattice: {
+      slotType,
+      runtimeRole,
+      family: latticeFamily,
+      sourceType: latticeSourceType,
+      affinityTags: copyStringArray(affinityTags),
+    },
+  };
+};
+
+const cloneSkillSummary = (summary) => {
+  if (!summary) return null;
+  return {
+    ...summary,
+    requiredClasses: [...summary.requiredClasses],
+    allowedClasses: [...summary.allowedClasses],
+    requiredRaces: [...summary.requiredRaces],
+    allowedRaces: [...summary.allowedRaces],
+    tags: [...summary.tags],
+    affinityTags: [...summary.affinityTags],
+    unlockConditions: summary.unlockConditions
+      ? {
+          ...summary.unlockConditions,
+          skillPrerequisites: [
+            ...(summary.unlockConditions.skillPrerequisites || []),
+          ],
+        }
+      : null,
+    template: summary.template
+      ? {
+          ...summary.template,
+          elements: [...summary.template.elements],
+        }
+      : null,
+    lattice: summary.lattice
+      ? {
+          ...summary.lattice,
+          affinityTags: [...summary.lattice.affinityTags],
+        }
+      : null,
+  };
+};
+
+let _skillSummaries = null;
+let _skillSummaryIndex = null;
+
+function ensureSkillSummaryIndex() {
+  if (_skillSummaries && _skillSummaryIndex) return;
+  _skillSummaries = getAllSkills().map((skill) => buildSkillSummary(skill)).filter(Boolean);
+  _skillSummaryIndex = new Map(
+    _skillSummaries.map((summary) => [summary.id, summary]),
+  );
+}
+
+export function getAllSkillSummaries() {
+  ensureSkillSummaryIndex();
+  return _skillSummaries.map((summary) => cloneSkillSummary(summary));
+}
+
+export function getSkillSummaryById(skillId) {
+  if (!skillId) return null;
+  ensureSkillSummaryIndex();
+  const summary = _skillSummaryIndex.get(skillId);
+  return cloneSkillSummary(summary);
+}
+
 /**
  * --- O(1) skill lookup index ---
  */
@@ -669,6 +805,149 @@ export function getLatticeSkillsForRace(raceId) {
   return abilities
     .map((ability) => ability?.lattice || adaptToLatticeSkill(ability))
     .filter(Boolean);
+}
+
+function resolveSkillReference(skillRef) {
+  if (!skillRef) return null;
+  if (typeof skillRef === "string") {
+    return getSkillById(skillRef) || getRaceAbilityById(skillRef) || getClassAbilityById(skillRef);
+  }
+  if (typeof skillRef === "object") {
+    if (skillRef.id) {
+      return skillRef.lattice
+        ? skillRef
+        : attachLatticeMetadata(skillRef);
+    }
+  }
+  return null;
+}
+
+function resolveSkillReferenceList(skillRefs = []) {
+  return (Array.isArray(skillRefs) ? skillRefs : [])
+    .map((skillRef) => resolveSkillReference(skillRef))
+    .filter(Boolean);
+}
+
+function getActiveTalentMigrationLanes(activeTalentIds = []) {
+  return (Array.isArray(activeTalentIds) ? activeTalentIds : [])
+    .filter((talentId) => typeof talentId === "string" && talentId.trim().length > 0)
+    .map((talentId) => ({
+      id: talentId,
+      lane: getTalentMigrationLane(talentId),
+    }));
+}
+
+export function getLatticeLoadoutSummary({
+  activeSkillIds = [],
+  passiveSkillIds = [],
+  activeSkills = [],
+  passiveSkills = [],
+  professionId = null,
+} = {}) {
+  const safeActiveSkills = Array.isArray(activeSkills) ? activeSkills : [];
+  const safePassiveSkills = Array.isArray(passiveSkills) ? passiveSkills : [];
+  const safeActiveSkillIds = Array.isArray(activeSkillIds) ? activeSkillIds : [];
+  const safePassiveSkillIds = Array.isArray(passiveSkillIds) ? passiveSkillIds : [];
+  const resolvedActiveSkills =
+    safeActiveSkills.length > 0 ? resolveSkillReferenceList(safeActiveSkills) : resolveSkillReferenceList(safeActiveSkillIds);
+  const resolvedPassiveSkills =
+    safePassiveSkills.length > 0 ? resolveSkillReferenceList(safePassiveSkills) : resolveSkillReferenceList(safePassiveSkillIds);
+
+  return summarizeLatticeLoadout({
+    activeSkills: resolvedActiveSkills,
+    passiveSkills: resolvedPassiveSkills,
+    professionId,
+  });
+}
+
+export function getLatticeBuildPressureForLoadout({
+  activeSkillIds = [],
+  passiveSkillIds = [],
+  activeSkills = [],
+  passiveSkills = [],
+  professionId = null,
+  nativeMiracleUsedRecently = false,
+} = {}) {
+  const safeActiveSkills = Array.isArray(activeSkills) ? activeSkills : [];
+  const safePassiveSkills = Array.isArray(passiveSkills) ? passiveSkills : [];
+  const safeActiveSkillIds = Array.isArray(activeSkillIds) ? activeSkillIds : [];
+  const safePassiveSkillIds = Array.isArray(passiveSkillIds) ? passiveSkillIds : [];
+  const resolvedActiveSkills =
+    safeActiveSkills.length > 0 ? resolveSkillReferenceList(safeActiveSkills) : resolveSkillReferenceList(safeActiveSkillIds);
+  const resolvedPassiveSkills =
+    safePassiveSkills.length > 0 ? resolveSkillReferenceList(safePassiveSkills) : resolveSkillReferenceList(safePassiveSkillIds);
+  const resolvedSkills = [...resolvedActiveSkills, ...resolvedPassiveSkills];
+
+  return {
+    loadout: getLatticeLoadoutSummary({
+      activeSkills: resolvedActiveSkills,
+      passiveSkills: resolvedPassiveSkills,
+      professionId,
+    }),
+    buildPressure: computeLatticeBuildPressure(resolvedSkills, {
+      nativeMiracleUsedRecently,
+    }),
+  };
+}
+
+export function validateSkillProgressEvent(event = {}, options = {}) {
+  const normalizedEvent = (event !== null && typeof event === 'object' && !Array.isArray(event)) ? event : {};
+  const skill = resolveSkillReference(normalizedEvent.skillId);
+  if (!skill) {
+    return {
+      valid: false,
+      errors: [`Unknown skillId: ${JSON.stringify(normalizedEvent.skillId)}`],
+      event: normalizedEvent,
+      skill: null,
+      masteryGain: 0,
+    };
+  }
+
+  const validation = validateLatticeProgressEvent(normalizedEvent, options);
+  if (!validation.valid) {
+    return {
+      ...validation,
+      skill: skill.lattice || adaptToLatticeSkill(skill),
+      masteryGain: 0,
+    };
+  }
+
+  return {
+    ...validation,
+    skill: skill.lattice || adaptToLatticeSkill(skill),
+    masteryGain: computeLatticeMasteryGain(validation.event, {
+      familyModifier: options.familyModifier ?? 1,
+      repetitionSaturation: options.repetitionSaturation ?? 0,
+    }),
+  };
+}
+
+export function processSkillProgressEvents(events = [], options = {}) {
+  const normalizedEvents = Array.isArray(events) ? events : [];
+  const deduped = dedupeLatticeProgressEvents(normalizedEvents, options);
+
+  return {
+    accepted: deduped.accepted.map((event) =>
+      validateSkillProgressEvent(event, {
+        ...options,
+        seenFingerprints: new Set(),
+      }),
+    ),
+    rejected: deduped.rejected,
+    seenFingerprints: deduped.seenFingerprints,
+  };
+}
+
+export function validateSkillContractMiracle(contract = {}, hostContext = {}) {
+  return validateExternalAuthorityContract(contract, hostContext);
+}
+
+export function getNativeMiracleState(miracle = {}) {
+  return normalizeNativeMiracle(miracle);
+}
+
+export function advanceSkillNativeMiracle(miracle = {}, options = {}) {
+  return advanceNativeMiracleState(miracle, options);
 }
 
 /**
@@ -862,8 +1141,15 @@ export function getModifiedSkill(
 
   // Store bypasses on skill for combat system reference
   modifiedSkill.bypasses = { ...(modifiedSkill.bypasses || {}), ...bypasses };
+  modifiedSkill.activeTalentMigrationLanes = getActiveTalentMigrationLanes(activeTalentIds);
 
-  return modifiedSkill;
+  return attachLatticeMetadata(modifiedSkill, {
+    family: baseSkill.latticeFamily,
+    sourceType: baseSkill.latticeSourceType,
+    rank: baseSkill.lattice?.rank,
+    mastery: baseSkill.lattice?.mastery,
+    stability: baseSkill.lattice?.stability,
+  });
 }
 
 /**
@@ -959,6 +1245,8 @@ export function getSkillDisplayInfo(
       aoeMultiplier: modifiedSkill?.aoeMultiplier ?? 1,
     },
     bypasses: modifiedSkill?.bypasses || {},
+    activeTalentMigrationLanes:
+      modifiedSkill?.activeTalentMigrationLanes || getActiveTalentMigrationLanes(activeTalentIds),
     effects: skill.effects || [],
     lattice: skill.lattice || null,
     latticeFamily: skill.latticeFamily || null,

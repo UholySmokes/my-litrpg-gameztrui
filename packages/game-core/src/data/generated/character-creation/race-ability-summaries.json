@@ -1,0 +1,2338 @@
+{
+  "byRace": {
+    "ancient_bloodline": [
+      {
+        "id": "ancient_bloodline_special",
+        "name": "Arcane Reservoir",
+        "description": "Open your mana core and reinforce your defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "ancient_bloodline",
+        "costType": "mana",
+        "cost": 18,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "ashenblood": [
+      {
+        "id": "ashenblood_special",
+        "name": "Ashen Blast",
+        "description": "A blast of smoldering ash.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "ashenblood",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "astral_nomad": [
+      {
+        "id": "astral_nomad_special",
+        "name": "Astral Step",
+        "description": "Slip through astral lanes to refuel.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "astral_nomad",
+        "costType": "mana",
+        "cost": 18,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "auric_seraph": [
+      {
+        "id": "auric_seraph_special",
+        "name": "Radiant Descent",
+        "description": "Crash down in a burst of holy light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "auric_seraph",
+        "costType": "mana",
+        "cost": 32,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "beast_kin": [
+      {
+        "id": "beast_kin_special",
+        "name": "Blood Hunt",
+        "description": "Strike hard and unleash a brief frenzy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "beast_kin",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "attack",
+          "elements": [
+            "physical"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "blood_frenzied": [
+      {
+        "id": "blood_frenzied_special",
+        "name": "Frenzy Rush",
+        "description": "A reckless rush that stokes a frenzy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "blood_frenzied",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "attack",
+          "elements": [
+            "physical"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "bloodwoven": [
+      {
+        "id": "bloodwoven_special",
+        "name": "Crimson Rite",
+        "description": "A ritual strike that feeds your wounds.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "bloodwoven",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "attack",
+          "elements": [
+            "physical"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "celestial_descendant": [
+      {
+        "id": "celestial_descendant_special",
+        "name": "Celestial Benediction",
+        "description": "Restore vitality and wrap yourself in light.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "celestial_descendant",
+        "costType": "mana",
+        "cost": 28,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "chaos_born": [
+      {
+        "id": "chaos_born_special",
+        "name": "Entropy Lash",
+        "description": "A destabilizing strike that disorients the foe.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "chaos_born",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "chaos_touched": [
+      {
+        "id": "chaos_touched_special",
+        "name": "Chaos Twist",
+        "description": "Unstable force that scrambles the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "chaos_touched",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "crystal_being": [
+      {
+        "id": "crystal_being_special",
+        "name": "Prismatic Guard",
+        "description": "Form a crystalline shield that reflects harm.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "crystal_being",
+        "costType": "mana",
+        "cost": 28,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "demon_kin": [
+      {
+        "id": "demon_kin_special",
+        "name": "Abyssal Siphon",
+        "description": "Drain life with a dark strike.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "demon_kin",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "divine_scion": [
+      {
+        "id": "divine_scion_special",
+        "name": "Divine Edict",
+        "description": "Call down judgment to stun the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "divine_scion",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "dragon_blood": [
+      {
+        "id": "dragon_blood_special",
+        "name": "Drakefire Roar",
+        "description": "Unleash a fiery roar that scorches the line.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "dragon_blood",
+        "costType": "mana",
+        "cost": 35,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "duskborne": [
+      {
+        "id": "duskborne_special",
+        "name": "Twilight Step",
+        "description": "Blur into dusk and reposition.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "duskborne",
+        "costType": "mana",
+        "cost": 24,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "echo_spirit": [
+      {
+        "id": "echo_spirit_special",
+        "name": "Echo Strike",
+        "description": "A resonant strike that restores a sliver of health.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "echo_spirit",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "holy"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "elemental_attuned": [
+      {
+        "id": "elemental_attuned_special",
+        "name": "Prismatic Burst",
+        "description": "Detonate a surge of mixed elements.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "elemental_attuned",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "lightning"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "emberkin": [
+      {
+        "id": "emberkin_special",
+        "name": "Cinderstorm",
+        "description": "Scatter burning embers across the field.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "emberkin",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "fae_touched": [
+      {
+        "id": "fae_touched_special",
+        "name": "Glamour",
+        "description": "Weave a glamour that confuses the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "fae_touched",
+        "costType": "mana",
+        "cost": 22,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "flux_attuned": [
+      {
+        "id": "flux_attuned_special",
+        "name": "Flux Shift",
+        "description": "Recalibrate elemental absorption and guard up.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "flux_attuned",
+        "costType": "mana",
+        "cost": 24,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "frostborne": [
+      {
+        "id": "frostborne_special",
+        "name": "Glacial Prison",
+        "description": "Freeze the target in place.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "frostborne",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "glacierkin": [
+      {
+        "id": "glacierkin_special",
+        "name": "Permafrost Lance",
+        "description": "Drive a lance of ancient ice.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "glacierkin",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "gloomshade": [
+      {
+        "id": "gloomshade_special",
+        "name": "Umbral Slice",
+        "description": "Cut through shadows to weaken defenses.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "gloomshade",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "grim_revenant": [
+      {
+        "id": "grim_revenant_special",
+        "name": "Death's Echo",
+        "description": "Strike from beyond and siphon resolve.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "grim_revenant",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "ironhide": [
+      {
+        "id": "ironhide_special",
+        "name": "Iron Carapace",
+        "description": "Brace for impact with hardened plating.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "ironhide",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "ironroot": [
+      {
+        "id": "ironroot_special",
+        "name": "Stonebark Guard",
+        "description": "Harden into living bark and reflect hits.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "ironroot",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "luckweaver": [
+      {
+        "id": "luckweaver_special",
+        "name": "Fortune Twist",
+        "description": "Bend probability for a lucky surge.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "luckweaver",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "mechanical_construct": [
+      {
+        "id": "mechanical_construct_special",
+        "name": "Overclock Core",
+        "description": "Push your systems beyond safe limits.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "mechanical_construct",
+        "costType": "mana",
+        "cost": 24,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "mirageborn": [
+      {
+        "id": "mirageborn_special",
+        "name": "Mirage Split",
+        "description": "Divide into mirages to confuse the foe.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "mirageborn",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "mutant": [
+      {
+        "id": "mutant_special",
+        "name": "Mutation Spike",
+        "description": "Trigger a volatile mutation buff.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "mutant",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "nature_spirit": [
+      {
+        "id": "nature_spirit_special",
+        "name": "Verdant Renewal",
+        "description": "Cleanse afflictions and heal through nature.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "nature_spirit",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "heal",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "neo_human": [
+      {
+        "id": "neo_human_special",
+        "name": "Target Lock",
+        "description": "Calculate the strike and expose weak points.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "neo_human",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "attack",
+          "elements": [
+            "physical"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "phoenix_reborn": [
+      {
+        "id": "phoenix_reborn_special",
+        "name": "Ashen Nova",
+        "description": "Explode in flame and reignite your vitality.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "phoenix_reborn",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "pure_human": [
+      {
+        "id": "pure_human_special",
+        "name": "Adaptive Surge",
+        "description": "Sharpen instincts to boost might and speed.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "pure_human",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "quakeborn": [
+      {
+        "id": "quakeborn_special",
+        "name": "Seismic Slam",
+        "description": "A ground-shattering blow that stuns.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "quakeborn",
+        "costType": "mana",
+        "cost": 30,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "attack",
+          "elements": [
+            "physical"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "riftborn": [
+      {
+        "id": "riftborn_special",
+        "name": "Rift Lunge",
+        "description": "Pierce the enemy from a spatial tear.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "riftborn",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "rune_sentinel": [
+      {
+        "id": "rune_sentinel_special",
+        "name": "Rune Cage",
+        "description": "Bind the target with sigils and weaken defense.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "rune_sentinel",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "arcane"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "sandstrider": [
+      {
+        "id": "sandstrider_special",
+        "name": "Dust Vortex",
+        "description": "Kick up a blinding storm of sand.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "sandstrider",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "attack",
+          "elements": [
+            "physical"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "shadow_veil": [
+      {
+        "id": "shadow_veil_special",
+        "name": "Veil Cloak",
+        "description": "Dissolve into shadow to avoid detection.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "shadow_veil",
+        "costType": "mana",
+        "cost": 24,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "shadow_walker": [
+      {
+        "id": "shadow_walker_special",
+        "name": "Umbral Veil",
+        "description": "Slip into shadow and evade retaliation.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "shadow_walker",
+        "costType": "mana",
+        "cost": 24,
+        "cooldown": 10,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "skybound": [
+      {
+        "id": "skybound_special",
+        "name": "Gale Dash",
+        "description": "Ride the wind with speed and evasion.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "skybound",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "sparkborn": [
+      {
+        "id": "sparkborn_special",
+        "name": "Arc Spark",
+        "description": "A crackling spark that jolts the foe.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "sparkborn",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "lightning"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "spirit_beast": [
+      {
+        "id": "spirit_beast_special",
+        "name": "Predator Pounce",
+        "description": "Leap in with a savage stun.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "spirit_beast",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "attack",
+          "elements": [
+            "physical"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "starseer": [
+      {
+        "id": "starseer_special",
+        "name": "Stellar Alignment",
+        "description": "Align with the stars to refuel mana.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "starseer",
+        "costType": "mana",
+        "cost": 15,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "resource",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "stormforged": [
+      {
+        "id": "stormforged_special",
+        "name": "Thunder Drive",
+        "description": "Drive a bolt through armor.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "stormforged",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "lightning"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "sunborn": [
+      {
+        "id": "sunborn_special",
+        "name": "Solar Aegis",
+        "description": "Radiant light fortifies your defense.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "sunborn",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "sunforged": [
+      {
+        "id": "sunforged_special",
+        "name": "Solar Hammer",
+        "description": "Bring down a blazing hammer blow.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "sunforged",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "fire"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "tidecaller": [
+      {
+        "id": "tidecaller_special",
+        "name": "Riptide",
+        "description": "Crashing tide that slows the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "tidecaller",
+        "costType": "mana",
+        "cost": 24,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "ice"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "umbral_oracle": [
+      {
+        "id": "umbral_oracle_special",
+        "name": "Void Prophecy",
+        "description": "A prophetic strike that clouds the mind.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "umbral_oracle",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "undead_awakened": [
+      {
+        "id": "undead_awakened_special",
+        "name": "Grave Chill",
+        "description": "Entomb the foe in necrotic cold.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "undead_awakened",
+        "costType": "mana",
+        "cost": 22,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "venomtail": [
+      {
+        "id": "venomtail_special",
+        "name": "Venom Fang",
+        "description": "Inject a potent toxin.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "venomtail",
+        "costType": "mana",
+        "cost": 20,
+        "cooldown": 6,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "nature"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "verdant_shaper": [
+      {
+        "id": "verdant_shaper_special",
+        "name": "Thornburst",
+        "description": "Verdant thorns bind and pierce the foe.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "verdant_shaper",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 8,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "nature"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "void_walker": [
+      {
+        "id": "void_walker_special",
+        "name": "Phase Rend",
+        "description": "Slice through space and slow the target.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "void_walker",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 7,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "spell",
+          "elements": [
+            "dark"
+          ],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "whisper_fae": [
+      {
+        "id": "whisper_fae_special",
+        "name": "Whispered Charm",
+        "description": "A silken whisper that enthralls the enemy.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "whisper_fae",
+        "costType": "mana",
+        "cost": 25,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ],
+    "wild_mutant": [
+      {
+        "id": "wild_mutant_special",
+        "name": "Wild Surge",
+        "description": "A volatile surge with unpredictable results.",
+        "type": "active",
+        "slotType": "active",
+        "ownerType": "race",
+        "ownerId": "wild_mutant",
+        "costType": "mana",
+        "cost": 22,
+        "cooldown": 9,
+        "resource": "mana",
+        "template": {
+          "category": "Race Ability",
+          "function": "utility",
+          "elements": [],
+          "source": "RaceAbilityRegistry"
+        }
+      }
+    ]
+  },
+  "byId": {
+    "ancient_bloodline_special": {
+      "id": "ancient_bloodline_special",
+      "name": "Arcane Reservoir",
+      "description": "Open your mana core and reinforce your defenses.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 18,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "resource",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "ashenblood_special": {
+      "id": "ashenblood_special",
+      "name": "Ashen Blast",
+      "description": "A blast of smoldering ash.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "fire"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "astral_nomad_special": {
+      "id": "astral_nomad_special",
+      "name": "Astral Step",
+      "description": "Slip through astral lanes to refuel.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 18,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "resource",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "auric_seraph_special": {
+      "id": "auric_seraph_special",
+      "name": "Radiant Descent",
+      "description": "Crash down in a burst of holy light.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 32,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "holy"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "beast_kin_special": {
+      "id": "beast_kin_special",
+      "name": "Blood Hunt",
+      "description": "Strike hard and unleash a brief frenzy.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "attack",
+        "elements": [
+          "physical"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "blood_frenzied_special": {
+      "id": "blood_frenzied_special",
+      "name": "Frenzy Rush",
+      "description": "A reckless rush that stokes a frenzy.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "attack",
+        "elements": [
+          "physical"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "bloodwoven_special": {
+      "id": "bloodwoven_special",
+      "name": "Crimson Rite",
+      "description": "A ritual strike that feeds your wounds.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "attack",
+        "elements": [
+          "physical"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "celestial_descendant_special": {
+      "id": "celestial_descendant_special",
+      "name": "Celestial Benediction",
+      "description": "Restore vitality and wrap yourself in light.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 28,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "heal",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "chaos_born_special": {
+      "id": "chaos_born_special",
+      "name": "Entropy Lash",
+      "description": "A destabilizing strike that disorients the foe.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "chaos_touched_special": {
+      "id": "chaos_touched_special",
+      "name": "Chaos Twist",
+      "description": "Unstable force that scrambles the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "crystal_being_special": {
+      "id": "crystal_being_special",
+      "name": "Prismatic Guard",
+      "description": "Form a crystalline shield that reflects harm.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 28,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "demon_kin_special": {
+      "id": "demon_kin_special",
+      "name": "Abyssal Siphon",
+      "description": "Drain life with a dark strike.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "divine_scion_special": {
+      "id": "divine_scion_special",
+      "name": "Divine Edict",
+      "description": "Call down judgment to stun the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "holy"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "dragon_blood_special": {
+      "id": "dragon_blood_special",
+      "name": "Drakefire Roar",
+      "description": "Unleash a fiery roar that scorches the line.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 35,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "fire"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "duskborne_special": {
+      "id": "duskborne_special",
+      "name": "Twilight Step",
+      "description": "Blur into dusk and reposition.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 24,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "echo_spirit_special": {
+      "id": "echo_spirit_special",
+      "name": "Echo Strike",
+      "description": "A resonant strike that restores a sliver of health.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 6,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "holy"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "elemental_attuned_special": {
+      "id": "elemental_attuned_special",
+      "name": "Prismatic Burst",
+      "description": "Detonate a surge of mixed elements.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "lightning"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "emberkin_special": {
+      "id": "emberkin_special",
+      "name": "Cinderstorm",
+      "description": "Scatter burning embers across the field.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "fire"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "fae_touched_special": {
+      "id": "fae_touched_special",
+      "name": "Glamour",
+      "description": "Weave a glamour that confuses the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 22,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "flux_attuned_special": {
+      "id": "flux_attuned_special",
+      "name": "Flux Shift",
+      "description": "Recalibrate elemental absorption and guard up.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 24,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "frostborne_special": {
+      "id": "frostborne_special",
+      "name": "Glacial Prison",
+      "description": "Freeze the target in place.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "ice"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "glacierkin_special": {
+      "id": "glacierkin_special",
+      "name": "Permafrost Lance",
+      "description": "Drive a lance of ancient ice.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "ice"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "gloomshade_special": {
+      "id": "gloomshade_special",
+      "name": "Umbral Slice",
+      "description": "Cut through shadows to weaken defenses.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "grim_revenant_special": {
+      "id": "grim_revenant_special",
+      "name": "Death's Echo",
+      "description": "Strike from beyond and siphon resolve.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "ironhide_special": {
+      "id": "ironhide_special",
+      "name": "Iron Carapace",
+      "description": "Brace for impact with hardened plating.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "ironroot_special": {
+      "id": "ironroot_special",
+      "name": "Stonebark Guard",
+      "description": "Harden into living bark and reflect hits.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "luckweaver_special": {
+      "id": "luckweaver_special",
+      "name": "Fortune Twist",
+      "description": "Bend probability for a lucky surge.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "mechanical_construct_special": {
+      "id": "mechanical_construct_special",
+      "name": "Overclock Core",
+      "description": "Push your systems beyond safe limits.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 24,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "mirageborn_special": {
+      "id": "mirageborn_special",
+      "name": "Mirage Split",
+      "description": "Divide into mirages to confuse the foe.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "mutant_special": {
+      "id": "mutant_special",
+      "name": "Mutation Spike",
+      "description": "Trigger a volatile mutation buff.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "nature_spirit_special": {
+      "id": "nature_spirit_special",
+      "name": "Verdant Renewal",
+      "description": "Cleanse afflictions and heal through nature.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "heal",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "neo_human_special": {
+      "id": "neo_human_special",
+      "name": "Target Lock",
+      "description": "Calculate the strike and expose weak points.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 6,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "attack",
+        "elements": [
+          "physical"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "phoenix_reborn_special": {
+      "id": "phoenix_reborn_special",
+      "name": "Ashen Nova",
+      "description": "Explode in flame and reignite your vitality.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "fire"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "pure_human_special": {
+      "id": "pure_human_special",
+      "name": "Adaptive Surge",
+      "description": "Sharpen instincts to boost might and speed.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 6,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "quakeborn_special": {
+      "id": "quakeborn_special",
+      "name": "Seismic Slam",
+      "description": "A ground-shattering blow that stuns.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 30,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "attack",
+        "elements": [
+          "physical"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "riftborn_special": {
+      "id": "riftborn_special",
+      "name": "Rift Lunge",
+      "description": "Pierce the enemy from a spatial tear.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "rune_sentinel_special": {
+      "id": "rune_sentinel_special",
+      "name": "Rune Cage",
+      "description": "Bind the target with sigils and weaken defense.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "arcane"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "sandstrider_special": {
+      "id": "sandstrider_special",
+      "name": "Dust Vortex",
+      "description": "Kick up a blinding storm of sand.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "attack",
+        "elements": [
+          "physical"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "shadow_veil_special": {
+      "id": "shadow_veil_special",
+      "name": "Veil Cloak",
+      "description": "Dissolve into shadow to avoid detection.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 24,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "shadow_walker_special": {
+      "id": "shadow_walker_special",
+      "name": "Umbral Veil",
+      "description": "Slip into shadow and evade retaliation.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 24,
+      "cooldown": 10,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "skybound_special": {
+      "id": "skybound_special",
+      "name": "Gale Dash",
+      "description": "Ride the wind with speed and evasion.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "sparkborn_special": {
+      "id": "sparkborn_special",
+      "name": "Arc Spark",
+      "description": "A crackling spark that jolts the foe.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 6,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "lightning"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "spirit_beast_special": {
+      "id": "spirit_beast_special",
+      "name": "Predator Pounce",
+      "description": "Leap in with a savage stun.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 6,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "attack",
+        "elements": [
+          "physical"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "starseer_special": {
+      "id": "starseer_special",
+      "name": "Stellar Alignment",
+      "description": "Align with the stars to refuel mana.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 15,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "resource",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "stormforged_special": {
+      "id": "stormforged_special",
+      "name": "Thunder Drive",
+      "description": "Drive a bolt through armor.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "lightning"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "sunborn_special": {
+      "id": "sunborn_special",
+      "name": "Solar Aegis",
+      "description": "Radiant light fortifies your defense.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "sunforged_special": {
+      "id": "sunforged_special",
+      "name": "Solar Hammer",
+      "description": "Bring down a blazing hammer blow.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "fire"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "tidecaller_special": {
+      "id": "tidecaller_special",
+      "name": "Riptide",
+      "description": "Crashing tide that slows the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 24,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "ice"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "umbral_oracle_special": {
+      "id": "umbral_oracle_special",
+      "name": "Void Prophecy",
+      "description": "A prophetic strike that clouds the mind.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "undead_awakened_special": {
+      "id": "undead_awakened_special",
+      "name": "Grave Chill",
+      "description": "Entomb the foe in necrotic cold.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 22,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "venomtail_special": {
+      "id": "venomtail_special",
+      "name": "Venom Fang",
+      "description": "Inject a potent toxin.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 20,
+      "cooldown": 6,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "nature"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "verdant_shaper_special": {
+      "id": "verdant_shaper_special",
+      "name": "Thornburst",
+      "description": "Verdant thorns bind and pierce the foe.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 8,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "nature"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "void_walker_special": {
+      "id": "void_walker_special",
+      "name": "Phase Rend",
+      "description": "Slice through space and slow the target.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 7,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "spell",
+        "elements": [
+          "dark"
+        ],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "whisper_fae_special": {
+      "id": "whisper_fae_special",
+      "name": "Whispered Charm",
+      "description": "A silken whisper that enthralls the enemy.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 25,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    },
+    "wild_mutant_special": {
+      "id": "wild_mutant_special",
+      "name": "Wild Surge",
+      "description": "A volatile surge with unpredictable results.",
+      "type": "active",
+      "slotType": "active",
+      "ownerType": "race",
+      "ownerId": "unbound",
+      "costType": "mana",
+      "cost": 22,
+      "cooldown": 9,
+      "resource": "mana",
+      "template": {
+        "category": "Race Ability",
+        "function": "utility",
+        "elements": [],
+        "source": "RaceAbilityRegistry"
+      }
+    }
+  }
+}

@@ -1,17 +1,15 @@
-import { DataRegistry } from "../../../data/DataRegistry.js";
-
 const genderOptions = ["male", "female", "other"];
 
 export default function CreationIdentityPanel({
-  characterName,
-  onNameChange,
   gender,
   onGenderSelect,
   selectedOrigin,
   onOriginSelect,
+  origins = [],
+  recommendedOriginIds = [],
   onAction,
 }) {
-  const origins = DataRegistry.getOrigins();
+  const recommended = new Set(recommendedOriginIds);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -24,33 +22,7 @@ export default function CreationIdentityPanel({
           letterSpacing: "3px",
         }}
       >
-        Genesis Terminal
-      </div>
-      <div>
-        <div
-          style={{
-            color: "var(--holo-cyan)",
-            fontFamily: "monospace",
-            marginBottom: "0.5rem",
-          }}
-        >
-          DESIGNATION
-        </div>
-        <input
-          type="text"
-          value={characterName || ""}
-          onChange={(event) => onNameChange(event.target.value)}
-          aria-label="Character designation"
-          style={{
-            width: "100%",
-            background: "rgba(0, 0, 0, 0.8)",
-            border: "2px solid var(--holo-cyan)",
-            color: "#00F3FF",
-            padding: "0.75rem",
-            fontFamily: "monospace",
-            fontSize: "1rem",
-          }}
-        />
+        Identity Matrix
       </div>
       <div>
         <div
@@ -138,9 +110,16 @@ export default function CreationIdentityPanel({
                   }}
                 >
                   <span style={{ fontWeight: "bold" }}>{origin.name.toUpperCase()}</span>
-                  <span style={{ color: "var(--holo-gold)", fontSize: "0.72rem" }}>
-                    {String(origin.favoredBiome || "neutral").toUpperCase()}
-                  </span>
+                  <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
+                    {recommended.has(origin.id) ? (
+                      <span style={{ color: "#8CE99A", fontSize: "0.66rem", fontWeight: "bold" }}>
+                        SYSTEM MATCH
+                      </span>
+                    ) : null}
+                    <span style={{ color: "var(--holo-gold)", fontSize: "0.72rem" }}>
+                      {String(origin.favoredBiome || "neutral").toUpperCase()}
+                    </span>
+                  </div>
                 </div>
                 <div style={{ color: "rgba(255, 255, 255, 0.72)", lineHeight: 1.4 }}>
                   {origin.description}

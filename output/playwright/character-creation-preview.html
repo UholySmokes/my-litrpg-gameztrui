@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Character Creation Preview</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background:
+          radial-gradient(circle at top, rgba(0, 243, 255, 0.14), transparent 34%),
+          linear-gradient(180deg, #07111f 0%, #02060f 100%);
+      }
+
+      body {
+        min-height: 100vh;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import React from "react";
+      import { createRoot } from "react-dom/client";
+      import "/src/index.css";
+      import "/src/App.css";
+      import CreationNarrativePanel from "/src/ui/panels/CreationNarrativePanel.jsx";
+      import CreationRacePanel from "/src/ui/panels/creation/CreationRacePanel.jsx";
+      import CreationWizardShellPanel from "/src/ui/panels/creation/CreationWizardShellPanel.jsx";
+      import {
+        getCharacterCreationArchetypeSystems,
+        getCharacterCreationClassesByTier,
+        getCharacterCreationOrigins,
+        getCharacterCreationRaces,
+      } from "/packages/game-core/src/characterCreation/CharacterCreationContentPack.js";
+
+      const origins = getCharacterCreationOrigins();
+      const races = getCharacterCreationRaces();
+      const classes = getCharacterCreationClassesByTier(1);
+      const systems = getCharacterCreationArchetypeSystems();
+
+      const selectedOrigin =
+        origins.find((entry) => entry.id === "outlands_exile") || origins[0] || null;
+      const selectedRace =
+        races.find((entry) => entry.id === "elf") || races[0] || null;
+      const selectedClass =
+        classes.find((entry) => entry.id === "mage") || classes[0] || null;
+      const selectedArchetypeSystem =
+        systems.find((entry) => entry.category === "hybrid") || systems[0] || null;
+
+      const steps = [
+        { id: "identity", label: "Identity", status: "done" },
+        { id: "race", label: "Lineage", status: "current" },
+        { id: "class", label: "Doctrine", status: "available" },
+        { id: "profession", label: "Craft", status: "available" },
+        { id: "system", label: "System", status: "available" },
+        { id: "review", label: "Finalize", status: "locked" },
+      ];
+
+      const statusLines = [
+        { label: "Designation locked", active: true },
+        { label: "Origin archived", active: true },
+        { label: "Lineage scan in progress", active: true },
+        { label: "Combat doctrine pending", active: false },
+        { label: "Profession link pending", active: false },
+        { label: "System binding pending", active: false },
+        { label: "Attribute allocation pending", active: false },
+        { label: "Final review pending", active: false },
+      ];
+
+      const preview = React.createElement(
+        "div",
+        {
+          style: {
+            minHeight: "100vh",
+            padding: "32px",
+            boxSizing: "border-box",
+          },
+        },
+        React.createElement(
+          "div",
+          {
+            style: {
+              maxWidth: "1280px",
+              margin: "0 auto",
+              display: "grid",
+              gap: "16px",
+            },
+          },
+          React.createElement(
+            "div",
+            {
+              style: {
+                display: "flex",
+                alignItems: "end",
+                justifyContent: "space-between",
+                gap: "16px",
+                flexWrap: "wrap",
+                color: "var(--text-main)",
+                fontFamily: "monospace",
+              },
+            },
+            React.createElement(
+              "div",
+              null,
+              React.createElement(
+                "div",
+                {
+                  style: {
+                    color: "var(--holo-gold)",
+                    fontSize: "0.78rem",
+                    letterSpacing: "3px",
+                    textTransform: "uppercase",
+                    marginBottom: "6px",
+                  },
+                },
+                "Void Verse Interface Capture",
+              ),
+              React.createElement(
+                "h1",
+                {
+                  style: {
+                    margin: 0,
+                    color: "var(--holo-cyan)",
+                    fontSize: "2rem",
+                    letterSpacing: "2px",
+                    textTransform: "uppercase",
+                  },
+                },
+                "Character Genesis",
+              ),
+            ),
+            React.createElement(
+              "div",
+              {
+                style: {
+                  padding: "10px 14px",
+                  border: "1px solid rgba(0, 243, 255, 0.25)",
+                  borderRadius: "10px",
+                  background: "rgba(0, 0, 0, 0.4)",
+                  color: "var(--text-dim)",
+                  fontSize: "0.78rem",
+                },
+              },
+              "Preview assembled from live UI panels",
+            ),
+          ),
+          React.createElement(
+            "div",
+            {
+              className: "holo-panel",
+              style: {
+                padding: "18px",
+              },
+            },
+            React.createElement(CreationWizardShellPanel, {
+              title: "Character Creation",
+              steps,
+              activeStepId: "race",
+              canBack: true,
+              canNext: true,
+              onBack: () => {},
+              onNext: () => {},
+              onStepSelect: () => {},
+              sidebar: React.createElement(CreationNarrativePanel, {
+                statusLines,
+                typewriterText:
+                  "Lineage crossmatch loaded. Compare racial boons, innate talents, and opening pressure before locking the profile.",
+                syncProgress: 42,
+                selectedOrigin,
+                selectedRace,
+                selectedClass,
+                selectedArchetypeSystem,
+              }),
+              content: React.createElement(CreationRacePanel, {
+                selectedRace,
+                onRaceSelect: () => {},
+                onAction: (fn) => fn?.(),
+              }),
+            }),
+          ),
+        ),
+      );
+
+      createRoot(document.getElementById("root")).render(preview);
+    </script>
+  </body>
+</html>

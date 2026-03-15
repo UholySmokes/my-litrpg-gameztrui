@@ -1,0 +1,322 @@
+[
+  {
+    "id": "archer_precision",
+    "name": "Precision",
+    "type": "passive",
+    "class": "archer",
+    "description": "Increased accuracy with all ranged attacks.",
+    "level": 1
+  },
+  {
+    "id": "archer_eagle_eye",
+    "name": "Eagle Eye",
+    "type": "passive",
+    "class": "archer",
+    "description": "Greatly increased range on attacks.",
+    "level": 1
+  },
+  {
+    "id": "archer_lethal_shots",
+    "name": "Lethal Shots",
+    "type": "passive",
+    "class": "archer",
+    "description": "Increased critical strike chance.",
+    "level": 1
+  },
+  {
+    "id": "archer_dead_eye",
+    "name": "Dead Eye",
+    "type": "passive",
+    "class": "archer",
+    "description": "Critical strike damage increased.",
+    "level": 1
+  },
+  {
+    "id": "archer_quick_draw",
+    "name": "Quick Draw",
+    "type": "passive",
+    "class": "archer",
+    "description": "Faster attack speed with bows.",
+    "level": 1
+  },
+  {
+    "id": "archer_steady_aim",
+    "name": "Steady Aim",
+    "type": "passive",
+    "class": "archer",
+    "description": "Standing still increases damage.",
+    "level": 1
+  },
+  {
+    "id": "archer_improved_steady_shot",
+    "name": "Improved Steady Shot",
+    "type": "passive",
+    "class": "archer",
+    "description": "Steady Shot deals more damage.",
+    "level": 1
+  },
+  {
+    "id": "archer_sharp_shooter",
+    "name": "Sharp Shooter",
+    "type": "passive",
+    "class": "archer",
+    "description": "Ignore a portion of enemy armor.",
+    "level": 1
+  },
+  {
+    "id": "archer_master_marksman",
+    "name": "Master Marksman",
+    "type": "passive",
+    "class": "archer",
+    "description": "Critical hits have chance to proc instant aimed shot.",
+    "level": 1
+  },
+  {
+    "id": "archer_sniper_training",
+    "name": "Sniper Training",
+    "type": "passive",
+    "class": "archer",
+    "description": "Damage increased based on distance to target.",
+    "level": 1
+  },
+  {
+    "id": "archer_hawk_eye_passive",
+    "name": "Hawk Eye",
+    "type": "passive",
+    "class": "archer",
+    "description": "Can spot hidden enemies.",
+    "level": 1
+  },
+  {
+    "id": "archer_careful_aim",
+    "name": "Careful Aim",
+    "type": "passive",
+    "class": "archer",
+    "description": "First shot against full health targets is empowered.",
+    "level": 1
+  },
+  {
+    "id": "archer_bullseye",
+    "name": "Bullseye",
+    "type": "passive",
+    "class": "archer",
+    "description": "Consecutive hits increase damage.",
+    "level": 1
+  },
+  {
+    "id": "archer_improved_barrage",
+    "name": "Improved Barrage",
+    "type": "passive",
+    "class": "archer",
+    "description": "Multi-shot abilities deal more damage.",
+    "level": 1
+  },
+  {
+    "id": "archer_trick_shots",
+    "name": "Trick Shots",
+    "type": "passive",
+    "class": "archer",
+    "description": "Multi-shot abilities have bonus effects.",
+    "level": 1
+  },
+  {
+    "id": "archer_lone_wolf",
+    "name": "Lone Wolf",
+    "type": "passive",
+    "class": "archer",
+    "description": "Increased damage when fighting alone.",
+    "level": 1
+  },
+  {
+    "id": "archer_nimble",
+    "name": "Nimble",
+    "type": "passive",
+    "class": "archer",
+    "description": "Increased dodge chance.",
+    "level": 1
+  },
+  {
+    "id": "archer_wind_runner",
+    "name": "Wind Runner",
+    "type": "passive",
+    "class": "archer",
+    "description": "Increased movement speed.",
+    "level": 1
+  },
+  {
+    "id": "archer_hunters_mark",
+    "name": "Hunters Mark",
+    "type": "passive",
+    "class": "archer",
+    "description": "Marked targets take increased damage from you.",
+    "level": 1
+  },
+  {
+    "id": "archer_explosive_expertise",
+    "name": "Explosive Expertise",
+    "type": "passive",
+    "class": "archer",
+    "description": "Explosive attacks deal more damage.",
+    "level": 1
+  },
+  {
+    "id": "archer_elemental_arrows",
+    "name": "Elemental Arrows",
+    "type": "passive",
+    "class": "archer",
+    "description": "Elemental arrows have stronger effects.",
+    "level": 1
+  },
+  {
+    "id": "archer_penetrating_shots",
+    "name": "Penetrating Shots",
+    "type": "passive",
+    "class": "archer",
+    "description": "Armor piercing is increased.",
+    "level": 1
+  },
+  {
+    "id": "archer_focused",
+    "name": "Focused",
+    "type": "passive",
+    "class": "archer",
+    "description": "Cannot be interrupted while aiming.",
+    "level": 1
+  },
+  {
+    "id": "archer_quick_reload",
+    "name": "Quick Reload",
+    "type": "passive",
+    "class": "archer",
+    "description": "Reduced cooldowns on abilities.",
+    "level": 1
+  },
+  {
+    "id": "archer_bow_mastery",
+    "name": "Bow Mastery",
+    "type": "passive",
+    "class": "archer",
+    "description": "Damage with bows increased.",
+    "level": 1
+  },
+  {
+    "id": "archer_crossbow_mastery",
+    "name": "Crossbow Mastery",
+    "type": "passive",
+    "class": "archer",
+    "description": "Damage with crossbows increased.",
+    "level": 1
+  },
+  {
+    "id": "archer_ammunition_expert",
+    "name": "Ammunition Expert",
+    "type": "passive",
+    "class": "archer",
+    "description": "Special ammunition is more effective.",
+    "level": 1
+  },
+  {
+    "id": "archer_kiting",
+    "name": "Kiting",
+    "type": "passive",
+    "class": "archer",
+    "description": "Can attack while moving with reduced penalty.",
+    "level": 1
+  },
+  {
+    "id": "archer_escape_artist",
+    "name": "Escape Artist",
+    "type": "passive",
+    "class": "archer",
+    "description": "Reduced duration of movement impairing effects.",
+    "level": 1
+  },
+  {
+    "id": "archer_camouflage",
+    "name": "Camouflage",
+    "type": "passive",
+    "class": "archer",
+    "description": "Harder to detect when standing still.",
+    "level": 1
+  },
+  {
+    "id": "archer_survivalist",
+    "name": "Survivalist",
+    "type": "passive",
+    "class": "archer",
+    "description": "Increased stamina and health regeneration.",
+    "level": 1
+  },
+  {
+    "id": "archer_recurve_expertise",
+    "name": "Recurve Expertise",
+    "type": "passive",
+    "class": "archer",
+    "description": "Faster draw speed.",
+    "level": 1
+  },
+  {
+    "id": "archer_heavy_draw",
+    "name": "Heavy Draw",
+    "type": "passive",
+    "class": "archer",
+    "description": "Fully drawn shots deal more damage.",
+    "level": 1
+  },
+  {
+    "id": "archer_tracking",
+    "name": "Tracking",
+    "type": "passive",
+    "class": "archer",
+    "description": "Can track enemies across distances.",
+    "level": 1
+  },
+  {
+    "id": "archer_windreader",
+    "name": "Wind Reader",
+    "type": "passive",
+    "class": "archer",
+    "description": "Compensate for wind, never miss.",
+    "level": 1
+  },
+  {
+    "id": "archer_trophy_hunter",
+    "name": "Trophy Hunter",
+    "type": "passive",
+    "class": "archer",
+    "description": "Bonus rewards from slain enemies.",
+    "level": 1
+  },
+  {
+    "id": "archer_rapid_recovery",
+    "name": "Rapid Recovery",
+    "type": "passive",
+    "class": "archer",
+    "description": "Recover from stuns faster.",
+    "level": 1
+  },
+  {
+    "id": "archer_arrow_recovery",
+    "name": "Arrow Recovery",
+    "type": "passive",
+    "class": "archer",
+    "description": "Chance to recover used ammunition.",
+    "level": 1
+  },
+  {
+    "id": "archer_finishing_blow",
+    "name": "Finishing Blow",
+    "type": "passive",
+    "class": "archer",
+    "description": "Deal bonus damage to low health enemies.",
+    "level": 1
+  },
+  {
+    "id": "archer_legendary_shot",
+    "name": "Legendary Shot",
+    "type": "passive",
+    "class": "archer",
+    "description": "Very rare chance for instant kill shot.",
+    "level": 1
+  }
+]

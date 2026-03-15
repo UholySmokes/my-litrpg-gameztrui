@@ -70,5 +70,16 @@ describe('SystemBuilder Platform Neutrality', () => {
       // Date.now() would produce numbers > 1 trillion
       expect(number).toBeLessThan(1000000);
     });
+
+    it('stores the selected system on the canonical archetypeSystem field', () => {
+      const builder = new SystemBuilder({});
+      const profile = builder.assignArchetype('revival_archive').build();
+
+      expect(profile.archetypeSystem).toMatchObject({
+        id: 'revival_archive',
+        category: 'System',
+      });
+      expect(profile.system).toBeUndefined();
+    });
   });
 });

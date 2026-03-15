@@ -5,6 +5,8 @@ export default function CreationSummaryPanel({
   selectionSummary,
   selectedActiveSkills,
   selectedPassiveSkills,
+  maxActiveSkills = 3,
+  maxPassiveSkills = 6,
   typewriterText,
   syncProgress,
   canFinalize,
@@ -15,6 +17,12 @@ export default function CreationSummaryPanel({
   const raceActiveAbility = selectionSummary.raceActiveAbility;
   const professionSkills = Array.isArray(selectionSummary.professionSkills)
     ? selectionSummary.professionSkills
+    : [];
+  const grantedActiveSkills = Array.isArray(selectionSummary.grantedActiveSkills)
+    ? selectionSummary.grantedActiveSkills
+    : [];
+  const grantedPassiveSkills = Array.isArray(selectionSummary.grantedPassiveSkills)
+    ? selectionSummary.grantedPassiveSkills
     : [];
   const originBiome = selectionSummary.originBiome
     ? String(selectionSummary.originBiome).replace(/_/g, " ")
@@ -183,6 +191,11 @@ export default function CreationSummaryPanel({
             <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
               {selectionSummary.systemDescription}
             </div>
+            {selectionSummary.systemMatchSummary ? (
+              <div style={{ fontSize: "0.75rem", color: "var(--text-dim)", marginTop: "0.35rem", lineHeight: 1.35 }}>
+                {selectionSummary.systemMatchSummary}
+              </div>
+            ) : null}
           </div>
         </div>
         <div
@@ -195,12 +208,48 @@ export default function CreationSummaryPanel({
           <div>
             <div
               style={{
-                color: "var(--holo-gold)",
+                color: "#8CE99A",
                 fontWeight: "bold",
                 marginBottom: "0.25rem",
               }}
             >
-              ACTIVE SKILLS ({selectedActiveSkills.length}/3)
+              SYSTEM-GRANTED
+            </div>
+            <ul
+              style={{
+                margin: 0,
+                paddingLeft: "1rem",
+                color: "var(--text-main)",
+                minHeight: "2.5rem",
+              }}
+            >
+              {grantedActiveSkills.length === 0 && grantedPassiveSkills.length === 0 ? (
+                <li style={{ color: "var(--text-dim)" }}>No automatic system skills.</li>
+              ) : (
+                <>
+                  {grantedActiveSkills.map((skill) => (
+                    <li key={`ga-${skill.id}`}>
+                      <strong>{skill.name}</strong> - Active
+                    </li>
+                  ))}
+                  {grantedPassiveSkills.map((skill) => (
+                    <li key={`gp-${skill.id}`}>
+                      <strong>{skill.name}</strong> - Passive
+                    </li>
+                  ))}
+                </>
+              )}
+            </ul>
+          </div>
+          <div>
+            <div
+              style={{
+              color: "var(--holo-gold)",
+              fontWeight: "bold",
+              marginBottom: "0.25rem",
+            }}
+          >
+              ACTIVE SKILLS ({selectedActiveSkills.length}/{maxActiveSkills})
             </div>
             <ul
               style={{
@@ -222,7 +271,7 @@ export default function CreationSummaryPanel({
                 })
               ) : (
                 <li style={{ color: "var(--text-dim)" }}>
-                  Select 3 active skills.
+                  Select {maxActiveSkills} active skills.
                 </li>
               )}
             </ul>
@@ -230,12 +279,12 @@ export default function CreationSummaryPanel({
           <div>
             <div
               style={{
-                color: "var(--holo-gold)",
-                fontWeight: "bold",
-                marginBottom: "0.25rem",
-              }}
-            >
-              PASSIVE SKILLS ({selectedPassiveSkills.length}/6)
+              color: "var(--holo-gold)",
+              fontWeight: "bold",
+              marginBottom: "0.25rem",
+            }}
+          >
+              PASSIVE SKILLS ({selectedPassiveSkills.length}/{maxPassiveSkills})
             </div>
             <ul
               style={{
@@ -257,7 +306,7 @@ export default function CreationSummaryPanel({
                 })
               ) : (
                 <li style={{ color: "var(--text-dim)" }}>
-                  Select 6 passive skills.
+                  Select {maxPassiveSkills} passive skills.
                 </li>
               )}
             </ul>

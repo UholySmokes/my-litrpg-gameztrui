@@ -1,0 +1,33 @@
+[
+  {
+    "id": "riftborn_special",
+    "name": "Rift Lunge",
+    "description": "Pierce the enemy from a spatial tear.",
+    "cost": 25,
+    "costType": "mana",
+    "cooldown": 7,
+    "target": "enemy",
+    "damage": {
+      "multiplier": 1.3,
+      "isMagic": true,
+      "element": "dark"
+    },
+    "effects": [
+      {
+        "target": "enemy",
+        "id": "slow",
+        "duration": 1,
+        "magnitude": -0.2
+      }
+    ],
+    "template": {
+      "category": "Race Ability",
+      "function": "spell",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [],
+      "source": "RaceAbilityRegistry"
+    }
+  }
+]

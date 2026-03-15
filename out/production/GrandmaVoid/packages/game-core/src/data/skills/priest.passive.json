@@ -1,0 +1,322 @@
+[
+  {
+    "id": "priest_divine_fury",
+    "name": "Divine Fury",
+    "type": "passive",
+    "class": "priest",
+    "description": "Reduces cast time of Smite and Holy Fire.",
+    "level": 1
+  },
+  {
+    "id": "priest_inspiration",
+    "name": "Inspiration",
+    "type": "passive",
+    "class": "priest",
+    "description": "Critical heals reduce damage taken by target.",
+    "level": 1
+  },
+  {
+    "id": "priest_meditation",
+    "name": "Meditation",
+    "type": "passive",
+    "class": "priest",
+    "description": "Mana regeneration continues during casting.",
+    "level": 1
+  },
+  {
+    "id": "priest_holy_concentration",
+    "name": "Holy Concentration",
+    "type": "passive",
+    "class": "priest",
+    "description": "Critical heals increase mana regeneration.",
+    "level": 1
+  },
+  {
+    "id": "priest_serendipity",
+    "name": "Serendipity",
+    "type": "passive",
+    "class": "priest",
+    "description": "Healing spells reduce cast time of next big heal.",
+    "level": 1
+  },
+  {
+    "id": "priest_spirit_of_the_redeemer",
+    "name": "Spirit of the Redeemer",
+    "type": "passive",
+    "class": "priest",
+    "description": "Healing done increased based on Spirit.",
+    "level": 1
+  },
+  {
+    "id": "priest_surge_of_light",
+    "name": "Surge of Light",
+    "type": "passive",
+    "class": "priest",
+    "description": "Healing criticals make Flash Heal instant and free.",
+    "level": 1
+  },
+  {
+    "id": "priest_rapid_renewal",
+    "name": "Rapid Renewal",
+    "type": "passive",
+    "class": "priest",
+    "description": "Renew ticks faster.",
+    "level": 1
+  },
+  {
+    "id": "priest_divine_providence",
+    "name": "Divine Providence",
+    "type": "passive",
+    "class": "priest",
+    "description": "AoE healing increased.",
+    "level": 1
+  },
+  {
+    "id": "priest_blessed_resilience",
+    "name": "Blessed Resilience",
+    "type": "passive",
+    "class": "priest",
+    "description": "Critical hits against you heal you over time.",
+    "level": 1
+  },
+  {
+    "id": "priest_improved_renew",
+    "name": "Improved Renew",
+    "type": "passive",
+    "class": "priest",
+    "description": "Renew healing increased.",
+    "level": 1
+  },
+  {
+    "id": "priest_empowered_healing",
+    "name": "Empowered Healing",
+    "type": "passive",
+    "class": "priest",
+    "description": "Healing spells benefit more from spell power.",
+    "level": 1
+  },
+  {
+    "id": "priest_borrowed_time",
+    "name": "Borrowed Time",
+    "type": "passive",
+    "class": "priest",
+    "description": "Power Word: Shield grants haste.",
+    "level": 1
+  },
+  {
+    "id": "priest_rapture",
+    "name": "Rapture",
+    "type": "passive",
+    "class": "priest",
+    "description": "Power Word: Shield breaking returns mana.",
+    "level": 1
+  },
+  {
+    "id": "priest_soul_warding",
+    "name": "Soul Warding",
+    "type": "passive",
+    "class": "priest",
+    "description": "Power Word: Shield has no cooldown.",
+    "level": 1
+  },
+  {
+    "id": "priest_divine_aegis",
+    "name": "Divine Aegis",
+    "type": "passive",
+    "class": "priest",
+    "description": "Critical heals create absorption shields.",
+    "level": 1
+  },
+  {
+    "id": "priest_grace",
+    "name": "Grace",
+    "type": "passive",
+    "class": "priest",
+    "description": "Healing spells stack a buff increasing healing done.",
+    "level": 1
+  },
+  {
+    "id": "priest_train_of_thought",
+    "name": "Train of Thought",
+    "type": "passive",
+    "class": "priest",
+    "description": "Smite and Heal reduce cooldowns of key abilities.",
+    "level": 1
+  },
+  {
+    "id": "priest_twisted_faith",
+    "name": "Twisted Faith",
+    "type": "passive",
+    "class": "priest",
+    "description": "Shadow damage spells also heal you slightly.",
+    "level": 1
+  },
+  {
+    "id": "priest_darkness",
+    "name": "Darkness",
+    "type": "passive",
+    "class": "priest",
+    "description": "Shadow spell damage increased.",
+    "level": 1
+  },
+  {
+    "id": "priest_shadow_weaving",
+    "name": "Shadow Weaving",
+    "type": "passive",
+    "class": "priest",
+    "description": "Shadow spells increase shadow damage taken by target.",
+    "level": 1
+  },
+  {
+    "id": "priest_mind_melt",
+    "name": "Mind Melt",
+    "type": "passive",
+    "class": "priest",
+    "description": "Mind Blast critical chance increased.",
+    "level": 1
+  },
+  {
+    "id": "priest_pain_and_suffering",
+    "name": "Pain and Suffering",
+    "type": "passive",
+    "class": "priest",
+    "description": "Mind Flay refreshes Shadow Word: Pain.",
+    "level": 1
+  },
+  {
+    "id": "priest_vampiric_embrace",
+    "name": "Vampiric Embrace",
+    "type": "passive",
+    "class": "priest",
+    "description": "Shadow damage heals the priest.",
+    "level": 1
+  },
+  {
+    "id": "priest_shadowy_insight",
+    "name": "Shadowy Insight",
+    "type": "passive",
+    "class": "priest",
+    "description": "Periodic shadow damage can proc instant Mind Blast.",
+    "level": 1
+  },
+  {
+    "id": "priest_phantasm",
+    "name": "Phantasm",
+    "type": "passive",
+    "class": "priest",
+    "description": "Fade removes movement impairing effects.",
+    "level": 1
+  },
+  {
+    "id": "priest_inner_focus",
+    "name": "Inner Focus",
+    "type": "passive",
+    "class": "priest",
+    "description": "Every few spells, one becomes free and cannot be interrupted.",
+    "level": 1
+  },
+  {
+    "id": "priest_binding_heal_mastery",
+    "name": "Binding Heal Mastery",
+    "type": "passive",
+    "class": "priest",
+    "description": "Binding Heal also heals a third target.",
+    "level": 1
+  },
+  {
+    "id": "priest_spirit_shell",
+    "name": "Spirit Shell",
+    "type": "passive",
+    "class": "priest",
+    "description": "Heals on shielded targets add to the shield.",
+    "level": 1
+  },
+  {
+    "id": "priest_angelic_bulwark",
+    "name": "Angelic Bulwark",
+    "type": "passive",
+    "class": "priest",
+    "description": "When below 30% health, gain an absorption shield.",
+    "level": 1
+  },
+  {
+    "id": "priest_body_and_soul",
+    "name": "Body and Soul",
+    "type": "passive",
+    "class": "priest",
+    "description": "Power Word: Shield grants movement speed.",
+    "level": 1
+  },
+  {
+    "id": "priest_desperate_prayer",
+    "name": "Desperate Prayer",
+    "type": "passive",
+    "class": "priest",
+    "description": "Periodically gain a free self-heal when damaged.",
+    "level": 1
+  },
+  {
+    "id": "priest_spectral_guise",
+    "name": "Spectral Guise",
+    "type": "passive",
+    "class": "priest",
+    "description": "Taking damage while faded creates a decoy.",
+    "level": 1
+  },
+  {
+    "id": "priest_void_entropy",
+    "name": "Void Entropy",
+    "type": "passive",
+    "class": "priest",
+    "description": "Shadow damage over time effects last longer.",
+    "level": 1
+  },
+  {
+    "id": "priest_from_darkness_comes_light",
+    "name": "From Darkness, Comes Light",
+    "type": "passive",
+    "class": "priest",
+    "description": "Shadow damage has a chance to make a heal instant.",
+    "level": 1
+  },
+  {
+    "id": "priest_divine_insight",
+    "name": "Divine Insight",
+    "type": "passive",
+    "class": "priest",
+    "description": "Various spells can trigger powerful bonuses.",
+    "level": 1
+  },
+  {
+    "id": "priest_power_infusion",
+    "name": "Power Infusion",
+    "type": "passive",
+    "class": "priest",
+    "description": "Periodically enter a state of increased casting speed.",
+    "level": 1
+  },
+  {
+    "id": "priest_lightwell_renew",
+    "name": "Lightwell Renew",
+    "type": "passive",
+    "class": "priest",
+    "description": "Lightwell placed heals persist longer.",
+    "level": 1
+  },
+  {
+    "id": "priest_echo_of_light",
+    "name": "Echo of Light",
+    "type": "passive",
+    "class": "priest",
+    "description": "Direct heals leave a heal over time effect.",
+    "level": 1
+  },
+  {
+    "id": "priest_heavenly_voice",
+    "name": "Heavenly Voice",
+    "type": "passive",
+    "class": "priest",
+    "description": "Divine Hymn healing increased.",
+    "level": 1
+  }
+]

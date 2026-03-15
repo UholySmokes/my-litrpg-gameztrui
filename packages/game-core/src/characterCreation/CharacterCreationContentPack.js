@@ -5,6 +5,7 @@ import skillSummariesData from "../data/generated/character-creation/skill-summa
 import classAbilitySummariesData from "../data/generated/character-creation/class-ability-summaries.json" with { type: "json" };
 import raceAbilitySummariesData from "../data/generated/character-creation/race-ability-summaries.json" with { type: "json" };
 import archetypeSystemsData from "../data/generated/character-creation/archetype-systems.json" with { type: "json" };
+import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
 
 function cloneValue(value) {
   if (value == null) return value;
@@ -81,6 +82,59 @@ const ARCHETYPE_SYSTEM_INDEX = new Map(
     .filter((entry) => typeof entry?.id === "string")
     .map((entry) => [entry.id, entry]),
 );
+
+function mergePreferredList(primary, fallback) {
+  if (Array.isArray(primary)) return cloneList(primary);
+  if (Array.isArray(fallback)) return cloneList(fallback);
+  return [];
+}
+
+function hydrateArchetypeSystem(entry) {
+  if (!entry || typeof entry !== "object" || typeof entry.id !== "string") {
+    return null;
+  }
+
+  const generated = cloneValue(entry);
+  const live = getArchetypeSystemById(entry.id);
+  if (!live || typeof live !== "object") {
+    return generated;
+  }
+
+  const liveValue = cloneValue({
+    ...live,
+  });
+
+  return {
+    ...liveValue,
+    ...generated,
+    coreLoop: mergePreferredList(generated.coreLoop, liveValue.coreLoop),
+    progression: mergePreferredList(generated.progression, liveValue.progression),
+    narrativeHooks: mergePreferredList(generated.narrativeHooks, liveValue.narrativeHooks),
+    questHooks: mergePreferredList(generated.questHooks, liveValue.questHooks),
+    tags: mergePreferredList(generated.tags, liveValue.tags),
+    possibleUses: mergePreferredList(generated.possibleUses, liveValue.possibleUses),
+    limits: mergePreferredList(generated.limits, liveValue.limits),
+    costs: mergePreferredList(generated.costs, liveValue.costs),
+    worldCompatibility: mergePreferredList(
+      generated.worldCompatibility,
+      liveValue.worldCompatibility,
+    ),
+    factionReactions: mergePreferredList(
+      generated.factionReactions,
+      liveValue.factionReactions,
+    ),
+    rarity: generated.rarity ?? liveValue.rarity ?? null,
+    stability: generated.stability ?? liveValue.stability ?? null,
+    selectionWeight: generated.selectionWeight ?? liveValue.selectionWeight ?? null,
+    archetypeResource: generated.archetypeResource || liveValue.archetypeResource || null,
+    narrativeTone: generated.narrativeTone || liveValue.narrativeTone || null,
+    progressionImpact: generated.progressionImpact || liveValue.progressionImpact || null,
+    characterCreation: generated.characterCreation || liveValue.characterCreation || null,
+    quality: generated.quality || liveValue.quality || null,
+    implementationProfile:
+      generated.implementationProfile || liveValue.implementationProfile || null,
+  };
+}
 
 function isSelectableCreationSystem(entry, platform = "") {
   const ordering =
@@ -167,7 +221,10 @@ export function getCharacterCreationSkillReferenceById(skillId) {
 }
 
 export function getCharacterCreationArchetypeSystems() {
-  return cloneList((Array.isArray(archetypeSystemsData) ? archetypeSystemsData : []).filter((entry) => isSelectableCreationSystem(entry)));
+  return (Array.isArray(archetypeSystemsData) ? archetypeSystemsData : [])
+    .filter((entry) => isSelectableCreationSystem(entry))
+    .map((entry) => hydrateArchetypeSystem(entry))
+    .filter(Boolean);
 }
 
 export function getCharacterCreationArchetypeSystemsByCategory(category) {
@@ -180,5 +237,5 @@ export function getCharacterCreationArchetypeSystemsByCategory(category) {
 export function getCharacterCreationArchetypeSystemById(systemId) {
   if (!systemId) return null;
   const entry = ARCHETYPE_SYSTEM_INDEX.get(systemId) || null;
-  return isSelectableCreationSystem(entry) ? cloneValue(entry) : null;
+  return isSelectableCreationSystem(entry) ? hydrateArchetypeSystem(entry) : null;
 }

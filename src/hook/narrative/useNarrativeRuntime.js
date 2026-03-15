@@ -27,17 +27,18 @@ import {
   buildActionSuggestions as buildActionSuggestionsFlow,
   buildSummaryPrompt as buildSummaryPromptFlow,
   inferMood as inferMoodFlow,
+  resolveActionSuggestions as resolveActionSuggestionsFlow,
   shouldRefreshSummary as shouldRefreshSummaryFlow,
 } from "./narrativeSuggestions.js";
 import {
   DEFAULT_ACTION_SUGGESTIONS,
   STREAM_PLACEHOLDER_TEXT,
 } from "./narrativeSuggestions.js";
-import { buildFallbackNarrative } from "./fallbackNarrative.js";
 import {
   collectNarrativeOutcomeNotes,
   mergeSuggestedQuestIntoState,
 } from "./narrativeOutcomePipeline.js";
+import { resolveNarrativeRuntimeOutcome } from "./narrativeRuntimeOutcome.js";
 import {
   applyNarrativeEntryToState,
   createInitialNarrativeState,
@@ -138,7 +139,11 @@ export function useNarrative(
   );
 
   const streamNarrative = useCallback(
-    async (prompt, prevStateForFallback, { mode } = {}) => {
+    async (
+      prompt,
+      prevStateForFallback,
+      { mode, userInput: turnUserInput, actionResult } = {},
+    ) => {
       if (streamAbortRef.current) {
         streamAbortRef.current.abort();
       }
@@ -168,40 +173,47 @@ export function useNarrative(
             );
           },
         });
+        const resolvedResult = resolveNarrativeRuntimeOutcome({
+          aiResult: result,
+          state: prevStateForFallback,
+          userInput: turnUserInput,
+          actionResult,
+        });
+        setActionSuggestions(resolvedResult.suggestions);
 
         setState((prevState) =>
           replaceNarrativeEntryInState(prevState, streamEntryId, {
-            text: result.narrative,
-            source: "ai",
-            mood: inferMoodFlow(result.narrative),
+            text: resolvedResult.narrative,
+            source: resolvedResult.source,
+            mood: resolvedResult.mood,
           }),
         );
 
         await maybeRefreshSummary({
           stateSnapshot: prevStateForFallback,
-          appendedLine: result.narrative,
+          appendedLine: resolvedResult.narrative,
         });
 
-        return result;
+        return resolvedResult;
       } catch (err) {
         if (err?.name === "AbortError") throw err;
         console.error("Stream narrative failed:", err);
         fallbackCounterRef.current += 1;
-        const fallbackText = buildFallbackNarrative({
+        const fallbackResult = resolveNarrativeRuntimeOutcome({
           state: prevStateForFallback,
+          userInput: turnUserInput,
+          actionResult,
           variantSeed: fallbackCounterRef.current,
         });
+        setActionSuggestions(fallbackResult.suggestions);
         setState((prevState) =>
           replaceNarrativeEntryInState(prevState, streamEntryId, {
-            text: fallbackText,
-            source: "fallback",
+            text: fallbackResult.narrative,
+            source: fallbackResult.source,
+            mood: fallbackResult.mood,
           }),
         );
-        return {
-          narrative: fallbackText,
-          mood: "neutral",
-          suggestions: ["Look around", "Check inventory", "Continue"],
-        };
+        return fallbackResult;
       } finally {
         if (streamAbortRef.current === controller) {
           streamAbortRef.current = null;
@@ -267,7 +279,11 @@ export function useNarrative(
                 nextUserInput,
                 openingActionResult,
               );
-              await streamNarrative(prompt, resolvedState, { mode });
+              await streamNarrative(prompt, resolvedState, {
+                mode,
+                userInput: nextUserInput,
+                actionResult: openingActionResult,
+              });
             } catch (err) {
               if (err?.name === "AbortError") return;
               console.error("Opening choice narrative generation failed:", err);
@@ -288,17 +304,24 @@ export function useNarrative(
           addSystemMessage(`Action failed: ${reason}`, "system");
 
           try {
-            const failurePrompt = assemblePrompt(currentState, nextUserInput, {
+            const failedActionResult = {
               success: false,
               actionType: action?.type,
               reason,
               description: `Attempted: ${nextUserInput}`,
+            };
+            const failurePrompt = assemblePrompt(currentState, nextUserInput, {
+              ...failedActionResult,
             });
             const mode = resolvePromptMode(currentState, {
               success: false,
               actionType: action?.type,
             });
-            await streamNarrative(failurePrompt, currentState, { mode });
+            await streamNarrative(failurePrompt, currentState, {
+              mode,
+              userInput: nextUserInput,
+              actionResult: failedActionResult,
+            });
           } catch (err) {
             if (err?.name === "AbortError") return;
             console.error("AI narrative generation failed:", err);
@@ -355,7 +378,11 @@ export function useNarrative(
           const promptState = actionResult.readOnly ? currentState : newState;
           const mode = resolvePromptMode(promptState, actionResult);
           const prompt = assemblePrompt(promptState, nextUserInput, actionResult);
-          await streamNarrative(prompt, promptState, { mode });
+          await streamNarrative(prompt, promptState, {
+            mode,
+            userInput: nextUserInput,
+            actionResult,
+          });
 
           setState((prevState) => {
             if (typeof evaluateQuestProgress === "function") {
@@ -416,14 +443,20 @@ export function useNarrative(
           aiResponse = await generateInitialNarrative(prompt);
           setInitialNarrativeCache(cacheKey, aiResponse);
         }
+        const initialResult = resolveNarrativeRuntimeOutcome({
+          aiResult: aiResponse,
+          state: currentState,
+          isInitial: true,
+        });
 
         const seededAt = SimBridge.now();
         const seededState = createInitialNarrativeState(
           currentState,
-          aiResponse.narrative,
+          initialResult.narrative,
           {
-            source: "ai",
+            source: initialResult.source,
             timestamp: seededAt,
+            mood: initialResult.mood,
           },
         );
 
@@ -434,12 +467,17 @@ export function useNarrative(
           }
           return resolved;
         });
-        setActionSuggestions(buildActionSuggestionsFlow(seededState));
+        setActionSuggestions(
+          resolveActionSuggestionsFlow({
+            preferredSuggestions: initialResult.suggestions,
+            fallbackSuggestions: buildActionSuggestionsFlow(seededState),
+          }),
+        );
       } catch (err) {
         console.error("Error generating initial narrative:", err);
         setError(err.message || "Failed to generate initial narrative.");
         fallbackCounterRef.current += 1;
-        const fallbackNarrative = buildFallbackNarrative({
+        const fallbackResult = resolveNarrativeRuntimeOutcome({
           state: currentState,
           isInitial: true,
           variantSeed: fallbackCounterRef.current,
@@ -447,18 +485,20 @@ export function useNarrative(
         setState((prevState) => {
           const nextState = applyNarrativeEntryToState(prevState, {
             type: "narrative",
-            text: fallbackNarrative,
+            text: fallbackResult.narrative,
             timestamp: SimBridge.now(),
-            source: "fallback",
+            source: fallbackResult.source,
+            mood: fallbackResult.mood,
           });
           return {
             ...nextState,
             narrative: {
               ...nextState.narrative,
-              summary: fallbackNarrative,
+              summary: fallbackResult.narrative,
             },
           };
         });
+        setActionSuggestions(fallbackResult.suggestions);
       } finally {
         busyRef.current = false;
         setIsLoading(false);

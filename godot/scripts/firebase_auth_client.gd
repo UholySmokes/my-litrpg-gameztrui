@@ -5,6 +5,7 @@ signal auth_state_changed(signed_in: bool, safe_mode: bool)
 
 @export var api_key: String = ""
 @export var clock_skew_seconds: int = 60
+@export var runtime_mode: String = "online"
 
 var id_token: String = ""
 var refresh_token: String = ""
@@ -14,6 +15,9 @@ var safe_mode_active: bool = true
 
 
 func sign_in_anonymously() -> bool:
+	if _is_local_mode():
+		_ensure_local_session()
+		return true
 	if api_key.is_empty():
 		_set_safe_mode(true)
 		return false
@@ -41,6 +45,9 @@ func sign_in_anonymously() -> bool:
 
 
 func refresh_id_token() -> bool:
+	if _is_local_mode():
+		_ensure_local_session()
+		return true
 	if api_key.is_empty() or refresh_token.is_empty():
 		_set_safe_mode(true)
 		return false
@@ -67,6 +74,9 @@ func refresh_id_token() -> bool:
 
 
 func ensure_session() -> bool:
+	if _is_local_mode():
+		_ensure_local_session()
+		return true
 	var now_unix := int(Time.get_unix_time_from_system())
 	if id_token.is_empty():
 		return await sign_in_anonymously()
@@ -76,11 +86,16 @@ func ensure_session() -> bool:
 
 
 func get_id_token() -> String:
+	if _is_local_mode():
+		_ensure_local_session()
+		return id_token
 	var ok := await ensure_session()
 	return id_token if ok else ""
 
 
 func get_auth_header() -> String:
+	if _is_local_mode():
+		_ensure_local_session()
 	if id_token.is_empty():
 		return ""
 	return "Bearer %s" % id_token
@@ -119,6 +134,18 @@ func _set_safe_mode(value: bool) -> void:
 		return
 	safe_mode_active = value
 	auth_state_changed.emit(not id_token.is_empty() and not safe_mode_active, safe_mode_active)
+
+
+func _is_local_mode() -> bool:
+	return runtime_mode.strip_edges().to_lower() == "singleplayer_local"
+
+
+func _ensure_local_session() -> void:
+	id_token = "local-singleplayer"
+	refresh_token = "local-singleplayer"
+	local_id = "local-singleplayer"
+	expires_at_unix = int(Time.get_unix_time_from_system()) + 315360000
+	_set_safe_mode(false)
 
 
 func _request_json(

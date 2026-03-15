@@ -1,4 +1,0 @@
-interface:
-  display_name: "LitRPG Implementation Squad"
-  short_description: "4-role engineering implementation workflow"
-  default_prompt: "Use $litrpg-implementation-squad to implement a new game mechanic with a 4-person code review chatlog."

@@ -10,29 +10,31 @@ import {
 } from "../../src/core/playerProfile.js";
 
 const STEPS = {
-  IDENTITY: 1,
-  RACE: 2,
-  CLASS: 3,
-  MULTICLASS: 4,
-  PROFESSION: 5,
-  ARCHETYPE: 6,
-  ATTRIBUTES: 7,
-  SKILLS: 8,
-  PERKS: 9,
-  STARTER_TREE: 10,
-  ALIGNMENT: 11,
-  REVIEW: 12,
+  NAME: 1,
+  ARCHETYPE: 2,
+  IDENTITY: 3,
+  RACE: 4,
+  CLASS: 5,
+  MULTICLASS: 6,
+  PROFESSION: 7,
+  ATTRIBUTES: 8,
+  SKILLS: 9,
+  PERKS: 10,
+  STARTER_TREE: 11,
+  ALIGNMENT: 12,
+  REVIEW: 13,
 };
 
 describe("character creation wizard flow", () => {
   it("skips advanced-only phases for first-time characters", () => {
     const flow = buildCreationStepSequence(STEPS, false);
     expect(flow.map((entry) => entry.id)).toEqual([
+      "name",
+      "system",
       "identity",
       "race",
       "class",
       "profession",
-      "system",
       "attributes",
       "skills",
       "perks",
@@ -44,12 +46,13 @@ describe("character creation wizard flow", () => {
   it("includes multiclass and starter tree after unlock", () => {
     const flow = buildCreationStepSequence(STEPS, true);
     expect(flow.map((entry) => entry.id)).toEqual([
+      "name",
+      "system",
       "identity",
       "race",
       "class",
       "multiclass",
       "profession",
-      "system",
       "attributes",
       "skills",
       "perks",
@@ -62,18 +65,19 @@ describe("character creation wizard flow", () => {
   it("computes sync progress from visible steps only", () => {
     const flow = buildCreationStepSequence(STEPS, false);
     const progress = calculateCreationSyncProgress(flow, {
+      name: true,
+      system: true,
       identity: true,
       race: true,
       class: true,
       profession: true,
-      system: true,
       attributes: false,
       skills: false,
       perks: false,
       alignment: false,
       review: false,
     });
-    expect(progress).toBe(56);
+    expect(progress).toBe(60);
   });
 });
 

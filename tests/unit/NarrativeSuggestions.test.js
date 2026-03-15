@@ -3,6 +3,7 @@ import {
   buildActionSuggestions,
   buildSummaryPrompt,
   computeDominantMood,
+  resolveActionSuggestions,
 } from "../../src/hook/narrative/narrativeSuggestions.js";
 
 describe("narrative suggestion helpers", () => {
@@ -35,5 +36,24 @@ describe("narrative suggestion helpers", () => {
         { text: "The enemy looms over you." },
       ]),
     ).toBe("tense");
+  });
+
+  it("prefers story-specific suggestions and falls back deterministically when empty", () => {
+    expect(
+      resolveActionSuggestions({
+        preferredSuggestions: ["follow the whisper", { t: "ask about the sigil", w: 0.8 }],
+        fallbackSuggestions: [{ t: "check status", w: 0.9 }],
+      }),
+    ).toEqual([
+      { t: "follow the whisper", w: 1 },
+      { t: "ask about the sigil", w: 0.8 },
+    ]);
+
+    expect(
+      resolveActionSuggestions({
+        preferredSuggestions: [],
+        fallbackSuggestions: [{ t: "check status", w: 0.9 }],
+      }),
+    ).toEqual([{ t: "check status", w: 0.9 }]);
   });
 });

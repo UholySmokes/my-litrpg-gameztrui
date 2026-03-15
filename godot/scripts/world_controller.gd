@@ -51,6 +51,7 @@ var _sync_in_flight: bool = false
 var _last_savepoint_seq: int = 0
 var _last_checkpoint_written_seq: int = 0
 var _runtime_config: Dictionary = {}
+var _runtime_mode: String = "online"
 var _telemetry_session_id: String = ""
 var _telemetry_build_id: String = "godot-unknown"
 var _last_story_context_key: String = ""
@@ -62,6 +63,7 @@ var _perf_map_transitions: int = 0
 var _last_perf_map_id: String = ""
 var _creating_character: bool = false
 var _player_profile: Dictionary = {}
+var _current_character_data: Dictionary = {}
 var _last_pointer_move_ms: int = 0
 
 
@@ -134,7 +136,8 @@ func _ready() -> void:
 	_sync_client.sync_rejected.connect(_on_sync_rejected)
 	await _auth_client.ensure_session()
 	await _flush_telemetry_if_needed()
-	_queue_story_refresh()
+	if not _creating_character:
+		_queue_story_refresh()
 
 	_flush_timer = Timer.new()
 	_flush_timer.one_shot = false
@@ -146,6 +149,7 @@ func _ready() -> void:
 
 func _on_character_creation_completed(character_data: Dictionary) -> void:
 	_creating_character = false
+	_current_character_data = character_data.duplicate(true)
 	_player_profile["characters_created"] = int(_player_profile.get("characters_created", 0)) + 1
 	_player_profile["last_creation_mode"] = String(character_data.get("mode", "basic"))
 	_save_player_profile(_player_profile)
@@ -160,6 +164,11 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 	var start_map: String = String(cc_cfg.get("startMapAfterCreation", _current_map_id))
 	if not start_map.is_empty():
 		_current_map_id = start_map
+	_current_character_data["mapId"] = _current_map_id
+	_current_character_data["playerPos"] = {
+		"x": _get_player_tile().x,
+		"y": _get_player_tile().y,
+	}
 
 	# show world elements
 	_player.visible = true
@@ -170,12 +179,11 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 	_apply_sprite_fallback_visibility()
 	_render_story()
 
-	# send character data to backend
 	if _sync_client and _sync_client.has_method("send_command"):
 		_client_seq += 1
 		var command_response: Dictionary = await _sync_client.send_command(
 			"create_character",
-			character_data,
+			_current_character_data,
 			run_id,
 			_client_seq,
 			_content_version
@@ -200,10 +208,13 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 				}
 			)
 		else:
+			var canonical_state_value: Variant = command_body.get("canonicalState", {})
+			if typeof(canonical_state_value) == TYPE_DICTIONARY:
+				_apply_canonical_state(canonical_state_value)
 			_enqueue_telemetry(
-				"character_create_synced",
+				"character_create_synced" if not _is_local_runtime() else "character_create_local",
 				"info",
-				"character_creation_command_accepted",
+				"character_creation_command_accepted" if not _is_local_runtime() else "character_creation_local_seeded",
 				{
 					"seq": _client_seq,
 				}
@@ -220,6 +231,7 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 		}
 	)
 
+	_queue_story_refresh()
 	print("=== Transitioning to gameplay after character creation ===")
 
 
@@ -394,7 +406,10 @@ func _build_commit_envelope(trigger_id: String, def: Dictionary) -> Dictionary:
 
 func _handle_sync_response(response: Dictionary) -> void:
 	if not bool(response.get("http_ok", false)):
-		_prose_panel.append_line("Sync unavailable. Local traversal continues in safe mode.")
+		if _is_local_runtime():
+			_prose_panel.append_line("Local world state could not be refreshed.")
+		else:
+			_prose_panel.append_line("Sync unavailable. Local traversal continues in safe mode.")
 		_enqueue_telemetry(
 			"sync_response",
 			"error",
@@ -451,17 +466,23 @@ func _handle_sync_response(response: Dictionary) -> void:
 func _reconcile_from_pull() -> void:
 	var pull_response: Dictionary = await _sync_client.pull(run_id, 0)
 	if not bool(pull_response.get("http_ok", false)):
-		_prose_panel.append_line("Reconcile pull failed; staying in local safe mode.")
+		_prose_panel.append_line(
+			"Local save reload failed." if _is_local_runtime() else "Reconcile pull failed; staying in local safe mode."
+		)
 		return
 	var body: Dictionary = pull_response.get("body", {})
 	if not bool(body.get("ok", false)):
-		_prose_panel.append_line("Reconcile pull returned no canonical state.")
+		_prose_panel.append_line(
+			"Local save returned no world state." if _is_local_runtime() else "Reconcile pull returned no canonical state."
+		)
 		return
 	var canonical: Dictionary = body.get("canonicalState", {})
 	if typeof(canonical) == TYPE_DICTIONARY and not canonical.is_empty():
 		_apply_canonical_state(canonical)
 	_trigger_queue.clear_pending()
-	_prose_panel.append_line("State reconciled to canonical sync tip.")
+	_prose_panel.append_line(
+		"Loaded the latest local save state." if _is_local_runtime() else "State reconciled to canonical sync tip."
+	)
 
 
 func _apply_canonical_state(canonical: Dictionary) -> void:
@@ -474,10 +495,16 @@ func _apply_canonical_state(canonical: Dictionary) -> void:
 	_set_player_tile(tile)
 	_client_seq = int(canonical.get("seq", _client_seq))
 	_quest_flags = canonical.get("questFlags", {})
+	var canonical_character_value: Variant = canonical.get("character", canonical.get("activeCharacter", {}))
+	if typeof(canonical_character_value) == TYPE_DICTIONARY and not Dictionary(canonical_character_value).is_empty():
+		_current_character_data = Dictionary(canonical_character_value).duplicate(true)
 	var entity_states: Dictionary = canonical.get("entityStates", {})
 	var savepoint: Dictionary = entity_states.get("lastSavepoint", {})
 	if typeof(savepoint) == TYPE_DICTIONARY:
 		_last_savepoint_seq = int(savepoint.get("seq", _last_savepoint_seq))
+	var active_character: Dictionary = entity_states.get("activeCharacter", {})
+	if not active_character.is_empty():
+		_current_character_data = active_character.duplicate(true)
 	_update_scene_for_map()
 	_render_story()
 	_queue_story_refresh()
@@ -625,6 +652,8 @@ func _render_story() -> void:
 func _queue_story_refresh() -> void:
 	if _story_client == null:
 		return
+	if _creating_character:
+		return
 	var context_key := _story_context_key()
 	if context_key == _last_story_context_key:
 		return
@@ -642,6 +671,8 @@ func _refresh_story_for_context(context_key: String) -> void:
 		"mapId": _current_map_id,
 		"clientSeq": _client_seq,
 		"questFlags": _quest_flags.duplicate(true),
+		"character": _current_character_data.duplicate(true),
+		"systemSummary": _get_current_system_summary(),
 	}
 	var prompt := _build_story_prompt(fallback)
 	var mode := String(fallback.get("mode", "exploration"))
@@ -666,11 +697,12 @@ func _refresh_story_for_context(context_key: String) -> void:
 
 
 func _story_context_key() -> String:
-	return "%s|%d|%d|%d" % [
+	return "%s|%d|%d|%d|%s" % [
 		_current_map_id,
 		int(bool(_quest_flags.get("slice_intro_seen", false))),
 		int(bool(_quest_flags.get("quest_tutorial_started", false))),
 		int(bool(_quest_flags.get("quest_tutorial_encounter_resolved", false))),
+		String(_current_character_data.get("archetypeSystemId", "")),
 	]
 
 
@@ -710,7 +742,11 @@ func _fallback_story_payload() -> Dictionary:
 		}
 	return {
 		"title": "Arrival",
-		"body": "Walk across the square. Trigger commits are sparse and server-validated.",
+		"body": (
+			"Walk across the square. Save with F and load with L from your local singleplayer state."
+			if _is_local_runtime()
+			else "Walk across the square. Trigger commits are sparse and server-validated."
+		),
 		"mode": "exploration",
 		"suggestions": [
 			{"t": "walk the square", "w": 1.0},
@@ -728,6 +764,18 @@ func _build_story_prompt(fallback: Dictionary) -> String:
 	lines.append("storyState=%s" % String(fallback.get("title", "Arrival")))
 	lines.append("fallbackHint=%s" % String(fallback.get("body", "")))
 	lines.append("questFlags=%s" % JSON.stringify(_quest_flags))
+	var character_name := String(_current_character_data.get("name", "")).strip_edges()
+	if not character_name.is_empty():
+		lines.append("characterName=%s" % character_name)
+	var system_name := String(Dictionary(_current_character_data.get("archetypeSystem", {})).get("name", ""))
+	if not system_name.is_empty():
+		lines.append("systemName=%s" % system_name)
+	var system_summary := _get_current_system_summary()
+	if not system_summary.is_empty():
+		lines.append("systemSummary=%s" % system_summary)
+	lines.append(
+		"saveMode=%s" % ("local-singleplayer" if _is_local_runtime() else "online-sync")
+	)
 	return "\n".join(lines)
 
 
@@ -917,8 +965,14 @@ func _on_sync_rejected(_payload: Dictionary) -> void:
 
 
 func _apply_runtime_config(config: Dictionary) -> void:
+	_runtime_mode = String(config.get("runtimeMode", "online")).strip_edges().to_lower()
+	if _runtime_mode.is_empty():
+		_runtime_mode = "online"
+	if _auth_client != null:
+		_auth_client.runtime_mode = _runtime_mode
 	if _sync_client == null:
 		return
+	_sync_client.runtime_mode = _runtime_mode
 	var api_base_url := String(config.get("apiBaseUrl", "")).strip_edges()
 	var configured_build := String(config.get("buildId", _telemetry_build_id)).strip_edges()
 	if not configured_build.is_empty():
@@ -938,6 +992,7 @@ func _apply_runtime_config(config: Dictionary) -> void:
 		_sync_client.sync_pull_path = pull_path
 
 	if _story_client != null:
+		_story_client.runtime_mode = _runtime_mode
 		if not api_base_url.is_empty():
 			_story_client.api_base_url = api_base_url
 		var story_start_path := _normalize_api_path(
@@ -973,6 +1028,8 @@ func _enqueue_telemetry(
 
 
 func _flush_telemetry_if_needed() -> void:
+	if _is_local_runtime():
+		return
 	if _telemetry_reporter == null:
 		return
 	if not _telemetry_reporter.has_pending():
@@ -1031,3 +1088,18 @@ func _hash_manifest(manifest: Dictionary) -> String:
 
 func _iso_now() -> String:
 	return Time.get_datetime_string_from_system(true).replace(" ", "T") + "Z"
+
+
+func _is_local_runtime() -> bool:
+	return _runtime_mode == "singleplayer_local"
+
+
+func _get_current_system_summary() -> String:
+	var system_value: Variant = _current_character_data.get("archetypeSystem", {})
+	if typeof(system_value) == TYPE_DICTIONARY:
+		var system_entry: Dictionary = system_value
+		var summary := String(system_entry.get("summary", "")).strip_edges()
+		if not summary.is_empty():
+			return summary
+		return String(system_entry.get("name", "")).strip_edges()
+	return ""

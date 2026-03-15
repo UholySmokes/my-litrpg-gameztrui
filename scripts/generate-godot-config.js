@@ -8,10 +8,11 @@ const DIST_CONFIG_PATH = path.resolve(process.cwd(), "dist", "runtime-config.js"
 const PUBLIC_CONFIG_PATH = path.resolve(process.cwd(), "public", "runtime-config.js");
 const DEFAULT_API_BASE_BY_PROFILE = Object.freeze({
 	local: "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api",
+	singleplayer_local: "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api",
 	production:
 		"https://us-central1-my-litrpg-gameztrui-3416-da75c.cloudfunctions.net/api",
 });
-const SUPPORTED_PROFILES = new Set(["local", "production"]);
+const SUPPORTED_PROFILES = new Set(["local", "production", "singleplayer_local"]);
 
 function normalizeConfigValue(value) {
 	return String(value || "").trim();
@@ -156,6 +157,7 @@ function buildGodotConfig({ runtimeConfig, source, profile, explicitApiBase }) {
 		generatedAt: new Date().toISOString(),
 		source,
 		profile,
+		runtimeMode: profile === "singleplayer_local" ? "singleplayer_local" : "online",
 		buildId: envBuildId || fileBuildId || "godot-dev",
 		apiBaseUrl: safeApiBaseUrl,
 		narrateEndpoint: normalizeRelativeApiPath(

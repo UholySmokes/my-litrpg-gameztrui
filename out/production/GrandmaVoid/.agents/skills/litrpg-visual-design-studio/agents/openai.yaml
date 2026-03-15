@@ -1,4 +1,0 @@
-interface:
-  display_name: "LitRPG Visual Design Studio"
-  short_description: "4-role LitRPG graphics and UI design workflow"
-  default_prompt: "Use $litrpg-visual-design-studio to design a LitRPG visual asset with Val, Kael, Jax, and Elena."

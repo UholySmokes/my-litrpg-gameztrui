@@ -776,7 +776,7 @@ This is the maintained todo list for the design and implementation-prep phase. I
 - [x] Draft detailed descriptions and possible uses for the starter `Framework` category set.
 - [x] Draft detailed descriptions and possible uses for the starter `Privilege` category set.
 - [x] Draft detailed descriptions and possible uses for the starter `Overlay` category set.
-- [ ] Rewrite or expand individual entry descriptions to meet the new standard across the full repo library.
+- [x] Rewrite or expand individual entry descriptions to meet the new standard across the full repo library.
 - [x] Rewrite the starter `System` source set in `systems.json` to the new authoring standard and validate all 16 starter entries cleanly.
 - [x] Rewrite the starter `Framework`, `Privilege`, and `Overlay` source sets to the new authoring standard.
 - [x] Rewrite the starter `Path` source set in `paths.json` and validate all 5 starter path entries cleanly.
@@ -784,7 +784,10 @@ This is the maintained todo list for the design and implementation-prep phase. I
 - [x] Rewrite the remaining non-starter `Framework` entries so the full `Framework` category validates `16 / 16` in strict authoring mode.
 - [x] Rewrite the remaining non-starter `Authority` entries so the full `Authority` category validates `27 / 27` in strict authoring mode.
 - [x] Rewrite the first non-starter `System` cluster (`gacha_reliquary`, `stat_purchase_contract`, `check_in_rewards_ledger`, `luck_monetization_engine`, `achievement_title_system`) to the new authoring standard.
-- [ ] Raise repo-wide strict authoring validation above the current `82 / 147` fully compliant entries.
+- [x] Rewrite the second non-starter `System` cluster (`skill_synthesis_lattice`, `skill_steal_graft`, `skill_copycat`) to the new authoring standard.
+- [x] Rewrite the third non-starter `System` cluster (`skill_thief`, `talent_evolver`, `bloodline_stealer`, `devourer_system`) to the new authoring standard.
+- [x] Rewrite the fourth non-starter `System` cluster (`revival_archive`, `beast_contract_battery`, `worldtree_resource_farm`, `mentor_symbiosis_link`) to the new authoring standard.
+- [x] Raise repo-wide strict authoring validation to `147 / 147` fully compliant entries.
 - [x] Add category-aware validation rules for lore compatibility and placeholder detection.
 - [x] Convert the proposed new overlay expansion drafts into canonical data entries and implementation tasks.
 - [x] Map all current runtime consumers of `archetypeSystem` and classify required changes.
@@ -796,6 +799,6 @@ This is the maintained todo list for the design and implementation-prep phase. I
 - [x] Define save normalization and migration rules for old archetype/system data.
 - [x] Produce the implementation-plan document that breaks this into shippable coding tasks.
 
-## Recommended next implementation slice
+## Current status
 
-The only remaining strict-authoring backlog is the broader `System` library, now reduced to `65` invalid entries. The next efficient pass should continue by fantasy cluster, with the strongest candidates being the remaining economy-support systems, then the copy/devour/growth systems, and finally the role- or world-facing systems so the rewrite stays canon-consistent instead of scattering tone.
+The strict-authoring backlog is complete. Repo-wide authoring validation now passes at `147 / 147`, runtime validation also passes at `147 / 147`, the generated character-creation archetype pack has been refreshed, and registry loading confirms all `147` definitions and systems hydrate correctly. Future work can now focus on consuming this canon-rich data more deeply in gameplay, narrator memory, UI presentation, and content generation rather than continuing source-library cleanup.

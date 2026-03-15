@@ -17,6 +17,7 @@ const IMMEDIATE_TRIGGER_TYPES := ["INTERACT", "ZONE_EXIT", "ENCOUNTER_GATE", "SA
 const PERF_SAMPLE_LIMIT := 240
 const PLAYER_SPRITE_PATH := "res://assets/characters/traveler_idle_down.png"
 const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"
+const POINTER_MOVE_DEBOUNCE_MS := 110
 
 @export var run_id: String = "slice-run-001"
 
@@ -61,6 +62,7 @@ var _perf_map_transitions: int = 0
 var _last_perf_map_id: String = ""
 var _creating_character: bool = false
 var _player_profile: Dictionary = {}
+var _last_pointer_move_ms: int = 0
 
 
 func _ready() -> void:
@@ -244,6 +246,38 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			await _load_checkpoint_and_pull()
 		_:
 			pass
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if _creating_character:
+		return
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.pressed and mouse_event.button_index == MOUSE_BUTTON_LEFT:
+			await _handle_pointer_primary(mouse_event.position)
+	elif event is InputEventScreenTouch:
+		var touch_event := event as InputEventScreenTouch
+		if touch_event.pressed:
+			await _handle_pointer_primary(touch_event.position)
+
+
+func _handle_pointer_primary(pointer_position: Vector2) -> void:
+	var now_ms := Time.get_ticks_msec()
+	if now_ms - _last_pointer_move_ms < POINTER_MOVE_DEBOUNCE_MS:
+		return
+	_last_pointer_move_ms = now_ms
+
+	var target_tile := _tile_from_viewport_position(pointer_position)
+	if not _within_map_bounds(_current_map_id, target_tile):
+		return
+
+	var player_tile := _get_player_tile()
+	if target_tile == player_tile:
+		await _try_interact()
+		return
+
+	var direction := _step_direction_toward(player_tile, target_tile)
+	await _try_move(direction)
 
 
 func _on_flush_timer_timeout() -> void:
@@ -532,6 +566,20 @@ func _get_player_tile() -> Vector2i:
 	)
 
 
+func _tile_from_viewport_position(pointer_position: Vector2) -> Vector2i:
+	return Vector2i(
+		int(floor(pointer_position.x / float(TILE_SIZE))),
+		int(floor(pointer_position.y / float(TILE_SIZE)))
+	)
+
+
+func _step_direction_toward(origin: Vector2i, target: Vector2i) -> Vector2i:
+	var delta := target - origin
+	if abs(delta.x) >= abs(delta.y):
+		return Vector2i(signi(delta.x), 0)
+	return Vector2i(0, signi(delta.y))
+
+
 func _update_scene_for_map() -> void:
 	var started_us := Time.get_ticks_usec()
 	if not _last_perf_map_id.is_empty() and _last_perf_map_id != _current_map_id:
@@ -569,7 +617,7 @@ func _render_story() -> void:
 	var fallback_suggestions: Array = fallback.get("suggestions", []) as Array
 	_prose_panel.set_story(
 		String(fallback.get("title", "Arrival")),
-		String(fallback.get("body", "The run continues.")),
+		String(fallback.get("body", "The run continues.")) + _controls_hint_text(),
 		fallback_suggestions
 	)
 
@@ -608,6 +656,7 @@ func _refresh_story_for_context(context_key: String) -> void:
 	var narrative := String(story_result.get("narrative", "")).strip_edges()
 	if narrative.is_empty():
 		narrative = String(fallback.get("body", "The story presses onward."))
+	narrative += _controls_hint_text()
 	var suggestions: Array = story_result.get("suggestions", fallback.get("suggestions", [])) as Array
 	_prose_panel.set_story(
 		String(fallback.get("title", "Story")),
@@ -680,6 +729,10 @@ func _build_story_prompt(fallback: Dictionary) -> String:
 	lines.append("fallbackHint=%s" % String(fallback.get("body", "")))
 	lines.append("questFlags=%s" % JSON.stringify(_quest_flags))
 	return "\n".join(lines)
+
+
+func _controls_hint_text() -> String:
+	return "\n\nControls: WASD/arrow keys move, E interacts, F saves, L loads, and mouse/tap moves one tile toward the selected location."
 
 
 func _trigger_tiles_for_map(map_id: String) -> Array:

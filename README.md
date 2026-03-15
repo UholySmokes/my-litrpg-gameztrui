@@ -34,6 +34,14 @@ Immersive LitRPG experience built with React + Vite. The project combines determ
 - Firebase CLI (for local hosting/functions emulators)
 - Firebase/Gemini credentials for Genkit agents (`GOOGLE_GENAI_API_KEY` or ADC)
 
+### Windows Git / PR Actions
+
+- Ensure Git long paths are enabled before working with generated Android output:
+  `git config --global core.longpaths true`
+- Ensure GitHub CLI is installed and available on `PATH` if you want in-app commit / push / PR actions to work:
+  `gh --version`
+  `gh auth status`
+
 ### Installation
 
 ```bash

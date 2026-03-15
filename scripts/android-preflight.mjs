@@ -9,14 +9,11 @@ const presetsPath = path.join(projectPath, "export_presets.cfg");
 const exportCredentialsPath = path.join(projectPath, "export_credentials.cfg");
 const appData = process.env.APPDATA || "";
 const localAppData = process.env.LOCALAPPDATA || "";
-const sdkRoot = path.resolve(
-  process.env.ANDROID_SDK_ROOT ||
-    process.env.ANDROID_HOME ||
-    path.join(localAppData, "Android", "Sdk"),
-);
-const templatesRoot = path.join(appData, "Godot", "export_templates", "4.6.1.stable");
+const home = process.env.HOME || "";
+const sdkRoot = path.resolve(resolveAndroidSdkRoot());
+const templatesRoot = resolveTemplatesRoot();
 const buildTemplateRoot = path.join(projectPath, "android", "build");
-const editorSettingsPath = path.join(appData, "Godot", "editor_settings-4.6.tres");
+const editorSettingsPath = resolveEditorSettingsPath();
 const supportedJavaMajor = 17;
 
 const results = [];
@@ -51,6 +48,31 @@ function resolveCommand(cmd) {
     .split(/\r?\n/)
     .map((line) => line.trim())
     .find(Boolean) || "";
+}
+
+function resolveAndroidSdkRoot() {
+  if (process.env.ANDROID_SDK_ROOT) return process.env.ANDROID_SDK_ROOT;
+  if (process.env.ANDROID_HOME) return process.env.ANDROID_HOME;
+  if (process.platform === "win32") {
+    return path.join(localAppData, "Android", "Sdk");
+  }
+  return path.join(home, "Android", "Sdk");
+}
+
+function resolveTemplatesRoot() {
+  if (process.platform === "win32") {
+    return path.join(appData, "Godot", "export_templates", "4.6.1.stable");
+  }
+  const xdgDataHome = process.env.XDG_DATA_HOME || path.join(home, ".local", "share");
+  return path.join(xdgDataHome, "godot", "export_templates", "4.6.1.stable");
+}
+
+function resolveEditorSettingsPath() {
+  if (process.platform === "win32") {
+    return path.join(appData, "Godot", "editor_settings-4.6.tres");
+  }
+  const xdgConfigHome = process.env.XDG_CONFIG_HOME || path.join(home, ".config");
+  return path.join(xdgConfigHome, "godot", "editor_settings-4.6.tres");
 }
 
 function listMatchingFiles(rootPath, pattern) {
@@ -133,8 +155,23 @@ function resolveGodotBin() {
 
 function parseJavaMajorFromPath(javaHome) {
   const normalized = String(javaHome || "").replace(/\\/g, "/");
-  const match = normalized.match(/jdk-(\d+)(?:[._-]|$)/i);
-  return match ? Number(match[1]) : 0;
+  const pathMatch = normalized.match(/(?:jdk|java|temurin|openjdk)[-_]?(\d+)(?:[._-]|$)/i);
+  if (pathMatch) {
+    return Number(pathMatch[1]);
+  }
+
+  try {
+    const javaReleasePath = path.join(javaHome, "release");
+    const releaseContent = fs.readFileSync(javaReleasePath, "utf8");
+    const releaseMatch = releaseContent.match(/JAVA_VERSION="(\d+)(?:[.][^"]+)?"/);
+    if (releaseMatch) {
+      return Number(releaseMatch[1]);
+    }
+  } catch {
+    // ignore non-standard java layouts
+  }
+
+  return 0;
 }
 
 function listJavaHomeCandidates() {
@@ -153,13 +190,14 @@ function listJavaHomeCandidates() {
   const roots = [
     path.join(String(process.env.ProgramFiles || "C:\\Program Files"), "Microsoft"),
     path.join(String(process.env.ProgramFiles || "C:\\Program Files"), "Java"),
+    "/usr/lib/jvm",
   ];
 
   for (const root of roots) {
     try {
       const entries = fs.readdirSync(root, { withFileTypes: true });
       entries
-        .filter((entry) => entry.isDirectory() && /^jdk-\d+/i.test(entry.name))
+        .filter((entry) => entry.isDirectory() && /(jdk|java|temurin|openjdk)/i.test(entry.name))
         .forEach((entry) => push(path.join(root, entry.name)));
     } catch {
       // ignore missing roots
@@ -184,6 +222,9 @@ function resolveJavaSdkPath() {
     const leftPreferred = leftMajor === supportedJavaMajor ? 1 : 0;
     const rightPreferred = rightMajor === supportedJavaMajor ? 1 : 0;
     if (leftPreferred !== rightPreferred) return rightPreferred - leftPreferred;
+    const leftSupported = leftMajor >= supportedJavaMajor ? 1 : 0;
+    const rightSupported = rightMajor >= supportedJavaMajor ? 1 : 0;
+    if (leftSupported !== rightSupported) return rightSupported - leftSupported;
     const leftDiff = leftMajor > 0 ? Math.abs(leftMajor - supportedJavaMajor) : 999;
     const rightDiff = rightMajor > 0 ? Math.abs(rightMajor - supportedJavaMajor) : 999;
     if (leftDiff !== rightDiff) return leftDiff - rightDiff;
@@ -208,8 +249,8 @@ const javaSdkPath = resolveJavaSdkPath();
 check("Godot CLI available", Boolean(godotBin), godotBin || "not found");
 check("Java SDK root", Boolean(javaSdkPath) && exists(javaSdkPath), javaSdkPath || "not found");
 check(
-  `Java SDK major ${supportedJavaMajor}`,
-  parseJavaMajorFromPath(javaSdkPath) === supportedJavaMajor,
+  `Java SDK major >= ${supportedJavaMajor}`,
+  parseJavaMajorFromPath(javaSdkPath) >= supportedJavaMajor,
   javaSdkPath || "not found",
 );
 

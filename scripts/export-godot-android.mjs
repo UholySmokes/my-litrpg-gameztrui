@@ -8,12 +8,9 @@ const EXPORT_PRESETS_PATH = path.join(PROJECT_PATH, "export_presets.cfg");
 const EXPORT_CREDENTIALS_PATH = path.join(PROJECT_PATH, "export_credentials.cfg");
 const APPDATA = process.env.APPDATA || "";
 const LOCALAPPDATA = process.env.LOCALAPPDATA || "";
-const ANDROID_SDK_ROOT = path.resolve(
-  process.env.ANDROID_SDK_ROOT ||
-    process.env.ANDROID_HOME ||
-    path.join(LOCALAPPDATA, "Android", "Sdk"),
-);
-const GODOT_EDITOR_SETTINGS_PATH = path.join(APPDATA, "Godot", "editor_settings-4.6.tres");
+const HOME = process.env.HOME || "";
+const ANDROID_SDK_ROOT = path.resolve(resolveAndroidSdkRoot());
+const GODOT_EDITOR_SETTINGS_PATH = resolveEditorSettingsPath();
 const ANDROID_BUILD_TEMPLATE_PATH = path.join(PROJECT_PATH, "android", "build");
 const ASSET_PACK_DIR = path.join(
   ANDROID_BUILD_TEMPLATE_PATH,
@@ -49,6 +46,23 @@ function parseArgs(argv) {
     throw new Error(`Invalid mode "${args.mode}". Use "debug" or "release".`);
   }
   return args;
+}
+
+function resolveAndroidSdkRoot() {
+  if (process.env.ANDROID_SDK_ROOT) return process.env.ANDROID_SDK_ROOT;
+  if (process.env.ANDROID_HOME) return process.env.ANDROID_HOME;
+  if (process.platform === "win32") {
+    return path.join(LOCALAPPDATA, "Android", "Sdk");
+  }
+  return path.join(HOME, "Android", "Sdk");
+}
+
+function resolveEditorSettingsPath() {
+  if (process.platform === "win32") {
+    return path.join(APPDATA, "Godot", "editor_settings-4.6.tres");
+  }
+  const xdgConfigHome = process.env.XDG_CONFIG_HOME || path.join(HOME, ".config");
+  return path.join(xdgConfigHome, "godot", "editor_settings-4.6.tres");
 }
 
 function isExecutable(filePath) {
@@ -155,8 +169,23 @@ function resolveGodotBin() {
 
 function parseJavaMajorFromPath(javaHome) {
   const normalized = String(javaHome || "").replace(/\\/g, "/");
-  const match = normalized.match(/jdk-(\d+)(?:[._-]|$)/i);
-  return match ? Number(match[1]) : 0;
+  const pathMatch = normalized.match(/(?:jdk|java|temurin|openjdk)[-_]?(\d+)(?:[._-]|$)/i);
+  if (pathMatch) {
+    return Number(pathMatch[1]);
+  }
+
+  try {
+    const javaReleasePath = path.join(javaHome, "release");
+    const releaseContent = fs.readFileSync(javaReleasePath, "utf8");
+    const releaseMatch = releaseContent.match(/JAVA_VERSION="(\d+)(?:[.][^"]+)?"/);
+    if (releaseMatch) {
+      return Number(releaseMatch[1]);
+    }
+  } catch {
+    // ignore non-standard java layouts
+  }
+
+  return 0;
 }
 
 function listJavaHomeCandidates() {
@@ -176,13 +205,14 @@ function listJavaHomeCandidates() {
   const roots = [
     path.join(String(process.env.ProgramFiles || "C:\\Program Files"), "Microsoft"),
     path.join(String(process.env.ProgramFiles || "C:\\Program Files"), "Java"),
+    "/usr/lib/jvm",
   ];
 
   for (const root of roots) {
     try {
       const entries = fs.readdirSync(root, { withFileTypes: true });
       entries
-        .filter((entry) => entry.isDirectory() && /^jdk-\d+/i.test(entry.name))
+        .filter((entry) => entry.isDirectory() && /(jdk|java|temurin|openjdk)/i.test(entry.name))
         .forEach((entry) => pushCandidate(path.join(root, entry.name)));
     } catch {
       // ignore missing roots
@@ -207,6 +237,9 @@ function resolveJavaSdkPath() {
     const leftPreferred = leftMajor === SUPPORTED_JAVA_MAJOR ? 1 : 0;
     const rightPreferred = rightMajor === SUPPORTED_JAVA_MAJOR ? 1 : 0;
     if (leftPreferred !== rightPreferred) return rightPreferred - leftPreferred;
+    const leftSupported = leftMajor >= SUPPORTED_JAVA_MAJOR ? 1 : 0;
+    const rightSupported = rightMajor >= SUPPORTED_JAVA_MAJOR ? 1 : 0;
+    if (leftSupported !== rightSupported) return rightSupported - leftSupported;
     const leftDiff = leftMajor > 0 ? Math.abs(leftMajor - SUPPORTED_JAVA_MAJOR) : 999;
     const rightDiff = rightMajor > 0 ? Math.abs(rightMajor - SUPPORTED_JAVA_MAJOR) : 999;
     if (leftDiff !== rightDiff) return leftDiff - rightDiff;
@@ -235,8 +268,10 @@ function ensureAndroidEditorSettings(javaSdkPath) {
   if (!javaSdkPath || !fs.existsSync(javaSdkPath)) {
     throw new Error("Java SDK not found. Install or point JAVA_HOME to a valid JDK root.");
   }
-  if (parseJavaMajorFromPath(javaSdkPath) !== SUPPORTED_JAVA_MAJOR) {
-    throw new Error(`Android export requires JDK ${SUPPORTED_JAVA_MAJOR}. Resolved: ${javaSdkPath}`);
+  if (parseJavaMajorFromPath(javaSdkPath) < SUPPORTED_JAVA_MAJOR) {
+    throw new Error(
+      `Android export requires JDK ${SUPPORTED_JAVA_MAJOR} or newer. Resolved: ${javaSdkPath}`,
+    );
   }
   if (!fs.existsSync(ANDROID_SDK_ROOT)) {
     throw new Error("Android SDK not found. Set ANDROID_SDK_ROOT or ANDROID_HOME.");

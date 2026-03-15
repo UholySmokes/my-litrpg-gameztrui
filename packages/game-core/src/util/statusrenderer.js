@@ -7,6 +7,7 @@ import {
   calculateMaxMana,
 } from "../utils/AttributeMath.js";
 import { getEffectiveAttributes, getTitleById } from "../core/titleLogic.js";
+import { resolvePlayerArchetypeSystem } from "../systems/archetype/resolvePlayerArchetypeSystem.js";
 import { getTalentById } from "../systems/skills/TalentContentPack.js";
 
 export function renderStatusBlock(player, config) {
@@ -27,14 +28,10 @@ export function renderStatusBlock(player, config) {
     .map((id) => getTalentById(id)?.name || id)
     .filter(Boolean);
   const talent = talentNames.length ? talentNames.join(", ") : player.talent || "None";
+  const resolvedArchetypeSystem = resolvePlayerArchetypeSystem(player);
   const archetypeSystemName =
-    typeof player.archetypeSystem === "string"
-      ? player.archetypeSystem
-      : player.archetypeSystem?.name || player.archetypeSystem?.id || "None";
-  const archetypeSystemCategory =
-    typeof player.archetypeSystem === "object"
-      ? player.archetypeSystem?.category
-      : null;
+    resolvedArchetypeSystem?.name || resolvedArchetypeSystem?.id || "None";
+  const archetypeSystemCategory = resolvedArchetypeSystem?.category || null;
   const archetypeSystem =
     archetypeSystemName !== "None" && archetypeSystemCategory
       ? `${archetypeSystemName} (${archetypeSystemCategory})`

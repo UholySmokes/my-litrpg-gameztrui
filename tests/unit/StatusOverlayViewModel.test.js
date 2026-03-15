@@ -63,7 +63,10 @@ describe("StatusOverlay view model", () => {
       },
       starterTrees: ["vanguard"],
       alignment: "lawful_neutral",
-      archetypeSystem: { id: "warden", name: "Warden", category: "guardian" },
+      archetypeSystem: "revival_archive",
+      resources: {
+        echo_credits: 37,
+      },
       skillLoadoutId: "class_core",
       perks: ["steady_hands"],
     };
@@ -101,6 +104,20 @@ describe("StatusOverlay view model", () => {
     );
     expect(viewModel.magic.preparedLabel).toBe("weave:lattice");
     expect(viewModel.magic.ownedPerkIds).toEqual(["stable_weaves"]);
+    expect(viewModel.summary.archetypeSystem).toEqual(
+      expect.objectContaining({
+        id: "revival_archive",
+        name: "Revival Archive",
+        category: "System",
+      }),
+    );
+    expect(viewModel.summary.archetypeSystem.resource).toEqual(
+      expect.objectContaining({
+        name: "Echo Credits",
+        current: 37,
+        max: 100,
+      }),
+    );
     expect(viewModel.progression.classEvolutionOptions.length).toBeGreaterThan(0);
     expect(viewModel.progression.classEvolutionOptions[0]).toEqual(
       expect.objectContaining({

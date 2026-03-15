@@ -9,6 +9,7 @@ export default function StatusOverlay({
   config,
   isOpen,
   onClose,
+  onOpenArchetypeSystem,
   onAllocateAttribute,
   onDeallocateAttribute,
   onEvolveSkill,
@@ -79,6 +80,7 @@ export default function StatusOverlay({
   const {
     classLabel,
     raceLabel,
+    archetypeSystem,
   } = summary;
   const {
     attributeEntries,
@@ -174,6 +176,52 @@ export default function StatusOverlay({
               <StatusStatCard label="Creation Perks" value={String(summary.creationPerkCount)} />
               <StatusStatCard label="Skill Loadout" value={summary.skillLoadoutLabel} />
             </div>
+            {archetypeSystem ? (
+              <div
+                className="holo-panel"
+                style={{
+                  marginTop: "0.75rem",
+                  padding: "0.85rem",
+                  display: "grid",
+                  gap: "0.5rem",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                  }}
+                >
+                  <div>
+                    <div style={{ color: "var(--holo-cyan)", fontWeight: "bold" }}>
+                      {archetypeSystem.name}
+                    </div>
+                    <div style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>
+                      {archetypeSystem.category}
+                      {archetypeSystem.profile ? ` · ${archetypeSystem.profile}` : ""}
+                    </div>
+                  </div>
+                  <button
+                    className="holo-button"
+                    type="button"
+                    onClick={onOpenArchetypeSystem}
+                    disabled={typeof onOpenArchetypeSystem !== "function"}
+                  >
+                    View System
+                  </button>
+                </div>
+                <div style={{ color: "var(--text-main)", lineHeight: 1.45 }}>
+                  {archetypeSystem.summary}
+                </div>
+                {archetypeSystem.resource ? (
+                  <div style={{ color: archetypeSystem.resource.color, fontSize: "0.9rem" }}>
+                    {archetypeSystem.resource.name}: {Math.floor(archetypeSystem.resource.current)} / {archetypeSystem.resource.max}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
           </section>
 
           <StatusMagicSection magic={magic} />

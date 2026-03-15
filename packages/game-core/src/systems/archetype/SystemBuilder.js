@@ -37,7 +37,7 @@ export class SystemBuilder {
         luck: 10,
         ...baseProfile.attributes
       },
-      system: null,
+      archetypeSystem: null,
       derivedStats: {
         hp: 100,
         mp: 50
@@ -62,7 +62,12 @@ export class SystemBuilder {
 
     // Build the system instance using the archetype's category-aware logic
     const systemInstance = archetype.build(context);
-    this.playerProfile.system = systemInstance;
+    this.playerProfile.archetypeSystem = {
+      ...systemInstance,
+      id: systemInstance.id || systemInstance.archetypeId || archetype.id,
+      name: systemInstance.name || archetype.name,
+      category: systemInstance.category || archetype.category,
+    };
 
     // Delegate all stat adjustments to the archetype - single source of truth
     archetype.applyBonuses(this.playerProfile, systemInstance.systemIntegrity);
@@ -75,13 +80,13 @@ export class SystemBuilder {
    * @returns {object|null}
    */
   getCategoryInfo() {
-    const category = this.playerProfile.system?.category;
+    const category = this.playerProfile.archetypeSystem?.category;
     return category ? getCategoryConfig(category) : null;
   }
 
   build() {
     // Default to the first archetype if none selected
-    if (!this.playerProfile.system && ARCHETYPE_SYSTEMS.length > 0) {
+    if (!this.playerProfile.archetypeSystem && ARCHETYPE_SYSTEMS.length > 0) {
       this.assignArchetype(ARCHETYPE_SYSTEMS[0].id);
     }
     return this.playerProfile;

@@ -4,8 +4,9 @@ import { DataRegistry } from "../../data/DataRegistry.js";
 import { randomInt } from "../../utils/DeterministicRandom.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 import {
-  getArchetypeSystemById,
-} from "../archetype/ArchetypeSystemRegistry.js";
+  getPlayerArchetypeSystemId,
+  resolvePlayerArchetypeSystem,
+} from "../archetype/resolvePlayerArchetypeSystem.js";
 
 export class QuestManager {
   static resolvePlayerClassId(player) {
@@ -187,17 +188,7 @@ export class QuestManager {
   }
 
   static resolveArchetypeSystem(player) {
-    if (!player) return null;
-    const raw = player.archetypeSystem;
-    if (!raw) return null;
-    if (typeof raw === "string") {
-      return getArchetypeSystemById(raw) || { id: raw, name: raw };
-    }
-    if (typeof raw === "object" && !Array.isArray(raw)) {
-      const resolved = raw.id ? getArchetypeSystemById(raw.id) : null;
-      return resolved || raw;
-    }
-    return null;
+    return resolvePlayerArchetypeSystem(player);
   }
 
   static buildSystemQuest(archetypeSystem, hookText) {
@@ -227,8 +218,7 @@ export class QuestManager {
       return false;
     }
 
-    const playerSystemId =
-      player.archetypeSystem?.id || player.archetypeSystem || null;
+    const playerSystemId = getPlayerArchetypeSystemId(player);
 
     // Check level requirements
     if (quest.levelRequirement && player.level < quest.levelRequirement) {

@@ -1,11 +1,7 @@
+import { getPlayerArchetypeSystemLabel } from "../../systems/archetype/resolvePlayerArchetypeSystem.js";
+
 export function resolveArchetypeSystemLabel(player = {}) {
-  const raw = player.archetypeSystem;
-  if (!raw) return null;
-  if (typeof raw === "string") return raw;
-  if (typeof raw === "object" && !Array.isArray(raw)) {
-    return raw.name || raw.id || null;
-  }
-  return null;
+  return getPlayerArchetypeSystemLabel(player);
 }
 
 function pickVariant(options, seed) {

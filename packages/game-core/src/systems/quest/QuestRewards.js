@@ -7,6 +7,8 @@ import {
 } from "../../utils/shared.js";
 import { getTitleBonuses } from "../../core/titleLogic.js";
 import { updatePlayerVitals } from "../../core/PlayerVitals.js";
+import { addXp } from "../leveling/LevelingManager.js";
+import { hasCreationPerk } from "../../core/creationPerks.js";
 
 const mergeResources = (existing = {}, rewardResources = {}, multiplier = 1) => {
   const next = { ...existing };
@@ -49,19 +51,13 @@ export const applyQuestRewards = (state, reward) => {
     progression.resourceGainMultiplier * progression.questRewardMultiplier;
   const soulRewardFactor = progression.questRewardMultiplier;
   const itemRewardFactor = progression.questRewardMultiplier;
+  let pendingXpDelta = null;
 
   if (Number.isFinite(reward.xp) && reward.xp !== 0) {
     const adjustedXp = scalePositiveReward(reward.xp, xpRewardFactor, "ceil");
-    if (isPlainObject(player.xp) && "current" in player.xp) {
-      player.xp = {
-        ...player.xp,
-        current: toNumber(player.xp.current, 0) + adjustedXp,
-      };
-    } else {
-      player.xp = toNumber(player.xp, 0) + adjustedXp;
-    }
-    playerChanged = true;
+    pendingXpDelta = adjustedXp;
   }
+  const hasXpDelta = Number.isFinite(pendingXpDelta) && pendingXpDelta !== 0;
 
   if (isPlainObject(reward.resources)) {
     player.resources = mergeResources(
@@ -80,7 +76,10 @@ export const applyQuestRewards = (state, reward) => {
       : 0;
     const titleAdjusted =
       rawDelta > 0 ? Math.ceil(rawDelta * (1 + goldGain)) : rawDelta;
-    const delta = scalePositiveReward(titleAdjusted, goldRewardFactor, "ceil");
+    let delta = scalePositiveReward(titleAdjusted, goldRewardFactor, "ceil");
+    if (delta > 0 && hasCreationPerk(player, "scavenger")) {
+      delta = Math.ceil(delta * 1.1 - 1e-9);
+    }
     const currentGold = toNumber(player.currency?.goldCoins ?? player.gold, 0);
     const nextGold = currentGold + delta;
 
@@ -216,13 +215,33 @@ export const applyQuestRewards = (state, reward) => {
     playerChanged = true;
   }
 
-  if (!playerChanged && !worldChanged) {
+  if (!playerChanged && !worldChanged && !hasXpDelta) {
     return state;
   }
 
-  return {
+  let nextState = {
     ...state,
     ...(playerChanged ? { player } : {}),
     ...(worldChanged ? { world } : {}),
   };
+
+  if (hasXpDelta) {
+    if (pendingXpDelta > 0) {
+      nextState = addXp(nextState, pendingXpDelta);
+    } else {
+      const xp = isPlainObject(nextState.player?.xp) ? nextState.player.xp : {};
+      const current = toNumber(xp.current, 0);
+      const max = toNumber(xp.max, 0);
+      const nextCurrent = Math.max(0, current + pendingXpDelta);
+      nextState = {
+        ...nextState,
+        player: {
+          ...nextState.player,
+          xp: { ...xp, current: nextCurrent, max },
+        },
+      };
+    }
+  }
+
+  return nextState;
 };

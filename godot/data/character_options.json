@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0.0",
-    "generatedAt": "2026-03-15T12:44:48.771Z",
+    "generatedAt": "2026-03-17T04:11:27.432Z",
     "generatedFrom": [
       "game-core/characterCreation",
       "game-core/systems/archetype",
@@ -3573,7 +3573,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "battle_focus",
@@ -3593,17 +3593,17 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -4531,17 +4531,17 @@
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         },
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "cautious",
@@ -4556,7 +4556,7 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         }
       ],
       "starterTrees": [
@@ -5474,7 +5474,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "battle_focus",
@@ -5494,17 +5494,17 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -6430,7 +6430,7 @@
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "battle_focus",
@@ -6440,7 +6440,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "cautious",
@@ -6455,12 +6455,12 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -7377,7 +7377,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "cautious",
@@ -7397,17 +7397,17 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -8327,7 +8327,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "battle_focus",
@@ -8347,17 +8347,17 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -9280,12 +9280,12 @@
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "battle_focus",
@@ -9305,12 +9305,12 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -10225,7 +10225,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "quick_learner",
@@ -10245,17 +10245,17 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -11170,12 +11170,12 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         },
         {
           "id": "cautious",
@@ -11200,12 +11200,12 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         }
       ],
       "starterTrees": [
@@ -12128,7 +12128,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "battle_focus",
@@ -12143,17 +12143,17 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -13073,7 +13073,7 @@
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         },
         {
           "id": "quick_learner",
@@ -13083,7 +13083,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "battle_focus",
@@ -13098,12 +13098,12 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         }
       ],
       "starterTrees": [
@@ -14015,7 +14015,7 @@
         {
           "id": "arcane_sense",
           "name": "Arcane Sense",
-          "description": "Detect magical traces on maps (placeholder)."
+          "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
         },
         {
           "id": "quick_learner",
@@ -14025,7 +14025,7 @@
         {
           "id": "scavenger",
           "name": "Scavenger",
-          "description": "+10% gold from drops."
+          "description": "+10% gold from drops and rewards."
         },
         {
           "id": "battle_focus",
@@ -14045,12 +14045,12 @@
         {
           "id": "ritualist",
           "name": "Ritualist",
-          "description": "Story rituals have an extra outcome option (placeholder)."
+          "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
         },
         {
           "id": "sturdy_grip",
           "name": "Sturdy Grip",
-          "description": "Reduced knockback and stagger (placeholder)."
+          "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
         }
       ],
       "starterTrees": [
@@ -401683,12 +401683,12 @@
       {
         "id": "scavenger",
         "name": "Scavenger",
-        "description": "+10% gold from drops."
+        "description": "+10% gold from drops and rewards."
       },
       {
         "id": "ritualist",
         "name": "Ritualist",
-        "description": "Story rituals have an extra outcome option (placeholder)."
+        "description": "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright."
       },
       {
         "id": "quick_learner",
@@ -401698,12 +401698,12 @@
       {
         "id": "sturdy_grip",
         "name": "Sturdy Grip",
-        "description": "Reduced knockback and stagger (placeholder)."
+        "description": "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced."
       },
       {
         "id": "arcane_sense",
         "name": "Arcane Sense",
-        "description": "Detect magical traces on maps (placeholder)."
+        "description": "Reveals arcane traces when traveling and adds trace notes to essence sensing."
       }
     ]
   },

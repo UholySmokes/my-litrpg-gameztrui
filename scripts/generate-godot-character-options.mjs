@@ -421,7 +421,13 @@ async function main() {
   };
 
   await fs.mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
-  await fs.writeFile(OUTPUT_PATH, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+  const serialized = `${JSON.stringify(payload, null, 2)}\n`;
+  if (/\(placeholder\)/i.test(serialized)) {
+    throw new Error(
+      "Refusing to write godot/data/character_options.json because it contains '(placeholder)' copy.",
+    );
+  }
+  await fs.writeFile(OUTPUT_PATH, serialized, "utf8");
   console.log(
     `[godot-character-options] wrote ${path.relative(process.cwd(), OUTPUT_PATH)} with ${selectableSystems.length} systems`,
   );

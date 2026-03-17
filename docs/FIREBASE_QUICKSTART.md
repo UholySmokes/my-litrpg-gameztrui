@@ -9,7 +9,9 @@ This repository includes a Firebase Hosting + Cloud Functions implementation und
 - Request routing and business logic: `functions/lib/**/*.js`
 - Package contract: `functions/package.json` uses CommonJS with `main: index.js`
 
-`functions/src/` is not the deployed runtime path for API handling. It contains Firebase template/generated artifacts and should not be treated as the source of truth for `/api/*` behavior.
+`functions/src/` is not the deployed runtime path for API handling. It primarily contains generated artifacts (notably `functions/src/dataconnect-admin-generated/**`) and should not be treated as the source of truth for `/api/*` behavior.
+
+Template-only Firebase/Genkit TypeScript scaffolds are kept under `functions/_templates/` to avoid confusion with deployed code.
 
 ## What This Enables
 

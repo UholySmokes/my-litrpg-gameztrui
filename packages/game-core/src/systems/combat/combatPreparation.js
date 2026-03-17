@@ -1,5 +1,6 @@
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 import { hasEffectTag, getEffectTagMagnitude } from "../effects/EffectSystem.js";
+import { hasCreationPerk } from "../../core/creationPerks.js";
 
 export const toNumberSafe = (value, fallback = 0) =>
   Number.isFinite(value) ? value : fallback;
@@ -114,8 +115,21 @@ const clampChance = (value, max = 0.95) => {
 export const getMissChance = (entity) =>
   clampChance(getEffectTagMagnitude(entity, "MISS_CHANCE"), 0.95);
 
-export const getDodgeChance = (entity) =>
-  clampChance(getEffectTagMagnitude(entity, "DODGE_BOOST"), 0.75);
+export const getDodgeChance = (entity) => {
+  let dodge = clampChance(getEffectTagMagnitude(entity, "DODGE_BOOST"), 0.75);
+
+  if (hasCreationPerk(entity, "cautious")) {
+    const hpNode = entity?.hp ?? entity?.stats?.hp;
+    const hpCurrent = Number(hpNode?.current ?? hpNode ?? 0);
+    const hpMax = Number(hpNode?.max ?? 0);
+    const hpPct = hpMax > 0 ? hpCurrent / hpMax : 1;
+    if (hpPct < 0.3) {
+      dodge = clampChance(dodge + 0.05, 0.75);
+    }
+  }
+
+  return dodge;
+};
 
 export const getReflectPercent = (entity) =>
   clampChance(getEffectTagMagnitude(entity, "DAMAGE_REFLECT"), 0.75);

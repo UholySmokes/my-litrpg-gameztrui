@@ -24,6 +24,7 @@ import {
   magicRelease,
   processEssenceEcologyTurn,
 } from "../systems/magic/EssenceWeavingSystem.js";
+import { hasCreationPerk } from "./creationPerks.js";
 
 const isLayerDEnabled = (state) => {
   const rollout =
@@ -276,9 +277,15 @@ export function executeAction(state, action, _options = {}) {
 
           const player = state.player;
           let nextPlayer = { ...player };
+          const consumablePotencyMult = hasCreationPerk(player, "iron_stomach") ? 1.1 : 1;
 
           // Apply effects with clamping
           if (item.effect?.heal) {
+            const baseHeal = Number(item.effect.heal);
+            const healAmount =
+              Number.isFinite(baseHeal) && baseHeal > 0 && consumablePotencyMult !== 1
+                ? Math.ceil(baseHeal * consumablePotencyMult - 1e-9)
+                : baseHeal;
             const currentHp =
               typeof player.hp === "object" && player.hp !== null
                 ? player.hp.current ?? 0
@@ -287,7 +294,7 @@ export function executeAction(state, action, _options = {}) {
               typeof player.hp === "object" && player.hp !== null
                 ? player.hp.max ?? 100
                 : player.maxHp ?? player.maxHealth ?? 100;
-            const nextHp = Math.min(maxHp, currentHp + item.effect.heal);
+            const nextHp = Math.min(maxHp, currentHp + healAmount);
             nextPlayer = {
               ...nextPlayer,
               hp:
@@ -302,6 +309,11 @@ export function executeAction(state, action, _options = {}) {
           }
 
           if (item.effect?.mana) {
+            const baseMana = Number(item.effect.mana);
+            const manaAmount =
+              Number.isFinite(baseMana) && baseMana > 0 && consumablePotencyMult !== 1
+                ? Math.ceil(baseMana * consumablePotencyMult - 1e-9)
+                : baseMana;
             const currentMana =
               typeof player.mana === "object" && player.mana !== null
                 ? player.mana.current ?? 0
@@ -310,7 +322,7 @@ export function executeAction(state, action, _options = {}) {
               typeof player.mana === "object" && player.mana !== null
                 ? player.mana.max ?? 100
                 : player.maxMana ?? 100;
-            const nextMana = Math.min(maxMana, currentMana + item.effect.mana);
+            const nextMana = Math.min(maxMana, currentMana + manaAmount);
             nextPlayer = {
               ...nextPlayer,
               mana:

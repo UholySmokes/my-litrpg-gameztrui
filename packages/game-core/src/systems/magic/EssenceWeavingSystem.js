@@ -6,6 +6,7 @@ import {
   getEssenceAnomalyIdsForBiome,
   getRareEssenceSourceById,
 } from "../../world/WorldDataRegistry.js";
+import { hasCreationPerk } from "../../core/creationPerks.js";
 
 export const ESSENCE_PRIMES = [
   "fire",
@@ -1293,6 +1294,12 @@ export function magicSense(state, action) {
         .map((id) => getRareEssenceSourceById(id)?.name || null)
         .filter(Boolean)
     : [];
+  const arcaneTraceSummary =
+    hasCreationPerk(hydrated.player, "arcane_sense") &&
+    typeof hydrated.world?.vars?.arcaneTrace?.summary === "string" &&
+    hydrated.world.vars.arcaneTrace.summary.trim()
+      ? hydrated.world.vars.arcaneTrace.summary.trim()
+      : null;
 
   const entries = ESSENCE_PRIMES.map((e) => ({
     essence: e,
@@ -1307,12 +1314,13 @@ export function magicSense(state, action) {
     const resonanceClause = rollout.layerC
       ? ` Resonance: ${resonanceState} (${resonanceValue.toFixed(0)}/100), overload risk ${overloadRisk}.`
       : "";
+    const arcaneClause = arcaneTraceSummary ? ` ${arcaneTraceSummary}` : "";
     return {
       state: hydrated,
-        description:
+      description:
           strength <= 0.01
-            ? `You sense almost no ${requested} essence here.`
-            : `You sense ${requested} essence (strength ${(strength * 100).toFixed(0)}%, draw x${mult.toFixed(2)}).${resonanceClause}`,
+            ? `You sense almost no ${requested} essence here.${arcaneClause}`
+            : `You sense ${requested} essence (strength ${(strength * 100).toFixed(0)}%, draw x${mult.toFixed(2)}).${resonanceClause}${arcaneClause}`,
       readOnly: true,
     };
   }
@@ -1359,12 +1367,13 @@ export function magicSense(state, action) {
     notable.splice(3);
   }
   const whyLine = notable.length ? ` Notable: ${notable.join("; ")}.` : "";
+  const arcaneClause = arcaneTraceSummary ? ` ${arcaneTraceSummary}` : "";
 
   return {
     state: hydrated,
     description: entries[0]?.strength
-      ? `Ambient essences: ${topLine}${contextLine}${whyLine}`
-      : "You sense no notable ambient essence.",
+      ? `Ambient essences: ${topLine}${contextLine}${whyLine}${arcaneClause}`
+      : `You sense no notable ambient essence.${arcaneClause}`,
     readOnly: true,
   };
 }
@@ -1742,18 +1751,30 @@ export function magicCompress(state, action) {
   }
 
   if (misfire) {
-    const outcome = randomChoice([
+    const outcomeOptions = [
       { id: "partial", weight: 3 },
       { id: "strain", weight: 3 },
       { id: "leak", weight: 2 },
       { id: "flare", weight: 1 },
-    ])?.id;
+    ];
+    if (hasCreationPerk(player, "ritualist")) {
+      outcomeOptions.push({ id: "ritualist_catch", weight: 1 });
+    }
+    const outcome = randomChoice(outcomeOptions)?.id;
 
     if (outcome === "partial") {
       const reduced = clamp(1 + (targetDensity - 1) * 0.5, 1, targetDensity);
       nextCharge = { ...nextCharge, density: reduced };
       resultLine = `Compression misfires; density only reaches ${reduced.toFixed(1)}.`;
       outcomeTag = "partial_misfire";
+    } else if (outcome === "ritualist_catch") {
+      // Convert a misfire into a costly success when the player has Ritualist.
+      extraDelta = {
+        mind: -Math.max(1, amount * 0.12),
+        body: -Math.max(1, amount * 0.07),
+      };
+      resultLine = `Compression threatens to misfire, but you catch it; density reaches ${targetDensity.toFixed(1)}.`;
+      outcomeTag = "ritualist_save";
     } else if (outcome === "leak") {
       const lost = clamp(amount * 0.15, 0, amount);
       nextCharge = { ...nextCharge, amount: Math.max(0, amount - lost) };
@@ -2345,11 +2366,15 @@ export function magicRelease(state) {
     );
 
     const success = random() < successChance;
+    const ritualCatch = !success && hasCreationPerk(player, "ritualist") && random() < 0.15;
     const backlash = random() < backlashChance;
 
     const cognitiveCost = 2 + 0.08 * amountTotal;
     const mindCost = 1 + 0.05 * amountTotal;
     const extra = backlash ? { body: -Math.max(2, amountTotal * 0.25) } : {};
+    const ritualExtra = ritualCatch
+      ? { cognitive: -Math.max(1, amountTotal * 0.04), mind: -Math.max(1, amountTotal * 0.03) }
+      : {};
 
     const nextMagic = applyStabilityDelta(
       {
@@ -2358,7 +2383,12 @@ export function magicRelease(state) {
         reserves: nextReserves,
         prepared: null,
       },
-      { cognitive: -cognitiveCost, mind: -mindCost, ...extra },
+      {
+        cognitive: -cognitiveCost,
+        mind: -mindCost,
+        ...extra,
+        ...ritualExtra,
+      },
     );
 
     const resonanceGain = rollout.layerC
@@ -2370,7 +2400,9 @@ export function magicRelease(state) {
       ? applyResonanceDelta(nextMagic, resonanceGain * damp)
       : nextMagic;
 
-    if (rollout.layerD && success && unfamiliar) {
+    const effectiveSuccess = success || ritualCatch;
+
+    if (rollout.layerD && effectiveSuccess && unfamiliar) {
       nextMagicWithResonance = addUnlockedPattern(nextMagicWithResonance, "weave", prepared.pattern);
     }
     const overload = resolveOverloadResult(nextMagicWithResonance, {
@@ -2388,7 +2420,9 @@ export function magicRelease(state) {
 
     const outcomeTag = backlash
       ? "backlash"
-      : success
+      : ritualCatch
+        ? "ritualist_save"
+        : success
         ? coherence >= 0.75
           ? "clean_success"
           : "strained_success"
@@ -2420,7 +2454,7 @@ export function magicRelease(state) {
       },
     });
 
-    const outcome = success ? "holds" : "fails";
+    const outcome = effectiveSuccess ? "holds" : "fails";
     const backlashLine = backlash ? " Backlash bites into your body." : "";
     return {
       state: nextState,

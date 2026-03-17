@@ -25,11 +25,11 @@ const PERKS_CONFIG = {
     { id: "iron_stomach", name: "Iron Stomach", description: "Consumables are 10% more effective." },
     { id: "battle_focus", name: "Battle Focus", description: "+5% damage while above 80% HP." },
     { id: "cautious", name: "Cautious", description: "+5% dodge while below 30% HP." },
-    { id: "scavenger", name: "Scavenger", description: "+10% gold from drops." },
-    { id: "ritualist", name: "Ritualist", description: "Story rituals have an extra outcome option (placeholder)." },
+    { id: "scavenger", name: "Scavenger", description: "+10% gold from drops and rewards." },
+    { id: "ritualist", name: "Ritualist", description: "Magic misfires sometimes gain a costly \"catch\" outcome instead of failing outright." },
     { id: "quick_learner", name: "Quick Learner", description: "+5% XP gain." },
-    { id: "sturdy_grip", name: "Sturdy Grip", description: "Reduced knockback and stagger (placeholder)." },
-    { id: "arcane_sense", name: "Arcane Sense", description: "Detect magical traces on maps (placeholder)." },
+    { id: "sturdy_grip", name: "Sturdy Grip", description: "Control resistance: 25% chance to shrug off stuns/roots; otherwise their duration is reduced." },
+    { id: "arcane_sense", name: "Arcane Sense", description: "Reveals arcane traces when traveling and adds trace notes to essence sensing." },
   ],
 };
 

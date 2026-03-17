@@ -6,6 +6,7 @@ import {
   ensureAttributeShape,
 } from "../../utils/AttributeMath.js";
 import { getEffectiveAttributes } from "../titles/TitleSystem.js";
+import { hasCreationPerk } from "../../core/creationPerks.js";
 
 const DEBUG_LOGGING_ENABLED = false;
 
@@ -16,13 +17,21 @@ const DEBUG_LOGGING_ENABLED = false;
  * @returns {object} A new game state object with the updated XP and level.
  */
 export function addXp(state, amount) {
+  const rawAmount = Number(amount);
+  if (!Number.isFinite(rawAmount) || rawAmount === 0) return state;
+
+  const adjustedAmount =
+    rawAmount > 0 && hasCreationPerk(state?.player, "quick_learner")
+      ? Math.ceil(rawAmount * 1.05 - 1e-9)
+      : rawAmount;
+
   let newState = {
     ...state,
     player: {
       ...state.player,
       xp: {
         ...state.player.xp,
-        current: state.player.xp.current + amount,
+        current: state.player.xp.current + adjustedAmount,
       },
     },
   };

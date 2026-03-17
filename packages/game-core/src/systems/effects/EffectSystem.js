@@ -10,6 +10,7 @@ import {
 } from "./EffectRegistry.js";
 import { emit } from "../../core/EventBus.js";
 import { random } from "../../utils/DeterministicRandom.js";
+import { hasCreationPerk } from "../../core/creationPerks.js";
 
 /**
  * Applies an effect to a target entity.
@@ -22,21 +23,40 @@ import { random } from "../../utils/DeterministicRandom.js";
  * @returns {object} The updated target entity
  */
 export function applyEffect(target, effectId, source = null, overrides = {}) {
+  if (!target || typeof target !== "object") return target;
   const def = getEffectDefinition(effectId);
   if (!def) return target;
 
   // Initialize effects array if missing
   const currentEffects = target.effects || [];
 
+  const baseDuration = overrides.duration ?? def.duration;
+  const baseMagnitude = overrides.magnitude ?? def.magnitude;
+  const isSturdyGripControl =
+    hasCreationPerk(target, "sturdy_grip") &&
+    def.type === EFFECT_TYPES.CONTROL &&
+    Array.isArray(def.tags) &&
+    def.tags.some((tag) => tag === "SKIP_TURN" || tag === "IMMOBILE");
+
+  if (isSturdyGripControl && random() < 0.25) {
+    // Control resistance: negate the effect entirely.
+    return target;
+  }
+
+  const duration =
+    isSturdyGripControl && Number.isFinite(baseDuration)
+      ? Math.max(1, baseDuration - 1)
+      : baseDuration;
+
   // Create new effect instance
   const newInstance = {
     ...def,
     instanceId: random().toString(36).substr(2, 9),
     sourceId: source?.id || "environment",
-    duration: overrides.duration ?? def.duration,
-    magnitude: overrides.magnitude ?? def.magnitude,
+    duration,
+    magnitude: baseMagnitude,
     stacks: 1,
-    remainingDuration: overrides.duration ?? def.duration,
+    remainingDuration: duration,
   };
 
   // Check for existing instances of this effect type

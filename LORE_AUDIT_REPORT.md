@@ -967,13 +967,9 @@ export class DataRegistry {
 4. Divine intervention (Divine Scion) - **PENDING** (minor race mechanic)
 5. Service Layer Restructuring - **PENDING**
 
-### NEW: UI Integration - NEXT PHASE
+### UI Integration
 
-1. ClassResourceBar component - **TODO**
-2. ClassAbilities component - **TODO**
-3. StatusEffects component - **TODO**
-4. MinionPanel component - **TODO**
-5. CombatUI integration - **TODO**
+This section was previously listed as "NEXT PHASE", but the components are already completed (see "SUCCESS METRICS -> UI Integration"). The TODO list has been removed to avoid a contradictory backlog.
 
 ---
 

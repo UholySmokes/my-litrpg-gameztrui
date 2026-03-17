@@ -591,6 +591,14 @@ function buildContextSection(gameState) {
         })
         .join("; ") || "None"}`
     : null;
+  const arcaneTraceSummaryRaw = gameState?.world?.vars?.arcaneTrace?.summary;
+  const arcaneTraceSummary =
+    typeof arcaneTraceSummaryRaw === "string" ? arcaneTraceSummaryRaw.trim() : "";
+  const arcaneTraceLine = arcaneTraceSummary
+    ? arcaneTraceSummary.toLowerCase().startsWith("arcane traces")
+      ? arcaneTraceSummary
+      : `Arcane traces: ${arcaneTraceSummary}`
+    : null;
 
   const secondaryClassLabel = resolveEntityLabel(player.secondaryClass, "None");
   const alignmentLabel = resolveEntityLabel(player.alignment, "None");
@@ -628,6 +636,7 @@ function buildContextSection(gameState) {
     `XP: ${xpCurrent}/${xpMax} (${xpToNext} until next level)`,
     `Zone: ${zoneLabel}`,
     `Location: ${locationLabel}`,
+    arcaneTraceLine,
     combatLine,
     combatEnemyLine,
     equippedLine,

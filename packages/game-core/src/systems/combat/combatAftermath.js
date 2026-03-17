@@ -9,6 +9,7 @@ import {
 } from "../../utils/shared.js";
 import { getTitleBonuses } from "../titles/TitleSystem.js";
 import { random } from "../../utils/DeterministicRandom.js";
+import { hasCreationPerk } from "../../core/creationPerks.js";
 
 const createEnemyDefeatLog = ({
   combatLog,
@@ -59,11 +60,14 @@ export function handleEnemyDefeatPhase(state, enemyIndex) {
     : 0;
   const titleAdjustedGold =
     drops.gold > 0 ? Math.max(0, Math.ceil(drops.gold * (1 + goldGain))) : 0;
-  const goldEarned = scalePositiveReward(
+  let goldEarned = scalePositiveReward(
     titleAdjustedGold,
     progression.goldGainMultiplier,
     "ceil",
   );
+  if (goldEarned > 0 && hasCreationPerk(state.player, "scavenger")) {
+    goldEarned = Math.ceil(goldEarned * 1.1 - 1e-9);
+  }
 
   const lootFactor = Math.max(
     1,

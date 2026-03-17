@@ -22,6 +22,7 @@ import { emit } from "../../core/EventBus.js";
 import { getRageMultipliers } from "../class/RageSystem.js";
 import { getComboMultiplier } from "../class/ChiSystem.js";
 import { allowsZeroDamage, toNumberSafe } from "./combatPreparation.js";
+import { hasCreationPerk } from "../../core/creationPerks.js";
 
 const buildCombatSnapshot = (attacker, defender, skill = null, config = {}) => {
   const isPlayer = Boolean(attacker?.race);
@@ -171,6 +172,17 @@ export function calculateDamage(attacker, defender, skill = null, config = {}) {
     if (backstabBonus) {
       damage = Math.floor(damage * (1 + backstabBonus));
       messages.push(`Set Bonus: Backstab +${Math.round(backstabBonus * 100)}%`);
+    }
+  }
+
+  if (hasCreationPerk(attacker, "battle_focus")) {
+    const hpNode = attacker?.hp ?? attacker?.stats?.hp;
+    const hpCurrent = Number(hpNode?.current ?? hpNode ?? 0);
+    const hpMax = Number(hpNode?.max ?? attacker?.maxHp ?? attacker?.maxHealth ?? 0);
+    const hpPct = hpMax > 0 ? hpCurrent / hpMax : 0;
+    if (hpPct > 0.8) {
+      damage = Math.floor(damage * 1.05 + 1e-9);
+      messages.push("Battle Focus: +5% Damage");
     }
   }
 
@@ -371,6 +383,16 @@ export function calculateDamagePipeline(
   ) {
     afterAttackers = Math.floor(afterAttackers * 2);
     attackerReasons.push("Bonus due to [Holy vs Undead]");
+  }
+  if (hasCreationPerk(attacker, "battle_focus")) {
+    const hpNode = attacker?.hp ?? attacker?.stats?.hp;
+    const hpCurrent = Number(hpNode?.current ?? hpNode ?? 0);
+    const hpMax = Number(hpNode?.max ?? attacker?.maxHp ?? attacker?.maxHealth ?? 0);
+    const hpPct = hpMax > 0 ? hpCurrent / hpMax : 0;
+    if (hpPct > 0.8) {
+      afterAttackers = Math.floor(afterAttackers * 1.05 + 1e-9);
+      attackerReasons.push("Perk: Battle Focus +5%");
+    }
   }
   log.push({
     stage: "ATTACKER_MULTIPLIERS",

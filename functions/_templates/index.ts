@@ -1,5 +1,6 @@
 /**
  * TEMPLATE-ONLY FILE (not deployed runtime).
+ * (Moved under functions/_templates to avoid confusion with deployed code.)
  *
  * Canonical runtime entrypoint for this repo is functions/index.js.
  * API route and handler logic lives in functions/lib/**/*.js.

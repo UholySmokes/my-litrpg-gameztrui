@@ -21,9 +21,16 @@ const ASSET_PACK_DIR = path.join(
 );
 const ASSET_PACK_PATH = path.join(ASSET_PACK_DIR, "assets.sparsepck");
 const PROJECT_BINARY_PATH = path.join(ASSET_PACK_DIR, "project.binary");
+const APP_ASSETS_DIR = path.join(ANDROID_BUILD_TEMPLATE_PATH, "src", "main", "assets");
 const LOCAL_PROPERTIES_PATH = path.join(ANDROID_BUILD_TEMPLATE_PATH, "local.properties");
 const SUPPORTED_JAVA_MAJOR = 17;
 const DEFAULT_RELEASE_ALIAS = "androiddebugkey";
+const STAGED_APK_RUNTIME_ASSETS = [
+  path.join(APP_ASSETS_DIR, "_cl_"),
+  path.join(APP_ASSETS_DIR, "project.binary"),
+  path.join(APP_ASSETS_DIR, "assets.sparsepck"),
+  path.join(APP_ASSETS_DIR, "game.pck"),
+];
 
 function parseArgs(argv) {
   const args = {
@@ -431,6 +438,58 @@ function ensurePathExists(filePath, label) {
   }
 }
 
+function copyFileIfPresent(fromPath, toPath) {
+  if (!fs.existsSync(fromPath)) return;
+  fs.mkdirSync(path.dirname(toPath), { recursive: true });
+  fs.copyFileSync(fromPath, toPath);
+}
+
+function stageApkRuntimeAssets(packPath) {
+  fs.mkdirSync(APP_ASSETS_DIR, { recursive: true });
+
+  copyFileIfPresent(path.join(ASSET_PACK_DIR, "_cl_"), path.join(APP_ASSETS_DIR, "_cl_"));
+  copyFileIfPresent(PROJECT_BINARY_PATH, path.join(APP_ASSETS_DIR, "project.binary"));
+
+  // Keep both canonical names so the runtime can resolve project data regardless of
+  // whether it is reading from the base APK assets path or asset-pack wiring.
+  copyFileIfPresent(packPath, path.join(APP_ASSETS_DIR, "assets.sparsepck"));
+  copyFileIfPresent(packPath, path.join(APP_ASSETS_DIR, "game.pck"));
+}
+
+function cleanupApkRuntimeAssets() {
+  for (const filePath of STAGED_APK_RUNTIME_ASSETS) {
+    try {
+      fs.rmSync(filePath, { force: true });
+    } catch {
+      // ignore cleanup failures for staged base-APK assets
+    }
+  }
+}
+
+function withoutAssetPackInBuildGradle(runBuild) {
+  const buildGradlePath = path.join(ANDROID_BUILD_TEMPLATE_PATH, "build.gradle");
+  if (!fs.existsSync(buildGradlePath)) {
+    return runBuild();
+  }
+
+  const originalContent = fs.readFileSync(buildGradlePath, "utf8");
+  const patchedContent = originalContent.replace(
+    /^\s*assetPacks\s*=\s*\[":assetPackInstallTime"\]\s*$/m,
+    "    // assetPacks disabled for APK fallback so project data is packaged in base assets",
+  );
+
+  if (patchedContent === originalContent) {
+    return runBuild();
+  }
+
+  fs.writeFileSync(buildGradlePath, patchedContent, "utf8");
+  try {
+    return runBuild();
+  } finally {
+    fs.writeFileSync(buildGradlePath, originalContent, "utf8");
+  }
+}
+
 function buildSpawnEnv(javaSdkPath) {
   const javaBin = path.join(javaSdkPath, "bin");
   return {
@@ -583,9 +642,17 @@ function runGradleFallback({ javaSdkPath, presetName, outputPath, mode, packPath
 
   fs.mkdirSync(ASSET_PACK_DIR, { recursive: true });
   fs.copyFileSync(packPath, ASSET_PACK_PATH);
+
+  if (config.exportFormat === "apk") {
+    stageApkRuntimeAssets(packPath);
+  }
+
   ensureAndroidBuildLocalProperties();
 
-  const gradleWrapper = path.join(ANDROID_BUILD_TEMPLATE_PATH, "gradlew.bat");
+  const gradleWrapper = path.join(
+    ANDROID_BUILD_TEMPLATE_PATH,
+    process.platform === "win32" ? "gradlew.bat" : "gradlew",
+  );
   ensurePathExists(gradleWrapper, "Gradle wrapper");
 
   const env = buildSpawnEnv(javaSdkPath);
@@ -613,7 +680,7 @@ function runGradleFallback({ javaSdkPath, presetName, outputPath, mode, packPath
     "-Pperform_zipalign=true",
   ];
 
-  const run =
+  const runGradle = () =>
     process.platform === "win32"
       ? spawnSync(
           "cmd.exe",
@@ -634,6 +701,18 @@ function runGradleFallback({ javaSdkPath, presetName, outputPath, mode, packPath
           stdio: "pipe",
           env,
         });
+
+  const run = (() => {
+    if (config.exportFormat !== "apk") {
+      return runGradle();
+    }
+
+    try {
+      return withoutAssetPackInBuildGradle(runGradle);
+    } finally {
+      cleanupApkRuntimeAssets();
+    }
+  })();
 
   emitProcessOutput(run);
   if (run.error) throw run.error;

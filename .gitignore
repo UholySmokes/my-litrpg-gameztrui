@@ -7,9 +7,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Generated outputs and local reports
+coverage/
 dist
 *.local
 build/android/
+firebase-export-*/
+tmp/godot-docs/
 
 # Playwright artifacts
 playwright-report/
@@ -29,12 +33,14 @@ docs/reports/*
 tmpclaude-*
 tmp/godot/
 mcp
+.run/
 
 # Local Godot CLI binaries (avoid committing large executables)
 tools/godot/
 
 # Bulk-gen scheduler scratch payloads (contain runIds/tokens)
 functions/tmp/
+dataconnect/.dataconnect/
 
 # Temporary scratch files
 .tmp-*
@@ -49,6 +55,7 @@ local.settings.json
 functions/.data/
 
 # Editor directories and files
+.vs/
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -89,4 +96,5 @@ error/index.html
 # Godot Android/Gradle generated state
 godot/android/build/.gradle/
 godot/android/build/build/
+godot/android/build/**/build/
 godot/android/build/local.properties

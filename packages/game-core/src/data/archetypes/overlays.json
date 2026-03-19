@@ -393,5 +393,354 @@
       "agility": 2,
       "intelligence": 1
     }
+  },
+  {
+    "id": "memory_leak_overlay",
+    "name": "Memory Leak Overlay",
+    "category": "Overlay",
+    "summary": "A cognition-corrupting Overlay that bleeds unowned memories, skill echoes, and identity fragments into the bearer at the cost of self-coherence.",
+    "description": "Memory Leak Overlay is an Overlay that intermittently bleeds foreign memories, skill echoes, and identity fragments into the bearer from ambient sources. It belongs in the Overlay category because it is a parasitic cognitive exploit on top of normal identity rather than a lawful knowledge system or memory authority. The bearer gains flashes of competence, experience, and recognition that belong to other people, creatures, or even dead practitioners. Its progression bias favors improvisation, obscure knowledge retrieval, and unexpected skill access rather than stable repeatable mastery. The main tradeoff is identity instability, because absorbing too many foreign memory fragments degrades the boundary between self and other and can fracture personality coherence under strain. In the world, Memory Leak Overlay should feel uncanny because the bearer sometimes knows things they have no right to know or performs techniques they never studied. It should also attract detection from mind-wards, identity enforcers, and cultures that treat memory sanctity as law. It remains lore-safe because it passively leaks ambient memory fragments rather than granting true memory dominion, and because null-mind fields, identity anchors, and shielded memories can block or corrupt the leak.",
+    "coreLoop": [
+      "Receive a leaked memory fragment containing skill echoes, foreign experience, or identity-adjacent knowledge from ambient cognitive sources.",
+      "Exploit that stolen competence for immediate advantage before the fragment degrades or conflicts with genuine personal memory.",
+      "Manage identity strain so accumulated foreign fragments do not erode self-coherence or trigger personality instability."
+    ],
+    "progression": [
+      "Early growth leaks small skill echoes and recognition flashes that help the bearer act on knowledge they never personally acquired.",
+      "Mid progression increases fragment clarity, extends retention, and grants access to deeper skill echoes from stronger ambient sources.",
+      "Late progression makes the bearer a terrifying improviser with borrowed competence, but increasingly uncertain about which memories are actually theirs."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes the bearer feel haunted by competence because every useful leak reminds them the skill belongs to someone else.",
+      "Others treat the bearer with suspicion when they demonstrate knowledge or ability that has no legitimate origin in their personal history.",
+      "It naturally creates scenes where identity itself becomes the battlefield because the bearer is not sure which thoughts are genuine."
+    ],
+    "questHooks": [
+      "Use a leaked combat memory to survive an encounter you have no training for, then track whose skill you borrowed and what happened to them.",
+      "Resist a leaked identity fragment that is trying to overwrite your personality with someone who died holding the same Overlay.",
+      "Navigate a sealed archive where the ambient memory density is so high that every step leaks a new fragment and self-coherence degrades by the minute."
+    ],
+    "tags": [
+      "memory",
+      "exploit",
+      "cognition",
+      "instability"
+    ],
+    "statModifiers": {
+      "intelligence": 2,
+      "wisdom": 1
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#FF8787"
+    },
+    "narrativeTone": {
+      "voice": "chaotic and unstable",
+      "vocabulary": [
+        "leaked",
+        "fragment",
+        "identity",
+        "echoes",
+        "borrowed"
+      ],
+      "sentenceStyle": "fragmented, glitchy, urgent"
+    },
+    "archetypePassives": [
+      {
+        "id": "memory_leak_overlay_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ],
+    "possibleUses": [
+      "In gameplay, Memory Leak Overlay can support temporary skill access, obscure knowledge rolls, and improvised competence at the cost of identity strain counters. It rewards adaptation and opportunism while creating strong risk around prolonged use. That makes moment-to-moment decisions feel charged with cognitive stakes.",
+      "In narrative and quests, it enables uncanny knowledge scenes, identity crisis arcs, and tense moments where the bearer performs brilliantly using someone else's stolen skill and must live with the implications. Characters can save lives with borrowed expertise and slowly lose themselves in the process.",
+      "In implementation, it maps to temporary skill-slot grants, fragment-retention timers, identity-strain meters, and memory-source event tags. Those hooks layer onto existing skill and knowledge systems without requiring a full memory manipulation engine.",
+      "Its limitation-aware use comes from ensuring that every leaked fragment carries identity risk. The Overlay gives but it also erodes, which prevents borrowed competence from becoming cost-free skill access."
+    ],
+    "limits": [
+      "Leaked memory fragments are temporary, incomplete, and degrade over time, making sustained mastery from borrowed skill unreliable.",
+      "Null-mind fields, identity anchors, and shielded memories can block the leak entirely or corrupt incoming fragments into dangerous noise.",
+      "The Overlay leaks ambient memory passively and the bearer cannot select, target, or control which fragments arrive or when."
+    ],
+    "costs": [
+      "Accumulated foreign memory fragments erode self-coherence and make it increasingly difficult to distinguish personal memories from leaked ones.",
+      "Identity instability can trigger personality fragmentation under stress, especially when multiple conflicting identity fragments activate simultaneously.",
+      "Mind-wards, memory enforcers, and identity-sacred cultures treat the leak as contamination and respond with purging, quarantine, or violence."
+    ],
+    "worldCompatibility": [
+      "Memory Leak Overlay remains beneath Void, Grandmother Void, and deeper law because it passively leaks ambient fragments rather than commanding memory.",
+      "It is compatible with knowledge, skill improvisation, and identity horror because it expresses unstable cognitive parasitism rather than lawful memory access.",
+      "Its strongest value depends on fragment quality and identity resilience, which keeps the Overlay powerful but self-destructive."
+    ],
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 2
+  },
+  {
+    "id": "stack_overflow_overlay",
+    "name": "Stack Overflow Overlay",
+    "category": "Overlay",
+    "summary": "A recursive-loop Overlay that amplifies a single effect by feeding it back into itself at escalating strain until the loop collapses or the bearer breaks.",
+    "description": "Stack Overflow Overlay is an Overlay that traps a single ability, effect, or action in a recursive amplification loop that feeds output back into itself. It belongs in the Overlay category because it is an unstable exploit of normal ability resolution rather than a lawful scaling system or progression engine. The bearer can force an effect to re-evaluate its own output as new input, creating escalating power spikes that grow faster than any linear enhancement should allow. Its progression bias favors all-in burst play, desperation gambles, and explosive single-moment output over sustained damage or utility. The main tradeoff is recursive collapse, because every additional loop iteration increases strain exponentially until the effect either collapses violently or tears through the bearer's capacity to contain it. In the world, Stack Overflow Overlay should look like insanity to anyone watching because the bearer is clearly pushing a single action past every safety limit it was designed with. It should also be terrifying when it works and catastrophic when it fails because recursive amplification has no graceful degradation mode. It remains lore-safe because the amplification is a temporary recursive exploit that inevitably collapses, and because null fields, ability dampeners, and system-level correction can interrupt the loop at any point.",
+    "coreLoop": [
+      "Select a single ability or effect and force it into a recursive amplification loop that feeds its output back as input for re-evaluation.",
+      "Ride the escalating power spike for as many iterations as the bearer can sustain before strain exceeds containment capacity.",
+      "Survive the inevitable loop collapse which converts all remaining recursive energy into backlash proportional to the amplification depth reached."
+    ],
+    "progression": [
+      "Early growth allows shallow recursion of one or two loops on basic abilities, producing noticeable but manageable power spikes with brief recovery.",
+      "Mid progression extends sustainable loop depth, reduces per-iteration strain leakage, and improves the bearer's ability to terminate loops voluntarily.",
+      "Late progression makes the bearer capable of terrifying recursive bursts, but each deep loop risks catastrophic collapse that can permanently damage the ability used."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes power feel addictive and suicidal in the same breath because every additional iteration is both stronger and closer to collapse.",
+      "Observers describe the effect as wrong because abilities are not supposed to feed on themselves and the visual distortion reflects that instability.",
+      "It naturally creates scenes where the bearer must choose between stopping at safe output and pushing one more iteration for victory at unknown cost."
+    ],
+    "questHooks": [
+      "Push a healing spell through enough recursive loops to save a dying city, then survive the collapse when the loop finally breaks your capacity.",
+      "Stop an enemy who has triggered their own recursive explosion before the amplification reaches a depth that destroys the entire zone.",
+      "Voluntarily collapse your own loop early to prevent catastrophic backlash knowing that the reduced output may not be enough to win the fight."
+    ],
+    "tags": [
+      "recursion",
+      "exploit",
+      "amplification",
+      "instability"
+    ],
+    "statModifiers": {
+      "strength": 2,
+      "vitality": 1
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#FF8787"
+    },
+    "narrativeTone": {
+      "voice": "chaotic and unstable",
+      "vocabulary": [
+        "recursive",
+        "overflow",
+        "amplification",
+        "collapse",
+        "strain"
+      ],
+      "sentenceStyle": "fragmented, glitchy, urgent"
+    },
+    "archetypePassives": [
+      {
+        "id": "stack_overflow_overlay_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ],
+    "possibleUses": [
+      "In gameplay, Stack Overflow Overlay can support recursive damage multipliers, burst-mode ability amplification, and strain-gated loop depth mechanics. It rewards all-in commitment and punishes overreach with proportional backlash. That makes desperation turns spectacular and dangerous.",
+      "In narrative and quests, it enables impossible-output scenes, last-stand recursion gambles, and catastrophic failures when the loop breaks at the wrong moment. Characters can win fights that arithmetic says were unwinnable and then spend recovery chapters paying the physical price.",
+      "In implementation, it maps to loop-depth counters, per-iteration strain multipliers, voluntary termination checks, and collapse-damage calculations. Those hooks layer onto existing ability resolution without requiring changes to the base ability system.",
+      "Its limitation-aware use comes from ensuring inevitable collapse. The loop always ends, the backlash always arrives, and pushing deeper always costs more. That prevents the Overlay from becoming a free damage multiplier."
+    ],
+    "limits": [
+      "Recursive amplification always collapses eventually, and deeper loops produce proportionally more catastrophic backlash when they fail.",
+      "Each iteration applies exponentially increasing strain that the bearer must sustain physically, making loop depth a direct survival gamble.",
+      "Null fields, ability dampeners, and system correction can interrupt the loop at any point, converting all accumulated recursion into immediate backlash."
+    ],
+    "costs": [
+      "Loop collapse converts all remaining recursive energy into backlash that scales with depth, making deep recursion potentially lethal to the bearer.",
+      "Recursive amplification distorts the ability being looped and can permanently degrade it if pushed past safe thresholds too often.",
+      "The bearer risks becoming addicted to impossible output and losing the discipline to fight at normal scale when recursion is unavailable."
+    ],
+    "worldCompatibility": [
+      "Stack Overflow Overlay remains beneath Void, Grandmother Void, and deeper law because it exploits ability resolution temporarily rather than rewriting power law.",
+      "It is compatible with burst combat, desperation mechanics, and ability exploitation because it expresses unstable recursive amplification rather than lawful scaling.",
+      "Its strongest value depends on loop depth, strain tolerance, and inevitable collapse timing, which keeps the Overlay explosive without becoming sustainable power."
+    ],
+    "rarity": "mythic",
+    "stability": "forbidden",
+    "selectionWeight": 1
+  },
+  {
+    "id": "permission_escalation_overlay",
+    "name": "Permission Escalation Overlay",
+    "category": "Overlay",
+    "summary": "A hierarchy-exploiting Overlay that temporarily claims permissions above the bearer's actual rank by abusing ambiguity in access control logic.",
+    "description": "Permission Escalation Overlay is an Overlay that exploits ambiguities, gaps, and transition states in access control hierarchies to temporarily claim permissions the bearer does not legitimately hold. It belongs in the Overlay category because it is an unstable exploit of existing permission structures rather than a lawful authority grant or rank advancement. The bearer can detect moments when access checks are weakest, identity verification is ambiguous, or hierarchical logic is in transition, and slip into a higher permission tier for brief windows. Its progression bias favors social infiltration, restricted access play, and hierarchy manipulation over direct combat. The main tradeoff is enforcement backlash, because every escalated permission leaves an audit trail and higher authorities respond aggressively when they detect unauthorized access. In the world, Permission Escalation Overlay should feel like the bearer is walking through locked doors by exploiting the lock's moment of uncertainty rather than holding the key. It should also remain visibly criminal because permission structures exist for reasons and bypassing them always has consequences. It remains lore-safe because it exploits ambiguity in existing access control rather than overwriting rank or authority, and because hard-locked permissions, divine seals, and audit-immune hierarchies can still block it completely.",
+    "coreLoop": [
+      "Detect an ambiguity, gap, or transition state in the local permission hierarchy where access control logic is temporarily vulnerable.",
+      "Exploit that vulnerability to claim a permission tier above the bearer's actual rank for a brief operational window.",
+      "Withdraw before audit detection catches the escalation and triggers enforcement response proportional to the permission tier claimed."
+    ],
+    "progression": [
+      "Early growth reveals basic access-check weaknesses in low-security hierarchies and grants brief escalation windows for minor restricted actions.",
+      "Mid progression extends escalation depth, improves detection of transition states in stronger hierarchies, and reduces the audit trail of successful exploits.",
+      "Late progression makes the bearer capable of terrifying rank claims in major hierarchies, but attracts proportionally severe enforcement attention."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes authority feel like a lockpicking challenge rather than a social contract, which terrifies everyone invested in hierarchical stability.",
+      "Others cannot understand how the bearer keeps accessing things they should never have reached, creating fear and investigation pressure.",
+      "It naturally creates scenes where the bearer walks through restricted zones they have no right to enter and must escape before the system notices."
+    ],
+    "questHooks": [
+      "Escalate permissions to access a restricted archive containing evidence that could prevent a war, then escape before the audit sweep reaches your access record.",
+      "Exploit a transition state in a faction's promotion hierarchy to claim a rank that lets you issue one critical order before being detected.",
+      "Navigate a divine hierarchy exploit chain where each escalation increases the risk that the next detection will be supernatural rather than bureaucratic."
+    ],
+    "tags": [
+      "hierarchy",
+      "exploit",
+      "access",
+      "instability"
+    ],
+    "statModifiers": {
+      "charisma": 1,
+      "intelligence": 1,
+      "luck": 1
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#FF8787"
+    },
+    "narrativeTone": {
+      "voice": "chaotic and unstable",
+      "vocabulary": [
+        "escalation",
+        "permission",
+        "exploit",
+        "hierarchy",
+        "detection"
+      ],
+      "sentenceStyle": "fragmented, glitchy, urgent"
+    },
+    "archetypePassives": [
+      {
+        "id": "permission_escalation_overlay_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ],
+    "possibleUses": [
+      "In gameplay, Permission Escalation Overlay can support restricted-zone infiltration, temporary rank claims, access-check exploitation, and hierarchy manipulation mechanics. It rewards preparation and timing without granting permanent authority. That makes stealth and social infiltration play sharper.",
+      "In narrative and quests, it enables heist scenes, unauthorized archive access, and tense moments where the bearer impersonates authority they do not hold. Characters can save lives by accessing restricted resources and face severe consequences when the audit catches them.",
+      "In implementation, it maps to permission-tier checks, escalation-window timers, audit-trail counters, and enforcement-response events. Those hooks layer onto existing rank and faction systems without requiring changes to legitimate authority mechanics.",
+      "Its limitation-aware use comes from ensuring that every escalation leaves traces and triggers proportional enforcement. The bearer cannot exploit hierarchy consequence-free, which keeps the Overlay tense and criminal."
+    ],
+    "limits": [
+      "Hard-locked permissions, divine seals, and audit-immune hierarchies cannot be escalated through ambiguity exploitation.",
+      "Every successful escalation leaves an audit trail that increases detection probability for future exploits in the same hierarchy.",
+      "The bearer claims temporary access but not legitimate authority, meaning escalated actions can be reversed or voided once the exploit is detected."
+    ],
+    "costs": [
+      "Enforcement response scales with the permission tier exploited, making high-rank escalation proportionally more dangerous when detected.",
+      "Audit trails accumulate across exploits and create pattern recognition that makes each subsequent escalation in the same hierarchy harder and riskier.",
+      "The bearer risks becoming permanently flagged in major hierarchies, closing off legitimate advancement paths they might otherwise have earned."
+    ],
+    "worldCompatibility": [
+      "Permission Escalation Overlay remains beneath Void, Grandmother Void, and deeper law because it exploits access control ambiguity rather than overwriting authority.",
+      "It is compatible with infiltration, heists, and hierarchy manipulation because it expresses unstable rank exploitation rather than lawful promotion.",
+      "Its strongest value depends on ambiguity windows and audit evasion, which keeps the Overlay criminal and bounded rather than a free authority engine."
+    ],
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 2
+  },
+  {
+    "id": "cache_corruption_overlay",
+    "name": "Cache Corruption Overlay",
+    "category": "Overlay",
+    "summary": "A state-poisoning Overlay that corrupts cached reality states to force outdated or incorrect values into current resolution at unpredictable cost.",
+    "description": "Cache Corruption Overlay is an Overlay that exploits the gap between cached state and current reality to force outdated, incorrect, or advantageous values into active resolution. It belongs in the Overlay category because it is a parasitic exploit on state management rather than a lawful authority over reality or information. The bearer can detect moments when cached values diverge from current truth and inject corrupted data into the resolution pipeline, causing abilities, defenses, positions, or conditions to resolve using wrong but beneficial assumptions. Its progression bias favors ambush, deception, and one-shot misdirection over sustained reliable advantage. The main tradeoff is cascade failure, because corrupted cache entries propagate unpredictably and can poison the bearer's own state resolution as badly as the target's. In the world, Cache Corruption Overlay should feel like the bearer is lying to reality itself and getting away with it briefly before the correction arrives. It should also remain dangerously unreliable because cache corruption does not distinguish between beneficial and harmful wrong values once propagation begins. It remains lore-safe because it exploits temporary state inconsistency rather than rewriting foundational truth, and because hard state refreshes, null corrections, and coherence enforcement can flush corrupted cache instantly.",
+    "coreLoop": [
+      "Detect a divergence between cached state and current reality that creates an exploitable gap in resolution logic.",
+      "Inject corrupted cache data to force an ability, defense, or condition to resolve using outdated or incorrect values that favor the bearer.",
+      "Contain corruption propagation before poisoned cache entries spread into the bearer's own state resolution and cause cascade failure."
+    ],
+    "progression": [
+      "Early growth detects basic cache divergences and allows minor state corruption that misdirects weak resolution checks.",
+      "Mid progression extends corruption precision, improves propagation containment, and lets the bearer target more critical cached values.",
+      "Late progression makes the bearer capable of devastating single-moment misdirections, but cascade risk scales with every deep corruption attempt."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes the bearer feel like a liar who has figured out how to make reality believe the lie for exactly long enough to matter.",
+      "Observers see impossible outcomes, dodged strikes that should have landed, and broken defenses that the target swears were active.",
+      "It naturally creates scenes where the truth catches up and the correction is worse than the original threat the corruption was used to avoid."
+    ],
+    "questHooks": [
+      "Corrupt a boss enemy's cached defense values to create a one-turn vulnerability window that lets your group strike before the refresh arrives.",
+      "Navigate a dungeon where your own cached position keeps diverging from reality because someone else is running the same Overlay against you.",
+      "Contain a cache corruption cascade that is spreading through a city's infrastructure before outdated state entries cause buildings to resolve as unbuilt."
+    ],
+    "tags": [
+      "cache",
+      "exploit",
+      "corruption",
+      "instability"
+    ],
+    "statModifiers": {
+      "intelligence": 2,
+      "luck": 1
+    },
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#FF8787"
+    },
+    "narrativeTone": {
+      "voice": "chaotic and unstable",
+      "vocabulary": [
+        "cached",
+        "corrupted",
+        "state",
+        "divergence",
+        "propagation"
+      ],
+      "sentenceStyle": "fragmented, glitchy, urgent"
+    },
+    "archetypePassives": [
+      {
+        "id": "cache_corruption_overlay_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ],
+    "possibleUses": [
+      "In gameplay, Cache Corruption Overlay can support temporary defense nullification, false-state combat advantages, and one-shot misdirection attacks at the cost of cascade risk. It rewards precision timing and ambush play while punishing overuse with self-corruption. That makes burst deception mechanically distinct from direct damage.",
+      "In narrative and quests, it enables impossible combat moments, reality-mismatch horror, and tense scenes where corrupted state catches up and the correction is worse than the original problem. Characters can win fights by lying to reality and then pay when the lie unravels.",
+      "In implementation, it maps to state-divergence detection, corrupted-value injection timers, cascade-risk counters, and hard-refresh events that purge corruption. Those hooks layer onto existing combat resolution without requiring changes to the base state management system.",
+      "Its limitation-aware use comes from making corruption propagation the primary risk. The bearer can lie to reality but the lie spreads, and once it reaches their own state the consequences are as devastating as the original advantage."
+    ],
+    "limits": [
+      "Corrupted cache entries propagate unpredictably and can poison the bearer's own state resolution as badly as the target's.",
+      "Hard state refreshes, null corrections, and coherence enforcement can flush corrupted cache instantly, negating the exploit mid-use.",
+      "The Overlay is strongest for single-moment misdirection and weakest when sustained advantage is needed because corruption degrades over time."
+    ],
+    "costs": [
+      "Cascade failure from uncontained corruption can resolve the bearer's own abilities, defenses, and position using wrong values with no warning.",
+      "Every deep corruption attempt increases the probability that subsequent cache entries in the area will diverge spontaneously without bearer control.",
+      "Hard state refreshes triggered by the corruption can expose the bearer's actual state to enemies who were previously resolving against false values."
+    ],
+    "worldCompatibility": [
+      "Cache Corruption Overlay remains beneath Void, Grandmother Void, and deeper law because it exploits state inconsistency rather than rewriting foundational truth.",
+      "It is compatible with combat deception, ambush play, and state manipulation because it expresses unstable cache exploitation rather than lawful reality authority.",
+      "Its strongest value depends on divergence windows and containment skill, which keeps the Overlay devastating in bursts and dangerous in sustained use."
+    ],
+    "rarity": "mythic",
+    "stability": "forbidden",
+    "selectionWeight": 1
   }
 ]

@@ -2406,3 +2406,15 @@ export function getRandomElementAbsorption() {
     message: `Elemental Flux: Absorbing ${absorbed}, weak to ${opposites[absorbed]}`,
   };
 }
+
+// --- evolution profile validation (runs once at module load) ---
+(function validateRaceEvolutionProfiles() {
+  for (const race of races) {
+    const profileKey = determineRaceEvolutionProfile(race);
+    if (!RACE_EVOLUTION_PROFILES[profileKey]) {
+      console.warn(
+        `[RaceDataRegistry] race "${race.id}" resolved to unknown evolution profile "${profileKey}"`,
+      );
+    }
+  }
+})();

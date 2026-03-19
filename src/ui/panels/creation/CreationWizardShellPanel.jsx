@@ -1,3 +1,5 @@
+import CharacterSelectionShowcase from "./CharacterSelectionShowcase.jsx";
+
 export default function CreationWizardShellPanel({
   title,
   steps,
@@ -156,6 +158,8 @@ export default function CreationWizardShellPanel({
           );
         })}
       </div>
+
+      <CharacterSelectionShowcase />
 
       {error ? (
         <div

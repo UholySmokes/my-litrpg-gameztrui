@@ -110,6 +110,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.28.5",
     "@babel/preset-typescript": "^7.26.0",
     "@eslint/js": "^9.39.1",
     "@firebase/rules-unit-testing": "^5.0.0",

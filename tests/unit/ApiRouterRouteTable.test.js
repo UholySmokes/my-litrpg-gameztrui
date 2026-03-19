@@ -3,7 +3,7 @@ import apiRouter from "../../functions/lib/api-router.js";
 import sync from "../../functions/lib/sync.js";
 import { findApiRoute, normalizePath } from "../../functions/lib/api-route-table.js";
 
-const { handleApiRequest } = apiRouter;
+const { handleApiRequest, MAX_BODY_SIZE } = apiRouter;
 
 function createRes() {
 	const res = {
@@ -90,5 +90,22 @@ describe("api router route table", () => {
 
 		expect(res.statusCode).toBe(404);
 		expect(res.body.errorCode).toBe("NOT_FOUND");
+	});
+
+	it("rejects oversized bodies before route dispatch", async () => {
+		const req = {
+			method: "POST",
+			url: "/api/narrate",
+			headers: {
+				"content-length": String(MAX_BODY_SIZE + 1),
+			},
+			body: "x",
+		};
+		const res = createRes();
+
+		await handleApiRequest(req, res);
+
+		expect(res.statusCode).toBe(413);
+		expect(res.body.errorCode).toBe("PAYLOAD_TOO_LARGE");
 	});
 });

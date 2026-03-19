@@ -54,6 +54,21 @@ export function useGameUiInteractionHandlers({
     [dispatch],
   );
 
+  const handlePerformPrestige = useCallback(() => {
+    dispatch({ type: "PERFORM_PRESTIGE" });
+  }, [dispatch]);
+
+  const handleBuyPrestigeUpgrade = useCallback(
+    (upgradeType) => {
+      if (!upgradeType) return;
+      dispatch({
+        type: "BUY_PRESTIGE_UPGRADE",
+        payload: { upgradeType },
+      });
+    },
+    [dispatch],
+  );
+
   const handleStudySpell = useCallback(
     (payload = { mode: "create" }) => {
       dispatchSystemEvent({
@@ -379,6 +394,7 @@ export function useGameUiInteractionHandlers({
 
   return {
     handleAllocateAttributePoint,
+    handleBuyPrestigeUpgrade,
     handleClassAbilityUse,
     handleCombatAttack,
     handleCombatEscape,
@@ -390,6 +406,7 @@ export function useGameUiInteractionHandlers({
     handleEvolveSkill,
     handleFuseSkills,
     handleGachaPull,
+    handlePerformPrestige,
     handleRaceAbilityUse,
     handleShopPurchase,
     handleSkillUse,

@@ -26,7 +26,7 @@ phases:
         files_affected:
           - "functions/lib/auth.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P0
         notes: "Half-day, zero regression risk. Non-negotiable security fix"
 
@@ -38,7 +38,7 @@ phases:
           - "packages/game-core/src/core/initialState.js"
           - "src/core/ActionDispatcher.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P0
         notes: "ROI 64.0. Change to percentage-based config. Keep Math.max(5,...) floor for low-level characters"
 
@@ -50,7 +50,7 @@ phases:
           - "packages/game-core/src/core/initialState.js"
           - "tests/"
         dependencies: []
-        status: pending
+        status: done
         priority: P0
         notes: "Data-only change — xpCurve.js already supports arrays"
 
@@ -62,7 +62,7 @@ phases:
           - "functions/index.js"
           - "functions/lib/rate-limit.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P0
         notes: "Already in package-lock, not imported. Pair with body size validation"
 
@@ -74,7 +74,7 @@ phases:
           - "functions/index.js"
         dependencies:
           - U-004
-        status: pending
+        status: done
         priority: P0
         notes: "Pair with rate limiting"
 
@@ -88,7 +88,7 @@ phases:
         files_affected:
           - "package.json"
         dependencies: []
-        status: pending
+        status: done
         priority: P1
         notes: "Non-blocking for content. Runs in parallel with content work"
 
@@ -124,7 +124,7 @@ phases:
         files_affected:
           - "packages/game-core/src/data/EnemyDataRegistry.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P1
         notes: "Phase 1 of content. ~2h/enemy including testing. 6 tiers × 5 enemies"
 
@@ -136,7 +136,7 @@ phases:
           - "packages/game-core/src/core/initialState.js"
           - "src/components/CharacterCreation.jsx"
         dependencies: []
-        status: pending
+        status: done
         priority: P1
         notes: "Racial differentiation for build identity"
 
@@ -147,7 +147,7 @@ phases:
         files_affected:
           - "packages/game-core/src/systems/GachaSystem.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P1
         notes: "20 new items across 2 new pools + pity counter (guaranteed rare after N pulls)"
 
@@ -158,7 +158,7 @@ phases:
         files_affected:
           - "src/components/AutoStatAllocator.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P1
         notes: "Balanced / Offensive / Defensive / Custom presets"
 
@@ -170,7 +170,7 @@ phases:
           - "packages/game-core/src/systems/PrestigeSystem.js"
           - "packages/game-core/src/systems/PrestigeSystem.ts"
         dependencies: []
-        status: pending
+        status: done
         priority: P1
         notes: "Delete .js, keep .ts as canonical"
 
@@ -208,7 +208,7 @@ phases:
         files_affected:
           - "src/core/ActionDispatcher.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
         notes: "Extract attack/rest/move handlers to separate modules. Unblocks new action types"
 
@@ -220,7 +220,7 @@ phases:
           - "packages/game-core/src/data/EnemyDataRegistry.js"
         dependencies:
           - U-009
-        status: pending
+        status: done
         priority: P2
         notes: "Phase 2 of content expansion"
 
@@ -254,7 +254,7 @@ phases:
           - "packages/game-core/src/systems/"
           - "src/components/DeathScreen.jsx"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
         notes: "Clear death cause message. Respawn at last safe zone with 1 HP/1 mana"
 

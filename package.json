@@ -176,6 +176,22 @@
       "<rootDir>/api/src/dataconnect-generated/",
       "<rootDir>/packages/game-core/src/dataconnect-generated/",
       "<rootDir>/packages/game-schemas/src/dataconnect-generated/"
-    ]
+    ],
+    "collectCoverageFrom": [
+      "packages/game-core/src/**/*.{js,ts}",
+      "functions/lib/**/*.js",
+      "src/core/**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!**/build/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 40,
+        "lines": 50,
+        "statements": 50
+      }
+    }
   }
 }

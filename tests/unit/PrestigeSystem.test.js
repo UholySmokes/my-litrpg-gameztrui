@@ -6,7 +6,7 @@ import {
   performPrestigeReset,
   buyPrestigeUpgrade,
   PRESTIGE_MIN_LEVEL,
-} from "../../packages/game-core/src/systems/PrestigeSystem.js";
+} from "../../packages/game-core/src/systems/PrestigeSystem";
 
 describe("PrestigeSystem pure functions", () => {
   describe("defaultPrestigeStats", () => {

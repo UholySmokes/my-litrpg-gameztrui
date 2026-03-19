@@ -1,2 +1,5 @@
 .godot/
 *.import
+
+# Godot editor binaries (too large for GitHub)
+*.exe

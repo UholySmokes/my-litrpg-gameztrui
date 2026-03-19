@@ -492,10 +492,10 @@ export function executeAction(state, action, _options = {}) {
           const config = state.config || {};
           const hpAmount = config.restHealAmount > 0
             ? config.restHealAmount
-            : Math.max(5, Math.floor(hp.max * 0.25));
+            : Math.max(config.restHealMinFloor ?? 5, Math.floor(hp.max * (config.restHealPercent ?? 0.25)));
           const manaAmount = config.restManaAmount > 0
             ? config.restManaAmount
-            : Math.max(5, Math.floor(mana.max * 0.25));
+            : Math.max(config.restManaMinFloor ?? 3, Math.floor(mana.max * (config.restManaPercent ?? 0.40)));
 
           const nextHp = Math.min(hp.max, (hp.current ?? 0) + hpAmount);
           const nextMana = Math.min(mana.max, (mana.current ?? 0) + manaAmount);

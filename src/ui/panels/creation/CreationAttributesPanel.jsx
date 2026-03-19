@@ -98,7 +98,7 @@ export default function CreationAttributesPanel({
                 >
                   <button
                     type="button"
-                    onClick={() => onAction?.(() => onStatChange(key, -1))}
+                    onClick={() => { onAction?.(() => {}); onStatChange(key, -1); }}
                     disabled={value <= 0 ? true : false}
                     style={{
                       background: "rgba(0, 243, 255, 0.1)",
@@ -130,7 +130,7 @@ export default function CreationAttributesPanel({
                   </span>
                   <button
                     type="button"
-                    onClick={() => onAction?.(() => onStatChange(key, 1))}
+                    onClick={() => { onAction?.(() => {}); onStatChange(key, 1); }}
                     disabled={availablePoints <= 0 ? true : false}
                     style={{
                       background: "rgba(0, 243, 255, 0.1)",
@@ -156,7 +156,7 @@ export default function CreationAttributesPanel({
       <div>
         <button
           type="button"
-          onClick={() => onAction?.(() => onReroll())}
+          onClick={() => { onAction?.(() => {}); onReroll(); }}
           disabled={rerollsRemaining <= 0 ? true : false}
           style={{
             width: "100%",

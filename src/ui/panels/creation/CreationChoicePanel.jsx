@@ -38,7 +38,7 @@ export default function CreationChoicePanel({
       {allowNone && (
         <button
           type="button"
-          onClick={() => onAction?.(() => onSelectNone?.())}
+          onClick={() => { onAction?.(() => {}); onSelectNone?.(); }}
           style={{
             padding: "0.65rem",
             textAlign: "left",
@@ -65,7 +65,7 @@ export default function CreationChoicePanel({
             <button
               key={entry.id}
               type="button"
-              onClick={() => onAction?.(() => onToggle?.(entry.id))}
+              onClick={() => { onAction?.(() => {}); onToggle?.(entry.id); }}
               style={{
                 padding: "0.75rem",
                 background: isSelected

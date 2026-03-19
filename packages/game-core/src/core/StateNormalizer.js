@@ -48,6 +48,8 @@ const DEFAULT_PROGRESS = {
   totalKills: 0,
   killsByEnemyId: {},
   gachaPulls: 0,
+  gachaPullsSinceRare: 0,
+  gachaPullsSinceEpic: 0,
   totalGoldEarned: 0,
 };
 
@@ -399,6 +401,8 @@ function normalizePlayer(rawPlayer, config) {
       totalKills: Math.max(0, Math.floor(toNumber(progress.totalKills, 0))),
       killsByEnemyId,
       gachaPulls: Math.max(0, Math.floor(toNumber(progress.gachaPulls, 0))),
+      gachaPullsSinceRare: Math.max(0, Math.floor(toNumber(progress.gachaPullsSinceRare, 0))),
+      gachaPullsSinceEpic: Math.max(0, Math.floor(toNumber(progress.gachaPullsSinceEpic, 0))),
       totalGoldEarned: Math.max(
         goldCoins,
         Math.max(0, Math.floor(toNumber(progress.totalGoldEarned, 0))),

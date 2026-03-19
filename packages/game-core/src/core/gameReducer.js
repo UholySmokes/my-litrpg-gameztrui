@@ -50,7 +50,7 @@ import {
   buyPrestigeUpgrade,
   defaultPrestigeStats,
   PRESTIGE_MIN_LEVEL,
-} from "../systems/PrestigeSystem.js";
+} from "../systems/PrestigeSystem";
 
 const ensureCombatStructure = (state) =>
   state.combat || {

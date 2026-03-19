@@ -26,7 +26,7 @@ import {
   getEssenceAnomalyById,
 } from "../world/WorldDataRegistry.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
-import { defaultPrestigeStats } from "../systems/PrestigeSystem.js";
+import { defaultPrestigeStats } from "../systems/PrestigeSystem";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
 const { GAME_STATE_VERSION } = saveCutover;

@@ -120,6 +120,8 @@ const initialGameState = {
       totalKills: 0,
       killsByEnemyId: {},
       gachaPulls: 0,
+      gachaPullsSinceRare: 0,
+      gachaPullsSinceEpic: 0,
       totalGoldEarned: 0,
       classEvolutions: 0,
       raceEvolutions: 0,

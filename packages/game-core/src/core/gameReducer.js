@@ -1215,6 +1215,9 @@ const gameReducer = (state, action) =>
           : {};
       const pullCount = Array.isArray(results) ? results.length : 0;
 
+      const pityRare = action.payload?.newPullsSinceRare;
+      const pityEpic = action.payload?.newPullsSinceEpic;
+
       const nextState = {
         ...state,
         player: {
@@ -1234,6 +1237,8 @@ const gameReducer = (state, action) =>
           progress: {
             ...progress,
             gachaPulls: toNumber(progress.gachaPulls, 0) + pullCount,
+            ...(pityRare != null ? { gachaPullsSinceRare: pityRare } : {}),
+            ...(pityEpic != null ? { gachaPullsSinceEpic: pityEpic } : {}),
           },
         },
       };

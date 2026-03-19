@@ -82,6 +82,9 @@ export default function MobileGameMode({
   onEquipTitle,
   onUnequipTitle,
 }) {
+  const { theme } = useTheme();
+  const mobileThemeKey = theme.mobileThemeKey || "dark-grimoire";
+
   const [activeTab, setActiveTab] = useState("adventure");
   const [showThemeSelector, setShowThemeSelector] = useState(false);
 
@@ -139,7 +142,7 @@ export default function MobileGameMode({
   };
 
   return (
-    <div className="mobile-game">
+    <div className="mobile-game" data-theme={mobileThemeKey}>
       <MobileStatBar player={player} config={config} />
 
       <MobileTabRouter activeTab={activeTab} tabProps={tabProps} />

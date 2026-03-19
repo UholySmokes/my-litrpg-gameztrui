@@ -120,6 +120,8 @@ async function runNarration(body) {
 		agentId,
 		status: "completed",
 		backend: result?.backend || "firebase-genkit",
+		fallbackUsed: Boolean(result?.fallbackUsed),
+		fallbackFrom: result?.fallbackFrom || undefined,
 		model: result?.model,
 		temperature: result?.temperature,
 		...payload,
@@ -187,6 +189,8 @@ async function runAgent(req, res) {
 			ok: true,
 			provider: "firebase-genkit",
 			backend: result.backend,
+			fallbackUsed: Boolean(result.fallbackUsed),
+			fallbackFrom: result.fallbackFrom || undefined,
 			agent: result.agent,
 			agentName: result.agentName,
 			model: result.model,
@@ -233,6 +237,8 @@ async function narrate(req, res) {
 			mode: result.mode,
 			agentId: result.agentId,
 			backend: result.backend,
+			fallbackUsed: result.fallbackUsed,
+			fallbackFrom: result.fallbackFrom,
 			model: result.model,
 			status: result.status,
 		});
@@ -329,6 +335,8 @@ async function narrateStart(req, res) {
 			suggestions: result.suggestions,
 			outputHash: result.outputHash,
 			backend: result.backend,
+			fallbackUsed: result.fallbackUsed,
+			fallbackFrom: result.fallbackFrom,
 			model: result.model,
 		});
 	} catch (error) {

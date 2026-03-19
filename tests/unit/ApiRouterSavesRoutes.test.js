@@ -6,6 +6,7 @@ import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 const { handleApiRequest } = require("../../functions/lib/api-router.js");
+const { SAVE_RESET_EPOCH } = require("../../shared/save-cutover.cjs");
 
 function makeTempFile(name) {
 	return path.join(
@@ -48,19 +49,51 @@ function createReq({ method, url, body, userId = "user-1" }) {
 }
 
 describe("api router saves routes", () => {
+	const originalSyncStorage = process.env.SYNC_DB_STORAGE;
+	const originalSyncPath = process.env.SYNC_DB_PATH;
 	const oldGameDbStorage = process.env.GAME_DB_STORAGE;
 	const oldGameSavesStorage = process.env.GAME_SAVES_STORAGE;
 	const oldGameDbPath = process.env.GAME_DB_PATH;
+	let syncDbPath = "";
 	let gameDbPath = "";
 
 	beforeEach(() => {
+		syncDbPath = makeTempFile("sync-db");
 		gameDbPath = makeTempFile("game-db");
+		process.env.SYNC_DB_STORAGE = "file";
+		process.env.SYNC_DB_PATH = syncDbPath;
 		process.env.GAME_DB_STORAGE = "file";
 		process.env.GAME_SAVES_STORAGE = "file";
 		process.env.GAME_DB_PATH = gameDbPath;
+		fs.writeFileSync(
+			syncDbPath,
+			JSON.stringify(
+				{
+					version: 1,
+					created_at: new Date().toISOString(),
+					updated_at: new Date().toISOString(),
+					runs: [],
+					events: [],
+					migration_versions: {
+						"user-1": SAVE_RESET_EPOCH,
+						"owner-1": SAVE_RESET_EPOCH,
+						"intruder-1": SAVE_RESET_EPOCH,
+					},
+				},
+				null,
+				2,
+			),
+			"utf8",
+		);
 	});
 
 	afterEach(() => {
+		if (originalSyncStorage === undefined) delete process.env.SYNC_DB_STORAGE;
+		else process.env.SYNC_DB_STORAGE = originalSyncStorage;
+
+		if (originalSyncPath === undefined) delete process.env.SYNC_DB_PATH;
+		else process.env.SYNC_DB_PATH = originalSyncPath;
+
 		if (oldGameDbStorage === undefined) delete process.env.GAME_DB_STORAGE;
 		else process.env.GAME_DB_STORAGE = oldGameDbStorage;
 
@@ -72,6 +105,9 @@ describe("api router saves routes", () => {
 
 		if (gameDbPath && fs.existsSync(gameDbPath)) {
 			fs.unlinkSync(gameDbPath);
+		}
+		if (syncDbPath && fs.existsSync(syncDbPath)) {
+			fs.unlinkSync(syncDbPath);
 		}
 	});
 

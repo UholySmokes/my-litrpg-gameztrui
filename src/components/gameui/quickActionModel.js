@@ -71,7 +71,8 @@ export function getQuickActionItems(player = {}) {
       const id = normalizeText(item.id);
       if (!id) return null;
       const quantity = Math.max(1, Number(item.quantity || 1));
-      const effect = item.effect && typeof item.effect === "object" ? item.effect : {};
+      const effect =
+        item.effect && typeof item.effect === "object" ? item.effect : {};
       const usable =
         item.type === "consumable" ||
         Number.isFinite(effect.heal) ||
@@ -96,4 +97,3 @@ export function getPrimaryCombatEnemyIndex(combatState = {}) {
   );
   return firstLivingIndex >= 0 ? firstLivingIndex : 0;
 }
-

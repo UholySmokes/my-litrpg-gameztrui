@@ -56,10 +56,10 @@ describe("GameQuickActions", () => {
 
   it("renders the direct actions and legacy toggles", () => {
     const markup = renderToStaticMarkup(
-      <GameQuickActions
-        isDevBuild={true}
-        combatState={{ status: "inactive", enemies: [] }}
-        player={{
+      React.createElement(GameQuickActions, {
+        isDevBuild: true,
+        combatState: { status: "inactive", enemies: [] },
+        player: {
           activeSkills: [{ id: "fireball", name: "Fireball" }],
           inventory: [
             {
@@ -70,23 +70,23 @@ describe("GameQuickActions", () => {
               effect: { heal: 20 },
             },
           ],
-        }}
-        submitAction={() => ({ ok: true })}
-        onAttack={() => {}}
-        onEscape={() => {}}
-        onRest={() => {}}
-        onUseItem={() => {}}
-        onUseSkill={() => {}}
-        onToggleArchetypeSystem={() => {}}
-        onToggleCraft={() => {}}
-        onToggleGacha={() => {}}
-        onToggleQuests={() => {}}
-        onToggleReplayInspector={() => {}}
-        onToggleSaveLoad={() => {}}
-        onToggleShop={() => {}}
-        onToggleStatus={() => {}}
-        onToggleTitles={() => {}}
-      />,
+        },
+        submitAction: () => ({ ok: true }),
+        onAttack: () => {},
+        onEscape: () => {},
+        onRest: () => {},
+        onUseItem: () => {},
+        onUseSkill: () => {},
+        onToggleArchetypeSystem: () => {},
+        onToggleCraft: () => {},
+        onToggleGacha: () => {},
+        onToggleQuests: () => {},
+        onToggleReplayInspector: () => {},
+        onToggleSaveLoad: () => {},
+        onToggleShop: () => {},
+        onToggleStatus: () => {},
+        onToggleTitles: () => {},
+      }),
     );
 
     expect(markup).toContain("Attack");
@@ -99,4 +99,3 @@ describe("GameQuickActions", () => {
     expect(markup).toContain("Replay Inspector");
   });
 });
-

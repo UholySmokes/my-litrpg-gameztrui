@@ -97,25 +97,25 @@ phases:
         effort_hours: 4
         team: Beta
         files_affected:
-          - "package.json"
+          - "tests/unit/smoke/"
         dependencies: []
-        status: pending
+        status: done
         priority: P1
-        notes: "Non-blocking for content"
+        notes: "Implemented as 24 dedicated smoke test files and validated with focused Jest runs"
 
       - id: U-008
         title: "Quick-action buttons (5: Attack/Rest/Escape/Skill/Item)"
         effort_hours: 14
         team: Beta + Design
         files_affected:
-          - "src/components/GameQuickActions.jsx"
-          - "src/components/ActionButtons.jsx"
-          - "src/components/SkillPicker.jsx"
-          - "src/components/ItemPicker.jsx"
+          - "src/components/gameui/GameQuickActions.jsx"
+          - "src/components/gameui/ActionButtons.jsx"
+          - "src/components/gameui/SkillPicker.jsx"
+          - "src/components/gameui/ItemPicker.jsx"
         dependencies: []
-        status: pending
+        status: done
         priority: P1
-        notes: "Consensus: 5 buttons with sub-menus. Attack/Rest/Escape direct, Skill/Item open pickers"
+        notes: "Implemented in the game UI shell with direct actions plus skill and item pickers; covered by unit tests"
 
       - id: U-009
         title: "Enemy expansion: 8→30 (6 tiers × 5 each)"
@@ -242,9 +242,9 @@ phases:
         files_affected:
           - "packages/game-core/src/data/"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "Milestone-based: levels, bosses, quests, exploration. Quality over quantity"
+        notes: "Title data currently contains 53 entries spanning levels, quests, kill milestones, gold, and gacha progression"
 
       - id: U-020
         title: "Death penalty: 10% gold loss + notification UI"
@@ -287,9 +287,9 @@ phases:
         files_affected:
           - "tests/integration/"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "Create char → fight → level → rest → save/load. 80% confidence at 20% cost"
+        notes: "Critical-path integration suite exists and passes: create char → fight → level → rest → save/load"
 
       - id: U-024
         title: "Split monolith function into 3"
@@ -344,9 +344,9 @@ phases:
         files_affected:
           - "functions/lib/api-router.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "Replace manual route wiring"
+        notes: "Implemented via functions/lib/api-route-table.js and covered by route-table unit tests"
 
       - id: U-029
         title: "Gacha expansion: 40→85 items"

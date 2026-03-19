@@ -2407,6 +2407,74 @@ export function getRandomElementAbsorption() {
   };
 }
 
+/**
+ * RACE ATTRIBUTE MODIFIERS
+ * Each race provides a net +5 attribute point budget at character creation.
+ * Keys are canonical attribute names.
+ */
+export const RACE_ATTRIBUTE_MODIFIERS = {
+  pure_human:            { strength: 1, agility: 1, vitality: 1, intelligence: 1, wisdom: 1 },
+  neo_human:             { strength: 2, dexterity: 2, agility: 1, vitality: 1, soul: -1 },
+  ancient_bloodline:     { intelligence: 2, wisdom: 2, soul: 2, strength: -1 },
+  spirit_beast:          { strength: 2, agility: 2, vitality: 1, dexterity: 1, intelligence: -1 },
+  demon_kin:             { strength: 2, willpower: 2, soul: 1, luck: 1, charisma: -1 },
+  celestial_descendant:  { wisdom: 2, charisma: 2, soul: 2, strength: -1 },
+  shadow_walker:         { agility: 2, dexterity: 2, luck: 1, intelligence: 1, charisma: -1 },
+  dragon_blood:          { strength: 2, vitality: 2, willpower: 1, intelligence: 1, agility: -1 },
+  elemental_attuned:     { intelligence: 2, soul: 2, wisdom: 1, luck: 1, strength: -1 },
+  mutant:                { luck: 2, vitality: 1, agility: 1, strength: 1, wisdom: 1, charisma: -1 },
+  undead_awakened:       { willpower: 3, soul: 2, intelligence: 1, charisma: -1 },
+  fae_touched:           { charisma: 2, luck: 2, dexterity: 1, intelligence: 1, strength: -1 },
+  beast_kin:             { strength: 2, agility: 2, dexterity: 1, vitality: 1, intelligence: -1 },
+  mechanical_construct:  { dexterity: 2, intelligence: 2, strength: 1, willpower: 1, charisma: -1 },
+  void_walker:           { intelligence: 2, soul: 2, wisdom: 1, willpower: 1, strength: -1 },
+  phoenix_reborn:        { vitality: 2, soul: 1, willpower: 1, intelligence: 1, luck: 1, strength: -1 },
+  nature_spirit:         { wisdom: 2, vitality: 2, soul: 1, intelligence: 1, strength: -1 },
+  crystal_being:         { willpower: 2, intelligence: 2, soul: 2, agility: -1 },
+  chaos_born:            { luck: 3, intelligence: 1, agility: 1, willpower: 1, wisdom: -1 },
+  divine_scion:          { charisma: 2, soul: 2, wisdom: 1, willpower: 1, strength: -1 },
+  stormforged:           { strength: 2, willpower: 2, vitality: 1, agility: 1, charisma: -1 },
+  frostborne:            { willpower: 2, vitality: 2, intelligence: 1, soul: 1, agility: -1 },
+  emberkin:              { strength: 2, agility: 1, willpower: 1, intelligence: 1, vitality: 1, charisma: -1 },
+  tidecaller:            { intelligence: 2, wisdom: 2, dexterity: 1, soul: 1, strength: -1 },
+  sunborn:               { charisma: 2, vitality: 1, willpower: 1, intelligence: 1, soul: 1, strength: -1 },
+  duskborne:             { agility: 2, dexterity: 2, luck: 1, wisdom: 1, strength: -1 },
+  ironroot:              { strength: 2, willpower: 2, vitality: 1, soul: 1, agility: -1 },
+  skybound:              { agility: 3, dexterity: 1, luck: 1, strength: 1, vitality: -1 },
+  bloodwoven:            { strength: 2, willpower: 2, vitality: 1, soul: 1, charisma: -1 },
+  starseer:              { intelligence: 2, wisdom: 2, soul: 2, strength: -1 },
+  rune_sentinel:         { willpower: 2, strength: 2, dexterity: 1, intelligence: 1, charisma: -1 },
+  mirageborn:            { charisma: 2, luck: 2, agility: 1, dexterity: 1, strength: -1 },
+  quakeborn:             { strength: 3, willpower: 2, vitality: 1, agility: -1 },
+  venomtail:             { dexterity: 2, agility: 2, luck: 1, strength: 1, charisma: -1 },
+  auric_seraph:          { charisma: 2, wisdom: 2, soul: 2, strength: -1 },
+  gloomshade:            { agility: 2, dexterity: 2, luck: 1, intelligence: 1, charisma: -1 },
+  sandstrider:           { agility: 2, luck: 2, dexterity: 1, vitality: 1, intelligence: -1 },
+  umbral_oracle:         { intelligence: 2, willpower: 2, soul: 2, strength: -1 },
+  verdant_shaper:        { vitality: 2, wisdom: 2, soul: 1, willpower: 1, strength: -1 },
+  astral_nomad:          { soul: 3, intelligence: 2, wisdom: 1, strength: -1 },
+  riftborn:              { agility: 2, soul: 2, intelligence: 1, dexterity: 1, strength: -1 },
+  ashenblood:            { strength: 2, willpower: 1, agility: 1, vitality: 1, intelligence: 1, charisma: -1 },
+  glacierkin:            { willpower: 2, intelligence: 2, vitality: 1, dexterity: 1, agility: -1 },
+  luckweaver:            { luck: 3, charisma: 2, intelligence: 1, strength: -1 },
+  blood_frenzied:        { strength: 3, vitality: 2, willpower: 1, intelligence: -1 },
+  grim_revenant:         { willpower: 3, soul: 2, vitality: 1, charisma: -1 },
+  sparkborn:             { agility: 2, dexterity: 2, strength: 1, vitality: 1, intelligence: -1 },
+  whisper_fae:           { charisma: 3, intelligence: 1, dexterity: 1, luck: 1, strength: -1 },
+  shadow_veil:           { agility: 2, dexterity: 2, luck: 1, willpower: 1, charisma: -1 },
+  wild_mutant:           { luck: 2, strength: 1, agility: 1, vitality: 1, dexterity: 1, intelligence: -1 },
+  flux_attuned:          { intelligence: 2, soul: 2, willpower: 1, wisdom: 1, strength: -1 },
+  ironhide:              { strength: 3, willpower: 2, vitality: 1, agility: -1 },
+  echo_spirit:           { soul: 3, willpower: 2, intelligence: 1, strength: -1 },
+  chaos_touched:         { luck: 2, intelligence: 1, agility: 1, willpower: 1, soul: 1, strength: -1 },
+  sunforged:             { strength: 2, willpower: 2, charisma: 1, vitality: 1, agility: -1 },
+};
+
+// Attach attributeModifiers to each race object
+for (const race of races) {
+  race.attributeModifiers = RACE_ATTRIBUTE_MODIFIERS[race.id] || {};
+}
+
 // --- evolution profile validation (runs once at module load) ---
 (function validateRaceEvolutionProfiles() {
   for (const race of races) {

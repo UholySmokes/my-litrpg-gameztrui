@@ -1,11 +1,10 @@
 import React from "react";
 import { describe, expect, it } from "@jest/globals";
 import { renderToStaticMarkup } from "react-dom/server";
-import GameQuickActions from "../../src/components/gameui/GameQuickActions.jsx";
-import {
+import GameQuickActions, {
   getQuickActionItems,
   getQuickActionSkills,
-} from "../../src/components/gameui/quickActionModel.js";
+} from "../../src/components/gameui/GameQuickActions.jsx";
 
 describe("GameQuickActions", () => {
   it("normalizes quick-action skills and inventory items", () => {

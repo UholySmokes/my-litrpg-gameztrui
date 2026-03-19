@@ -3,7 +3,7 @@ import {
   getPrimaryCombatEnemyIndex,
   getQuickActionItems,
   getQuickActionSkills,
-} from "../../src/components/gameui/quickActionModel.js";
+} from "../../src/components/gameui/GameQuickActions.jsx";
 
 describe("quickActionModel", () => {
   it("prefers active skill collections and de-duplicates by id", () => {

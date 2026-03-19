@@ -36,7 +36,7 @@ Auth requirements:
 - Save endpoints (`/api/saves*`) require auth.
 - In local non-production runs, `x-dev-user-id` / `DEV_USER_ID` can be used as a dev fallback.
 
-## Firebase-Native Agent Flows (Genkit + Gemini)
+## Firebase-Native Agent Flows (OpenAI + Gemini Fallback)
 
 The Firebase function now also exposes Google/Firebase-native multi-agent routes:
 
@@ -74,20 +74,22 @@ Example request:
 
 Runtime notes:
 
-- Uses `genkit` + `@genkit-ai/google-genai`.
-- If `GOOGLE_GENAI_API_KEY` is set, it uses Gemini Developer API (`googleAI`) and does not require Vertex API enablement.
-- If no API key is set, it uses Vertex AI (`vertexAI`) with ADC credentials.
-- Model defaults to `GEMINI_MODEL` or `gemini-2.5-flash`.
+- Narration agents (`narrator`, `combat`, `dialogue`, `world`, `system`, `quest`) default to OpenAI Responses (`openai-responses`) when `AI_TEXT_PROVIDER=openai`.
+- OpenAI path uses `OPENAI_API_KEY` + `OPENAI_MODEL` (default `gpt-5.4-mini`), with `OPENAI_ALLOWED_MODELS` allowlist support.
+- On retryable OpenAI failures (429/5xx/timeout), runtime auto-falls back to Gemini (`google-ai-studio`/`vertex-ai`) and marks `fallbackUsed=true`.
+- `content_smith` remains Gemini-first to keep the existing bulk generation flow unchanged.
+- Gemini execution uses `genkit` + `@genkit-ai/google-genai` and falls back to Vertex ADC when no Gemini API key is set.
 - Vertex location defaults to `global` (`GENKIT_VERTEX_LOCATION` to override).
-- Uses `GOOGLE_GENAI_API_KEY` (or `GOOGLE_API_KEY`) when provided, otherwise falls back to Vertex ADC credentials.
+- Gemini auth uses `GOOGLE_GENAI_API_KEY` (or `GOOGLE_API_KEY`) when provided, otherwise Vertex ADC credentials.
 
 ## Local setup for these agents
 
 1. A template now exists at `functions/.env.example`.
 2. Create `functions/.env.local` from that template.
-3. Add one auth method in `functions/.env.local`:
-   - `GOOGLE_GENAI_API_KEY=<your-key>`
-   - or `GOOGLE_APPLICATION_CREDENTIALS=<path-to-service-account.json>`
+3. Add provider credentials in `functions/.env.local`:
+   - `OPENAI_API_KEY=<your-openai-key>`
+   - `GOOGLE_GENAI_API_KEY=<your-gemini-key>` (recommended fallback)
+   - or `GOOGLE_APPLICATION_CREDENTIALS=<path-to-service-account.json>` (Vertex fallback)
 4. Start emulators:
 
 ```bash
@@ -132,12 +134,22 @@ const runResult = await agentRun({
 
 Firebase-native agent vars:
 
-- `GOOGLE_GENAI_API_KEY` (recommended for Gemini API key auth)
-- `GOOGLE_API_KEY` (optional alias)
-- `GEMINI_MODEL` (optional, default `gemini-2.5-flash`)
-- `GENKIT_ALLOWED_MODELS` (optional CSV allowlist, defaults to `GEMINI_MODEL` + `gemini-2.5-flash`)
-- `GEMINI_TEMPERATURE` (optional, per-agent defaults apply)
+- `AI_TEXT_PROVIDER` (optional, default `openai`)
+- `OPENAI_API_KEY` (required for OpenAI primary execution)
+- `OPENAI_MODEL` (optional, default `gpt-5.4-mini`)
+- `OPENAI_ALLOWED_MODELS` (optional CSV allowlist, defaults to `OPENAI_MODEL` + `gpt-5.4-mini`)
+- `OPENAI_TEMPERATURE` (optional fallback temperature for OpenAI path)
+- `GOOGLE_GENAI_API_KEY` (recommended for Gemini fallback auth)
+- `GOOGLE_API_KEY` (optional Gemini alias)
+- `GEMINI_MODEL` (optional Gemini model default, `gemini-2.5-flash`)
+- `GENKIT_ALLOWED_MODELS` (optional Gemini allowlist, defaults to `GEMINI_MODEL` + `gemini-2.5-flash`)
+- `GEMINI_TEMPERATURE` (optional Gemini temperature)
 - `GENKIT_VERTEX_LOCATION` (optional, default `global`)
+
+Deployed secret handling:
+
+- Set `OPENAI_API_KEY` in Firebase/Google Secret Manager and bind it to runtime functions.
+- Keep local keys in `functions/.env.local` for emulator use only.
 
 Narration/timeouts:
 

@@ -1,9 +1,22 @@
 const { getAgentDefinition, listFirebaseAgents, normalizeAgentId } = require("./definitions");
 
-const DEFAULT_MODEL = "gemini-2.5-flash";
+const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
+const DEFAULT_OPENAI_MODEL = "gpt-5.4-mini";
 const DEFAULT_LOCATION = "global";
+const DEFAULT_AI_TEXT_PROVIDER = "openai";
+const DEFAULT_OPENAI_TIMEOUT_MS = 120000;
+const OPENAI_NARRATION_AGENTS = new Set([
+	"narrator",
+	"combat",
+	"dialogue",
+	"world",
+	"system",
+	"quest",
+]);
 
-let runtimePromise = null;
+let geminiRuntimePromise = null;
+let openAiClientPromise = null;
+let runtimeTestOverrides = null;
 
 function parseNumber(value, fallback) {
 	const parsed = Number(value);
@@ -24,14 +37,47 @@ function parseCsvList(value) {
 		.filter(Boolean);
 }
 
-function resolveAllowedModels() {
+function normalizeProvider(value) {
+	const raw = String(value || "").trim().toLowerCase();
+	if (raw === "gemini") return "gemini";
+	if (raw === "openai") return "openai";
+	return DEFAULT_AI_TEXT_PROVIDER;
+}
+
+function getConfiguredProvider() {
+	return normalizeProvider(process.env.AI_TEXT_PROVIDER || DEFAULT_AI_TEXT_PROVIDER);
+}
+
+function resolveGeminiAllowedModels() {
 	const configured = parseCsvList(process.env.GENKIT_ALLOWED_MODELS || "");
 	if (configured.length > 0) return configured;
 
-	const fallback = new Set([DEFAULT_MODEL]);
+	const fallback = new Set([DEFAULT_GEMINI_MODEL]);
 	const envDefault = (process.env.GEMINI_MODEL || "").trim();
 	if (envDefault) fallback.add(envDefault);
 	return Array.from(fallback);
+}
+
+function resolveOpenAiAllowedModels() {
+	const configured = parseCsvList(process.env.OPENAI_ALLOWED_MODELS || "");
+	if (configured.length > 0) return configured;
+
+	const fallback = new Set([DEFAULT_OPENAI_MODEL]);
+	const envDefault = (process.env.OPENAI_MODEL || "").trim();
+	if (envDefault) fallback.add(envDefault);
+	return Array.from(fallback);
+}
+
+function isOpenAiPrimaryAgent(agentId) {
+	return OPENAI_NARRATION_AGENTS.has(agentId);
+}
+
+function resolvePrimaryProvider(agentId) {
+	if (agentId === "content_smith") return "gemini";
+	const configured = getConfiguredProvider();
+	if (configured === "gemini") return "gemini";
+	if (isOpenAiPrimaryAgent(agentId)) return "openai";
+	return "gemini";
 }
 
 function resolveProjectId() {
@@ -129,7 +175,86 @@ function tryParseStructured(text) {
 	}
 }
 
-async function initializeRuntime() {
+function resolveStatusCode(error) {
+	const direct = Number(error?.status);
+	if (Number.isFinite(direct)) return direct;
+	const alternate = Number(error?.statusCode);
+	if (Number.isFinite(alternate)) return alternate;
+	const nested = Number(error?.response?.status);
+	if (Number.isFinite(nested)) return nested;
+	return NaN;
+}
+
+function extractOpenAiText(response) {
+	const outputText =
+		typeof response?.output_text === "string" ? response.output_text.trim() : "";
+	if (outputText) return outputText;
+
+	const output = Array.isArray(response?.output) ? response.output : [];
+	const parts = [];
+	for (const item of output) {
+		const content = Array.isArray(item?.content) ? item.content : [];
+		for (const part of content) {
+			if (part?.type === "output_text" && typeof part?.text === "string") {
+				const text = part.text.trim();
+				if (text) parts.push(text);
+			}
+		}
+	}
+	return parts.join("\n").trim();
+}
+
+function isRetryableProviderError(error) {
+	const status = resolveStatusCode(error);
+	if (status === 429 || status >= 500) return true;
+
+	const code = String(error?.code || "").toUpperCase();
+	if (
+		[
+			"ETIMEDOUT",
+			"ECONNRESET",
+			"ECONNREFUSED",
+			"EAI_AGAIN",
+			"ENOTFOUND",
+			"ERR_STREAM_PREMATURE_CLOSE",
+		].includes(code)
+	) {
+		return true;
+	}
+
+	const message = String(error?.message || "").toLowerCase();
+	if (!message) return false;
+	return (
+		message.includes("timeout") ||
+		message.includes("timed out") ||
+		message.includes("temporarily unavailable") ||
+		message.includes("rate limit") ||
+		message.includes("too many requests") ||
+		message.includes("overloaded") ||
+		message.includes("upstream")
+	);
+}
+
+function createModelNotAllowedError(model, allowedModels, configHint) {
+	const error = new Error(
+		`Model '${model}' is not allowed. Configure ${configHint} to permit it.`,
+	);
+	error.status = 400;
+	error.code = "MODEL_NOT_ALLOWED";
+	error.allowedModels = allowedModels;
+	return error;
+}
+
+function createMissingOpenAiKeyError() {
+	const error = new Error(
+		"Missing OpenAI API key. Set OPENAI_API_KEY for OpenAI provider execution.",
+	);
+	error.status = 500;
+	error.code = "OPENAI_API_KEY_MISSING";
+	return error;
+}
+
+async function initializeGeminiRuntime() {
 	const [{ genkit }, { vertexAI, googleAI }] = await Promise.all([
 		import("genkit"),
 		import("@genkit-ai/google-genai"),
@@ -164,50 +289,95 @@ async function initializeRuntime() {
 	};
 }
 
-async function getRuntime() {
-	if (!runtimePromise) runtimePromise = initializeRuntime();
-	return runtimePromise;
+async function getGeminiRuntime() {
+	if (!geminiRuntimePromise) geminiRuntimePromise = initializeGeminiRuntime();
+	return geminiRuntimePromise;
 }
 
-async function runFirebaseAgent({
-	agent,
-	input,
-	model,
-	temperature,
-	topP,
-}) {
-	const normalizedAgent = normalizeAgentId(agent);
-	const definition = getAgentDefinition(normalizedAgent);
-	if (!definition) {
-		const error = new Error(`Unknown agent: ${String(agent || "")}`);
-		error.status = 400;
-		error.code = "INVALID_AGENT";
-		error.allowedAgents = listFirebaseAgents().map((x) => x.id);
-		throw error;
-	}
+async function initializeOpenAiClient() {
+	const apiKey = String(process.env.OPENAI_API_KEY || "").trim();
+	if (!apiKey) throw createMissingOpenAiKeyError();
 
-	const requestedModel = (typeof model === "string" && model.trim()) || "";
-	const activeModel = requestedModel || process.env.GEMINI_MODEL || DEFAULT_MODEL;
-	const allowedModels = resolveAllowedModels();
-	if (!allowedModels.includes(activeModel)) {
-		const error = new Error(
-			`Model '${activeModel}' is not allowed. Configure GENKIT_ALLOWED_MODELS to permit it.`,
-		);
-		error.status = 400;
-		error.code = "MODEL_NOT_ALLOWED";
-		error.allowedModels = allowedModels;
-		throw error;
-	}
+	const mod = await import("openai");
+	const OpenAI = mod?.default || mod?.OpenAI;
+	const client = new OpenAI({ apiKey });
+	return client;
+}
 
-	const activeTemperature = parseTemperature(
-		temperature,
-		parseTemperature(process.env.GEMINI_TEMPERATURE, definition.temperature),
+async function getOpenAiClient() {
+	if (!openAiClientPromise) openAiClientPromise = initializeOpenAiClient();
+	return openAiClientPromise;
+}
+
+function computeActiveTemperature(definition, provider, inputTemperature) {
+	const envKey = provider === "openai" ? "OPENAI_TEMPERATURE" : "GEMINI_TEMPERATURE";
+	return parseTemperature(
+		inputTemperature,
+		parseTemperature(process.env[envKey], definition.temperature),
 	);
-	const activeTopP = Math.max(0, Math.min(1, parseNumber(topP, 1)));
-	const inputPrompt = buildInputPrompt(definition.id, input);
-	const fullPrompt = `${definition.instructions}\n\nINPUT\n${inputPrompt}`;
+}
 
-	const { ai, modelResolver, backend } = await getRuntime();
+function formatExecutionResult({
+	definition,
+	activeModel,
+	activeTemperature,
+	backend,
+	text,
+	fallbackUsed = false,
+	fallbackFrom = "",
+}) {
+	return {
+		agent: definition.id,
+		agentName: definition.name,
+		model: activeModel,
+		temperature: activeTemperature,
+		backend,
+		text,
+		structured: tryParseStructured(text),
+		fallbackUsed: Boolean(fallbackUsed),
+		fallbackFrom: fallbackFrom || undefined,
+	};
+}
+
+function setRuntimeTestOverrides(overrides) {
+	runtimeTestOverrides =
+		overrides && typeof overrides === "object" ? { ...overrides } : null;
+	// Ensure each test run starts from a clean runtime cache.
+	geminiRuntimePromise = null;
+	openAiClientPromise = null;
+}
+
+function resetRuntimeTestOverrides() {
+	runtimeTestOverrides = null;
+	geminiRuntimePromise = null;
+	openAiClientPromise = null;
+}
+
+async function executeGeminiProvider({
+	definition,
+	fullPrompt,
+	activeModel,
+	activeTemperature,
+	activeTopP,
+}) {
+	if (runtimeTestOverrides?.executeGeminiProvider) {
+		const overrideResult = await runtimeTestOverrides.executeGeminiProvider({
+			definition,
+			fullPrompt,
+			activeModel,
+			activeTemperature,
+			activeTopP,
+		});
+		return formatExecutionResult({
+			definition,
+			activeModel,
+			activeTemperature,
+			backend: overrideResult.backend || "google-ai-studio",
+			text: String(overrideResult.text || "").trim(),
+		});
+	}
+
+	const { ai, modelResolver, backend } = await getGeminiRuntime();
 	const { response, stream } = ai.generateStream({
 		model: modelResolver(activeModel),
 		prompt: fullPrompt,
@@ -235,18 +405,170 @@ async function runFirebaseAgent({
 		throw error;
 	}
 
-	return {
-		agent: definition.id,
-		agentName: definition.name,
-		model: activeModel,
-		temperature: activeTemperature,
+	return formatExecutionResult({
+		definition,
+		activeModel,
+		activeTemperature,
 		backend,
 		text: finalText,
-		structured: tryParseStructured(finalText),
-	};
+	});
+}
+
+async function executeOpenAiProvider({
+	definition,
+	fullPrompt,
+	activeModel,
+	activeTemperature,
+	activeTopP,
+}) {
+	if (runtimeTestOverrides?.executeOpenAiProvider) {
+		const overrideResult = await runtimeTestOverrides.executeOpenAiProvider({
+			definition,
+			fullPrompt,
+			activeModel,
+			activeTemperature,
+			activeTopP,
+		});
+		return formatExecutionResult({
+			definition,
+			activeModel,
+			activeTemperature,
+			backend: overrideResult.backend || "openai-responses",
+			text: String(overrideResult.text || "").trim(),
+		});
+	}
+
+	const client = await getOpenAiClient();
+	const timeout = parseNumber(process.env.OPENAI_TIMEOUT_MS, DEFAULT_OPENAI_TIMEOUT_MS);
+	const response = await client.responses.create(
+		{
+			model: activeModel,
+			input: fullPrompt,
+			temperature: activeTemperature,
+			top_p: activeTopP,
+		},
+		{ timeout },
+	);
+
+	const finalText = extractOpenAiText(response);
+	if (!finalText) {
+		const error = new Error("Model returned empty output.");
+		error.status = 502;
+		error.code = "NON_TEXT_OUTPUT";
+		throw error;
+	}
+
+	return formatExecutionResult({
+		definition,
+		activeModel,
+		activeTemperature,
+		backend: "openai-responses",
+		text: finalText,
+	});
+}
+
+async function runFirebaseAgent({
+	agent,
+	input,
+	model,
+	temperature,
+	topP,
+}) {
+	const normalizedAgent = normalizeAgentId(agent);
+	const definition = getAgentDefinition(normalizedAgent);
+	if (!definition) {
+		const error = new Error(`Unknown agent: ${String(agent || "")}`);
+		error.status = 400;
+		error.code = "INVALID_AGENT";
+		error.allowedAgents = listFirebaseAgents().map((x) => x.id);
+		throw error;
+	}
+
+	const provider = resolvePrimaryProvider(definition.id);
+	const requestedModel = (typeof model === "string" && model.trim()) || "";
+	const activeModel =
+		provider === "openai"
+			? requestedModel || process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL
+			: requestedModel || process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
+	const allowedModels =
+		provider === "openai"
+			? resolveOpenAiAllowedModels()
+			: resolveGeminiAllowedModels();
+	if (!allowedModels.includes(activeModel)) {
+		throw createModelNotAllowedError(
+			activeModel,
+			allowedModels,
+			provider === "openai" ? "OPENAI_ALLOWED_MODELS" : "GENKIT_ALLOWED_MODELS",
+		);
+	}
+
+	const activeTemperature = computeActiveTemperature(
+		definition,
+		provider,
+		temperature,
+	);
+	const activeTopP = Math.max(0, Math.min(1, parseNumber(topP, 1)));
+	const inputPrompt = buildInputPrompt(definition.id, input);
+	const fullPrompt = `${definition.instructions}\n\nINPUT\n${inputPrompt}`;
+
+	if (provider === "openai") {
+		try {
+			return await executeOpenAiProvider({
+				definition,
+				fullPrompt,
+				activeModel,
+				activeTemperature,
+				activeTopP,
+			});
+		} catch (error) {
+			if (!isRetryableProviderError(error) && error?.code !== "OPENAI_API_KEY_MISSING") {
+				throw error;
+			}
+
+			const fallbackModel = process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
+			const fallbackAllowedModels = resolveGeminiAllowedModels();
+			if (!fallbackAllowedModels.includes(fallbackModel)) {
+				throw createModelNotAllowedError(
+					fallbackModel,
+					fallbackAllowedModels,
+					"GENKIT_ALLOWED_MODELS",
+				);
+			}
+
+			console.warn(
+				`[firebase-agents] OpenAI execution failed for '${definition.id}', falling back to Gemini.`,
+				{
+					status: resolveStatusCode(error),
+					code: error?.code || "",
+				},
+			);
+			const fallbackResult = await executeGeminiProvider({
+				definition,
+				fullPrompt,
+				activeModel: fallbackModel,
+				activeTemperature: computeActiveTemperature(definition, "gemini", temperature),
+				activeTopP,
+			});
+			return {
+				...fallbackResult,
+				fallbackUsed: true,
+				fallbackFrom: "openai-responses",
+			};
+		}
+	}
+
+	return executeGeminiProvider({
+		definition,
+		fullPrompt,
+		activeModel,
+		activeTemperature,
+		activeTopP,
+	});
 }
 
 module.exports = {
 	listFirebaseAgents,
 	runFirebaseAgent,
+	__setRuntimeTestOverrides: setRuntimeTestOverrides,
+	__resetRuntimeTestOverrides: resetRuntimeTestOverrides,
 };

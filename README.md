@@ -6,7 +6,7 @@ A cross-platform LitRPG game with AI-driven narration, deep character progressio
 
 - **55 playable races** with evolution paths (Mortal → Awakened → Ascendant → Mythic → Transcendent), hidden traits, and meaningful trade-offs.
 - **16+ classes** across three tiers with unique resource mechanics — rage, chi, mana, focus, energy — and 100+ skills per class (active + passive).
-- **AI-assisted narrative** with typewriter display, mood tracking, and per-turn story generation via Gemini.
+- **AI-assisted narrative** with typewriter display, mood tracking, and per-turn story generation via OpenAI (with Gemini fallback).
 - **Deterministic gameplay engine** — reducer-driven state, seeded PRNG, action replay for sync and debugging.
 - **20+ modular systems** — combat, loot, quests, crafting, professions, magic, prestige, inventory, effects, and more.
 - **Cross-platform** — React web app, Godot native client, and Firebase API all share `@voidverse/game-core`.
@@ -81,7 +81,8 @@ See [docs/REPO_MAP.md](docs/REPO_MAP.md) for task-based navigation.
 
 - **Node.js 20+** and **npm 9+**
 - **Firebase CLI** — for local hosting and functions emulators
-- **Gemini API key** (`GOOGLE_GENAI_API_KEY`) or Application Default Credentials — for AI narration
+- **OpenAI API key** (`OPENAI_API_KEY`) — primary AI narration provider
+- **Gemini API key** (`GOOGLE_GENAI_API_KEY`) or Application Default Credentials — recommended fallback provider
 
 ### Install
 
@@ -196,7 +197,7 @@ See [docs/ANDROID_TOOLCHAIN_CONTRACT.md](docs/ANDROID_TOOLCHAIN_CONTRACT.md) and
 | Schemas | Zod 4 (`@voidverse/game-schemas`) |
 | API | Firebase Functions (Node.js) |
 | Database | Firestore |
-| AI | Google Gemini (via `@google/genai`) |
+| AI | OpenAI Responses API + Google Gemini fallback |
 | Native client | Godot 4 + GDScript |
 | Testing | Jest 30, Playwright |
 | Observability | OpenTelemetry |

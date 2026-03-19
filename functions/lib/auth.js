@@ -37,7 +37,19 @@ function parseOptionalBoolean(value) {
 	return null;
 }
 
+const PRODUCTION_PROJECT_IDS = [
+	'my-litrpg-gameztrui-3416-da75c',
+];
+
+function isProductionEnvironment() {
+	const projectId = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || '';
+	return PRODUCTION_PROJECT_IDS.includes(projectId);
+}
+
 function isDevAuthEnabled() {
+	// SECURITY: Never allow dev auth in production
+	if (isProductionEnvironment()) return false;
+
 	const explicit = parseOptionalBoolean(process.env.DEV_AUTH_ENABLED);
 	if (explicit !== null) return explicit;
 	return String(process.env.FUNCTIONS_EMULATOR || "").toLowerCase() === "true";
@@ -136,5 +148,6 @@ async function getUserFromRequest(req) {
 
 module.exports = {
 	isDevAuthEnabled,
+	isProductionEnvironment,
 	getUserFromRequest,
 };

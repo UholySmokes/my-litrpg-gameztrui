@@ -18,6 +18,10 @@ export const INITIAL_CONFIG = {
 
   restHealAmount: 0,
   restManaAmount: 0,
+  restHealPercent: 0.25,
+  restManaPercent: 0.40,
+  restHealMinFloor: 5,
+  restManaMinFloor: 3,
   manaRegenPerTurn: 2,
   classEvolutionLevel: 10,
   classEvolutionLevelStep: 5,
@@ -28,7 +32,16 @@ export const INITIAL_CONFIG = {
     layerD: true,
   },
 
-  xpBrackets: [{ end: 1000, base: 100, growth: 1.5 }],
+  xpBrackets: [
+    { end: 10,   base: 100,    growth: 1.15 }, // Tier 1: Tutorial/Early game
+    { end: 25,   base: 200,    growth: 1.18 }, // Tier 2: Early-mid
+    { end: 50,   base: 500,    growth: 1.20 }, // Tier 3: Mid game
+    { end: 100,  base: 1500,   growth: 1.22 }, // Tier 4: Late-mid
+    { end: 200,  base: 5000,   growth: 1.25 }, // Tier 5: Late game
+    { end: 350,  base: 20000,  growth: 1.15 }, // Tier 6: End game
+    { end: 500,  base: 50000,  growth: 1.10 }, // Tier 7: Post-game grind
+    { end: 1000, base: 100000, growth: 1.05 }, // Tier 8: Prestige/endless
+  ],
   xpBonusPerLevelDiff: 0.2,
   xpMalusPerLevelDiff: 0.1,
   xpNoRewardBelowDelta: 10,

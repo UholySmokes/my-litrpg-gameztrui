@@ -66,6 +66,86 @@ describe("ActionDispatcher", () => {
       const result = executeAction(state, { type: "rest" });
       expect(result.success).toBe(false);
     });
+
+    it("uses percentage-based healing from config", () => {
+      const state = {
+        ...baseState,
+        player: {
+          ...baseState.player,
+          hp: { current: 50, max: 200 },
+          mana: { current: 20, max: 200 },
+        },
+        config: {
+          ...baseState.config,
+          restHealAmount: 0,
+          restManaAmount: 0,
+          restHealPercent: 0.25,
+          restManaPercent: 0.40,
+          restHealMinFloor: 5,
+          restManaMinFloor: 3,
+          manaRegenPerTurn: 0,
+        },
+      };
+
+      const result = executeAction(state, { type: "rest" });
+      expect(result.success).toBe(true);
+      // HP: 50 + floor(200*0.25)=50 → 100
+      expect(result.state.player.hp.current).toBe(100);
+      // Mana: 20 + floor(200*0.40)=80 → 100
+      expect(result.state.player.mana.current).toBe(100);
+    });
+
+    it("applies min floor for low-level characters", () => {
+      const state = {
+        ...baseState,
+        player: {
+          ...baseState.player,
+          hp: { current: 1, max: 10 },
+          mana: { current: 1, max: 5 },
+        },
+        config: {
+          ...baseState.config,
+          restHealAmount: 0,
+          restManaAmount: 0,
+          restHealPercent: 0.25,
+          restManaPercent: 0.40,
+          restHealMinFloor: 5,
+          restManaMinFloor: 3,
+          manaRegenPerTurn: 0,
+        },
+      };
+
+      const result = executeAction(state, { type: "rest" });
+      expect(result.success).toBe(true);
+      // floor(10*0.25)=2 < 5, so min floor 5 applies; capped at max 10
+      expect(result.state.player.hp.current).toBe(6);
+      // floor(5*0.40)=2 < 3, so min floor 3 applies; capped at max 5
+      expect(result.state.player.mana.current).toBe(4);
+    });
+
+    it("caps HP and mana at max after rest", () => {
+      const state = {
+        ...baseState,
+        player: {
+          ...baseState.player,
+          hp: { current: 95, max: 100 },
+          mana: { current: 90, max: 100 },
+        },
+        config: {
+          ...baseState.config,
+          restHealAmount: 0,
+          restManaAmount: 0,
+          restHealPercent: 0.25,
+          restManaPercent: 0.40,
+          manaRegenPerTurn: 0,
+        },
+      };
+
+      const result = executeAction(state, { type: "rest" });
+      expect(result.success).toBe(true);
+      expect(result.state.player.hp.current).toBe(100);
+      expect(result.state.player.mana.current).toBe(100);
+    });
   });
 
   describe("passive mana regen on turn-advancing actions", () => {

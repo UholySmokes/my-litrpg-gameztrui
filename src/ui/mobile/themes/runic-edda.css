@@ -1,0 +1,126 @@
+/*  Theme 5 — Runic Edda (Norse / Runic-Stone)
+    Carved stone, runic inscriptions, frost & fire duality. */
+
+@import url('https://fonts.googleapis.com/css2?family=Metamorphous&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Fira+Mono:wght@400;500&display=swap');
+
+.mobile-game[data-theme="runic-edda"] {
+  /* ── Palette ── */
+  --m-bg-deep: #0a0c10;
+  --m-bg-panel: rgba(18, 22, 32, 0.92);
+  --m-accent-primary: #5dade2;
+  --m-accent-secondary: #e67e22;
+  --m-accent-danger: #c0392b;
+  --m-accent-mana: #5dade2;
+  --m-accent-xp: #aed6f1;
+  --m-text-main: #d5dbe0;
+  --m-text-dim: rgba(213, 219, 224, 0.5);
+  --m-border-color: rgba(93, 173, 226, 0.35);
+  --m-btn-bg: rgba(18, 22, 32, 0.85);
+  --m-btn-active: rgba(93, 173, 226, 0.15);
+
+  /* ── Typography ── */
+  --m-font-heading: 'Metamorphous', serif;
+  --m-font-body: 'Merriweather', serif;
+  --m-font-hud: 'Fira Mono', monospace;
+
+  /* Stone texture via repeated linear gradients */
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(93, 173, 226, 0.015) 40px,
+      rgba(93, 173, 226, 0.015) 41px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 40px,
+      rgba(93, 173, 226, 0.01) 40px,
+      rgba(93, 173, 226, 0.01) 41px
+    ),
+    var(--m-bg-deep);
+}
+
+/* ── Stat bar: carved stone ── */
+.mobile-game[data-theme="runic-edda"] .mobile-stat-bar {
+  background: var(--m-bg-panel);
+  box-shadow: inset 0 -2px 6px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid var(--m-border-color);
+}
+
+.mobile-game[data-theme="runic-edda"] .mobile-bar__fill {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Frost blue HP */
+.mobile-game[data-theme="runic-edda"] .mobile-bar--hp .mobile-bar__fill {
+  background: linear-gradient(to right, #2980b9, #5dade2);
+  box-shadow: 0 0 6px rgba(93, 173, 226, 0.3);
+}
+
+/* Fire orange mana / rage */
+.mobile-game[data-theme="runic-edda"] .mobile-bar--mana .mobile-bar__fill {
+  background: linear-gradient(to right, #d35400, #e67e22);
+  box-shadow: 0 0 6px rgba(230, 126, 34, 0.3);
+}
+
+.mobile-game[data-theme="runic-edda"] .mobile-bar--xp .mobile-bar__fill {
+  background: linear-gradient(to right, #7fb3d8, #aed6f1);
+}
+
+/* ── Tab bar: stone tablets ── */
+.mobile-game[data-theme="runic-edda"] .mobile-tab-bar {
+  background: linear-gradient(to top, #080a0e, #121620);
+  border-top: 1px solid var(--m-border-color);
+}
+
+.mobile-game[data-theme="runic-edda"] .mobile-tab-bar__btn--active {
+  background: rgba(93, 173, 226, 0.12);
+  box-shadow:
+    0 -2px 0 var(--m-accent-primary),
+    0 0 10px rgba(93, 173, 226, 0.15);
+}
+
+/* ── Panels: carved-stone inset ── */
+.mobile-game[data-theme="runic-edda"] .mobile-tab-content {
+  background: transparent;
+}
+
+.mobile-game[data-theme="runic-edda"] .adventure-narrative,
+.mobile-game[data-theme="runic-edda"] .adventure-suggestions,
+.mobile-game[data-theme="runic-edda"] .character-stats,
+.mobile-game[data-theme="runic-edda"] .paper-doll {
+  background: var(--m-bg-panel);
+  border: 1px solid var(--m-border-color);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Suggestion buttons: runic prefix ── */
+.mobile-game[data-theme="runic-edda"] .adventure-suggestions__btn {
+  border: 1px solid var(--m-border-color);
+  color: var(--m-accent-primary);
+}
+
+.mobile-game[data-theme="runic-edda"] .adventure-suggestions__btn::before {
+  content: 'ᛟ ';
+  font-size: 0.9em;
+  opacity: 0.7;
+}
+
+/* ── Combat overlay: Bifröst shimmer ── */
+.mobile-game[data-theme="runic-edda"] .mobile-combat-overlay {
+  background:
+    linear-gradient(135deg,
+      rgba(93, 173, 226, 0.05),
+      transparent 30%,
+      rgba(230, 126, 34, 0.05) 70%,
+      transparent
+    ),
+    var(--m-bg-deep);
+  box-shadow: inset 0 0 100px rgba(93, 173, 226, 0.1);
+}
+
+.mobile-game[data-theme="runic-edda"] .mobile-combat-overlay__header {
+  border-bottom: 1px solid var(--m-border-color);
+}

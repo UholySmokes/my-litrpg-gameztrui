@@ -1,0 +1,116 @@
+/*  Theme 2 — Void Nexus (Cosmic Dark Sci-Fi)
+    Deep space void, nebula colors, holographic readouts. */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Space+Grotesk:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+
+.mobile-game[data-theme="void-nexus"] {
+  /* ── Palette ── */
+  --m-bg-deep: #020108;
+  --m-bg-panel: rgba(10, 5, 25, 0.88);
+  --m-accent-primary: #b266ff;
+  --m-accent-secondary: #00e5ff;
+  --m-accent-danger: #ff2a6d;
+  --m-accent-mana: #b266ff;
+  --m-accent-xp: #ffd700;
+  --m-text-main: #e0dff0;
+  --m-text-dim: rgba(224, 223, 240, 0.5);
+  --m-border-color: rgba(178, 102, 255, 0.3);
+  --m-btn-bg: rgba(10, 5, 25, 0.7);
+  --m-btn-active: rgba(178, 102, 255, 0.18);
+
+  /* ── Typography ── */
+  --m-font-heading: 'Orbitron', sans-serif;
+  --m-font-body: 'Space Grotesk', sans-serif;
+  --m-font-hud: 'Fira Code', monospace;
+
+  background:
+    radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 40% 70%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 60% 20%, rgba(255, 255, 255, 0.25), transparent),
+    radial-gradient(1px 1px at 80% 50%, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(ellipse at 50% 80%, rgba(80, 20, 140, 0.15), transparent 60%),
+    var(--m-bg-deep);
+}
+
+/* ── Stat bar: frosted glass ── */
+.mobile-game[data-theme="void-nexus"] .mobile-stat-bar {
+  background: var(--m-bg-panel);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--m-border-color);
+  box-shadow: 0 2px 16px rgba(178, 102, 255, 0.12);
+}
+
+.mobile-game[data-theme="void-nexus"] .mobile-bar__fill {
+  box-shadow: 0 0 8px currentColor;
+}
+
+.mobile-game[data-theme="void-nexus"] .mobile-bar--hp .mobile-bar__fill {
+  background: linear-gradient(to right, #00e5ff, #00b8d4);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+.mobile-game[data-theme="void-nexus"] .mobile-bar--mana .mobile-bar__fill {
+  background: linear-gradient(to right, #7c3aed, #b266ff);
+  box-shadow: 0 0 10px rgba(178, 102, 255, 0.5);
+}
+
+.mobile-game[data-theme="void-nexus"] .mobile-bar--xp .mobile-bar__fill {
+  background: linear-gradient(to right, #b8860b, #ffd700);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+/* ── Tab bar: floating capsule ── */
+.mobile-game[data-theme="void-nexus"] .mobile-tab-bar {
+  background: rgba(5, 2, 15, 0.92);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--m-border-color);
+}
+
+.mobile-game[data-theme="void-nexus"] .mobile-tab-bar__btn--active {
+  background: rgba(178, 102, 255, 0.15);
+  box-shadow:
+    0 2px 0 var(--m-accent-primary),
+    0 0 12px rgba(178, 102, 255, 0.2);
+}
+
+/* ── Panels: frosted glass ── */
+.mobile-game[data-theme="void-nexus"] .mobile-tab-content {
+  background: transparent;
+}
+
+.mobile-game[data-theme="void-nexus"] .adventure-narrative,
+.mobile-game[data-theme="void-nexus"] .adventure-suggestions,
+.mobile-game[data-theme="void-nexus"] .character-stats,
+.mobile-game[data-theme="void-nexus"] .paper-doll {
+  background: var(--m-bg-panel);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--m-border-color);
+  box-shadow: 0 0 12px rgba(178, 102, 255, 0.08);
+}
+
+/* ── Suggestion buttons: neon outline ── */
+.mobile-game[data-theme="void-nexus"] .adventure-suggestions__btn {
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  color: var(--m-accent-secondary);
+}
+
+.mobile-game[data-theme="void-nexus"] .adventure-suggestions__btn:active {
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.3);
+}
+
+.mobile-game[data-theme="void-nexus"] .adventure-suggestions__btn::before {
+  content: '◇ ';
+  opacity: 0.7;
+}
+
+/* ── Combat overlay: void rift ── */
+.mobile-game[data-theme="void-nexus"] .mobile-combat-overlay {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(80, 20, 140, 0.25), transparent 60%),
+    var(--m-bg-deep);
+  box-shadow: inset 0 0 100px rgba(178, 102, 255, 0.15);
+}
+
+.mobile-game[data-theme="void-nexus"] .mobile-combat-overlay__header {
+  border-bottom: 1px solid var(--m-border-color);
+}

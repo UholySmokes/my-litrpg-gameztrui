@@ -148,7 +148,32 @@ const THEMES = {
   3: THEME_NEON_SYNTHWAVE,
   4: THEME_NATURE_GROVE,
   5: THEME_MINIMALIST_LIGHT,
-  6: THEME_COSMIC_VOID
+  6: THEME_COSMIC_VOID,
+  7: {
+    id: 7, name: 'Dark Grimoire', mobileThemeKey: 'dark-grimoire',
+    colors: { bgDeep: '#0d0a07', bgPanel: 'rgba(25,18,10,0.92)', primary: '#c9a84c', secondary: '#8b1a1a', alert: '#8b1a1a', textMain: '#d4c5a0', textDim: 'rgba(212,197,160,0.55)', border: 'rgba(201,168,76,0.35)', buttonBg: 'rgba(25,18,10,0.85)', buttonSelected: 'rgba(201,168,76,0.2)', glow: 'rgba(201,168,76,0.4)' },
+    layout: 'ornate', borderRadius: '2px', fontFamily: "'Cinzel Decorative', serif", hudFont: "'JetBrains Mono', monospace"
+  },
+  8: {
+    id: 8, name: 'Void Nexus', mobileThemeKey: 'void-nexus',
+    colors: { bgDeep: '#020108', bgPanel: 'rgba(10,5,25,0.88)', primary: '#b266ff', secondary: '#00e5ff', alert: '#ff2a6d', textMain: '#e0dff0', textDim: 'rgba(224,223,240,0.5)', border: 'rgba(178,102,255,0.3)', buttonBg: 'rgba(10,5,25,0.7)', buttonSelected: 'rgba(178,102,255,0.18)', glow: 'rgba(178,102,255,0.5)' },
+    layout: 'floating', borderRadius: '12px', fontFamily: "'Orbitron', sans-serif", hudFont: "'Fira Code', monospace"
+  },
+  9: {
+    id: 9, name: 'Jade Meridian', mobileThemeKey: 'jade-meridian',
+    colors: { bgDeep: '#0a0e08', bgPanel: 'rgba(15,25,15,0.9)', primary: '#4ecdc4', secondary: '#e8d5b7', alert: '#d4380d', textMain: '#e8e0d0', textDim: 'rgba(232,224,208,0.5)', border: 'rgba(78,205,196,0.4)', buttonBg: 'rgba(15,25,15,0.8)', buttonSelected: 'rgba(78,205,196,0.15)', glow: 'rgba(78,205,196,0.4)' },
+    layout: 'organic', borderRadius: '6px', fontFamily: "'Noto Serif SC', serif", hudFont: "'IBM Plex Mono', monospace"
+  },
+  10: {
+    id: 10, name: 'Ironbound Codex', mobileThemeKey: 'ironbound-codex',
+    colors: { bgDeep: '#0c0a07', bgPanel: 'rgba(28,22,14,0.93)', primary: '#cd7f32', secondary: '#2ecc71', alert: '#c0392b', textMain: '#efe5d0', textDim: 'rgba(239,229,208,0.5)', border: 'rgba(205,127,50,0.45)', buttonBg: 'rgba(28,22,14,0.85)', buttonSelected: 'rgba(205,127,50,0.2)', glow: 'rgba(205,127,50,0.4)' },
+    layout: 'ornate', borderRadius: '2px', fontFamily: "'Pirata One', serif", hudFont: "'Source Code Pro', monospace"
+  },
+  11: {
+    id: 11, name: 'Runic Edda', mobileThemeKey: 'runic-edda',
+    colors: { bgDeep: '#0a0c10', bgPanel: 'rgba(18,22,32,0.92)', primary: '#5dade2', secondary: '#e67e22', alert: '#c0392b', textMain: '#d5dbe0', textDim: 'rgba(213,219,224,0.5)', border: 'rgba(93,173,226,0.35)', buttonBg: 'rgba(18,22,32,0.85)', buttonSelected: 'rgba(93,173,226,0.15)', glow: 'rgba(93,173,226,0.4)' },
+    layout: 'standard', borderRadius: '4px', fontFamily: "'Metamorphous', serif", hudFont: "'Fira Mono', monospace"
+  }
 };
 
 const ThemeContext = createContext(null);
@@ -180,7 +205,7 @@ export function ThemeProvider({ children }) {
   );
 }
 
-function useTheme() {
+export function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');

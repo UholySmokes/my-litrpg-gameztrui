@@ -1,0 +1,94 @@
+/*  Theme 1 — Dark Grimoire (Gothic Fantasy)
+    Closest to Grim Quest: parchment, iron, blood-red, medieval fonts. */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+.mobile-game[data-theme="dark-grimoire"] {
+  /* ── Palette ── */
+  --m-bg-deep: #0d0a07;
+  --m-bg-panel: rgba(25, 18, 10, 0.92);
+  --m-accent-primary: #c9a84c;
+  --m-accent-secondary: #c9a84c;
+  --m-accent-danger: #8b1a1a;
+  --m-accent-mana: #3a5fa0;
+  --m-accent-xp: #c9a84c;
+  --m-text-main: #d4c5a0;
+  --m-text-dim: rgba(212, 197, 160, 0.55);
+  --m-border-color: rgba(201, 168, 76, 0.35);
+  --m-btn-bg: rgba(25, 18, 10, 0.85);
+  --m-btn-active: rgba(201, 168, 76, 0.2);
+
+  /* ── Typography ── */
+  --m-font-heading: 'Cinzel Decorative', serif;
+  --m-font-body: 'Crimson Text', serif;
+  --m-font-hud: 'JetBrains Mono', monospace;
+
+  background: var(--m-bg-deep);
+}
+
+/* ── Stat bar: stone-carved look ── */
+.mobile-game[data-theme="dark-grimoire"] .mobile-stat-bar {
+  background: var(--m-bg-panel);
+  border-bottom: 2px ridge rgba(201, 168, 76, 0.5);
+}
+
+.mobile-game[data-theme="dark-grimoire"] .mobile-bar__fill {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.mobile-game[data-theme="dark-grimoire"] .mobile-bar--hp .mobile-bar__fill {
+  background: linear-gradient(to right, #6b1a1a, #8b1a1a);
+}
+
+.mobile-game[data-theme="dark-grimoire"] .mobile-bar--mana .mobile-bar__fill {
+  background: linear-gradient(to right, #2a4570, #3a5fa0);
+}
+
+.mobile-game[data-theme="dark-grimoire"] .mobile-bar--xp .mobile-bar__fill {
+  background: linear-gradient(to right, #8a7a30, #c9a84c);
+}
+
+/* ── Tab bar: stone slab ── */
+.mobile-game[data-theme="dark-grimoire"] .mobile-tab-bar {
+  background: linear-gradient(to top, #12100a, #1d1710);
+  border-top: 2px ridge rgba(201, 168, 76, 0.45);
+}
+
+.mobile-game[data-theme="dark-grimoire"] .mobile-tab-bar__btn--active {
+  background: rgba(201, 168, 76, 0.12);
+  box-shadow: inset 0 -2px 6px rgba(201, 168, 76, 0.25);
+}
+
+/* ── Panels: double-ridge borders, parchment feel ── */
+.mobile-game[data-theme="dark-grimoire"] .mobile-tab-content {
+  background: var(--m-bg-deep);
+}
+
+.mobile-game[data-theme="dark-grimoire"] .adventure-narrative,
+.mobile-game[data-theme="dark-grimoire"] .adventure-suggestions,
+.mobile-game[data-theme="dark-grimoire"] .character-stats,
+.mobile-game[data-theme="dark-grimoire"] .paper-doll {
+  border: 2px ridge rgba(201, 168, 76, 0.5);
+  background: var(--m-bg-panel);
+}
+
+/* ── Suggestion buttons: parchment style ── */
+.mobile-game[data-theme="dark-grimoire"] .adventure-suggestions__btn {
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  color: var(--m-accent-primary);
+}
+
+.mobile-game[data-theme="dark-grimoire"] .adventure-suggestions__btn::before {
+  content: '▶ ';
+  opacity: 0.6;
+}
+
+/* ── Combat overlay: blood-red vignette ── */
+.mobile-game[data-theme="dark-grimoire"] .mobile-combat-overlay {
+  background: var(--m-bg-deep);
+  box-shadow: inset 0 0 120px rgba(139, 26, 26, 0.4);
+}
+
+.mobile-game[data-theme="dark-grimoire"] .mobile-combat-overlay__header {
+  border-bottom: 2px ridge rgba(201, 168, 76, 0.45);
+}

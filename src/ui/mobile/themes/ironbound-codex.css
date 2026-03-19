@@ -1,0 +1,98 @@
+/*  Theme 4 — Ironbound Codex (Steampunk / Alchemical)
+    Copper, gears, parchment & ink — mechanical spellbook. */
+
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Code+Pro:wght@400;500&display=swap');
+
+.mobile-game[data-theme="ironbound-codex"] {
+  /* ── Palette ── */
+  --m-bg-deep: #0c0a07;
+  --m-bg-panel: rgba(28, 22, 14, 0.93);
+  --m-accent-primary: #cd7f32;
+  --m-accent-secondary: #2ecc71;
+  --m-accent-danger: #c0392b;
+  --m-accent-mana: #2ecc71;
+  --m-accent-xp: #cd7f32;
+  --m-text-main: #efe5d0;
+  --m-text-dim: rgba(239, 229, 208, 0.5);
+  --m-border-color: rgba(205, 127, 50, 0.45);
+  --m-btn-bg: rgba(28, 22, 14, 0.85);
+  --m-btn-active: rgba(205, 127, 50, 0.2);
+
+  /* ── Typography ── */
+  --m-font-heading: 'Pirata One', serif;
+  --m-font-body: 'Lora', serif;
+  --m-font-hud: 'Source Code Pro', monospace;
+
+  background: var(--m-bg-deep);
+}
+
+/* ── Stat bar: brass riveted frame ── */
+.mobile-game[data-theme="ironbound-codex"] .mobile-stat-bar {
+  background: var(--m-bg-panel);
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, #8b4513, #cd7f32, #8b4513) 1;
+}
+
+.mobile-game[data-theme="ironbound-codex"] .mobile-bar__fill {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-game[data-theme="ironbound-codex"] .mobile-bar--hp .mobile-bar__fill {
+  background: linear-gradient(to right, #8b2500, #c0392b);
+}
+
+.mobile-game[data-theme="ironbound-codex"] .mobile-bar--mana .mobile-bar__fill {
+  background: linear-gradient(to right, #1e8449, #2ecc71);
+}
+
+.mobile-game[data-theme="ironbound-codex"] .mobile-bar--xp .mobile-bar__fill {
+  background: linear-gradient(to right, #8b5e14, #cd7f32);
+}
+
+/* ── Tab bar: brass gear tabs ── */
+.mobile-game[data-theme="ironbound-codex"] .mobile-tab-bar {
+  background: linear-gradient(to top, #0f0d08, #1a1610);
+  border-top: 2px solid;
+  border-image: linear-gradient(to right, #8b4513, #cd7f32, #8b4513) 1;
+}
+
+.mobile-game[data-theme="ironbound-codex"] .mobile-tab-bar__btn--active {
+  background: rgba(205, 127, 50, 0.15);
+  box-shadow: inset 0 -2px 6px rgba(205, 127, 50, 0.25);
+}
+
+/* ── Panels: leather + copper rivets ── */
+.mobile-game[data-theme="ironbound-codex"] .mobile-tab-content {
+  background: var(--m-bg-deep);
+}
+
+.mobile-game[data-theme="ironbound-codex"] .adventure-narrative,
+.mobile-game[data-theme="ironbound-codex"] .adventure-suggestions,
+.mobile-game[data-theme="ironbound-codex"] .character-stats,
+.mobile-game[data-theme="ironbound-codex"] .paper-doll {
+  background: var(--m-bg-panel);
+  border: 2px solid;
+  border-image: linear-gradient(#cd7f32, #8b4513) 1;
+}
+
+/* ── Suggestion buttons: gear prefix ── */
+.mobile-game[data-theme="ironbound-codex"] .adventure-suggestions__btn {
+  border: 1px solid var(--m-border-color);
+  color: var(--m-accent-primary);
+}
+
+.mobile-game[data-theme="ironbound-codex"] .adventure-suggestions__btn::before {
+  content: '⚙ ';
+  opacity: 0.7;
+}
+
+/* ── Combat overlay: clockwork frame ── */
+.mobile-game[data-theme="ironbound-codex"] .mobile-combat-overlay {
+  background: var(--m-bg-deep);
+  box-shadow: inset 0 0 80px rgba(205, 127, 50, 0.12);
+}
+
+.mobile-game[data-theme="ironbound-codex"] .mobile-combat-overlay__header {
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, #8b4513, #cd7f32, #8b4513) 1;
+}

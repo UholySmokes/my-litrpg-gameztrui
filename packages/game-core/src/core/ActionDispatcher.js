@@ -1,11 +1,9 @@
 import { DataRegistry } from "../data/DataRegistry.js";
-import { moveToLocation } from "../systems/exploration/ExplorationSystem.js";
-import {
-  startCombat,
-  playerAttack,
-  escapeCombat,
-  processEnemyTurns,
-} from "../systems/combat/CombatSystem.js";
+import { processEnemyTurns } from "../systems/combat/CombatSystem.js";
+import { handleAttack } from "./actions/attackHandler.js";
+import { handleRest } from "./actions/restHandler.js";
+import { handleMove } from "./actions/moveHandler.js";
+import { handleEscape } from "./actions/escapeHandler.js";
 import {
   processTimeEffects,
   advanceWorldTimeAndWeather,
@@ -360,158 +358,41 @@ export function executeAction(state, action, _options = {}) {
           break;
         }
 
-        case "move":
-          if (action.targetLocation) {
-            newState = moveToLocation(state, action.targetLocation);
-            if (newState === state) {
-              description = `Already at ${action.targetLocation}`;
-              incrementsTurn = false;
-            } else {
-              description = `Moved to ${action.targetLocation}`;
-              changes.location = action.targetLocation;
-            }
-          } else {
-            return {
-              success: false,
-              reason: "No target location specified",
-              state: state,
-            };
-          }
+        case "move": {
+          const moveResult = handleMove(state, action);
+          if (moveResult.earlyReturn) return moveResult.earlyReturn;
+          newState = moveResult.newState;
+          description = moveResult.description;
+          Object.assign(changes, moveResult.changes);
+          if (moveResult.incrementsTurn === false) incrementsTurn = false;
           break;
+        }
 
-        case "attack":
-          // If not already in combat, start combat and perform an opening strike.
-          if (!state.combat || state.combat.status !== "active") {
-            const enemyIds =
-              action.enemyIds && action.enemyIds.length > 0
-                ? action.enemyIds
-                : ["goblin", "goblin"];
-            const engagedState = startCombat(state, enemyIds);
-            if (
-              !engagedState?.combat ||
-              engagedState.combat.status !== "active"
-            ) {
-              return {
-                success: false,
-                reason: "Could not start combat encounter.",
-                state,
-              };
-            }
-
-            const enemyNames = (engagedState.combat.enemies || [])
-              .map((enemy) => enemy?.name)
-              .filter(Boolean)
-              .join(", ");
-            const openerResult = playerAttack(
-              engagedState,
-              action.enemyIndex !== undefined ? action.enemyIndex : 0,
-              action.skillId || null,
-            );
-            if (!openerResult.success) {
-              newState = engagedState;
-              description = enemyNames
-                ? `Engaged combat with ${enemyNames}.`
-                : "Engaged combat.";
-            } else {
-              newState = processEnemyTurns(openerResult.state);
-              const targetName =
-                engagedState.combat.enemies?.[
-                  action.enemyIndex !== undefined ? action.enemyIndex : 0
-                ]?.name || "enemy";
-              description = enemyNames
-                ? `Engaged combat with ${enemyNames} and struck ${targetName}.`
-                : `Engaged combat and struck ${targetName}.`;
-              changes.damage = openerResult.damage;
-            }
-            changes.combatStarted = true;
-          } else {
-            const enemyIndex =
-              action.enemyIndex !== undefined ? action.enemyIndex : 0;
-            const result = playerAttack(
-              state,
-              enemyIndex,
-              action.skillId || null,
-            );
-            if (!result.success) {
-              return { success: false, reason: result.reason, state: state };
-            }
-            newState = processEnemyTurns(result.state);
-            const targetName =
-              newState.combat.enemies?.[enemyIndex]?.name || "enemy";
-            description = `Attacked ${targetName}`;
-            changes.damage = result.damage;
-          }
+        case "attack": {
+          const attackResult = handleAttack(state, action);
+          if (attackResult.earlyReturn) return attackResult.earlyReturn;
+          newState = attackResult.newState;
+          description = attackResult.description;
+          Object.assign(changes, attackResult.changes);
           break;
+        }
 
         case "escape": {
-          if (!state.combat || state.combat.status !== "active") {
-            return {
-              success: false,
-              reason: "Not in combat",
-              state,
-            };
-          }
-
-          const result = escapeCombat(state);
-          if (result.success) {
-            newState = result.state || state;
-            description = "Escaped from combat.";
-            changes.escaped = true;
-          } else if (result.state && result.state !== state) {
-            // Preserve failed-escape side effects (combat log + enemy turn).
-            newState = result.state;
-            description = result.reason || "Escape attempt failed.";
-            changes.escapeFailed = true;
-          } else {
-            return {
-              success: false,
-              reason: result.reason || "Escape failed",
-              state,
-            };
-          }
-
-          incrementsTurn = false;
+          const escapeResult = handleEscape(state, action);
+          if (escapeResult.earlyReturn) return escapeResult.earlyReturn;
+          newState = escapeResult.newState;
+          description = escapeResult.description;
+          Object.assign(changes, escapeResult.changes);
+          if (escapeResult.incrementsTurn === false) incrementsTurn = false;
           break;
         }
 
         case "rest": {
-          if (state.combat?.status === "active") {
-            return { success: false, reason: "Cannot rest during combat", state };
-          }
-
-          const player = state.player;
-          const hp =
-            player.hp && typeof player.hp === "object" && player.hp !== null
-              ? player.hp
-              : { current: player.hp ?? 0, max: player.maxHp ?? 100 };
-          const mana =
-            player.mana && typeof player.mana === "object" && player.mana !== null
-              ? player.mana
-              : { current: player.mana ?? 0, max: player.maxMana ?? 100 };
-
-          const config = state.config || {};
-          const hpAmount = config.restHealAmount > 0
-            ? config.restHealAmount
-            : Math.max(config.restHealMinFloor ?? 5, Math.floor(hp.max * (config.restHealPercent ?? 0.25)));
-          const manaAmount = config.restManaAmount > 0
-            ? config.restManaAmount
-            : Math.max(config.restManaMinFloor ?? 3, Math.floor(mana.max * (config.restManaPercent ?? 0.40)));
-
-          const nextHp = Math.min(hp.max, (hp.current ?? 0) + hpAmount);
-          const nextMana = Math.min(mana.max, (mana.current ?? 0) + manaAmount);
-
-          newState = {
-            ...state,
-            player: {
-              ...player,
-              hp: { ...hp, current: nextHp },
-              mana: { ...mana, current: nextMana },
-            },
-          };
-
-          description = "Rested and recovered.";
-          changes.hp = { current: nextHp, max: hp.max };
-          changes.mana = { current: nextMana, max: mana.max };
+          const restResult = handleRest(state, action);
+          if (restResult.earlyReturn) return restResult.earlyReturn;
+          newState = restResult.newState;
+          description = restResult.description;
+          Object.assign(changes, restResult.changes);
           break;
         }
 

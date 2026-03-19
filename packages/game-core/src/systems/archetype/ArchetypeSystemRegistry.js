@@ -95,6 +95,17 @@ const VALID_STABILITIES = new Set([
 ]);
 
 
+/**
+ * Base progression impact multipliers per archetype category.
+ *
+ * `classEvolutionStepReduction` — reduces the number of prerequisite steps
+ * required for class evolution by the specified amount.  A value of 1 lets the
+ * player skip one tier of class-evolution prerequisites (e.g. evolve from T1
+ * directly to T3 requirements instead of requiring the full T1→T2→T3 chain).
+ * Paths and Overlays grant a base reduction of 1; archetypes tagged with
+ * "evolution" or "ascension" gain an additional +1.  The total is clamped to
+ * [0, 3] so players can never bypass more than 3 prerequisite tiers.
+ */
 const IMPACT_BASE = {
   System: {
     xpGainMultiplier: 0.08,

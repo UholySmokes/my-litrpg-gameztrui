@@ -26,6 +26,7 @@ import {
   getEssenceAnomalyById,
 } from "../world/WorldDataRegistry.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
+import { defaultPrestigeStats } from "../systems/PrestigeSystem.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
 const { GAME_STATE_VERSION } = saveCutover;
@@ -389,6 +390,9 @@ function normalizePlayer(rawPlayer, config) {
     progressionModifiers,
     talents: Array.isArray(player.talents) ? player.talents : [],
     professions: isPlainObject(player.professions) ? player.professions : {},
+    prestige: isPlainObject(player.prestige)
+      ? { ...defaultPrestigeStats(), ...player.prestige }
+      : defaultPrestigeStats(),
     progress: {
       ...DEFAULT_PROGRESS,
       ...progress,

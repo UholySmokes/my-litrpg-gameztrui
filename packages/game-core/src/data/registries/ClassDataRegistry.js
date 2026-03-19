@@ -847,6 +847,17 @@ function getClassEvolutionOption(classId, evolutionIdOrTargetId) {
   );
 }
 
+// --- parentId validation (runs once at module load) ---
+(function validateParentIds() {
+  for (const cls of classes) {
+    if (cls.parentId && !getClassById(cls.parentId)) {
+      console.warn(
+        `[ClassDataRegistry] class "${cls.id}" references unknown parentId "${cls.parentId}"`,
+      );
+    }
+  }
+})();
+
 export function setClasses(nextClasses) {
   if (Array.isArray(nextClasses)) {
     classes = nextClasses;

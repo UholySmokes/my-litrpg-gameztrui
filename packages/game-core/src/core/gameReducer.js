@@ -45,6 +45,12 @@ import {
   applyRaceEvolution,
   getRaceEvolutionOptions,
 } from "../data/registries/RaceDataRegistry.js";
+import {
+  performPrestigeReset,
+  buyPrestigeUpgrade,
+  defaultPrestigeStats,
+  PRESTIGE_MIN_LEVEL,
+} from "../systems/PrestigeSystem.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -1086,6 +1092,54 @@ const gameReducer = (state, action) =>
           state.config,
           attributes,
         ),
+      };
+    }
+
+    case "PERFORM_PRESTIGE": {
+      const player = state.player || {};
+      if ((player.level || 1) < PRESTIGE_MIN_LEVEL) return state;
+      const result = performPrestigeReset(player);
+      if (!result) return state;
+
+      const progress = isPlainObject(player.progress) ? player.progress : {};
+      const prestigeHistory = Array.isArray(progress.prestigeHistory)
+        ? [...progress.prestigeHistory]
+        : [];
+      prestigeHistory.push({
+        atLevel: player.level || 1,
+        prestigeLevel: result.prestige.prestigeLevel,
+        shardsEarned: result.prestige.soulShards - (player.prestige?.soulShards ?? 0),
+      });
+
+      return {
+        ...state,
+        player: {
+          ...player,
+          level: result.level,
+          xp: result.xp,
+          prestige: result.prestige,
+          progress: {
+            ...progress,
+            prestigeHistory: prestigeHistory.slice(-10),
+          },
+        },
+      };
+    }
+
+    case "BUY_PRESTIGE_UPGRADE": {
+      const player = state.player || {};
+      const upgradeType = action.payload?.upgradeType;
+      if (!upgradeType) return state;
+      const prestige = player.prestige ?? defaultPrestigeStats();
+      const nextPrestige = buyPrestigeUpgrade(prestige, upgradeType);
+      if (!nextPrestige) return state;
+
+      return {
+        ...state,
+        player: {
+          ...player,
+          prestige: nextPrestige,
+        },
       };
     }
 

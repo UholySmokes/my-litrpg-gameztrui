@@ -232,14 +232,14 @@ export function resolveBypasses(talentIds = []) {
 export function applyCostOverride(baseCost, bypasses) {
   if (bypasses.bypassCost) return 0;
   if (typeof bypasses.costMultiplier === "number")
-    return Math.floor(baseCost * bypasses.costMultiplier);
+    return Math.max(1, Math.floor(baseCost * bypasses.costMultiplier));
   return baseCost;
 }
 
 export function applyCooldownOverride(baseCd, bypasses) {
   if (bypasses.bypassCooldown) return 0;
   if (typeof bypasses.cooldownMultiplier === "number")
-    return Math.floor(baseCd * bypasses.cooldownMultiplier);
+    return Math.max(1, Math.floor(baseCd * bypasses.cooldownMultiplier));
   return baseCd;
 }
 

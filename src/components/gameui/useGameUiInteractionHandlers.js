@@ -12,6 +12,7 @@ export function useGameUiInteractionHandlers({
   addSystemMessage,
   dispatch,
   dispatchSystemEvent,
+  submitAction,
   state,
 }) {
   const handleEvolveSkill = useCallback(
@@ -354,6 +355,26 @@ export function useGameUiInteractionHandlers({
     [dispatchSystemEvent, state],
   );
 
+  const handleRest = useCallback(() => {
+    const result =
+      typeof submitAction === "function"
+        ? submitAction({
+            kind: "action",
+            action: {
+              type: "rest",
+              originalInput: "rest",
+            },
+          })
+        : null;
+
+    if (result && result.ok === false) {
+      addSystemMessage(
+        result.reason || "Rest is not available right now.",
+        "system",
+      );
+    }
+  }, [addSystemMessage, submitAction]);
+
   const handleSkillUse = useCallback(
     (skillId, enemyIndex = 0) => {
       if (state?.combat?.status !== "active") return;
@@ -387,6 +408,32 @@ export function useGameUiInteractionHandlers({
     [dispatchSystemEvent, state],
   );
 
+  const handleUseItem = useCallback(
+    (itemId, itemName = "") => {
+      if (!itemId) return;
+      const result =
+        typeof submitAction === "function"
+          ? submitAction({
+              kind: "action",
+              action: {
+                type: "use_item",
+                itemId,
+                itemName,
+                originalInput: `use ${itemName || itemId}`,
+              },
+            })
+          : null;
+
+      if (result && result.ok === false) {
+        addSystemMessage(
+          result.reason || `Cannot use ${itemName || itemId}.`,
+          "system",
+        );
+      }
+    },
+    [addSystemMessage, submitAction],
+  );
+
   const handleCombatEscape = useCallback(() => {
     if (state?.combat?.status !== "active") return;
     dispatchSystemEvent({ type: "PLAYER_ESCAPE" });
@@ -409,11 +456,13 @@ export function useGameUiInteractionHandlers({
     handlePerformPrestige,
     handleRaceAbilityUse,
     handleShopPurchase,
+    handleRest,
     handleSkillUse,
     handleStudySpell,
     handleTitleEquip,
     handleTitlePurchase,
     handleTitleUnequip,
+    handleUseItem,
     handleUnequipItem,
   };
 }

@@ -10,7 +10,7 @@ import {
 describe("GachaSystem", () => {
   // ── Pool & item catalogue ──────────────────────────────────
 
-  it("has at least 40 unique items across all pools", () => {
+  it("has at least 85 unique items across all pools", () => {
     const ids = new Set();
     for (const pool of Object.values(gachaPools)) {
       for (const rarityItems of Object.values(pool.items)) {
@@ -19,7 +19,7 @@ describe("GachaSystem", () => {
         }
       }
     }
-    expect(ids.size).toBeGreaterThanOrEqual(40);
+    expect(ids.size).toBeGreaterThanOrEqual(85);
   });
 
   it("has 5 pools (equipment, skills, premium, elemental, shadow)", () => {

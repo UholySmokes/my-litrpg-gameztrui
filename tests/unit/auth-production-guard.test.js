@@ -1,4 +1,7 @@
-const { describe, it, expect, beforeEach, afterEach } = require("@jest/globals");
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+const { describe, it, expect, beforeEach, afterEach, jest } = require("@jest/globals");
 
 describe("auth production guard", () => {
 	const PROD_ID = "my-litrpg-gameztrui-3416-da75c";

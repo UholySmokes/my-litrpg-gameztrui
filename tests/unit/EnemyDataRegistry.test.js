@@ -1,8 +1,8 @@
 import { enemies, getEnemyTemplate, getEnemiesByLevelRange } from '@voidverse/game-core/data/registries/EnemyDataRegistry.js';
 
 describe('EnemyDataRegistry', () => {
-  test('contains exactly 30 enemies', () => {
-    expect(enemies).toHaveLength(30);
+  test('contains at least 50 enemies', () => {
+    expect(enemies.length).toBeGreaterThanOrEqual(50);
   });
 
   test('all enemies have required fields', () => {

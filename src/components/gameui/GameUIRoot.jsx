@@ -176,18 +176,46 @@ export default function GameUI({ user }) {
     handleGachaPull,
     handleRaceAbilityUse,
     handleShopPurchase,
+    handleRest,
     handleSkillUse,
     handleStudySpell,
     handleTitleEquip,
     handleTitlePurchase,
     handleTitleUnequip,
+    handleUseItem,
     handleUnequipItem,
   } = useGameUiInteractionHandlers({
     addSystemMessage,
     dispatch,
     dispatchSystemEvent,
+    submitAction,
     state,
   });
+
+  const gameQuickActionsProps = useMemo(
+    () => ({
+      ...quickActionsProps,
+      combatState: state?.combat,
+      gameState: state,
+      player: state?.player,
+      submitAction,
+      onAttack: handleCombatAttack,
+      onEscape: handleCombatEscape,
+      onRest: handleRest,
+      onUseItem: handleUseItem,
+      onUseSkill: handleSkillUse,
+    }),
+    [
+      handleCombatAttack,
+      handleCombatEscape,
+      handleRest,
+      handleSkillUse,
+      handleUseItem,
+      quickActionsProps,
+      state,
+      submitAction,
+    ],
+  );
 
   const handleLoadState = useCallback(
     (loadedState, options = {}) => {
@@ -427,7 +455,7 @@ export default function GameUI({ user }) {
               isActive={showGameMode}
               isDevBuild={IS_DEV_BUILD}
               isTransitioning={isTransitioning}
-              quickActionsProps={quickActionsProps}
+              quickActionsProps={gameQuickActionsProps}
             />
           )}
         </div>

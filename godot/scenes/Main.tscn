@@ -1,99 +1,93 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene format=3 uid="uid://ntmyce7j3w7l"]
 
-[ext_resource type="Script" path="res://scripts/world_controller.gd" id="1_world"]
-[ext_resource type="Script" path="res://scripts/firebase_auth_client.gd" id="2_auth"]
-[ext_resource type="Script" path="res://scripts/sync_client.gd" id="3_sync"]
-[ext_resource type="Script" path="res://scripts/trigger_queue.gd" id="4_queue"]
-[ext_resource type="Script" path="res://scripts/prose_panel.gd" id="5_prose"]
-[ext_resource type="Script" path="res://scripts/config_loader.gd" id="6_config"]
-[ext_resource type="Script" path="res://scripts/story_client.gd" id="7_story"]
-[ext_resource type="Script" path="res://scripts/pixel_map_renderer.gd" id="8_renderer"]
-[ext_resource type="Script" path="res://scripts/telemetry_reporter.gd" id="9_telemetry"]
-[ext_resource type="Script" path="res://scripts/character_creation_controller.gd" id="10_cc_ctrl"]
-[ext_resource type="Script" path="res://scripts/character_creation_panel.gd" id="11_cc_panel"]
-[ext_resource type="Script" path="res://scripts/character_creation_summary_panel.gd" id="12_cc_summary"]
+[ext_resource type="Script" uid="uid://byq8uopbac4mc" path="res://scripts/world_controller.gd" id="1_world"]
+[ext_resource type="Script" uid="uid://bxwmqu6cx4xl4" path="res://scripts/firebase_auth_client.gd" id="2_auth"]
+[ext_resource type="Script" uid="uid://lkilud3mj6l5" path="res://scripts/sync_client.gd" id="3_sync"]
+[ext_resource type="Script" uid="uid://dlr43fxhx7255" path="res://scripts/trigger_queue.gd" id="4_queue"]
+[ext_resource type="Script" uid="uid://bh5drrupssfa5" path="res://scripts/prose_panel.gd" id="5_prose"]
+[ext_resource type="Script" uid="uid://bo08e2fby8o12" path="res://scripts/config_loader.gd" id="6_config"]
+[ext_resource type="Script" uid="uid://k0dwva3ahrig" path="res://scripts/story_client.gd" id="7_story"]
+[ext_resource type="Script" uid="uid://bx61cefudkcch" path="res://scripts/pixel_map_renderer.gd" id="8_renderer"]
+[ext_resource type="Script" uid="uid://bosfxs6qxqo3j" path="res://scripts/telemetry_reporter.gd" id="9_telemetry"]
+[ext_resource type="Script" uid="uid://do4kb40fi1alr" path="res://scripts/character_creation_controller.gd" id="10_cc_ctrl"]
+[ext_resource type="Script" uid="uid://b03xgdxgfyqyk" path="res://scripts/character_creation_panel.gd" id="11_cc_panel"]
+[ext_resource type="Script" uid="uid://cjailttulkqrn" path="res://scripts/character_creation_summary_panel.gd" id="12_cc_summary"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=210207142]
 script = ExtResource("1_world")
 
-[node name="MapBackground" type="ColorRect" parent="."]
+[node name="MapBackground" type="ColorRect" parent="." unique_id=569907681]
 unique_name_in_owner = true
 offset_right = 1280.0
 offset_bottom = 720.0
 color = Color(0.1, 0.14, 0.18, 1)
 
-[node name="MapRenderer" type="Node2D" parent="."]
+[node name="MapRenderer" type="Node2D" parent="." unique_id=1712136591]
 unique_name_in_owner = true
 script = ExtResource("8_renderer")
 
-[node name="Player" type="ColorRect" parent="."]
+[node name="Player" type="ColorRect" parent="." unique_id=1267872996]
 unique_name_in_owner = true
 offset_right = 28.0
 offset_bottom = 28.0
-color = Color(0.95, 0.89, 0.30, 1)
+color = Color(0.95, 0.89, 0.3, 1)
 
-[node name="SpriteHooks" type="Node2D" parent="."]
+[node name="SpriteHooks" type="Node2D" parent="." unique_id=787154199]
 unique_name_in_owner = true
 
-[node name="PlayerSpriteAnchor" type="Node2D" parent="SpriteHooks"]
+[node name="PlayerSpriteAnchor" type="Node2D" parent="SpriteHooks" unique_id=789484609]
 unique_name_in_owner = true
 
-[node name="PlayerSprite" type="Sprite2D" parent="SpriteHooks/PlayerSpriteAnchor"]
-unique_name_in_owner = true
-z_index = 3
-centered = false
-
-[node name="GuideSpriteAnchor" type="Node2D" parent="SpriteHooks"]
-unique_name_in_owner = true
-
-[node name="GuideSprite" type="Sprite2D" parent="SpriteHooks/GuideSpriteAnchor"]
+[node name="PlayerSprite" type="Sprite2D" parent="SpriteHooks/PlayerSpriteAnchor" unique_id=32432018]
 unique_name_in_owner = true
 z_index = 3
 centered = false
 
-[node name="NpcGuide" type="ColorRect" parent="."]
+[node name="GuideSpriteAnchor" type="Node2D" parent="SpriteHooks" unique_id=850272801]
+unique_name_in_owner = true
+
+[node name="GuideSprite" type="Sprite2D" parent="SpriteHooks/GuideSpriteAnchor" unique_id=1905148585]
+unique_name_in_owner = true
+z_index = 3
+centered = false
+
+[node name="NpcGuide" type="ColorRect" parent="." unique_id=486751837]
 unique_name_in_owner = true
 offset_right = 28.0
 offset_bottom = 28.0
 color = Color(0.27, 0.83, 0.97, 1)
 
-[node name="AuthClient" type="Node" parent="."]
+[node name="AuthClient" type="Node" parent="." unique_id=830868296]
 unique_name_in_owner = true
 script = ExtResource("2_auth")
-api_key = ""
-clock_skew_seconds = 60
 
-[node name="SyncClient" type="Node" parent="."]
+[node name="SyncClient" type="Node" parent="." unique_id=654010025]
 unique_name_in_owner = true
 script = ExtResource("3_sync")
-api_base_url = "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api"
-client_id = "godot-client"
 
-[node name="StoryClient" type="Node" parent="."]
+[node name="StoryClient" type="Node" parent="." unique_id=765388354]
 unique_name_in_owner = true
 script = ExtResource("7_story")
-api_base_url = "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api"
 
-[node name="TelemetryReporter" type="Node" parent="."]
+[node name="TelemetryReporter" type="Node" parent="." unique_id=338380592]
 unique_name_in_owner = true
 script = ExtResource("9_telemetry")
-api_base_url = "http://127.0.0.1:5001/my-litrpg-gameztrui-3416-da75c/us-central1/api"
 
-[node name="ConfigLoader" type="Node" parent="."]
+[node name="ConfigLoader" type="Node" parent="." unique_id=97596826]
 unique_name_in_owner = true
 script = ExtResource("6_config")
 
-[node name="TriggerQueue" type="Node" parent="."]
+[node name="TriggerQueue" type="Node" parent="." unique_id=1654113357]
 unique_name_in_owner = true
 script = ExtResource("4_queue")
 
-[node name="CharacterCreationController" type="Node" parent="."]
+[node name="CharacterCreationController" type="Node" parent="." unique_id=1584848835]
 unique_name_in_owner = true
 script = ExtResource("10_cc_ctrl")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=358967527]
 
-[node name="ProsePanel" type="Panel" parent="CanvasLayer"]
+[node name="ProsePanel" type="Panel" parent="CanvasLayer" unique_id=1209918646]
 unique_name_in_owner = true
 offset_left = 760.0
 offset_top = 20.0
@@ -101,8 +95,9 @@ offset_right = 1260.0
 offset_bottom = 700.0
 script = ExtResource("5_prose")
 
-[node name="TitleLabel" type="Label" parent="CanvasLayer/ProsePanel"]
+[node name="TitleLabel" type="Label" parent="CanvasLayer/ProsePanel" unique_id=2013100599]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 16.0
 offset_top = 14.0
 offset_right = 472.0
@@ -110,18 +105,16 @@ offset_bottom = 46.0
 theme_override_font_sizes/font_size = 22
 text = "Story"
 
-[node name="BodyLabel" type="RichTextLabel" parent="CanvasLayer/ProsePanel"]
+[node name="BodyLabel" type="RichTextLabel" parent="CanvasLayer/ProsePanel" unique_id=552651341]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 16.0
 offset_top = 56.0
 offset_right = 480.0
 offset_bottom = 664.0
 fit_content = true
-scroll_active = true
-bbcode_enabled = false
-text = ""
 
-[node name="CharacterCreationPanel" type="Panel" parent="CanvasLayer"]
+[node name="CharacterCreationPanel" type="Panel" parent="CanvasLayer" unique_id=193327348]
 unique_name_in_owner = true
 offset_left = 80.0
 offset_top = 40.0
@@ -129,8 +122,9 @@ offset_right = 740.0
 offset_bottom = 680.0
 script = ExtResource("11_cc_panel")
 
-[node name="CreationTitleLabel" type="Label" parent="CanvasLayer/CharacterCreationPanel"]
+[node name="CreationTitleLabel" type="Label" parent="CanvasLayer/CharacterCreationPanel" unique_id=384900977]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 16.0
 offset_top = 14.0
 offset_right = 640.0
@@ -138,64 +132,66 @@ offset_bottom = 50.0
 theme_override_font_sizes/font_size = 24
 text = "CHARACTER CREATION"
 
-[node name="CreationStepLabel" type="Label" parent="CanvasLayer/CharacterCreationPanel"]
+[node name="CreationStepLabel" type="Label" parent="CanvasLayer/CharacterCreationPanel" unique_id=482035745]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 480.0
 offset_top = 14.0
 offset_right = 640.0
 offset_bottom = 46.0
 theme_override_font_sizes/font_size = 14
-horizontal_alignment = 2
 text = "Step 1 / 6"
+horizontal_alignment = 2
 
-[node name="CreationBodyLabel" type="RichTextLabel" parent="CanvasLayer/CharacterCreationPanel"]
+[node name="CreationBodyLabel" type="RichTextLabel" parent="CanvasLayer/CharacterCreationPanel" unique_id=1088895284]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 16.0
 offset_top = 60.0
 offset_right = 640.0
 offset_bottom = 580.0
-fit_content = false
-scroll_active = true
-bbcode_enabled = false
-text = ""
 
-[node name="CreationNameInput" type="LineEdit" parent="CanvasLayer/CharacterCreationPanel"]
+[node name="CreationNameInput" type="LineEdit" parent="CanvasLayer/CharacterCreationPanel" unique_id=2119379213]
 unique_name_in_owner = true
+visible = false
+layout_mode = 0
 offset_left = 16.0
 offset_top = 590.0
 offset_right = 400.0
 offset_bottom = 620.0
 placeholder_text = "Enter your name..."
-visible = false
 
-[node name="CreationBackButton" type="Button" parent="CanvasLayer/CharacterCreationPanel"]
+[node name="CreationBackButton" type="Button" parent="CanvasLayer/CharacterCreationPanel" unique_id=1816799947]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 420.0
 offset_top = 590.0
 offset_right = 520.0
 offset_bottom = 625.0
-text = "BACK"
 disabled = true
+text = "BACK"
 
-[node name="CreationNextButton" type="Button" parent="CanvasLayer/CharacterCreationPanel"]
+[node name="CreationNextButton" type="Button" parent="CanvasLayer/CharacterCreationPanel" unique_id=1364614532]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 530.0
 offset_top = 590.0
 offset_right = 640.0
 offset_bottom = 625.0
 text = "NEXT"
 
-[node name="CharacterCreationSummaryPanel" type="Panel" parent="CanvasLayer"]
+[node name="CharacterCreationSummaryPanel" type="Panel" parent="CanvasLayer" unique_id=1976541788]
 unique_name_in_owner = true
+visible = false
 offset_left = 760.0
 offset_top = 40.0
 offset_right = 1240.0
 offset_bottom = 680.0
-visible = false
 script = ExtResource("12_cc_summary")
 
-[node name="SummaryTitleLabel" type="Label" parent="CanvasLayer/CharacterCreationSummaryPanel"]
+[node name="SummaryTitleLabel" type="Label" parent="CanvasLayer/CharacterCreationSummaryPanel" unique_id=1104144836]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 16.0
 offset_top = 14.0
 offset_right = 464.0
@@ -203,13 +199,10 @@ offset_bottom = 44.0
 theme_override_font_sizes/font_size = 18
 text = "SUMMARY"
 
-[node name="SummaryBodyLabel" type="RichTextLabel" parent="CanvasLayer/CharacterCreationSummaryPanel"]
+[node name="SummaryBodyLabel" type="RichTextLabel" parent="CanvasLayer/CharacterCreationSummaryPanel" unique_id=1186579186]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 16.0
 offset_top = 56.0
 offset_right = 464.0
 offset_bottom = 624.0
-fit_content = false
-scroll_active = true
-bbcode_enabled = false
-text = ""

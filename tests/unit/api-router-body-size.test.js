@@ -1,10 +1,17 @@
-const { handleApiRequest, MAX_BODY_SIZE } = require("../../functions/lib/api-router");
+import { createRequire } from "module";
 
-// Stub rate-limit to always allow
-jest.mock("../../functions/lib/rate-limit", () => ({
-  checkRateLimit: () => ({ allowed: true, limit: 60, remaining: 59 }),
-  resetRateLimitStore: () => {},
-}));
+const require = createRequire(import.meta.url);
+const rateLimitPath = require.resolve("../../functions/lib/rate-limit.js");
+require.cache[rateLimitPath] = {
+  id: rateLimitPath,
+  filename: rateLimitPath,
+  loaded: true,
+  exports: {
+    checkRateLimit: () => ({ allowed: true, limit: 60, remaining: 59 }),
+    _resetStore: () => {},
+  },
+};
+const { handleApiRequest, MAX_BODY_SIZE } = require("../../functions/lib/api-router");
 
 function mockReq(overrides = {}) {
   return {

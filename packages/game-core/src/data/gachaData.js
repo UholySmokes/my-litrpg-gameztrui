@@ -208,6 +208,167 @@ export let gachaPools = {
   },
 };
 
+const additionalGachaItems = {
+  equipment: {
+    common: [
+      { id: 'bronze_halberd', name: 'Bronze Halberd' },
+      { id: 'padded_greaves', name: 'Padded Greaves' },
+      { id: 'traveler_cloak', name: 'Traveler Cloak' },
+      { id: 'oak_roundshield', name: 'Oak Roundshield' },
+    ],
+    uncommon: [
+      { id: 'runed_spear', name: 'Runed Spear' },
+      { id: 'warden_mail', name: 'Warden Mail' },
+      { id: 'moonring_relic', name: 'Moonring Relic' },
+    ],
+    rare: [
+      { id: 'stormforged_blade', name: 'Stormforged Blade' },
+      { id: 'ashen_plate', name: 'Ashen Plate' },
+    ],
+    epic: [
+      { id: 'mythic_crown', name: 'Mythic Crown' },
+    ],
+    legendary: [
+      { id: 'worldrend_relic', name: 'Worldrend Relic' },
+    ],
+  },
+  skills: {
+    common: [
+      {
+        id: 'gacha_skill_focus',
+        name: 'Focus Pulse',
+        description: 'Sharpen your attention for one decisive action.',
+        type: 'passive',
+        manaCost: 0,
+      },
+      {
+        id: 'gacha_skill_guard',
+        name: 'Guard Stance',
+        description: 'Brace for impact and reduce the next hit.',
+        type: 'passive',
+        manaCost: 0,
+      },
+    ],
+    uncommon: [
+      {
+        id: 'gacha_skill_rally',
+        name: 'Rally Cry',
+        description: 'Steady yourself and push the party forward.',
+        type: 'active',
+        manaCost: 8,
+      },
+      {
+        id: 'gacha_skill_echo',
+        name: 'Echo Step',
+        description: 'Repeat a movement pattern with ghostlike precision.',
+        type: 'active',
+        manaCost: 6,
+      },
+    ],
+    rare: [
+      {
+        id: 'gacha_skill_burst',
+        name: 'Burst Channel',
+        description: 'Release a compact wave of unstable force.',
+        type: 'active',
+        manaCost: 16,
+      },
+      {
+        id: 'gacha_skill_barrier',
+        name: 'Barrier Weave',
+        description: 'Shape a short-lived wall of protective essence.',
+        type: 'active',
+        manaCost: 18,
+      },
+    ],
+    epic: [
+      {
+        id: 'gacha_skill_overdrive',
+        name: 'Overdrive Seal',
+        description: 'Push one chosen skill beyond its usual rhythm.',
+        type: 'active',
+        manaCost: 30,
+      },
+    ],
+    legendary: [
+      {
+        id: 'gacha_skill_paragon',
+        name: 'Paragon Conduit',
+        description: 'Channel a near-perfect spell through your body and will.',
+        type: 'active',
+        manaCost: 48,
+      },
+    ],
+  },
+  premium: {
+    common: [
+      { id: 'astral_ticket', name: 'Astral Ticket' },
+      { id: 'moon_coin', name: 'Moon Coin' },
+    ],
+    uncommon: [
+      { id: 'auric_seal', name: 'Auric Seal' },
+      { id: 'celestial_ink', name: 'Celestial Ink' },
+    ],
+    rare: [
+      { id: 'starlit_charm', name: 'Starlit Charm' },
+      { id: 'voidheart_sigil', name: 'Voidheart Sigil' },
+    ],
+    epic: [
+      { id: 'voidheart_lantern', name: 'Voidheart Lantern' },
+    ],
+    legendary: [
+      { id: 'empyrean_key', name: 'Empyrean Key' },
+    ],
+  },
+  elemental: {
+    common: [
+      { id: 'ember_dart', name: 'Ember Dart' },
+      { id: 'frost_talisman', name: 'Frost Talisman' },
+    ],
+    uncommon: [
+      { id: 'storm_lash', name: 'Storm Lash' },
+      { id: 'blizzard_charm', name: 'Blizzard Charm' },
+    ],
+    rare: [
+      { id: 'inferno_censer', name: 'Inferno Censer' },
+      { id: 'thunderstrike_orb', name: 'Thunderstrike Orb' },
+    ],
+    epic: [
+      { id: 'glacial_aegis', name: 'Glacial Aegis' },
+    ],
+    legendary: [],
+  },
+  shadow: {
+    common: [
+      { id: 'nightshade_needle', name: 'Nightshade Needle' },
+      { id: 'smoke_veil', name: 'Smoke Veil' },
+    ],
+    uncommon: [
+      { id: 'shadow_veil', name: 'Shadow Veil' },
+      { id: 'venom_ink', name: 'Venom Ink' },
+    ],
+    rare: [
+      { id: 'umbral_dagger', name: 'Umbral Dagger' },
+      { id: 'phantasm_steps', name: 'Phantasm Steps' },
+    ],
+    epic: [
+      { id: 'eclipse_shroud', name: 'Eclipse Shroud' },
+    ],
+    legendary: [
+      { id: 'void_assassin_cape', name: 'Void Assassin Cape' },
+    ],
+  },
+};
+
+for (const [poolId, raritySets] of Object.entries(additionalGachaItems)) {
+  const pool = gachaPools[poolId];
+  if (!pool) continue;
+
+  for (const [rarity, items] of Object.entries(raritySets)) {
+    if (!Array.isArray(items) || items.length === 0) continue;
+    pool.items[rarity] = [...(pool.items[rarity] || []), ...items];
+  }
+}
 export function setGachaPools(nextPools) {
   if (nextPools && typeof nextPools === "object" && !Array.isArray(nextPools)) {
     gachaPools = nextPools;
@@ -378,3 +539,4 @@ export function calculateGachaResultWithPity(
     newPullsSinceEpic: pullsSinceEpic,
   };
 }
+

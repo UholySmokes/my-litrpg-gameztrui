@@ -1,0 +1,571 @@
+.shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(104, 213, 255, 0.18);
+  background:
+    radial-gradient(circle at top left, rgba(104, 213, 255, 0.12), transparent 34%),
+    radial-gradient(circle at top right, rgba(122, 92, 255, 0.12), transparent 28%),
+    linear-gradient(160deg, rgba(12, 18, 32, 0.96), rgba(8, 12, 20, 0.9));
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.28);
+  padding: 1rem;
+}
+
+.shell::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(226, 184, 92, 0.14);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.kicker {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24rem;
+  color: var(--text-dim);
+}
+
+.title {
+  margin: 0.35rem 0 0;
+  font-size: 1.5rem;
+  color: #f7efd3;
+}
+
+.subtitle {
+  margin: 0.35rem 0 0;
+  max-width: 62ch;
+  color: #aabbd0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.variantToggle {
+  display: inline-flex;
+  gap: 0.45rem;
+  background: rgba(7, 12, 20, 0.85);
+  border: 1px solid rgba(226, 184, 92, 0.16);
+  border-radius: 999px;
+  padding: 0.4rem;
+}
+
+.variantButton {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-dim);
+  border-radius: 999px;
+  padding: 0.55rem 0.85rem;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    background 140ms ease;
+}
+
+.variantButton:hover,
+.variantButton:focus-visible {
+  color: #eef7ff;
+  border-color: rgba(104, 213, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.variantButtonActive {
+  color: #08111d;
+  background: linear-gradient(135deg, #f0d48b, #bf8b3f);
+  font-weight: 700;
+}
+
+.variantButtonPixel.variantButtonActive {
+  background: linear-gradient(135deg, #f0d48b, #d6b04d);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(320px, 0.95fr);
+  gap: 1rem;
+}
+
+.roster {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+  gap: 0.85rem;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-height: 325px;
+  border-radius: 20px;
+  padding: 0.85rem;
+  border: 1px solid rgba(124, 145, 168, 0.22);
+  background: linear-gradient(180deg, rgba(31, 47, 72, 0.92), rgba(14, 22, 37, 0.96));
+  color: #eef4fb;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(104, 213, 255, 0.34);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+}
+
+.cardActive {
+  border-color: rgba(226, 184, 92, 0.62);
+  box-shadow: 0 0 0 1px rgba(226, 184, 92, 0.15), 0 18px 36px rgba(0, 0, 0, 0.34);
+}
+
+.cardPixel {
+  border-radius: 0;
+  box-shadow: inset 0 0 0 2px rgba(57, 197, 187, 0.22);
+  background: linear-gradient(180deg, rgba(49, 61, 97, 0.98), rgba(21, 27, 45, 0.98));
+}
+
+.cardPortrait,
+.renderPortrait {
+  height: 170px;
+  border-radius: 16px;
+  border: 1px solid rgba(104, 213, 255, 0.2);
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 14%, rgba(255, 255, 255, 0.2), transparent 20%),
+    var(--portrait, linear-gradient(145deg, #3d5a80, #152238));
+}
+
+.cardPixel .cardPortrait,
+.renderCardPixel .renderPortrait {
+  border-radius: 0;
+  image-rendering: pixelated;
+}
+
+.cardPortrait::before,
+.renderPortrait::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.28), transparent 18%),
+    radial-gradient(circle at 50% 88%, rgba(0, 0, 0, 0.35), transparent 28%);
+}
+
+.cardPortrait::after,
+.renderPortrait::after {
+  content: "";
+  position: absolute;
+  inset: auto 18% 14% 18%;
+  height: 54%;
+  border-radius: 44% 44% 30% 30%;
+  background: var(--figure, linear-gradient(180deg, #ebc4ad, #c89476));
+  box-shadow:
+    0 -60px 0 -24px var(--hair, #9660d8),
+    0 18px 0 -10px rgba(0, 0, 0, 0.18);
+}
+
+.cardPixel .cardPortrait::after,
+.renderCardPixel .renderPortrait::after {
+  border-radius: 0;
+  inset: auto 23% 16% 23%;
+  height: 48%;
+  box-shadow: 0 -52px 0 -22px var(--hair, #9660d8);
+}
+
+.cardName {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #f8eed0;
+}
+
+.cardMeta {
+  color: #6fd6ff;
+  font-size: 0.78rem;
+  letter-spacing: 0.04rem;
+  text-transform: uppercase;
+}
+
+.statRow,
+.renderStatRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.statChip,
+.renderStatChip {
+  border-radius: 12px;
+  border: 1px solid rgba(104, 213, 255, 0.16);
+  background: rgba(7, 12, 20, 0.56);
+  padding: 0.45rem;
+  text-align: center;
+}
+
+.renderStatChip {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.renderStatChip span {
+  color: #8fb1cd;
+  font-size: 0.5rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+}
+
+.renderStatChip strong {
+  color: #f6ebcc;
+  font-size: 0.8rem;
+}
+
+.cardPixel .statChip,
+.detailPixel .statChip,
+.previewPixel .renderStatChip,
+.renderCardPixel .renderStatChip {
+  border-radius: 0;
+}
+
+.statLabel {
+  display: block;
+  color: #9bb7d1;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08rem;
+}
+
+.statValue {
+  display: block;
+  margin-top: 0.18rem;
+  color: #f8eed0;
+  font-weight: 700;
+}
+
+.cardSummary {
+  color: #aabbd0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  border-radius: 22px;
+  border: 1px solid rgba(226, 184, 92, 0.22);
+  background: linear-gradient(180deg, rgba(17, 27, 42, 0.94), rgba(10, 16, 28, 0.98));
+  padding: 1rem;
+}
+
+.detailPixel {
+  border-radius: 0;
+  border-color: rgba(214, 176, 77, 0.55);
+}
+
+.preview {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(104, 213, 255, 0.18);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(104, 213, 255, 0.12), transparent 28%),
+    linear-gradient(160deg, rgba(16, 26, 43, 0.97), rgba(9, 14, 24, 0.98));
+  overflow: hidden;
+}
+
+.previewPixel {
+  border-radius: 0;
+  background: linear-gradient(180deg, #1a1c2c, #111522);
+}
+
+.previewHeader,
+.previewFooter {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.8rem 0.9rem;
+}
+
+.previewHeader {
+  border-bottom: 1px solid rgba(104, 213, 255, 0.12);
+}
+
+.previewFooter {
+  border-top: 1px solid rgba(104, 213, 255, 0.12);
+  color: #a7bdd4;
+  font-size: 0.7rem;
+}
+
+.previewKicker {
+  color: #f8eed0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.previewSubkicker {
+  color: #89a6c2;
+  font-size: 0.62rem;
+  letter-spacing: 0.06rem;
+  margin-top: 0.25rem;
+}
+
+.previewMode {
+  border-radius: 999px;
+  border: 1px solid rgba(226, 184, 92, 0.42);
+  background: rgba(8, 14, 24, 0.8);
+  color: #f6e8be;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  padding: 0.45rem 0.7rem;
+}
+
+.previewPixel .previewMode,
+.previewPixel .previewBadge,
+.previewPixel .previewAction,
+.previewPixel .previewActionPrimary,
+.previewPixel .previewDetail,
+.previewPixel .renderCard,
+.previewPixel .previewLoadout span {
+  border-radius: 0;
+}
+
+.previewBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(190px, 0.95fr);
+  gap: 0.7rem;
+  padding: 0.75rem;
+}
+
+.previewRoster {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.renderCard {
+  min-height: 185px;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 145, 168, 0.2);
+  background: linear-gradient(180deg, rgba(31, 47, 72, 0.92), rgba(14, 22, 37, 0.96));
+  padding: 0.55rem;
+}
+
+.renderCardActive {
+  border-color: rgba(226, 184, 92, 0.62);
+  box-shadow: 0 0 0 1px rgba(226, 184, 92, 0.14);
+}
+
+.renderCardPixel {
+  border-radius: 0;
+  box-shadow: inset 0 0 0 2px rgba(57, 197, 187, 0.22);
+}
+
+.renderCard .renderPortrait {
+  height: 82px;
+  margin-bottom: 0.45rem;
+}
+
+.renderName {
+  color: #f8eed0;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.renderRole {
+  color: #67d3ff;
+  font-size: 0.56rem;
+  letter-spacing: 0.06rem;
+  margin: 0.15rem 0 0.45rem;
+  text-transform: uppercase;
+}
+
+.previewDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  border-radius: 16px;
+  border: 1px solid rgba(226, 184, 92, 0.18);
+  background: rgba(15, 23, 37, 0.86);
+  padding: 0.7rem;
+}
+
+.previewDetailPixel {
+  border-radius: 0;
+}
+
+.previewDetailLabel {
+  color: #9bb7d1;
+  font-size: 0.55rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+.previewDetailName {
+  color: #f8eed0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.previewDetailMeta {
+  color: #6fd6ff;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+}
+
+.previewBadgeRow,
+.previewLoadout,
+.previewFooterActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.previewBadge,
+.previewAction,
+.previewActionPrimary,
+.previewLoadout span {
+  border-radius: 999px;
+  border: 1px solid rgba(104, 213, 255, 0.24);
+  background: rgba(19, 31, 47, 0.82);
+  color: #f8eed0;
+  font-size: 0.52rem;
+  padding: 0.22rem 0.45rem;
+}
+
+.previewActionPrimary {
+  background: linear-gradient(135deg, #f0d48b, #bf8b3f);
+  border-color: rgba(226, 184, 92, 0.7);
+  color: #08111d;
+  font-weight: 700;
+}
+
+.previewDetailCopy {
+  color: #d8e1ea;
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+.detailLabel {
+  color: #9bb7d1;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18rem;
+}
+
+.detailName {
+  margin: 0.1rem 0 0;
+  font-size: 1.6rem;
+  color: #f8eed0;
+}
+
+.detailMeta {
+  color: #6fd6ff;
+  font-size: 0.92rem;
+}
+
+.detailBody {
+  color: #d8e1ea;
+  line-height: 1.55;
+  font-size: 0.92rem;
+}
+
+.badges {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  border-radius: 999px;
+  border: 1px solid rgba(104, 213, 255, 0.24);
+  background: rgba(19, 31, 47, 0.82);
+  color: #f8eed0;
+  font-size: 0.74rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.detailPixel .badge {
+  border-radius: 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(104, 213, 255, 0.12);
+}
+
+.footerCopy {
+  color: #aabbd0;
+  font-size: 0.84rem;
+  max-width: 56ch;
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.action,
+.actionPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(104, 213, 255, 0.24);
+  background: rgba(10, 16, 28, 0.7);
+  color: #f0f6fb;
+  font: inherit;
+}
+
+.actionPrimary {
+  background: linear-gradient(135deg, #f0d48b, #bf8b3f);
+  color: #08111d;
+  border-color: rgba(226, 184, 92, 0.7);
+  font-weight: 700;
+}
+
+@media (max-width: 1180px) {
+  .layout,
+  .previewBody {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .roster,
+  .previewRoster {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .roster,
+  .previewRoster {
+    grid-template-columns: 1fr;
+  }
+}

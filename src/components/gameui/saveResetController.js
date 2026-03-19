@@ -1,4 +1,4 @@
-import * as saveCutover from "../../../shared/save-cutover.cjs";
+import * as saveCutover from "../../../shared/save-cutover.js";
 
 const { SAVE_RESET_EPOCH } = saveCutover;
 

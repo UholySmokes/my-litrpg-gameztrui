@@ -1,7 +1,7 @@
 import { xpForNextLevel } from "../core/xpCurve.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { createInitialWorldState } from "../world/WorldInitializer.js";
-import * as saveCutover from "../../../../shared/save-cutover.cjs";
+import * as saveCutover from "../../../../shared/save-cutover.js";
 
 const { GAME_STATE_VERSION } = saveCutover;
 

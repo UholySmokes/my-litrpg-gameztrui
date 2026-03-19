@@ -6,7 +6,7 @@ import {
   getAutoUnlockableTitles,
   getEffectiveAttributes,
 } from "./titleLogic.js";
-import * as saveCutover from "../../../../shared/save-cutover.cjs";
+import * as saveCutover from "../../../../shared/save-cutover.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { normalizeNarrativeEntries } from "./narrativeLog.js";
 import {

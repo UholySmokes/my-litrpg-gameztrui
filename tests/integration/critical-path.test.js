@@ -84,9 +84,13 @@ describe("Critical Path Integration", () => {
 
       // Player dealt damage — enemy HP decreased or combat ended
       if (current.player.hp.current > 0) {
-        // If player survived, enemy should be dead or combat ended
+        // If player survived, combat either cleaned up enemies or left a dead target in slot 0.
         const enemy = current.combat.enemies[0];
-        expect(enemy.stats.hp.current).toBeLessThanOrEqual(0);
+        if (!enemy) {
+          expect(["inactive", "victory"]).toContain(current.combat.status);
+        } else {
+          expect(enemy.stats.hp.current).toBeLessThanOrEqual(0);
+        }
       }
     });
   });
@@ -170,9 +174,12 @@ describe("Critical Path Integration", () => {
       expect(result.state.player.hp.current).toBe(
         Math.min(hpMax, 1 + expectedHpGain),
       );
-      expect(result.state.player.mana.current).toBe(
-        Math.min(manaMax, 1 + expectedManaGain),
+      // Rest now advances world time and can add passive mana regeneration.
+      const minimumExpectedMana = Math.min(manaMax, 1 + expectedManaGain);
+      expect(result.state.player.mana.current).toBeGreaterThanOrEqual(
+        minimumExpectedMana,
       );
+      expect(result.state.player.mana.current).toBeLessThanOrEqual(manaMax);
     });
 
     it("HP and mana don't exceed max after rest", () => {

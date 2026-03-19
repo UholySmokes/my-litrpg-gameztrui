@@ -1,0 +1,100 @@
+/*  Theme 3 — Jade Meridian (Eastern Cultivation / Wuxia)
+    Ink wash painting, jade green, silk textures. */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.mobile-game[data-theme="jade-meridian"] {
+  /* ── Palette ── */
+  --m-bg-deep: #0a0e08;
+  --m-bg-panel: rgba(15, 25, 15, 0.9);
+  --m-accent-primary: #4ecdc4;
+  --m-accent-secondary: #e8d5b7;
+  --m-accent-danger: #d4380d;
+  --m-accent-mana: #7fdbda;
+  --m-accent-xp: #e8d5b7;
+  --m-text-main: #e8e0d0;
+  --m-text-dim: rgba(232, 224, 208, 0.5);
+  --m-border-color: rgba(78, 205, 196, 0.4);
+  --m-btn-bg: rgba(15, 25, 15, 0.8);
+  --m-btn-active: rgba(78, 205, 196, 0.15);
+
+  /* ── Typography ── */
+  --m-font-heading: 'Noto Serif SC', serif;
+  --m-font-body: 'Noto Sans SC', 'Source Sans Pro', sans-serif;
+  --m-font-hud: 'IBM Plex Mono', monospace;
+
+  /* Ink wash mountain background */
+  background:
+    linear-gradient(to top, rgba(10, 14, 8, 0.95), transparent 40%),
+    linear-gradient(175deg, rgba(78, 205, 196, 0.03) 0%, transparent 30%),
+    linear-gradient(185deg, rgba(78, 205, 196, 0.02) 20%, transparent 50%),
+    var(--m-bg-deep);
+}
+
+/* ── Stat bar: bamboo frame ── */
+.mobile-game[data-theme="jade-meridian"] .mobile-stat-bar {
+  background: var(--m-bg-panel);
+  border-bottom: 1.5px solid var(--m-border-color);
+}
+
+.mobile-game[data-theme="jade-meridian"] .mobile-bar__fill {
+  border-radius: 1px;
+}
+
+.mobile-game[data-theme="jade-meridian"] .mobile-bar--hp .mobile-bar__fill {
+  background: linear-gradient(to right, #2d8a6e, #4ecdc4);
+}
+
+.mobile-game[data-theme="jade-meridian"] .mobile-bar--mana .mobile-bar__fill {
+  background: linear-gradient(to right, #5abfbd, #7fdbda);
+}
+
+.mobile-game[data-theme="jade-meridian"] .mobile-bar--xp .mobile-bar__fill {
+  background: linear-gradient(to right, #b0a060, #e8d5b7);
+}
+
+/* ── Tab bar: wooden plank + jade inlay ── */
+.mobile-game[data-theme="jade-meridian"] .mobile-tab-bar {
+  background: linear-gradient(to top, #0d1a0d, #122012);
+  border-top: 1.5px solid var(--m-border-color);
+}
+
+.mobile-game[data-theme="jade-meridian"] .mobile-tab-bar__btn--active {
+  background: rgba(78, 205, 196, 0.12);
+  box-shadow: 0 -2px 0 var(--m-accent-primary);
+}
+
+/* ── Panels: rice paper + jade trim ── */
+.mobile-game[data-theme="jade-meridian"] .mobile-tab-content {
+  background: var(--m-bg-deep);
+}
+
+.mobile-game[data-theme="jade-meridian"] .adventure-narrative,
+.mobile-game[data-theme="jade-meridian"] .adventure-suggestions,
+.mobile-game[data-theme="jade-meridian"] .character-stats,
+.mobile-game[data-theme="jade-meridian"] .paper-doll {
+  background: var(--m-bg-panel);
+  border: 1.5px solid var(--m-border-color);
+}
+
+/* ── Suggestion buttons ── */
+.mobile-game[data-theme="jade-meridian"] .adventure-suggestions__btn {
+  border: 1px solid rgba(78, 205, 196, 0.3);
+  color: var(--m-accent-primary);
+}
+
+.mobile-game[data-theme="jade-meridian"] .adventure-suggestions__btn::before {
+  content: '🌿 ';
+  font-size: 0.85em;
+}
+
+/* ── Combat overlay: martial arts focus ── */
+.mobile-game[data-theme="jade-meridian"] .mobile-combat-overlay {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(78, 205, 196, 0.08), transparent 50%),
+    var(--m-bg-deep);
+}
+
+.mobile-game[data-theme="jade-meridian"] .mobile-combat-overlay__header {
+  border-bottom: 1.5px solid var(--m-border-color);
+}

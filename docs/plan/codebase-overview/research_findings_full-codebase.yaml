@@ -636,6 +636,19 @@ related_architecture:
       to: functions/lib/sync.js (replay)
       relationship: "HTTP call"
 
+supplemental_diagrams:
+  - name: magic-systems-dependency-map
+    path: docs/plan/codebase-overview/magic-systems-dependency-map.md
+    purpose: "Durable Mermaid dependency map for spell content sources, runtime registries, mana and cooldown layers, combat resolution, and essence-weaving wiring"
+    last_updated: "2026-03-20"
+    primary_files:
+      - packages/game-core/src/systems/skills/SkillRegistry.js
+      - packages/game-core/src/systems/skills/SpellStudySystem.js
+      - packages/game-core/src/systems/combat/CombatSystem.js
+      - packages/game-core/src/systems/magic/EssenceWeavingSystem.js
+      - packages/game-core/src/core/ActionDispatcher.js
+      - packages/game-core/src/core/InputParser.js
+
 related_technology_stack:
   languages_used_in_domain:
     - JavaScript (ES modules, JSX)

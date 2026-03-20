@@ -53,6 +53,11 @@ const DEFAULT_PROGRESS = {
   totalGoldEarned: 0,
 };
 
+const DEFAULT_DUNGEON_STATE = {
+  activeRun: null,
+  completedRuns: [],
+};
+
 function lookupEntityByKind(trimmed, kind) {
   const registry = kind === "race"
     ? {
@@ -417,6 +422,116 @@ function normalizeArray(value) {
 
 function normalizeObject(value) {
   return isPlainObject(value) ? value : {};
+}
+
+function normalizeDungeonRewards(rawRewards) {
+  const rewards = normalizeObject(rawRewards);
+  const next = {};
+
+  ["xp", "gold", "soulpoints"].forEach((key) => {
+    const numeric = toNumber(rewards[key], null);
+    if (numeric === null) return;
+    next[key] = Math.max(0, numeric);
+  });
+
+  return next;
+}
+
+function normalizeDungeonRoom(rawRoom, index = 0) {
+  const room = normalizeObject(rawRoom);
+  const order = Math.max(1, Math.floor(toNumber(room.order, index + 1)));
+  const kind =
+    typeof room.kind === "string" && room.kind.trim()
+      ? room.kind.trim()
+      : "combat";
+
+  return {
+    ...room,
+    id:
+      typeof room.id === "string" && room.id.trim()
+        ? room.id.trim()
+        : `dungeon_room_${order}`,
+    order,
+    kind,
+    title:
+      typeof room.title === "string" && room.title.trim()
+        ? room.title.trim()
+        : `${kind.charAt(0).toUpperCase()}${kind.slice(1)} Room ${order}`,
+    enemyIds: normalizeArray(room.enemyIds)
+      .map((entry) => (typeof entry === "string" ? entry.trim() : ""))
+      .filter(Boolean),
+    rewards: normalizeDungeonRewards(room.rewards),
+    cleared: Boolean(room.cleared),
+  };
+}
+
+function normalizeDungeonRun(rawRun) {
+  if (!isPlainObject(rawRun)) return null;
+
+  const rooms = normalizeArray(rawRun.rooms).map((room, index) =>
+    normalizeDungeonRoom(room, index),
+  );
+  const currentRoomIndex = clamp(
+    Math.floor(toNumber(rawRun.currentRoomIndex, 0)),
+    0,
+    Math.max(0, rooms.length - 1),
+  );
+
+  return {
+    ...rawRun,
+    runId:
+      typeof rawRun.runId === "string" && rawRun.runId.trim()
+        ? rawRun.runId.trim()
+        : "dungeon_run_1",
+    templateId:
+      typeof rawRun.templateId === "string" && rawRun.templateId.trim()
+        ? rawRun.templateId.trim()
+        : "training_depths",
+    difficulty: Math.max(1, Math.floor(toNumber(rawRun.difficulty, 1))),
+    status:
+      typeof rawRun.status === "string" && rawRun.status.trim()
+        ? rawRun.status.trim()
+        : "active",
+    currentRoomIndex,
+    clearedRoomIds: normalizeArray(rawRun.clearedRoomIds)
+      .map((entry) => (typeof entry === "string" ? entry.trim() : ""))
+      .filter(Boolean),
+    rooms,
+  };
+}
+
+function normalizeCompletedDungeonRun(rawRun) {
+  const run = normalizeObject(rawRun);
+
+  return {
+    runId:
+      typeof run.runId === "string" && run.runId.trim()
+        ? run.runId.trim()
+        : "dungeon_run_1",
+    templateId:
+      typeof run.templateId === "string" && run.templateId.trim()
+        ? run.templateId.trim()
+        : "training_depths",
+    difficulty: Math.max(1, Math.floor(toNumber(run.difficulty, 1))),
+    roomCount: Math.max(0, Math.floor(toNumber(run.roomCount, 0))),
+    clearedRoomIds: normalizeArray(run.clearedRoomIds)
+      .map((entry) => (typeof entry === "string" ? entry.trim() : ""))
+      .filter(Boolean),
+    completed: true,
+  };
+}
+
+function normalizeDungeonState(rawDungeon) {
+  const dungeon = normalizeObject(rawDungeon);
+
+  return {
+    ...DEFAULT_DUNGEON_STATE,
+    ...dungeon,
+    activeRun: normalizeDungeonRun(dungeon.activeRun),
+    completedRuns: normalizeArray(dungeon.completedRuns).map(
+      normalizeCompletedDungeonRun,
+    ),
+  };
 }
 
 const DEFAULT_WORLD_ID = WORLD_META.id;
@@ -1001,6 +1116,7 @@ export function normalizeGameState(rawState) {
   const player = normalizePlayer(state.player, config);
 
   const quests = normalizeObject(state.quests);
+  const dungeon = normalizeObject(state.dungeon);
   const world = normalizeObject(state.world);
   const narrative = normalizeObject(state.narrative);
   const combat = normalizeObject(state.combat);
@@ -1056,6 +1172,7 @@ export function normalizeGameState(rawState) {
       active: normalizeArray(quests.active),
       completed: normalizeArray(quests.completed),
     },
+    dungeon: normalizeDungeonState(dungeon),
     world: {
       ...world,
       id: normalizedWorldId,

@@ -12,28 +12,28 @@ For each operation, there is a wrapper hook that can be used to call the operati
 
 Here are all of the hooks that get generated:
 ```ts
-import { useGetMyProfile, useListMySaveSlots, useGetMySaveSlot, useListMyRunSnapshots, useGetMyRunSessionByRunId, useGetMyRunEventByCommitId, useListMyRunEventsSince, useListAllMyRunSessions, useListAllMyRunEvents, useListMyStoryMemories } from '@dataconnect/generated/react';
+import { useUpsertMyProfile, useMarkMyProfileMigration, useCreateSaveSlot, useUpsertSaveSlot, useDeleteSaveSlot, useDeleteRunSession, useDeleteRunEvent, useUpsertRunSession, useCreateRunEvent, useUpsertStoryMemory } from '@dataconnect/generated/react';
 // The types of these hooks are available in react/index.d.ts
 
-const { data, isPending, isSuccess, isError, error } = useGetMyProfile();
+const { data, isPending, isSuccess, isError, error } = useUpsertMyProfile(upsertMyProfileVars);
 
-const { data, isPending, isSuccess, isError, error } = useListMySaveSlots(listMySaveSlotsVars);
+const { data, isPending, isSuccess, isError, error } = useMarkMyProfileMigration(markMyProfileMigrationVars);
 
-const { data, isPending, isSuccess, isError, error } = useGetMySaveSlot(getMySaveSlotVars);
+const { data, isPending, isSuccess, isError, error } = useCreateSaveSlot(createSaveSlotVars);
 
-const { data, isPending, isSuccess, isError, error } = useListMyRunSnapshots(listMyRunSnapshotsVars);
+const { data, isPending, isSuccess, isError, error } = useUpsertSaveSlot(upsertSaveSlotVars);
 
-const { data, isPending, isSuccess, isError, error } = useGetMyRunSessionByRunId(getMyRunSessionByRunIdVars);
+const { data, isPending, isSuccess, isError, error } = useDeleteSaveSlot(deleteSaveSlotVars);
 
-const { data, isPending, isSuccess, isError, error } = useGetMyRunEventByCommitId(getMyRunEventByCommitIdVars);
+const { data, isPending, isSuccess, isError, error } = useDeleteRunSession(deleteRunSessionVars);
 
-const { data, isPending, isSuccess, isError, error } = useListMyRunEventsSince(listMyRunEventsSinceVars);
+const { data, isPending, isSuccess, isError, error } = useDeleteRunEvent(deleteRunEventVars);
 
-const { data, isPending, isSuccess, isError, error } = useListAllMyRunSessions();
+const { data, isPending, isSuccess, isError, error } = useUpsertRunSession(upsertRunSessionVars);
 
-const { data, isPending, isSuccess, isError, error } = useListAllMyRunEvents();
+const { data, isPending, isSuccess, isError, error } = useCreateRunEvent(createRunEventVars);
 
-const { data, isPending, isSuccess, isError, error } = useListMyStoryMemories(listMyStoryMemoriesVars);
+const { data, isPending, isSuccess, isError, error } = useUpsertStoryMemory(upsertStoryMemoryVars);
 
 ```
 
@@ -72,38 +72,38 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { getMyProfile, listMySaveSlots, getMySaveSlot, listMyRunSnapshots, getMyRunSessionByRunId, getMyRunEventByCommitId, listMyRunEventsSince, listAllMyRunSessions, listAllMyRunEvents, listMyStoryMemories } from '@dataconnect/generated';
+import { upsertMyProfile, markMyProfileMigration, createSaveSlot, upsertSaveSlot, deleteSaveSlot, deleteRunSession, deleteRunEvent, upsertRunSession, createRunEvent, upsertStoryMemory } from '@dataconnect/generated';
 
 
-// Operation GetMyProfile: 
-const { data } = await GetMyProfile(dataConnect);
+// Operation UpsertMyProfile:  For variables, look at type UpsertMyProfileVars in ../index.d.ts
+const { data } = await UpsertMyProfile(dataConnect, upsertMyProfileVars);
 
-// Operation ListMySaveSlots:  For variables, look at type ListMySaveSlotsVars in ../index.d.ts
-const { data } = await ListMySaveSlots(dataConnect, listMySaveSlotsVars);
+// Operation MarkMyProfileMigration:  For variables, look at type MarkMyProfileMigrationVars in ../index.d.ts
+const { data } = await MarkMyProfileMigration(dataConnect, markMyProfileMigrationVars);
 
-// Operation GetMySaveSlot:  For variables, look at type GetMySaveSlotVars in ../index.d.ts
-const { data } = await GetMySaveSlot(dataConnect, getMySaveSlotVars);
+// Operation CreateSaveSlot:  For variables, look at type CreateSaveSlotVars in ../index.d.ts
+const { data } = await CreateSaveSlot(dataConnect, createSaveSlotVars);
 
-// Operation ListMyRunSnapshots:  For variables, look at type ListMyRunSnapshotsVars in ../index.d.ts
-const { data } = await ListMyRunSnapshots(dataConnect, listMyRunSnapshotsVars);
+// Operation UpsertSaveSlot:  For variables, look at type UpsertSaveSlotVars in ../index.d.ts
+const { data } = await UpsertSaveSlot(dataConnect, upsertSaveSlotVars);
 
-// Operation GetMyRunSessionByRunId:  For variables, look at type GetMyRunSessionByRunIdVars in ../index.d.ts
-const { data } = await GetMyRunSessionByRunId(dataConnect, getMyRunSessionByRunIdVars);
+// Operation DeleteSaveSlot:  For variables, look at type DeleteSaveSlotVars in ../index.d.ts
+const { data } = await DeleteSaveSlot(dataConnect, deleteSaveSlotVars);
 
-// Operation GetMyRunEventByCommitId:  For variables, look at type GetMyRunEventByCommitIdVars in ../index.d.ts
-const { data } = await GetMyRunEventByCommitId(dataConnect, getMyRunEventByCommitIdVars);
+// Operation DeleteRunSession:  For variables, look at type DeleteRunSessionVars in ../index.d.ts
+const { data } = await DeleteRunSession(dataConnect, deleteRunSessionVars);
 
-// Operation ListMyRunEventsSince:  For variables, look at type ListMyRunEventsSinceVars in ../index.d.ts
-const { data } = await ListMyRunEventsSince(dataConnect, listMyRunEventsSinceVars);
+// Operation DeleteRunEvent:  For variables, look at type DeleteRunEventVars in ../index.d.ts
+const { data } = await DeleteRunEvent(dataConnect, deleteRunEventVars);
 
-// Operation ListAllMyRunSessions: 
-const { data } = await ListAllMyRunSessions(dataConnect);
+// Operation UpsertRunSession:  For variables, look at type UpsertRunSessionVars in ../index.d.ts
+const { data } = await UpsertRunSession(dataConnect, upsertRunSessionVars);
 
-// Operation ListAllMyRunEvents: 
-const { data } = await ListAllMyRunEvents(dataConnect);
+// Operation CreateRunEvent:  For variables, look at type CreateRunEventVars in ../index.d.ts
+const { data } = await CreateRunEvent(dataConnect, createRunEventVars);
 
-// Operation ListMyStoryMemories:  For variables, look at type ListMyStoryMemoriesVars in ../index.d.ts
-const { data } = await ListMyStoryMemories(dataConnect, listMyStoryMemoriesVars);
+// Operation UpsertStoryMemory:  For variables, look at type UpsertStoryMemoryVars in ../index.d.ts
+const { data } = await UpsertStoryMemory(dataConnect, upsertStoryMemoryVars);
 
 
 ```

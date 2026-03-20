@@ -69,4 +69,15 @@ describe("handlers runAgent fallback metadata", () => {
     expect(res.body.fallbackFrom).toBe("openai-responses");
     expect(res.body.agent).toBe("narrator");
   });
+
+  it("requires authentication for the agent catalog endpoint", async () => {
+    auth.getUserFromRequest = jest.fn(async () => null);
+    const req = { method: "GET" };
+    const res = createRes();
+
+    await handlers.agents(req, res);
+
+    expect(res.statusCode).toBe(401);
+    expect(res.body.errorCode).toBe("UNAUTHENTICATED");
+  });
 });

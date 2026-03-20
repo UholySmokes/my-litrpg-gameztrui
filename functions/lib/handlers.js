@@ -138,6 +138,8 @@ async function health(_req, res) {
 async function agents(req, res) {
 	const method = (req?.method || "GET").toUpperCase();
 	if (method === "GET") {
+		if (!(await requireAuthenticatedUser(req, res))) return;
+
 		return json(res, 200, {
 			ok: true,
 			provider: "firebase-genkit",

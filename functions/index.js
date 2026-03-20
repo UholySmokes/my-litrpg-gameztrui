@@ -53,6 +53,11 @@ function hashContent(text) {
 		.digest("hex");
 }
 
+function getCallableCallerId(request) {
+	const devUserId = isDevAuthEnabled() ? String(process.env.DEV_USER_ID || "").trim() : "";
+	return String(request?.auth?.uid || devUserId || "").trim();
+}
+
 function createHttpApiFunction(allowedRouteNames) {
 	return onRequest(HTTP_API_OPTIONS, async (req, res) => {
 		try {
@@ -73,17 +78,22 @@ exports.apiSync = apiSync;
 exports.apiAdmin = apiAdmin;
 exports.api = apiAdmin;
 
-exports.agentList = onCall({ region: "us-central1" }, async () => ({
-	ok: true,
-	provider: "firebase-genkit",
-	agents: listFirebaseAgents(),
-}));
+exports.agentList = onCall({ region: "us-central1" }, async (request) => {
+	if (!getCallableCallerId(request)) {
+		throw new HttpsError("unauthenticated", "Sign in required.");
+	}
+
+	return {
+		ok: true,
+		provider: "firebase-genkit",
+		agents: listFirebaseAgents(),
+	};
+});
 
 exports.agentRun = onCall(
 	{ region: "us-central1", timeoutSeconds: 120, secrets: AI_RUNTIME_SECRETS },
 	async (request) => {
-		const devUserId = isDevAuthEnabled() ? String(process.env.DEV_USER_ID || "").trim() : "";
-		const callerId = String(request?.auth?.uid || devUserId || "").trim();
+		const callerId = getCallableCallerId(request);
 		if (!callerId) {
 			throw new HttpsError("unauthenticated", "Sign in required.");
 		}
@@ -169,4 +179,3 @@ exports.agentRun = onCall(
 		}
 	},
 );
-

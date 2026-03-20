@@ -168,32 +168,39 @@ export interface GetMyRunSessionByRunIdVariables {
 }
 
 export interface GetMySaveSlotData {
-  saveSlot?: {
-    id: UUIDString;
-    saveName: string;
-    gameStateJson: string;
-    playerName: string;
-    playerLevel: number;
-    worldId: string;
-    locationId: string;
-    mapId?: string | null;
-    playerPosJson?: string | null;
-    entityStatesJson?: string | null;
-    questFlagsJson?: string | null;
-    turnCount: number;
-    contentVersion?: string | null;
-    stateVersion?: number | null;
-    runId?: string | null;
-    seq?: number | null;
-    tick?: number | null;
-    stateHash?: string | null;
-    createdAt: DateString;
-    updatedAt: DateString;
-  } & SaveSlot_Key;
+  userProfile?: {
+    id: string;
+    saveSlots: ({
+      id: UUIDString;
+      saveName: string;
+      gameStateJson: string;
+      playerName: string;
+      playerLevel: number;
+      worldId: string;
+      locationId: string;
+      mapId?: string | null;
+      playerPosJson?: string | null;
+      entityStatesJson?: string | null;
+      questFlagsJson?: string | null;
+      turnCount: number;
+      contentVersion?: string | null;
+      stateVersion?: number | null;
+      runId?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & SaveSlot_Key)[];
+  } & UserProfile_Key;
 }
 
 export interface GetMySaveSlotVariables {
   id: UUIDString;
+}
+
+export interface ListMySaveSlotsVariables {
+  limit: number;
 }
 
 export interface ListAllMyRunEventsData {
@@ -508,9 +515,9 @@ export function getMyProfile(dc: DataConnect, options?: OperationOptions): Promi
 export function getMyProfile(options?: OperationOptions): Promise<ExecuteOperationResponse<GetMyProfileData>>;
 
 /** Generated Node Admin SDK operation action function for the 'ListMySaveSlots' Query. Allow users to execute without passing in DataConnect. */
-export function listMySaveSlots(dc: DataConnect, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMySaveSlotsData>>;
+export function listMySaveSlots(dc: DataConnect, vars: ListMySaveSlotsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMySaveSlotsData>>;
 /** Generated Node Admin SDK operation action function for the 'ListMySaveSlots' Query. Allow users to pass in custom DataConnect instances. */
-export function listMySaveSlots(options?: OperationOptions): Promise<ExecuteOperationResponse<ListMySaveSlotsData>>;
+export function listMySaveSlots(vars: ListMySaveSlotsVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMySaveSlotsData>>;
 
 /** Generated Node Admin SDK operation action function for the 'GetMySaveSlot' Query. Allow users to execute without passing in DataConnect. */
 export function getMySaveSlot(dc: DataConnect, vars: GetMySaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMySaveSlotData>>;
@@ -551,4 +558,3 @@ export function listAllMyRunEvents(options?: OperationOptions): Promise<ExecuteO
 export function listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMyStoryMemoriesData>>;
 /** Generated Node Admin SDK operation action function for the 'ListMyStoryMemories' Query. Allow users to pass in custom DataConnect instances. */
 export function listMyStoryMemories(vars: ListMyStoryMemoriesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMyStoryMemoriesData>>;
-

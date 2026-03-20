@@ -72,10 +72,10 @@ export function getMyProfile(dcOrOptions, options) {
   return dcInstance.executeQuery('GetMyProfile', undefined, inputOpts);
 }
 
-export function listMySaveSlots(dcOrOptions, options) {
-  const { dc: dcInstance, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrOptions, options, undefined);
+export function listMySaveSlots(dcOrVarsOrOptions, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts} = validateAdminArgs(connectorConfig, dcOrVarsOrOptions, varsOrOptions, options, true, true);
   dcInstance.useGen(true);
-  return dcInstance.executeQuery('ListMySaveSlots', undefined, inputOpts);
+  return dcInstance.executeQuery('ListMySaveSlots', inputVars, inputOpts);
 }
 
 export function getMySaveSlot(dcOrVarsOrOptions, varsOrOptions, options) {
@@ -125,4 +125,3 @@ export function listMyStoryMemories(dcOrVarsOrOptions, varsOrOptions, options) {
   dcInstance.useGen(true);
   return dcInstance.executeQuery('ListMyStoryMemories', inputVars, inputOpts);
 }
-

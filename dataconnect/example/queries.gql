@@ -11,11 +11,11 @@ query GetMyProfile @auth(level: USER) {
   }
 }
 
-query ListMySaveSlots @auth(level: USER) {
+query ListMySaveSlots($limit: Int!) @auth(level: USER) {
   userProfile(key: { id_expr: "auth.uid" }) {
     id
     displayName
-    saveSlots: saveSlots_on_user {
+    saveSlots: saveSlots_on_user(orderBy: [{ updatedAt: DESC }], limit: $limit) {
       id
       saveName
       playerName
@@ -40,27 +40,30 @@ query ListMySaveSlots @auth(level: USER) {
 }
 
 query GetMySaveSlot($id: UUID!) @auth(level: USER) {
-  saveSlot(key: { id: $id }) {
+  userProfile(key: { id_expr: "auth.uid" }) {
     id
-    saveName
-    gameStateJson
-    playerName
-    playerLevel
-    worldId
-    locationId
-    mapId
-    playerPosJson
-    entityStatesJson
-    questFlagsJson
-    turnCount
-    contentVersion
-    stateVersion
-    runId
-    seq
-    tick
-    stateHash
-    createdAt
-    updatedAt
+    saveSlots: saveSlots_on_user(where: { id: { eq: $id } }, limit: 1) {
+      id
+      saveName
+      gameStateJson
+      playerName
+      playerLevel
+      worldId
+      locationId
+      mapId
+      playerPosJson
+      entityStatesJson
+      questFlagsJson
+      turnCount
+      contentVersion
+      stateVersion
+      runId
+      seq
+      tick
+      stateHash
+      createdAt
+      updatedAt
+    }
   }
 }
 

@@ -94,6 +94,12 @@ function toInteger(value, fallback = 0) {
 	return Math.floor(parsed);
 }
 
+function normalizePositiveLimit(value, fallback = 50) {
+	const parsed = toInteger(value, fallback);
+	if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+	return parsed;
+}
+
 function safeParseJson(value, fallback = null) {
 	if (value === null || value === undefined) return fallback;
 	if (typeof value === "object") return value;
@@ -225,8 +231,10 @@ async function ensureDcProfile({ userId, displayName }) {
 
 async function dcListSaves({ userId, limit }) {
 	const dc = getDataConnectDb();
+	const normalizedLimit = normalizePositiveLimit(limit);
 	const response = await getDataconnectGenerated().listMySaveSlots(
 		dc,
+		{ limit: normalizedLimit },
 		buildDcOptions(userId),
 	);
 	const slots = Array.isArray(response?.data?.userProfile?.saveSlots)
@@ -235,10 +243,6 @@ async function dcListSaves({ userId, limit }) {
 	return slots
 		.map((slot) => mapDataconnectSave({ userId, slot }))
 		.filter(Boolean)
-		.sort((a, b) =>
-			String(b.updated_at || "").localeCompare(String(a.updated_at || "")),
-		)
-		.slice(0, limit)
 		.map((row) => ({
 			id: row.id,
 			save_name: row.save_name,
@@ -254,7 +258,9 @@ async function dcGetSave({ userId, saveId }) {
 		{ id: String(saveId) },
 		buildDcOptions(userId),
 	);
-	const slot = response?.data?.saveSlot;
+	const slot = Array.isArray(response?.data?.userProfile?.saveSlots)
+		? response.data.userProfile.saveSlots[0]
+		: null;
 	if (!slot) return null;
 	return mapDataconnectSave({ userId, slot });
 }
@@ -307,19 +313,34 @@ async function dcDeleteSave({ userId, saveId }) {
 }
 
 async function dcPurgeUserProgress({ userId }) {
-	const saves = await dcListSaves({ userId, limit: Number.MAX_SAFE_INTEGER });
-	const dc = getDataConnectDb();
-	await Promise.all(
-		(saves || []).map((save) =>
-			getDataconnectGenerated().deleteSaveSlot(
-				dc,
-				{ id: String(save.id) },
-				buildDcOptions(userId),
+	const deleteBatchSize = 100;
+	let deletedSaveCount = 0;
+
+	for (;;) {
+		const saves = await dcListSaves({ userId, limit: deleteBatchSize });
+		if (!Array.isArray(saves) || saves.length === 0) {
+			break;
+		}
+
+		const dc = getDataConnectDb();
+		await Promise.all(
+			saves.map((save) =>
+				getDataconnectGenerated().deleteSaveSlot(
+					dc,
+					{ id: String(save.id) },
+					buildDcOptions(userId),
+				),
 			),
-		),
-	);
+		);
+		deletedSaveCount += saves.length;
+
+		if (saves.length < deleteBatchSize) {
+			break;
+		}
+	}
+
 	return {
-		deletedSaveCount: Array.isArray(saves) ? saves.length : 0,
+		deletedSaveCount,
 	};
 }
 

@@ -199,10 +199,6 @@ export interface GetMySaveSlotVariables {
   id: UUIDString;
 }
 
-export interface ListMySaveSlotsVariables {
-  limit: number;
-}
-
 export interface ListAllMyRunEventsData {
   userProfile?: {
     id: string;
@@ -331,6 +327,10 @@ export interface ListMySaveSlotsData {
       updatedAt: DateString;
     } & SaveSlot_Key)[];
   } & UserProfile_Key;
+}
+
+export interface ListMySaveSlotsVariables {
+  limit: number;
 }
 
 export interface ListMyStoryMemoriesData {
@@ -558,3 +558,4 @@ export function listAllMyRunEvents(options?: OperationOptions): Promise<ExecuteO
 export function listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMyStoryMemoriesData>>;
 /** Generated Node Admin SDK operation action function for the 'ListMyStoryMemories' Query. Allow users to pass in custom DataConnect instances. */
 export function listMyStoryMemories(vars: ListMyStoryMemoriesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMyStoryMemoriesData>>;
+

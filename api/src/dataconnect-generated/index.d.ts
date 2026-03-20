@@ -170,28 +170,31 @@ export interface GetMyRunSessionByRunIdVariables {
 }
 
 export interface GetMySaveSlotData {
-  saveSlot?: {
-    id: UUIDString;
-    saveName: string;
-    gameStateJson: string;
-    playerName: string;
-    playerLevel: number;
-    worldId: string;
-    locationId: string;
-    mapId?: string | null;
-    playerPosJson?: string | null;
-    entityStatesJson?: string | null;
-    questFlagsJson?: string | null;
-    turnCount: number;
-    contentVersion?: string | null;
-    stateVersion?: number | null;
-    runId?: string | null;
-    seq?: number | null;
-    tick?: number | null;
-    stateHash?: string | null;
-    createdAt: DateString;
-    updatedAt: DateString;
-  } & SaveSlot_Key;
+  userProfile?: {
+    id: string;
+    saveSlots: ({
+      id: UUIDString;
+      saveName: string;
+      gameStateJson: string;
+      playerName: string;
+      playerLevel: number;
+      worldId: string;
+      locationId: string;
+      mapId?: string | null;
+      playerPosJson?: string | null;
+      entityStatesJson?: string | null;
+      questFlagsJson?: string | null;
+      turnCount: number;
+      contentVersion?: string | null;
+      stateVersion?: number | null;
+      runId?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & SaveSlot_Key)[];
+  } & UserProfile_Key;
 }
 
 export interface GetMySaveSlotVariables {
@@ -326,6 +329,10 @@ export interface ListMySaveSlotsData {
       updatedAt: DateString;
     } & SaveSlot_Key)[];
   } & UserProfile_Key;
+}
+
+export interface ListMySaveSlotsVariables {
+  limit: number;
 }
 
 export interface ListMyStoryMemoriesData {
@@ -588,15 +595,15 @@ export function getMyProfile(dc: DataConnect): QueryPromise<GetMyProfileData, un
 
 interface ListMySaveSlotsRef {
   /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListMySaveSlotsData, undefined>;
+  (vars: ListMySaveSlotsVariables): QueryRef<ListMySaveSlotsData, ListMySaveSlotsVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListMySaveSlotsData, undefined>;
+  (dc: DataConnect, vars: ListMySaveSlotsVariables): QueryRef<ListMySaveSlotsData, ListMySaveSlotsVariables>;
   operationName: string;
 }
 export const listMySaveSlotsRef: ListMySaveSlotsRef;
 
-export function listMySaveSlots(): QueryPromise<ListMySaveSlotsData, undefined>;
-export function listMySaveSlots(dc: DataConnect): QueryPromise<ListMySaveSlotsData, undefined>;
+export function listMySaveSlots(vars: ListMySaveSlotsVariables): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
+export function listMySaveSlots(dc: DataConnect, vars: ListMySaveSlotsVariables): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 
 interface GetMySaveSlotRef {
   /* Allow users to create refs without passing in DataConnect */

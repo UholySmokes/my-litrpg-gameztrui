@@ -127,15 +127,15 @@ export function getMyProfile(dc) {
   return executeQuery(getMyProfileRef(dc));
 }
 
-export const listMySaveSlotsRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+export const listMySaveSlotsRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListMySaveSlots');
+  return queryRef(dcInstance, 'ListMySaveSlots', inputVars);
 }
 listMySaveSlotsRef.operationName = 'ListMySaveSlots';
 
-export function listMySaveSlots(dc) {
-  return executeQuery(listMySaveSlotsRef(dc));
+export function listMySaveSlots(dcOrVars, vars) {
+  return executeQuery(listMySaveSlotsRef(dcOrVars, vars));
 }
 
 export const getMySaveSlotRef = (dcOrVars, vars) => {

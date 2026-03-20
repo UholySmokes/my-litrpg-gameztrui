@@ -51,6 +51,12 @@ import {
   defaultPrestigeStats,
   PRESTIGE_MIN_LEVEL,
 } from "../systems/PrestigeSystem";
+import {
+  abandonDungeonRun,
+  advanceDungeonRoom,
+  completeCurrentDungeonRoom,
+  startDungeonRun,
+} from "../systems/dungeon/DungeonRuntime.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -807,6 +813,18 @@ const gameReducer = (state, action) =>
         targetLane,
       });
     }
+
+    case "DUNGEON_START_RUN":
+      return normalizeGameState(startDungeonRun(state, action.payload || {}));
+
+    case "DUNGEON_COMPLETE_ROOM":
+      return normalizeGameState(completeCurrentDungeonRoom(state));
+
+    case "DUNGEON_ADVANCE_ROOM":
+      return normalizeGameState(advanceDungeonRoom(state));
+
+    case "DUNGEON_ABANDON_RUN":
+      return normalizeGameState(abandonDungeonRun(state));
 
     case "PLAYER_ESCAPE": {
       const combatState = ensureCombatStructure(state);

@@ -132,6 +132,10 @@ const initialGameState = {
     active: [],
     completed: [],
   },
+  dungeon: {
+    activeRun: null,
+    completedRuns: [],
+  },
   world: {
     ...createInitialWorldState({ seed: 1 }),
   },

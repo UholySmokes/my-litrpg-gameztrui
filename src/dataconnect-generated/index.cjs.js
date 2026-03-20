@@ -7,126 +7,6 @@ const connectorConfig = {
 };
 exports.connectorConfig = connectorConfig;
 
-const getMyProfileRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetMyProfile');
-}
-getMyProfileRef.operationName = 'GetMyProfile';
-exports.getMyProfileRef = getMyProfileRef;
-
-exports.getMyProfile = function getMyProfile(dc) {
-  return executeQuery(getMyProfileRef(dc));
-};
-
-const listMySaveSlotsRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListMySaveSlots');
-}
-listMySaveSlotsRef.operationName = 'ListMySaveSlots';
-exports.listMySaveSlotsRef = listMySaveSlotsRef;
-
-exports.listMySaveSlots = function listMySaveSlots(dc) {
-  return executeQuery(listMySaveSlotsRef(dc));
-};
-
-const getMySaveSlotRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetMySaveSlot', inputVars);
-}
-getMySaveSlotRef.operationName = 'GetMySaveSlot';
-exports.getMySaveSlotRef = getMySaveSlotRef;
-
-exports.getMySaveSlot = function getMySaveSlot(dcOrVars, vars) {
-  return executeQuery(getMySaveSlotRef(dcOrVars, vars));
-};
-
-const listMyRunSnapshotsRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListMyRunSnapshots', inputVars);
-}
-listMyRunSnapshotsRef.operationName = 'ListMyRunSnapshots';
-exports.listMyRunSnapshotsRef = listMyRunSnapshotsRef;
-
-exports.listMyRunSnapshots = function listMyRunSnapshots(dcOrVars, vars) {
-  return executeQuery(listMyRunSnapshotsRef(dcOrVars, vars));
-};
-
-const getMyRunSessionByRunIdRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetMyRunSessionByRunId', inputVars);
-}
-getMyRunSessionByRunIdRef.operationName = 'GetMyRunSessionByRunId';
-exports.getMyRunSessionByRunIdRef = getMyRunSessionByRunIdRef;
-
-exports.getMyRunSessionByRunId = function getMyRunSessionByRunId(dcOrVars, vars) {
-  return executeQuery(getMyRunSessionByRunIdRef(dcOrVars, vars));
-};
-
-const getMyRunEventByCommitIdRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetMyRunEventByCommitId', inputVars);
-}
-getMyRunEventByCommitIdRef.operationName = 'GetMyRunEventByCommitId';
-exports.getMyRunEventByCommitIdRef = getMyRunEventByCommitIdRef;
-
-exports.getMyRunEventByCommitId = function getMyRunEventByCommitId(dcOrVars, vars) {
-  return executeQuery(getMyRunEventByCommitIdRef(dcOrVars, vars));
-};
-
-const listMyRunEventsSinceRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListMyRunEventsSince', inputVars);
-}
-listMyRunEventsSinceRef.operationName = 'ListMyRunEventsSince';
-exports.listMyRunEventsSinceRef = listMyRunEventsSinceRef;
-
-exports.listMyRunEventsSince = function listMyRunEventsSince(dcOrVars, vars) {
-  return executeQuery(listMyRunEventsSinceRef(dcOrVars, vars));
-};
-
-const listAllMyRunSessionsRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListAllMyRunSessions');
-}
-listAllMyRunSessionsRef.operationName = 'ListAllMyRunSessions';
-exports.listAllMyRunSessionsRef = listAllMyRunSessionsRef;
-
-exports.listAllMyRunSessions = function listAllMyRunSessions(dc) {
-  return executeQuery(listAllMyRunSessionsRef(dc));
-};
-
-const listAllMyRunEventsRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListAllMyRunEvents');
-}
-listAllMyRunEventsRef.operationName = 'ListAllMyRunEvents';
-exports.listAllMyRunEventsRef = listAllMyRunEventsRef;
-
-exports.listAllMyRunEvents = function listAllMyRunEvents(dc) {
-  return executeQuery(listAllMyRunEventsRef(dc));
-};
-
-const listMyStoryMemoriesRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListMyStoryMemories', inputVars);
-}
-listMyStoryMemoriesRef.operationName = 'ListMyStoryMemories';
-exports.listMyStoryMemoriesRef = listMyStoryMemoriesRef;
-
-exports.listMyStoryMemories = function listMyStoryMemories(dcOrVars, vars) {
-  return executeQuery(listMyStoryMemoriesRef(dcOrVars, vars));
-};
-
 const upsertMyProfileRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars);
   dcInstance._useGeneratedSdk();
@@ -245,4 +125,124 @@ exports.upsertStoryMemoryRef = upsertStoryMemoryRef;
 
 exports.upsertStoryMemory = function upsertStoryMemory(dcOrVars, vars) {
   return executeMutation(upsertStoryMemoryRef(dcOrVars, vars));
+};
+
+const getMyProfileRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetMyProfile');
+}
+getMyProfileRef.operationName = 'GetMyProfile';
+exports.getMyProfileRef = getMyProfileRef;
+
+exports.getMyProfile = function getMyProfile(dc) {
+  return executeQuery(getMyProfileRef(dc));
+};
+
+const listMySaveSlotsRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListMySaveSlots');
+}
+listMySaveSlotsRef.operationName = 'ListMySaveSlots';
+exports.listMySaveSlotsRef = listMySaveSlotsRef;
+
+exports.listMySaveSlots = function listMySaveSlots(dc) {
+  return executeQuery(listMySaveSlotsRef(dc));
+};
+
+const getMySaveSlotRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetMySaveSlot', inputVars);
+}
+getMySaveSlotRef.operationName = 'GetMySaveSlot';
+exports.getMySaveSlotRef = getMySaveSlotRef;
+
+exports.getMySaveSlot = function getMySaveSlot(dcOrVars, vars) {
+  return executeQuery(getMySaveSlotRef(dcOrVars, vars));
+};
+
+const listMyRunSnapshotsRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListMyRunSnapshots', inputVars);
+}
+listMyRunSnapshotsRef.operationName = 'ListMyRunSnapshots';
+exports.listMyRunSnapshotsRef = listMyRunSnapshotsRef;
+
+exports.listMyRunSnapshots = function listMyRunSnapshots(dcOrVars, vars) {
+  return executeQuery(listMyRunSnapshotsRef(dcOrVars, vars));
+};
+
+const getMyRunSessionByRunIdRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetMyRunSessionByRunId', inputVars);
+}
+getMyRunSessionByRunIdRef.operationName = 'GetMyRunSessionByRunId';
+exports.getMyRunSessionByRunIdRef = getMyRunSessionByRunIdRef;
+
+exports.getMyRunSessionByRunId = function getMyRunSessionByRunId(dcOrVars, vars) {
+  return executeQuery(getMyRunSessionByRunIdRef(dcOrVars, vars));
+};
+
+const getMyRunEventByCommitIdRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetMyRunEventByCommitId', inputVars);
+}
+getMyRunEventByCommitIdRef.operationName = 'GetMyRunEventByCommitId';
+exports.getMyRunEventByCommitIdRef = getMyRunEventByCommitIdRef;
+
+exports.getMyRunEventByCommitId = function getMyRunEventByCommitId(dcOrVars, vars) {
+  return executeQuery(getMyRunEventByCommitIdRef(dcOrVars, vars));
+};
+
+const listMyRunEventsSinceRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListMyRunEventsSince', inputVars);
+}
+listMyRunEventsSinceRef.operationName = 'ListMyRunEventsSince';
+exports.listMyRunEventsSinceRef = listMyRunEventsSinceRef;
+
+exports.listMyRunEventsSince = function listMyRunEventsSince(dcOrVars, vars) {
+  return executeQuery(listMyRunEventsSinceRef(dcOrVars, vars));
+};
+
+const listAllMyRunSessionsRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListAllMyRunSessions');
+}
+listAllMyRunSessionsRef.operationName = 'ListAllMyRunSessions';
+exports.listAllMyRunSessionsRef = listAllMyRunSessionsRef;
+
+exports.listAllMyRunSessions = function listAllMyRunSessions(dc) {
+  return executeQuery(listAllMyRunSessionsRef(dc));
+};
+
+const listAllMyRunEventsRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListAllMyRunEvents');
+}
+listAllMyRunEventsRef.operationName = 'ListAllMyRunEvents';
+exports.listAllMyRunEventsRef = listAllMyRunEventsRef;
+
+exports.listAllMyRunEvents = function listAllMyRunEvents(dc) {
+  return executeQuery(listAllMyRunEventsRef(dc));
+};
+
+const listMyStoryMemoriesRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'ListMyStoryMemories', inputVars);
+}
+listMyStoryMemoriesRef.operationName = 'ListMyStoryMemories';
+exports.listMyStoryMemoriesRef = listMyStoryMemoriesRef;
+
+exports.listMyStoryMemories = function listMyStoryMemories(dcOrVars, vars) {
+  return executeQuery(listMyStoryMemoriesRef(dcOrVars, vars));
 };

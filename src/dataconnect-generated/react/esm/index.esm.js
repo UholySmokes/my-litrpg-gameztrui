@@ -1,67 +1,7 @@
-import { getMyProfileRef, listMySaveSlotsRef, getMySaveSlotRef, listMyRunSnapshotsRef, getMyRunSessionByRunIdRef, getMyRunEventByCommitIdRef, listMyRunEventsSinceRef, listAllMyRunSessionsRef, listAllMyRunEventsRef, listMyStoryMemoriesRef, upsertMyProfileRef, markMyProfileMigrationRef, createSaveSlotRef, upsertSaveSlotRef, deleteSaveSlotRef, deleteRunSessionRef, deleteRunEventRef, upsertRunSessionRef, createRunEventRef, upsertStoryMemoryRef, connectorConfig } from '../../esm/index.esm.js';
+import { upsertMyProfileRef, markMyProfileMigrationRef, createSaveSlotRef, upsertSaveSlotRef, deleteSaveSlotRef, deleteRunSessionRef, deleteRunEventRef, upsertRunSessionRef, createRunEventRef, upsertStoryMemoryRef, getMyProfileRef, listMySaveSlotsRef, getMySaveSlotRef, listMyRunSnapshotsRef, getMyRunSessionByRunIdRef, getMyRunEventByCommitIdRef, listMyRunEventsSinceRef, listAllMyRunSessionsRef, listAllMyRunEventsRef, listMyStoryMemoriesRef, connectorConfig } from '../../esm/index.esm.js';
 import { validateArgs, CallerSdkTypeEnum } from 'firebase/data-connect';
 import { useDataConnectQuery, useDataConnectMutation, validateReactArgs } from '@tanstack-query-firebase/react/data-connect';
 
-
-export function useGetMyProfile(dcOrOptions, options) {
-  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
-  const ref = getMyProfileRef(dcInstance);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useListMySaveSlots(dcOrOptions, options) {
-  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
-  const ref = listMySaveSlotsRef(dcInstance);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useGetMySaveSlot(dcOrVars, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  const ref = getMySaveSlotRef(dcInstance, inputVars);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useListMyRunSnapshots(dcOrVars, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  const ref = listMyRunSnapshotsRef(dcInstance, inputVars);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useGetMyRunSessionByRunId(dcOrVars, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  const ref = getMyRunSessionByRunIdRef(dcInstance, inputVars);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useGetMyRunEventByCommitId(dcOrVars, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  const ref = getMyRunEventByCommitIdRef(dcInstance, inputVars);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useListMyRunEventsSince(dcOrVars, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  const ref = listMyRunEventsSinceRef(dcInstance, inputVars);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useListAllMyRunSessions(dcOrOptions, options) {
-  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
-  const ref = listAllMyRunSessionsRef(dcInstance);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useListAllMyRunEvents(dcOrOptions, options) {
-  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
-  const ref = listAllMyRunEventsRef(dcInstance);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
-
-export function useListMyStoryMemories(dcOrVars, varsOrOptions, options) {
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
-  const ref = listMyStoryMemoriesRef(dcInstance, inputVars);
-  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
-}
 export function useUpsertMyProfile(dcOrOptions, options) {
   const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
   function refFactory(vars) {
@@ -140,4 +80,65 @@ export function useUpsertStoryMemory(dcOrOptions, options) {
     return upsertStoryMemoryRef(dcInstance, vars);
   }
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+
+export function useGetMyProfile(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = getMyProfileRef(dcInstance);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useListMySaveSlots(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = listMySaveSlotsRef(dcInstance);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useGetMySaveSlot(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = getMySaveSlotRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useListMyRunSnapshots(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = listMyRunSnapshotsRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useGetMyRunSessionByRunId(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = getMyRunSessionByRunIdRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useGetMyRunEventByCommitId(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = getMyRunEventByCommitIdRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useListMyRunEventsSince(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = listMyRunEventsSinceRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useListAllMyRunSessions(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = listAllMyRunSessionsRef(dcInstance);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useListAllMyRunEvents(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = listAllMyRunEventsRef(dcInstance);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useListMyStoryMemories(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = listMyStoryMemoriesRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }

@@ -1,10 +1,14 @@
 const { json } = require("./http");
-const { dispatchApiRoute, normalizePath } = require("./api-route-table");
+const { findApiRoute, normalizePath } = require("./api-route-table");
 const { checkRateLimit } = require("./rate-limit");
 
 const MAX_BODY_SIZE = 100 * 1024; // 100KB
 
-async function handleApiRequest(req, res) {
+function getRequestPath(req) {
+	return normalizePath(req?.originalUrl || req?.url);
+}
+
+async function handleApiRequest(req, res, options = {}) {
 	// Rate limit check
 	const rateResult = checkRateLimit(req);
 	if (!rateResult.allowed) {
@@ -36,11 +40,23 @@ async function handleApiRequest(req, res) {
 		}
 	}
 
-	const path = normalizePath(req?.url);
+	const path = getRequestPath(req);
 	const method = (req?.method || "GET").toUpperCase();
+	const found = findApiRoute(path, method);
+	const allowedRouteNames = options?.allowedRouteNames;
 
-	const routed = await dispatchApiRoute({ req, res, path, method });
-	if (routed) return;
+	if (found) {
+		if (allowedRouteNames && !allowedRouteNames.has(found.route.name)) {
+			return json(res, 404, {
+				ok: false,
+				errorCode: "NOT_FOUND",
+				message: `No route for ${method} ${path}`,
+			});
+		}
+
+		await found.route.handle(req, res, found.match);
+		return;
+	}
 
 	return json(res, 404, {
 		ok: false,
@@ -50,6 +66,7 @@ async function handleApiRequest(req, res) {
 }
 
 module.exports = {
+	getRequestPath,
 	handleApiRequest,
 	MAX_BODY_SIZE,
 };

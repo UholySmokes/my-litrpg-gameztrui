@@ -52,6 +52,27 @@ describe("api router route table", () => {
 		expect(res.body.ok).toBe(true);
 	});
 
+	it("uses originalUrl when a scoped function sits behind hosting rewrites", async () => {
+		sync.action = jest.fn(async (_req, res) => {
+			res.status(200).set("Content-Type", "application/json").json({ ok: true });
+		});
+
+		const req = {
+			method: "POST",
+			url: "/sync/action",
+			originalUrl: "/api/sync/action",
+			headers: {},
+		};
+		const res = createRes();
+
+		await handleApiRequest(req, res, {
+			allowedRouteNames: new Set(["sync-action"]),
+		});
+
+		expect(sync.action).toHaveBeenCalledTimes(1);
+		expect(res.statusCode).toBe(200);
+	});
+
 	it("honors method restrictions during route lookup", () => {
 		expect(findApiRoute("/api/sync/commit", "GET")).toBeNull();
 		expect(findApiRoute("/api/sync/commit", "POST")?.route.name).toBe("sync-commit");
@@ -87,6 +108,18 @@ describe("api router route table", () => {
 		const res = createRes();
 
 		await handleApiRequest(req, res);
+
+		expect(res.statusCode).toBe(404);
+		expect(res.body.errorCode).toBe("NOT_FOUND");
+	});
+
+	it("returns 404 when a scoped function receives a route outside its allowlist", async () => {
+		const req = { method: "POST", url: "/api/narrate", headers: {} };
+		const res = createRes();
+
+		await handleApiRequest(req, res, {
+			allowedRouteNames: new Set(["sync-commit"]),
+		});
 
 		expect(res.statusCode).toBe(404);
 		expect(res.body.errorCode).toBe("NOT_FOUND");

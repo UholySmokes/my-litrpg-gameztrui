@@ -44,9 +44,86 @@
     ],
     "rewrites": [
       {
+        "source": "/api/narrate",
+        "function": {
+          "functionId": "apiNarrate",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/narrate-start",
+        "function": {
+          "functionId": "apiNarrate",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/narrate-poll",
+        "function": {
+          "functionId": "apiNarrate",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/story/**",
+        "function": {
+          "functionId": "apiNarrate",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/sync/**",
+        "function": {
+          "functionId": "apiSync",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/saves/**",
+        "function": {
+          "functionId": "apiSync",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/health",
+        "function": {
+          "functionId": "apiAdmin",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/agents",
+        "function": {
+          "functionId": "apiAdmin",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/agents/run",
+        "function": {
+          "functionId": "apiAdmin",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/telemetry",
+        "function": {
+          "functionId": "apiAdmin",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/bulk-gen/**",
+        "function": {
+          "functionId": "apiAdmin",
+          "region": "us-central1"
+        }
+      },
+      {
         "source": "/api/**",
         "function": {
-          "functionId": "api",
+          "functionId": "apiAdmin",
           "region": "us-central1"
         }
       },

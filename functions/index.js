@@ -8,6 +8,43 @@ const {
 } = require("./lib/firebase-agents/runtime");
 
 const AI_RUNTIME_SECRETS = ["OPENAI_API_KEY"];
+const HTTP_API_OPTIONS = {
+	region: "us-central1",
+	memory: "1GiB",
+	timeoutSeconds: 540,
+	secrets: AI_RUNTIME_SECRETS,
+};
+const NARRATE_ROUTE_NAMES = new Set([
+	"narrate",
+	"narrate-start",
+	"narrate-poll",
+	"story-event",
+	"story-start",
+	"story-poll",
+]);
+const SYNC_ROUTE_NAMES = new Set([
+	"saves-reset-legacy",
+	"saves",
+	"sync-commit",
+	"sync-commit-batch",
+	"sync-command",
+	"sync-pull",
+	"sync-replay",
+	"sync-action",
+]);
+const ADMIN_ROUTE_NAMES = new Set([
+	"health",
+	"agents",
+	"agents-run",
+	"telemetry",
+	"bulk-gen-run-start",
+	"bulk-gen-run-tick",
+	"bulk-gen-run-status",
+	"bulk-gen-run-pause",
+	"bulk-gen-run-resume",
+	"bulk-gen-style",
+	"bulk-gen-budget-alert",
+]);
 
 function hashContent(text) {
 	return crypto
@@ -16,22 +53,25 @@ function hashContent(text) {
 		.digest("hex");
 }
 
-exports.api = onRequest(
-	{
-		region: "us-central1",
-		memory: "1GiB",
-		timeoutSeconds: 540,
-		secrets: AI_RUNTIME_SECRETS,
-	},
-	async (req, res) => {
+function createHttpApiFunction(allowedRouteNames) {
+	return onRequest(HTTP_API_OPTIONS, async (req, res) => {
 		try {
-			await handleApiRequest(req, res);
+			await handleApiRequest(req, res, { allowedRouteNames });
 		} catch (error) {
 			const message = String(error?.message || error || "Unknown error");
 			res.status(500).json({ ok: false, errorCode: "UNEXPECTED_ERROR", message });
 		}
-	},
-);
+	});
+}
+
+const apiNarrate = createHttpApiFunction(NARRATE_ROUTE_NAMES);
+const apiSync = createHttpApiFunction(SYNC_ROUTE_NAMES);
+const apiAdmin = createHttpApiFunction(ADMIN_ROUTE_NAMES);
+
+exports.apiNarrate = apiNarrate;
+exports.apiSync = apiSync;
+exports.apiAdmin = apiAdmin;
+exports.api = apiAdmin;
 
 exports.agentList = onCall({ region: "us-central1" }, async () => ({
 	ok: true,

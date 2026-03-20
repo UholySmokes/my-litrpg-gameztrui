@@ -15,6 +15,7 @@ export default function CombatOverlay({
   onUseClassAbility,
   onUseRaceAbility,
   onEscape,
+  onSetCombatLane,
 }) {
   if (!combatState?.active) return null;
 
@@ -25,13 +26,14 @@ export default function CombatOverlay({
       </div>
       <div className="mobile-combat-overlay__body">
         <CombatUI
-          player={player}
+          playerState={player}
           combatState={combatState}
           onAttack={onAttack}
           onUseSkill={onUseSkill}
           onUseClassAbility={onUseClassAbility}
           onUseRaceAbility={onUseRaceAbility}
           onEscape={onEscape}
+          onSetCombatLane={onSetCombatLane}
         />
       </div>
     </div>

@@ -5,6 +5,7 @@ import ClassAbilities from "./ClassAbilities";
 import RaceAbilities from "./RaceAbilities";
 import StatusEffects from "./StatusEffects";
 import MinionPanel from "./MinionPanel";
+import CombatLog from "./CombatLog.jsx";
 
 export default function CombatUI({
   combatState,
@@ -14,6 +15,7 @@ export default function CombatUI({
   onUseClassAbility,
   onUseRaceAbility,
   onEscape,
+  onSetCombatLane,
 }) {
   const combat = combatState;
   const player = playerState;
@@ -32,6 +34,17 @@ export default function CombatUI({
       : player?.skills?.active ||
         (player?.abilities || []).filter((ability) => ability.type === "active");
   const playerLane = combat?.lanes?.player;
+  const laneNumbers = Array.from(
+    {
+      length: Math.max(
+        3,
+        Number.isFinite(playerLane) ? playerLane : 1,
+        ...((combat?.lanes?.enemies || []).filter((lane) => Number.isFinite(lane))),
+      ),
+    },
+    (_, index) => index + 1,
+  );
+  const laneControlsDisabled = combat?.turn !== "player";
   const toPercent = (current, max) => {
     if (!Number.isFinite(current) || !Number.isFinite(max) || max <= 0) {
       return 0;
@@ -57,6 +70,50 @@ export default function CombatUI({
       <div style={{ color: "var(--text-dim)", marginBottom: "0.5rem" }}>
         Position: Lane {Number.isFinite(playerLane) ? playerLane : 1}
       </div>
+      {typeof onSetCombatLane === "function" && (
+        <div style={{ marginBottom: "1rem" }}>
+          <div
+            style={{
+              color: "var(--holo-cyan)",
+              fontWeight: "bold",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Reposition:
+          </div>
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+            {laneNumbers.map((laneNumber) => {
+              const isActiveLane = laneNumber === playerLane;
+              return (
+                <button
+                  key={`lane-${laneNumber}`}
+                  className="holo-button"
+                  onClick={() => onSetCombatLane(laneNumber)}
+                  disabled={laneControlsDisabled || isActiveLane}
+                  style={{
+                    fontSize: "0.85rem",
+                    opacity: laneControlsDisabled || isActiveLane ? 0.6 : 1,
+                    cursor:
+                      laneControlsDisabled || isActiveLane ? "not-allowed" : "pointer",
+                  }}
+                  title={
+                    isActiveLane
+                      ? `Already in lane ${laneNumber}`
+                      : laneControlsDisabled
+                        ? "You can only reposition on your turn."
+                        : `Move to lane ${laneNumber} and end your turn.`
+                  }
+                >
+                  {isActiveLane ? `Lane ${laneNumber} (Current)` : `Move to lane ${laneNumber}`}
+                </button>
+              );
+            })}
+          </div>
+          <div style={{ color: "var(--text-dim)", fontSize: "0.8rem", marginTop: "0.5rem" }}>
+            Lane changes consume your turn and can reduce range penalties before the enemy acts.
+          </div>
+        </div>
+      )}
 
       {/* Class Resource Bar */}
       {player && <ClassResourceBar player={player} />}
@@ -143,7 +200,7 @@ export default function CombatUI({
         })}
       </div>
 
-      {/* Combat log removed - now displayed in narrator */}
+      <CombatLog entries={combat?.log || []} />
 
       {/* Skills */}
       {availableSkills.length > 0 && (

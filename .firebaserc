@@ -1,6 +1,8 @@
 {
   "projects": {
-    "default": "my-litrpg-gameztrui-3416-da75c"
+    "default": "my-litrpg-gameztrui-3416-da75c",
+    "production": "my-litrpg-gameztrui-3416-da75c",
+    "staging": "my-litrpg-gameztrui-staging"
   },
   "targets": {},
   "etags": {}

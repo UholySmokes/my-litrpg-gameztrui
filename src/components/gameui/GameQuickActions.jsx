@@ -126,6 +126,7 @@ export default function GameQuickActions({
   onUseItem,
   onUseSkill,
   onToggleArchetypeSystem,
+  onToggleBestiary,
   onToggleCraft,
   onToggleGacha,
   onToggleQuests,
@@ -304,6 +305,9 @@ export default function GameQuickActions({
       <div className="command-deck__quick-actions-row command-deck__quick-actions-row--support">
         <button type="button" className="holo-button" onClick={onToggleQuests}>
           Quests
+        </button>
+        <button type="button" className="holo-button" onClick={onToggleBestiary}>
+          Bestiary
         </button>
         <button type="button" className="holo-button" onClick={onToggleShop}>
           Shop

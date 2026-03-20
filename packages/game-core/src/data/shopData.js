@@ -159,6 +159,22 @@ export let shopDatabase = {
       price: { goldCoins: 25 },
       category: 'service',
       service: 'identify'
+    },
+    {
+      id: 'potion_restock_service',
+      name: 'Potion Restock',
+      description: 'Receive 2 Health Potions and 2 Mana Potions.',
+      price: { goldCoins: 60 },
+      category: 'service',
+      service: 'potion_restock'
+    },
+    {
+      id: 'attribute_respec_service',
+      name: 'Attribute Respec',
+      description: 'Refund invested attribute points for a gold fee.',
+      price: { goldCoins: 150 },
+      category: 'service',
+      service: 'attribute_respec'
     }
   ]
 };

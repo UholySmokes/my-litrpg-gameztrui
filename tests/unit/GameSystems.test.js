@@ -39,6 +39,16 @@ describe("QuestManager", () => {
     });
   });
 
+  it("seeds the tutorial onboarding in move-fight-rest order", () => {
+    const quests = QuestManager.generateInitialQuests(mockPlayer);
+    expect(quests.slice(0, 3).map((quest) => quest.id)).toEqual([
+      "bq_first_stride",
+      "bq_first_conflict",
+      "bq_recovery_breath",
+    ]);
+    expect(quests[2].objectives[0].criteria.actionType).toBe("rest");
+  });
+
   it("updates quest objective progress", () => {
     const [quest] = QuestManager.generateInitialQuests(mockPlayer);
     expect(quest).toBeDefined();

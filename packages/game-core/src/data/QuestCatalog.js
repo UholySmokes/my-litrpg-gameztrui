@@ -89,6 +89,28 @@ let BEGINNER_QUESTS = [
     },
   },
   {
+    id: "bq_recovery_breath",
+    name: "Recovery Breath",
+    description:
+      "Take one deliberate rest after your first clash so you learn how to recover before pushing forward.",
+    objectives: [
+      {
+        id: "bq_recovery_breath_obj_1",
+        description: "Take a short rest once",
+        completed: false,
+        criteria: {
+          actionType: "rest",
+        },
+      },
+    ],
+    rewards: { xp: 30, items: [{ id: "minor_mana_potion", quantity: 1 }] },
+    tags: {
+      starter: true,
+      tones: ["serene", "neutral"],
+      favoredOrigins: ["freehold_scrapper", "ledger_apprentice", "grove_exile"],
+    },
+  },
+  {
     id: "bq_arcane_awareness",
     name: "Arcane Awareness",
     description:

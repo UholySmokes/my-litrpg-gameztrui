@@ -1,3 +1,12 @@
+const process = require("node:process");
+
+const DEFAULT_OTEL_NODE_RESOURCE_DETECTORS =
+	"env,host,os,process,serviceinstance,container,gcp";
+
+if (!String(process.env.OTEL_NODE_RESOURCE_DETECTORS || "").trim()) {
+	process.env.OTEL_NODE_RESOURCE_DETECTORS = DEFAULT_OTEL_NODE_RESOURCE_DETECTORS;
+}
+
 const { handleApiRequest } = require("./lib/api-router");
 const crypto = require("crypto");
 const { onCall, onRequest, HttpsError } = require("firebase-functions/v2/https");

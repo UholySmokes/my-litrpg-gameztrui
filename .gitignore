@@ -20,6 +20,9 @@ playwright-report/
 test-results/
 .playwright-cli/
 .playwright-mcp/
+output/tmp/playwright-artifacts-*/
+output/tmp/playwright_chromiumdev_profile-*/
+output/pw-browsers/
 
 # Analysis reports (temporary)
 middleware-report.json

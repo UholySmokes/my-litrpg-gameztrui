@@ -208,15 +208,21 @@ export default function GetMyProfileComponent() {
 You can execute the `ListMySaveSlots` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
 
 ```javascript
-useListMySaveSlots(dc: DataConnect, options?: useDataConnectQueryOptions<ListMySaveSlotsData>): UseDataConnectQueryResult<ListMySaveSlotsData, undefined>;
+useListMySaveSlots(dc: DataConnect, vars: ListMySaveSlotsVariables, options?: useDataConnectQueryOptions<ListMySaveSlotsData>): UseDataConnectQueryResult<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 ```
 You can also pass in a `DataConnect` instance to the Query hook function.
 ```javascript
-useListMySaveSlots(options?: useDataConnectQueryOptions<ListMySaveSlotsData>): UseDataConnectQueryResult<ListMySaveSlotsData, undefined>;
+useListMySaveSlots(vars: ListMySaveSlotsVariables, options?: useDataConnectQueryOptions<ListMySaveSlotsData>): UseDataConnectQueryResult<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 ```
 
 ### Variables
-The `ListMySaveSlots` Query has no variables.
+The `ListMySaveSlots` Query requires an argument of type `ListMySaveSlotsVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface ListMySaveSlotsVariables {
+  limit: number;
+}
+```
 ### Return Type
 Recall that calling the `ListMySaveSlots` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
 
@@ -259,26 +265,33 @@ To learn more about the `UseQueryResult` object, see the [TanStack React Query d
 
 ```javascript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig } from '@dataconnect/generated';
+import { connectorConfig, ListMySaveSlotsVariables } from '@dataconnect/generated';
 import { useListMySaveSlots } from '@dataconnect/generated/react'
 
 export default function ListMySaveSlotsComponent() {
+  // The `useListMySaveSlots` Query hook requires an argument of type `ListMySaveSlotsVariables`:
+  const listMySaveSlotsVars: ListMySaveSlotsVariables = {
+    limit: ..., 
+  };
+
   // You don't have to do anything to "execute" the Query.
   // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
-  const query = useListMySaveSlots();
+  const query = useListMySaveSlots(listMySaveSlotsVars);
+  // Variables can be defined inline as well.
+  const query = useListMySaveSlots({ limit: ..., });
 
   // You can also pass in a `DataConnect` instance to the Query hook function.
   const dataConnect = getDataConnect(connectorConfig);
-  const query = useListMySaveSlots(dataConnect);
+  const query = useListMySaveSlots(dataConnect, listMySaveSlotsVars);
 
   // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
   const options = { staleTime: 5 * 1000 };
-  const query = useListMySaveSlots(options);
+  const query = useListMySaveSlots(listMySaveSlotsVars, options);
 
   // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
-  const query = useListMySaveSlots(dataConnect, options);
+  const query = useListMySaveSlots(dataConnect, listMySaveSlotsVars, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -324,28 +337,31 @@ To check the status of a Query, use the `UseQueryResult.status` field. You can a
 To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetMySaveSlot` Query is of type `GetMySaveSlotData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
 ```javascript
 export interface GetMySaveSlotData {
-  saveSlot?: {
-    id: UUIDString;
-    saveName: string;
-    gameStateJson: string;
-    playerName: string;
-    playerLevel: number;
-    worldId: string;
-    locationId: string;
-    mapId?: string | null;
-    playerPosJson?: string | null;
-    entityStatesJson?: string | null;
-    questFlagsJson?: string | null;
-    turnCount: number;
-    contentVersion?: string | null;
-    stateVersion?: number | null;
-    runId?: string | null;
-    seq?: number | null;
-    tick?: number | null;
-    stateHash?: string | null;
-    createdAt: DateString;
-    updatedAt: DateString;
-  } & SaveSlot_Key;
+  userProfile?: {
+    id: string;
+    saveSlots: ({
+      id: UUIDString;
+      saveName: string;
+      gameStateJson: string;
+      playerName: string;
+      playerLevel: number;
+      worldId: string;
+      locationId: string;
+      mapId?: string | null;
+      playerPosJson?: string | null;
+      entityStatesJson?: string | null;
+      questFlagsJson?: string | null;
+      turnCount: number;
+      contentVersion?: string | null;
+      stateVersion?: number | null;
+      runId?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & SaveSlot_Key)[];
+  } & UserProfile_Key;
 }
 ```
 
@@ -394,7 +410,7 @@ export default function GetMySaveSlotComponent() {
 
   // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
   if (query.isSuccess) {
-    console.log(query.data.saveSlot);
+    console.log(query.data.userProfile);
   }
   return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
 }

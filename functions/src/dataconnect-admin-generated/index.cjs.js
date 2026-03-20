@@ -146,3 +146,4 @@ function listMyStoryMemories(dcOrVarsOrOptions, varsOrOptions, options) {
   return dcInstance.executeQuery('ListMyStoryMemories', inputVars, inputOpts);
 }
 exports.listMyStoryMemories = listMyStoryMemories;
+

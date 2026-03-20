@@ -175,22 +175,22 @@ executeQuery(ref).then((response) => {
 ## ListMySaveSlots
 You can execute the `ListMySaveSlots` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-listMySaveSlots(): QueryPromise<ListMySaveSlotsData, undefined>;
+listMySaveSlots(vars: ListMySaveSlotsVariables): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 
 interface ListMySaveSlotsRef {
   ...
   /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListMySaveSlotsData, undefined>;
+  (vars: ListMySaveSlotsVariables): QueryRef<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 }
 export const listMySaveSlotsRef: ListMySaveSlotsRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-listMySaveSlots(dc: DataConnect): QueryPromise<ListMySaveSlotsData, undefined>;
+listMySaveSlots(dc: DataConnect, vars: ListMySaveSlotsVariables): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 
 interface ListMySaveSlotsRef {
   ...
-  (dc: DataConnect): QueryRef<ListMySaveSlotsData, undefined>;
+  (dc: DataConnect, vars: ListMySaveSlotsVariables): QueryRef<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 }
 export const listMySaveSlotsRef: ListMySaveSlotsRef;
 ```
@@ -202,7 +202,13 @@ console.log(name);
 ```
 
 ### Variables
-The `ListMySaveSlots` query has no variables.
+The `ListMySaveSlots` query requires an argument of type `ListMySaveSlotsVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface ListMySaveSlotsVariables {
+  limit: number;
+}
+```
 ### Return Type
 Recall that executing the `ListMySaveSlots` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
@@ -240,21 +246,27 @@ export interface ListMySaveSlotsData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, listMySaveSlots } from '@dataconnect/generated';
+import { connectorConfig, listMySaveSlots, ListMySaveSlotsVariables } from '@dataconnect/generated';
 
+// The `ListMySaveSlots` query requires an argument of type `ListMySaveSlotsVariables`:
+const listMySaveSlotsVars: ListMySaveSlotsVariables = {
+  limit: ..., 
+};
 
 // Call the `listMySaveSlots()` function to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await listMySaveSlots();
+const { data } = await listMySaveSlots(listMySaveSlotsVars);
+// Variables can be defined inline as well.
+const { data } = await listMySaveSlots({ limit: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
-const { data } = await listMySaveSlots(dataConnect);
+const { data } = await listMySaveSlots(dataConnect, listMySaveSlotsVars);
 
 console.log(data.userProfile);
 
 // Or, you can use the `Promise` API.
-listMySaveSlots().then((response) => {
+listMySaveSlots(listMySaveSlotsVars).then((response) => {
   const data = response.data;
   console.log(data.userProfile);
 });
@@ -264,15 +276,21 @@ listMySaveSlots().then((response) => {
 
 ```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, listMySaveSlotsRef } from '@dataconnect/generated';
+import { connectorConfig, listMySaveSlotsRef, ListMySaveSlotsVariables } from '@dataconnect/generated';
 
+// The `ListMySaveSlots` query requires an argument of type `ListMySaveSlotsVariables`:
+const listMySaveSlotsVars: ListMySaveSlotsVariables = {
+  limit: ..., 
+};
 
 // Call the `listMySaveSlotsRef()` function to get a reference to the query.
-const ref = listMySaveSlotsRef();
+const ref = listMySaveSlotsRef(listMySaveSlotsVars);
+// Variables can be defined inline as well.
+const ref = listMySaveSlotsRef({ limit: ..., });
 
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
-const ref = listMySaveSlotsRef(dataConnect);
+const ref = listMySaveSlotsRef(dataConnect, listMySaveSlotsVars);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
@@ -330,28 +348,31 @@ Recall that executing the `GetMySaveSlot` query returns a `QueryPromise` that re
 The `data` property is an object of type `GetMySaveSlotData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface GetMySaveSlotData {
-  saveSlot?: {
-    id: UUIDString;
-    saveName: string;
-    gameStateJson: string;
-    playerName: string;
-    playerLevel: number;
-    worldId: string;
-    locationId: string;
-    mapId?: string | null;
-    playerPosJson?: string | null;
-    entityStatesJson?: string | null;
-    questFlagsJson?: string | null;
-    turnCount: number;
-    contentVersion?: string | null;
-    stateVersion?: number | null;
-    runId?: string | null;
-    seq?: number | null;
-    tick?: number | null;
-    stateHash?: string | null;
-    createdAt: DateString;
-    updatedAt: DateString;
-  } & SaveSlot_Key;
+  userProfile?: {
+    id: string;
+    saveSlots: ({
+      id: UUIDString;
+      saveName: string;
+      gameStateJson: string;
+      playerName: string;
+      playerLevel: number;
+      worldId: string;
+      locationId: string;
+      mapId?: string | null;
+      playerPosJson?: string | null;
+      entityStatesJson?: string | null;
+      questFlagsJson?: string | null;
+      turnCount: number;
+      contentVersion?: string | null;
+      stateVersion?: number | null;
+      runId?: string | null;
+      seq?: number | null;
+      tick?: number | null;
+      stateHash?: string | null;
+      createdAt: DateString;
+      updatedAt: DateString;
+    } & SaveSlot_Key)[];
+  } & UserProfile_Key;
 }
 ```
 ### Using `GetMySaveSlot`'s action shortcut function
@@ -375,12 +396,12 @@ const { data } = await getMySaveSlot({ id: ..., });
 const dataConnect = getDataConnect(connectorConfig);
 const { data } = await getMySaveSlot(dataConnect, getMySaveSlotVars);
 
-console.log(data.saveSlot);
+console.log(data.userProfile);
 
 // Or, you can use the `Promise` API.
 getMySaveSlot(getMySaveSlotVars).then((response) => {
   const data = response.data;
-  console.log(data.saveSlot);
+  console.log(data.userProfile);
 });
 ```
 
@@ -408,12 +429,12 @@ const ref = getMySaveSlotRef(dataConnect, getMySaveSlotVars);
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await executeQuery(ref);
 
-console.log(data.saveSlot);
+console.log(data.userProfile);
 
 // Or, you can use the `Promise` API.
 executeQuery(ref).then((response) => {
   const data = response.data;
-  console.log(data.saveSlot);
+  console.log(data.userProfile);
 });
 ```
 

@@ -125,3 +125,4 @@ export function listMyStoryMemories(dcOrVarsOrOptions, varsOrOptions, options) {
   dcInstance.useGen(true);
   return dcInstance.executeQuery('ListMyStoryMemories', inputVars, inputOpts);
 }
+

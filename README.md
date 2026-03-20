@@ -137,6 +137,7 @@ npm run dev:stack
 ```
 
 Leave `VITE_API_BASE_URL` empty to use same-origin `/api/*`.
+Runtime builds outside dev enable web gameplay by default unless a build profile overrides it.
 
 ## Commands
 

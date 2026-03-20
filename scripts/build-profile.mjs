@@ -23,7 +23,7 @@ if (!validProfiles.has(profile)) {
   if (profile === "pwa") {
     env.VITE_WEB_GAMEPLAY_ENABLED = "true";
   } else {
-    delete env.VITE_WEB_GAMEPLAY_ENABLED;
+    env.VITE_WEB_GAMEPLAY_ENABLED = "false";
     delete env.VITE_ENABLE_WEB_GAMEPLAY;
   }
 

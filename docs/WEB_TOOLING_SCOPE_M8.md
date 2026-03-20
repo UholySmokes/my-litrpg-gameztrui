@@ -44,13 +44,13 @@ Policy implementation:
 Rules:
 
 1. Dev builds (`import.meta.env.DEV`) allow web gameplay for engineering workflows.
-2. Outside dev, web gameplay defaults to disabled.
+2. Outside dev, web gameplay defaults to enabled for hosted/runtime builds.
 3. Explicit override requires one of:
    - `VITE_WEB_GAMEPLAY_ENABLED=true`
    - `VITE_ENABLE_WEB_GAMEPLAY=true`
 4. When disabled, web renders a tooling-only notice instead of gameplay UI.
 5. CI/release build profiles:
-   - `npm run build:tooling` strips installable PWA artifacts.
+   - `npm run build:tooling` strips installable PWA artifacts and forces gameplay off.
    - `npm run build:pwa` keeps manifest/service worker for Android install.
 
 ## 4. Operator Flow

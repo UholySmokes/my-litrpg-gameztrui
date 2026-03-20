@@ -99,7 +99,6 @@ function main() {
       assert(hasFlagTrue, "Expected runtime config gameplay flag to be true.");
     } else {
       assert(!hasFlagTrue, "Tooling profile must not enable gameplay flag true.");
-      assert(!hasFlagFalse, "Tooling profile should rely on default disabled flag.");
     }
   }
 

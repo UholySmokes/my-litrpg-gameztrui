@@ -162,24 +162,22 @@ describe("saves-store dataconnect behavior", () => {
 		const result = await savesStore.purgeUserProgress({ ownerId: "user-1" });
 
 		expect(result.deletedSaveCount).toBe(2);
+		expect(dataconnectGenerated.listMySaveSlots).toHaveBeenCalledWith(
+			expect.anything(),
+			{ limit: 100 },
+			expect.anything(),
+		);
 		expect(dataconnectGenerated.deleteSaveSlot).toHaveBeenCalledTimes(2);
 	});
 
-	it("lists save slots via dataconnect with descending updated_at ordering", async () => {
+	it("passes the requested limit through to dataconnect listing", async () => {
 		dataconnectGenerated.listMySaveSlots = jest.fn(async () => ({
 			data: {
 				userProfile: {
 					saveSlots: [
 						{
-							id: "s1",
-							saveName: "Older",
-							gameStateJson: "{}",
-							createdAt: "2026-02-23T00:00:00.000Z",
-							updatedAt: "2026-02-23T00:00:01.000Z",
-						},
-						{
 							id: "s2",
-							saveName: "Newer",
+							saveName: "Newest",
 							gameStateJson: "{}",
 							createdAt: "2026-02-23T00:00:00.000Z",
 							updatedAt: "2026-02-23T00:00:02.000Z",
@@ -191,6 +189,11 @@ describe("saves-store dataconnect behavior", () => {
 
 		const rows = await savesStore.listSaves({ userId: "user-1", limit: 1 });
 		expect(dataconnectGenerated.listMySaveSlots).toHaveBeenCalledTimes(1);
+		expect(dataconnectGenerated.listMySaveSlots).toHaveBeenCalledWith(
+			expect.anything(),
+			{ limit: 1 },
+			expect.anything(),
+		);
 		expect(rows).toHaveLength(1);
 		expect(rows[0].id).toBe("s2");
 	});
@@ -204,13 +207,17 @@ describe("saves-store dataconnect behavior", () => {
 		}));
 		dataconnectGenerated.getMySaveSlot = jest.fn(async () => ({
 			data: {
-				saveSlot: {
-					id: "00000000-0000-4000-8000-000000000010",
-					saveName: "Slice Save",
-					gameStateJson:
-						'{"player":{"name":"Traveler","level":4},"world":{"id":"w1","location":{"current":"map_a"},"turnCount":7},"runId":"run-10","seq":7,"tick":7}',
-					createdAt: "2026-02-23T00:00:00.000Z",
-					updatedAt: "2026-02-23T00:00:01.000Z",
+				userProfile: {
+					saveSlots: [
+						{
+							id: "00000000-0000-4000-8000-000000000010",
+							saveName: "Slice Save",
+							gameStateJson:
+								'{"player":{"name":"Traveler","level":4},"world":{"id":"w1","location":{"current":"map_a"},"turnCount":7},"runId":"run-10","seq":7,"tick":7}',
+							createdAt: "2026-02-23T00:00:00.000Z",
+							updatedAt: "2026-02-23T00:00:01.000Z",
+						},
+					],
 				},
 			},
 		}));
@@ -238,6 +245,44 @@ describe("saves-store dataconnect behavior", () => {
 		expect(vars.runId).toBe("run-10");
 		expect(vars.seq).toBe(7);
 		expect(row.id).toBe("00000000-0000-4000-8000-000000000010");
+	});
+
+	it("returns null for owner-scoped save fetches when the slot is not owned by the caller", async () => {
+		dataconnectGenerated.getMySaveSlot = jest.fn(async () => ({
+			data: {
+				userProfile: {
+					saveSlots: [],
+				},
+			},
+		}));
+
+		const row = await savesStore.getSave({
+			userId: "user-1",
+			saveId: "00000000-0000-4000-8000-000000000010",
+		});
+
+		expect(row).toBeNull();
+	});
+
+	it("does not delete a save when the owner-scoped lookup finds nothing", async () => {
+		dataconnectGenerated.getMySaveSlot = jest.fn(async () => ({
+			data: {
+				userProfile: {
+					saveSlots: [],
+				},
+			},
+		}));
+		dataconnectGenerated.deleteSaveSlot = jest.fn(async () => ({
+			data: { saveSlot_delete: null },
+		}));
+
+		const removed = await savesStore.deleteSave({
+			userId: "user-1",
+			saveId: "00000000-0000-4000-8000-000000000010",
+		});
+
+		expect(removed).toBe(false);
+		expect(dataconnectGenerated.deleteSaveSlot).not.toHaveBeenCalled();
 	});
 
 	it("respects strict mode by throwing on dataconnect failures", async () => {

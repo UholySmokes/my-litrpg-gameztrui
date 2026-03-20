@@ -64,7 +64,16 @@ async function requireOperatorUser(req, res) {
 	}
 
 	const allowed = parseCsvList(process.env.BULK_GEN_ALLOWED_USER_IDS || "");
-	if (allowed.length > 0 && !allowed.includes(String(user.id))) {
+	if (allowed.length === 0) {
+		json(res, 403, {
+			ok: false,
+			errorCode: "FORBIDDEN",
+			message: "Bulk generation is disabled until operator IDs are configured.",
+		});
+		return null;
+	}
+
+	if (!allowed.includes(String(user.id))) {
 		json(res, 403, {
 			ok: false,
 			errorCode: "FORBIDDEN",

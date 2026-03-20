@@ -195,6 +195,15 @@ export let locations = [
     aliases: ["quarantine barricade", "barricade", "quarantine line"],
     travelPolicy: "restricted",
   },
+  {
+    id: "ruins_signal_spire",
+    zoneId: "ruins",
+    name: "Signal Spire",
+    summary:
+      "A snapped watchtower that still pulses old evacuation codes whenever storms roll in.",
+    aliases: ["signal spire", "watchtower", "spire relay"],
+    travelPolicy: "restricted",
+  },
 
   // WILDS (3)
   {
@@ -222,6 +231,15 @@ export let locations = [
     summary:
       "Soft green light under old branches; the air tastes like decisions you have not made yet.",
     aliases: ["mosslit clearing", "clearing", "mosslit"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "wilds_seed_oath_grove",
+    zoneId: "wilds",
+    name: "Seed-Oath Grove",
+    summary:
+      "A ring of oath-trees where treaties are planted instead of signed and every promise grows roots.",
+    aliases: ["seed oath grove", "oath grove", "seed-oath"],
     travelPolicy: "restricted",
   },
 
@@ -253,6 +271,15 @@ export let locations = [
     aliases: ["engine quay", "quay", "engine bay"],
     travelPolicy: "restricted",
   },
+  {
+    id: "skydocks_drydock_seven",
+    zoneId: "skydocks",
+    name: "Drydock Seven",
+    summary:
+      "An abandoned repair bay where decommissioned engines whisper engine-law through static leaks.",
+    aliases: ["drydock seven", "drydock", "repair bay"],
+    travelPolicy: "restricted",
+  },
 
   // UNDERCITY (3)
   {
@@ -280,6 +307,15 @@ export let locations = [
     summary:
       "A candlelit pit where recollections are bid on, bottled, and resold as alibis.",
     aliases: ["memory auction", "auction", "memory market"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "undercity_inkwell_sluice",
+    zoneId: "undercity",
+    name: "Inkwell Sluice",
+    summary:
+      "Drain tunnels flooded with living ink runoff, where ledgers bleed secrets into the water.",
+    aliases: ["inkwell sluice", "ink sluice", "ledger drain"],
     travelPolicy: "restricted",
   },
 
@@ -311,6 +347,15 @@ export let locations = [
     aliases: ["rune sentinel watch", "watchpost", "sentinel watch"],
     travelPolicy: "restricted",
   },
+  {
+    id: "mountain_echo_forge_steps",
+    zoneId: "mountain",
+    name: "Echoforge Steps",
+    summary:
+      "Terraced forge-stairs carved into the ridge, each step resonating with a different metal hymn.",
+    aliases: ["echoforge steps", "forge steps", "echo forge"],
+    travelPolicy: "restricted",
+  },
 
   // COAST (3)
   {
@@ -338,6 +383,15 @@ export let locations = [
     summary:
       "A floating marker of light that keeps ships honest, until it flickers and lies.",
     aliases: ["astral waypoint", "waypoint", "navigation node"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "coast_lantern_reef",
+    zoneId: "coast",
+    name: "Lantern Reef",
+    summary:
+      "A shallow reef lit by salvage lanterns, where divers trade warnings faster than pearls.",
+    aliases: ["lantern reef", "reef", "salvage lanterns"],
     travelPolicy: "restricted",
   },
 
@@ -369,6 +423,15 @@ export let locations = [
     aliases: ["glassstep dunes", "dunes", "glassstep"],
     travelPolicy: "restricted",
   },
+  {
+    id: "desert_glassstep_cistern",
+    zoneId: "desert",
+    name: "Glassstep Cistern",
+    summary:
+      "A buried reservoir beneath stormglass dunes, guarded by guides who sell true maps by the sip.",
+    aliases: ["glassstep cistern", "cistern", "buried reservoir"],
+    travelPolicy: "restricted",
+  },
 
   // VOLCANIC (3)
   {
@@ -398,6 +461,15 @@ export let locations = [
     aliases: ["vent-seal chamber", "vent chamber", "seal chamber", "vents"],
     travelPolicy: "restricted",
   },
+  {
+    id: "volcanic_ventwarden_outpost",
+    zoneId: "volcanic",
+    name: "Ventwarden Outpost",
+    summary:
+      "A soot-black station where vent seals are cataloged like military casualties and civic debt.",
+    aliases: ["ventwarden outpost", "ventwarden", "seal station"],
+    travelPolicy: "restricted",
+  },
 
   // DREAMSCAPE (3)
   {
@@ -425,6 +497,15 @@ export let locations = [
     summary:
       "A still pool that reflects possible versions of you, each one insisting it's the original.",
     aliases: ["mirrorpool thin place", "mirrorpool", "thin place", "mirror pool"],
+    travelPolicy: "restricted",
+  },
+  {
+    id: "dreamscape_lucid_switchyard",
+    zoneId: "dreamscape",
+    name: "Lucid Switchyard",
+    summary:
+      "A rail yard of unfinished memories where sleeping routes are rerouted with a thought and a toll.",
+    aliases: ["lucid switchyard", "switchyard", "dream rail"],
     travelPolicy: "restricted",
   },
 ];

@@ -1,0 +1,83 @@
+name: Firebase Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - ".firebaserc"
+      - "firebase.json"
+      - "functions/**"
+      - "package.json"
+      - "package-lock.json"
+      - "packages/**"
+      - "public/**"
+      - "src/**"
+      - "vite.config.js"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deployment target"
+        required: true
+        default: "staging"
+        type: choice
+        options:
+          - staging
+          - production
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-staging:
+    if: github.event_name == 'push' || github.event.inputs.environment == 'staging'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Fast Validation
+        run: npm run test:smoke
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Firebase Staging
+        run: npx firebase-tools deploy --project staging --only hosting,functions --token "${{ secrets.FIREBASE_TOKEN }}"
+
+  deploy-production:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Fast Validation
+        run: npm run test:smoke
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Firebase Production
+        run: npx firebase-tools deploy --project production --only hosting,functions --token "${{ secrets.FIREBASE_TOKEN }}"

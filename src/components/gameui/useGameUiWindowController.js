@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 
 export function useGameUiWindowController() {
+  const [showBestiary, setShowBestiary] = useState(false);
   const [showShop, setShowShop] = useState(false);
   const [showGacha, setShowGacha] = useState(false);
   const [showTitleSystem, setShowTitleSystem] = useState(false);
@@ -42,6 +43,7 @@ export function useGameUiWindowController() {
     setEquipmentSelectSlot(null);
   }, []);
 
+  const handleCloseBestiary = useCallback(() => setShowBestiary(false), []);
   const handleCloseShop = useCallback(() => setShowShop(false), []);
   const handleCloseGacha = useCallback(() => setShowGacha(false), []);
   const handleCloseTitleSystem = useCallback(() => setShowTitleSystem(false), []);
@@ -61,6 +63,10 @@ export function useGameUiWindowController() {
   const handleToggleQuests = useCallback(
     () => toggleWindow("quests", showQuests, setShowQuests),
     [showQuests, toggleWindow],
+  );
+  const handleToggleBestiary = useCallback(
+    () => toggleWindow("bestiary", showBestiary, setShowBestiary),
+    [showBestiary, toggleWindow],
   );
   const handleToggleShop = useCallback(
     () => toggleWindow("shop", showShop, setShowShop),
@@ -108,6 +114,7 @@ export function useGameUiWindowController() {
   const quickActionsProps = useMemo(
     () => ({
       onToggleArchetypeSystem: handleToggleArchetypeSystem,
+      onToggleBestiary: handleToggleBestiary,
       onToggleCraft: handleToggleCraft,
       onToggleGacha: handleToggleGacha,
       onToggleQuests: handleToggleQuests,
@@ -119,6 +126,7 @@ export function useGameUiWindowController() {
     }),
     [
       handleToggleArchetypeSystem,
+      handleToggleBestiary,
       handleToggleCraft,
       handleToggleGacha,
       handleToggleQuests,
@@ -134,6 +142,7 @@ export function useGameUiWindowController() {
     equipmentSelectSlot,
     focusWindowRequest,
     quickActionsProps,
+    showBestiary,
     showArchetypeSystem,
     showGacha,
     showProfessions,
@@ -144,6 +153,7 @@ export function useGameUiWindowController() {
     showStatusOverlay,
     showTitleSystem,
     handleCloseEquipmentSelect,
+    handleCloseBestiary,
     handleCloseArchetypeSystem,
     handleCloseGacha,
     handleCloseProfessions,

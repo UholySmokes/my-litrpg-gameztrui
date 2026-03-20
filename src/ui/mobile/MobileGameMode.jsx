@@ -43,6 +43,7 @@ export default function MobileGameMode({
   onUseClassAbility,
   onUseRaceAbility,
   onEscape,
+  onSetCombatLane,
   equipmentSelectSlot,
   onSelectEquipmentSlot,
   onEquipItem,
@@ -159,6 +160,7 @@ export default function MobileGameMode({
         onUseClassAbility={onUseClassAbility}
         onUseRaceAbility={onUseRaceAbility}
         onEscape={onEscape}
+        onSetCombatLane={onSetCombatLane}
       />
     </div>
   );

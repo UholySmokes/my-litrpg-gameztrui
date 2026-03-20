@@ -208,6 +208,22 @@ const applyLaneModifier = (
     : [`Lane gap ${laneDistance}: x${multiplier}`];
   return { ...damageResult, damage: nextDamage, messages };
 };
+
+const formatDamageBreakdown = (summary, damageResult) => {
+  if (!damageResult) {
+    return summary;
+  }
+
+  const details = Array.isArray(damageResult.messages)
+    ? damageResult.messages.filter(Boolean)
+    : [];
+
+  if (details.length === 0) {
+    return `${summary} for ${damageResult.damage} damage.`;
+  }
+
+  return `${summary} for ${damageResult.damage} damage. ${details.join(" | ")}`;
+};
 const resolveSkillDefinition = (state, skillInput) => {
   if (!skillInput) return null;
   if (typeof skillInput === "object") return skillInput;
@@ -624,6 +640,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   let damageResult = null;
   let skillCooldownUpdate = null;
   let laneAllowZero = false;
+  let activeSkill = null;
   if (skillId) {
     const skillKey = typeof skillId === "string" ? skillId : skillId?.id;
     const existingCooldown = skillKey
@@ -640,6 +657,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     if (!skill) {
       return { success: false, reason: "Skill not found", state };
     }
+    activeSkill = skill;
     // Silence/disarm checks (player side)
     if (skill.isMagic && hasEffectTag(state.player, "BLOCK_MAGIC")) {
       return { success: false, reason: "Silenced", state };
@@ -923,8 +941,12 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     ...(absorbedByShield > 0
       ? [`ðŸ›¡ï¸ ${shieldedEnemy.name}'s shield absorbs ${absorbedByShield} damage!`]
       : []),
-    damageResult.messages.join(" ") ||
-      `You dealt ${damageResult.damage} damage to ${shieldedEnemy.name}.`,
+    formatDamageBreakdown(
+      activeSkill
+        ? `${resolvedState.player.name} uses ${activeSkill.name} on ${shieldedEnemy.name}`
+        : `${resolvedState.player.name} attacks ${shieldedEnemy.name}`,
+      damageResult,
+    ),
   ];
   // === RAGE GAIN ON HIT (Berserker) ===
   let rageGainAmount = 0;
@@ -1307,7 +1329,18 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
           hp: { ...updatedEnemies[targetIndex].stats.hp, current: nextHp },
         },
       };
-      combatLog.push(`${ability.name} hits ${enemy.name} for ${damage} damage.`);
+      combatLog.push(
+        formatDamageBreakdown(
+          `${updatedPlayer.name} uses ${ability.name} on ${enemy.name}`,
+          {
+            damage,
+            messages:
+              laneDistance > 0
+                ? [`Lane gap ${laneDistance}: x${laneDistance === 1 ? 0.85 : 0.7}`]
+                : [],
+          },
+        ),
+      );
     }
     const targetEffects = Array.isArray(ability.effects)
       ? ability.effects.filter((effect) => effect.target !== "self")
@@ -1676,11 +1709,10 @@ function enemyAttack(state, enemyIndex) {
   );
   const laneDistance = getLaneDistance(state.combat, enemyIndex);
   damageResult = applyLaneModifier(damageResult, laneDistance);
-  const critText = damageResult.isCritical ? " (CRITICAL!)" : "";
   const skillText = skill ? ` using ${skill.name}` : "";
   const newLog = [
     ...state.combat.log,
-    `${enemy.name} attacks you${skillText} for ${damageResult.damage} damage${critText}!`,
+    formatDamageBreakdown(`${enemy.name} attacks you${skillText}`, damageResult),
   ];
   const attackResult = takeDamage(
     {

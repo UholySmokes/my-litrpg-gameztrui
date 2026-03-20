@@ -185,9 +185,9 @@ phases:
           - ".github/workflows/"
           - "firebase.json"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "CI/CD for staging → production"
+        notes: "Added firebase-deploy GitHub Actions workflow with push-to-staging and manual production promotion"
 
       - id: U-015
         title: "Staging environment setup"
@@ -197,9 +197,9 @@ phases:
           - "firebase.json"
         dependencies:
           - U-014
-        status: pending
+        status: done
         priority: P2
-        notes: "Separate Firebase project for staging"
+        notes: ".firebaserc now defines staging and production aliases, with staging targeting my-litrpg-gameztrui-staging"
 
       - id: U-016
         title: "ActionDispatcher partial extraction"
@@ -231,9 +231,9 @@ phases:
         files_affected:
           - "packages/game-core/src/data/"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "2 new full zones + flesh out stubs"
+        notes: "WorldDataRegistry now contains 40 locations across the live zone set, including new skydocks, dreamscape, desert, volcanic, and coast entries"
 
       - id: U-019
         title: "Titles: add 44 new titles (8→52)"
@@ -265,9 +265,9 @@ phases:
         files_affected:
           - "packages/game-core/src/systems/"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "Prevent gold accumulation. Item repair, potion restock, skill respec fee"
+        notes: "Shop services now cover repair, potion restock, and attribute respec with pure utility tests"
 
       - id: U-022
         title: "Lane positioning controls (player-facing)"
@@ -276,9 +276,9 @@ phases:
         files_affected:
           - "src/components/"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "Expose existing 0.85x/0.7x modifiers to player choice"
+        notes: "Combat UI now exposes lane switching as a turn-consuming action wired through reducer + mobile/desktop shells"
 
       - id: U-023
         title: "5 critical-path integration tests"
@@ -298,9 +298,9 @@ phases:
         files_affected:
           - "functions/index.js"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "Separate narrate/sync/admin functions"
+        notes: "Hosting rewrites now split /api traffic across apiNarrate, apiSync, and apiAdmin with scoped route allowlists"
 
       - id: U-025
         title: "Interactive tutorial (3-step intro quest)"
@@ -310,9 +310,9 @@ phases:
           - "packages/game-core/src/systems/"
           - "packages/game-core/src/data/"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "Move → Fight → Rest onboarding. Critical for new player retention"
+        notes: "Initial quest generation now guarantees the move → fight → rest onboarding sequence before broader quest seeding"
 
       - id: U-026
         title: "Bestiary / collection tracker UI"
@@ -322,9 +322,9 @@ phases:
           - "src/components/Bestiary.jsx"
         dependencies:
           - U-009
-        status: pending
+        status: done
         priority: P2
-        notes: "Track discovered enemies, items, titles. Required by Gamer Council for title visibility"
+        notes: "Added a collection tracker window with enemy, item, and title discovery progress sourced from live state + registries"
 
       - id: U-027
         title: "Combat log (damage breakdown)"
@@ -333,9 +333,9 @@ phases:
         files_affected:
           - "src/components/CombatLog.jsx"
         dependencies: []
-        status: pending
+        status: done
         priority: P2
-        notes: "Per-hit breakdown: Base 40 × Crit 1.5 × Lane 0.85"
+        notes: "Combat UI now includes a dedicated combat log panel and attack summaries surface lane-gap multipliers and crit context"
 
       - id: U-028
         title: "Declarative route table"
@@ -356,9 +356,9 @@ phases:
           - "packages/game-core/src/data/"
         dependencies:
           - U-011
-        status: pending
+        status: done
         priority: P2
-        notes: "Phase 2 of gacha content"
+        notes: "Current gacha pools already total 86 items across equipment, skills, premium, elemental, and shadow pools"
 
   - name: "P3 — Backlog"
     timeline: "Future"
@@ -462,9 +462,9 @@ phases:
         files_affected:
           - ".nvmrc"
         dependencies: []
-        status: pending
+        status: done
         priority: P3
-        notes: "Prevent version drift"
+        notes: "Repo already pins Node 20 in .nvmrc and firebase-deploy workflow uses node-version-file"
 
       - id: U-039
         title: "Progressive system reveal"

@@ -82,6 +82,30 @@ const getTotalKills = (state) =>
     Math.floor(toNumber(state?.player?.progress?.totalKills, 0)),
   );
 
+const getCombatLaneBounds = (combatState) => {
+  const enemyLanes = Array.isArray(combatState?.lanes?.enemies)
+    ? combatState.lanes.enemies
+    : [];
+  const finiteEnemyLanes = enemyLanes
+    .map((lane) => Math.round(toNumber(lane, NaN)))
+    .filter((lane) => Number.isFinite(lane));
+  const maxLane = Math.max(
+    3,
+    Math.round(toNumber(combatState?.lanes?.player, 1)),
+    ...finiteEnemyLanes,
+  );
+
+  return {
+    maxLane,
+    enemyLanes: finiteEnemyLanes,
+  };
+};
+
+const clampCombatLane = (lane, combatState) => {
+  const { maxLane } = getCombatLaneBounds(combatState);
+  return clamp(Math.round(toNumber(lane, 1)), 1, maxLane);
+};
+
 const getPlayerAttribute = (player, attributeKey) => {
   if (!attributeKey) return 0;
   const canonical = toCanonicalAttributeKey(attributeKey);
@@ -733,6 +757,54 @@ const gameReducer = (state, action) =>
         type: "attack",
         abilityId,
         enemyIndex,
+      });
+    }
+
+    case "PLAYER_SET_COMBAT_LANE": {
+      const combatState = ensureCombatStructure(state);
+      if (combatState.status !== "active" || combatState.turn !== "player") {
+        return state;
+      }
+
+      const currentLane = clampCombatLane(combatState?.lanes?.player, combatState);
+      const targetLane = clampCombatLane(action.payload?.lane, combatState);
+
+      if (targetLane === currentLane) {
+        return state;
+      }
+
+      const { enemyLanes } = getCombatLaneBounds(combatState);
+      const nextCombatState = {
+        ...combatState,
+        turn: "enemy",
+        log: [
+          ...(combatState.log || []),
+          `${state?.player?.name || "You"} shift from lane ${currentLane} to lane ${targetLane}.`,
+        ],
+        lanes: {
+          player: targetLane,
+          enemies:
+            enemyLanes.length > 0
+              ? enemyLanes
+              : (combatState.enemies || []).map((enemy) =>
+                  clampCombatLane(enemy?.lane, combatState),
+                ),
+        },
+      };
+
+      const postCombatState = applyAutoTitleUnlocks(
+        processEnemyTurns({
+          ...state,
+          combat: nextCombatState,
+        }),
+        {
+          announce: true,
+        },
+      );
+
+      return syncQuestObjectivesForAction(state, postCombatState, {
+        type: "reposition",
+        targetLane,
       });
     }
 

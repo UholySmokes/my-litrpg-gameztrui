@@ -9,6 +9,7 @@ import CommandTerminalPanel from "../panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../panels/ActionSuggestionsPanel.jsx";
 import QuestPanel from "../panels/QuestPanel.jsx";
 import CombatUI from "../../components/CombatUI.jsx";
+import Bestiary from "../../components/Bestiary.jsx";
 import ShopUI from "../../components/ShopUI.jsx";
 import GachaUI from "../../components/GachaUI.jsx";
 import TitleUI from "../../components/TitleUI.jsx";
@@ -91,6 +92,8 @@ export default function GameMode({
   onUseClassAbility,
   onUseRaceAbility,
   onEscape,
+  onSetCombatLane,
+  showBestiary = false,
   showShop = false,
   showGacha = false,
   showArchetypeSystem = false,
@@ -101,6 +104,7 @@ export default function GameMode({
   showReplayInspector = false,
   onCloseShop = () => {},
   onCloseGacha = () => {},
+  onCloseBestiary = () => {},
   onCloseArchetypeSystem = () => {},
   onOpenArchetypeSystem = () => {},
   onCloseTitleSystem = () => {},
@@ -241,6 +245,22 @@ export default function GameMode({
           },
         ]
       : []),
+    ...(showBestiary
+      ? [
+          {
+            id: "bestiary",
+            title: "Bestiary",
+            dockZone: "float",
+            position: { x: 880, y: 120 },
+            size: { w: 460, h: 520 },
+            minWidth: 340,
+            minHeight: 260,
+            openFullscreenOnce: true,
+            onClose: onCloseBestiary,
+            content: <Bestiary player={player} gameState={gameState} />,
+          },
+        ]
+      : []),
     {
       id: "combat",
       title: storyContext.combatTitle,
@@ -259,6 +279,7 @@ export default function GameMode({
             onUseClassAbility={onUseClassAbility}
             onUseRaceAbility={onUseRaceAbility}
             onEscape={onEscape}
+            onSetCombatLane={onSetCombatLane}
           />
         ) : (
           <div style={{ color: "var(--text-dim)" }}>No active combat.</div>

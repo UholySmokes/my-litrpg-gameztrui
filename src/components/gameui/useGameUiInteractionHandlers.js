@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { gachaPools } from "../../data/gachaData.js";
 import { getTitleBonuses } from "../../core/titleLogic.js";
 import { mergeInventoryItems } from "../../utils/shared.js";
+import { applyShopServicePurchase } from "./shopServiceUtils.js";
 
 const normalizeAttributeLabel = (attributeKey) => {
   if (!attributeKey) return "attribute";
@@ -118,6 +119,7 @@ export function useGameUiInteractionHandlers({
           soulpoints: nextSoul,
         },
       };
+      let serviceMessage = null;
 
       if (item?.itemId) {
         nextPlayer.inventory = mergeInventoryItems(player.inventory || [], [
@@ -137,32 +139,9 @@ export function useGameUiInteractionHandlers({
           ? abilities
           : [...abilities, item.skillData];
       } else if (item?.service) {
-        const equipment = { ...(player.equipment || {}) };
-        if (item.service === "enhance_weapon") {
-          const weapon = equipment.weapon;
-          if (weapon) {
-            equipment.weapon = {
-              ...weapon,
-              stats: {
-                ...(weapon.stats || {}),
-                attack: (weapon.stats?.attack || 0) + 5,
-              },
-            };
-            nextPlayer.equipment = equipment;
-          }
-        } else if (item.service === "enhance_armor") {
-          const armor = equipment.armor;
-          if (armor) {
-            equipment.armor = {
-              ...armor,
-              stats: {
-                ...(armor.stats || {}),
-                defense: (armor.stats?.defense || 0) + 5,
-              },
-            };
-            nextPlayer.equipment = equipment;
-          }
-        }
+        const serviceResult = applyShopServicePurchase(nextPlayer, item);
+        nextPlayer = serviceResult.player;
+        serviceMessage = serviceResult.message;
       }
 
       dispatchSystemEvent({
@@ -178,7 +157,14 @@ export function useGameUiInteractionHandlers({
           : soulCost > 0
             ? `${soulCost} soulpoints`
             : "free";
-      addSystemMessage(`Purchased ${item.name} for ${costText}`, "system");
+      addSystemMessage(
+        serviceMessage
+          ? `${serviceMessage} Cost: ${costText}.`
+          : `Purchased ${item.name} for ${costText}`,
+        "system",
+      );
+
+      return;
     },
     [addSystemMessage, dispatchSystemEvent, state],
   );
@@ -355,6 +341,17 @@ export function useGameUiInteractionHandlers({
     [dispatchSystemEvent, state],
   );
 
+  const handleSetCombatLane = useCallback(
+    (lane) => {
+      if (state?.combat?.status !== "active") return;
+      dispatchSystemEvent({
+        type: "PLAYER_SET_COMBAT_LANE",
+        payload: { lane },
+      });
+    },
+    [dispatchSystemEvent, state],
+  );
+
   const handleRest = useCallback(() => {
     const result =
       typeof submitAction === "function"
@@ -457,6 +454,7 @@ export function useGameUiInteractionHandlers({
     handleRaceAbilityUse,
     handleShopPurchase,
     handleRest,
+    handleSetCombatLane,
     handleSkillUse,
     handleStudySpell,
     handleTitleEquip,

@@ -84,4 +84,14 @@ describe("world registry runtime", () => {
       }),
     );
   });
+
+  it("keeps the location registry at or above the phase-2 target", () => {
+    expect(locations.length).toBeGreaterThanOrEqual(40);
+    expect(getLocationById("skydocks_drydock_seven")).toEqual(
+      expect.objectContaining({
+        zoneId: "skydocks",
+        name: "Drydock Seven",
+      }),
+    );
+  });
 });

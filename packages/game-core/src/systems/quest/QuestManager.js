@@ -8,6 +8,12 @@ import {
   resolvePlayerArchetypeSystem,
 } from "../archetype/resolvePlayerArchetypeSystem.js";
 
+const TUTORIAL_QUEST_IDS = [
+  "bq_first_stride",
+  "bq_first_conflict",
+  "bq_recovery_breath",
+];
+
 export class QuestManager {
   static resolvePlayerClassId(player) {
     return player?.class?.id || player?.class || null;
@@ -73,6 +79,17 @@ export class QuestManager {
 
   static generateInitialQuests(player) {
     const quests = [];
+    const suitableBeginnerQuests = BEGINNER_QUESTS.filter((quest) =>
+      this.isQuestSuitable(quest, player),
+    );
+    const tutorialQuests = TUTORIAL_QUEST_IDS.map((questId) =>
+      suitableBeginnerQuests.find((quest) => quest.id === questId),
+    ).filter(Boolean);
+
+    tutorialQuests.forEach((quest) => {
+      quests.push(this.initializeQuest(quest));
+    });
+
     const suitableMainQuests = MAIN_QUESTS.filter((quest) =>
       this.isQuestSuitable(quest, player),
     );
@@ -82,12 +99,15 @@ export class QuestManager {
       );
     }
 
-    const suitableBeginnerQuests = BEGINNER_QUESTS.filter((quest) =>
-      this.isQuestSuitable(quest, player),
+    const tutorialQuestIds = new Set(tutorialQuests.map((quest) => quest.id));
+    const beginnerPool = suitableBeginnerQuests.filter(
+      (quest) => !tutorialQuestIds.has(quest.id),
     );
-    const beginnerPool = [...suitableBeginnerQuests];
 
-    const beginnerQuestCount = Math.min(2, beginnerPool.length);
+    const beginnerQuestCount = Math.min(
+      Math.max(0, 3 - tutorialQuests.length),
+      beginnerPool.length,
+    );
     for (let i = 0; i < beginnerQuestCount; i++) {
       if (beginnerPool.length === 0) break;
       const quest = this.pullQuestByPriority(beginnerPool, player);

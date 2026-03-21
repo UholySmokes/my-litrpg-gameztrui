@@ -38,7 +38,7 @@ export function isWebGameplayEnabled() {
   if (explicit !== undefined) {
     return parseBooleanFlag(explicit, false);
   }
-  return false;
+  return true;
 }
 
 export const __testing = {

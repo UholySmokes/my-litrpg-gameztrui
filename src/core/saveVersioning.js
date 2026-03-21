@@ -2,33 +2,57 @@ function normalizeForHash(value) {
   if (value === null || value === undefined) {
     return value;
   }
+
   if (typeof value !== "object") {
     return value;
   }
+
   if (Array.isArray(value)) {
     return value.map((entry) => normalizeForHash(entry));
   }
+
   const keys = Object.keys(value).sort();
-  const sorted = {};
+  const normalized = {};
   for (const key of keys) {
-    sorted[key] = normalizeForHash(value[key]);
+    normalized[key] = normalizeForHash(value[key]);
   }
-  return sorted;
+  return normalized;
+}
+
+function hashString(input) {
+  let hash = 5381;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = ((hash << 5) + hash + input.charCodeAt(i)) >>> 0;
+  }
+  return hash.toString(16).padStart(8, "0");
 }
 
 export function computeSaveStateHash(gameState) {
-  const normalized = JSON.stringify(normalizeForHash(gameState));
-  let hash = 0x811c9dc5;
-  for (let i = 0; i < normalized.length; i += 1) {
-    hash ^= normalized.charCodeAt(i);
-    hash = Math.imul(hash, 0x01000193) >>> 0;
-  }
-  const fallback = hash.toString(16).padStart(8, "0");
+  return hashString(JSON.stringify(normalizeForHash(gameState ?? null)));
+}
 
-  if (globalThis?.crypto?.subtle) {
-    // Async subtle crypto would complicate callers; keep the deterministic sync hash.
-    return fallback;
+export function extractSaveVersionToken(value) {
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+  const stateHash =
+    typeof value.state_hash === "string" && value.state_hash.trim()
+      ? value.state_hash.trim()
+      : typeof value.stateHash === "string" && value.stateHash.trim()
+        ? value.stateHash.trim()
+        : null;
+
+  if (!stateHash) {
+    return null;
   }
 
-  return fallback;
+  return {
+    stateHash,
+    updatedAt:
+      typeof value.updated_at === "string" && value.updated_at.trim()
+        ? value.updated_at.trim()
+        : typeof value.updatedAt === "string" && value.updatedAt.trim()
+          ? value.updatedAt.trim()
+          : null,
+  };
 }

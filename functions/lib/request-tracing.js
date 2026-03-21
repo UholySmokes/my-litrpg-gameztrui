@@ -1,60 +1,59 @@
 const crypto = require("crypto");
 
+function randomHex(length) {
+  return crypto.randomBytes(Math.ceil(length / 2)).toString("hex").slice(0, length);
+}
+
 function normalizeHeaderValue(value) {
-  return typeof value === "string" ? value.trim() : "";
+  return typeof value === "string" ? value.trim().toLowerCase() : "";
 }
 
-function randomHex(bytes) {
-  return crypto.randomBytes(bytes).toString("hex");
+function validTraceId(value) {
+  return /^[0-9a-f]{32}$/i.test(value);
 }
 
-function normalizeTraceId(value) {
-  const normalized = normalizeHeaderValue(value).toLowerCase();
-  return /^[0-9a-f]{32}$/.test(normalized) ? normalized : randomHex(16);
+function validSpanId(value) {
+  return /^[0-9a-f]{16}$/i.test(value);
 }
 
-function normalizeSpanId(value) {
-  const normalized = normalizeHeaderValue(value).toLowerCase();
-  return /^[0-9a-f]{16}$/.test(normalized) ? normalized : randomHex(8);
-}
-
-function createRequestTraceContext(req) {
+function createTraceContext(req) {
   const headers = req?.headers || {};
-  const traceId = normalizeTraceId(
-    headers["x-trace-id"] || headers["traceparent"]?.split("-")?.[1],
-  );
-  const spanId = normalizeSpanId(headers["x-span-id"]);
-  const traceparent = `00-${traceId}-${spanId}-01`;
+  const traceId = normalizeHeaderValue(headers["x-trace-id"]);
+  const parentSpanId = normalizeHeaderValue(headers["x-span-id"]);
   return {
-    traceId,
-    spanId,
-    traceparent,
+    traceId: validTraceId(traceId) ? traceId : randomHex(32),
+    spanId: randomHex(16),
+    parentSpanId: validSpanId(parentSpanId) ? parentSpanId : null,
   };
 }
 
-function attachTraceHeaders(res, trace) {
-  if (!res || typeof res.set !== "function" || !trace) return;
-  res.set("X-Trace-Id", trace.traceId);
-  res.set("X-Span-Id", trace.spanId);
-  res.set("Traceparent", trace.traceparent);
+function attachTraceHeaders(res, traceContext) {
+  if (!res || !traceContext) return;
+  res.set("X-Trace-Id", traceContext.traceId);
+  res.set("X-Span-Id", traceContext.spanId);
+  if (traceContext.parentSpanId) {
+    res.set("X-Parent-Span-Id", traceContext.parentSpanId);
+  }
 }
 
-function withTraceBody(body, trace) {
-  if (!trace || !body || typeof body !== "object" || Array.isArray(body)) {
+function withTraceBody(body, traceContext) {
+  if (!body || typeof body !== "object" || Array.isArray(body) || !traceContext) {
     return body;
   }
-  if (body.trace) return body;
   return {
     ...body,
     trace: {
-      traceId: trace.traceId,
-      spanId: trace.spanId,
+      traceId: traceContext.traceId,
+      spanId: traceContext.spanId,
+      parentSpanId: traceContext.parentSpanId || null,
     },
   };
 }
 
 module.exports = {
+  createTraceContext,
+  createRequestTraceContext: createTraceContext,
+  attachTraceContext: attachTraceHeaders,
   attachTraceHeaders,
-  createRequestTraceContext,
   withTraceBody,
 };

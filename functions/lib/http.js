@@ -1,7 +1,10 @@
+const { attachTraceHeaders, withTraceBody } = require("./request-tracing");
+
 function json(res, status, body) {
 	res.status(status);
+  attachTraceHeaders(res, res.locals?.traceContext);
 	res.set("Content-Type", "application/json");
-	res.json(body);
+	res.json(withTraceBody(body, res.locals?.traceContext));
 }
 
 function toStringSafe(value) {

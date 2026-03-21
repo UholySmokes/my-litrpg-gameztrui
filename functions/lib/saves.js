@@ -8,6 +8,10 @@ const {
 	updateSave,
 	deleteSave,
 } = require("./saves-store");
+const {
+  computeSaveStateHash,
+  extractExpectedStateHash,
+} = require("./save-versioning");
 const { enforceProgressReset, resetLegacyProgress } = require("./save-reset.cjs");
 
 const MAX_SAVE_NAME_LENGTH = 80;
@@ -51,6 +55,15 @@ function normalizeGameState(value) {
 
 function isGuid(value) {
 	return GUID_REGEX.test(String(value || ""));
+}
+
+function buildSaveConflict(row, expectedStateHash) {
+  return {
+    saveId: row?.id || null,
+    expectedStateHash: expectedStateHash || null,
+    currentStateHash: row?.state_hash || null,
+    updatedAt: row?.updated_at || null,
+  };
 }
 
 async function handleResetLegacyRequest(req, res) {
@@ -149,6 +162,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 					id: row.id,
 					save_name: row.save_name,
 					game_state: safeJsonParse(row.game_state),
+					state_hash: row.state_hash,
 					created_at: row.created_at,
 					updated_at: row.updated_at,
 				},
@@ -183,6 +197,8 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 					? {
 							id: row.id,
 							save_name: row.save_name,
+              state_hash:
+                row.state_hash || computeSaveStateHash(gameState),
 							created_at: row.created_at,
 							updated_at: row.updated_at,
 					  }
@@ -202,6 +218,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 			const body = await readJsonBody(req);
 			const saveName = normalizeSaveName(body?.saveName || body?.save_name);
 			const gameState = normalizeGameState(body?.gameState || body?.game_state);
+      const expectedStateHash = extractExpectedStateHash(body);
 
 			if (!gameState) {
 				return json(res, 400, {
@@ -210,6 +227,35 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 					message: "gameState must include player and world objects.",
 				});
 			}
+
+      if (!expectedStateHash) {
+        return json(res, 400, {
+          ok: false,
+          errorCode: "MISSING_VERSION_TOKEN",
+          message: "Updates must include expectedStateHash.",
+        });
+      }
+
+      const existing = await getSave({
+        userId: user.id,
+        saveId: normalizedSaveId,
+      });
+      if (!existing) {
+        return json(res, 404, {
+          ok: false,
+          errorCode: "SAVE_NOT_FOUND",
+          message: "Save not found.",
+        });
+      }
+
+      if (String(existing.state_hash || "") !== expectedStateHash) {
+        return json(res, 409, {
+          ok: false,
+          errorCode: "SAVE_CONFLICT",
+          message: "Save has changed since it was loaded.",
+          conflict: buildSaveConflict(existing, expectedStateHash),
+        });
+      }
 
 			const row = await updateSave({
 				userId: user.id,
@@ -231,6 +277,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 				save: {
 					id: row.id,
 					save_name: row.save_name,
+          state_hash: row.state_hash || computeSaveStateHash(gameState),
 					created_at: row.created_at,
 					updated_at: row.updated_at,
 				},

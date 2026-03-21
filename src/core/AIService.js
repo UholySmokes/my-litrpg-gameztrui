@@ -1,4 +1,9 @@
 import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
+import { normalizeNarrationPayload } from "./narrationContract.js";
+import {
+  buildTraceHeaders,
+  createRequestTraceContext,
+} from "../observability/requestTrace.js";
 
 const DEFAULT_TIMEOUT_MS = 135000;
 const DEV_DEFAULT_TIMEOUT_MS = 150000;
@@ -128,15 +133,17 @@ function stripMarkdownFormatting(text) {
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function buildApiHeaders(baseHeaders = {}) {
+  const trace = createRequestTraceContext();
   const headers = {
     ...baseHeaders,
     ...getDevAuthHeaders(),
+    ...buildTraceHeaders(trace),
   };
   const token = await getAuthToken();
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
-  return headers;
+  return { headers, trace };
 }
 
 async function fetchWithTimeout(url, options, timeoutMs) {
@@ -232,7 +239,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
   const apiEndpoints = resolveNarrateEndpoints();
   const timeoutMs = resolveRequestTimeoutMs();
   const isDev = Boolean(getBuildEnv().DEV);
-  const headers = await buildApiHeaders({
+  const { headers } = await buildApiHeaders({
     "Content-Type": "application/json",
   });
 
@@ -298,13 +305,15 @@ export async function generateNarrative(prompt, { mode } = {}) {
         throw new Error("Narrative response missing.");
       }
 
-      return applyNarrationGuards({
-        narrative: data.narrative || "Something happened.",
-        mood: data.mood || "neutral",
-        suggestions: Array.isArray(data.suggestions)
-          ? data.suggestions.slice(0, 3)
-          : ["Look around", "Check inventory", "Continue"],
-      });
+      return applyNarrationGuards(
+        normalizeNarrationPayload(data, {
+          narrative: "Something happened.",
+          mood: "neutral",
+          suggestions: ["Look around", "Check inventory", "Continue"],
+          provider: "firebase-genkit",
+          fallbackUsed: false,
+        }),
+      );
     } catch (error) {
       lastError = error;
       if (isDev) {
@@ -406,10 +415,10 @@ export async function generateNarrativeStream(
 ) {
   const endpoints = resolveStreamEndpoints();
   const isDev = Boolean(getBuildEnv().DEV);
-  const startHeaders = await buildApiHeaders({
+  const { headers: startHeaders } = await buildApiHeaders({
     "Content-Type": "application/json",
   });
-  const pollHeaders = await buildApiHeaders();
+  const { headers: pollHeaders } = await buildApiHeaders();
 
   // No stream endpoints configured — transparent fallback
   if (!endpoints) {
@@ -459,13 +468,15 @@ export async function generateNarrativeStream(
   }
 
   if (startDone && typeof startData?.narrative === "string") {
-    const result = applyNarrationGuards({
-      narrative: startData.narrative,
-      mood: startData.mood || "neutral",
-      suggestions: Array.isArray(startData.suggestions)
-        ? startData.suggestions.slice(0, 3)
-        : ["Look around", "Check inventory", "Continue"],
-    });
+    const result = applyNarrationGuards(
+      normalizeNarrationPayload(startData, {
+        narrative: startData.narrative,
+        mood: "neutral",
+        suggestions: ["Look around", "Check inventory", "Continue"],
+        provider: "firebase-genkit",
+        fallbackUsed: false,
+      }),
+    );
     if (typeof onDone === "function") onDone(result);
     return result;
   }
@@ -525,16 +536,15 @@ export async function generateNarrativeStream(
       if (pollData?.ok === false) {
         throw new Error(pollData?.message || "Narrative generation failed.");
       }
-      const result = applyNarrationGuards({
-        narrative: currentText || "Something happened.",
-        mood:
-          typeof pollData?.mood === "string" && pollData.mood.trim()
-            ? pollData.mood.trim()
-            : "neutral",
-        suggestions: Array.isArray(pollData?.suggestions)
-          ? pollData.suggestions.slice(0, 3)
-          : ["Look around", "Check inventory", "Continue"],
-      });
+      const result = applyNarrationGuards(
+        normalizeNarrationPayload(pollData, {
+          narrative: currentText || "Something happened.",
+          mood: "neutral",
+          suggestions: ["Look around", "Check inventory", "Continue"],
+          provider: "firebase-genkit",
+          fallbackUsed: false,
+        }),
+      );
       if (typeof onDone === "function") onDone(result);
       return result;
     }

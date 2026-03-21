@@ -22,3 +22,24 @@ export function createRequestTraceContext() {
     spanId: randomHex(16),
   };
 }
+
+export function buildTraceHeaders(traceContext) {
+  if (!traceContext || typeof traceContext !== "object") {
+    return {};
+  }
+
+  const headers = {};
+  if (typeof traceContext.traceId === "string" && traceContext.traceId.trim()) {
+    headers["X-Trace-Id"] = traceContext.traceId.trim();
+  }
+  if (typeof traceContext.spanId === "string" && traceContext.spanId.trim()) {
+    headers["X-Span-Id"] = traceContext.spanId.trim();
+  }
+  if (
+    typeof traceContext.parentSpanId === "string" &&
+    traceContext.parentSpanId.trim()
+  ) {
+    headers["X-Parent-Span-Id"] = traceContext.parentSpanId.trim();
+  }
+  return headers;
+}

@@ -87,6 +87,9 @@ function mapFirestoreRun(doc) {
 			typeof data.narrative === "string" ? data.narrative : undefined,
 		mood: typeof data.mood === "string" ? data.mood : undefined,
 		suggestions: Array.isArray(data.suggestions) ? data.suggestions : undefined,
+		provider: typeof data.provider === "string" ? data.provider : undefined,
+		fallback_used:
+			typeof data.fallback_used === "boolean" ? data.fallback_used : undefined,
 		output_hash:
 			typeof data.output_hash === "string" ? data.output_hash : undefined,
 		error_code:
@@ -160,6 +163,10 @@ async function fireUpdateRun({ threadId, runId, ownerId, patch }) {
 	if (typeof patch.narrative === "string") next.narrative = patch.narrative;
 	if (typeof patch.mood === "string") next.mood = patch.mood;
 	if (Array.isArray(patch.suggestions)) next.suggestions = patch.suggestions;
+	if (typeof patch.provider === "string") next.provider = patch.provider;
+	if (typeof patch.fallbackUsed === "boolean") {
+		next.fallback_used = patch.fallbackUsed;
+	}
 	if (typeof patch.outputHash === "string") next.output_hash = patch.outputHash;
 	if (typeof patch.errorCode === "string") next.error_code = patch.errorCode;
 	if (typeof patch.message === "string") next.message = patch.message;
@@ -292,6 +299,10 @@ function fileUpdateRun({ threadId, runId, ownerId, patch }) {
 	if (typeof patch.narrative === "string") updated.narrative = patch.narrative;
 	if (typeof patch.mood === "string") updated.mood = patch.mood;
 	if (Array.isArray(patch.suggestions)) updated.suggestions = patch.suggestions;
+	if (typeof patch.provider === "string") updated.provider = patch.provider;
+	if (typeof patch.fallbackUsed === "boolean") {
+		updated.fallback_used = patch.fallbackUsed;
+	}
 	if (typeof patch.outputHash === "string") updated.output_hash = patch.outputHash;
 	if (typeof patch.errorCode === "string") updated.error_code = patch.errorCode;
 	if (typeof patch.message === "string") updated.message = patch.message;

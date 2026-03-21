@@ -1,0 +1,17 @@
+{
+  "url": "https://void-verse.com/",
+  "status": 200,
+  "title": "Void Verse",
+  "bodyText": "Web Gameplay Disabled\n\nThis environment is configured for tooling and observability only. Production gameplay should run through the Godot runtime.\n\nTo explicitly enable web gameplay outside dev, set `VITE_WEB_GAMEPLAY_ENABLED=true` (or `VITE_ENABLE_WEB_GAMEPLAY=true`) in runtime/build config.",
+  "runtimeConfig": {
+    "VITE_API_BASE_URL": "/",
+    "VITE_NARRATE_ENDPOINT": "/api/narrate",
+    "VITE_NARRATE_TIMEOUT_MS": "240000"
+  },
+  "serviceWorkers": {
+    "supported": true,
+    "controller": null,
+    "registrations": []
+  },
+  "cacheKeys": []
+}

@@ -71,6 +71,24 @@ const INITIAL_LEVEL = 1;
 const INITIAL_HP_MAX = calculateMaxHp(INITIAL_ATTRIBUTES);
 const INITIAL_MANA_MAX = calculateMaxMana(INITIAL_ATTRIBUTES);
 const INITIAL_XP_MAX = xpForNextLevel(INITIAL_LEVEL, INITIAL_CONFIG);
+const INITIAL_MAGIC_PATTERNS = {
+  shape: ["pulse", "wall", "shield"],
+  weave: ["lattice"],
+};
+const INITIAL_MAGIC_AFFINITIES = {
+  fire: 0,
+  water: 0,
+  earth: 0,
+  air: 0,
+  lightning: 0,
+  shadow: 0,
+  light: 0,
+  life: 0,
+  creation: 0,
+  destruction: 0,
+  space: 0,
+  time: 0,
+};
 
 const initialGameState = {
   config: INITIAL_CONFIG,
@@ -91,6 +109,59 @@ const initialGameState = {
     mana: {
       current: INITIAL_MANA_MAX,
       max: INITIAL_MANA_MAX,
+    },
+    magic: {
+      mana: {
+        current: INITIAL_MANA_MAX,
+        max: INITIAL_MANA_MAX,
+      },
+      strain: {
+        current: 0,
+        max: 100,
+        state: "steady",
+      },
+      stability: {
+        body: { current: 100, max: 100 },
+        mind: { current: 100, max: 100 },
+        cognitive: { current: 100, max: 100 },
+      },
+      attunement: {
+        stance: "open",
+        focusedEssence: null,
+        environment: null,
+      },
+      affinities: INITIAL_MAGIC_AFFINITIES,
+      classBias: {
+        manaMultiplier: 1,
+        strainMultiplier: 1,
+        potencyByEssence: {},
+      },
+      grammar: {
+        essences: ["fire", "water", "earth", "air"],
+        forms: ["bolt", "pulse", "shield"],
+        patterns: INITIAL_MAGIC_PATTERNS,
+        deliveries: ["instant", "sustained", "channeled"],
+        recipes: [],
+      },
+      unlockedPatterns: INITIAL_MAGIC_PATTERNS,
+      prepared: null,
+      activeWorkings: [],
+      casting: null,
+      resonance: {
+        current: 0,
+        max: 100,
+        state: "quiet",
+      },
+      interference: {
+        score: 0,
+      },
+      anchors: {
+        self: null,
+        area: null,
+        itemId: null,
+      },
+      reserves: {},
+      charges: [],
     },
     attributes: INITIAL_ATTRIBUTES,
     attributeInvestments: {},

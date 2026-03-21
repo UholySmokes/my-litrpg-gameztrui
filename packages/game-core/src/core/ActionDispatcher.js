@@ -22,6 +22,16 @@ import {
   magicRelease,
   processEssenceEcologyTurn,
 } from "../systems/magic/EssenceWeavingSystem.js";
+import {
+  buildCombatMagicSkill,
+  castMagic,
+  castPreparedMagic,
+  prepareMagic,
+  senseMagic,
+  stabilizeMagic,
+  sustainMagic,
+  translateLegacyMagicAction,
+} from "../systems/magic/UnifiedMagicSystem.js";
 import { hasCreationPerk } from "./creationPerks.js";
 
 const isLayerDEnabled = (state) => {
@@ -80,8 +90,70 @@ export function executeAction(state, action, _options = {}) {
       let incrementsTurn = true;
 
       switch (action.type) {
+        case "magic_prepare": {
+          const result = prepareMagic(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Prepared magic";
+          break;
+        }
+
+        case "magic_cast": {
+          const inCombat = state.combat?.status === "active";
+          if (inCombat) {
+            const combatMagic = buildCombatMagicSkill(state, action);
+            if (!combatMagic.ok) {
+              return { success: false, reason: combatMagic.reason, state };
+            }
+            const attackResult = handleAttack(state, {
+              type: "attack",
+              enemyIndex: action.enemyIndex !== undefined ? action.enemyIndex : 0,
+              skillId: combatMagic.syntheticSkill,
+            });
+            if (attackResult.earlyReturn) return attackResult.earlyReturn;
+            newState = attackResult.newState;
+            description = `Cast ${combatMagic.syntheticSkill.name}`;
+            Object.assign(changes, attackResult.changes, {
+              magicCast: combatMagic.syntheticSkill.name,
+            });
+            incrementsTurn = false;
+            break;
+          }
+
+          const result = castMagic(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Cast magic";
+          break;
+        }
+
+        case "magic_sustain": {
+          const result = sustainMagic(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Sustained magic";
+          break;
+        }
+
+        case "magic_stabilize": {
+          const result = stabilizeMagic(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Stabilized magic";
+          incrementsTurn = false;
+          break;
+        }
+
         case "magic_sense": {
-          const result = magicSense(state, action);
+          const result = senseMagic(state, action);
           return {
             success: true,
             description: result.description || "Sensed essence",
@@ -91,7 +163,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_attune": {
-          const result = magicAttune(state, action);
+          const result = stabilizeMagic(state, translateLegacyMagicAction(action));
           newState = result.state || state;
           description = result.description || "Attuned";
           incrementsTurn = false;
@@ -147,102 +219,47 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_shape": {
-          const result = magicShape(state, action);
+          const result = prepareMagic(state, translateLegacyMagicAction(action));
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
           newState = result.state || state;
-          description = result.description || "Shaped";
+          description = result.description || "Prepared magic";
           break;
         }
 
         case "magic_weave": {
-          const result = magicWeave(state, action);
+          const result = prepareMagic(state, translateLegacyMagicAction(action));
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
           newState = result.state || state;
-          description = result.description || "Wove";
+          description = result.description || "Prepared weave";
           break;
         }
 
         case "magic_release": {
-          const prepared = state.player?.magic?.prepared;
-          const isInCombat = state.combat?.status === "active";
-          const casting = state.player?.magic?.casting;
-          const layerD = isLayerDEnabled(state);
-
-          if (layerD && isInCombat && prepared) {
-            const anchored = Boolean(
-              state.player?.magic?.anchors?.self ||
-                state.player?.magic?.anchors?.area ||
-                state.player?.magic?.anchors?.itemId,
-            );
-
-            if (casting && typeof casting === "object") {
-              const remaining = Math.max(0, Math.floor(Number(casting.remainingTurns || 0)) - 1);
-              if (remaining > 0) {
-                newState = {
-                  ...state,
-                  player: {
-                    ...state.player,
-                    magic: {
-                      ...state.player.magic,
-                      casting: { ...casting, remainingTurns: remaining },
-                    },
-                  },
-                };
-                description = `You continue casting... (${remaining} turns)`;
-              } else {
-                const withoutCasting = {
-                  ...state,
-                  player: {
-                    ...state.player,
-                    magic: {
-                      ...state.player.magic,
-                      casting: null,
-                    },
-                  },
-                };
-                const result = magicRelease(withoutCasting, action);
-                if (result && result.ok === false) {
-                  return { success: false, reason: result.reason, state: result.state || state };
-                }
-                newState = result.state || state;
-                description = result.description || "Released";
-              }
-            } else {
-              const baseTurns = prepared.kind === "weave" ? 2 : 1;
-              const reduced = anchored ? Math.max(0, baseTurns - 1) : baseTurns;
-              if (reduced <= 0) {
-                const result = magicRelease(state, action);
-                if (result && result.ok === false) {
-                  return { success: false, reason: result.reason, state: result.state || state };
-                }
-                newState = result.state || state;
-                description = result.description || "Released";
-              } else {
-                newState = {
-                  ...state,
-                  player: {
-                    ...state.player,
-                    magic: {
-                      ...state.player.magic,
-                      casting: {
-                        kind: "release",
-                        preparedKind: prepared.kind,
-                        remainingTurns: reduced,
-                        anchored,
-                        startedTurn: state.world?.turnCount || 0,
-                      },
-                    },
-                  },
-                };
-                description = `You begin casting... (${reduced} turns)`;
-              }
+          const translated = translateLegacyMagicAction(action);
+          const inCombat = state.combat?.status === "active";
+          if (inCombat) {
+            const combatMagic = buildCombatMagicSkill(state, translated);
+            if (!combatMagic.ok) {
+              return { success: false, reason: combatMagic.reason, state };
             }
+            const attackResult = handleAttack(state, {
+              type: "attack",
+              enemyIndex: action.enemyIndex !== undefined ? action.enemyIndex : 0,
+              skillId: combatMagic.syntheticSkill,
+            });
+            if (attackResult.earlyReturn) return attackResult.earlyReturn;
+            newState = attackResult.newState;
+            description = `Cast ${combatMagic.syntheticSkill.name}`;
+            Object.assign(changes, attackResult.changes, {
+              magicCast: combatMagic.syntheticSkill.name,
+            });
+            incrementsTurn = false;
           } else {
-            const result = magicRelease(state, action);
+            const result = castPreparedMagic(state, translated);
             if (result && result.ok === false) {
               return { success: false, reason: result.reason, state: result.state || state };
             }

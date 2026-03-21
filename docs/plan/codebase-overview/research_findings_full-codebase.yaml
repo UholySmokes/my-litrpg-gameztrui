@@ -462,7 +462,7 @@ patterns_found:
 
   - category: architecture
     pattern: "Dual runtime: Web + Godot"
-    description: "Web gameplay gated behind VITE_WEB_GAMEPLAY_ENABLED (default disabled in prod). Production targets Godot (Android). Web serves as dev/tooling frontend."
+    description: "Web gameplay gated behind VITE_WEB_GAMEPLAY_ENABLED (default enabled in hosted/runtime builds, explicitly disabled for tooling-only builds). Production targets include Godot (Android), while web also serves tooling and hosted play surfaces."
     examples:
       - file: src/core/WebGameplayGate.js
         location: src/core/WebGameplayGate.js:28

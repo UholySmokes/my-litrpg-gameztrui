@@ -2,23 +2,30 @@ function normalizeForHash(value) {
   if (value === null || value === undefined) {
     return value;
   }
+
   if (typeof value !== "object") {
     return value;
   }
+
   if (Array.isArray(value)) {
     return value.map((entry) => normalizeForHash(entry));
   }
+
   const keys = Object.keys(value).sort();
-  const sorted = {};
+  const normalized = {};
   for (const key of keys) {
-    sorted[key] = normalizeForHash(value[key]);
+    normalized[key] = normalizeForHash(value[key]);
   }
-  return sorted;
+  return normalized;
 }
 
 function safeParseJson(value) {
-  if (value && typeof value === "object") return value;
-  if (typeof value !== "string") return null;
+  if (value && typeof value === "object") {
+    return value;
+  }
+  if (typeof value !== "string") {
+    return null;
+  }
   try {
     return JSON.parse(value);
   } catch {
@@ -26,23 +33,24 @@ function safeParseJson(value) {
   }
 }
 
-function computeSaveStateHash(gameState) {
-  const parsed = safeParseJson(gameState);
-  const source = parsed && typeof parsed === "object" ? parsed : gameState;
-  const normalized = JSON.stringify(normalizeForHash(source));
-  let hash = 0x811c9dc5;
-  for (let i = 0; i < normalized.length; i += 1) {
-    hash ^= normalized.charCodeAt(i);
-    hash = Math.imul(hash, 0x01000193) >>> 0;
+function hashString(input) {
+  let hash = 5381;
+  for (let index = 0; index < input.length; index += 1) {
+    hash = ((hash << 5) + hash + input.charCodeAt(index)) >>> 0;
   }
   return hash.toString(16).padStart(8, "0");
+}
+
+function computeStateHash(gameStateInput) {
+  const parsed = safeParseJson(gameStateInput);
+  const normalized = normalizeForHash(parsed ?? gameStateInput ?? null);
+  return hashString(JSON.stringify(normalized));
 }
 
 function extractExpectedStateHash(body = {}) {
   const candidates = [
     body.expectedStateHash,
     body.expected_state_hash,
-    body.versionToken,
     body.stateHash,
     body.state_hash,
   ];
@@ -55,6 +63,7 @@ function extractExpectedStateHash(body = {}) {
 }
 
 module.exports = {
-  computeSaveStateHash,
+  computeStateHash,
+  computeSaveStateHash: computeStateHash,
   extractExpectedStateHash,
 };

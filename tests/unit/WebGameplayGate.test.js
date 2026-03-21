@@ -6,8 +6,8 @@ afterEach(() => {
 });
 
 describe("WebGameplayGate", () => {
-  it("defaults to disabled outside dev when no explicit flag exists", () => {
-    expect(isWebGameplayEnabled()).toBe(false);
+  it("defaults to enabled outside dev when no explicit flag exists", () => {
+    expect(isWebGameplayEnabled()).toBe(true);
   });
 
   it("enables gameplay when runtime flag is explicitly true", () => {

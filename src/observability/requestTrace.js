@@ -1,30 +1,24 @@
-function randomHex(bytes) {
-  const array = new Uint8Array(bytes);
+function randomHex(length) {
   if (globalThis?.crypto?.getRandomValues) {
-    globalThis.crypto.getRandomValues(array);
-  } else {
-    for (let i = 0; i < array.length; i += 1) {
-      array[i] = Math.floor(Math.random() * 256);
-    }
+    const bytes = new Uint8Array(Math.ceil(length / 2));
+    globalThis.crypto.getRandomValues(bytes);
+    return Array.from(bytes, (value) => value.toString(16).padStart(2, "0"))
+      .join("")
+      .slice(0, length);
   }
-  return Array.from(array, (value) => value.toString(16).padStart(2, "0")).join("");
+
+  let fallback = "";
+  while (fallback.length < length) {
+    fallback += Math.floor(Math.random() * 0xffffffff)
+      .toString(16)
+      .padStart(8, "0");
+  }
+  return fallback.slice(0, length);
 }
 
 export function createRequestTraceContext() {
-  const traceId = randomHex(16);
-  const spanId = randomHex(8);
   return {
-    traceId,
-    spanId,
-    traceparent: `00-${traceId}-${spanId}-01`,
-  };
-}
-
-export function buildTraceHeaders(trace) {
-  if (!trace) return {};
-  return {
-    "X-Trace-Id": trace.traceId,
-    "X-Span-Id": trace.spanId,
-    Traceparent: trace.traceparent,
+    traceId: randomHex(32),
+    spanId: randomHex(16),
   };
 }

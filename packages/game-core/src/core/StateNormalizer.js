@@ -16,6 +16,7 @@ import {
   normalizeProgressionModifiers,
 } from "../utils/shared.js";
 import { INITIAL_CONFIG } from "../data/initialState.js";
+import { describeBalanceConfig } from "../data/balance/balanceConfig.js";
 import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import {
   WORLD_META,
@@ -188,6 +189,11 @@ function normalizeConfig(rawConfig) {
     ...DEFAULT_CONFIG,
     ...source,
     xpBrackets,
+    balanceSummary: describeBalanceConfig({
+      ...DEFAULT_CONFIG,
+      ...source,
+      xpBrackets,
+    }),
   };
 }
 

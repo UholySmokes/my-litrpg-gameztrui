@@ -1,10 +1,9 @@
-const CACHE_VERSION = "voidverse-v1";
+const CACHE_VERSION = "voidverse-v2";
 const APP_SHELL = [
   "/",
   "/index.html",
   "/offline.html",
   "/manifest.webmanifest",
-  "/runtime-config.js",
   "/icons/icon-any.svg",
   "/icons/icon-maskable.svg",
 ];
@@ -46,6 +45,25 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (requestUrl.origin !== self.location.origin) return;
+
+  if (requestUrl.pathname === "/runtime-config.js") {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200 && response.type === "basic") {
+            const clone = response.clone();
+            caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(async () => {
+          const cached = await caches.match(event.request);
+          if (cached) return cached;
+          throw new Error("runtime-config-unavailable");
+        }),
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cached) => {

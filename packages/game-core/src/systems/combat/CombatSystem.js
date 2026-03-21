@@ -182,6 +182,11 @@ import {
 } from "../titles/TitleSystem.js";
 import { random, randomChoice } from "../../utils/DeterministicRandom.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
+import {
+  DEFAULT_COMBAT_LANE_CONFIG,
+  DEFAULT_ELEMENTAL_REACTIONS,
+  getBalanceConfig,
+} from "../../data/balance/balanceConfig.js";
 const DEBUG_LOGGING_ENABLED = false;
 const getLaneDistance = (combatState, enemyIndex) => {
   const playerLane = combatState?.lanes?.player;
@@ -194,10 +199,15 @@ const getLaneDistance = (combatState, enemyIndex) => {
 const applyLaneModifier = (
   damageResult,
   laneDistance,
+  config,
   { allowZeroDamage = false } = {},
 ) => {
   if (!damageResult || laneDistance <= 0) return damageResult;
-  const multiplier = laneDistance === 1 ? 0.85 : 0.7;
+  const laneConfig = getBalanceConfig(config).combatLane || DEFAULT_COMBAT_LANE_CONFIG;
+  const multiplier =
+    laneDistance === 1
+      ? laneConfig.oneGapMultiplier
+      : laneConfig.multiGapMultiplier;
   const minDamage = allowZeroDamage ? 0 : 1;
   const nextDamage = Math.max(
     minDamage,
@@ -243,90 +253,7 @@ const resolveSkillDefinition = (state, skillInput) => {
   }
   return pools.find((skill) => skill?.id === skillId) || null;
 };
-const ELEMENTAL_REACTIONS = [
-  {
-    element: "fire",
-    requires: ["wet"],
-    multiplier: 1.15,
-    remove: ["wet"],
-    addEffects: [{ id: "obscured", target: "enemy", duration: 2, magnitude: 0.25 }],
-    message: "Elemental Reaction: Steam!",
-  },
-  {
-    element: "fire",
-    requires: ["frostbite", "freeze"],
-    multiplier: 1.25,
-    remove: ["frostbite", "freeze"],
-    addEffects: [{ id: "burn", target: "enemy", duration: 2, magnitude: 6 }],
-    message: "Elemental Reaction: Melt!",
-  },
-  {
-    element: "ice",
-    requires: ["burn"],
-    multiplier: 1.2,
-    remove: ["burn"],
-    addEffects: [{ id: "slow", target: "enemy", duration: 2, magnitude: -0.2 }],
-    message: "Elemental Reaction: Quench!",
-  },
-  {
-    element: "ice",
-    requires: ["wet"],
-    multiplier: 1.2,
-    remove: ["wet"],
-    addEffects: [{ id: "freeze", target: "enemy", duration: 1 }],
-    message: "Elemental Reaction: Flash Freeze!",
-  },
-  {
-    element: "lightning",
-    requires: ["frostbite", "slow"],
-    multiplier: 1.2,
-    addEffects: [{ id: "shock", target: "enemy", duration: 2, magnitude: 0.1 }],
-    message: "Elemental Reaction: Conduction!",
-  },
-  {
-    element: "lightning",
-    requires: ["wet"],
-    multiplier: 1.25,
-    addEffects: [{ id: "shock", target: "enemy", duration: 2, magnitude: 0.1 }],
-    message: "Elemental Reaction: Electro-Charged!",
-  },
-  {
-    element: "nature",
-    requires: ["burn"],
-    multiplier: 1.15,
-    addEffects: [{ id: "poison", target: "enemy", duration: 3, magnitude: 4 }],
-    message: "Elemental Reaction: Wildfire Spores!",
-  },
-  {
-    element: "water",
-    requires: ["burn"],
-    multiplier: 1.15,
-    remove: ["burn"],
-    addEffects: [
-      { id: "wet", target: "enemy", duration: 3, magnitude: 1 },
-      { id: "slow", target: "enemy", duration: 2, magnitude: -0.15 },
-    ],
-    message: "Elemental Reaction: Douse!",
-  },
-  {
-    element: "holy",
-    requires: ["curse"],
-    multiplier: 1.25,
-    remove: ["curse"],
-    addEffects: [
-      { id: "radiant_mark", target: "enemy", duration: 3, magnitude: 0.12 },
-    ],
-    message: "Elemental Reaction: Purge!",
-  },
-  {
-    element: "dark",
-    requires: ["radiant_mark"],
-    multiplier: 1.25,
-    remove: ["radiant_mark"],
-    addEffects: [{ id: "curse", target: "enemy", duration: 3, magnitude: 0.12 }],
-    message: "Elemental Reaction: Eclipse!",
-  },
-];
+const ELEMENTAL_REACTIONS = DEFAULT_ELEMENTAL_REACTIONS;
 const applyElementalReactions = ({ attacker, defender, element, damage }) => {
   if (!element || !defender) {
     return { damage, defender, messages: [] };
@@ -764,7 +691,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     );
   }
   const laneDistance = getLaneDistance(state.combat, enemyIndex);
-  damageResult = applyLaneModifier(damageResult, laneDistance, {
+  damageResult = applyLaneModifier(damageResult, laneDistance, state?.config, {
     allowZeroDamage: laneAllowZero,
   });
   // === CHECK FOR CONFUSE EFFECT ===
@@ -1270,7 +1197,11 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
         damage = Math.floor(damage * ability.aoe.damageMultiplier);
       }
       const laneDistance = getLaneDistance(newState.combat, targetIndex);
-      damage = applyLaneModifier({ damage, messages: [] }, laneDistance).damage;
+      damage = applyLaneModifier(
+        { damage, messages: [] },
+        laneDistance,
+        newState?.config,
+      ).damage;
       // Defender dodge chance from effects like Blur
       {
         const dodgeChance = getDodgeChance(updatedEnemies[targetIndex]);
@@ -1329,6 +1260,8 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
           hp: { ...updatedEnemies[targetIndex].stats.hp, current: nextHp },
         },
       };
+      const laneConfig =
+        getBalanceConfig(newState?.config).combatLane || DEFAULT_COMBAT_LANE_CONFIG;
       combatLog.push(
         formatDamageBreakdown(
           `${updatedPlayer.name} uses ${ability.name} on ${enemy.name}`,
@@ -1336,7 +1269,13 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
             damage,
             messages:
               laneDistance > 0
-                ? [`Lane gap ${laneDistance}: x${laneDistance === 1 ? 0.85 : 0.7}`]
+                ? [
+                    `Lane gap ${laneDistance}: x${
+                      laneDistance === 1
+                        ? laneConfig.oneGapMultiplier
+                        : laneConfig.multiGapMultiplier
+                    }`,
+                  ]
                 : [],
           },
         ),
@@ -1708,7 +1647,7 @@ function enemyAttack(state, enemyIndex) {
     state.config,
   );
   const laneDistance = getLaneDistance(state.combat, enemyIndex);
-  damageResult = applyLaneModifier(damageResult, laneDistance);
+  damageResult = applyLaneModifier(damageResult, laneDistance, state?.config);
   const skillText = skill ? ` using ${skill.name}` : "";
   const newLog = [
     ...state.combat.log,

@@ -49,6 +49,18 @@ function validateAction(action, gameState) {
     case 'magic_sense':
       return { valid: true };
 
+    case "magic_prepare":
+      return validateUnifiedMagicPrepare(action);
+
+    case "magic_cast":
+      return validateUnifiedMagicCast(action);
+
+    case "magic_sustain":
+      return { valid: true };
+
+    case "magic_stabilize":
+      return validateUnifiedMagicStabilize(action);
+
     case 'magic_attune':
       return validateMagicAttune(action);
 
@@ -401,6 +413,47 @@ function validateMagicPurge(action) {
     (!Number.isFinite(action.amount) || action.amount <= 0)
   ) {
     return { valid: false, reason: "Invalid purge amount." };
+  }
+  return { valid: true };
+}
+
+function validateUnifiedMagicPrepare(action) {
+  const essences = Array.isArray(action?.essences)
+    ? action.essences
+    : action?.essence
+      ? [action.essence]
+      : [];
+  if (essences.length === 0 || !essences.every(isEssenceId)) {
+    return { valid: false, reason: "Invalid magic essence selection." };
+  }
+  if (!action?.form || typeof action.form !== "string") {
+    return { valid: false, reason: "Missing magic form." };
+  }
+  if (
+    action?.scale != null &&
+    (!Number.isFinite(action.scale) || action.scale <= 0)
+  ) {
+    return { valid: false, reason: "Invalid magic scale." };
+  }
+  return { valid: true };
+}
+
+function validateUnifiedMagicCast(action) {
+  if (action?.usePrepared) return { valid: true };
+  return validateUnifiedMagicPrepare(action);
+}
+
+function validateUnifiedMagicStabilize(action) {
+  if (action?.essence != null && !isEssenceId(action.essence)) {
+    return { valid: false, reason: "Unknown stabilization essence." };
+  }
+  if (
+    action?.stance != null &&
+    action.stance !== "open" &&
+    action.stance !== "focused" &&
+    action.stance !== "guarded"
+  ) {
+    return { valid: false, reason: "Invalid stabilization stance." };
   }
   return { valid: true };
 }

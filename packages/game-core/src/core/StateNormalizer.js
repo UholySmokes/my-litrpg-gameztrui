@@ -27,6 +27,7 @@ import {
 } from "../world/WorldDataRegistry.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { defaultPrestigeStats } from "../systems/PrestigeSystem";
+import { normalizeUnifiedMagicState } from "../systems/magic/UnifiedMagicSystem.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
 const { GAME_STATE_VERSION } = saveCutover;
@@ -364,6 +365,14 @@ function normalizePlayer(rawPlayer, config) {
   );
   const hpMaxDefault = calculateMaxHp(effectiveAttributes);
   const manaMaxDefault = calculateMaxMana(effectiveAttributes);
+  const normalizedMana = normalizeGauge(player.mana, manaMaxDefault);
+  const magic = normalizeUnifiedMagicState(player.magic, {
+    player: {
+      ...player,
+      class: normalizedClass,
+      mana: normalizedMana,
+    },
+  });
 
   return {
     ...player,
@@ -378,7 +387,8 @@ function normalizePlayer(rawPlayer, config) {
         : {},
     xp: normalizeXp(player.xp, level, config),
     hp: normalizeGauge(player.hp, hpMaxDefault),
-    mana: normalizeGauge(player.mana, manaMaxDefault),
+    mana: normalizedMana,
+    magic,
     resources: normalizeResources(player.resources),
     inventory: Array.isArray(player.inventory) ? player.inventory : [],
     equipment: isPlainObject(player.equipment) ? player.equipment : {},

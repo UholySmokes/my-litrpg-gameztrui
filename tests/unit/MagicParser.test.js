@@ -3,6 +3,29 @@ import { parseAction } from "../../src/core/InputParser.js";
 import { initialGameState } from "../../src/data/initialState.js";
 
 describe("Magic input parsing", () => {
+  it("parses canonical PREPARE grammar", () => {
+    const action = parseAction("PREPARE fire bolt 2", initialGameState);
+    expect(action.type).toBe("magic_prepare");
+    expect(action.essences).toEqual(["fire"]);
+    expect(action.form).toBe("bolt");
+    expect(action.scale).toBe(2);
+  });
+
+  it("parses canonical CAST grammar", () => {
+    const action = parseAction("CAST fire+air vortex 3", initialGameState);
+    expect(action.type).toBe("magic_cast");
+    expect(action.essences).toEqual(["fire", "air"]);
+    expect(action.form).toBe("vortex");
+    expect(action.scale).toBe(3);
+  });
+
+  it("parses stabilize shorthand", () => {
+    const action = parseAction("stabilize focused fire", initialGameState);
+    expect(action.type).toBe("magic_stabilize");
+    expect(action.stance).toBe("focused");
+    expect(action.essence).toBe("fire");
+  });
+
   it("parses DRAW", () => {
     const action = parseAction("DRAW FIRE 10", initialGameState);
     expect(action.type).toBe("magic_draw");
@@ -49,7 +72,8 @@ describe("Magic input parsing", () => {
 
   it("parses release prepared weave shorthand", () => {
     const action = parseAction("release prepared weave", initialGameState);
-    expect(action.type).toBe("magic_release");
+    expect(action.type).toBe("magic_cast");
+    expect(action.usePrepared).toBe(true);
   });
 
   it("parses resonance anchor shorthand", () => {

@@ -68,6 +68,91 @@ function parseMagic(input) {
     "(fire|water|earth|air|lightning|shadow|light|life|creation|destruction|space|time)";
   const essence =
     "(?:fire|water|earth|air|lightning|shadow|light|life|creation|destruction|space|time)";
+  const form =
+    "(bolt|pulse|lance|cone|wall|shield|vortex|veil|lattice)";
+
+  {
+    const match = input.match(
+      new RegExp(
+        `^prepare\\s+((?:${essence})(?:\\+(?:${essence}))*)\\s+${form}(?:\\s+(\\d+))?$`,
+        "i",
+      ),
+    );
+    if (match) {
+      const essences = match[1]
+        .toLowerCase()
+        .split("+")
+        .map((part) => part.trim())
+        .filter(Boolean);
+      return {
+        type: "magic_prepare",
+        essences,
+        essence: essences[0] || null,
+        form: match[2].toLowerCase(),
+        scale: match[3] ? Number(match[3]) : 1,
+        intent: "prepare",
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(
+      new RegExp(
+        `^cast\\s+((?:${essence})(?:\\+(?:${essence}))*)\\s+${form}(?:\\s+(\\d+))?$`,
+        "i",
+      ),
+    );
+    if (match) {
+      const essences = match[1]
+        .toLowerCase()
+        .split("+")
+        .map((part) => part.trim())
+        .filter(Boolean);
+      return {
+        type: "magic_cast",
+        essences,
+        essence: essences[0] || null,
+        form: match[2].toLowerCase(),
+        scale: match[3] ? Number(match[3]) : 1,
+        intent: "cast",
+        originalInput: input,
+      };
+    }
+  }
+
+  if (/^(cast|release)(?:\s+prepared(?:\s+(?:magic|weave))?)?$/i.test(input)) {
+    return {
+      type: "magic_cast",
+      usePrepared: true,
+      intent: "cast",
+      originalInput: input,
+    };
+  }
+
+  if (/^(sustain|maintain)(?:\s+working)?$/i.test(input)) {
+    return {
+      type: "magic_sustain",
+      originalInput: input,
+    };
+  }
+
+  {
+    const match = input.match(
+      new RegExp(
+        `^(stabilize|recover(?:\\s+magic)?)(?:\\s+(open|guarded|focused))?(?:\\s+${essenceCap})?$`,
+        "i",
+      ),
+    );
+    if (match) {
+      return {
+        type: "magic_stabilize",
+        stance: match[2]?.toLowerCase() || null,
+        essence: match[3]?.toLowerCase() || null,
+        originalInput: input,
+      };
+    }
+  }
 
   {
     const match = input.match(

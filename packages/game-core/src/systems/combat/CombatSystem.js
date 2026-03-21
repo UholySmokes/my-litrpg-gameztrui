@@ -2005,7 +2005,7 @@ export function escapeCombat(state) {
     };
   }
 }
-export function executeSkill(attacker, defender, skillInput, config = {}) {
+export function executeSkill(attacker, defender, skillInput, config = {}, options = {}) {
   let skill =
     typeof skillInput === "string" ? getSkillById(skillInput) : skillInput;
   if (!skill) return { damage: 0, messages: ["Skill not found"] };
@@ -2020,10 +2020,17 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
     if (modified) skill = modified;
   }
   const bypasses = resolveBypasses(attacker.talents || []);
-  const cd = applyCooldownOverride(skill.cooldown || 0, bypasses);
+  const unifiedMagic = skill?.unifiedMagic || options?.unifiedMagic || null;
+  const cd = Number.isFinite(unifiedMagic?.cooldown)
+    ? unifiedMagic.cooldown
+    : applyCooldownOverride(skill.cooldown || 0, bypasses);
   // Calculate mana cost using the new balance system
-  const calculatedCost = calculateManaCost(skill, attacker.level || 1);
-  const cost = applyCostOverride(calculatedCost, bypasses);
+  const calculatedCost = Number.isFinite(unifiedMagic?.manaCost)
+    ? unifiedMagic.manaCost
+    : calculateManaCost(skill, attacker.level || 1);
+  const cost = Number.isFinite(unifiedMagic?.manaCost)
+    ? unifiedMagic.manaCost
+    : applyCostOverride(calculatedCost, bypasses);
   // Validate and consume mana using the new system
   const consumption = consumeMana({ ...skill, manaCost: cost }, attacker, {
     showFeedback: false, // Feedback handled by UI
@@ -2049,6 +2056,43 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
       mana: {
         ...updatedAttacker.mana,
         current: consumption.remainingMana,
+      },
+    };
+  }
+  if (unifiedMagic?.attackerMagic && typeof unifiedMagic.attackerMagic === "object") {
+    updatedAttacker = {
+      ...updatedAttacker,
+      magic: {
+        ...unifiedMagic.attackerMagic,
+        mana: {
+          ...(unifiedMagic.attackerMagic.mana || {}),
+          current: consumption.remainingMana,
+          max:
+            unifiedMagic.attackerMagic.mana?.max ??
+            updatedAttacker.mana?.max ??
+            attacker?.mana?.max ??
+            consumption.remainingMana,
+        },
+      },
+    };
+  } else if (
+    updatedAttacker.magic &&
+    typeof updatedAttacker.magic === "object" &&
+    !Array.isArray(updatedAttacker.magic)
+  ) {
+    updatedAttacker = {
+      ...updatedAttacker,
+      magic: {
+        ...updatedAttacker.magic,
+        mana: {
+          ...(updatedAttacker.magic.mana || {}),
+          current: consumption.remainingMana,
+          max:
+            updatedAttacker.magic.mana?.max ??
+            updatedAttacker.mana?.max ??
+            attacker?.mana?.max ??
+            consumption.remainingMana,
+        },
       },
     };
   }
@@ -2111,6 +2155,19 @@ export function executeSkill(attacker, defender, skillInput, config = {}) {
         reason: gambleResult.message,
       });
     }
+  }
+  if (Number.isFinite(unifiedMagic?.backfireDamage) && unifiedMagic.backfireDamage > 0) {
+    result.backfireDamage =
+      Math.max(
+        0,
+        Number.isFinite(result.backfireDamage) ? result.backfireDamage : 0,
+      ) +
+      Math.floor(unifiedMagic.backfireDamage);
+    result.log.push({
+      stage: "MAGIC_STRAIN_BACKFIRE",
+      value: result.backfireDamage,
+      reason: "Strain overload destabilized the cast.",
+    });
   }
   // Apply magnitude-based AoE caps if skill has AoE effects
   if (Array.isArray(skill.effects) && skill.effects.some((e) => e.aoe)) {

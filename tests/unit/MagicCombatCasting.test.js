@@ -1,53 +1,46 @@
 import { describe, it, expect } from "@jest/globals";
 import { executeAction } from "../../packages/game-core/src/core/ActionDispatcher.js";
 import { initialGameState } from "../../packages/game-core/src/data/initialState.js";
-import { applyCastingInterruptionFromDamage } from "../../packages/game-core/src/systems/combat/CombatSystem.js";
+import {
+  applyCastingInterruptionFromDamage,
+  startCombat,
+} from "../../packages/game-core/src/systems/combat/CombatSystem.js";
 
 describe("Combat casting", () => {
-  it("requires extra release turns in combat and then completes", () => {
-    const base = {
+  it("prepares and casts unified magic in combat", () => {
+    const engaged = startCombat({
       ...initialGameState,
-      world: { ...initialGameState.world, turnCount: 0 },
       player: {
         ...initialGameState.player,
+        class: "mage",
         hp: { current: 100, max: 100 },
-        mana: { current: 50, max: 50 },
+        mana: { current: 60, max: 60 },
         magic: {
-          mana: { current: 50, max: 50 },
-          reserves: { fire: 50 },
+          ...initialGameState.player.magic,
+          mana: { current: 60, max: 60 },
         },
       },
-      combat: {
-        status: "active",
-        turn: "player",
-        enemies: [],
-        skillCooldowns: {},
-        classAbilityCooldowns: {},
-        raceAbilityCooldowns: {},
-        playerTurnEffectsProcessed: false,
-        log: [],
-        lanes: { player: 1, enemies: [] },
-      },
-    };
+      world: { ...initialGameState.world, turnCount: 0 },
+    }, ["goblin"]);
 
-    const shaped = executeAction(base, {
-      type: "magic_shape",
+    const prepared = executeAction(engaged, {
+      type: "magic_prepare",
       essence: "fire",
-      form: "pulse",
-      amount: 10,
+      form: "bolt",
+      scale: 2,
     });
-    expect(shaped.success).toBe(true);
-    expect(shaped.state.player.magic.prepared?.kind).toBe("shape");
+    expect(prepared.success).toBe(true);
+    expect(prepared.state.player.magic.prepared?.request?.form).toBe("bolt");
 
-    const started = executeAction(shaped.state, { type: "magic_release" });
-    expect(started.success).toBe(true);
-    expect(started.state.player.magic.casting).toBeTruthy();
-    expect(started.state.player.magic.prepared).toBeTruthy();
-
-    const finished = executeAction(started.state, { type: "magic_release" });
-    expect(finished.success).toBe(true);
-    expect(finished.state.player.magic.casting).toBeNull();
-    expect(finished.state.player.magic.prepared).toBeNull();
+    const cast = executeAction(prepared.state, {
+      type: "magic_cast",
+      usePrepared: true,
+      enemyIndex: 0,
+    });
+    expect(cast.success).toBe(true);
+    expect(cast.state.player.magic.prepared).toBeNull();
+    expect(cast.state.player.magic.strain.current).toBeGreaterThan(0);
+    expect(cast.state.player.mana.current).toBeLessThan(60);
   });
 
   it("interrupts casting on damage and clears prepared", () => {
@@ -83,51 +76,23 @@ describe("Combat casting", () => {
     expect(next.combat.log.length).toBeGreaterThan(0);
   });
 
-  it("releases immediately in combat when rollout layer D is disabled", () => {
+  it("stabilize reduces unified magic strain", () => {
     const base = {
       ...initialGameState,
-      config: {
-        ...initialGameState.config,
-        magicRollout: {
-          ...(initialGameState.config?.magicRollout || {}),
-          layerD: false,
-        },
-      },
-      world: { ...initialGameState.world, turnCount: 0 },
       player: {
         ...initialGameState.player,
-        hp: { current: 100, max: 100 },
-        mana: { current: 50, max: 50 },
         magic: {
-          mana: { current: 50, max: 50 },
-          reserves: { fire: 50 },
+          ...initialGameState.player.magic,
+          strain: { current: 42, max: 100, state: "tense" },
         },
-      },
-      combat: {
-        status: "active",
-        turn: "player",
-        enemies: [],
-        skillCooldowns: {},
-        classAbilityCooldowns: {},
-        raceAbilityCooldowns: {},
-        playerTurnEffectsProcessed: false,
-        log: [],
-        lanes: { player: 1, enemies: [] },
       },
     };
 
-    const shaped = executeAction(base, {
-      type: "magic_shape",
-      essence: "fire",
-      form: "pulse",
-      amount: 10,
+    const stabilized = executeAction(base, {
+      type: "magic_stabilize",
     });
-    expect(shaped.success).toBe(true);
-
-    const released = executeAction(shaped.state, { type: "magic_release" });
-    expect(released.success).toBe(true);
-    expect(released.state.player.magic.casting).toBeFalsy();
-    expect(released.state.player.magic.prepared).toBeNull();
+    expect(stabilized.success).toBe(true);
+    expect(stabilized.state.player.magic.strain.current).toBeLessThan(42);
   });
 });
 

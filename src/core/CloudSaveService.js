@@ -1,4 +1,9 @@
 import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
+import { computeSaveStateHash } from "./saveVersioning.js";
+import {
+  buildTraceHeaders,
+  createRequestTraceContext,
+} from "../observability/requestTrace.js";
 
 const DEFAULT_TIMEOUT_MS = 10000;
 
@@ -98,9 +103,11 @@ async function requestJson(path, { method, body } = {}) {
   const endpoints = resolveSaveEndpoints();
   const timeoutMs = resolveTimeoutMs();
   const token = await getAuthToken();
+  const trace = createRequestTraceContext();
   const headers = {
     "Content-Type": "application/json",
     ...getDevAuthHeaders(),
+    ...buildTraceHeaders(trace),
   };
   if (token) {
     headers.Authorization = `Bearer ${token}`;
@@ -125,7 +132,7 @@ async function requestJson(path, { method, body } = {}) {
         lastError = new Error("Endpoint not found");
         continue;
       }
-      return { response, data };
+      return { response, data, trace };
     } catch (error) {
       lastError = error;
     }
@@ -158,9 +165,10 @@ const buildFailure = (data, fallback, status, extras = {}) => ({
 
 export async function saveGameState(_userId, gameState, saveName = "Auto Save") {
   try {
+    const stateHash = computeSaveStateHash(gameState);
     const { response, data } = await requestJson("", {
       method: "POST",
-      body: { saveName, gameState },
+      body: { saveName, gameState, stateHash },
     });
 
     if (!response.ok || data?.ok === false) {
@@ -174,6 +182,7 @@ export async function saveGameState(_userId, gameState, saveName = "Auto Save") 
     return {
       success: true,
       saveId: data?.save?.id,
+      stateHash: data?.save?.state_hash || stateHash,
       data: data?.save,
     };
   } catch (error) {
@@ -186,11 +195,18 @@ export async function saveGameState(_userId, gameState, saveName = "Auto Save") 
   }
 }
 
-export async function updateGameState(_userId, saveId, gameState, saveName) {
+export async function updateGameState(
+  _userId,
+  saveId,
+  gameState,
+  saveName,
+  { expectedStateHash } = {},
+) {
   try {
+    const stateHash = computeSaveStateHash(gameState);
     const { response, data } = await requestJson(saveId, {
       method: "PUT",
-      body: { saveName, gameState },
+      body: { saveName, gameState, stateHash, expectedStateHash },
     });
 
     if (!response.ok || data?.ok === false) {
@@ -198,11 +214,15 @@ export async function updateGameState(_userId, saveId, gameState, saveName) {
         data,
         "Failed to update game state.",
         response.status,
+        {
+          conflict: data?.conflict || null,
+        },
       );
     }
 
     return {
       success: true,
+      stateHash: data?.save?.state_hash || stateHash,
       data: data?.save,
     };
   } catch (error) {
@@ -232,6 +252,7 @@ export async function loadGameState(_userId, saveId) {
     return {
       success: true,
       gameState: data?.save?.game_state,
+      stateHash: data?.save?.state_hash || null,
       saveName: data?.save?.save_name,
       createdAt: data?.save?.created_at,
       updatedAt: data?.save?.updated_at,
@@ -263,7 +284,12 @@ export async function listSaves() {
 
     return {
       success: true,
-      saves: Array.isArray(data?.saves) ? data.saves : [],
+      saves: Array.isArray(data?.saves)
+        ? data.saves.map((entry) => ({
+            ...entry,
+            state_hash: entry?.state_hash || null,
+          }))
+        : [],
     };
   } catch (error) {
     return {

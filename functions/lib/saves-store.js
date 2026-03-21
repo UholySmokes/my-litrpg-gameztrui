@@ -1,4 +1,5 @@
 const { resolveGameDbBackend, fileDb } = require("./game-db");
+const { computeSaveStateHash } = require("./save-versioning");
 
 let firebaseAdminApp = null;
 let firebaseAdminFirestore = null;
@@ -186,6 +187,7 @@ function buildSaveSlotVars({ saveId, saveName, gameState }) {
 			? gameState
 			: JSON.stringify(gameState && typeof gameState === "object" ? gameState : {});
 	const metadata = extractSaveSlotMetadata(stateJson);
+  const stateHash = metadata.stateHash || computeSaveStateHash(stateJson);
 	return {
 		id: String(saveId),
 		saveName: String(saveName),
@@ -204,7 +206,7 @@ function buildSaveSlotVars({ saveId, saveName, gameState }) {
 		runId: metadata.runId,
 		seq: metadata.seq,
 		tick: metadata.tick,
-		stateHash: metadata.stateHash,
+		stateHash,
 	};
 }
 
@@ -215,6 +217,7 @@ function mapDataconnectSave({ userId, slot }) {
 		user_id: String(userId || ""),
 		save_name: String(slot.saveName || "Auto Save"),
 		game_state: slot.gameStateJson,
+    state_hash: normalizeString(slot.stateHash) || computeSaveStateHash(slot.gameStateJson),
 		created_at: toIso(slot.createdAt),
 		updated_at: toIso(slot.updatedAt),
 	};
@@ -248,6 +251,7 @@ async function dcListSaves({ userId, limit }) {
 			save_name: row.save_name,
 			created_at: row.created_at,
 			updated_at: row.updated_at,
+      state_hash: row.state_hash,
 		}));
 }
 
@@ -352,6 +356,11 @@ function mapFirestoreSave(doc) {
 		save_name: String(data.save_name || "Auto Save"),
 		game_state:
 			typeof data.game_state === "string" ? data.game_state : data.game_state,
+    state_hash:
+      normalizeString(data.state_hash) ||
+      computeSaveStateHash(
+        typeof data.game_state === "string" ? data.game_state : JSON.stringify(data.game_state || {}),
+      ),
 		created_at: toIso(data.created_at),
 		updated_at: toIso(data.updated_at),
 	};
@@ -372,6 +381,7 @@ async function fireListSaves({ userId, limit }) {
 			save_name: row.save_name,
 			created_at: row.created_at,
 			updated_at: row.updated_at,
+      state_hash: row.state_hash,
 		}));
 }
 
@@ -389,10 +399,12 @@ async function fireGetSave({ userId, saveId }) {
 async function fireCreateSave({ saveId, userId, saveName, gameState, now }) {
 	const iso = now || nowIso();
 	const ts = firebaseAdminFirestore.Timestamp.fromDate(new Date(iso));
+  const stateHash = computeSaveStateHash(gameState);
 	const row = {
 		user_id: String(userId),
 		save_name: String(saveName),
 		game_state: gameState,
+    state_hash: stateHash,
 		created_at: ts,
 		updated_at: ts,
 	};
@@ -406,6 +418,7 @@ async function fireCreateSave({ saveId, userId, saveName, gameState, now }) {
 		user_id: String(userId),
 		save_name: String(saveName),
 		game_state: gameState,
+    state_hash: stateHash,
 		created_at: iso,
 		updated_at: iso,
 	};
@@ -421,9 +434,11 @@ async function fireUpdateSave({ userId, saveId, saveName, gameState, now }) {
 
 	const iso = now || nowIso();
 	const ts = firebaseAdminFirestore.Timestamp.fromDate(new Date(iso));
+  const stateHash = computeSaveStateHash(gameState);
 	await docRef.update({
 		save_name: String(saveName),
 		game_state: gameState,
+    state_hash: stateHash,
 		updated_at: ts,
 	});
 
@@ -431,6 +446,7 @@ async function fireUpdateSave({ userId, saveId, saveName, gameState, now }) {
 		...existing,
 		save_name: String(saveName),
 		game_state: gameState,
+    state_hash: stateHash,
 		updated_at: iso,
 	};
 }

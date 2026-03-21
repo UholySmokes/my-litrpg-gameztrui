@@ -130,7 +130,9 @@ describe("api router saves routes", () => {
 		expect(createResObj.statusCode).toBe(200);
 		expect(createResObj.body.ok).toBe(true);
 		const saveId = String(createResObj.body?.save?.id || "");
+		const stateHash = String(createResObj.body?.save?.state_hash || "");
 		expect(saveId).toHaveLength(36);
+    expect(stateHash).toHaveLength(8);
 
 		const getResObj = createRes();
 		await handleApiRequest(
@@ -144,6 +146,7 @@ describe("api router saves routes", () => {
 		expect(getResObj.body.ok).toBe(true);
 		expect(getResObj.body.save.id).toBe(saveId);
 		expect(getResObj.body.save.game_state.player.name).toBe("Traveler");
+    expect(getResObj.body.save.state_hash).toBe(stateHash);
 
 		const listResObj = createRes();
 		await handleApiRequest(
@@ -157,6 +160,7 @@ describe("api router saves routes", () => {
 		expect(listResObj.body.ok).toBe(true);
 		expect(listResObj.body.saves).toHaveLength(1);
 		expect(listResObj.body.saves[0].id).toBe(saveId);
+    expect(listResObj.body.saves[0].state_hash).toBe(stateHash);
 
 		const updateResObj = createRes();
 		await handleApiRequest(
@@ -165,6 +169,7 @@ describe("api router saves routes", () => {
 				url: `/api/saves/${saveId}`,
 				body: {
 					saveName: "Starter v2",
+          expectedStateHash: stateHash,
 					gameState: {
 						player: { name: "Traveler", level: 2 },
 						world: { id: "world-1", location: { current: "map-1" }, turnCount: 2 },
@@ -176,6 +181,7 @@ describe("api router saves routes", () => {
 		expect(updateResObj.statusCode).toBe(200);
 		expect(updateResObj.body.ok).toBe(true);
 		expect(updateResObj.body.save.id).toBe(saveId);
+    expect(updateResObj.body.save.state_hash).not.toBe(stateHash);
 
 		const deleteResObj = createRes();
 		await handleApiRequest(
@@ -231,6 +237,69 @@ describe("api router saves routes", () => {
 		expect(denied.statusCode).toBe(404);
 		expect(denied.body.errorCode).toBe("SAVE_NOT_FOUND");
 	});
+
+  it("rejects stale cloud-save updates with a conflict payload", async () => {
+    const created = createRes();
+    await handleApiRequest(
+      createReq({
+        method: "POST",
+        url: "/api/saves",
+        body: {
+          saveName: "Conflict Save",
+          gameState: {
+            player: { name: "Traveler", level: 1 },
+            world: { id: "world-1", location: { current: "map-1" } },
+          },
+        },
+      }),
+      created,
+    );
+
+    const saveId = String(created.body?.save?.id || "");
+    const stateHash = String(created.body?.save?.state_hash || "");
+
+    const firstUpdate = createRes();
+    await handleApiRequest(
+      createReq({
+        method: "PUT",
+        url: `/api/saves/${saveId}`,
+        body: {
+          saveName: "Conflict Save v2",
+          expectedStateHash: stateHash,
+          gameState: {
+            player: { name: "Traveler", level: 2 },
+            world: { id: "world-1", location: { current: "map-2" } },
+          },
+        },
+      }),
+      firstUpdate,
+    );
+    expect(firstUpdate.statusCode).toBe(200);
+
+    const staleUpdate = createRes();
+    await handleApiRequest(
+      createReq({
+        method: "PUT",
+        url: `/api/saves/${saveId}`,
+        body: {
+          saveName: "Conflict Save stale",
+          expectedStateHash: stateHash,
+          gameState: {
+            player: { name: "Traveler", level: 3 },
+            world: { id: "world-1", location: { current: "map-3" } },
+          },
+        },
+      }),
+      staleUpdate,
+    );
+
+    expect(staleUpdate.statusCode).toBe(409);
+    expect(staleUpdate.body.errorCode).toBe("SAVE_CONFLICT");
+    expect(staleUpdate.body.conflict.expectedStateHash).toBe(stateHash);
+    expect(staleUpdate.body.conflict.currentStateHash).toBe(
+      firstUpdate.body.save.state_hash,
+    );
+  });
 
 	it("rejects invalid game state payloads", async () => {
 		const res = createRes();

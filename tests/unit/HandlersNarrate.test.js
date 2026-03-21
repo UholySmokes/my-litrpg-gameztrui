@@ -91,6 +91,7 @@ describe("handlers narrate endpoints", () => {
     expect(typeof res.body.agentId).toBe("string");
     expect(res.body.agentId).toBe("narrator");
     expect(typeof res.body.backend).toBe("string");
+    expect(typeof res.body.provider).toBe("string");
     expect(typeof res.body.model).toBe("string");
   });
 
@@ -154,6 +155,7 @@ describe("handlers narrate endpoints", () => {
     expect(res.body.status).toBe("completed");
     expect(res.body.narrative).toContain("Dawn breaks");
     expect(res.body.outputHash).toBe("abc123");
+    expect(res.body.provider).toBe("firebase-genkit");
   });
 
   it("returns not found in narratePoll when run does not exist", async () => {
@@ -215,6 +217,7 @@ describe("handlers narrate endpoints", () => {
     // Generation trace: which agent, backend, and model handled the request
     expect(res.body.agentId).toBe("combat");
     expect(typeof res.body.backend).toBe("string");
+    expect(typeof res.body.provider).toBe("string");
     expect(typeof res.body.model).toBe("string");
     expect(res.body.mode).toBe("combat");
   });

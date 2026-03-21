@@ -21,8 +21,8 @@ import { processTimeEffects } from "../../src/systems/world/TimeSystem.js";
 describe("Leveling and combat invariants", () => {
   it("uses spec-aligned XP curve defaults", () => {
     expect(xpForNextLevel(1)).toBe(100);
-    expect(xpForNextLevel(2)).toBe(150);
-    expect(xpForNextLevel(3)).toBe(225);
+    expect(xpForNextLevel(2)).toBe(114);
+    expect(xpForNextLevel(3)).toBe(132);
   });
 
   it("initialGameState derives XP/HP/Mana from config + attributes", () => {

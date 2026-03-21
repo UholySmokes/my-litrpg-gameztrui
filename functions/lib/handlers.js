@@ -4,6 +4,7 @@ const { normalizeMode, buildDefaultSuggestions } = require("./agent-router");
 const auth = require("./auth");
 const runtime = require("./firebase-agents/runtime");
 const narrateRunsStore = require("./narrate-runs-store");
+const { normalizeNarrationPayload } = require("./narration-contract");
 
 const MOOD_PATTERNS = [
 	{ mood: "tense", patterns: [/danger/i, /threat/i, /ambush/i, /attack/i, /enemy/i, /looming/i] },
@@ -63,23 +64,20 @@ async function cleanupNarrateRuns() {
 
 function buildNarrativePayload(rawText, mode) {
 	const structured = tryParseStructured(rawText);
-	const narrative =
-		typeof structured?.narrative === "string" && structured.narrative.trim()
-			? structured.narrative.trim()
-			: String(rawText || "");
-	const mood =
-		typeof structured?.mood === "string" && structured.mood.trim()
-			? structured.mood.trim()
-			: inferMood(narrative);
-	const suggestions = Array.isArray(structured?.suggestions)
-		? structured.suggestions
-		: buildDefaultSuggestions(mode);
+	const normalized = normalizeNarrationPayload(
+    structured || { narrative: String(rawText || "") },
+    {
+      narrative: String(rawText || ""),
+      mood: inferMood(String(rawText || "")),
+      suggestions: buildDefaultSuggestions(mode),
+      provider: "firebase-genkit",
+      fallbackUsed: false,
+    },
+  );
 
 	return {
-		narrative,
-		mood,
-		suggestions,
-		outputHash: hashContent(narrative),
+		...normalized,
+		outputHash: hashContent(normalized.narrative),
 	};
 }
 
@@ -120,6 +118,7 @@ async function runNarration(body) {
 		agentId,
 		status: "completed",
 		backend: result?.backend || "firebase-genkit",
+		provider: result?.backend || "firebase-genkit",
 		fallbackUsed: Boolean(result?.fallbackUsed),
 		fallbackFrom: result?.fallbackFrom || undefined,
 		model: result?.model,
@@ -235,10 +234,12 @@ async function narrate(req, res) {
 			narrative: result.narrative,
 			mood: result.mood,
 			suggestions: result.suggestions,
+      provider: result.provider,
 			outputHash: result.outputHash,
 			mode: result.mode,
 			agentId: result.agentId,
 			backend: result.backend,
+      provider: result.provider,
 			fallbackUsed: result.fallbackUsed,
 			fallbackFrom: result.fallbackFrom,
 			model: result.model,
@@ -320,6 +321,7 @@ async function narrateStart(req, res) {
 				narrative: result.narrative,
 				mood: result.mood,
 				suggestions: result.suggestions,
+          provider: result.provider,
 				outputHash: result.outputHash,
 			},
 		});
@@ -335,6 +337,7 @@ async function narrateStart(req, res) {
 			narrative: result.narrative,
 			mood: result.mood,
 			suggestions: result.suggestions,
+      provider: result.provider,
 			outputHash: result.outputHash,
 			backend: result.backend,
 			fallbackUsed: result.fallbackUsed,
@@ -401,10 +404,17 @@ async function narratePoll(req, res) {
 
 		if (run.narrative) {
 			response.narrative = run.narrative;
-			response.mood = run.mood || inferMood(run.narrative);
-			response.suggestions = Array.isArray(run.suggestions)
-				? run.suggestions
-				: buildDefaultSuggestions(response.mode);
+			const normalized = normalizeNarrationPayload(run, {
+        narrative: run.narrative,
+        mood: run.mood || inferMood(run.narrative),
+        suggestions: buildDefaultSuggestions(response.mode),
+        provider: "firebase-genkit",
+        fallbackUsed: false,
+      });
+      response.mood = normalized.mood;
+      response.suggestions = normalized.suggestions;
+      response.provider = normalized.provider;
+      response.fallbackUsed = normalized.fallbackUsed;
 			response.outputHash = run.output_hash || hashContent(run.narrative);
 		}
 

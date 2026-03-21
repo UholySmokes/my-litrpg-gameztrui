@@ -24,6 +24,9 @@ lib/**/*.js.map
 !lib/bulk-gen-store-normalization.js
 !lib/bulk-gen-observability.js
 !lib/api-route-table.js
+!lib/save-versioning.js
+!lib/request-tracing.js
+!lib/narration-contract.js
 
 # TypeScript v1 declaration files
 typings/

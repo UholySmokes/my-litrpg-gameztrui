@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { computeSaveStateHash } = require("./save-versioning");
 
 const DEFAULT_DB_PATH = path.resolve(__dirname, "..", ".data", "game-db.json");
 
@@ -87,22 +88,30 @@ function listSaves({ userId, limit }) {
 			save_name: row.save_name,
 			created_at: row.created_at,
 			updated_at: row.updated_at,
+      state_hash: row.state_hash || computeSaveStateHash(row.game_state),
 		}));
 }
 
 function getSave({ userId, saveId }) {
 	const db = readDb();
-	return db.saves.find((row) => row.id === saveId && row.user_id === userId) || null;
+	const row = db.saves.find((entry) => entry.id === saveId && entry.user_id === userId);
+  if (!row) return null;
+  return {
+    ...row,
+    state_hash: row.state_hash || computeSaveStateHash(row.game_state),
+  };
 }
 
 function createSave({ saveId, userId, saveName, gameState, now }) {
 	const iso = now || nowIso();
 	const db = readDb();
+  const stateHash = computeSaveStateHash(gameState);
 	const row = {
 		id: saveId,
 		user_id: userId,
 		save_name: saveName,
 		game_state: gameState,
+    state_hash: stateHash,
 		created_at: iso,
 		updated_at: iso,
 	};
@@ -122,6 +131,7 @@ function updateSave({ userId, saveId, saveName, gameState, now }) {
 		...db.saves[idx],
 		save_name: saveName,
 		game_state: gameState,
+    state_hash: computeSaveStateHash(gameState),
 		updated_at: iso,
 	};
 	db.saves[idx] = updated;

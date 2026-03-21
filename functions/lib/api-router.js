@@ -1,6 +1,7 @@
 const { json } = require("./http");
 const { findApiRoute, normalizePath } = require("./api-route-table");
 const { checkRateLimit } = require("./rate-limit");
+const { createRequestTraceContext } = require("./request-tracing");
 
 const MAX_BODY_SIZE = 100 * 1024; // 100KB
 
@@ -9,6 +10,12 @@ function getRequestPath(req) {
 }
 
 async function handleApiRequest(req, res, options = {}) {
+  req.traceContext = createRequestTraceContext(req);
+  res.locals = {
+    ...(res.locals || {}),
+    traceContext: req.traceContext,
+  };
+
 	// Rate limit check
 	const rateResult = checkRateLimit(req);
 	if (!rateResult.allowed) {

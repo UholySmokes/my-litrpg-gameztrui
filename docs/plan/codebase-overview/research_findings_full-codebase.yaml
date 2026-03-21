@@ -640,7 +640,7 @@ supplemental_diagrams:
   - name: magic-systems-dependency-map
     path: docs/plan/codebase-overview/magic-systems-dependency-map.md
     purpose: "Durable Mermaid dependency map for spell content sources, runtime registries, mana and cooldown layers, combat resolution, and essence-weaving wiring"
-    last_updated: "2026-03-20"
+    last_updated: "2026-03-21"
     primary_files:
       - packages/game-core/src/systems/skills/SkillRegistry.js
       - packages/game-core/src/systems/skills/SpellStudySystem.js

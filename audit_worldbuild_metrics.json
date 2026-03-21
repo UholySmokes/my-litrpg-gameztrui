@@ -1,14 +1,16 @@
 {
-  "generatedAt": "2026-02-28T16:19:01.339Z",
+  "generatedAt": "2026-03-21T05:19:06.256Z",
   "counts": {
     "classCount": 30,
     "raceCount": 55,
     "classAbilityCount": 216,
     "raceAbilityCount": 55,
-    "totalSkills": 2246,
+    "totalSkills": 2247,
     "professionCount": 21,
+    "originCount": 10,
     "itemCount": 608,
-    "questCount": 29
+    "questCount": 30,
+    "openingSceneCount": 17
   },
   "classTierCounts": {
     "1": 6,
@@ -26,7 +28,7 @@
   "skillOwnerCounts": [
     [
       "universal",
-      274
+      275
     ],
     [
       "warrior",
@@ -240,7 +242,7 @@
     ],
     [
       "universal",
-      274
+      275
     ],
     [
       "profession",
@@ -786,9 +788,19 @@
   "questsWithFavoredClasses": 26,
   "questsWithFavoredRaces": 24,
   "questsWithFavoredProfessions": 0,
+  "questsWithFavoredOrigins": 14,
   "missingQuestFavoredClasses": [],
   "missingQuestFavoredRaces": [],
   "missingQuestFavoredProfessions": [],
+  "missingQuestFavoredOrigins": [],
+  "openingScenesWithFavoredClasses": 6,
+  "openingScenesWithFavoredRaces": 6,
+  "openingScenesWithFavoredProfessions": 0,
+  "openingScenesWithFavoredOrigins": 6,
+  "missingOpeningSceneFavoredClasses": [],
+  "missingOpeningSceneFavoredRaces": [],
+  "missingOpeningSceneFavoredProfessions": [],
+  "missingOpeningSceneFavoredOrigins": [],
   "missingQuestRewardItemCount": 0,
   "missingQuestRewardItemsSample": [],
   "manifests": {

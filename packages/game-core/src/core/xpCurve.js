@@ -1,20 +1,19 @@
+import {
+  DEFAULT_XP_BRACKETS,
+  getBalanceConfig,
+} from "../data/balance/balanceConfig.js";
 const SAFE_MAX = Number.MAX_SAFE_INTEGER;
 
 // Default bracket configuration (piecewise exponential)
 // Keep this aligned with system_specs.md unless the spec is updated.
-const defaultBrackets = [{ end: 1000, base: 100, growth: 1.5 }];
+const defaultBrackets = DEFAULT_XP_BRACKETS;
 
 function getBrackets(config) {
-  return config?.xpBrackets || defaultBrackets;
+  return getBalanceConfig(config).xpBrackets || defaultBrackets;
 }
 
 function getDeltaConfig(config) {
-  return {
-    bonusPerLevel: config?.xpBonusPerLevelDiff ?? 0.2, // +20% per level above player
-    malusPerLevel: config?.xpMalusPerLevelDiff ?? 0.1, // -10% per level below player
-    zeroBelow: config?.xpNoRewardBelowDelta ?? 10, // 0 XP if mob is >= this many levels below
-    minMultiplier: config?.xpMinMultiplier ?? 0, // floor multiplier
-  };
+  return getBalanceConfig(config).xpDelta;
 }
 
 function clampSafe(value) {

@@ -1,6 +1,11 @@
 import { xpForNextLevel } from "../core/xpCurve.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { createInitialWorldState } from "../world/WorldInitializer.js";
+import {
+  DEFAULT_ELEMENTAL_REACTIONS,
+  DEFAULT_XP_BRACKETS,
+  describeBalanceConfig,
+} from "./balance/balanceConfig.js";
 import * as saveCutover from "../../../../shared/save-cutover.js";
 
 const { GAME_STATE_VERSION } = saveCutover;
@@ -32,21 +37,21 @@ export const INITIAL_CONFIG = {
     layerD: true,
   },
 
-  xpBrackets: [
-    { end: 10,   base: 100,    growth: 1.15 }, // Tier 1: Tutorial/Early game
-    { end: 25,   base: 200,    growth: 1.18 }, // Tier 2: Early-mid
-    { end: 50,   base: 500,    growth: 1.20 }, // Tier 3: Mid game
-    { end: 100,  base: 1500,   growth: 1.22 }, // Tier 4: Late-mid
-    { end: 200,  base: 5000,   growth: 1.25 }, // Tier 5: Late game
-    { end: 350,  base: 20000,  growth: 1.15 }, // Tier 6: End game
-    { end: 500,  base: 50000,  growth: 1.10 }, // Tier 7: Post-game grind
-    { end: 1000, base: 100000, growth: 1.05 }, // Tier 8: Prestige/endless
-  ],
+  xpBrackets: DEFAULT_XP_BRACKETS,
   xpBonusPerLevelDiff: 0.2,
   xpMalusPerLevelDiff: 0.1,
   xpNoRewardBelowDelta: 10,
   xpMinMultiplier: 0.1,
+  combatLaneConfig: {
+    minLane: 1,
+    fallbackMaxLane: 3,
+    oneGapMultiplier: 0.85,
+    multiGapMultiplier: 0.7,
+  },
+  elementalReactions: DEFAULT_ELEMENTAL_REACTIONS,
 };
+
+INITIAL_CONFIG.balanceSummary = describeBalanceConfig(INITIAL_CONFIG);
 
 const INITIAL_ATTRIBUTES = {
   strength: 5,

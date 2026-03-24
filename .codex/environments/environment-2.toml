@@ -4,16 +4,16 @@ name = "my-litrpg-gameztrui"
 
 [setup]
 script = '''
-#!/usr/bin/env bash
+#!/usr/bin/ bash
 set -euo pipefail
 
-echo "[setup] Starting environment setup in $(pwd)"
+echo "[setup] Starting ironment setup in $(pwd)"
 
-if [ ! -f ".env.local" ] && [ -f ".env.example" ]; then
-  echo "[setup] Creating .env.local from .env.example"
-  cp ".env.example" ".env.local"
+if [ ! -f "..local" ] && [ -f "..example" ]; then
+  echo "[setup] Creating ..local from ..example"
+  cp "..example" "..local"
 else
-  echo "[setup] Skipping .env.local seed (already exists or no .env.example found)"
+  echo "[setup] Skipping ..local seed (already exists or no ..example found)"
 fi
 
 if command -v firebase >/dev/null 2>&1; then
@@ -35,14 +35,14 @@ echo "[setup] Setup complete"
 script = '''
 $ErrorActionPreference = "Stop"
 
-Write-Host "[setup] Starting environment setup in $(Get-Location)"
+Write-Host "[setup] Starting ironment setup in $(Get-Location)"
 
-if (-not (Test-Path ".env.local") -and (Test-Path ".env.example")) {
-  Write-Host "[setup] Creating .env.local from .env.example"
-  Copy-Item ".env.example" ".env.local"
+if (-not (Test-Path "..local") -and (Test-Path "..example")) {
+  Write-Host "[setup] Creating ..local from ..example"
+  Copy-Item "..example" "..local"
 }
 else {
-  Write-Host "[setup] Skipping .env.local seed (already exists or no .env.example found)"
+  Write-Host "[setup] Skipping ..local seed (already exists or no ..example found)"
 }
 
 if (Get-Command firebase -ErrorAction SilentlyContinue) {

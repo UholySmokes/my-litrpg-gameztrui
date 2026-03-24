@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { resolveGameDbBackend } = require("./game-db");
+const { createSupabaseServerClient } = require("./supabase");
 
 const DEFAULT_COLLECTION = "narrate_runs";
 const DEFAULT_FILE_PATH = path.resolve(
@@ -105,6 +106,17 @@ function getCollectionName() {
 	return getOptionalEnv("NARRATE_RUNS_COLLECTION") || DEFAULT_COLLECTION;
 }
 
+async function getSupabaseClient(accessToken = "") {
+	const client = await createSupabaseServerClient({
+		accessToken,
+		preferServiceRole: true,
+	});
+	if (!client) {
+		throw new Error("Supabase client is not configured.");
+	}
+	return client;
+}
+
 function getFirestoreDb() {
 	const { getApps, initializeApp, getFirestore } = getFirebaseAdminModules();
 	if (getApps().length === 0) {
@@ -202,6 +214,133 @@ async function firePurgeExpiredRuns() {
 	}
 	await batch.commit();
 	return count;
+}
+
+function mapSupabaseRun(row) {
+	if (!row || typeof row !== "object") return null;
+	return {
+		key: String(row.key || ""),
+		thread_id: String(row.thread_id || ""),
+		run_id: String(row.run_id || ""),
+		owner_id: String(row.owner_id || ""),
+		mode: String(row.mode || "exploration"),
+		status: String(row.status || "running"),
+		done: Boolean(row.done),
+		ok:
+			typeof row.ok === "boolean"
+				? row.ok
+				: row.done
+					? row.status === "completed"
+					: null,
+		narrative: typeof row.narrative === "string" ? row.narrative : undefined,
+		mood: typeof row.mood === "string" ? row.mood : undefined,
+		suggestions: Array.isArray(row.suggestions) ? row.suggestions : undefined,
+		provider: typeof row.provider === "string" ? row.provider : undefined,
+		fallback_used:
+			typeof row.fallback_used === "boolean" ? row.fallback_used : undefined,
+		output_hash:
+			typeof row.output_hash === "string" ? row.output_hash : undefined,
+		error_code:
+			typeof row.error_code === "string" ? row.error_code : undefined,
+		message: typeof row.message === "string" ? row.message : undefined,
+		created_at: toIso(row.created_at),
+		updated_at: toIso(row.updated_at),
+		expires_at: toIso(row.expires_at),
+	};
+}
+
+async function supabaseCreateRun({ threadId, runId, ownerId, mode, accessToken = "" }) {
+	const client = await getSupabaseClient(accessToken);
+	const key = normalizeRunKey(threadId, runId);
+	const now = new Date().toISOString();
+	const expiresAt = new Date(Date.now() + getTtlMs()).toISOString();
+	const payload = {
+		key,
+		thread_id: String(threadId),
+		run_id: String(runId),
+		owner_id: String(ownerId),
+		mode: String(mode || "exploration"),
+		status: "running",
+		done: false,
+		ok: null,
+		created_at: now,
+		updated_at: now,
+		expires_at: expiresAt,
+	};
+	const { error } = await client.from(getCollectionName()).upsert(payload, {
+		onConflict: "key",
+	});
+	if (error) throw error;
+	return payload;
+}
+
+async function supabaseUpdateRun({
+	threadId,
+	runId,
+	ownerId,
+	patch,
+	accessToken = "",
+}) {
+	const client = await getSupabaseClient(accessToken);
+	const key = normalizeRunKey(threadId, runId);
+	const next = {
+		updated_at: new Date().toISOString(),
+		expires_at: new Date(Date.now() + getTtlMs()).toISOString(),
+	};
+	if (Object.prototype.hasOwnProperty.call(patch, "status")) {
+		next.status = String(patch.status || "running");
+	}
+	if (Object.prototype.hasOwnProperty.call(patch, "done")) {
+		next.done = Boolean(patch.done);
+	}
+	if (Object.prototype.hasOwnProperty.call(patch, "ok")) {
+		next.ok =
+			typeof patch.ok === "boolean" ? patch.ok : patch.ok === null ? null : undefined;
+	}
+	if (typeof patch.mode === "string") next.mode = patch.mode;
+	if (typeof patch.narrative === "string") next.narrative = patch.narrative;
+	if (typeof patch.mood === "string") next.mood = patch.mood;
+	if (Array.isArray(patch.suggestions)) next.suggestions = patch.suggestions;
+	if (typeof patch.provider === "string") next.provider = patch.provider;
+	if (typeof patch.fallbackUsed === "boolean") next.fallback_used = patch.fallbackUsed;
+	if (typeof patch.outputHash === "string") next.output_hash = patch.outputHash;
+	if (typeof patch.errorCode === "string") next.error_code = patch.errorCode;
+	if (typeof patch.message === "string") next.message = patch.message;
+
+	const { data, error } = await client
+		.from(getCollectionName())
+		.update(next)
+		.eq("key", key)
+		.eq("owner_id", String(ownerId))
+		.select("*")
+		.maybeSingle();
+	if (error) throw error;
+	return mapSupabaseRun(data);
+}
+
+async function supabaseGetRun({ threadId, runId, ownerId, accessToken = "" }) {
+	const client = await getSupabaseClient(accessToken);
+	const key = normalizeRunKey(threadId, runId);
+	const { data, error } = await client
+		.from(getCollectionName())
+		.select("*")
+		.eq("key", key)
+		.eq("owner_id", String(ownerId))
+		.maybeSingle();
+	if (error) throw error;
+	return mapSupabaseRun(data);
+}
+
+async function supabasePurgeExpiredRuns({ accessToken = "" } = {}) {
+	const client = await getSupabaseClient(accessToken);
+	const cutoff = new Date().toISOString();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.delete()
+		.lte("expires_at", cutoff)
+		.select("key");
+	if (error) throw error;
+	return Array.isArray(data) ? data.length : 0;
 }
 
 function readFileDb() {
@@ -329,37 +468,46 @@ function fileGetRun({ threadId, runId, ownerId }) {
 	};
 }
 
-async function withBackend({ firestoreFn, fileFn }) {
+async function withBackend({ supabaseFn, firestoreFn, fileFn }) {
 	const backend = resolveGameDbBackend();
 	if (backend === "file") {
 		return fileFn();
 	}
+	if (backend === "supabase") {
+		return supabaseFn();
+	}
 	return firestoreFn();
 }
 
-async function createNarrateRun({ threadId, runId, ownerId, mode }) {
+async function createNarrateRun({ threadId, runId, ownerId, mode, accessToken = "" }) {
 	return withBackend({
+		supabaseFn: () =>
+			supabaseCreateRun({ threadId, runId, ownerId, mode, accessToken }),
 		firestoreFn: () => fireCreateRun({ threadId, runId, ownerId, mode }),
 		fileFn: () => fileCreateRun({ threadId, runId, ownerId, mode }),
 	});
 }
 
-async function updateNarrateRun({ threadId, runId, ownerId, patch }) {
+async function updateNarrateRun({ threadId, runId, ownerId, patch, accessToken = "" }) {
 	return withBackend({
+		supabaseFn: () =>
+			supabaseUpdateRun({ threadId, runId, ownerId, patch, accessToken }),
 		firestoreFn: () => fireUpdateRun({ threadId, runId, ownerId, patch }),
 		fileFn: () => fileUpdateRun({ threadId, runId, ownerId, patch }),
 	});
 }
 
-async function getNarrateRun({ threadId, runId, ownerId }) {
+async function getNarrateRun({ threadId, runId, ownerId, accessToken = "" }) {
 	return withBackend({
+		supabaseFn: () => supabaseGetRun({ threadId, runId, ownerId, accessToken }),
 		firestoreFn: () => fireGetRun({ threadId, runId, ownerId }),
 		fileFn: () => fileGetRun({ threadId, runId, ownerId }),
 	});
 }
 
-async function purgeExpiredNarrateRuns() {
+async function purgeExpiredNarrateRuns({ accessToken = "" } = {}) {
 	return withBackend({
+		supabaseFn: () => supabasePurgeExpiredRuns({ accessToken }),
 		firestoreFn: () => firePurgeExpiredRuns(),
 		fileFn: () => filePurgeExpiredRuns(),
 	});

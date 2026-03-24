@@ -1,6 +1,7 @@
 let firebaseAdminAppModule = null;
 let firebaseAdminAuthModule = null;
 let firebaseAdminLoadAttempted = false;
+const { getSupabaseUser } = require("./supabase");
 
 function loadFirebaseAdminModules() {
 	if (firebaseAdminLoadAttempted) {
@@ -92,6 +93,14 @@ function getDevUser(req) {
 	return null;
 }
 
+function setAuthContext(req, patch) {
+	if (!req || typeof req !== "object") return;
+	req.authContext = {
+		...(req.authContext || {}),
+		...(patch && typeof patch === "object" ? patch : {}),
+	};
+}
+
 function ensureFirebaseApp() {
 	const modules = loadFirebaseAdminModules();
 	if (!modules) return false;
@@ -122,6 +131,10 @@ async function getFirebaseUser(req) {
 		const { getAuth } = modules.auth;
 		const decoded = await getAuth().verifyIdToken(token);
 		if (!decoded || !decoded.uid) return null;
+		setAuthContext(req, {
+			accessToken: token,
+			provider: "firebase",
+		});
 		return {
 			id: String(decoded.uid),
 			email:
@@ -136,9 +149,30 @@ async function getFirebaseUser(req) {
 	}
 }
 
+async function getSupabaseAuthUser(req) {
+	const token = extractBearerToken(req);
+	if (!token) return null;
+	const user = await getSupabaseUser(token);
+	if (!user) return null;
+	setAuthContext(req, {
+		accessToken: token,
+		provider: "supabase",
+	});
+	return user;
+}
+
 async function getUserFromRequest(req) {
 	const devUser = getDevUser(req);
-	if (devUser) return devUser;
+	if (devUser) {
+		setAuthContext(req, {
+			accessToken: "",
+			provider: "dev",
+		});
+		return devUser;
+	}
+
+	const supabaseUser = await getSupabaseAuthUser(req);
+	if (supabaseUser) return supabaseUser;
 
 	const firebaseUser = await getFirebaseUser(req);
 	if (firebaseUser) return firebaseUser;

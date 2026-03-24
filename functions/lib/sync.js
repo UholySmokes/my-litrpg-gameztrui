@@ -333,8 +333,8 @@ async function requireUser(req, res) {
 	return null;
 }
 
-async function loadRunState({ ownerId, runId, manifest, allowCreate = false }) {
-	const run = await syncStore.getRun({ ownerId, runId });
+async function loadRunState({ ownerId, accessToken = "", runId, manifest, allowCreate = false }) {
+	const run = await syncStore.getRun({ ownerId, runId, accessToken });
 	if (run && run.state) {
 		return {
 			state: normalizeStoredState(run.state, { runId, manifest }),
@@ -352,6 +352,7 @@ async function loadRunState({ ownerId, runId, manifest, allowCreate = false }) {
 		ownerId,
 		runId,
 		state: initial,
+		accessToken,
 	});
 	return {
 		state: normalizeStoredState(stored.state, { runId, manifest }),
@@ -382,7 +383,7 @@ function buildAcceptResult({ commit, state, duplicate = false }) {
 	};
 }
 
-async function processCommitStream({ ownerId, commits, manifest }) {
+async function processCommitStream({ ownerId, accessToken = "", commits, manifest }) {
 	if (!Array.isArray(commits) || commits.length === 0) {
 		return {
 			ok: false,
@@ -394,6 +395,7 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 	const runId = commits[0].runId;
 	const loaded = await loadRunState({
 		ownerId,
+		accessToken,
 		runId,
 		manifest,
 		allowCreate: true,
@@ -431,6 +433,7 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 			ownerId,
 			runId,
 			commitId: commit.id,
+			accessToken,
 		});
 		if (existingEvent) {
 			if (existingEvent.accepted) {
@@ -457,6 +460,7 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 			await syncStore.appendEvent({
 				ownerId,
 				runId,
+				accessToken,
 				event: {
 					commit_id: commit.id,
 					client_seq: commit.clientSeq,
@@ -482,6 +486,7 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 			await syncStore.appendEvent({
 				ownerId,
 				runId,
+				accessToken,
 				event: {
 					commit_id: commit.id,
 					client_seq: commit.clientSeq,
@@ -512,6 +517,7 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 			await syncStore.appendEvent({
 				ownerId,
 				runId,
+				accessToken,
 				event: {
 					commit_id: commit.id,
 					client_seq: commit.clientSeq,
@@ -541,10 +547,12 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 			runId,
 			state,
 			saveSlotId,
+			accessToken,
 		});
 		await syncStore.appendEvent({
 			ownerId,
 			runId,
+			accessToken,
 			event: {
 				commit_id: commit.id,
 				client_seq: commit.clientSeq,
@@ -563,6 +571,7 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 				ownerId,
 				saveSlotId,
 				runState: state,
+				accessToken,
 			});
 			saveSlotId = normalizeString(snapshot.saveSlotId);
 			await syncStore.putRun({
@@ -570,6 +579,7 @@ async function processCommitStream({ ownerId, commits, manifest }) {
 				runId,
 				state,
 				saveSlotId,
+				accessToken,
 			});
 		}
 
@@ -619,9 +629,10 @@ async function commit(req, res) {
 		try {
 			const user = await requireUser(req, res);
 			if (!user) return;
+			const accessToken = req?.authContext?.accessToken || "";
 			if (!enforceCanaryAccess(res, user)) return;
 			if (!enforceLimitedRolloutAccess(res, user)) return;
-			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			const gate = await enforceProgressReset(res, { ownerId: user.id, accessToken });
 			if (!gate.ok) return;
 
 			const body = await readJsonBody(req);
@@ -637,6 +648,7 @@ async function commit(req, res) {
 			const manifest = getWorldManifest();
 			const result = await processCommitStream({
 				ownerId: user.id,
+				accessToken,
 				commits: [normalized.commit],
 				manifest,
 			});
@@ -666,9 +678,10 @@ async function commitBatch(req, res) {
 		try {
 			const user = await requireUser(req, res);
 			if (!user) return;
+			const accessToken = req?.authContext?.accessToken || "";
 			if (!enforceCanaryAccess(res, user)) return;
 			if (!enforceLimitedRolloutAccess(res, user)) return;
-			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			const gate = await enforceProgressReset(res, { ownerId: user.id, accessToken });
 			if (!gate.ok) return;
 
 			const body = await readJsonBody(req);
@@ -684,6 +697,7 @@ async function commitBatch(req, res) {
 			const manifest = getWorldManifest();
 			const result = await processCommitStream({
 				ownerId: user.id,
+				accessToken,
 				commits: normalized.commits,
 				manifest,
 			});
@@ -839,9 +853,10 @@ async function action(req, res) {
 		try {
 			const user = await requireUser(req, res);
 			if (!user) return;
+			const accessToken = req?.authContext?.accessToken || "";
 			if (!enforceCanaryAccess(res, user)) return;
 			if (!enforceLimitedRolloutAccess(res, user)) return;
-			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			const gate = await enforceProgressReset(res, { ownerId: user.id, accessToken });
 			if (!gate.ok) return;
 
 			const manifest = getWorldManifest();
@@ -858,6 +873,7 @@ async function action(req, res) {
 
 			const result = await processCommitStream({
 				ownerId: user.id,
+				accessToken,
 				commits: [normalized.commit],
 				manifest,
 			});
@@ -886,9 +902,10 @@ async function command(req, res) {
 		try {
 			const user = await requireUser(req, res);
 			if (!user) return;
+			const accessToken = req?.authContext?.accessToken || "";
 			if (!enforceCanaryAccess(res, user)) return;
 			if (!enforceLimitedRolloutAccess(res, user)) return;
-			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			const gate = await enforceProgressReset(res, { ownerId: user.id, accessToken });
 			if (!gate.ok) return;
 
 			const manifest = getWorldManifest();
@@ -904,6 +921,7 @@ async function command(req, res) {
 
 			const result = await processCommitStream({
 				ownerId: user.id,
+				accessToken,
 				commits: [normalized.commit],
 				manifest,
 			});
@@ -932,9 +950,10 @@ async function pull(req, res) {
 		try {
 			const user = await requireUser(req, res);
 			if (!user) return;
+			const accessToken = req?.authContext?.accessToken || "";
 			if (!enforceCanaryAccess(res, user)) return;
 			if (!enforceLimitedRolloutAccess(res, user)) return;
-			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			const gate = await enforceProgressReset(res, { ownerId: user.id, accessToken });
 			if (!gate.ok) return;
 
 			const runId = normalizeString(req?.query?.runId);
@@ -949,6 +968,7 @@ async function pull(req, res) {
 			const manifest = getWorldManifest();
 			const loaded = await loadRunState({
 				ownerId: user.id,
+				accessToken,
 				runId,
 				manifest,
 				allowCreate: false,
@@ -968,6 +988,7 @@ async function pull(req, res) {
 				runId,
 				afterSeq,
 				limit,
+				accessToken,
 			});
 			return json(res, 200, {
 				ok: true,
@@ -1001,9 +1022,10 @@ async function replay(req, res) {
 		try {
 			const user = await requireUser(req, res);
 			if (!user) return;
+			const accessToken = req?.authContext?.accessToken || "";
 			if (!enforceCanaryAccess(res, user)) return;
 			if (!enforceLimitedRolloutAccess(res, user)) return;
-			const gate = await enforceProgressReset(res, { ownerId: user.id });
+			const gate = await enforceProgressReset(res, { ownerId: user.id, accessToken });
 			if (!gate.ok) return;
 
 			const runId = normalizeString(req?.query?.runId);
@@ -1018,6 +1040,7 @@ async function replay(req, res) {
 			const manifest = getWorldManifest();
 			const loaded = await loadRunState({
 				ownerId: user.id,
+				accessToken,
 				runId,
 				manifest,
 				allowCreate: false,
@@ -1038,6 +1061,7 @@ async function replay(req, res) {
 				runId,
 				afterSeq,
 				limit,
+				accessToken,
 			});
 			const timeline = events
 				.map((event) => ({

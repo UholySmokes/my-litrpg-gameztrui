@@ -88,6 +88,7 @@ async function handleResetLegacyRequest(req, res) {
 		const result = await resetLegacyProgress({
 			ownerId: user.id,
 			displayName: user.displayName || user.email || "Traveler",
+			accessToken: req?.authContext?.accessToken || "",
 		});
 
 		return json(res, 200, {
@@ -117,7 +118,8 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 			});
 		}
 
-		const gate = await enforceProgressReset(res, { ownerId: user.id });
+		const accessToken = req?.authContext?.accessToken || "";
+		const gate = await enforceProgressReset(res, { ownerId: user.id, accessToken });
 		if (!gate.ok) return;
 
 		const method = String(req?.method || "GET").toUpperCase();
@@ -128,6 +130,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 			const saves = await listSaves({
 				userId: user.id,
 				limit: MAX_SAVES_RETURNED,
+				accessToken,
 			});
 			return json(res, 200, {
 				ok: true,
@@ -147,6 +150,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 			const row = await getSave({
 				userId: user.id,
 				saveId: normalizedSaveId,
+				accessToken,
 			});
 			if (!row) {
 				return json(res, 404, {
@@ -189,6 +193,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 				saveName,
 				gameState,
 				now,
+				accessToken,
 			});
 
 			return json(res, 200, {
@@ -239,6 +244,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
       const existing = await getSave({
         userId: user.id,
         saveId: normalizedSaveId,
+        accessToken,
       });
       if (!existing) {
         return json(res, 404, {
@@ -263,6 +269,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 				saveName,
 				gameState,
 				now,
+				accessToken,
 			});
 			if (!row) {
 				return json(res, 404, {
@@ -296,6 +303,7 @@ async function handleSavesRequest(req, res, { saveId = "" } = {}) {
 			const removed = await deleteSave({
 				userId: user.id,
 				saveId: normalizedSaveId,
+				accessToken,
 			});
 
 			if (!removed) {

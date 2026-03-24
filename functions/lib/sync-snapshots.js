@@ -1,6 +1,4 @@
 const crypto = require("crypto");
-const { getDataConnect } = require("firebase-admin/data-connect");
-const dataconnectGenerated = require("../src/dataconnect-admin-generated");
 const { getSave, createSave, updateSave } = require("./saves-store");
 
 const GUID_REGEX =
@@ -177,6 +175,8 @@ function buildImpersonation(ownerId) {
 }
 
 async function persistWithDataConnect({ ownerId, saveSlotId, runState }) {
+	const { getDataConnect } = require("firebase-admin/data-connect");
+	const dataconnectGenerated = require("../src/dataconnect-admin-generated");
 	const vars = buildSaveSlotVariables({ saveSlotId, runState });
 	const options = buildImpersonation(ownerId);
 	const dc = getDataConnect(dataconnectGenerated.connectorConfig);
@@ -190,9 +190,9 @@ async function persistWithDataConnect({ ownerId, saveSlotId, runState }) {
 	};
 }
 
-async function persistWithFallbackStore({ ownerId, saveSlotId, runState }) {
+async function persistWithFallbackStore({ ownerId, saveSlotId, runState, accessToken = "" }) {
 	const vars = buildSaveSlotVariables({ saveSlotId, runState });
-	const existing = await getSave({ userId: ownerId, saveId: vars.id });
+	const existing = await getSave({ userId: ownerId, saveId: vars.id, accessToken });
 	if (existing) {
 		await updateSave({
 			userId: ownerId,
@@ -200,6 +200,7 @@ async function persistWithFallbackStore({ ownerId, saveSlotId, runState }) {
 			saveName: vars.saveName,
 			gameState: vars.gameStateJson,
 			now: new Date().toISOString(),
+			accessToken,
 		});
 	} else {
 		await createSave({
@@ -208,6 +209,7 @@ async function persistWithFallbackStore({ ownerId, saveSlotId, runState }) {
 			saveName: vars.saveName,
 			gameState: vars.gameStateJson,
 			now: new Date().toISOString(),
+			accessToken,
 		});
 	}
 	return {
@@ -216,10 +218,10 @@ async function persistWithFallbackStore({ ownerId, saveSlotId, runState }) {
 	};
 }
 
-async function persistRunSnapshot({ ownerId, saveSlotId, runState }) {
+async function persistRunSnapshot({ ownerId, saveSlotId, runState, accessToken = "" }) {
 	const preference = resolveSnapshotPreference();
 	if (preference === "fallback") {
-		return persistWithFallbackStore({ ownerId, saveSlotId, runState });
+		return persistWithFallbackStore({ ownerId, saveSlotId, runState, accessToken });
 	}
 
 	try {
@@ -229,6 +231,7 @@ async function persistRunSnapshot({ ownerId, saveSlotId, runState }) {
 			ownerId,
 			saveSlotId,
 			runState,
+			accessToken,
 		});
 		return {
 			...fallback,

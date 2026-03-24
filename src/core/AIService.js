@@ -278,7 +278,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
 
         if (response.status === 401 || response.status === 403) {
           throw new Error(
-            "Narrator API requires sign-in. Use Firebase Google sign-in, or set VITE_DEV_USER_ID for local dev headers.",
+            "Narrator API requires sign-in. Use cloud sign-in, or set VITE_DEV_USER_ID for local dev headers.",
           );
         }
 

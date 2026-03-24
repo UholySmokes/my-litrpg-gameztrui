@@ -84,7 +84,8 @@ function writeFileDb(db) {
 }
 
 async function withBackend({ firestoreFn, fileFn }) {
-	if (resolveGameDbBackend() === "file") {
+	const backend = resolveGameDbBackend();
+	if (backend === "file" || backend === "supabase") {
 		return fileFn();
 	}
 	return firestoreFn();

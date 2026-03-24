@@ -54,9 +54,9 @@ function resolveNarratorAgentId(mode) {
 	return "narrator";
 }
 
-async function cleanupNarrateRuns() {
+async function cleanupNarrateRuns(options = {}) {
 	try {
-		await narrateRunsStore.purgeExpiredNarrateRuns();
+		await narrateRunsStore.purgeExpiredNarrateRuns(options);
 	} catch {
 		// Cleanup is best-effort.
 	}
@@ -130,7 +130,7 @@ async function runNarration(body) {
 async function health(_req, res) {
 	return json(res, 200, {
 		ok: true,
-		service: "void-verse-firebase-api",
+		service: "void-verse-vercel-api",
 	});
 }
 
@@ -234,7 +234,6 @@ async function narrate(req, res) {
 			narrative: result.narrative,
 			mood: result.mood,
 			suggestions: result.suggestions,
-      provider: result.provider,
 			outputHash: result.outputHash,
 			mode: result.mode,
 			agentId: result.agentId,
@@ -260,8 +259,9 @@ async function narrateStart(req, res) {
 	try {
 		const user = await requireAuthenticatedUser(req, res);
 		if (!user) return;
+		const accessToken = req?.authContext?.accessToken || "";
 
-		await cleanupNarrateRuns();
+		await cleanupNarrateRuns({ accessToken });
 		const body = await readJsonBody(req);
 		const mode = normalizeMode(body?.mode);
 		const threadId = crypto.randomUUID();
@@ -272,6 +272,7 @@ async function narrateStart(req, res) {
 			runId,
 			ownerId: user.id,
 			mode,
+			accessToken,
 		});
 
 		let result;
@@ -287,6 +288,7 @@ async function narrateStart(req, res) {
 				threadId,
 				runId,
 				ownerId: user.id,
+				accessToken,
 				patch: {
 					status: "failed",
 					done: true,
@@ -313,6 +315,7 @@ async function narrateStart(req, res) {
 			threadId,
 			runId,
 			ownerId: user.id,
+			accessToken,
 			patch: {
 				status: "completed",
 				done: true,
@@ -359,8 +362,9 @@ async function narratePoll(req, res) {
 	try {
 		const user = await requireAuthenticatedUser(req, res);
 		if (!user) return;
+		const accessToken = req?.authContext?.accessToken || "";
 
-		await cleanupNarrateRuns();
+		await cleanupNarrateRuns({ accessToken });
 		const threadId = req?.query?.threadId;
 		const runId = req?.query?.runId;
 		if (!threadId || !runId) {
@@ -375,6 +379,7 @@ async function narratePoll(req, res) {
 			threadId: String(threadId),
 			runId: String(runId),
 			ownerId: user.id,
+			accessToken,
 		});
 		if (!run) {
 			return json(res, 404, {

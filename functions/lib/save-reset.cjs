@@ -9,9 +9,9 @@ function normalizeVersion(value) {
 	return Math.max(0, Number(value) || 0);
 }
 
-async function getProgressResetStatus({ ownerId }) {
+async function getProgressResetStatus({ ownerId, accessToken = "" }) {
 	const migrationVersion = normalizeVersion(
-		await syncStore.getMigrationVersion({ ownerId }),
+		await syncStore.getMigrationVersion({ ownerId, accessToken }),
 	);
 	return {
 		migrationVersion,
@@ -31,8 +31,8 @@ function respondProgressResetRequired(res, status) {
 	});
 }
 
-async function enforceProgressReset(res, { ownerId }) {
-	const status = await getProgressResetStatus({ ownerId });
+async function enforceProgressReset(res, { ownerId, accessToken = "" }) {
+	const status = await getProgressResetStatus({ ownerId, accessToken });
 	if (!status.needsReset) {
 		return {
 			ok: true,
@@ -46,13 +46,14 @@ async function enforceProgressReset(res, { ownerId }) {
 	};
 }
 
-async function resetLegacyProgress({ ownerId, displayName = "" }) {
-	const saveResult = await savesStore.purgeUserProgress({ ownerId });
-	const syncResult = await syncStore.purgeUserProgress({ ownerId });
+async function resetLegacyProgress({ ownerId, displayName = "", accessToken = "" }) {
+	const saveResult = await savesStore.purgeUserProgress({ ownerId, accessToken });
+	const syncResult = await syncStore.purgeUserProgress({ ownerId, accessToken });
 	await syncStore.markMigrationVersion({
 		ownerId,
 		version: SAVE_RESET_EPOCH,
 		displayName,
+		accessToken,
 	});
 	return {
 		migrationVersion: SAVE_RESET_EPOCH,

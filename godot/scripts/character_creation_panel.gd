@@ -348,20 +348,26 @@ func _render_review_step(data: Dictionary) -> void:
 	lines.append("Selected Passive Skills: %s" % _join_or_none(passive_skill_names))
 
 	var system_granted: Dictionary = data.get("systemGrantedSkills", {})
+	var system_granted_entries: Array = (
+		Array(system_granted.get("active", []))
+		+ Array(system_granted.get("passive", []))
+	)
 	lines.append(
 		"System Granted Skills: %s"
 		% _join_or_none(
-			_skill_name_list(Array(system_granted.get("active", [])))
-			+ _skill_name_list(Array(system_granted.get("passive", [])))
+			_skill_name_list(system_granted_entries)
 		)
 	)
 
 	var profession_granted: Dictionary = data.get("professionGrantedSkills", {})
+	var profession_granted_entries: Array = (
+		Array(profession_granted.get("active", []))
+		+ Array(profession_granted.get("passive", []))
+	)
 	lines.append(
 		"Profession Granted Skills: %s"
 		% _join_or_none(
-			_skill_name_list(Array(profession_granted.get("active", [])))
-			+ _skill_name_list(Array(profession_granted.get("passive", [])))
+			_skill_name_list(profession_granted_entries)
 		)
 	)
 
@@ -583,13 +589,50 @@ func _display_text(value: String, fallback: String) -> String:
 
 func _skill_name_list(entries: Array) -> Array:
 	var names: Array = []
+	var seen: Dictionary = {} # id -> true
+	var name_counts: Dictionary = {} # name -> count
+	var resolved: Array = [] # [{name, source, id, has_id}]
 	for raw in entries:
 		if typeof(raw) != TYPE_DICTIONARY:
 			continue
-		var name := String((raw as Dictionary).get("name", "")).strip_edges()
+		var entry := raw as Dictionary
+		var entry_id := String(entry.get("id", "")).strip_edges()
+		var name := String(entry.get("name", "")).strip_edges()
+		if name.is_empty() and not entry_id.is_empty():
+			name = entry_id
 		if name.is_empty():
 			continue
-		names.append(name)
+
+		var dedupe_key := entry_id if not entry_id.is_empty() else ("name:" + name.to_lower())
+		if seen.has(dedupe_key):
+			continue
+		seen[dedupe_key] = true
+
+		var owner_type := String(entry.get("source", entry.get("ownerType", ""))).strip_edges().to_lower()
+		if owner_type == "universal":
+			owner_type = "general"
+
+		resolved.append({
+			"name": name,
+			"source": owner_type,
+			"id": entry_id,
+			"has_id": not entry_id.is_empty(),
+		})
+		name_counts[name] = int(name_counts.get(name, 0)) + 1
+
+	for item in resolved:
+		var n := String(item.get("name", ""))
+		if int(name_counts.get(n, 0)) <= 1:
+			names.append(n)
+			continue
+		var src := String(item.get("source", ""))
+		if not src.is_empty():
+			names.append("%s (%s)" % [n, src])
+			continue
+		if bool(item.get("has_id", false)):
+			names.append("%s [%s]" % [n, String(item.get("id", ""))])
+		else:
+			names.append(n)
 	return names
 
 

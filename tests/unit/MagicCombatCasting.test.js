@@ -7,6 +7,36 @@ import {
 } from "../../packages/game-core/src/systems/combat/CombatSystem.js";
 
 describe("Combat casting", () => {
+  it("routes named mage spells through unified magic state in combat", () => {
+    const engaged = startCombat({
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        class: "mage",
+        hp: { current: 100, max: 100 },
+        mana: { current: 80, max: 80 },
+        magic: {
+          ...initialGameState.player.magic,
+          mana: { current: 80, max: 80 },
+          strain: { current: 0, max: 100, state: "steady" },
+          resonance: { current: 0, max: 100, state: "quiet" },
+        },
+      },
+      world: { ...initialGameState.world, turnCount: 0 },
+    }, ["goblin"]);
+
+    const cast = executeAction(engaged, {
+      type: "attack",
+      enemyIndex: 0,
+      skillId: "fireball",
+    });
+
+    expect(cast.success).toBe(true);
+    expect(cast.state.player.magic.strain.current).toBeGreaterThan(0);
+    expect(cast.state.player.magic.resonance.current).toBeGreaterThan(0);
+    expect(cast.state.player.mana.current).toBeLessThan(80);
+  });
+
   it("prepares and casts unified magic in combat", () => {
     const engaged = startCombat({
       ...initialGameState,
@@ -40,6 +70,7 @@ describe("Combat casting", () => {
     expect(cast.success).toBe(true);
     expect(cast.state.player.magic.prepared).toBeNull();
     expect(cast.state.player.magic.strain.current).toBeGreaterThan(0);
+    expect(cast.state.player.magic.resonance.current).toBeGreaterThan(0);
     expect(cast.state.player.mana.current).toBeLessThan(60);
   });
 

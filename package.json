@@ -98,6 +98,7 @@
     "@opentelemetry/resources": "^1.25.1",
     "@opentelemetry/sdk-node": "^0.52.0",
     "@opentelemetry/semantic-conventions": "^1.25.1",
+    "@supabase/supabase-js": "^2.100.0",
     "@voidverse/game-core": "workspace:*",
     "@voidverse/game-schemas": "workspace:*",
     "dotenv": "^17.2.4",

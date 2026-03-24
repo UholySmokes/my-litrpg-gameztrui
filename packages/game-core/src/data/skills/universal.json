@@ -7,11 +7,17 @@
     "description": "A survivable seed of Void-purity, filtered through space and time. Required to endure and shape true Void workings.",
     "level": 1,
     "isMagic": true,
-    "tags": ["void", "voidspark", "magic"],
+    "tags": [
+      "void",
+      "voidspark",
+      "magic"
+    ],
     "template": {
       "category": "Voidverse Magic",
       "function": "utility",
-      "elements": ["space"],
+      "elements": [
+        "space"
+      ],
       "synergies": [
         "Unlocks Void techniques that would otherwise be lethal.",
         "Pairs with Spell Study and Essence Weaving (space/time patterns).",
@@ -98,703 +104,2922 @@
   },
   {
     "id": "universal_flame_strike",
-    "name": "Flame Strike",
+    "name": "Ashen Brand",
     "type": "active",
     "class": "universal",
-    "description": "Flame Strike delivers a focused hit. It scorches targets with fire.",
+    "description": "Brand the target with a compact fire seal that bites on impact and leaves a stubborn burn behind.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 3
+    "cooldown": 3,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "strike"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_burst",
-    "name": "Flame Burst",
+    "name": "Backdraft Bloom",
     "type": "active",
     "class": "universal",
-    "description": "Flame Burst erupts in a short-range blast. It scorches targets with fire.",
+    "description": "Collapse a pocket of superheated air at close range, blasting nearby foes with a violent backdraft.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "burst"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.2
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_lance",
-    "name": "Flame Lance",
+    "name": "Pyre Skewer",
     "type": "active",
     "class": "universal",
-    "description": "Flame Lance fires a piercing line attack. It scorches targets with fire.",
+    "description": "Drive a narrow column of fire through the line, scorching everything caught behind the first point of contact.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "lance"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.25
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_wave",
-    "name": "Flame Wave",
+    "name": "Cauterizing Sweep",
     "type": "active",
     "class": "universal",
-    "description": "Flame Wave sweeps outward in a wide arc. It scorches targets with fire.",
+    "description": "Kick a low sweeping wall of flame across the battlefield to clip clustered enemies and deny space.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "wave"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_pulse",
-    "name": "Flame Pulse",
+    "name": "Emberlock Beat",
     "type": "active",
     "class": "universal",
-    "description": "Flame Pulse emits a rhythmic shock. It scorches targets with fire.",
+    "description": "Release a heartbeat-like fire shock that catches enemies in rhythm and keeps burn damage rolling.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "pulse"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.08
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_nova",
-    "name": "Flame Nova",
+    "name": "Furnace Halo",
     "type": "active",
     "class": "universal",
-    "description": "Flame Nova detonates in an expanding ring. It scorches targets with fire.",
+    "description": "Detonate a ring of furnace flame around yourself, punishing swarms that close the distance.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 8
+    "cooldown": 8,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "nova"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_torrent",
-    "name": "Flame Torrent",
+    "name": "Salamander Jet",
     "type": "active",
     "class": "universal",
-    "description": "Flame Torrent unleashes a sustained stream. It scorches targets with fire.",
+    "description": "Channel a sustained stream of hungry fire that chews through guard and forces enemies to keep moving.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "torrent"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.18
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_step",
-    "name": "Flame Step",
+    "name": "Cinder Skip",
     "type": "active",
     "class": "universal",
-    "description": "Flame Step blinks forward into an attack. It scorches targets with fire.",
+    "description": "Flash through a burst of cinders and reappear inside striking range with your next hit already ignited.",
     "level": 1,
     "manaCost": 11,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "step"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_cleave",
-    "name": "Flame Cleave",
+    "name": "Hearthrend Arc",
     "type": "active",
     "class": "universal",
-    "description": "Flame Cleave cuts through multiple foes. It scorches targets with fire.",
+    "description": "Carve a broad incandescent arc that licks across multiple bodies and starts several fires at once.",
     "level": 1,
     "manaCost": 16,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "cleave"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.12
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_flame_spear",
-    "name": "Flame Spear",
+    "name": "Magma Impaler",
     "type": "active",
     "class": "universal",
-    "description": "Flame Spear launches a long-range thrust. It scorches targets with fire.",
+    "description": "Condense molten heat into a heavy projectile that hits like a siege-spike and bursts on impact.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "fire",
+    "isMagic": true,
+    "tags": [
+      "fire",
+      "offense",
+      "starter_spell",
+      "flame",
+      "spear"
+    ],
+    "effects": [
+      {
+        "id": "burn",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 6
+      }
+    ],
+    "damage": {
+      "multiplier": 1.22
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "fire"
+      ],
+      "synergies": [
+        "Excels at pressure and area denial.",
+        "Pairs well with classes that can capitalize on burning targets."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_strike",
-    "name": "Frost Strike",
+    "name": "Hoarfang Cut",
     "type": "active",
     "class": "universal",
-    "description": "Frost Strike delivers a focused hit. It chills targets and slows them.",
+    "description": "Etch freezing force into a fast opening blow that numbs limbs and steals momentum from the target.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "strike"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_burst",
-    "name": "Frost Burst",
+    "name": "Whiteout Snap",
     "type": "active",
     "class": "universal",
-    "description": "Frost Burst erupts in a short-range blast. It chills targets and slows them.",
+    "description": "Pop a compact frost bloom at your feet to slow every enemy reckless enough to crowd you.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "burst"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.2
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_lance",
-    "name": "Frost Lance",
+    "name": "Icicle Drill",
     "type": "active",
     "class": "universal",
-    "description": "Frost Lance fires a piercing line attack. It chills targets and slows them.",
+    "description": "Bore forward with a spinning icicle lance that drills through the lead target and chills the line behind it.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "lance"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.25
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_wave",
-    "name": "Frost Wave",
+    "name": "Winter Shear",
     "type": "active",
     "class": "universal",
-    "description": "Frost Wave sweeps outward in a wide arc. It chills targets and slows them.",
+    "description": "Send a razor-thin sheet of winter outward, shaving speed and confidence off anyone it touches.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "wave"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_pulse",
-    "name": "Frost Pulse",
+    "name": "Permafrost Thrum",
     "type": "active",
     "class": "universal",
-    "description": "Frost Pulse emits a rhythmic shock. It chills targets and slows them.",
+    "description": "Emit a dense frost vibration that settles into joints and drags enemy movement into syrupy slow motion.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "pulse"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.08
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_nova",
-    "name": "Frost Nova",
+    "name": "Glasswinter Ring",
     "type": "active",
     "class": "universal",
-    "description": "Frost Nova detonates in an expanding ring. It chills targets and slows them.",
+    "description": "Raise a ring of glassy cold around yourself, freezing the advance of melee packs in an instant.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 9
+    "cooldown": 9,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "nova"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_torrent",
-    "name": "Frost Torrent",
+    "name": "Rimefall Channel",
     "type": "active",
     "class": "universal",
-    "description": "Frost Torrent unleashes a sustained stream. It chills targets and slows them.",
+    "description": "Channel a pressurized rime stream that steadily coats targets in ice until they can barely answer.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 8
+    "cooldown": 8,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "torrent"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.18
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_step",
-    "name": "Frost Step",
+    "name": "Coldflash Step",
     "type": "active",
     "class": "universal",
-    "description": "Frost Step blinks forward into an attack. It chills targets and slows them.",
+    "description": "Blink through a flash of cold and leave a slick wake that slows the foe you reappear beside.",
     "level": 1,
     "manaCost": 11,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "step"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_cleave",
-    "name": "Frost Cleave",
+    "name": "Sleet Reap",
     "type": "active",
     "class": "universal",
-    "description": "Frost Cleave cuts through multiple foes. It chills targets and slows them.",
+    "description": "Whip a crescent of sleet through a pack, spreading chill and opening safer spacing for follow-up attacks.",
     "level": 1,
     "manaCost": 16,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "cleave"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.12
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_frost_spear",
-    "name": "Frost Spear",
+    "name": "Glacial Javelin",
     "type": "active",
     "class": "universal",
-    "description": "Frost Spear launches a long-range thrust. It chills targets and slows them.",
+    "description": "Throw a long glacial javelin that punches deep and leaves a freezing anchor point in the wound.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "ice",
+    "isMagic": true,
+    "tags": [
+      "ice",
+      "control",
+      "starter_spell",
+      "frost",
+      "spear"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.2
+      }
+    ],
+    "damage": {
+      "multiplier": 1.22
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "ice"
+      ],
+      "synergies": [
+        "Excellent for kiting and formation control.",
+        "Pairs with burst windows created by slowed enemies."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_strike",
-    "name": "Storm Strike",
+    "name": "Static Break",
     "type": "active",
     "class": "universal",
-    "description": "Storm Strike delivers a focused hit. It crackles with lightning and staggers foes.",
+    "description": "Drive a short violent charge through the target and jolt their timing out of sequence.",
     "level": 1,
     "manaCost": 11,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "strike"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_burst",
-    "name": "Storm Burst",
+    "name": "Thunderclap Well",
     "type": "active",
     "class": "universal",
-    "description": "Storm Burst erupts in a short-range blast. It crackles with lightning and staggers foes.",
+    "description": "Drop a thunderclap at close range that punishes tight groups with shock and disorientation.",
     "level": 1,
     "manaCost": 13,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.2
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_lance",
-    "name": "Storm Lance",
+    "name": "Fulgur Pike",
     "type": "active",
     "class": "universal",
-    "description": "Storm Lance fires a piercing line attack. It crackles with lightning and staggers foes.",
+    "description": "Fire a focused lightning pike that leaps into the target before the sound can catch up.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "lance"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.25
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_wave",
-    "name": "Storm Wave",
+    "name": "Tempest Scythe",
     "type": "active",
     "class": "universal",
-    "description": "Storm Wave sweeps outward in a wide arc. It crackles with lightning and staggers foes.",
+    "description": "Sweep out a hooked stormfront that clips several enemies and leaves their nerves buzzing.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "wave"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_pulse",
-    "name": "Storm Pulse",
+    "name": "Resonant Charge",
     "type": "active",
     "class": "universal",
-    "description": "Storm Pulse emits a rhythmic shock. It crackles with lightning and staggers foes.",
+    "description": "Build charge under your feet and release it as a resonant beat that shocks everything nearby.",
     "level": 1,
     "manaCost": 13,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "pulse"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.08
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_nova",
-    "name": "Storm Nova",
+    "name": "Skyshatter Ring",
     "type": "active",
     "class": "universal",
-    "description": "Storm Nova detonates in an expanding ring. It crackles with lightning and staggers foes.",
+    "description": "Crack the air open in a circular storm discharge that punishes anyone surrounding you.",
     "level": 1,
     "manaCost": 21,
-    "cooldown": 9
+    "cooldown": 9,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "nova"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_torrent",
-    "name": "Storm Torrent",
+    "name": "Arcstream",
     "type": "active",
     "class": "universal",
-    "description": "Storm Torrent unleashes a sustained stream. It crackles with lightning and staggers foes.",
+    "description": "Maintain a streaming arc that keeps pressure on evasive targets and dares them to trade into it.",
     "level": 1,
     "manaCost": 19,
-    "cooldown": 8
+    "cooldown": 8,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "torrent"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.18
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_step",
-    "name": "Storm Step",
+    "name": "Flashstride",
     "type": "active",
     "class": "universal",
-    "description": "Storm Step blinks forward into an attack. It crackles with lightning and staggers foes.",
+    "description": "Move as a flash of stormlight and arrive with a charged hit that snaps into the nearest enemy.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "step"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_cleave",
-    "name": "Storm Cleave",
+    "name": "Squall Rend",
     "type": "active",
     "class": "universal",
-    "description": "Storm Cleave cuts through multiple foes. It crackles with lightning and staggers foes.",
+    "description": "Rip a squall-edged slash through a group so each target eats a sharp lightning follow-through.",
     "level": 1,
     "manaCost": 17,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "cleave"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.12
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_storm_spear",
-    "name": "Storm Spear",
+    "name": "Bolt Harpoon",
     "type": "active",
     "class": "universal",
-    "description": "Storm Spear launches a long-range thrust. It crackles with lightning and staggers foes.",
+    "description": "Throw a harpooning bolt that sticks long enough to dump a final violent surge into the victim.",
     "level": 1,
     "manaCost": 16,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "lightning",
+    "isMagic": true,
+    "tags": [
+      "lightning",
+      "burst",
+      "starter_spell",
+      "storm",
+      "spear"
+    ],
+    "effects": [
+      {
+        "id": "shock",
+        "target": "enemy",
+        "duration": 2,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.22
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "lightning"
+      ],
+      "synergies": [
+        "Strong at interruption and tempo swings.",
+        "Pairs well with crit-focused or reaction-heavy builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_strike",
-    "name": "Stone Strike",
+    "name": "Faultline Knuckle",
     "type": "active",
     "class": "universal",
-    "description": "Stone Strike delivers a focused hit. It crushes foes with heavy force.",
+    "description": "Hit with condensed stone force that lands like a hammerblow and robs the target of footing.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "strike"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_burst",
-    "name": "Stone Burst",
+    "name": "Quarry Burst",
     "type": "active",
     "class": "universal",
-    "description": "Stone Burst erupts in a short-range blast. It crushes foes with heavy force.",
+    "description": "Rupture the ground in a tight ring of flying shale to punish enemies pressing too close.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "burst"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.2
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_lance",
-    "name": "Stone Lance",
+    "name": "Bedrock Spike",
     "type": "active",
     "class": "universal",
-    "description": "Stone Lance fires a piercing line attack. It crushes foes with heavy force.",
+    "description": "Heave a jagged bedrock spike in a straight line, breaking guard and punching through softer ranks.",
     "level": 1,
     "manaCost": 16,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "lance"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.25
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_wave",
-    "name": "Stone Wave",
+    "name": "Tectonic Sweep",
     "type": "active",
     "class": "universal",
-    "description": "Stone Wave sweeps outward in a wide arc. It crushes foes with heavy force.",
+    "description": "Roll a tectonic sweep across the front to knock enemy rhythm off and make advances clumsy.",
     "level": 1,
     "manaCost": 16,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "wave"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_pulse",
-    "name": "Stone Pulse",
+    "name": "Seismic Pound",
     "type": "active",
     "class": "universal",
-    "description": "Stone Pulse emits a rhythmic shock. It crushes foes with heavy force.",
+    "description": "Hammer the battlefield with a seismic beat that travels through boots, bones, and bad decisions.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "pulse"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.08
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_nova",
-    "name": "Stone Nova",
+    "name": "Cragbreaker Halo",
     "type": "active",
     "class": "universal",
-    "description": "Stone Nova detonates in an expanding ring. It crushes foes with heavy force.",
+    "description": "Detonate a halo of fractured stone around yourself and turn surrounding pressure into an opening.",
     "level": 1,
     "manaCost": 22,
-    "cooldown": 10
+    "cooldown": 10,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "nova"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_torrent",
-    "name": "Stone Torrent",
+    "name": "Gravelstorm Drive",
     "type": "active",
     "class": "universal",
-    "description": "Stone Torrent unleashes a sustained stream. It crushes foes with heavy force.",
+    "description": "Drive a sustained stream of gravel and pressure forward until the enemy line starts to buckle.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 9
+    "cooldown": 9,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "torrent"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.18
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_step",
-    "name": "Stone Step",
+    "name": "Bastion Step",
     "type": "active",
     "class": "universal",
-    "description": "Stone Step blinks forward into an attack. It crushes foes with heavy force.",
+    "description": "Brace, blink a short distance, and arrive wrapped in stone momentum that converts movement into impact.",
     "level": 1,
     "manaCost": 13,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "step"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_cleave",
-    "name": "Stone Cleave",
+    "name": "Mason's Reap",
     "type": "active",
     "class": "universal",
-    "description": "Stone Cleave cuts through multiple foes. It crushes foes with heavy force.",
+    "description": "Reap sideways with a slab-heavy arc that batters multiple opponents and keeps them off balance.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 8
+    "cooldown": 8,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "cleave"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.12
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stone_spear",
-    "name": "Stone Spear",
+    "name": "Pillar Lance",
     "type": "active",
     "class": "universal",
-    "description": "Stone Spear launches a long-range thrust. It crushes foes with heavy force.",
+    "description": "Launch a dense pillar-shard that flies like siege ammunition and lands with crushing force.",
     "level": 1,
     "manaCost": 17,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "earth",
+    "isMagic": true,
+    "tags": [
+      "earth",
+      "impact",
+      "starter_spell",
+      "stone",
+      "spear"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.15
+      }
+    ],
+    "damage": {
+      "multiplier": 1.22
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Favors heavy impact, interruption, and frontline control.",
+        "Pairs with builds that want reliable stagger windows."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_strike",
-    "name": "Gale Strike",
+    "name": "Windshear Jab",
     "type": "active",
     "class": "universal",
-    "description": "Gale Strike delivers a focused hit. It drives a wind gust that pushes back.",
+    "description": "Pack cutting wind into a quick jab that stings hard and shoves the target off its preferred angle.",
     "level": 1,
     "manaCost": 9,
-    "cooldown": 3
+    "cooldown": 3,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "strike"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_burst",
-    "name": "Gale Burst",
+    "name": "Downdraft Bloom",
     "type": "active",
     "class": "universal",
-    "description": "Gale Burst erupts in a short-range blast. It drives a wind gust that pushes back.",
+    "description": "Drop a compact downdraft that batters nearby enemies and opens breathing room instantly.",
     "level": 1,
     "manaCost": 11,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "burst"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.2
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_lance",
-    "name": "Gale Lance",
+    "name": "Airspike",
     "type": "active",
     "class": "universal",
-    "description": "Gale Lance fires a piercing line attack. It drives a wind gust that pushes back.",
+    "description": "Compress the air into a stabbing spike that crosses distance faster than most foes can read.",
     "level": 1,
     "manaCost": 13,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "lance"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.25
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_wave",
-    "name": "Gale Wave",
+    "name": "Monsoon Arc",
     "type": "active",
     "class": "universal",
-    "description": "Gale Wave sweeps outward in a wide arc. It drives a wind gust that pushes back.",
+    "description": "Throw a curving monsoon edge that sweeps enemies off-line and disrupts clustered advances.",
     "level": 1,
     "manaCost": 13,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "wave"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_pulse",
-    "name": "Gale Pulse",
+    "name": "Pressure Beat",
     "type": "active",
     "class": "universal",
-    "description": "Gale Pulse emits a rhythmic shock. It drives a wind gust that pushes back.",
+    "description": "Release a pressure beat that thumps through a formation and steals the cleanest counterattack windows.",
     "level": 1,
     "manaCost": 11,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "pulse"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.08
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_nova",
-    "name": "Gale Nova",
+    "name": "Cyclone Ring",
     "type": "active",
     "class": "universal",
-    "description": "Gale Nova detonates in an expanding ring. It drives a wind gust that pushes back.",
+    "description": "Spin out a cyclone ring around yourself to reset spacing when the field gets too crowded.",
     "level": 1,
     "manaCost": 19,
-    "cooldown": 8
+    "cooldown": 8,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "nova"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_torrent",
-    "name": "Gale Torrent",
+    "name": "Jetstream Rush",
     "type": "active",
     "class": "universal",
-    "description": "Gale Torrent unleashes a sustained stream. It drives a wind gust that pushes back.",
+    "description": "Ride a roaring jetstream forward and keep the enemy under constant wind-cut pressure.",
     "level": 1,
     "manaCost": 17,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "torrent"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.18
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_step",
-    "name": "Gale Step",
+    "name": "Slipstream Step",
     "type": "active",
     "class": "universal",
-    "description": "Gale Step blinks forward into an attack. It drives a wind gust that pushes back.",
+    "description": "Slip on a ribbon of fast air, reposition in an instant, and let the landing gust spoil retaliation.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "step"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_cleave",
-    "name": "Gale Cleave",
+    "name": "Crosswind Reap",
     "type": "active",
     "class": "universal",
-    "description": "Gale Cleave cuts through multiple foes. It drives a wind gust that pushes back.",
+    "description": "Scythe a crosswind through several foes so each one eats a sharp slice and a shove.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "cleave"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.12
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_gale_spear",
-    "name": "Gale Spear",
+    "name": "Zephyr Pike",
     "type": "active",
     "class": "universal",
-    "description": "Gale Spear launches a long-range thrust. It drives a wind gust that pushes back.",
+    "description": "Hurl a zephyr-hardened pike that hits clean, fast, and far before dissolving back into air.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "wind",
+    "isMagic": true,
+    "tags": [
+      "wind",
+      "mobility",
+      "starter_spell",
+      "gale",
+      "spear"
+    ],
+    "effects": [
+      {
+        "id": "slow",
+        "target": "enemy",
+        "duration": 1,
+        "magnitude": 0.1
+      }
+    ],
+    "damage": {
+      "multiplier": 1.22
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Excels at spacing, repositioning, and safe harassment.",
+        "Pairs naturally with kiting and hit-and-run play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_strike",
-    "name": "Shadow Strike",
+    "name": "Duskrend",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Strike delivers a focused hit. It drains light and weakens defenses.",
+    "description": "Cut with condensed dusk that bites deeper than the wound and leaves the target easier to punish.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "strike"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_burst",
-    "name": "Shadow Burst",
+    "name": "Umbral Bloom",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Burst erupts in a short-range blast. It drains light and weakens defenses.",
+    "description": "Open a sudden umbral bloom at close range that blunts enemy confidence with a fresh curse.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "burst"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.2
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_lance",
-    "name": "Shadow Lance",
+    "name": "Nightthorn",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Lance fires a piercing line attack. It drains light and weakens defenses.",
+    "description": "Fire a thorn of night through the gap in a defense and let darkness keep worrying the wound.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "lance"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.25
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_wave",
-    "name": "Shadow Wave",
+    "name": "Gloam Sickle",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Wave sweeps outward in a wide arc. It drains light and weakens defenses.",
+    "description": "Send a hooked wall of gloam across the lane, clipping several foes and weakening their resistance.",
     "level": 1,
     "manaCost": 14,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "wave"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_pulse",
-    "name": "Shadow Pulse",
+    "name": "Eclipse Throb",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Pulse emits a rhythmic shock. It drains light and weakens defenses.",
+    "description": "Beat the shadows around you into a living throb that tags nearby enemies for harsher follow-up damage.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "pulse"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.08
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_nova",
-    "name": "Shadow Nova",
+    "name": "Noctis Crown",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Nova detonates in an expanding ring. It drains light and weakens defenses.",
+    "description": "Raise a crown of darkness around yourself and curse every opponent reckless enough to stand inside it.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 9
+    "cooldown": 9,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "nova"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_torrent",
-    "name": "Shadow Torrent",
+    "name": "Blacktide Channel",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Torrent unleashes a sustained stream. It drains light and weakens defenses.",
+    "description": "Channel a blacktide stream that smothers vision, pressure, and morale all at once.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 8
+    "cooldown": 8,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "torrent"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.18
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_step",
-    "name": "Shadow Step",
+    "name": "Shade Skip",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Step blinks forward into an attack. It drains light and weakens defenses.",
+    "description": "Skip through a patch of shade and arrive behind tempo with a cursed strike already in motion.",
     "level": 1,
     "manaCost": 11,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "step"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_cleave",
-    "name": "Shadow Cleave",
+    "name": "Graveveil Arc",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Cleave cuts through multiple foes. It drains light and weakens defenses.",
+    "description": "Drag a graveveil arc through the enemy line, leaving several bodies marked for punishment.",
     "level": 1,
     "manaCost": 16,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "cleave"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.12
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_spear",
-    "name": "Shadow Spear",
+    "name": "Voidpin",
     "type": "active",
     "class": "universal",
-    "description": "Shadow Spear launches a long-range thrust. It drains light and weakens defenses.",
+    "description": "Pin the target with a void-dark spear that lands quietly and then blooms into fresh weakness.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "dark",
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_spell",
+      "spear"
+    ],
+    "effects": [
+      {
+        "id": "curse",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.22
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Best when the build can exploit weakened or marked enemies.",
+        "Pairs with stealth and execution play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_strike",
-    "name": "Radiant Strike",
+    "name": "Dawnbrand",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Strike delivers a focused hit. It burns with holy light and cleanses.",
+    "description": "Stamp the enemy with a sharp flare of dawnlight that leaves them exposed to righteous follow-up.",
     "level": 1,
     "manaCost": 11,
-    "cooldown": 4
+    "cooldown": 4,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "strike"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_burst",
-    "name": "Radiant Burst",
+    "name": "Sunwell Bloom",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Burst erupts in a short-range blast. It burns with holy light and cleanses.",
+    "description": "Unfold a close-range bloom of sunfire that punishes pressure and marks the careless.",
     "level": 1,
     "manaCost": 13,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "burst"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.2
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_lance",
-    "name": "Radiant Lance",
+    "name": "Lumen Spear",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Lance fires a piercing line attack. It burns with holy light and cleanses.",
+    "description": "Launch a spear of condensed lumen through the frontline and let holy light cling to the hit.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "lance"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.25
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_wave",
-    "name": "Radiant Wave",
+    "name": "Halo Sweep",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Wave sweeps outward in a wide arc. It burns with holy light and cleanses.",
+    "description": "Sweep a bright halo outward to catch multiple enemies and paint them for the next exchange.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "wave"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_pulse",
-    "name": "Radiant Pulse",
+    "name": "Aegis Pulse",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Pulse emits a rhythmic shock. It burns with holy light and cleanses.",
+    "description": "Release a measured aegis pulse that steadies your tempo while tagging nearby foes with radiant debt.",
     "level": 1,
     "manaCost": 13,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "pulse"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.08
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_nova",
-    "name": "Radiant Nova",
+    "name": "Solar Corona",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Nova detonates in an expanding ring. It burns with holy light and cleanses.",
+    "description": "Ignite a solar corona around yourself and force surrounding enemies to fight inside your light.",
     "level": 1,
     "manaCost": 21,
-    "cooldown": 9
+    "cooldown": 9,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "nova"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.15
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_torrent",
-    "name": "Radiant Torrent",
+    "name": "Daybreak Channel",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Torrent unleashes a sustained stream. It burns with holy light and cleanses.",
+    "description": "Channel a sustained ribbon of daybreak that sears steadily and keeps the mark refreshed.",
     "level": 1,
     "manaCost": 19,
-    "cooldown": 8
+    "cooldown": 8,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "torrent"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.18
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_step",
-    "name": "Radiant Step",
+    "name": "Aurora Step",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Step blinks forward into an attack. It burns with holy light and cleanses.",
+    "description": "Advance inside a flash of aurora and land with a radiant strike that turns entry into setup.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 5
+    "cooldown": 5,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "step"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.1
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_cleave",
-    "name": "Radiant Cleave",
+    "name": "Judgment Arc",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Cleave cuts through multiple foes. It burns with holy light and cleanses.",
+    "description": "Cut a judgment arc across several targets so each one leaves the exchange carrying holy exposure.",
     "level": 1,
     "manaCost": 17,
-    "cooldown": 7
+    "cooldown": 7,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "cleave"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.12
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_spear",
-    "name": "Radiant Spear",
+    "name": "Starpiercer",
     "type": "active",
     "class": "universal",
-    "description": "Radiant Spear launches a long-range thrust. It burns with holy light and cleanses.",
+    "description": "Throw a star-bright spear that punches deep and leaves a brilliant mark burning in the wound.",
     "level": 1,
     "manaCost": 16,
-    "cooldown": 6
+    "cooldown": 6,
+    "element": "holy",
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_spell",
+      "spear"
+    ],
+    "effects": [
+      {
+        "id": "radiant_mark",
+        "target": "enemy",
+        "duration": 3,
+        "magnitude": 0.12
+      }
+    ],
+    "damage": {
+      "multiplier": 1.22
+    },
+    "template": {
+      "category": "Universal Starter Spell",
+      "function": "combat",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Creates clean burst windows against marked enemies.",
+        "Pairs with disciplined melee or spellcaster hybrids."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_venom_strike",
@@ -1098,802 +3323,2858 @@
   },
   {
     "id": "universal_arcane_instinct",
-    "name": "Arcane Instinct",
+    "name": "Quick Study",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "Your first read on an enemy spell or feint comes faster, making evasive reactions and target swaps smoother.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_discipline",
-    "name": "Arcane Discipline",
+    "name": "Methodical Casting",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "You recover from cast animations with less waste, steadying cooldown flow and reducing awkward dead time.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_momentum",
-    "name": "Arcane Momentum",
+    "name": "Leyline Drift",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Movement feeds your casting stance, letting repositioning translate into cleaner offensive tempo.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_focus",
-    "name": "Arcane Focus",
+    "name": "Scholar's Sight",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Arcane techniques land with better certainty, especially when you commit to a deliberate opening.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_precision",
-    "name": "Arcane Precision",
+    "name": "Fine Control",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Single-target spells and ranged techniques stray less, making technical shots worth attempting.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_ward",
-    "name": "Arcane Ward",
+    "name": "Prepared Ward",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Ward adds minor damage reduction.",
-    "level": 1
+    "description": "A thin reserve of force cushions incoming pressure so small mistakes are less punishing.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_vitality",
-    "name": "Arcane Vitality",
+    "name": "Deep Reserve",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "Your circuit can hold more magical strain, improving staying power during longer exchanges.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_insight",
-    "name": "Arcane Insight",
+    "name": "Mana Accounting",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "You spend mana with sharper judgment, squeezing more work out of every point committed.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_edge",
-    "name": "Arcane Edge",
+    "name": "Spellfuse Edge",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "Well-timed hits after spell use bite harder, rewarding builds that weave casting into weapon pressure.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_arcane_harmony",
-    "name": "Arcane Harmony",
+    "name": "Controlled Exchange",
     "type": "passive",
     "class": "universal",
-    "description": "Arcane Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "After spending a skill, your posture recenters more quickly so offense and defense stop tripping each other.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "arcane",
+      "discipline",
+      "starter_passive",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Supports mana-aware caster builds.",
+        "Rewards clean sequencing and technical play."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_instinct",
-    "name": "Martial Instinct",
+    "name": "Duelist's Read",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "You read shoulder turns, overcommits, and bad foot placement early enough to evade or punish cleanly.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_discipline",
-    "name": "Martial Discipline",
+    "name": "Tempo Drills",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Your recovery between weapon skills tightens up, keeping your rotation from feeling sloppy under pressure.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_momentum",
-    "name": "Martial Momentum",
+    "name": "Driven Footwork",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Advancing with intent builds pressure instead of wasting it, rewarding aggressive repositioning.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_focus",
-    "name": "Martial Focus",
+    "name": "Killing Eye",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Committed attacks land with steadier accuracy and better crit discipline.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_precision",
-    "name": "Martial Precision",
+    "name": "Thread-the-Needle",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Narrow windows on weak points are easier to exploit, especially with ranged or thrusting attacks.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_ward",
-    "name": "Martial Ward",
+    "name": "Iron Guard",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Ward adds minor damage reduction.",
-    "level": 1
+    "description": "A trained guard posture shaves off chip damage and stabilizes you during messy trades.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_vitality",
-    "name": "Martial Vitality",
+    "name": "Battle-Breathed",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "Breath control and conditioning improve your ability to stay dangerous after the first exchange.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_insight",
-    "name": "Martial Insight",
+    "name": "Combat Economy",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "You waste less stamina and secondary resources when choosing the next tool for the situation.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_edge",
-    "name": "Martial Edge",
+    "name": "Opening Carve",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "The first clean weapon hit in a sequence cuts deeper and helps your pressure snowball.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_martial_harmony",
-    "name": "Martial Harmony",
+    "name": "Balanced Form",
     "type": "passive",
     "class": "universal",
-    "description": "Martial Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Attacking and defending stop feeling like separate modes, making transitions faster and safer.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "martial",
+      "discipline",
+      "starter_passive",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports weapon-first openers and frontline consistency.",
+        "Especially useful for proactive melee builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_instinct",
-    "name": "Shadow Instinct",
+    "name": "Night Scent",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "Your body notices hesitation in the dark before your mind does, sharpening evasive reactions and ambush reads.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_discipline",
-    "name": "Shadow Discipline",
+    "name": "Cloak Discipline",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Shadow techniques recover with cleaner timing so your pressure does not collapse after one mistake.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "discipline",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_momentum",
-    "name": "Shadow Momentum",
+    "name": "Murderer's Glide",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Repositioning through dim angles builds threat instead of resetting it.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_focus",
-    "name": "Shadow Focus",
+    "name": "Low-Light Aim",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Attacks launched from favorable light or obscured lines land with colder certainty.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_precision",
-    "name": "Shadow Precision",
+    "name": "Veilthread",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "You place ranged or surgical hits more accurately when working from concealment.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_ward",
-    "name": "Shadow Ward",
+    "name": "Shade Mantle",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Ward adds minor damage reduction.",
-    "level": 1
+    "description": "A veil-thin mantle blunts minor damage and helps you survive while setting up the kill.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_vitality",
-    "name": "Shadow Vitality",
+    "name": "Gravewind Lungs",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "You hold together better in attrition fights where fear and pain would normally crack your rhythm.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_insight",
-    "name": "Shadow Insight",
+    "name": "Stolen Breath",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "Cursed or stealthy play spends resources more efficiently, letting you sustain pressure longer.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_edge",
-    "name": "Shadow Edge",
+    "name": "Ruin Cut",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "Enemies already under pressure are easier to open, making follow-up cuts nastier.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_shadow_harmony",
-    "name": "Shadow Harmony",
+    "name": "Umbra Balance",
     "type": "passive",
     "class": "universal",
-    "description": "Shadow Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Entering and exiting aggressive shadow play costs less defensive stability than it used to.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "shadow",
+      "debuff",
+      "starter_passive",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "dark"
+      ],
+      "synergies": [
+        "Supports stealth, curse, and punish windows.",
+        "Pairs with crit or execution-oriented builds."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_instinct",
-    "name": "Radiant Instinct",
+    "name": "Oathsense",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "Your read on hostile intent sharpens, making protective reactions and clean dodges easier to time.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_discipline",
-    "name": "Radiant Discipline",
+    "name": "Litany Control",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Radiant techniques settle into a steadier cadence with less waste between activations.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "discipline",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_momentum",
-    "name": "Radiant Momentum",
+    "name": "Pilgrim's Advance",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Forward movement carries devotional force, helping offense stay composed while you advance.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_focus",
-    "name": "Radiant Focus",
+    "name": "Sun-True Aim",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Radiant attacks land with calmer confidence and more reliable finishing pressure.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_precision",
-    "name": "Radiant Precision",
+    "name": "Consecrated Line",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Lines of fire and single-target miracle work grow cleaner and less error-prone.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_ward",
-    "name": "Radiant Ward",
+    "name": "Halo Ward",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Ward adds minor damage reduction.",
-    "level": 1
+    "description": "A halo-thin defense trims incoming punishment and keeps you upright through chip damage.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_vitality",
-    "name": "Radiant Vitality",
+    "name": "Dawnheart",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "Your body and spirit recover from pressure with less visible strain.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_insight",
-    "name": "Radiant Insight",
+    "name": "Grace Reservoir",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "You handle mana or sacred resource flow with better restraint and less leakage.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_edge",
-    "name": "Radiant Edge",
+    "name": "Penance Brand",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "Marked enemies are easier to punish, and your follow-up hits carry more conviction.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_radiant_harmony",
-    "name": "Radiant Harmony",
+    "name": "Evenlight",
     "type": "passive",
     "class": "universal",
-    "description": "Radiant Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Supportive and aggressive actions chain together without tearing your stance apart.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "holy",
+      "radiant",
+      "starter_passive",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "holy"
+      ],
+      "synergies": [
+        "Supports marked-target burst and disciplined team play.",
+        "Pairs well with builds that want clean windows, not chaos."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_instinct",
-    "name": "Verdant Instinct",
+    "name": "Rootsense",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "You feel pressure shifts early, like roots reading tremors before the storm breaks.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_discipline",
-    "name": "Verdant Discipline",
+    "name": "Grove Patience",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Nature-aligned skills unwind into smoother recovery and less self-inflicted tempo loss.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "discipline",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_momentum",
-    "name": "Verdant Momentum",
+    "name": "Vinebound Stride",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Movement feeds your rhythm instead of disrupting it, especially while circling or kiting.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_focus",
-    "name": "Verdant Focus",
+    "name": "Canopy Sight",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Your attacks and control tools land more reliably when you take the clean angle.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_precision",
-    "name": "Verdant Precision",
+    "name": "Thornline",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Ranged and single-target techniques thread openings with better consistency.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_ward",
-    "name": "Verdant Ward",
+    "name": "Bark Ward",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Ward adds minor damage reduction.",
-    "level": 1
+    "description": "A bark-like reserve of toughness softens routine damage and stabilizes bad exchanges.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_vitality",
-    "name": "Verdant Vitality",
+    "name": "Sap Vitality",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "Your natural recovery and staying power rise enough to matter in drawn-out fights.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_insight",
-    "name": "Verdant Insight",
+    "name": "Green Reserve",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "You stretch resources further, making each cast or technique a little less expensive to sustain.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_edge",
-    "name": "Verdant Edge",
+    "name": "Briar Edge",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "Once the target is slowed or pressured, your follow-up strikes bite more effectively.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_verdant_harmony",
-    "name": "Verdant Harmony",
+    "name": "Wild Balance",
     "type": "passive",
     "class": "universal",
-    "description": "Verdant Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Control, damage, and self-preservation stop competing so hard for the same attention.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "nature",
+      "growth",
+      "starter_passive",
+      "verdant",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "nature"
+      ],
+      "synergies": [
+        "Supports sustain, control, and attrition play.",
+        "Excellent for builds that want to outlast and out-position."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_instinct",
-    "name": "Stalwart Instinct",
+    "name": "Shield Sense",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "You notice incoming pressure a beat earlier and brace in time more often.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_discipline",
-    "name": "Stalwart Discipline",
+    "name": "Siege Patience",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Your defensive techniques recover with less panic, letting you hold the line without stalling out.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "discipline",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_momentum",
-    "name": "Stalwart Momentum",
+    "name": "Holdfast Advance",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Advancing under threat no longer costs as much control, so your frontline pace stays intact.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_focus",
-    "name": "Stalwart Focus",
+    "name": "Bastion Aim",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Heavy committed attacks land with more certainty once you choose the moment.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_precision",
-    "name": "Stalwart Precision",
+    "name": "Sureline",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Ranged or single-target finishers from a defensive posture connect more reliably.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_ward",
-    "name": "Stalwart Ward",
+    "name": "Rampart Ward",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Ward adds minor damage reduction.",
-    "level": 1
+    "description": "A true rampart layer cuts routine damage and makes every bad trade slightly less bad.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "ward"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_vitality",
-    "name": "Stalwart Vitality",
+    "name": "Garrison Blood",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "You stay combat-worthy longer, even when the fight tries to grind you down.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_insight",
-    "name": "Stalwart Insight",
+    "name": "Stonekeeper's Breath",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "Your resource use steadies, giving you more answers before the tank runs dry.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_edge",
-    "name": "Stalwart Edge",
+    "name": "Breaker Edge",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "Targets already struggling against your control are easier to crack open.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_stalwart_harmony",
-    "name": "Stalwart Harmony",
+    "name": "Anchor Balance",
     "type": "passive",
     "class": "universal",
-    "description": "Stalwart Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Guarding, advancing, and retaliating fit together more naturally in one stance.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "defense",
+      "frontline",
+      "starter_passive",
+      "stalwart",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "earth"
+      ],
+      "synergies": [
+        "Best for tanky or line-holding builds.",
+        "Pairs with heavy weapons, shields, and control spells."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_instinct",
-    "name": "Swift Instinct",
+    "name": "Lightning Reflex",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "Your body commits to evasive movement faster, which matters when fights get frantic.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_discipline",
-    "name": "Swift Discipline",
+    "name": "Low-Drag Form",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Fast techniques recover with less wobble, keeping your kit crisp instead of frantic.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "discipline",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_momentum",
-    "name": "Swift Momentum",
+    "name": "Chase Rhythm",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Every clean reposition helps build pressure instead of sacrificing it.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_focus",
-    "name": "Swift Focus",
+    "name": "First Shot",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Opening attacks and quick punish shots land with better reliability.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_precision",
-    "name": "Swift Precision",
+    "name": "Featherline",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Needle-threading ranged or thrusting attacks become noticeably more trustworthy.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_ward",
-    "name": "Swift Ward",
+    "name": "Blink Ward",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Ward adds minor damage reduction.",
-    "level": 1
+    "description": "A flicker-thin defense helps you survive glancing punishment while staying mobile.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_vitality",
-    "name": "Swift Vitality",
+    "name": "Sprinter's Lungs",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "You retain speed and composure longer in extended engagements.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_insight",
-    "name": "Swift Insight",
+    "name": "Efficient Motion",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "Movement-heavy play drains fewer resources, letting you keep the pace you want.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_edge",
-    "name": "Swift Edge",
+    "name": "Razor Wake",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "Targets clipped during reposition or pursuit take nastier follow-up punishment.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_swift_harmony",
-    "name": "Swift Harmony",
+    "name": "Flow Balance",
     "type": "passive",
     "class": "universal",
-    "description": "Swift Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Speed and stability stop fighting each other, so your kit feels lighter without becoming reckless.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "speed",
+      "mobility",
+      "starter_passive",
+      "swift",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "wind"
+      ],
+      "synergies": [
+        "Great for skirmishers and reposition-heavy kits.",
+        "Pairs with dash, blink, and kiting play patterns."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_instinct",
-    "name": "Cunning Instinct",
+    "name": "Ambush Sense",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "You read trap windows, weak posture, and exploitable hesitation a little faster than most.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_discipline",
-    "name": "Cunning Discipline",
+    "name": "Scheme Discipline",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Your setup tools and trick plays recover into each other with less wasted motion.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "discipline",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_momentum",
-    "name": "Cunning Momentum",
+    "name": "Feint Momentum",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Feints and repositioning now build your offense instead of resetting it.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_focus",
-    "name": "Cunning Focus",
+    "name": "Hunter's Eye",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Planned attacks land with better certainty once the target is where you want them.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_precision",
-    "name": "Cunning Precision",
+    "name": "Surgical Thread",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Fine attacks aimed at weak points connect more consistently, especially at range.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_ward",
-    "name": "Cunning Ward",
+    "name": "Deceiver's Ward",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Ward adds minor damage reduction.",
-    "level": 1
+    "description": "You carry just enough defensive misdirection to survive while setting up the next play.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_vitality",
-    "name": "Cunning Vitality",
+    "name": "Survivor's Reserve",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "Scrappy endurance keeps you operational after the plan takes a hit.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_insight",
-    "name": "Cunning Insight",
+    "name": "Cheap Tricks",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "You squeeze more value out of limited resources by choosing cheaper but smarter lines.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_edge",
-    "name": "Cunning Edge",
+    "name": "Hidden Knife",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "The enemy pays harder for every opening you manufacture.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_cunning_harmony",
-    "name": "Cunning Harmony",
+    "name": "Split Intent",
     "type": "passive",
     "class": "universal",
-    "description": "Cunning Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Your setup and payoff phases blend together instead of feeling like separate mini-games.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "trickery",
+      "precision",
+      "starter_passive",
+      "cunning",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Supports trap, stealth, crit, and setup-heavy builds.",
+        "Rewards smart target selection and sequencing."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_instinct",
-    "name": "Resilient Instinct",
+    "name": "Pain Read",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "You stay aware under pressure instead of spiraling the moment things get ugly.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_discipline",
-    "name": "Resilient Discipline",
+    "name": "Scar Discipline",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Your techniques stay usable deeper into a hard fight, with less collapse in rhythm.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "discipline",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_momentum",
-    "name": "Resilient Momentum",
+    "name": "Relentless Gait",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Even while pressured, movement still contributes to offense and escape options.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_focus",
-    "name": "Resilient Focus",
+    "name": "Unbroken Focus",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Pain and disruption do less to spoil your aim and timing.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_precision",
-    "name": "Resilient Precision",
+    "name": "Endurance Line",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Long exchanges no longer erode your accuracy as quickly as before.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_ward",
-    "name": "Resilient Ward",
+    "name": "Last-Stand Ward",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Ward adds minor damage reduction.",
-    "level": 1
+    "description": "A stubborn reserve blunts incoming punishment and keeps the comeback possible.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_vitality",
-    "name": "Resilient Vitality",
+    "name": "Second Wind",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "Your staying power rises in the exact fights where others start to break.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_insight",
-    "name": "Resilient Insight",
+    "name": "Frugal Effort",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "You conserve resources more effectively once the battle drags beyond the ideal script.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_edge",
-    "name": "Resilient Edge",
+    "name": "Grindstone Edge",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "Enemies worn down by attrition become easier to finish cleanly.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_resilient_harmony",
-    "name": "Resilient Harmony",
+    "name": "Rebound Balance",
     "type": "passive",
     "class": "universal",
-    "description": "Resilient Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Recovery, retaliation, and defense flow together better after absorbing a bad hit.",
+    "level": 1,
+    "isMagic": false,
+    "tags": [
+      "endurance",
+      "tenacity",
+      "starter_passive",
+      "resilient",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "physical"
+      ],
+      "synergies": [
+        "Designed for attrition and comeback-friendly builds.",
+        "Pairs with bruisers, tanks, and self-healing kits."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_instinct",
-    "name": "Adept Instinct",
+    "name": "Combat Literacy",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Instinct improves reaction speed and evasion.",
-    "level": 1
+    "description": "Broad training helps you recognize what matters first when a fight changes shape suddenly.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "instinct",
+      "reaction"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_discipline",
-    "name": "Adept Discipline",
+    "name": "Practiced Routine",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Discipline reduces cooldown variance and steadies output.",
-    "level": 1
+    "description": "Mixed kits recover into themselves more smoothly, reducing friction between tools.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "discipline",
+      "cooldown"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_momentum",
-    "name": "Adept Momentum",
+    "name": "Learned Motion",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Momentum rewards movement with damage bonuses.",
-    "level": 1
+    "description": "Movement slots naturally into your sequence, helping flexible builds keep pressure.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "momentum",
+      "movement"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_focus",
-    "name": "Adept Focus",
+    "name": "Field Concentration",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Focus increases accuracy and critical stability.",
-    "level": 1
+    "description": "Generalist attack patterns land with steadier confidence across weapon and spell options.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "focus",
+      "accuracy"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_precision",
-    "name": "Adept Precision",
+    "name": "Fine Measure",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Precision tightens hit consistency for ranged attacks.",
-    "level": 1
+    "description": "Technical or single-target actions stray less when the window is narrow.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "precision",
+      "single_target"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_ward",
-    "name": "Adept Ward",
+    "name": "Prepared Counter",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Ward adds minor damage reduction.",
-    "level": 1
+    "description": "Preparation trims the damage from routine mistakes before they snowball.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "ward",
+      "defense"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_vitality",
-    "name": "Adept Vitality",
+    "name": "Trained Reserve",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Vitality raises max health and regeneration.",
-    "level": 1
+    "description": "Versatile training gives you more gas in the tank for long, messy fights.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "vitality",
+      "survivability"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_insight",
-    "name": "Adept Insight",
+    "name": "Resource Sense",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Insight boosts mana efficiency and resource gain.",
-    "level": 1
+    "description": "You judge resource spend better across different tools and damage types.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "insight",
+      "resource"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_edge",
-    "name": "Adept Edge",
+    "name": "Technical Finish",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Edge adds bleed chance on melee hits.",
-    "level": 1
+    "description": "Once a setup lands, you convert it into real damage with better efficiency.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "edge",
+      "pressure"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   },
   {
     "id": "universal_adept_harmony",
-    "name": "Adept Harmony",
+    "name": "Integrated Form",
     "type": "passive",
     "class": "universal",
-    "description": "Adept Harmony balances offense and defense after ability use.",
-    "level": 1
+    "description": "Hybrid play stops feeling stitched together and starts behaving like one coherent style.",
+    "level": 1,
+    "isMagic": true,
+    "tags": [
+      "mastery",
+      "technical",
+      "starter_passive",
+      "adept",
+      "harmony",
+      "balance"
+    ],
+    "template": {
+      "category": "Universal Combat Discipline",
+      "function": "passive",
+      "elements": [
+        "arcane"
+      ],
+      "synergies": [
+        "Generalist mastery line for flexible builds.",
+        "Works well when the loadout mixes weapons, spells, and utility."
+      ],
+      "source": "universal_authored_refresh_2026_03"
+    }
   }
 ]

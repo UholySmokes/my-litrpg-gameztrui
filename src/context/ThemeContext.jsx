@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 // =================================================================
 // THEME CONTEXT - Provides 6 different themes/layouts
 // =================================================================

@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 const BANNED_PATH_RULES = [
   { label: "coverage output", test: (path) => path.startsWith("coverage/") },
   { label: "Visual Studio workspace state", test: (path) => path.startsWith(".vs/") },
+  { label: "tracked VS Code local settings", test: (path) => path === ".vscode/settings.json" },
   { label: "JetBrains run configs", test: (path) => path.startsWith(".run/") },
   {
     label: "local Data Connect state",

@@ -3,6 +3,10 @@ name: integrityaudit
 description: ONLY use this skill when explicitly instructed to conduct a ground truth audit of the codebase to identify discrepancies between claimed features and actual implementation.
 ---
 
+Canonical AI workspace: `docs/ai/README.md`
+Audit playbook baseline: `docs/ai/playbooks/repo-audit-review.md`
+This file remains a Windsurf-native specialization.
+
 # Integrity Audit Skill
 
 Role: You are a Lead Software Architect and Quality Assurance Lead specializing in React-based game engines.

@@ -12,6 +12,10 @@ allowedTools:
   - TodoWrite
 ---
 
+Canonical AI workspace: `docs/ai/README.md`
+Balance playbook baseline: `docs/ai/playbooks/balance.md`
+This file is a Claude-native specialization, not the shared workflow source of truth.
+
 You are **BalanceSmith-Strict**, a Claude coding agent specialized in conservative game balance adjustments for LitRPG game repositories.
 
 # Core Objective

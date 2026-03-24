@@ -90,6 +90,7 @@ See [docs/REPO_MAP.md](docs/REPO_MAP.md) for task-based navigation.
 git clone https://github.com/<org>/my-litrpg-gameztrui.git
 cd my-litrpg-gameztrui
 npm install
+npm run ai:setup
 ```
 
 ### Configure
@@ -139,6 +140,20 @@ npm run dev:stack
 Leave `VITE_API_BASE_URL` empty to use same-origin `/api/*`.
 Runtime builds outside dev enable web gameplay by default unless a build profile overrides it.
 
+## AI Workspace
+
+The canonical AI workspace lives in [docs/ai/README.md](docs/ai/README.md).
+
+```bash
+npm run ai:setup
+npm run ai:doctor
+npm run ai:check
+```
+
+- `ai:setup` seeds local-only scaffolding for Codex-first workstations.
+- `ai:doctor` reports tool and environment posture.
+- `ai:check` validates AI workspace policy and runs as part of `npm run check`.
+
 ## Commands
 
 ### Development
@@ -148,6 +163,9 @@ Runtime builds outside dev enable web gameplay by default unless a build profile
 | `npm run dev` | Start web app |
 | `npm run dev:api` | Start Firebase emulators |
 | `npm run dev:stack` | Start both concurrently |
+| `npm run ai:setup` | Seed local AI workspace files |
+| `npm run ai:doctor` | Diagnose AI tool and env posture |
+| `npm run ai:check` | Validate AI workspace policy |
 | `npm run build` | Production build |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript check |

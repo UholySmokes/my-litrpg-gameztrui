@@ -99,6 +99,10 @@ function buildMinimalWorldState(runState) {
 
 function buildSaveGameState(runState) {
 	return {
+		saveMeta: {
+			source: "sync-savepoint",
+			loadableInGameUi: false,
+		},
 		player: buildMinimalPlayerState(runState),
 		world: buildMinimalWorldState(runState),
 		quests: {
@@ -142,7 +146,7 @@ function buildSaveSlotVariables({ saveSlotId, runState }) {
 	const stateHash = normalizeString(runState?.stateHash) || null;
 	return {
 		id: ensureUuid(saveSlotId),
-		saveName: "Auto Savepoint",
+		saveName: "Sync Savepoint",
 		gameStateJson: JSON.stringify(gameState),
 		playerName: "Traveler",
 		playerLevel: toNonNegativeInteger(gameState?.player?.level, 1),

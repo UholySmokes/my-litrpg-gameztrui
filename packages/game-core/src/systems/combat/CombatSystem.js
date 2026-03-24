@@ -441,7 +441,7 @@ export function startCombat(state, enemyIds) {
     .filter((e) => e !== null)
     .map((enemy, index) => ({
       ...enemy,
-      lane: index % 3,
+      lane: (index % 3) + 1,
     }));
   if (enemies.length === 0) {
     return state;

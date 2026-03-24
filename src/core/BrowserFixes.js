@@ -4,6 +4,25 @@
 export function initBrowserFixes() {
   if (typeof window === "undefined") return;
 
+  // Keep CSS viewport units aligned with the *visible* viewport.
+  // `100vh` can be slightly taller than the real viewport (browser UI, rounding),
+  // which shows up as a small overflow under the app frame (including Playwright).
+  const updateViewportVars = () => {
+    const viewport = window.visualViewport;
+    const width = Math.max(1, Math.floor(viewport?.width ?? window.innerWidth));
+    const height = Math.max(1, Math.floor(viewport?.height ?? window.innerHeight));
+
+    // Store as pixels-per-1% for easy `calc(var(--vvh) * 100)` usage.
+    document.documentElement.style.setProperty("--vvw", `${width * 0.01}px`);
+    document.documentElement.style.setProperty("--vvh", `${height * 0.01}px`);
+  };
+
+  updateViewportVars();
+  window.addEventListener("resize", updateViewportVars, { passive: true });
+  window.addEventListener("orientationchange", updateViewportVars, { passive: true });
+  window.visualViewport?.addEventListener("resize", updateViewportVars, { passive: true });
+  window.visualViewport?.addEventListener("scroll", updateViewportVars, { passive: true });
+
   // 1. Deprecated API: InstallTrigger
   // Firefox-specific API often checked by legacy scripts
   if (!("InstallTrigger" in window)) {

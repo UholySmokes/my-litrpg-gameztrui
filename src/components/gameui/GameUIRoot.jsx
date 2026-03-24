@@ -1,20 +1,19 @@
-// GameUI.jsx - Technical Cleanup & Dashboard Refactor
-import React, { useRef, useEffect, useCallback, useMemo } from "react";
+// GameUI.jsx - Unified web shell orchestration
+import React, { useRef, useEffect, useCallback, useMemo, useState } from "react";
 import { useGameEngine } from "../../hook/usegamestate";
 import { useNarrative } from "../../hook/useNarrative";
 import AdminTools from "../AdminTools";
+import AdventureShell from "../shell/AdventureShell.jsx";
+import CharacterHub from "../shell/CharacterHub.jsx";
+import { clearLegacyShellState } from "../shell/shellState.js";
 import CharacterCreationShell from "./CharacterCreationShell.jsx";
 import AutosaveResumeOverlay from "./AutosaveResumeOverlay.jsx";
-import GameModeShell from "./GameModeShell.jsx";
-import ModeTransitionOverlay from "./ModeTransitionOverlay.jsx";
+import PwaInstallPrompt from "../PwaInstallPrompt.jsx";
 import SaveResetGate from "./SaveResetGate.jsx";
 import SystemFailureOverlay from "./SystemFailureOverlay.jsx";
 import { useGameUiCharacterCreationFlow } from "./useGameUiCharacterCreationFlow.js";
 import { useGameUiInteractionHandlers } from "./useGameUiInteractionHandlers.js";
-import {
-  buildModeShellState,
-  buildNarrativePanelView,
-} from "./gameUiSelectors.js";
+import { buildNarrativePanelView } from "./gameUiSelectors.js";
 import {
   hasCreatedCharacterSnapshot,
   isRecord,
@@ -58,7 +57,6 @@ const renderTypewriterText = (text = "") => {
 export default function GameUI({ user }) {
   const {
     state,
-    chatLog,
     addSystemMessage,
     setState,
     evaluateQuestProgress,
@@ -86,6 +84,9 @@ export default function GameUI({ user }) {
   );
   const narrativeMemoryRef = useRef(null);
   const previousStateRef = useRef(null);
+  const [activeSurface, setActiveSurface] = useState(() =>
+    hasCreatedCharacterSnapshot(state) ? "adventure" : "hub",
+  );
 
   const {
     persistLocalAutosave,
@@ -103,6 +104,10 @@ export default function GameUI({ user }) {
       container.scrollTop = 0;
     }
   }, [narrativeEntries.length]);
+
+  useEffect(() => {
+    clearLegacyShellState();
+  }, []);
 
   const {
     submitInput,
@@ -135,7 +140,6 @@ export default function GameUI({ user }) {
 
   const {
     equipmentSelectSlot,
-    focusWindowRequest,
     quickActionsProps,
     showBestiary,
     showArchetypeSystem,
@@ -226,7 +230,9 @@ export default function GameUI({ user }) {
     (loadedState, options = {}) => {
       if (!isRecord(loadedState)) return;
       setState(loadedState);
-      setCharacterCreated(hasCreatedCharacterSnapshot(loadedState));
+      const hasCharacter = hasCreatedCharacterSnapshot(loadedState);
+      setCharacterCreated(hasCharacter);
+      setActiveSurface(hasCharacter ? "adventure" : "hub");
 
       if (options.closeSaveLoad !== false) {
         setShowSaveLoad(false);
@@ -240,7 +246,7 @@ export default function GameUI({ user }) {
 
   const handleSubmit = useCallback(
     async (e) => {
-      e.preventDefault();
+      e?.preventDefault?.();
       if (!userInput || !userInput.trim() || isLoading) return;
 
       const input = userInput.trim();
@@ -281,95 +287,119 @@ export default function GameUI({ user }) {
     [addSystemMessage, isLoading, state, submitInput],
   );
 
-  const {
-    showCreationMode,
-    showGameMode,
-    shouldRenderCreationShell,
-    shouldRenderGameShell,
-  } = useMemo(
-    () => buildModeShellState({ characterCreated, isTransitioning }),
-    [characterCreated, isTransitioning],
+  const handleStartCreation = useCallback(
+    (selectedHero) => {
+      setActiveSurface("creation");
+      if (selectedHero?.name) {
+        addSystemMessage(
+          `Selected featured path: ${selectedHero.name}. Final choices remain reversible during creation.`,
+          "system",
+        );
+      }
+    },
+    [addSystemMessage],
   );
-  const gameModeProps = useMemo(
+
+  const handleCreationComplete = useCallback(
+    async (characterData) => {
+      await handleCharacterCreationComplete(characterData);
+      setActiveSurface("adventure");
+    },
+    [handleCharacterCreationComplete],
+  );
+
+  const equipmentSelectLabel = equipmentSelectSlot
+    ? equipmentSelectSlot.charAt(0).toUpperCase() + equipmentSelectSlot.slice(1)
+    : "Item";
+
+  const adventureView = useMemo(
     () => ({
+      user,
+      state,
       player: state?.player,
       config: state?.config,
-      gameState: state,
-      chatLog,
-      userInput,
-      onInputChange: setUserInput,
-      onSubmit: handleSubmit,
-      isLoading,
-      error: narrativeError,
-      inputRef,
-      suggestions: actionSuggestions,
-      onSuggestionSelect: handleSuggestionClick,
-      narrativeSummary: shouldShowNarrativeSummary ? narrativeSummary : "",
-      narrativeCurrentMood,
-      narrativeEntries: recentNarrativeEntries,
-      latestEntry: latestNarrativeEntry,
-      latestEntryText: latestEntryTypewriterContent,
-      narrativeMemoryRef,
-      equipmentSelectSlot,
-      onSelectEquipmentSlot: handleOpenEquipmentSlot,
-      onCloseEquipmentSelect: handleCloseEquipmentSelect,
-      onEquipItem: handleEquipItem,
-      onUnequipItem: handleUnequipItem,
-      onEquipTitle: handleTitleEquip,
-      onUnequipTitle: handleTitleUnequip,
       quests: state?.quests,
       combatState: state?.combat,
-      onAttack: handleCombatAttack,
-      onUseSkill: handleSkillUse,
-      onUseClassAbility: handleClassAbilityUse,
-      onUseRaceAbility: handleRaceAbilityUse,
-      onEscape: handleCombatEscape,
-      onSetCombatLane: handleSetCombatLane,
-      showShop,
-      showGacha,
-      showBestiary,
-      showArchetypeSystem,
-      showTitleSystem,
-      showProfessions,
-      showStatusOverlay,
-      showSaveLoad,
-      showQuests,
-      showReplayInspector: IS_DEV_BUILD && showReplayInspector,
-      onCloseShop: handleCloseShop,
-      onCloseGacha: handleCloseGacha,
-      onCloseBestiary: handleCloseBestiary,
-      onCloseArchetypeSystem: handleCloseArchetypeSystem,
-      onOpenArchetypeSystem: handleToggleArchetypeSystem,
-      onCloseTitleSystem: handleCloseTitleSystem,
-      onCloseProfessions: handleCloseProfessions,
-      onCloseStatusOverlay: handleCloseStatusOverlay,
-      onCloseSaveLoad: handleCloseSaveLoad,
-      onCloseQuests: handleCloseQuests,
-      onCloseReplayInspector: handleCloseReplayInspector,
-      onShopPurchase: handleShopPurchase,
-      onGachaPull: handleGachaPull,
-      onTitleEquip: handleTitleEquip,
-      onTitleUnequip: handleTitleUnequip,
-      onTitlePurchase: handleTitlePurchase,
-      onCraft: handleCraft,
-      onAllocateAttribute: handleAllocateAttributePoint,
-      onDeallocateAttribute: handleDeallocateAttributePoint,
-      onEvolveSkill: handleEvolveSkill,
-      onFuseSkills: handleFuseSkills,
-      onEvolveClass: handleEvolveClass,
-      onEvolveRace: handleEvolveRace,
-      onStudySpell: handleStudySpell,
-      onLoadState: handleLoadState,
-      addSystemMessage,
-      user,
-      focusWindowRequest,
+      narrative: {
+        summary: shouldShowNarrativeSummary ? narrativeSummary : "",
+        currentMood: narrativeCurrentMood,
+        entries: recentNarrativeEntries,
+        latestEntry: latestNarrativeEntry,
+        latestEntryText: latestEntryTypewriterContent,
+        memoryRef: narrativeMemoryRef,
+      },
+      command: {
+        userInput,
+        onInputChange: setUserInput,
+        onSubmit: handleSubmit,
+        isLoading,
+        error: narrativeError,
+        inputRef,
+        suggestions: actionSuggestions,
+        onSuggestionSelect: handleSuggestionClick,
+      },
+      surfaces: {
+        equipmentSelectSlot,
+        equipmentSelectLabel,
+        showBestiary,
+        showArchetypeSystem,
+        showGacha,
+        showProfessions,
+        showQuests,
+        showReplayInspector: IS_DEV_BUILD && showReplayInspector,
+        showSaveLoad,
+        showShop,
+        showStatusOverlay,
+        showTitleSystem,
+        handleCloseEquipmentSelect,
+        handleCloseBestiary,
+        handleCloseArchetypeSystem,
+        handleCloseGacha,
+        handleCloseProfessions,
+        handleCloseQuests,
+        handleCloseReplayInspector,
+        handleCloseSaveLoad,
+        handleCloseShop,
+        handleCloseStatusOverlay,
+        handleCloseTitleSystem,
+        handleOpenEquipmentSlot,
+        handleToggleArchetypeSystem,
+      },
+      actions: {
+        onAllocateAttribute: handleAllocateAttributePoint,
+        onAttack: handleCombatAttack,
+        onUseSkill: handleSkillUse,
+        onUseClassAbility: handleClassAbilityUse,
+        onUseRaceAbility: handleRaceAbilityUse,
+        onEscape: handleCombatEscape,
+        onSetCombatLane: handleSetCombatLane,
+        onEquipItem: handleEquipItem,
+        onUnequipItem: handleUnequipItem,
+        onEquipTitle: handleTitleEquip,
+        onUnequipTitle: handleTitleUnequip,
+        onTitleEquip: handleTitleEquip,
+        onTitleUnequip: handleTitleUnequip,
+        onTitlePurchase: handleTitlePurchase,
+        onShopPurchase: handleShopPurchase,
+        onGachaPull: handleGachaPull,
+        onCraft: handleCraft,
+        onDeallocateAttribute: handleDeallocateAttributePoint,
+        onEvolveSkill: handleEvolveSkill,
+        onFuseSkills: handleFuseSkills,
+        onEvolveClass: handleEvolveClass,
+        onEvolveRace: handleEvolveRace,
+        onStudySpell: handleStudySpell,
+      },
+      system: {
+        onLoadState: handleLoadState,
+        addSystemMessage,
+      },
     }),
     [
-      addSystemMessage,
       actionSuggestions,
-      chatLog,
+      addSystemMessage,
+      equipmentSelectLabel,
       equipmentSelectSlot,
-      focusWindowRequest,
       handleAllocateAttributePoint,
       handleClassAbilityUse,
       handleCloseEquipmentSelect,
@@ -383,7 +413,6 @@ export default function GameUI({ user }) {
       handleCloseShop,
       handleCloseStatusOverlay,
       handleCloseTitleSystem,
-      handleToggleArchetypeSystem,
       handleCombatAttack,
       handleCombatEscape,
       handleCraft,
@@ -406,6 +435,7 @@ export default function GameUI({ user }) {
       handleTitleEquip,
       handleTitlePurchase,
       handleTitleUnequip,
+      handleToggleArchetypeSystem,
       handleUnequipItem,
       inputRef,
       isLoading,
@@ -418,9 +448,9 @@ export default function GameUI({ user }) {
       recentNarrativeEntries,
       setUserInput,
       shouldShowNarrativeSummary,
-      showGacha,
       showBestiary,
       showArchetypeSystem,
+      showGacha,
       showProfessions,
       showQuests,
       showReplayInspector,
@@ -433,6 +463,14 @@ export default function GameUI({ user }) {
       userInput,
     ],
   );
+
+  const hasCharacterSnapshot = hasCreatedCharacterSnapshot(state);
+  const shouldShowAdventure =
+    !isTransitioning &&
+    (activeSurface === "adventure" || characterCreated || hasCharacterSnapshot);
+  const shouldShowCreation =
+    activeSurface === "creation" || (isTransitioning && hasCharacterSnapshot);
+  const shouldShowHub = !shouldShowAdventure && !shouldShowCreation;
 
   if (!saveResetState.ready) {
     const isRetryable = !saveResetState.busy && Boolean(saveResetState.error);
@@ -447,29 +485,31 @@ export default function GameUI({ user }) {
   }
 
   return (
-    <div className="app-frame">
-      <div className="app-container">
-        <div className="mode-stage">
-          {isTransitioning && <ModeTransitionOverlay />}
-          {shouldRenderCreationShell && (
+    <div className="runic-app">
+      <div className="runic-app__stack">
+        <PwaInstallPrompt enabled={shouldShowHub} />
+
+        {shouldShowHub ? (
+          <CharacterHub user={user} onStartCreation={handleStartCreation} />
+        ) : null}
+
+        {shouldShowCreation ? (
             <CharacterCreationShell
               advancedUnlocked={advancedCreationUnlocked}
-              isActive={showCreationMode}
+              isActive={true}
               isTransitioning={isTransitioning}
-              onComplete={handleCharacterCreationComplete}
+              onComplete={handleCreationComplete}
               telemetryUser={user}
             />
-          )}
-          {shouldRenderGameShell && (
-            <GameModeShell
-              gameModeProps={gameModeProps}
-              isActive={showGameMode}
-              isDevBuild={IS_DEV_BUILD}
-              isTransitioning={isTransitioning}
-              quickActionsProps={gameQuickActionsProps}
-            />
-          )}
-        </div>
+        ) : null}
+
+        {shouldShowAdventure ? (
+          <AdventureShell
+            view={adventureView}
+            quickActionsProps={gameQuickActionsProps}
+            isDevBuild={IS_DEV_BUILD}
+          />
+        ) : null}
       </div>
 
       {saveResetState.ready && (
@@ -484,7 +524,9 @@ export default function GameUI({ user }) {
         <SystemFailureOverlay onRestart={() => window.location.reload()} />
       )}
 
-      <AdminTools dispatch={dispatchSystemEvent} getState={() => state} />
+      {IS_DEV_BUILD ? (
+        <AdminTools dispatch={dispatchSystemEvent} getState={() => state} />
+      ) : null}
     </div>
   );
 }

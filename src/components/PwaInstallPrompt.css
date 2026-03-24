@@ -12,6 +12,7 @@
   z-index: 1300;
   display: grid;
   gap: 10px;
+  pointer-events: none;
 }
 
 .pwa-install-copy strong {
@@ -32,6 +33,7 @@
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
+  pointer-events: auto;
 }
 
 .pwa-install-actions button,

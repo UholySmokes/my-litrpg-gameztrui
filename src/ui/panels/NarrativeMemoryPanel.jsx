@@ -19,14 +19,16 @@ export default function NarrativeMemoryPanel({
         aria-label="AI narrative memory entries"
       >
         <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-          {entries.map((entry) => {
-            const isLatest = entry.id === latestEntry?.id;
+          {entries.map((entry, index) => {
+            const entryKey = entry.id ?? entry.timestamp ?? `entry-${index}`;
+            const latestKey = latestEntry?.id ?? latestEntry?.timestamp ?? null;
+            const isLatest = latestKey ? entryKey === latestKey : index === entries.length - 1;
             const classNames = ["narrative-memory-entry"];
             if (isLatest) {
               classNames.push("narrative-memory-entry--latest");
             }
             return (
-              <li key={entry.id} className={classNames.join(" ")}>
+              <li key={entryKey} className={classNames.join(" ")}>
                 {isLatest ? latestEntryText : entry.text}
               </li>
             );

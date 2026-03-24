@@ -40,7 +40,7 @@ export default function AdventureTab({
               <button
                 key={i}
                 className="adventure-tab__action-btn"
-                onClick={() => onSuggestionSelect?.(s)}
+                onClick={() => onSuggestionSelect?.(text)}
                 disabled={isLoading}
               >
                 <span className="adventure-tab__action-marker">▶</span>

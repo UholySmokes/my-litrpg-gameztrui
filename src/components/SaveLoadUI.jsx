@@ -9,6 +9,7 @@ import {
 
 const LOCAL_SAVE_KEY = "localSaves:v1";
 const LOCAL_AUTOSAVE_KEY = "localAutosave:v1";
+const SYNC_SAVEPOINT_NAMES = new Set(["Auto Savepoint", "Sync Savepoint"]);
 
 const safeJsonParse = (value, fallback) => {
   try {
@@ -33,6 +34,12 @@ const readAutosave = () => {
 const writeLocalSaves = (saves) => {
   localStorage.setItem(LOCAL_SAVE_KEY, JSON.stringify(saves));
 };
+
+const isBlockedCloudSnapshot = (entry) =>
+  Boolean(entry?.save_name && SYNC_SAVEPOINT_NAMES.has(entry.save_name));
+
+const CLOUD_SNAPSHOT_BLOCK_MESSAGE =
+  "Sync savepoints are recovery snapshots and cannot be loaded from the web UI yet.";
 
 export default function SaveLoadUI({
   isOpen,
@@ -173,14 +180,21 @@ export default function SaveLoadUI({
     }
   };
 
-  const handleRemoteLoad = async (saveId) => {
+  const handleRemoteLoad = async (entry) => {
     if (!canUseRemote) return;
+    if (isBlockedCloudSnapshot(entry)) {
+      setError(CLOUD_SNAPSHOT_BLOCK_MESSAGE);
+      return;
+    }
     setIsBusy(true);
     setError(null);
     try {
-      const result = await loadGameState(user.id, saveId);
+      const result = await loadGameState(user.id, entry?.id);
       if (!result.success) {
         throw new Error(result.error || "Failed to load");
+      }
+      if (result.gameState?.saveMeta?.loadableInGameUi === false) {
+        throw new Error(CLOUD_SNAPSHOT_BLOCK_MESSAGE);
       }
       onLoadState?.(result.gameState);
       addSystemMessage?.(`Loaded cloud save: ${result.saveName}`, "system");
@@ -394,12 +408,22 @@ export default function SaveLoadUI({
                       <div style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
                         {entry.updated_at}
                       </div>
+                      {isBlockedCloudSnapshot(entry) ? (
+                        <div style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
+                          Recovery snapshot only
+                        </div>
+                      ) : null}
                     </div>
                     <div style={{ display: "flex", gap: "0.5rem" }}>
                       <button
                         className="holo-button"
-                        onClick={() => handleRemoteLoad(entry.id)}
-                        disabled={isBusy}
+                        onClick={() => handleRemoteLoad(entry)}
+                        disabled={isBusy || isBlockedCloudSnapshot(entry)}
+                        title={
+                          isBlockedCloudSnapshot(entry)
+                            ? CLOUD_SNAPSHOT_BLOCK_MESSAGE
+                            : "Load cloud save"
+                        }
                       >
                         Load
                       </button>

@@ -13,6 +13,17 @@ const MAGIC_ESSENCES = [
   "time",
 ];
 
+const ESSENCE_ALIASES = {
+  ice: "water",
+  frost: "water",
+  holy: "light",
+  radiant: "light",
+  dark: "shadow",
+  void: "shadow",
+  nature: "life",
+  arcane: "creation",
+};
+
 const FORM_DEFINITIONS = {
   bolt: { baseMana: 8, baseStrain: 6, damage: 1.05, delivery: "instant", tags: [] },
   pulse: { baseMana: 10, baseStrain: 7, damage: 1.0, delivery: "instant", tags: [] },
@@ -46,7 +57,7 @@ const CLASS_MAGIC_PROFILES = {
   mage: {
     ...BASE_PROFILE,
     essences: ["fire", "water", "air", "lightning", "light", "shadow"],
-    forms: ["bolt", "pulse", "lance", "cone", "veil"],
+    forms: ["bolt", "pulse", "lance", "cone", "shield", "veil"],
     patterns: { shape: ["pulse", "wall", "shield"], weave: ["lattice", "vortex"] },
     manaMultiplier: 0.92,
     strainMultiplier: 0.95,
@@ -114,7 +125,8 @@ const toNumberSafe = (value, fallback = 0) =>
 
 function normalizeEssenceId(value) {
   if (typeof value !== "string") return null;
-  const id = value.trim().toLowerCase();
+  const raw = value.trim().toLowerCase();
+  const id = ESSENCE_ALIASES[raw] || raw;
   return MAGIC_ESSENCES.includes(id) ? id : null;
 }
 
@@ -186,6 +198,14 @@ function describeStrain(current, max) {
   return "steady";
 }
 
+function describeResonance(current, max) {
+  const pct = max > 0 ? current / max : 0;
+  if (pct >= 0.75) return "shrieking";
+  if (pct >= 0.5) return "ringing";
+  if (pct >= 0.25) return "humming";
+  return "quiet";
+}
+
 export function normalizeUnifiedMagicState(rawMagic, { player } = {}) {
   const magic =
     rawMagic && typeof rawMagic === "object" && !Array.isArray(rawMagic)
@@ -214,7 +234,26 @@ export function normalizeUnifiedMagicState(rawMagic, { player } = {}) {
     magic?.grammar && typeof magic.grammar === "object" && !Array.isArray(magic.grammar)
       ? magic.grammar
       : {};
+  const grammarEssences = normalizeEssenceList(grammar.essences);
+  const grammarForms =
+    Array.isArray(grammar.forms) && grammar.forms.length
+      ? [...new Set(grammar.forms)]
+      : [];
+  const grammarDeliveries =
+    Array.isArray(grammar.deliveries) && grammar.deliveries.length
+      ? [...new Set(grammar.deliveries)]
+      : [];
   const strainGauge = normalizeGauge(magic?.strain, 100, 0);
+  const classBiasNode =
+    magic?.classBias && typeof magic.classBias === "object" && !Array.isArray(magic.classBias)
+      ? magic.classBias
+      : {};
+  const storedManaMultiplier = Number.isFinite(classBiasNode.manaMultiplier)
+    ? Number(classBiasNode.manaMultiplier)
+    : null;
+  const storedStrainMultiplier = Number.isFinite(classBiasNode.strainMultiplier)
+    ? Number(classBiasNode.strainMultiplier)
+    : null;
 
   return {
     ...magic,
@@ -246,27 +285,21 @@ export function normalizeUnifiedMagicState(rawMagic, { player } = {}) {
     },
     affinities: buildAffinityMap(magic?.affinities, profile),
     classBias: {
-      manaMultiplier: toNumberSafe(magic?.classBias?.manaMultiplier, profile.manaMultiplier),
-      strainMultiplier: toNumberSafe(magic?.classBias?.strainMultiplier, profile.strainMultiplier),
+      manaMultiplier: storedManaMultiplier ?? profile.manaMultiplier,
+      strainMultiplier: storedStrainMultiplier ?? profile.strainMultiplier,
       potencyByEssence: {
         ...(profile.potencyByEssence || {}),
-        ...(magic?.classBias?.potencyByEssence || {}),
+        ...(classBiasNode.potencyByEssence || {}),
       },
     },
     grammar: {
-      essences: normalizeEssenceList(grammar.essences).length
-        ? normalizeEssenceList(grammar.essences)
-        : [...profile.essences],
-      forms: Array.isArray(grammar.forms) && grammar.forms.length
-        ? [...new Set(grammar.forms)]
-        : [...profile.forms],
+      essences: [...new Set([...profile.essences, ...grammarEssences])],
+      forms: [...new Set([...profile.forms, ...grammarForms])],
       patterns: {
         shape: shapePatterns,
         weave: weavePatterns,
       },
-      deliveries: Array.isArray(grammar.deliveries) && grammar.deliveries.length
-        ? [...new Set(grammar.deliveries)]
-        : [...profile.deliveries],
+      deliveries: [...new Set([...profile.deliveries, ...grammarDeliveries])],
       recipes: Array.isArray(grammar.recipes) ? [...grammar.recipes] : [],
     },
     unlockedPatterns: {
@@ -481,6 +514,74 @@ function buildDisplayName(request) {
   return request.delivery === "sustained" ? `${label} Weaving` : label;
 }
 
+function normalizeMagicProfile(rawProfile) {
+  const profile =
+    rawProfile && typeof rawProfile === "object" && !Array.isArray(rawProfile)
+      ? rawProfile
+      : null;
+  if (!profile) return null;
+
+  const essences = normalizeEssenceList(profile.essences);
+  const formCandidate =
+    typeof profile.form === "string" ? profile.form.trim().toLowerCase() : "bolt";
+  const form = FORM_DEFINITIONS[formCandidate] ? formCandidate : "bolt";
+  const delivery = normalizeDelivery(profile, FORM_DEFINITIONS[form]);
+
+  return {
+    essences,
+    form,
+    delivery,
+    scale: clamp(Math.round(toNumberSafe(profile.scale, 1)), 1, 5),
+    pattern: inferPattern(profile),
+    targeting:
+      typeof profile.targeting === "string" && profile.targeting.trim()
+        ? profile.targeting.trim().toLowerCase()
+        : null,
+    displayName:
+      typeof profile.displayName === "string" && profile.displayName.trim()
+        ? profile.displayName.trim()
+        : null,
+  };
+}
+
+function buildRequestFromMagicProfile(skill, state) {
+  void state;
+  const profile = normalizeMagicProfile(
+    skill?.magicProfile || skill?.template?.meta?.magicProfile,
+  );
+  if (!profile || profile.essences.length === 0) return null;
+
+  const primaryEssence = profile.essences[0];
+  const targeting =
+    profile.targeting ||
+    (skill?.target === "self"
+      ? "self"
+      : chooseTargeting({ targeting: skill?.target }, profile.delivery));
+
+  return {
+    essences: profile.essences,
+    primaryEssence,
+    form: profile.form,
+    pattern: profile.pattern,
+    delivery: profile.delivery,
+    scale: profile.scale,
+    targeting,
+    intent: "cast",
+    source: skill?.id || "skill_magic_profile",
+    displayName: profile.displayName || skill?.name || null,
+  };
+}
+
+function computeResonanceGain(request) {
+  const extraEssenceCount = Math.max(0, request.essences.length - 1);
+  const base =
+    1.5 +
+    request.scale * 1.6 +
+    extraEssenceCount * 1.4 +
+    (request.delivery === "sustained" ? 2.2 : request.delivery === "channeled" ? 1.4 : 0);
+  return Number(base.toFixed(1));
+}
+
 function buildPreparedDescription(request) {
   return `You prepare ${buildDisplayName(request)}.`;
 }
@@ -560,12 +661,25 @@ function computeResolution(state, request) {
   const nextStrain = clamp(magic.strain.current + strainGain, 0, magic.strain.max);
   const overload = Math.max(0, magic.strain.current + strainGain - magic.strain.max);
   const backfireDamage = overload > 0 ? Math.max(1, Math.floor(overload / 4)) : 0;
+  const resonanceGain = computeResonanceGain(request);
+  const resonanceMax = clamp(toNumberSafe(magic?.resonance?.max, 100), 1, 100);
+  const resonanceCurrent = clamp(
+    toNumberSafe(magic?.resonance?.current, 0) + resonanceGain,
+    0,
+    resonanceMax,
+  );
   const attackerMagic = {
     ...magic,
     strain: {
       current: nextStrain,
       max: magic.strain.max,
       state: describeStrain(nextStrain, magic.strain.max),
+    },
+    resonance: {
+      ...(magic.resonance || {}),
+      current: resonanceCurrent,
+      max: resonanceMax,
+      state: describeResonance(resonanceCurrent, resonanceMax),
     },
     prepared: null,
   };
@@ -580,7 +694,8 @@ function computeResolution(state, request) {
     damageMultiplier,
     cooldown: 0,
     backfireDamage,
-    displayName: buildDisplayName(request),
+    resonanceGain,
+    displayName: request.displayName || buildDisplayName(request),
   };
 }
 
@@ -608,12 +723,14 @@ export function prepareMagic(state, action) {
   if (validationError) {
     return { ok: false, reason: validationError, state };
   }
+  const preview = computeResolution(state, request);
   const nextPlayer = syncPlayerMagicState(player, {
     ...magic,
     prepared: {
       request,
       preview: {
-        manaCost: computeResolution(state, request).manaCost || 0,
+        manaCost: preview.manaCost || 0,
+        displayName: preview.displayName || buildDisplayName(request),
       },
     },
   });
@@ -779,6 +896,30 @@ export function buildCombatMagicSkill(state, action) {
       ...resolution,
       attackerMagic,
     }),
+  };
+}
+
+export function resolveCombatSkillMagic(state, skill) {
+  const request = buildRequestFromMagicProfile(skill, state);
+  if (!request) return null;
+
+  const resolution = computeResolution(state, request);
+  if (!resolution.ok) {
+    return {
+      ok: false,
+      reason: resolution.reason,
+    };
+  }
+
+  return {
+    ok: true,
+    request,
+    manaCost: resolution.manaCost,
+    cooldown: resolution.cooldown,
+    backfireDamage: resolution.backfireDamage,
+    attackerMagic: resolution.attackerMagic,
+    displayName: resolution.displayName,
+    resonanceGain: resolution.resonanceGain,
   };
 }
 

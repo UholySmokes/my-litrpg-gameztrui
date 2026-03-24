@@ -599,9 +599,16 @@
     "id": "fireball",
     "name": "Fireball",
     "description": "Hurl a burning sphere that scorches the enemy.",
+    "isMagic": true,
     "cost": 25,
     "costType": "mana",
     "cooldown": 3,
+    "magicProfile": {
+      "essences": ["fire"],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 3
+    },
     "damage": {
       "multiplier": 1.25,
       "isMagic": true,
@@ -629,9 +636,16 @@
     "id": "ice_lance",
     "name": "Ice Lance",
     "description": "A piercing lance of frost that slows the target.",
+    "isMagic": true,
     "cost": 20,
     "costType": "mana",
     "cooldown": 3,
+    "magicProfile": {
+      "essences": ["water"],
+      "form": "lance",
+      "delivery": "instant",
+      "scale": 2
+    },
     "damage": {
       "multiplier": 1.15,
       "isMagic": true,
@@ -659,9 +673,16 @@
     "id": "lightning_bolt",
     "name": "Lightning Bolt",
     "description": "Chain lightning that disrupts focus.",
+    "isMagic": true,
     "cost": 30,
     "costType": "mana",
     "cooldown": 4,
+    "magicProfile": {
+      "essences": ["lightning"],
+      "form": "lance",
+      "delivery": "instant",
+      "scale": 4
+    },
     "damage": {
       "multiplier": 1.3,
       "isMagic": true,
@@ -689,10 +710,18 @@
     "id": "mana_shield",
     "name": "Mana Shield",
     "description": "Convert mana into a protective ward.",
+    "isMagic": true,
     "cost": 20,
     "costType": "mana",
     "cooldown": 10,
     "target": "self",
+    "magicProfile": {
+      "essences": ["creation", "light"],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 2,
+      "targeting": "self"
+    },
     "effects": [
       {
         "target": "self",

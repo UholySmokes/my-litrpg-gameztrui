@@ -6,7 +6,7 @@ const { checkRateLimit, getClientIp } = require("../../../functions/lib/rate-lim
 
 describe("smoke: functions rate-limit", () => {
   it("calculates per-request limits", () => {
-    const req = { url: "/api/test", headers: { "x-forwarded-for": "127.0.0.1" } };
+    const req = { url: "/api/test", headers: { "x-forwarded-for": "127.0.0.1" }, ip: "127.0.0.1" };
     const result = checkRateLimit(req, { maxRequests: 2, narrationMaxRequests: 2, windowMs: 1000 });
     expect(result.allowed).toBe(true);
     expect(getClientIp(req)).toBe("127.0.0.1");

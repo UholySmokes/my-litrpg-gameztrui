@@ -269,7 +269,7 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
                 textAlign: "center",
               }}
             >
-              Developer Mode
+              Local Mode
             </p>
             <button
               type="button"
@@ -285,7 +285,7 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
                 justifyContent: "center",
               }}
             >
-              Play Local Game (No Login)
+              Play Local Game
             </button>
           </div>
         )}

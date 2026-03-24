@@ -1,4 +1,4 @@
-import CharacterCreationMode from "../../ui/modes/CharacterCreationMode.jsx";
+import CharacterCreationFlow from "../shell/CharacterCreationFlow.jsx";
 
 export default function CharacterCreationShell({
   advancedUnlocked,
@@ -10,15 +10,14 @@ export default function CharacterCreationShell({
   return (
     <div
       className={[
-        "mode-shell",
-        "mode-shell--creation",
+        "creation-shell",
         isActive ? "mode-shell--active" : "",
         isTransitioning ? "mode-shell--fade-out" : "",
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <CharacterCreationMode
+      <CharacterCreationFlow
         advancedUnlocked={advancedUnlocked}
         telemetryUser={telemetryUser}
         onComplete={onComplete}

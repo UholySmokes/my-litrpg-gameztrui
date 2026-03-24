@@ -1,15 +1,13 @@
 {
-  "startedAt": "2026-02-23T14:36:38.378Z",
+  "startedAt": "2026-03-23T02:35:57.546Z",
   "webReady": true,
-  "apiReady": true,
-  "healthStatus": 500,
-  "narrateStatus": 500,
-  "narrateBody": "",
-  "consoleErrors": [
-    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
-    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
-  ],
+  "apiReady": false,
+  "healthStatus": null,
+  "narrateStatus": null,
+  "narrateBody": null,
+  "consoleErrors": [],
   "pageErrors": [],
   "success": false,
-  "finishedAt": "2026-02-23T14:36:41.601Z"
+  "error": "Stack readiness failed (webReady=true, apiReady=false)",
+  "finishedAt": "2026-03-23T02:38:37.836Z"
 }

@@ -2,52 +2,16 @@ import { useState, useEffect, Suspense, lazy } from "react";
 import { getCurrentUser, onAuthStateChange } from "./core/AuthService.js";
 import { isWebGameplayEnabled } from "./core/WebGameplayGate.js";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
-import PwaInstallPrompt from "./components/PwaInstallPrompt.jsx";
+import EntryShell from "./components/shell/EntryShell.jsx";
 import "./index.css";
 import "./App.css";
+import "./styles/runic-shell.css";
 
 const GameUI = lazy(() => import("./components/GameUI"));
 const AuthUI = lazy(() => import("./components/AuthUI"));
 
 const LOCAL_USER = { id: "local", email: "local@game.dev" };
 const WEB_GAMEPLAY_ENABLED = isWebGameplayEnabled();
-
-function GameplayDisabledScreen() {
-  return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "var(--bg-deep)",
-        padding: "2rem",
-      }}
-    >
-      <div className="holo-panel" style={{ maxWidth: "680px", width: "100%" }}>
-        <h2
-          style={{
-            marginTop: 0,
-            color: "var(--holo-cyan)",
-            fontFamily: "var(--font-hud)",
-          }}
-        >
-          Web Gameplay Disabled
-        </h2>
-        <p style={{ color: "var(--text-main)" }}>
-          This environment is configured for tooling and observability only.
-          Production gameplay should run through the Godot runtime.
-        </p>
-        <p style={{ color: "var(--text-muted)", marginBottom: 0 }}>
-          To explicitly enable web gameplay outside dev, set
-          `VITE_WEB_GAMEPLAY_ENABLED=true` (or `VITE_ENABLE_WEB_GAMEPLAY=true`) in
-          runtime/build config.
-        </p>
-      </div>
-    </div>
-  );
-}
 
 function AppContent() {
   const [isLocalGame, setIsLocalGame] = useState(() => {
@@ -60,20 +24,12 @@ function AppContent() {
   });
   const [loading, setLoading] = useState(true);
   const loadingScreen = (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "var(--bg-deep)",
-        color: "var(--holo-cyan)",
-        fontFamily: "var(--font-hud)",
-      }}
-    >
-      Loading...
-    </div>
+    <EntryShell
+      title="Synchronizing the lattice."
+      description="Loading identity, runtime contracts, and the latest browser-safe game shell before the chronicle opens."
+      status="Boot sequence in progress."
+      footer="Void-Verse runs the same deterministic systems beneath web, native, and simulation surfaces."
+    />
   );
 
   useEffect(() => {
@@ -131,41 +87,35 @@ function AppContent() {
   }
 
   if (!WEB_GAMEPLAY_ENABLED) {
-    return <GameplayDisabledScreen />;
+    return (
+      <EntryShell
+        title="Web gameplay is disabled."
+        description="This environment is configured for tooling and observability. Enable the web runtime explicitly when you want the browser client to run the game."
+        status="Set `VITE_WEB_GAMEPLAY_ENABLED=true` or `VITE_ENABLE_WEB_GAMEPLAY=true` in runtime or build config."
+        footer="The Godot runtime remains the recommended native delivery surface when web gameplay is intentionally disabled."
+      />
+    );
   }
 
   // Show login if not authenticated and not in local game
   if (!user && !isLocalGame) {
     return (
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "var(--bg-deep)",
-          padding: "2rem",
-        }}
+      <EntryShell
+        title="Bind your chronicle."
+        description="Sign in to carry progression, saves, and narrative continuity across sessions, or launch a local-only run in this browser."
+        status="Cloud sign-in unlocks synced progression and remote saves."
+        footer="The new web shell keeps onboarding, creation, and adventure inside one continuous responsive experience."
       >
-        <div style={{ maxWidth: "400px", width: "100%" }}>
-          <Suspense fallback={loadingScreen}>
-            <AuthUI
-              onAuthChange={handleAuthChange}
-              onLocalGame={import.meta.env.DEV ? handleLocalGame : null}
-            />
-          </Suspense>
-        </div>
-      </div>
+        <Suspense fallback={loadingScreen}>
+          <AuthUI onAuthChange={handleAuthChange} onLocalGame={handleLocalGame} />
+        </Suspense>
+      </EntryShell>
     );
   }
 
   return (
     <Suspense fallback={loadingScreen}>
-      <>
-        <PwaInstallPrompt enabled={WEB_GAMEPLAY_ENABLED} />
-        <GameUI user={user} />
-      </>
+      <GameUI user={user} />
     </Suspense>
   );
 }

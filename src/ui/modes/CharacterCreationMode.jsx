@@ -3,7 +3,6 @@ import {
   buildCharacterCreationDerivedState,
   useCharacterCreationReworked,
 } from "../../hook/useCharacterCreationReworked.js";
-import WindowManager from "../windowing/WindowManager.jsx";
 import NarrativeMemoryPanel from "../panels/NarrativeMemoryPanel.jsx";
 import CreationNarrativePanel from "../panels/CreationNarrativePanel.jsx";
 import CreationNamePanel from "../panels/creation/CreationNamePanel.jsx";
@@ -16,7 +15,6 @@ import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
 import CreationChoicePanel from "../panels/creation/CreationChoicePanel.jsx";
 import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSystemPanel.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
-import CreationWizardShellPanel from "../panels/creation/CreationWizardShellPanel.jsx";
 import { ensureAttributeShape } from "../../constants/attributes.js";
 import {
   buildCreationStepSequence,
@@ -1012,44 +1010,91 @@ export default function CharacterCreationMode({
   const canBack = currentSequenceIndex > 0;
   const canNext = currentSequenceIndex < creationFlow.length - 1;
 
-  const windows = [
-    {
-      id: "wizard",
-      title: "Character Genesis",
-      dockZone: "center",
-      minWidth: 720,
-      minHeight: 520,
-      content: (
-        <CreationWizardShellPanel
-          title="Character Genesis"
-          steps={wizardSteps}
-          activeStepId={activeStepId}
-          error={wizardError}
-          canBack={canBack}
-          canNext={canNext}
-          onBack={() => {
-            setWizardError("");
-            previousStep();
-          }}
-          onNext={() => {
-            const validation = validateCurrentStep?.();
-            if (!validation?.valid) {
-              setWizardError(validation?.error || "Complete this phase to continue.");
-              return;
-            }
-            setWizardError("");
-            emitCreationTelemetry(
-              createTelemetryEvent("character_create_step_completed", {
-                data: {
-                  stepId: activeStepId,
-                  stepIndex: currentSequenceIndex + 1,
-                  stepCount: creationFlow.length,
-                },
-              }),
+  const handleBack = () => {
+    setWizardError("");
+    previousStep();
+  };
+
+  const handleNext = () => {
+    const validation = validateCurrentStep?.();
+    if (!validation?.valid) {
+      setWizardError(validation?.error || "Complete this phase to continue.");
+      return;
+    }
+
+    setWizardError("");
+    emitCreationTelemetry(
+      createTelemetryEvent("character_create_step_completed", {
+        data: {
+          stepId: activeStepId,
+          stepIndex: currentSequenceIndex + 1,
+          stepCount: creationFlow.length,
+        },
+      }),
+    );
+    nextStep();
+  };
+
+  return (
+    <section className="creation-flow">
+      <header className="creation-flow__hero">
+        <div className="creation-flow__eyebrow">Character Genesis</div>
+        <h2 className="creation-flow__title">Forge a run-ready identity.</h2>
+        <p className="creation-flow__copy">
+          Bind a System, shape your lineage and class, and lock in a reversible
+          starting build before the first narrative beat lands.
+        </p>
+
+        <div className="creation-flow__status-list">
+          {statusLines.slice(0, 8).map((line) => (
+            <div
+              key={line.label}
+              className={[
+                "creation-flow__status-pill",
+                line.active ? "creation-flow__status-pill--active" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              {line.label}
+            </div>
+          ))}
+        </div>
+
+        <div className="creation-flow__step-grid">
+          {wizardSteps.map((step, index) => {
+            const isActive = step.id === activeStepId;
+            const isDone = step.status === "done";
+
+            return (
+              <div
+                key={step.id}
+                className={[
+                  "creation-flow__step",
+                  isActive ? "creation-flow__step--active" : "",
+                  isDone ? "creation-flow__step--done" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                <div className="creation-flow__step-phase">Phase {index + 1}</div>
+                <div className="creation-flow__step-label">{step.label}</div>
+                <div className="creation-flow__step-state">
+                  {isDone ? "done" : isActive ? "now" : step.status}
+                </div>
+              </div>
             );
-            nextStep();
-          }}
-          sidebar={
+          })}
+        </div>
+      </header>
+
+      {wizardError ? (
+        <div className="creation-flow__error">{wizardError}</div>
+      ) : null}
+
+      <div className="creation-flow__frame">
+        <aside className="creation-flow__sidebar">
+          <div className="creation-flow__sidebar-card">
             <CreationNarrativePanel
               statusLines={statusLines}
               typewriterText={typewriterText}
@@ -1059,30 +1104,42 @@ export default function CharacterCreationMode({
               selectedClass={selectedClass}
               selectedArchetypeSystem={selectedArchetypeSystem}
             />
-          }
-          content={activePhase}
-        />
-      ),
-    },
-    {
-      id: "narrativeMemory",
-      title: "Narrative Memory",
-      dockZone: "right",
-      allowDockCompact: true,
-      compactLabel: "MEM",
-      minWidth: 320,
-      minHeight: 240,
-      content: (
-        <NarrativeMemoryPanel
-          summary=""
-          entries={creationMemoryEntries}
-          latestEntry={latestEntry}
-          latestEntryText={latestEntry?.text || ""}
-          containerRef={narrativeMemoryRef}
-        />
-      ),
-    },
-  ];
+          </div>
 
-  return <WindowManager mode="creation" windows={windows} forceFloating={true} />;
+          <div className="creation-flow__sidebar-card">
+            <NarrativeMemoryPanel
+              summary=""
+              entries={creationMemoryEntries}
+              latestEntry={latestEntry}
+              latestEntryText={latestEntry?.text || ""}
+              containerRef={narrativeMemoryRef}
+            />
+          </div>
+        </aside>
+
+        <div className="creation-flow__main">
+          <div className="creation-flow__main-card">{activePhase}</div>
+
+          <div className="creation-flow__actions">
+            <button
+              type="button"
+              className="holo-button"
+              disabled={!canBack}
+              onClick={handleBack}
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              className="holo-button holo-button--solid"
+              disabled={!canNext}
+              onClick={handleNext}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

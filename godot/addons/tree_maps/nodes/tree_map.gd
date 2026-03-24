@@ -46,8 +46,6 @@ const default_arrow_texture = preload("res://addons/tree_maps/icons/arrow_filled
 #@export var arrow_border_color: Color
 @export var arrow_texture: Texture2D = default_arrow_texture
 
-# TODO:  Properties which are overriden will reset, if its the same as parent when editing parent's properties.
-
 var setup_properties = [
 		"node_color", "node_size", "node_texture", #"node_shape",
 		"line_color", "line_thickness",
@@ -67,14 +65,11 @@ func setup_tree_map_node(node):
 	for property in setup_properties:
 		var parent_value = get(property)
 		var parent_property = "parent_" + property
-		# Before updating inherited properties, check if that property was actually inherited.
-		# If it was, use inheited value as the default revert value for that property.
-		if node.get(property) == node.get(parent_property):
-			node.set(parent_property, parent_value)
-			node.set(property, node.property_get_revert(property))
-		#
-		else:
-			node.set(parent_property, get(property))
+		# Keep explicit overrides intact, but refresh inherited values whenever the parent changes.
+		var was_inherited = node.get(property) == node.get(parent_property)
+		node.set(parent_property, parent_value)
+		if was_inherited:
+			node.set(property, parent_value)
 
 	## Before updating inherited properties, check if that property was actually inherited.
 	#if node.line_color == node.parent_line_color:
@@ -180,12 +175,10 @@ func _on_selection_changed() -> void:
 						edit_node(target)  # select targeted node if chaining is enabled.
 					else: select_node(node)  # select old node if chaining is disabled.
 		EditStates.ADDING:
-			# TODO: if TreeMap is selected, add nodes without connections
-			# TODO: Fix node not applyning inherited colors
-			if tree_map_nodes.is_empty():  # Empty spot selected
+			var selected_tree_map = selected_nodes.has(self)
+			if tree_map_nodes.is_empty() or selected_tree_map:  # Empty spot or TreeMap selected
 				var new_node = create_tree_map_node()
 				setup_tree_map_node(new_node)
-				#new_node.apply_properties()
 				if chaining_enabled:
 					for node in edited_nodes:
 						connnect_nodes([node], new_node)

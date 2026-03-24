@@ -430,11 +430,13 @@ func _draw_circle_shape(center: Vector2, radius: float):
 			if pos.distance_squared_to(center) <= radius_sq:
 				current_image.set_pixelv(pos, current_color)
 
-# TODO: Fix the double call for the zoom function when zooming with the mouse wheel
 func _on_canvas_gui_input(event):
 	#print("_on_canvas_gui_input(event: %s)" % event)
 	# ======================== ZOOM WITH CTRL + MOUSE WHEEL ========================
 	if event.ctrl_pressed and event is InputEventMouseButton:
+		if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN] and not event.pressed:
+			return
+
 		var viewport = get_viewport()
 		var mouse_pos = event.position
 

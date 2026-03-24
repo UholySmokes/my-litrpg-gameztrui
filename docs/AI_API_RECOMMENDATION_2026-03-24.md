@@ -68,7 +68,7 @@ FMHY remains useful as **discovery/navigation** (many links to official and unof
 
 ## 3) Best API choice for *this* repo
 
-## Decision
+### Decision
 
 **Keep OpenAI Responses API as primary for player-facing runtime agents; keep Gemini as automatic fallback; keep `content_smith` Gemini-first.**
 

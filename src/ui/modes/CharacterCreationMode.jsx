@@ -264,19 +264,23 @@ export default function CharacterCreationMode({
   }, [selectedClass]);
 
   useEffect(() => {
-    const descriptionParts = [];
-    if (selectedArchetypeSystem?.summary) descriptionParts.push(selectedArchetypeSystem.summary);
-    if (selectedOrigin?.description) descriptionParts.push(selectedOrigin.description);
-    if (selectedClass?.description) descriptionParts.push(selectedClass.description);
-    if (selectedRace?.description) descriptionParts.push(selectedRace.description);
-    if (selectedProfession?.description) descriptionParts.push(selectedProfession.description);
-    const combinedDescription = descriptionParts.join(" ").trim();
-    if (combinedDescription.length > 0) {
+    const descriptionParts = [
+      selectedArchetypeSystem?.summary,
+      selectedOrigin?.description,
+      selectedClass?.description,
+      selectedRace?.description,
+      selectedProfession?.description,
+    ]
+      .filter((part) => typeof part === "string" && part.trim().length > 0)
+      .map((part) => part.trim());
+    const descriptionCharacters = Array.from(descriptionParts.join(" "));
+    if (descriptionCharacters.length > 0) {
       setTypewriterText("");
       let index = 0;
       const interval = setInterval(() => {
-        if (index < combinedDescription.length) {
-          setTypewriterText((prev) => prev + combinedDescription[index]);
+        if (index < descriptionCharacters.length) {
+          const nextCharacter = descriptionCharacters[index] ?? "";
+          setTypewriterText((prev) => `${prev}${nextCharacter}`);
           index++;
         } else {
           clearInterval(interval);

@@ -5,7 +5,6 @@ import React from "react";
  * Wraps existing NarrativeHub + ActionSuggestions + CommandTerminal logic.
  */
 export default function AdventureTab({
-  narrativeEntries,
   latestEntryText,
   suggestions,
   onSuggestionSelect,

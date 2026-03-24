@@ -51,14 +51,12 @@ export default function MobileGameMode({
   // Toggles for modal screens
   showShop,
   showGacha,
-  showArchetypeSystem,
   showTitleSystem,
   showProfessions,
   showStatusOverlay,
   showSaveLoad,
   onCloseShop,
   onCloseGacha,
-  onCloseArchetypeSystem,
   onOpenArchetypeSystem,
   onCloseTitleSystem,
   onCloseProfessions,
@@ -87,7 +85,7 @@ export default function MobileGameMode({
   const mobileThemeKey = theme.mobileThemeKey || "dark-grimoire";
 
   const [activeTab, setActiveTab] = useState("adventure");
-  const [showThemeSelector, setShowThemeSelector] = useState(false);
+  const [, setShowThemeSelector] = useState(false);
 
   const onToggleThemeSelector = useCallback(() => setShowThemeSelector((v) => !v), []);
 

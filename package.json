@@ -102,6 +102,7 @@
     "@vercel/analytics": "^2.0.1",
     "@voidverse/game-core": "workspace:*",
     "@voidverse/game-schemas": "workspace:*",
+    "build": "^0.1.4",
     "dotenv": "^17.2.4",
     "firebase": "^12.9.0",
     "firebase-admin": "^13.6.1",

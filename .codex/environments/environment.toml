@@ -3,4 +3,16 @@ version = 1
 name = "my-litrpg-gameztrui"
 
 [setup]
-script = ""
+script = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+node scripts/ai-setup.mjs
+'''
+
+[setup.win32]
+script = '''
+$ErrorActionPreference = "Stop"
+
+node scripts/ai-setup.mjs
+'''

@@ -59,6 +59,7 @@ export default function GameUI({ user }) {
     state,
     addSystemMessage,
     setState,
+    loadState,
     evaluateQuestProgress,
     dispatchSystemEvent,
     dispatch,
@@ -229,7 +230,7 @@ export default function GameUI({ user }) {
   const handleLoadState = useCallback(
     (loadedState, options = {}) => {
       if (!isRecord(loadedState)) return;
-      setState(loadedState);
+      loadState(loadedState);
       const hasCharacter = hasCreatedCharacterSnapshot(loadedState);
       setCharacterCreated(hasCharacter);
       setActiveSurface(hasCharacter ? "adventure" : "hub");
@@ -241,7 +242,7 @@ export default function GameUI({ user }) {
         addSystemMessage(options.message || "Loaded save game.", "system");
       }
     },
-    [addSystemMessage, setCharacterCreated, setState, setShowSaveLoad],
+    [addSystemMessage, loadState, setCharacterCreated, setShowSaveLoad],
   );
 
   const handleSubmit = useCallback(

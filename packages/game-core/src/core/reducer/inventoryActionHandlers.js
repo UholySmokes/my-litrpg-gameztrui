@@ -6,9 +6,16 @@ import { canPurchaseTitle, getTitleById } from "../titleLogic.js";
 export function handleInventoryAction(state, action) {
   switch (action.type) {
     case "EQUIP_ITEM": {
-      const { slot, item } = action.payload;
+      const { slot, item } = action.payload || {};
+      if (!state.player || !slot || !item?.id) return state;
       const equipment = { ...(state.player.equipment || {}) };
       const inventory = [...(state.player.inventory || [])];
+      const itemIndex = inventory.findIndex((i) => i.id === item.id);
+      const availableQuantity =
+        itemIndex >= 0 ? toNumber(inventory[itemIndex]?.quantity, 1) : 0;
+      if (availableQuantity <= 0) {
+        return state;
+      }
 
       if (equipment[slot]) {
         const prevItem = equipment[slot];
@@ -23,16 +30,13 @@ export function handleInventoryAction(state, action) {
         }
       }
 
-      const itemIndex = inventory.findIndex((i) => i.id === item.id);
-      if (itemIndex >= 0) {
-        if (inventory[itemIndex].quantity > 1) {
+      if (inventory[itemIndex].quantity > 1) {
           inventory[itemIndex] = {
             ...inventory[itemIndex],
             quantity: inventory[itemIndex].quantity - 1,
           };
-        } else {
-          inventory.splice(itemIndex, 1);
-        }
+      } else {
+        inventory.splice(itemIndex, 1);
       }
 
       equipment[slot] = item;

@@ -5,7 +5,6 @@ import React from "react";
  * Wraps existing NarrativeHub + ActionSuggestions + CommandTerminal logic.
  */
 export default function AdventureTab({
-  narrativeEntries,
   latestEntryText,
   suggestions,
   onSuggestionSelect,
@@ -41,7 +40,7 @@ export default function AdventureTab({
               <button
                 key={i}
                 className="adventure-tab__action-btn"
-                onClick={() => onSuggestionSelect?.(s)}
+                onClick={() => onSuggestionSelect?.(text)}
                 disabled={isLoading}
               >
                 <span className="adventure-tab__action-marker">▶</span>

@@ -1,4 +1,5 @@
 import { DataRegistry } from "../../data/DataRegistry.js";
+import { xpForNextLevel } from "../xpCurve.js";
 import { performLevelUp } from "../../systems/leveling/LevelingManager.js";
 import { toCanonicalAttributeKey } from "../../constants/attributes.js";
 import {
@@ -179,7 +180,11 @@ export function handleProgressionAction(state, action, helpers) {
         player: {
           ...player,
           level: result.level,
-          xp: result.xp,
+          xp: {
+            ...(isPlainObject(player.xp) ? player.xp : {}),
+            current: result.xp,
+            max: xpForNextLevel(result.level, state.config),
+          },
           prestige: result.prestige,
           progress: {
             ...progress,

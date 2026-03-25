@@ -28,6 +28,7 @@ import { getModifiedSkill } from "../skills/SkillRegistry.js";
 import { effectApplicationSystem } from "../effects/EffectApplicationSystem.js";
 import { consumeMana } from "../magic/ManaSystem.js";
 import { calculateManaCost } from "../magic/ManaBalance.js";
+import { resolveCombatSkillMagic } from "../magic/UnifiedMagicSystem.js";
 import { emit } from "../../core/EventBus.js";
 import {
   allowsZeroDamage,
@@ -441,7 +442,7 @@ export function startCombat(state, enemyIds) {
     .filter((e) => e !== null)
     .map((enemy, index) => ({
       ...enemy,
-      lane: index % 3,
+      lane: (index % 3) + 1,
     }));
   if (enemies.length === 0) {
     return state;
@@ -602,6 +603,7 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       updatedEnemy,
       skill,
       state.config,
+      { state },
     );
     if (skillResult.insufficientMana) {
       return {
@@ -2020,7 +2022,36 @@ export function executeSkill(attacker, defender, skillInput, config = {}, option
     if (modified) skill = modified;
   }
   const bypasses = resolveBypasses(attacker.talents || []);
-  const unifiedMagic = skill?.unifiedMagic || options?.unifiedMagic || null;
+  const stateForUnifiedMagic =
+    options?.state && typeof options.state === "object" && !Array.isArray(options.state)
+      ? {
+          ...options.state,
+          player: {
+            ...(options.state.player || {}),
+            ...attacker,
+            mana: attacker?.mana || options.state.player?.mana,
+            magic: attacker?.magic || options.state.player?.magic,
+          },
+        }
+      : null;
+  const resolvedSkillMagic =
+    !options?.unifiedMagic && stateForUnifiedMagic
+      ? resolveCombatSkillMagic(stateForUnifiedMagic, skill)
+      : null;
+  if (resolvedSkillMagic?.ok === false) {
+    return {
+      damage: 0,
+      messages: [resolvedSkillMagic.reason || "Magic profile unavailable"],
+      cooldown: 0,
+      cost: 0,
+      insufficientMana: true,
+    };
+  }
+  const unifiedMagic =
+    skill?.unifiedMagic ||
+    options?.unifiedMagic ||
+    (resolvedSkillMagic?.ok ? resolvedSkillMagic : null) ||
+    null;
   const cd = Number.isFinite(unifiedMagic?.cooldown)
     ? unifiedMagic.cooldown
     : applyCooldownOverride(skill.cooldown || 0, bypasses);

@@ -1,0 +1,10 @@
+{
+  "chatgpt.runCodexInWindowsSubsystemForLinux": false,
+  "powershell.enableProfileLoading": false,
+  "powershell.scriptAnalysis.enable": false,
+  "markdown.validate.enabled": true,
+  "files.associations": {
+    "*.gql": "graphql",
+    "*.graphql": "graphql"
+  }
+}

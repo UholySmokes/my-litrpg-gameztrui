@@ -1,4 +1,5 @@
 import { random, randomChoice } from "../../utils/DeterministicRandom.js";
+import { normalizeUnifiedMagicState } from "./UnifiedMagicSystem.js";
 import {
   findLocationsByZone,
   getBiomeEssenceProfile,
@@ -1126,9 +1127,11 @@ export function processEssenceEcologyTurn(state) {
 
 function ensurePlayerMagic(player) {
   const magic = player.magic && typeof player.magic === "object" ? player.magic : null;
+  const normalizedMagic = normalizeUnifiedMagicState(magic, { player });
   const stability = magic?.stability || {};
   const baseMax = 100;
   const nextMagic = {
+    ...normalizedMagic,
     stability: {
       body: {
         current: toNumberSafe(stability.body?.current, baseMax),
@@ -1144,7 +1147,7 @@ function ensurePlayerMagic(player) {
       },
     },
     affinity: ensureEssenceMap(magic?.affinity, 0),
-    attunement: ensureEssenceMap(magic?.attunement, 1),
+    attunementLevels: ensureEssenceMap(magic?.attunementLevels ?? magic?.attunement, 1),
     reserves: ensureEssenceMap(magic?.reserves, 0),
     reservesTaint: ensureEssenceMap(magic?.reservesTaint, 0),
     charges: Array.isArray(magic?.charges) ? magic.charges : [],
@@ -1182,10 +1185,10 @@ function ensurePlayerMagic(player) {
     prepared: magic?.prepared ?? null,
     casting: magic?.casting && typeof magic.casting === "object" ? magic.casting : null,
     mana: {
-      max: toNumberSafe(magic?.mana?.max, toNumberSafe(player.mana?.max, 50)),
+      max: toNumberSafe(magic?.mana?.max, toNumberSafe(normalizedMagic?.mana?.max, toNumberSafe(player.mana?.max, 50))),
       current: toNumberSafe(
         magic?.mana?.current,
-        toNumberSafe(magic?.mana?.max, toNumberSafe(player.mana?.max, 50)),
+        toNumberSafe(normalizedMagic?.mana?.current, toNumberSafe(player.mana?.max, 50)),
       ),
     },
   };
@@ -1437,7 +1440,7 @@ export function magicDraw(state, action) {
       : stance === "guarded"
         ? 0.75
         : 1.0;
-  const att = clamp(0.25 + 0.075 * toNumberSafe(magic.attunement?.[essence], 1), 0, 2);
+  const att = clamp(0.25 + 0.075 * toNumberSafe(magic.attunementLevels?.[essence], 1), 0, 2);
   const aff = 1 + clamp(toNumberSafe(magic.affinity?.[essence], 0), -0.5, 2);
 
   const drawMult = clamp(toNumberSafe(ambient?.global?.drawMultByEssence?.[essence], 1), 0.9, 1.2);
@@ -1565,7 +1568,7 @@ export function magicRefine(state, action) {
   const refineYieldMult = clamp(1 + 0.03 * yieldRank, 0.9, 1.2);
 
   const mindPct = stabilityPct(magic.stability?.mind);
-  const refineSkillFactor = clamp(0.15 * toNumberSafe(magic.attunement?.[essence], 1) + 0.5 * mindPct, 0, 1);
+  const refineSkillFactor = clamp(0.15 * toNumberSafe(magic.attunementLevels?.[essence], 1) + 0.5 * mindPct, 0, 1);
   const blendedTaint = clamp((ambientTaint * 0.55 + reserveTaint * 0.45) * contaminationMult, 0, 1);
   const taintPenalty = rollout.layerB
     ? clamp(blendedTaint * (0.32 - 0.04 * cleanRefiningRank), 0, 0.35)
@@ -2186,7 +2189,7 @@ export function magicRelease(state) {
         : 1.0;
     const potency = 1 + 0.35 * (densityAvg - 1);
     const control = clamp(
-      0.4 + 0.06 * toNumberSafe(magic.attunement?.[essence], 1) + 0.3 * stabilityPct(magic.stability?.mind),
+      0.4 + 0.06 * toNumberSafe(magic.attunementLevels?.[essence], 1) + 0.3 * stabilityPct(magic.stability?.mind),
       0,
       1.2,
     );

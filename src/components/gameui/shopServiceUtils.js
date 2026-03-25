@@ -1,7 +1,6 @@
 import { mergeInventoryItems } from "../../utils/shared.js";
 
 function normalizeDurability(item) {
-  const current = Number(item?.durability?.current);
   const max = Number(item?.durability?.max);
   const resolvedMax = Number.isFinite(max) && max > 0 ? max : 100;
   return {

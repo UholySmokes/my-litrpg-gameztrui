@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useRef, useCallback, useMemo } from "react";
+import { useReducer, useEffect, useRef, useCallback, useState } from "react";
 import { gameReducer } from "../core/gameReducer.js";
 import { initialGameState } from "../data/initialState.js";
 import { SystemEventObserver } from "../core/SystemEventObserver.js";
@@ -6,6 +6,32 @@ import { emit } from "../core/EventBus.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { serializeEvent } from "../simulation/logging/CombatLogSerializer.ts";
 import { createSystemEngine } from "../core/createSystemEngine.js";
+
+const resolveEngineSeed = (gameState) => {
+  const worldSeed = gameState?.world?.vars?.worldSeed ?? gameState?.world?.seed;
+  const numericSeed = Number(worldSeed);
+  return Number.isFinite(numericSeed) ? numericSeed : 1;
+};
+
+const resolveEngineTick = (gameState) => {
+  const rawTick = gameState?.tick ?? gameState?.world?.turnCount;
+  const numericTick = Number(rawTick);
+  return Number.isFinite(numericTick) && numericTick >= 0 ? Math.floor(numericTick) : 0;
+};
+
+const resolveEngineConfig = (gameState) => ({
+  mode: "client",
+  seed: resolveEngineSeed(gameState),
+  contentVersion: gameState?.contentVersion ?? "core@0.1.0",
+  stateVersion: gameState?.stateVersion ?? 1,
+});
+
+const createEngineForState = (gameState) => {
+  const config = resolveEngineConfig(gameState);
+  SimBridge.initialize(config.seed);
+  SimBridge.currentTick = resolveEngineTick(gameState);
+  return createSystemEngine(config);
+};
 
 const cloneInitialState = () => {
   if (typeof structuredClone === "function") {
@@ -23,20 +49,11 @@ const rootReducer = (state, action) => {
 
 export function useGameEngine() {
   const [state, dispatch] = useReducer(rootReducer, undefined, cloneInitialState);
+  const [engine, setEngine] = useState(() => createEngineForState(initialGameState));
   const prevStateRef = useRef(state);
   const isInitialRender = useRef(true);
   const stateRef = useRef(state);
-
-  const engine = useMemo(
-    () =>
-      createSystemEngine({
-        mode: "client",
-        seed: initialGameState.world?.seed ?? 1,
-        contentVersion: initialGameState.contentVersion ?? "core@0.1.0",
-        stateVersion: initialGameState.stateVersion ?? 1,
-      }),
-    [],
-  );
+  const suppressObserverRef = useRef(false);
 
   useEffect(() => {
     stateRef.current = state;
@@ -45,6 +62,12 @@ export function useGameEngine() {
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
+      prevStateRef.current = state;
+      return;
+    }
+
+    if (suppressObserverRef.current) {
+      suppressObserverRef.current = false;
       prevStateRef.current = state;
       return;
     }
@@ -112,6 +135,16 @@ export function useGameEngine() {
       payload: nextStateOrUpdater,
     });
 
+  const loadState = useCallback((nextState) => {
+    if (!nextState || typeof nextState !== "object") return;
+    suppressObserverRef.current = true;
+    setEngine(createEngineForState(nextState));
+    dispatch({
+      type: "SET_STATE",
+      payload: nextState,
+    });
+  }, []);
+
   const evaluateQuestProgress = (nextState) => {
     const resolvedNext = nextState ?? state;
     SystemEventObserver.checkQuestObjectives(state, resolvedNext, dispatch);
@@ -142,6 +175,7 @@ export function useGameEngine() {
     chatLog: state.chatLog || [],
     addSystemMessage,
     setState,
+    loadState,
     evaluateQuestProgress,
     /** SystemEngine instance for direct access. */
     engine,

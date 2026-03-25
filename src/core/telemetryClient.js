@@ -8,6 +8,12 @@ function normalizeUserEmail(user) {
   return String(user.email || user.mail || "").trim();
 }
 
+function shouldSkipTelemetry(user) {
+  const userId = normalizeUserId(user);
+  const userEmail = normalizeUserEmail(user);
+  return userId === "local" || userEmail === "local@game.dev";
+}
+
 export function createTelemetryEvent(type, { level = "info", message = null, data } = {}) {
   return {
     type,
@@ -26,6 +32,9 @@ export async function postTelemetryBatch({
 } = {}) {
   if (typeof fetch !== "function") return { ok: false, skipped: true };
   if (!Array.isArray(events) || events.length === 0) {
+    return { ok: false, skipped: true };
+  }
+  if (shouldSkipTelemetry(user)) {
     return { ok: false, skipped: true };
   }
 

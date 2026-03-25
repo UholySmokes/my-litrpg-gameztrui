@@ -51,14 +51,18 @@ export default function MobileGameMode({
   // Toggles for modal screens
   showShop,
   showGacha,
-  showArchetypeSystem,
   showTitleSystem,
   showProfessions,
   showStatusOverlay,
   showSaveLoad,
+  onToggleShop,
+  onToggleGacha,
+  onToggleProfessions,
+  onToggleTitleSystem,
+  onToggleStatusOverlay,
+  onToggleSaveLoad,
   onCloseShop,
   onCloseGacha,
-  onCloseArchetypeSystem,
   onOpenArchetypeSystem,
   onCloseTitleSystem,
   onCloseProfessions,
@@ -87,7 +91,7 @@ export default function MobileGameMode({
   const mobileThemeKey = theme.mobileThemeKey || "dark-grimoire";
 
   const [activeTab, setActiveTab] = useState("adventure");
-  const [showThemeSelector, setShowThemeSelector] = useState(false);
+  const [, setShowThemeSelector] = useState(false);
 
   const onToggleThemeSelector = useCallback(() => setShowThemeSelector((v) => !v), []);
 
@@ -114,13 +118,22 @@ export default function MobileGameMode({
     onEquipItem,
     onUnequipItem,
     // Menu toggles
-    onToggleShop: showShop !== undefined ? onCloseShop : undefined,
-    onToggleGacha: showGacha !== undefined ? onCloseGacha : undefined,
-    onToggleProfessions: showProfessions !== undefined ? onCloseProfessions : undefined,
-    onToggleTitleSystem: showTitleSystem !== undefined ? onCloseTitleSystem : undefined,
+    onToggleShop:
+      onToggleShop || (showShop !== undefined ? onCloseShop : undefined),
+    onToggleGacha:
+      onToggleGacha || (showGacha !== undefined ? onCloseGacha : undefined),
+    onToggleProfessions:
+      onToggleProfessions ||
+      (showProfessions !== undefined ? onCloseProfessions : undefined),
+    onToggleTitleSystem:
+      onToggleTitleSystem ||
+      (showTitleSystem !== undefined ? onCloseTitleSystem : undefined),
     onOpenArchetypeSystem,
-    onToggleStatusOverlay: showStatusOverlay !== undefined ? onCloseStatusOverlay : undefined,
-    onToggleSaveLoad: showSaveLoad !== undefined ? onCloseSaveLoad : undefined,
+    onToggleStatusOverlay:
+      onToggleStatusOverlay ||
+      (showStatusOverlay !== undefined ? onCloseStatusOverlay : undefined),
+    onToggleSaveLoad:
+      onToggleSaveLoad || (showSaveLoad !== undefined ? onCloseSaveLoad : undefined),
     onToggleThemeSelector,
     onShopPurchase,
     onGachaPull,

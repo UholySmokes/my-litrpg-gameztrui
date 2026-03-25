@@ -17484,6 +17484,576 @@
     }
   },
   {
+    "id": "temporal_awareness_grant",
+    "name": "Temporal Awareness Grant",
+    "category": "Privilege",
+    "summary": "A perception Privilege that reveals temporal stress, event echoes, and decision convergence points before they fully resolve.",
+    "description": "Temporal Awareness Grant is a Privilege that surfaces moments of temporal stress, lingering event residue, and approaching convergence points before ordinary perception registers them. It belongs in the Privilege category because it is a narrow temporal perception advantage rather than time manipulation or true chronal authority. The bearer notices where time is about to compress, loop, or fracture and gains a brief interpretive window to act on that knowledge. Its progression bias favors preparation, escape timing, and leveraging moments that matter more than they appear rather than raw speed or rewind power. The main tradeoff is cognitive strain, because processing temporal stress signals alongside normal perception creates disorientation, headaches, and difficulty distinguishing past echoes from present reality. In the world, Temporal Awareness Grant should feel like the bearer has an unfair sense of timing that others find eerie and slightly inhuman. It should also attract attention from temporal enforcers, chronal predators, and factions that protect the sanctity of unobserved time. It remains lore-safe because it reveals temporal patterns without granting the ability to rewrite, reverse, or command time itself, and because stronger temporal structures can mask the signals the Privilege depends on.",
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 3,
+    "coreLoop": [
+      "Detect a moment of temporal stress, convergence, or residual echo in the immediate environment before ordinary perception catches it.",
+      "Interpret that temporal signal fast enough to choose a better action, avoid a trap, or position for an incoming shift.",
+      "Manage cognitive strain so repeated temporal reads do not degrade present-moment clarity or normal social function.",
+      "Trigger Temporal Awareness Grant's privilege protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth reveals basic temporal stress markers like event echoes, approaching deadlines, and moments where time feels heavier than normal.",
+      "Mid progression sharpens convergence detection, improves echo resolution, and lets the bearer distinguish meaningful signals from temporal noise.",
+      "Late progression makes the bearer uncannily well-timed in crisis moments, but increasingly disoriented in calm periods where temporal noise accumulates without purpose.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "Others treat the bearer with unease because their timing is too good and their warnings about approaching moments are too accurate.",
+      "The Privilege turns patience into a weapon and waiting into a tactical advantage because the bearer can sense when a moment is about to matter.",
+      "It naturally creates tension between trusting temporal intuition and trusting ordinary judgment when the signals disagree."
+    ],
+    "questHooks": [
+      "Detect a convergence event forming in a city district and decide whether to warn civilians risk exposing the Privilege or stay silent and save only yourself.",
+      "Follow a trail of temporal echoes back to a sealed ruin to discover what happened there before the echoes finish fading.",
+      "Navigate a negotiation where every decision branch carries visible temporal weight and the wrong choice crystallizes a future you can feel approaching."
+    ],
+    "possibleUses": [
+      "In gameplay, Temporal Awareness Grant can support event-timing prediction, echo-trail exploration, convergence warnings, and decision-weight visualization. It rewards planning and careful timing without granting time control. That makes strategic play sharper without trivializing encounters.",
+      "In narrative and quests, it enables moments where the bearer knows something terrible is converging before anyone else and must decide how to act on that knowledge. Characters can seem prophetic or paranoid depending on who is watching. That ambiguity gives the Privilege rich dramatic potential.",
+      "In implementation, it maps to event-proximity alerts, echo-state markers on locations, and temporal-stress UI indicators. Those hooks are lightweight and layer cleanly onto existing exploration and quest systems without requiring a time-manipulation engine.",
+      "Its limitation-aware use comes from keeping temporal perception distinct from temporal control. The bearer sees the pressure building but cannot redirect it. That preserves stakes and ensures the Privilege stays a narrow advantage rather than a full chronal System."
+    ],
+    "limits": [
+      "The Privilege reveals temporal stress and echoes but grants no ability to rewind, redirect, or control time itself.",
+      "Stronger temporal structures, chronal masking, or void-adjacent null zones can suppress or distort the signals the bearer depends on.",
+      "Cognitive strain accumulates with extended use, degrading clarity and making it harder to distinguish meaningful signals from background temporal noise."
+    ],
+    "costs": [
+      "Repeated temporal reads create disorientation and headaches that impair normal perception and social function between active uses.",
+      "The bearer risks chronological detachment where past echoes and future convergence feel more real than present experience.",
+      "Displaying uncanny timing attracts attention from temporal enforcers, chronal predators, and factions that patrol unobserved time."
+    ],
+    "worldCompatibility": [
+      "Temporal Awareness Grant remains beneath Void, Grandmother Void, and higher law because it perceives temporal patterns without granting authority over time.",
+      "It is compatible with exploration, quest timing, and strategic preparation because it expresses narrow temporal perception rather than chronal dominion.",
+      "Its power is bounded by perception strain and signal quality, which keeps the Privilege sharp and survivable without becoming time manipulation."
+    ],
+    "factionReactions": [
+      "Clever rivals will try to expose or bait Temporal Awareness Grant into becoming visible.",
+      "Secretive powers may prize Temporal Awareness Grant more than public institutions ever would."
+    ],
+    "tags": [
+      "temporal",
+      "perception",
+      "awareness",
+      "privilege",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#8CE99A"
+    },
+    "narrativeTone": {
+      "voice": "conspiratorial and secretive",
+      "vocabulary": [
+        "convergence",
+        "echoes",
+        "temporal",
+        "stress",
+        "timing"
+      ],
+      "sentenceStyle": "whispered hints, hidden meanings"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.06,
+      "questRewardMultiplier": 0.1,
+      "skillGrowthMultiplier": 0.06,
+      "goldGainMultiplier": 0.12,
+      "resourceGainMultiplier": 0.08,
+      "lootQualityBonus": 0.1,
+      "resourceCapMultiplier": 0.11,
+      "classEvolutionStepReduction": 0,
+      "riskScale": 0.04
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 88
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
+    "id": "spatial_fold_privilege",
+    "name": "Spatial Fold Privilege",
+    "category": "Privilege",
+    "summary": "A movement Privilege that detects and exploits spatial shortcuts, fold points, and compressed distance zones invisible to normal travelers.",
+    "description": "Spatial Fold Privilege is a Privilege that reveals spatial shortcuts, fold points, and pockets of compressed distance that normal travelers cannot perceive or use. It belongs in the Privilege category because it grants access to spatial exceptions rather than full dominion over space, distance, or teleportation. The bearer notices where geometry bends, distance compresses, or passages exist between points that should not be connected. Its progression bias favors mobility, escape, and positional advantage over direct combat power. The main tradeoff is spatial disorientation, because moving through fold points distorts proprioception, spatial memory, and sometimes the physical relationship between body and surroundings. In the world, Spatial Fold Privilege should feel impossible to anyone watching because the bearer crosses distance that arithmetic says cannot be crossed that quickly. It should also remain structurally limited because fold points are environmental features rather than bearer-created portals. It remains lore-safe because it exploits existing spatial geometry rather than rewriting it, and because null zones, sealed geometries, and spatial anchoring can block or collapse the folds the bearer depends on.",
+    "rarity": "epic",
+    "stability": "volatile",
+    "selectionWeight": 3,
+    "coreLoop": [
+      "Detect a spatial fold point, compressed distance pocket, or hidden shortcut in the current environment before it closes or shifts.",
+      "Exploit that fold to cross distance, bypass barriers, or reposition in ways that normal movement cannot achieve.",
+      "Manage spatial disorientation and proprioceptive drift so repeated fold use does not permanently damage spatial memory or body coordination.",
+      "Trigger Spatial Fold Privilege's privilege protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth reveals basic fold points and short-range spatial shortcuts that shave seconds off movement in critical moments.",
+      "Mid progression expands fold detection range, improves passage stability during transit, and reduces post-fold disorientation recovery time.",
+      "Late progression makes the bearer terrifyingly mobile in environments rich with spatial stress, but dangerously dependent on fold availability.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "Observers see someone appear where geometry says they should not be yet, creating fear and suspicion in equal measure.",
+      "The Privilege makes the bearer seem impossible to trap or corner, which attracts pursuers who specialize in sealing spatial anomalies.",
+      "It naturally creates scenes where escape is always available but its cost is never quite safe."
+    ],
+    "questHooks": [
+      "Use an unstable fold point to evacuate civilians from a collapsing zone before the fold collapses too and traps everyone between distances.",
+      "Map a network of fold points through a hostile territory that a pursuing army cannot follow through without spatial perception of their own.",
+      "Decide whether to seal a fold point that connects two factions who should never have found each other or leave it open because someone else will need it."
+    ],
+    "possibleUses": [
+      "In gameplay, Spatial Fold Privilege can support rapid repositioning, barrier bypassing, escape routes, and environmental shortcut discovery. It rewards exploration and spatial awareness without granting free teleportation. That makes positional play meaningful and exciting.",
+      "In narrative and quests, it enables impossible escapes, spatial puzzle solving, and tension around whether a fold point will hold long enough to save everyone. Characters can outmaneuver armies, reach unreachable places, and still face the consequence of spatial disorientation afterward.",
+      "In implementation, it maps to fold-point markers on maps, spatial-stress detection checks, and traversal shortcuts with disorientation cooldowns. Those hooks integrate cleanly into exploration systems without requiring a teleportation engine.",
+      "Its limitation-aware use comes from ensuring fold points are environmental features that can be sealed, shifted, or absent. The bearer exploits geometry rather than commanding it, which keeps the Privilege bounded and interesting."
+    ],
+    "limits": [
+      "Fold points are environmental features that the bearer detects but does not create, so availability depends on local spatial geometry.",
+      "Sealed geometries, spatial anchoring, and null zones can block or collapse fold points before the bearer can use them.",
+      "The Privilege grants rapid movement through existing folds, not true teleportation or spatial authority over distance itself."
+    ],
+    "costs": [
+      "Repeated fold transit causes proprioceptive drift, spatial memory degradation, and physical disorientation that worsens with frequency.",
+      "Dependence on fold availability creates vulnerability in sealed or spatially stable environments where no folds exist.",
+      "Observers and spatial enforcement factions react aggressively to unexplained position changes, creating pursuit and investigation pressure."
+    ],
+    "worldCompatibility": [
+      "Spatial Fold Privilege remains beneath Void, Grandmother Void, and higher law because it exploits existing spatial features rather than rewriting geometry.",
+      "It is compatible with exploration, evasion, and positional combat because it expresses narrow spatial access rather than dominion over distance.",
+      "Its strongest value depends on environmental fold availability and transit stability, which keeps the Privilege mobile without becoming spatial sovereignty."
+    ],
+    "factionReactions": [
+      "Clever rivals will try to expose or bait Spatial Fold Privilege into becoming visible.",
+      "Secretive powers may prize Spatial Fold Privilege more than public institutions ever would."
+    ],
+    "tags": [
+      "spatial",
+      "movement",
+      "access",
+      "privilege",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#8CE99A"
+    },
+    "narrativeTone": {
+      "voice": "conspiratorial and secretive",
+      "vocabulary": [
+        "fold",
+        "distance",
+        "spatial",
+        "shortcut",
+        "geometry"
+      ],
+      "sentenceStyle": "whispered hints, hidden meanings"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.06,
+      "questRewardMultiplier": 0.1,
+      "skillGrowthMultiplier": 0.06,
+      "goldGainMultiplier": 0.12,
+      "resourceGainMultiplier": 0.08,
+      "lootQualityBonus": 0.1,
+      "resourceCapMultiplier": 0.11,
+      "classEvolutionStepReduction": 0,
+      "riskScale": 0.04
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 88
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
+    "id": "essence_sight_privilege",
+    "name": "Essence Sight Privilege",
+    "category": "Privilege",
+    "summary": "A perception Privilege that reveals the raw essence composition of creatures, objects, and environments beyond surface appearance.",
+    "description": "Essence Sight Privilege is a Privilege that allows the bearer to perceive the underlying essence composition of creatures, items, and environments in ways that bypass surface appearance. It belongs in the Privilege category because it grants a narrow perceptual advantage rather than the ability to manipulate, harvest, or redistribute essence. The bearer sees what things are actually made of at a foundational level and can distinguish genuine materials from fakes, detect hidden enchantments, identify creature types through disguise, and read environmental danger through essence density. Its progression bias favors appraisal, threat assessment, and preparation over direct combat advantage. The main tradeoff is sensory overload, because essence density in complex environments can overwhelm the bearer with too much foundational information at once. In the world, Essence Sight Privilege should make the bearer invaluable to craftsmen, alchemists, and hunters while simultaneously making them uncomfortable to be around because people do not enjoy being seen at a level deeper than their chosen appearance. It remains lore-safe because it reveals composition without granting the ability to change it, and because essence-masked items, creatures, and locations can partially or fully resist the sight.",
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 3,
+    "coreLoop": [
+      "Focus essence sight on a target creature, item, or environment to perceive its foundational composition beneath surface appearance.",
+      "Interpret the revealed essence data to make better appraisals, threat assessments, or preparation decisions than surface reading would allow.",
+      "Manage sensory load so essence-dense environments do not overwhelm perception or cause clarity degradation in subsequent readings.",
+      "Trigger Essence Sight Privilege's privilege protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth reveals basic essence markers on simple items and creatures, distinguishing genuine materials from fakes and detecting obvious enchantments.",
+      "Mid progression sharpens compositional depth, improves reading speed under pressure, and adds environmental essence density assessment.",
+      "Late progression makes the bearer devastatingly accurate at appraisal and threat reading, but increasingly uncomfortable in essence-saturated environments.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "People feel exposed around the bearer because essence sight bypasses every cosmetic layer, disguise, and careful presentation they rely on.",
+      "The Privilege turns markets, ruins, and encounters into readable puzzles where the truth is visible but not always welcome.",
+      "It naturally creates tension between sharing what you see and keeping the peace that ignorance maintains."
+    ],
+    "questHooks": [
+      "Identify a counterfeit relic being sold as genuine before a faction treaty depends on its authenticity and the lie starts a war.",
+      "Read the essence composition of a sealed vault door to determine whether the contents are worth the price of opening it.",
+      "Detect an essence-masked predator lurking inside an allied camp by noticing the compositional mismatch between its appearance and its true nature."
+    ],
+    "possibleUses": [
+      "In gameplay, Essence Sight Privilege can support item appraisal, disguise penetration, environmental hazard detection, and creature type identification. It rewards investigation and preparation without granting direct combat dominance. That makes exploration and market interactions more rewarding.",
+      "In narrative and quests, it enables forgery detection scenes, hidden predator reveals, and uncomfortable moments where the bearer sees what others prefer to keep hidden. Characters can save lives by reading composition accurately and ruin relationships by seeing what was never meant to be exposed.",
+      "In implementation, it maps to appraisal checks, essence-density UI indicators, disguise-penetration rolls, and environmental hazard markers. Those hooks layer onto existing inspection and exploration systems without requiring an essence manipulation engine.",
+      "Its limitation-aware use comes from keeping sight separate from manipulation. The bearer sees composition but cannot change it, which keeps the Privilege perceptual and prevents it from becoming an alchemy or enchantment System."
+    ],
+    "limits": [
+      "Essence sight reveals composition but grants no ability to manipulate, harvest, or redistribute the essence it perceives.",
+      "Essence-masked items, creatures, and locations can partially or fully resist the sight, especially if the masking was designed by stronger forces.",
+      "Complex or essence-saturated environments create sensory overload that degrades reading accuracy and subsequent perception clarity."
+    ],
+    "costs": [
+      "Sensory overload from essence-dense environments can cause headaches, nausea, and temporary clarity degradation after intense readings.",
+      "People become guarded or hostile around the bearer once they realize their foundational nature is being perceived without consent.",
+      "Over-reliance on essence sight can erode trust in surface-level social cues and ordinary judgment, leaving the bearer socially isolated."
+    ],
+    "worldCompatibility": [
+      "Essence Sight Privilege remains beneath Void, Grandmother Void, and higher law because it perceives essence composition without granting authority over it.",
+      "It is compatible with appraisal, investigation, and threat assessment because it expresses narrow perceptual access rather than essence manipulation.",
+      "Its power is bounded by sensory capacity and masking resistance, which keeps the Privilege sharp without becoming a foundational truth System."
+    ],
+    "factionReactions": [
+      "Clever rivals will try to expose or bait Essence Sight Privilege into becoming visible.",
+      "Secretive powers may prize Essence Sight Privilege more than public institutions ever would."
+    ],
+    "tags": [
+      "perception",
+      "essence",
+      "appraisal",
+      "privilege",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#8CE99A"
+    },
+    "narrativeTone": {
+      "voice": "conspiratorial and secretive",
+      "vocabulary": [
+        "essence",
+        "composition",
+        "reveals",
+        "foundational",
+        "hidden"
+      ],
+      "sentenceStyle": "whispered hints, hidden meanings"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.06,
+      "questRewardMultiplier": 0.1,
+      "skillGrowthMultiplier": 0.06,
+      "goldGainMultiplier": 0.12,
+      "resourceGainMultiplier": 0.08,
+      "lootQualityBonus": 0.1,
+      "resourceCapMultiplier": 0.11,
+      "classEvolutionStepReduction": 0,
+      "riskScale": 0.04
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 88
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
+    "id": "karmic_balance_privilege",
+    "name": "Karmic Balance Privilege",
+    "category": "Privilege",
+    "summary": "A consequence Privilege that passively accumulates karmic weight from actions and intermittently converts it into proportional fortune or misfortune.",
+    "description": "Karmic Balance Privilege is a Privilege that passively tracks the moral and consequential weight of the bearer's actions and intermittently converts accumulated karma into proportional fortune or misfortune. It belongs in the Privilege category because it is a narrow consequence-feedback loop rather than a full moral authority or fate System. The bearer does not control karma or choose when it resolves; instead, the Privilege operates like an unfair accounting layer that notices when the ledger tips far enough to warrant a correction. Good deeds accumulate positive weight that eventually manifests as favorable luck, reduced resistance, or unexpected advantages. Harmful deeds accumulate negative weight that eventually manifests as bad luck, amplified opposition, or karmic retaliation from the environment itself. Its progression bias favors consistent behavior and long-term moral investment over short-term exploitation. The main tradeoff is unpredictability, because the bearer cannot control the timing or form of karmic resolution and may find their ledger settling at the worst possible moment. In the world, Karmic Balance Privilege should make the bearer appear either blessed or cursed depending on the current state of their ledger. It should also remain opaque enough that the bearer can never fully game the system by precisely calculating karmic thresholds. It remains lore-safe because it is a passive consequence tracker rather than a divine mandate or fate-controlling power, and because overwhelming force, void interference, and stronger law can override karma entirely.",
+    "rarity": "epic",
+    "stability": "volatile",
+    "selectionWeight": 3,
+    "coreLoop": [
+      "Take actions that accumulate positive or negative karmic weight based on their moral and consequential impact on others.",
+      "Experience intermittent karmic resolution as the accumulated ledger tips into fortune, misfortune, or environmental correction.",
+      "Adapt behavior knowing that the Privilege rewards consistency and punishes moral oscillation with unpredictable timing.",
+      "Trigger Karmic Balance Privilege's privilege protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth reveals small fortune and misfortune fluctuations that correlate loosely with recent moral choices.",
+      "Mid progression makes karmic resolution more visible, more impactful, and more clearly connected to the bearer's accumulated behavior patterns.",
+      "Late progression turns the bearer into a walking consequence engine where major actions ripple into proportional karmic response with terrifying reliability.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "Others notice the bearer's luck patterns and begin forming opinions about what kind of person produces that kind of fortune.",
+      "The Privilege makes moral choices feel weighted and real because every decision feeds a ledger the bearer cannot fully see or control.",
+      "It naturally creates scenes where the bearer must decide whether short-term cruelty is worth the unpredictable karmic debt it will generate."
+    ],
+    "questHooks": [
+      "Spend accumulated positive karma to survive a situation that should have killed you and then feel the ledger empty with no reserve left for the next crisis.",
+      "Track down the source of escalating misfortune to discover it traces back to a single harmful decision you made weeks ago that the Privilege never forgot.",
+      "Choose mercy in a moment where cruelty would be tactically optimal because the karmic ledger is already negative and you cannot afford what another bad choice might trigger."
+    ],
+    "possibleUses": [
+      "In gameplay, Karmic Balance Privilege can support fortune variance tied to recent behavior, environmental karma resolution events, and moral-choice weighting that produces proportional consequence. It rewards consistent behavior over exploitation and makes morality mechanically meaningful without being preachy.",
+      "In narrative and quests, it enables dramatic reversals of fortune, moments where past kindness saves the bearer unexpectedly, and tense sequences where accumulated debt resolves at the worst possible time. Characters experience their own choices returning as environmental response.",
+      "In implementation, it maps to a hidden karma counter, resolution probability thresholds, and fortune or misfortune modifier events. Those hooks layer onto existing luck and random-event systems without requiring a full morality engine.",
+      "Its limitation-aware use comes from keeping karmic resolution unpredictable and uncontrollable. The bearer cannot game the timing, which preserves drama and prevents the Privilege from becoming a deterministic morality calculator."
+    ],
+    "limits": [
+      "The Privilege tracks and resolves karma passively; the bearer cannot choose when, how, or in what magnitude karmic correction occurs.",
+      "Overwhelming force, void interference, and stronger law can override karma entirely, making the ledger irrelevant in extreme situations.",
+      "Karmic resolution is proportional but not precise, meaning the bearer can never fully calculate or game the threshold at which fortune shifts."
+    ],
+    "costs": [
+      "Unpredictable timing means karmic fortune or misfortune may resolve at the worst possible moment regardless of current need.",
+      "Moral oscillation, where the bearer rapidly alternates between good and harmful actions, creates chaotic resolution patterns that become increasingly dangerous.",
+      "The bearer risks becoming paralyzed by moral calculation once they realize every choice is being passively weighed by a system they cannot fully see."
+    ],
+    "worldCompatibility": [
+      "Karmic Balance Privilege remains beneath Void, Grandmother Void, and higher law because it tracks consequence passively rather than commanding fate or morality.",
+      "It is compatible with moral choice, luck systems, and environmental consequence because it expresses narrow karmic feedback rather than divine judgment.",
+      "Its strongest value depends on behavioral consistency and unpredictable resolution timing, which keeps the Privilege meaningful without becoming fate control."
+    ],
+    "factionReactions": [
+      "Clever rivals will try to expose or bait Karmic Balance Privilege into becoming visible.",
+      "Secretive powers may prize Karmic Balance Privilege more than public institutions ever would."
+    ],
+    "tags": [
+      "karma",
+      "consequence",
+      "fortune",
+      "privilege",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#8CE99A"
+    },
+    "narrativeTone": {
+      "voice": "conspiratorial and secretive",
+      "vocabulary": [
+        "karmic",
+        "ledger",
+        "consequence",
+        "fortune",
+        "balance"
+      ],
+      "sentenceStyle": "whispered hints, hidden meanings"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.06,
+      "questRewardMultiplier": 0.1,
+      "skillGrowthMultiplier": 0.06,
+      "goldGainMultiplier": 0.12,
+      "resourceGainMultiplier": 0.08,
+      "lootQualityBonus": 0.1,
+      "resourceCapMultiplier": 0.11,
+      "classEvolutionStepReduction": 0,
+      "riskScale": 0.04
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 88
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
+    "id": "thread_weaving_grant",
+    "name": "Thread Weaving Grant",
+    "category": "Privilege",
+    "summary": "A social Privilege that reveals invisible relational threads between people, factions, and events and allows subtle manipulation of connection tension.",
+    "description": "Thread Weaving Grant is a Privilege that reveals the invisible relational threads connecting people, factions, objects, and events. It belongs in the Privilege category because it grants a narrow social perception and manipulation advantage rather than full authority over relationships, fate, or narrative structure. The bearer sees who is connected to whom, how strongly, through what tension, and where those connections are about to strain or snap. Beyond perception, the bearer can subtly increase or decrease tension on visible threads through careful social action, tipping alliances, rivalries, and loyalties in directions that serve their purpose. Its progression bias favors social engineering, alliance manipulation, and political positioning over direct combat power. The main tradeoff is relational entanglement, because pulling threads creates feedback that entangles the bearer in the same web they are trying to manipulate. In the world, Thread Weaving Grant should make the bearer feel like a social architect who sees the structure beneath relationships that others navigate by instinct. It should also make them dangerous to trust because people notice when their loyalties shift in ways that feel externally influenced. It remains lore-safe because the threads are relational patterns that the bearer can nudge but not sever or forge from nothing, and because strong-willed individuals, faction wards, and relational anchors can resist manipulation.",
+    "rarity": "legendary",
+    "stability": "volatile",
+    "selectionWeight": 2,
+    "coreLoop": [
+      "Perceive the relational threads connecting targets to allies, enemies, factions, and events including tension levels and strain direction.",
+      "Subtly increase or decrease thread tension through social action to tip loyalties, escalate rivalries, or strengthen fragile alliances.",
+      "Manage relational entanglement so thread manipulation does not bind the bearer into the same web they are trying to control.",
+      "Trigger Thread Weaving Grant's privilege protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth reveals basic relational threads between nearby individuals, showing connection strength and obvious tension points.",
+      "Mid progression expands thread perception to factions, distant connections, and hidden loyalties while improving tension adjustment precision.",
+      "Late progression makes the bearer devastatingly effective at social engineering, but deeply entangled in relational webs that resist clean extraction.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "Others feel uncomfortable around the bearer because their loyalties seem to shift in directions that feel too convenient for one person.",
+      "The Privilege turns every social gathering into a readable map of who owes what to whom and where the next betrayal will originate.",
+      "It naturally creates scenes where the bearer knows exactly which thread to pull and must decide whether the consequences are worth the advantage."
+    ],
+    "questHooks": [
+      "Strengthen a fragile alliance thread between two factions before a mutual enemy exploits the weakness you can see but they cannot.",
+      "Trace a hidden relational thread from a betrayer back to the faction leader who ordered the betrayal before the evidence disappears.",
+      "Cut tension on a thread connecting an ally to a dangerous patron knowing that the relief will be temporary and the patron will notice."
+    ],
+    "possibleUses": [
+      "In gameplay, Thread Weaving Grant can support faction relationship visualization, loyalty manipulation mechanics, alliance stability checks, and social engineering skill trees. It rewards social and political play without replacing combat entirely. That makes diplomacy and intrigue mechanically meaningful.",
+      "In narrative and quests, it enables political manipulation scenes, betrayal detection, alliance rescue missions, and uncomfortable moments where the bearer sees relational truths that were never meant to be visible. Characters can save kingdoms through social precision and destroy trust by pulling the wrong thread.",
+      "In implementation, it maps to relationship-graph visualization, thread-tension modifiers on faction states, and social-action influence checks. Those hooks integrate into existing faction and reputation systems without requiring a full social simulation engine.",
+      "Its limitation-aware use comes from ensuring thread manipulation creates reciprocal entanglement. The bearer who pulls too many threads becomes trapped in the web, which prevents the Privilege from becoming consequence-free social control."
+    ],
+    "limits": [
+      "The bearer can perceive and nudge relational threads but cannot forge new connections from nothing or sever established bonds without consequence.",
+      "Strong-willed individuals, faction wards, and relational anchors can resist thread tension manipulation partially or completely.",
+      "Thread manipulation creates reciprocal entanglement that binds the bearer into the relationships they are trying to influence."
+    ],
+    "costs": [
+      "Relational entanglement accumulates with every manipulation, making it increasingly difficult for the bearer to extract themselves from the social webs they have shaped.",
+      "People who notice their loyalties shifting in convenient directions become suspicious, hostile, or actively resistant to the bearer's social proximity.",
+      "Over-reliance on thread perception can erode the bearer's ability to form genuine relationships because every connection looks like a manipulable structure."
+    ],
+    "worldCompatibility": [
+      "Thread Weaving Grant remains beneath Void, Grandmother Void, and higher law because it nudges relational patterns rather than commanding loyalty or rewriting social bonds.",
+      "It is compatible with faction politics, alliance mechanics, and social engineering because it expresses narrow relational perception and tension adjustment.",
+      "Its strongest value depends on social context, willing targets, and reciprocal entanglement risk, which keeps the Privilege influential without becoming social omnipotence."
+    ],
+    "factionReactions": [
+      "Clever rivals will try to expose or bait Thread Weaving Grant into becoming visible.",
+      "Secretive powers may prize Thread Weaving Grant more than public institutions ever would."
+    ],
+    "tags": [
+      "social",
+      "perception",
+      "manipulation",
+      "privilege",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#8CE99A"
+    },
+    "narrativeTone": {
+      "voice": "conspiratorial and secretive",
+      "vocabulary": [
+        "threads",
+        "weaving",
+        "tension",
+        "relational",
+        "connection"
+      ],
+      "sentenceStyle": "whispered hints, hidden meanings"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.06,
+      "questRewardMultiplier": 0.1,
+      "skillGrowthMultiplier": 0.06,
+      "goldGainMultiplier": 0.12,
+      "resourceGainMultiplier": 0.08,
+      "lootQualityBonus": 0.1,
+      "resourceCapMultiplier": 0.11,
+      "classEvolutionStepReduction": 0,
+      "riskScale": 0.04
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 88
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
     "id": "glitch_exploit_overlay",
     "name": "Glitch Exploit Overlay",
     "category": "Overlay",
@@ -18150,6 +18720,470 @@
         "creates"
       ],
       "sentenceStyle": "structured, consequence-aware"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.12000000000000001,
+      "questRewardMultiplier": 0.11,
+      "skillGrowthMultiplier": 0.08,
+      "goldGainMultiplier": 0.06,
+      "resourceGainMultiplier": 0.1,
+      "lootQualityBonus": 0.12,
+      "resourceCapMultiplier": 0.09,
+      "classEvolutionStepReduction": 1,
+      "riskScale": 0.14
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 85
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression",
+        "class_evolution"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
+    "id": "memory_leak_overlay",
+    "name": "Memory Leak Overlay",
+    "category": "Overlay",
+    "summary": "A cognition-corrupting Overlay that bleeds unowned memories, skill echoes, and identity fragments into the bearer at the cost of self-coherence.",
+    "description": "Memory Leak Overlay is an Overlay that intermittently bleeds foreign memories, skill echoes, and identity fragments into the bearer from ambient sources. It belongs in the Overlay category because it is a parasitic cognitive exploit on top of normal identity rather than a lawful knowledge system or memory authority. The bearer gains flashes of competence, experience, and recognition that belong to other people, creatures, or even dead practitioners. Its progression bias favors improvisation, obscure knowledge retrieval, and unexpected skill access rather than stable repeatable mastery. The main tradeoff is identity instability, because absorbing too many foreign memory fragments degrades the boundary between self and other and can fracture personality coherence under strain. In the world, Memory Leak Overlay should feel uncanny because the bearer sometimes knows things they have no right to know or performs techniques they never studied. It should also attract detection from mind-wards, identity enforcers, and cultures that treat memory sanctity as law. It remains lore-safe because it passively leaks ambient memory fragments rather than granting true memory dominion, and because null-mind fields, identity anchors, and shielded memories can block or corrupt the leak.",
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 2,
+    "coreLoop": [
+      "Receive a leaked memory fragment containing skill echoes, foreign experience, or identity-adjacent knowledge from ambient cognitive sources.",
+      "Exploit that stolen competence for immediate advantage before the fragment degrades or conflicts with genuine personal memory.",
+      "Manage identity strain so accumulated foreign fragments do not erode self-coherence or trigger personality instability.",
+      "Trigger Memory Leak Overlay's overlay protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth leaks small skill echoes and recognition flashes that help the bearer act on knowledge they never personally acquired.",
+      "Mid progression increases fragment clarity, extends retention, and grants access to deeper skill echoes from stronger ambient sources.",
+      "Late progression makes the bearer a terrifying improviser with borrowed competence, but increasingly uncertain about which memories are actually theirs.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes the bearer feel haunted by competence because every useful leak reminds them the skill belongs to someone else.",
+      "Others treat the bearer with suspicion when they demonstrate knowledge or ability that has no legitimate origin in their personal history.",
+      "It naturally creates scenes where identity itself becomes the battlefield because the bearer is not sure which thoughts are genuine."
+    ],
+    "questHooks": [
+      "Use a leaked combat memory to survive an encounter you have no training for, then track whose skill you borrowed and what happened to them.",
+      "Resist a leaked identity fragment that is trying to overwrite your personality with someone who died holding the same Overlay.",
+      "Navigate a sealed archive where the ambient memory density is so high that every step leaks a new fragment and self-coherence degrades by the minute."
+    ],
+    "possibleUses": [
+      "In gameplay, Memory Leak Overlay can support temporary skill access, obscure knowledge rolls, and improvised competence at the cost of identity strain counters. It rewards adaptation and opportunism while creating strong risk around prolonged use. That makes moment-to-moment decisions feel charged with cognitive stakes.",
+      "In narrative and quests, it enables uncanny knowledge scenes, identity crisis arcs, and tense moments where the bearer performs brilliantly using someone else's stolen skill and must live with the implications. Characters can save lives with borrowed expertise and slowly lose themselves in the process.",
+      "In implementation, it maps to temporary skill-slot grants, fragment-retention timers, identity-strain meters, and memory-source event tags. Those hooks layer onto existing skill and knowledge systems without requiring a full memory manipulation engine.",
+      "Its limitation-aware use comes from ensuring that every leaked fragment carries identity risk. The Overlay gives but it also erodes, which prevents borrowed competence from becoming cost-free skill access."
+    ],
+    "limits": [
+      "Leaked memory fragments are temporary, incomplete, and degrade over time, making sustained mastery from borrowed skill unreliable.",
+      "Null-mind fields, identity anchors, and shielded memories can block the leak entirely or corrupt incoming fragments into dangerous noise.",
+      "The Overlay leaks ambient memory passively and the bearer cannot select, target, or control which fragments arrive or when."
+    ],
+    "costs": [
+      "Accumulated foreign memory fragments erode self-coherence and make it increasingly difficult to distinguish personal memories from leaked ones.",
+      "Identity instability can trigger personality fragmentation under stress, especially when multiple conflicting identity fragments activate simultaneously.",
+      "Mind-wards, memory enforcers, and identity-sacred cultures treat the leak as contamination and respond with purging, quarantine, or violence."
+    ],
+    "worldCompatibility": [
+      "Memory Leak Overlay remains beneath Void, Grandmother Void, and deeper law because it passively leaks ambient fragments rather than commanding memory.",
+      "It is compatible with knowledge, skill improvisation, and identity horror because it expresses unstable cognitive parasitism rather than lawful memory access.",
+      "Its strongest value depends on fragment quality and identity resilience, which keeps the Overlay powerful but self-destructive."
+    ],
+    "factionReactions": [
+      "Enforcers and anomaly hunters will treat Memory Leak Overlay as something to contain or erase.",
+      "Desperate opportunists may covet Memory Leak Overlay even while fearing the fallout around it."
+    ],
+    "tags": [
+      "memory",
+      "exploit",
+      "cognition",
+      "instability",
+      "overlay",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#FF8787"
+    },
+    "narrativeTone": {
+      "voice": "chaotic and unstable",
+      "vocabulary": [
+        "leaked",
+        "fragment",
+        "identity",
+        "echoes",
+        "borrowed"
+      ],
+      "sentenceStyle": "fragmented, glitchy, urgent"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.12000000000000001,
+      "questRewardMultiplier": 0.11,
+      "skillGrowthMultiplier": 0.08,
+      "goldGainMultiplier": 0.06,
+      "resourceGainMultiplier": 0.1,
+      "lootQualityBonus": 0.12,
+      "resourceCapMultiplier": 0.09,
+      "classEvolutionStepReduction": 1,
+      "riskScale": 0.14
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 85
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression",
+        "class_evolution"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
+    "id": "stack_overflow_overlay",
+    "name": "Stack Overflow Overlay",
+    "category": "Overlay",
+    "summary": "A recursive-loop Overlay that amplifies a single effect by feeding it back into itself at escalating strain until the loop collapses or the bearer breaks.",
+    "description": "Stack Overflow Overlay is an Overlay that traps a single ability, effect, or action in a recursive amplification loop that feeds output back into itself. It belongs in the Overlay category because it is an unstable exploit of normal ability resolution rather than a lawful scaling system or progression engine. The bearer can force an effect to re-evaluate its own output as new input, creating escalating power spikes that grow faster than any linear enhancement should allow. Its progression bias favors all-in burst play, desperation gambles, and explosive single-moment output over sustained damage or utility. The main tradeoff is recursive collapse, because every additional loop iteration increases strain exponentially until the effect either collapses violently or tears through the bearer's capacity to contain it. In the world, Stack Overflow Overlay should look like insanity to anyone watching because the bearer is clearly pushing a single action past every safety limit it was designed with. It should also be terrifying when it works and catastrophic when it fails because recursive amplification has no graceful degradation mode. It remains lore-safe because the amplification is a temporary recursive exploit that inevitably collapses, and because null fields, ability dampeners, and system-level correction can interrupt the loop at any point.",
+    "rarity": "mythic",
+    "stability": "forbidden",
+    "selectionWeight": 1,
+    "coreLoop": [
+      "Select a single ability or effect and force it into a recursive amplification loop that feeds its output back as input for re-evaluation.",
+      "Ride the escalating power spike for as many iterations as the bearer can sustain before strain exceeds containment capacity.",
+      "Survive the inevitable loop collapse which converts all remaining recursive energy into backlash proportional to the amplification depth reached.",
+      "Trigger Stack Overflow Overlay's overlay protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth allows shallow recursion of one or two loops on basic abilities, producing noticeable but manageable power spikes with brief recovery.",
+      "Mid progression extends sustainable loop depth, reduces per-iteration strain leakage, and improves the bearer's ability to terminate loops voluntarily.",
+      "Late progression makes the bearer capable of terrifying recursive bursts, but each deep loop risks catastrophic collapse that can permanently damage the ability used.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes power feel addictive and suicidal in the same breath because every additional iteration is both stronger and closer to collapse.",
+      "Observers describe the effect as wrong because abilities are not supposed to feed on themselves and the visual distortion reflects that instability.",
+      "It naturally creates scenes where the bearer must choose between stopping at safe output and pushing one more iteration for victory at unknown cost."
+    ],
+    "questHooks": [
+      "Push a healing spell through enough recursive loops to save a dying city, then survive the collapse when the loop finally breaks your capacity.",
+      "Stop an enemy who has triggered their own recursive explosion before the amplification reaches a depth that destroys the entire zone.",
+      "Voluntarily collapse your own loop early to prevent catastrophic backlash knowing that the reduced output may not be enough to win the fight."
+    ],
+    "possibleUses": [
+      "In gameplay, Stack Overflow Overlay can support recursive damage multipliers, burst-mode ability amplification, and strain-gated loop depth mechanics. It rewards all-in commitment and punishes overreach with proportional backlash. That makes desperation turns spectacular and dangerous.",
+      "In narrative and quests, it enables impossible-output scenes, last-stand recursion gambles, and catastrophic failures when the loop breaks at the wrong moment. Characters can win fights that arithmetic says were unwinnable and then spend recovery chapters paying the physical price.",
+      "In implementation, it maps to loop-depth counters, per-iteration strain multipliers, voluntary termination checks, and collapse-damage calculations. Those hooks layer onto existing ability resolution without requiring changes to the base ability system.",
+      "Its limitation-aware use comes from ensuring inevitable collapse. The loop always ends, the backlash always arrives, and pushing deeper always costs more. That prevents the Overlay from becoming a free damage multiplier."
+    ],
+    "limits": [
+      "Recursive amplification always collapses eventually, and deeper loops produce proportionally more catastrophic backlash when they fail.",
+      "Each iteration applies exponentially increasing strain that the bearer must sustain physically, making loop depth a direct survival gamble.",
+      "Null fields, ability dampeners, and system correction can interrupt the loop at any point, converting all accumulated recursion into immediate backlash."
+    ],
+    "costs": [
+      "Loop collapse converts all remaining recursive energy into backlash that scales with depth, making deep recursion potentially lethal to the bearer.",
+      "Recursive amplification distorts the ability being looped and can permanently degrade it if pushed past safe thresholds too often.",
+      "The bearer risks becoming addicted to impossible output and losing the discipline to fight at normal scale when recursion is unavailable."
+    ],
+    "worldCompatibility": [
+      "Stack Overflow Overlay remains beneath Void, Grandmother Void, and deeper law because it exploits ability resolution temporarily rather than rewriting power law.",
+      "It is compatible with burst combat, desperation mechanics, and ability exploitation because it expresses unstable recursive amplification rather than lawful scaling.",
+      "Its strongest value depends on loop depth, strain tolerance, and inevitable collapse timing, which keeps the Overlay explosive without becoming sustainable power."
+    ],
+    "factionReactions": [
+      "Enforcers and anomaly hunters will treat Stack Overflow Overlay as something to contain or erase.",
+      "Desperate opportunists may covet Stack Overflow Overlay even while fearing the fallout around it."
+    ],
+    "tags": [
+      "recursion",
+      "exploit",
+      "amplification",
+      "instability",
+      "overlay",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#FF8787"
+    },
+    "narrativeTone": {
+      "voice": "chaotic and unstable",
+      "vocabulary": [
+        "recursive",
+        "overflow",
+        "amplification",
+        "collapse",
+        "strain"
+      ],
+      "sentenceStyle": "fragmented, glitchy, urgent"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.12000000000000001,
+      "questRewardMultiplier": 0.11,
+      "skillGrowthMultiplier": 0.08,
+      "goldGainMultiplier": 0.06,
+      "resourceGainMultiplier": 0.1,
+      "lootQualityBonus": 0.12,
+      "resourceCapMultiplier": 0.09,
+      "classEvolutionStepReduction": 1,
+      "riskScale": 0.14
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 85
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression",
+        "class_evolution"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
+    "id": "permission_escalation_overlay",
+    "name": "Permission Escalation Overlay",
+    "category": "Overlay",
+    "summary": "A hierarchy-exploiting Overlay that temporarily claims permissions above the bearer's actual rank by abusing ambiguity in access control logic.",
+    "description": "Permission Escalation Overlay is an Overlay that exploits ambiguities, gaps, and transition states in access control hierarchies to temporarily claim permissions the bearer does not legitimately hold. It belongs in the Overlay category because it is an unstable exploit of existing permission structures rather than a lawful authority grant or rank advancement. The bearer can detect moments when access checks are weakest, identity verification is ambiguous, or hierarchical logic is in transition, and slip into a higher permission tier for brief windows. Its progression bias favors social infiltration, restricted access play, and hierarchy manipulation over direct combat. The main tradeoff is enforcement backlash, because every escalated permission leaves an audit trail and higher authorities respond aggressively when they detect unauthorized access. In the world, Permission Escalation Overlay should feel like the bearer is walking through locked doors by exploiting the lock's moment of uncertainty rather than holding the key. It should also remain visibly criminal because permission structures exist for reasons and bypassing them always has consequences. It remains lore-safe because it exploits ambiguity in existing access control rather than overwriting rank or authority, and because hard-locked permissions, divine seals, and audit-immune hierarchies can still block it completely.",
+    "rarity": "legendary",
+    "stability": "corrupted",
+    "selectionWeight": 2,
+    "coreLoop": [
+      "Detect an ambiguity, gap, or transition state in the local permission hierarchy where access control logic is temporarily vulnerable.",
+      "Exploit that vulnerability to claim a permission tier above the bearer's actual rank for a brief operational window.",
+      "Withdraw before audit detection catches the escalation and triggers enforcement response proportional to the permission tier claimed.",
+      "Trigger Permission Escalation Overlay's overlay protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth reveals basic access-check weaknesses in low-security hierarchies and grants brief escalation windows for minor restricted actions.",
+      "Mid progression extends escalation depth, improves detection of transition states in stronger hierarchies, and reduces the audit trail of successful exploits.",
+      "Late progression makes the bearer capable of terrifying rank claims in major hierarchies, but attracts proportionally severe enforcement attention.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes authority feel like a lockpicking challenge rather than a social contract, which terrifies everyone invested in hierarchical stability.",
+      "Others cannot understand how the bearer keeps accessing things they should never have reached, creating fear and investigation pressure.",
+      "It naturally creates scenes where the bearer walks through restricted zones they have no right to enter and must escape before the system notices."
+    ],
+    "questHooks": [
+      "Escalate permissions to access a restricted archive containing evidence that could prevent a war, then escape before the audit sweep reaches your access record.",
+      "Exploit a transition state in a faction's promotion hierarchy to claim a rank that lets you issue one critical order before being detected.",
+      "Navigate a divine hierarchy exploit chain where each escalation increases the risk that the next detection will be supernatural rather than bureaucratic."
+    ],
+    "possibleUses": [
+      "In gameplay, Permission Escalation Overlay can support restricted-zone infiltration, temporary rank claims, access-check exploitation, and hierarchy manipulation mechanics. It rewards preparation and timing without granting permanent authority. That makes stealth and social infiltration play sharper.",
+      "In narrative and quests, it enables heist scenes, unauthorized archive access, and tense moments where the bearer impersonates authority they do not hold. Characters can save lives by accessing restricted resources and face severe consequences when the audit catches them.",
+      "In implementation, it maps to permission-tier checks, escalation-window timers, audit-trail counters, and enforcement-response events. Those hooks layer onto existing rank and faction systems without requiring changes to legitimate authority mechanics.",
+      "Its limitation-aware use comes from ensuring that every escalation leaves traces and triggers proportional enforcement. The bearer cannot exploit hierarchy consequence-free, which keeps the Overlay tense and criminal."
+    ],
+    "limits": [
+      "Hard-locked permissions, divine seals, and audit-immune hierarchies cannot be escalated through ambiguity exploitation.",
+      "Every successful escalation leaves an audit trail that increases detection probability for future exploits in the same hierarchy.",
+      "The bearer claims temporary access but not legitimate authority, meaning escalated actions can be reversed or voided once the exploit is detected."
+    ],
+    "costs": [
+      "Enforcement response scales with the permission tier exploited, making high-rank escalation proportionally more dangerous when detected.",
+      "Audit trails accumulate across exploits and create pattern recognition that makes each subsequent escalation in the same hierarchy harder and riskier.",
+      "The bearer risks becoming permanently flagged in major hierarchies, closing off legitimate advancement paths they might otherwise have earned."
+    ],
+    "worldCompatibility": [
+      "Permission Escalation Overlay remains beneath Void, Grandmother Void, and deeper law because it exploits access control ambiguity rather than overwriting authority.",
+      "It is compatible with infiltration, heists, and hierarchy manipulation because it expresses unstable rank exploitation rather than lawful promotion.",
+      "Its strongest value depends on ambiguity windows and audit evasion, which keeps the Overlay criminal and bounded rather than a free authority engine."
+    ],
+    "factionReactions": [
+      "Enforcers and anomaly hunters will treat Permission Escalation Overlay as something to contain or erase.",
+      "Desperate opportunists may covet Permission Escalation Overlay even while fearing the fallout around it."
+    ],
+    "tags": [
+      "hierarchy",
+      "exploit",
+      "access",
+      "instability",
+      "overlay",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#FF8787"
+    },
+    "narrativeTone": {
+      "voice": "chaotic and unstable",
+      "vocabulary": [
+        "escalation",
+        "permission",
+        "exploit",
+        "hierarchy",
+        "detection"
+      ],
+      "sentenceStyle": "fragmented, glitchy, urgent"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.12000000000000001,
+      "questRewardMultiplier": 0.11,
+      "skillGrowthMultiplier": 0.08,
+      "goldGainMultiplier": 0.06,
+      "resourceGainMultiplier": 0.1,
+      "lootQualityBonus": 0.12,
+      "resourceCapMultiplier": 0.09,
+      "classEvolutionStepReduction": 1,
+      "riskScale": 0.14
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 85
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression",
+        "class_evolution"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
+    "id": "cache_corruption_overlay",
+    "name": "Cache Corruption Overlay",
+    "category": "Overlay",
+    "summary": "A state-poisoning Overlay that corrupts cached reality states to force outdated or incorrect values into current resolution at unpredictable cost.",
+    "description": "Cache Corruption Overlay is an Overlay that exploits the gap between cached state and current reality to force outdated, incorrect, or advantageous values into active resolution. It belongs in the Overlay category because it is a parasitic exploit on state management rather than a lawful authority over reality or information. The bearer can detect moments when cached values diverge from current truth and inject corrupted data into the resolution pipeline, causing abilities, defenses, positions, or conditions to resolve using wrong but beneficial assumptions. Its progression bias favors ambush, deception, and one-shot misdirection over sustained reliable advantage. The main tradeoff is cascade failure, because corrupted cache entries propagate unpredictably and can poison the bearer's own state resolution as badly as the target's. In the world, Cache Corruption Overlay should feel like the bearer is lying to reality itself and getting away with it briefly before the correction arrives. It should also remain dangerously unreliable because cache corruption does not distinguish between beneficial and harmful wrong values once propagation begins. It remains lore-safe because it exploits temporary state inconsistency rather than rewriting foundational truth, and because hard state refreshes, null corrections, and coherence enforcement can flush corrupted cache instantly.",
+    "rarity": "mythic",
+    "stability": "forbidden",
+    "selectionWeight": 1,
+    "coreLoop": [
+      "Detect a divergence between cached state and current reality that creates an exploitable gap in resolution logic.",
+      "Inject corrupted cache data to force an ability, defense, or condition to resolve using outdated or incorrect values that favor the bearer.",
+      "Contain corruption propagation before poisoned cache entries spread into the bearer's own state resolution and cause cascade failure.",
+      "Trigger Cache Corruption Overlay's overlay protocol by completing a focused objective tied to your current build."
+    ],
+    "progression": [
+      "Early growth detects basic cache divergences and allows minor state corruption that misdirects weak resolution checks.",
+      "Mid progression extends corruption precision, improves propagation containment, and lets the bearer target more critical cached values.",
+      "Late progression makes the bearer capable of devastating single-moment misdirections, but cascade risk scales with every deep corruption attempt.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "The Overlay makes the bearer feel like a liar who has figured out how to make reality believe the lie for exactly long enough to matter.",
+      "Observers see impossible outcomes, dodged strikes that should have landed, and broken defenses that the target swears were active.",
+      "It naturally creates scenes where the truth catches up and the correction is worse than the original threat the corruption was used to avoid."
+    ],
+    "questHooks": [
+      "Corrupt a boss enemy's cached defense values to create a one-turn vulnerability window that lets your group strike before the refresh arrives.",
+      "Navigate a dungeon where your own cached position keeps diverging from reality because someone else is running the same Overlay against you.",
+      "Contain a cache corruption cascade that is spreading through a city's infrastructure before outdated state entries cause buildings to resolve as unbuilt."
+    ],
+    "possibleUses": [
+      "In gameplay, Cache Corruption Overlay can support temporary defense nullification, false-state combat advantages, and one-shot misdirection attacks at the cost of cascade risk. It rewards precision timing and ambush play while punishing overuse with self-corruption. That makes burst deception mechanically distinct from direct damage.",
+      "In narrative and quests, it enables impossible combat moments, reality-mismatch horror, and tense scenes where corrupted state catches up and the correction is worse than the original problem. Characters can win fights by lying to reality and then pay when the lie unravels.",
+      "In implementation, it maps to state-divergence detection, corrupted-value injection timers, cascade-risk counters, and hard-refresh events that purge corruption. Those hooks layer onto existing combat resolution without requiring changes to the base state management system.",
+      "Its limitation-aware use comes from making corruption propagation the primary risk. The bearer can lie to reality but the lie spreads, and once it reaches their own state the consequences are as devastating as the original advantage."
+    ],
+    "limits": [
+      "Corrupted cache entries propagate unpredictably and can poison the bearer's own state resolution as badly as the target's.",
+      "Hard state refreshes, null corrections, and coherence enforcement can flush corrupted cache instantly, negating the exploit mid-use.",
+      "The Overlay is strongest for single-moment misdirection and weakest when sustained advantage is needed because corruption degrades over time."
+    ],
+    "costs": [
+      "Cascade failure from uncontained corruption can resolve the bearer's own abilities, defenses, and position using wrong values with no warning.",
+      "Every deep corruption attempt increases the probability that subsequent cache entries in the area will diverge spontaneously without bearer control.",
+      "Hard state refreshes triggered by the corruption can expose the bearer's actual state to enemies who were previously resolving against false values."
+    ],
+    "worldCompatibility": [
+      "Cache Corruption Overlay remains beneath Void, Grandmother Void, and deeper law because it exploits state inconsistency rather than rewriting foundational truth.",
+      "It is compatible with combat deception, ambush play, and state manipulation because it expresses unstable cache exploitation rather than lawful reality authority.",
+      "Its strongest value depends on divergence windows and containment skill, which keeps the Overlay devastating in bursts and dangerous in sustained use."
+    ],
+    "factionReactions": [
+      "Enforcers and anomaly hunters will treat Cache Corruption Overlay as something to contain or erase.",
+      "Desperate opportunists may covet Cache Corruption Overlay even while fearing the fallout around it."
+    ],
+    "tags": [
+      "cache",
+      "exploit",
+      "corruption",
+      "instability",
+      "overlay",
+      "progression",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "System Energy",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 1,
+      "color": "#FF8787"
+    },
+    "narrativeTone": {
+      "voice": "chaotic and unstable",
+      "vocabulary": [
+        "cached",
+        "corrupted",
+        "state",
+        "divergence",
+        "propagation"
+      ],
+      "sentenceStyle": "fragmented, glitchy, urgent"
     },
     "progressionImpact": {
       "xpGainMultiplier": 0.12000000000000001,

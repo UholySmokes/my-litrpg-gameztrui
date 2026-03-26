@@ -56,4 +56,63 @@ describe("AIService streaming narrative", () => {
     expect(result.suggestions).toEqual([{ t: "kneel at the altar", w: 0.92 }]);
     expect(globalThis.fetch).toHaveBeenCalledTimes(2);
   });
+
+  it("retries stream start with alternate auth headers after 401", async () => {
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_DEV_USER_ID: "local",
+      VITE_DEV_USER_EMAIL: "local@game.dev",
+    };
+
+    globalThis.fetch = jest
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ ok: false, message: "Unauthorized" }), {
+          status: 401,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            threadId: "thread-401",
+            runId: "run-401",
+            status: "running",
+            done: false,
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            status: "completed",
+            done: true,
+            narrative: "The conduit stabilizes under your command.",
+            mood: "steady",
+            suggestions: [{ t: "Advance", w: 0.8 }],
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      );
+
+    const promise = generateNarrativeStream("Stabilize the conduit.");
+    await jest.advanceTimersByTimeAsync(1500);
+    const result = await promise;
+
+    expect(typeof result.narrative).toBe("string");
+    expect(result.narrative.length).toBeGreaterThan(0);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(3);
+    const firstHeaders = globalThis.fetch.mock.calls[0][1]?.headers || {};
+    const secondHeaders = globalThis.fetch.mock.calls[1][1]?.headers || {};
+    expect(firstHeaders["x-dev-user-id"]).toBe("local");
+    expect(secondHeaders["x-dev-user-id"]).toBeUndefined();
+  });
 });

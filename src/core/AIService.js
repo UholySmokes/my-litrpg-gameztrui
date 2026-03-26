@@ -146,6 +146,49 @@ async function buildApiHeaders(baseHeaders = {}) {
   return { headers, trace };
 }
 
+const hasHeader = (headers, name) =>
+  Object.keys(headers || {}).some(
+    (key) => key.toLowerCase() === String(name || "").toLowerCase(),
+  );
+
+const omitHeaders = (headers, names = []) => {
+  const denied = new Set((names || []).map((name) => String(name).toLowerCase()));
+  return Object.fromEntries(
+    Object.entries(headers || {}).filter(
+      ([key]) => !denied.has(String(key).toLowerCase()),
+    ),
+  );
+};
+
+async function buildApiHeaderVariants(baseHeaders = {}) {
+  const { headers: primary } = await buildApiHeaders(baseHeaders);
+  const variants = [primary];
+  const hasDevHeader = hasHeader(primary, "x-dev-user-id");
+  const hasAuthHeader = hasHeader(primary, "authorization");
+
+  if (hasDevHeader) {
+    variants.push(omitHeaders(primary, ["x-dev-user-id", "x-dev-user-email"]));
+  }
+
+  if (hasAuthHeader) {
+    variants.push(omitHeaders(primary, ["authorization"]));
+  }
+
+  if (hasDevHeader && hasAuthHeader) {
+    variants.push(
+      omitHeaders(primary, [
+        "x-dev-user-id",
+        "x-dev-user-email",
+        "authorization",
+      ]),
+    );
+  }
+
+  return unique(variants.map((value) => JSON.stringify(value))).map((key) =>
+    JSON.parse(key),
+  );
+}
+
 async function fetchWithTimeout(url, options, timeoutMs) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -239,7 +282,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
   const apiEndpoints = resolveNarrateEndpoints();
   const timeoutMs = resolveRequestTimeoutMs();
   const isDev = Boolean(getBuildEnv().DEV);
-  const { headers } = await buildApiHeaders({
+  const headerVariants = await buildApiHeaderVariants({
     "Content-Type": "application/json",
   });
 
@@ -254,71 +297,87 @@ export async function generateNarrative(prompt, { mode } = {}) {
   for (const endpoint of apiEndpoints) {
     attemptedEndpoints += 1;
     attemptedUrls.push(endpoint);
-    try {
-      const { response, data, rawText } = await fetchJsonWithRetry(
-        endpoint,
-        {
-          method: "POST",
-          headers,
-          body: JSON.stringify({ prompt, mode }),
-        },
-        timeoutMs,
-      );
-      if (isDev) {
-        console.info("Narrator endpoint response:", {
+    let endpointMissing = false;
+    for (let i = 0; i < headerVariants.length; i += 1) {
+      const headers = headerVariants[i];
+      try {
+        const { response, data, rawText } = await fetchJsonWithRetry(
           endpoint,
-          status: response.status,
-        });
-      }
-      if (!response.ok) {
-        if (response.status === 404 || response.status === 405) {
-          missingEndpointCount += 1;
-          continue;
+          {
+            method: "POST",
+            headers,
+            body: JSON.stringify({ prompt, mode }),
+          },
+          timeoutMs,
+        );
+        if (isDev) {
+          console.info("Narrator endpoint response:", {
+            endpoint,
+            status: response.status,
+            authVariant: i + 1,
+          });
+        }
+        if (!response.ok) {
+          if (response.status === 404 || response.status === 405) {
+            endpointMissing = true;
+            break;
+          }
+
+          if (
+            (response.status === 401 || response.status === 403) &&
+            i < headerVariants.length - 1
+          ) {
+            continue;
+          }
+
+          if (response.status === 401 || response.status === 403) {
+            throw new Error(
+              "Narrator API requires sign-in. Use Firebase Google sign-in, or set VITE_DEV_USER_ID for local dev headers.",
+            );
+          }
+
+          const message =
+            typeof data?.message === "string"
+              ? data.message
+              : typeof data?.error === "string"
+                ? data.error
+              : rawText
+                ? `Narrative generation failed (${response.status}). ${rawText.slice(0, 240)}`
+                : `Narrative generation failed (${response.status}).`;
+          throw new Error(message);
         }
 
-        if (response.status === 401 || response.status === 403) {
-          throw new Error(
-            "Narrator API requires sign-in. Use Firebase Google sign-in, or set VITE_DEV_USER_ID for local dev headers.",
-          );
+        if (data && data.ok === false) {
+          const message =
+            typeof data.message === "string" && data.message.trim()
+              ? data.message
+              : "Narrative generation failed.";
+          throw new Error(message);
         }
 
-        const message =
-          typeof data?.message === "string"
-            ? data.message
-            : typeof data?.error === "string"
-              ? data.error
-            : rawText
-              ? `Narrative generation failed (${response.status}). ${rawText.slice(0, 240)}`
-              : `Narrative generation failed (${response.status}).`;
-        throw new Error(message);
-      }
+        if (!data || typeof data.narrative !== "string") {
+          throw new Error("Narrative response missing.");
+        }
 
-      if (data && data.ok === false) {
-        const message =
-          typeof data.message === "string" && data.message.trim()
-            ? data.message
-            : "Narrative generation failed.";
-        throw new Error(message);
+        return applyNarrationGuards(
+          normalizeNarrationPayload(data, {
+            narrative: "Something happened.",
+            mood: "neutral",
+            suggestions: ["Look around", "Check inventory", "Continue"],
+            provider: "firebase-genkit",
+            fallbackUsed: false,
+          }),
+        );
+      } catch (error) {
+        lastError = error;
+        if (isDev) {
+          console.error("AI Service Error:", error);
+        }
       }
-
-      if (!data || typeof data.narrative !== "string") {
-        throw new Error("Narrative response missing.");
-      }
-
-      return applyNarrationGuards(
-        normalizeNarrationPayload(data, {
-          narrative: "Something happened.",
-          mood: "neutral",
-          suggestions: ["Look around", "Check inventory", "Continue"],
-          provider: "firebase-genkit",
-          fallbackUsed: false,
-        }),
-      );
-    } catch (error) {
-      lastError = error;
-      if (isDev) {
-        console.error("AI Service Error:", error);
-      }
+    }
+    if (endpointMissing) {
+      missingEndpointCount += 1;
+      continue;
     }
   }
 
@@ -415,10 +474,10 @@ export async function generateNarrativeStream(
 ) {
   const endpoints = resolveStreamEndpoints();
   const isDev = Boolean(getBuildEnv().DEV);
-  const { headers: startHeaders } = await buildApiHeaders({
+  const startHeaderVariants = await buildApiHeaderVariants({
     "Content-Type": "application/json",
   });
-  const { headers: pollHeaders } = await buildApiHeaders();
+  const pollHeaderVariants = await buildApiHeaderVariants();
 
   // No stream endpoints configured — transparent fallback
   if (!endpoints) {
@@ -430,21 +489,28 @@ export async function generateNarrativeStream(
   // Step 1: Start the run (fast POST, returns threadId + runId)
   let startData;
   try {
-    const res = await fetchWithTimeout(
-      endpoints.start,
-      {
-        method: "POST",
-        headers: startHeaders,
-        body: JSON.stringify({ prompt, mode }),
-        signal,
-      },
-      30000,
-    );
-    startData = await res.json().catch(() => null);
-    if (!res.ok || !startData?.ok) {
-      throw new Error(
-        startData?.message || `Start failed (${res.status})`,
+    for (let i = 0; i < startHeaderVariants.length; i += 1) {
+      const res = await fetchWithTimeout(
+        endpoints.start,
+        {
+          method: "POST",
+          headers: startHeaderVariants[i],
+          body: JSON.stringify({ prompt, mode }),
+          signal,
+        },
+        30000,
       );
+      startData = await res.json().catch(() => null);
+      if (
+        (res.status === 401 || res.status === 403) &&
+        i < startHeaderVariants.length - 1
+      ) {
+        continue;
+      }
+      if (!res.ok || !startData?.ok) {
+        throw new Error(startData?.message || `Start failed (${res.status})`);
+      }
+      break;
     }
   } catch (error) {
     if (error?.name === "AbortError") throw error;
@@ -503,15 +569,48 @@ export async function generateNarrativeStream(
 
     let pollData;
     try {
-      const res = await fetchWithTimeout(
-        `${endpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}${mode ? `&mode=${encodeURIComponent(mode)}` : ""}`,
-        { method: "GET", headers: pollHeaders, signal },
-        15000,
-      );
-      pollData = await res.json().catch(() => null);
+      let pollResponse = null;
+      let pollError = null;
+      for (let i = 0; i < pollHeaderVariants.length; i += 1) {
+        const res = await fetchWithTimeout(
+          `${endpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}${mode ? `&mode=${encodeURIComponent(mode)}` : ""}`,
+          { method: "GET", headers: pollHeaderVariants[i], signal },
+          15000,
+        );
+        pollResponse = res;
+        pollData = await res.json().catch(() => null);
+        if (
+          (res.status === 401 || res.status === 403) &&
+          i < pollHeaderVariants.length - 1
+        ) {
+          continue;
+        }
+        if (!res.ok) {
+          pollError = new Error(
+            pollData?.message || `Stream poll failed (${res.status})`,
+          );
+        }
+        break;
+      }
+      if (pollError) {
+        throw pollError;
+      }
+      if (!pollResponse) {
+        throw new Error("Stream poll failed (no response).");
+      }
     } catch (error) {
       if (error?.name === "AbortError") throw error;
       if (isDev) console.warn("Stream poll error:", error);
+      if (
+        String(error?.message || "").toLowerCase().includes("unauthorized")
+      ) {
+        if (isDev) {
+          console.warn("Stream poll unauthorized, falling back to sync narrate");
+        }
+        const result = await generateNarrative(prompt, { mode });
+        if (typeof onDone === "function") onDone(result);
+        return result;
+      }
       continue; // retry next poll
     }
 

@@ -131,3 +131,4 @@ Top consensus priorities:
 5. Add bootstrap guardrails around test commands so missing local dependencies fail with actionable setup guidance.
 
 Outcome: architecture direction remains strong; next cycle should emphasize completion + integration hardening over net-new feature breadth.
+- Full tracked report: `docs/agent-output/swarm_consensus_review_2026-03-26.md`.

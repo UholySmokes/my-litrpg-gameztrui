@@ -124,7 +124,7 @@ Environment note:
 Executed a repository-wide swarm-style review focusing on gameplay readiness, integration debt, and release polish.
 
 Top consensus priorities:
-1. Fix local narration auth mismatch (`/api` currently returning `401` for local dev headers) so local-play validation uses live narration paths.
+1. Fix local narration auth mismatch (proxied narrator backend on `localhost:5000` currently returning `401` for local dev headers) so local-play validation uses live narration paths.
 2. Complete placeholder art replacement pipeline and enforce replacement thresholds in CI.
 3. Finish Godot archetype/system alignment against canonical registry-generated subsets.
 4. Reintegrate or formally retire currently ignored Jest suites (`skillEffects`, `endToEndEffects`, `magnitudeCapsFusion`) to reduce hidden regression risk.

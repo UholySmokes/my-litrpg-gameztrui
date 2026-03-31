@@ -1,5 +1,4 @@
-// AuthUI.jsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   signIn,
   signOut,
@@ -52,17 +51,25 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
 
   if (user) {
     return (
-      <div className="holo-panel" style={{ marginBottom: "1rem" }}>
+      <div className="holo-panel auth-card" style={{ marginBottom: "1rem" }}>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            gap: "1rem",
           }}
         >
           <div>
-            <div style={{ fontSize: "0.9rem", color: "var(--holo-cyan)" }}>
-              Logged in as
+            <div
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--text-dim)",
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+              }}
+            >
+              Chronicle Bound
             </div>
             <div style={{ fontSize: "1rem", fontWeight: "bold" }}>
               {user.email || user.id}
@@ -72,44 +79,36 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
             className="holo-button"
             onClick={handleSignOut}
             disabled={loading}
-            style={{ minWidth: "100px" }}
+            style={{ minWidth: "116px" }}
           >
             {loading ? "..." : "Sign Out"}
           </button>
         </div>
-        {error && (
-          <div
-            style={{
-              marginTop: "0.5rem",
-              color: "var(--holo-alert)",
-              fontSize: "0.85rem",
-            }}
-          >
-            {error}
-          </div>
-        )}
+        {error && <div className="auth-card__error">{error}</div>}
       </div>
     );
   }
 
   if (mode === "sidebar" && !showModal) {
     return (
-      <div className="holo-panel" style={{ marginBottom: "1rem" }}>
+      <div className="holo-panel auth-card" style={{ marginBottom: "1rem" }}>
         <p
           style={{
             fontSize: "0.9rem",
-            color: "var(--holo-cyan)",
+            color: "var(--text-main)",
             textAlign: "center",
             marginBottom: "0.5rem",
+            textTransform: "uppercase",
+            letterSpacing: "0.14em",
           }}
         >
-          Connect Cloud Account
+          Bind Cloud Chronicle
         </p>
         <button
           type="button"
           className="holo-button"
           onClick={() => setShowModal(true)}
-          style={{ width: "100%", fontSize: "0.9rem", padding: "0.5rem" }}
+          style={{ width: "100%", fontSize: "0.9rem", padding: "0.65rem" }}
         >
           Sign In
         </button>
@@ -121,12 +120,9 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
     mode === "sidebar"
       ? {
           position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "rgba(0, 0, 0, 0.8)",
-          backdropFilter: "blur(5px)",
+          inset: 0,
+          background: "rgba(8, 5, 4, 0.82)",
+          backdropFilter: "blur(16px)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -135,11 +131,11 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
       : {
           width: "100%",
           padding: "1.5rem",
-          backgroundColor: "rgba(10, 15, 30, 0.95)",
-          backdropFilter: "blur(5px)",
-          border: "1px solid rgba(0, 243, 255, 0.3)",
-          borderRadius: "8px",
-          boxShadow: "0 0 20px rgba(0, 243, 255, 0.2)",
+          background: "var(--shell-surface-strong)",
+          backdropFilter: "blur(16px)",
+          border: "1px solid var(--shell-border-strong)",
+          borderRadius: "24px",
+          boxShadow: "var(--shell-shadow)",
         };
 
   const contentStyle =
@@ -148,16 +144,16 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
           maxWidth: "420px",
           width: "90%",
           padding: "2rem",
-          backgroundColor: "rgba(10, 15, 30, 0.95)",
-          border: "1px solid var(--holo-cyan)",
-          borderRadius: "8px",
-          boxShadow: "0 0 30px rgba(0, 243, 255, 0.2)",
+          background: "var(--shell-surface-strong)",
+          border: "1px solid var(--shell-border-strong)",
+          borderRadius: "28px",
+          boxShadow: "var(--shell-shadow)",
         }
       : {};
 
   return (
     <section
-      className={mode === "sidebar" ? "" : "holo-panel"}
+      className={mode === "sidebar" ? "" : "holo-panel auth-card"}
       style={containerStyle}
       role={mode === "sidebar" ? "dialog" : undefined}
       aria-modal={mode === "sidebar" ? "true" : undefined}
@@ -168,127 +164,84 @@ export default function AuthUI({ onAuthChange, onLocalGame, mode = "full" }) {
         setShowModal(false)
       }
     >
-      <div style={contentStyle} onClick={(e) => e.stopPropagation()}>
+      <div className="auth-card" style={contentStyle} onClick={(e) => e.stopPropagation()}>
         {mode === "sidebar" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginBottom: "1rem",
-            }}
-          >
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1rem" }}>
             <button
               type="button"
+              className="auth-card__close"
               onClick={() => setShowModal(false)}
               aria-label="Close sign-in dialog"
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "var(--holo-alert)",
-                fontSize: "1.5rem",
-                cursor: "pointer",
-                lineHeight: 1,
-              }}
             >
-              ×
+              x
             </button>
           </div>
         )}
-        <h3
-          id="auth-heading"
-          style={{
-            fontFamily: "var(--font-hud)",
-            fontSize: "1.2rem",
-            marginBottom: "1rem",
-            color: "var(--holo-cyan)",
-            textAlign: "center",
-          }}
-        >
-          Cloud Sign-In
-        </h3>
 
-        <p
-          style={{
-            color: "var(--text-muted)",
-            fontSize: "0.9rem",
-            textAlign: "center",
-            marginBottom: "1.25rem",
-          }}
-        >
-          Sign in to enable cloud saves and synced progression.
-        </p>
+        <div className="auth-card__header">
+          <h3 id="auth-heading" className="auth-card__title">
+            Bind Your Chronicle
+          </h3>
+          <p className="auth-card__copy">
+            Sign in to keep your saves, progression, and narrative state tethered
+            across sessions.
+          </p>
+        </div>
 
         {error && (
-          <div
-            style={{
-              color: "var(--holo-alert)",
-              fontSize: "0.85rem",
-              textAlign: "center",
-              padding: "0.5rem",
-              background: "rgba(255, 50, 50, 0.1)",
-              borderRadius: "4px",
-              marginBottom: "0.75rem",
-            }}
-            role="alert"
-          >
+          <div className="auth-card__error" role="alert">
             {error}
           </div>
         )}
 
-        <button
-          type="button"
-          className="holo-button"
-          onClick={handleSignIn}
-          disabled={loading}
-          style={{
-            width: "100%",
-            height: "45px",
-            fontSize: "1rem",
-            opacity: loading ? 0.7 : 1,
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
-        >
-          {loading ? "..." : "Sign In"}
-        </button>
-
-        {onLocalGame && (
-          <div
+        <div className="auth-card__actions">
+          <button
+            type="button"
+            className="holo-button holo-button--solid"
+            onClick={handleSignIn}
+            disabled={loading}
             style={{
-              marginTop: "1rem",
-              padding: "0.75rem",
-              background: "rgba(255, 215, 0, 0.1)",
-              borderRadius: "4px",
-              border: "1px solid var(--holo-gold)",
+              width: "100%",
+              minHeight: "48px",
+              fontSize: "0.95rem",
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? "not-allowed" : "pointer",
             }}
           >
-            <p
-              style={{
-                fontSize: "0.85rem",
-                color: "var(--holo-gold)",
-                marginBottom: "0.5rem",
-                textAlign: "center",
-              }}
-            >
-              Local Mode
-            </p>
-            <button
-              type="button"
-              className="holo-button"
-              onClick={onLocalGame}
-              style={{
-                width: "100%",
-                borderColor: "var(--holo-gold)",
-                color: "var(--holo-gold)",
-                height: "45px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              Play Local Game
-            </button>
-          </div>
-        )}
+            {loading ? "Binding..." : "Enter The Archive"}
+          </button>
+
+          {onLocalGame && (
+            <div className="auth-card__notice">
+              <p
+                style={{
+                  fontSize: "0.82rem",
+                  marginTop: 0,
+                  marginBottom: "0.65rem",
+                  textAlign: "center",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                }}
+              >
+                Local Chronicle
+              </p>
+              <button
+                type="button"
+                className="holo-button"
+                onClick={onLocalGame}
+                style={{
+                  width: "100%",
+                  minHeight: "46px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Play Offline Run
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

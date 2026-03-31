@@ -21,7 +21,7 @@ function runSharedContractAssertions(normalizePayload) {
   );
 
   expect(legacy.narrative).toBe("The shrine hums awake.");
-  expect(legacy.suggestions).toEqual([{ t: "inspect the altar", w: 1 }]);
+  expect(legacy.suggestions).toEqual(["inspect the altar"]);
   expect(legacy.sceneMemory).toBeUndefined();
   expect(legacy.choiceMeta).toBeUndefined();
 

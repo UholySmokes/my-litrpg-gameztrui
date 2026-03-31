@@ -345,12 +345,6 @@ function buildPresentEntities(gameState = {}) {
 }
 
 function buildActiveThreats(gameState = {}) {
-  const priorSceneMemory =
-    gameState?.narrative?.sceneMemory &&
-    typeof gameState.narrative.sceneMemory === "object" &&
-    !Array.isArray(gameState.narrative.sceneMemory)
-      ? gameState.narrative.sceneMemory
-      : {};
   const combat = gameState?.combat || {};
   const combatActive = Boolean(
     combat?.inCombat ?? combat?.status === "active",

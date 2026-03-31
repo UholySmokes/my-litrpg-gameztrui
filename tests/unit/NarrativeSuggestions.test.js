@@ -119,8 +119,8 @@ describe("narrative suggestion helpers", () => {
       }),
     ).toEqual([
       { t: "inspect the sigil", w: 0.8 },
-      { t: "check status", w: 0.9 },
       { t: "rest to recover", w: 0.85 },
+      { t: "check status", w: 0.9 },
     ]);
   });
 });

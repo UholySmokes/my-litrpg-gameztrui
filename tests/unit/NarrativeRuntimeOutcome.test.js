@@ -49,6 +49,7 @@ describe("narrative runtime outcome policy", () => {
     expect(result.suggestions).toEqual([
       { t: "follow the whisper", w: 0.9 },
       { t: "study the seal", w: 0.8 },
+      { t: "look around", w: 1 },
     ]);
     expect(result.sceneMemory?.locationLabel).toBe("Shrine Door");
   });

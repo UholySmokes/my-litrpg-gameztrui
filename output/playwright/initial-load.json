@@ -1,0 +1,97 @@
+{
+  "title": "Void Verse",
+  "buttons": [
+    {
+      "i": 0,
+      "text": "DISMISS",
+      "disabled": false,
+      "aria": null
+    },
+    {
+      "i": 1,
+      "text": "MOON ELF • SPELLBLADE\nAstra Veil\nARCANE DUELIST\nBlink through tempo gaps, chain spell-etched strikes, and cash out on precision burst windows.\nBurst\nMobility\nArcane",
+      "disabled": false,
+      "aria": null
+    },
+    {
+      "i": 2,
+      "text": "STONEBORN • BASTION\nBrakka Ironroot\nFRONTLINE GUARDIAN\nConvert pressure into barriers, threat spikes, and safe ground while the System tracks every exchange.\nTank\nControl\nBulwark",
+      "disabled": false,
+      "aria": null
+    },
+    {
+      "i": 3,
+      "text": "WILDBORN • MARKSMAN\nLyra Ashwind\nRANGE PREDATOR\nPlay the edges of the battlefield with marked shots, traps, and relentless scouting momentum.\nRange\nCrit\nScout",
+      "disabled": false,
+      "aria": null
+    },
+    {
+      "i": 4,
+      "text": "NIGHTKIN • EXECUTIONER\nVeyn Hollow\nSHADOW ASSASSIN\nDisappear into narrative openings and detonate isolated targets the moment a kill window forms.\nStealth\nExecution\nBurst",
+      "disabled": false,
+      "aria": null
+    },
+    {
+      "i": 5,
+      "text": "BEGIN CHARACTER GENESIS",
+      "disabled": false,
+      "aria": null
+    }
+  ],
+  "inputs": [],
+  "textSnippets": [
+    "INSTALL VOID VERSE",
+    "Add this game to your Android home screen for a native-like launch and offline fallback.",
+    "INSTALL STEPS",
+    "DISMISS",
+    "CHARACTER HUB",
+    "CHOOSE THE FANTASY OF YOUR NEXT RUN.",
+    "Start with a featured combat identity, then lock in your exact race, class, profession, and System bindings inside the full creation flow.",
+    "Bound profile",
+    "local-dev@example.com",
+    "MOON ELF • SPELLBLADE",
+    "Astra Veil",
+    "ARCANE DUELIST",
+    "Blink through tempo gaps, chain spell-etched strikes, and cash out on precision burst windows.",
+    "Burst",
+    "Mobility",
+    "Arcane",
+    "STONEBORN • BASTION",
+    "Brakka Ironroot",
+    "FRONTLINE GUARDIAN",
+    "Convert pressure into barriers, threat spikes, and safe ground while the System tracks every exchange.",
+    "Tank",
+    "Control",
+    "Bulwark",
+    "WILDBORN • MARKSMAN",
+    "Lyra Ashwind",
+    "RANGE PREDATOR",
+    "Play the edges of the battlefield with marked shots, traps, and relentless scouting momentum.",
+    "Range",
+    "Crit",
+    "Scout",
+    "NIGHTKIN • EXECUTIONER",
+    "Veyn Hollow",
+    "SHADOW ASSASSIN",
+    "Disappear into narrative openings and detonate isolated targets the moment a kill window forms.",
+    "Stealth",
+    "Execution",
+    "Burst",
+    "FEATURED PATH",
+    "Astra Veil",
+    "MOON ELF • SPELLBLADE",
+    "Blink through tempo gaps, chain spell-etched strikes, and cash out on precision burst windows.",
+    "Role",
+    "Arcane Duelist",
+    "Lineage",
+    "Moon Elf",
+    "Class",
+    "Spellblade",
+    "Your exact build is still fully reversible during creation.",
+    "BEGIN CHARACTER GENESIS"
+  ],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+  ],
+  "pageErrors": []
+}

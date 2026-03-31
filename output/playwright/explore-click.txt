@@ -1,0 +1,183 @@
+VOID-VERSE // ADVENTURE
+PLAYWRIGHT QA
+Level 1 • Pure Human • Rogue
+Profile
+local-dev@example.com
+Mood
+tense
+System
+EXP Multiplier Matrix
+VITALS
+COMBAT READINESS
+Health: 140/140
+Mana: 68/68
+LV.1 - 0%
+❖ System Energy
+0/100
+⚡ Energy
+100/100
+LOADOUT
+EQUIPMENT
+WEAPON
+No weapon equipped
+ARMOR
+No armor equipped
+ACCESSORY
+No accessory equipped
+TITLE
+No title equipped
+CURRENT CHRONICLE
+Damp air coils through the Arrival Terminal, carrying the scent of wet stone, old wood, and a faint metallic edge that clings to first danger. Ahead, the passage opens into unfamiliar ground, quiet enough to hear your own breath settle. The EXP Multiplier Matrix hums beneath your awareness with cold, measured certainty, as if it has already begun to tally what you earn from each careful choice. Your Rogue instincts answer that pressure with restraint, reading the terminal as a place where movement matters more than haste. Somewhere beyond the threshold, the promise of First Stride waits in the shape of a simple road, a first calm step into a larger world. The air itself seems to caution you: one clean decision now may matter more than many reckless ones later. For a moment, the region feels less like a destination and more like a test of momentum. You stand at the edge of that beginning, with the path ahead still undecided.
+OPEN STATUS
+SAVE / LOAD
+JOURNAL
+NARRATIVE
+STORY FEED
+☰
+Log
+⌂
+Memory
+⚠
+TENSE
+2 entries
+Damp air coils through the Arrival Terminal, carrying the scent of wet stone, old wood, and a faint metallic edge that clings to first danger. Ahead, the passage opens into unfamiliar ground, quiet enough to hear your own breath settle. The EXP Multiplier Matrix hums beneath your awareness with cold, measured certainty, as if it has already begun to tally what you earn from each careful choice. Your Rogue instincts answer that pressure with restraint, reading the terminal as a place where movement matters more than haste. Somewhere beyond the threshold, the promise of First Stride waits in the shape of a simple road, a first calm step into a larger world. The air itself seems to caution you: one clean decision now may matter more than many reckless ones later. For a moment, the region feels less like a destination and more like a test of momentum. You stand at the edge of that beginning, with the path ahead still undecided.
+SYS
+Selected featured path: Astra Veil. Final choices remain reversible during creation.
+COMMAND
+INPUT
+Command input
+EXECUTE
+SUGGESTIONS
+NEXT MOVES
+explore area
+check status
+open inventory
+ACTIONS
+BATTLEFIELD CONTROLS
+ATTACK
+REST
+ESCAPE
+SKILL
+ITEM
+QUESTS
+BESTIARY
+SHOP
+GACHA
+CRAFT
+STATUS
+SYSTEM
+TITLES
+SAVE AND LOAD
+SUPPLIES
+INVENTORY
+Inventory empty.
+QUESTS
+ACTIVE OBJECTIVES
+First Stride
+[ ] Visit one nearby location
+[ ] Reach level 2
+First Conflict
+[ ] Defeat one enemy
+Recovery Breath
+[ ] Take a short rest once
+Oracle of the Sundial
+[ ] Locate the wandering oracle
+[ ] Interpret the sundial glyphs
+FIELD STATE
+AWAITING CONTACT
+No active combat. Issue a command, scout the world, or open a subsystem to prepare your next move.
+---AFTER---
+VOID-VERSE // ADVENTURE
+PLAYWRIGHT QA
+Level 1 • Pure Human • Rogue
+Profile
+local-dev@example.com
+Mood
+neutral
+System
+EXP Multiplier Matrix
+VITALS
+COMBAT READINESS
+Health: 140/140
+Mana: 68/68
+LV.1 - 0%
+❖ System Energy
+0/100
+⚡ Energy
+100/100
+LOADOUT
+EQUIPMENT
+WEAPON
+No weapon equipped
+ARMOR
+No armor equipped
+ACCESSORY
+No accessory equipped
+TITLE
+No title equipped
+CURRENT CHRONICLE
+You move deeper into the Arrival Terminal, and the quiet changes shape around you rather than breaking. Damp stone and old wood give way to a clearer stretch of passage, where the light from the arcology catches in thin strips across the floor. The terminal remains empty of confirmed figures, but the space no longer feels static; it feels watched by possibility, as if the first real route is just beyond immediate sight. The EXP Multiplier Matrix stays present at the edge of awareness, measuring this calm advance as a valid beginning rather than a trivial pause. No threat emerges, and combat remains absent, leaving you with the clean, uneasy advantage of time. A simple path forward and a more careful look around both seem available from here.
+Damp air coils through the Arrival Terminal, carrying the scent of wet stone, old wood, and a faint metallic edge that clings to first danger. Ahead, the passage opens into unfamiliar ground, quiet enough to hear your own breath settle. The EXP Multiplier Matrix hums beneath your awareness with cold, measured certainty, as if it has already begun to tally what you earn from each careful choice. Your Rogue instincts answer that pressure with restraint, reading the terminal as a place where movement matters more than haste. Somewhere beyond the threshold, the promise of First Stride waits in the shape of a simple road, a first calm step into a larger world. The air itself seems to caution you: one clean decision now may matter more than many reckless ones later. For a moment, the region feels less like a destination and more like a test of momentum. You stand at the edge of that beginning, with the path ahead still undecided.
+OPEN STATUS
+SAVE / LOAD
+JOURNAL
+NARRATIVE
+STORY FEED
+☰
+Log
+⌂
+Memory
+4 entries
+T1
+You move deeper into the Arrival Terminal, and the quiet changes shape around you rather than breaking. Damp stone and old wood give way to a clearer stretch of passage, where the light from the arcology catches in thin strips across the floor. The terminal remains empty of confirmed figures, but the space no longer feels static; it feels watched by possibility, as if the first real route is just beyond immediate sight. The EXP Multiplier Matrix stays present at the edge of awareness, measuring this calm advance as a valid beginning rather than a trivial pause. No threat emerges, and combat remains absent, leaving you with the clean, uneasy advantage of time. A simple path forward and a more careful look around both seem available from here.
+T1
+explore area
+Damp air coils through the Arrival Terminal, carrying the scent of wet stone, old wood, and a faint metallic edge that clings to first danger. Ahead, the passage opens into unfamiliar ground, quiet enough to hear your own breath settle. The EXP Multiplier Matrix hums beneath your awareness with cold, measured certainty, as if it has already begun to tally what you earn from each careful choice. Your Rogue instincts answer that pressure with restraint, reading the terminal as a place where movement matters more than haste. Somewhere beyond the threshold, the promise of First Stride waits in the shape of a simple road, a first calm step into a larger world. The air itself seems to caution you: one clean decision now may matter more than many reckless ones later. For a moment, the region feels less like a destination and more like a test of momentum. You stand at the edge of that beginning, with the path ahead still undecided.
+SYS
+Selected featured path: Astra Veil. Final choices remain reversible during creation.
+COMMAND
+INPUT
+Command input
+EXECUTE
+SUGGESTIONS
+NEXT MOVES
+Continue along the open passage
+Study the terminal for overlooked details
+Pause and steady your breathing before moving on
+ACTIONS
+BATTLEFIELD CONTROLS
+ATTACK
+REST
+ESCAPE
+SKILL
+ITEM
+QUESTS
+BESTIARY
+SHOP
+GACHA
+CRAFT
+STATUS
+SYSTEM
+TITLES
+SAVE AND LOAD
+SUPPLIES
+INVENTORY
+Inventory empty.
+QUESTS
+ACTIVE OBJECTIVES
+First Stride
+[ ] Visit one nearby location
+[ ] Reach level 2
+First Conflict
+[ ] Defeat one enemy
+Recovery Breath
+[ ] Take a short rest once
+Oracle of the Sundial
+[ ] Locate the wandering oracle
+[ ] Interpret the sundial glyphs
+System Basics
+[ ] Check your status once
+[ ] Open your inventory once
+FIELD STATE
+AWAITING CONTACT
+No active combat. Issue a command, scout the world, or open a subsystem to prepare your next move.

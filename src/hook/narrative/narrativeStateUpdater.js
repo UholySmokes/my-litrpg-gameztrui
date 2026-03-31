@@ -9,6 +9,7 @@ function withNarrativeMetadata(prevNarrative, nextNarrative) {
     ...nextNarrative,
     summary: prevNarrative?.summary ?? nextNarrative.summary ?? "",
     summaryMeta: prevNarrative?.summaryMeta,
+    sceneMemory: prevNarrative?.sceneMemory ?? nextNarrative.sceneMemory,
   };
 }
 
@@ -93,6 +94,7 @@ export function createInitialNarrativeState(
     timestamp,
     maxEntries = 80,
     mood,
+    sceneMemory,
   } = {},
 ) {
   const resolvedMood =
@@ -119,6 +121,10 @@ export function createInitialNarrativeState(
         updatedAt: timestamp,
       },
       currentMood: resolvedMood,
+      sceneMemory:
+        sceneMemory && typeof sceneMemory === "object"
+          ? sceneMemory
+          : seededState.narrative?.sceneMemory,
     },
   };
 }

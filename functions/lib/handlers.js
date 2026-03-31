@@ -237,6 +237,8 @@ async function narrate(req, res) {
 			narrative: result.narrative,
 			mood: result.mood,
 			suggestions: result.suggestions,
+			sceneMemory: result.sceneMemory,
+			choiceMeta: result.choiceMeta,
       provider: result.provider,
 			outputHash: result.outputHash,
 			mode: result.mode,
@@ -324,6 +326,8 @@ async function narrateStart(req, res) {
 				narrative: result.narrative,
 				mood: result.mood,
 				suggestions: result.suggestions,
+				sceneMemory: result.sceneMemory,
+				choiceMeta: result.choiceMeta,
           provider: result.provider,
 				outputHash: result.outputHash,
 			},
@@ -340,6 +344,8 @@ async function narrateStart(req, res) {
 			narrative: result.narrative,
 			mood: result.mood,
 			suggestions: result.suggestions,
+			sceneMemory: result.sceneMemory,
+			choiceMeta: result.choiceMeta,
       provider: result.provider,
 			outputHash: result.outputHash,
 			backend: result.backend,
@@ -411,11 +417,15 @@ async function narratePoll(req, res) {
         narrative: run.narrative,
         mood: run.mood || inferMood(run.narrative),
         suggestions: buildDefaultSuggestions(response.mode),
+        sceneMemory: run.scene_memory,
+        choiceMeta: run.choice_meta,
         provider: "firebase-genkit",
         fallbackUsed: false,
       });
       response.mood = normalized.mood;
       response.suggestions = normalized.suggestions;
+      response.sceneMemory = normalized.sceneMemory;
+      response.choiceMeta = normalized.choiceMeta;
       response.provider = normalized.provider;
       response.fallbackUsed = normalized.fallbackUsed;
 			response.outputHash = run.output_hash || hashContent(run.narrative);

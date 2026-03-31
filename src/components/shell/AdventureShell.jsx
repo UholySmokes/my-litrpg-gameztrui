@@ -210,7 +210,7 @@ export default function AdventureShell({
           <section className="adventure-shell__scene-card">
             <div className="adventure-shell__scene-copy">
               <div className="adventure-shell__scene-kicker">
-                {zone?.name || "Unknown Zone"} · {location?.name || "Unknown Reach"}
+                {zone?.name || "Unknown Zone"} / {location?.name || "Unknown Reach"}
               </div>
               <h3 className="adventure-shell__scene-title">{objective.questName}</h3>
               <p className="adventure-shell__scene-objective">{objective.objectiveText}</p>
@@ -305,16 +305,7 @@ export default function AdventureShell({
           <div className="adventure-shell__drawer-body">
             {drawerTab === "combat" ? (
               isCombatActive ? (
-                <CombatUI
-                  combatState={combatState}
-                  playerState={player}
-                  onAttack={actions.onAttack}
-                  onUseSkill={actions.onUseSkill}
-                  onUseClassAbility={actions.onUseClassAbility}
-                  onUseRaceAbility={actions.onUseRaceAbility}
-                  onEscape={actions.onEscape}
-                  onSetCombatLane={actions.onSetCombatLane}
-                />
+                <CombatDrawerSummary combatState={combatState} />
               ) : (
                 <div className="adventure-shell__drawer-empty">
                   Combat controls appear here when an encounter begins.

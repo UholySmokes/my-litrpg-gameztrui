@@ -12,6 +12,8 @@
 }
 
 .suggestionButton {
+  display: grid;
+  gap: 0.2rem;
   background: var(--button-bg);
   border: 1px solid rgba(0, 243, 255, 0.15);
   border-radius: var(--radius-md);
@@ -44,4 +46,15 @@
 
 .suggestionButton[data-weight="low"] {
   opacity: var(--opacity-dim);
+}
+
+.suggestionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.suggestionCommand {
+  font-size: 0.72rem;
+  font-family: var(--font-code);
+  color: var(--text-dim);
 }

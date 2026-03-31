@@ -6,6 +6,7 @@ export default function SurfaceDialog({
   title,
   subtitle = "",
   size = "lg",
+  tone = "azure",
   children,
 }) {
   const dialogRef = useRef(null);
@@ -41,7 +42,7 @@ export default function SurfaceDialog({
   return (
     <div className="surface-dialog" onClick={onClose}>
       <div
-        className={`surface-dialog__panel surface-dialog__panel--${size}`}
+        className={`surface-dialog__panel surface-dialog__panel--${size} surface-dialog__panel--tone-${tone}`}
         ref={dialogRef}
         role="dialog"
         aria-modal="true"

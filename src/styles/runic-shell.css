@@ -1312,6 +1312,54 @@ body {
   color: rgba(57, 40, 22, 0.76);
 }
 
+.adventure-shell__combat-drawer {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+  border-radius: 22px;
+  background: rgba(255, 251, 243, 0.92);
+  border: 1px solid rgba(102, 77, 47, 0.14);
+}
+
+.adventure-shell__combat-drawer-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #7c5e39;
+}
+
+.adventure-shell__combat-drawer-title {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #24160f;
+}
+
+.adventure-shell__combat-drawer-copy {
+  margin: 0;
+  line-height: 1.6;
+  color: rgba(57, 40, 22, 0.74);
+}
+
+.adventure-shell__combat-drawer-stat {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.75rem 0.8rem;
+  border-radius: 16px;
+  background: rgba(250, 244, 232, 0.92);
+  border: 1px solid rgba(102, 77, 47, 0.12);
+}
+
+.adventure-shell__combat-drawer-stat span {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(74, 54, 33, 0.62);
+}
+
+.adventure-shell__combat-drawer-stat strong {
+  color: #24160f;
+}
+
 .adventure-shell__quiet-actions {
   display: flex;
   flex-wrap: wrap;

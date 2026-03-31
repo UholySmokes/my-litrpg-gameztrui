@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import ClassResourceBar from "./ClassResourceBar";
 import ClassAbilities from "./ClassAbilities";
 import RaceAbilities from "./RaceAbilities";
@@ -27,28 +27,27 @@ export default function CombatUI({
   const player = playerState;
   const [selectedEnemyIndex, setSelectedEnemyIndex] = useState(0);
 
-  const livingEnemies = useMemo(
-    () =>
-      (combat?.enemies || [])
-        .map((enemy, index) => ({ enemy, index }))
-        .filter(({ enemy }) => (enemy?.stats?.hp?.current || 0) > 0),
-    [combat?.enemies],
-  );
+  const livingEnemies = (combat?.enemies || [])
+    .map((enemy, index) => ({ enemy, index }))
+    .filter(({ enemy }) => (enemy?.stats?.hp?.current || 0) > 0);
+  const resolvedEnemyIndex = livingEnemies.some(
+    ({ index }) => index === selectedEnemyIndex,
+  )
+    ? selectedEnemyIndex
+    : (livingEnemies[0]?.index ?? 0);
 
-  useEffect(() => {
-    if (!livingEnemies.some(({ index }) => index === selectedEnemyIndex)) {
-      setSelectedEnemyIndex(livingEnemies[0]?.index ?? 0);
-    }
-  }, [livingEnemies, selectedEnemyIndex]);
+  if (!combat || combat.status !== "active") {
+    return null;
+  }
 
-  const selectedEnemy = livingEnemies.find(({ index }) => index === selectedEnemyIndex);
+  const selectedEnemy = livingEnemies.find(({ index }) => index === resolvedEnemyIndex);
   const availableSkills =
     player?.activeSkills?.length
       ? player.activeSkills
       : player?.skills?.active ||
         (player?.abilities || []).filter((ability) => ability.type === "active") ||
         [];
-  const skillCooldowns = combat.skillCooldowns || {};
+  const skillCooldowns = combat?.skillCooldowns || {};
   const playerLane = combat?.lanes?.player;
   const laneNumbers = Array.from(
     {
@@ -61,10 +60,6 @@ export default function CombatUI({
     (_, index) => index + 1,
   );
   const laneControlsDisabled = combat?.turn !== "player";
-
-  if (!combat || combat.status !== "active") {
-    return null;
-  }
 
   return (
     <div className="combat-stage">
@@ -124,7 +119,7 @@ export default function CombatUI({
         <button
           type="button"
           className="holo-button holo-button--solid"
-          onClick={() => onAttack(selectedEnemy?.index ?? 0)}
+          onClick={() => onAttack(resolvedEnemyIndex)}
         >
           Strike {selectedEnemy?.enemy?.name || "Target"}
         </button>
@@ -149,7 +144,7 @@ export default function CombatUI({
                 key={skill.id}
                 type="button"
                 className="combat-stage__skill-chip"
-                onClick={() => onUseSkill(skill.id, selectedEnemy?.index ?? 0)}
+                onClick={() => onUseSkill(skill.id, resolvedEnemyIndex)}
                 disabled={disabled}
                 title={
                   disabled

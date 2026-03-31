@@ -32,6 +32,29 @@ describe("GameUI save reset controller", () => {
     });
   });
 
+  test("treats dev-provider identities as local for save reset flow", async () => {
+    const clearLegacyLocalProgressFn = jest.fn();
+    const resetLegacyProgressFn = jest.fn();
+
+    const nextState = await runSaveResetFlow({
+      user: { id: "local-dev", provider: "dev" },
+      readAppliedResetEpochFn: () => SAVE_RESET_EPOCH - 1,
+      clearLegacyLocalProgressFn,
+      resetLegacyProgressFn,
+    });
+
+    expect(isAuthenticatedGameplayUser({ id: "local-dev", provider: "dev" })).toBe(false);
+    expect(clearLegacyLocalProgressFn).toHaveBeenCalledTimes(1);
+    expect(resetLegacyProgressFn).not.toHaveBeenCalled();
+    expect(nextState).toEqual({
+      ready: true,
+      busy: false,
+      error: "",
+      mode: "local",
+      recoverable: false,
+    });
+  });
+
   test("returns remote ready state after synced reset succeeds", async () => {
     const clearLegacyLocalProgressFn = jest.fn();
     const resetLegacyProgressFn = jest.fn().mockResolvedValue({ success: true });

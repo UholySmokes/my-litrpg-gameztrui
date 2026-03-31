@@ -116,3 +116,19 @@ Environment note:
 - Browser requests in local-play mode correctly send `x-dev-user-id: local` and `x-dev-user-email: local@game.dev`.
 - The proxied narrator backend on `localhost:5000` still returns `401` for those dev headers in this environment, so local no-login runs currently use the frontend's offline narrative fallback rather than live AI narration.
 - This is not a frontend shell blocker anymore, but if live local narration is desired the `/api` server needs dev auth enabled or a signed-in session.
+
+---
+
+## Swarm Review Update (2026-03-26)
+
+Executed a repository-wide swarm-style review focusing on gameplay readiness, integration debt, and release polish.
+
+Top consensus priorities:
+1. Fix local narration auth mismatch (proxied narrator backend on `localhost:5000` currently returning `401` for local dev headers) so local-play validation uses live narration paths.
+2. Complete placeholder art replacement pipeline and enforce replacement thresholds in CI.
+3. Finish Godot archetype/system alignment against canonical registry-generated subsets.
+4. Reintegrate or formally retire currently ignored Jest suites (`skillEffects`, `endToEndEffects`, `magnitudeCapsFusion`) to reduce hidden regression risk.
+5. Add bootstrap guardrails around test commands so missing local dependencies fail with actionable setup guidance.
+
+Outcome: architecture direction remains strong; next cycle should emphasize completion + integration hardening over net-new feature breadth.
+- Full tracked report: `docs/agent-output/swarm_consensus_review_2026-03-26.md`.

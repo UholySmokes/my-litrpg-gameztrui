@@ -3,25 +3,25 @@
 
 :root {
   /* Backgrounds */
-  --bg-deep: #0f0b09;
-  --bg-glass: rgba(23, 16, 12, 0.72);
-  --bg-panel: rgba(28, 20, 15, 0.88);
+  --bg-deep: #070b12;
+  --bg-glass: rgba(13, 21, 34, 0.72);
+  --bg-panel: rgba(18, 27, 40, 0.9);
 
   /* Interface Colors */
-  --holo-cyan: #91b7ae;
-  --holo-cyan-rgb: 145, 183, 174;
-  --holo-alert: #c87054;
-  --holo-alert-rgb: 200, 112, 84;
-  --holo-gold: #c5a36a;
-  --holo-gold-rgb: 197, 163, 106;
-  --holo-blue: #7a85b8;
-  --holo-green: #809566;
-  --holo-gray: #8d7f73;
-  --holo-dark: #0a0706;
+  --holo-cyan: #56cfe1;
+  --holo-cyan-rgb: 86, 207, 225;
+  --holo-alert: #d26464;
+  --holo-alert-rgb: 210, 100, 100;
+  --holo-gold: #b08a52;
+  --holo-gold-rgb: 176, 138, 82;
+  --holo-blue: #7f98b9;
+  --holo-green: #7ea394;
+  --holo-gray: #9db0c9;
+  --holo-dark: #060a12;
   --holo-primary: var(--holo-gold);
-  --holo-secondary: #4d3a2b;
-  --holo-accent: #d8c9a7;
-  --holo-ink: #16100d;
+  --holo-secondary: #2c3c54;
+  --holo-accent: #d7c3a2;
+  --holo-ink: #111b2a;
 
   /* Effects */
   --glow-strong: 0 0 22px rgba(var(--holo-gold-rgb), 0.22);
@@ -38,8 +38,8 @@
   --font-code: "IBM Plex Mono", monospace;
 
   /* Text */
-  --text-main: #f1e7d2;
-  --text-dim: rgba(221, 205, 178, 0.68);
+  --text-main: #e8f1ff;
+  --text-dim: rgba(157, 176, 201, 0.78);
   --text-muted: var(--text-dim);
   --button-bg: rgba(var(--holo-gold-rgb), 0.12);
   --button-selected: rgba(var(--holo-gold-rgb), 0.22);
@@ -96,10 +96,11 @@ body {
   min-height: 100dvh;
   min-height: calc(var(--vvh, 1vh) * 100);
   background:
-    radial-gradient(circle at top, rgba(var(--holo-gold-rgb), 0.08), transparent 30%),
-    radial-gradient(circle at 18% 16%, rgba(var(--holo-cyan-rgb), 0.1), transparent 22%),
-    radial-gradient(circle at 84% 20%, rgba(var(--holo-alert-rgb), 0.12), transparent 24%),
-    linear-gradient(180deg, #261a13 0%, #110d0b 55%, #090706 100%);
+    radial-gradient(circle at top, rgba(var(--holo-gold-rgb), 0.08), transparent 28%),
+    radial-gradient(circle at 16% 14%, rgba(var(--holo-cyan-rgb), 0.14), transparent 25%),
+    radial-gradient(circle at 83% 18%, rgba(var(--holo-alert-rgb), 0.1), transparent 24%),
+    radial-gradient(circle at 50% 115%, rgba(68, 113, 150, 0.16), transparent 36%),
+    linear-gradient(180deg, #172336 0%, #0d1624 52%, #070b12 100%);
   background-color: var(--bg-deep);
   color: var(--text-main);
   font-family: var(--font-text);
@@ -118,7 +119,7 @@ textarea {
 }
 
 :focus-visible {
-  outline: 2px solid var(--holo-gold);
+  outline: 2px solid var(--holo-cyan);
   outline-offset: 2px;
 }
 

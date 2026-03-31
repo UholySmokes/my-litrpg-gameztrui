@@ -4,6 +4,53 @@ import {
   processEnemyTurns,
 } from "../../systems/combat/CombatSystem.js";
 
+const DEFAULT_ENCOUNTER_POOLS = [
+  ["goblin", "slime"],
+  ["giant_rat", "goblin"],
+  ["bandit"],
+];
+
+const BIOME_ENCOUNTER_POOLS = {
+  city: [["bandit"], ["slime", "bandit"], ["giant_rat", "bandit"]],
+  ruins: [["goblin", "slime"], ["goblin", "giant_rat"], ["bandit", "goblin"]],
+  wilds: [["wolf"], ["slime", "wolf"], ["giant_rat", "wolf"]],
+  skydocks: [["bandit"], ["goblin", "bandit"], ["slime", "bandit"]],
+  undercity: [["giant_rat", "slime"], ["giant_rat", "bandit"], ["slime", "goblin"]],
+  mountain: [["goblin", "wolf"], ["bandit", "wolf"], ["slime", "goblin"]],
+  coast: [["slime", "wolf"], ["bandit", "slime"], ["goblin", "wolf"]],
+  desert: [["bandit", "slime"], ["goblin", "bandit"], ["giant_rat", "bandit"]],
+  volcanic: [["slime", "goblin"], ["wolf", "bandit"], ["goblin", "bandit"]],
+  dreamscape: [["slime", "goblin"], ["giant_rat", "slime"], ["bandit", "slime"]],
+};
+
+function resolveEncounterSelection(state) {
+  const biome = state?.world?.location?.biome || "city";
+  const locationId = state?.world?.location?.current || "starting_zone";
+  const visitedCount = Array.isArray(state?.world?.location?.visited)
+    ? state.world.location.visited.length
+    : 1;
+  const totalKills = Number(state?.player?.progress?.totalKills || 0);
+  const director = state?.world?.vars?.combatDirector || {};
+  const pools = BIOME_ENCOUNTER_POOLS[biome] || DEFAULT_ENCOUNTER_POOLS;
+
+  let index =
+    Math.abs(totalKills + visitedCount + String(locationId).length) % pools.length;
+  const encounterId = `${biome}:${index}`;
+
+  if (
+    director?.lastEncounterId === encounterId &&
+    Number.isFinite(Number(director?.repeatCount)) &&
+    director.repeatCount > 0
+  ) {
+    index = (index + director.repeatCount) % pools.length;
+  }
+
+  return {
+    encounterId: `${biome}:${index}`,
+    enemyIds: pools[index] || DEFAULT_ENCOUNTER_POOLS[0],
+  };
+}
+
 /**
  * Handle attack actions — start combat if needed, then perform player attack.
  * @param {object} state - Current game state
@@ -17,11 +64,22 @@ export function handleAttack(state, action) {
 
   // If not already in combat, start combat and perform an opening strike.
   if (!state.combat || state.combat.status !== "active") {
-    const enemyIds =
+    const encounterSelection =
       action.enemyIds && action.enemyIds.length > 0
-        ? action.enemyIds
-        : ["goblin", "goblin"];
-    const engagedState = startCombat(state, enemyIds);
+        ? { encounterId: "manual", enemyIds: action.enemyIds }
+        : resolveEncounterSelection(state);
+    const engagedBaseState = startCombat(state, encounterSelection.enemyIds);
+    const engagedState = {
+      ...engagedBaseState,
+      combat: {
+        ...engagedBaseState.combat,
+        spawnMeta: {
+          encounterId: encounterSelection.encounterId,
+          enemyIds: encounterSelection.enemyIds.slice(),
+          biome: state?.world?.location?.biome || "city",
+        },
+      },
+    };
     if (
       !engagedState?.combat ||
       engagedState.combat.status !== "active"

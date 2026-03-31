@@ -22,9 +22,35 @@ export default function InventoryPanel({ inventory, storyHint = "" }) {
   const [typeFilter, setTypeFilter] = useState("all");
 
   const normalizedInventory = Array.isArray(inventory) ? inventory : EMPTY_INVENTORY;
+  const groupedInventory = useMemo(() => {
+    const groups = new Map();
+
+    normalizedInventory.forEach((item, index) => {
+      const key = String(item?.id || item?.name || `item-${index}`).toLowerCase();
+      const quantity = Number.isFinite(item?.quantity) ? item.quantity : 1;
+      if (!groups.has(key)) {
+        groups.set(key, {
+          ...item,
+          quantity,
+          _count: 1,
+        });
+        return;
+      }
+
+      const existing = groups.get(key);
+      groups.set(key, {
+        ...existing,
+        quantity: existing.quantity + quantity,
+        _count: existing._count + 1,
+      });
+    });
+
+    return Array.from(groups.values());
+  }, [normalizedInventory]);
+
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return normalizedInventory.filter((item) => {
+    return groupedInventory.filter((item) => {
       const type = normalizeType(item);
       if (typeFilter !== "all" && type !== typeFilter) return false;
       if (!q) return true;
@@ -32,7 +58,7 @@ export default function InventoryPanel({ inventory, storyHint = "" }) {
       const description = String(item?.description || "").toLowerCase();
       return name.includes(q) || description.includes(q);
     });
-  }, [normalizedInventory, query, typeFilter]);
+  }, [groupedInventory, query, typeFilter]);
 
   if (!normalizedInventory.length) {
     return <div style={{ color: "var(--text-dim)" }}>Inventory empty.</div>;
@@ -40,6 +66,10 @@ export default function InventoryPanel({ inventory, storyHint = "" }) {
 
   return (
     <div className="inventory-panel">
+      <div className="inventory-panel__summary">
+        <strong>{groupedInventory.length}</strong> stacks across{" "}
+        <strong>{normalizedInventory.length}</strong> items
+      </div>
       {storyHint ? (
         <div style={{ color: "var(--text-dim)", fontSize: "0.78rem" }}>{storyHint}</div>
       ) : null}
@@ -87,6 +117,7 @@ export default function InventoryPanel({ inventory, storyHint = "" }) {
                 <div className="inventory-panel__item-meta">
                   <span>{TYPE_LABELS[type] || "Misc"}</span>
                   {item?.rarity && <span>{item.rarity}</span>}
+                  {item?._count > 1 && <span>{item._count} drops merged</span>}
                 </div>
                 {item?.description && (
                   <div className="inventory-panel__item-desc">

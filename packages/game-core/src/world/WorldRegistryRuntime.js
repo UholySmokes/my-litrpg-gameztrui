@@ -246,6 +246,28 @@ export function createWorldRegistryRuntime({
         this.findLocationsByZone(zoneId)
           .filter((location) => location.travelPolicy === "public")
           .forEach((location) => result.add(location.id));
+
+        const connectedZoneIds = Array.isArray(this.getZoneById(zoneId)?.connections)
+          ? this.getZoneById(zoneId).connections
+          : [];
+
+        connectedZoneIds.forEach((connectedZoneId) => {
+          const zone = this.getZoneById(connectedZoneId);
+          if (!zone) return;
+
+          const startLocationIds = Array.isArray(zone.startLocationIds)
+            ? zone.startLocationIds
+            : [];
+          startLocationIds.forEach((locationId) => {
+            if (typeof locationId === "string" && locationId.trim()) {
+              result.add(locationId);
+            }
+          });
+
+          this.findLocationsByZone(connectedZoneId)
+            .filter((location) => location.travelPolicy === "public")
+            .forEach((location) => result.add(location.id));
+        });
       }
 
       return result;

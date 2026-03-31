@@ -14,10 +14,11 @@ let BEGINNER_QUESTS = [
     objectives: [
       {
         id: "bq_first_stride_obj_1",
-        description: "Visit one nearby location",
+        description: "Make one successful travel move",
         completed: false,
         criteria: {
-          minVisitedLocations: 2,
+          actionType: "move",
+          requiresLocationChange: true,
         },
       },
       {
@@ -59,7 +60,7 @@ let BEGINNER_QUESTS = [
         },
       },
     ],
-    rewards: { xp: 30, items: [{ id: "minor_health_potion", quantity: 1 }] },
+    rewards: { xp: 5, items: [{ id: "minor_health_potion", quantity: 1 }] },
     tags: {
       starter: true,
       tones: ["neutral"],
@@ -81,7 +82,7 @@ let BEGINNER_QUESTS = [
         },
       },
     ],
-    rewards: { xp: 40, items: [{ id: "bandage_roll", quantity: 2 }] },
+    rewards: { xp: 25, items: [{ id: "bandage_roll", quantity: 2 }] },
     tags: {
       starter: true,
       tones: ["tense"],
@@ -103,7 +104,7 @@ let BEGINNER_QUESTS = [
         },
       },
     ],
-    rewards: { xp: 30, items: [{ id: "minor_mana_potion", quantity: 1 }] },
+    rewards: { xp: 5, items: [{ id: "minor_mana_potion", quantity: 1 }] },
     tags: {
       starter: true,
       tones: ["serene", "neutral"],
@@ -362,11 +363,18 @@ let MAIN_QUESTS = [
         id: "mq_oracle_sundial_obj_1",
         description: "Locate the wandering oracle",
         completed: false,
+        criteria: {
+          actionType: "move",
+          requiresLocationChange: true,
+        },
       },
       {
         id: "mq_oracle_sundial_obj_2",
         description: "Interpret the sundial glyphs",
         completed: false,
+        criteria: {
+          actionType: ["look", "magic_sense"],
+        },
       },
     ],
     rewards: { xp: 135, items: [{ id: "sundial_glyph", quantity: 1 }] },

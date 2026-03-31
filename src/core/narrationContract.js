@@ -21,15 +21,40 @@ function normalizeString(value) {
 
 function normalizeSuggestionEntry(entry) {
   if (typeof entry === "string" && entry.trim()) {
-    return entry.trim();
+    const command = entry.trim();
+    return {
+      id: command.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      label: command,
+      command,
+      enabled: true,
+      weight: 1,
+      w: 1,
+      t: command,
+    };
   }
   if (entry && typeof entry === "object" && !Array.isArray(entry)) {
-    const text = normalizeString(entry.t || entry.text || entry.label);
-    if (!text) return null;
+    const label = normalizeString(entry.label || entry.text || entry.t || entry.command);
+    const command = normalizeString(entry.command || entry.cmd || entry.t || label);
+    if (!label && !command) return null;
     const weight = Number(entry.w ?? entry.weight);
-    return Number.isFinite(weight)
-      ? { t: text, w: Math.max(0, Math.min(1, weight)) }
-      : { t: text };
+    const normalizedWeight = Number.isFinite(weight)
+      ? Math.max(0, Math.min(1, weight))
+      : 1;
+    const resolvedCommand = command || label;
+    const resolvedLabel = label || resolvedCommand;
+    return {
+      id:
+        normalizeString(entry.id) ||
+        resolvedCommand.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      label: resolvedLabel,
+      command: resolvedCommand,
+      enabled: entry.enabled !== false,
+      reason: normalizeString(entry.reason),
+      category: normalizeString(entry.category).toLowerCase(),
+      weight: normalizedWeight,
+      w: normalizedWeight,
+      t: resolvedCommand,
+    };
   }
   return null;
 }

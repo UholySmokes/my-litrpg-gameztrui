@@ -275,8 +275,13 @@ export default function GameUI({ user }) {
   const handleSuggestionClick = useCallback(
     async (actionText) => {
       if (isLoading) return;
+      const resolvedActionText =
+        typeof actionText === "string"
+          ? actionText
+          : actionText?.command || actionText?.t || actionText?.label || "";
+      if (!resolvedActionText) return;
       try {
-        await submitInput(actionText, state, { fromSuggestion: true });
+        await submitInput(resolvedActionText, state, { fromSuggestion: true });
       } catch (err) {
         console.error("Suggestion action failed:", err);
         addSystemMessage(

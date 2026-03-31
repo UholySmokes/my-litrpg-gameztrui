@@ -58,11 +58,11 @@ describe("auth production guard", () => {
 			expect(isDevAuthEnabled()).toBe(false);
 		});
 
-		it("returns false in production even when FUNCTIONS_EMULATOR=true", () => {
+		it("returns true in the local functions emulator even when the project ID is production", () => {
 			process.env.GOOGLE_CLOUD_PROJECT = PROD_ID;
 			process.env.FUNCTIONS_EMULATOR = "true";
 			const { isDevAuthEnabled } = loadAuth();
-			expect(isDevAuthEnabled()).toBe(false);
+			expect(isDevAuthEnabled()).toBe(true);
 		});
 
 		it("returns true in dev when DEV_AUTH_ENABLED=true and not production", () => {

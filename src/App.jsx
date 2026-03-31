@@ -1,7 +1,7 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import { getCurrentUser, onAuthStateChange } from "./core/AuthService.js";
 import { isWebGameplayEnabled } from "./core/WebGameplayGate.js";
-import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { ThemeDock, ThemeProvider } from "./context/ThemeContext.jsx";
 import EntryShell from "./components/shell/EntryShell.jsx";
 import "./index.css";
 import "./App.css";
@@ -125,6 +125,7 @@ function App() {
   return (
     <ThemeProvider>
       <AppContent />
+      <ThemeDock />
     </ThemeProvider>
   );
 }

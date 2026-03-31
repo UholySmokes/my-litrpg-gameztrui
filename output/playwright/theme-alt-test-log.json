@@ -1,0 +1,191 @@
+{
+  "startedAt": "2026-03-31T10:16:54.707Z",
+  "moveTargetName": "Neon Bazaar",
+  "actions": [
+    {
+      "type": "command",
+      "text": "status",
+      "before": {
+        "title": "Mist Ledger",
+        "location": "Arrival Terminal",
+        "mood": "anticipatory",
+        "latestPassage": "Resumed autosave: Playwright Seeded Adventure",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      },
+      "after": {
+        "title": "Mist Ledger",
+        "location": "Arrival Terminal",
+        "mood": "anticipatory",
+        "latestPassage": "[SYSTEM INTERFACE][STATUS: Mist Ledger]--------------------------------------------------Level:  1 (XP: 0/100)   Title: NoneRace:   Pure Human        (Current Evolution Stage)Class:  MageSystem: EXP Multiplier Matrix (System)Talents: None--------------------------------------------------[VITALITY]Health: 135/135      Mana: 95/95      Mana Pool: 65/65Stability: Body 100/100 | Mind 100/100 | Cognitive 100/100[ATTRIBUTES] (Free Points: 0)> Strength:      6  (Physical power)> Agility:       8  (Speed/Dodge)> Dexterity:     7  (Precision/Crafting)> Vitality:      7  (Endurance/HP)> Intelligence:  15  (Magic/Learning)> Charisma:      7  (Influence)> Will:          9  (Mental Defense/Pressure)> Luck:          6  (Drop Rate/Crit)> Soul Strength: 9  (Psychic/Focus)[ABILITIES]- Adaptive Surge (Lvl 1)- Aegis Pulse (Lvl 1)- Air Control (Wind Manipulation) (Lvl 1)- Killing Eye (Lvl 1)- Alchemy (Potion Brewing & Transmutation) (Lvl 1)- Ambush Sense (Lvl 1)- Anchor Balance (Lvl 1)- Artificing (Gadgeteering & Constructs) (Lvl 1)- Balanced Form (Lvl 1)- Driven Footwork (Lvl 1)- Basic Engineering (Lvl 1)[INVENTORY]- Empty",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      }
+    },
+    {
+      "type": "command",
+      "text": "move to Neon Bazaar",
+      "before": {
+        "title": "Mist Ledger",
+        "location": "Arrival Terminal",
+        "mood": "anticipatory",
+        "latestPassage": "[SYSTEM INTERFACE][STATUS: Mist Ledger]--------------------------------------------------Level:  1 (XP: 0/100)   Title: NoneRace:   Pure Human        (Current Evolution Stage)Class:  MageSystem: EXP Multiplier Matrix (System)Talents: None--------------------------------------------------[VITALITY]Health: 135/135      Mana: 95/95      Mana Pool: 65/65Stability: Body 100/100 | Mind 100/100 | Cognitive 100/100[ATTRIBUTES] (Free Points: 0)> Strength:      6  (Physical power)> Agility:       8  (Speed/Dodge)> Dexterity:     7  (Precision/Crafting)> Vitality:      7  (Endurance/HP)> Intelligence:  15  (Magic/Learning)> Charisma:      7  (Influence)> Will:          9  (Mental Defense/Pressure)> Luck:          6  (Drop Rate/Crit)> Soul Strength: 9  (Psychic/Focus)[ABILITIES]- Adaptive Surge (Lvl 1)- Aegis Pulse (Lvl 1)- Air Control (Wind Manipulation) (Lvl 1)- Killing Eye (Lvl 1)- Alchemy (Potion Brewing & Transmutation) (Lvl 1)- Ambush Sense (Lvl 1)- Anchor Balance (Lvl 1)- Artificing (Gadgeteering & Constructs) (Lvl 1)- Balanced Form (Lvl 1)- Driven Footwork (Lvl 1)- Basic Engineering (Lvl 1)[INVENTORY]- Empty",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      },
+      "after": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Narrator gathers the next scene.",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      }
+    },
+    {
+      "type": "command",
+      "text": "look around",
+      "before": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Narrator gathers the next scene.",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      },
+      "after": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Narrator gathers the next scene.",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      }
+    },
+    {
+      "type": "quick-action",
+      "text": "rest",
+      "snapshot": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Rested and recovered.",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      }
+    },
+    {
+      "type": "quick-action",
+      "text": "rest",
+      "snapshot": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "You already feel fully rested.",
+        "hp": "135/135",
+        "mp": "98/98",
+        "combatActive": false
+      }
+    }
+  ],
+  "fights": [
+    {
+      "index": 1,
+      "enemies": [
+        "Bandit"
+      ],
+      "turns": 2,
+      "before": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Narrator gathers the next scene.",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      },
+      "after": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Engaged combat with Bandit and struck Bandit.",
+        "hp": "116/135",
+        "mp": "95/95",
+        "combatActive": false
+      },
+      "completed": true
+    },
+    {
+      "index": 2,
+      "enemies": [
+        "Slime",
+        "Bandit"
+      ],
+      "turns": 5,
+      "before": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Rested and recovered.",
+        "hp": "135/135",
+        "mp": "95/95",
+        "combatActive": false
+      },
+      "after": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Unlocked title: Wayfarer",
+        "hp": "135/135",
+        "mp": "98/98",
+        "combatActive": false
+      },
+      "completed": true
+    },
+    {
+      "index": 3,
+      "enemies": [
+        "Bandit"
+      ],
+      "turns": 2,
+      "before": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "You already feel fully rested.",
+        "hp": "135/135",
+        "mp": "98/98",
+        "combatActive": false
+      },
+      "after": {
+        "title": "Mist Ledger",
+        "location": "Neon Bazaar",
+        "mood": "neutral",
+        "latestPassage": "Engaged combat with Bandit and struck Bandit.",
+        "hp": "121/135",
+        "mp": "98/98",
+        "combatActive": false
+      },
+      "completed": true
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "finalSnapshot": {
+    "title": "Mist Ledger",
+    "location": "Neon Bazaar",
+    "mood": "neutral",
+    "latestPassage": "Engaged combat with Bandit and struck Bandit.",
+    "hp": "121/135",
+    "mp": "98/98",
+    "combatActive": false
+  },
+  "finishedAt": "2026-03-31T10:17:27.525Z"
+}

@@ -25,8 +25,48 @@ export const DEFAULT_ACTION_SUGGESTIONS = [
   ...FIXED_ACTION_SUGGESTIONS,
   ...CONTEXT_SUGGESTION_FILLERS,
 ];
+export const SUGGESTION_CATEGORY_ORDER = [
+  "observe",
+  "social",
+  "progress",
+  "recovery",
+  "power",
+  "risk",
+];
+const SUGGESTION_CATEGORY_SET = new Set(SUGGESTION_CATEGORY_ORDER);
+const GENERIC_ENTITY_REFERENCES = new Set([
+  "area",
+  "altar",
+  "artifact",
+  "battle",
+  "enemy",
+  "foe",
+  "locals",
+  "location",
+  "inventory",
+  "quests",
+  "quest",
+  "route",
+  "status",
+  "system",
+  "magic",
+  "essence",
+  "pattern",
+  "weave",
+  "resonance",
+  "threat",
+  "surroundings",
+  "sigil",
+  "seal",
+  "signal",
+  "whisper",
+  "door",
+  "gate",
+  "npc",
+  "nearby npc",
+]);
 
-function normalizeSingleActionSuggestion(suggestion) {
+function normalizeSingleActionSuggestion(suggestion, choiceMetaEntry) {
   const label =
     typeof suggestion === "string"
       ? suggestion
@@ -38,16 +78,23 @@ function normalizeSingleActionSuggestion(suggestion) {
     typeof suggestion === "object" && Number.isFinite(suggestion?.w)
       ? suggestion.w
       : 1;
+  const metaUrgency = Number(choiceMetaEntry?.urgency);
+  const resolvedWeight = Number.isFinite(metaUrgency) ? metaUrgency : rawWeight;
 
   return {
     t: trimmed,
-    w: Math.min(1, Math.max(0.35, rawWeight)),
+    w: Math.min(1, Math.max(0.35, resolvedWeight)),
   };
 }
 
-export function normalizeActionSuggestions(suggestions = [], { maxItems = 6 } = {}) {
+export function normalizeActionSuggestions(
+  suggestions = [],
+  { maxItems = 6, choiceMeta = [] } = {},
+) {
   const normalized = (Array.isArray(suggestions) ? suggestions : [])
-    .map((suggestion) => normalizeSingleActionSuggestion(suggestion))
+    .map((suggestion, index) =>
+      normalizeSingleActionSuggestion(suggestion, choiceMeta[index]),
+    )
     .filter(Boolean);
   const seen = new Set();
 
@@ -59,15 +106,187 @@ export function normalizeActionSuggestions(suggestions = [], { maxItems = 6 } = 
   }).slice(0, maxItems);
 }
 
+function inferSuggestionCategory(label = "") {
+  const value = String(label || "").toLowerCase();
+  if (
+    /\b(look|inspect|study|scan|sense|observe|check|read|listen|survey|examine)\b/.test(
+      value,
+    )
+  ) {
+    return "observe";
+  }
+  if (
+    /\b(talk|speak|ask|negotiate|greet|question|parley|locals|npc)\b/.test(value)
+  ) {
+    return "social";
+  }
+  if (
+    /\b(follow|continue|advance|pursue|explore|travel|open|unlock|investigate|search)\b/.test(
+      value,
+    )
+  ) {
+    return "progress";
+  }
+  if (
+    /\b(rest|recover|heal|drink potion|stabilize|anchor|purge|calm)\b/.test(value)
+  ) {
+    return "recovery";
+  }
+  if (
+    /\b(use skill|train|practice|cast|weave|release|draw essence|refine|meditate|probe|status)\b/.test(
+      value,
+    )
+  ) {
+    return "power";
+  }
+  if (
+    /\b(attack|escape|retreat|risk|gamble|rush|charge|ambush)\b/.test(value)
+  ) {
+    return "risk";
+  }
+  return "progress";
+}
+
+function getSceneMemory(state = {}) {
+  return state?.narrative?.sceneMemory &&
+    typeof state.narrative.sceneMemory === "object" &&
+    !Array.isArray(state.narrative.sceneMemory)
+    ? state.narrative.sceneMemory
+    : {};
+}
+
+function getKnownEntities(state = {}) {
+  const sceneMemory = getSceneMemory(state);
+  const combatEnemies = Array.isArray(state?.combat?.enemies)
+    ? state.combat.enemies
+        .map((enemy) => enemy?.name)
+        .filter((value) => typeof value === "string" && value.trim())
+    : [];
+  const quests = Array.isArray(state?.quests?.active)
+    ? state.quests.active
+        .map((quest) => quest?.name)
+        .filter((value) => typeof value === "string" && value.trim())
+    : [];
+  return [
+    ...(Array.isArray(sceneMemory.presentEntities) ? sceneMemory.presentEntities : []),
+    ...combatEnemies,
+    ...quests,
+    sceneMemory.locationLabel,
+    sceneMemory.zoneLabel,
+  ]
+    .filter((value) => typeof value === "string" && value.trim())
+    .map((value) => value.trim());
+}
+
+function extractReferencedEntity(label = "") {
+  const match = String(label || "").match(
+    /\b(?:talk to|speak with|ask|follow|attack|inspect|approach|help|protect|escort)\s+([a-z][a-z' -]{2,})/i,
+  );
+  return String(match?.[1] || "")
+    .replace(/^(?:about|toward|towards|the|a|an)\s+/i, "")
+    .trim();
+}
+
+function referencesMissingEntity(label, state) {
+  const referenced = extractReferencedEntity(label);
+  if (!referenced) return false;
+  const normalizedReference = referenced.toLowerCase();
+  if (GENERIC_ENTITY_REFERENCES.has(normalizedReference)) return false;
+  const knownEntities = getKnownEntities(state).map((entry) => entry.toLowerCase());
+  return !knownEntities.some(
+    (entity) =>
+      entity.includes(normalizedReference) || normalizedReference.includes(entity),
+  );
+}
+
+function isValidForCombatContext(label, state) {
+  const value = String(label || "").toLowerCase();
+  const inCombat = Boolean(
+    state?.combat?.inCombat ?? state?.combat?.status === "active",
+  );
+  const combatOnly = /\b(attack|parry|dodge|escape|retreat from battle|target enemy)\b/;
+  const safeOnly = /\b(visit shop|talk to locals|leave politely|review quests)\b/;
+  if (!inCombat && combatOnly.test(value)) return false;
+  if (inCombat && safeOnly.test(value)) return false;
+  return true;
+}
+
+function normalizeChoiceMetaEntry(choiceMetaEntry = {}) {
+  if (!choiceMetaEntry || typeof choiceMetaEntry !== "object" || Array.isArray(choiceMetaEntry)) {
+    return null;
+  }
+  const category = String(choiceMetaEntry.category || "").trim().toLowerCase();
+  const intent = String(choiceMetaEntry.intent || "").trim();
+  return {
+    intent,
+    category: SUGGESTION_CATEGORY_SET.has(category)
+      ? category
+      : intent
+        ? inferSuggestionCategory(intent)
+        : "",
+    urgency: Number.isFinite(Number(choiceMetaEntry.urgency))
+      ? Math.max(0, Math.min(1, Number(choiceMetaEntry.urgency)))
+      : undefined,
+    groundedInState: Boolean(choiceMetaEntry.groundedInState),
+  };
+}
+
+function validateSuggestionCandidate(candidate, state, choiceMetaEntry) {
+  if (!candidate?.t) return null;
+  if (!isValidForCombatContext(candidate.t, state)) return null;
+  if (referencesMissingEntity(candidate.t, state)) return null;
+  const normalizedMeta = normalizeChoiceMetaEntry(choiceMetaEntry);
+  const category = normalizedMeta?.category || inferSuggestionCategory(candidate.t);
+  return {
+    ...candidate,
+    category,
+    groundedInState: Boolean(normalizedMeta?.groundedInState) || !referencesMissingEntity(candidate.t, state),
+  };
+}
+
 export function resolveActionSuggestions({
   preferredSuggestions,
+  preferredChoiceMeta,
   fallbackSuggestions = DEFAULT_ACTION_SUGGESTIONS,
+  state,
+  maxItems = 3,
 } = {}) {
-  const preferred = normalizeActionSuggestions(preferredSuggestions);
-  if (preferred.length > 0) {
-    return preferred;
+  const accepted = [];
+  const seen = new Set();
+  const categories = new Set();
+  const tryAdd = (candidate, choiceMetaEntry) => {
+    if (!candidate?.t || accepted.length >= maxItems) return;
+    const key = candidate.t.toLowerCase();
+    if (seen.has(key)) return;
+    const validated = validateSuggestionCandidate(candidate, state, choiceMetaEntry);
+    if (!validated) return;
+    seen.add(key);
+    accepted.push({ t: validated.t, w: validated.w });
+    categories.add(validated.category);
+  };
+
+  const preferred = normalizeActionSuggestions(preferredSuggestions, {
+    maxItems,
+    choiceMeta: preferredChoiceMeta,
+  });
+  preferred.forEach((candidate, index) =>
+    tryAdd(candidate, Array.isArray(preferredChoiceMeta) ? preferredChoiceMeta[index] : null),
+  );
+
+  const fallback = normalizeActionSuggestions(fallbackSuggestions, { maxItems: 8 });
+  if (accepted.length < maxItems || categories.size < 2) {
+    fallback
+      .filter((candidate) => {
+        const category = inferSuggestionCategory(candidate.t);
+        return categories.size < 2 ? !categories.has(category) : true;
+      })
+      .forEach((candidate) => tryAdd(candidate, null));
   }
-  return normalizeActionSuggestions(fallbackSuggestions);
+  if (accepted.length < maxItems) {
+    fallback.forEach((candidate) => tryAdd(candidate, null));
+  }
+
+  return accepted.slice(0, maxItems);
 }
 
 const MOOD_PATTERNS = [

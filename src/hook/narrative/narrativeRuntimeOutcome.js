@@ -26,12 +26,21 @@ export function resolveNarrativeRuntimeOutcome({
           : inferMood(aiResult.narrative),
       suggestions: resolveActionSuggestions({
         preferredSuggestions: aiResult?.suggestions,
+        preferredChoiceMeta: aiResult?.choiceMeta,
         fallbackSuggestions,
+        state,
       }),
       source:
         typeof aiResult?.source === "string" && aiResult.source.trim()
           ? aiResult.source.trim()
           : "ai",
+      sceneMemory:
+        aiResult?.sceneMemory &&
+        typeof aiResult.sceneMemory === "object" &&
+        !Array.isArray(aiResult.sceneMemory)
+          ? aiResult.sceneMemory
+          : undefined,
+      choiceMeta: Array.isArray(aiResult?.choiceMeta) ? aiResult.choiceMeta : undefined,
     };
   }
 
@@ -48,6 +57,7 @@ export function resolveNarrativeRuntimeOutcome({
     mood: inferMood(fallbackNarrative),
     suggestions: resolveActionSuggestions({
       fallbackSuggestions,
+      state,
     }),
     source: "fallback",
   };

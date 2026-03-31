@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import {
   assemblePrompt,
+  buildSceneMemorySeed,
   buildHistorySection,
 } from "../../src/core/PromptAssembler.js";
 
@@ -156,5 +157,85 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("Creation Perks: quick_learner");
     expect(prompt).toContain("Starter Trees: offense");
     expect(prompt).toContain("Skill Loadout: warrior_starter");
+  });
+
+  it("includes authoritative scene state and structured response rules", () => {
+    const gameState = {
+      player: {
+        name: "Tester",
+        level: 4,
+        hp: { current: 20, max: 30 },
+        mana: { current: 10, max: 20 },
+        xp: { current: 15, max: 100 },
+        inventory: [],
+        equipment: {},
+      },
+      world: {
+        location: { current: "starting_zone" },
+      },
+      quests: {
+        active: [{ name: "Find the courier", description: "Track the hidden courier signal." }],
+      },
+      narrative: {
+        summary: "You reached the terminal and survived the ambush.",
+        sceneMemory: {
+          locationLabel: "Arrival Terminal",
+          zoneLabel: "Threshold Ward",
+          immediateObjective: "Find the courier signal.",
+          presentEntities: ["Goblin Raider"],
+          activeThreats: ["Goblin Raider"],
+          unresolvedHooks: ["Courier signal"],
+          lastConsequence: "The terminal unlocked.",
+        },
+        entries: [],
+      },
+      combat: {
+        status: "inactive",
+        inCombat: false,
+        enemies: [],
+      },
+    };
+
+    const prompt = assemblePrompt(gameState, "inspect the terminal seam", {
+      success: true,
+      description: "You inspect the seam carefully.",
+      state: gameState,
+    });
+
+    expect(prompt).toContain("=== AUTHORITATIVE SCENE STATE ===");
+    expect(prompt).toContain("Recent Summary: You reached the terminal and survived the ambush.");
+    expect(prompt).toContain("Return one valid JSON object with this shape:");
+    expect(prompt).toContain('"sceneMemory"');
+    expect(prompt).toContain("Active Threats: None confirmed");
+    expect(prompt).not.toContain("Present Entities: Goblin Raider");
+  });
+
+  it("builds scene memory from deterministic state without reviving inactive enemies", () => {
+    const sceneMemory = buildSceneMemorySeed(
+      {
+        world: { location: { current: "starting_zone" } },
+        quests: { active: [{ name: "Wake the shrine", description: "Restore shrine power." }] },
+        narrative: {
+          sceneMemory: {
+            locationLabel: "Old Hall",
+            zoneLabel: "Forgotten Ward",
+            presentEntities: ["Goblin Raider", "Caretaker Echo"],
+            activeThreats: ["Goblin Raider"],
+            unresolvedHooks: ["Broken shrine"],
+          },
+        },
+        combat: {
+          status: "inactive",
+          inCombat: false,
+          enemies: [],
+        },
+      },
+      { description: "You steady yourself by the shrine gate." },
+    );
+
+    expect(sceneMemory.presentEntities).toEqual(["Caretaker Echo"]);
+    expect(sceneMemory.activeThreats).toEqual([]);
+    expect(sceneMemory.immediateObjective).toBe("Restore shrine power.");
+    expect(sceneMemory.lastConsequence).toBe("You steady yourself by the shrine gate.");
   });
 });

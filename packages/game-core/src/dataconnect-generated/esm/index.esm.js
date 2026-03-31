@@ -1,11 +1,10 @@
-import { queryRef, executeQuery, mutationRef, executeMutation, validateArgs } from 'firebase/data-connect';
+import { queryRef, executeQuery, validateArgsWithOptions, mutationRef, executeMutation, validateArgs } from 'firebase/data-connect';
 
 export const connectorConfig = {
   connector: 'example',
   service: 'my-litrpg-gameztrui',
   location: 'us-east4'
 };
-
 export const upsertMyProfileRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars);
   dcInstance._useGeneratedSdk();
@@ -14,7 +13,8 @@ export const upsertMyProfileRef = (dcOrVars, vars) => {
 upsertMyProfileRef.operationName = 'UpsertMyProfile';
 
 export function upsertMyProfile(dcOrVars, vars) {
-  return executeMutation(upsertMyProfileRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars);
+  return executeMutation(upsertMyProfileRef(dcInstance, inputVars));
 }
 
 export const markMyProfileMigrationRef = (dcOrVars, vars) => {
@@ -25,7 +25,8 @@ export const markMyProfileMigrationRef = (dcOrVars, vars) => {
 markMyProfileMigrationRef.operationName = 'MarkMyProfileMigration';
 
 export function markMyProfileMigration(dcOrVars, vars) {
-  return executeMutation(markMyProfileMigrationRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(markMyProfileMigrationRef(dcInstance, inputVars));
 }
 
 export const createSaveSlotRef = (dcOrVars, vars) => {
@@ -36,7 +37,8 @@ export const createSaveSlotRef = (dcOrVars, vars) => {
 createSaveSlotRef.operationName = 'CreateSaveSlot';
 
 export function createSaveSlot(dcOrVars, vars) {
-  return executeMutation(createSaveSlotRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(createSaveSlotRef(dcInstance, inputVars));
 }
 
 export const upsertSaveSlotRef = (dcOrVars, vars) => {
@@ -47,7 +49,8 @@ export const upsertSaveSlotRef = (dcOrVars, vars) => {
 upsertSaveSlotRef.operationName = 'UpsertSaveSlot';
 
 export function upsertSaveSlot(dcOrVars, vars) {
-  return executeMutation(upsertSaveSlotRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(upsertSaveSlotRef(dcInstance, inputVars));
 }
 
 export const deleteSaveSlotRef = (dcOrVars, vars) => {
@@ -58,7 +61,8 @@ export const deleteSaveSlotRef = (dcOrVars, vars) => {
 deleteSaveSlotRef.operationName = 'DeleteSaveSlot';
 
 export function deleteSaveSlot(dcOrVars, vars) {
-  return executeMutation(deleteSaveSlotRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(deleteSaveSlotRef(dcInstance, inputVars));
 }
 
 export const deleteRunSessionRef = (dcOrVars, vars) => {
@@ -69,7 +73,8 @@ export const deleteRunSessionRef = (dcOrVars, vars) => {
 deleteRunSessionRef.operationName = 'DeleteRunSession';
 
 export function deleteRunSession(dcOrVars, vars) {
-  return executeMutation(deleteRunSessionRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(deleteRunSessionRef(dcInstance, inputVars));
 }
 
 export const deleteRunEventRef = (dcOrVars, vars) => {
@@ -80,7 +85,8 @@ export const deleteRunEventRef = (dcOrVars, vars) => {
 deleteRunEventRef.operationName = 'DeleteRunEvent';
 
 export function deleteRunEvent(dcOrVars, vars) {
-  return executeMutation(deleteRunEventRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(deleteRunEventRef(dcInstance, inputVars));
 }
 
 export const upsertRunSessionRef = (dcOrVars, vars) => {
@@ -91,7 +97,8 @@ export const upsertRunSessionRef = (dcOrVars, vars) => {
 upsertRunSessionRef.operationName = 'UpsertRunSession';
 
 export function upsertRunSession(dcOrVars, vars) {
-  return executeMutation(upsertRunSessionRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(upsertRunSessionRef(dcInstance, inputVars));
 }
 
 export const createRunEventRef = (dcOrVars, vars) => {
@@ -102,7 +109,8 @@ export const createRunEventRef = (dcOrVars, vars) => {
 createRunEventRef.operationName = 'CreateRunEvent';
 
 export function createRunEvent(dcOrVars, vars) {
-  return executeMutation(createRunEventRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(createRunEventRef(dcInstance, inputVars));
 }
 
 export const upsertStoryMemoryRef = (dcOrVars, vars) => {
@@ -113,7 +121,8 @@ export const upsertStoryMemoryRef = (dcOrVars, vars) => {
 upsertStoryMemoryRef.operationName = 'UpsertStoryMemory';
 
 export function upsertStoryMemory(dcOrVars, vars) {
-  return executeMutation(upsertStoryMemoryRef(dcOrVars, vars));
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(upsertStoryMemoryRef(dcInstance, inputVars));
 }
 
 export const getMyProfileRef = (dc) => {
@@ -123,8 +132,10 @@ export const getMyProfileRef = (dc) => {
 }
 getMyProfileRef.operationName = 'GetMyProfile';
 
-export function getMyProfile(dc) {
-  return executeQuery(getMyProfileRef(dc));
+export function getMyProfile(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(getMyProfileRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const listMySaveSlotsRef = (dcOrVars, vars) => {
@@ -134,8 +145,10 @@ export const listMySaveSlotsRef = (dcOrVars, vars) => {
 }
 listMySaveSlotsRef.operationName = 'ListMySaveSlots';
 
-export function listMySaveSlots(dcOrVars, vars) {
-  return executeQuery(listMySaveSlotsRef(dcOrVars, vars));
+export function listMySaveSlots(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listMySaveSlotsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const getMySaveSlotRef = (dcOrVars, vars) => {
@@ -145,8 +158,10 @@ export const getMySaveSlotRef = (dcOrVars, vars) => {
 }
 getMySaveSlotRef.operationName = 'GetMySaveSlot';
 
-export function getMySaveSlot(dcOrVars, vars) {
-  return executeQuery(getMySaveSlotRef(dcOrVars, vars));
+export function getMySaveSlot(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(getMySaveSlotRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const listMyRunSnapshotsRef = (dcOrVars, vars) => {
@@ -156,8 +171,10 @@ export const listMyRunSnapshotsRef = (dcOrVars, vars) => {
 }
 listMyRunSnapshotsRef.operationName = 'ListMyRunSnapshots';
 
-export function listMyRunSnapshots(dcOrVars, vars) {
-  return executeQuery(listMyRunSnapshotsRef(dcOrVars, vars));
+export function listMyRunSnapshots(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listMyRunSnapshotsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const getMyRunSessionByRunIdRef = (dcOrVars, vars) => {
@@ -167,8 +184,10 @@ export const getMyRunSessionByRunIdRef = (dcOrVars, vars) => {
 }
 getMyRunSessionByRunIdRef.operationName = 'GetMyRunSessionByRunId';
 
-export function getMyRunSessionByRunId(dcOrVars, vars) {
-  return executeQuery(getMyRunSessionByRunIdRef(dcOrVars, vars));
+export function getMyRunSessionByRunId(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(getMyRunSessionByRunIdRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const getMyRunEventByCommitIdRef = (dcOrVars, vars) => {
@@ -178,8 +197,10 @@ export const getMyRunEventByCommitIdRef = (dcOrVars, vars) => {
 }
 getMyRunEventByCommitIdRef.operationName = 'GetMyRunEventByCommitId';
 
-export function getMyRunEventByCommitId(dcOrVars, vars) {
-  return executeQuery(getMyRunEventByCommitIdRef(dcOrVars, vars));
+export function getMyRunEventByCommitId(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(getMyRunEventByCommitIdRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const listMyRunEventsSinceRef = (dcOrVars, vars) => {
@@ -189,8 +210,10 @@ export const listMyRunEventsSinceRef = (dcOrVars, vars) => {
 }
 listMyRunEventsSinceRef.operationName = 'ListMyRunEventsSince';
 
-export function listMyRunEventsSince(dcOrVars, vars) {
-  return executeQuery(listMyRunEventsSinceRef(dcOrVars, vars));
+export function listMyRunEventsSince(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listMyRunEventsSinceRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const listAllMyRunSessionsRef = (dc) => {
@@ -200,8 +223,10 @@ export const listAllMyRunSessionsRef = (dc) => {
 }
 listAllMyRunSessionsRef.operationName = 'ListAllMyRunSessions';
 
-export function listAllMyRunSessions(dc) {
-  return executeQuery(listAllMyRunSessionsRef(dc));
+export function listAllMyRunSessions(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(listAllMyRunSessionsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const listAllMyRunEventsRef = (dc) => {
@@ -211,8 +236,10 @@ export const listAllMyRunEventsRef = (dc) => {
 }
 listAllMyRunEventsRef.operationName = 'ListAllMyRunEvents';
 
-export function listAllMyRunEvents(dc) {
-  return executeQuery(listAllMyRunEventsRef(dc));
+export function listAllMyRunEvents(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(listAllMyRunEventsRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 
 export const listMyStoryMemoriesRef = (dcOrVars, vars) => {
@@ -222,7 +249,9 @@ export const listMyStoryMemoriesRef = (dcOrVars, vars) => {
 }
 listMyStoryMemoriesRef.operationName = 'ListMyStoryMemories';
 
-export function listMyStoryMemories(dcOrVars, vars) {
-  return executeQuery(listMyStoryMemoriesRef(dcOrVars, vars));
+export function listMyStoryMemories(dcOrVars, varsOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  return executeQuery(listMyStoryMemoriesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
 }
 

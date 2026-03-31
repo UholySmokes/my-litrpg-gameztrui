@@ -80,7 +80,7 @@ Below are examples of how to use the `example` connector's generated functions t
 ## GetMyProfile
 You can execute the `GetMyProfile` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-getMyProfile(): QueryPromise<GetMyProfileData, undefined>;
+getMyProfile(options?: ExecuteQueryOptions): QueryPromise<GetMyProfileData, undefined>;
 
 interface GetMyProfileRef {
   ...
@@ -91,7 +91,7 @@ export const getMyProfileRef: GetMyProfileRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-getMyProfile(dc: DataConnect): QueryPromise<GetMyProfileData, undefined>;
+getMyProfile(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<GetMyProfileData, undefined>;
 
 interface GetMyProfileRef {
   ...
@@ -177,7 +177,7 @@ executeQuery(ref).then((response) => {
 ## ListMySaveSlots
 You can execute the `ListMySaveSlots` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-listMySaveSlots(vars: ListMySaveSlotsVariables): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
+listMySaveSlots(vars: ListMySaveSlotsVariables, options?: ExecuteQueryOptions): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 
 interface ListMySaveSlotsRef {
   ...
@@ -188,7 +188,7 @@ export const listMySaveSlotsRef: ListMySaveSlotsRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-listMySaveSlots(dc: DataConnect, vars: ListMySaveSlotsVariables): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
+listMySaveSlots(dc: DataConnect, vars: ListMySaveSlotsVariables, options?: ExecuteQueryOptions): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 
 interface ListMySaveSlotsRef {
   ...
@@ -310,7 +310,7 @@ executeQuery(ref).then((response) => {
 ## GetMySaveSlot
 You can execute the `GetMySaveSlot` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-getMySaveSlot(vars: GetMySaveSlotVariables): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
+getMySaveSlot(vars: GetMySaveSlotVariables, options?: ExecuteQueryOptions): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
 
 interface GetMySaveSlotRef {
   ...
@@ -321,7 +321,7 @@ export const getMySaveSlotRef: GetMySaveSlotRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-getMySaveSlot(dc: DataConnect, vars: GetMySaveSlotVariables): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
+getMySaveSlot(dc: DataConnect, vars: GetMySaveSlotVariables, options?: ExecuteQueryOptions): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
 
 interface GetMySaveSlotRef {
   ...
@@ -443,7 +443,7 @@ executeQuery(ref).then((response) => {
 ## ListMyRunSnapshots
 You can execute the `ListMyRunSnapshots` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-listMyRunSnapshots(vars: ListMyRunSnapshotsVariables): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
+listMyRunSnapshots(vars: ListMyRunSnapshotsVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
 
 interface ListMyRunSnapshotsRef {
   ...
@@ -454,7 +454,7 @@ export const listMyRunSnapshotsRef: ListMyRunSnapshotsRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-listMyRunSnapshots(dc: DataConnect, vars: ListMyRunSnapshotsVariables): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
+listMyRunSnapshots(dc: DataConnect, vars: ListMyRunSnapshotsVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
 
 interface ListMyRunSnapshotsRef {
   ...
@@ -567,7 +567,7 @@ executeQuery(ref).then((response) => {
 ## GetMyRunSessionByRunId
 You can execute the `GetMyRunSessionByRunId` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-getMyRunSessionByRunId(vars: GetMyRunSessionByRunIdVariables): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+getMyRunSessionByRunId(vars: GetMyRunSessionByRunIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
 
 interface GetMyRunSessionByRunIdRef {
   ...
@@ -578,7 +578,7 @@ export const getMyRunSessionByRunIdRef: GetMyRunSessionByRunIdRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-getMyRunSessionByRunId(dc: DataConnect, vars: GetMyRunSessionByRunIdVariables): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+getMyRunSessionByRunId(dc: DataConnect, vars: GetMyRunSessionByRunIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
 
 interface GetMyRunSessionByRunIdRef {
   ...
@@ -698,7 +698,7 @@ executeQuery(ref).then((response) => {
 ## GetMyRunEventByCommitId
 You can execute the `GetMyRunEventByCommitId` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-getMyRunEventByCommitId(vars: GetMyRunEventByCommitIdVariables): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+getMyRunEventByCommitId(vars: GetMyRunEventByCommitIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
 
 interface GetMyRunEventByCommitIdRef {
   ...
@@ -709,7 +709,7 @@ export const getMyRunEventByCommitIdRef: GetMyRunEventByCommitIdRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-getMyRunEventByCommitId(dc: DataConnect, vars: GetMyRunEventByCommitIdVariables): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+getMyRunEventByCommitId(dc: DataConnect, vars: GetMyRunEventByCommitIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
 
 interface GetMyRunEventByCommitIdRef {
   ...
@@ -830,7 +830,7 @@ executeQuery(ref).then((response) => {
 ## ListMyRunEventsSince
 You can execute the `ListMyRunEventsSince` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-listMyRunEventsSince(vars: ListMyRunEventsSinceVariables): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+listMyRunEventsSince(vars: ListMyRunEventsSinceVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
 
 interface ListMyRunEventsSinceRef {
   ...
@@ -841,7 +841,7 @@ export const listMyRunEventsSinceRef: ListMyRunEventsSinceRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-listMyRunEventsSince(dc: DataConnect, vars: ListMyRunEventsSinceVariables): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+listMyRunEventsSince(dc: DataConnect, vars: ListMyRunEventsSinceVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
 
 interface ListMyRunEventsSinceRef {
   ...
@@ -962,7 +962,7 @@ executeQuery(ref).then((response) => {
 ## ListAllMyRunSessions
 You can execute the `ListAllMyRunSessions` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-listAllMyRunSessions(): QueryPromise<ListAllMyRunSessionsData, undefined>;
+listAllMyRunSessions(options?: ExecuteQueryOptions): QueryPromise<ListAllMyRunSessionsData, undefined>;
 
 interface ListAllMyRunSessionsRef {
   ...
@@ -973,7 +973,7 @@ export const listAllMyRunSessionsRef: ListAllMyRunSessionsRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-listAllMyRunSessions(dc: DataConnect): QueryPromise<ListAllMyRunSessionsData, undefined>;
+listAllMyRunSessions(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListAllMyRunSessionsData, undefined>;
 
 interface ListAllMyRunSessionsRef {
   ...
@@ -1075,7 +1075,7 @@ executeQuery(ref).then((response) => {
 ## ListAllMyRunEvents
 You can execute the `ListAllMyRunEvents` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-listAllMyRunEvents(): QueryPromise<ListAllMyRunEventsData, undefined>;
+listAllMyRunEvents(options?: ExecuteQueryOptions): QueryPromise<ListAllMyRunEventsData, undefined>;
 
 interface ListAllMyRunEventsRef {
   ...
@@ -1086,7 +1086,7 @@ export const listAllMyRunEventsRef: ListAllMyRunEventsRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-listAllMyRunEvents(dc: DataConnect): QueryPromise<ListAllMyRunEventsData, undefined>;
+listAllMyRunEvents(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListAllMyRunEventsData, undefined>;
 
 interface ListAllMyRunEventsRef {
   ...
@@ -1186,7 +1186,7 @@ executeQuery(ref).then((response) => {
 ## ListMyStoryMemories
 You can execute the `ListMyStoryMemories` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-listMyStoryMemories(vars: ListMyStoryMemoriesVariables): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+listMyStoryMemories(vars: ListMyStoryMemoriesVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
 
 interface ListMyStoryMemoriesRef {
   ...
@@ -1197,7 +1197,7 @@ export const listMyStoryMemoriesRef: ListMyStoryMemoriesRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
 
 interface ListMyStoryMemoriesRef {
   ...

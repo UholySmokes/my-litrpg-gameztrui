@@ -1,4 +1,4 @@
-import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, MutationRef, MutationPromise } from 'firebase/data-connect';
+import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, ExecuteQueryOptions, MutationRef, MutationPromise } from 'firebase/data-connect';
 
 export const connectorConfig: ConnectorConfig;
 
@@ -590,8 +590,8 @@ interface GetMyProfileRef {
 }
 export const getMyProfileRef: GetMyProfileRef;
 
-export function getMyProfile(): QueryPromise<GetMyProfileData, undefined>;
-export function getMyProfile(dc: DataConnect): QueryPromise<GetMyProfileData, undefined>;
+export function getMyProfile(options?: ExecuteQueryOptions): QueryPromise<GetMyProfileData, undefined>;
+export function getMyProfile(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<GetMyProfileData, undefined>;
 
 interface ListMySaveSlotsRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -602,8 +602,8 @@ interface ListMySaveSlotsRef {
 }
 export const listMySaveSlotsRef: ListMySaveSlotsRef;
 
-export function listMySaveSlots(vars: ListMySaveSlotsVariables): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
-export function listMySaveSlots(dc: DataConnect, vars: ListMySaveSlotsVariables): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
+export function listMySaveSlots(vars: ListMySaveSlotsVariables, options?: ExecuteQueryOptions): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
+export function listMySaveSlots(dc: DataConnect, vars: ListMySaveSlotsVariables, options?: ExecuteQueryOptions): QueryPromise<ListMySaveSlotsData, ListMySaveSlotsVariables>;
 
 interface GetMySaveSlotRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -614,8 +614,8 @@ interface GetMySaveSlotRef {
 }
 export const getMySaveSlotRef: GetMySaveSlotRef;
 
-export function getMySaveSlot(vars: GetMySaveSlotVariables): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
-export function getMySaveSlot(dc: DataConnect, vars: GetMySaveSlotVariables): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
+export function getMySaveSlot(vars: GetMySaveSlotVariables, options?: ExecuteQueryOptions): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
+export function getMySaveSlot(dc: DataConnect, vars: GetMySaveSlotVariables, options?: ExecuteQueryOptions): QueryPromise<GetMySaveSlotData, GetMySaveSlotVariables>;
 
 interface ListMyRunSnapshotsRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -626,8 +626,8 @@ interface ListMyRunSnapshotsRef {
 }
 export const listMyRunSnapshotsRef: ListMyRunSnapshotsRef;
 
-export function listMyRunSnapshots(vars: ListMyRunSnapshotsVariables): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
-export function listMyRunSnapshots(dc: DataConnect, vars: ListMyRunSnapshotsVariables): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
+export function listMyRunSnapshots(vars: ListMyRunSnapshotsVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
+export function listMyRunSnapshots(dc: DataConnect, vars: ListMyRunSnapshotsVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyRunSnapshotsData, ListMyRunSnapshotsVariables>;
 
 interface GetMyRunSessionByRunIdRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -638,8 +638,8 @@ interface GetMyRunSessionByRunIdRef {
 }
 export const getMyRunSessionByRunIdRef: GetMyRunSessionByRunIdRef;
 
-export function getMyRunSessionByRunId(vars: GetMyRunSessionByRunIdVariables): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
-export function getMyRunSessionByRunId(dc: DataConnect, vars: GetMyRunSessionByRunIdVariables): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+export function getMyRunSessionByRunId(vars: GetMyRunSessionByRunIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
+export function getMyRunSessionByRunId(dc: DataConnect, vars: GetMyRunSessionByRunIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetMyRunSessionByRunIdData, GetMyRunSessionByRunIdVariables>;
 
 interface GetMyRunEventByCommitIdRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -650,8 +650,8 @@ interface GetMyRunEventByCommitIdRef {
 }
 export const getMyRunEventByCommitIdRef: GetMyRunEventByCommitIdRef;
 
-export function getMyRunEventByCommitId(vars: GetMyRunEventByCommitIdVariables): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
-export function getMyRunEventByCommitId(dc: DataConnect, vars: GetMyRunEventByCommitIdVariables): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+export function getMyRunEventByCommitId(vars: GetMyRunEventByCommitIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
+export function getMyRunEventByCommitId(dc: DataConnect, vars: GetMyRunEventByCommitIdVariables, options?: ExecuteQueryOptions): QueryPromise<GetMyRunEventByCommitIdData, GetMyRunEventByCommitIdVariables>;
 
 interface ListMyRunEventsSinceRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -662,8 +662,8 @@ interface ListMyRunEventsSinceRef {
 }
 export const listMyRunEventsSinceRef: ListMyRunEventsSinceRef;
 
-export function listMyRunEventsSince(vars: ListMyRunEventsSinceVariables): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
-export function listMyRunEventsSince(dc: DataConnect, vars: ListMyRunEventsSinceVariables): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+export function listMyRunEventsSince(vars: ListMyRunEventsSinceVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
+export function listMyRunEventsSince(dc: DataConnect, vars: ListMyRunEventsSinceVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyRunEventsSinceData, ListMyRunEventsSinceVariables>;
 
 interface ListAllMyRunSessionsRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -674,8 +674,8 @@ interface ListAllMyRunSessionsRef {
 }
 export const listAllMyRunSessionsRef: ListAllMyRunSessionsRef;
 
-export function listAllMyRunSessions(): QueryPromise<ListAllMyRunSessionsData, undefined>;
-export function listAllMyRunSessions(dc: DataConnect): QueryPromise<ListAllMyRunSessionsData, undefined>;
+export function listAllMyRunSessions(options?: ExecuteQueryOptions): QueryPromise<ListAllMyRunSessionsData, undefined>;
+export function listAllMyRunSessions(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListAllMyRunSessionsData, undefined>;
 
 interface ListAllMyRunEventsRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -686,8 +686,8 @@ interface ListAllMyRunEventsRef {
 }
 export const listAllMyRunEventsRef: ListAllMyRunEventsRef;
 
-export function listAllMyRunEvents(): QueryPromise<ListAllMyRunEventsData, undefined>;
-export function listAllMyRunEvents(dc: DataConnect): QueryPromise<ListAllMyRunEventsData, undefined>;
+export function listAllMyRunEvents(options?: ExecuteQueryOptions): QueryPromise<ListAllMyRunEventsData, undefined>;
+export function listAllMyRunEvents(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<ListAllMyRunEventsData, undefined>;
 
 interface ListMyStoryMemoriesRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -698,6 +698,6 @@ interface ListMyStoryMemoriesRef {
 }
 export const listMyStoryMemoriesRef: ListMyStoryMemoriesRef;
 
-export function listMyStoryMemories(vars: ListMyStoryMemoriesVariables): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
-export function listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+export function listMyStoryMemories(vars: ListMyStoryMemoriesVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
+export function listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables, options?: ExecuteQueryOptions): QueryPromise<ListMyStoryMemoriesData, ListMyStoryMemoriesVariables>;
 

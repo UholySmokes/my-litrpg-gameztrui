@@ -24,11 +24,11 @@
   font-family: var(--font-code);
   font-size: 0.85rem;
   color: var(--holo-cyan);
-  background: rgba(5, 16, 26, 0.75);
+  background: rgba(8, 19, 32, 0.8);
   padding: 15px;
-  border: 1px solid rgba(0, 243, 255, 0.25);
-  box-shadow: inset 0 0 12px rgba(0, 243, 255, 0.12);
-  text-shadow: 0 0 1px rgba(0, 243, 255, 0.25);
+  border: 1px solid rgba(var(--holo-cyan-rgb), 0.35);
+  box-shadow: inset 0 0 12px rgba(var(--holo-cyan-rgb), 0.16);
+  text-shadow: 0 0 1px rgba(var(--holo-cyan-rgb), 0.25);
   white-space: pre-wrap;
   line-height: 1.4;
   margin: 0;
@@ -40,10 +40,10 @@
   height: 100%;
   padding: 1.5rem;
   background:
-    radial-gradient(circle at 15% 20%, rgba(0, 243, 255, 0.16), transparent 45%),
-    radial-gradient(circle at 85% 10%, rgba(255, 215, 0, 0.12), transparent 45%),
-    radial-gradient(circle at 30% 80%, rgba(255, 42, 109, 0.12), transparent 55%),
-    linear-gradient(135deg, #050a10 0%, #070c14 40%, #050510 75%, #050a10 100%);
+    radial-gradient(circle at 15% 20%, rgba(var(--holo-cyan-rgb), 0.18), transparent 45%),
+    radial-gradient(circle at 85% 10%, rgba(var(--holo-gold-rgb), 0.14), transparent 45%),
+    radial-gradient(circle at 30% 80%, rgba(var(--holo-alert-rgb), 0.1), transparent 55%),
+    linear-gradient(135deg, #0b1320 0%, #0a1422 40%, #08101a 75%, #070b12 100%);
   display: flex;
   align-items: stretch;
   justify-content: stretch;
@@ -57,16 +57,16 @@
   content: "";
   position: absolute;
   inset: 0.5rem;
-  border: 1px solid rgba(0, 243, 255, 0.25);
+  border: 1px solid rgba(var(--holo-cyan-rgb), 0.25);
   pointer-events: none;
   box-shadow:
-    0 0 25px rgba(0, 243, 255, 0.12),
-    inset 0 0 40px rgba(0, 243, 255, 0.08);
+    0 0 25px rgba(var(--holo-cyan-rgb), 0.12),
+    inset 0 0 40px rgba(var(--holo-cyan-rgb), 0.08);
 }
 
 .app-frame::after {
   inset: 1.25rem;
-  border-color: rgba(255, 215, 0, 0.25);
+  border-color: rgba(var(--holo-gold-rgb), 0.24);
   opacity: 0.85;
 }
 
@@ -80,13 +80,13 @@
   grid-template-areas: "rail main";
   gap: 1.5rem;
   padding: 1.5rem;
-  background: rgba(5, 16, 26, 0.65);
+  background: rgba(8, 18, 31, 0.7);
   position: relative;
   overflow: hidden;
   border-radius: calc(var(--border-radius) + 6px);
-  border: 1px solid rgba(0, 243, 255, 0.18);
+  border: 1px solid rgba(var(--holo-cyan-rgb), 0.2);
   box-shadow:
-    inset 0 0 40px rgba(0, 243, 255, 0.08),
+    inset 0 0 40px rgba(var(--holo-cyan-rgb), 0.08),
     0 18px 30px rgba(0, 0, 0, 0.45);
   min-height: 0;
 }

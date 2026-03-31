@@ -1,22 +1,22 @@
-const GENESIS_PILLARS = [
+const ARRIVAL_RITES = [
   {
-    title: "System First",
-    copy: "Bind the progression engine before you decide lineage, class, or craft.",
+    title: "Bind The Lattice",
+    copy: "Choose the system that will color every recommendation, growth lane, and skill bias.",
   },
   {
-    title: "No Premade Hero",
-    copy: "Featured combat identities are gone. Every run now starts as a blank chronicle.",
+    title: "Shape The Vessel",
+    copy: "Define lineage, doctrine, profession, and the narrative role that will carry the run.",
   },
   {
-    title: "Author The Shape",
-    copy: "Race, doctrine, profession, attributes, perks, and alignment stay under your control.",
+    title: "Seal The Oath",
+    copy: "Lock the opening build only after the full chamber sequence resolves cleanly.",
   },
 ];
 
-const GENESIS_STEPS = [
-  "Name and bind the run",
-  "Choose System, origin, race, and class",
-  "Tune craft, stats, skills, perks, and alignment",
+const ARRIVAL_SIGNALS = [
+  "Systems determine recommendation pressure and opening loadouts.",
+  "Every run begins from zero. No pre-authored hero path overrides genesis.",
+  "Creation remains reversible until the final oath is sealed.",
 ];
 
 export default function CharacterHub({
@@ -29,14 +29,14 @@ export default function CharacterHub({
       : user?.email || user?.id || "Linked Traveler";
 
   return (
-    <section className="character-hub">
+    <section className="character-hub character-hub--arrival">
       <div className="character-hub__intro character-hub__hero">
-        <div className="character-hub__eyebrow">Character Hub</div>
-        <h2 className="character-hub__title">Build the run from zero.</h2>
+        <div className="character-hub__eyebrow">Arrival Chamber</div>
+        <h2 className="character-hub__title">Enter the genesis atrium.</h2>
         <p className="character-hub__copy">
-          No featured combat identity is waiting for you here. Start from a blank
-          chronicle, bind a System, shape your lineage, and author the combat role
-          yourself inside the full genesis flow.
+          The chamber is quiet until you bind a system and begin forging the next
+          chronicle. No premade champion stands in for you here. The run starts only
+          after the lattice recognizes a name, a lineage, and an oath.
         </p>
         <div className="character-hub__account">
           <span>Bound profile</span>
@@ -44,44 +44,49 @@ export default function CharacterHub({
         </div>
       </div>
 
-      <div className="character-hub__body character-hub__body--solo">
-        <section className="character-hub__mission">
-          <div className="character-hub__panel-kicker">Genesis Scope</div>
-          <h3 className="character-hub__panel-title">
-            Every run starts authored, not assigned.
-          </h3>
+      <div className="character-hub__arrival-grid">
+        <section className="character-hub__arrival-main">
+          <div className="character-hub__panel-kicker">Ritual Sequence</div>
+          <h3 className="character-hub__panel-title">A full-room genesis ritual awaits.</h3>
+
           <div className="character-hub__feature-list">
-            {GENESIS_PILLARS.map((pillar) => (
-              <article key={pillar.title} className="character-hub__feature">
-                <h4>{pillar.title}</h4>
-                <p>{pillar.copy}</p>
+            {ARRIVAL_RITES.map((rite, index) => (
+              <article key={rite.title} className="character-hub__feature">
+                <span className="character-hub__feature-index">{`0${index + 1}`}</span>
+                <div>
+                  <h4>{rite.title}</h4>
+                  <p>{rite.copy}</p>
+                </div>
               </article>
             ))}
           </div>
         </section>
 
-        <aside className="character-hub__launch">
-          <div className="character-hub__panel-kicker">Launch Vector</div>
-          <h3 className="character-hub__panel-title">Shape the whole identity in one pass.</h3>
+        <aside className="character-hub__arrival-side">
+          <div className="character-hub__panel-kicker">Atrium Signals</div>
+          <h3 className="character-hub__panel-title">What the chamber guarantees</h3>
+
           <div className="character-hub__pathway">
-            {GENESIS_STEPS.map((step, index) => (
-              <div key={step} className="character-hub__path-step">
-                <span>{index + 1}</span>
-                <strong>{step}</strong>
+            {ARRIVAL_SIGNALS.map((signal) => (
+              <div key={signal} className="character-hub__path-step">
+                <span>+</span>
+                <strong>{signal}</strong>
               </div>
             ))}
           </div>
+
           <p className="character-hub__launch-copy">
-            The build stays reversible during creation, but the opening premise is
-            yours from the first click.
+            Begin the chamber walk to rebuild identity, doctrine, and the opening
+            power profile from the ground up.
           </p>
+
           <div className="character-hub__launch-footer">
             <button
               type="button"
               className="holo-button holo-button--solid"
               onClick={() => onStartCreation?.()}
             >
-              Begin Character Genesis
+              Enter Character Genesis
             </button>
           </div>
         </aside>

@@ -221,4 +221,36 @@ describe("handlers narrate endpoints", () => {
     expect(typeof res.body.model).toBe("string");
     expect(res.body.mode).toBe("combat");
   });
+
+  it("preserves backend and fallback metadata from the runtime result", async () => {
+    runtime.runFirebaseAgent = jest.fn(async () => ({
+      text: JSON.stringify({
+        narrative: "The local emulator fills the silence.",
+        mood: "neutral",
+        suggestions: ["Continue"],
+      }),
+      backend: "local-emulator-fallback",
+      model: "gpt-5.4-mini",
+      temperature: 1,
+      fallbackUsed: true,
+      fallbackFrom: "google-ai-studio",
+    }));
+
+    const req = {
+      method: "POST",
+      body: {
+        mode: "exploration",
+        prompt: "Narrate the next step.",
+      },
+    };
+    const res = createRes();
+
+    await handlers.narrate(req, res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.backend).toBe("local-emulator-fallback");
+    expect(res.body.provider).toBe("local-emulator-fallback");
+    expect(res.body.fallbackUsed).toBe(true);
+    expect(res.body.fallbackFrom).toBe("google-ai-studio");
+  });
 });

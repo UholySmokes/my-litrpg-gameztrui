@@ -12,6 +12,7 @@ const ENV_KEYS = [
   "GEMINI_MODEL",
   "GENKIT_ALLOWED_MODELS",
   "GEMINI_TEMPERATURE",
+  "FUNCTIONS_EMULATOR",
 ];
 
 const originalEnv = {};
@@ -158,5 +159,40 @@ describe("firebase agent runtime provider routing", () => {
     });
 
     expect(openAiExecutor).not.toHaveBeenCalled();
+  });
+
+  it("uses a local emulator fallback when provider credentials are unavailable", async () => {
+    process.env.FUNCTIONS_EMULATOR = "true";
+    const openAiExecutor = jest.fn(async () => {
+      const error = new Error("Missing OpenAI API key. Set OPENAI_API_KEY for OpenAI provider execution.");
+      error.status = 500;
+      error.code = "OPENAI_API_KEY_MISSING";
+      throw error;
+    });
+    const geminiExecutor = jest.fn(async () => {
+      const error = new Error("API key not valid. Please pass a valid API key.");
+      error.status = 400;
+      throw error;
+    });
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    runtime.__setRuntimeTestOverrides({
+      executeOpenAiProvider: openAiExecutor,
+      executeGeminiProvider: geminiExecutor,
+    });
+
+    const result = await runtime.runFirebaseAgent({
+      agent: "narrator",
+      input: { game_state: { location: "Ashen Gate" } },
+    });
+
+    expect(openAiExecutor).toHaveBeenCalledTimes(1);
+    expect(geminiExecutor).toHaveBeenCalledTimes(1);
+    expect(result.backend).toBe("local-emulator-fallback");
+    expect(result.fallbackUsed).toBe(true);
+    expect(result.fallbackFrom).toBe("google-ai-studio");
+    expect(result.structured?.narrative).toContain("local emulator");
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    warnSpy.mockRestore();
   });
 });

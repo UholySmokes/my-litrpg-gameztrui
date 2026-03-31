@@ -27,16 +27,12 @@ export default function CombatUI({
   const player = playerState;
   const [selectedEnemyIndex, setSelectedEnemyIndex] = useState(0);
 
-  if (!combat || combat.status !== "active") {
-    return null;
-  }
-
   const livingEnemies = useMemo(
     () =>
-      (combat.enemies || [])
+      (combat?.enemies || [])
         .map((enemy, index) => ({ enemy, index }))
         .filter(({ enemy }) => (enemy?.stats?.hp?.current || 0) > 0),
-    [combat.enemies],
+    [combat?.enemies],
   );
 
   useEffect(() => {
@@ -50,7 +46,8 @@ export default function CombatUI({
     player?.activeSkills?.length
       ? player.activeSkills
       : player?.skills?.active ||
-        (player?.abilities || []).filter((ability) => ability.type === "active");
+        (player?.abilities || []).filter((ability) => ability.type === "active") ||
+        [];
   const skillCooldowns = combat.skillCooldowns || {};
   const playerLane = combat?.lanes?.player;
   const laneNumbers = Array.from(
@@ -64,6 +61,10 @@ export default function CombatUI({
     (_, index) => index + 1,
   );
   const laneControlsDisabled = combat?.turn !== "player";
+
+  if (!combat || combat.status !== "active") {
+    return null;
+  }
 
   return (
     <div className="combat-stage">
@@ -159,7 +160,7 @@ export default function CombatUI({
                 <span>{skill.name}</span>
                 <strong>
                   {skill.manaCost ?? skill.cost?.mana ?? 0} MP
-                  {disabled ? ` · CD ${remainingCooldown}` : ""}
+                  {disabled ? ` | CD ${remainingCooldown}` : ""}
                 </strong>
               </button>
             );

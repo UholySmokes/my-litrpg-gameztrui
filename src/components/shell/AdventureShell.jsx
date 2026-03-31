@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Bestiary from "../Bestiary.jsx";
 import CombatUI from "../CombatUI.jsx";
 import GachaUI from "../GachaUI.jsx";
@@ -60,6 +60,40 @@ function resolvePrimaryObjective(quests) {
   };
 }
 
+function CombatDrawerSummary({ combatState }) {
+  const enemies = Array.isArray(combatState?.enemies)
+    ? combatState.enemies.filter((enemy) => (enemy?.stats?.hp?.current || 0) > 0)
+    : [];
+  const enemyPreview = enemies
+    .slice(0, 3)
+    .map((enemy) => enemy?.name || "Unknown foe")
+    .join(", ");
+  const playerLane = Number.isFinite(combatState?.lanes?.player)
+    ? combatState.lanes.player
+    : 1;
+
+  return (
+    <div className="adventure-shell__combat-drawer">
+      <div className="adventure-shell__combat-drawer-label">Combat Focus</div>
+      <h4 className="adventure-shell__combat-drawer-title">
+        {enemies.length} hostile {enemies.length === 1 ? "signature" : "signatures"} locked
+      </h4>
+      <p className="adventure-shell__combat-drawer-copy">
+        Use the center stage for targeting and abilities. The drawer stays compact so the
+        battlefield remains readable.
+      </p>
+      <div className="adventure-shell__combat-drawer-stat">
+        <span>Frontline</span>
+        <strong>Lane {playerLane}</strong>
+      </div>
+      <div className="adventure-shell__combat-drawer-stat">
+        <span>Enemies</span>
+        <strong>{enemyPreview || "No visible targets"}</strong>
+      </div>
+    </div>
+  );
+}
+
 export default function AdventureShell({
   view,
   quickActionsProps,
@@ -79,7 +113,9 @@ export default function AdventureShell({
     system,
   } = view;
 
-  const [drawerTab, setDrawerTab] = useState("quests");
+  const [drawerTab, setDrawerTab] = useState(
+    combatState?.status === "active" ? "combat" : "quests",
+  );
   const playerIdentity = buildPlayerIdentity(player);
   const isCombatActive = combatState?.status === "active";
   const profileLabel =
@@ -97,12 +133,6 @@ export default function AdventureShell({
     { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
     { label: "Gold", value: String(player?.currency?.goldCoins ?? player?.gold ?? 0) },
   ];
-
-  useEffect(() => {
-    if (isCombatActive) {
-      setDrawerTab("combat");
-    }
-  }, [isCombatActive]);
 
   return (
     <section className="adventure-shell">

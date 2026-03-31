@@ -87,6 +87,11 @@ function mapFirestoreRun(doc) {
 			typeof data.narrative === "string" ? data.narrative : undefined,
 		mood: typeof data.mood === "string" ? data.mood : undefined,
 		suggestions: Array.isArray(data.suggestions) ? data.suggestions : undefined,
+		scene_memory:
+			data.scene_memory && typeof data.scene_memory === "object"
+				? data.scene_memory
+				: undefined,
+		choice_meta: Array.isArray(data.choice_meta) ? data.choice_meta : undefined,
 		provider: typeof data.provider === "string" ? data.provider : undefined,
 		fallback_used:
 			typeof data.fallback_used === "boolean" ? data.fallback_used : undefined,
@@ -163,6 +168,10 @@ async function fireUpdateRun({ threadId, runId, ownerId, patch }) {
 	if (typeof patch.narrative === "string") next.narrative = patch.narrative;
 	if (typeof patch.mood === "string") next.mood = patch.mood;
 	if (Array.isArray(patch.suggestions)) next.suggestions = patch.suggestions;
+	if (patch.sceneMemory && typeof patch.sceneMemory === "object") {
+		next.scene_memory = patch.sceneMemory;
+	}
+	if (Array.isArray(patch.choiceMeta)) next.choice_meta = patch.choiceMeta;
 	if (typeof patch.provider === "string") next.provider = patch.provider;
 	if (typeof patch.fallbackUsed === "boolean") {
 		next.fallback_used = patch.fallbackUsed;
@@ -299,6 +308,10 @@ function fileUpdateRun({ threadId, runId, ownerId, patch }) {
 	if (typeof patch.narrative === "string") updated.narrative = patch.narrative;
 	if (typeof patch.mood === "string") updated.mood = patch.mood;
 	if (Array.isArray(patch.suggestions)) updated.suggestions = patch.suggestions;
+	if (patch.sceneMemory && typeof patch.sceneMemory === "object") {
+		updated.scene_memory = patch.sceneMemory;
+	}
+	if (Array.isArray(patch.choiceMeta)) updated.choice_meta = patch.choiceMeta;
 	if (typeof patch.provider === "string") updated.provider = patch.provider;
 	if (typeof patch.fallbackUsed === "boolean") {
 		updated.fallback_used = patch.fallbackUsed;

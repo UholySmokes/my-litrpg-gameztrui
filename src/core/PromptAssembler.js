@@ -181,12 +181,18 @@ export function assemblePrompt(gameState, userInput, actionResult) {
     repetitionDirective,
   });
   const contextSection = buildContextSection(gameState);
+  const authoritativeSceneStateSection = buildAuthoritativeSceneStateSection(
+    gameState,
+    resolvedActionResult,
+  );
   const historySection = buildHistorySection(gameState);
   const actionSection = buildActionSection(userInput, resolvedActionResult);
 
   return `${systemPrompt}
 
 ${contextSection}
+
+${authoritativeSceneStateSection}
 
 ${historySection}
 
@@ -221,6 +227,7 @@ function buildSystemPrompt({
 8. Avoid markdown formatting entirely (no **bold**, *italic*, backticks, headings, or lists)
 9. Avoid repetitive keyword loops; do not reuse signature archetype terms more than once unless strictly necessary
 10. Advance the scene each turn with at least one new concrete detail or consequence
+11. Return exactly one valid JSON object and nothing else
 ${modeDirective}
 ${moodDirective}
 ${repetitionDirective}
@@ -273,6 +280,174 @@ function buildArchetypeToneDirective(archetypeSystem) {
 
 function formatNumber(value, digits = 2) {
   return Number.isFinite(value) ? Number(value).toFixed(digits) : "0.00";
+}
+
+function dedupeStrings(values = [], maxItems = 6) {
+  const seen = new Set();
+  const normalized = [];
+  for (const entry of values) {
+    if (typeof entry !== "string") continue;
+    const trimmed = entry.trim();
+    const key = trimmed.toLowerCase();
+    if (!trimmed || seen.has(key)) continue;
+    seen.add(key);
+    normalized.push(trimmed);
+    if (normalized.length >= maxItems) break;
+  }
+  return normalized;
+}
+
+function resolveQuestObjective(gameState = {}) {
+  const activeQuests = Array.isArray(gameState?.quests?.active)
+    ? gameState.quests.active
+    : [];
+  const primaryQuest = activeQuests[0];
+  if (!primaryQuest) return "";
+  if (typeof primaryQuest.description === "string" && primaryQuest.description.trim()) {
+    return primaryQuest.description.trim();
+  }
+  if (typeof primaryQuest.name === "string" && primaryQuest.name.trim()) {
+    return `Advance quest: ${primaryQuest.name.trim()}`;
+  }
+  return "";
+}
+
+function buildPresentEntities(gameState = {}) {
+  const priorSceneMemory =
+    gameState?.narrative?.sceneMemory &&
+    typeof gameState.narrative.sceneMemory === "object" &&
+    !Array.isArray(gameState.narrative.sceneMemory)
+      ? gameState.narrative.sceneMemory
+      : {};
+  const combat = gameState?.combat || {};
+  const combatActive = Boolean(
+    combat?.inCombat ?? combat?.status === "active",
+  );
+  const combatEnemyNames = combatActive && Array.isArray(combat?.enemies)
+    ? combat.enemies
+        .filter((enemy) => toNumber(enemy?.stats?.hp?.current, 0) > 0)
+        .map((enemy) => enemy?.name)
+        .filter((enemyName) => typeof enemyName === "string" && enemyName.trim())
+    : [];
+
+  return dedupeStrings([
+    ...(Array.isArray(priorSceneMemory.presentEntities)
+      ? priorSceneMemory.presentEntities
+      : []),
+    ...combatEnemyNames,
+  ]);
+}
+
+function buildActiveThreats(gameState = {}) {
+  const priorSceneMemory =
+    gameState?.narrative?.sceneMemory &&
+    typeof gameState.narrative.sceneMemory === "object" &&
+    !Array.isArray(gameState.narrative.sceneMemory)
+      ? gameState.narrative.sceneMemory
+      : {};
+  const combat = gameState?.combat || {};
+  const combatActive = Boolean(
+    combat?.inCombat ?? combat?.status === "active",
+  );
+  if (combatActive && Array.isArray(combat?.enemies)) {
+    return dedupeStrings(
+      combat.enemies
+        .filter((enemy) => toNumber(enemy?.stats?.hp?.current, 0) > 0)
+        .map((enemy) => enemy?.name),
+    );
+  }
+  return dedupeStrings(
+    Array.isArray(priorSceneMemory.activeThreats)
+      ? priorSceneMemory.activeThreats
+      : [],
+  );
+}
+
+export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
+  const world = gameState?.world || {};
+  const priorSceneMemory =
+    gameState?.narrative?.sceneMemory &&
+    typeof gameState.narrative.sceneMemory === "object" &&
+    !Array.isArray(gameState.narrative.sceneMemory)
+      ? gameState.narrative.sceneMemory
+      : {};
+  const locationRaw = world?.location?.current ?? world?.location ?? null;
+  const locationId =
+    resolveLocationId(locationRaw) ||
+    (typeof locationRaw === "string" ? locationRaw.trim() : null);
+  const resolvedLocation = locationId ? getLocationById(locationId) : null;
+  const resolvedZone = resolvedLocation?.zoneId
+    ? getZoneById(resolvedLocation.zoneId)
+    : null;
+  const unresolvedHooks = dedupeStrings([
+    ...(Array.isArray(priorSceneMemory.unresolvedHooks)
+      ? priorSceneMemory.unresolvedHooks
+      : []),
+    ...((Array.isArray(gameState?.quests?.active) ? gameState.quests.active : [])
+      .map((quest) => quest?.name)
+      .filter(Boolean)),
+  ]);
+  const immediateObjective =
+    resolveQuestObjective(gameState) ||
+    (typeof priorSceneMemory.immediateObjective === "string"
+      ? priorSceneMemory.immediateObjective.trim()
+      : "");
+  const lastConsequence =
+    typeof actionResult?.description === "string" && actionResult.description.trim()
+      ? actionResult.description.trim()
+      : typeof priorSceneMemory.lastConsequence === "string"
+        ? priorSceneMemory.lastConsequence.trim()
+        : "";
+
+  return {
+    locationLabel:
+      resolvedLocation?.name ||
+      (typeof priorSceneMemory.locationLabel === "string"
+        ? priorSceneMemory.locationLabel.trim()
+        : "") ||
+      "Unknown",
+    zoneLabel:
+      resolvedZone?.name ||
+      (typeof priorSceneMemory.zoneLabel === "string"
+        ? priorSceneMemory.zoneLabel.trim()
+        : "") ||
+      "Unknown Zone",
+    immediateObjective,
+    presentEntities: buildPresentEntities(gameState),
+    activeThreats: buildActiveThreats(gameState),
+    unresolvedHooks,
+    lastConsequence,
+  };
+}
+
+function buildAuthoritativeSceneStateSection(gameState, actionResult) {
+  const sceneMemory = buildSceneMemorySeed(gameState, actionResult);
+  const narrativeSummary =
+    typeof gameState?.narrative?.summary === "string" && gameState.narrative.summary.trim()
+      ? gameState.narrative.summary.trim()
+      : "No summary yet.";
+  const validatedConsequence =
+    typeof actionResult?.description === "string" && actionResult.description.trim()
+      ? actionResult.description.trim()
+      : actionResult?.success === false &&
+          typeof actionResult?.reason === "string" &&
+          actionResult.reason.trim()
+        ? actionResult.reason.trim()
+        : "No validated consequence recorded.";
+
+  return [
+    "=== AUTHORITATIVE SCENE STATE ===",
+    `Scene Location: ${sceneMemory.locationLabel}`,
+    `Scene Zone: ${sceneMemory.zoneLabel}`,
+    `Immediate Objective: ${sceneMemory.immediateObjective || "None stated"}`,
+    `Present Entities: ${sceneMemory.presentEntities.join(", ") || "None confirmed"}`,
+    `Active Threats: ${sceneMemory.activeThreats.join(", ") || "None confirmed"}`,
+    `Unresolved Hooks: ${sceneMemory.unresolvedHooks.join(", ") || "None"}`,
+    `Last Consequence: ${sceneMemory.lastConsequence || "None confirmed"}`,
+    `Recent Summary: ${narrativeSummary}`,
+    `Validated Action Consequence: ${validatedConsequence}`,
+    "Continuity Rule: the scene state above is authoritative and recent history below is only supporting context.",
+  ].join("\n");
 }
 
 function buildMagicContextLines(player = {}, world = {}) {
@@ -795,7 +970,38 @@ The action failed. ${result.reason || "Action could not be completed."}`;
 ${actionDescription}
 
 === YOUR TASK ===
-Generate a narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. ${shouldFavorDialogue ? "Dialogue can appear when it directly matches the player's intent, but keep it brief and purposeful." : "Do not open with quoted dialogue; begin with immediate scene action or sensory detail."} Hard constraints: never describe ongoing combat when combat is inactive, and do not invent enemies/items/locations not present in state. Hard limit: keep the response under 1200 characters.`;
+Generate a structured narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. ${shouldFavorDialogue ? "Dialogue can appear when it directly matches the player's intent, but keep it brief and purposeful." : "Do not open with quoted dialogue; begin with immediate scene action or sensory detail."}
+
+Hard rules:
+- Do not add or remove present entities unless supported by state, recent history, or the validated action consequence.
+- Do not narrate ongoing combat when combat is inactive.
+- Do not invent enemies, items, rewards, or locations not present in authoritative state.
+- Each suggestion must be feasible from the current scene and distinct in category from the others.
+- Suggestions must not be simple paraphrases of the same move.
+
+=== RESPONSE FORMAT ===
+Return one valid JSON object with this shape:
+{
+  "narrative": "Plain text only. 4-8 sentences. Under 1200 characters.",
+  "mood": "neutral|tense|triumphant|mysterious|serene|desperate",
+  "suggestions": [
+    { "t": "Short actionable next move", "w": 0.0 }
+  ],
+  "choiceMeta": [
+    { "intent": "brief rationale", "category": "observe|social|progress|recovery|power|risk", "urgency": 0.0, "groundedInState": true }
+  ],
+  "sceneMemory": {
+    "locationLabel": "Current place name",
+    "zoneLabel": "Current zone name",
+    "immediateObjective": "Immediate goal",
+    "presentEntities": ["Confirmed entity"],
+    "activeThreats": ["Confirmed threat"],
+    "unresolvedHooks": ["Open thread"],
+    "lastConsequence": "Most important new consequence from this turn"
+  }
+}
+
+Return exactly 3 suggestions and 3 aligned choiceMeta entries when possible.`;
 }
 
 /**

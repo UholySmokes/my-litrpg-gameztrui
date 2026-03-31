@@ -113,8 +113,13 @@ export function normalizeNarrationPayload(payload, fallback = {}) {
   }
 
   const suggestions = normalizeSuggestions(payload?.suggestions, fallback.suggestions);
-  const sceneMemory = normalizeSceneMemory(payload?.sceneMemory);
-  const choiceMeta = normalizeChoiceMeta(payload?.choiceMeta, suggestions.length);
+  const sceneMemory = normalizeSceneMemory(
+    payload?.sceneMemory || fallback.sceneMemory,
+  );
+  const choiceMeta = normalizeChoiceMeta(
+    payload?.choiceMeta || fallback.choiceMeta,
+    suggestions.length,
+  );
 
   return {
     narrative,

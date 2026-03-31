@@ -183,7 +183,7 @@ function extractReferencedEntity(label = "") {
     /\b(?:talk to|speak with|ask|follow|attack|inspect|approach|help|protect|escort)\s+([a-z][a-z' -]{2,})/i,
   );
   return String(match?.[1] || "")
-    .replace(/^(?:about|toward|towards|the|a|an)\s+/i, "")
+    .replace(/^(?:(?:about|toward|towards|the|a|an)\s+)+/i, "")
     .trim();
 }
 

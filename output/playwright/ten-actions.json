@@ -1,0 +1,287 @@
+[
+  {
+    "label": "start",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "serene",
+    "fieldState": "AWAITING CONTACT",
+    "chronicle": "Damp air curls through the Arrival Terminal, clinging to stone and skin alike, while the first hush of the region settles around you. The EXP Multiplier Matrix hums quietly at the edge of awareness, a disciplined engine waiting for motion, momentum, and earned progress. Ahead, the path opens into unfamiliar ground, and every careful step feels like part of a larger pattern waiting to be set. The scent of wet earth and old tension lingers in the air, carrying a warning that First Conflict is not far behind. For now, the world asks only for movement: a calm advance, a measured beginning, the kind that teaches a new wanderer how this place responds. Somewhere beyond the terminal, recovery and risk seem to breathe in sequence, as if the land itself understands the cost of interruption. You can already feel how easily a streak might become precious here, how quickly the wrong pause could matter. The next choice is simple, and it is yours: take your first step into the region, and see what answers it gives.",
+    "suggestions": [
+      "explore area",
+      "check status",
+      "open inventory"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "FIELD STATE"
+    ]
+  },
+  {
+    "label": "1 explore",
+    "click": "explore area",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "neutral",
+    "fieldState": "AWAITING CONTACT",
+    "chronicle": "You move through the Arrival Terminal at an unhurried pace, and the damp hush around you changes with each step. Stone underfoot gives way to a broader stretch of unfamiliar ground, where wet earth and old tension still linger in the air. The region does not answer with force; it answers with atmosphere, a quiet test of attention and composure. At the edge of awareness, the EXP Multiplier Matrix remains steady, its growth engine waiting for meaningful motion rather than idle drift. No threats step forward, and combat stays inactive, leaving the scene open for observation and careful progress. A path deeper into Meridian Arcology remains available, while the oracle thread and the promise of First Conflict continue to wait beyond the terminal.",
+    "suggestions": [
+      "Proceed deeper into Meridian Arcology",
+      "Pause and recover your bearings before advancing",
+      "look around"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics"
+    ]
+  },
+  {
+    "label": "2 continue passage",
+    "command": "Continue along the open passage",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "neutral",
+    "fieldState": "AWAITING CONTACT",
+    "chronicle": "You continue along the open passage, and the Arrival Terminal falls a little farther behind with each measured step. The stone corridor ahead is broader than it first appeared, its surface damp with a thin sheen that catches the clear daylight filtering in from above. Meridian Arcology remains quiet, but the silence is not empty; it feels arranged, as if the place is still deciding how to present itself to you. The EXP Multiplier Matrix stays calm at the edge of awareness, its pressure less like a command than a steady reminder that movement has value here. No threat rises to meet you, and combat remains inactive, leaving the path open for observation and deliberate progress. A faint divide in the passage suggests two directions of interest: one deeper into the arcology’s interior, another where light gathers unevenly along the stone.",
+    "suggestions": [
+      "Continue deeper into Meridian Arcology",
+      "Pause to observe the passage for details",
+      "Check your interface and current resources"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics"
+    ]
+  },
+  {
+    "label": "3 study details",
+    "command": "Study the terminal for overlooked details",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "neutral",
+    "fieldState": "AWAITING CONTACT",
+    "chronicle": "You study the Arrival Terminal with patient attention, and the place yields its smallest truths. Beneath the damp sheen and quiet stonework, you notice signs of frequent passage: softened edges, faint track-marks, and a subtle draft threading through a seam in the structure. Nothing hostile stirs, and combat remains inactive, but the terminal feels less like a doorway and more like a filter, sorting the calm from what lies beyond. The EXP Multiplier Matrix stays quiet at the edge of awareness, as if noting that careful observation is still a form of progress. A broader route remains open ahead, while the uneven light to the side still suggests a second direction worth checking. For now, you have learned that this place hides its meaning in details, not declarations.",
+    "suggestions": [
+      "Follow the broader route deeper into Meridian Arcology",
+      "Examine the uneven light along the side passage",
+      "Pause and orient yourself to the terminal’s layout"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics"
+    ]
+  },
+  {
+    "label": "4 continue passage",
+    "command": "Continue along the open passage",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "neutral",
+    "fieldState": "AWAITING CONTACT",
+    "chronicle": "You continue along the open passage, and the Arrival Terminal recedes behind you in a slow, measured rhythm. The stone corridor widens by degrees, its damp surface catching the clear daylight in thin, pale bands that guide your steps forward. Meridian Arcology remains quiet, but the silence now feels structured, as if the place is revealing itself one layer at a time. The EXP Multiplier Matrix stays steady at the edge of awareness, its pressure aligned with motion rather than stillness. No threat emerges, and combat remains inactive, leaving the path open for careful observation. Ahead, the passage still offers two subtle points of interest: a deeper route into the arcology and a brighter span where light gathers unevenly along the stone.",
+    "suggestions": [
+      "Examine the uneven light along the stone",
+      "Keep moving deeper into Meridian Arcology",
+      "Pause and study the corridor for more signs of passage"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics"
+    ]
+  },
+  {
+    "label": "5 scout for danger",
+    "command": "scout for danger",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "neutral",
+    "fieldState": "AWAITING CONTACT",
+    "chronicle": "You slow your pace and let your attention widen, mapping the corridor by its seams, drafts, and the way light breaks across the damp stone. The terminal offers no sudden threat; instead, it grants you a clearer read on the path ahead, confirming that danger is not pressing in from the immediate area. The EXP Multiplier Matrix remains steady, its quiet pressure matching the value of deliberate observation. Two routes still present themselves: one deeper into Meridian Arcology, the other toward the uneven band of light where the passage opens differently. For now, the scene stays calm, but the place feels more legible than before, as if it has yielded a small measure of its pattern to you.",
+    "suggestions": [
+      "Take the deeper route into the arcology",
+      "Continue forward at a measured pace",
+      "look around"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics"
+    ]
+  },
+  {
+    "label": "6 continue deeper",
+    "command": "continue deeper into the terminal",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "tense",
+    "fieldState": "AWAITING CONTACT",
+    "chronicle": "You continue deeper into the terminal, and the corridor answers with a cooler wash of air sliding over the damp stone. The passage narrows slightly before opening again, making the space feel less like a simple hall and more like a guided threshold. Clear daylight still filters from above, but it falls in thinner bands here, leaving longer shadows along the floor. Combat remains inactive, and the calm holds, yet the terminal now feels more layered, as if each step is carrying you farther from the obvious and closer to something worth noticing. The EXP Multiplier Matrix stays quietly present, its pressure aligned with forward motion rather than strain. Ahead, the route still suggests a deeper interior, while the uneven light to one side remains a distinct point of interest.",
+    "suggestions": [
+      "Keep advancing deeper into the corridor",
+      "Examine the uneven light along the side passage",
+      "Pause and study the stone for drafts or seams"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics"
+    ]
+  },
+  {
+    "label": "7 search for enemies",
+    "command": "search for enemies",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "tense",
+    "fieldState": "AWAITING CONTACT",
+    "chronicle": "Your search widens the silence instead of breaking it. You scan the Arrival Terminal with disciplined attention, checking the seams of the corridor, the uneven wash of light, and the cooler currents moving through the damp air. No enemy reveals itself, and combat remains inactive; the result is useful precisely because nothing answers you. The terminal feels clearer now, its hidden angles reduced to simple facts: there is a deeper route ahead, and there is still that brighter span where light gathers out of pattern. The EXP Multiplier Matrix stays quiet, but the act of careful reconnaissance still feels like forward motion. For the moment, the region yields information rather than confrontation.",
+    "suggestions": [
+      "Move into the deeper route",
+      "Pause and steady yourself before advancing",
+      "look around"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics"
+    ]
+  },
+  {
+    "label": "8 attack",
+    "click": "ATTACK",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "tense",
+    "fieldState": "VOID-VERSE // ADVENTURE",
+    "chronicle": "Engaged combat with Goblin, Goblin and struck Goblin.",
+    "suggestions": [
+      "Move into the deeper route",
+      "Pause and steady yourself before advancing",
+      "look around"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "First Conflict",
+      "[ ] Defeat one enemy",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics"
+    ]
+  },
+  {
+    "label": "9 quick strike",
+    "command": "use Quick Strike",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "tense",
+    "fieldState": "VOID-VERSE // ADVENTURE",
+    "chronicle": "You snap into motion, and the Quick Strike cuts the rhythm of the corridor. The goblin reacts at once, drawn into the fight by the sharp burst of intent, its posture tightening as it squares up in the damp light. The Arrival Terminal feels smaller now, all distance collapsed into timing and threat. The EXP Multiplier Matrix hums at the edge of awareness, rewarding initiative and clean tempo rather than hesitation. Combat remains active, with the goblin still standing and watching for your next opening. The scene has shifted from quiet scouting to close-range pressure, where every beat matters and the next move will shape the exchange.",
+    "suggestions": [
+      "Reposition to control spacing and force its approach",
+      "Briefly assess the goblin’s stance for a safer opening",
+      "look around"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics",
+      "[ ] Check your status once",
+      "[ ] Open your inventory once"
+    ]
+  },
+  {
+    "label": "10 cheap shot",
+    "command": "use Cheap Shot",
+    "level": "Level 1 • Pure Human • Rogue",
+    "mood": "tense",
+    "fieldState": "VOID-VERSE // ADVENTURE",
+    "chronicle": "You use Cheap Shot. A faint current passes through the air. The EXP Multiplier Matrix records the moment, seeking an opening.",
+    "suggestions": [
+      "look around",
+      "check status",
+      "open inventory"
+    ],
+    "questChunk": [
+      "First Stride",
+      "[ ] Visit one nearby location",
+      "[ ] Reach level 2",
+      "Recovery Breath",
+      "[ ] Take a short rest once",
+      "Oracle of the Sundial",
+      "[ ] Locate the wandering oracle",
+      "[ ] Interpret the sundial glyphs",
+      "System Basics",
+      "[ ] Check your status once",
+      "[ ] Open your inventory once"
+    ]
+  }
+]

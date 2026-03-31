@@ -28,6 +28,7 @@ describe("GameUI save reset controller", () => {
       busy: false,
       error: "",
       mode: "local",
+      recoverable: false,
     });
   });
 
@@ -52,6 +53,7 @@ describe("GameUI save reset controller", () => {
       busy: false,
       error: "",
       mode: "remote",
+      recoverable: false,
     });
   });
 
@@ -78,6 +80,34 @@ describe("GameUI save reset controller", () => {
       busy: false,
       error: "sync down",
       mode: "remote",
+      recoverable: false,
+    });
+  });
+
+  test("falls back to recoverable local mode for transient sync db temp-file failures", async () => {
+    const clearLegacyLocalProgressFn = jest.fn();
+    const resetLegacyProgressFn = jest.fn().mockResolvedValue({
+      success: false,
+      error:
+        "ENOENT: no such file or directory, copyfile 'C:\\temp\\sync-db.json.tmp' -> 'C:\\temp\\sync-db.json'",
+    });
+
+    const nextState = await runSaveResetFlow({
+      user: { id: "player-123" },
+      readAppliedResetEpochFn: () => SAVE_RESET_EPOCH - 1,
+      clearLegacyLocalProgressFn,
+      resetLegacyProgressFn,
+    });
+
+    expect(resetLegacyProgressFn).toHaveBeenCalledTimes(1);
+    expect(clearLegacyLocalProgressFn).toHaveBeenCalledTimes(1);
+    expect(nextState).toEqual({
+      ready: true,
+      busy: false,
+      error:
+        "ENOENT: no such file or directory, copyfile 'C:\\temp\\sync-db.json.tmp' -> 'C:\\temp\\sync-db.json'",
+      mode: "recoverable-local",
+      recoverable: true,
     });
   });
 });

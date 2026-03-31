@@ -60,7 +60,7 @@ export default function AdventureTab({
                 onClick={() => onSuggestionSelect?.({ label, command })}
                 disabled={isLoading || suggestion?.enabled === false}
               >
-                <span className="adventure-tab__action-marker">></span>
+                <span className="adventure-tab__action-marker">{">"}</span>
                 <span>{label}</span>
               </button>
             );

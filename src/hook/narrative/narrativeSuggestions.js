@@ -860,8 +860,6 @@ export function buildActionSuggestions(state) {
     );
   }
 
-  const activeQuests = Array.isArray(state.quests?.active) ? state.quests.active : [];
-
   const fixedLabels = new Set(
     FIXED_ACTION_SUGGESTIONS.map((suggestion) =>
       String(suggestion?.command || suggestion?.t || "").toLowerCase(),

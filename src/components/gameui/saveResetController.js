@@ -13,7 +13,7 @@ export const DEFAULT_SAVE_RESET_STATE = Object.freeze({
 });
 
 export const isAuthenticatedGameplayUser = (user) =>
-  Boolean(user?.id && user.id !== "local");
+  Boolean(user?.id && user.id !== "local" && user?.provider !== "dev");
 
 export const createLocalReadySaveResetState = () => ({
   ready: true,

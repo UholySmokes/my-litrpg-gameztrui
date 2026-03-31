@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { resetLegacyProgress } from "../../core/CloudSaveService.js";
 import {
   clearLegacyLocalProgress,
@@ -19,6 +19,17 @@ export function useGameUiSaveController({ state, user }) {
   const [saveResetAttempt, setSaveResetAttempt] = useState(0);
   const [saveResetState, setSaveResetState] = useState(DEFAULT_SAVE_RESET_STATE);
   const userId = user?.id || null;
+  const saveResetUser = useMemo(
+    () =>
+      user
+        ? {
+            id: user.id || null,
+            provider: user.provider || null,
+            email: user.email || null,
+          }
+        : null,
+    [user],
+  );
 
   const persistLocalAutosave = useCallback(
     (snapshotState, saveName = "Autosave") => {
@@ -43,7 +54,7 @@ export function useGameUiSaveController({ state, user }) {
     let cancelled = false;
 
     const ensureSaveCutover = async () => {
-      const nextUser = userId ? { id: userId } : null;
+      const nextUser = saveResetUser?.id ? saveResetUser : null;
       if (isAuthenticatedGameplayUser(nextUser) && !cancelled) {
         setSaveResetState(createRemoteBusySaveResetState());
       }
@@ -64,7 +75,7 @@ export function useGameUiSaveController({ state, user }) {
     return () => {
       cancelled = true;
     };
-  }, [saveResetAttempt, userId]);
+  }, [saveResetAttempt, saveResetUser, userId]);
 
   useEffect(() => {
     if (!saveResetState.ready || !state) return;

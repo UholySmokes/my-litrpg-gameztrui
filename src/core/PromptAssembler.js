@@ -31,9 +31,9 @@ const HISTORY_ENTRY_TYPES = new Set([
   "user",
   "action",
 ]);
-const REPETITION_WINDOW = 6;
+const REPETITION_WINDOW = 8;
 const REPETITION_MIN_TERM_LENGTH = 5;
-const REPETITION_MIN_COUNT = 3;
+const REPETITION_MIN_COUNT = 2;
 const REPETITION_STOPWORDS = new Set([
   "their",
   "there",
@@ -227,7 +227,8 @@ function buildSystemPrompt({
 8. Avoid markdown formatting entirely (no **bold**, *italic*, backticks, headings, or lists)
 9. Avoid repetitive keyword loops; do not reuse signature archetype terms more than once unless strictly necessary
 10. Advance the scene each turn with at least one new concrete detail or consequence
-11. Return exactly one valid JSON object and nothing else
+11. Open with the most recent validated state change before atmosphere or reflection
+12. Return exactly one valid JSON object and nothing else
 ${modeDirective}
 ${moodDirective}
 ${repetitionDirective}
@@ -972,6 +973,7 @@ Hard rules:
 - Do not add or remove present entities unless supported by state, recent history, or the validated action consequence.
 - Do not narrate ongoing combat when combat is inactive.
 - Do not invent enemies, items, rewards, or locations not present in authoritative state.
+- Begin the first sentence with the concrete result of the validated action, state change, or failed attempt.
 - Each suggestion must be feasible from the current scene and distinct in category from the others.
 - Suggestions must not be simple paraphrases of the same move.
 
@@ -981,7 +983,13 @@ Return one valid JSON object with this shape:
   "narrative": "Plain text only. 4-8 sentences. Under 1200 characters.",
   "mood": "neutral|tense|triumphant|mysterious|serene|desperate",
   "suggestions": [
-    { "t": "Short actionable next move", "w": 0.0 }
+    {
+      "label": "Short actionable next move",
+      "command": "Exact executable command",
+      "weight": 0.0,
+      "enabled": true,
+      "reason": "Why this move fits now"
+    }
   ],
   "choiceMeta": [
     { "intent": "brief rationale", "category": "observe|social|progress|recovery|power|risk", "urgency": 0.0, "groundedInState": true }

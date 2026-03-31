@@ -9,6 +9,7 @@ export const DEFAULT_SAVE_RESET_STATE = Object.freeze({
   busy: true,
   error: "",
   mode: "pending",
+  recoverable: false,
 });
 
 export const isAuthenticatedGameplayUser = (user) =>
@@ -19,6 +20,7 @@ export const createLocalReadySaveResetState = () => ({
   busy: false,
   error: "",
   mode: "local",
+  recoverable: false,
 });
 
 export const createRemoteBusySaveResetState = () => ({
@@ -26,6 +28,7 @@ export const createRemoteBusySaveResetState = () => ({
   busy: true,
   error: "",
   mode: "remote",
+  recoverable: false,
 });
 
 export const createRemoteReadySaveResetState = () => ({
@@ -33,6 +36,7 @@ export const createRemoteReadySaveResetState = () => ({
   busy: false,
   error: "",
   mode: "remote",
+  recoverable: false,
 });
 
 export const createRemoteErrorSaveResetState = (error = "") => ({
@@ -40,7 +44,29 @@ export const createRemoteErrorSaveResetState = (error = "") => ({
   busy: false,
   error: error || "Legacy progress reset failed.",
   mode: "remote",
+  recoverable: false,
 });
+
+export const createRecoverableLocalSaveResetState = (error = "") => ({
+  ready: true,
+  busy: false,
+  error: error || "",
+  mode: "recoverable-local",
+  recoverable: true,
+});
+
+export const isRecoverableLocalSyncFailure = (result) => {
+  if (!result || result.success) return false;
+  const message = String(result?.error || "").toLowerCase();
+  if (!message) return false;
+
+  return (
+    message.includes("sync-db.json.tmp") ||
+    (message.includes("sync-db.json") && message.includes("enoent")) ||
+    (message.includes("copyfile") && message.includes("sync-db.json")) ||
+    (message.includes("rename") && message.includes("sync-db.json"))
+  );
+};
 
 export const clearLegacyProgressIfNeeded = ({
   readAppliedResetEpochFn,
@@ -73,6 +99,9 @@ export async function runSaveResetFlow({
 
   const result = await resetLegacyProgressFn();
   if (!result?.success) {
+    if (isRecoverableLocalSyncFailure(result)) {
+      return createRecoverableLocalSaveResetState(result?.error);
+    }
     return createRemoteErrorSaveResetState(result?.error);
   }
 

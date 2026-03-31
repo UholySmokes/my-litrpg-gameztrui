@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import Bestiary from "../Bestiary.jsx";
 import CombatUI from "../CombatUI.jsx";
 import GachaUI from "../GachaUI.jsx";
@@ -11,18 +12,18 @@ import ArchetypeSystemPanel from "../ArchetypeSystemPanel.jsx";
 import GameQuickActions from "../gameui/GameQuickActions.jsx";
 import NarrativeHubPanel from "../../ui/panels/NarrativeHubPanel.jsx";
 import QuestPanel from "../../ui/panels/QuestPanel.jsx";
-import VitalsPanel from "../../ui/panels/VitalsPanel.jsx";
 import InventoryPanel from "../../ui/panels/InventoryPanel.jsx";
 import EquipmentPanel from "../../ui/panels/EquipmentPanel.jsx";
 import EquipmentSelectionPanel from "../../ui/panels/EquipmentSelectionPanel.jsx";
 import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../../ui/panels/ActionSuggestionsPanel.jsx";
+import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
 import { buildPlayerIdentity } from "./shellState.js";
 import SurfaceDialog from "./SurfaceDialog.jsx";
 
-function SurfaceSection({ eyebrow, title, children }) {
+function SurfaceSection({ eyebrow, title, children, className = "" }) {
   return (
-    <section className="surface-section">
+    <section className={`surface-section ${className}`.trim()}>
       <div className="surface-section__header">
         {eyebrow ? <div className="surface-section__eyebrow">{eyebrow}</div> : null}
         {title ? <h3 className="surface-section__title">{title}</h3> : null}
@@ -30,6 +31,33 @@ function SurfaceSection({ eyebrow, title, children }) {
       <div className="surface-section__body">{children}</div>
     </section>
   );
+}
+
+function formatMeter(current, max) {
+  return `${Number(current || 0)}/${Number(max || 0)}`;
+}
+
+function resolvePrimaryObjective(quests) {
+  const activeQuests = Array.isArray(quests?.active) ? quests.active : [];
+  const primaryQuest = activeQuests[0];
+  if (!primaryQuest) {
+    return {
+      questName: "No active directive",
+      objectiveText: "Roam, study the field, and choose your next move.",
+    };
+  }
+
+  const nextObjective = Array.isArray(primaryQuest.objectives)
+    ? primaryQuest.objectives.find((objective) => !objective?.completed)
+    : null;
+
+  return {
+    questName: primaryQuest.name || "Primary Directive",
+    objectiveText:
+      nextObjective?.description ||
+      primaryQuest.description ||
+      "Advance the current directive.",
+  };
 }
 
 export default function AdventureShell({
@@ -51,89 +79,74 @@ export default function AdventureShell({
     system,
   } = view;
 
+  const [drawerTab, setDrawerTab] = useState("quests");
   const playerIdentity = buildPlayerIdentity(player);
   const isCombatActive = combatState?.status === "active";
   const profileLabel =
     user?.id === "local" ? "Local Chronicle" : user?.email || user?.id || "Bound Traveler";
+  const locationId =
+    typeof state?.world?.location === "string"
+      ? state.world.location
+      : state?.world?.location?.current || "starting_zone";
+  const location = getLocationById(locationId);
+  const zone = getZoneById(location?.zoneId);
+  const objective = useMemo(() => resolvePrimaryObjective(quests), [quests]);
+  const topMeters = [
+    { label: "HP", value: formatMeter(player?.hp?.current, player?.hp?.max) },
+    { label: "MP", value: formatMeter(player?.mana?.current, player?.mana?.max) },
+    { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
+    { label: "Gold", value: String(player?.currency?.goldCoins ?? player?.gold ?? 0) },
+  ];
+
+  useEffect(() => {
+    if (isCombatActive) {
+      setDrawerTab("combat");
+    }
+  }, [isCombatActive]);
 
   return (
     <section className="adventure-shell">
-      <header className="adventure-shell__header">
+      <header className="adventure-shell__topbar">
         <div className="adventure-shell__brand">
-          <div className="adventure-shell__eyebrow">Void-Verse // Adventure</div>
+          <div className="adventure-shell__eyebrow">Tactical Chronicle</div>
           <h2 className="adventure-shell__title">{playerIdentity.name}</h2>
           <div className="adventure-shell__meta">
-            Level {playerIdentity.level} • {playerIdentity.race} • {playerIdentity.classLabel}
+            Level {playerIdentity.level} {playerIdentity.race} {playerIdentity.classLabel}
           </div>
         </div>
 
-        <div className="adventure-shell__statusbar">
-          <div className="adventure-shell__statuspill">
+        <div className="adventure-shell__statusstrip">
+          <div className="adventure-shell__statuscard">
             <span>Profile</span>
             <strong>{profileLabel}</strong>
           </div>
-          <div className="adventure-shell__statuspill">
+          <div className="adventure-shell__statuscard">
+            <span>Location</span>
+            <strong>{location?.name || "Unknown Reach"}</strong>
+          </div>
+          <div className="adventure-shell__statuscard">
+            <span>Zone</span>
+            <strong>{zone?.name || location?.zoneId || "Unmapped"}</strong>
+          </div>
+          <div className="adventure-shell__statuscard">
             <span>Mood</span>
             <strong>{narrative.currentMood || "neutral"}</strong>
-          </div>
-          <div className="adventure-shell__statuspill">
-            <span>System</span>
-            <strong>{player?.archetypeSystem?.name || player?.archetypeSystem || "Unbound"}</strong>
           </div>
         </div>
       </header>
 
-      <div className="adventure-shell__frame">
-        <aside className="adventure-shell__rail adventure-shell__rail--left">
-          <SurfaceSection eyebrow="Vitals" title="Combat Readiness">
-            <VitalsPanel player={player} config={config} />
+      <div className="adventure-shell__layout">
+        <aside className="adventure-shell__journal">
+          <SurfaceSection eyebrow="Chronicle" title="Latest Passage" className="adventure-shell__passage">
+            <div className="adventure-shell__passage-text">
+              {narrative.latestEntryText || "The lattice waits for your first command."}
+            </div>
+            {narrative.summary ? (
+              <div className="adventure-shell__passage-summary">{narrative.summary}</div>
+            ) : null}
           </SurfaceSection>
 
-          <SurfaceSection eyebrow="Loadout" title="Equipment">
-            <EquipmentPanel
-              player={player}
-              onSelectSlot={surfaces.handleOpenEquipmentSlot}
-            />
-          </SurfaceSection>
-        </aside>
-
-        <main className="adventure-shell__main">
-          <section className="adventure-shell__hero">
-            <div className="adventure-shell__hero-copy">
-              <div className="adventure-shell__hero-kicker">Current Chronicle</div>
-              <div className="adventure-shell__hero-text">
-                {narrative.latestEntryText || "The lattice waits for your first command."}
-              </div>
-              {narrative.summary ? (
-                <div className="adventure-shell__hero-summary">{narrative.summary}</div>
-              ) : null}
-            </div>
-            <div className="adventure-shell__hero-actions">
-              <button
-                type="button"
-                className="holo-button"
-                onClick={quickActionsProps.onToggleStatus}
-              >
-                Open Status
-              </button>
-              <button
-                type="button"
-                className="holo-button"
-                onClick={quickActionsProps.onToggleSaveLoad}
-              >
-                Save / Load
-              </button>
-              <button
-                type="button"
-                className="holo-button holo-button--solid"
-                onClick={quickActionsProps.onToggleQuests}
-              >
-                Journal
-              </button>
-            </div>
-          </section>
-
-          <SurfaceSection eyebrow="Narrative" title="Story Feed">
+          <SurfaceSection eyebrow="Narrative" title="Story Feed" className="adventure-shell__feed">
             <NarrativeHubPanel
               entries={narrative.entries}
               summary={narrative.summary}
@@ -144,46 +157,49 @@ export default function AdventureShell({
             />
           </SurfaceSection>
 
-          <div className="adventure-shell__command-grid">
-            <SurfaceSection eyebrow="Command" title="Input">
-              <CommandTerminalPanel
-                userInput={command.userInput}
-                onInputChange={command.onInputChange}
-                onSubmit={command.onSubmit}
-                isLoading={command.isLoading}
-                error={command.error}
-                inputRef={command.inputRef}
-              />
-            </SurfaceSection>
-
-            <SurfaceSection eyebrow="Suggestions" title="Next Moves">
-              <ActionSuggestionsPanel
-                suggestions={command.suggestions}
-                onSelect={command.onSuggestionSelect}
-              />
-            </SurfaceSection>
-          </div>
-
-          <SurfaceSection eyebrow="Actions" title="Battlefield Controls">
-            <GameQuickActions
-              {...quickActionsProps}
-              isDevBuild={isDevBuild}
+          <SurfaceSection eyebrow="Command" title="What Do You Do?">
+            <CommandTerminalPanel
+              userInput={command.userInput}
+              onInputChange={command.onInputChange}
+              onSubmit={command.onSubmit}
+              isLoading={command.isLoading}
+              error={command.error}
+              inputRef={command.inputRef}
             />
           </SurfaceSection>
-        </main>
 
-        <aside className="adventure-shell__rail adventure-shell__rail--right">
-          <SurfaceSection eyebrow="Supplies" title="Inventory">
-            <InventoryPanel inventory={player?.inventory || []} />
+          <SurfaceSection eyebrow="Suggested" title="Parser-Safe Moves">
+            <ActionSuggestionsPanel
+              suggestions={command.suggestions}
+              onSelect={command.onSuggestionSelect}
+            />
           </SurfaceSection>
+        </aside>
 
-          <SurfaceSection eyebrow="Quests" title="Active Objectives">
-            <QuestPanel quests={quests} />
-          </SurfaceSection>
+        <main className="adventure-shell__stage">
+          <section className="adventure-shell__scene-card">
+            <div className="adventure-shell__scene-copy">
+              <div className="adventure-shell__scene-kicker">
+                {zone?.name || "Unknown Zone"} · {location?.name || "Unknown Reach"}
+              </div>
+              <h3 className="adventure-shell__scene-title">{objective.questName}</h3>
+              <p className="adventure-shell__scene-objective">{objective.objectiveText}</p>
+            </div>
 
-          <SurfaceSection
-            eyebrow={isCombatActive ? "Combat" : "Field State"}
-            title={isCombatActive ? "Encounter" : "Awaiting Contact"}
+            <div className="adventure-shell__scene-meters">
+              {topMeters.map((meter) => (
+                <div key={meter.label} className="adventure-shell__meter">
+                  <span>{meter.label}</span>
+                  <strong>{meter.value}</strong>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section
+            className={`adventure-shell__battle-stage ${
+              isCombatActive ? "adventure-shell__battle-stage--combat" : ""
+            }`}
           >
             {isCombatActive ? (
               <CombatUI
@@ -197,12 +213,98 @@ export default function AdventureShell({
                 onSetCombatLane={actions.onSetCombatLane}
               />
             ) : (
-              <div className="adventure-shell__quiet-state">
-                No active combat. Issue a command, scout the world, or open a subsystem
-                to prepare your next move.
+              <div className="adventure-shell__quiet-stage">
+                <div className="adventure-shell__quiet-title">Field State Stable</div>
+                <p>
+                  No encounter is active. Push into a new route, inspect the terrain, or
+                  prepare your build before the next clash.
+                </p>
+                <div className="adventure-shell__quiet-actions">
+                  <button
+                    type="button"
+                    className="holo-button"
+                    onClick={quickActionsProps.onToggleStatus}
+                  >
+                    Open Status
+                  </button>
+                  <button
+                    type="button"
+                    className="holo-button"
+                    onClick={quickActionsProps.onToggleSaveLoad}
+                  >
+                    Save / Load
+                  </button>
+                  <button
+                    type="button"
+                    className="holo-button holo-button--solid"
+                    onClick={quickActionsProps.onToggleQuests}
+                  >
+                    Journal
+                  </button>
+                </div>
               </div>
             )}
+          </section>
+
+          <SurfaceSection eyebrow="Action Bank" title="Direct Controls">
+            <GameQuickActions {...quickActionsProps} isDevBuild={isDevBuild} />
           </SurfaceSection>
+        </main>
+
+        <aside className="adventure-shell__drawer">
+          <div className="adventure-shell__drawer-tabs">
+            {[
+              { id: "combat", label: "Combat" },
+              { id: "inventory", label: "Inventory" },
+              { id: "quests", label: "Quest Log" },
+              { id: "loadout", label: "Loadout" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                className={`adventure-shell__drawer-tab ${
+                  drawerTab === tab.id ? "adventure-shell__drawer-tab--active" : ""
+                }`}
+                onClick={() => setDrawerTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="adventure-shell__drawer-body">
+            {drawerTab === "combat" ? (
+              isCombatActive ? (
+                <CombatUI
+                  combatState={combatState}
+                  playerState={player}
+                  onAttack={actions.onAttack}
+                  onUseSkill={actions.onUseSkill}
+                  onUseClassAbility={actions.onUseClassAbility}
+                  onUseRaceAbility={actions.onUseRaceAbility}
+                  onEscape={actions.onEscape}
+                  onSetCombatLane={actions.onSetCombatLane}
+                />
+              ) : (
+                <div className="adventure-shell__drawer-empty">
+                  Combat controls appear here when an encounter begins.
+                </div>
+              )
+            ) : null}
+
+            {drawerTab === "inventory" ? (
+              <InventoryPanel inventory={player?.inventory || []} />
+            ) : null}
+
+            {drawerTab === "quests" ? <QuestPanel quests={quests} /> : null}
+
+            {drawerTab === "loadout" ? (
+              <EquipmentPanel
+                player={player}
+                onSelectSlot={surfaces.handleOpenEquipmentSlot}
+              />
+            ) : null}
+          </div>
         </aside>
       </div>
 
@@ -319,7 +421,7 @@ export default function AdventureShell({
           subtitle="Developer replay and sync timeline diagnostics."
           size="xl"
         >
-          <ReplayInspector gameState={state} />
+          <ReplayInspector />
         </SurfaceDialog>
       ) : null}
     </section>

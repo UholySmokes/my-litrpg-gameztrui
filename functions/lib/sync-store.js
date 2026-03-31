@@ -112,12 +112,17 @@ function writeDb(db) {
 	fs.mkdirSync(path.dirname(filePath), { recursive: true });
 	const tmpPath = `${filePath}.tmp`;
 	db.updated_at = nowIso();
-	fs.writeFileSync(tmpPath, JSON.stringify(db, null, 2), "utf8");
+	const serialized = JSON.stringify(db, null, 2);
+	fs.writeFileSync(tmpPath, serialized, "utf8");
 	try {
 		fs.renameSync(tmpPath, filePath);
 	} catch {
-		fs.copyFileSync(tmpPath, filePath);
-		fs.unlinkSync(tmpPath);
+		if (fs.existsSync(tmpPath)) {
+			fs.copyFileSync(tmpPath, filePath);
+			fs.unlinkSync(tmpPath);
+			return;
+		}
+		fs.writeFileSync(filePath, serialized, "utf8");
 	}
 }
 

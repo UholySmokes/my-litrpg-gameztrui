@@ -1,24 +1,92 @@
 import { listOpeningSceneChoices } from "../../data/OpeningScenes.js";
 import {
+  getAccessibleLocationIds,
+  getLocationById,
+  getZoneById,
+} from "../../world/WorldDataRegistry.js";
+import {
   getPlayerArchetypeSystemLabel,
   resolvePlayerArchetypeSystem,
 } from "../../systems/archetype/resolvePlayerArchetypeSystem.js";
 import { toNumber } from "../../utils/shared.js";
 
+const toSuggestionId = (value) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "suggestion";
+
+function createSuggestionRecord({
+  id,
+  label,
+  command,
+  weight = 1,
+  enabled = true,
+  reason = "",
+  category = "",
+  groundedInState = true,
+} = {}) {
+  const resolvedCommand = String(command || label || "").trim();
+  if (!resolvedCommand) return null;
+  const resolvedLabel = String(label || resolvedCommand).trim();
+  const normalizedWeight = Number.isFinite(weight)
+    ? Math.min(1, Math.max(0.35, weight))
+    : 1;
+
+  return {
+    id: String(id || toSuggestionId(resolvedCommand)),
+    label: resolvedLabel,
+    command: resolvedCommand,
+    enabled: enabled !== false,
+    reason: String(reason || "").trim(),
+    category: String(category || "").trim().toLowerCase(),
+    groundedInState: Boolean(groundedInState),
+    weight: normalizedWeight,
+    w: normalizedWeight,
+    t: resolvedCommand,
+  };
+}
+
 export const FIXED_ACTION_SUGGESTIONS = [
-  { t: "look around", w: 1 },
-  { t: "check status", w: 1 },
-  { t: "open inventory", w: 1 },
-  { t: "review quests", w: 1 },
-  { t: "train skills", w: 1 },
-  { t: "talk to nearby NPC", w: 1 },
+  createSuggestionRecord({
+    id: "look-around",
+    label: "Look Around",
+    command: "look around",
+    weight: 1,
+    category: "observe",
+  }),
+  createSuggestionRecord({
+    id: "check-status",
+    label: "Check Status",
+    command: "check status",
+    weight: 0.94,
+    category: "power",
+  }),
+  createSuggestionRecord({
+    id: "open-inventory",
+    label: "Open Inventory",
+    command: "open inventory",
+    weight: 0.9,
+    category: "power",
+  }),
 ];
 
 export const CONTEXT_SUGGESTION_FILLERS = [
-  { t: "explore a nearby route", w: 0.82 },
-  { t: "prepare for the next objective", w: 0.8 },
-  { t: "gather local information", w: 0.78 },
-  { t: "take a short rest", w: 0.76 },
+  createSuggestionRecord({
+    id: "sense-ambient-essence",
+    label: "Sense Ambient Essence",
+    command: "sense ambient essence",
+    weight: 0.84,
+    category: "observe",
+  }),
+  createSuggestionRecord({
+    id: "rest",
+    label: "Rest",
+    command: "rest",
+    weight: 0.78,
+    category: "recovery",
+  }),
 ];
 
 export const DEFAULT_ACTION_SUGGESTIONS = [
@@ -70,21 +138,33 @@ function normalizeSingleActionSuggestion(suggestion, choiceMetaEntry) {
   const label =
     typeof suggestion === "string"
       ? suggestion
-      : suggestion?.t || suggestion?.text || suggestion?.label || "";
-  const trimmed = String(label || "").trim();
+      : suggestion?.label || suggestion?.text || suggestion?.t || suggestion?.command || "";
+  const command =
+    typeof suggestion === "object" && suggestion
+      ? suggestion.command || suggestion.cmd || suggestion.t || suggestion.text || suggestion.label
+      : label;
+  const trimmed = String(command || label || "").trim();
   if (!trimmed) return null;
 
   const rawWeight =
-    typeof suggestion === "object" && Number.isFinite(suggestion?.w)
-      ? suggestion.w
+    typeof suggestion === "object" &&
+    Number.isFinite(Number(suggestion?.w ?? suggestion?.weight))
+      ? Number(suggestion.w ?? suggestion.weight)
       : 1;
   const metaUrgency = Number(choiceMetaEntry?.urgency);
   const resolvedWeight = Number.isFinite(metaUrgency) ? metaUrgency : rawWeight;
 
-  return {
-    t: trimmed,
-    w: Math.min(1, Math.max(0.35, resolvedWeight)),
-  };
+  return createSuggestionRecord({
+    id: suggestion?.id,
+    label: String(label || trimmed).trim(),
+    command: trimmed,
+    weight: resolvedWeight,
+    enabled: suggestion?.enabled !== false,
+    reason: suggestion?.reason || "",
+    category: suggestion?.category || choiceMetaEntry?.category || "",
+    groundedInState:
+      suggestion?.groundedInState ?? choiceMetaEntry?.groundedInState ?? true,
+  });
 }
 
 export function normalizeActionSuggestions(
@@ -232,15 +312,17 @@ function normalizeChoiceMetaEntry(choiceMetaEntry = {}) {
 }
 
 function validateSuggestionCandidate(candidate, state, choiceMetaEntry) {
-  if (!candidate?.t) return null;
-  if (!isValidForCombatContext(candidate.t, state)) return null;
-  if (referencesMissingEntity(candidate.t, state)) return null;
+  const actionText = candidate?.command || candidate?.t || candidate?.label || "";
+  if (!actionText) return null;
+  if (!isValidForCombatContext(actionText, state)) return null;
+  if (referencesMissingEntity(actionText, state)) return null;
   const normalizedMeta = normalizeChoiceMetaEntry(choiceMetaEntry);
-  const category = normalizedMeta?.category || inferSuggestionCategory(candidate.t);
+  const category = normalizedMeta?.category || inferSuggestionCategory(actionText);
   return {
     ...candidate,
     category,
-    groundedInState: Boolean(normalizedMeta?.groundedInState) || !referencesMissingEntity(candidate.t, state),
+    groundedInState:
+      Boolean(normalizedMeta?.groundedInState) || !referencesMissingEntity(actionText, state),
   };
 }
 
@@ -255,13 +337,23 @@ export function resolveActionSuggestions({
   const seen = new Set();
   const categories = new Set();
   const tryAdd = (candidate, choiceMetaEntry) => {
-    if (!candidate?.t || accepted.length >= maxItems) return;
-    const key = candidate.t.toLowerCase();
+    const actionText = candidate?.command || candidate?.t || candidate?.label || "";
+    if (!actionText || accepted.length >= maxItems) return;
+    const key = actionText.toLowerCase();
     if (seen.has(key)) return;
     const validated = validateSuggestionCandidate(candidate, state, choiceMetaEntry);
     if (!validated) return;
     seen.add(key);
-    accepted.push({ t: validated.t, w: validated.w });
+    accepted.push(
+      createSuggestionRecord({
+        ...validated,
+        command: actionText,
+        label: validated.label || actionText,
+        weight: validated.w ?? validated.weight ?? 1,
+        category: validated.category,
+        groundedInState: validated.groundedInState,
+      }),
+    );
     categories.add(validated.category);
   };
 
@@ -277,7 +369,9 @@ export function resolveActionSuggestions({
   if (accepted.length < maxItems || categories.size < 2) {
     fallback
       .filter((candidate) => {
-        const category = inferSuggestionCategory(candidate.t);
+        const category = inferSuggestionCategory(
+          candidate?.command || candidate?.t || candidate?.label || "",
+        );
         return categories.size < 2 ? !categories.has(category) : true;
       })
       .forEach((candidate) => tryAdd(candidate, null));
@@ -355,6 +449,101 @@ export function resolveArchetypeSystemLabel(player = {}) {
   return getPlayerArchetypeSystemLabel(player);
 }
 
+function getCurrentLocationId(state) {
+  const rawLocation = state?.world?.location;
+  return typeof rawLocation === "string" ? rawLocation : rawLocation?.current || "";
+}
+
+function buildTravelSuggestions(state, maxItems = 3) {
+  if (!state) return [];
+  const currentLocationId = getCurrentLocationId(state);
+  const currentLocation = getLocationById(currentLocationId);
+  const currentZoneId = currentLocation?.zoneId || state?.world?.location?.biome || "";
+  const accessibleIds = getAccessibleLocationIds(state)
+    .filter((locationId) => typeof locationId === "string" && locationId !== currentLocationId)
+    .map((locationId) => getLocationById(locationId))
+    .filter(Boolean)
+    .sort((left, right) => {
+      const leftZoneMatch = left.zoneId === currentZoneId ? 0 : 1;
+      const rightZoneMatch = right.zoneId === currentZoneId ? 0 : 1;
+      if (leftZoneMatch !== rightZoneMatch) return leftZoneMatch - rightZoneMatch;
+      return String(left.name || left.id).localeCompare(String(right.name || right.id));
+    });
+
+  return accessibleIds.slice(0, maxItems).map((location, index) =>
+    createSuggestionRecord({
+      id: `travel-${location.id}-${index}`,
+      label: `Go to ${location.name}`,
+      command: `go to ${location.name}`,
+      weight: index === 0 ? 0.98 : 0.88 - index * 0.05,
+      category: "progress",
+      reason:
+        location.zoneId === currentZoneId
+          ? "A reachable route in the current region."
+          : `A connected route into ${getZoneById(location.zoneId)?.name || location.zoneId}.`,
+    }),
+  );
+}
+
+function buildQuestDrivenSuggestions(state) {
+  const activeQuests = Array.isArray(state?.quests?.active) ? state.quests.active : [];
+  const primaryQuest = activeQuests[0];
+  if (!primaryQuest) return [];
+
+  const travelSuggestions = buildTravelSuggestions(state, 2);
+  const currentLocationId = getCurrentLocationId(state);
+  const currentLocation = getLocationById(currentLocationId);
+  const questId = String(primaryQuest.id || "");
+
+  if (questId === "bq_first_stride") {
+    return travelSuggestions.slice(0, 1);
+  }
+
+  if (questId === "mq_oracle_sundial") {
+    if (currentLocationId === "desert_oracle_sundial") {
+      return [
+        createSuggestionRecord({
+          id: "oracle-glyphs",
+          label: "Inspect the Sundial Glyphs",
+          command: "look at the sundial glyphs",
+          weight: 0.98,
+          category: "observe",
+          reason: "The glyphs are the clearest lead on the blackout warning.",
+        }),
+        createSuggestionRecord({
+          id: "oracle-sense",
+          label: "Sense the Sundial",
+          command: "sense ambient essence",
+          weight: 0.9,
+          category: "power",
+          reason: "The oracle trail is strongest around the warped shadow-line.",
+        }),
+      ];
+    }
+
+    return [
+      ...travelSuggestions.slice(0, 1),
+      createSuggestionRecord({
+        id: "oracle-look",
+        label: `Survey ${currentLocation?.name || "the route"}`,
+        command: "look around",
+        weight: 0.9,
+        category: "observe",
+        reason: "The oracle leaves signs in the shifting route-glyphs.",
+      }),
+    ].filter(Boolean);
+  }
+
+  const reachStyleObjective = /reach|locate|track|navigate|secure|reclaim/i.test(
+    `${primaryQuest.name || ""} ${primaryQuest.description || ""}`,
+  );
+  if (reachStyleObjective) {
+    return travelSuggestions.slice(0, 1);
+  }
+
+  return [];
+}
+
 export function buildActionSuggestions(state) {
   if (!state) {
     return DEFAULT_ACTION_SUGGESTIONS;
@@ -418,7 +607,16 @@ export function buildActionSuggestions(state) {
   if (!inCombat && openingChoicePending && openingSceneId) {
     const openingContext = listOpeningSceneChoices(openingSceneId)
       .slice(0, 4)
-      .map((choice) => ({ t: choice.label, w: 1 }));
+      .map((choice, index) =>
+        createSuggestionRecord({
+          id: choice?.id || `opening-choice-${index + 1}`,
+          label: choice.label,
+          command: choice.label,
+          weight: 1,
+          category: "progress",
+          reason: "An explicit opening-scene choice.",
+        }),
+      );
     const fallbackContext = CONTEXT_SUGGESTION_FILLERS.slice(0, 4);
     const resolvedContext =
       openingContext.length > 0 ? openingContext : fallbackContext;
@@ -427,88 +625,215 @@ export function buildActionSuggestions(state) {
 
   if (inCombat) {
     contextSuggestions.push(
-      { t: "attack enemy", w: 1 },
-      { t: "use skill", w: 1 },
-      { t: "drink potion", w: player.inventory?.length ? 0.9 : 0.6 },
-      { t: "attempt escape", w: 0.7 },
+      createSuggestionRecord({
+        id: "combat-attack",
+        label: "Attack",
+        command: "attack",
+        weight: 1,
+        category: "risk",
+      }),
+      createSuggestionRecord({
+        id: "combat-escape",
+        label: "Attempt Escape",
+        command: "attempt escape",
+        weight: 0.72,
+        category: "risk",
+      }),
     );
     const activeSkills = Array.isArray(player.activeSkills) ? player.activeSkills : [];
     if (activeSkills.length > 0) {
       const skill = activeSkills[Math.floor(Date.now() / 10000) % activeSkills.length];
-      if (skill?.name) contextSuggestions.push({ t: `use ${skill.name}`, w: 0.95 });
+      if (skill?.name) {
+        contextSuggestions.push(
+          createSuggestionRecord({
+            id: `combat-skill-${skill.id || toSuggestionId(skill.name)}`,
+            label: `Use ${skill.name}`,
+            command: `use ${skill.name}`,
+            weight: 0.95,
+            category: "power",
+          }),
+        );
+      }
+    }
+    const potion = Array.isArray(player.inventory)
+      ? player.inventory.find((item) =>
+          /potion|elixir|draft|tonic/i.test(String(item?.name || item?.id || "")),
+        )
+      : null;
+    if (potion?.name) {
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: `combat-item-${potion.id || toSuggestionId(potion.name)}`,
+          label: `Drink ${potion.name}`,
+          command: `drink ${potion.name}`,
+          weight: 0.86,
+          category: "recovery",
+        }),
+      );
     }
     if (prepared) {
-      contextSuggestions.push({ t: "release prepared weave", w: 0.98 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "combat-release-prepared",
+          label: "Release Prepared Magic",
+          command: "release prepared magic",
+          weight: 0.94,
+          category: "power",
+        }),
+      );
     } else if (charges.length > 0) {
-      contextSuggestions.push({ t: "shape a quick weave", w: 0.9 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "combat-sense",
+          label: "Sense the Field",
+          command: "sense ambient essence",
+          weight: 0.74,
+          category: "observe",
+        }),
+      );
     }
     if (resonanceCurrent >= 70) {
-      contextSuggestions.push({ t: "anchor to stabilize resonance", w: 0.94 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "combat-anchor",
+          label: "Anchor Resonance",
+          command: "anchor",
+          weight: 0.9,
+          category: "recovery",
+        }),
+      );
     }
     if (avgReserveTaint >= 0.25) {
-      contextSuggestions.push({ t: "purge contamination", w: 0.92 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "combat-purge",
+          label: "Purge Taint",
+          command: "purge contamination",
+          weight: 0.92,
+          category: "recovery",
+        }),
+      );
     }
   } else {
-    contextSuggestions.push(
-      { t: "explore area", w: 1 },
-      { t: "speak with locals", w: 0.9 },
-      { t: "follow quest lead", w: (state.quests?.active?.length ?? 0) ? 1 : 0.6 },
-      { t: "practice one ability", w: 0.8 },
-    );
+    contextSuggestions.push(...buildQuestDrivenSuggestions(state), ...buildTravelSuggestions(state, 2));
 
     if (!hasAmbientSnapshot) {
-      contextSuggestions.push({ t: "sense ambient essence", w: 0.92 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "sense-ambient-field",
+          label: "Sense Ambient Essence",
+          command: "sense ambient essence",
+          weight: 0.92,
+          category: "observe",
+        }),
+      );
     } else if (reserveRows.length === 0) {
-      contextSuggestions.push({ t: "draw essence from the ambient field", w: 0.95 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "draw-essence",
+          label: "Draw Essence",
+          command: `draw ${ambient?.dominantEssence || highestReserve?.essence || "fire"}`,
+          weight: 0.9,
+          category: "power",
+        }),
+      );
     }
     if (reserveRows.length > 0 && charges.length === 0) {
       const target = highestReserve?.essence || "fire";
-      contextSuggestions.push({ t: `refine ${target} essence`, w: 0.95 });
-    }
-    if (charges.length > 0 && !prepared) {
-      contextSuggestions.push({ t: "shape and weave a pattern", w: 0.93 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: `refine-${target}`,
+          label: `Refine ${target} Essence`,
+          command: `refine ${target} essence 1`,
+          weight: 0.88,
+          category: "power",
+        }),
+      );
     }
     if (prepared) {
-      contextSuggestions.push({ t: "release prepared magic", w: 0.9 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "release-prepared-magic",
+          label: "Release Prepared Magic",
+          command: "release prepared magic",
+          weight: 0.9,
+          category: "power",
+        }),
+      );
     }
     if (avgReserveTaint >= 0.2) {
-      contextSuggestions.push({ t: "purge tainted reserves", w: 0.9 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "purge-tainted-reserves",
+          label: "Purge Tainted Reserves",
+          command: "purge tainted reserves",
+          weight: 0.9,
+          category: "recovery",
+        }),
+      );
     }
     if (resonanceCurrent >= 60) {
-      contextSuggestions.push({ t: "anchor and calm resonance", w: 0.9 });
+      contextSuggestions.push(
+        createSuggestionRecord({
+          id: "anchor-resonance",
+          label: "Anchor Resonance",
+          command: "anchor",
+          weight: 0.88,
+          category: "recovery",
+        }),
+      );
     }
 
     const systemLabel = resolveArchetypeSystemLabel(player);
     if (systemLabel) {
       const category = resolvePlayerArchetypeSystem(player)?.category || null;
       const systemSuggestions = {
-        System: { t: "check system status", w: 0.85 },
-        Authority: { t: "exert authority", w: 0.85 },
-        Path: { t: "meditate on path", w: 0.85 },
-        Framework: { t: "analyze framework", w: 0.85 },
-        Privilege: { t: "scan for hidden paths", w: 0.85 },
-        Overlay: { t: "probe for exploits", w: 0.85 },
+        System: createSuggestionRecord({
+          id: "system-status",
+          label: "Check System Status",
+          command: "check status",
+          weight: 0.85,
+          category: "power",
+        }),
+        Authority: createSuggestionRecord({
+          id: "authority-survey",
+          label: "Survey the Area",
+          command: "look around",
+          weight: 0.82,
+          category: "observe",
+        }),
+        Path: createSuggestionRecord({
+          id: "path-rest",
+          label: "Center Yourself",
+          command: "rest",
+          weight: 0.8,
+          category: "recovery",
+        }),
+        Framework: createSuggestionRecord({
+          id: "framework-readout",
+          label: "Check Status",
+          command: "check status",
+          weight: 0.82,
+          category: "power",
+        }),
+        Privilege: createSuggestionRecord({
+          id: "privilege-look",
+          label: "Study the Scene",
+          command: "look around",
+          weight: 0.82,
+          category: "observe",
+        }),
+        Overlay: createSuggestionRecord({
+          id: "overlay-sense",
+          label: "Probe the Ambient Field",
+          command: "sense ambient essence",
+          weight: 0.82,
+          category: "power",
+        }),
       };
       if (category && systemSuggestions[category]) {
         contextSuggestions.push(systemSuggestions[category]);
       }
-    }
-
-    const location = state.world?.location?.current || state.world?.location || "";
-    const locationStr = typeof location === "string" ? location : "";
-    if (
-      locationStr.includes("town") ||
-      locationStr.includes("village") ||
-      locationStr.includes("city")
-    ) {
-      contextSuggestions.push({ t: "visit shop", w: 0.8 });
-    }
-    if (
-      locationStr.includes("dungeon") ||
-      locationStr.includes("cave") ||
-      locationStr.includes("ruin")
-    ) {
-      contextSuggestions.push({ t: "search for treasure", w: 0.85 });
     }
   }
 
@@ -524,35 +849,43 @@ export function buildActionSuggestions(state) {
   );
 
   if (hpCurrent < 0.3 * Math.max(1, hpMax)) {
-    contextSuggestions.push({ t: "rest to recover", w: 0.9 });
-  }
-
-  if (!player.profession) {
-    contextSuggestions.push({ t: "choose profession", w: 0.8 });
+    contextSuggestions.push(
+      createSuggestionRecord({
+        id: "rest-to-recover",
+        label: "Rest to Recover",
+        command: "rest",
+        weight: 0.92,
+        category: "recovery",
+      }),
+    );
   }
 
   const activeQuests = Array.isArray(state.quests?.active) ? state.quests.active : [];
-  if (activeQuests.length > 0 && !inCombat) {
-    const quest = activeQuests[0];
-    if (quest?.name) {
-      contextSuggestions.push({ t: `pursue ${quest.name}`, w: 0.9 });
-    }
-  }
 
   const fixedLabels = new Set(
-    FIXED_ACTION_SUGGESTIONS.map((suggestion) => suggestion.t.toLowerCase()),
+    FIXED_ACTION_SUGGESTIONS.map((suggestion) =>
+      String(suggestion?.command || suggestion?.t || "").toLowerCase(),
+    ),
   );
   const uniqueContextSuggestions = contextSuggestions.filter(
     (suggestion, index, all) =>
-      all.findIndex((entry) => entry.t === suggestion.t) === index &&
-      !fixedLabels.has(String(suggestion.t || "").toLowerCase()),
+      all.findIndex(
+        (entry) =>
+          String(entry?.command || entry?.t || "").toLowerCase() ===
+          String(suggestion?.command || suggestion?.t || "").toLowerCase(),
+      ) === index &&
+      !fixedLabels.has(String(suggestion?.command || suggestion?.t || "").toLowerCase()),
   );
 
   const normalizedContext = [
     ...uniqueContextSuggestions,
     ...CONTEXT_SUGGESTION_FILLERS.filter(
       (fallback) =>
-        !uniqueContextSuggestions.some((entry) => entry.t === fallback.t),
+        !uniqueContextSuggestions.some(
+          (entry) =>
+            String(entry?.command || entry?.t || "").toLowerCase() ===
+            String(fallback?.command || fallback?.t || "").toLowerCase(),
+        ),
     ),
   ].slice(0, 4);
 

@@ -25,6 +25,19 @@ const createEnemyDefeatLog = ({
 
 export function endCombatPhase(state, result) {
   const newLog = [...state.combat.log];
+  const previousDirector =
+    state?.world?.vars &&
+    typeof state.world.vars === "object" &&
+    !Array.isArray(state.world.vars)
+      ? state.world.vars.combatDirector
+      : null;
+  const encounterId = state?.combat?.spawnMeta?.encounterId || "";
+  const nextRepeatCount =
+    result === "victory" && encounterId
+      ? previousDirector?.lastEncounterId === encounterId
+        ? Math.max(1, Number(previousDirector?.repeatCount || 0) + 1)
+        : 1
+      : 0;
 
   if (result === "victory") {
     newLog.push("Victory! All enemies defeated!");
@@ -36,6 +49,17 @@ export function endCombatPhase(state, result) {
 
   return {
     ...state,
+    world: {
+      ...state.world,
+      vars: {
+        ...(state.world?.vars || {}),
+        combatDirector: {
+          lastEncounterId: encounterId || "",
+          repeatCount: nextRepeatCount,
+          lastResult: result,
+        },
+      },
+    },
     combat: {
       status:
         result === "victory"
@@ -45,6 +69,7 @@ export function endCombatPhase(state, result) {
             : "inactive",
       turn: "player",
       enemies: [],
+      spawnMeta: null,
       log: newLog,
     },
   };

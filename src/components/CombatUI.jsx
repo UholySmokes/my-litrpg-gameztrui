@@ -1,11 +1,17 @@
-// CombatUI.jsx
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ClassResourceBar from "./ClassResourceBar";
 import ClassAbilities from "./ClassAbilities";
 import RaceAbilities from "./RaceAbilities";
 import StatusEffects from "./StatusEffects";
 import MinionPanel from "./MinionPanel";
 import CombatLog from "./CombatLog.jsx";
+
+function toPercent(current, max) {
+  if (!Number.isFinite(current) || !Number.isFinite(max) || max <= 0) {
+    return 0;
+  }
+  return Math.max(0, Math.min(100, (current / max) * 100));
+}
 
 export default function CombatUI({
   combatState,
@@ -19,20 +25,33 @@ export default function CombatUI({
 }) {
   const combat = combatState;
   const player = playerState;
+  const [selectedEnemyIndex, setSelectedEnemyIndex] = useState(0);
 
   if (!combat || combat.status !== "active") {
     return null;
   }
 
-  const skillCooldowns = combat.skillCooldowns || {};
-  const livingEnemies = (combat.enemies || [])
-    .map((enemy, index) => ({ enemy, index }))
-    .filter(({ enemy }) => enemy?.stats?.hp?.current > 0);
+  const livingEnemies = useMemo(
+    () =>
+      (combat.enemies || [])
+        .map((enemy, index) => ({ enemy, index }))
+        .filter(({ enemy }) => (enemy?.stats?.hp?.current || 0) > 0),
+    [combat.enemies],
+  );
+
+  useEffect(() => {
+    if (!livingEnemies.some(({ index }) => index === selectedEnemyIndex)) {
+      setSelectedEnemyIndex(livingEnemies[0]?.index ?? 0);
+    }
+  }, [livingEnemies, selectedEnemyIndex]);
+
+  const selectedEnemy = livingEnemies.find(({ index }) => index === selectedEnemyIndex);
   const availableSkills =
     player?.activeSkills?.length
       ? player.activeSkills
       : player?.skills?.active ||
         (player?.abilities || []).filter((ability) => ability.type === "active");
+  const skillCooldowns = combat.skillCooldowns || {};
   const playerLane = combat?.lanes?.player;
   const laneNumbers = Array.from(
     {
@@ -45,241 +64,163 @@ export default function CombatUI({
     (_, index) => index + 1,
   );
   const laneControlsDisabled = combat?.turn !== "player";
-  const toPercent = (current, max) => {
-    if (!Number.isFinite(current) || !Number.isFinite(max) || max <= 0) {
-      return 0;
-    }
-    return Math.max(0, Math.min(100, (current / max) * 100));
-  };
 
   return (
-    <div
-      className="holo-panel"
-      style={{ marginBottom: "1rem", padding: "1rem" }}
-    >
-      <div
-        style={{
-          color: "var(--holo-alert)",
-          fontWeight: "bold",
-          marginBottom: "0.5rem",
-          fontSize: "1.1rem",
-        }}
-      >
-        [COMBAT]
-      </div>
-      <div style={{ color: "var(--text-dim)", marginBottom: "0.5rem" }}>
-        Position: Lane {Number.isFinite(playerLane) ? playerLane : 1}
-      </div>
-      {typeof onSetCombatLane === "function" && (
-        <div style={{ marginBottom: "1rem" }}>
-          <div
-            style={{
-              color: "var(--holo-cyan)",
-              fontWeight: "bold",
-              marginBottom: "0.5rem",
-            }}
-          >
-            Reposition:
-          </div>
-          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-            {laneNumbers.map((laneNumber) => {
-              const isActiveLane = laneNumber === playerLane;
-              return (
-                <button
-                  key={`lane-${laneNumber}`}
-                  className="holo-button"
-                  onClick={() => onSetCombatLane(laneNumber)}
-                  disabled={laneControlsDisabled || isActiveLane}
-                  style={{
-                    fontSize: "0.85rem",
-                    opacity: laneControlsDisabled || isActiveLane ? 0.6 : 1,
-                    cursor:
-                      laneControlsDisabled || isActiveLane ? "not-allowed" : "pointer",
-                  }}
-                  title={
-                    isActiveLane
-                      ? `Already in lane ${laneNumber}`
-                      : laneControlsDisabled
-                        ? "You can only reposition on your turn."
-                        : `Move to lane ${laneNumber} and end your turn.`
-                  }
-                >
-                  {isActiveLane ? `Lane ${laneNumber} (Current)` : `Move to lane ${laneNumber}`}
-                </button>
-              );
-            })}
-          </div>
-          <div style={{ color: "var(--text-dim)", fontSize: "0.8rem", marginTop: "0.5rem" }}>
-            Lane changes consume your turn and can reduce range penalties before the enemy acts.
-          </div>
+    <div className="combat-stage">
+      <div className="combat-stage__header">
+        <div>
+          <div className="combat-stage__eyebrow">Encounter</div>
+          <h3 className="combat-stage__title">Active Combat</h3>
         </div>
-      )}
-
-      {/* Class Resource Bar */}
-      {player && <ClassResourceBar player={player} />}
-
-      {/* Status Effects */}
-      {player && <StatusEffects player={player} />}
-
-      {/* Minions/Pets/Totems */}
-      {player && <MinionPanel player={player} />}
-
-      {/* Enemies */}
-      <div style={{ marginBottom: "1rem" }}>
-        <div
-          style={{
-            color: "var(--holo-cyan)",
-            fontWeight: "bold",
-            marginBottom: "0.5rem",
-          }}
-        >
-          Enemies:
+        <div className="combat-stage__lane">
+          <span>Lane</span>
+          <strong>{Number.isFinite(playerLane) ? playerLane : 1}</strong>
         </div>
+      </div>
+
+      <div className="combat-stage__enemy-grid">
         {livingEnemies.map(({ enemy, index }) => {
           const hpPercentage = toPercent(
             enemy?.stats?.hp?.current ?? 0,
             enemy?.stats?.hp?.max ?? 0,
           );
+          const isSelected = index === selectedEnemyIndex;
 
           return (
-            <div
+            <button
               key={`${enemy.id || "enemy"}-${index}`}
-              style={{
-                marginBottom: "0.75rem",
-                padding: "0.5rem",
-                border: "1px solid var(--holo-cyan)",
-                borderRadius: "4px",
-              }}
+              type="button"
+              className={`combat-stage__enemy-card ${
+                isSelected ? "combat-stage__enemy-card--selected" : ""
+              }`}
+              onClick={() => setSelectedEnemyIndex(index)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "0.25rem",
-                }}
-              >
-                <span style={{ color: "var(--text-main)", fontWeight: "bold" }}>
-                  {enemy.name} (Lvl {enemy.level})
-                </span>
-                <span style={{ color: "var(--text-main)" }}>
-                  HP: {enemy?.stats?.hp?.current ?? 0}/{enemy?.stats?.hp?.max ?? 0}
-                </span>
+              <div className="combat-stage__enemy-head">
+                <span>{enemy.name}</span>
+                <strong>Lvl {enemy.level}</strong>
               </div>
-              <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>
-                Lane:{" "}
+              <div className="combat-stage__enemy-meta">
+                HP {enemy?.stats?.hp?.current ?? 0}/{enemy?.stats?.hp?.max ?? 0}
+              </div>
+              <div className="combat-stage__enemy-meta">
+                Lane{" "}
                 {Number.isFinite(combat?.lanes?.enemies?.[index])
                   ? combat.lanes.enemies[index]
                   : enemy.lane ?? 1}
               </div>
-              <div
-                className="health-bar-container"
-                style={{ marginBottom: "0.5rem" }}
-              >
-                <div className="health-bar">
-                  <div
-                    className="health-bar-fill"
-                    style={{
-                      width: `${hpPercentage}%`,
-                      background:
-                        hpPercentage < 30
-                          ? "linear-gradient(90deg, var(--holo-alert), #ff6b9d)"
-                          : "linear-gradient(90deg, var(--holo-alert), var(--holo-cyan))",
-                    }}
-                  ></div>
-                </div>
+              <div className="combat-stage__meterbar">
+                <div
+                  className="combat-stage__meterfill"
+                  style={{ width: `${hpPercentage}%` }}
+                />
               </div>
-              <button
-                className="holo-button"
-                onClick={() => onAttack(index)}
-                style={{ width: "100%", fontSize: "0.85rem" }}
-              >
-                Attack {enemy.name}
-              </button>
-            </div>
+            </button>
           );
         })}
       </div>
 
-      <CombatLog entries={combat?.log || []} />
+      <div className="combat-stage__core-actions">
+        <button
+          type="button"
+          className="holo-button holo-button--solid"
+          onClick={() => onAttack(selectedEnemy?.index ?? 0)}
+        >
+          Strike {selectedEnemy?.enemy?.name || "Target"}
+        </button>
 
-      {/* Skills */}
-      {availableSkills.length > 0 && (
-        <div style={{ marginBottom: "1rem" }}>
-          <div
-            style={{
-              color: "var(--holo-cyan)",
-              fontWeight: "bold",
-              marginBottom: "0.5rem",
-            }}
-          >
-            Skills:
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-            {availableSkills.slice(0, 4).map((skill) => {
-              const remainingCooldown = skillCooldowns?.[skill.id] || 0;
-              const disabled = remainingCooldown > 0;
+        <button
+          type="button"
+          className="holo-button holo-button--danger"
+          onClick={onEscape}
+        >
+          Attempt Escape
+        </button>
+      </div>
 
-              return (
-                <button
-                  key={skill.id}
-                  className="holo-button"
-                  onClick={() =>
-                    onUseSkill(skill.id, livingEnemies[0]?.index ?? 0)
-                  }
-                  disabled={disabled}
-                  style={{
-                    fontSize: "0.85rem",
-                    flex: "1 1 auto",
-                    minWidth: "120px",
-                    opacity: disabled ? 0.6 : 1,
-                    cursor: disabled ? "not-allowed" : "pointer",
-                  }}
-                  title={
-                    disabled
-                      ? `${skill.name} is on cooldown (${remainingCooldown} turn(s) remaining)`
-                      : skill.description || skill.name
-                  }
-                >
-                  {skill.name} (Cost: {skill.manaCost ?? skill.cost?.mana ?? 0} MP
-                  {disabled ? ` | CD: ${remainingCooldown}` : ""})
-                </button>
-              );
-            })}
-          </div>
+      {availableSkills.length > 0 ? (
+        <div className="combat-stage__skill-row">
+          {availableSkills.slice(0, 4).map((skill) => {
+            const remainingCooldown = skillCooldowns?.[skill.id] || 0;
+            const disabled = remainingCooldown > 0;
+
+            return (
+              <button
+                key={skill.id}
+                type="button"
+                className="combat-stage__skill-chip"
+                onClick={() => onUseSkill(skill.id, selectedEnemy?.index ?? 0)}
+                disabled={disabled}
+                title={
+                  disabled
+                    ? `${skill.name} is on cooldown (${remainingCooldown} turn(s) remaining)`
+                    : skill.description || skill.name
+                }
+              >
+                <span>{skill.name}</span>
+                <strong>
+                  {skill.manaCost ?? skill.cost?.mana ?? 0} MP
+                  {disabled ? ` · CD ${remainingCooldown}` : ""}
+                </strong>
+              </button>
+            );
+          })}
         </div>
-      )}
+      ) : null}
 
-      {/* Class Abilities */}
-      {player && onUseClassAbility && (
-        <ClassAbilities
-          player={player}
-          onUseAbility={onUseClassAbility}
-          cooldowns={combat?.classAbilityCooldowns || {}}
-        />
-      )}
+      {typeof onSetCombatLane === "function" ? (
+        <div className="combat-stage__lane-row">
+          {laneNumbers.map((laneNumber) => {
+            const isActiveLane = laneNumber === playerLane;
+            return (
+              <button
+                key={`lane-${laneNumber}`}
+                type="button"
+                className={`combat-stage__lane-chip ${
+                  isActiveLane ? "combat-stage__lane-chip--active" : ""
+                }`}
+                onClick={() => onSetCombatLane(laneNumber)}
+                disabled={laneControlsDisabled || isActiveLane}
+                title={
+                  isActiveLane
+                    ? `Already in lane ${laneNumber}`
+                    : laneControlsDisabled
+                      ? "You can only reposition on your turn."
+                      : `Shift to lane ${laneNumber}.`
+                }
+              >
+                Lane {laneNumber}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
-      {/* Race Ability */}
-      {player && onUseRaceAbility && (
-        <RaceAbilities
-          player={player}
-          onUseAbility={onUseRaceAbility}
-          cooldowns={combat?.raceAbilityCooldowns || {}}
-        />
-      )}
+      {player ? <ClassResourceBar player={player} /> : null}
 
-      {/* Escape Button */}
-      <button
-        className="holo-button"
-        onClick={onEscape}
-        style={{
-          width: "100%",
-          borderColor: "var(--holo-alert)",
-          color: "var(--holo-alert)",
-          fontSize: "0.9rem",
-        }}
-      >
-        Attempt Escape
-      </button>
+      <div className="combat-stage__support-grid">
+        {player ? <StatusEffects player={player} /> : null}
+        {player ? <MinionPanel player={player} /> : null}
+      </div>
+
+      <div className="combat-stage__ability-tray">
+        {player && onUseClassAbility ? (
+          <ClassAbilities
+            player={player}
+            onUseAbility={onUseClassAbility}
+            cooldowns={combat?.classAbilityCooldowns || {}}
+          />
+        ) : null}
+
+        {player && onUseRaceAbility ? (
+          <RaceAbilities
+            player={player}
+            onUseAbility={onUseRaceAbility}
+            cooldowns={combat?.raceAbilityCooldowns || {}}
+          />
+        ) : null}
+      </div>
+
+      <CombatLog entries={combat?.log || []} />
     </div>
   );
 }

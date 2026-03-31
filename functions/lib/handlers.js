@@ -62,7 +62,7 @@ async function cleanupNarrateRuns() {
 	}
 }
 
-function buildNarrativePayload(rawText, mode) {
+function buildNarrativePayload(rawText, mode, metadata = {}) {
 	const structured = tryParseStructured(rawText);
 	const normalized = normalizeNarrationPayload(
     structured || { narrative: String(rawText || "") },
@@ -70,8 +70,8 @@ function buildNarrativePayload(rawText, mode) {
       narrative: String(rawText || ""),
       mood: inferMood(String(rawText || "")),
       suggestions: buildDefaultSuggestions(mode),
-      provider: "firebase-genkit",
-      fallbackUsed: false,
+      provider: metadata.provider || "firebase-genkit",
+      fallbackUsed: Boolean(metadata.fallbackUsed),
     },
   );
 
@@ -112,18 +112,21 @@ async function runNarration(body) {
 		topP: body?.topP,
 	});
 
-	const payload = buildNarrativePayload(result?.text, mode);
+	const payload = buildNarrativePayload(result?.text, mode, {
+		provider: result?.backend || "firebase-genkit",
+		fallbackUsed: Boolean(result?.fallbackUsed),
+	});
 	return {
+		...payload,
 		mode,
 		agentId,
 		status: "completed",
 		backend: result?.backend || "firebase-genkit",
-		provider: result?.backend || "firebase-genkit",
-		fallbackUsed: Boolean(result?.fallbackUsed),
+		provider: payload.provider || result?.backend || "firebase-genkit",
+		fallbackUsed: Boolean(result?.fallbackUsed ?? payload.fallbackUsed),
 		fallbackFrom: result?.fallbackFrom || undefined,
 		model: result?.model,
 		temperature: result?.temperature,
-		...payload,
 	};
 }
 

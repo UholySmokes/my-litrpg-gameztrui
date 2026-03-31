@@ -46,13 +46,22 @@ function isProductionEnvironment() {
 	return PRODUCTION_PROJECT_IDS.includes(projectId);
 }
 
+function isFunctionsEmulatorEnvironment() {
+	return String(process.env.FUNCTIONS_EMULATOR || "").toLowerCase() === "true";
+}
+
 function isDevAuthEnabled() {
-	// SECURITY: Never allow dev auth in production
+	const explicit = parseOptionalBoolean(process.env.DEV_AUTH_ENABLED);
+	if (isFunctionsEmulatorEnvironment()) {
+		if (explicit !== null) return explicit;
+		return true;
+	}
+
+	// SECURITY: Never allow dev auth against deployed production functions.
 	if (isProductionEnvironment()) return false;
 
-	const explicit = parseOptionalBoolean(process.env.DEV_AUTH_ENABLED);
 	if (explicit !== null) return explicit;
-	return String(process.env.FUNCTIONS_EMULATOR || "").toLowerCase() === "true";
+	return false;
 }
 
 function getHeader(req, name) {

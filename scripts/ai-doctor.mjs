@@ -12,7 +12,8 @@ import {
 
 const rootEnv = loadEnvFile(".env.local");
 const functionsEnv = loadEnvFile("functions/.env.local");
-const envPresence = parseEnvPresence(rootEnv, functionsEnv);
+const functionsSecretEnv = loadEnvFile("functions/.secret.local");
+const envPresence = parseEnvPresence(rootEnv, functionsEnv, functionsSecretEnv);
 
 printSection("Core tools");
 for (const command of ["git", "node", "npm", "codex"]) {
@@ -32,6 +33,11 @@ printStatus(
   fileExists("functions/.env.local") ? "OK" : "WARN",
   "functions/.env.local",
   fileExists("functions/.env.local") ? "present" : "missing",
+);
+printStatus(
+  fileExists("functions/.secret.local") ? "OK" : "WARN",
+  "functions/.secret.local",
+  fileExists("functions/.secret.local") ? "present" : "missing",
 );
 
 printSection("AI provider posture");

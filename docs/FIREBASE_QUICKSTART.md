@@ -86,11 +86,15 @@ Runtime notes:
 
 1. A template now exists at `functions/.env.example`.
 2. Create `functions/.env.local` from that template.
-3. Add provider credentials in `functions/.env.local`:
+3. Add provider secrets in `functions/.secret.local`:
    - `OPENAI_API_KEY=<your-openai-key>`
    - `GOOGLE_GENAI_API_KEY=<your-gemini-key>` (recommended fallback)
+4. Keep non-secret provider settings in `functions/.env.local`:
+   - `AI_TEXT_PROVIDER=openai`
+   - `OPENAI_MODEL=gpt-5.4-mini`
+   - `GEMINI_MODEL=gemini-2.5-flash`
    - or `GOOGLE_APPLICATION_CREDENTIALS=<path-to-service-account.json>` (Vertex fallback)
-4. Start emulators:
+5. Start emulators:
 
 ```bash
 npm run dev:api
@@ -149,7 +153,7 @@ Firebase-native agent vars:
 Deployed secret handling:
 
 - Set `OPENAI_API_KEY` in Firebase/Google Secret Manager and bind it to runtime functions.
-- Keep local keys in `functions/.env.local` for emulator use only.
+- Keep local emulator secrets in `functions/.secret.local`.
 
 Narration/timeouts:
 

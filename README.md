@@ -84,6 +84,8 @@ See [docs/REPO_MAP.md](docs/REPO_MAP.md) for task-based navigation.
 - **OpenAI API key** (`OPENAI_API_KEY`) — primary AI narration provider
 - **Gemini API key** (`GOOGLE_GENAI_API_KEY`) or Application Default Credentials — recommended fallback provider
 
+For local Firebase emulators, place provider secrets in `functions/.secret.local`.
+
 ### Install
 
 ```bash
@@ -123,6 +125,14 @@ VITE_WEB_GAMEPLAY_ENABLED=true
 ```
 
 </details>
+
+For Firebase Functions emulator secrets, create `functions/.secret.local`:
+
+```bash
+OPENAI_API_KEY=...
+# Optional Gemini fallback
+# GOOGLE_GENAI_API_KEY=...
+```
 
 ### Run
 

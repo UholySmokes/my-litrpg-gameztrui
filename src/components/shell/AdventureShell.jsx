@@ -113,9 +113,7 @@ export default function AdventureShell({
     system,
   } = view;
 
-  const [drawerTab, setDrawerTab] = useState(
-    combatState?.status === "active" ? "combat" : "quests",
-  );
+  const [activePortal, setActivePortal] = useState(null);
   const playerIdentity = buildPlayerIdentity(player);
   const isCombatActive = combatState?.status === "active";
   const profileLabel =
@@ -132,6 +130,44 @@ export default function AdventureShell({
     { label: "MP", value: formatMeter(player?.mana?.current, player?.mana?.max) },
     { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
     { label: "Gold", value: String(player?.currency?.goldCoins ?? player?.gold ?? 0) },
+  ];
+  const portalCards = [
+    {
+      id: "narrative",
+      title: "Narrative Feed",
+      eyebrow: "Story",
+      copy: "Open the chronicle stream, recap summary, and mood telemetry.",
+    },
+    {
+      id: "command",
+      title: "Command Console",
+      eyebrow: "Input",
+      copy: "Issue parser-safe commands and drive the narrative engine.",
+    },
+    {
+      id: "combat",
+      title: "Combat Stage",
+      eyebrow: "Battle",
+      copy: "Launch the tactical encounter surface with abilities and lanes.",
+    },
+    {
+      id: "inventory",
+      title: "Inventory Matrix",
+      eyebrow: "Items",
+      copy: "Inspect carried gear, slots, and progression drops in detail.",
+    },
+    {
+      id: "quests",
+      title: "Quest Log",
+      eyebrow: "Objectives",
+      copy: "Review active directives, objectives, and progress trails.",
+    },
+    {
+      id: "loadout",
+      title: "Loadout Bay",
+      eyebrow: "Equipment",
+      copy: "Open equipment slots and tune your combat-ready build.",
+    },
   ];
 
   return (
@@ -165,169 +201,140 @@ export default function AdventureShell({
         </div>
       </header>
 
-      <div className="adventure-shell__layout">
-        <aside className="adventure-shell__journal">
-          <SurfaceSection eyebrow="Chronicle" title="Latest Passage" className="adventure-shell__passage">
-            <div className="adventure-shell__passage-text">
-              {narrative.latestEntryText || "The lattice waits for your first command."}
+      <div className="adventure-shell__layout adventure-shell__layout--portal">
+        <section className="adventure-shell__scene-card">
+          <div className="adventure-shell__scene-copy">
+            <div className="adventure-shell__scene-kicker">
+              {zone?.name || "Unknown Zone"} / {location?.name || "Unknown Reach"}
             </div>
-            {narrative.summary ? (
-              <div className="adventure-shell__passage-summary">{narrative.summary}</div>
-            ) : null}
-          </SurfaceSection>
+            <h3 className="adventure-shell__scene-title">{objective.questName}</h3>
+            <p className="adventure-shell__scene-objective">{objective.objectiveText}</p>
+          </div>
 
-          <SurfaceSection eyebrow="Narrative" title="Story Feed" className="adventure-shell__feed">
-            <NarrativeHubPanel
-              entries={narrative.entries}
-              summary={narrative.summary}
-              latestEntry={narrative.latestEntry}
-              latestEntryText={narrative.latestEntryText}
-              memoryRef={narrative.memoryRef}
-              currentMood={narrative.currentMood}
-            />
-          </SurfaceSection>
-
-          <SurfaceSection eyebrow="Command" title="What Do You Do?">
-            <CommandTerminalPanel
-              userInput={command.userInput}
-              onInputChange={command.onInputChange}
-              onSubmit={command.onSubmit}
-              isLoading={command.isLoading}
-              error={command.error}
-              inputRef={command.inputRef}
-            />
-          </SurfaceSection>
-
-          <SurfaceSection eyebrow="Suggested" title="Parser-Safe Moves">
-            <ActionSuggestionsPanel
-              suggestions={command.suggestions}
-              onSelect={command.onSuggestionSelect}
-            />
-          </SurfaceSection>
-        </aside>
-
-        <main className="adventure-shell__stage">
-          <section className="adventure-shell__scene-card">
-            <div className="adventure-shell__scene-copy">
-              <div className="adventure-shell__scene-kicker">
-                {zone?.name || "Unknown Zone"} / {location?.name || "Unknown Reach"}
+          <div className="adventure-shell__scene-meters">
+            {topMeters.map((meter) => (
+              <div key={meter.label} className="adventure-shell__meter">
+                <span>{meter.label}</span>
+                <strong>{meter.value}</strong>
               </div>
-              <h3 className="adventure-shell__scene-title">{objective.questName}</h3>
-              <p className="adventure-shell__scene-objective">{objective.objectiveText}</p>
-            </div>
-
-            <div className="adventure-shell__scene-meters">
-              {topMeters.map((meter) => (
-                <div key={meter.label} className="adventure-shell__meter">
-                  <span>{meter.label}</span>
-                  <strong>{meter.value}</strong>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section
-            className={`adventure-shell__battle-stage ${
-              isCombatActive ? "adventure-shell__battle-stage--combat" : ""
-            }`}
-          >
-            {isCombatActive ? (
-              <CombatUI
-                combatState={combatState}
-                playerState={player}
-                onAttack={actions.onAttack}
-                onUseSkill={actions.onUseSkill}
-                onUseClassAbility={actions.onUseClassAbility}
-                onUseRaceAbility={actions.onUseRaceAbility}
-                onEscape={actions.onEscape}
-                onSetCombatLane={actions.onSetCombatLane}
-              />
-            ) : (
-              <div className="adventure-shell__quiet-stage">
-                <div className="adventure-shell__quiet-title">Field State Stable</div>
-                <p>
-                  No encounter is active. Push into a new route, inspect the terrain, or
-                  prepare your build before the next clash.
-                </p>
-                <div className="adventure-shell__quiet-actions">
-                  <button
-                    type="button"
-                    className="holo-button"
-                    onClick={quickActionsProps.onToggleStatus}
-                  >
-                    Open Status
-                  </button>
-                  <button
-                    type="button"
-                    className="holo-button"
-                    onClick={quickActionsProps.onToggleSaveLoad}
-                  >
-                    Save / Load
-                  </button>
-                  <button
-                    type="button"
-                    className="holo-button holo-button--solid"
-                    onClick={quickActionsProps.onToggleQuests}
-                  >
-                    Journal
-                  </button>
-                </div>
-              </div>
-            )}
-          </section>
-
-          <SurfaceSection eyebrow="Action Bank" title="Direct Controls">
-            <GameQuickActions {...quickActionsProps} isDevBuild={isDevBuild} />
-          </SurfaceSection>
-        </main>
-
-        <aside className="adventure-shell__drawer">
-          <div className="adventure-shell__drawer-tabs">
-            {[
-              { id: "combat", label: "Combat" },
-              { id: "inventory", label: "Inventory" },
-              { id: "quests", label: "Quest Log" },
-              { id: "loadout", label: "Loadout" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                className={`adventure-shell__drawer-tab ${
-                  drawerTab === tab.id ? "adventure-shell__drawer-tab--active" : ""
-                }`}
-                onClick={() => setDrawerTab(tab.id)}
-              >
-                {tab.label}
-              </button>
             ))}
           </div>
+        </section>
 
-          <div className="adventure-shell__drawer-body">
-            {drawerTab === "combat" ? (
-              isCombatActive ? (
-                <CombatDrawerSummary combatState={combatState} />
-              ) : (
-                <div className="adventure-shell__drawer-empty">
-                  Combat controls appear here when an encounter begins.
-                </div>
-              )
-            ) : null}
+        <section className="adventure-shell__portal-grid">
+          {portalCards.map((portal) => (
+            <button
+              key={portal.id}
+              type="button"
+              className="adventure-shell__portal-card"
+              onClick={() => setActivePortal(portal.id)}
+            >
+              <span>{portal.eyebrow}</span>
+              <strong>{portal.title}</strong>
+              <p>{portal.copy}</p>
+            </button>
+          ))}
+        </section>
 
-            {drawerTab === "inventory" ? (
-              <InventoryPanel inventory={player?.inventory || []} />
-            ) : null}
-
-            {drawerTab === "quests" ? <QuestPanel quests={quests} /> : null}
-
-            {drawerTab === "loadout" ? (
-              <EquipmentPanel
-                player={player}
-                onSelectSlot={surfaces.handleOpenEquipmentSlot}
-              />
-            ) : null}
-          </div>
-        </aside>
+        <SurfaceSection eyebrow="Action Bank" title="Direct Controls">
+          <GameQuickActions {...quickActionsProps} isDevBuild={isDevBuild} />
+        </SurfaceSection>
       </div>
+
+      <SurfaceDialog
+        isOpen={activePortal === "narrative"}
+        onClose={() => setActivePortal(null)}
+        title="Narrative Feed"
+        subtitle="Chronicle history, latest passage, and mood telemetry."
+        size="xl"
+      >
+        <NarrativeHubPanel
+          entries={narrative.entries}
+          summary={narrative.summary}
+          latestEntry={narrative.latestEntry}
+          latestEntryText={narrative.latestEntryText}
+          memoryRef={narrative.memoryRef}
+          currentMood={narrative.currentMood}
+        />
+      </SurfaceDialog>
+
+      <SurfaceDialog
+        isOpen={activePortal === "command"}
+        onClose={() => setActivePortal(null)}
+        title="Command Console"
+        subtitle="Issue intent, push parser-safe directives, and steer the run."
+        size="xl"
+      >
+        <SurfaceSection eyebrow="Command" title="What Do You Do?">
+          <CommandTerminalPanel
+            userInput={command.userInput}
+            onInputChange={command.onInputChange}
+            onSubmit={command.onSubmit}
+            isLoading={command.isLoading}
+            error={command.error}
+            inputRef={command.inputRef}
+          />
+        </SurfaceSection>
+        <SurfaceSection eyebrow="Suggested" title="Parser-Safe Moves">
+          <ActionSuggestionsPanel
+            suggestions={command.suggestions}
+            onSelect={command.onSuggestionSelect}
+          />
+        </SurfaceSection>
+      </SurfaceDialog>
+
+      <SurfaceDialog
+        isOpen={activePortal === "combat"}
+        onClose={() => setActivePortal(null)}
+        title="Combat Stage"
+        subtitle="Dedicated tactical viewport."
+        size="xl"
+      >
+        {isCombatActive ? (
+          <CombatUI
+            combatState={combatState}
+            playerState={player}
+            onAttack={actions.onAttack}
+            onUseSkill={actions.onUseSkill}
+            onUseClassAbility={actions.onUseClassAbility}
+            onUseRaceAbility={actions.onUseRaceAbility}
+            onEscape={actions.onEscape}
+            onSetCombatLane={actions.onSetCombatLane}
+          />
+        ) : (
+          <CombatDrawerSummary combatState={combatState} />
+        )}
+      </SurfaceDialog>
+
+      <SurfaceDialog
+        isOpen={activePortal === "inventory"}
+        onClose={() => setActivePortal(null)}
+        title="Inventory Matrix"
+        subtitle="Items, rarity, and progression stockpile."
+      >
+        <InventoryPanel inventory={player?.inventory || []} />
+      </SurfaceDialog>
+
+      <SurfaceDialog
+        isOpen={activePortal === "quests"}
+        onClose={() => setActivePortal(null)}
+        title="Quest Log"
+        subtitle="Track active directives and objective chains."
+      >
+        <QuestPanel quests={quests} />
+      </SurfaceDialog>
+
+      <SurfaceDialog
+        isOpen={activePortal === "loadout"}
+        onClose={() => setActivePortal(null)}
+        title="Loadout Bay"
+        subtitle="Manage equipped slots and combat setup."
+      >
+        <EquipmentPanel
+          player={player}
+          onSelectSlot={surfaces.handleOpenEquipmentSlot}
+        />
+      </SurfaceDialog>
 
       <SurfaceDialog
         isOpen={surfaces.showQuests}

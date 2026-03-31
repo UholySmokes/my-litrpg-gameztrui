@@ -53,6 +53,23 @@ describe("AIService endpoint resolution", () => {
             narrative: "A warding sigil flares and then settles.",
             mood: "focused",
             suggestions: ["Inspect the sigil"],
+            sceneMemory: {
+              locationLabel: "Warding Hall",
+              zoneLabel: "Glass Ward",
+              immediateObjective: "Understand the sigil.",
+              presentEntities: ["Warding Sigil"],
+              activeThreats: [],
+              unresolvedHooks: ["Sigil source"],
+              lastConsequence: "The sigil calmed.",
+            },
+            choiceMeta: [
+              {
+                intent: "Inspect the now-stable sigil.",
+                category: "observe",
+                urgency: 0.75,
+                groundedInState: true,
+              },
+            ],
           }),
           {
             status: 200,
@@ -63,6 +80,8 @@ describe("AIService endpoint resolution", () => {
 
     const result = await generateNarrative("test prompt");
     expect(result.narrative).toContain("warding sigil");
+    expect(result.sceneMemory?.locationLabel).toBe("Warding Hall");
+    expect(result.choiceMeta?.[0]?.category).toBe("observe");
     expect(globalThis.fetch).toHaveBeenCalledTimes(2);
 
     const firstHeaders = globalThis.fetch.mock.calls[0][1]?.headers || {};

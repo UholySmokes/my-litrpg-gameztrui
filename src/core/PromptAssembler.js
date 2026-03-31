@@ -323,17 +323,23 @@ function buildPresentEntities(gameState = {}) {
   const combatActive = Boolean(
     combat?.inCombat ?? combat?.status === "active",
   );
+  const priorThreats = Array.isArray(priorSceneMemory.activeThreats)
+    ? priorSceneMemory.activeThreats.map((entry) => String(entry).toLowerCase())
+    : [];
   const combatEnemyNames = combatActive && Array.isArray(combat?.enemies)
     ? combat.enemies
         .filter((enemy) => toNumber(enemy?.stats?.hp?.current, 0) > 0)
         .map((enemy) => enemy?.name)
         .filter((enemyName) => typeof enemyName === "string" && enemyName.trim())
     : [];
+  const carryForwardEntities = Array.isArray(priorSceneMemory.presentEntities)
+    ? priorSceneMemory.presentEntities.filter((entry) =>
+        combatActive ? true : !priorThreats.includes(String(entry).toLowerCase()),
+      )
+    : [];
 
   return dedupeStrings([
-    ...(Array.isArray(priorSceneMemory.presentEntities)
-      ? priorSceneMemory.presentEntities
-      : []),
+    ...carryForwardEntities,
     ...combatEnemyNames,
   ]);
 }
@@ -356,11 +362,7 @@ function buildActiveThreats(gameState = {}) {
         .map((enemy) => enemy?.name),
     );
   }
-  return dedupeStrings(
-    Array.isArray(priorSceneMemory.activeThreats)
-      ? priorSceneMemory.activeThreats
-      : [],
-  );
+  return [];
 }
 
 export function buildSceneMemorySeed(gameState = {}, actionResult = null) {

@@ -43,6 +43,23 @@ describe("handlers narrate endpoints", () => {
         narrative: "The market lights flicker as night falls.",
         mood: "mysterious",
         suggestions: ["Press deeper into the bazaar."],
+        sceneMemory: {
+          locationLabel: "Night Bazaar",
+          zoneLabel: "Copper Ward",
+          immediateObjective: "Find the veiled broker.",
+          presentEntities: ["Veiled Broker"],
+          activeThreats: [],
+          unresolvedHooks: ["Broker bargain"],
+          lastConsequence: "The lantern-row woke around you.",
+        },
+        choiceMeta: [
+          {
+            intent: "Continue deeper before the broker disappears.",
+            category: "progress",
+            urgency: 0.9,
+            groundedInState: true,
+          },
+        ],
       }),
       backend: "firebase-genkit",
       model: "gemini-2.5-flash",
@@ -93,6 +110,8 @@ describe("handlers narrate endpoints", () => {
     expect(typeof res.body.backend).toBe("string");
     expect(typeof res.body.provider).toBe("string");
     expect(typeof res.body.model).toBe("string");
+    expect(res.body.sceneMemory?.locationLabel).toBe("Night Bazaar");
+    expect(res.body.choiceMeta?.[0]?.category).toBe("progress");
   });
 
   it("persists failed run state and returns error details when narration fails", async () => {
@@ -139,6 +158,23 @@ describe("handlers narrate endpoints", () => {
       narrative: "Dawn breaks over the copper roofs.",
       mood: "serene",
       suggestions: ["Head toward the eastern gate."],
+      scene_memory: {
+        locationLabel: "Copper Roofs",
+        zoneLabel: "East Market",
+        immediateObjective: "Reach the eastern gate.",
+        presentEntities: ["Gate Warden"],
+        activeThreats: [],
+        unresolvedHooks: ["Eastern gate"],
+        lastConsequence: "Dawn revealed the road.",
+      },
+      choice_meta: [
+        {
+          intent: "Move while the gate remains quiet.",
+          category: "progress",
+          urgency: 0.7,
+          groundedInState: true,
+        },
+      ],
       output_hash: "abc123",
     }));
     const req = {
@@ -156,6 +192,8 @@ describe("handlers narrate endpoints", () => {
     expect(res.body.narrative).toContain("Dawn breaks");
     expect(res.body.outputHash).toBe("abc123");
     expect(res.body.provider).toBe("firebase-genkit");
+    expect(res.body.sceneMemory?.locationLabel).toBe("Copper Roofs");
+    expect(res.body.choiceMeta?.[0]?.category).toBe("progress");
   });
 
   it("returns not found in narratePoll when run does not exist", async () => {

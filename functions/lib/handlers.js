@@ -239,7 +239,6 @@ async function narrate(req, res) {
 			suggestions: result.suggestions,
 			sceneMemory: result.sceneMemory,
 			choiceMeta: result.choiceMeta,
-      provider: result.provider,
 			outputHash: result.outputHash,
 			mode: result.mode,
 			agentId: result.agentId,

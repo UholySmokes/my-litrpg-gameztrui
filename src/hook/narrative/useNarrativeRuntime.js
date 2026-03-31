@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import {
   assemblePrompt,
+  buildSceneMemorySeed,
   buildInitialPrompt,
   resolvePromptMode,
 } from "../../core/PromptAssembler.js";
@@ -182,11 +183,23 @@ export function useNarrative(
         setActionSuggestions(resolvedResult.suggestions);
 
         setState((prevState) =>
-          replaceNarrativeEntryInState(prevState, streamEntryId, {
-            text: resolvedResult.narrative,
-            source: resolvedResult.source,
-            mood: resolvedResult.mood,
-          }),
+          {
+            const nextState = replaceNarrativeEntryInState(prevState, streamEntryId, {
+              text: resolvedResult.narrative,
+              source: resolvedResult.source,
+              mood: resolvedResult.mood,
+            });
+            if (!resolvedResult.sceneMemory) {
+              return nextState;
+            }
+            return {
+              ...nextState,
+              narrative: {
+                ...nextState.narrative,
+                sceneMemory: resolvedResult.sceneMemory,
+              },
+            };
+          },
         );
 
         await maybeRefreshSummary({
@@ -252,7 +265,12 @@ export function useNarrative(
             const resolvedState = openingResolution.state || currentState;
 
             setState(resolvedState);
-            setActionSuggestions(buildActionSuggestionsFlow(resolvedState));
+            setActionSuggestions(
+              resolveActionSuggestionsFlow({
+                fallbackSuggestions: buildActionSuggestionsFlow(resolvedState),
+                state: resolvedState,
+              }),
+            );
             collectNarrativeOutcomeNotes(openingResolution.notes).forEach((note) =>
               addSystemMessage(note, "system"),
             );
@@ -361,7 +379,12 @@ export function useNarrative(
         };
 
         const suggestionSource = actionResult.readOnly ? currentState : newState;
-        setActionSuggestions(buildActionSuggestionsFlow(suggestionSource));
+        setActionSuggestions(
+          resolveActionSuggestionsFlow({
+            fallbackSuggestions: buildActionSuggestionsFlow(suggestionSource),
+            state: suggestionSource,
+          }),
+        );
 
         if (action?.type === "status") {
           const statusString = renderStatusBlock(
@@ -457,6 +480,7 @@ export function useNarrative(
             source: initialResult.source,
             timestamp: seededAt,
             mood: initialResult.mood,
+            sceneMemory: initialResult.sceneMemory || buildSceneMemorySeed(currentState),
           },
         );
 
@@ -470,7 +494,9 @@ export function useNarrative(
         setActionSuggestions(
           resolveActionSuggestionsFlow({
             preferredSuggestions: initialResult.suggestions,
+            preferredChoiceMeta: initialResult.choiceMeta,
             fallbackSuggestions: buildActionSuggestionsFlow(seededState),
+            state: seededState,
           }),
         );
       } catch (err) {
@@ -495,6 +521,8 @@ export function useNarrative(
             narrative: {
               ...nextState.narrative,
               summary: fallbackResult.narrative,
+              sceneMemory:
+                nextState.narrative?.sceneMemory || buildSceneMemorySeed(currentState),
             },
           };
         });

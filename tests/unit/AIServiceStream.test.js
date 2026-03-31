@@ -40,6 +40,23 @@ describe("AIService streaming narrative", () => {
             narrative: "A hush settles over the shrine courtyard.",
             mood: "serene",
             suggestions: [{ t: "kneel at the altar", w: 0.92 }],
+            sceneMemory: {
+              locationLabel: "Shrine Courtyard",
+              zoneLabel: "Moonlit Rise",
+              immediateObjective: "Learn why the altar awoke.",
+              presentEntities: ["Shrine Caretaker"],
+              activeThreats: [],
+              unresolvedHooks: ["Awakened altar"],
+              lastConsequence: "The courtyard fell silent.",
+            },
+            choiceMeta: [
+              {
+                intent: "Study the altar respectfully.",
+                category: "observe",
+                urgency: 0.92,
+                groundedInState: true,
+              },
+            ],
           }),
           {
             status: 200,
@@ -54,6 +71,8 @@ describe("AIService streaming narrative", () => {
 
     expect(result.mood).toBe("serene");
     expect(result.suggestions).toEqual([{ t: "kneel at the altar", w: 0.92 }]);
+    expect(result.sceneMemory?.locationLabel).toBe("Shrine Courtyard");
+    expect(result.choiceMeta?.[0]?.category).toBe("observe");
     expect(globalThis.fetch).toHaveBeenCalledTimes(2);
   });
 

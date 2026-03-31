@@ -65,6 +65,23 @@ describe("narrate-runs-store file backend", () => {
         narrative: "The gate opens with a low metallic hum.",
         mood: "mysterious",
         suggestions: ["Step through carefully."],
+        sceneMemory: {
+          locationLabel: "Gate Antechamber",
+          zoneLabel: "Lower Vault",
+          immediateObjective: "Reach the inner vault.",
+          presentEntities: ["Gate Warden"],
+          activeThreats: [],
+          unresolvedHooks: ["Inner vault"],
+          lastConsequence: "The gate unlocked.",
+        },
+        choiceMeta: [
+          {
+            intent: "Advance while the mechanism remains open.",
+            category: "progress",
+            urgency: 0.8,
+            groundedInState: true,
+          },
+        ],
         outputHash: "hash-1",
       },
     });
@@ -81,6 +98,8 @@ describe("narrate-runs-store file backend", () => {
     });
     expect(readBack.narrative).toContain("gate opens");
     expect(Array.isArray(readBack.suggestions)).toBe(true);
+    expect(readBack.scene_memory?.locationLabel).toBe("Gate Antechamber");
+    expect(readBack.choice_meta?.[0]?.category).toBe("progress");
 
     const raw = JSON.parse(fs.readFileSync(filePath, "utf8"));
     expect(Array.isArray(raw.runs)).toBe(true);

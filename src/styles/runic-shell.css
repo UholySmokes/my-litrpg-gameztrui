@@ -1611,3 +1611,512 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+:root {
+  --shell-bg-0: #dbe6e8;
+  --shell-bg-1: #b9ccd2;
+  --shell-bg-2: #91aab2;
+  --shell-surface: rgba(242, 247, 247, 0.9);
+  --shell-surface-strong: rgba(250, 252, 252, 0.96);
+  --shell-border: rgba(66, 92, 99, 0.24);
+  --shell-border-strong: rgba(66, 92, 99, 0.38);
+  --shell-shadow: 0 28px 72px rgba(33, 51, 58, 0.14);
+  --shell-noise:
+    radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px),
+    radial-gradient(circle at 78% 26%, rgba(77, 109, 117, 0.08) 0 1px, transparent 1px);
+}
+
+body,
+.app-frame {
+  background:
+    radial-gradient(circle at 12% 15%, rgba(116, 182, 186, 0.18), transparent 22%),
+    radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.42), transparent 20%),
+    radial-gradient(circle at 50% 100%, rgba(218, 144, 102, 0.18), transparent 34%),
+    linear-gradient(180deg, #eef5f5 0%, #d7e5e8 42%, #afc3c8 100%);
+}
+
+.app-container {
+  background: rgba(238, 245, 245, 0.82);
+  border: 1px solid rgba(66, 92, 99, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 28px 64px rgba(33, 51, 58, 0.12);
+}
+
+.holo-panel,
+.surface-section,
+.surface-dialog__panel,
+.save-reset-gate__card,
+.character-hub__mission,
+.character-hub__launch {
+  background:
+    linear-gradient(180deg, rgba(252, 254, 254, 0.96), rgba(232, 241, 242, 0.94));
+  border: 1px solid rgba(66, 92, 99, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 18px 38px rgba(40, 60, 66, 0.1);
+}
+
+.holo-button {
+  border-color: rgba(49, 108, 112, 0.28);
+  background:
+    linear-gradient(180deg, rgba(245, 251, 251, 0.98), rgba(205, 226, 229, 0.94));
+  color: #163137;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 10px 20px rgba(41, 66, 72, 0.1);
+}
+
+.holo-button:hover {
+  border-color: rgba(49, 108, 112, 0.46);
+  background:
+    linear-gradient(180deg, rgba(252, 254, 254, 1), rgba(194, 220, 224, 0.96));
+  color: #10262b;
+}
+
+.holo-button--solid {
+  background:
+    linear-gradient(180deg, rgba(41, 97, 102, 0.96), rgba(25, 58, 61, 0.98));
+  border-color: rgba(29, 68, 71, 0.72);
+  color: #eef8f8;
+}
+
+.holo-button--danger {
+  background:
+    linear-gradient(180deg, rgba(180, 102, 72, 0.92), rgba(122, 64, 44, 0.98));
+  border-color: rgba(143, 78, 53, 0.62);
+}
+
+.character-hub {
+  color: #173036;
+}
+
+.character-hub__hero {
+  padding: 1.35rem 1.45rem;
+  border-radius: 32px;
+  background:
+    linear-gradient(145deg, rgba(252, 254, 254, 0.96), rgba(222, 236, 238, 0.92));
+  border: 1px solid rgba(66, 92, 99, 0.16);
+  box-shadow: var(--shell-shadow);
+}
+
+.character-hub__title,
+.character-hub__panel-title,
+.adventure-shell__title,
+.adventure-shell__scene-title,
+.combat-stage__title {
+  color: #19353a;
+}
+
+.character-hub__copy,
+.character-hub__launch-copy,
+.character-hub__feature p,
+.adventure-shell__passage-summary,
+.adventure-shell__scene-objective,
+.adventure-shell__quiet-stage p,
+.adventure-shell__drawer-empty,
+.combat-stage__enemy-meta {
+  color: rgba(35, 62, 68, 0.72);
+}
+
+.character-hub__account {
+  background: rgba(245, 250, 250, 0.84);
+  border-color: rgba(66, 92, 99, 0.18);
+  color: rgba(35, 62, 68, 0.62);
+}
+
+.character-hub__account strong {
+  color: #19353a;
+}
+
+.character-hub__body--solo {
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.9fr);
+}
+
+.character-hub__mission,
+.character-hub__launch {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-radius: 28px;
+}
+
+.character-hub__panel-kicker {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(35, 96, 100, 0.74);
+}
+
+.character-hub__feature-list,
+.character-hub__pathway {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.character-hub__feature,
+.character-hub__path-step {
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  background: rgba(247, 251, 251, 0.9);
+  border: 1px solid rgba(66, 92, 99, 0.12);
+}
+
+.character-hub__feature h4,
+.character-hub__path-step strong {
+  margin: 0;
+  color: #19353a;
+}
+
+.character-hub__feature p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.character-hub__path-step {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 0.8rem;
+}
+
+.character-hub__path-step span {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(41, 97, 102, 0.12);
+  color: #1a5a60;
+  font-weight: 700;
+}
+
+.character-hub__launch-footer {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.adventure-shell__topbar,
+.adventure-shell__scene-card,
+.adventure-shell__battle-stage {
+  background:
+    linear-gradient(160deg, rgba(252, 254, 254, 0.98), rgba(225, 236, 238, 0.94));
+  border-color: rgba(66, 92, 99, 0.14);
+  box-shadow: var(--shell-shadow);
+}
+
+.adventure-shell__statuscard,
+.adventure-shell__meter,
+.combat-stage__enemy-card,
+.combat-stage__lane,
+.combat-stage__skill-chip,
+.combat-stage__lane-chip,
+.adventure-shell__combat-drawer,
+.adventure-shell__combat-drawer-stat {
+  background: rgba(247, 251, 251, 0.9);
+  border-color: rgba(66, 92, 99, 0.12);
+}
+
+.combat-stage__meterfill {
+  background: linear-gradient(90deg, #2f8185, #d18c60);
+}
+
+.adventure-shell__eyebrow,
+.surface-section__eyebrow,
+.save-reset-gate__eyebrow,
+.adventure-shell__scene-kicker,
+.combat-stage__eyebrow,
+.adventure-shell__quiet-title,
+.character-hub__panel-kicker {
+  color: rgba(35, 96, 100, 0.74);
+}
+
+@media (max-width: 1180px) {
+  .character-hub__body--solo {
+    grid-template-columns: 1fr;
+  }
+}
+
+body,
+.app-frame {
+  background: var(--shell-body-backdrop);
+  color: var(--text-main);
+}
+
+#root {
+  isolation: isolate;
+}
+
+.app-frame::before,
+.entry-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: var(--shell-frame-backdrop);
+  opacity: 0.96;
+  z-index: -2;
+}
+
+.app-container {
+  background: color-mix(in srgb, var(--bg-panel) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 14%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 32px 90px rgba(0, 0, 0, 0.18);
+}
+
+.holo-panel,
+.surface-section,
+.surface-dialog__panel,
+.save-reset-gate__card,
+.character-hub__mission,
+.character-hub__launch,
+.entry-shell__panel,
+.entry-shell__hero,
+.entry-shell__status,
+.entry-shell__footer {
+  background: var(--shell-panel-gradient);
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 14%, rgba(255, 255, 255, 0.08));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 18px 44px rgba(0, 0, 0, 0.14);
+}
+
+.holo-button,
+.surface-button,
+.surface-dialog__actions .holo-button {
+  border-color: color-mix(in srgb, var(--holo-cyan) 30%, transparent);
+  background: var(--shell-button-gradient);
+  color: var(--text-main);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 12px 26px rgba(0, 0, 0, 0.14);
+}
+
+.holo-button:hover,
+.surface-button:hover,
+.surface-dialog__actions .holo-button:hover {
+  border-color: color-mix(in srgb, var(--holo-gold) 38%, transparent);
+  background: var(--shell-button-hover-gradient);
+  color: var(--holo-ink);
+}
+
+.holo-button--solid {
+  background: var(--shell-button-solid-gradient);
+  border-color: color-mix(in srgb, var(--holo-gold) 38%, transparent);
+  color: var(--holo-ink);
+}
+
+.holo-button--danger {
+  background: var(--shell-button-danger-gradient);
+  border-color: color-mix(in srgb, var(--holo-alert) 42%, transparent);
+  color: var(--text-main);
+}
+
+.character-hub,
+.entry-shell,
+.adventure-shell,
+.save-reset-gate,
+.surface-dialog {
+  color: var(--text-main);
+}
+
+.character-hub__hero,
+.adventure-shell__topbar,
+.adventure-shell__scene-card,
+.adventure-shell__battle-stage {
+  background: var(--shell-card-gradient);
+  border-color: color-mix(in srgb, var(--holo-cyan) 14%, transparent);
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.16);
+}
+
+.character-hub__feature,
+.character-hub__path-step,
+.adventure-shell__statuscard,
+.adventure-shell__meter,
+.combat-stage__enemy-card,
+.combat-stage__lane,
+.combat-stage__skill-chip,
+.combat-stage__lane-chip,
+.adventure-shell__combat-drawer,
+.adventure-shell__combat-drawer-stat,
+.entry-shell__status {
+  background: var(--shell-quiet-gradient);
+  border-color: color-mix(in srgb, var(--holo-cyan) 16%, transparent);
+}
+
+.adventure-shell__scene-card {
+  background: var(--shell-scene-gradient);
+}
+
+.adventure-shell__battle-stage {
+  background: var(--shell-stage-gradient);
+}
+
+.entry-shell__backdrop,
+.adventure-shell__ambient,
+.character-hub__ambient {
+  background: transparent;
+}
+
+.combat-stage__meterfill {
+  background: linear-gradient(90deg, var(--holo-cyan), var(--holo-gold));
+}
+
+.character-hub__title,
+.character-hub__panel-title,
+.adventure-shell__title,
+.adventure-shell__scene-title,
+.combat-stage__title,
+.entry-shell__title {
+  color: var(--text-main);
+  font-family: var(--font-hud);
+}
+
+.character-hub__copy,
+.character-hub__launch-copy,
+.character-hub__feature p,
+.adventure-shell__passage-summary,
+.adventure-shell__scene-objective,
+.adventure-shell__quiet-stage p,
+.adventure-shell__drawer-empty,
+.combat-stage__enemy-meta,
+.entry-shell__description,
+.entry-shell__footer {
+  color: var(--text-dim);
+}
+
+.adventure-shell__eyebrow,
+.surface-section__eyebrow,
+.save-reset-gate__eyebrow,
+.adventure-shell__scene-kicker,
+.combat-stage__eyebrow,
+.adventure-shell__quiet-title,
+.character-hub__panel-kicker,
+.entry-shell__eyebrow {
+  color: color-mix(in srgb, var(--holo-cyan) 72%, white);
+}
+
+.character-hub__account {
+  background: color-mix(in srgb, var(--bg-panel) 74%, transparent);
+  border-color: color-mix(in srgb, var(--holo-cyan) 16%, transparent);
+  color: var(--text-dim);
+}
+
+.character-hub__account strong {
+  color: var(--text-main);
+}
+
+.theme-dock {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 80;
+  width: min(340px, calc(100vw - 1.6rem));
+  display: grid;
+  gap: 0.95rem;
+  padding: 1rem;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-panel) 92%, transparent), color-mix(in srgb, var(--bg-glass) 94%, transparent));
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 20%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 24px 64px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(20px);
+}
+
+.theme-dock__header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.theme-dock__eyebrow {
+  margin: 0;
+  font-size: 0.68rem;
+  font-family: var(--font-code);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--holo-cyan) 72%, white);
+}
+
+.theme-dock__title {
+  margin: 0;
+  font-family: var(--font-hud);
+  font-size: 1.05rem;
+  color: var(--text-main);
+}
+
+.theme-dock__summary {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.theme-dock__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.theme-dock__swatch {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.72rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 16%, transparent);
+  background: color-mix(in srgb, var(--bg-panel) 76%, transparent);
+  color: var(--text-main);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.theme-dock__swatch:hover,
+.theme-dock__swatch:focus-visible {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--holo-gold) 36%, transparent);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14);
+}
+
+.theme-dock__swatch--active {
+  border-color: color-mix(in srgb, var(--holo-gold) 44%, transparent);
+  background: color-mix(in srgb, var(--bg-panel) 88%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--holo-gold) 32%, transparent),
+    0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.theme-dock__swatch-preview {
+  width: 100%;
+  aspect-ratio: 2.3 / 1;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.theme-dock__swatch-name {
+  font-family: var(--font-hud);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 820px) {
+  .theme-dock {
+    left: 0.8rem;
+    right: 0.8rem;
+    bottom: 0.8rem;
+    width: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .theme-dock__grid {
+    grid-template-columns: 1fr;
+  }
+}

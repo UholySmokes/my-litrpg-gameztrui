@@ -1,30 +1,28 @@
-import { useMemo, useState } from "react";
-import {
-  FEATURED_ARCHETYPES,
-  formatIdentityLabel,
-} from "./shellState.js";
+const GENESIS_PILLARS = [
+  {
+    title: "System First",
+    copy: "Bind the progression engine before you decide lineage, class, or craft.",
+  },
+  {
+    title: "No Premade Hero",
+    copy: "Featured combat identities are gone. Every run now starts as a blank chronicle.",
+  },
+  {
+    title: "Author The Shape",
+    copy: "Race, doctrine, profession, attributes, perks, and alignment stay under your control.",
+  },
+];
 
-function SpotlightMetric({ label, value }) {
-  return (
-    <div className="character-hub__metric">
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </div>
-  );
-}
+const GENESIS_STEPS = [
+  "Name and bind the run",
+  "Choose System, origin, race, and class",
+  "Tune craft, stats, skills, perks, and alignment",
+];
 
 export default function CharacterHub({
   user = null,
   onStartCreation,
 }) {
-  const [selectedId, setSelectedId] = useState(FEATURED_ARCHETYPES[0]?.id || "");
-  const selectedHero = useMemo(
-    () =>
-      FEATURED_ARCHETYPES.find((hero) => hero.id === selectedId) ||
-      FEATURED_ARCHETYPES[0],
-    [selectedId],
-  );
-
   const accountLabel =
     user?.id === "local"
       ? "Local Chronicle"
@@ -32,12 +30,13 @@ export default function CharacterHub({
 
   return (
     <section className="character-hub">
-      <div className="character-hub__intro">
+      <div className="character-hub__intro character-hub__hero">
         <div className="character-hub__eyebrow">Character Hub</div>
-        <h2 className="character-hub__title">Choose the fantasy of your next run.</h2>
+        <h2 className="character-hub__title">Build the run from zero.</h2>
         <p className="character-hub__copy">
-          Start with a featured combat identity, then lock in your exact race,
-          class, profession, and System bindings inside the full creation flow.
+          No featured combat identity is waiting for you here. Start from a blank
+          chronicle, bind a System, shape your lineage, and author the combat role
+          yourself inside the full genesis flow.
         </p>
         <div className="character-hub__account">
           <span>Bound profile</span>
@@ -45,68 +44,42 @@ export default function CharacterHub({
         </div>
       </div>
 
-      <div className="character-hub__body">
-        <div className="character-hub__roster">
-          {FEATURED_ARCHETYPES.map((hero) => {
-            const active = hero.id === selectedHero?.id;
-            return (
-              <button
-                key={hero.id}
-                type="button"
-                className={[
-                  "character-hub__card",
-                  `character-hub__card--${hero.accent}`,
-                  active ? "character-hub__card--active" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                onClick={() => setSelectedId(hero.id)}
-              >
-                <div className="character-hub__card-eyebrow">
-                  {hero.lineage} • {hero.classLabel}
-                </div>
-                <div className="character-hub__card-name">{hero.name}</div>
-                <div className="character-hub__card-role">{hero.role}</div>
-                <div className="character-hub__card-copy">{hero.summary}</div>
-                <div className="character-hub__traits">
-                  {hero.traits.map((trait) => (
-                    <span key={trait}>{trait}</span>
-                  ))}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        <aside
-          className={[
-            "character-hub__spotlight",
-            selectedHero ? `character-hub__spotlight--${selectedHero.accent}` : "",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-        >
-          <div className="character-hub__spotlight-kicker">Featured Path</div>
-          <h3 className="character-hub__spotlight-name">{selectedHero?.name}</h3>
-          <div className="character-hub__spotlight-meta">
-            {formatIdentityLabel(selectedHero?.lineage)} • {formatIdentityLabel(selectedHero?.classLabel)}
+      <div className="character-hub__body character-hub__body--solo">
+        <section className="character-hub__mission">
+          <div className="character-hub__panel-kicker">Genesis Scope</div>
+          <h3 className="character-hub__panel-title">
+            Every run starts authored, not assigned.
+          </h3>
+          <div className="character-hub__feature-list">
+            {GENESIS_PILLARS.map((pillar) => (
+              <article key={pillar.title} className="character-hub__feature">
+                <h4>{pillar.title}</h4>
+                <p>{pillar.copy}</p>
+              </article>
+            ))}
           </div>
-          <p className="character-hub__spotlight-copy">{selectedHero?.summary}</p>
+        </section>
 
-          <div className="character-hub__metrics">
-            <SpotlightMetric label="Role" value={selectedHero?.role || "-"} />
-            <SpotlightMetric label="Lineage" value={selectedHero?.lineage || "-"} />
-            <SpotlightMetric label="Class" value={selectedHero?.classLabel || "-"} />
+        <aside className="character-hub__launch">
+          <div className="character-hub__panel-kicker">Launch Vector</div>
+          <h3 className="character-hub__panel-title">Shape the whole identity in one pass.</h3>
+          <div className="character-hub__pathway">
+            {GENESIS_STEPS.map((step, index) => (
+              <div key={step} className="character-hub__path-step">
+                <span>{index + 1}</span>
+                <strong>{step}</strong>
+              </div>
+            ))}
           </div>
-
-          <div className="character-hub__spotlight-footer">
-            <div className="character-hub__spotlight-note">
-              Your exact build is still fully reversible during creation.
-            </div>
+          <p className="character-hub__launch-copy">
+            The build stays reversible during creation, but the opening premise is
+            yours from the first click.
+          </p>
+          <div className="character-hub__launch-footer">
             <button
               type="button"
               className="holo-button holo-button--solid"
-              onClick={() => onStartCreation?.(selectedHero)}
+              onClick={() => onStartCreation?.()}
             >
               Begin Character Genesis
             </button>

@@ -14,6 +14,11 @@ const ALLOWED_CHOICE_CATEGORIES = new Set([
   "power",
   "risk",
 ]);
+const ALLOWED_STATE_INTENT_TYPES = new Set([
+  "world.flag.set",
+  "clue.add",
+  "player.reputation.delta",
+]);
 
 function normalizeString(value) {
   return typeof value === "string" ? value.trim() : "";
@@ -131,6 +136,44 @@ function normalizeChoiceMeta(choiceMeta, suggestionCount) {
   return hasContent ? normalized : undefined;
 }
 
+function normalizeStateIntentEntry(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const type = normalizeString(value.type);
+  if (!ALLOWED_STATE_INTENT_TYPES.has(type)) return null;
+
+  if (type === "world.flag.set") {
+    const flag = normalizeString(value.flag);
+    if (!flag) return null;
+    return { type, flag, value: Boolean(value.value) };
+  }
+
+  if (type === "clue.add") {
+    const clueId = normalizeString(value.clueId);
+    if (!clueId) return null;
+    return { type, clueId };
+  }
+
+  if (type === "player.reputation.delta") {
+    const delta = Number(value.value);
+    if (!Number.isFinite(delta) || delta === 0) return null;
+    return {
+      type,
+      value: Math.max(-5, Math.min(5, Math.round(delta))),
+    };
+  }
+
+  return null;
+}
+
+function normalizeStateIntents(stateIntents) {
+  if (!Array.isArray(stateIntents)) return undefined;
+  const normalized = stateIntents
+    .slice(0, 3)
+    .map((entry) => normalizeStateIntentEntry(entry))
+    .filter(Boolean);
+  return normalized.length > 0 ? normalized : undefined;
+}
+
 export function normalizeNarrationPayload(payload, fallback = {}) {
   const narrative = normalizeString(payload?.narrative || fallback.narrative);
   if (!narrative) {
@@ -145,6 +188,9 @@ export function normalizeNarrationPayload(payload, fallback = {}) {
     payload?.choiceMeta || fallback.choiceMeta,
     suggestions.length,
   );
+  const stateIntents = normalizeStateIntents(
+    payload?.stateIntents || fallback.stateIntents,
+  );
 
   return {
     narrative,
@@ -155,6 +201,7 @@ export function normalizeNarrationPayload(payload, fallback = {}) {
     fallbackUsed: Boolean(
       payload?.fallbackUsed ?? fallback.fallbackUsed ?? false,
     ),
+    stateIntents,
     sceneMemory,
     choiceMeta,
   };

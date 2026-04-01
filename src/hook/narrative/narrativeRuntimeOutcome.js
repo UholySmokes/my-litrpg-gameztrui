@@ -4,6 +4,24 @@ import {
   inferMood,
   resolveActionSuggestions,
 } from "./narrativeSuggestions.js";
+import { deriveStateIntentsFromNarrative } from "./narrativeStateIntentExtraction.js";
+
+function mergeStateIntents(explicitIntents, derivedIntents) {
+  const merged = [];
+  const seen = new Set();
+
+  [...(Array.isArray(explicitIntents) ? explicitIntents : []), ...(derivedIntents || [])].forEach(
+    (intent) => {
+      if (!intent || typeof intent !== "object") return;
+      const key = JSON.stringify(intent);
+      if (seen.has(key)) return;
+      seen.add(key);
+      merged.push(intent);
+    },
+  );
+
+  return merged.length ? merged : undefined;
+}
 
 export function resolveNarrativeRuntimeOutcome({
   aiResult,
@@ -18,6 +36,7 @@ export function resolveNarrativeRuntimeOutcome({
     typeof aiResult?.narrative === "string" && aiResult.narrative.trim().length > 0;
 
   if (hasNarrative) {
+    const derivedStateIntents = deriveStateIntentsFromNarrative(aiResult.narrative);
     return {
       narrative: aiResult.narrative.trim(),
       mood:
@@ -41,6 +60,7 @@ export function resolveNarrativeRuntimeOutcome({
           ? aiResult.sceneMemory
           : undefined,
       choiceMeta: Array.isArray(aiResult?.choiceMeta) ? aiResult.choiceMeta : undefined,
+      stateIntents: mergeStateIntents(aiResult?.stateIntents, derivedStateIntents),
     };
   }
 

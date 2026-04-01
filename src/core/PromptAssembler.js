@@ -976,6 +976,8 @@ Hard rules:
 - Begin the first sentence with the concrete result of the validated action, state change, or failed attempt.
 - Each suggestion must be feasible from the current scene and distinct in category from the others.
 - Suggestions must not be simple paraphrases of the same move.
+- stateIntents is optional. Include it only when a concrete, grounded world consequence should be persisted.
+- If a persistent consequence exists, state it plainly in narration (e.g., "Reputation increased by 1.", "Clue: hidden_passage_map", "Flag: guard_alert active").
 
 === RESPONSE FORMAT ===
 Return one valid JSON object with this shape:
@@ -993,6 +995,11 @@ Return one valid JSON object with this shape:
   ],
   "choiceMeta": [
     { "intent": "brief rationale", "category": "observe|social|progress|recovery|power|risk", "urgency": 0.0, "groundedInState": true }
+  ],
+  "stateIntents": [
+    { "type": "world.flag.set", "flag": "string_flag_id", "value": true },
+    { "type": "clue.add", "clueId": "string_clue_id" },
+    { "type": "player.reputation.delta", "value": 1 }
   ],
   "sceneMemory": {
     "locationLabel": "Current place name",

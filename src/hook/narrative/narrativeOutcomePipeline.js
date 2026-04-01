@@ -39,3 +39,76 @@ export function mergeSuggestedQuestIntoState(state, suggestedQuest) {
     },
   };
 }
+
+export function applyNarrativeStateIntents(state, intents = []) {
+  if (!Array.isArray(intents) || intents.length === 0) {
+    return { state, notes: [] };
+  }
+
+  let nextState = state;
+  const notes = [];
+
+  intents.forEach((intent) => {
+    switch (intent?.type) {
+      case "world.flag.set": {
+        const flag = String(intent.flag || "").trim();
+        if (!flag) return;
+        const world = nextState?.world || {};
+        nextState = {
+          ...nextState,
+          world: {
+            ...world,
+            flags: {
+              ...(world.flags || {}),
+              [flag]: Boolean(intent.value),
+            },
+          },
+        };
+        break;
+      }
+      case "clue.add": {
+        const clueId = String(intent.clueId || "").trim();
+        if (!clueId) return;
+        const world = nextState?.world || {};
+        const vars = world?.vars && typeof world.vars === "object" ? world.vars : {};
+        const clues = Array.isArray(vars.clues) ? vars.clues : [];
+        if (clues.includes(clueId)) return;
+        nextState = {
+          ...nextState,
+          world: {
+            ...world,
+            vars: {
+              ...vars,
+              clues: [...clues, clueId],
+            },
+          },
+        };
+        notes.push(`Clue discovered: ${clueId.replace(/_/g, " ")}.`);
+        break;
+      }
+      case "player.reputation.delta": {
+        const delta = Number(intent.value);
+        if (!Number.isFinite(delta) || delta === 0) return;
+        const player = nextState?.player || {};
+        const nextReputation = (Number(player.reputation) || 0) + delta;
+        nextState = {
+          ...nextState,
+          player: {
+            ...player,
+            reputation: nextReputation,
+          },
+        };
+        notes.push(
+          delta > 0
+            ? `Reputation increased by ${Math.abs(delta)}.`
+            : `Reputation decreased by ${Math.abs(delta)}.`,
+        );
+        break;
+      }
+      default:
+        break;
+    }
+  });
+
+  return { state: nextState, notes };
+}

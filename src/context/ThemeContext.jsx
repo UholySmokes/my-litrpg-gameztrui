@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useState,
 } from "react";
@@ -545,16 +546,40 @@ export function useTheme() {
 
 export function ThemeDock() {
   const { currentThemeId, setTheme, theme, themes } = useTheme();
+  const gridId = useId();
+  const [isReduced, setIsReduced] = useState(false);
 
   return (
-    <aside className="theme-dock" aria-label="Theme selection">
+    <aside
+      className={`theme-dock ${isReduced ? "theme-dock--reduced" : ""}`}
+      aria-label="Theme selection"
+    >
       <div className="theme-dock__header">
-        <div className="theme-dock__eyebrow">Theme Set</div>
-        <div className="theme-dock__title">{theme.name}</div>
-        <div className="theme-dock__summary">{theme.summary}</div>
+        <div className="theme-dock__meta">
+          <div className="theme-dock__eyebrow">Theme Set</div>
+          <div className="theme-dock__title-row">
+            <span
+              className="theme-dock__active-preview"
+              style={{ background: theme.preview }}
+              aria-hidden="true"
+            />
+            <div className="theme-dock__title">{theme.name}</div>
+          </div>
+          <div className="theme-dock__summary">{theme.summary}</div>
+        </div>
+        <button
+          type="button"
+          className="theme-dock__toggle"
+          onClick={() => setIsReduced((prev) => !prev)}
+          aria-expanded={!isReduced}
+          aria-controls={gridId}
+          aria-label={isReduced ? "Expand theme list" : "Retract theme list"}
+        >
+          {isReduced ? "Expand" : "Retract"}
+        </button>
       </div>
 
-      <div className="theme-dock__grid">
+      <div id={gridId} className="theme-dock__grid" hidden={isReduced}>
         {themes.map((entry) => {
           const isActive = entry.id === currentThemeId;
           return (

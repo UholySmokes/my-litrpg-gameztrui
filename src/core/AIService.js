@@ -569,12 +569,15 @@ export async function generateNarrativeStream(
 
     let pollData;
     try {
+      let pollResponse = null;
+      let pollError = null;
       for (let i = 0; i < pollHeaderVariants.length; i += 1) {
         const res = await fetchWithTimeout(
           `${endpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}${mode ? `&mode=${encodeURIComponent(mode)}` : ""}`,
           { method: "GET", headers: pollHeaderVariants[i], signal },
           15000,
         );
+        pollResponse = res;
         pollData = await res.json().catch(() => null);
         if (
           (res.status === 401 || res.status === 403) &&
@@ -582,11 +585,34 @@ export async function generateNarrativeStream(
         ) {
           continue;
         }
+        if (!res.ok) {
+          pollError = new Error(
+            pollData?.message || `Stream poll failed (${res.status})`,
+          );
+        }
+        break;
+      }
+      if (pollError) {
+        throw pollError;
+      }
+      if (!pollResponse) {
+        throw new Error("Stream poll failed (no response).");
+      }
         break;
       }
     } catch (error) {
       if (error?.name === "AbortError") throw error;
       if (isDev) console.warn("Stream poll error:", error);
+      if (
+        String(error?.message || "").toLowerCase().includes("unauthorized")
+      ) {
+        if (isDev) {
+          console.warn("Stream poll unauthorized, falling back to sync narrate");
+        }
+        const result = await generateNarrative(prompt, { mode });
+        if (typeof onDone === "function") onDone(result);
+        return result;
+      }
       continue; // retry next poll
     }
 

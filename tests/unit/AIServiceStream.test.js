@@ -134,4 +134,64 @@ describe("AIService streaming narrative", () => {
     expect(firstHeaders["x-dev-user-id"]).toBe("local");
     expect(secondHeaders["x-dev-user-id"]).toBeUndefined();
   });
+
+  it("falls back to sync narrate when stream poll stays unauthorized", async () => {
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_DEV_USER_ID: "local",
+      VITE_DEV_USER_EMAIL: "local@game.dev",
+      VITE_NARRATE_ENDPOINT: "/api/narrate",
+    };
+
+    globalThis.fetch = jest
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            threadId: "thread-poll-auth",
+            runId: "run-poll-auth",
+            status: "running",
+            done: false,
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ ok: false, message: "Unauthorized" }), {
+          status: 401,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ ok: false, message: "Unauthorized" }), {
+          status: 401,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            narrative: "Fallback sync narration recovered the turn.",
+            mood: "focused",
+            suggestions: [{ t: "Continue", w: 0.8 }],
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      );
+
+    const promise = generateNarrativeStream("Recover from auth mismatch.");
+    await jest.advanceTimersByTimeAsync(1500);
+    const result = await promise;
+
+    expect(result.narrative).toContain("Fallback sync narration recovered");
+    expect(globalThis.fetch).toHaveBeenCalledTimes(4);
+    expect(globalThis.fetch.mock.calls[3][0]).toBe("/api/narrate");
+  });
 });

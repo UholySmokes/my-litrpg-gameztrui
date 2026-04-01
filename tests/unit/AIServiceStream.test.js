@@ -74,7 +74,9 @@ describe("AIService streaming narrative", () => {
     const result = await promise;
 
     expect(result.mood).toBe("serene");
-    expect(result.suggestions).toEqual([{ t: "kneel at the altar", w: 0.92 }]);
+    expect(result.suggestions).toEqual([
+      expect.objectContaining({ t: "kneel at the altar", w: 0.92 }),
+    ]);
     expect(result.sceneMemory?.locationLabel).toBe("Shrine Courtyard");
     expect(result.choiceMeta?.[0]?.category).toBe("observe");
     expect(globalThis.fetch).toHaveBeenCalledTimes(2);

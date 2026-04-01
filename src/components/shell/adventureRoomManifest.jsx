@@ -15,6 +15,7 @@ import EquipmentPanel from "../../ui/panels/EquipmentPanel.jsx";
 import EquipmentSelectionPanel from "../../ui/panels/EquipmentSelectionPanel.jsx";
 import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../../ui/panels/ActionSuggestionsPanel.jsx";
+import MagicStudyPanel from "../../ui/panels/MagicStudyPanel.jsx";
 
 function RoomSection({ eyebrow, title, children }) {
   return (
@@ -36,6 +37,9 @@ function BattleTheaterIdle({ combatState }) {
     .slice(0, 3)
     .map((enemy) => enemy?.name || "Unknown foe")
     .join(", ");
+  const combatLog = Array.isArray(combatState?.log) ? combatState.log : [];
+  const latestEvents = combatLog.slice(-4);
+  const showOverview = combatState?.status === "victory" && latestEvents.length > 0;
 
   return (
     <div className="atrium-room-idle">
@@ -54,6 +58,21 @@ function BattleTheaterIdle({ combatState }) {
           <strong>{enemyPreview || "None"}</strong>
         </div>
       </div>
+      {showOverview ? (
+        <div className="atrium-room-idle__metrics" style={{ marginTop: "0.85rem" }}>
+          <div style={{ width: "100%" }}>
+            <span>Battle Overview</span>
+            <strong>Last encounter resolved in victory.</strong>
+            <ul style={{ margin: "0.5rem 0 0", paddingLeft: "1rem" }}>
+              {latestEvents.map((event, index) => (
+                <li key={`${index}-${String(event)}`}>
+                  {typeof event === "string" ? event : event?.text || "Combat event recorded."}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -399,6 +418,24 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
         <EquipmentPanel
           player={player}
           onSelectSlot={surfaces.handleOpenEquipmentSlot}
+        />
+      ),
+    },
+    {
+      id: "magic-study",
+      title: "Magic Study",
+      subtitle: "Study natural phenomena, runes, inscriptions, and experimental spell build-ups.",
+      tone: "violet",
+      entryAction: "Enter study",
+      size: "xl",
+      group: "primary",
+      availability: true,
+      render: () => (
+        <MagicStudyPanel
+          player={player}
+          latestEntryText={narrative.latestEntryText}
+          onSubmitCommand={command.onSuggestionSelect}
+          suggestions={command.suggestions}
         />
       ),
     },

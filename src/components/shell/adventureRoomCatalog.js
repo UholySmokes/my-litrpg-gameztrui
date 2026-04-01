@@ -27,6 +27,15 @@ const BASE_CATALOG = [
     group: "primary",
   },
   {
+    id: "magic-study",
+    title: "Magic Study",
+    subtitle: "Study natural phenomena, runes, inscriptions, and spell build-up combinations.",
+    tone: "violet",
+    entryAction: "Enter study",
+    size: "xl",
+    group: "primary",
+  },
+  {
     id: "inventory",
     title: "Inventory Vault",
     subtitle: "Inspect carried inventory, rarities, and expedition stock.",

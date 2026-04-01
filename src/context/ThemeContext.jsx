@@ -545,17 +545,33 @@ export function useTheme() {
 
 export function ThemeDock() {
   const { currentThemeId, setTheme, theme, themes } = useTheme();
+  const [isReduced, setIsReduced] = useState(false);
+  const visibleThemes = isReduced
+    ? themes.filter((entry) => entry.id === currentThemeId).slice(0, 1)
+    : themes;
 
   return (
-    <aside className="theme-dock" aria-label="Theme selection">
+    <aside
+      className={`theme-dock ${isReduced ? "theme-dock--reduced" : ""}`}
+      aria-label="Theme selection"
+    >
       <div className="theme-dock__header">
         <div className="theme-dock__eyebrow">Theme Set</div>
         <div className="theme-dock__title">{theme.name}</div>
         <div className="theme-dock__summary">{theme.summary}</div>
+        <button
+          type="button"
+          className="theme-dock__toggle"
+          onClick={() => setIsReduced((prev) => !prev)}
+          aria-expanded={!isReduced}
+          aria-label={isReduced ? "Expand theme list" : "Reduce theme list"}
+        >
+          {isReduced ? "Expand" : "Reduce"}
+        </button>
       </div>
 
       <div className="theme-dock__grid">
-        {themes.map((entry) => {
+        {visibleThemes.map((entry) => {
           const isActive = entry.id === currentThemeId;
           return (
             <button

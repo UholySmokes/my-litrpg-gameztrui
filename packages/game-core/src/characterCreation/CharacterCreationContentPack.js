@@ -5,7 +5,10 @@ import skillSummariesData from "../data/generated/character-creation/skill-summa
 import classAbilitySummariesData from "../data/generated/character-creation/class-ability-summaries.json" with { type: "json" };
 import raceAbilitySummariesData from "../data/generated/character-creation/race-ability-summaries.json" with { type: "json" };
 import archetypeSystemsData from "../data/generated/character-creation/archetype-systems.json" with { type: "json" };
-import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
+import {
+  getAllArchetypeSystemSummaries,
+  getArchetypeSystemById,
+} from "../systems/archetype/ArchetypeSystemRegistry.js";
 
 function cloneValue(value) {
   if (value == null) return value;
@@ -82,6 +85,7 @@ const ARCHETYPE_SYSTEM_INDEX = new Map(
     .filter((entry) => typeof entry?.id === "string")
     .map((entry) => [entry.id, entry]),
 );
+const ADDITIONAL_SYSTEM_LIMIT = 12;
 
 function mergePreferredList(primary, fallback) {
   if (Array.isArray(primary)) return cloneList(primary);
@@ -145,6 +149,62 @@ function isSelectableCreationSystem(entry, platform = "") {
   if (!platform) return true;
   const platforms = Array.isArray(ordering.platforms) ? ordering.platforms : [];
   return platforms.includes(platform);
+}
+
+function toPreviewList(value) {
+  return Array.isArray(value) ? cloneList(value).filter(Boolean).slice(0, 3) : [];
+}
+
+function buildFallbackCreationSystemFromSummary(summary) {
+  if (!summary || typeof summary !== "object" || typeof summary.id !== "string") {
+    return null;
+  }
+
+  return {
+    id: summary.id,
+    name: summary.name || summary.id,
+    category: summary.category || "System",
+    summary: summary.summary || "",
+    description: summary.description || summary.summary || "",
+    coreLoop: toPreviewList(summary.coreLoopPreview),
+    progression: toPreviewList(summary.possibleUsesPreview),
+    narrativeHooks: toPreviewList(summary.narrativeHooksPreview),
+    questHooks: toPreviewList(summary.questHooksPreview),
+    rarity: summary.rarity || null,
+    stability: summary.stability || null,
+    tags: toPreviewList(summary.tags),
+    characterCreation: {
+      ordering: {
+        selectable: true,
+        platforms: ["web", "godot"],
+        priority: 500,
+      },
+      attributeBias: {
+        primary: [],
+        secondary: [],
+      },
+      skillRules: {
+        grantActiveIds: [],
+        grantPassiveIds: [],
+      },
+    },
+    quality: summary.quality || null,
+  };
+}
+
+function getAdditionalCreationSystems(existingIds = new Set()) {
+  return getAllArchetypeSystemSummaries()
+    .filter((entry) => {
+      if (!entry || typeof entry.id !== "string") return false;
+      if (existingIds.has(entry.id)) return false;
+      if (entry.category === "Overlay") return false;
+      if (entry.stability === "corrupted" || entry.stability === "forbidden") return false;
+      return true;
+    })
+    .map((entry) => buildFallbackCreationSystemFromSummary(entry))
+    .filter(Boolean)
+    .sort((left, right) => String(left?.name || left?.id).localeCompare(String(right?.name || right?.id)))
+    .slice(0, ADDITIONAL_SYSTEM_LIMIT);
 }
 
 export function getCharacterCreationClasses() {
@@ -221,10 +281,14 @@ export function getCharacterCreationSkillReferenceById(skillId) {
 }
 
 export function getCharacterCreationArchetypeSystems() {
-  return (Array.isArray(archetypeSystemsData) ? archetypeSystemsData : [])
+  const curated = (Array.isArray(archetypeSystemsData) ? archetypeSystemsData : [])
     .filter((entry) => isSelectableCreationSystem(entry))
     .map((entry) => hydrateArchetypeSystem(entry))
     .filter(Boolean);
+
+  const selectedIds = new Set(curated.map((entry) => entry.id));
+  const additional = getAdditionalCreationSystems(selectedIds);
+  return [...curated, ...additional];
 }
 
 export function getCharacterCreationArchetypeSystemsByCategory(category) {
@@ -237,5 +301,8 @@ export function getCharacterCreationArchetypeSystemsByCategory(category) {
 export function getCharacterCreationArchetypeSystemById(systemId) {
   if (!systemId) return null;
   const entry = ARCHETYPE_SYSTEM_INDEX.get(systemId) || null;
-  return isSelectableCreationSystem(entry) ? hydrateArchetypeSystem(entry) : null;
+  if (isSelectableCreationSystem(entry)) {
+    return hydrateArchetypeSystem(entry);
+  }
+  return getAdditionalCreationSystems().find((candidate) => candidate.id === systemId) || null;
 }

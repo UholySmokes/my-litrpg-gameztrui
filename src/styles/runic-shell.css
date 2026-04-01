@@ -2033,6 +2033,26 @@ body,
   gap: 0.25rem;
 }
 
+.theme-dock__toggle {
+  justify-self: start;
+  margin-top: 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 28%, transparent);
+  background: color-mix(in srgb, var(--bg-panel) 82%, transparent);
+  color: var(--text-main);
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 0.38rem 0.72rem;
+  cursor: pointer;
+}
+
+.theme-dock__toggle:hover,
+.theme-dock__toggle:focus-visible {
+  border-color: color-mix(in srgb, var(--holo-gold) 38%, transparent);
+}
+
 .theme-dock__eyebrow {
   margin: 0;
   font-size: 0.68rem;
@@ -2060,6 +2080,10 @@ body,
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.7rem;
+}
+
+.theme-dock--reduced .theme-dock__grid {
+  grid-template-columns: 1fr;
 }
 
 .theme-dock__swatch {

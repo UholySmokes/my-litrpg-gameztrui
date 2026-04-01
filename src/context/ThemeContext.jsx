@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useId,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -548,9 +549,46 @@ export function ThemeDock() {
   const { currentThemeId, setTheme, theme, themes } = useTheme();
   const gridId = useId();
   const [isReduced, setIsReduced] = useState(false);
+  const dockRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return undefined;
+
+    const root = document.documentElement;
+    const dockElement = dockRef.current;
+    if (!dockElement) return undefined;
+
+    const syncDockHeight = () => {
+      root.style.setProperty("--theme-dock-height", `${dockElement.offsetHeight}px`);
+    };
+
+    syncDockHeight();
+
+    if (typeof ResizeObserver !== "function") {
+      window.addEventListener("resize", syncDockHeight);
+      return () => {
+        window.removeEventListener("resize", syncDockHeight);
+        root.style.removeProperty("--theme-dock-height");
+      };
+    }
+
+    const observer = new ResizeObserver(() => {
+      syncDockHeight();
+    });
+
+    observer.observe(dockElement);
+    window.addEventListener("resize", syncDockHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", syncDockHeight);
+      root.style.removeProperty("--theme-dock-height");
+    };
+  }, [isReduced]);
 
   return (
     <aside
+      ref={dockRef}
       className={`theme-dock ${isReduced ? "theme-dock--reduced" : ""}`}
       aria-label="Theme selection"
     >

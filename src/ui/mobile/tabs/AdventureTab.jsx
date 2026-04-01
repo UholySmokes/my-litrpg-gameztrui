@@ -1,9 +1,5 @@
 import React from "react";
 
-/**
- * Adventure tab - main narrative screen + suggested actions + command input.
- * Wraps existing NarrativeHub + ActionSuggestions + CommandTerminal logic.
- */
 export default function AdventureTab({
   latestEntryText,
   suggestions,
@@ -14,26 +10,30 @@ export default function AdventureTab({
   isLoading,
   inputRef,
   error,
+  quests,
 }) {
-  const displayText = latestEntryText || "Your adventure awaits...";
+  const displayText = latestEntryText || "The atrium is still. Choose the next room or issue a command.";
+  const activeQuest = Array.isArray(quests?.active) ? quests.active[0] : null;
 
   return (
-    <div className="adventure-tab">
+    <div className="adventure-tab adventure-tab--atrium">
+      <div className="adventure-tab__hero">
+        <div className="mobile-section-title">World Atrium</div>
+        <h2 className="adventure-tab__title">{activeQuest?.name || "No active directive"}</h2>
+        <p className="adventure-tab__summary">
+          {activeQuest?.description || "Review the current chronicle pulse and route your next move."}
+        </p>
+      </div>
+
       <div className="adventure-tab__scene">{displayText}</div>
 
-      {error && (
-        <div
-          style={{
-            color: "var(--m-accent-danger, #ff2a6d)",
-            fontSize: "0.8rem",
-            padding: "0.4rem",
-          }}
-        >
+      {error ? (
+        <div className="adventure-tab__error">
           {typeof error === "string" ? error : error.message || "An error occurred."}
         </div>
-      )}
+      ) : null}
 
-      {suggestions && suggestions.length > 0 && (
+      {suggestions && suggestions.length > 0 ? (
         <div className="adventure-tab__actions">
           {suggestions.map((suggestion, index) => {
             const label =
@@ -60,13 +60,13 @@ export default function AdventureTab({
                 onClick={() => onSuggestionSelect?.({ label, command })}
                 disabled={isLoading || suggestion?.enabled === false}
               >
-                <span className="adventure-tab__action-marker">{">"}</span>
+                <span className="adventure-tab__action-marker">::</span>
                 <span>{label}</span>
               </button>
             );
           })}
         </div>
-      )}
+      ) : null}
 
       <form
         className="adventure-tab__input-row"
@@ -79,7 +79,7 @@ export default function AdventureTab({
           ref={inputRef}
           className="adventure-tab__input"
           type="text"
-          placeholder={isLoading ? "Thinking..." : "What do you do?"}
+          placeholder={isLoading ? "Routing through the lattice..." : "What do you do?"}
           value={userInput || ""}
           onChange={(event) => onInputChange?.(event.target.value)}
           disabled={isLoading}
@@ -90,7 +90,7 @@ export default function AdventureTab({
           className="adventure-tab__send-btn"
           disabled={isLoading || !userInput?.trim()}
         >
-          {isLoading ? "..." : "GO"}
+          CAST
         </button>
       </form>
     </div>

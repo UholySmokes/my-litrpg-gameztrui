@@ -21,7 +21,7 @@ export default function AdventureTab({
         <div className="mobile-section-title">World Atrium</div>
         <h2 className="adventure-tab__title">{activeQuest?.name || "No active directive"}</h2>
         <p className="adventure-tab__summary">
-          {activeQuest?.description || "Review the current chronicle pulse and route your next move."}
+          {activeQuest?.description || "Review the latest generated text and route your next move through the Command Dais."}
         </p>
       </div>
 

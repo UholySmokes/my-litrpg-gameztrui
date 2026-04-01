@@ -130,6 +130,9 @@ export default function AdventureShell({
       room.onClose?.();
       return;
     }
+    if (room.isOpen && typeof room.onClose === "function") {
+      room.onClose();
+    }
     setActiveRoomId((current) => (current === room.id ? null : current));
   };
 

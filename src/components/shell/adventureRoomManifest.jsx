@@ -382,6 +382,8 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       size: "lg",
       group: "primary",
       availability: true,
+      isOpen: Boolean(surfaces.showQuests),
+      onClose: surfaces.handleCloseQuests,
       render: () => <QuestPanel quests={quests} />,
     },
     {

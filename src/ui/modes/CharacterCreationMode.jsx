@@ -167,9 +167,6 @@ export default function CharacterCreationMode({
   const [activeChamberIndex, setActiveChamberIndex] = useState(0);
   const [unlockedChamberIndex, setUnlockedChamberIndex] = useState(0);
   const [wizardError, setWizardError] = useState("");
-  const [typewriterText, setTypewriterText] = useState(
-    "Bind a designation, then choose the system that will shape the rest of genesis.",
-  );
   const narrativeMemoryRef = useRef(null);
 
   const emitCreationTelemetry = useCallback(
@@ -210,7 +207,7 @@ export default function CharacterCreationMode({
     }
   }, [selectedClass]);
 
-  useEffect(() => {
+  const typewriterText = useMemo(() => {
     const description = [
       selectedArchetypeSystem?.summary,
       selectedOrigin?.description,
@@ -221,25 +218,10 @@ export default function CharacterCreationMode({
       .filter((value) => typeof value === "string" && value.trim())
       .join(" ");
 
-    if (!description) {
-      setTypewriterText(
-        "Bind a designation, then choose the system that will shape the rest of genesis.",
-      );
-      return;
-    }
-
-    const chars = Array.from(description);
-    setTypewriterText("");
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < chars.length) {
-        setTypewriterText((prev) => `${prev}${chars[index] ?? ""}`);
-        index += 1;
-      } else {
-        clearInterval(interval);
-      }
-    }, 15);
-    return () => clearInterval(interval);
+    return (
+      description ||
+      "Bind a designation, then choose the system that will shape the rest of genesis."
+    );
   }, [
     selectedArchetypeSystem?.summary,
     selectedClass,
@@ -571,3 +553,371 @@ export default function CharacterCreationMode({
       setWizardError(error?.message || "Character initialization failed.");
     }
   }, [chambers.length, emitCreationTelemetry, finalizeCharacter, onComplete]);
+
+  const handleNext = () => {
+    const validation = validateCreationChamber(activeChamber.id, chamberChecks);
+    if (!validation.valid) {
+      setWizardError(validation.error);
+      return;
+    }
+
+    emitCreationTelemetry(
+      createTelemetryEvent("character_create_step_completed", {
+        data: {
+          chamberId: activeChamber.id,
+          chamberIndex: activeChamberIndex + 1,
+          chamberCount: chambers.length,
+        },
+      }),
+    );
+
+    const nextIndex = Math.min(activeChamberIndex + 1, chambers.length - 1);
+    setUnlockedChamberIndex((current) => Math.max(current, nextIndex));
+    setActiveChamberIndex(nextIndex);
+    setWizardError("");
+  };
+
+  const navigateToChamber = (index) => {
+    if (index < 0 || index > unlockedChamberIndex || index >= chambers.length) return;
+    setWizardError("");
+    setActiveChamberIndex(index);
+  };
+
+  const chamberBody = (() => {
+    switch (activeChamber.id) {
+      case "binding-hall":
+        return (
+          <div className="creation-chamber__grid creation-chamber__grid--split">
+            <ChamberSection eyebrow="Designation" title="Mark the chronicle">
+              <CreationNamePanel
+                characterName={characterName}
+                onNameChange={(value) => {
+                  setWizardError("");
+                  setName(value);
+                }}
+              />
+            </ChamberSection>
+            <ChamberSection eyebrow="System" title="Bind the lattice">
+              <CreationArchetypeSystemPanel
+                systems={availableArchetypeSystems}
+                selectedSystem={selectedArchetypeSystem}
+                onSystemSelect={(systemId) => {
+                  setWizardError("");
+                  handleArchetypeSystemSelect(systemId);
+                }}
+                onAction={handleClick}
+              />
+            </ChamberSection>
+          </div>
+        );
+      case "lineage-vault":
+        return (
+          <div className="creation-chamber__grid creation-chamber__grid--split">
+            <ChamberSection eyebrow="Identity" title="Anchor the self">
+              <CreationIdentityPanel
+                gender={gender}
+                onGenderSelect={(value) => {
+                  setWizardError("");
+                  setGender(value);
+                }}
+                selectedOrigin={selectedOrigin}
+                origins={availableOrigins}
+                recommendedOriginIds={recommendedOriginIds}
+                onOriginSelect={(origin) => {
+                  setWizardError("");
+                  handleOriginSelect(origin);
+                }}
+                onAction={handleClick}
+              />
+            </ChamberSection>
+            <ChamberSection eyebrow="Lineage" title="Choose inherited form">
+              <CreationRacePanel
+                selectedRace={selectedRace}
+                races={availableRaces}
+                recommendedRaceIds={recommendedRaceIds}
+                onRaceSelect={(race) => {
+                  setWizardError("");
+                  handleRaceSelect(race);
+                }}
+                onAction={handleClick}
+              />
+            </ChamberSection>
+          </div>
+        );
+      case "doctrine-forge":
+        return (
+          <div className="creation-chamber__stack">
+            <ChamberSection eyebrow="Class" title="Set the primary doctrine">
+              <CreationClassPanel
+                selectedClass={selectedClass}
+                classes={availableClasses}
+                recommendedClassIds={recommendedClassIds}
+                onClassSelect={(cls) => {
+                  setWizardError("");
+                  handleClassSelect(cls);
+                }}
+                onAction={handleClick}
+              />
+            </ChamberSection>
+            {advancedUnlocked ? (
+              <ChamberSection eyebrow="Multiclass" title="Optional branching doctrine">
+                <CreationChoicePanel
+                  title="Multiclass"
+                  subtitle="Optional secondary class. Select none to remain single-classed."
+                  options={availableSecondaryClasses}
+                  selectedIds={selectedSecondaryClass?.id ? [selectedSecondaryClass.id] : []}
+                  onToggle={(classId) => {
+                    const next =
+                      availableSecondaryClasses.find((entry) => entry.id === classId) || null;
+                    handleSecondaryClassSelect(next);
+                  }}
+                  allowNone={true}
+                  onSelectNone={() => handleSecondaryClassSelect(null)}
+                  noneLabel="None (Single Class)"
+                  onAction={handleClick}
+                />
+              </ChamberSection>
+            ) : null}
+            <ChamberSection eyebrow="Profession" title="Add the opening craft">
+              <CreationProfessionPanel
+                selectedProfession={selectedProfession}
+                professions={availableProfessions}
+                recommendedProfessionIds={recommendedProfessionIds}
+                onProfessionSelect={(profId) => {
+                  setWizardError("");
+                  handleProfessionSelect(profId);
+                }}
+                onAction={handleClick}
+              />
+            </ChamberSection>
+          </div>
+        );
+      case "soul-crucible":
+        return (
+          <div className="creation-chamber__stack">
+            <ChamberSection eyebrow="Attributes" title="Distribute core power">
+              <CreationAttributesPanel
+                allocationPoints={allocationPoints}
+                derivedStats={derivedStats}
+                availablePoints={availablePoints}
+                onStatChange={(stat, delta) => {
+                  setWizardError("");
+                  if (delta > 0) {
+                    allocateAttributePoint(stat);
+                  } else {
+                    deallocateAttributePoint(stat);
+                  }
+                }}
+                onAction={handleClick}
+                rerollsRemaining={rerollsRemaining}
+                onReroll={() => {
+                  setWizardError("");
+                  handleReroll();
+                }}
+              />
+            </ChamberSection>
+            <ChamberSection eyebrow="Skills" title="Assemble active and passive loadout">
+              <div className="creation-chamber__stack">
+                {availableCreationSkillLoadouts.length > 0 ? (
+                  <CreationChoicePanel
+                    title="Skill Loadout"
+                    subtitle="Optional preset loadout. Manual picks below still apply."
+                    options={availableCreationSkillLoadouts}
+                    selectedIds={selectedSkillLoadoutId ? [selectedSkillLoadoutId] : []}
+                    onToggle={handleSkillLoadoutSelect}
+                    allowNone={true}
+                    onSelectNone={() => handleSkillLoadoutSelect(null)}
+                    noneLabel="None (Manual Selection)"
+                    maxSelections={1}
+                    onAction={handleClick}
+                  />
+                ) : null}
+                <CreationSkillsPanel
+                  selectedClass={selectedClass}
+                  selectedSystem={selectedArchetypeSystem}
+                  availableActiveSkills={availableActiveSkills}
+                  availablePassiveSkills={availablePassiveSkills}
+                  grantedActiveSkills={grantedActiveSkills}
+                  grantedPassiveSkills={grantedPassiveSkills}
+                  blockedSkillIds={blockedSkillIds}
+                  selectedActiveSkills={selectedActiveSkills}
+                  selectedPassiveSkills={selectedPassiveSkills}
+                  maxActiveSkills={MAX_ACTIVE_SKILLS}
+                  maxPassiveSkills={MAX_PASSIVE_SKILLS}
+                  onActiveSelect={(skill) => {
+                    setWizardError("");
+                    handleActiveSkillSelect(skill);
+                  }}
+                  onPassiveToggle={(skill) => {
+                    setWizardError("");
+                    handlePassiveSkillToggle(skill);
+                  }}
+                  onAction={handleClick}
+                />
+              </div>
+            </ChamberSection>
+            <ChamberSection eyebrow="Perks" title="Select starting mutations">
+              <CreationChoicePanel
+                title="Perks"
+                subtitle="Choose the starting perk package."
+                options={availableCreationPerks}
+                selectedIds={selectedPerkIds}
+                onToggle={handlePerkToggle}
+                minSelections={creationPerkLimits?.minPicks || 0}
+                maxSelections={creationPerkLimits?.maxPicks || 0}
+                onAction={handleClick}
+              />
+            </ChamberSection>
+            {advancedUnlocked ? (
+              <ChamberSection eyebrow="Starter Tree" title="Prime the first progression tree">
+                <CreationChoicePanel
+                  title="Starter Tree"
+                  subtitle="Choose the initial progression tree."
+                  options={availableCreationStarterTrees}
+                  selectedIds={selectedStarterTreeIds}
+                  onToggle={handleStarterTreeSelect}
+                  minSelections={1}
+                  maxSelections={1}
+                  onAction={handleClick}
+                />
+              </ChamberSection>
+            ) : null}
+            <ChamberSection eyebrow="Alignment" title="Select roleplay tone">
+              <CreationChoicePanel
+                title="Alignment"
+                subtitle="Choose the narrative alignment that colors the run."
+                options={availableCreationAlignments}
+                selectedIds={selectedAlignmentId ? [selectedAlignmentId] : []}
+                onToggle={handleAlignmentSelect}
+                minSelections={1}
+                maxSelections={1}
+                onAction={handleClick}
+              />
+            </ChamberSection>
+          </div>
+        );
+      default:
+        return (
+          <CreationSummaryPanel
+            asciiArt={asciiArt}
+            selectionSummary={selectionSummary}
+            selectedActiveSkills={selectedActiveSkills}
+            selectedPassiveSkills={selectedPassiveSkills}
+            maxActiveSkills={MAX_ACTIVE_SKILLS}
+            maxPassiveSkills={MAX_PASSIVE_SKILLS}
+            typewriterText={typewriterText}
+            syncProgress={syncProgress}
+            canFinalize={canFinalize}
+            onFinalize={handleFinalize}
+          />
+        );
+    }
+  })();
+
+  return (
+    <section className="creation-flow creation-flow--chambers">
+      <header className="creation-flow__hero creation-flow__hero--chambers">
+        <div className="creation-flow__eyebrow">Character Genesis</div>
+        <h2 className="creation-flow__title">Walk the chamber sequence.</h2>
+        <p className="creation-flow__copy">
+          Each chamber resolves a different piece of the chronicle. Bind the system,
+          shape the vessel, and seal the oath only when the full pattern is stable.
+        </p>
+        <div className="creation-flow__status-list">
+          {statusLines.slice(0, 8).map((line) => (
+            <div
+              key={line.label}
+              className={[
+                "creation-flow__status-pill",
+                line.active ? "creation-flow__status-pill--active" : "",
+              ].filter(Boolean).join(" ")}
+            >
+              {line.label}
+            </div>
+          ))}
+        </div>
+        <div className="creation-chamber__nav">
+          {chambers.map((chamber, index) => (
+            <button
+              key={chamber.id}
+              type="button"
+              className={[
+                "creation-chamber__nav-item",
+                index === activeChamberIndex ? "creation-chamber__nav-item--active" : "",
+                chamberCompletion[chamber.id] ? "creation-chamber__nav-item--done" : "",
+              ].filter(Boolean).join(" ")}
+              disabled={index > unlockedChamberIndex}
+              onClick={() => navigateToChamber(index)}
+            >
+              <span>{`0${index + 1}`}</span>
+              <strong>{chamber.title}</strong>
+              <em>{chamberCompletion[chamber.id] ? "stable" : "pending"}</em>
+            </button>
+          ))}
+        </div>
+      </header>
+
+      {wizardError ? <div className="creation-flow__error">{wizardError}</div> : null}
+
+      <div className="creation-flow__frame creation-flow__frame--chambers">
+        <aside className="creation-flow__sidebar">
+          <div className="creation-flow__sidebar-card">
+            <CreationNarrativePanel
+              statusLines={statusLines}
+              typewriterText={typewriterText}
+              syncProgress={syncProgress}
+              selectedOrigin={selectedOrigin}
+              selectedRace={selectedRace}
+              selectedClass={selectedClass}
+              selectedArchetypeSystem={selectedArchetypeSystem}
+            />
+          </div>
+          <div className="creation-flow__sidebar-card">
+            <NarrativeMemoryPanel
+              summary=""
+              entries={creationMemoryEntries}
+              latestEntry={latestEntry}
+              latestEntryText={latestEntry?.text || ""}
+              containerRef={narrativeMemoryRef}
+            />
+          </div>
+        </aside>
+
+        <div className="creation-flow__main">
+          <div className="creation-flow__main-card creation-flow__main-card--chamber">
+            <div className="creation-chamber__header">
+              <div className="creation-flow__eyebrow">Active Chamber</div>
+              <h3 className="surface-section__title">{activeChamber.title}</h3>
+              <p className="creation-chamber__subtitle">{activeChamber.subtitle}</p>
+            </div>
+            {chamberBody}
+          </div>
+          <div className="creation-flow__actions">
+            <button
+              type="button"
+              className="holo-button"
+              disabled={activeChamberIndex === 0}
+              onClick={() => navigateToChamber(activeChamberIndex - 1)}
+            >
+              Previous Chamber
+            </button>
+            {activeChamberIndex < chambers.length - 1 ? (
+              <button type="button" className="holo-button holo-button--solid" onClick={handleNext}>
+                Open Next Chamber
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="holo-button holo-button--solid"
+                disabled={!canFinalize}
+                onClick={handleFinalize}
+              >
+                Seal The Oath
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,19 +1,5 @@
 import React from "react";
-
-const MENU_ITEMS = [
-  { group: "Systems", items: [
-    { id: "shop", icon: "🏪", label: "Shop" },
-    { id: "gacha", icon: "🎰", label: "Gacha" },
-    { id: "craft", icon: "🔨", label: "Crafting" },
-    { id: "titles", icon: "🏆", label: "Titles" },
-    { id: "archetype", icon: "⚛", label: "Archetype System" },
-  ]},
-  { group: "Game", items: [
-    { id: "status", icon: "📊", label: "Full Status" },
-    { id: "saveload", icon: "💾", label: "Save & Load" },
-    { id: "theme", icon: "🎨", label: "Change Theme" },
-  ]},
-];
+import { MOBILE_SYSTEM_MENU as MENU_ITEMS } from "../mobileAtriumNav.js";
 
 export default function MenuTab({
   onToggleShop,
@@ -38,6 +24,7 @@ export default function MenuTab({
 
   return (
     <div className="menu-tab">
+      <div className="mobile-section-title">Room Access</div>
       {MENU_ITEMS.map((group) => (
         <React.Fragment key={group.group}>
           <div className="menu-tab__group-title">{group.group}</div>

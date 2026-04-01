@@ -598,8 +598,6 @@ export async function generateNarrativeStream(
       if (!pollResponse) {
         throw new Error("Stream poll failed (no response).");
       }
-        break;
-      }
     } catch (error) {
       if (error?.name === "AbortError") throw error;
       if (isDev) console.warn("Stream poll error:", error);

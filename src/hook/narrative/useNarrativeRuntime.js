@@ -36,6 +36,7 @@ import {
   STREAM_PLACEHOLDER_TEXT,
 } from "./narrativeSuggestions.js";
 import {
+  applyNarrativeStateIntents,
   collectNarrativeOutcomeNotes,
   mergeSuggestedQuestIntoState,
 } from "./narrativeOutcomePipeline.js";
@@ -297,11 +298,24 @@ export function useNarrative(
                 nextUserInput,
                 openingActionResult,
               );
-              await streamNarrative(prompt, resolvedState, {
+              const narrativeResult = await streamNarrative(prompt, resolvedState, {
                 mode,
                 userInput: nextUserInput,
                 actionResult: openingActionResult,
               });
+              const intentResolution = applyNarrativeStateIntents(
+                resolvedState,
+                narrativeResult?.stateIntents,
+              );
+              if (intentResolution.state !== resolvedState) {
+                setState(intentResolution.state);
+                if (typeof evaluateQuestProgress === "function") {
+                  evaluateQuestProgress(intentResolution.state);
+                }
+              }
+              collectNarrativeOutcomeNotes(intentResolution.notes).forEach((note) =>
+                addSystemMessage(note, "system"),
+              );
             } catch (err) {
               if (err?.name === "AbortError") return;
               console.error("Opening choice narrative generation failed:", err);
@@ -401,11 +415,21 @@ export function useNarrative(
           const promptState = actionResult.readOnly ? currentState : newState;
           const mode = resolvePromptMode(promptState, actionResult);
           const prompt = assemblePrompt(promptState, nextUserInput, actionResult);
-          await streamNarrative(prompt, promptState, {
+          const narrativeResult = await streamNarrative(prompt, promptState, {
             mode,
             userInput: nextUserInput,
             actionResult,
           });
+          const intentResolution = applyNarrativeStateIntents(
+            promptState,
+            narrativeResult?.stateIntents,
+          );
+          if (intentResolution.state !== promptState) {
+            setState(intentResolution.state);
+          }
+          collectNarrativeOutcomeNotes(intentResolution.notes).forEach((note) =>
+            addSystemMessage(note, "system"),
+          );
 
           setState((prevState) => {
             if (typeof evaluateQuestProgress === "function") {

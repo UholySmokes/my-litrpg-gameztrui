@@ -1,10 +1,14 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
-import { generateNarrative } from "../../src/core/AIService.js";
+import {
+  __resetNarratorAvailabilityStateForTests,
+  generateNarrative,
+} from "../../src/core/AIService.js";
 
 afterEach(() => {
   delete globalThis.fetch;
   delete globalThis.window;
   delete globalThis.__RUNTIME_CONFIG__;
+  __resetNarratorAvailabilityStateForTests();
 });
 
 describe("AIService endpoint resolution", () => {
@@ -29,6 +33,30 @@ describe("AIService endpoint resolution", () => {
       "/api/narrate",
       expect.objectContaining({ method: "POST" }),
     );
+  });
+
+  it("short-circuits repeated missing-endpoint attempts during cooldown", async () => {
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_NARRATE_ENDPOINT: "/api/narrate",
+    };
+
+    globalThis.fetch = jest.fn().mockResolvedValue(
+      new Response(JSON.stringify({ message: "Not Found" }), {
+        status: 404,
+        headers: { "content-type": "application/json" },
+      }),
+    );
+
+    await expect(generateNarrative("first prompt")).rejects.toMatchObject({
+      code: "NARRATOR_ENDPOINT_MISSING",
+    });
+
+    await expect(generateNarrative("second prompt")).rejects.toMatchObject({
+      code: "NARRATOR_UNAVAILABLE_COOLDOWN",
+      causeCode: "NARRATOR_ENDPOINT_MISSING",
+    });
+
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
   });
 
   it("retries with alternate auth headers when dev headers are rejected", async () => {

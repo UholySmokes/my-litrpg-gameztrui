@@ -9,6 +9,7 @@ import {
   generateNarrative,
   generateNarrativeStream,
   generateInitialNarrative,
+  shouldUseNarrativeLocalFallback,
 } from "../../core/AIService.js";
 import { renderStatusBlock } from "../../util/statusrenderer.js";
 import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
@@ -46,6 +47,10 @@ import {
   createInitialNarrativeState,
   replaceNarrativeEntryInState,
 } from "./narrativeStateUpdater.js";
+
+function shouldLogNarrativeError(error) {
+  return !shouldUseNarrativeLocalFallback(error);
+}
 
 /**
  * Custom hook for managing AI narrative and user actions.
@@ -211,7 +216,9 @@ export function useNarrative(
         return resolvedResult;
       } catch (err) {
         if (err?.name === "AbortError") throw err;
-        console.error("Stream narrative failed:", err);
+        if (shouldLogNarrativeError(err)) {
+          console.error("Stream narrative failed:", err);
+        }
         fallbackCounterRef.current += 1;
         const fallbackResult = resolveNarrativeRuntimeOutcome({
           state: prevStateForFallback,
@@ -318,7 +325,9 @@ export function useNarrative(
               );
             } catch (err) {
               if (err?.name === "AbortError") return;
-              console.error("Opening choice narrative generation failed:", err);
+              if (shouldLogNarrativeError(err)) {
+                console.error("Opening choice narrative generation failed:", err);
+              }
             } finally {
               setIsNarrating(false);
             }
@@ -356,7 +365,9 @@ export function useNarrative(
             });
           } catch (err) {
             if (err?.name === "AbortError") return;
-            console.error("AI narrative generation failed:", err);
+            if (shouldLogNarrativeError(err)) {
+              console.error("AI narrative generation failed:", err);
+            }
           }
 
           setIsLoading(false);
@@ -439,7 +450,9 @@ export function useNarrative(
           });
         } catch (err) {
           if (err?.name === "AbortError") return;
-          console.error("AI narrative generation failed:", err);
+          if (shouldLogNarrativeError(err)) {
+            console.error("AI narrative generation failed:", err);
+          }
         } finally {
           setIsNarrating(false);
         }
@@ -524,8 +537,10 @@ export function useNarrative(
           }),
         );
       } catch (err) {
-        console.error("Error generating initial narrative:", err);
-        setError(err.message || "Failed to generate initial narrative.");
+        if (shouldLogNarrativeError(err)) {
+          console.error("Error generating initial narrative:", err);
+          setError(err.message || "Failed to generate initial narrative.");
+        }
         fallbackCounterRef.current += 1;
         const fallbackResult = resolveNarrativeRuntimeOutcome({
           state: currentState,

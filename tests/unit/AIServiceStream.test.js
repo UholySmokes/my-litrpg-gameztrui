@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { generateNarrativeStream } from "../../src/core/AIService.js";
+import {
+  __resetNarratorAvailabilityStateForTests,
+  generateNarrativeStream,
+} from "../../src/core/AIService.js";
 
 describe("AIService streaming narrative", () => {
   beforeEach(() => {
@@ -11,6 +14,7 @@ describe("AIService streaming narrative", () => {
     delete globalThis.fetch;
     delete globalThis.window;
     delete globalThis.__RUNTIME_CONFIG__;
+    __resetNarratorAvailabilityStateForTests();
   });
 
   it("preserves mood and suggestions from a completed poll response", async () => {

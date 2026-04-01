@@ -3,6 +3,8 @@ import GameQuickActions from "../gameui/GameQuickActions.jsx";
 import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
 import { buildPlayerIdentity } from "./shellState.js";
 import SurfaceDialog from "./SurfaceDialog.jsx";
+import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
+import ActionSuggestionsPanel from "../../ui/panels/ActionSuggestionsPanel.jsx";
 import {
   buildAdventureRoomManifest,
   filterOpenAdventureRooms,
@@ -111,7 +113,6 @@ export default function AdventureShell({
   );
 
   const latestPassage = narrative.latestEntryText || "The lattice waits for your next move.";
-  const recentEntries = Array.isArray(narrative.entries) ? narrative.entries.slice(0, 3) : [];
   const combatStatus =
     combatState?.status === "active"
       ? `${Array.isArray(combatState?.enemies) ? combatState.enemies.length : 0} threats`
@@ -178,32 +179,27 @@ export default function AdventureShell({
         <section className="atrium-pulse">
           <div className="atrium-pulse__header">
             <div>
-              <div className="adventure-shell__eyebrow">Chronicle Pulse</div>
-              <h3 className="surface-section__title">The latest signal in the atrium</h3>
+              <div className="adventure-shell__eyebrow">Command Dais</div>
+              <h3 className="surface-section__title">Issue your next command and review the latest generated text</h3>
             </div>
             <div className="atrium-pulse__status">{combatStatus}</div>
           </div>
 
           <div className="atrium-pulse__passage">{latestPassage}</div>
 
-          {narrative.summary ? (
-            <div className="atrium-pulse__summary">{narrative.summary}</div>
-          ) : null}
-
           <div className="atrium-pulse__timeline">
-            {recentEntries.length > 0 ? (
-              recentEntries.map((entry, index) => (
-                <div key={`${entry?.timestamp || "entry"}-${index}`} className="atrium-pulse__entry">
-                  <span>{entry?.timestamp || `Pulse ${index + 1}`}</span>
-                  <p>{entry?.text || entry?.content || "Narrative signal unavailable."}</p>
-                </div>
-              ))
-            ) : (
-              <div className="atrium-pulse__entry">
-                <span>Awaiting signal</span>
-                <p>No chronicle entries are stored yet.</p>
-              </div>
-            )}
+            <CommandTerminalPanel
+              userInput={quickActionsProps?.userInput}
+              onInputChange={quickActionsProps?.onInputChange}
+              onSubmit={quickActionsProps?.onSubmit}
+              isLoading={quickActionsProps?.isLoading}
+              error={quickActionsProps?.error}
+              inputRef={quickActionsProps?.inputRef}
+            />
+            <ActionSuggestionsPanel
+              suggestions={quickActionsProps?.suggestions}
+              onSelect={quickActionsProps?.onSuggestionSelect}
+            />
           </div>
         </section>
 

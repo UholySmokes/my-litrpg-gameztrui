@@ -668,6 +668,19 @@ body {
   max-width: 1240px;
 }
 
+.surface-dialog--fullscreen {
+  padding: clamp(0.35rem, 1.2vw, 1rem);
+}
+
+.surface-dialog__panel--fullscreen {
+  width: 100%;
+  max-width: none;
+  min-height: calc(100dvh - clamp(0.7rem, 2.4vw, 2rem));
+  max-height: calc(100dvh - clamp(0.7rem, 2.4vw, 2rem));
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
 .surface-dialog__header {
   display: flex;
   justify-content: space-between;
@@ -689,6 +702,7 @@ body {
 
 .surface-dialog__body {
   min-height: 0;
+  overflow: auto;
 }
 
 .creation-flow {

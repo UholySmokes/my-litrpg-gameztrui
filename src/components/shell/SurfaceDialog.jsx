@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export default function SurfaceDialog({
   isOpen,
@@ -11,6 +11,10 @@ export default function SurfaceDialog({
 }) {
   const dialogRef = useRef(null);
   const previousFocusRef = useRef(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  const stableClose = useCallback(() => onCloseRef.current?.(), []);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -25,7 +29,7 @@ export default function SurfaceDialog({
     const handleKeyDown = (event) => {
       if (event.key !== "Escape") return;
       event.preventDefault();
-      onClose?.();
+      stableClose();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -35,12 +39,12 @@ export default function SurfaceDialog({
       window.removeEventListener("keydown", handleKeyDown);
       previousFocusRef.current?.focus?.();
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, stableClose]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="surface-dialog" onClick={onClose}>
+    <div className="surface-dialog" onClick={stableClose}>
       <div
         className={`surface-dialog__panel surface-dialog__panel--${size} surface-dialog__panel--tone-${tone}`}
         ref={dialogRef}

@@ -7,6 +7,7 @@ export default function SurfaceDialog({
   subtitle = "",
   size = "lg",
   tone = "azure",
+  fullscreen = false,
   children,
 }) {
   const dialogRef = useRef(null);
@@ -40,9 +41,21 @@ export default function SurfaceDialog({
   if (!isOpen) return null;
 
   return (
-    <div className="surface-dialog" onClick={onClose}>
+    <div
+      className={["surface-dialog", fullscreen ? "surface-dialog--fullscreen" : ""]
+        .filter(Boolean)
+        .join(" ")}
+      onClick={onClose}
+    >
       <div
-        className={`surface-dialog__panel surface-dialog__panel--${size} surface-dialog__panel--tone-${tone}`}
+        className={[
+          "surface-dialog__panel",
+          `surface-dialog__panel--${size}`,
+          `surface-dialog__panel--tone-${tone}`,
+          fullscreen ? "surface-dialog__panel--fullscreen" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
         ref={dialogRef}
         role="dialog"
         aria-modal="true"

@@ -307,29 +307,9 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
 
   const primaryRooms = [
     {
-      id: "chronicle",
-      title: "Chronicle Archive",
-      subtitle: "Review the latest narration, summary, and emotional telemetry.",
-      tone: "azure",
-      entryAction: "Open archive",
-      size: "xl",
-      group: "primary",
-      availability: true,
-      render: () => (
-        <NarrativeHubPanel
-          entries={narrative.entries}
-          summary={narrative.summary}
-          latestEntry={narrative.latestEntry}
-          latestEntryText={narrative.latestEntryText}
-          memoryRef={narrative.memoryRef}
-          currentMood={narrative.currentMood}
-        />
-      ),
-    },
-    {
       id: "command",
       title: "Command Dais",
-      subtitle: "Issue parser-safe intent and route the next move through the lattice.",
+      subtitle: "Issue parser-safe intent and read the latest response in one shared chamber.",
       tone: "gold",
       entryAction: "Open dais",
       size: "xl",
@@ -337,6 +317,14 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       availability: true,
       render: () => (
         <div className="atrium-room-stack">
+          <NarrativeHubPanel
+            entries={narrative.entries}
+            summary={narrative.summary}
+            latestEntry={narrative.latestEntry}
+            latestEntryText={narrative.latestEntryText}
+            memoryRef={narrative.memoryRef}
+            currentMood={narrative.currentMood}
+          />
           <RoomSection eyebrow="Command" title="What Do You Invoke?">
             <CommandTerminalPanel
               userInput={command.userInput}

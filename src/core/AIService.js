@@ -10,6 +10,12 @@ const DEV_DEFAULT_TIMEOUT_MS = 150000;
 const STREAM_POLL_INTERVAL_MS = 1500;
 const STREAM_STALL_TIMEOUT_MS = 60000;
 const STREAM_MAX_POLLS = 200;
+const NARRATOR_UNAVAILABLE_COOLDOWN_MS = 10000;
+const NARRATOR_LOCAL_FALLBACK_CODES = new Set([
+  "NARRATOR_ENDPOINT_MISSING",
+  "NARRATOR_SERVICE_UNREACHABLE",
+  "NARRATOR_UNAVAILABLE_COOLDOWN",
+]);
 
 const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
@@ -51,6 +57,15 @@ const unique = (values) => {
   return result;
 };
 
+const createNarratorAvailabilityState = () => ({
+  signature: "",
+  code: "",
+  message: "",
+  until: 0,
+});
+
+let narratorAvailabilityState = createNarratorAvailabilityState();
+
 const resolveNarrateEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
@@ -77,6 +92,93 @@ const resolveNarrateEndpoints = () => {
   }
   return endpoints;
 };
+
+const resolveStreamEndpoints = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  const apiBaseUrl = sanitizeEndpointPath(
+    pickEnvValue(
+      runtimeEnv["VITE_API_BASE_URL"],
+      buildEnv["VITE_API_BASE_URL"],
+      runtimeEnv["VITE_API_BASE"],
+      buildEnv["VITE_API_BASE"],
+    ),
+  );
+  if (!apiBaseUrl) {
+    return {
+      start: "/api/narrate-start",
+      poll: "/api/narrate-poll",
+    };
+  }
+  const base = normalizeBaseUrl(apiBaseUrl);
+  return {
+    start: `${base}/api/narrate-start`,
+    poll: `${base}/api/narrate-poll`,
+  };
+};
+
+const buildNarratorAvailabilitySignature = () => {
+  const stream = resolveStreamEndpoints();
+  return JSON.stringify({
+    narrate: resolveNarrateEndpoints(),
+    start: stream?.start || "",
+    poll: stream?.poll || "",
+  });
+};
+
+const resetNarratorAvailabilityState = () => {
+  narratorAvailabilityState = createNarratorAvailabilityState();
+};
+
+const getActiveNarratorAvailabilityState = () => {
+  const signature = buildNarratorAvailabilitySignature();
+  if (
+    !narratorAvailabilityState.signature ||
+    narratorAvailabilityState.signature !== signature ||
+    narratorAvailabilityState.until <= Date.now()
+  ) {
+    if (narratorAvailabilityState.signature) {
+      resetNarratorAvailabilityState();
+    }
+    return null;
+  }
+  return narratorAvailabilityState;
+};
+
+const markNarratorUnavailable = (code, message) => {
+  narratorAvailabilityState = {
+    signature: buildNarratorAvailabilitySignature(),
+    code: String(code || "").trim(),
+    message: String(message || "").trim(),
+    until: Date.now() + NARRATOR_UNAVAILABLE_COOLDOWN_MS,
+  };
+};
+
+const createNarratorCooldownError = () => {
+  const activeState = getActiveNarratorAvailabilityState();
+  if (!activeState) return null;
+  const error = new Error(
+    activeState.message || "Narrator service temporarily unavailable.",
+  );
+  error.code = "NARRATOR_UNAVAILABLE_COOLDOWN";
+  error.causeCode = activeState.code || undefined;
+  error.retryAfterMs = Math.max(0, activeState.until - Date.now());
+  error.silent = true;
+  return error;
+};
+
+export function shouldUseNarrativeLocalFallback(error) {
+  const code = String(error?.code || "").trim();
+  const causeCode = String(error?.causeCode || "").trim();
+  return (
+    NARRATOR_LOCAL_FALLBACK_CODES.has(code) ||
+    NARRATOR_LOCAL_FALLBACK_CODES.has(causeCode)
+  );
+}
+
+export function __resetNarratorAvailabilityStateForTests() {
+  resetNarratorAvailabilityState();
+}
 
 const resolveRequestTimeoutMs = () => {
   const runtimeEnv = getRuntimeEnv();
@@ -275,6 +377,9 @@ export function applyNarrationGuards(response) {
  * @returns {Promise<object>} The parsed JSON response with narrative, mood, and suggestions
  */
 export async function generateNarrative(prompt, { mode } = {}) {
+  const cooldownError = createNarratorCooldownError();
+  if (cooldownError) throw cooldownError;
+
   let lastError = null;
   let attemptedEndpoints = 0;
   let missingEndpointCount = 0;
@@ -359,6 +464,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
           throw new Error("Narrative response missing.");
         }
 
+        resetNarratorAvailabilityState();
         return applyNarrationGuards(
           normalizeNarrationPayload(data, {
             narrative: "Something happened.",
@@ -386,6 +492,7 @@ export async function generateNarrative(prompt, { mode } = {}) {
       "Narrator endpoint not found. For local dev, start the API with `npm run dev:api`, or configure VITE_NARRATE_ENDPOINT / VITE_API_BASE_URL.",
     );
     error.code = "NARRATOR_ENDPOINT_MISSING";
+    markNarratorUnavailable(error.code, error.message);
     if (isDev) {
       console.warn("Narrator endpoints attempted:", attemptedUrls);
     }
@@ -408,9 +515,12 @@ export async function generateNarrative(prompt, { mode } = {}) {
       lastError.message.includes("fetch") ||
       lastError.message.includes("Connection error"))
   ) {
-    throw new Error(
+    const error = new Error(
       "Narrator service unreachable. Start local API with `npm run dev:api` (or `npm run dev:stack`) and retry.",
     );
+    error.code = "NARRATOR_SERVICE_UNREACHABLE";
+    markNarratorUnavailable(error.code, error.message);
+    throw error;
   }
 
   if (isDev) {
@@ -432,30 +542,6 @@ export async function generateInitialNarrative(initialPrompt) {
 // Streaming (start + poll) client
 // -----------------------------------------------------------------
 
-const resolveStreamEndpoints = () => {
-  const runtimeEnv = getRuntimeEnv();
-  const buildEnv = getBuildEnv();
-  const apiBaseUrl = sanitizeEndpointPath(
-    pickEnvValue(
-      runtimeEnv["VITE_API_BASE_URL"],
-      buildEnv["VITE_API_BASE_URL"],
-      runtimeEnv["VITE_API_BASE"],
-      buildEnv["VITE_API_BASE"],
-    ),
-  );
-  if (!apiBaseUrl) {
-    return {
-      start: "/api/narrate-start",
-      poll: "/api/narrate-poll",
-    };
-  }
-  const base = normalizeBaseUrl(apiBaseUrl);
-  return {
-    start: `${base}/api/narrate-start`,
-    poll: `${base}/api/narrate-poll`,
-  };
-};
-
 /**
  * Streaming narrative generation via start + poll.
  * Kicks off a run, then polls for progress, invoking onChunk
@@ -472,6 +558,9 @@ export async function generateNarrativeStream(
   prompt,
   { onChunk, onDone, signal, mode } = {},
 ) {
+  const cooldownError = createNarratorCooldownError();
+  if (cooldownError) throw cooldownError;
+
   const endpoints = resolveStreamEndpoints();
   const isDev = Boolean(getBuildEnv().DEV);
   const startHeaderVariants = await buildApiHeaderVariants({
@@ -508,18 +597,28 @@ export async function generateNarrativeStream(
         continue;
       }
       if (!res.ok || !startData?.ok) {
-        throw new Error(startData?.message || `Start failed (${res.status})`);
+        const error = new Error(
+          startData?.message || `Start failed (${res.status})`,
+        );
+        if (res.status === 404 || res.status === 405) {
+          error.code = "NARRATOR_ENDPOINT_MISSING";
+        }
+        throw error;
       }
       break;
     }
   } catch (error) {
     if (error?.name === "AbortError") throw error;
     // Fall back to synchronous narrate
-    if (isDev) console.warn("Stream start failed, falling back:", error);
+    if (isDev && !shouldUseNarrativeLocalFallback(error)) {
+      console.warn("Stream start failed, falling back:", error);
+    }
     const result = await generateNarrative(prompt, { mode });
     if (typeof onDone === "function") onDone(result);
     return result;
   }
+
+  resetNarratorAvailabilityState();
 
   const { threadId, runId } = startData;
   const startStatus = String(startData?.status || "").trim().toLowerCase();

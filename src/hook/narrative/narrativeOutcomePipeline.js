@@ -105,6 +105,34 @@ export function applyNarrativeStateIntents(state, intents = []) {
         );
         break;
       }
+      case "magic.journal.add": {
+        const note = String(intent.note || "").trim();
+        if (!note) return;
+        const player = nextState?.player || {};
+        const magic = player.magic && typeof player.magic === "object" ? player.magic : {};
+        const journal = Array.isArray(magic.journal) ? magic.journal : [];
+        const turn = nextState?.world?.turnCount || 0;
+        const entry = {
+          turn,
+          topic: "narrative_insight",
+          target: null,
+          method: "narrative",
+          result: "recorded",
+          notes: note,
+        };
+        nextState = {
+          ...nextState,
+          player: {
+            ...player,
+            magic: {
+              ...magic,
+              journal: [...journal, entry].slice(-50),
+            },
+          },
+        };
+        notes.push(`Magic insight recorded: ${note}`);
+        break;
+      }
       default:
         break;
     }

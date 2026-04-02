@@ -238,6 +238,64 @@ export function executeAction(state, action, _options = {}) {
           break;
         }
 
+        case "magic_study": {
+          const magic = state.player?.magic || {};
+          const target = action.target || "unknown";
+          const journal = Array.isArray(magic.journal) ? magic.journal : [];
+          const turn = state.world?.turnCount || 0;
+          const entry = {
+            turn,
+            topic: `study_${target.replace(/\s+/g, "_")}`,
+            target,
+            method: "observation",
+            result: "recorded",
+            notes: `Studied ${target} at turn ${turn}.`,
+          };
+          const nextJournal = [...journal, entry].slice(-50);
+          newState = {
+            ...state,
+            player: {
+              ...state.player,
+              magic: { ...magic, journal: nextJournal },
+            },
+          };
+          description = `Studied ${target} — observation logged in magic journal.`;
+          break;
+        }
+
+        case "magic_journal": {
+          const magic = state.player?.magic || {};
+          const journal = Array.isArray(magic.journal) ? magic.journal : [];
+          const turn = state.world?.turnCount || 0;
+          if (action.note) {
+            const entry = {
+              turn,
+              topic: "player_note",
+              target: null,
+              method: "manual",
+              result: "noted",
+              notes: action.note,
+            };
+            const nextJournal = [...journal, entry].slice(-50);
+            newState = {
+              ...state,
+              player: {
+                ...state.player,
+                magic: { ...magic, journal: nextJournal },
+              },
+            };
+            description = `Journal updated: "${action.note}"`;
+          } else {
+            const count = journal.length;
+            description = count > 0
+              ? `Magic journal has ${count} entries. Latest: ${journal[count - 1]?.notes || "(empty)"}`
+              : "Magic journal is empty.";
+            newState = state;
+          }
+          incrementsTurn = false;
+          break;
+        }
+
         case "magic_release": {
           const translated = translateLegacyMagicAction(action);
           const inCombat = state.combat?.status === "active";

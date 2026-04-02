@@ -18,6 +18,7 @@ const ALLOWED_STATE_INTENT_TYPES = new Set([
   "world.flag.set",
   "clue.add",
   "player.reputation.delta",
+  "magic.journal.add",
 ]);
 
 function normalizeString(value) {
@@ -69,7 +70,7 @@ function normalizeSuggestions(suggestions, fallbackSuggestions = []) {
   return source
     .map((entry) => normalizeSuggestionEntry(entry))
     .filter(Boolean)
-    .slice(0, 3);
+    .slice(0, 6);
 }
 
 function normalizeStringList(value, maxItems = 6) {
@@ -160,6 +161,12 @@ function normalizeStateIntentEntry(value) {
       type,
       value: Math.max(-5, Math.min(5, Math.round(delta))),
     };
+  }
+
+  if (type === "magic.journal.add") {
+    const note = normalizeString(value.note);
+    if (!note) return null;
+    return { type, note };
   }
 
   return null;

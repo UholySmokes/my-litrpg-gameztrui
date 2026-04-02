@@ -999,7 +999,8 @@ Return one valid JSON object with this shape:
   "stateIntents": [
     { "type": "world.flag.set", "flag": "string_flag_id", "value": true },
     { "type": "clue.add", "clueId": "string_clue_id" },
-    { "type": "player.reputation.delta", "value": 1 }
+    { "type": "player.reputation.delta", "value": 1 },
+    { "type": "magic.journal.add", "note": "brief magic insight from narrative" }
   ],
   "sceneMemory": {
     "locationLabel": "Current place name",
@@ -1012,7 +1013,7 @@ Return one valid JSON object with this shape:
   }
 }
 
-Return exactly 3 suggestions and 3 aligned choiceMeta entries when possible.`;
+Return exactly 6 suggestions and 6 aligned choiceMeta entries when possible.`;
 }
 
 /**

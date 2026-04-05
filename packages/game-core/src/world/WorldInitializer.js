@@ -137,13 +137,16 @@ export function seedWorldAfterCharacterCreation(
   });
   const startingSceneId = opening?.scene?.id || null;
 
+  const playerZoneId = player?.startingZoneId || null;
   const sceneBiome = opening?.scene?.biome;
   const questBiome = mainQuest?.tags?.biome;
-  const zoneId = getZoneById(sceneBiome)
-    ? sceneBiome
-    : getZoneById(questBiome)
-      ? questBiome
-      : "city";
+  const zoneId = (playerZoneId && getZoneById(playerZoneId))
+    ? playerZoneId
+    : getZoneById(sceneBiome)
+      ? sceneBiome
+      : getZoneById(questBiome)
+        ? questBiome
+        : "city";
 
   const startLocationId = pickStartLocationId({
     zoneId,

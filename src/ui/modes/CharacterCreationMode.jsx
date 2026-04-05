@@ -94,6 +94,62 @@ function ChamberSection({ eyebrow, title, children }) {
   );
 }
 
+function CollapsibleChamberSection({ eyebrow, title, summaryText, isOpen, onToggle, children }) {
+  return (
+    <section className="creation-chamber__section">
+      <button
+        type="button"
+        className="creation-chamber__section-header creation-chamber__section-header--collapsible"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        style={{ cursor: "pointer", background: "none", border: "none", padding: 0, width: "100%", textAlign: "left", color: "inherit", font: "inherit" }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <span style={{ fontSize: "0.75rem", opacity: 0.6, transition: "transform 0.2s", transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}>&#9654;</span>
+          <div className="creation-flow__eyebrow">{eyebrow}</div>
+        </div>
+        <h3 className="surface-section__title">{title}</h3>
+        {!isOpen && summaryText ? (
+          <div style={{ fontSize: "0.78rem", color: "var(--text-dim)", marginTop: "0.15rem" }}>{summaryText}</div>
+        ) : null}
+      </button>
+      {isOpen ? <div className="creation-chamber__section-body">{children}</div> : null}
+    </section>
+  );
+}
+
+function SoulCrucibleSummaryStrip({ raceName, className, systemName, completionById, advancedUnlocked }) {
+  const steps = ["attributes", "skills", "perks", ...(advancedUnlocked ? ["starter-tree"] : []), "alignment"];
+  const done = steps.filter((s) => completionById[s]).length;
+  return (
+    <div
+      className="creation-chamber__summary-strip"
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 2,
+        display: "flex",
+        alignItems: "center",
+        gap: "0.6rem",
+        padding: "0.5rem 0.75rem",
+        borderRadius: "8px",
+        background: "rgba(7, 13, 22, 0.85)",
+        border: "1px solid color-mix(in srgb, var(--holo-cyan) 20%, transparent)",
+        fontSize: "0.8rem",
+        color: "var(--text-dim)",
+        flexWrap: "wrap",
+      }}
+    >
+      <span style={{ color: "var(--holo-cyan)" }}>{raceName}</span>
+      <span>·</span>
+      <span style={{ color: "var(--holo-cyan)" }}>{className}</span>
+      <span>·</span>
+      <span style={{ color: "var(--holo-cyan)" }}>{systemName}</span>
+      <span style={{ marginLeft: "auto", opacity: 0.7 }}>{done}/{steps.length} complete</span>
+    </div>
+  );
+}
+
 export default function CharacterCreationMode({
   onComplete,
   advancedUnlocked = false,
@@ -166,6 +222,7 @@ export default function CharacterCreationMode({
   const [activeChamberIndex, setActiveChamberIndex] = useState(0);
   const [unlockedChamberIndex, setUnlockedChamberIndex] = useState(0);
   const [wizardError, setWizardError] = useState("");
+  const [openCrucibleSections, setOpenCrucibleSections] = useState({});
   const narrativeMemoryRef = useRef(null);
 
   const emitCreationTelemetry = useCallback(
@@ -281,6 +338,9 @@ export default function CharacterCreationMode({
       passiveSkills: selectedPassiveSkills.length > 0 ? selectedPassiveSkills : null,
       grantedActiveSkills,
       grantedPassiveSkills,
+      originName: selectedStartingPoint?.name || "Origin not selected",
+      originDescription: selectedStartingPoint?.summary || "Choose an origin to shape your opening pressures.",
+      originBiome: selectedStartingPoint?.type || null,
     };
   }, [
     blockedSkillIds.length,
@@ -295,6 +355,7 @@ export default function CharacterCreationMode({
     selectedProfession,
     selectedRace,
     selectedActiveSkills,
+    selectedStartingPoint,
     systemAttributeBias,
   ]);
 
@@ -365,6 +426,11 @@ export default function CharacterCreationMode({
     }),
     [canFinalize, completionById],
   );
+
+  // Clear validation errors when the player makes a selection that changes chamber checks.
+  useEffect(() => {
+    setWizardError((prev) => (prev ? "" : prev));
+  }, [chamberChecks]);
 
   const chamberCompletion = useMemo(
     () =>
@@ -672,110 +738,148 @@ export default function CharacterCreationMode({
             </ChamberSection>
           </div>
         );
-      case "soul-crucible":
+      case "soul-crucible": {
+        const crucibleSections = [
+          { id: "attributes", eyebrow: "Attributes", title: "Distribute core power", summaryText: completionById.attributes ? `${availablePoints === 0 ? "All" : availablePoints} points allocated` : null },
+          { id: "skills", eyebrow: "Skills", title: "Assemble active and passive loadout", summaryText: completionById.skills ? `${selectedActiveSkills.length} active, ${selectedPassiveSkills.length} passive` : null },
+          { id: "perks", eyebrow: "Perks", title: "Select starting mutations", summaryText: completionById.perks ? `${selectedPerkIds.length} perk${selectedPerkIds.length !== 1 ? "s" : ""} chosen` : null },
+          ...(advancedUnlocked ? [{ id: "starter-tree", eyebrow: "Starter Tree", title: "Prime the first progression tree", summaryText: completionById["starter-tree"] ? `${selectedStarterTreeIds.length} tree selected` : null }] : []),
+          { id: "alignment", eyebrow: "Alignment", title: "Select roleplay tone", summaryText: completionById.alignment ? "Alignment set" : null },
+        ];
+        const firstIncompleteIdx = crucibleSections.findIndex((s) => !completionById[s.id]);
+        const autoOpenIdx = firstIncompleteIdx === -1 ? crucibleSections.length - 1 : firstIncompleteIdx;
         return (
           <div className="creation-chamber__stack">
-            <ChamberSection eyebrow="Attributes" title="Distribute core power">
-              <CreationAttributesPanel
-                allocationPoints={allocationPoints}
-                derivedStats={derivedStats}
-                availablePoints={availablePoints}
-                onStatChange={(stat, delta) => {
-                  setWizardError("");
-                  if (delta > 0) {
-                    allocateAttributePoint(stat);
-                  } else {
-                    deallocateAttributePoint(stat);
-                  }
-                }}
-                onAction={handleClick}
-                rerollsRemaining={rerollsRemaining}
-                onReroll={() => {
-                  setWizardError("");
-                  handleReroll();
-                }}
-              />
-            </ChamberSection>
-            <ChamberSection eyebrow="Skills" title="Assemble active and passive loadout">
-              <div className="creation-chamber__stack">
-                {availableCreationSkillLoadouts.length > 0 ? (
-                  <CreationChoicePanel
-                    title="Skill Loadout"
-                    subtitle="Optional preset loadout. Manual picks below still apply."
-                    options={availableCreationSkillLoadouts}
-                    selectedIds={selectedSkillLoadoutId ? [selectedSkillLoadoutId] : []}
-                    onToggle={handleSkillLoadoutSelect}
-                    allowNone={true}
-                    onSelectNone={() => handleSkillLoadoutSelect(null)}
-                    noneLabel="None (Manual Selection)"
-                    maxSelections={1}
-                    onAction={handleClick}
-                  />
-                ) : null}
-                <CreationSkillsPanel
-                  selectedClass={selectedClass}
-                  selectedSystem={selectedArchetypeSystem}
-                  availableActiveSkills={availableActiveSkills}
-                  availablePassiveSkills={availablePassiveSkills}
-                  grantedActiveSkills={grantedActiveSkills}
-                  grantedPassiveSkills={grantedPassiveSkills}
-                  blockedSkillIds={blockedSkillIds}
-                  selectedActiveSkills={selectedActiveSkills}
-                  selectedPassiveSkills={selectedPassiveSkills}
-                  maxActiveSkills={MAX_ACTIVE_SKILLS}
-                  maxPassiveSkills={MAX_PASSIVE_SKILLS}
-                  onActiveSelect={(skill) => {
-                    setWizardError("");
-                    handleActiveSkillSelect(skill);
-                  }}
-                  onPassiveToggle={(skill) => {
-                    setWizardError("");
-                    handlePassiveSkillToggle(skill);
-                  }}
-                  onAction={handleClick}
-                />
-              </div>
-            </ChamberSection>
-            <ChamberSection eyebrow="Perks" title="Select starting mutations">
-              <CreationChoicePanel
-                title="Perks"
-                subtitle="Choose the starting perk package."
-                options={availableCreationPerks}
-                selectedIds={selectedPerkIds}
-                onToggle={handlePerkToggle}
-                minSelections={creationPerkLimits?.minPicks || 0}
-                maxSelections={creationPerkLimits?.maxPicks || 0}
-                onAction={handleClick}
-              />
-            </ChamberSection>
-            {advancedUnlocked ? (
-              <ChamberSection eyebrow="Starter Tree" title="Prime the first progression tree">
-                <CreationChoicePanel
-                  title="Starter Tree"
-                  subtitle="Choose the initial progression tree."
-                  options={availableCreationStarterTrees}
-                  selectedIds={selectedStarterTreeIds}
-                  onToggle={handleStarterTreeSelect}
-                  minSelections={1}
-                  maxSelections={1}
-                  onAction={handleClick}
-                />
-              </ChamberSection>
-            ) : null}
-            <ChamberSection eyebrow="Alignment" title="Select roleplay tone">
-              <CreationChoicePanel
-                title="Alignment"
-                subtitle="Choose the narrative alignment that colors the run."
-                options={availableCreationAlignments}
-                selectedIds={selectedAlignmentId ? [selectedAlignmentId] : []}
-                onToggle={handleAlignmentSelect}
-                minSelections={1}
-                maxSelections={1}
-                onAction={handleClick}
-              />
-            </ChamberSection>
+            <SoulCrucibleSummaryStrip
+              raceName={selectionSummary.raceName}
+              className={selectionSummary.className}
+              systemName={selectionSummary.systemName}
+              completionById={completionById}
+              advancedUnlocked={advancedUnlocked}
+            />
+            {crucibleSections.map((sec, idx) => {
+              const isOpen = idx === autoOpenIdx || (openCrucibleSections && openCrucibleSections[sec.id]);
+              const toggle = () => setOpenCrucibleSections((prev) => ({ ...prev, [sec.id]: !prev[sec.id] }));
+              switch (sec.id) {
+                case "attributes":
+                  return (
+                    <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
+                      <CreationAttributesPanel
+                        allocationPoints={allocationPoints}
+                        derivedStats={derivedStats}
+                        availablePoints={availablePoints}
+                        onStatChange={(stat, delta) => {
+                          setWizardError("");
+                          if (delta > 0) {
+                            allocateAttributePoint(stat);
+                          } else {
+                            deallocateAttributePoint(stat);
+                          }
+                        }}
+                        onAction={handleClick}
+                        rerollsRemaining={rerollsRemaining}
+                        onReroll={() => {
+                          setWizardError("");
+                          handleReroll();
+                        }}
+                      />
+                    </CollapsibleChamberSection>
+                  );
+                case "skills":
+                  return (
+                    <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
+                      <div className="creation-chamber__stack">
+                        {availableCreationSkillLoadouts.length > 0 ? (
+                          <CreationChoicePanel
+                            title="Skill Loadout"
+                            subtitle="Optional preset loadout. Manual picks below still apply."
+                            options={availableCreationSkillLoadouts}
+                            selectedIds={selectedSkillLoadoutId ? [selectedSkillLoadoutId] : []}
+                            onToggle={handleSkillLoadoutSelect}
+                            allowNone={true}
+                            onSelectNone={() => handleSkillLoadoutSelect(null)}
+                            noneLabel="None (Manual Selection)"
+                            maxSelections={1}
+                            onAction={handleClick}
+                          />
+                        ) : null}
+                        <CreationSkillsPanel
+                          selectedClass={selectedClass}
+                          selectedSystem={selectedArchetypeSystem}
+                          availableActiveSkills={availableActiveSkills}
+                          availablePassiveSkills={availablePassiveSkills}
+                          grantedActiveSkills={grantedActiveSkills}
+                          grantedPassiveSkills={grantedPassiveSkills}
+                          blockedSkillIds={blockedSkillIds}
+                          selectedActiveSkills={selectedActiveSkills}
+                          selectedPassiveSkills={selectedPassiveSkills}
+                          maxActiveSkills={MAX_ACTIVE_SKILLS}
+                          maxPassiveSkills={MAX_PASSIVE_SKILLS}
+                          onActiveSelect={(skill) => {
+                            setWizardError("");
+                            handleActiveSkillSelect(skill);
+                          }}
+                          onPassiveToggle={(skill) => {
+                            setWizardError("");
+                            handlePassiveSkillToggle(skill);
+                          }}
+                          onAction={handleClick}
+                        />
+                      </div>
+                    </CollapsibleChamberSection>
+                  );
+                case "perks":
+                  return (
+                    <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
+                      <CreationChoicePanel
+                        title="Perks"
+                        subtitle="Choose the starting perk package."
+                        options={availableCreationPerks}
+                        selectedIds={selectedPerkIds}
+                        onToggle={handlePerkToggle}
+                        minSelections={creationPerkLimits?.minPicks || 0}
+                        maxSelections={creationPerkLimits?.maxPicks || 0}
+                        onAction={handleClick}
+                      />
+                    </CollapsibleChamberSection>
+                  );
+                case "starter-tree":
+                  return (
+                    <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
+                      <CreationChoicePanel
+                        title="Starter Tree"
+                        subtitle="Choose the initial progression tree."
+                        options={availableCreationStarterTrees}
+                        selectedIds={selectedStarterTreeIds}
+                        onToggle={handleStarterTreeSelect}
+                        minSelections={1}
+                        maxSelections={1}
+                        onAction={handleClick}
+                      />
+                    </CollapsibleChamberSection>
+                  );
+                case "alignment":
+                  return (
+                    <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
+                      <CreationChoicePanel
+                        title="Alignment"
+                        subtitle="Choose the narrative alignment that colors the run."
+                        options={availableCreationAlignments}
+                        selectedIds={selectedAlignmentId ? [selectedAlignmentId] : []}
+                        onToggle={handleAlignmentSelect}
+                        minSelections={1}
+                        maxSelections={1}
+                        onAction={handleClick}
+                      />
+                    </CollapsibleChamberSection>
+                  );
+                default:
+                  return null;
+              }
+            })}
           </div>
         );
+      }
       case "oath-mirror":
         return (
           <div className="creation-chamber__stack">

@@ -196,6 +196,7 @@ export default function AdventureShell({
               isLoading={command?.isLoading}
               error={command?.error}
               inputRef={command?.inputRef}
+              placeholder={`What will you do in ${location?.name || zone?.name || "this place"}?`}
             />
             <ActionSuggestionsPanel
               suggestions={command?.suggestions}

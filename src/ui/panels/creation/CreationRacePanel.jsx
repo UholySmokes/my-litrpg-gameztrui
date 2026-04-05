@@ -152,6 +152,7 @@ export default function CreationRacePanel({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search races..."
+          aria-label="Search races"
           style={{
             width: "100%",
             padding: "0.45rem 0.6rem 0.45rem 1.6rem",

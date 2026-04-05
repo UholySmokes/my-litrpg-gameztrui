@@ -130,6 +130,7 @@ export default function GameUI({ user }) {
     advancedCreationUnlocked,
     characterCreated,
     isTransitioning,
+    transitionSummary,
     setCharacterCreated,
     handleCharacterCreationComplete,
   } = useGameUiCharacterCreationFlow({
@@ -521,6 +522,18 @@ export default function GameUI({ user }) {
               onComplete={handleCreationComplete}
               telemetryUser={user}
             />
+        ) : null}
+
+        {isTransitioning && transitionSummary ? (
+          <div className="creation-handoff-overlay" role="status" aria-live="polite">
+            <p className="creation-handoff-overlay__name">{transitionSummary.name}</p>
+            <p className="creation-handoff-overlay__class">{transitionSummary.className}</p>
+            {transitionSummary.startingPoint ? (
+              <p className="creation-handoff-overlay__destination">
+                Your chronicle begins in {transitionSummary.startingPoint}\u2026
+              </p>
+            ) : null}
+          </div>
         ) : null}
 
         {shouldShowAdventure ? (

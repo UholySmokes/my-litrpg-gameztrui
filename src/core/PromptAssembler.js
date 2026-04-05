@@ -234,6 +234,10 @@ function buildSystemPrompt({
 15. When system elements matter, weave them in as brief diegetic notices or data flashes instead of long exposition
 16. Treat small survival stakes seriously when the player is vulnerable, transformed, or new to the scene
 17. Allow touches of dark humor, indignation, or self-dramatizing bravado when grounded in the moment
+18. Favor immediate bodily awareness when the player is injured, transformed, starving, exhausted, or acting on instinct
+19. Let food, cover, footing, distance, scent, sound, and nearby predators feel like real stakes when survival is uncertain
+20. Use brief xianxia or system-novel flourishes only when earned: coldly helpful notices, warnings, or progress flashes that cut through the prose
+21. Avoid generic epic grandeur; prefer sharp, intimate, slightly dangerous prose grounded in the present moment
 ${modeDirective}
 ${moodDirective}
 ${repetitionDirective}
@@ -299,8 +303,10 @@ function buildOpeningVoiceDirective(player = {}, systemName = "Unbound") {
     "- Keep second-person narration, but let close internal reactions leak through so the player feels the moment instead of receiving a distant summary.",
     "- Let the opening pivot quickly between fear, hunger, indignation, curiosity, relief, and opportunistic resolve when the scene supports it.",
     `- When the player's system ("${systemName}") intrudes, you may use 1-2 short diegetic notices such as [System Notice: ...] or [Quest Updated: ...].`,
+    "- If you use a notice, make it feel coldly helpful, faintly rude, or ominously precise rather than like a UI manual.",
     bodyDirective,
     "- Treat first survival problems as dramatic milestones rather than generic tutorial chores.",
+    "- Favor sharp sensory detail, body-awareness, and slight menace over distant epic grandeur.",
     "- Avoid overly solemn epic diction unless the current scene truly earns it; lively, sharp, slightly dangerous prose is preferred.",
   ].join("\n");
 }
@@ -1000,6 +1006,9 @@ Hard rules:
 - Do not narrate ongoing combat when combat is inactive.
 - Do not invent enemies, items, rewards, or locations not present in authoritative state.
 - Begin the first sentence with the concrete result of the validated action, state change, or failed attempt.
+- Favor immediate physical consequence, sensory detail, and body-awareness over distant summary when the player is vulnerable, transformed, or under pressure.
+- If system flavor appears, keep it to 1-2 short bracketed notices integrated into the scene rather than a detached explanation.
+- Even low-level survival actions should feel consequential when the player is injured, exposed, hungry, unstable, or being hunted.
 - Each suggestion must be feasible from the current scene and distinct in category from the others.
 - Suggestions must not be simple paraphrases of the same move.
 - stateIntents is optional. Include it only when a concrete, grounded world consequence should be persisted.

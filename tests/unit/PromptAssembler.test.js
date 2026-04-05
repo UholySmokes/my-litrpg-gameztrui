@@ -267,6 +267,8 @@ describe("assemblePrompt", () => {
     expect(prompt).not.toContain("Do not include JSON");
     expect(prompt).toContain("Keep the narration emotionally reactive");
     expect(prompt).toContain("Allow touches of dark humor");
+    expect(prompt).toContain("Favor immediate bodily awareness");
+    expect(prompt).toContain("coldly helpful notices");
   });
 });
 
@@ -295,6 +297,8 @@ describe("buildInitialPrompt", () => {
     expect(prompt).toContain("=== OPENING VOICE RULES ===");
     expect(prompt).toContain("Foxkin body should feel immediate");
     expect(prompt).toContain('[System Notice: ...]');
+    expect(prompt).toContain("coldly helpful");
+    expect(prompt).toContain("sharp sensory detail");
     expect(prompt).toContain("Return one valid JSON object with this shape:");
     expect(prompt).toContain('"sceneMemory"');
   });

@@ -120,6 +120,8 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
           onEvolveClass={actions.onEvolveClass}
           onEvolveRace={actions.onEvolveRace}
           onStudySpell={actions.onStudySpell}
+          onPerformPrestige={actions.onPerformPrestige}
+          onBuyPrestigeUpgrade={actions.onBuyPrestigeUpgrade}
           onOpenArchetypeSystem={surfaces.handleToggleArchetypeSystem}
         />
       ),
@@ -155,7 +157,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
     {
       id: "titles",
       title: "Title Reliquary",
-      subtitle: "Manage earned titles, ceremonial bonuses, and prestige loadouts.",
+      subtitle: "Manage earned titles, ceremonial bonuses, and prestige rites.",
       tone: "gold",
       entryAction: "Open reliquary",
       size: "fullscreen",
@@ -172,6 +174,8 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
           onEquip={actions.onTitleEquip}
           onUnequip={actions.onTitleUnequip}
           onPurchase={actions.onTitlePurchase}
+          onPerformPrestige={actions.onPerformPrestige}
+          onBuyPrestigeUpgrade={actions.onBuyPrestigeUpgrade}
           variant="modal"
         />
       ),

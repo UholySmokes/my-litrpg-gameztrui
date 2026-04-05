@@ -119,6 +119,8 @@ export default function GameMode({
   onTitleEquip = () => {},
   onTitleUnequip = () => {},
   onTitlePurchase = () => {},
+  onPerformPrestige = () => {},
+  onBuyPrestigeUpgrade = () => {},
   onCraft = () => {},
   onAllocateAttribute = () => {},
   onDeallocateAttribute = () => {},
@@ -370,6 +372,8 @@ export default function GameMode({
                 onEquip={onTitleEquip}
                 onUnequip={onTitleUnequip}
                 onPurchase={onTitlePurchase}
+                onPerformPrestige={onPerformPrestige}
+                onBuyPrestigeUpgrade={onBuyPrestigeUpgrade}
               />
             ),
           },
@@ -426,6 +430,8 @@ export default function GameMode({
                 onEvolveClass={onEvolveClass}
                 onEvolveRace={onEvolveRace}
                 onStudySpell={onStudySpell}
+                onPerformPrestige={onPerformPrestige}
+                onBuyPrestigeUpgrade={onBuyPrestigeUpgrade}
                 onOpenArchetypeSystem={onOpenArchetypeSystem}
               />
             ),

@@ -55,7 +55,7 @@ describe("WorldInitializer", () => {
     const seeded = seedWorldAfterCharacterCreation(baseWorld, {
       player,
       quests,
-      seed: 99,
+      seed: 1,
     });
 
     expect(typeof seeded.vars.startingSceneId).toBe("string");

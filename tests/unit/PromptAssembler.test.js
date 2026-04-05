@@ -206,6 +206,7 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("=== AUTHORITATIVE SCENE STATE ===");
     expect(prompt).toContain("Recent Summary: You reached the terminal and survived the ambush.");
     expect(prompt).toContain("Return one valid JSON object with this shape:");
+    expect(prompt).toContain('"story"');
     expect(prompt).toContain('"sceneMemory"');
     expect(prompt).toContain("Active Threats: None confirmed");
     expect(prompt).not.toContain("Present Entities: Goblin Raider");
@@ -300,6 +301,7 @@ describe("buildInitialPrompt", () => {
     expect(prompt).toContain("coldly helpful");
     expect(prompt).toContain("sharp sensory detail");
     expect(prompt).toContain("Return one valid JSON object with this shape:");
+    expect(prompt).toContain('"story"');
     expect(prompt).toContain('"sceneMemory"');
   });
 });

@@ -1017,7 +1017,7 @@ Hard rules:
 === RESPONSE FORMAT ===
 Return one valid JSON object with this shape:
 {
-  "narrative": "Plain text only. 4-8 sentences. Under 1200 characters.",
+  "story": "Plain text only. 4-8 sentences. Under 1200 characters.",
   "mood": "neutral|tense|triumphant|mysterious|serene|desperate",
   "suggestions": [
     {
@@ -1182,7 +1182,7 @@ Hard limit: keep the response under 1200 characters.
 === RESPONSE FORMAT ===
 Return one valid JSON object with this shape:
 {
-  "narrative": "Plain text only. 6-9 sentences. Under 1200 characters.",
+  "story": "Plain text only. 6-9 sentences. Under 1200 characters.",
   "mood": "neutral|tense|triumphant|mysterious|serene|desperate",
   "suggestions": [
     {

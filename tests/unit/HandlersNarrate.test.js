@@ -40,7 +40,7 @@ describe("handlers narrate endpoints", () => {
     auth.getUserFromRequest = jest.fn(async () => ({ id: "user-1" }));
     runtime.runFirebaseAgent = jest.fn(async () => ({
       text: JSON.stringify({
-        narrative: "The market lights flicker as night falls.",
+        story: "The market lights flicker as night falls.",
         mood: "mysterious",
         suggestions: ["Press deeper into the bazaar."],
         sceneMemory: {
@@ -96,7 +96,9 @@ describe("handlers narrate endpoints", () => {
     expect(res.body.ok).toBe(true);
     expect(res.body.status).toBe("completed");
     expect(res.body.done).toBe(true);
+    expect(res.body.story).toContain("market lights");
     expect(res.body.narrative).toContain("market lights");
+    expect(res.body.narrative).toBe(res.body.story);
     expect(typeof res.body.threadId).toBe("string");
     expect(typeof res.body.runId).toBe("string");
     expect(typeof res.body.outputHash).toBe("string");
@@ -189,7 +191,9 @@ describe("handlers narrate endpoints", () => {
     expect(res.body.ok).toBe(true);
     expect(res.body.done).toBe(true);
     expect(res.body.status).toBe("completed");
+    expect(res.body.story).toContain("Dawn breaks");
     expect(res.body.narrative).toContain("Dawn breaks");
+    expect(res.body.narrative).toBe(res.body.story);
     expect(res.body.outputHash).toBe("abc123");
     expect(res.body.provider).toBe("firebase-genkit");
     expect(res.body.sceneMemory?.locationLabel).toBe("Copper Roofs");
@@ -251,7 +255,9 @@ describe("handlers narrate endpoints", () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.ok).toBe(true);
+    expect(res.body.story).toContain("market lights");
     expect(res.body.narrative).toContain("market lights");
+    expect(res.body.narrative).toBe(res.body.story);
     // Generation trace: which agent, backend, and model handled the request
     expect(res.body.agentId).toBe("combat");
     expect(typeof res.body.backend).toBe("string");
@@ -263,7 +269,7 @@ describe("handlers narrate endpoints", () => {
   it("preserves backend and fallback metadata from the runtime result", async () => {
     runtime.runFirebaseAgent = jest.fn(async () => ({
       text: JSON.stringify({
-        narrative: "The local emulator fills the silence.",
+        story: "The local emulator fills the silence.",
         mood: "neutral",
         suggestions: ["Continue"],
       }),

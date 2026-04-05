@@ -182,9 +182,11 @@ function normalizeStateIntents(stateIntents) {
 }
 
 export function normalizeNarrationPayload(payload, fallback = {}) {
-  const narrative = normalizeString(payload?.narrative || fallback.narrative);
-  if (!narrative) {
-    throw new Error("Narrative response missing.");
+  const story = normalizeString(
+    payload?.story || payload?.narrative || fallback.story || fallback.narrative,
+  );
+  if (!story) {
+    throw new Error("Story response missing.");
   }
 
   const suggestions = normalizeSuggestions(payload?.suggestions, fallback.suggestions);
@@ -200,7 +202,8 @@ export function normalizeNarrationPayload(payload, fallback = {}) {
   );
 
   return {
-    narrative,
+    story,
+    narrative: story,
     mood: normalizeMood(payload?.mood, normalizeMood(fallback.mood, "neutral")),
     suggestions,
     provider: normalizeString(payload?.provider || payload?.backend || fallback.provider) ||

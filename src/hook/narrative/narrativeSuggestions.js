@@ -459,7 +459,7 @@ function buildTravelSuggestions(state, maxItems = 3) {
   const currentLocationId = getCurrentLocationId(state);
   const currentLocation = getLocationById(currentLocationId);
   const currentZoneId = currentLocation?.zoneId || state?.world?.location?.biome || "";
-  const accessibleIds = getAccessibleLocationIds(state)
+  const accessibleIds = Array.from(getAccessibleLocationIds(state) || [])
     .filter((locationId) => typeof locationId === "string" && locationId !== currentLocationId)
     .map((locationId) => getLocationById(locationId))
     .filter(Boolean)

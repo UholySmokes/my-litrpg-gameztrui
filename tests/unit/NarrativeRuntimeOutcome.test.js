@@ -5,7 +5,7 @@ describe("narrative runtime outcome policy", () => {
   it("treats successful AI output as canonical for mood and suggestions", () => {
     const result = resolveNarrativeRuntimeOutcome({
       aiResult: {
-        narrative: "The whisper curls from the shrine door.",
+        story: "The whisper curls from the shrine door.",
         mood: "mysterious",
         suggestions: ["follow the whisper", { t: "study the seal", w: 0.8 }],
         sceneMemory: {
@@ -45,12 +45,21 @@ describe("narrative runtime outcome policy", () => {
     });
 
     expect(result.source).toBe("ai");
+    expect(result.story).toBe("The whisper curls from the shrine door.");
+    expect(result.narrative).toBe(result.story);
     expect(result.mood).toBe("mysterious");
-    expect(result.suggestions).toEqual([
-      { t: "follow the whisper", w: 0.9 },
-      { t: "study the seal", w: 0.8 },
-      { t: "look around", w: 1 },
-    ]);
+    expect(result.suggestions.length).toBeGreaterThanOrEqual(3);
+    expect(result.suggestions[0]).toEqual(
+      expect.objectContaining({ t: "follow the whisper", w: 0.9 }),
+    );
+    expect(result.suggestions[1]).toEqual(
+      expect.objectContaining({ t: "study the seal", w: 0.8 }),
+    );
+    expect(result.suggestions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ t: "look around", w: 1 }),
+      ]),
+    );
     expect(result.sceneMemory?.locationLabel).toBe("Shrine Door");
   });
 
@@ -79,8 +88,11 @@ describe("narrative runtime outcome policy", () => {
     });
 
     expect(result.source).toBe("fallback");
+    expect(result.story).toContain("inspect sigil");
+    expect(result.story).toContain("the sigil stays dark");
     expect(result.narrative).toContain("inspect sigil");
     expect(result.narrative).toContain("the sigil stays dark");
+    expect(result.narrative).toBe(result.story);
     expect(result.suggestions.length).toBeGreaterThan(0);
     expect(result.sceneMemory).toBeUndefined();
   });

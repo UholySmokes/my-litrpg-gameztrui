@@ -351,30 +351,42 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
 }
 
 export function applyNarrationGuards(response) {
-  const narrativeRaw =
-    response && typeof response.narrative === "string" ? response.narrative : "";
-  let narrative = narrativeRaw.trim();
-  if (!narrative) {
-    return { ...response, narrative: NARRATION_GUARD_FALLBACK };
+  const storyRaw =
+    response && typeof response.story === "string"
+      ? response.story
+      : response && typeof response.narrative === "string"
+        ? response.narrative
+        : "";
+  let story = storyRaw.trim();
+  if (!story) {
+    return {
+      ...response,
+      story: NARRATION_GUARD_FALLBACK,
+      narrative: NARRATION_GUARD_FALLBACK,
+    };
   }
 
-  narrative = stripToneViolations(narrative);
-  narrative = stripMarkdownFormatting(narrative);
-  if (!narrative) {
-    return { ...response, narrative: NARRATION_GUARD_FALLBACK };
+  story = stripToneViolations(story);
+  story = stripMarkdownFormatting(story);
+  if (!story) {
+    return {
+      ...response,
+      story: NARRATION_GUARD_FALLBACK,
+      narrative: NARRATION_GUARD_FALLBACK,
+    };
   }
 
-  if (narrative.length > MAX_NARRATIVE_LENGTH) {
-    narrative = narrative.slice(0, MAX_NARRATIVE_LENGTH).trim();
+  if (story.length > MAX_NARRATIVE_LENGTH) {
+    story = story.slice(0, MAX_NARRATIVE_LENGTH).trim();
   }
 
-  return { ...response, narrative };
+  return { ...response, story, narrative: story };
 }
 
 /**
  * Calls narrative API to generate response
  * @param {string} prompt - The complete prompt string
- * @returns {Promise<object>} The parsed JSON response with narrative, mood, and suggestions
+ * @returns {Promise<object>} The parsed JSON response with story, mood, and suggestions
  */
 export async function generateNarrative(prompt, { mode } = {}) {
   const cooldownError = createNarratorCooldownError();
@@ -460,14 +472,17 @@ export async function generateNarrative(prompt, { mode } = {}) {
           throw new Error(message);
         }
 
-        if (!data || typeof data.narrative !== "string") {
-          throw new Error("Narrative response missing.");
+        if (
+          !data ||
+          (typeof data.story !== "string" && typeof data.narrative !== "string")
+        ) {
+          throw new Error("Story response missing.");
         }
 
         resetNarratorAvailabilityState();
         return applyNarrationGuards(
           normalizeNarrationPayload(data, {
-            narrative: "Something happened.",
+            story: "Something happened.",
             mood: "neutral",
             suggestions: ["Look around", "Check inventory", "Continue"],
             provider: "firebase-genkit",
@@ -632,10 +647,13 @@ export async function generateNarrativeStream(
     throw new Error(startData?.message || "Narrative generation failed.");
   }
 
-  if (startDone && typeof startData?.narrative === "string") {
+  if (
+    startDone &&
+    (typeof startData?.story === "string" || typeof startData?.narrative === "string")
+  ) {
     const result = applyNarrationGuards(
       normalizeNarrationPayload(startData, {
-        narrative: startData.narrative,
+        story: startData.story || startData.narrative,
         mood: "neutral",
         suggestions: ["Look around", "Check inventory", "Continue"],
         provider: "firebase-genkit",
@@ -714,7 +732,7 @@ export async function generateNarrativeStream(
     }
 
     // Emit delta when text has grown
-    const currentText = pollData?.narrative || "";
+    const currentText = pollData?.story || pollData?.narrative || "";
     if (currentText.length > lastText.length) {
       const delta = currentText.slice(lastText.length);
       lastText = currentText;
@@ -736,7 +754,7 @@ export async function generateNarrativeStream(
       }
       const result = applyNarrationGuards(
         normalizeNarrationPayload(pollData, {
-          narrative: currentText || "Something happened.",
+          story: currentText || "Something happened.",
           mood: "neutral",
           suggestions: ["Look around", "Check inventory", "Continue"],
           provider: "firebase-genkit",

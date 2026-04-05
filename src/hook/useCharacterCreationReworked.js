@@ -397,6 +397,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setSelectedStarterTreeIds([]);
     setSelectedAlignmentId(null);
     setSelectedSkillLoadoutId(null);
+    setSelectedStartingPoint(null);
     setSelectedActiveSkills([]);
     setSelectedPassiveSkills([]);
     setAttributePoints(createAttributeBaseline(BASE_ATTRIBUTE_VALUE));
@@ -968,7 +969,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       attributePoints,
       selectedRace,
       selectedClass,
-      selectedOrigin,
     });
 
     // Add profession skills at tier 1
@@ -1035,7 +1035,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       classId: selectedClass?.id,
       secondaryClassId:
         advancedUnlocked ? selectedSecondaryClass?.id || null : null,
-      originId: selectedOrigin?.id,
+      startingZoneId: selectedStartingPoint?.id,
       professionId,
       archetypeSystemId: selectedArchetypeSystem?.id,
       attributes: derivedState.attributes,
@@ -1055,7 +1055,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       secondaryClass: advancedUnlocked
         ? normalizeEntityRef(selectedSecondaryClass, "None")
         : null,
-      origin: cloneOrigin(selectedOrigin),
+      startingZoneId: selectedStartingPoint?.id || null,
       alignment: selectedAlignmentId,
       perks: selectedPerkIds,
       starterTrees: advancedUnlocked ? selectedStarterTreeIds : [],
@@ -1129,7 +1129,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     attributePoints,
     name,
     gender,
-    selectedOrigin,
+    selectedStartingPoint,
     selectedRace,
     selectedSecondaryClass,
     selectedClass,
@@ -1158,7 +1158,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     name,
     characterName: name,
     gender,
-    selectedOrigin,
+    selectedStartingPoint,
     selectedRace,
     selectedClass,
     selectedSecondaryClass,
@@ -1172,7 +1172,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     selectedSkillLoadoutId,
     attributePoints,
     remainingPoints,
-    availableOrigins,
+    availableStartingPoints: AVAILABLE_STARTING_POINTS,
     availableRaces,
     availableClasses,
     availableSecondaryClasses,
@@ -1184,7 +1184,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     availableCreationStarterTrees,
     availableCreationAlignments,
     availableCreationSkillLoadouts,
-    recommendedOriginIds,
     recommendedRaceIds,
     recommendedClassIds,
     recommendedProfessionIds,
@@ -1200,7 +1199,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setGender,
 
     // Actions
-    handleOriginSelect,
+    handleStartingPointSelect,
     handleRaceSelect,
     handleClassSelect,
     handleSecondaryClassSelect,

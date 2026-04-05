@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import {
   assemblePrompt,
+  buildInitialPrompt,
   buildSceneMemorySeed,
   buildHistorySection,
 } from "../../src/core/PromptAssembler.js";
@@ -237,5 +238,64 @@ describe("assemblePrompt", () => {
     expect(sceneMemory.activeThreats).toEqual([]);
     expect(sceneMemory.immediateObjective).toBe("Restore shrine power.");
     expect(sceneMemory.lastConsequence).toBe("You steady yourself by the shrine gate.");
+  });
+
+  it("keeps the runtime prompt contract JSON-only and adds reactive LitRPG voice cues", () => {
+    const prompt = assemblePrompt(
+      {
+        player: {
+          name: "Nessa",
+          level: 2,
+          hp: { current: 12, max: 12 },
+          mana: { current: 6, max: 6 },
+          xp: { current: 0, max: 10 },
+          inventory: [],
+          equipment: {},
+        },
+        world: { location: { current: "starting_zone" } },
+        quests: { active: [] },
+        narrative: { entries: [], summary: "" },
+      },
+      "look around",
+      {
+        success: true,
+        description: "You steady yourself and look around.",
+      },
+    );
+
+    expect(prompt).toContain("Return exactly one valid JSON object and nothing else");
+    expect(prompt).not.toContain("Do not include JSON");
+    expect(prompt).toContain("Keep the narration emotionally reactive");
+    expect(prompt).toContain("Allow touches of dark humor");
+  });
+});
+
+describe("buildInitialPrompt", () => {
+  it("uses the structured JSON contract and opening voice rules", () => {
+    const prompt = buildInitialPrompt({
+      player: {
+        name: "Suri",
+        race: { name: "Foxkin" },
+        class: { name: "Scout" },
+        profession: { name: "Forager" },
+        activeSkills: [{ name: "Pounce" }],
+      },
+      world: {
+        location: { current: "starting_zone" },
+        vars: {
+          startingSceneId: "start_moonlit_fox_awakening",
+          openingSceneChoicePending: true,
+        },
+      },
+      quests: {
+        active: [{ name: "Stay Alive", description: "Survive the first night." }],
+      },
+    });
+
+    expect(prompt).toContain("=== OPENING VOICE RULES ===");
+    expect(prompt).toContain("Foxkin body should feel immediate");
+    expect(prompt).toContain('[System Notice: ...]');
+    expect(prompt).toContain("Return one valid JSON object with this shape:");
+    expect(prompt).toContain('"sceneMemory"');
   });
 });

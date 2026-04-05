@@ -102,4 +102,27 @@ describe("WorldInitializer", () => {
     expect(loc.zoneId).not.toBe("city");
     expect(seeded.location.current).not.toBe("starting_zone");
   });
+
+  it("keeps the selected starting zone when no quests are seeded", () => {
+    const baseWorld = createInitialWorldState({ seed: 7 });
+    const seeded = seedWorldAfterCharacterCreation(baseWorld, {
+      player: {
+        class: "mage",
+        race: "human",
+        profession: { id: "blacksmith", name: "Blacksmith" },
+        startingZoneId: "coast",
+      },
+      quests: {
+        active: [],
+        completed: [],
+      },
+      seed: 7,
+    });
+
+    const loc = getLocationById(seeded.location.current);
+    expect(loc).toBeTruthy();
+    expect(loc.zoneId).toBe("coast");
+    expect(seeded.vars.current_quest_id).toBeNull();
+    expect(typeof seeded.vars.startingSceneId).toBe("string");
+  });
 });

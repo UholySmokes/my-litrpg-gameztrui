@@ -304,4 +304,36 @@ describe("buildInitialPrompt", () => {
     expect(prompt).toContain('"story"');
     expect(prompt).toContain('"sceneMemory"');
   });
+
+  it("treats a questless start as a deliberate opening state", () => {
+    const prompt = buildInitialPrompt({
+      player: {
+        name: "Ari",
+        race: { name: "Human" },
+        class: { name: "Paladin" },
+        profession: { name: "Blacksmith" },
+        startingZoneId: "coast",
+      },
+      world: {
+        location: { current: "starting_zone" },
+        vars: {
+          startingSceneId: "start_inn_raid_midnight",
+          openingSceneChoicePending: true,
+        },
+      },
+      quests: {
+        active: [],
+      },
+    });
+
+    expect(prompt).toContain("=== OPENING PRESSURES ===");
+    expect(prompt).toContain(
+      "Immediate Lead -> Let the first meaningful opportunity emerge from the opening scene itself.",
+    );
+    expect(prompt).toContain("no formal quest has been assigned yet");
+    expect(prompt).not.toContain("Main Quest -> Pending discovery.");
+    expect(prompt).not.toContain("=== QUEST THREADS ===");
+    expect(prompt).toContain("Return one valid JSON object with this shape:");
+    expect(prompt).toContain('"sceneMemory"');
+  });
 });

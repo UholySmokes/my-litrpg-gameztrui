@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { QuestManager } from "../../systems/quest/QuestManager.js";
 import { seedWorldAfterCharacterCreation } from "../../world/WorldInitializer.js";
 import { getZoneById } from "../../world/WorldDataRegistry.js";
 import {
@@ -32,9 +31,9 @@ function buildTransitionAudioProfile(classId) {
   }
 }
 
-function buildCharacterCreationState(state, characterData, initialQuests) {
+export function buildCharacterCreationState(state, characterData) {
   const nextQuests = {
-    active: initialQuests,
+    active: [],
     completed: [],
   };
   const seededWorld = seedWorldAfterCharacterCreation(state?.world, {
@@ -121,23 +120,7 @@ export function useGameUiCharacterCreationFlow({
       console.log("=== CHARACTER CREATION COMPLETE ===");
       console.log("Character data received:", characterData);
 
-      let initialQuests = [];
-      try {
-        initialQuests = QuestManager.generateInitialQuests(characterData);
-        console.log("Generated initial quests:", initialQuests);
-      } catch (error) {
-        console.error("Failed to generate initial quests:", error);
-        addSystemMessage(
-          "Quest generation failed, but you can continue your adventure.",
-          "system",
-        );
-      }
-
-      const nextState = buildCharacterCreationState(
-        state,
-        characterData,
-        initialQuests,
-      );
+      const nextState = buildCharacterCreationState(state, characterData);
 
       setState(nextState);
       persistLocalAutosave(nextState, "Character Creation Checkpoint");

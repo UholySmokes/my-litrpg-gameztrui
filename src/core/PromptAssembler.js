@@ -1121,21 +1121,38 @@ export function buildInitialPrompt(gameState = {}) {
     : null;
   const startingPointName =
     startingPointZone?.name || openingZone?.name || null;
+  const hasQuestThreads = activeQuests.length > 0;
   const sceneDescription = describeOpeningScene(scene, {
-    mainQuestName: mainQuest?.name || "the looming mystery",
+    mainQuestName: mainQuest?.name || "the first strange trouble in reach",
     sideHookNames: sideQuests.map((q) => q.name),
     locationHint:
       openingLocation?.name || openingZone?.name || scene?.biome || "district",
     factionHint: scene?.tone || "locals",
   });
 
-  const questLines = [
-    mainQuest
-      ? `Main Quest -> ${mainQuest.name}: ${mainQuest.description}`
-      : "Main Quest -> Pending discovery.",
+  const openingPressureLines = [
+    "Immediate Lead -> Let the first meaningful opportunity emerge from the opening scene itself.",
+    startingPointName
+      ? `Starting Point Pressure -> ${startingPointName} should shape the first tension, contact, or curiosity.`
+      : null,
+    openingLocation?.name
+      ? `Current Locale -> ${openingLocation.name}`
+      : null,
+    openingChoicePending && openingChoiceLines.length
+      ? "Opening Choice -> One of the listed opening choices should feel naturally tempting, but no formal quest has been assigned yet."
+      : "Opening Momentum -> No formal quest has been assigned yet. End on a clear immediate action the player can choose.",
   ]
-    .concat(sideQuests.map((q) => `Side Hook -> ${q.name}: ${q.description}`))
+    .filter(Boolean)
     .join("\n");
+  const threadLines = hasQuestThreads
+    ? [
+        `Main Quest -> ${mainQuest.name}: ${mainQuest.description}`,
+        ...sideQuests.map((q) => `Side Hook -> ${q.name}: ${q.description}`),
+      ].join("\n")
+    : openingPressureLines;
+  const threadSectionTitle = hasQuestThreads
+    ? "=== QUEST THREADS ==="
+    : "=== OPENING PRESSURES ===";
 
   const narrativeHooks = Array.isArray(archetypeSystem?.narrativeHooks)
     ? archetypeSystem.narrativeHooks.slice(0, 2)
@@ -1171,8 +1188,8 @@ ${resolvedOpeningSeed
     ? `\n=== RESOLVED OPENING SEED ===\n${resolvedOpeningSeed}`
     : ""}
 
-=== QUEST THREADS ===
-${questLines}
+${threadSectionTitle}
+${threadLines}
 ${systemHooks.length ? `\n=== SYSTEM HOOKS ===\n${systemHooks.join("\n")}` : ""}
 ${narrativeHooks.length ? `\n=== NARRATIVE HOOKS ===\n${narrativeHooks.join("\n")}` : ""}
 ${openingVoiceDirective ? `\n${openingVoiceDirective}` : ""}
@@ -1180,7 +1197,9 @@ ${openingVoiceDirective ? `\n${openingVoiceDirective}` : ""}
 TASK: Deliver an atmospheric opening (6-9 sentences) that:
 - Establishes the scene and immediate surroundings${startingPointName ? `\n- Names the player's starting point ("${startingPointName}") within the first two sentences` : ""}
 - References the player's system ("${systemName}") naturally, as if it is part of the world
-- Hints at one quest thread without being heavy-handed
+- ${hasQuestThreads
+    ? "Hints at one quest thread without being heavy-handed"
+    : "Hints at one immediate tension, opportunity, or mystery without framing it as a formal quest"}
 - Uses at least one emotionally reactive beat rather than staying purely external
 - Ends with a compelling hook that invites the player's first action${openingChoicePending && openingChoiceLines.length ? " and nudges one opening choice naturally." : ""}
 Hard limit: keep the response under 1200 characters.

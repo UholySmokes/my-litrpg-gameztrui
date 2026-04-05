@@ -617,10 +617,25 @@ export function buildActionSuggestions(state) {
           reason: "An explicit opening-scene choice.",
         }),
       );
-    const fallbackContext = CONTEXT_SUGGESTION_FILLERS.slice(0, 4);
-    const resolvedContext =
-      openingContext.length > 0 ? openingContext : fallbackContext;
-    return [...FIXED_ACTION_SUGGESTIONS, ...resolvedContext];
+    if (openingContext.length > 0) {
+      const fixedLabels = new Set(
+        openingContext.map((entry) =>
+          String(entry?.command || entry?.t || "").toLowerCase(),
+        ),
+      );
+      const fixedFallbacks = FIXED_ACTION_SUGGESTIONS.filter(
+        (entry) =>
+          !fixedLabels.has(String(entry?.command || entry?.t || "").toLowerCase()),
+      );
+      const contextualFillers = CONTEXT_SUGGESTION_FILLERS.filter(
+        (entry) =>
+          !fixedLabels.has(String(entry?.command || entry?.t || "").toLowerCase()),
+      );
+
+      return [...openingContext, ...fixedFallbacks, ...contextualFillers].slice(0, 8);
+    }
+
+    return [...FIXED_ACTION_SUGGESTIONS, ...CONTEXT_SUGGESTION_FILLERS].slice(0, 8);
   }
 
   if (inCombat) {

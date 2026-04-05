@@ -6,7 +6,6 @@ import {
 import NarrativeMemoryPanel from "../panels/NarrativeMemoryPanel.jsx";
 import CreationNarrativePanel from "../panels/CreationNarrativePanel.jsx";
 import CreationNamePanel from "../panels/creation/CreationNamePanel.jsx";
-import CreationIdentityPanel from "../panels/creation/CreationIdentityPanel.jsx";
 import CreationRacePanel from "../panels/creation/CreationRacePanel.jsx";
 import CreationClassPanel from "../panels/creation/CreationClassPanel.jsx";
 import CreationProfessionPanel from "../panels/creation/CreationProfessionPanel.jsx";
@@ -15,6 +14,7 @@ import CreationSkillsPanel from "../panels/creation/CreationSkillsPanel.jsx";
 import CreationChoicePanel from "../panels/creation/CreationChoicePanel.jsx";
 import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSystemPanel.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
+import CreationStartingPointPanel from "../panels/creation/CreationStartingPointPanel.jsx";
 import { ensureAttributeShape } from "../../constants/attributes.js";
 import {
   buildCreationStepSequence,
@@ -102,7 +102,7 @@ export default function CharacterCreationMode({
   const creation = useCharacterCreationReworked({ advancedUnlocked });
   const {
     steps,
-    selectedOrigin,
+    selectedStartingPoint,
     selectedRace,
     selectedClass,
     selectedSecondaryClass,
@@ -118,7 +118,7 @@ export default function CharacterCreationMode({
     selectedStarterTreeIds,
     selectedAlignmentId,
     selectedSkillLoadoutId,
-    availableOrigins,
+    availableStartingPoints,
     availableRaces,
     availableClasses,
     availableSecondaryClasses,
@@ -130,7 +130,6 @@ export default function CharacterCreationMode({
     availableCreationStarterTrees,
     availableCreationAlignments,
     availableCreationSkillLoadouts,
-    recommendedOriginIds,
     recommendedRaceIds,
     recommendedClassIds,
     recommendedProfessionIds,
@@ -140,7 +139,7 @@ export default function CharacterCreationMode({
     systemAttributeBias,
     creationPerkLimits,
     rerollsRemaining,
-    handleOriginSelect,
+    handleStartingPointSelect,
     handleRaceSelect,
     handleClassSelect,
     handleSecondaryClassSelect,
@@ -192,9 +191,8 @@ export default function CharacterCreationMode({
         attributePoints: allocationPoints,
         selectedRace,
         selectedClass,
-        selectedOrigin,
       }),
-    [allocationPoints, selectedClass, selectedOrigin, selectedRace],
+    [allocationPoints, selectedClass, selectedRace],
   );
 
   useEffect(() => {
@@ -210,7 +208,6 @@ export default function CharacterCreationMode({
   const typewriterText = useMemo(() => {
     const description = [
       selectedArchetypeSystem?.summary,
-      selectedOrigin?.description,
       selectedClass?.description,
       selectedRace?.description,
       selectedProfession?.description,
@@ -225,16 +222,12 @@ export default function CharacterCreationMode({
   }, [
     selectedArchetypeSystem?.summary,
     selectedClass,
-    selectedOrigin,
     selectedProfession?.description,
     selectedRace,
   ]);
 
   const selectionSummary = useMemo(() => {
     const systemMatchSummaryParts = [];
-    if (recommendedOriginIds.includes(selectedOrigin?.id)) {
-      systemMatchSummaryParts.push(`Origin harmonizes with ${selectedArchetypeSystem?.name}.`);
-    }
     if (recommendedRaceIds.includes(selectedRace?.id)) {
       systemMatchSummaryParts.push("Race is a strong system match.");
     }
@@ -259,11 +252,6 @@ export default function CharacterCreationMode({
     }
 
     return {
-      originName: selectedOrigin?.name || "Origin not selected",
-      originDescription:
-        selectedOrigin?.description ||
-        "Choose an origin to shape starting stat pressure and world hooks.",
-      originBiome: selectedOrigin?.favoredBiome || null,
       raceName: selectedRace?.name || "Race not selected",
       raceDescription: selectedRace?.description || "Choose a race to view inherited bonuses.",
       racePassiveAbility: selectedRace?.passiveAbility || null,
@@ -299,12 +287,10 @@ export default function CharacterCreationMode({
     grantedActiveSkills,
     grantedPassiveSkills,
     recommendedClassIds,
-    recommendedOriginIds,
     recommendedProfessionIds,
     recommendedRaceIds,
     selectedArchetypeSystem,
     selectedClass,
-    selectedOrigin,
     selectedPassiveSkills,
     selectedProfession,
     selectedRace,
@@ -318,7 +304,6 @@ export default function CharacterCreationMode({
     () => ({
       name: Boolean(characterName?.trim()),
       system: Boolean(selectedArchetypeSystem),
-      identity: Boolean(selectedOrigin),
       race: Boolean(selectedRace),
       class: Boolean(selectedClass),
       multiclass: true,
@@ -333,6 +318,7 @@ export default function CharacterCreationMode({
           (creationPerkLimits?.maxPicks || Number.MAX_SAFE_INTEGER),
       "starter-tree": !advancedUnlocked || selectedStarterTreeIds.length === 1,
       alignment: Boolean(selectedAlignmentId),
+      "starting-point": Boolean(selectedStartingPoint),
       review: canFinalize,
     }),
     [
@@ -348,7 +334,7 @@ export default function CharacterCreationMode({
       selectedAlignmentId,
       selectedArchetypeSystem,
       selectedClass,
-      selectedOrigin,
+      selectedStartingPoint,
       selectedPassiveSkills.length,
       selectedPerkIds.length,
       selectedProfession,
@@ -366,7 +352,6 @@ export default function CharacterCreationMode({
     () => ({
       hasName: completionById.name,
       hasSystem: completionById.system,
-      hasOrigin: completionById.identity,
       hasRace: completionById.race,
       hasClass: completionById.class,
       hasProfession: completionById.profession,
@@ -375,6 +360,7 @@ export default function CharacterCreationMode({
       perksLocked: completionById.perks,
       starterTreeLocked: completionById["starter-tree"],
       alignmentLocked: completionById.alignment,
+      hasStartingPoint: completionById["starting-point"],
       canFinalize,
     }),
     [canFinalize, completionById],
@@ -402,10 +388,6 @@ export default function CharacterCreationMode({
         active: Boolean(selectedArchetypeSystem),
       },
       { label: `Gender: ${gender || "optional"}`, active: true },
-      {
-        label: `Origin: ${selectedOrigin?.name || "pending"}`,
-        active: Boolean(selectedOrigin),
-      },
       {
         label: `Race: ${selectedRace?.name || "pending"}`,
         active: Boolean(selectedRace),
@@ -450,6 +432,10 @@ export default function CharacterCreationMode({
         label: `Alignment: ${selectedAlignmentId || "pending"}`,
         active: Boolean(selectedAlignmentId),
       },
+      {
+        label: `Starting Point: ${selectedStartingPoint?.name || "pending"}`,
+        active: Boolean(selectedStartingPoint),
+      },
     ],
     [
       MAX_ACTIVE_SKILLS,
@@ -464,7 +450,7 @@ export default function CharacterCreationMode({
       selectedAlignmentId,
       selectedArchetypeSystem,
       selectedClass,
-      selectedOrigin,
+      selectedStartingPoint,
       selectedPassiveSkills.length,
       selectedPerkIds.length,
       selectedProfession,
@@ -482,9 +468,6 @@ export default function CharacterCreationMode({
     if (selectedArchetypeSystem) {
       entries.push({ timestamp: "system", text: `System bound: ${selectedArchetypeSystem.name}` });
     }
-    if (selectedOrigin) {
-      entries.push({ timestamp: "origin", text: `Origin anchored: ${selectedOrigin.name}` });
-    }
     if (selectedRace) {
       entries.push({ timestamp: "race", text: `Race locked: ${selectedRace.name}` });
     }
@@ -499,7 +482,6 @@ export default function CharacterCreationMode({
     characterName,
     selectedArchetypeSystem,
     selectedClass,
-    selectedOrigin,
     selectedProfession,
     selectedRace,
   ]);
@@ -596,6 +578,21 @@ export default function CharacterCreationMode({
                   setName(value);
                 }}
               />
+              <div className="creation-gender-select" style={{ marginTop: "1rem" }}>
+                <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", opacity: 0.7 }}>Gender (optional)</label>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  {["male", "female", "non-binary", "other"].map((g) => (
+                    <button
+                      key={g}
+                      className={`creation-option-btn ${gender === g ? "creation-option-btn--selected" : ""}`}
+                      onClick={() => { setWizardError(""); setGender(gender === g ? "" : g); }}
+                      style={{ textTransform: "capitalize", padding: "0.4rem 0.8rem", fontSize: "0.85rem" }}
+                    >
+                      {g}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </ChamberSection>
             <ChamberSection eyebrow="System" title="Bind the lattice">
               <CreationArchetypeSystemPanel
@@ -613,23 +610,6 @@ export default function CharacterCreationMode({
       case "lineage-vault":
         return (
           <div className="creation-chamber__grid creation-chamber__grid--split">
-            <ChamberSection eyebrow="Identity" title="Anchor the self">
-              <CreationIdentityPanel
-                gender={gender}
-                onGenderSelect={(value) => {
-                  setWizardError("");
-                  setGender(value);
-                }}
-                selectedOrigin={selectedOrigin}
-                origins={availableOrigins}
-                recommendedOriginIds={recommendedOriginIds}
-                onOriginSelect={(origin) => {
-                  setWizardError("");
-                  handleOriginSelect(origin);
-                }}
-                onAction={handleClick}
-              />
-            </ChamberSection>
             <ChamberSection eyebrow="Lineage" title="Choose inherited form">
               <CreationRacePanel
                 selectedRace={selectedRace}
@@ -796,6 +776,35 @@ export default function CharacterCreationMode({
             </ChamberSection>
           </div>
         );
+      case "oath-mirror":
+        return (
+          <div className="creation-chamber__stack">
+            <ChamberSection eyebrow="Starting Point" title="Choose where to begin">
+              <CreationStartingPointPanel
+                startingPoints={availableStartingPoints}
+                selectedStartingPoint={selectedStartingPoint}
+                onStartingPointSelect={(point) => {
+                  setWizardError("");
+                  handleStartingPointSelect(point);
+                }}
+              />
+            </ChamberSection>
+            <ChamberSection eyebrow="Review" title="Seal the chronicle">
+              <CreationSummaryPanel
+                asciiArt={asciiArt}
+                selectionSummary={selectionSummary}
+                selectedActiveSkills={selectedActiveSkills}
+                selectedPassiveSkills={selectedPassiveSkills}
+                maxActiveSkills={MAX_ACTIVE_SKILLS}
+                maxPassiveSkills={MAX_PASSIVE_SKILLS}
+                typewriterText={typewriterText}
+                syncProgress={syncProgress}
+                canFinalize={canFinalize}
+                onFinalize={handleFinalize}
+              />
+            </ChamberSection>
+          </div>
+        );
       default:
         return (
           <CreationSummaryPanel
@@ -866,7 +875,6 @@ export default function CharacterCreationMode({
               statusLines={statusLines}
               typewriterText={typewriterText}
               syncProgress={syncProgress}
-              selectedOrigin={selectedOrigin}
               selectedRace={selectedRace}
               selectedClass={selectedClass}
               selectedArchetypeSystem={selectedArchetypeSystem}

@@ -80,7 +80,6 @@ function normalizeCreationProfile(profile = {}) {
       priority: Number.isFinite(ordering.priority) ? Number(ordering.priority) : 999,
     },
     optionRules: {
-      origin: normalizeOptionRule(optionRules.origin),
       race: normalizeOptionRule(optionRules.race),
       class: normalizeOptionRule(optionRules.class),
       secondaryClass: normalizeOptionRule(optionRules.secondaryClass),
@@ -238,7 +237,6 @@ export function resolveCharacterCreationSkillInfluence({
 
 export function resolveCharacterCreationOptionsBySystem({
   systemId = null,
-  origins = [],
   races = [],
   classes = [],
   professions = [],
@@ -250,7 +248,6 @@ export function resolveCharacterCreationOptionsBySystem({
 
   return {
     profile,
-    origins: applyCharacterCreationOptionRule(origins, rules.origin),
     races: applyCharacterCreationOptionRule(races, rules.race),
     classes: applyCharacterCreationOptionRule(classes, rules.class),
     secondaryClasses: applyCharacterCreationOptionRule(classes, rules.secondaryClass),

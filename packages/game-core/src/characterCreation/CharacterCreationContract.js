@@ -32,10 +32,6 @@ export function migrateCharacterCreationBlueprint(legacy = {}) {
     normalizeId(source.raceId) ||
     normalizeId(source.race?.id) ||
     normalizeId(source.race);
-  const originId =
-    normalizeId(source.originId) ||
-    normalizeId(source.origin?.id) ||
-    normalizeId(source.origin);
   const professionId =
     normalizeId(source.professionId) ||
     normalizeId(source.profession?.id) ||
@@ -55,7 +51,7 @@ export function migrateCharacterCreationBlueprint(legacy = {}) {
       normalizeId(source.secondaryClassId) ||
       normalizeId(source.secondaryClass?.id) ||
       normalizeId(source.secondaryClass),
-    originId,
+    startingZoneId: normalizeId(source.startingZoneId),
     professionId,
     archetypeSystemId,
     attributes: normalizeAttributes(source.attributes),
@@ -91,7 +87,6 @@ export function validateCharacterCreationBlueprint(blueprint = {}, options = {})
   if (!source.name) errors.push("Name is required.");
   if (!source.raceId) errors.push("Race is required.");
   if (!source.classId) errors.push("Class is required.");
-  if (!source.originId) errors.push("Origin is required.");
   if (!source.professionId) errors.push("Profession is required.");
   if (!source.archetypeSystemId) errors.push("Archetype system is required.");
   if (!source.attributes || Object.keys(source.attributes).length === 0) {

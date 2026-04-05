@@ -179,7 +179,7 @@ export default function CreationAttributesPanel({
             letterSpacing: "2px",
           }}
         >
-          Reset Initialization ({rerollsRemaining} remaining)
+          Re-roll Attributes ({rerollsRemaining} left)
         </button>
       </div>
     </div>

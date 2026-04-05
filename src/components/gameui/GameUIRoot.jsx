@@ -558,6 +558,28 @@ export default function GameUI({ user }) {
       )}
 
       {IS_DEV_BUILD ? (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 4,
+            left: 4,
+            padding: "2px 6px",
+            fontSize: "0.6rem",
+            fontFamily: "monospace",
+            background: characterCreated ? "rgba(255,200,50,0.15)" : "rgba(50,255,100,0.15)",
+            color: characterCreated ? "#ffc832" : "#32ff64",
+            border: `1px solid ${characterCreated ? "rgba(255,200,50,0.3)" : "rgba(50,255,100,0.3)"}`,
+            borderRadius: 3,
+            zIndex: 9999,
+            pointerEvents: "none",
+            userSelect: "none",
+          }}
+        >
+          {characterCreated ? "RESUMED SESSION" : "CLEAN SESSION"}
+        </div>
+      ) : null}
+
+      {IS_DEV_BUILD ? (
         <AdminTools dispatch={dispatchSystemEvent} getState={() => state} />
       ) : null}
     </div>

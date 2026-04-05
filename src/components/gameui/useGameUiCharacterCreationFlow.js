@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QuestManager } from "../../systems/quest/QuestManager.js";
 import { seedWorldAfterCharacterCreation } from "../../world/WorldInitializer.js";
+import { getZoneById } from "../../world/WorldDataRegistry.js";
 import {
   incrementCharactersCreated,
   isAdvancedCreationUnlocked,
 } from "../../core/playerProfile.js";
 
-const TRANSITION_DURATION_MS = 1200;
+const TRANSITION_DURATION_MS = 2500;
 
 function buildTransitionAudioProfile(classId) {
   switch (classId) {
@@ -59,6 +60,7 @@ export function useGameUiCharacterCreationFlow({
 }) {
   const [characterCreated, setCharacterCreated] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionSummary, setTransitionSummary] = useState(null);
   const transitionTimeoutRef = useRef(null);
   const transitionAudioRef = useRef(null);
 
@@ -140,6 +142,17 @@ export function useGameUiCharacterCreationFlow({
       setState(nextState);
       persistLocalAutosave(nextState, "Character Creation Checkpoint");
 
+      const playerObj = nextState?.player || characterData;
+      const zoneId = characterData?.startingZoneId || null;
+      const zone = zoneId ? getZoneById(zoneId) : null;
+      setTransitionSummary({
+        name: playerObj?.name || "Adventurer",
+        className:
+          (typeof playerObj?.class === "string"
+            ? playerObj.class
+            : playerObj?.class?.name) || "Unknown",
+        startingPoint: zone?.name || zoneId || null,
+      });
       setIsTransitioning(true);
       if (transitionTimeoutRef.current) {
         clearTimeout(transitionTimeoutRef.current);
@@ -148,6 +161,11 @@ export function useGameUiCharacterCreationFlow({
         setCharacterCreated(true);
         setIsTransitioning(false);
       }, TRANSITION_DURATION_MS);
+
+      addSystemMessage(
+        "Level 1 \u2014 Your chronicle has begun. Earn 100 XP to reach Level 2.",
+        "system",
+      );
 
       try {
         await generateInitialNarrativeText(nextState);
@@ -172,6 +190,7 @@ export function useGameUiCharacterCreationFlow({
     advancedCreationUnlocked,
     characterCreated,
     isTransitioning,
+    transitionSummary,
     setCharacterCreated,
     handleCharacterCreationComplete,
   };

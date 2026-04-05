@@ -828,6 +828,55 @@ body {
   min-height: 0;
 }
 
+/* Handoff confirmation overlay shown during creation-to-adventure transition */
+.creation-handoff-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: rgba(8, 6, 18, 0.92);
+  animation: handoffFadeIn 0.6s ease-out both;
+  text-align: center;
+  pointer-events: none;
+}
+
+.creation-handoff-overlay__name {
+  margin: 0;
+  font-family: var(--font-hud, sans-serif);
+  font-size: 1.6rem;
+  color: var(--text-main, #e8e0d4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.creation-handoff-overlay__class {
+  margin: 0;
+  font-family: var(--font-hud, sans-serif);
+  font-size: 1rem;
+  color: var(--text-dim, #9b917e);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.creation-handoff-overlay__destination {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-body, serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--holo-accent, #6ec5e0);
+  opacity: 0;
+  animation: handoffFadeIn 0.8s 0.5s ease-out both;
+}
+
+@keyframes handoffFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .auth-card {
   display: grid;
   gap: 1rem;

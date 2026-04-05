@@ -1116,6 +1116,11 @@ export function buildInitialPrompt(gameState = {}) {
   const openingZone = openingLocation?.zoneId
     ? getZoneById(openingLocation.zoneId)
     : null;
+  const startingPointZone = player.startingZoneId
+    ? getZoneById(player.startingZoneId)
+    : null;
+  const startingPointName =
+    startingPointZone?.name || openingZone?.name || null;
   const sceneDescription = describeOpeningScene(scene, {
     mainQuestName: mainQuest?.name || "the looming mystery",
     sideHookNames: sideQuests.map((q) => q.name),
@@ -1154,6 +1159,7 @@ Class: ${className}
 System: ${systemName}${systemCategory}
 ${systemSummary ? `System Summary: ${systemSummary}` : ""}
 Profession: ${professionName}
+${startingPointName ? `Starting Point: ${startingPointName}` : ""}
 ${skillLine}
 
 === OPENING SCENE ===
@@ -1172,7 +1178,7 @@ ${narrativeHooks.length ? `\n=== NARRATIVE HOOKS ===\n${narrativeHooks.join("\n"
 ${openingVoiceDirective ? `\n${openingVoiceDirective}` : ""}
 
 TASK: Deliver an atmospheric opening (6-9 sentences) that:
-- Establishes the scene and immediate surroundings
+- Establishes the scene and immediate surroundings${startingPointName ? `\n- Names the player's starting point ("${startingPointName}") within the first two sentences` : ""}
 - References the player's system ("${systemName}") naturally, as if it is part of the world
 - Hints at one quest thread without being heavy-handed
 - Uses at least one emotionally reactive beat rather than staying purely external

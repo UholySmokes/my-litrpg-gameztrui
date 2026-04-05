@@ -79,6 +79,7 @@ export default function AdventureShell({
     quests,
     combatState,
     narrative,
+    command,
   } = view;
   const [activeRoomId, setActiveRoomId] = useState(null);
 
@@ -189,16 +190,16 @@ export default function AdventureShell({
 
           <div className="atrium-pulse__timeline">
             <CommandTerminalPanel
-              userInput={quickActionsProps?.userInput}
-              onInputChange={quickActionsProps?.onInputChange}
-              onSubmit={quickActionsProps?.onSubmit}
-              isLoading={quickActionsProps?.isLoading}
-              error={quickActionsProps?.error}
-              inputRef={quickActionsProps?.inputRef}
+              userInput={command?.userInput}
+              onInputChange={command?.onInputChange}
+              onSubmit={command?.onSubmit}
+              isLoading={command?.isLoading}
+              error={command?.error}
+              inputRef={command?.inputRef}
             />
             <ActionSuggestionsPanel
-              suggestions={quickActionsProps?.suggestions}
-              onSelect={quickActionsProps?.onSuggestionSelect}
+              suggestions={command?.suggestions}
+              onSelect={command?.onSuggestionSelect}
             />
           </div>
         </section>

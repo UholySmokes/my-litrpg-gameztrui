@@ -229,6 +229,11 @@ function buildSystemPrompt({
 10. Advance the scene each turn with at least one new concrete detail or consequence
 11. Open with the most recent validated state change before atmosphere or reflection
 12. Return exactly one valid JSON object and nothing else
+13. Keep the narration emotionally reactive rather than distant or stately
+14. Use close internal beats sparingly to show shock, hunger, pride, fear, irritation, or stubborn resolve
+15. When system elements matter, weave them in as brief diegetic notices or data flashes instead of long exposition
+16. Treat small survival stakes seriously when the player is vulnerable, transformed, or new to the scene
+17. Allow touches of dark humor, indignation, or self-dramatizing bravado when grounded in the moment
 ${modeDirective}
 ${moodDirective}
 ${repetitionDirective}
@@ -277,6 +282,27 @@ function buildArchetypeToneDirective(archetypeSystem) {
   };
 
   return toneMap[category] || `\nThe player's archetype system is "${name}". Reference it when relevant.`;
+}
+
+function buildOpeningVoiceDirective(player = {}, systemName = "Unbound") {
+  const raceName =
+    typeof player?.race === "string"
+      ? player.race
+      : player?.race?.name || "";
+  const bodyDirective =
+    raceName && !/^human$/i.test(raceName)
+      ? `- The player's ${raceName} body should feel immediate and slightly unfamiliar when the opening starts.`
+      : "- If the opening implies transformation, awakening, or bodily wrongness, make it feel immediate and physical.";
+
+  return [
+    "=== OPENING VOICE RULES ===",
+    "- Keep second-person narration, but let close internal reactions leak through so the player feels the moment instead of receiving a distant summary.",
+    "- Let the opening pivot quickly between fear, hunger, indignation, curiosity, relief, and opportunistic resolve when the scene supports it.",
+    `- When the player's system ("${systemName}") intrudes, you may use 1-2 short diegetic notices such as [System Notice: ...] or [Quest Updated: ...].`,
+    bodyDirective,
+    "- Treat first survival problems as dramatic milestones rather than generic tutorial chores.",
+    "- Avoid overly solemn epic diction unless the current scene truly earns it; lively, sharp, slightly dangerous prose is preferred.",
+  ].join("\n");
 }
 
 function formatNumber(value, digits = 2) {
@@ -1101,6 +1127,7 @@ export function buildInitialPrompt(gameState = {}) {
     ? archetypeSystem.narrativeHooks.slice(0, 2)
     : [];
   const toneDirective = buildArchetypeToneDirective(archetypeSystem);
+  const openingVoiceDirective = buildOpeningVoiceDirective(player, systemName);
 
   const skillNames = Array.isArray(player.activeSkills)
     ? player.activeSkills.map((s) => s.name || s.id).filter(Boolean).slice(0, 4)
@@ -1133,13 +1160,43 @@ ${resolvedOpeningSeed
 ${questLines}
 ${systemHooks.length ? `\n=== SYSTEM HOOKS ===\n${systemHooks.join("\n")}` : ""}
 ${narrativeHooks.length ? `\n=== NARRATIVE HOOKS ===\n${narrativeHooks.join("\n")}` : ""}
+${openingVoiceDirective ? `\n${openingVoiceDirective}` : ""}
 
 TASK: Deliver an atmospheric opening (6-9 sentences) that:
 - Establishes the scene and immediate surroundings
 - References the player's system ("${systemName}") naturally, as if it is part of the world
 - Hints at one quest thread without being heavy-handed
+- Uses at least one emotionally reactive beat rather than staying purely external
 - Ends with a compelling hook that invites the player's first action${openingChoicePending && openingChoiceLines.length ? " and nudges one opening choice naturally." : ""}
 Hard limit: keep the response under 1200 characters.
 
-Respond with narrative text only.`;
+=== RESPONSE FORMAT ===
+Return one valid JSON object with this shape:
+{
+  "narrative": "Plain text only. 6-9 sentences. Under 1200 characters.",
+  "mood": "neutral|tense|triumphant|mysterious|serene|desperate",
+  "suggestions": [
+    {
+      "label": "Short actionable next move",
+      "command": "Exact executable command",
+      "weight": 0.0,
+      "enabled": true,
+      "reason": "Why this move fits now"
+    }
+  ],
+  "choiceMeta": [
+    { "intent": "brief rationale", "category": "observe|social|progress|recovery|power|risk", "urgency": 0.0, "groundedInState": true }
+  ],
+  "sceneMemory": {
+    "locationLabel": "Current place name",
+    "zoneLabel": "Current zone name",
+    "immediateObjective": "Immediate goal",
+    "presentEntities": ["Confirmed entity"],
+    "activeThreats": ["Confirmed threat"],
+    "unresolvedHooks": ["Open thread"],
+    "lastConsequence": "Most important opening consequence"
+  }
+}
+
+Return exactly 6 suggestions and 6 aligned choiceMeta entries when possible.`;
 }

@@ -271,9 +271,10 @@ export function buildStatusOverlayViewModel({
       ? player.class
       : player?.class?.name || player?.class?.id || "";
   const talentIds = Array.isArray(player?.talents) ? player.talents : [];
-  const resolvedTalentNames = talentIds
-    .map((id) => getTalentById(id)?.name || id)
+  const resolvedTalents = talentIds
+    .map((id) => getTalentById(id) || { id, name: id, description: "", affinities: [], bucket: "unknown" })
     .filter(Boolean);
+  const resolvedTalentNames = resolvedTalents.map((t) => t.name);
   const talentLabel =
     resolvedTalentNames.length > 0
       ? resolvedTalentNames.join(", ")
@@ -458,6 +459,7 @@ export function buildStatusOverlayViewModel({
       titleLabel,
       raceLabel,
       talentLabel,
+      talents: resolvedTalents,
       prestigeLevel,
       prestigeSoulShards,
       prestigeXpMultiplier,

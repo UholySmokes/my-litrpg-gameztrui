@@ -97,6 +97,14 @@ describe("StatusOverlay view model", () => {
 
     expect(viewModel.summary.talentLabel).toContain("Arcane Focus");
     expect(viewModel.summary.talentLabel).toContain("Oathbound");
+    expect(viewModel.summary.talents).toHaveLength(2);
+    expect(viewModel.summary.talents[0]).toEqual(
+      expect.objectContaining({ id: "arcane_focus", name: "Arcane Focus" }),
+    );
+    expect(viewModel.summary.talents[1]).toEqual(
+      expect.objectContaining({ id: "oathbound", name: "Oathbound" }),
+    );
+    expect(viewModel.summary.talents[0].description).toBeTruthy();
     expect(viewModel.magic.reserveRows[0]).toEqual(
       expect.objectContaining({
         essence: "fire",

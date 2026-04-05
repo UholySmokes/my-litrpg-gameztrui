@@ -177,7 +177,11 @@ export default function StatusOverlay({
               />
               <StatusStatCard label="System" value={summary.archetypeSystemLabel} />
               <StatusStatCard label="Race" value={summary.raceLabel} />
-              <StatusStatCard label="Talents" value={summary.talentLabel} />
+              <StatusStatCard
+                label="Talents"
+                value={summary.talents.length > 0 ? `${summary.talents.length} active` : "None"}
+                tooltip={summary.talentLabel}
+              />
               <StatusStatCard label="Secondary Class" value={summary.secondaryClassLabel} />
               <StatusStatCard label="Alignment" value={summary.alignmentLabel} />
               <StatusStatCard label="Starter Trees" value={summary.starterTreeLabel} />
@@ -233,6 +237,75 @@ export default function StatusOverlay({
           </section>
 
           <StatusMagicSection magic={magic} />
+
+          {summary.talents.length > 0 && (
+            <section>
+              <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+                Talent Attunement
+              </h3>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                  gap: "0.75rem",
+                }}
+              >
+                {summary.talents.map((talent) => (
+                  <div
+                    key={talent.id}
+                    className="holo-panel"
+                    style={{ padding: "0.75rem", display: "grid", gap: "0.35rem" }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "baseline",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <span style={{ color: "var(--holo-cyan)", fontWeight: "bold" }}>
+                        {talent.name}
+                      </span>
+                      <span
+                        style={{
+                          color: talent.bucket === "ex_rank" ? "var(--holo-gold)" : "var(--text-dim)",
+                          fontSize: "0.75rem",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {talent.bucket === "ex_rank" ? "EX" : "Standard"}
+                      </span>
+                    </div>
+                    {talent.description && (
+                      <div style={{ color: "var(--text-main)", fontSize: "0.85rem", lineHeight: 1.4 }}>
+                        {talent.description}
+                      </div>
+                    )}
+                    {Array.isArray(talent.affinities) && talent.affinities.length > 0 && (
+                      <div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap" }}>
+                        {talent.affinities.map((aff) => (
+                          <span
+                            key={aff}
+                            style={{
+                              fontSize: "0.7rem",
+                              padding: "0.15rem 0.4rem",
+                              border: "1px solid rgba(0, 243, 255, 0.3)",
+                              borderRadius: "3px",
+                              color: "var(--text-dim)",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            {aff}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section>
             <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>

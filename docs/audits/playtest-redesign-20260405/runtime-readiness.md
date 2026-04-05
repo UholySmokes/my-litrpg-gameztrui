@@ -21,7 +21,7 @@
 
 - Web gameplay gate:
   - In dev builds, browser gameplay is always enabled by `src/core/WebGameplayGate.js` because `import.meta.env.DEV` returns `true`.
-  - Outside dev, gameplay is enabled when either `VITE_WEB_GAMEPLAY_ENABLED=true` or `VITE_ENABLE_WEB_GAMEPLAY=true` is present in runtime or build config.
+  - Outside dev, gameplay stays enabled by default unless `VITE_WEB_GAMEPLAY_ENABLED` or `VITE_ENABLE_WEB_GAMEPLAY` is set explicitly to a false value in runtime or build config.
   - `public/runtime-config.js` currently sets `VITE_WEB_GAMEPLAY_ENABLED = "true"`.
 - Entry behavior in `src/App.jsx`:
   - If gameplay is disabled, `/` stops at the disabled `EntryShell` and the playtest is blocked.
@@ -44,10 +44,10 @@
   - Character creation completion attempts to generate initial narrative, but it catches failure and falls back to a system message, so shell progression is still possible.
   - Early gameplay quality review depends on narrator endpoints being reachable if the team wants live narrative behavior rather than degraded fallback behavior.
 
-## Required Flags And Paired Services
+## Relevant Flags And Paired Services
 
-- Required for browser gameplay outside dev:
-  - `VITE_WEB_GAMEPLAY_ENABLED=true` or `VITE_ENABLE_WEB_GAMEPLAY=true`
+- Browser gameplay outside dev:
+  - Explicit `true` values on `VITE_WEB_GAMEPLAY_ENABLED` or `VITE_ENABLE_WEB_GAMEPLAY` keep intent unambiguous, but they are not strictly required because the gate defaults to enabled unless one of those flags is set false.
 - Required for no-sign-in local browser runs:
   - `VITE_DEV_USER_ID`
   - Optional: `VITE_DEV_USER_EMAIL`

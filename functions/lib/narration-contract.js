@@ -106,9 +106,11 @@ function normalizeChoiceMeta(choiceMeta, suggestionCount) {
 }
 
 function normalizeNarrationPayload(payload, fallback = {}) {
-  const narrative = normalizeString(payload?.narrative || fallback.narrative);
-  if (!narrative) {
-    throw new Error("Narration payload missing narrative text.");
+  const story = normalizeString(
+    payload?.story || payload?.narrative || fallback.story || fallback.narrative,
+  );
+  if (!story) {
+    throw new Error("Narration payload missing story text.");
   }
 
   const suggestions = normalizeSuggestions(payload?.suggestions, fallback.suggestions);
@@ -121,7 +123,8 @@ function normalizeNarrationPayload(payload, fallback = {}) {
   );
 
   return {
-    narrative,
+    story,
+    narrative: story,
     mood: normalizeMood(payload?.mood, normalizeMood(fallback.mood, "neutral")),
     suggestions,
     provider: normalizeString(payload?.provider || payload?.backend || fallback.provider) ||

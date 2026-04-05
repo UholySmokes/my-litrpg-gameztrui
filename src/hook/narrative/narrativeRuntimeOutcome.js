@@ -32,17 +32,24 @@ export function resolveNarrativeRuntimeOutcome({
   variantSeed,
 }) {
   const fallbackSuggestions = buildActionSuggestions(state);
-  const hasNarrative =
-    typeof aiResult?.narrative === "string" && aiResult.narrative.trim().length > 0;
+  const storyText =
+    typeof aiResult?.story === "string"
+      ? aiResult.story
+      : typeof aiResult?.narrative === "string"
+        ? aiResult.narrative
+        : "";
+  const hasStory = storyText.trim().length > 0;
 
-  if (hasNarrative) {
-    const derivedStateIntents = deriveStateIntentsFromNarrative(aiResult.narrative);
+  if (hasStory) {
+    const story = storyText.trim();
+    const derivedStateIntents = deriveStateIntentsFromNarrative(story);
     return {
-      narrative: aiResult.narrative.trim(),
+      story,
+      narrative: story,
       mood:
         typeof aiResult?.mood === "string" && aiResult.mood.trim()
           ? aiResult.mood.trim()
-          : inferMood(aiResult.narrative),
+          : inferMood(story),
       suggestions: resolveActionSuggestions({
         preferredSuggestions: aiResult?.suggestions,
         preferredChoiceMeta: aiResult?.choiceMeta,
@@ -73,6 +80,7 @@ export function resolveNarrativeRuntimeOutcome({
   });
 
   return {
+    story: fallbackNarrative,
     narrative: fallbackNarrative,
     mood: inferMood(fallbackNarrative),
     suggestions: resolveActionSuggestions({

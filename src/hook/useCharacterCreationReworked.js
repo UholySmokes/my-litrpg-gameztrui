@@ -42,7 +42,6 @@ import {
   getCharacterCreationArchetypeSystemById,
   getCharacterCreationArchetypeSystems,
   getCharacterCreationClassesByTier,
-  getCharacterCreationOrigins,
   getCharacterCreationRaces,
   getCharacterCreationSkillSummaryById,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";

@@ -8,8 +8,8 @@ const CHAMBER_DEFINITIONS = [
   {
     id: "lineage-vault",
     title: "Lineage Vault",
-    subtitle: "Anchor origin, bloodline, and personal identity.",
-    includedSteps: ["identity", "race"],
+    subtitle: "Anchor bloodline and personal identity.",
+    includedSteps: ["race"],
   },
   {
     id: "doctrine-forge",
@@ -26,8 +26,8 @@ const CHAMBER_DEFINITIONS = [
   {
     id: "oath-mirror",
     title: "Oath Mirror",
-    subtitle: "Review the whole build and seal the chronicle.",
-    includedSteps: ["review"],
+    subtitle: "Choose where to begin, review the build, and seal the chronicle.",
+    includedSteps: ["starting-point", "review"],
   },
 ];
 
@@ -59,9 +59,6 @@ export function validateCreationChamber(chamberId, checks = {}) {
       }
       return { valid: true };
     case "lineage-vault":
-      if (!checks.hasOrigin) {
-        return { valid: false, error: "Select an origin before leaving the Lineage Vault." };
-      }
       if (!checks.hasRace) {
         return { valid: false, error: "Choose a race before leaving the Lineage Vault." };
       }
@@ -107,6 +104,12 @@ export function validateCreationChamber(chamberId, checks = {}) {
       }
       return { valid: true };
     case "oath-mirror":
+      if (!checks.hasStartingPoint) {
+        return {
+          valid: false,
+          error: "Choose a starting point before sealing the chronicle.",
+        };
+      }
       if (!checks.canFinalize) {
         return {
           valid: false,

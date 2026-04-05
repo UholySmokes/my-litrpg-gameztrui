@@ -1,7 +1,6 @@
 const STEP_DEFINITIONS = [
   { id: "name", label: "Name", key: "NAME" },
   { id: "system", label: "System", key: "ARCHETYPE" },
-  { id: "identity", label: "Identity", key: "IDENTITY" },
   { id: "race", label: "Race", key: "RACE" },
   { id: "class", label: "Class", key: "CLASS" },
   { id: "multiclass", label: "Multiclass", key: "MULTICLASS" },
@@ -11,6 +10,7 @@ const STEP_DEFINITIONS = [
   { id: "perks", label: "Perks", key: "PERKS" },
   { id: "starter-tree", label: "Starter Tree", key: "STARTER_TREE" },
   { id: "alignment", label: "Alignment", key: "ALIGNMENT" },
+  { id: "starting-point", label: "Starting Point", key: "STARTING_POINT" },
   { id: "review", label: "Review", key: "REVIEW" },
 ];
 

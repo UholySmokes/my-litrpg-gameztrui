@@ -145,6 +145,15 @@ export function useNarrative(
     [setState],
   );
 
+  const refreshActionSuggestions = useCallback((stateSnapshot) => {
+    setActionSuggestions(
+      resolveActionSuggestionsFlow({
+        fallbackSuggestions: buildActionSuggestionsFlow(stateSnapshot),
+        state: stateSnapshot,
+      }),
+    );
+  }, []);
+
   const streamNarrative = useCallback(
     async (
       prompt,
@@ -273,12 +282,7 @@ export function useNarrative(
             const resolvedState = openingResolution.state || currentState;
 
             setState(resolvedState);
-            setActionSuggestions(
-              resolveActionSuggestionsFlow({
-                fallbackSuggestions: buildActionSuggestionsFlow(resolvedState),
-                state: resolvedState,
-              }),
-            );
+            refreshActionSuggestions(resolvedState);
             collectNarrativeOutcomeNotes(openingResolution.notes).forEach((note) =>
               addSystemMessage(note, "system"),
             );
@@ -404,12 +408,7 @@ export function useNarrative(
         };
 
         const suggestionSource = actionResult.readOnly ? currentState : newState;
-        setActionSuggestions(
-          resolveActionSuggestionsFlow({
-            fallbackSuggestions: buildActionSuggestionsFlow(suggestionSource),
-            state: suggestionSource,
-          }),
-        );
+        refreshActionSuggestions(suggestionSource);
 
         if (action?.type === "status") {
           const statusString = renderStatusBlock(
@@ -471,6 +470,7 @@ export function useNarrative(
     [
       addSystemMessage,
       evaluateQuestProgress,
+      refreshActionSuggestions,
       setState,
       streamNarrative,
       submitAction,
@@ -585,5 +585,6 @@ export function useNarrative(
     setUserInput,
     inputRef,
     actionSuggestions,
+    refreshActionSuggestions,
   };
 }

@@ -119,6 +119,7 @@ export default function GameUI({ user }) {
     inputRef,
     actionSuggestions,
     generateInitialNarrativeText,
+    refreshActionSuggestions,
   } = useNarrative(
     setState,
     addSystemMessage,
@@ -233,6 +234,7 @@ export default function GameUI({ user }) {
     (loadedState, options = {}) => {
       if (!isRecord(loadedState)) return;
       loadState(loadedState);
+      refreshActionSuggestions(loadedState);
       const hasCharacter = hasCreatedCharacterSnapshot(loadedState);
       setCharacterCreated(hasCharacter);
       setActiveSurface(hasCharacter ? "adventure" : "hub");
@@ -244,7 +246,13 @@ export default function GameUI({ user }) {
         addSystemMessage(options.message || "Loaded save game.", "system");
       }
     },
-    [addSystemMessage, loadState, setCharacterCreated, setShowSaveLoad],
+    [
+      addSystemMessage,
+      loadState,
+      refreshActionSuggestions,
+      setCharacterCreated,
+      setShowSaveLoad,
+    ],
   );
 
   const handleSubmit = useCallback(

@@ -169,7 +169,7 @@ function normalizeSingleActionSuggestion(suggestion, choiceMetaEntry) {
 
 export function normalizeActionSuggestions(
   suggestions = [],
-  { maxItems = 6, choiceMeta = [] } = {},
+  { maxItems = 8, choiceMeta = [] } = {},
 ) {
   const normalized = (Array.isArray(suggestions) ? suggestions : [])
     .map((suggestion, index) =>
@@ -331,7 +331,7 @@ export function resolveActionSuggestions({
   preferredChoiceMeta,
   fallbackSuggestions = DEFAULT_ACTION_SUGGESTIONS,
   state,
-  maxItems = 3,
+  maxItems = 8,
 } = {}) {
   const accepted = [];
   const seen = new Set();
@@ -885,7 +885,7 @@ export function buildActionSuggestions(state) {
             String(fallback?.command || fallback?.t || "").toLowerCase(),
         ),
     ),
-  ].slice(0, 4);
+  ].slice(0, 5);
 
   return [...FIXED_ACTION_SUGGESTIONS, ...normalizedContext];
 }

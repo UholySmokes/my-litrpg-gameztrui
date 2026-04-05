@@ -70,7 +70,7 @@ function normalizeSuggestions(suggestions, fallbackSuggestions = []) {
   return source
     .map((entry) => normalizeSuggestionEntry(entry))
     .filter(Boolean)
-    .slice(0, 6);
+    .slice(0, 8);
 }
 
 function normalizeStringList(value, maxItems = 6) {

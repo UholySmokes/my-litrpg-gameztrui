@@ -1039,7 +1039,7 @@ Return one valid JSON object with this shape:
   }
 }
 
-Return exactly 6 suggestions and 6 aligned choiceMeta entries when possible.`;
+Return 5-8 suggestions and the same number of aligned choiceMeta entries when possible.`;
 }
 
 /**
@@ -1198,5 +1198,5 @@ Return one valid JSON object with this shape:
   }
 }
 
-Return exactly 6 suggestions and 6 aligned choiceMeta entries when possible.`;
+Return 5-8 suggestions and the same number of aligned choiceMeta entries when possible.`;
 }

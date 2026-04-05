@@ -123,9 +123,14 @@ describe("character creation content pack", () => {
     const packSystems = getCharacterCreationArchetypeSystems();
     const sample = liveSystems[0];
 
-    expect(packSystems.map((entry) => entry.id)).toEqual(
-      liveSystems.map((entry) => entry.id),
-    );
+    // Pack includes all explicitly-selectable live systems plus up to 12
+    // supplemental entries pulled from the broader live registry.
+    const packIds = packSystems.map((entry) => entry.id);
+    const liveIds = liveSystems.map((entry) => entry.id);
+    liveIds.forEach((id) => {
+      expect(packIds).toContain(id);
+    });
+    expect(packSystems.length).toBeGreaterThanOrEqual(liveSystems.length);
     expect(getCharacterCreationArchetypeSystemById(sample.id)).toEqual(
       expect.objectContaining({
         id: sample.id,

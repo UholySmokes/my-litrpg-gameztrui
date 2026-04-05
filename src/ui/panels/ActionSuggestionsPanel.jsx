@@ -26,7 +26,19 @@ export default function ActionSuggestionsPanel({ suggestions = [], onSelect }) {
     .filter((suggestion) => suggestion.label.length > 0 && suggestion.command.length > 0);
 
   if (!normalizedSuggestions.length) {
-    return <div className={styles.emptyState}>No suggestions yet.</div>;
+    return (
+      <div className={styles.emptyState}>
+        <section className="surface-section">
+          <div className="surface-section__header">
+            <div className="surface-section__eyebrow">Command Dais</div>
+            <h3 className="surface-section__title">Action Suggestions</h3>
+          </div>
+          <div className="surface-section__body">
+            <p>No suggestions yet.</p>
+          </div>
+        </section>
+      </div>
+    );
   }
 
   const getWeightLevel = (weight) => {

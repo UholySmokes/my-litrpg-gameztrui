@@ -71,4 +71,35 @@ describe("WorldInitializer", () => {
     expect(seeded.flags.leyline_storms_active).toBe(false);
     expect(seeded.flags.dream_wisps_active).toBe(false);
   });
+
+  it("uses opening scene biome for location, not just quest biome", () => {
+    const baseWorld = createInitialWorldState({ seed: 42 });
+    const player = {
+      class: "berserker",
+      race: "ashmarked",
+      profession: null,
+      origin: { id: "ashmarked_prospector", name: "Ashmarked Prospector" },
+    };
+    const quests = {
+      active: [
+        {
+          id: "mq_ember_bloom",
+          name: "Ember Bloom",
+          tags: { biome: "wilds", favoredClasses: ["berserker"] },
+        },
+      ],
+      completed: [],
+    };
+
+    const seeded = seedWorldAfterCharacterCreation(baseWorld, {
+      player,
+      quests,
+      seed: 42,
+    });
+
+    const loc = getLocationById(seeded.location.current);
+    expect(loc).toBeTruthy();
+    expect(loc.zoneId).not.toBe("city");
+    expect(seeded.location.current).not.toBe("starting_zone");
+  });
 });

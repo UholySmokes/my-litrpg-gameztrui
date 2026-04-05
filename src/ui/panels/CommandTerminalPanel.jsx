@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import styles from './CommandTerminalPanel.module.css';
 
+const NOOP = () => {};
+
 export default function CommandTerminalPanel({
-  userInput,
-  onInputChange,
+  userInput = "",
+  onInputChange = NOOP,
   onSubmit,
-  isLoading,
-  error,
+  isLoading = false,
+  error = null,
   inputRef,
 }) {
   const [landscapeMobile, setLandscapeMobile] = useState(false);

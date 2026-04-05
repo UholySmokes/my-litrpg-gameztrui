@@ -1,6 +1,6 @@
 prd_id: playtest-redesign-20260405
-version: 0.1.0
-status: draft
+version: 0.2.0
+status: completed
 user_stories:
   - id: us-fresh-run-golden-path
     as_a: review_orchestrator
@@ -48,17 +48,20 @@ needs_clarification:
     current_assumption: Plan for level 1 completion as the minimum bar and record level 2 as an optional extended checkpoint unless later promoted to required scope
 features:
   - id: feature-multi-agent-playtest
+    status: complete
     summary: Coordinate multiple agents acting as gamers with distinct but comparable fresh-start runs
     requirements:
       - Use the current browser shell at '/'
       - Preserve a clean-session assumption for each agent run
       - Capture both golden-path evidence and light exploration notes
   - id: feature-experience-review
+    status: complete
     summary: Evaluate onboarding, story presentation, controls, readability, responsiveness, and immediate adventure flow
     requirements:
       - Score or summarize story feel, UI feel, and functional behavior with balanced emphasis
       - Identify blocked onboarding, confusing transitions, and weak narrative payoff
   - id: feature-redesign-synthesis
+    status: complete
     summary: Produce recommendation-only redesign outputs from the observed playtests
     requirements:
       - Include larger redesign ideas grounded in observed friction or missed fantasy
@@ -161,3 +164,6 @@ changes:
   - date: 2026-04-05
     version: 0.1.0
     summary: Initial draft PRD created as source of truth for multi-agent browser playtest and redesign review planning
+  - date: 2026-04-05
+    version: 0.2.0
+    summary: Marked the PRD complete after the runtime audit, persona playtests, synthesis, and stakeholder-facing redesign recommendations were delivered

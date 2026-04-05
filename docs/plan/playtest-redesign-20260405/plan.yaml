@@ -1,0 +1,423 @@
+plan_id: playtest-redesign-20260405
+objective: Orchestrate multiple agents acting as gamers to play the browser game from fresh load through character creation and early gameplay, evaluate function/story/UI feel, and produce larger redesign recommendations plus 10 random improvement suggestions.
+created_at: 2026-04-05T00:00:00Z
+created_by: gem-planner
+status: pending_approval
+research_confidence: low
+
+plan_metrics:
+  wave_1_task_count: 2
+  total_dependencies: 6
+  risk_score: medium
+
+tldr: |
+  This DAG plans a browser-first audit of the current root flow at '/'.
+  Execution starts from a fresh browser session, treats post-creation level 1 as the minimum completion checkpoint,
+  and, if feasible, continues toward first earned milestone observations at level 2 / 100 XP without blocking report delivery.
+  The work stays review-only unless a hard blocker requires separate break-fix replanning.
+
+open_questions:
+  - None. Scope, weighting, stop-point framing, and redesign-output boundary are locked by the PRD and task clarifications.
+
+pre_mortem:
+  overall_risk_level: medium
+  critical_failure_modes:
+    - scenario: Browser runtime is reachable but web gameplay is effectively gated, leaving agents to review only the disabled shell.
+      likelihood: medium
+      impact: high
+      mitigation: Front-load environment validation to confirm runtime gate state, local-game path availability, and whether a paired backend or emulator is required before any gameplay conclusions are recorded.
+    - scenario: Fresh-start assumptions are invalidated by retained local storage, autosave resume, or cross-run browser state contamination.
+      likelihood: medium
+      impact: high
+      mitigation: Require clean-session execution per browser agent, capture reset steps in evidence, and treat contaminated runs as invalid evidence for onboarding conclusions.
+    - scenario: Narrative generation degrades or stalls during creation or early play, distorting story and UX scoring.
+      likelihood: medium
+      impact: high
+      mitigation: Record degraded-mode behavior explicitly, separate functional blockage from content quality judgments, and continue with fallback observations when the UI remains usable.
+  assumptions:
+    - The active browser path under review is App.jsx -> GameUIRoot.jsx -> CharacterHub / CharacterCreationShell / AdventureShell.
+    - Local execution can target the Vite web shell at http://127.0.0.1:5173/ with a fresh browser context per playtest agent.
+    - Review output remains audit-only; any code changes triggered by blockers are deferred into a separate implementation plan.
+
+implementation_specification:
+  code_structure: Review-only orchestration plan. Evidence should be gathered against the current web shell, then synthesized into audit findings and recommendation artifacts without changing source code in this plan.
+  affected_areas:
+    - src/App.jsx
+    - src/components/gameui/GameUIRoot.jsx
+    - src/components/shell/
+    - src/hook/narrative/useNarrativeRuntime.js
+    - docs/PLAYTEST_CHECKLIST.md
+  component_details:
+    - component: Runtime entry and gating
+      responsibility: Establish whether the current root flow is runnable from a fresh browser load and whether local-game or backend dependencies alter the review path.
+      interfaces:
+        - Root URL '/'
+        - Web gameplay gate via runtime and build flags
+        - Entry shell local-game and auth options
+    - component: Golden-path browser run
+      responsibility: Execute the main player journey from fresh load through character creation into immediate post-creation gameplay and collect evidence on onboarding clarity, control flow, story delivery, and defects.
+      interfaces:
+        - Character hub launch action
+        - Character creation completion callback
+        - Adventure shell early gameplay interactions
+    - component: Exploratory browser run
+      responsibility: Sample light alternate choices and non-blocking interactions around onboarding and early play without replacing the golden-path baseline.
+      interfaces:
+        - Alternate onboarding interaction points
+        - Optional side interactions and suggestion clicks
+        - Early gameplay branch sampling up to report-safe depth
+    - component: Review synthesis
+      responsibility: Merge evidence into balanced functional, story, and UI analysis, then produce larger redesign directions and 10 random improvement suggestions.
+      interfaces:
+        - Evidence packets from browser agents
+        - Severity and category rubric
+        - Final audit narrative and recommendation sections
+  dependencies:
+    - component: Golden-path browser run
+      relationship: Depends on validated runtime access and clean-session rules from environment validation.
+    - component: Exploratory browser run
+      relationship: Depends on validated runtime access and clean-session rules from environment validation.
+    - component: Review synthesis
+      relationship: Consumes browser evidence and source-informed UX/story context to produce the final audit.
+  integration_points:
+    - Web entry shell and gameplay gate in src/App.jsx
+    - Shell orchestration and autosave transition logic in src/components/gameui/GameUIRoot.jsx
+    - Onboarding and adventure shell surfaces in src/components/shell/
+    - Narrative runtime behavior surfaced through src/hook/narrative/useNarrativeRuntime.js
+
+contracts:
+  - from_task: T1
+    to_task: T2
+    interface: Runtime readiness brief including URL, required env flags, session reset method, and blocker conditions.
+    format: checklist
+  - from_task: T1
+    to_task: T3
+    interface: Runtime readiness brief including URL, required env flags, session reset method, and blocker conditions.
+    format: checklist
+  - from_task: T2
+    to_task: T5
+    interface: Golden-path evidence packet covering step trace, defects, UX observations, story impressions, and milestone reach status.
+    format: structured audit notes
+  - from_task: T3
+    to_task: T5
+    interface: Exploratory evidence packet covering alternate interactions, edge-case observations, and non-blocking divergence notes.
+    format: structured audit notes
+  - from_task: T4
+    to_task: T5
+    interface: Source-informed review rubric and current-shell context for balanced weighting across story, UI, and functional behavior.
+    format: scoring rubric
+  - from_task: T5
+    to_task: T6
+    interface: Consolidated findings, redesign themes, and 10 random improvement suggestions ready for stakeholder-readable packaging.
+    format: report outline
+
+tasks:
+  - id: T1
+    title: Validate browser runtime and fresh-start audit conditions
+    task_definition: Confirm that the current root flow at '/' is reachable in a valid browser-gameplay configuration, document whether local-game mode or paired backend support is required, and define the clean-session protocol that every browser-player agent must follow before evidence capture begins.
+    description: |
+      Establish the runtime preconditions for the audit.
+      Verify the root URL, the current web gameplay gate behavior, the likely local-game or auth entry path,
+      and whether emulator or backend pairing is necessary for meaningful progression through creation and early play.
+      Output must explicitly state that fresh-start completion means immediate post-creation level 1,
+      and that continued observation toward level 2 / 100 XP is desirable only when feasible without delaying reporting.
+    wave: 1
+    agent: gem-researcher
+    priority: high
+    status: pending
+    dependencies: []
+    conflicts_with: []
+    file_targets:
+      - src/App.jsx
+      - src/core/WebGameplayGate.js
+      - package.json
+    context_files:
+      - path: docs/PRD.yaml
+        description: Source-of-truth scope, stop point, and environment notes.
+      - path: src/App.jsx
+        description: Entry shell and auth or local-game launch behavior.
+      - path: src/core/WebGameplayGate.js
+        description: Runtime gate logic for web gameplay enablement.
+    estimated_effort: small
+    estimated_files: 3
+    estimated_lines: 180
+    focus_area: runtime readiness
+    verification:
+      - Confirm the active root URL and expected launch command for the browser shell.
+      - Confirm how a fresh session is defined and reset for browser testing.
+      - Confirm whether level 2 observation is optional and non-blocking for report completion.
+    acceptance_criteria:
+      - Produces a runtime readiness brief usable by browser-playtest agents without additional discovery.
+      - Identifies hard blockers that would invalidate downstream gameplay findings.
+      - States fresh-start completion and optional first-earned-milestone continuation rules explicitly.
+    failure_modes:
+      - scenario: Runtime notes miss a required flag or backend dependency, causing downstream browser agents to misclassify environment failures as game defects.
+        likelihood: medium
+        impact: high
+        mitigation: Cross-check the PRD environment notes, package scripts, and runtime gate source before handing off readiness instructions.
+    tech_stack:
+      - Vite web runtime
+      - React browser shell
+      - Firebase or local-game entry context
+    test_coverage: null
+
+  - id: T4
+    title: Build balanced review rubric from current shell and narrative surface
+    task_definition: Inspect the current active browser shell and narrative-facing surfaces to define a balanced scoring frame across story, UI, and functional behavior before the live evidence is synthesized.
+    description: |
+      Review the current-shell code and visible copy for onboarding tone, narrative presentation, shell transitions,
+      and likely interaction expectations so the final audit does not overweight bugs or aesthetics alone.
+      This task is source-informed, not a replacement for live play; it prepares the evaluation rubric and redesign lens.
+    wave: 1
+    agent: gem-reviewer
+    priority: medium
+    status: pending
+    dependencies: []
+    conflicts_with: []
+    file_targets:
+      - src/components/gameui/GameUIRoot.jsx
+      - src/components/shell/CharacterHub.jsx
+      - src/hook/narrative/useNarrativeRuntime.js
+    context_files:
+      - path: docs/PRD.yaml
+        description: Balanced weighting and output expectations.
+      - path: src/components/gameui/GameUIRoot.jsx
+        description: Active shell routing and post-creation transition logic.
+      - path: src/components/shell/CharacterHub.jsx
+        description: New-player copy and first actionable step.
+    estimated_effort: medium
+    estimated_files: 3
+    estimated_lines: 420
+    focus_area: review framing
+    verification:
+      - Confirm the rubric addresses functional behavior, story feel, and UI feel with equal attention.
+      - Confirm legacy or inactive UI paths are not treated as current behavior under test.
+      - Confirm redesign criteria stay recommendation-only.
+    acceptance_criteria:
+      - Produces a balanced review rubric aligned to the active shell path.
+      - Captures likely onboarding and narrative quality checkpoints for synthesis.
+      - Excludes implementation proposals beyond recommendation framing.
+    failure_modes:
+      - scenario: Static review over-indexes on code intent instead of lived player friction.
+        likelihood: medium
+        impact: medium
+        mitigation: Treat this task as rubric preparation only and require live browser evidence to substantiate conclusions.
+    requires_review: true
+    review_depth: standard
+    review_security_sensitive: false
+
+  - id: T2
+    title: Execute golden-path browser playtest to fresh-start completion
+    task_definition: Run the main fresh-session player journey from initial browser load through character creation into immediate early gameplay, capturing blockers, confusion points, narrative feel, UI feel, and first-minute gameplay quality. Continue toward level 2 / 100 XP only if feasible without holding the report.
+    description: |
+      Use a clean browser session and follow the intended new-player path.
+      Start at '/', reach character hub, complete character genesis, confirm immediate post-creation level 1 readiness,
+      and interact with the first available adventure flow to gather grounded evidence on controls, readability,
+      responsiveness, narrative payoff, and obvious defects.
+      Treat level 1 as the mandatory completion checkpoint and level 2 as an opportunistic extension.
+    wave: 2
+    agent: gem-browser-tester
+    priority: high
+    status: pending
+    dependencies:
+      - T1
+    conflicts_with: []
+    file_targets:
+      - src/App.jsx
+      - src/components/gameui/GameUIRoot.jsx
+      - src/components/gameui/useGameUiCharacterCreationFlow.js
+    context_files:
+      - path: docs/PRD.yaml
+        description: Browser-flow state machine and audit boundaries.
+      - path: src/App.jsx
+        description: Entry route and local-game launch path.
+      - path: src/components/gameui/GameUIRoot.jsx
+        description: Shell state transitions from hub to creation to adventure.
+    estimated_effort: medium
+    estimated_files: 3
+    estimated_lines: 480
+    focus_area: golden path
+    verification:
+      - Verify run begins from a clean session at '/'.
+      - Verify character creation reaches immediate post-creation level 1 state.
+      - Verify early gameplay observations are captured even if level 2 is not reached.
+    acceptance_criteria:
+      - Produces a chronological golden-path evidence packet with steps, outcomes, and severity-tagged findings.
+      - Distinguishes startup blockers, onboarding blockers, narrative degradation, and downstream quality issues.
+      - Explicitly records whether level 2 / 100 XP was observed or skipped for time or feasibility reasons.
+    failure_modes:
+      - scenario: Autosave resume or retained storage bypasses the intended fresh-start onboarding path.
+        likelihood: medium
+        impact: high
+        mitigation: Reset browser state before execution and invalidate contaminated runs.
+      - scenario: The path stalls in character creation and no immediate gameplay evidence is collected.
+        likelihood: medium
+        impact: high
+        mitigation: Capture the exact blocking step and stop attributing later issues to systems that were never reached.
+    validation_matrix:
+      - scenario: Fresh-load golden path
+        steps:
+          - Open '/'
+          - Enter local or accessible player path
+          - Start character creation
+          - Complete genesis and transition into adventure shell
+        expected_result: Player reaches immediate post-creation level 1 state with actionable early gameplay UI.
+      - scenario: Early gameplay follow-through
+        steps:
+          - Use first available action input or suggestion
+          - Observe narrative, feedback, and state updates
+          - Continue only while the run remains stable and report-safe
+        expected_result: Early gameplay quality is observable, and milestone continuation status is recorded without blocking final synthesis.
+
+  - id: T3
+    title: Execute exploratory browser playtest with light alternate choices
+    task_definition: Run a second fresh-session playtest that preserves the same main flow but samples a small set of non-blocking alternate interactions, choices, and early gameplay touches to surface branch-specific friction and delight.
+    description: |
+      Use a separate clean browser session and repeat the current root flow with light exploration.
+      Sample alternate choices or interactions around onboarding, creation, and early adventure,
+      but do not replace the golden-path baseline with exhaustive branch coverage.
+      The goal is to find branch-specific clarity gaps, UI dead ends, or story tone shifts that a single run may miss.
+    wave: 2
+    agent: gem-browser-tester
+    priority: medium
+    status: pending
+    dependencies:
+      - T1
+    conflicts_with: []
+    file_targets:
+      - src/components/shell/CharacterHub.jsx
+      - src/components/gameui/CharacterCreationShell.jsx
+      - src/components/shell/AdventureShell.jsx
+    context_files:
+      - path: docs/PRD.yaml
+        description: Light-exploration scope and milestone framing.
+      - path: src/components/shell/CharacterHub.jsx
+        description: Entry messaging and launch affordances.
+      - path: src/components/shell/AdventureShell.jsx
+        description: Early gameplay shell and command surface.
+    estimated_effort: medium
+    estimated_files: 3
+    estimated_lines: 420
+    focus_area: exploratory path
+    verification:
+      - Verify exploration remains light and does not displace the main flow.
+      - Verify alternate choices are limited to non-blocking, report-relevant interactions.
+      - Verify evidence is comparable to the golden-path run.
+    acceptance_criteria:
+      - Produces an exploratory evidence packet with alternate-choice observations and branch-specific findings.
+      - Preserves fresh-start conditions and current-shell scope.
+      - Notes whether any alternate path changed story tone, UI clarity, or functional resilience.
+    failure_modes:
+      - scenario: Exploration scope expands into ad hoc broad testing and delays synthesis.
+        likelihood: medium
+        impact: medium
+        mitigation: Cap the run to light exploration and prioritize evidence quality over breadth.
+    validation_matrix:
+      - scenario: Alternate onboarding and creation touches
+        steps:
+          - Start from a clean session
+          - Sample a small number of alternate interactions before or during creation
+          - Complete creation if the flow remains stable
+        expected_result: Evidence reveals whether alternate choices materially alter clarity, pacing, or usability.
+      - scenario: Early gameplay branch sampling
+        steps:
+          - Interact with a different suggestion or command path than the golden run
+          - Observe state feedback and narrative response
+        expected_result: Branch-specific friction or delight is captured without needing exhaustive coverage.
+
+  - id: T5
+    title: Synthesize findings into redesign themes and prioritized audit output
+    task_definition: Merge runtime validation, live play evidence, and rubric context into a balanced audit that separates blocking defects, quality issues, larger redesign recommendations, and 10 random improvement suggestions.
+    description: |
+      Consolidate the evidence across browser runs and source-informed review.
+      Weight story, UI, and functional behavior evenly, call out severity clearly,
+      and translate repeated friction into larger redesign directions without drifting into implementation planning.
+      The output must explicitly preserve the level-1 and optional level-2 framing.
+    wave: 3
+    agent: gem-reviewer
+    priority: high
+    status: pending
+    dependencies:
+      - T2
+      - T3
+      - T4
+    conflicts_with: []
+    file_targets:
+      - docs/PRD.yaml
+      - docs/PLAYTEST_CHECKLIST.md
+      - src/components/gameui/GameUIRoot.jsx
+    context_files:
+      - path: docs/PRD.yaml
+        description: Acceptance criteria and stop-point framing.
+      - path: docs/PLAYTEST_CHECKLIST.md
+        description: Existing playtest framing that may inform evidence structure.
+      - path: src/components/gameui/GameUIRoot.jsx
+        description: Active shell transitions for mapping findings to the current flow.
+    estimated_effort: medium
+    estimated_files: 3
+    estimated_lines: 360
+    focus_area: synthesis
+    verification:
+      - Confirm the audit separates blockers, quality issues, redesign recommendations, and random suggestions.
+      - Confirm balanced weighting across story, UI, and functional behavior.
+      - Confirm the report does not require optional level 2 observation to be considered complete.
+    acceptance_criteria:
+      - Produces a consolidated findings set with evidence-backed categories and priorities.
+      - Includes larger redesign recommendations grounded in observed friction or missed fantasy.
+      - Includes exactly 10 random improvement suggestions distinct from the core redesign recommendations.
+    failure_modes:
+      - scenario: Strong bug evidence overwhelms story and UI assessment, skewing the redesign output.
+        likelihood: medium
+        impact: high
+        mitigation: Use the balanced rubric from T4 and require explicit coverage of all three review dimensions.
+    requires_review: true
+    review_depth: full
+    review_security_sensitive: false
+
+  - id: T6
+    title: Package the final audit report for stakeholder review
+    task_definition: Turn the synthesized findings into a concise, stakeholder-readable audit deliverable that states scope, execution limits, evidence-backed findings, redesign recommendations, and the 10 random improvement suggestions.
+    description: |
+      Prepare the final report artifact for consumption by design, product, and engineering leads.
+      Keep the narrative audit-focused, clearly scoped to the current root flow at '/'.
+      Explicitly note that fresh-start completion is post-creation level 1,
+      and that first-earned milestone observations at level 2 / 100 XP were included only when feasible.
+    wave: 4
+    agent: gem-documentation-writer
+    priority: medium
+    status: pending
+    dependencies:
+      - T5
+    conflicts_with: []
+    file_targets:
+      - docs/plan/playtest-redesign-20260405/plan.yaml
+    context_files:
+      - path: docs/PRD.yaml
+        description: Scope and acceptance criteria to echo in the report framing.
+      - path: docs/PLAYTEST_CHECKLIST.md
+        description: Supporting playtest language and structure.
+    estimated_effort: small
+    estimated_files: 1
+    estimated_lines: 220
+    focus_area: reporting
+    verification:
+      - Confirm the report is readable without code-level context.
+      - Confirm limitations and optional milestone continuation are clearly disclosed.
+      - Confirm recommendations remain audit outputs, not implementation commitments.
+    acceptance_criteria:
+      - Produces a final audit-ready report structure suitable for stakeholder review.
+      - Preserves the separation of findings, redesign recommendations, and random suggestions.
+      - Reflects the actual evidence boundaries from the browser runs.
+    failure_modes:
+      - scenario: Final packaging collapses nuanced findings into vague summary language.
+        likelihood: medium
+        impact: medium
+        mitigation: Preserve evidence-backed phrasing and category structure from synthesis.
+    task_type: walkthrough
+    audience: stakeholders
+    coverage_matrix:
+      - Scope and runtime assumptions
+      - Golden-path and exploratory execution coverage
+      - Balanced findings across function, story, and UI
+      - Larger redesign recommendations
+      - 10 random improvement suggestions

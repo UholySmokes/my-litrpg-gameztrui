@@ -112,8 +112,9 @@ export default function CreationIdentityPanel({
                   <span style={{ fontWeight: "bold" }}>{origin.name.toUpperCase()}</span>
                   <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
                     {recommended.has(origin.id) ? (
-                      <span style={{ color: "#8CE99A", fontSize: "0.66rem", fontWeight: "bold" }}>
-                        SYSTEM MATCH
+                      <span style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-end" }}>
+                        <span style={{ color: "#8CE99A", fontSize: "0.66rem", fontWeight: "bold" }}>SYSTEM MATCH</span>
+                        <span style={{ fontSize: "0.45rem", color: "#8CE99A", opacity: 0.7 }}>Favored by your bound system</span>
                       </span>
                     ) : null}
                     <span style={{ color: "var(--holo-gold)", fontSize: "0.72rem" }}>

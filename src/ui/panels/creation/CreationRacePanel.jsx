@@ -275,7 +275,10 @@ export default function CreationRacePanel({
                           <span style={{ fontWeight: "bold", letterSpacing: "1px" }}>{race.name.toUpperCase()}</span>
                           <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
                             {recommended.has(race.id) ? (
-                              <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>SYSTEM MATCH</span>
+                              <span style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-end" }}>
+                                <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>SYSTEM MATCH</span>
+                                <span style={{ fontSize: "0.45rem", color: "#8CE99A", opacity: 0.7 }}>Favored by your bound system</span>
+                              </span>
                             ) : null}
                             {isSelected && (
                               <span style={{ fontSize: "0.55rem", color: "var(--holo-gold)", fontWeight: "bold" }}>SELECTED</span>

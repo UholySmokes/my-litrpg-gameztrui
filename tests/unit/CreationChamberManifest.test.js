@@ -45,7 +45,7 @@ describe("creation chamber manifest", () => {
       }),
     ).toEqual({
       valid: false,
-      error: "Bind a system before leaving the Binding Hall.",
+      error: "Bind a governing system to proceed. Your designation is set.",
     });
 
     expect(
@@ -58,7 +58,7 @@ describe("creation chamber manifest", () => {
       }),
     ).toEqual({
       valid: false,
-      error: "Choose an alignment before leaving the Soul Crucible.",
+      error: "Choose an alignment to complete the Soul Crucible.",
     });
   });
 });

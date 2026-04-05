@@ -72,39 +72,39 @@ This player wants agency fast. They tolerate sparse fiction if the game makes sy
 
 ## Persona B: Lore-First Cautious Explorer
 
-### Intent
+### Persona B Intent
 
 This player wants the world to earn trust before they commit. They value tone, fantasy payoff, and coherent guidance that makes choices feel meaningful rather than rushed.
 
-### Reading Behavior
+### Persona B Reading Behavior
 
 - Reads narrative copy, labels, and descriptive tooltips carefully before acting.
 - Re-reads choice text when the fantasy implication is ambiguous.
 - Compares flavor framing across available options before selecting one.
 - Pays attention to wording, mood, and whether narrative context supports the mechanics being offered.
 
-### Pacing
+### Persona B Pacing
 
 - Moves deliberately through the hub and creation flow.
 - Pauses on each major step to understand what the game is asking and why it matters in-world.
 - Samples a small number of non-blocking affordances if they appear to deepen understanding of the setting or character fantasy.
 - Accepts a slower path to level 1 readiness if the extra reading produces stronger confidence in the roleplay premise.
 
-### Tolerance For Friction
+### Persona B Tolerance For Friction
 
 - Moderate tolerance for additional reading if it consistently improves immersion or clarifies intent.
 - Low tolerance for contradictory worldbuilding, unexplained tone shifts, or choices that sound important but feel empty.
 - Low tolerance for interfaces that force irreversible choices before the fiction or stakes are understandable.
 - Low tolerance for dead ends during optional exploration because they weaken trust in the shell.
 
-### Choice Style
+### Persona B Choice Style
 
 - Chooses options that best fit a coherent character fantasy, even if they are not obviously optimal.
 - Uses light exploration to compare how different choices are framed, but stays within the active hub, creation, and immediate adventure surfaces.
 - Prefers choices that promise a readable fantasy arc over pure numerical strength.
 - Notes when a choice fails because the narrative framing and mechanical result feel disconnected.
 
-### Delight Signals
+### Persona B Delight Signals
 
 - Strong narrative framing that makes the first clicks feel like entering a world rather than opening a menu.
 - Character options whose names, descriptions, and outcomes align into a clear fantasy promise.
@@ -112,7 +112,7 @@ This player wants the world to earn trust before they commit. They value tone, f
 - Early adventure content that rewards attention by reflecting the chosen identity or mood.
 - Optional affordances that deepen immersion without threatening the golden-path flow.
 
-### Failure Signals
+### Persona B Failure Signals
 
 - Important terms, factions, classes, or narrative stakes appear without enough context to judge them.
 - Copy implies fantasy depth that the interface or immediate outcome does not support.
@@ -120,7 +120,7 @@ This player wants the world to earn trust before they commit. They value tone, f
 - Exploration clicks produce little insight, weak feedback, or confusion about whether something mattered.
 - The player reaches level 1 readiness but still cannot describe who their character is supposed to be.
 
-### Evidence Emphasis
+### Persona B Evidence Emphasis
 
 - Narrative clarity and fantasy payoff.
 - Trustworthiness of choice framing.

@@ -29,14 +29,14 @@ Score only the current browser flow rooted at `/`:
 
 Use the same 0-5 checkpoint rating everywhere.
 
-| Score | Meaning | Tester guidance |
-| --- | --- | --- |
-| 0 | Broken | Cannot proceed, or the feature contradicts expected behavior in a way that prevents trustworthy review |
-| 1 | Severe friction | Technically reachable, but confusing, misleading, or unstable enough that most new players would likely stop |
-| 2 | Weak | Partially works, but repeated friction, ambiguity, or poor feedback damages confidence |
-| 3 | Adequate | Works with noticeable rough edges, but remains understandable and usable |
-| 4 | Strong | Clear, stable, and satisfying with only minor polish gaps |
-| 5 | Excellent | Clear, reliable, emotionally effective, and easy to recommend as-is for the reviewed phase |
+| Score | Meaning         | Tester guidance                                                                                              |
+| ----- | --------------- | ------------------------------------------------------------------------------------------------------------ |
+| 0     | Broken          | Cannot proceed, or the feature contradicts expected behavior in a way that prevents trustworthy review       |
+| 1     | Severe friction | Technically reachable, but confusing, misleading, or unstable enough that most new players would likely stop |
+| 2     | Weak            | Partially works, but repeated friction, ambiguity, or poor feedback damages confidence                       |
+| 3     | Adequate        | Works with noticeable rough edges, but remains understandable and usable                                     |
+| 4     | Strong          | Clear, stable, and satisfying with only minor polish gaps                                                    |
+| 5     | Excellent       | Clear, reliable, emotionally effective, and easy to recommend as-is for the reviewed phase                   |
 
 For each checkpoint, record:
 
@@ -224,23 +224,23 @@ This rubric can feed recommendations, but the rubric itself remains recommendati
 
 Use this template per checkpoint:
 
-| Pillar | Checkpoint | Score (0-5) | Blocker State | Evidence | Recommendation Note |
-| --- | --- | --- | --- | --- | --- |
-| Functional | F1 Entry and Session Integrity |  |  |  |  |
-| Functional | F2 Onboarding Progression to Creation |  |  |  |  |
-| Functional | F3 Character Creation Completion |  |  |  |  |
-| Functional | F4 Transition to Level 1 Ready Adventure |  |  |  |  |
-| Functional | F5 Early Command Loop Reliability |  |  |  |  |
-| Story | S1 Fantasy Hook at Arrival |  |  |  |  |
-| Story | S2 Creation Ritual Cohesion |  |  |  |  |
-| Story | S3 Narrative Responsiveness |  |  |  |  |
-| Story | S4 Momentum Into Adventure |  |  |  |  |
-| Story | S5 Early Play Story Continuity |  |  |  |  |
-| UI | U1 Entry Clarity and Orientation |  |  |  |  |
-| UI | U2 Onboarding Readability |  |  |  |  |
-| UI | U3 Transition Smoothness |  |  |  |  |
-| UI | U4 Adventure Shell Control Readiness |  |  |  |  |
-| UI | U5 Feedback and Atmosphere |  |  |  |  |
+| Pillar     | Checkpoint                               | Score (0-5) | Blocker State | Evidence | Recommendation Note |
+| ---------- | ---------------------------------------- | ----------- | ------------- | -------- | ------------------- |
+| Functional | F1 Entry and Session Integrity           |             |               |          |                     |
+| Functional | F2 Onboarding Progression to Creation    |             |               |          |                     |
+| Functional | F3 Character Creation Completion         |             |               |          |                     |
+| Functional | F4 Transition to Level 1 Ready Adventure |             |               |          |                     |
+| Functional | F5 Early Command Loop Reliability        |             |               |          |                     |
+| Story      | S1 Fantasy Hook at Arrival               |             |               |          |                     |
+| Story      | S2 Creation Ritual Cohesion              |             |               |          |                     |
+| Story      | S3 Narrative Responsiveness              |             |               |          |                     |
+| Story      | S4 Momentum Into Adventure               |             |               |          |                     |
+| Story      | S5 Early Play Story Continuity           |             |               |          |                     |
+| UI         | U1 Entry Clarity and Orientation         |             |               |          |                     |
+| UI         | U2 Onboarding Readability                |             |               |          |                     |
+| UI         | U3 Transition Smoothness                 |             |               |          |                     |
+| UI         | U4 Adventure Shell Control Readiness     |             |               |          |                     |
+| UI         | U5 Feedback and Atmosphere               |             |               |          |                     |
 
 ## Final Synthesis Hand-off
 

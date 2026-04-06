@@ -481,6 +481,78 @@ const THEME_BY_ID = Object.fromEntries(THEME_REGISTRY.map((theme) => [theme.id, 
 const DEFAULT_THEME_ID = THEME_REGISTRY[0].id;
 const ThemeContext = createContext(null);
 
+function parseHexColor(value) {
+  if (typeof value !== "string") return null;
+
+  const normalized = value.trim();
+  if (!normalized.startsWith("#")) return null;
+
+  const hex = normalized.slice(1);
+  if (hex.length === 3) {
+    return {
+      r: Number.parseInt(hex[0] + hex[0], 16),
+      g: Number.parseInt(hex[1] + hex[1], 16),
+      b: Number.parseInt(hex[2] + hex[2], 16),
+    };
+  }
+
+  if (hex.length === 6) {
+    return {
+      r: Number.parseInt(hex.slice(0, 2), 16),
+      g: Number.parseInt(hex.slice(2, 4), 16),
+      b: Number.parseInt(hex.slice(4, 6), 16),
+    };
+  }
+
+  return null;
+}
+
+function toRgba(value, alpha) {
+  const parsed = parseHexColor(value);
+  if (!parsed) return value;
+  return `rgba(${parsed.r}, ${parsed.g}, ${parsed.b}, ${alpha})`;
+}
+
+function relativeChannel(channel) {
+  const normalized = channel / 255;
+  if (normalized <= 0.03928) {
+    return normalized / 12.92;
+  }
+  return ((normalized + 0.055) / 1.055) ** 2.4;
+}
+
+function relativeLuminance(value) {
+  const parsed = parseHexColor(value);
+  if (!parsed) return 0;
+
+  return (
+    0.2126 * relativeChannel(parsed.r) +
+    0.7152 * relativeChannel(parsed.g) +
+    0.0722 * relativeChannel(parsed.b)
+  );
+}
+
+function getReadableAccentText(accentColor) {
+  return relativeLuminance(accentColor) > 0.42 ? "#13080a" : "#fffaf5";
+}
+
+function getDerivedThemeTokens(theme) {
+  const tokens = theme?.tokens || {};
+  const textMain = tokens["--text-main"] || (theme?.colorScheme === "light" ? "#111827" : "#f8fafc");
+  const colorScheme = theme?.colorScheme || "dark";
+  const dimAlpha = colorScheme === "light" ? 0.84 : 0.82;
+  const mutedAlpha = colorScheme === "light" ? 0.72 : 0.7;
+  const primaryAccent = tokens["--holo-primary"] || tokens["--holo-cyan"] || textMain;
+  const alertAccent = tokens["--holo-alert"] || primaryAccent;
+
+  return {
+    "--text-dim": toRgba(textMain, dimAlpha),
+    "--text-muted": toRgba(textMain, mutedAlpha),
+    "--text-on-accent": getReadableAccentText(primaryAccent),
+    "--text-on-danger": getReadableAccentText(alertAccent),
+  };
+}
+
 function getStoredThemeId() {
   if (typeof window === "undefined") return DEFAULT_THEME_ID;
 
@@ -496,7 +568,12 @@ function applyThemeTokens(theme) {
   if (typeof document === "undefined" || !theme) return;
 
   const root = document.documentElement;
-  Object.entries(theme.tokens || {}).forEach(([token, value]) => {
+  const resolvedTokens = {
+    ...(theme.tokens || {}),
+    ...getDerivedThemeTokens(theme),
+  };
+
+  Object.entries(resolvedTokens).forEach(([token, value]) => {
     root.style.setProperty(token, value);
   });
   root.dataset.shellTheme = theme.id;

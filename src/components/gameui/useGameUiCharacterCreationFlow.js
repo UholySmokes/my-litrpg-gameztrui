@@ -6,6 +6,7 @@ import {
   incrementCharactersCreated,
   isAdvancedCreationUnlocked,
 } from "../../core/playerProfile.js";
+import { evaluateCharacterReadiness } from "./characterReadiness.js";
 
 const TRANSITION_DURATION_MS = 2500;
 
@@ -122,6 +123,14 @@ export function useGameUiCharacterCreationFlow({
       console.log("Character data received:", characterData);
 
       const nextState = buildCharacterCreationState(state, characterData);
+      const readiness = evaluateCharacterReadiness(nextState);
+
+      if (!readiness.valid) {
+        throw new Error(
+          readiness.errors[0] ||
+            "Character creation is incomplete. Finish the required selections before starting the adventure.",
+        );
+      }
 
       setState(nextState);
       persistLocalAutosave(nextState, "Character Creation Checkpoint");

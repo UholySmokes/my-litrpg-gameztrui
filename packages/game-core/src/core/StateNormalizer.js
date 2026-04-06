@@ -20,6 +20,7 @@ import { describeBalanceConfig } from "../data/balance/balanceConfig.js";
 import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
 import { isDevourerCorePlayer, normalizeDevourerArchetypeState } from "../systems/archetype/devourerCore.js";
 import {
+  DEFAULT_START_LOCATION_ID,
   WORLD_META,
   MAJOR_FACTION_IDS,
   resolveLocationId,
@@ -555,7 +556,6 @@ function normalizeDungeonState(rawDungeon) {
 }
 
 const DEFAULT_WORLD_ID = WORLD_META.id;
-const DEFAULT_START_LOCATION_ID = "starting_zone";
 const DEFAULT_WORLD_COUNTERS = {
   day: 1,
   chapter: 0,
@@ -580,7 +580,16 @@ function canonicalizeLocationId(value) {
   if (typeof value !== "string") return null;
   const trimmed = value.trim();
   if (!trimmed) return null;
-  if (trimmed.toLowerCase() === "starting zone") return DEFAULT_START_LOCATION_ID;
+  const lowered = trimmed.toLowerCase();
+  if (
+    lowered === "starting zone" ||
+    lowered === "starting_zone" ||
+    lowered === "rebirth alcove" ||
+    lowered === "summoning alcove" ||
+    lowered === "awakening point"
+  ) {
+    return DEFAULT_START_LOCATION_ID;
+  }
 
   // Prefer canonical ids when possible; preserve unknown strings for forward-compat.
   return resolveLocationId(trimmed) || trimmed;

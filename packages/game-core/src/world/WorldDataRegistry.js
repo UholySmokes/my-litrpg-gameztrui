@@ -1,8 +1,10 @@
 /**
- * starting_zone is a location id, not a zone id. Zone ids are biome keys (city, ruins, ...).
+ * DEFAULT_START_LOCATION_ID is a location id, not a zone id. Zone ids are biome keys (city, ruins, ...).
  */
 
 import { createWorldRegistryRuntime } from "./WorldRegistryRuntime.js";
+
+export const DEFAULT_START_LOCATION_ID = "city_neon_bazaar";
 
 // =============================================================================
 // WORLD META (BIBLE)
@@ -129,23 +131,14 @@ export const WORLD_META = {
 // =============================================================================
 
 export let locations = [
-  // CITY (4)
-  {
-    id: "starting_zone",
-    zoneId: "city",
-    name: "Rebirth Alcove",
-    summary:
-      "A shallow stone alcove beneath the arcology's main arch, scored with fading summoning glyphs — where new arrivals open unfamiliar eyes for the first time, with guild boards and merchant stalls just beyond the threshold.",
-    aliases: ["starting zone", "rebirth alcove", "alcove", "summoning alcove", "awakening point"],
-    travelPolicy: "public",
-  },
+  // CITY (3)
   {
     id: "city_neon_bazaar",
     zoneId: "city",
     name: "Neon Bazaar",
     summary:
       "Stalls of synthcloth and spiritwire under pulsing signage, where contracts change hands faster than coins.",
-    aliases: ["neon bazaar", "bazaar", "market", "exchange floor"],
+    aliases: ["starting zone", "neon bazaar", "bazaar", "market", "exchange floor"],
     travelPolicy: "public",
   },
   {
@@ -530,7 +523,7 @@ export let zones = [
     summary:
       "A neon sanctuary built atop ancient bones, where commerce is a spell and safety is a clause.",
     connections: ["ruins", "wilds", "skydocks", "undercity", "coast"],
-    startLocationIds: ["starting_zone", "city_neon_bazaar"],
+    startLocationIds: [DEFAULT_START_LOCATION_ID, "city_sunspire_temple"],
     dominantFactionIds: ["aurum_exchange", "arcane_wardens"],
   },
   {
@@ -929,6 +922,7 @@ let worldRuntime = createWorldRegistryRuntime({
   factions,
   zones,
   locations,
+  defaultStartLocationId: DEFAULT_START_LOCATION_ID,
 });
 
 export function getRareEssenceSourceById(id) {
@@ -977,6 +971,7 @@ export function setWorldRegistry({
     factions,
     zones,
     locations,
+    defaultStartLocationId: DEFAULT_START_LOCATION_ID,
   });
 }
 
@@ -1040,3 +1035,4 @@ export function resolveStartingLocationId(raw, { fallbackLocationId } = {}) {
 export function getAccessibleLocationIds(gameState) {
   return worldRuntime.getAccessibleLocationIds(gameState);
 }
+

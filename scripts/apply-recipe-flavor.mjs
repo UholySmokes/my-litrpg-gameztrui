@@ -833,26 +833,26 @@ const FLAVOR = {
   // REPAIR
   // =========================================================================
   repair: {
-    patch: {
-      1: "Scrap material pressed over damage. It holds until something better comes along.",
-      3: "Alloy patch with bonding compound. The repair outlasts the original where it overlaps.",
-      5: "Arcane-bonded patch that fuses with the damaged surface. The seam becomes the strongest part.",
-      7: "Spirit-infused rare-alloy patch. The repair material integrates so cleanly the damage becomes invisible.",
-      9: "Primordial patch of divine material. It doesn't fix the item—it convinces it that it was never broken.",
+    repair_kit: {
+      1: "Scrap material and binding wire packed into a rough kit. It holds until something better comes along.",
+      3: "Alloy patches and bonding compound in an organized case. The repair outlasts the original where it overlaps.",
+      5: "An arcane repair kit that diagnoses damage before the crafter does. The tools guide the hands.",
+      7: "A spirit-infused rare-alloy repair kit. The materials choose their own placement for optimal restoration.",
+      9: "A primordial repair kit of divine completeness. It doesn't fix items—it convinces them they were never broken.",
     },
-    weld: {
-      1: "Metal fused by heat and hope. The joint is rough but functional.",
-      3: "Alloy weld with clean penetration. Structurally sound under stress.",
-      5: "Arcane-flux weld that bonds at the molecular level. The join is stronger than virgin metal.",
-      7: "Spirit-charge weld from rare alloy. The repaired area gains properties the original lacked.",
-      9: "Primordial weld of divine metallurgy. The metal forgets the fracture ever existed.",
+    polish: {
+      1: "Rough abrasive and elbow grease. The surface improves, grudgingly.",
+      3: "Quality polish compound that restores luster and protects against future wear.",
+      5: "Arcane polish that bonds at the molecular level. The surface becomes stronger than virgin metal.",
+      7: "Spirit-charged polish from rare compounds. The treated surface gains properties the original lacked.",
+      9: "Primordial polish of divine metallurgy. The metal forgets every scratch it ever received.",
     },
-    refit: {
-      1: "Worn parts replaced with basic salvage. Functional restoration at minimum cost.",
-      3: "Quality components swapped in with precision. The item works like it did when it was new.",
-      5: "Arcane-grade refit with enhanced replacement parts. The item comes back better than before.",
-      7: "Spirit-fitted rare components that integrate with the item's original purpose.",
-      9: "Primordial refit with divine-grade components. The item evolves past its original design intent.",
+    reinforcement: {
+      1: "Extra strapping and bracing applied to weak points. Functional support at minimum cost.",
+      3: "Quality reinforcement plates and bindings. The item regains—and exceeds—its original durability.",
+      5: "Arcane-grade reinforcement that integrates with the item's structure. Stronger than a fresh forge.",
+      7: "Spirit-fitted rare-alloy reinforcement that merges with the item's original purpose.",
+      9: "Primordial reinforcement of divine-grade material. The item evolves past its original design limits.",
     },
     restoration: {
       1: "Basic cleaning and realignment. Restores enough function to keep going.",
@@ -929,12 +929,12 @@ const FLAVOR = {
       7: "Spirit-silk cloak woven with essence threads. The fabric darkens in danger and lightens in safety.",
       9: "Primordial cloak of divine weave. Observers forget the wearer's face before they finish looking.",
     },
-    sash: {
-      1: "A strip of cloth with decorative intent. Mostly symbolic.",
-      3: "Quality-linen sash with dyed pattern. Marks rank or affiliation.",
-      5: "Arcane-silk sash that stores residual spell energy. A mage's utility belt in fabric form.",
-      7: "Spirit-silk sash woven with essence thread. The fabric tightens or loosens based on the wearer's needs.",
-      9: "Primordial sash of divine textile. It wraps around purpose, not waist—the physical fit is incidental.",
+    bag: {
+      1: "Rough cloth stitched into a carry-all. It holds more than it should and complains about none of it.",
+      3: "Quality-linen bag with reinforced seams and organized compartments. A traveler's reliable companion.",
+      5: "Arcane-silk bag that adjusts its interior to fit the contents. Spatial efficiency as textile craft.",
+      7: "Spirit-silk bag woven with essence thread. The interior is larger than the exterior admits.",
+      9: "Primordial bag of divine weave. It contains what its owner needs before they know they need it.",
     },
     gloves: {
       1: "Cloth gloves that protect against splinters and little else.",

@@ -1,7 +1,7 @@
 const EXAMPLE_STARTS = [
-  "I wake in Rootbound Camp, join the scouts, and ask who knows a safe way into the Fringe.",
-  "I begin in the Wildroot Fringe, crouched at the tree line and listening for movement before I step out.",
-  "I arrive at Rebirth Alcove and ask the first guild runner what trouble is already looking for me.",
+  "I join the scouts, keep quiet, and ask who needs another blade.",
+  "I steady myself, watch the crowd, and wait for the first opening worth taking.",
+  "I ask the nearest locals what trouble is already moving and who is desperate enough to pay.",
 ];
 
 export default function CreationStartingPointPanel({
@@ -10,14 +10,12 @@ export default function CreationStartingPointPanel({
   onOptimizePrompt,
   optimizedPromptAlternates = [],
   onSelectAlternate,
-  inferredStartingLocation,
-  inferredStartingZone,
 }) {
   return (
     <div className="creation-starting-point-panel">
       <p style={{ fontSize: "0.82rem", opacity: 0.72, marginBottom: "1rem", lineHeight: 1.5 }}>
-        Write the exact opening you want. The world will infer the safest valid spawn from your text,
-        then auto-run it as your first turn.
+        Write the exact opening you want. This command defines the first beat of the chronicle,
+        then auto-runs as your opening turn.
       </p>
 
       <label
@@ -72,18 +70,6 @@ export default function CreationStartingPointPanel({
         >
           Optimize Prompt
         </button>
-        <div
-          style={{
-            padding: "0.55rem 0.8rem",
-            borderRadius: "999px",
-            border: "1px solid rgba(140, 233, 154, 0.35)",
-            background: "rgba(18, 38, 24, 0.72)",
-            color: "#8ce99a",
-            fontSize: "0.8rem",
-          }}
-        >
-          Spawn: {inferredStartingLocation?.name || "Rebirth Alcove"} / {inferredStartingZone?.name || "Meridian Arcology"}
-        </div>
       </div>
 
       <div style={{ marginTop: "1rem", display: "grid", gap: "0.65rem" }}>
@@ -114,7 +100,7 @@ export default function CreationStartingPointPanel({
           ))
         ) : (
           <div style={{ fontSize: "0.82rem", color: "var(--text-dim)", lineHeight: 1.5 }}>
-            Optimize the draft to get three cleaner handoff variants you can still edit.
+            Optimize the draft to get three cleaner opening variants you can still edit.
           </div>
         )}
       </div>

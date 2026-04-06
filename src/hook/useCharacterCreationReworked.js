@@ -54,7 +54,6 @@ import {
 } from "@voidverse/game-core/characterCreation/CharacterCreationOptionsRegistry.js";
 import { resolveCharacterCreationOptionsBySystem } from "@voidverse/game-core/characterCreation/CharacterCreationSystemInfluence.js";
 import {
-  inferStartingLocation,
   optimizeStartCommand,
   sanitizeStartCommand,
 } from "../core/customStart.js";
@@ -409,14 +408,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setSelectedPassiveSkills([]);
     setAttributePoints(createAttributeBaseline(BASE_ATTRIBUTE_VALUE));
   }, [rerollsRemaining]);
-
-  const inferredStartingLocation = useMemo(
-    () => inferStartingLocation(startingPrompt),
-    [startingPrompt],
-  );
-  const inferredStartingLocationId = inferredStartingLocation.locationId || "starting_zone";
-  const inferredStartingLocationData = inferredStartingLocation.location || null;
-  const inferredStartingZone = inferredStartingLocation.zone || null;
 
   const handleStartingPromptChange = useCallback((value) => {
     setStartingPrompt(value);
@@ -834,8 +825,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         raceId: selectedRace?.id,
         classId: selectedClass?.id,
         startingPrompt: sanitizeStartCommand(startingPrompt),
-        startingLocationId: inferredStartingLocationId,
-        startingZoneId: inferredStartingZone?.id || null,
         professionId: selectedProfession?.id,
         archetypeSystemId: selectedArchetypeSystem?.id,
         attributes: buildCharacterCreationAttributes({
@@ -888,8 +877,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     selectedArchetypeSystem,
     selectedClass,
     selectedSecondaryClass,
-    inferredStartingLocationId,
-    inferredStartingZone?.id,
     startingPrompt,
     selectedPassiveSkills,
     selectedPerkIds,
@@ -1071,8 +1058,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       secondaryClassId:
         advancedUnlocked ? selectedSecondaryClass?.id || null : null,
       startingPrompt: sanitizedStartingPrompt,
-      startingLocationId: inferredStartingLocationId,
-      startingZoneId: inferredStartingZone?.id || null,
       professionId,
       archetypeSystemId: selectedArchetypeSystem?.id,
       attributes: derivedState.attributes,
@@ -1093,8 +1078,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         ? normalizeEntityRef(selectedSecondaryClass, "None")
         : null,
       startingPrompt: sanitizedStartingPrompt,
-      startingLocationId: inferredStartingLocationId,
-      startingZoneId: inferredStartingZone?.id || null,
       alignment: selectedAlignmentId,
       perks: selectedPerkIds,
       starterTrees: advancedUnlocked ? selectedStarterTreeIds : [],
@@ -1168,8 +1151,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     attributePoints,
     name,
     gender,
-    inferredStartingLocationId,
-    inferredStartingZone?.id,
     selectedRace,
     selectedSecondaryClass,
     selectedClass,
@@ -1201,8 +1182,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     gender,
     startingPrompt,
     optimizedStartingPromptOptions,
-    inferredStartingLocation: inferredStartingLocationData,
-    inferredStartingZone,
     selectedRace,
     selectedClass,
     selectedSecondaryClass,

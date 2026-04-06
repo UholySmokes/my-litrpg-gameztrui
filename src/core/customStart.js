@@ -54,49 +54,23 @@ function buildPromptVariant(value, fallback) {
   return ensureSentence(noPrefix || fallback);
 }
 
-function buildLocationAwareVariant(trimmedInput, locationName) {
-  if (!locationName) {
-    return buildPromptVariant(trimmedInput, "I steady myself and take in the scene");
-  }
-  const bare = removeGenericPrefix(trimmedInput);
-  if (bare) {
-    return ensureSentence(`At ${locationName}, ${bare.charAt(0).toLowerCase()}${bare.slice(1)}`);
-  }
-  return ensureSentence(`I arrive at ${locationName}, stay alert, and take in the scene`);
-}
-
-function buildObservationVariant(locationName, groupLabel) {
-  if (groupLabel && locationName) {
-    return ensureSentence(`At ${locationName}, I fall in with ${groupLabel} and study how they move`);
-  }
+function buildObservationVariant(groupLabel) {
   if (groupLabel) {
     return ensureSentence(`I fall in with ${groupLabel} and study how they move`);
-  }
-  if (locationName) {
-    return ensureSentence(`At ${locationName}, I look around before I commit to a direction`);
   }
   return ensureSentence("I look around before I commit to a direction");
 }
 
-function buildInquiryVariant(locationName, groupLabel, zoneName) {
-  const destination = zoneName || locationName || "the road ahead";
+function buildInquiryVariant(groupLabel) {
   if (groupLabel) {
-    return ensureSentence(
-      `I join ${groupLabel} and ask who can guide me safely toward ${destination}`,
-    );
+    return ensureSentence(`I join ${groupLabel} and ask who needs help first`);
   }
-  if (locationName) {
-    return ensureSentence(`At ${locationName}, I ask the nearest locals what route is safest toward ${destination}`);
-  }
-  return ensureSentence(`I ask the nearest locals what route is safest toward ${destination}`);
+  return ensureSentence("I ask the nearest locals where the first real trouble is");
 }
 
-function buildCautiousVariant(locationName, groupLabel) {
+function buildCautiousVariant(groupLabel) {
   if (groupLabel) {
     return ensureSentence(`I keep close to ${groupLabel}, stay quiet, and wait for the first useful opening`);
-  }
-  if (locationName) {
-    return ensureSentence(`I stay low at ${locationName} and wait for the first useful opening`);
   }
   return ensureSentence("I stay quiet and wait for the first useful opening");
 }
@@ -133,22 +107,28 @@ export function optimizeStartCommand(input, { fallbackLocationId = "starting_zon
     return {
       optimized: "",
       alternatives: [],
-      inference: inferStartingLocation("", fallbackLocationId),
+      inference: {
+        locationId: null,
+        location: null,
+        zone: null,
+      },
     };
   }
 
-  const inference = inferStartingLocation(trimmedInput, fallbackLocationId);
-  const locationName = inference.location?.name || "";
-  const zoneName = inference.zone?.name || "";
   const groupLabel = extractGroupReference(trimmedInput);
+  const inference = {
+    locationId: null,
+    location: null,
+    zone: null,
+  };
 
   const optimized = ensureSentence(
-    trimToSentence(buildLocationAwareVariant(trimmedInput, locationName)),
+    trimToSentence(buildPromptVariant(trimmedInput, "I take in the scene and choose my first move")),
   );
   const alternatives = dedupeVariants([
-    buildObservationVariant(locationName, groupLabel),
-    buildInquiryVariant(locationName, groupLabel, zoneName),
-    buildCautiousVariant(locationName, groupLabel),
+    buildObservationVariant(groupLabel),
+    buildInquiryVariant(groupLabel),
+    buildCautiousVariant(groupLabel),
     buildPromptVariant(trimmedInput, "I take in the scene and choose my first move"),
   ])
     .filter((entry) => entry.toLowerCase() !== optimized.toLowerCase())

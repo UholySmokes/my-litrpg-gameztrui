@@ -15,9 +15,7 @@ describe("CharacterCreationContract", () => {
       name: "Aela",
       raceId: "neo_human",
       classId: "warrior",
-      startingPrompt: "I wake in Rebirth Alcove and look around.",
-      startingLocationId: "starting_zone",
-      startingZoneId: "city",
+      startingPrompt: "I steady myself, look around, and ask who needs help first.",
       professionId: "blacksmith",
       archetypeSystemId: "balanced",
       attributes: { strength: 8 },
@@ -29,6 +27,8 @@ describe("CharacterCreationContract", () => {
 
     expect(result.valid).toBe(true);
     expect(result.blueprint.gender).toBeNull();
+    expect(result.blueprint.startingLocationId).toBeNull();
+    expect(result.blueprint.startingZoneId).toBeNull();
     expect(limits).toEqual({
       requiredActiveSkillCount: 3,
       requiredPassiveSkillCount: 6,

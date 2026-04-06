@@ -158,8 +158,12 @@ export function useGameEngine() {
    * @returns {object} StepResult
    */
   const submitAction = useCallback(
-    (input) => {
-      const result = engine.step(input, stateRef.current);
+    (input, stateOverride = undefined) => {
+      const baseState =
+        stateOverride && typeof stateOverride === "object"
+          ? stateOverride
+          : stateRef.current;
+      const result = engine.step(input, baseState);
       if (result.ok) {
         dispatch({ type: "APPLY_ENGINE_RESULT", payload: result });
       }

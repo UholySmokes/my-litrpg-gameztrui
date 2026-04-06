@@ -14,7 +14,32 @@ describe("buildCharacterCreationState", () => {
         name: "Ari",
         class: "paladin",
         race: "human",
+        secondaryClass: { id: "sentinel", name: "Sentinel" },
         profession: { id: "blacksmith", name: "Blacksmith" },
+        archetypeSystem: { id: "runebound", name: "Runebound" },
+        alignment: "guardian",
+        perks: ["hardened_skin", "echo_memory"],
+        starterTrees: ["iron_vow"],
+        skillLoadoutId: "vanguard",
+        activeSkills: [{ id: "shield_bash", name: "Shield Bash" }],
+        passiveSkills: [{ id: "bulwark", name: "Bulwark" }],
+        characterCreationBlueprint: {
+          name: "Ari",
+          raceId: "human",
+          classId: "paladin",
+          secondaryClassId: "sentinel",
+          professionId: "blacksmith",
+          archetypeSystemId: "runebound",
+          alignmentId: "guardian",
+          perkIds: ["hardened_skin", "echo_memory"],
+          starterTreeIds: ["iron_vow"],
+          skillLoadoutId: "vanguard",
+          activeSkillIds: ["shield_bash"],
+          passiveSkillIds: ["bulwark"],
+          startingPrompt: "I wake on the pier and ask for the safest route inland.",
+          startingLocationId: "coast_tideward_pier",
+          startingZoneId: "coast",
+        },
         startingPrompt: "I wake on the pier and ask for the safest route inland.",
         startingLocationId: "coast_tideward_pier",
         startingZoneId: "coast",
@@ -32,5 +57,24 @@ describe("buildCharacterCreationState", () => {
 
     const startLocation = getLocationById(nextState.world.location.current);
     expect(startLocation?.zoneId).toBe("coast");
+    expect(nextState.player.secondaryClass).toEqual({ id: "sentinel", name: "Sentinel" });
+    expect(nextState.player.archetypeSystem).toEqual({ id: "runebound", name: "Runebound" });
+    expect(nextState.player.alignment).toBe("guardian");
+    expect(nextState.player.perks).toEqual(["hardened_skin", "echo_memory"]);
+    expect(nextState.player.starterTrees).toEqual(["iron_vow"]);
+    expect(nextState.player.skillLoadoutId).toBe("vanguard");
+    expect(nextState.player.activeSkills).toEqual([{ id: "shield_bash", name: "Shield Bash" }]);
+    expect(nextState.player.passiveSkills).toEqual([{ id: "bulwark", name: "Bulwark" }]);
+    expect(nextState.player.characterCreationBlueprint).toMatchObject({
+      archetypeSystemId: "runebound",
+      alignmentId: "guardian",
+      perkIds: ["hardened_skin", "echo_memory"],
+      starterTreeIds: ["iron_vow"],
+      skillLoadoutId: "vanguard",
+      activeSkillIds: ["shield_bash"],
+      passiveSkillIds: ["bulwark"],
+      startingLocationId: "coast_tideward_pier",
+      startingZoneId: "coast",
+    });
   });
 });

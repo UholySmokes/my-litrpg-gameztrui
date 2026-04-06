@@ -273,7 +273,10 @@ export function useNarrative(
       setError(null);
 
       try {
-        const stepResult = submitAction?.({ kind: "text", text: nextUserInput });
+        const stepResult = submitAction?.(
+          { kind: "text", text: nextUserInput },
+          currentState,
+        );
         const action = stepResult?.action;
 
         if (!stepResult?.ok) {

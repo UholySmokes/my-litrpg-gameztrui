@@ -16,6 +16,7 @@ import EquipmentSelectionPanel from "../../ui/panels/EquipmentSelectionPanel.jsx
 import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../../ui/panels/ActionSuggestionsPanel.jsx";
 import MagicStudyPanel from "../../ui/panels/MagicStudyPanel.jsx";
+import WorldMapPanel from "../../ui/panels/WorldMapPanel.jsx";
 
 function RoomSection({ eyebrow, title, children }) {
   return (
@@ -396,6 +397,17 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       isOpen: Boolean(surfaces.showQuests),
       onClose: surfaces.handleCloseQuests,
       render: () => <QuestPanel quests={quests} />,
+    },
+    {
+      id: "map",
+      title: "Route Cartograph",
+      subtitle: "Display nearby routes, connected zones, and known but distant sites.",
+      tone: "azure",
+      entryAction: "Open cartograph",
+      size: "xl",
+      group: "primary",
+      availability: true,
+      render: () => <WorldMapPanel state={state} />,
     },
     {
       id: "loadout",

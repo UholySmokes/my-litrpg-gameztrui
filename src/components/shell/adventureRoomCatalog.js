@@ -54,6 +54,15 @@ const BASE_CATALOG = [
     group: "primary",
   },
   {
+    id: "map",
+    title: "Route Cartograph",
+    subtitle: "Display nearby routes, connected zones, and known but distant sites.",
+    tone: "azure",
+    entryAction: "Open cartograph",
+    size: "xl",
+    group: "primary",
+  },
+  {
     id: "loadout",
     title: "Loadout Forge",
     subtitle: "Bind equipment slots and refine the active build.",

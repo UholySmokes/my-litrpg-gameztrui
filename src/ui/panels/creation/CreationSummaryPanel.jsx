@@ -24,8 +24,6 @@ export default function CreationSummaryPanel({
   const grantedPassiveSkills = Array.isArray(selectionSummary.grantedPassiveSkills)
     ? selectionSummary.grantedPassiveSkills
     : [];
-  const startLocationName = selectionSummary.startLocationName || "Rebirth Alcove";
-  const startZoneName = selectionSummary.startZoneName || "Meridian Arcology";
 
   return (
     <div
@@ -74,14 +72,10 @@ export default function CreationSummaryPanel({
         >
           <div style={{ color: "var(--holo-cyan)" }}>
             <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              START
-            </div>
-            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
-              {startLocationName}
+              OPENING
             </div>
             <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              {selectionSummary.startLocationSummary ||
-                "The world will seed you at the safest valid entry your prompt supports."}
+              Your first command defines the opening beat. Locations stay part of the wider world and unfold through play.
             </div>
             {selectionSummary.startingPrompt ? (
               <div
@@ -93,17 +87,6 @@ export default function CreationSummaryPanel({
                 }}
               >
                 <strong>Command:</strong> {selectionSummary.startingPrompt}
-              </div>
-            ) : null}
-            {startZoneName ? (
-              <div
-                style={{
-                  marginTop: "0.35rem",
-                  fontSize: "0.75rem",
-                  color: "var(--text-dim)",
-                }}
-              >
-                <strong>Zone:</strong> {startZoneName}
               </div>
             ) : null}
           </div>

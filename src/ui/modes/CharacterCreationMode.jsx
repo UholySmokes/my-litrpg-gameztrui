@@ -160,8 +160,6 @@ export default function CharacterCreationMode({
     steps,
     startingPrompt,
     optimizedStartingPromptOptions,
-    inferredStartingLocation,
-    inferredStartingZone,
     selectedRace,
     selectedClass,
     selectedSecondaryClass,
@@ -344,12 +342,6 @@ export default function CharacterCreationMode({
       grantedPassiveSkills,
       startingPrompt:
         startingPrompt?.trim() || "Write how the run begins to lock the opening handoff.",
-      startLocationName:
-        inferredStartingLocation?.name || "Rebirth Alcove",
-      startLocationSummary:
-        inferredStartingLocation?.summary ||
-        "The world will seed you at the safest valid entry it can prove from your prompt.",
-      startZoneName: inferredStartingZone?.name || "Meridian Arcology",
     };
   }, [
     blockedSkillIds.length,
@@ -366,8 +358,6 @@ export default function CharacterCreationMode({
     selectedActiveSkills,
     startingPrompt,
     systemAttributeBias,
-    inferredStartingLocation,
-    inferredStartingZone,
   ]);
 
   const canFinalize = useMemo(() => Boolean(validateReview?.()?.valid), [validateReview]);
@@ -910,8 +900,6 @@ export default function CharacterCreationMode({
                   setWizardError("");
                   applyStartingPromptSuggestion(value);
                 }}
-                inferredStartingLocation={inferredStartingLocation}
-                inferredStartingZone={inferredStartingZone}
               />
             </ChamberSection>
             <ChamberSection eyebrow="Review" title="Seal the chronicle">

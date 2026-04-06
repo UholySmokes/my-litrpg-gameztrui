@@ -527,11 +527,6 @@ export default function GameUI({ user }) {
           <div className="creation-handoff-overlay anime-dramatic" role="status" aria-live="polite">
             <p className="creation-handoff-overlay__name anime-slide-up">{transitionSummary.name}</p>
             <p className="creation-handoff-overlay__class anime-slide-up">{transitionSummary.className}</p>
-            {transitionSummary.startingPoint ? (
-              <p className="creation-handoff-overlay__destination">
-                Your chronicle begins in {transitionSummary.startingPoint}\u2026
-              </p>
-            ) : null}
           </div>
         ) : null}
 

@@ -526,6 +526,21 @@ export function executeAction(state, action, _options = {}) {
             showStatus: true, // Flag to show status block
           };
 
+        case "dialogue":
+          return {
+            success: true,
+            description: action.description || action.originalInput || "Spoke",
+            state,
+            readOnly: true,
+            dialogue: {
+              intent: action.intent || "speech",
+              targetLabel: action.targetLabel || null,
+              topic: action.topic || null,
+              spokenText: action.spokenText || action.originalInput || "",
+              requiresResponse: true,
+            },
+          };
+
         case "narrative":
           // Narrative actions don't change game state
           return {
@@ -586,6 +601,15 @@ export function executeAction(state, action, _options = {}) {
         description: description || "Action completed",
         state: newState,
         changes: Object.keys(changes).length > 0 ? changes : undefined,
+        dialogue: action?.type === "dialogue"
+          ? {
+              intent: action.intent || "speech",
+              targetLabel: action.targetLabel || null,
+              topic: action.topic || null,
+              spokenText: action.spokenText || action.originalInput || "",
+              requiresResponse: true,
+            }
+          : undefined,
       };
     },
   );

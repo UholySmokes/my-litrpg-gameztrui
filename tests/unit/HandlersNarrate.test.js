@@ -297,4 +297,35 @@ describe("handlers narrate endpoints", () => {
     expect(res.body.fallbackUsed).toBe(true);
     expect(res.body.fallbackFrom).toBe("google-ai-studio");
   });
+
+  it("forwards npc context to the dialogue agent for direct questions", async () => {
+    const req = {
+      method: "POST",
+      body: {
+        mode: "dialogue",
+        prompt: "Resolve the patrol's response.",
+        npcContext: {
+          targetLabel: "Spirit Beast Clan Patrol",
+          spokenText: "Why are you all just watching me?",
+          requiresResponse: true,
+        },
+      },
+    };
+    const res = createRes();
+
+    await handlers.narrate(req, res);
+
+    expect(res.statusCode).toBe(200);
+    expect(runtime.runFirebaseAgent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        agent: "dialogue",
+        input: expect.objectContaining({
+          npc_context: expect.objectContaining({
+            targetLabel: "Spirit Beast Clan Patrol",
+            requiresResponse: true,
+          }),
+        }),
+      }),
+    );
+  });
 });

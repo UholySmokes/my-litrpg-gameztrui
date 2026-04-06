@@ -59,11 +59,67 @@ export function parseAction(userInput, gameState) {
   const lookAction = parseLook(cleanedInput);
   if (lookAction) return lookAction;
 
+  const dialogueAction = parseDialogue(cleanedInput, userInput, gameState);
+  if (dialogueAction) return dialogueAction;
+
   // Default: treat as narrative/exploration
   return {
     type: "narrative",
     originalInput: userInput,
     description: `Player said: "${userInput}"`,
+  };
+}
+
+function parseDialogue(input, rawInput, gameState) {
+  const sceneMemory =
+    gameState?.narrative && typeof gameState.narrative === "object"
+      ? gameState.narrative.sceneMemory
+      : null;
+  const presentEntities = [
+    ...(Array.isArray(sceneMemory?.presentEntities) ? sceneMemory.presentEntities : []),
+    ...(Array.isArray(sceneMemory?.familiarEntities) ? sceneMemory.familiarEntities : []),
+    ...(Array.isArray(sceneMemory?.partyEntities) ? sceneMemory.partyEntities : []),
+  ]
+    .map((entry) => (typeof entry === "string" ? entry.trim() : ""))
+    .filter(Boolean);
+
+  const trimmedRaw = typeof rawInput === "string" ? rawInput.trim() : "";
+  if (!trimmedRaw) return null;
+
+  const hasSpeechVerb = /(^["'])|\b(say|ask|tell|speak|talk|shout|whisper|yell|reply|negotiate|question)\b/i.test(
+    input,
+  );
+  const hasQuestionShape =
+    /\?\s*$/.test(trimmedRaw) ||
+    /^(who|what|when|where|why|how|can|could|would|will|do|does|did|are|is)\b/i.test(
+      input,
+    );
+
+  if (!hasSpeechVerb && !(hasQuestionShape && presentEntities.length > 0)) {
+    return null;
+  }
+
+  const explicitTargetMatch = trimmedRaw.match(
+    /\b(?:ask|tell|say to|speak to|talk to|reply to|shout at|whisper to|question)\s+(?:the\s+)?([^,.!?]+?)(?:\s+about\b|\s*[:,?.!]|$)/i,
+  );
+  const explicitAboutMatch = trimmedRaw.match(/\babout\s+([^?.!]+)$/i);
+  const quotedSpeechMatch = trimmedRaw.match(/["']([^"']+)["']/);
+  const targetLabel = explicitTargetMatch?.[1]?.trim() || null;
+  const spokenText = quotedSpeechMatch?.[1]?.trim() || trimmedRaw;
+  const topic = explicitAboutMatch?.[1]?.trim() || null;
+  const intent = hasQuestionShape || /\b(ask|question)\b/i.test(input) ? "question" : "speech";
+
+  return {
+    type: "dialogue",
+    intent,
+    originalInput: trimmedRaw,
+    spokenText,
+    targetLabel,
+    topic,
+    description:
+      intent === "question"
+        ? `Player asked: "${trimmedRaw}"`
+        : `Player said: "${trimmedRaw}"`,
   };
 }
 

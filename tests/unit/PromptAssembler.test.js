@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import {
   assemblePrompt,
+  buildDialogueNpcContext,
   buildInitialPrompt,
   buildSceneMemorySeed,
   buildHistorySection,
@@ -313,6 +314,69 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("Allow touches of dark humor");
     expect(prompt).toContain("Favor immediate bodily awareness");
     expect(prompt).toContain("coldly helpful notices");
+  });
+
+  it("builds npc context and requires direct dialogue resolution", () => {
+    const gameState = {
+      player: {
+        name: "Suri",
+        level: 2,
+        hp: { current: 7, max: 12 },
+        mana: { current: 3, max: 6 },
+        xp: { current: 0, max: 10 },
+        inventory: [],
+        equipment: {},
+      },
+      world: { location: { current: "wildroot_fringe" } },
+      quests: { active: [] },
+      narrative: {
+        entries: [],
+        summary: "The patrol found you in the roots.",
+        sceneMemory: {
+          locationLabel: "Rootbound Alcove",
+          zoneLabel: "Wildroot Fringe",
+          immediateObjective: "Convince the patrol not to leave you here.",
+          presentEntities: ["Spirit Beast Clan Patrol"],
+          activeThreats: [],
+          unresolvedHooks: ["Why the patrol is cautious"],
+          lastConsequence: "The patrol halted around you.",
+          familiarEntities: ["Spirit Beast Clan Patrol"],
+          partyEntities: [],
+          socialSummary: "The patrol is wary but has not attacked.",
+        },
+      },
+      combat: { status: "inactive", inCombat: false, enemies: [] },
+    };
+
+    const actionResult = {
+      success: true,
+      actionType: "dialogue",
+      description: 'Player asked: "Why are you all just watching me?"',
+      dialogue: {
+        intent: "question",
+        targetLabel: "patrol",
+        topic: "their silence",
+        spokenText: "Why are you all just watching me?",
+        requiresResponse: true,
+      },
+    };
+
+    const npcContext = buildDialogueNpcContext(
+      gameState,
+      "Why are you all just watching me?",
+      actionResult,
+    );
+    const prompt = assemblePrompt(
+      gameState,
+      "Why are you all just watching me?",
+      actionResult,
+    );
+
+    expect(npcContext?.targetLabel).toBe("Spirit Beast Clan Patrol");
+    expect(npcContext?.requiresResponse).toBe(true);
+    expect(prompt).toContain("This is a direct social turn.");
+    expect(prompt).toContain("Do not leave a direct question hanging in unexplained silence.");
+    expect(prompt).toContain("Dialogue resolution required: yes.");
   });
 });
 

@@ -96,6 +96,12 @@ async function requireAuthenticatedUser(req, res) {
 async function runNarration(body) {
 	const mode = normalizeMode(body?.mode);
 	const prompt = typeof body?.prompt === "string" ? body.prompt.trim() : "";
+	const npcContext =
+		body?.npcContext && typeof body.npcContext === "object"
+			? body.npcContext
+			: body?.npc_context && typeof body.npc_context === "object"
+				? body.npc_context
+				: undefined;
 	const input =
 		prompt ||
 		`Narrate the next scene based on: ${JSON.stringify(body || {})}`;
@@ -106,6 +112,7 @@ async function runNarration(body) {
 		input: {
 			prompt: input,
 			mode,
+			npc_context: npcContext,
 		},
 		model: body?.model,
 		temperature: body?.temperature,

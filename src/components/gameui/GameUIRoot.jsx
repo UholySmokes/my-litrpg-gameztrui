@@ -24,7 +24,12 @@ import { SAVE_RESET_EPOCH } from "./saveResetController.js";
 import { useGameUiSaveController } from "./useGameUiSaveController.js";
 import { useGameUiWindowController } from "./useGameUiWindowController.js";
 
-const IS_DEV_BUILD = Boolean(import.meta?.env?.DEV);
+const IS_DEV_BUILD = Boolean(
+  import.meta?.env?.DEV ||
+    import.meta?.env?.MODE === "development" ||
+    (typeof window !== "undefined" &&
+      (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost")),
+);
 const TYPEWRITER_CHAR_DELAY_MS = 28;
 
 const renderTypewriterText = (text = "") => {

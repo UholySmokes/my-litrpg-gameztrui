@@ -101,7 +101,7 @@ describe("WorldInitializer", () => {
     const loc = getLocationById(seeded.location.current);
     expect(loc).toBeTruthy();
     expect(loc.zoneId).not.toBe("city");
-    expect(seeded.location.current).not.toBe("starting_zone");
+    expect(seeded.location.current).not.toBe(STARTING_LOCATION_ID);
   });
 
   it("keeps the selected starting zone when no quests are seeded", () => {

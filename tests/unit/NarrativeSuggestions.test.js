@@ -44,7 +44,7 @@ describe("narrative suggestion helpers", () => {
         ].includes(entry.t),
       ),
     ).toBe(true);
-    expect(suggestions.some((entry) => entry.t === "go to Neon Bazaar")).toBe(true);
+    expect(suggestions.some((entry) => entry.t === "go to Sunspire Temple")).toBe(true);
     expect(suggestions.some((entry) => entry.t === "look around")).toBe(true);
   });
 

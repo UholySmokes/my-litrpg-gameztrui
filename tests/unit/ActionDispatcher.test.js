@@ -217,9 +217,9 @@ describe("ActionDispatcher", () => {
           turnCount: 0,
           location: {
             ...baseState.world.location,
-            current: "city_neon_bazaar",
-            visited: ["city_neon_bazaar"],
-            unlockedAreas: ["city_neon_bazaar", "city_neon_bazaar"],
+            current: "city_sunspire_temple",
+            visited: ["city_sunspire_temple"],
+            unlockedAreas: ["city_sunspire_temple", "city_neon_bazaar"],
             biome: "city",
           },
           time: {

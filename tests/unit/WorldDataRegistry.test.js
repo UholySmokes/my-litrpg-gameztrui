@@ -1,5 +1,6 @@
 import { describe, it, expect } from "@jest/globals";
 import {
+  DEFAULT_START_LOCATION_ID,
   MAJOR_FACTION_IDS,
   factions,
   zones,
@@ -33,8 +34,8 @@ describe("WorldDataRegistry integrity", () => {
     });
   });
 
-  it("starting_zone exists and is a location id", () => {
-    const loc = getLocationById("starting_zone");
+  it("the default start location exists and is a city location", () => {
+    const loc = getLocationById(DEFAULT_START_LOCATION_ID);
     expect(loc).toBeTruthy();
     expect(loc.zoneId).toBe("city");
   });

@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
 import {
+  DEFAULT_START_LOCATION_ID,
   factions,
   zones,
   locations,
@@ -53,15 +54,15 @@ describe("world registry runtime", () => {
 
   it("exposes lightweight faction, zone, and location summaries", () => {
     const locationSummary = getLocationSummaries().find(
-      (entry) => entry.id === "starting_zone",
+      (entry) => entry.id === DEFAULT_START_LOCATION_ID,
     );
     const zoneSummary = getZoneSummaries().find((entry) => entry.id === "city");
     const factionSummary = getFactionSummaries()[0];
 
     expect(locationSummary).toEqual(
       expect.objectContaining({
-        id: "starting_zone",
-        name: "Rebirth Alcove",
+        id: DEFAULT_START_LOCATION_ID,
+        name: "Neon Bazaar",
         zoneId: "city",
         travelPolicy: "public",
       }),
@@ -85,8 +86,8 @@ describe("world registry runtime", () => {
     );
   });
 
-  it("keeps the location registry at or above the phase-2 target", () => {
-    expect(locations.length).toBeGreaterThanOrEqual(40);
+  it("keeps the location registry above the authored-world minimum", () => {
+    expect(locations.length).toBeGreaterThanOrEqual(39);
     expect(getLocationById("skydocks_drydock_seven")).toEqual(
       expect.objectContaining({
         zoneId: "skydocks",

@@ -1,5 +1,6 @@
 import { executeAction } from "../packages/game-core/src/core/ActionDispatcher.js";
 import { initialGameState } from "../packages/game-core/src/data/initialState.js";
+import { DEFAULT_START_LOCATION_ID } from "../packages/game-core/src/world/WorldDataRegistry.js";
 
 function tally(map, key) {
   map.set(key, (map.get(key) || 0) + 1);
@@ -16,7 +17,7 @@ function runScenario({ biome, weatherType, weatherIntensity, iterations }) {
     world: {
       ...initialGameState.world,
       turnCount: 0,
-      location: { current: "starting_zone", biome },
+      location: { current: DEFAULT_START_LOCATION_ID, biome },
       weather: { byBiome: { [biome]: { type: weatherType, intensity: weatherIntensity, updatedTurn: 0 } } },
     },
     player: {

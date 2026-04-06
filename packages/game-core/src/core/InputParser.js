@@ -3,6 +3,11 @@
 // Parses user text input to determine game actions
 // =================================================================
 
+import {
+  getAccessibleLocationIds,
+  resolveTravelLocationId,
+} from "../world/WorldDataRegistry.js";
+
 /**
  * Parses user input text and extracts game actions
  * @param {string} userInput - The raw text input from the user
@@ -583,43 +588,57 @@ function parseUseItem(input, gameState) {
  * Parses movement actions
  */
 function parseMove(input, gameState) {
-  const movePatterns = [
-    /^(go|move|walk|run|travel|head|proceed)\s+(north|south|east|west|up|down|forward|backward|left|right|to)\s*(.+)?$/i,
-    /^(go|move|walk|run|travel|head|proceed)\s+(.+)$/i,
+  const directionOnlyMatch = input.match(
     /^(north|south|east|west|up|down|forward|backward|left|right)$/i,
-  ];
-
-  for (const pattern of movePatterns) {
-    const match = input.match(pattern);
-    if (match) {
-      const direction = match[2] || match[1];
-      const location = match[3] || direction;
-
-      return {
-        type: "move",
-        direction: direction.toLowerCase(),
-        targetLocation: location,
-        originalInput: input,
-      };
-    }
+  );
+  if (directionOnlyMatch) {
+    const direction = directionOnlyMatch[1].toLowerCase();
+    return {
+      type: "move",
+      direction,
+      targetLocation: direction,
+      originalInput: input,
+    };
   }
 
-  // Check for location names in world
-  const world = gameState?.world || {};
-  const visitedLocations = world.location?.visited || [];
-
-  for (const location of visitedLocations) {
-    if (
-      input.includes(location.toLowerCase()) &&
-      (input.includes("go") || input.includes("move") || input.includes("to"))
-    ) {
-      return {
-        type: "move",
-        targetLocation: location,
-        originalInput: input,
-      };
-    }
+  const directionalVerbMatch = input.match(
+    /^(go|move|walk|run|travel|head|proceed)\s+(north|south|east|west|up|down|forward|backward|left|right)$/i,
+  );
+  if (directionalVerbMatch) {
+    const direction = directionalVerbMatch[2].toLowerCase();
+    return {
+      type: "move",
+      direction,
+      targetLocation: direction,
+      originalInput: input,
+    };
   }
+
+  const targetedMoveMatch = input.match(
+    /^(go|move|walk|run|travel|head|proceed)(?:\s+to)?\s+(.+)$/i,
+  );
+  if (!targetedMoveMatch) {
+    return null;
+  }
+
+  const candidate = String(targetedMoveMatch[2] || "")
+    .replace(/^the\s+/i, "")
+    .trim();
+  if (!candidate) {
+    return null;
+  }
+
+  const allowedLocationIds = getAccessibleLocationIds(gameState);
+  const resolvedTargetId = resolveTravelLocationId(candidate, { allowedLocationIds });
+  if (!resolvedTargetId) {
+    return null;
+  }
+
+  return {
+    type: "move",
+    targetLocation: candidate,
+    originalInput: input,
+  };
 
   return null;
 }

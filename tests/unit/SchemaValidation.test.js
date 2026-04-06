@@ -68,6 +68,7 @@ describe('Game Schemas Validation', () => {
         { type: 'inventory' },
         { type: 'status' },
         { type: 'narrative' },
+        { type: 'dialogue', intent: 'question', spokenText: 'Why are you watching me?' },
         { type: 'magic_sense' },
         { type: 'magic_attune', stance: 'open' },
         { type: 'magic_draw', essence: 'fire', amount: 5 },

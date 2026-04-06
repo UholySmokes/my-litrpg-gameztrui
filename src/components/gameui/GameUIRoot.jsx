@@ -525,9 +525,9 @@ export default function GameUI({ user }) {
         ) : null}
 
         {isTransitioning && transitionSummary ? (
-          <div className="creation-handoff-overlay" role="status" aria-live="polite">
-            <p className="creation-handoff-overlay__name">{transitionSummary.name}</p>
-            <p className="creation-handoff-overlay__class">{transitionSummary.className}</p>
+          <div className="creation-handoff-overlay anime-dramatic" role="status" aria-live="polite">
+            <p className="creation-handoff-overlay__name anime-slide-up">{transitionSummary.name}</p>
+            <p className="creation-handoff-overlay__class anime-slide-up">{transitionSummary.className}</p>
             {transitionSummary.startingPoint ? (
               <p className="creation-handoff-overlay__destination">
                 Your chronicle begins in {transitionSummary.startingPoint}\u2026

@@ -223,6 +223,27 @@ body {
   );
 }
 
+.entry-shell__magic-circle {
+  position: absolute;
+  top: -40%;
+  left: -20%;
+  width: clamp(280px, 40vw, 560px);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.entry-shell__hero-silhouette {
+  position: absolute;
+  bottom: -10%;
+  right: -8%;
+  height: clamp(200px, 32vw, 420px);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+  filter: drop-shadow(0 0 24px rgba(168, 85, 247, 0.3));
+}
+
 .entry-shell__eyebrow,
 .character-hub__eyebrow,
 .adventure-shell__eyebrow,
@@ -2331,6 +2352,19 @@ body,
 
 .character-hub--arrival {
   gap: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.character-hub__deco-sword {
+  position: absolute;
+  top: 10%;
+  right: -5%;
+  height: clamp(180px, 28vw, 380px);
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+  filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.25));
 }
 
 .character-hub__arrival-grid {

@@ -1,3 +1,9 @@
+import {
+  evaluateCharacterReadiness,
+  hasCharacterIdentitySnapshot,
+  hasReadyCharacterSnapshot,
+} from "./characterReadiness.js";
+
 export const LOCAL_AUTOSAVE_KEY = "localAutosave:v1";
 export const LOCAL_SAVE_KEY = "localSaves:v1";
 export const AUTOSAVE_PROMPT_DISMISS_KEY = "autosavePromptDismissed:v1";
@@ -26,20 +32,10 @@ const getSessionStorageRef = (storageRef) => {
   return globalThis.sessionStorage ?? null;
 };
 
-export const hasCreatedCharacterSnapshot = (snapshotState) => {
-  if (!isRecord(snapshotState)) return false;
-  const player = snapshotState.player;
-  if (!isRecord(player)) return false;
+export { evaluateCharacterReadiness, hasCharacterIdentitySnapshot };
 
-  return Boolean(
-    player.origin ||
-      player.race ||
-      player.class ||
-      player.profession ||
-      (Array.isArray(player.activeSkills) && player.activeSkills.length > 0) ||
-      (Array.isArray(player.passiveSkills) && player.passiveSkills.length > 0),
-  );
-};
+export const hasCreatedCharacterSnapshot = (snapshotState) =>
+  hasReadyCharacterSnapshot(snapshotState);
 
 export const getAutosavePromptMarker = (autosaveRecord) =>
   String(

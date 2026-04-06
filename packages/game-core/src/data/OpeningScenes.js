@@ -526,7 +526,7 @@ export function getOpeningSceneEffectIntents(sceneRef, choiceRef = null) {
 export function buildOpeningSceneNarrativeSeed(sceneRef, choiceRef = null) {
   const scene =
     typeof sceneRef === "string" ? getOpeningSceneById(sceneRef) : sceneRef;
-  if (!scene) return "The world stirs as your journey begins.";
+  if (!scene) return "Consciousness floods in before memory does. You open eyes that are not yours, and the world sharpens around a body you have never worn.";
 
   const baseText = describeOpeningScene(scene, {
     mainQuestName: "the looming mystery",

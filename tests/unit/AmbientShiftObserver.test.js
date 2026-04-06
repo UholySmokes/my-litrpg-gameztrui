@@ -9,7 +9,7 @@ describe("Ambient shift observer", () => {
       ...initialGameState,
       world: {
         ...initialGameState.world,
-        location: { current: "starting_zone", biome: "coast" },
+        location: { current: "city_neon_bazaar", biome: "coast" },
         weather: { byBiome: { coast: { type: "clear", intensity: 0.3, updatedTurn: 0 } } },
       },
     });
@@ -29,4 +29,5 @@ describe("Ambient shift observer", () => {
     expect(String(ambient.payload.message)).toMatch(/Weather: storm/i);
   });
 });
+
 

@@ -60,11 +60,11 @@ describe("InputValidator", () => {
     expect(result.valid).toBe(false);
   });
 
-  it('accepts "Starting Zone" (resolves to starting_zone) when accessible', () => {
+  it('accepts "Starting Zone" (resolves to city_neon_bazaar) when accessible', () => {
     const state = cloneState(initialGameState);
     state.world.location.current = "city_neon_bazaar";
-    state.world.location.visited = ["starting_zone", "city_neon_bazaar"];
-    state.world.location.unlockedAreas = ["starting_zone", "city_neon_bazaar"];
+    state.world.location.visited = ["city_neon_bazaar", "city_neon_bazaar"];
+    state.world.location.unlockedAreas = ["city_neon_bazaar", "city_neon_bazaar"];
 
     const result = validateActionComprehensive(
       { type: "move", targetLocation: "Starting Zone" },
@@ -75,9 +75,9 @@ describe("InputValidator", () => {
 
   it("accepts connected zone names such as Wildroot Fringe", () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "starting_zone";
-    state.world.location.visited = ["starting_zone"];
-    state.world.location.unlockedAreas = ["starting_zone"];
+    state.world.location.current = "city_neon_bazaar";
+    state.world.location.visited = ["city_neon_bazaar"];
+    state.world.location.unlockedAreas = ["city_neon_bazaar"];
 
     const result = validateActionComprehensive(
       { type: "move", targetLocation: "Wildroot Fringe" },
@@ -88,9 +88,9 @@ describe("InputValidator", () => {
 
   it("rejects direct movement to interior locations in a connected zone", () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "starting_zone";
-    state.world.location.visited = ["starting_zone"];
-    state.world.location.unlockedAreas = ["starting_zone"];
+    state.world.location.current = "city_neon_bazaar";
+    state.world.location.visited = ["city_neon_bazaar"];
+    state.world.location.unlockedAreas = ["city_neon_bazaar"];
 
     const result = validateActionComprehensive(
       { type: "move", targetLocation: "Breaker Shrine" },
@@ -101,9 +101,9 @@ describe("InputValidator", () => {
 
   it("rejects direct movement to a far discovered location that is not nearby", () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "starting_zone";
-    state.world.location.visited = ["starting_zone", "mountain_starforge_foundry"];
-    state.world.location.unlockedAreas = ["starting_zone", "mountain_starforge_foundry"];
+    state.world.location.current = "city_neon_bazaar";
+    state.world.location.visited = ["city_neon_bazaar", "mountain_starforge_foundry"];
+    state.world.location.unlockedAreas = ["city_neon_bazaar", "mountain_starforge_foundry"];
 
     const result = validateActionComprehensive(
       { type: "move", targetLocation: "Starforge Foundry" },
@@ -114,9 +114,9 @@ describe("InputValidator", () => {
 
   it("only exposes nearby public hubs and connected-zone entry points as travel options", () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "starting_zone";
-    state.world.location.visited = ["starting_zone"];
-    state.world.location.unlockedAreas = ["starting_zone"];
+    state.world.location.current = "city_neon_bazaar";
+    state.world.location.visited = ["city_neon_bazaar"];
+    state.world.location.unlockedAreas = ["city_neon_bazaar"];
 
     const accessibleIds = getAccessibleLocationIds(state);
 
@@ -187,3 +187,4 @@ describe("InputValidator", () => {
     expect(invalidEssence.valid).toBe(false);
   });
 });
+

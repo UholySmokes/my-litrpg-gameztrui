@@ -16,7 +16,7 @@ const LOCATION_IDS = getLocationSummaries()
   .filter(Boolean)
   .map((id) => String(id))
   .sort();
-const DEFAULT_LOCATION_ID = LOCATION_IDS[0] || "starting_zone";
+const DEFAULT_LOCATION_ID = LOCATION_IDS[0] || "city_neon_bazaar";
 const ALT_LOCATION_ID =
   LOCATION_IDS.find((id) => id !== DEFAULT_LOCATION_ID) || DEFAULT_LOCATION_ID;
 
@@ -277,3 +277,4 @@ describe("creation perk mechanics", () => {
     expect(result.description).toContain("ritualist save");
   });
 });
+

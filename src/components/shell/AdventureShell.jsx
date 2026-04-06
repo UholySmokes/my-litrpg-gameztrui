@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import GameQuickActions from "../gameui/GameQuickActions.jsx";
-import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
+import {
+  DEFAULT_START_LOCATION_ID,
+  getLocationById,
+  getZoneById,
+} from "../../world/WorldDataRegistry.js";
 import { buildPlayerIdentity } from "./shellState.js";
 import SurfaceDialog from "./SurfaceDialog.jsx";
 import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
@@ -90,7 +94,7 @@ export default function AdventureShell({
   const locationId =
     typeof state?.world?.location === "string"
       ? state.world.location
-      : state?.world?.location?.current || "starting_zone";
+      : state?.world?.location?.current || DEFAULT_START_LOCATION_ID;
   const location = getLocationById(locationId);
   const zone = getZoneById(location?.zoneId);
   const objective = useMemo(() => resolvePrimaryObjective(quests), [quests]);

@@ -1,5 +1,6 @@
 import { addXp } from '../leveling/LevelingManager.js';
 import {
+  DEFAULT_START_LOCATION_ID,
   getAccessibleLocationIds,
   getLocationById,
   getZoneById,
@@ -37,7 +38,7 @@ export function moveToLocation(state, locationId) {
   const unlockedAreas = Array.isArray(locationState.unlockedAreas)
     ? [...locationState.unlockedAreas]
     : [];
-  const currentRaw = locationState.current ?? "starting_zone";
+  const currentRaw = locationState.current ?? DEFAULT_START_LOCATION_ID;
   const currentId =
     resolveLocationId(currentRaw) ||
     (typeof currentRaw === "string" ? currentRaw.trim() : null);

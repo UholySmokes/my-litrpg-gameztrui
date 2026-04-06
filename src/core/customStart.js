@@ -1,4 +1,5 @@
 import {
+  DEFAULT_START_LOCATION_ID,
   getLocationById,
   getZoneById,
   resolveStartingLocationId,
@@ -90,7 +91,10 @@ export function sanitizeStartCommand(value) {
   return trimToSentence(collapsed);
 }
 
-export function inferStartingLocation(value, fallbackLocationId = "starting_zone") {
+export function inferStartingLocation(
+  value,
+  fallbackLocationId = DEFAULT_START_LOCATION_ID,
+) {
   const locationId = resolveStartingLocationId(value, { fallbackLocationId });
   const location = locationId ? getLocationById(locationId) : null;
   const zone = location?.zoneId ? getZoneById(location.zoneId) : null;
@@ -101,7 +105,10 @@ export function inferStartingLocation(value, fallbackLocationId = "starting_zone
   };
 }
 
-export function optimizeStartCommand(input, { fallbackLocationId = "starting_zone" } = {}) {
+export function optimizeStartCommand(
+  input,
+  { fallbackLocationId = DEFAULT_START_LOCATION_ID } = {},
+) {
   const trimmedInput = sanitizeStartCommand(input);
   if (!trimmedInput) {
     return {

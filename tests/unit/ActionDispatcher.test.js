@@ -217,9 +217,9 @@ describe("ActionDispatcher", () => {
           turnCount: 0,
           location: {
             ...baseState.world.location,
-            current: "starting_zone",
-            visited: ["starting_zone"],
-            unlockedAreas: ["starting_zone", "city_neon_bazaar"],
+            current: "city_neon_bazaar",
+            visited: ["city_neon_bazaar"],
+            unlockedAreas: ["city_neon_bazaar", "city_neon_bazaar"],
             biome: "city",
           },
           time: {
@@ -257,15 +257,15 @@ describe("ActionDispatcher", () => {
           turnCount: 3,
           location: {
             ...baseState.world.location,
-            current: "starting_zone",
-            unlockedAreas: ["starting_zone"],
+            current: "city_neon_bazaar",
+            unlockedAreas: ["city_neon_bazaar"],
           },
         },
       };
 
       const result = executeAction(state, {
         type: "move",
-        targetLocation: "starting_zone",
+        targetLocation: "city_neon_bazaar",
       });
       expect(result.success).toBe(true);
       expect(result.state.world.turnCount).toBe(3);
@@ -305,7 +305,7 @@ describe("ActionDispatcher", () => {
       const state = {
         ...baseState,
         config: { ...baseState.config, manaRegenPerTurn: 0 },
-        world: { ...baseState.world, turnCount: 0, location: { ...baseState.world.location, current: "starting_zone" } },
+        world: { ...baseState.world, turnCount: 0, location: { ...baseState.world.location, current: "city_neon_bazaar" } },
       };
 
       const result = executeAction(state, { type: "magic_draw", essence: "fire", amount: 5 });
@@ -324,7 +324,7 @@ describe("ActionDispatcher", () => {
         world: {
           ...baseState.world,
           turnCount: 0,
-          location: { ...baseState.world.location, current: "starting_zone" },
+          location: { ...baseState.world.location, current: "city_neon_bazaar" },
           essence: {
             ambient: {
               fire: 0.1,
@@ -425,3 +425,4 @@ describe("ActionDispatcher", () => {
   });
 
 });
+

@@ -121,7 +121,7 @@ describe("assemblePrompt", () => {
       },
       world: {
         flags: {},
-        location: { current: "starting_zone", biome: "city" },
+        location: { current: "city_neon_bazaar", biome: "city" },
         essence: {
           ambient: {
             compositionByEssence: { fire: { density: 0.4, purity: 0.8, taint: 0.1 } },
@@ -186,7 +186,7 @@ describe("assemblePrompt", () => {
           },
         },
       },
-      world: { flags: {}, location: { current: "starting_zone" } },
+      world: { flags: {}, location: { current: "city_neon_bazaar" } },
       quests: { active: [] },
       narrative: { entries: [], summary: "" },
       combat: { status: "inactive" },
@@ -215,7 +215,7 @@ describe("assemblePrompt", () => {
         equipment: {},
       },
       world: {
-        location: { current: "starting_zone" },
+        location: { current: "city_neon_bazaar" },
       },
       quests: {
         active: [{ name: "Find the courier", description: "Track the hidden courier signal." }],
@@ -223,7 +223,7 @@ describe("assemblePrompt", () => {
       narrative: {
         summary: "You reached the terminal and survived the ambush.",
         sceneMemory: {
-          locationLabel: "Rebirth Alcove",
+          locationLabel: "Neon Bazaar",
           zoneLabel: "Threshold Ward",
           immediateObjective: "Find the courier signal.",
           presentEntities: ["Goblin Raider"],
@@ -258,7 +258,7 @@ describe("assemblePrompt", () => {
   it("builds scene memory from deterministic state without reviving inactive enemies", () => {
     const sceneMemory = buildSceneMemorySeed(
       {
-        world: { location: { current: "starting_zone" } },
+        world: { location: { current: "city_neon_bazaar" } },
         quests: { active: [{ name: "Wake the shrine", description: "Restore shrine power." }] },
         narrative: {
           sceneMemory: {
@@ -296,7 +296,7 @@ describe("assemblePrompt", () => {
           inventory: [],
           equipment: {},
         },
-        world: { location: { current: "starting_zone" } },
+        world: { location: { current: "city_neon_bazaar" } },
         quests: { active: [] },
         narrative: { entries: [], summary: "" },
       },
@@ -327,7 +327,7 @@ describe("buildInitialPrompt", () => {
         activeSkills: [{ name: "Pounce" }],
       },
       world: {
-        location: { current: "starting_zone" },
+        location: { current: "city_neon_bazaar" },
         vars: {
           startingSceneId: "start_moonlit_fox_awakening",
           openingSceneChoicePending: true,
@@ -358,7 +358,7 @@ describe("buildInitialPrompt", () => {
         startingZoneId: "coast",
       },
       world: {
-        location: { current: "starting_zone" },
+        location: { current: "city_neon_bazaar" },
         vars: {
           startingSceneId: "start_inn_raid_midnight",
           openingSceneChoicePending: true,
@@ -392,7 +392,7 @@ describe("buildInitialPrompt", () => {
           "In a random forest surrounded by trees, I remember a truck hitting me and realize I'm a tiny spirit fox beast cub as a nearby patrol finds me.",
       },
       world: {
-        location: { current: "starting_zone" },
+        location: { current: "city_neon_bazaar" },
       },
       quests: {
         active: [],
@@ -408,3 +408,4 @@ describe("buildInitialPrompt", () => {
     expect(prompt).not.toContain('Names the player\'s starting point ("Meridian Arcology")');
   });
 });
+

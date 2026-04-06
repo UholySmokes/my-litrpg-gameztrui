@@ -1,3 +1,4 @@
+import { DEFAULT_START_LOCATION_ID } from "../../world/WorldDataRegistry.js";
 import {
   startCombat,
   playerAttack,
@@ -25,7 +26,8 @@ const BIOME_ENCOUNTER_POOLS = {
 
 function resolveEncounterSelection(state) {
   const biome = state?.world?.location?.biome || "city";
-  const locationId = state?.world?.location?.current || "starting_zone";
+  const locationId =
+    state?.world?.location?.current || DEFAULT_START_LOCATION_ID;
   const visitedCount = Array.isArray(state?.world?.location?.visited)
     ? state.world.location.visited.length
     : 1;

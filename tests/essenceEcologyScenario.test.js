@@ -18,7 +18,7 @@ function baseState({ biome, weatherType = "clear", weatherIntensity = 0.3, timeO
     world: {
       ...initialGameState.world,
       turnCount: 0,
-      location: { current: "starting_zone", biome },
+      location: { current: "city_neon_bazaar", biome },
       time: { currentTime: 480, timeOfDay, isOutdoors: true, lastUpdate: 0 },
       weather: { byBiome: { [biome]: { type: weatherType, intensity: weatherIntensity, updatedTurn: 0 } } },
     },
@@ -191,3 +191,4 @@ describe("Essence ecology scenario checks", () => {
     expect(saferCount).toBeLessThanOrEqual(highCount);
   });
 });
+

@@ -1,4 +1,5 @@
 import {
+  DEFAULT_START_LOCATION_ID,
   findLocationsByZone,
   getAccessibleLocationIds,
   getLocationById,
@@ -77,7 +78,10 @@ function MapList({ title, items, emptyLabel, accent }) {
 
 export default function WorldMapPanel({ state }) {
   const rawLocation = state?.world?.location;
-  const currentLocationId = typeof rawLocation === "string" ? rawLocation : rawLocation?.current || "starting_zone";
+  const currentLocationId =
+    typeof rawLocation === "string"
+      ? rawLocation
+      : rawLocation?.current || DEFAULT_START_LOCATION_ID;
   const currentLocation = getLocationById(currentLocationId);
   const currentZone = getZoneById(currentLocation?.zoneId);
   const accessibleIds = Array.from(getAccessibleLocationIds(state) || []);

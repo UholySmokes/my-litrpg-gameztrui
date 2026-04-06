@@ -482,7 +482,10 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
 
   const handleStarterTreeSelect = useCallback((treeId) => {
     const normalizedId = typeof treeId === "string" ? treeId.trim() : "";
-    if (!normalizedId) return;
+    if (!normalizedId) {
+      setSelectedStarterTreeIds([]);
+      return;
+    }
     setSelectedStarterTreeIds([normalizedId]);
   }, []);
 
@@ -1234,6 +1237,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     blockedSkillIds,
     systemAttributeBias,
     creationPerkLimits,
+    starterTreeLimits,
     rerollsRemaining,
 
     // Setters

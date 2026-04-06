@@ -702,6 +702,9 @@ body {
 
 .surface-dialog__body {
   min-height: 0;
+}
+
+.surface-dialog__panel--fullscreen .surface-dialog__body {
   overflow: auto;
 }
 

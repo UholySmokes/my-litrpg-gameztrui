@@ -256,6 +256,7 @@ export default function AdventureShell({
           subtitle={room.subtitle}
           size={room.size}
           tone={room.tone}
+          fullscreen={true}
         >
           {room.render()}
         </SurfaceDialog>

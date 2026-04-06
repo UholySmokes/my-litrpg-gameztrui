@@ -114,15 +114,6 @@ export default function GameUI({ user }) {
 
   const hasCharacterSnapshot = hasCreatedCharacterSnapshot(state);
 
-  useEffect(() => {
-    if (isTransitioning || hasCharacterSnapshot || activeSurface !== "adventure") {
-      return;
-    }
-
-    setCharacterCreated(false);
-    setActiveSurface("hub");
-  }, [activeSurface, hasCharacterSnapshot, isTransitioning, setCharacterCreated]);
-
   const {
     submitInput,
     isLoading,
@@ -152,6 +143,15 @@ export default function GameUI({ user }) {
     state,
     submitInput,
   });
+
+  useEffect(() => {
+    if (isTransitioning || hasCharacterSnapshot || activeSurface !== "adventure") {
+      return;
+    }
+
+    setCharacterCreated(false);
+    setActiveSurface("hub");
+  }, [activeSurface, hasCharacterSnapshot, isTransitioning, setCharacterCreated]);
 
   const {
     equipmentSelectSlot,

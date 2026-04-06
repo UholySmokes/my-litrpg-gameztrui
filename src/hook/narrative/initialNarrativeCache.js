@@ -38,6 +38,7 @@ export function createInitialNarrativeCacheKey(currentState) {
     ...activeQuests.map((quest) => resolveEntityKey(quest)).sort(),
     locationKey,
     typeof player?.name === "string" ? player.name.trim() : null,
+    typeof player?.startingPrompt === "string" ? player.startingPrompt.trim() : null,
     resolveEntityKey(player?.race),
     resolveEntityKey(player?.class),
     resolveEntityKey(player?.profession),

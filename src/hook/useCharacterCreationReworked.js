@@ -46,6 +46,7 @@ import {
   getCharacterCreationSkillSummaryById,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 import {
+  getCharacterCreationStarterTreeLimits,
   getCharacterCreationPerkLimits,
   listCharacterCreationAlignments,
   listCharacterCreationPerks,
@@ -242,6 +243,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   const [optimizedStartingPromptOptions, setOptimizedStartingPromptOptions] = useState([]);
 
   const creationPerkLimits = getCharacterCreationPerkLimits();
+  const starterTreeLimits = getCharacterCreationStarterTreeLimits();
   const availableCreationAlignments = listCharacterCreationAlignments();
   const [selectedActiveSkills, setSelectedActiveSkills] = useState([]);
   const [selectedPassiveSkills, setSelectedPassiveSkills] = useState([]);
@@ -787,11 +789,27 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   }, [creationPerkLimits.maxPicks, creationPerkLimits.minPicks, selectedPerkIds.length]);
 
   const validateStarterTree = useCallback(() => {
-    if (availableCreationStarterTrees.length > 0 && selectedStarterTreeIds.length < 1) {
-      return { valid: false, error: "Starter tree selection is required" };
+    const min = starterTreeLimits.minPicks || 0;
+    const max = starterTreeLimits.maxPicks || Number.MAX_SAFE_INTEGER;
+    if (availableCreationStarterTrees.length > 0 && selectedStarterTreeIds.length < min) {
+      return {
+        valid: false,
+        error: `Must select at least ${min} starter trees`,
+      };
+    }
+    if (selectedStarterTreeIds.length > max) {
+      return {
+        valid: false,
+        error: `Must select no more than ${max} starter trees`,
+      };
     }
     return { valid: true };
-  }, [availableCreationStarterTrees.length, selectedStarterTreeIds.length]);
+  }, [
+    availableCreationStarterTrees.length,
+    selectedStarterTreeIds.length,
+    starterTreeLimits.maxPicks,
+    starterTreeLimits.minPicks,
+  ]);
 
   const validateAlignment = useCallback(() => {
     if (!selectedAlignmentId) return { valid: false, error: "Alignment is required" };
@@ -846,7 +864,9 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         minPerks: creationPerkLimits.minPicks,
         maxPerks: creationPerkLimits.maxPicks,
         requiresStarterTree:
-          advancedUnlocked && availableCreationStarterTrees.length > 0,
+          advancedUnlocked &&
+          availableCreationStarterTrees.length > 0 &&
+          (starterTreeLimits.minPicks || 0) > 0,
       },
     );
     if (!blueprintValidation.valid) {

@@ -572,9 +572,38 @@ function buildActiveThreats(gameState = {}) {
   return [];
 }
 
+function getAuthoredOpeningAuthority(gameState = {}) {
+  const player = gameState?.player || {};
+  const world = gameState?.world || {};
+  const sceneId = world?.vars?.startingSceneId ?? world?.flags?.startingSceneId;
+  const scene = getOpeningSceneById(sceneId);
+  const selectedOpeningChoiceId = world?.vars?.openingSceneChoiceId || null;
+  const resolvedOpeningSeed =
+    sceneId && selectedOpeningChoiceId
+      ? buildOpeningSceneNarrativeSeed(sceneId, selectedOpeningChoiceId)
+      : null;
+  const authoredStartingPrompt =
+    typeof player?.startingPrompt === "string" ? player.startingPrompt.trim() : "";
+  const authoredSceneText =
+    typeof scene?.text === "string" ? scene.text.trim() : "";
+  const authorityText = authoredStartingPrompt || resolvedOpeningSeed || authoredSceneText || "";
+  const active = Boolean(authorityText);
+
+  return {
+    active,
+    scene,
+    sceneId,
+    selectedOpeningChoiceId,
+    resolvedOpeningSeed,
+    authoredStartingPrompt,
+    authorityText,
+  };
+}
+
 export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
   const world = gameState?.world || {};
   const priorSceneMemory = getPriorSceneMemory(gameState);
+  const openingAuthority = getAuthoredOpeningAuthority(gameState);
   const locationRaw = world?.location?.current ?? world?.location ?? null;
   const locationId =
     resolveLocationId(locationRaw) ||
@@ -602,20 +631,22 @@ export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
       : typeof priorSceneMemory.lastConsequence === "string"
         ? priorSceneMemory.lastConsequence.trim()
         : "";
+  const locationLabelFallback =
+    (typeof priorSceneMemory.locationLabel === "string"
+      ? priorSceneMemory.locationLabel.trim()
+      : "") || (openingAuthority.active ? "Opening scene" : "Unknown");
+  const zoneLabelFallback =
+    (typeof priorSceneMemory.zoneLabel === "string"
+      ? priorSceneMemory.zoneLabel.trim()
+      : "") || (openingAuthority.active ? "Authored opening" : "Unknown Zone");
 
   return {
     locationLabel:
       resolvedLocation?.name ||
-      (typeof priorSceneMemory.locationLabel === "string"
-        ? priorSceneMemory.locationLabel.trim()
-        : "") ||
-      "Unknown",
+      locationLabelFallback,
     zoneLabel:
       resolvedZone?.name ||
-      (typeof priorSceneMemory.zoneLabel === "string"
-        ? priorSceneMemory.zoneLabel.trim()
-        : "") ||
-      "Unknown Zone",
+      zoneLabelFallback,
     immediateObjective,
     presentEntities: buildPresentEntities(gameState),
     activeThreats: buildActiveThreats(gameState),
@@ -1317,7 +1348,8 @@ export function buildInitialPrompt(gameState = {}) {
   const sceneId =
     gameState?.world?.vars?.startingSceneId ??
     gameState?.world?.flags?.startingSceneId;
-  const scene = getOpeningSceneById(sceneId);
+  const openingAuthority = getAuthoredOpeningAuthority(gameState);
+  const scene = openingAuthority.scene;
   const openingChoicePending = Boolean(
     gameState?.world?.vars?.openingSceneChoicePending,
   );
@@ -1327,10 +1359,7 @@ export function buildInitialPrompt(gameState = {}) {
   const openingChoiceLines = openingChoices
     .slice(0, 4)
     .map((choice, index) => `${index + 1}. ${choice.label}`);
-  const resolvedOpeningSeed =
-    sceneId && selectedOpeningChoiceId
-      ? buildOpeningSceneNarrativeSeed(sceneId, selectedOpeningChoiceId)
-      : null;
+  const resolvedOpeningSeed = openingAuthority.resolvedOpeningSeed;
   const openingLocationRaw =
     gameState?.world?.location?.current ?? gameState?.world?.location ?? null;
   const openingLocationId =
@@ -1347,24 +1376,31 @@ export function buildInitialPrompt(gameState = {}) {
   const startingPointZone = player.startingZoneId
     ? getZoneById(player.startingZoneId)
     : null;
+  const authoredOpeningActive = openingAuthority.active;
   const startingPointName =
-    startingPointZone?.name || openingZone?.name || null;
+    authoredOpeningActive ? null : startingPointZone?.name || openingZone?.name || null;
   const hasQuestThreads = activeQuests.length > 0;
   const sceneDescription = describeOpeningScene(scene, {
     mainQuestName: mainQuest?.name || "the first strange trouble in reach",
     sideHookNames: sideQuests.map((q) => q.name),
     locationHint:
-      openingLocation?.name || openingZone?.name || scene?.biome || "district",
+      authoredOpeningActive
+        ? scene?.biome || "wilderness"
+        : openingLocation?.name || openingZone?.name || scene?.biome || "district",
     factionHint: scene?.tone || "locals",
   });
+  const openingSceneNarrative = openingAuthority.authoredStartingPrompt || sceneDescription;
 
   const openingPressureLines = [
     "Immediate Lead -> Let the first meaningful opportunity emerge from the opening scene itself.",
     startingPointName
       ? `Starting Point Pressure -> ${startingPointName} should shape the first tension, contact, or curiosity.`
       : null,
-    openingLocation?.name
+    openingLocation?.name && !authoredOpeningActive
       ? `Current Locale -> ${openingLocation.name}`
+      : null,
+    authoredOpeningActive
+      ? "Opening Authority -> Treat the authored opening premise as canonical for this first scene. Do not relocate the player to a default hub or city unless the authored opening explicitly says so."
       : null,
     openingChoicePending && openingChoiceLines.length
       ? "Opening Choice -> One of the listed opening choices should feel naturally tempting, but no formal quest has been assigned yet."
@@ -1405,10 +1441,11 @@ System: ${systemName}${systemCategory}
 ${systemSummary ? `System Summary: ${systemSummary}` : ""}
 Profession: ${professionName}
 ${startingPointName ? `Starting Point: ${startingPointName}` : ""}
+${openingAuthority.authoredStartingPrompt ? `Authored Opening: ${openingAuthority.authoredStartingPrompt}` : ""}
 ${skillLine}
 
 === OPENING SCENE ===
-${sceneDescription}
+${openingSceneNarrative}
 ${openingChoicePending && openingChoiceLines.length
     ? `\n=== OPENING CHOICES ===\n${openingChoiceLines.join("\n")}`
     : ""}
@@ -1424,6 +1461,7 @@ ${openingVoiceDirective ? `\n${openingVoiceDirective}` : ""}
 
 TASK: Deliver an atmospheric opening (6-9 sentences) that:
 - Establishes the scene and immediate surroundings${startingPointName ? `\n- Names the player's starting point ("${startingPointName}") within the first two sentences` : ""}
+- ${authoredOpeningActive ? "Honors the authored opening premise without relocating the player to a generic hub, alcove, or city that the opening does not mention" : "Keeps the opening grounded in the current world state"}
 - References the player's system ("${systemName}") naturally, as if it is part of the world
 - ${hasQuestThreads
     ? "Hints at one quest thread without being heavy-handed"

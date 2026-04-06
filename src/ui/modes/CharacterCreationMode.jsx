@@ -194,6 +194,7 @@ export default function CharacterCreationMode({
     blockedSkillIds,
     systemAttributeBias,
     creationPerkLimits,
+    starterTreeLimits,
     rerollsRemaining,
     handleStartingPromptChange,
     handleOptimizeStartingPrompt,
@@ -427,11 +428,13 @@ export default function CharacterCreationMode({
       skillsLocked: completionById.skills,
       perksLocked: completionById.perks,
       starterTreeLocked: completionById["starter-tree"],
+      requiresStarterTree:
+        advancedUnlocked && (starterTreeLimits?.minPicks || 0) > 0,
       alignmentLocked: completionById.alignment,
       hasStartingPrompt: completionById["starting-point"],
       canFinalize,
     }),
-    [canFinalize, completionById],
+    [advancedUnlocked, canFinalize, completionById, starterTreeLimits?.minPicks],
   );
 
   // Clear validation errors when the player makes a selection that changes chamber checks.

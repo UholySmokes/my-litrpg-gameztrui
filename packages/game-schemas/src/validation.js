@@ -39,6 +39,15 @@ const NarrativeActionSchema = z.object({
   type: z.literal('narrative'),
 });
 
+const DialogueActionSchema = z.object({
+  type: z.literal('dialogue'),
+  intent: z.enum(['speech', 'question']).optional(),
+  targetLabel: z.string().nullable().optional(),
+  topic: z.string().nullable().optional(),
+  spokenText: z.string().optional(),
+  originalInput: z.string().optional(),
+});
+
 const EssenceIdSchema = z.enum([
   "fire",
   "water",
@@ -138,6 +147,7 @@ export const ParsedActionSchema = z.discriminatedUnion('type', [
   InventoryActionSchema,
   StatusActionSchema,
   NarrativeActionSchema,
+  DialogueActionSchema,
   MagicSenseActionSchema,
   MagicAttuneActionSchema,
   MagicDrawActionSchema,

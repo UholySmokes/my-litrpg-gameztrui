@@ -7,6 +7,7 @@ export type ActionType =
   | "inventory"
   | "status"
   | "narrative"
+  | "dialogue"
   | "magic_sense"
   | "magic_attune"
   | "magic_draw"
@@ -36,6 +37,14 @@ export type ParsedAction =
   | { type: "inventory" }
   | { type: "status" }
   | { type: "narrative" }
+  | {
+      type: "dialogue";
+      intent?: "speech" | "question";
+      targetLabel?: string | null;
+      topic?: string | null;
+      spokenText?: string;
+      originalInput?: string;
+    }
   | { type: "magic_sense"; essence?: string | null }
   | { type: "magic_attune"; stance: "open" | "focused" | "guarded"; essence?: string | null }
   | { type: "magic_draw"; essence: string; amount?: number | null }

@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import { validateActionComprehensive } from "../../src/core/InputValidator.js";
 import { initialGameState } from "../../src/data/initialState.js";
+import { getAccessibleLocationIds } from "../../src/world/WorldDataRegistry.js";
 
 const cloneState = (state) => JSON.parse(JSON.stringify(state));
 
@@ -83,6 +84,47 @@ describe("InputValidator", () => {
       state,
     );
     expect(result.valid).toBe(true);
+  });
+
+  it("rejects direct movement to interior locations in a connected zone", () => {
+    const state = cloneState(initialGameState);
+    state.world.location.current = "starting_zone";
+    state.world.location.visited = ["starting_zone"];
+    state.world.location.unlockedAreas = ["starting_zone"];
+
+    const result = validateActionComprehensive(
+      { type: "move", targetLocation: "Breaker Shrine" },
+      state,
+    );
+    expect(result.valid).toBe(false);
+  });
+
+  it("rejects direct movement to a far discovered location that is not nearby", () => {
+    const state = cloneState(initialGameState);
+    state.world.location.current = "starting_zone";
+    state.world.location.visited = ["starting_zone", "mountain_starforge_foundry"];
+    state.world.location.unlockedAreas = ["starting_zone", "mountain_starforge_foundry"];
+
+    const result = validateActionComprehensive(
+      { type: "move", targetLocation: "Starforge Foundry" },
+      state,
+    );
+    expect(result.valid).toBe(false);
+  });
+
+  it("only exposes nearby public hubs and connected-zone entry points as travel options", () => {
+    const state = cloneState(initialGameState);
+    state.world.location.current = "starting_zone";
+    state.world.location.visited = ["starting_zone"];
+    state.world.location.unlockedAreas = ["starting_zone"];
+
+    const accessibleIds = getAccessibleLocationIds(state);
+
+    expect(accessibleIds.has("city_neon_bazaar")).toBe(true);
+    expect(accessibleIds.has("city_sunspire_temple")).toBe(true);
+    expect(accessibleIds.has("coast_tideward_pier")).toBe(true);
+    expect(accessibleIds.has("coast_breaker_shrine")).toBe(false);
+    expect(accessibleIds.has("mountain_starforge_foundry")).toBe(false);
   });
 
   it("rejects movement when dead", () => {

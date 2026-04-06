@@ -401,15 +401,22 @@ export function createWorldRegistryRuntime({
         ? rawLocation.unlockedAreas
         : [];
 
-      const result = new Set(
-        [currentId, ...visited, ...unlocked].filter(
-          (id) => typeof id === "string" && id.trim(),
-        ),
-      );
-
       const resolvedCurrent =
         typeof currentId === "string" ? this.getLocationById(currentId) : null;
       const zoneId = resolvedCurrent?.zoneId || null;
+
+      const result = new Set();
+      const addLocationId = (locationId) => {
+        if (typeof locationId !== "string" || !locationId.trim()) return;
+        const location = this.getLocationById(locationId);
+        if (!location?.zoneId) return;
+        if (!zoneId || location.zoneId === zoneId) {
+          result.add(location.id);
+        }
+      };
+
+      [currentId, ...visited, ...unlocked].forEach(addLocationId);
+
       if (zoneId) {
         this.findLocationsByZone(zoneId)
           .filter((location) => location.travelPolicy === "public")
@@ -431,10 +438,6 @@ export function createWorldRegistryRuntime({
               result.add(locationId);
             }
           });
-
-          this.findLocationsByZone(connectedZoneId)
-            .filter((location) => location.travelPolicy === "public")
-            .forEach((location) => result.add(location.id));
         });
       }
 

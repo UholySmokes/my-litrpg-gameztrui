@@ -1,11 +1,11 @@
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
-import { pickOpeningScene } from "../data/OpeningScenes.js";
-import { hashSeed, mulberry32 } from "../data/QuestCatalog.js";
 import {
   WORLD_META,
   MAJOR_FACTION_IDS,
   getZoneById,
   getLocationById,
+  getZoneEntryLocationId,
+  resolveStartingLocationId,
 } from "./WorldDataRegistry.js";
 
 export const STARTING_LOCATION_ID = "starting_zone";
@@ -51,23 +51,18 @@ function resolvePlayerArchetypeIds(player) {
   };
 }
 
-function pickStartLocationId({ zoneId, seed, mainQuest } = {}) {
-  const zone = getZoneById(zoneId);
-  const candidates = Array.isArray(zone?.startLocationIds)
-    ? zone.startLocationIds.filter((id) => typeof id === "string" && id.trim())
-    : [];
-
-  if (candidates.length === 0) {
-    return STARTING_LOCATION_ID;
+function pickStartLocationId({ locationId, zoneId } = {}) {
+  if (typeof locationId === "string" && locationId.trim()) {
+    return resolveStartingLocationId(locationId, {
+      fallbackLocationId: STARTING_LOCATION_ID,
+    });
   }
 
-  const baseSeed = hashSeed(seed ?? mainQuest?.id ?? zoneId ?? WORLD_META.id);
-  const rng = mulberry32(baseSeed + 7);
-  const index = Math.min(
-    candidates.length - 1,
-    Math.max(0, Math.floor(rng() * candidates.length)),
-  );
-  return candidates[index];
+  if (typeof zoneId === "string" && zoneId.trim() && getZoneById(zoneId)) {
+    return getZoneEntryLocationId(zoneId) || STARTING_LOCATION_ID;
+  }
+
+  return STARTING_LOCATION_ID;
 }
 
 export function createInitialWorldState({ seed } = {}) {
@@ -129,29 +124,21 @@ export function seedWorldAfterCharacterCreation(
 
   const resolvedSeed = seed ?? baseWorld?.vars?.worldSeed ?? SimBridge.now();
 
-  const character = resolvePlayerArchetypeIds(player);
-  const opening = pickOpeningScene({
-    seed: resolvedSeed,
-    mainQuest,
-    character,
-  });
-  const startingSceneId = opening?.scene?.id || null;
-
+  resolvePlayerArchetypeIds(player);
+  const playerLocationId = player?.startingLocationId || null;
   const playerZoneId = player?.startingZoneId || null;
-  const sceneBiome = opening?.scene?.biome;
   const questBiome = mainQuest?.tags?.biome;
-  const zoneId = (playerZoneId && getZoneById(playerZoneId))
-    ? playerZoneId
-    : getZoneById(sceneBiome)
-      ? sceneBiome
+  const zoneId = playerLocationId
+    ? getLocationById(playerLocationId)?.zoneId || playerZoneId || null
+    : (playerZoneId && getZoneById(playerZoneId))
+      ? playerZoneId
       : getZoneById(questBiome)
         ? questBiome
         : "city";
 
   const startLocationId = pickStartLocationId({
+    locationId: playerLocationId,
     zoneId,
-    seed: resolvedSeed,
-    mainQuest,
   });
 
   const resolvedStartLoc = getLocationById(startLocationId);
@@ -205,9 +192,10 @@ export function seedWorldAfterCharacterCreation(
     flags: nextFlags,
     vars: {
       ...(baseWorld.vars || {}),
-      startingSceneId,
+      worldSeed: resolvedSeed,
+      startingSceneId: null,
       current_quest_id: mainQuest?.id || null,
-      openingSceneChoicePending: Boolean(startingSceneId),
+      openingSceneChoicePending: false,
       openingSceneChoiceId: null,
       openingSceneChoiceLabel: null,
       openingSceneChoiceNext: null,

@@ -1017,6 +1017,22 @@ export function resolveLocationId(raw, { allowedLocationIds } = {}) {
   return worldRuntime.resolveLocationId(raw, { allowedLocationIds });
 }
 
+export function resolveZoneId(raw) {
+  return worldRuntime.resolveZoneId(raw);
+}
+
+export function getZoneEntryLocationId(zoneId, { allowedLocationIds } = {}) {
+  return worldRuntime.getZoneEntryLocationId(zoneId, { allowedLocationIds });
+}
+
+export function resolveTravelLocationId(raw, { allowedLocationIds } = {}) {
+  return worldRuntime.resolveTravelLocationId(raw, { allowedLocationIds });
+}
+
+export function resolveStartingLocationId(raw, { fallbackLocationId } = {}) {
+  return worldRuntime.resolveStartingLocationId(raw, { fallbackLocationId });
+}
+
 /**
  * Runtime helper: compute location ids a player can travel to right now.
  * Includes visited/unlocked/current, plus "public" hubs in the current zone.

@@ -46,6 +46,17 @@ function finalizeIndex(index) {
   }
 }
 
+function pickBestMatch(entries = []) {
+  if (!Array.isArray(entries) || entries.length === 0) return null;
+  return entries
+    .slice()
+    .sort(
+      (left, right) =>
+        (right.score || 0) - (left.score || 0) ||
+        compareIds(left.id, right.id),
+    )[0];
+}
+
 function buildFactionSummary(faction) {
   return {
     id: faction.id,
@@ -87,8 +98,10 @@ export function createWorldRegistryRuntime({
   const zoneById = new Map();
   const locationById = new Map();
   const locationsByZoneId = new Map();
+  const zoneNameIndex = new Map();
   const locationAliasIndex = new Map();
   const locationNameIndex = new Map();
+  const zoneSearchEntries = [];
   const locationSearchEntries = [];
 
   const factionSummaries = factions
@@ -106,6 +119,14 @@ export function createWorldRegistryRuntime({
       if (typeof zone.id === "string" && zone.id) {
         zoneById.set(zone.id, zone);
       }
+      const normalizedName = normalizeSearchText(zone.name);
+      if (normalizedName) {
+        pushIndexEntry(zoneNameIndex, normalizedName, zone.id);
+      }
+      zoneSearchEntries.push({
+        id: zone.id,
+        name: normalizedName,
+      });
       return buildZoneSummary(zone);
     });
 
@@ -144,6 +165,17 @@ export function createWorldRegistryRuntime({
 
   finalizeIndex(locationAliasIndex);
   finalizeIndex(locationNameIndex);
+  finalizeIndex(zoneNameIndex);
+
+  const starterLocationIds = new Set(
+    zoneSummaries.flatMap((zone) =>
+      Array.isArray(zone?.startingLocationId)
+        ? zone.startingLocationId
+        : Array.isArray(zoneById.get(zone.id)?.startLocationIds)
+          ? zoneById.get(zone.id).startLocationIds
+          : [],
+    ),
+  );
 
   const getAllowedLocationIdPool = (allowedLocationIds) => {
     const allowedSet = normalizeAllowedIds(allowedLocationIds);
@@ -152,6 +184,38 @@ export function createWorldRegistryRuntime({
       allowedSet,
       poolEntries: locationSearchEntries.filter((entry) => allowedSet.has(entry.id)),
     };
+  };
+
+  const getStarterLocationEntries = () =>
+    locationSearchEntries.filter((entry) => starterLocationIds.has(entry.id));
+
+  const getZoneEntryLocationId = (zoneId, { allowedLocationIds } = {}) => {
+    const zone = zoneById.get(zoneId);
+    if (!zone) return null;
+
+    const allowedSet = normalizeAllowedIds(allowedLocationIds);
+    const startLocationIds = Array.isArray(zone.startLocationIds)
+      ? zone.startLocationIds.filter((id) => typeof id === "string" && id.trim())
+      : [];
+    const allowedStartLocationIds = allowedSet
+      ? startLocationIds.filter((id) => allowedSet.has(id))
+      : startLocationIds;
+
+    const publicStartId = allowedStartLocationIds.find(
+      (id) => locationById.get(id)?.travelPolicy === "public",
+    );
+    if (publicStartId) return publicStartId;
+
+    if (allowedStartLocationIds.length > 0) {
+      return allowedStartLocationIds[0];
+    }
+
+    const publicLocationId = (locationsByZoneId.get(zoneId) || [])
+      .filter((location) => location?.travelPolicy === "public")
+      .map((location) => location.id)
+      .find((id) => !allowedSet || allowedSet.has(id));
+
+    return publicLocationId || null;
   };
 
   return {
@@ -179,6 +243,31 @@ export function createWorldRegistryRuntime({
     },
     getLocationSummaries() {
       return locationSummaries.slice();
+    },
+    resolveZoneId(raw) {
+      const trimmed = typeof raw === "string" ? raw.trim() : "";
+      const rawLower = trimmed.toLowerCase();
+      const normalized = normalizeSearchText(trimmed);
+      if (!normalized) return null;
+
+      if (zoneById.has(rawLower)) {
+        return rawLower;
+      }
+
+      const nameMatches = zoneNameIndex.get(normalized);
+      if (Array.isArray(nameMatches) && nameMatches.length === 1) {
+        return nameMatches[0];
+      }
+      if (Array.isArray(nameMatches) && nameMatches.length > 1) {
+        return pickLexicographicallySmallestId(nameMatches);
+      }
+
+      const containsMatches = zoneSearchEntries
+        .filter((entry) => entry.name.includes(normalized) || normalized.includes(entry.name))
+        .map((entry) => entry.id);
+
+      if (containsMatches.length === 1) return containsMatches[0];
+      return pickLexicographicallySmallestId(containsMatches);
     },
     resolveLocationId(raw, { allowedLocationIds } = {}) {
       const trimmed = typeof raw === "string" ? raw.trim() : "";
@@ -217,6 +306,85 @@ export function createWorldRegistryRuntime({
 
       if (containsMatches.length === 1) return containsMatches[0];
       return pickLexicographicallySmallestId(containsMatches);
+    },
+    getZoneEntryLocationId(zoneId, options = {}) {
+      return getZoneEntryLocationId(zoneId, options);
+    },
+    resolveTravelLocationId(raw, { allowedLocationIds } = {}) {
+      const locationId = this.resolveLocationId(raw, { allowedLocationIds });
+      if (locationId) return locationId;
+      const zoneId = this.resolveZoneId(raw);
+      if (!zoneId) return null;
+      return getZoneEntryLocationId(zoneId, { allowedLocationIds });
+    },
+    resolveStartingLocationId(raw, { fallbackLocationId = "starting_zone" } = {}) {
+      const fallback = locationById.has(fallbackLocationId)
+        ? fallbackLocationId
+        : "starting_zone";
+      const trimmed = typeof raw === "string" ? raw.trim() : "";
+      const normalized = normalizeSearchText(trimmed);
+      if (!normalized) return fallback;
+
+      const starterEntries = getStarterLocationEntries();
+      const exactLocationMatches = starterEntries
+        .filter(
+          (entry) =>
+            entry.id === normalized ||
+            entry.name === normalized ||
+            entry.aliases.includes(normalized),
+        )
+        .map((entry) => entry.id);
+      if (exactLocationMatches.length > 0) {
+        return pickLexicographicallySmallestId(exactLocationMatches) || fallback;
+      }
+
+      const exactZoneId = this.resolveZoneId(trimmed);
+      if (exactZoneId) {
+        return getZoneEntryLocationId(exactZoneId) || fallback;
+      }
+
+      const locationMatch = pickBestMatch(
+        starterEntries
+          .map((entry) => {
+            const exactContained = [entry.name, ...entry.aliases].find(
+              (candidate) => candidate && normalized.includes(candidate),
+            );
+            if (exactContained) {
+              return { id: entry.id, score: exactContained.length + 100 };
+            }
+            const partial = [entry.name, ...entry.aliases].find(
+              (candidate) => candidate && candidate.includes(normalized),
+            );
+            if (partial) {
+              return { id: entry.id, score: partial.length };
+            }
+            return null;
+          })
+          .filter(Boolean),
+      );
+      if (locationMatch?.id) {
+        return locationMatch.id;
+      }
+
+      const zoneMatch = pickBestMatch(
+        zoneSearchEntries
+          .map((entry) => {
+            if (!entry?.id || !entry?.name) return null;
+            if (normalized.includes(entry.name) || normalized.includes(entry.id)) {
+              return { id: entry.id, score: entry.name.length + 80 };
+            }
+            if (entry.name.includes(normalized)) {
+              return { id: entry.id, score: entry.name.length };
+            }
+            return null;
+          })
+          .filter(Boolean),
+      );
+      if (zoneMatch?.id) {
+        return getZoneEntryLocationId(zoneMatch.id) || fallback;
+      }
+
+      return fallback;
     },
     getAccessibleLocationIds(gameState) {
       const world = gameState?.world || {};

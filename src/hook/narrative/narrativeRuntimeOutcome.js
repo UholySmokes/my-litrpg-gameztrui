@@ -1,4 +1,5 @@
 import { buildFallbackNarrative } from "./fallbackNarrative.js";
+import { mergeNarrativeSceneMemory } from "../../core/PromptAssembler.js";
 import {
   buildActionSuggestions,
   inferMood,
@@ -60,12 +61,12 @@ export function resolveNarrativeRuntimeOutcome({
         typeof aiResult?.source === "string" && aiResult.source.trim()
           ? aiResult.source.trim()
           : "ai",
-      sceneMemory:
-        aiResult?.sceneMemory &&
-        typeof aiResult.sceneMemory === "object" &&
-        !Array.isArray(aiResult.sceneMemory)
-          ? aiResult.sceneMemory
-          : undefined,
+      sceneMemory: mergeNarrativeSceneMemory(
+        state,
+        actionResult,
+        aiResult?.sceneMemory,
+        story,
+      ),
       choiceMeta: Array.isArray(aiResult?.choiceMeta) ? aiResult.choiceMeta : undefined,
       stateIntents: mergeStateIntents(aiResult?.stateIntents, derivedStateIntents),
     };

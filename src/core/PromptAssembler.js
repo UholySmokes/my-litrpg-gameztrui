@@ -238,6 +238,8 @@ function buildSystemPrompt({
 19. Let food, cover, footing, distance, scent, sound, and nearby predators feel like real stakes when survival is uncertain
 20. Use brief xianxia or system-novel flourishes only when earned: coldly helpful notices, warnings, or progress flashes that cut through the prose
 21. Avoid generic epic grandeur; prefer sharp, intimate, slightly dangerous prose grounded in the present moment
+22. Entities listed as familiar or party are already known to the player and must never be reintroduced as mysterious strangers unless the state explicitly says the bond broke
+23. If a companion group is unnamed, use a stable role label such as scouts, caravan hands, or volunteers instead of vague stranger language
 ${modeDirective}
 ${moodDirective}
 ${repetitionDirective}
@@ -330,6 +332,170 @@ function dedupeStrings(values = [], maxItems = 6) {
   return normalized;
 }
 
+function normalizeSceneString(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function getPriorSceneMemory(gameState = {}) {
+  return gameState?.narrative?.sceneMemory &&
+    typeof gameState.narrative.sceneMemory === "object" &&
+    !Array.isArray(gameState.narrative.sceneMemory)
+    ? gameState.narrative.sceneMemory
+    : {};
+}
+
+function normalizeSceneMemoryInput(value = {}) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return {};
+  }
+  return {
+    locationLabel: normalizeSceneString(value.locationLabel),
+    zoneLabel: normalizeSceneString(value.zoneLabel),
+    immediateObjective: normalizeSceneString(value.immediateObjective),
+    presentEntities: dedupeStrings(value.presentEntities || []),
+    activeThreats: dedupeStrings(value.activeThreats || []),
+    unresolvedHooks: dedupeStrings(value.unresolvedHooks || []),
+    lastConsequence: normalizeSceneString(value.lastConsequence),
+    familiarEntities: dedupeStrings(value.familiarEntities || []),
+    partyEntities: dedupeStrings(value.partyEntities || []),
+    socialSummary: normalizeSceneString(value.socialSummary),
+  };
+}
+
+function pickGroupLikeEntity(values = []) {
+  return (
+    dedupeStrings(values, 8).find((entry) =>
+      /\b(scouts?|caravan|hands?|volunteers?|guards?|companions?|travelers?|workers?|group|party|pilgrims?)\b/i.test(
+        entry,
+      ),
+    ) || ""
+  );
+}
+
+function fallbackPartyLabel(gameState = {}, sceneMemory = {}) {
+  const priorLabel =
+    pickGroupLikeEntity(sceneMemory.partyEntities) ||
+    pickGroupLikeEntity(sceneMemory.familiarEntities) ||
+    pickGroupLikeEntity(sceneMemory.presentEntities);
+  if (priorLabel) return priorLabel;
+
+  const locationLabel = normalizeSceneString(sceneMemory.locationLabel);
+  if (/rootbound/i.test(locationLabel)) return "the rootbound scouts";
+  if (/rally/i.test(locationLabel)) return "the rally volunteers";
+  if (/caravan/i.test(locationLabel)) return "the caravan hands";
+
+  const zoneLabel = normalizeSceneString(sceneMemory.zoneLabel);
+  if (/wildroot/i.test(zoneLabel)) return "the rootbound scouts";
+  if (/meridian/i.test(zoneLabel)) return "the rally volunteers";
+
+  const currentLocationRaw =
+    gameState?.world?.location?.current ?? gameState?.world?.location ?? null;
+  const currentLocation =
+    resolveLocationId(currentLocationRaw) ||
+    (typeof currentLocationRaw === "string" ? currentLocationRaw.trim() : "");
+  if (/wilds_/i.test(currentLocation)) return "the rootbound scouts";
+  return "the group";
+}
+
+function extractStableSocialLabel(narrativeText = "", gameState = {}, sceneMemory = {}) {
+  const matchers = [
+    /\b(rootbound\s+scouts?)\b/i,
+    /\b(caravan\s+hands?)\b/i,
+    /\b(rally\s+volunteers?)\b/i,
+    /\b(the\s+caravan)\b/i,
+    /\b(the\s+scouts?)\b/i,
+    /\b(the\s+guards?)\b/i,
+    /\b(the\s+group)\b/i,
+    /\b(the\s+party)\b/i,
+  ];
+
+  for (const matcher of matchers) {
+    const match = narrativeText.match(matcher);
+    if (!match?.[1]) continue;
+    const normalized = match[1].trim().toLowerCase();
+    if (normalized === "the caravan") return "the caravan hands";
+    if (normalized === "the group" || normalized === "the party") {
+      return fallbackPartyLabel(gameState, sceneMemory);
+    }
+    if (!normalized.startsWith("the ")) {
+      return `the ${normalized}`;
+    }
+    return normalized;
+  }
+
+  return fallbackPartyLabel(gameState, sceneMemory);
+}
+
+function mergeSocialSceneMemory({
+  gameState = {},
+  baseSceneMemory = {},
+  incomingSceneMemory = {},
+  narrativeText = "",
+} = {}) {
+  const sourceText = String(narrativeText || "");
+  const joinedParty =
+    /\b(social link formed|joined the group|joined the caravan|travel(?:ing)? with(?: them| the|\b)|fell in with the caravan|you are traveling with|keep pace with the group)\b/i.test(
+      sourceText,
+    );
+  const leftParty =
+    /\b(part ways|leave them behind|travel alone|you are alone|the group scatters|they peel away|the caravan moves on without you)\b/i.test(
+      sourceText,
+    );
+  const formedFamiliarity =
+    joinedParty ||
+    /\b(social link formed|know the others better|stops feeling like a wall of strangers|become legible|worth following)\b/i.test(
+      sourceText,
+    );
+
+  let familiarEntities = incomingSceneMemory.familiarEntities?.length
+    ? incomingSceneMemory.familiarEntities
+    : dedupeStrings(baseSceneMemory.familiarEntities || []);
+  let partyEntities = incomingSceneMemory.partyEntities?.length
+    ? incomingSceneMemory.partyEntities
+    : dedupeStrings(baseSceneMemory.partyEntities || []);
+
+  if (leftParty && partyEntities.length > 0) {
+    familiarEntities = dedupeStrings([...familiarEntities, ...partyEntities]);
+    partyEntities = [];
+  }
+
+  if (formedFamiliarity) {
+    const stableLabel = extractStableSocialLabel(sourceText, gameState, {
+      ...baseSceneMemory,
+      ...incomingSceneMemory,
+    });
+    const labelPool = stableLabel
+      ? [stableLabel]
+      : [
+          pickGroupLikeEntity(incomingSceneMemory.presentEntities),
+          pickGroupLikeEntity(baseSceneMemory.presentEntities),
+        ].filter(Boolean);
+
+    if (joinedParty) {
+      partyEntities = dedupeStrings([...partyEntities, ...labelPool]);
+    }
+    familiarEntities = dedupeStrings([
+      ...familiarEntities,
+      ...partyEntities,
+      ...labelPool,
+    ]);
+  }
+
+  const socialSummary =
+    incomingSceneMemory.socialSummary ||
+    (partyEntities.length > 0
+      ? `${partyEntities.join(", ")} are traveling with the player and must not be treated as strangers.`
+      : familiarEntities.length > 0
+        ? `${familiarEntities.join(", ")} are known contacts and must not be treated as strangers.`
+        : normalizeSceneString(baseSceneMemory.socialSummary));
+
+  return {
+    familiarEntities,
+    partyEntities,
+    socialSummary,
+  };
+}
+
 function resolveQuestObjective(gameState = {}) {
   const activeQuests = Array.isArray(gameState?.quests?.active)
     ? gameState.quests.active
@@ -346,12 +512,7 @@ function resolveQuestObjective(gameState = {}) {
 }
 
 function buildPresentEntities(gameState = {}) {
-  const priorSceneMemory =
-    gameState?.narrative?.sceneMemory &&
-    typeof gameState.narrative.sceneMemory === "object" &&
-    !Array.isArray(gameState.narrative.sceneMemory)
-      ? gameState.narrative.sceneMemory
-      : {};
+  const priorSceneMemory = getPriorSceneMemory(gameState);
   const combat = gameState?.combat || {};
   const combatActive = Boolean(
     combat?.inCombat ?? combat?.status === "active",
@@ -370,9 +531,17 @@ function buildPresentEntities(gameState = {}) {
         combatActive ? true : !priorThreats.includes(String(entry).toLowerCase()),
       )
     : [];
+  const familiarEntities = Array.isArray(priorSceneMemory.familiarEntities)
+    ? priorSceneMemory.familiarEntities
+    : [];
+  const partyEntities = Array.isArray(priorSceneMemory.partyEntities)
+    ? priorSceneMemory.partyEntities
+    : [];
 
   return dedupeStrings([
     ...carryForwardEntities,
+    ...familiarEntities,
+    ...partyEntities,
     ...combatEnemyNames,
   ]);
 }
@@ -394,12 +563,7 @@ function buildActiveThreats(gameState = {}) {
 
 export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
   const world = gameState?.world || {};
-  const priorSceneMemory =
-    gameState?.narrative?.sceneMemory &&
-    typeof gameState.narrative.sceneMemory === "object" &&
-    !Array.isArray(gameState.narrative.sceneMemory)
-      ? gameState.narrative.sceneMemory
-      : {};
+  const priorSceneMemory = getPriorSceneMemory(gameState);
   const locationRaw = world?.location?.current ?? world?.location ?? null;
   const locationId =
     resolveLocationId(locationRaw) ||
@@ -446,6 +610,52 @@ export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
     activeThreats: buildActiveThreats(gameState),
     unresolvedHooks,
     lastConsequence,
+    familiarEntities: dedupeStrings(priorSceneMemory.familiarEntities || []),
+    partyEntities: dedupeStrings(priorSceneMemory.partyEntities || []),
+    socialSummary: normalizeSceneString(priorSceneMemory.socialSummary),
+  };
+}
+
+export function mergeNarrativeSceneMemory(
+  gameState = {},
+  actionResult = null,
+  incomingSceneMemory = null,
+  narrativeText = "",
+) {
+  const baseSceneMemory = buildSceneMemorySeed(gameState, actionResult);
+  const normalizedIncoming = normalizeSceneMemoryInput(incomingSceneMemory);
+  const socialMemory = mergeSocialSceneMemory({
+    gameState,
+    baseSceneMemory,
+    incomingSceneMemory: normalizedIncoming,
+    narrativeText,
+  });
+  const hasIncomingPresentEntities = normalizedIncoming.presentEntities.length > 0;
+
+  return {
+    locationLabel: normalizedIncoming.locationLabel || baseSceneMemory.locationLabel,
+    zoneLabel: normalizedIncoming.zoneLabel || baseSceneMemory.zoneLabel,
+    immediateObjective:
+      normalizedIncoming.immediateObjective || baseSceneMemory.immediateObjective,
+    presentEntities: dedupeStrings([
+      ...(hasIncomingPresentEntities
+        ? normalizedIncoming.presentEntities
+        : baseSceneMemory.presentEntities),
+      ...socialMemory.partyEntities,
+    ]),
+    activeThreats:
+      normalizedIncoming.activeThreats.length > 0
+        ? normalizedIncoming.activeThreats
+        : baseSceneMemory.activeThreats,
+    unresolvedHooks: dedupeStrings([
+      ...baseSceneMemory.unresolvedHooks,
+      ...normalizedIncoming.unresolvedHooks,
+    ]),
+    lastConsequence:
+      normalizedIncoming.lastConsequence || baseSceneMemory.lastConsequence,
+    familiarEntities: socialMemory.familiarEntities,
+    partyEntities: socialMemory.partyEntities,
+    socialSummary: socialMemory.socialSummary,
   };
 }
 
@@ -473,9 +683,13 @@ function buildAuthoritativeSceneStateSection(gameState, actionResult) {
     `Active Threats: ${sceneMemory.activeThreats.join(", ") || "None confirmed"}`,
     `Unresolved Hooks: ${sceneMemory.unresolvedHooks.join(", ") || "None"}`,
     `Last Consequence: ${sceneMemory.lastConsequence || "None confirmed"}`,
+    `Familiar Entities: ${sceneMemory.familiarEntities.join(", ") || "None confirmed"}`,
+    `Party Entities: ${sceneMemory.partyEntities.join(", ") || "None confirmed"}`,
+    `Social Summary: ${sceneMemory.socialSummary || "None confirmed"}`,
     `Recent Summary: ${narrativeSummary}`,
     `Validated Action Consequence: ${validatedConsequence}`,
     "Continuity Rule: the scene state above is authoritative and recent history below is only supporting context.",
+    "Companion Rule: familiarEntities and partyEntities are known contacts, not strangers, anonymous crowds, or unreadable unknowns. If unnamed, use a stable role label instead.",
   ].join("\n");
 }
 
@@ -1044,7 +1258,10 @@ Return one valid JSON object with this shape:
     "presentEntities": ["Confirmed entity"],
     "activeThreats": ["Confirmed threat"],
     "unresolvedHooks": ["Open thread"],
-    "lastConsequence": "Most important new consequence from this turn"
+    "lastConsequence": "Most important new consequence from this turn",
+    "familiarEntities": ["Known contact or group"],
+    "partyEntities": ["Current traveling companion or allied group"],
+    "socialSummary": "How these contacts relate to the player right now"
   }
 }
 
@@ -1228,7 +1445,10 @@ Return one valid JSON object with this shape:
     "presentEntities": ["Confirmed entity"],
     "activeThreats": ["Confirmed threat"],
     "unresolvedHooks": ["Open thread"],
-    "lastConsequence": "Most important opening consequence"
+    "lastConsequence": "Most important opening consequence",
+    "familiarEntities": ["Known contact or group"],
+    "partyEntities": ["Current traveling companion or allied group"],
+    "socialSummary": "How these contacts relate to the player right now"
   }
 }
 

@@ -2,11 +2,11 @@
 import React, { useRef, useEffect, useCallback, useMemo, useState } from "react";
 import { useGameEngine } from "../../hook/usegamestate";
 import { useNarrative } from "../../hook/useNarrative";
-import AdminTools from "../AdminTools";
 import AdventureShell from "../shell/AdventureShell.jsx";
 import CharacterHub from "../shell/CharacterHub.jsx";
 import { clearLegacyShellState } from "../shell/shellState.js";
 import CharacterCreationShell from "./CharacterCreationShell.jsx";
+import DevConsoleDock from "./DevConsoleDock.jsx";
 import AutosaveResumeOverlay from "./AutosaveResumeOverlay.jsx";
 import PwaInstallPrompt from "../PwaInstallPrompt.jsx";
 import SaveResetGate from "./SaveResetGate.jsx";
@@ -357,6 +357,13 @@ export default function GameUI({ user }) {
     [handleCharacterCreationComplete],
   );
 
+  const handleDevConsoleStoryCommand = useCallback(
+    async (commandText) => {
+      await submitInput(commandText, state);
+    },
+    [state, submitInput],
+  );
+
   const equipmentSelectLabel = equipmentSelectSlot
     ? equipmentSelectSlot.charAt(0).toUpperCase() + equipmentSelectSlot.slice(1)
     : "Item";
@@ -543,6 +550,16 @@ export default function GameUI({ user }) {
   return (
     <div className="runic-app">
       <div className="runic-app__stack">
+        {IS_DEV_BUILD ? (
+          <DevConsoleDock
+            state={state}
+            dispatch={dispatchSystemEvent}
+            setState={setState}
+            addSystemMessage={addSystemMessage}
+            runStoryCommand={handleDevConsoleStoryCommand}
+          />
+        ) : null}
+
         <PwaInstallPrompt enabled={shouldShowHub && hasHubInteracted} />
 
         {shouldShowHub ? (
@@ -607,10 +624,6 @@ export default function GameUI({ user }) {
         >
           {characterCreated ? "RESUMED SESSION" : "CLEAN SESSION"}
         </div>
-      ) : null}
-
-      {IS_DEV_BUILD ? (
-        <AdminTools dispatch={dispatchSystemEvent} getState={() => state} />
       ) : null}
     </div>
   );

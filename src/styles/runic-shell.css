@@ -2025,8 +2025,8 @@ body,
 
 .theme-dock {
   position: fixed;
+  top: 1.1rem;
   right: 1.1rem;
-  bottom: 1.1rem;
   z-index: 80;
   width: min(340px, calc(100vw - 1.6rem));
   display: grid;
@@ -2117,6 +2117,8 @@ body,
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.7rem;
+  max-height: min(40vh, 320px);
+  overflow-y: auto;
 }
 
 .theme-dock--reduced .theme-dock__grid {

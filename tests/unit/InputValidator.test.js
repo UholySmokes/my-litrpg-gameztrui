@@ -1,7 +1,10 @@
 import { describe, it, expect } from "@jest/globals";
 import { validateActionComprehensive } from "../../src/core/InputValidator.js";
 import { initialGameState } from "../../src/data/initialState.js";
-import { getAccessibleLocationIds } from "../../src/world/WorldDataRegistry.js";
+import {
+  DEFAULT_START_LOCATION_ID,
+  getAccessibleLocationIds,
+} from "../../src/world/WorldDataRegistry.js";
 
 const cloneState = (state) => JSON.parse(JSON.stringify(state));
 
@@ -60,11 +63,11 @@ describe("InputValidator", () => {
     expect(result.valid).toBe(false);
   });
 
-  it('accepts "Starting Zone" (resolves to city_neon_bazaar) when accessible', () => {
+  it('accepts "Starting Zone" as an alias for the default city start', () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "city_neon_bazaar";
-    state.world.location.visited = ["city_neon_bazaar", "city_neon_bazaar"];
-    state.world.location.unlockedAreas = ["city_neon_bazaar", "city_neon_bazaar"];
+    state.world.location.current = "city_sunspire_temple";
+    state.world.location.visited = [DEFAULT_START_LOCATION_ID, "city_sunspire_temple"];
+    state.world.location.unlockedAreas = [DEFAULT_START_LOCATION_ID, "city_sunspire_temple"];
 
     const result = validateActionComprehensive(
       { type: "move", targetLocation: "Starting Zone" },
@@ -75,9 +78,9 @@ describe("InputValidator", () => {
 
   it("accepts connected zone names such as Wildroot Fringe", () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "city_neon_bazaar";
-    state.world.location.visited = ["city_neon_bazaar"];
-    state.world.location.unlockedAreas = ["city_neon_bazaar"];
+    state.world.location.current = DEFAULT_START_LOCATION_ID;
+    state.world.location.visited = [DEFAULT_START_LOCATION_ID];
+    state.world.location.unlockedAreas = [DEFAULT_START_LOCATION_ID];
 
     const result = validateActionComprehensive(
       { type: "move", targetLocation: "Wildroot Fringe" },
@@ -88,9 +91,9 @@ describe("InputValidator", () => {
 
   it("rejects direct movement to interior locations in a connected zone", () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "city_neon_bazaar";
-    state.world.location.visited = ["city_neon_bazaar"];
-    state.world.location.unlockedAreas = ["city_neon_bazaar"];
+    state.world.location.current = DEFAULT_START_LOCATION_ID;
+    state.world.location.visited = [DEFAULT_START_LOCATION_ID];
+    state.world.location.unlockedAreas = [DEFAULT_START_LOCATION_ID];
 
     const result = validateActionComprehensive(
       { type: "move", targetLocation: "Breaker Shrine" },
@@ -101,9 +104,9 @@ describe("InputValidator", () => {
 
   it("rejects direct movement to a far discovered location that is not nearby", () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "city_neon_bazaar";
-    state.world.location.visited = ["city_neon_bazaar", "mountain_starforge_foundry"];
-    state.world.location.unlockedAreas = ["city_neon_bazaar", "mountain_starforge_foundry"];
+    state.world.location.current = DEFAULT_START_LOCATION_ID;
+    state.world.location.visited = [DEFAULT_START_LOCATION_ID, "mountain_starforge_foundry"];
+    state.world.location.unlockedAreas = [DEFAULT_START_LOCATION_ID, "mountain_starforge_foundry"];
 
     const result = validateActionComprehensive(
       { type: "move", targetLocation: "Starforge Foundry" },
@@ -114,9 +117,9 @@ describe("InputValidator", () => {
 
   it("only exposes nearby public hubs and connected-zone entry points as travel options", () => {
     const state = cloneState(initialGameState);
-    state.world.location.current = "city_neon_bazaar";
-    state.world.location.visited = ["city_neon_bazaar"];
-    state.world.location.unlockedAreas = ["city_neon_bazaar"];
+    state.world.location.current = DEFAULT_START_LOCATION_ID;
+    state.world.location.visited = [DEFAULT_START_LOCATION_ID];
+    state.world.location.unlockedAreas = [DEFAULT_START_LOCATION_ID];
 
     const accessibleIds = getAccessibleLocationIds(state);
 

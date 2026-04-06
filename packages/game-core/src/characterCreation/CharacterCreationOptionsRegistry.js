@@ -34,6 +34,7 @@ const PERKS_CONFIG = {
 };
 
 const STARTER_TREES_CONFIG = {
+  minPicks: 0,
   maxPicks: 1,
   options: [
     { id: "offense", name: "Offense", description: "Plan toward burst damage and crit synergies." },
@@ -63,6 +64,7 @@ export function listCharacterCreationStarterTrees() {
 
 export function getCharacterCreationStarterTreeLimits() {
   return {
+    minPicks: STARTER_TREES_CONFIG.minPicks,
     maxPicks: STARTER_TREES_CONFIG.maxPicks,
   };
 }

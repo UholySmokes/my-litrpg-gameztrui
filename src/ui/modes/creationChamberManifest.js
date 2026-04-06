@@ -93,7 +93,7 @@ export function validateCreationChamber(chamberId, checks = {}) {
           error: "Choose the required perk package. Attributes and skills are locked.",
         };
       }
-      if (!checks.starterTreeLocked) {
+      if (checks.requiresStarterTree && !checks.starterTreeLocked) {
         return {
           valid: false,
           error: "Choose a starter tree. Attributes, skills, and perks are locked.",

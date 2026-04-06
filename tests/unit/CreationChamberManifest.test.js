@@ -61,4 +61,17 @@ describe("creation chamber manifest", () => {
       error: "Choose an alignment to complete the Soul Crucible.",
     });
   });
+
+  it("allows soul crucible progression without a starter tree when optional", () => {
+    expect(
+      validateCreationChamber("soul-crucible", {
+        attributesLocked: true,
+        skillsLocked: true,
+        perksLocked: true,
+        starterTreeLocked: false,
+        requiresStarterTree: false,
+        alignmentLocked: true,
+      }),
+    ).toEqual({ valid: true });
+  });
 });

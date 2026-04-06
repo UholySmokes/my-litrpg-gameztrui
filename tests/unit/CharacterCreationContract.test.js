@@ -4,6 +4,7 @@ import {
   getCharacterCreationSkillSelectionLimits,
   listCharacterCreationAlignments,
   getCharacterCreationPerkLimits,
+  getCharacterCreationStarterTreeLimits,
   listCharacterCreationStarterTrees,
   validateCharacterCreationBlueprint,
 } from "@voidverse/game-core";
@@ -38,6 +39,28 @@ describe("CharacterCreationContract", () => {
   it("exposes alignment/perk/tree options for shared creation surfaces", () => {
     expect(listCharacterCreationAlignments().length).toBeGreaterThan(0);
     expect(getCharacterCreationPerkLimits()).toEqual({ minPicks: 1, maxPicks: 2 });
+    expect(getCharacterCreationStarterTreeLimits()).toEqual({ minPicks: 0, maxPicks: 1 });
     expect(listCharacterCreationStarterTrees().map((entry) => entry.id)).toContain("offense");
+  });
+
+  it("accepts a blueprint without starter trees when the flow does not require one", () => {
+    const blueprint = createCharacterCreationBlueprint({
+      name: "Aela",
+      raceId: "neo_human",
+      classId: "warrior",
+      startingPrompt: "I wake in a forest and steady my breathing.",
+      professionId: "blacksmith",
+      archetypeSystemId: "balanced",
+      attributes: { strength: 8 },
+      activeSkillIds: ["slash", "guard", "rush"],
+      passiveSkillIds: ["vigor", "resolve", "focus", "grit", "discipline", "instinct"],
+      starterTreeIds: [],
+    });
+
+    const result = validateCharacterCreationBlueprint(blueprint, {
+      requiresStarterTree: false,
+    });
+
+    expect(result.valid).toBe(true);
   });
 });

@@ -336,4 +336,32 @@ describe("buildInitialPrompt", () => {
     expect(prompt).toContain("Return one valid JSON object with this shape:");
     expect(prompt).toContain('"sceneMemory"');
   });
+
+  it("keeps an authored starting prompt authoritative over default hub labels", () => {
+    const prompt = buildInitialPrompt({
+      player: {
+        name: "Suri",
+        race: { name: "Foxkin" },
+        class: { name: "Scout" },
+        profession: { name: "Forager" },
+        startingZoneId: "city",
+        startingPrompt:
+          "In a random forest surrounded by trees, I remember a truck hitting me and realize I'm a tiny spirit fox beast cub as a nearby patrol finds me.",
+      },
+      world: {
+        location: { current: "starting_zone" },
+      },
+      quests: {
+        active: [],
+      },
+    });
+
+    expect(prompt).toContain("Authored Opening:");
+    expect(prompt).toContain("random forest surrounded by trees");
+    expect(prompt).toContain(
+      "Honors the authored opening premise without relocating the player to a generic hub, alcove, or city",
+    );
+    expect(prompt).not.toContain('Starting Point: Meridian Arcology');
+    expect(prompt).not.toContain('Names the player\'s starting point ("Meridian Arcology")');
+  });
 });

@@ -378,7 +378,11 @@ export default function CharacterCreationMode({
         selectedPerkIds.length >= (creationPerkLimits?.minPicks || 0) &&
         selectedPerkIds.length <=
           (creationPerkLimits?.maxPicks || Number.MAX_SAFE_INTEGER),
-      "starter-tree": !advancedUnlocked || selectedStarterTreeIds.length === 1,
+      "starter-tree":
+        !advancedUnlocked ||
+        (selectedStarterTreeIds.length >= (starterTreeLimits?.minPicks || 0) &&
+          selectedStarterTreeIds.length <=
+            (starterTreeLimits?.maxPicks || Number.MAX_SAFE_INTEGER)),
       alignment: Boolean(selectedAlignmentId),
       "starting-point": Boolean(startingPrompt?.trim()),
       review: canFinalize,
@@ -392,6 +396,8 @@ export default function CharacterCreationMode({
       characterName,
       creationPerkLimits?.maxPicks,
       creationPerkLimits?.minPicks,
+      starterTreeLimits?.maxPicks,
+      starterTreeLimits?.minPicks,
       selectedActiveSkills.length,
       selectedAlignmentId,
       selectedArchetypeSystem,
@@ -491,7 +497,7 @@ export default function CharacterCreationMode({
       },
       advancedUnlocked
         ? {
-            label: `Starter Tree: ${selectedStarterTreeIds[0] || "pending"}`,
+            label: `Starter Tree: ${selectedStarterTreeIds[0] || "optional"}`,
             active: completionById["starter-tree"],
           }
         : { label: "Starter Tree: unlock after first character", active: true },
@@ -513,6 +519,7 @@ export default function CharacterCreationMode({
       completionById,
       creationPerkLimits?.maxPicks,
       gender,
+      starterTreeLimits?.minPicks,
       selectedActiveSkills.length,
       selectedAlignmentId,
       selectedArchetypeSystem,
@@ -744,7 +751,18 @@ export default function CharacterCreationMode({
           { id: "attributes", eyebrow: "Attributes", title: "Distribute core power", summaryText: completionById.attributes ? `${availablePoints === 0 ? "All" : availablePoints} points allocated` : null },
           { id: "skills", eyebrow: "Skills", title: "Assemble active and passive loadout", summaryText: completionById.skills ? `${selectedActiveSkills.length} active, ${selectedPassiveSkills.length} passive` : null },
           { id: "perks", eyebrow: "Perks", title: "Select starting mutations", summaryText: completionById.perks ? `${selectedPerkIds.length} perk${selectedPerkIds.length !== 1 ? "s" : ""} chosen` : null },
-          ...(advancedUnlocked ? [{ id: "starter-tree", eyebrow: "Starter Tree", title: "Prime the first progression tree", summaryText: completionById["starter-tree"] ? `${selectedStarterTreeIds.length} tree selected` : null }] : []),
+          ...(advancedUnlocked
+            ? [{
+                id: "starter-tree",
+                eyebrow: "Starter Tree",
+                title: "Prime the first progression tree",
+                summaryText: completionById["starter-tree"]
+                  ? selectedStarterTreeIds.length > 0
+                    ? `${selectedStarterTreeIds.length} tree selected`
+                    : "Optional: none selected"
+                  : null,
+              }]
+            : []),
           { id: "alignment", eyebrow: "Alignment", title: "Select roleplay tone", summaryText: completionById.alignment ? "Alignment set" : null },
         ];
         const firstIncompleteIdx = crucibleSections.findIndex((s) => !completionById[s.id]);
@@ -849,12 +867,15 @@ export default function CharacterCreationMode({
                     <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
                       <CreationChoicePanel
                         title="Starter Tree"
-                        subtitle="Choose the initial progression tree."
+                        subtitle="Optional initial progression tree. Select none to begin without one."
                         options={availableCreationStarterTrees}
                         selectedIds={selectedStarterTreeIds}
                         onToggle={handleStarterTreeSelect}
-                        minSelections={1}
-                        maxSelections={1}
+                        minSelections={starterTreeLimits?.minPicks || 0}
+                        maxSelections={starterTreeLimits?.maxPicks || 1}
+                        allowNone={true}
+                        onSelectNone={() => handleStarterTreeSelect(null)}
+                        noneLabel="None (Optional)"
                         onAction={handleClick}
                       />
                     </CollapsibleChamberSection>

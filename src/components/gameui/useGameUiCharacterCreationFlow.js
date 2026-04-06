@@ -126,6 +126,7 @@ export function useGameUiCharacterCreationFlow({
       setState(nextState);
       persistLocalAutosave(nextState, "Character Creation Checkpoint");
       clearCharacterCreationDraft();
+      setCharacterCreated(true);
 
       const playerObj = nextState?.player || characterData;
       const startingLocationId = characterData?.startingLocationId || null;
@@ -148,7 +149,6 @@ export function useGameUiCharacterCreationFlow({
         clearTimeout(transitionTimeoutRef.current);
       }
       transitionTimeoutRef.current = setTimeout(() => {
-        setCharacterCreated(true);
         setIsTransitioning(false);
       }, TRANSITION_DURATION_MS);
 

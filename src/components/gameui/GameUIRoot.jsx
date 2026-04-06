@@ -148,15 +148,16 @@ export default function GameUI({ user }) {
     state,
     submitInput,
   });
+  const hasAdventureSession = characterCreated || hasCharacterSnapshot;
 
   useEffect(() => {
-    if (isTransitioning || hasCharacterSnapshot || activeSurface !== "adventure") {
+    if (isTransitioning || hasAdventureSession || activeSurface !== "adventure") {
       return;
     }
 
     setCharacterCreated(false);
     setActiveSurface(hasCharacterCreationDraft() ? "creation" : "hub");
-  }, [activeSurface, hasCharacterSnapshot, isTransitioning, setCharacterCreated]);
+  }, [activeSurface, hasAdventureSession, isTransitioning, setCharacterCreated]);
 
   useEffect(() => {
     if (

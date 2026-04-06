@@ -23,9 +23,9 @@ describe("narrative suggestion helpers", () => {
     const suggestions = buildActionSuggestions({
       world: {
         location: {
-          current: "starting_zone",
-          visited: ["starting_zone"],
-          unlockedAreas: ["starting_zone"],
+          current: "city_neon_bazaar",
+          visited: ["city_neon_bazaar"],
+          unlockedAreas: ["city_neon_bazaar"],
           biome: "city",
         },
       },
@@ -274,3 +274,4 @@ describe("narrative suggestion helpers", () => {
     expect(resolved.some((entry) => entry.t === "check status")).toBe(true);
   });
 });
+

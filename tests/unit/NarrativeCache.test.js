@@ -20,7 +20,7 @@ describe("initial narrative cache helpers", () => {
           current_quest_id: "quest_a",
           openingSceneChoicePending: true,
         },
-        location: { current: "starting_zone" },
+        location: { current: "city_neon_bazaar" },
       },
       quests: { active: [{ id: "quest_b" }, { id: "quest_a" }] },
       player: {
@@ -39,7 +39,7 @@ describe("initial narrative cache helpers", () => {
           current_quest_id: "quest_a",
           openingSceneChoicePending: true,
         },
-        location: "starting_zone",
+        location: "city_neon_bazaar",
       },
       quests: { active: [{ id: "quest_a" }, { id: "quest_b" }] },
       player: {
@@ -59,7 +59,7 @@ describe("initial narrative cache helpers", () => {
     const base = {
       world: {
         vars: { startingSceneId: "start_fog_clan_ashes", current_quest_id: "quest_a" },
-        location: { current: "starting_zone" },
+        location: { current: "city_neon_bazaar" },
       },
       quests: { active: [{ id: "quest_a" }] },
       player: {
@@ -96,3 +96,4 @@ describe("initial narrative cache helpers", () => {
     });
   });
 });
+

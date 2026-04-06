@@ -1,6 +1,7 @@
 import { random, randomChoice } from "../../utils/DeterministicRandom.js";
 import { normalizeUnifiedMagicState } from "./UnifiedMagicSystem.js";
 import {
+  DEFAULT_START_LOCATION_ID,
   findLocationsByZone,
   getBiomeEssenceProfile,
   getEssenceAnomalyById,
@@ -880,7 +881,8 @@ export function ensureEssenceWeavingState(state) {
   if (!player || !world) return state;
   const rollout = resolveMagicRollout(state?.config);
 
-  const locationId = world.location?.current || world.location || "starting_zone";
+  const locationId =
+    world.location?.current || world.location || DEFAULT_START_LOCATION_ID;
 
   const biome = world.location?.biome || null;
   const time = world.time || null;
@@ -941,7 +943,8 @@ export function processEssenceEcologyTurn(state) {
   if (!world || !player) return hydrated;
   const rollout = resolveMagicRollout(hydrated?.config);
 
-  const locationId = world.location?.current || world.location || "starting_zone";
+  const locationId =
+    world.location?.current || world.location || DEFAULT_START_LOCATION_ID;
   const biome = world.location?.biome || null;
   const turn = toNumberSafe(world.turnCount, 0);
 

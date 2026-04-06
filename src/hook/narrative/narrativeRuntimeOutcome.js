@@ -89,5 +89,11 @@ export function resolveNarrativeRuntimeOutcome({
       state,
     }),
     source: "fallback",
+    sceneMemory: mergeNarrativeSceneMemory(
+      state,
+      actionResult,
+      null,
+      fallbackNarrative,
+    ),
   };
 }

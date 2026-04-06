@@ -1,0 +1,441 @@
+﻿alchemy|minor_healing_potion|Minor Healing Potion|1|Minor Healing Potion crafted through alchemy.|2x common_herb, 1x water|{"heal":25}
+alchemy|minor_mana_potion|Minor Mana Potion|1|Minor Mana Potion crafted through alchemy.|2x spirit_flower, 1x water|{"mana":20}
+alchemy|healing_potion|Healing Potion|3|Healing Potion crafted through alchemy.|3x medicinal_herb, 1x purified_water|{"heal":75}
+alchemy|antidote|Antidote|3|Antidote crafted through alchemy.|2x antidote_herb, 1x charcoal|{"cure":"poison"}
+alchemy|mind_focus_elixir|Mind Focus Elixir|5|Mind Focus Elixir crafted through alchemy.|3x spirit_flower, 1x arcane_dust, 1x purified_water|{"mana":120,"spell_power":15,"duration":420}
+alchemy|aurora_flux|Aurora Flux|7|Aurora Flux crafted through alchemy.|1x void_essence, 2x ancient_root, 1x prismatic_powder|{"heal":250,"mana":150,"buff":"elemental_wrath","duration":600}
+alchemy|alchemy_basic_potion|Basic Potion|1|Basic Potion crafted through alchemy.|2x common_herb|none
+alchemy|alchemy_basic_elixir|Basic Elixir|1|Basic Elixir crafted through alchemy.|2x common_herb|none
+alchemy|alchemy_basic_tonic|Basic Tonic|1|Basic Tonic crafted through alchemy.|2x common_herb|none
+alchemy|alchemy_basic_catalyst|Basic Catalyst|1|Basic Catalyst crafted through alchemy.|2x common_herb|none
+alchemy|alchemy_sturdy_potion|Sturdy Potion|3|Sturdy Potion crafted through alchemy.|3x medicinal_herb|none
+alchemy|alchemy_sturdy_elixir|Sturdy Elixir|3|Sturdy Elixir crafted through alchemy.|3x medicinal_herb|none
+alchemy|alchemy_sturdy_tonic|Sturdy Tonic|3|Sturdy Tonic crafted through alchemy.|3x medicinal_herb|none
+alchemy|alchemy_sturdy_catalyst|Sturdy Catalyst|3|Sturdy Catalyst crafted through alchemy.|3x medicinal_herb|none
+alchemy|alchemy_enchanted_potion|Enchanted Potion|5|Enchanted Potion crafted through alchemy.|4x spirit_flower, 1x arcane_dust|none
+alchemy|alchemy_enchanted_elixir|Enchanted Elixir|5|Enchanted Elixir crafted through alchemy.|4x spirit_flower, 1x arcane_dust|none
+alchemy|alchemy_enchanted_tonic|Enchanted Tonic|5|Enchanted Tonic crafted through alchemy.|4x spirit_flower, 1x arcane_dust|none
+alchemy|alchemy_enchanted_catalyst|Enchanted Catalyst|5|Enchanted Catalyst crafted through alchemy.|4x spirit_flower, 1x arcane_dust|none
+alchemy|alchemy_masterwork_potion|Masterwork Potion|7|Masterwork Potion crafted through alchemy.|5x ancient_root, 1x spirit_essence|none
+alchemy|alchemy_masterwork_elixir|Masterwork Elixir|7|Masterwork Elixir crafted through alchemy.|5x ancient_root, 1x spirit_essence|none
+alchemy|alchemy_masterwork_tonic|Masterwork Tonic|7|Masterwork Tonic crafted through alchemy.|5x ancient_root, 1x spirit_essence|none
+alchemy|alchemy_masterwork_catalyst|Masterwork Catalyst|7|Masterwork Catalyst crafted through alchemy.|5x ancient_root, 1x spirit_essence|none
+alchemy|alchemy_mythic_potion|Mythic Potion|9|Mythic Potion crafted through alchemy.|6x void_essence, 1x primordial_essence, 1x rare_essence|none
+alchemy|alchemy_mythic_elixir|Mythic Elixir|9|Mythic Elixir crafted through alchemy.|6x void_essence, 1x primordial_essence, 1x rare_essence|none
+alchemy|alchemy_mythic_tonic|Mythic Tonic|9|Mythic Tonic crafted through alchemy.|6x void_essence, 1x primordial_essence, 1x rare_essence|none
+alchemy|alchemy_mythic_catalyst|Mythic Catalyst|9|Mythic Catalyst crafted through alchemy.|6x void_essence, 1x primordial_essence, 1x rare_essence|none
+blacksmithing|iron_ingot|Iron Ingot|1|Iron Ingot crafted through blacksmithing.|2x iron_ore|none
+blacksmithing|iron_dagger|Iron Dagger|1|Iron Dagger crafted through blacksmithing.|2x iron_ingot|none
+blacksmithing|iron_chainmail|Iron Chainmail|1|Iron Chainmail crafted through blacksmithing.|5x iron_ingot|none
+blacksmithing|steel_ingot|Steel Ingot|3|Steel Ingot crafted through blacksmithing.|2x iron_ingot, 1x coal|none
+blacksmithing|steel_sword|Steel Sword|3|Steel Sword crafted through blacksmithing.|4x steel_ingot, 1x leather|none
+blacksmithing|mythril_ingot|Mythril Ingot|5|Mythril Ingot crafted through blacksmithing.|3x mythril_ore, 1x spirit_essence|none
+blacksmithing|mythril_blade|Mythril Blade|5|Mythril Blade crafted through blacksmithing.|5x mythril_ingot, 2x enchanted_leather|none
+blacksmithing|soulforged_helmet|Soulforged Helmet|7|Soulforged Helmet crafted through blacksmithing.|4x adamantine_ingot, 1x soul_gem, 2x enchanted_leather|{"defense":45}
+blacksmithing|blacksmithing_basic_blade|Basic Blade|1|Basic Blade crafted through blacksmithing.|2x iron_ingot|none
+blacksmithing|blacksmithing_basic_shield|Basic Shield|1|Basic Shield crafted through blacksmithing.|2x iron_ingot|none
+blacksmithing|blacksmithing_basic_armor|Basic Armor|1|Basic Armor crafted through blacksmithing.|2x iron_ingot|none
+blacksmithing|blacksmithing_basic_tool|Basic Tool|1|Basic Tool crafted through blacksmithing.|2x iron_ingot|none
+blacksmithing|blacksmithing_sturdy_blade|Sturdy Blade|3|Sturdy Blade crafted through blacksmithing.|3x steel_ingot|none
+blacksmithing|blacksmithing_sturdy_shield|Sturdy Shield|3|Sturdy Shield crafted through blacksmithing.|3x steel_ingot|none
+blacksmithing|blacksmithing_sturdy_armor|Sturdy Armor|3|Sturdy Armor crafted through blacksmithing.|3x steel_ingot|none
+blacksmithing|blacksmithing_sturdy_tool|Sturdy Tool|3|Sturdy Tool crafted through blacksmithing.|3x steel_ingot|none
+blacksmithing|blacksmithing_enchanted_blade|Enchanted Blade|5|Enchanted Blade crafted through blacksmithing.|4x mythril_ingot, 1x arcane_dust|none
+blacksmithing|blacksmithing_enchanted_shield|Enchanted Shield|5|Enchanted Shield crafted through blacksmithing.|4x mythril_ingot, 1x arcane_dust|none
+blacksmithing|blacksmithing_enchanted_armor|Enchanted Armor|5|Enchanted Armor crafted through blacksmithing.|4x mythril_ingot, 1x arcane_dust|none
+blacksmithing|blacksmithing_enchanted_tool|Enchanted Tool|5|Enchanted Tool crafted through blacksmithing.|4x mythril_ingot, 1x arcane_dust|none
+blacksmithing|blacksmithing_masterwork_blade|Masterwork Blade|7|Masterwork Blade crafted through blacksmithing.|5x adamantine_ingot, 1x spirit_essence|none
+blacksmithing|blacksmithing_masterwork_shield|Masterwork Shield|7|Masterwork Shield crafted through blacksmithing.|5x adamantine_ingot, 1x spirit_essence|none
+blacksmithing|blacksmithing_masterwork_armor|Masterwork Armor|7|Masterwork Armor crafted through blacksmithing.|5x adamantine_ingot, 1x spirit_essence|none
+blacksmithing|blacksmithing_masterwork_tool|Masterwork Tool|7|Masterwork Tool crafted through blacksmithing.|5x adamantine_ingot, 1x spirit_essence|none
+blacksmithing|blacksmithing_mythic_blade|Mythic Blade|9|Mythic Blade crafted through blacksmithing.|6x divine_metal, 1x primordial_essence, 1x rare_essence|none
+blacksmithing|blacksmithing_mythic_shield|Mythic Shield|9|Mythic Shield crafted through blacksmithing.|6x divine_metal, 1x primordial_essence, 1x rare_essence|none
+blacksmithing|blacksmithing_mythic_armor|Mythic Armor|9|Mythic Armor crafted through blacksmithing.|6x divine_metal, 1x primordial_essence, 1x rare_essence|none
+blacksmithing|blacksmithing_mythic_tool|Mythic Tool|9|Mythic Tool crafted through blacksmithing.|6x divine_metal, 1x primordial_essence, 1x rare_essence|none
+brewing|brewing_basic_ale|Basic Ale|1|Basic Ale crafted through brewing.|2x grain|none
+brewing|brewing_basic_wine|Basic Wine|1|Basic Wine crafted through brewing.|2x grain|none
+brewing|brewing_basic_tonic|Basic Tonic|1|Basic Tonic crafted through brewing.|2x grain|none
+brewing|brewing_basic_elixir|Basic Elixir|1|Basic Elixir crafted through brewing.|2x grain|none
+brewing|brewing_sturdy_ale|Sturdy Ale|3|Sturdy Ale crafted through brewing.|3x fruit|none
+brewing|brewing_sturdy_wine|Sturdy Wine|3|Sturdy Wine crafted through brewing.|3x fruit|none
+brewing|brewing_sturdy_tonic|Sturdy Tonic|3|Sturdy Tonic crafted through brewing.|3x fruit|none
+brewing|brewing_sturdy_elixir|Sturdy Elixir|3|Sturdy Elixir crafted through brewing.|3x fruit|none
+brewing|brewing_enchanted_ale|Enchanted Ale|5|Enchanted Ale crafted through brewing.|4x spirit_flower, 1x arcane_dust|none
+brewing|brewing_enchanted_wine|Enchanted Wine|5|Enchanted Wine crafted through brewing.|4x spirit_flower, 1x arcane_dust|none
+brewing|brewing_enchanted_tonic|Enchanted Tonic|5|Enchanted Tonic crafted through brewing.|4x spirit_flower, 1x arcane_dust|none
+brewing|brewing_enchanted_elixir|Enchanted Elixir|5|Enchanted Elixir crafted through brewing.|4x spirit_flower, 1x arcane_dust|none
+brewing|brewing_masterwork_ale|Masterwork Ale|7|Masterwork Ale crafted through brewing.|5x void_essence, 1x spirit_essence|none
+brewing|brewing_masterwork_wine|Masterwork Wine|7|Masterwork Wine crafted through brewing.|5x void_essence, 1x spirit_essence|none
+brewing|brewing_masterwork_tonic|Masterwork Tonic|7|Masterwork Tonic crafted through brewing.|5x void_essence, 1x spirit_essence|none
+brewing|brewing_masterwork_elixir|Masterwork Elixir|7|Masterwork Elixir crafted through brewing.|5x void_essence, 1x spirit_essence|none
+brewing|brewing_mythic_ale|Mythic Ale|9|Mythic Ale crafted through brewing.|6x divine_nectar, 1x primordial_essence, 1x rare_essence|none
+brewing|brewing_mythic_wine|Mythic Wine|9|Mythic Wine crafted through brewing.|6x divine_nectar, 1x primordial_essence, 1x rare_essence|none
+brewing|brewing_mythic_tonic|Mythic Tonic|9|Mythic Tonic crafted through brewing.|6x divine_nectar, 1x primordial_essence, 1x rare_essence|none
+brewing|brewing_mythic_elixir|Mythic Elixir|9|Mythic Elixir crafted through brewing.|6x divine_nectar, 1x primordial_essence, 1x rare_essence|none
+butchery|butchery_basic_cured_meat|Basic Cured Meat|1|Basic Cured Meat crafted through butchery.|2x raw_meat|none
+butchery|butchery_basic_jerky|Basic Jerky|1|Basic Jerky crafted through butchery.|2x raw_meat|none
+butchery|butchery_basic_sausage|Basic Sausage|1|Basic Sausage crafted through butchery.|2x raw_meat|none
+butchery|butchery_basic_ration|Basic Ration|1|Basic Ration crafted through butchery.|2x raw_meat|none
+butchery|butchery_sturdy_cured_meat|Sturdy Cured Meat|3|Sturdy Cured Meat crafted through butchery.|3x prime_meat|none
+butchery|butchery_sturdy_jerky|Sturdy Jerky|3|Sturdy Jerky crafted through butchery.|3x prime_meat|none
+butchery|butchery_sturdy_sausage|Sturdy Sausage|3|Sturdy Sausage crafted through butchery.|3x prime_meat|none
+butchery|butchery_sturdy_ration|Sturdy Ration|3|Sturdy Ration crafted through butchery.|3x prime_meat|none
+butchery|butchery_enchanted_cured_meat|Enchanted Cured Meat|5|Enchanted Cured Meat crafted through butchery.|4x exotic_meat, 1x arcane_dust|none
+butchery|butchery_enchanted_jerky|Enchanted Jerky|5|Enchanted Jerky crafted through butchery.|4x exotic_meat, 1x arcane_dust|none
+butchery|butchery_enchanted_sausage|Enchanted Sausage|5|Enchanted Sausage crafted through butchery.|4x exotic_meat, 1x arcane_dust|none
+butchery|butchery_enchanted_ration|Enchanted Ration|5|Enchanted Ration crafted through butchery.|4x exotic_meat, 1x arcane_dust|none
+butchery|butchery_masterwork_cured_meat|Masterwork Cured Meat|7|Masterwork Cured Meat crafted through butchery.|5x dragon_steak, 1x spirit_essence|none
+butchery|butchery_masterwork_jerky|Masterwork Jerky|7|Masterwork Jerky crafted through butchery.|5x dragon_steak, 1x spirit_essence|none
+butchery|butchery_masterwork_sausage|Masterwork Sausage|7|Masterwork Sausage crafted through butchery.|5x dragon_steak, 1x spirit_essence|none
+butchery|butchery_masterwork_ration|Masterwork Ration|7|Masterwork Ration crafted through butchery.|5x dragon_steak, 1x spirit_essence|none
+butchery|butchery_mythic_cured_meat|Mythic Cured Meat|9|Mythic Cured Meat crafted through butchery.|6x divine_flesh, 1x primordial_essence, 1x rare_essence|none
+butchery|butchery_mythic_jerky|Mythic Jerky|9|Mythic Jerky crafted through butchery.|6x divine_flesh, 1x primordial_essence, 1x rare_essence|none
+butchery|butchery_mythic_sausage|Mythic Sausage|9|Mythic Sausage crafted through butchery.|6x divine_flesh, 1x primordial_essence, 1x rare_essence|none
+butchery|butchery_mythic_ration|Mythic Ration|9|Mythic Ration crafted through butchery.|6x divine_flesh, 1x primordial_essence, 1x rare_essence|none
+construction|construction_basic_wall|Basic Wall|1|Basic Wall crafted through construction.|2x timber|none
+construction|construction_basic_gate|Basic Gate|1|Basic Gate crafted through construction.|2x timber|none
+construction|construction_basic_tower|Basic Tower|1|Basic Tower crafted through construction.|2x timber|none
+construction|construction_basic_workshop|Basic Workshop|1|Basic Workshop crafted through construction.|2x timber|none
+construction|construction_sturdy_wall|Sturdy Wall|3|Sturdy Wall crafted through construction.|3x stone_block|none
+construction|construction_sturdy_gate|Sturdy Gate|3|Sturdy Gate crafted through construction.|3x stone_block|none
+construction|construction_sturdy_tower|Sturdy Tower|3|Sturdy Tower crafted through construction.|3x stone_block|none
+construction|construction_sturdy_workshop|Sturdy Workshop|3|Sturdy Workshop crafted through construction.|3x stone_block|none
+construction|construction_enchanted_wall|Enchanted Wall|5|Enchanted Wall crafted through construction.|4x reinforced_brick, 1x arcane_dust|none
+construction|construction_enchanted_gate|Enchanted Gate|5|Enchanted Gate crafted through construction.|4x reinforced_brick, 1x arcane_dust|none
+construction|construction_enchanted_tower|Enchanted Tower|5|Enchanted Tower crafted through construction.|4x reinforced_brick, 1x arcane_dust|none
+construction|construction_enchanted_workshop|Enchanted Workshop|5|Enchanted Workshop crafted through construction.|4x reinforced_brick, 1x arcane_dust|none
+construction|construction_masterwork_wall|Masterwork Wall|7|Masterwork Wall crafted through construction.|5x enchanted_masonry, 1x spirit_essence|none
+construction|construction_masterwork_gate|Masterwork Gate|7|Masterwork Gate crafted through construction.|5x enchanted_masonry, 1x spirit_essence|none
+construction|construction_masterwork_tower|Masterwork Tower|7|Masterwork Tower crafted through construction.|5x enchanted_masonry, 1x spirit_essence|none
+construction|construction_masterwork_workshop|Masterwork Workshop|7|Masterwork Workshop crafted through construction.|5x enchanted_masonry, 1x spirit_essence|none
+construction|construction_mythic_wall|Mythic Wall|9|Mythic Wall crafted through construction.|6x void_structure, 1x primordial_essence, 1x rare_essence|none
+construction|construction_mythic_gate|Mythic Gate|9|Mythic Gate crafted through construction.|6x void_structure, 1x primordial_essence, 1x rare_essence|none
+construction|construction_mythic_tower|Mythic Tower|9|Mythic Tower crafted through construction.|6x void_structure, 1x primordial_essence, 1x rare_essence|none
+construction|construction_mythic_workshop|Mythic Workshop|9|Mythic Workshop crafted through construction.|6x void_structure, 1x primordial_essence, 1x rare_essence|none
+cooking|simple_meal|Simple Meal|1|Simple Meal crafted through cooking.|1x raw_meat, 1x vegetables|{"hp_regen":2,"duration":300}
+cooking|bread|Bread|1|Bread crafted through cooking.|2x flour, 1x water|{"hp_regen":1,"duration":180}
+cooking|hearty_stew|Hearty Stew|3|Hearty Stew crafted through cooking.|2x prime_meat, 2x vegetables, 1x spices|{"hp_regen":5,"stamina":10,"duration":600}
+cooking|cooking_basic_meal|Basic Meal|1|Basic Meal crafted through cooking.|2x raw_meat|none
+cooking|cooking_basic_stew|Basic Stew|1|Basic Stew crafted through cooking.|2x raw_meat|none
+cooking|cooking_basic_skewer|Basic Skewer|1|Basic Skewer crafted through cooking.|2x raw_meat|none
+cooking|cooking_basic_dessert|Basic Dessert|1|Basic Dessert crafted through cooking.|2x raw_meat|none
+cooking|cooking_sturdy_meal|Sturdy Meal|3|Sturdy Meal crafted through cooking.|3x prime_meat|none
+cooking|cooking_sturdy_stew|Sturdy Stew|3|Sturdy Stew crafted through cooking.|3x prime_meat|none
+cooking|cooking_sturdy_skewer|Sturdy Skewer|3|Sturdy Skewer crafted through cooking.|3x prime_meat|none
+cooking|cooking_sturdy_dessert|Sturdy Dessert|3|Sturdy Dessert crafted through cooking.|3x prime_meat|none
+cooking|cooking_enchanted_meal|Enchanted Meal|5|Enchanted Meal crafted through cooking.|4x spices, 1x arcane_dust|none
+cooking|cooking_enchanted_stew|Enchanted Stew|5|Enchanted Stew crafted through cooking.|4x spices, 1x arcane_dust|none
+cooking|cooking_enchanted_skewer|Enchanted Skewer|5|Enchanted Skewer crafted through cooking.|4x spices, 1x arcane_dust|none
+cooking|cooking_enchanted_dessert|Enchanted Dessert|5|Enchanted Dessert crafted through cooking.|4x spices, 1x arcane_dust|none
+cooking|cooking_masterwork_meal|Masterwork Meal|7|Masterwork Meal crafted through cooking.|5x rare_herb, 1x spirit_essence|none
+cooking|cooking_masterwork_stew|Masterwork Stew|7|Masterwork Stew crafted through cooking.|5x rare_herb, 1x spirit_essence|none
+cooking|cooking_masterwork_skewer|Masterwork Skewer|7|Masterwork Skewer crafted through cooking.|5x rare_herb, 1x spirit_essence|none
+cooking|cooking_masterwork_dessert|Masterwork Dessert|7|Masterwork Dessert crafted through cooking.|5x rare_herb, 1x spirit_essence|none
+cooking|cooking_mythic_meal|Mythic Meal|9|Mythic Meal crafted through cooking.|6x divine_flesh, 1x primordial_essence, 1x rare_essence|none
+cooking|cooking_mythic_stew|Mythic Stew|9|Mythic Stew crafted through cooking.|6x divine_flesh, 1x primordial_essence, 1x rare_essence|none
+cooking|cooking_mythic_skewer|Mythic Skewer|9|Mythic Skewer crafted through cooking.|6x divine_flesh, 1x primordial_essence, 1x rare_essence|none
+cooking|cooking_mythic_dessert|Mythic Dessert|9|Mythic Dessert crafted through cooking.|6x divine_flesh, 1x primordial_essence, 1x rare_essence|none
+dyeing|dyeing_basic_dye|Basic Dye|1|Basic Dye crafted through dyeing.|2x basic_dye|none
+dyeing|dyeing_basic_pattern|Basic Pattern|1|Basic Pattern crafted through dyeing.|2x basic_dye|none
+dyeing|dyeing_basic_glamour|Basic Glamour|1|Basic Glamour crafted through dyeing.|2x basic_dye|none
+dyeing|dyeing_basic_finish|Basic Finish|1|Basic Finish crafted through dyeing.|2x basic_dye|none
+dyeing|dyeing_sturdy_dye|Sturdy Dye|3|Sturdy Dye crafted through dyeing.|3x metallic_pigment|none
+dyeing|dyeing_sturdy_pattern|Sturdy Pattern|3|Sturdy Pattern crafted through dyeing.|3x metallic_pigment|none
+dyeing|dyeing_sturdy_glamour|Sturdy Glamour|3|Sturdy Glamour crafted through dyeing.|3x metallic_pigment|none
+dyeing|dyeing_sturdy_finish|Sturdy Finish|3|Sturdy Finish crafted through dyeing.|3x metallic_pigment|none
+dyeing|dyeing_enchanted_dye|Enchanted Dye|5|Enchanted Dye crafted through dyeing.|4x prismatic_pigment, 1x arcane_dust|none
+dyeing|dyeing_enchanted_pattern|Enchanted Pattern|5|Enchanted Pattern crafted through dyeing.|4x prismatic_pigment, 1x arcane_dust|none
+dyeing|dyeing_enchanted_glamour|Enchanted Glamour|5|Enchanted Glamour crafted through dyeing.|4x prismatic_pigment, 1x arcane_dust|none
+dyeing|dyeing_enchanted_finish|Enchanted Finish|5|Enchanted Finish crafted through dyeing.|4x prismatic_pigment, 1x arcane_dust|none
+dyeing|dyeing_masterwork_dye|Masterwork Dye|7|Masterwork Dye crafted through dyeing.|5x illusion_dust, 1x spirit_essence|none
+dyeing|dyeing_masterwork_pattern|Masterwork Pattern|7|Masterwork Pattern crafted through dyeing.|5x illusion_dust, 1x spirit_essence|none
+dyeing|dyeing_masterwork_glamour|Masterwork Glamour|7|Masterwork Glamour crafted through dyeing.|5x illusion_dust, 1x spirit_essence|none
+dyeing|dyeing_masterwork_finish|Masterwork Finish|7|Masterwork Finish crafted through dyeing.|5x illusion_dust, 1x spirit_essence|none
+dyeing|dyeing_mythic_dye|Mythic Dye|9|Mythic Dye crafted through dyeing.|6x divine_radiance, 1x primordial_essence, 1x rare_essence|none
+dyeing|dyeing_mythic_pattern|Mythic Pattern|9|Mythic Pattern crafted through dyeing.|6x divine_radiance, 1x primordial_essence, 1x rare_essence|none
+dyeing|dyeing_mythic_glamour|Mythic Glamour|9|Mythic Glamour crafted through dyeing.|6x divine_radiance, 1x primordial_essence, 1x rare_essence|none
+dyeing|dyeing_mythic_finish|Mythic Finish|9|Mythic Finish crafted through dyeing.|6x divine_radiance, 1x primordial_essence, 1x rare_essence|none
+enchanting|mindshield_charm|Mindshield Charm|3|Mindshield Charm crafted through enchanting.|1x silver_ring, 1x wisdom_essence, 1x arcane_ink|{"resist":"fear","willpower":8}
+enchanting|stormbrand_enchant|Stormbrand Enchant|6|Stormbrand Enchant crafted through enchanting.|1x mythril_blade, 1x lightning_core, 2x soulthread|{"damage":"+18 lightning","proc":"chain_lightning"}
+enchanting|enchanting_basic_rune|Basic Rune|1|Basic Rune crafted through enchanting.|2x arcane_ink|none
+enchanting|enchanting_basic_sigil|Basic Sigil|1|Basic Sigil crafted through enchanting.|2x arcane_ink|none
+enchanting|enchanting_basic_ward|Basic Ward|1|Basic Ward crafted through enchanting.|2x arcane_ink|none
+enchanting|enchanting_basic_charm|Basic Charm|1|Basic Charm crafted through enchanting.|2x arcane_ink|none
+enchanting|enchanting_sturdy_rune|Sturdy Rune|3|Sturdy Rune crafted through enchanting.|3x elemental_shard|none
+enchanting|enchanting_sturdy_sigil|Sturdy Sigil|3|Sturdy Sigil crafted through enchanting.|3x elemental_shard|none
+enchanting|enchanting_sturdy_ward|Sturdy Ward|3|Sturdy Ward crafted through enchanting.|3x elemental_shard|none
+enchanting|enchanting_sturdy_charm|Sturdy Charm|3|Sturdy Charm crafted through enchanting.|3x elemental_shard|none
+enchanting|enchanting_enchanted_rune|Enchanted Rune|5|Enchanted Rune crafted through enchanting.|4x soul_gem, 1x arcane_dust|none
+enchanting|enchanting_enchanted_sigil|Enchanted Sigil|5|Enchanted Sigil crafted through enchanting.|4x soul_gem, 1x arcane_dust|none
+enchanting|enchanting_enchanted_ward|Enchanted Ward|5|Enchanted Ward crafted through enchanting.|4x soul_gem, 1x arcane_dust|none
+enchanting|enchanting_enchanted_charm|Enchanted Charm|5|Enchanted Charm crafted through enchanting.|4x soul_gem, 1x arcane_dust|none
+enchanting|enchanting_masterwork_rune|Masterwork Rune|7|Masterwork Rune crafted through enchanting.|5x void_essence, 1x spirit_essence|none
+enchanting|enchanting_masterwork_sigil|Masterwork Sigil|7|Masterwork Sigil crafted through enchanting.|5x void_essence, 1x spirit_essence|none
+enchanting|enchanting_masterwork_ward|Masterwork Ward|7|Masterwork Ward crafted through enchanting.|5x void_essence, 1x spirit_essence|none
+enchanting|enchanting_masterwork_charm|Masterwork Charm|7|Masterwork Charm crafted through enchanting.|5x void_essence, 1x spirit_essence|none
+enchanting|enchanting_mythic_rune|Mythic Rune|9|Mythic Rune crafted through enchanting.|6x primordial_essence, 1x primordial_essence, 1x rare_essence|none
+enchanting|enchanting_mythic_sigil|Mythic Sigil|9|Mythic Sigil crafted through enchanting.|6x primordial_essence, 1x primordial_essence, 1x rare_essence|none
+enchanting|enchanting_mythic_ward|Mythic Ward|9|Mythic Ward crafted through enchanting.|6x primordial_essence, 1x primordial_essence, 1x rare_essence|none
+enchanting|enchanting_mythic_charm|Mythic Charm|9|Mythic Charm crafted through enchanting.|6x primordial_essence, 1x primordial_essence, 1x rare_essence|none
+engineering|engineering_basic_bomb|Basic Bomb|1|Basic Bomb crafted through engineering.|2x copper_gear|none
+engineering|engineering_basic_turret|Basic Turret|1|Basic Turret crafted through engineering.|2x copper_gear|none
+engineering|engineering_basic_gadget|Basic Gadget|1|Basic Gadget crafted through engineering.|2x copper_gear|none
+engineering|engineering_basic_automaton|Basic Automaton|1|Basic Automaton crafted through engineering.|2x copper_gear|none
+engineering|engineering_sturdy_bomb|Sturdy Bomb|3|Sturdy Bomb crafted through engineering.|3x steel_gear|none
+engineering|engineering_sturdy_turret|Sturdy Turret|3|Sturdy Turret crafted through engineering.|3x steel_gear|none
+engineering|engineering_sturdy_gadget|Sturdy Gadget|3|Sturdy Gadget crafted through engineering.|3x steel_gear|none
+engineering|engineering_sturdy_automaton|Sturdy Automaton|3|Sturdy Automaton crafted through engineering.|3x steel_gear|none
+engineering|engineering_enchanted_bomb|Enchanted Bomb|5|Enchanted Bomb crafted through engineering.|4x arcane_core, 1x arcane_dust|none
+engineering|engineering_enchanted_turret|Enchanted Turret|5|Enchanted Turret crafted through engineering.|4x arcane_core, 1x arcane_dust|none
+engineering|engineering_enchanted_gadget|Enchanted Gadget|5|Enchanted Gadget crafted through engineering.|4x arcane_core, 1x arcane_dust|none
+engineering|engineering_enchanted_automaton|Enchanted Automaton|5|Enchanted Automaton crafted through engineering.|4x arcane_core, 1x arcane_dust|none
+engineering|engineering_masterwork_bomb|Masterwork Bomb|7|Masterwork Bomb crafted through engineering.|5x mana_battery, 1x spirit_essence|none
+engineering|engineering_masterwork_turret|Masterwork Turret|7|Masterwork Turret crafted through engineering.|5x mana_battery, 1x spirit_essence|none
+engineering|engineering_masterwork_gadget|Masterwork Gadget|7|Masterwork Gadget crafted through engineering.|5x mana_battery, 1x spirit_essence|none
+engineering|engineering_masterwork_automaton|Masterwork Automaton|7|Masterwork Automaton crafted through engineering.|5x mana_battery, 1x spirit_essence|none
+engineering|engineering_mythic_bomb|Mythic Bomb|9|Mythic Bomb crafted through engineering.|6x void_capacitor, 1x primordial_essence, 1x rare_essence|none
+engineering|engineering_mythic_turret|Mythic Turret|9|Mythic Turret crafted through engineering.|6x void_capacitor, 1x primordial_essence, 1x rare_essence|none
+engineering|engineering_mythic_gadget|Mythic Gadget|9|Mythic Gadget crafted through engineering.|6x void_capacitor, 1x primordial_essence, 1x rare_essence|none
+engineering|engineering_mythic_automaton|Mythic Automaton|9|Mythic Automaton crafted through engineering.|6x void_capacitor, 1x primordial_essence, 1x rare_essence|none
+farming|farming_basic_grain_sack|Basic Grain Sack|1|Basic Grain Sack crafted through farming.|2x wheat|none
+farming|farming_basic_fertilizer|Basic Fertilizer|1|Basic Fertilizer crafted through farming.|2x wheat|none
+farming|farming_basic_seedling|Basic Seedling|1|Basic Seedling crafted through farming.|2x wheat|none
+farming|farming_basic_harvest_feast|Basic Harvest Feast|1|Basic Harvest Feast crafted through farming.|2x wheat|none
+farming|farming_sturdy_grain_sack|Sturdy Grain Sack|3|Sturdy Grain Sack crafted through farming.|3x fruit|none
+farming|farming_sturdy_fertilizer|Sturdy Fertilizer|3|Sturdy Fertilizer crafted through farming.|3x fruit|none
+farming|farming_sturdy_seedling|Sturdy Seedling|3|Sturdy Seedling crafted through farming.|3x fruit|none
+farming|farming_sturdy_harvest_feast|Sturdy Harvest Feast|3|Sturdy Harvest Feast crafted through farming.|3x fruit|none
+farming|farming_enchanted_grain_sack|Enchanted Grain Sack|5|Enchanted Grain Sack crafted through farming.|4x magical_crop, 1x arcane_dust|none
+farming|farming_enchanted_fertilizer|Enchanted Fertilizer|5|Enchanted Fertilizer crafted through farming.|4x magical_crop, 1x arcane_dust|none
+farming|farming_enchanted_seedling|Enchanted Seedling|5|Enchanted Seedling crafted through farming.|4x magical_crop, 1x arcane_dust|none
+farming|farming_enchanted_harvest_feast|Enchanted Harvest Feast|5|Enchanted Harvest Feast crafted through farming.|4x magical_crop, 1x arcane_dust|none
+farming|farming_masterwork_grain_sack|Masterwork Grain Sack|7|Masterwork Grain Sack crafted through farming.|5x ancient_seed, 1x spirit_essence|none
+farming|farming_masterwork_fertilizer|Masterwork Fertilizer|7|Masterwork Fertilizer crafted through farming.|5x ancient_seed, 1x spirit_essence|none
+farming|farming_masterwork_seedling|Masterwork Seedling|7|Masterwork Seedling crafted through farming.|5x ancient_seed, 1x spirit_essence|none
+farming|farming_masterwork_harvest_feast|Masterwork Harvest Feast|7|Masterwork Harvest Feast crafted through farming.|5x ancient_seed, 1x spirit_essence|none
+farming|farming_mythic_grain_sack|Mythic Grain Sack|9|Mythic Grain Sack crafted through farming.|6x divine_harvest, 1x primordial_essence, 1x rare_essence|none
+farming|farming_mythic_fertilizer|Mythic Fertilizer|9|Mythic Fertilizer crafted through farming.|6x divine_harvest, 1x primordial_essence, 1x rare_essence|none
+farming|farming_mythic_seedling|Mythic Seedling|9|Mythic Seedling crafted through farming.|6x divine_harvest, 1x primordial_essence, 1x rare_essence|none
+farming|farming_mythic_harvest_feast|Mythic Harvest Feast|9|Mythic Harvest Feast crafted through farming.|6x divine_harvest, 1x primordial_essence, 1x rare_essence|none
+first_aid|first_aid_basic_bandage|Basic Bandage|1|Basic Bandage crafted through first aid.|2x clean_cloth|none
+first_aid|first_aid_basic_salve|Basic Salve|1|Basic Salve crafted through first aid.|2x clean_cloth|none
+first_aid|first_aid_basic_kit|Basic Kit|1|Basic Kit crafted through first aid.|2x clean_cloth|none
+first_aid|first_aid_basic_antidote|Basic Antidote|1|Basic Antidote crafted through first aid.|2x clean_cloth|none
+first_aid|first_aid_sturdy_bandage|Sturdy Bandage|3|Sturdy Bandage crafted through first aid.|3x herb_paste|none
+first_aid|first_aid_sturdy_salve|Sturdy Salve|3|Sturdy Salve crafted through first aid.|3x herb_paste|none
+first_aid|first_aid_sturdy_kit|Sturdy Kit|3|Sturdy Kit crafted through first aid.|3x herb_paste|none
+first_aid|first_aid_sturdy_antidote|Sturdy Antidote|3|Sturdy Antidote crafted through first aid.|3x herb_paste|none
+first_aid|first_aid_enchanted_bandage|Enchanted Bandage|5|Enchanted Bandage crafted through first aid.|4x healing_kit, 1x arcane_dust|none
+first_aid|first_aid_enchanted_salve|Enchanted Salve|5|Enchanted Salve crafted through first aid.|4x healing_kit, 1x arcane_dust|none
+first_aid|first_aid_enchanted_kit|Enchanted Kit|5|Enchanted Kit crafted through first aid.|4x healing_kit, 1x arcane_dust|none
+first_aid|first_aid_enchanted_antidote|Enchanted Antidote|5|Enchanted Antidote crafted through first aid.|4x healing_kit, 1x arcane_dust|none
+first_aid|first_aid_masterwork_bandage|Masterwork Bandage|7|Masterwork Bandage crafted through first aid.|5x regeneration_kit, 1x spirit_essence|none
+first_aid|first_aid_masterwork_salve|Masterwork Salve|7|Masterwork Salve crafted through first aid.|5x regeneration_kit, 1x spirit_essence|none
+first_aid|first_aid_masterwork_kit|Masterwork Kit|7|Masterwork Kit crafted through first aid.|5x regeneration_kit, 1x spirit_essence|none
+first_aid|first_aid_masterwork_antidote|Masterwork Antidote|7|Masterwork Antidote crafted through first aid.|5x regeneration_kit, 1x spirit_essence|none
+first_aid|first_aid_mythic_bandage|Mythic Bandage|9|Mythic Bandage crafted through first aid.|6x divine_intervention_kit, 1x primordial_essence, 1x rare_essence|none
+first_aid|first_aid_mythic_salve|Mythic Salve|9|Mythic Salve crafted through first aid.|6x divine_intervention_kit, 1x primordial_essence, 1x rare_essence|none
+first_aid|first_aid_mythic_kit|Mythic Kit|9|Mythic Kit crafted through first aid.|6x divine_intervention_kit, 1x primordial_essence, 1x rare_essence|none
+first_aid|first_aid_mythic_antidote|Mythic Antidote|9|Mythic Antidote crafted through first aid.|6x divine_intervention_kit, 1x primordial_essence, 1x rare_essence|none
+fishing|fishing_basic_fish_fillet|Basic Fish Fillet|1|Basic Fish Fillet crafted through fishing.|2x common_fish|none
+fishing|fishing_basic_oil|Basic Oil|1|Basic Oil crafted through fishing.|2x common_fish|none
+fishing|fishing_basic_bait|Basic Bait|1|Basic Bait crafted through fishing.|2x common_fish|none
+fishing|fishing_basic_talisman|Basic Talisman|1|Basic Talisman crafted through fishing.|2x common_fish|none
+fishing|fishing_sturdy_fish_fillet|Sturdy Fish Fillet|3|Sturdy Fish Fillet crafted through fishing.|3x rare_fish|none
+fishing|fishing_sturdy_oil|Sturdy Oil|3|Sturdy Oil crafted through fishing.|3x rare_fish|none
+fishing|fishing_sturdy_bait|Sturdy Bait|3|Sturdy Bait crafted through fishing.|3x rare_fish|none
+fishing|fishing_sturdy_talisman|Sturdy Talisman|3|Sturdy Talisman crafted through fishing.|3x rare_fish|none
+fishing|fishing_enchanted_fish_fillet|Enchanted Fish Fillet|5|Enchanted Fish Fillet crafted through fishing.|4x magical_fish, 1x arcane_dust|none
+fishing|fishing_enchanted_oil|Enchanted Oil|5|Enchanted Oil crafted through fishing.|4x magical_fish, 1x arcane_dust|none
+fishing|fishing_enchanted_bait|Enchanted Bait|5|Enchanted Bait crafted through fishing.|4x magical_fish, 1x arcane_dust|none
+fishing|fishing_enchanted_talisman|Enchanted Talisman|5|Enchanted Talisman crafted through fishing.|4x magical_fish, 1x arcane_dust|none
+fishing|fishing_masterwork_fish_fillet|Masterwork Fish Fillet|7|Masterwork Fish Fillet crafted through fishing.|5x legendary_fish, 1x spirit_essence|none
+fishing|fishing_masterwork_oil|Masterwork Oil|7|Masterwork Oil crafted through fishing.|5x legendary_fish, 1x spirit_essence|none
+fishing|fishing_masterwork_bait|Masterwork Bait|7|Masterwork Bait crafted through fishing.|5x legendary_fish, 1x spirit_essence|none
+fishing|fishing_masterwork_talisman|Masterwork Talisman|7|Masterwork Talisman crafted through fishing.|5x legendary_fish, 1x spirit_essence|none
+fishing|fishing_mythic_fish_fillet|Mythic Fish Fillet|9|Mythic Fish Fillet crafted through fishing.|6x divine_fish, 1x primordial_essence, 1x rare_essence|none
+fishing|fishing_mythic_oil|Mythic Oil|9|Mythic Oil crafted through fishing.|6x divine_fish, 1x primordial_essence, 1x rare_essence|none
+fishing|fishing_mythic_bait|Mythic Bait|9|Mythic Bait crafted through fishing.|6x divine_fish, 1x primordial_essence, 1x rare_essence|none
+fishing|fishing_mythic_talisman|Mythic Talisman|9|Mythic Talisman crafted through fishing.|6x divine_fish, 1x primordial_essence, 1x rare_essence|none
+herbalism|herbalism_basic_herb_bundle|Basic Herb Bundle|1|Basic Herb Bundle crafted through herbalism.|2x common_herb|none
+herbalism|herbalism_basic_tonic|Basic Tonic|1|Basic Tonic crafted through herbalism.|2x common_herb|none
+herbalism|herbalism_basic_salve|Basic Salve|1|Basic Salve crafted through herbalism.|2x common_herb|none
+herbalism|herbalism_basic_draught|Basic Draught|1|Basic Draught crafted through herbalism.|2x common_herb|none
+herbalism|herbalism_sturdy_herb_bundle|Sturdy Herb Bundle|3|Sturdy Herb Bundle crafted through herbalism.|3x medicinal_herb|none
+herbalism|herbalism_sturdy_tonic|Sturdy Tonic|3|Sturdy Tonic crafted through herbalism.|3x medicinal_herb|none
+herbalism|herbalism_sturdy_salve|Sturdy Salve|3|Sturdy Salve crafted through herbalism.|3x medicinal_herb|none
+herbalism|herbalism_sturdy_draught|Sturdy Draught|3|Sturdy Draught crafted through herbalism.|3x medicinal_herb|none
+herbalism|herbalism_enchanted_herb_bundle|Enchanted Herb Bundle|5|Enchanted Herb Bundle crafted through herbalism.|4x spirit_flower, 1x arcane_dust|none
+herbalism|herbalism_enchanted_tonic|Enchanted Tonic|5|Enchanted Tonic crafted through herbalism.|4x spirit_flower, 1x arcane_dust|none
+herbalism|herbalism_enchanted_salve|Enchanted Salve|5|Enchanted Salve crafted through herbalism.|4x spirit_flower, 1x arcane_dust|none
+herbalism|herbalism_enchanted_draught|Enchanted Draught|5|Enchanted Draught crafted through herbalism.|4x spirit_flower, 1x arcane_dust|none
+herbalism|herbalism_masterwork_herb_bundle|Masterwork Herb Bundle|7|Masterwork Herb Bundle crafted through herbalism.|5x ancient_root, 1x spirit_essence|none
+herbalism|herbalism_masterwork_tonic|Masterwork Tonic|7|Masterwork Tonic crafted through herbalism.|5x ancient_root, 1x spirit_essence|none
+herbalism|herbalism_masterwork_salve|Masterwork Salve|7|Masterwork Salve crafted through herbalism.|5x ancient_root, 1x spirit_essence|none
+herbalism|herbalism_masterwork_draught|Masterwork Draught|7|Masterwork Draught crafted through herbalism.|5x ancient_root, 1x spirit_essence|none
+herbalism|herbalism_mythic_herb_bundle|Mythic Herb Bundle|9|Mythic Herb Bundle crafted through herbalism.|6x divine_bloom, 1x primordial_essence, 1x rare_essence|none
+herbalism|herbalism_mythic_tonic|Mythic Tonic|9|Mythic Tonic crafted through herbalism.|6x divine_bloom, 1x primordial_essence, 1x rare_essence|none
+herbalism|herbalism_mythic_salve|Mythic Salve|9|Mythic Salve crafted through herbalism.|6x divine_bloom, 1x primordial_essence, 1x rare_essence|none
+herbalism|herbalism_mythic_draught|Mythic Draught|9|Mythic Draught crafted through herbalism.|6x divine_bloom, 1x primordial_essence, 1x rare_essence|none
+inscription|scroll_of_light|Scroll of Light|1|Scroll of Light crafted through inscription.|1x parchment, 1x light_ink|{"spell":"light","charges":3}
+inscription|basic_glyph|Basic Glyph|1|Basic Glyph crafted through inscription.|1x stone_tablet, 1x arcane_ink|{"buff":"minor_protection","duration":300}
+inscription|inscription_basic_scroll|Basic Scroll|1|Basic Scroll crafted through inscription.|2x parchment|none
+inscription|inscription_basic_glyph|Basic Glyph|1|Basic Glyph crafted through inscription.|2x parchment|none
+inscription|inscription_basic_rune|Basic Rune|1|Basic Rune crafted through inscription.|2x parchment|none
+inscription|inscription_basic_contract|Basic Contract|1|Basic Contract crafted through inscription.|2x parchment|none
+inscription|inscription_sturdy_scroll|Sturdy Scroll|3|Sturdy Scroll crafted through inscription.|3x arcane_ink|none
+inscription|inscription_sturdy_glyph|Sturdy Glyph|3|Sturdy Glyph crafted through inscription.|3x arcane_ink|none
+inscription|inscription_sturdy_rune|Sturdy Rune|3|Sturdy Rune crafted through inscription.|3x arcane_ink|none
+inscription|inscription_sturdy_contract|Sturdy Contract|3|Sturdy Contract crafted through inscription.|3x arcane_ink|none
+inscription|inscription_enchanted_scroll|Enchanted Scroll|5|Enchanted Scroll crafted through inscription.|4x rune_stone, 1x arcane_dust|none
+inscription|inscription_enchanted_glyph|Enchanted Glyph|5|Enchanted Glyph crafted through inscription.|4x rune_stone, 1x arcane_dust|none
+inscription|inscription_enchanted_rune|Enchanted Rune|5|Enchanted Rune crafted through inscription.|4x rune_stone, 1x arcane_dust|none
+inscription|inscription_enchanted_contract|Enchanted Contract|5|Enchanted Contract crafted through inscription.|4x rune_stone, 1x arcane_dust|none
+inscription|inscription_masterwork_scroll|Masterwork Scroll|7|Masterwork Scroll crafted through inscription.|5x soul_ink, 1x spirit_essence|none
+inscription|inscription_masterwork_glyph|Masterwork Glyph|7|Masterwork Glyph crafted through inscription.|5x soul_ink, 1x spirit_essence|none
+inscription|inscription_masterwork_rune|Masterwork Rune|7|Masterwork Rune crafted through inscription.|5x soul_ink, 1x spirit_essence|none
+inscription|inscription_masterwork_contract|Masterwork Contract|7|Masterwork Contract crafted through inscription.|5x soul_ink, 1x spirit_essence|none
+inscription|inscription_mythic_scroll|Mythic Scroll|9|Mythic Scroll crafted through inscription.|6x void_ink, 1x primordial_essence, 1x rare_essence|none
+inscription|inscription_mythic_glyph|Mythic Glyph|9|Mythic Glyph crafted through inscription.|6x void_ink, 1x primordial_essence, 1x rare_essence|none
+inscription|inscription_mythic_rune|Mythic Rune|9|Mythic Rune crafted through inscription.|6x void_ink, 1x primordial_essence, 1x rare_essence|none
+inscription|inscription_mythic_contract|Mythic Contract|9|Mythic Contract crafted through inscription.|6x void_ink, 1x primordial_essence, 1x rare_essence|none
+jewelcrafting|jewelcrafting_basic_ring|Basic Ring|1|Basic Ring crafted through jewelcrafting.|2x rough_gem|none
+jewelcrafting|jewelcrafting_basic_amulet|Basic Amulet|1|Basic Amulet crafted through jewelcrafting.|2x rough_gem|none
+jewelcrafting|jewelcrafting_basic_gem|Basic Gem|1|Basic Gem crafted through jewelcrafting.|2x rough_gem|none
+jewelcrafting|jewelcrafting_basic_circlet|Basic Circlet|1|Basic Circlet crafted through jewelcrafting.|2x rough_gem|none
+jewelcrafting|jewelcrafting_sturdy_ring|Sturdy Ring|3|Sturdy Ring crafted through jewelcrafting.|3x polished_gem|none
+jewelcrafting|jewelcrafting_sturdy_amulet|Sturdy Amulet|3|Sturdy Amulet crafted through jewelcrafting.|3x polished_gem|none
+jewelcrafting|jewelcrafting_sturdy_gem|Sturdy Gem|3|Sturdy Gem crafted through jewelcrafting.|3x polished_gem|none
+jewelcrafting|jewelcrafting_sturdy_circlet|Sturdy Circlet|3|Sturdy Circlet crafted through jewelcrafting.|3x polished_gem|none
+jewelcrafting|jewelcrafting_enchanted_ring|Enchanted Ring|5|Enchanted Ring crafted through jewelcrafting.|4x perfect_gem, 1x arcane_dust|none
+jewelcrafting|jewelcrafting_enchanted_amulet|Enchanted Amulet|5|Enchanted Amulet crafted through jewelcrafting.|4x perfect_gem, 1x arcane_dust|none
+jewelcrafting|jewelcrafting_enchanted_gem|Enchanted Gem|5|Enchanted Gem crafted through jewelcrafting.|4x perfect_gem, 1x arcane_dust|none
+jewelcrafting|jewelcrafting_enchanted_circlet|Enchanted Circlet|5|Enchanted Circlet crafted through jewelcrafting.|4x perfect_gem, 1x arcane_dust|none
+jewelcrafting|jewelcrafting_masterwork_ring|Masterwork Ring|7|Masterwork Ring crafted through jewelcrafting.|5x prismatic_gem, 1x spirit_essence|none
+jewelcrafting|jewelcrafting_masterwork_amulet|Masterwork Amulet|7|Masterwork Amulet crafted through jewelcrafting.|5x prismatic_gem, 1x spirit_essence|none
+jewelcrafting|jewelcrafting_masterwork_gem|Masterwork Gem|7|Masterwork Gem crafted through jewelcrafting.|5x prismatic_gem, 1x spirit_essence|none
+jewelcrafting|jewelcrafting_masterwork_circlet|Masterwork Circlet|7|Masterwork Circlet crafted through jewelcrafting.|5x prismatic_gem, 1x spirit_essence|none
+jewelcrafting|jewelcrafting_mythic_ring|Mythic Ring|9|Mythic Ring crafted through jewelcrafting.|6x soul_gem, 1x primordial_essence, 1x rare_essence|none
+jewelcrafting|jewelcrafting_mythic_amulet|Mythic Amulet|9|Mythic Amulet crafted through jewelcrafting.|6x soul_gem, 1x primordial_essence, 1x rare_essence|none
+jewelcrafting|jewelcrafting_mythic_gem|Mythic Gem|9|Mythic Gem crafted through jewelcrafting.|6x soul_gem, 1x primordial_essence, 1x rare_essence|none
+jewelcrafting|jewelcrafting_mythic_circlet|Mythic Circlet|9|Mythic Circlet crafted through jewelcrafting.|6x soul_gem, 1x primordial_essence, 1x rare_essence|none
+logging|logging_basic_plank|Basic Plank|1|Basic Plank crafted through logging.|2x oak_wood|none
+logging|logging_basic_bow|Basic Bow|1|Basic Bow crafted through logging.|2x oak_wood|none
+logging|logging_basic_totem|Basic Totem|1|Basic Totem crafted through logging.|2x oak_wood|none
+logging|logging_basic_workbench|Basic Workbench|1|Basic Workbench crafted through logging.|2x oak_wood|none
+logging|logging_sturdy_plank|Sturdy Plank|3|Sturdy Plank crafted through logging.|3x maple_wood|none
+logging|logging_sturdy_bow|Sturdy Bow|3|Sturdy Bow crafted through logging.|3x maple_wood|none
+logging|logging_sturdy_totem|Sturdy Totem|3|Sturdy Totem crafted through logging.|3x maple_wood|none
+logging|logging_sturdy_workbench|Sturdy Workbench|3|Sturdy Workbench crafted through logging.|3x maple_wood|none
+logging|logging_enchanted_plank|Enchanted Plank|5|Enchanted Plank crafted through logging.|4x ironwood, 1x arcane_dust|none
+logging|logging_enchanted_bow|Enchanted Bow|5|Enchanted Bow crafted through logging.|4x ironwood, 1x arcane_dust|none
+logging|logging_enchanted_totem|Enchanted Totem|5|Enchanted Totem crafted through logging.|4x ironwood, 1x arcane_dust|none
+logging|logging_enchanted_workbench|Enchanted Workbench|5|Enchanted Workbench crafted through logging.|4x ironwood, 1x arcane_dust|none
+logging|logging_masterwork_plank|Masterwork Plank|7|Masterwork Plank crafted through logging.|5x ancient_wood, 1x spirit_essence|none
+logging|logging_masterwork_bow|Masterwork Bow|7|Masterwork Bow crafted through logging.|5x ancient_wood, 1x spirit_essence|none
+logging|logging_masterwork_totem|Masterwork Totem|7|Masterwork Totem crafted through logging.|5x ancient_wood, 1x spirit_essence|none
+logging|logging_masterwork_workbench|Masterwork Workbench|7|Masterwork Workbench crafted through logging.|5x ancient_wood, 1x spirit_essence|none
+logging|logging_mythic_plank|Mythic Plank|9|Mythic Plank crafted through logging.|6x world_tree_wood, 1x primordial_essence, 1x rare_essence|none
+logging|logging_mythic_bow|Mythic Bow|9|Mythic Bow crafted through logging.|6x world_tree_wood, 1x primordial_essence, 1x rare_essence|none
+logging|logging_mythic_totem|Mythic Totem|9|Mythic Totem crafted through logging.|6x world_tree_wood, 1x primordial_essence, 1x rare_essence|none
+logging|logging_mythic_workbench|Mythic Workbench|9|Mythic Workbench crafted through logging.|6x world_tree_wood, 1x primordial_essence, 1x rare_essence|none
+mining|mining_basic_refined_ore|Basic Refined Ore|1|Basic Refined Ore crafted through mining.|2x copper_ore|none
+mining|mining_basic_cut_gem|Basic Cut Gem|1|Basic Cut Gem crafted through mining.|2x copper_ore|none
+mining|mining_basic_alloy|Basic Alloy|1|Basic Alloy crafted through mining.|2x copper_ore|none
+mining|mining_basic_core|Basic Core|1|Basic Core crafted through mining.|2x copper_ore|none
+mining|mining_sturdy_refined_ore|Sturdy Refined Ore|3|Sturdy Refined Ore crafted through mining.|3x iron_ore|none
+mining|mining_sturdy_cut_gem|Sturdy Cut Gem|3|Sturdy Cut Gem crafted through mining.|3x iron_ore|none
+mining|mining_sturdy_alloy|Sturdy Alloy|3|Sturdy Alloy crafted through mining.|3x iron_ore|none
+mining|mining_sturdy_core|Sturdy Core|3|Sturdy Core crafted through mining.|3x iron_ore|none
+mining|mining_enchanted_refined_ore|Enchanted Refined Ore|5|Enchanted Refined Ore crafted through mining.|4x mythril_ore, 1x arcane_dust|none
+mining|mining_enchanted_cut_gem|Enchanted Cut Gem|5|Enchanted Cut Gem crafted through mining.|4x mythril_ore, 1x arcane_dust|none
+mining|mining_enchanted_alloy|Enchanted Alloy|5|Enchanted Alloy crafted through mining.|4x mythril_ore, 1x arcane_dust|none
+mining|mining_enchanted_core|Enchanted Core|5|Enchanted Core crafted through mining.|4x mythril_ore, 1x arcane_dust|none
+mining|mining_masterwork_refined_ore|Masterwork Refined Ore|7|Masterwork Refined Ore crafted through mining.|5x adamantine_ore, 1x spirit_essence|none
+mining|mining_masterwork_cut_gem|Masterwork Cut Gem|7|Masterwork Cut Gem crafted through mining.|5x adamantine_ore, 1x spirit_essence|none
+mining|mining_masterwork_alloy|Masterwork Alloy|7|Masterwork Alloy crafted through mining.|5x adamantine_ore, 1x spirit_essence|none
+mining|mining_masterwork_core|Masterwork Core|7|Masterwork Core crafted through mining.|5x adamantine_ore, 1x spirit_essence|none
+mining|mining_mythic_refined_ore|Mythic Refined Ore|9|Mythic Refined Ore crafted through mining.|6x divine_ore, 1x primordial_essence, 1x rare_essence|none
+mining|mining_mythic_cut_gem|Mythic Cut Gem|9|Mythic Cut Gem crafted through mining.|6x divine_ore, 1x primordial_essence, 1x rare_essence|none
+mining|mining_mythic_alloy|Mythic Alloy|9|Mythic Alloy crafted through mining.|6x divine_ore, 1x primordial_essence, 1x rare_essence|none
+mining|mining_mythic_core|Mythic Core|9|Mythic Core crafted through mining.|6x divine_ore, 1x primordial_essence, 1x rare_essence|none
+portal_creation|portal_creation_basic_portal_rune|Basic Portal Rune|1|Basic Portal Rune crafted through portal creation.|2x portal_shard|none
+portal_creation|portal_creation_basic_waypoint_seal|Basic Waypoint Seal|1|Basic Waypoint Seal crafted through portal creation.|2x portal_shard|none
+portal_creation|portal_creation_basic_anchor_stone|Basic Anchor Stone|1|Basic Anchor Stone crafted through portal creation.|2x portal_shard|none
+portal_creation|portal_creation_basic_gate_sigil|Basic Gate Sigil|1|Basic Gate Sigil crafted through portal creation.|2x portal_shard|none
+portal_creation|portal_creation_sturdy_portal_rune|Sturdy Portal Rune|3|Sturdy Portal Rune crafted through portal creation.|3x waypoint_core|none
+portal_creation|portal_creation_sturdy_waypoint_seal|Sturdy Waypoint Seal|3|Sturdy Waypoint Seal crafted through portal creation.|3x waypoint_core|none
+portal_creation|portal_creation_sturdy_anchor_stone|Sturdy Anchor Stone|3|Sturdy Anchor Stone crafted through portal creation.|3x waypoint_core|none
+portal_creation|portal_creation_sturdy_gate_sigil|Sturdy Gate Sigil|3|Sturdy Gate Sigil crafted through portal creation.|3x waypoint_core|none
+portal_creation|portal_creation_enchanted_portal_rune|Enchanted Portal Rune|5|Enchanted Portal Rune crafted through portal creation.|4x dimensional_anchor, 1x arcane_dust|none
+portal_creation|portal_creation_enchanted_waypoint_seal|Enchanted Waypoint Seal|5|Enchanted Waypoint Seal crafted through portal creation.|4x dimensional_anchor, 1x arcane_dust|none
+portal_creation|portal_creation_enchanted_anchor_stone|Enchanted Anchor Stone|5|Enchanted Anchor Stone crafted through portal creation.|4x dimensional_anchor, 1x arcane_dust|none
+portal_creation|portal_creation_enchanted_gate_sigil|Enchanted Gate Sigil|5|Enchanted Gate Sigil crafted through portal creation.|4x dimensional_anchor, 1x arcane_dust|none
+portal_creation|portal_creation_masterwork_portal_rune|Masterwork Portal Rune|7|Masterwork Portal Rune crafted through portal creation.|5x planar_key, 1x spirit_essence|none
+portal_creation|portal_creation_masterwork_waypoint_seal|Masterwork Waypoint Seal|7|Masterwork Waypoint Seal crafted through portal creation.|5x planar_key, 1x spirit_essence|none
+portal_creation|portal_creation_masterwork_anchor_stone|Masterwork Anchor Stone|7|Masterwork Anchor Stone crafted through portal creation.|5x planar_key, 1x spirit_essence|none
+portal_creation|portal_creation_masterwork_gate_sigil|Masterwork Gate Sigil|7|Masterwork Gate Sigil crafted through portal creation.|5x planar_key, 1x spirit_essence|none
+portal_creation|portal_creation_mythic_portal_rune|Mythic Portal Rune|9|Mythic Portal Rune crafted through portal creation.|6x void_crystal, 1x primordial_essence, 1x rare_essence|none
+portal_creation|portal_creation_mythic_waypoint_seal|Mythic Waypoint Seal|9|Mythic Waypoint Seal crafted through portal creation.|6x void_crystal, 1x primordial_essence, 1x rare_essence|none
+portal_creation|portal_creation_mythic_anchor_stone|Mythic Anchor Stone|9|Mythic Anchor Stone crafted through portal creation.|6x void_crystal, 1x primordial_essence, 1x rare_essence|none
+portal_creation|portal_creation_mythic_gate_sigil|Mythic Gate Sigil|9|Mythic Gate Sigil crafted through portal creation.|6x void_crystal, 1x primordial_essence, 1x rare_essence|none
+repair|repair_basic_repair_kit|Basic Repair Kit|1|Basic Repair Kit crafted through repair.|2x scrap_metal|none
+repair|repair_basic_polish|Basic Polish|1|Basic Polish crafted through repair.|2x scrap_metal|none
+repair|repair_basic_reinforcement|Basic Reinforcement|1|Basic Reinforcement crafted through repair.|2x scrap_metal|none
+repair|repair_basic_restoration|Basic Restoration|1|Basic Restoration crafted through repair.|2x scrap_metal|none
+repair|repair_sturdy_repair_kit|Sturdy Repair Kit|3|Sturdy Repair Kit crafted through repair.|3x polishing_oil|none
+repair|repair_sturdy_polish|Sturdy Polish|3|Sturdy Polish crafted through repair.|3x polishing_oil|none
+repair|repair_sturdy_reinforcement|Sturdy Reinforcement|3|Sturdy Reinforcement crafted through repair.|3x polishing_oil|none
+repair|repair_sturdy_restoration|Sturdy Restoration|3|Sturdy Restoration crafted through repair.|3x polishing_oil|none
+repair|repair_enchanted_repair_kit|Enchanted Repair Kit|5|Enchanted Repair Kit crafted through repair.|4x reinforced_plate, 1x arcane_dust|none
+repair|repair_enchanted_polish|Enchanted Polish|5|Enchanted Polish crafted through repair.|4x reinforced_plate, 1x arcane_dust|none
+repair|repair_enchanted_reinforcement|Enchanted Reinforcement|5|Enchanted Reinforcement crafted through repair.|4x reinforced_plate, 1x arcane_dust|none
+repair|repair_enchanted_restoration|Enchanted Restoration|5|Enchanted Restoration crafted through repair.|4x reinforced_plate, 1x arcane_dust|none
+repair|repair_masterwork_repair_kit|Masterwork Repair Kit|7|Masterwork Repair Kit crafted through repair.|5x arcane_binding, 1x spirit_essence|none
+repair|repair_masterwork_polish|Masterwork Polish|7|Masterwork Polish crafted through repair.|5x arcane_binding, 1x spirit_essence|none
+repair|repair_masterwork_reinforcement|Masterwork Reinforcement|7|Masterwork Reinforcement crafted through repair.|5x arcane_binding, 1x spirit_essence|none
+repair|repair_masterwork_restoration|Masterwork Restoration|7|Masterwork Restoration crafted through repair.|5x arcane_binding, 1x spirit_essence|none
+repair|repair_mythic_repair_kit|Mythic Repair Kit|9|Mythic Repair Kit crafted through repair.|6x divine_thread, 1x primordial_essence, 1x rare_essence|none
+repair|repair_mythic_polish|Mythic Polish|9|Mythic Polish crafted through repair.|6x divine_thread, 1x primordial_essence, 1x rare_essence|none
+repair|repair_mythic_reinforcement|Mythic Reinforcement|9|Mythic Reinforcement crafted through repair.|6x divine_thread, 1x primordial_essence, 1x rare_essence|none
+repair|repair_mythic_restoration|Mythic Restoration|9|Mythic Restoration crafted through repair.|6x divine_thread, 1x primordial_essence, 1x rare_essence|none
+skinning|skinning_basic_leather|Basic Leather|1|Basic Leather crafted through skinning.|2x raw_hide|none
+skinning|skinning_basic_hide_armor|Basic Hide Armor|1|Basic Hide Armor crafted through skinning.|2x raw_hide|none
+skinning|skinning_basic_trophy|Basic Trophy|1|Basic Trophy crafted through skinning.|2x raw_hide|none
+skinning|skinning_basic_pelt|Basic Pelt|1|Basic Pelt crafted through skinning.|2x raw_hide|none
+skinning|skinning_sturdy_leather|Sturdy Leather|3|Sturdy Leather crafted through skinning.|3x thick_hide|none
+skinning|skinning_sturdy_hide_armor|Sturdy Hide Armor|3|Sturdy Hide Armor crafted through skinning.|3x thick_hide|none
+skinning|skinning_sturdy_trophy|Sturdy Trophy|3|Sturdy Trophy crafted through skinning.|3x thick_hide|none
+skinning|skinning_sturdy_pelt|Sturdy Pelt|3|Sturdy Pelt crafted through skinning.|3x thick_hide|none
+skinning|skinning_enchanted_leather|Enchanted Leather|5|Enchanted Leather crafted through skinning.|4x exotic_hide, 1x arcane_dust|none
+skinning|skinning_enchanted_hide_armor|Enchanted Hide Armor|5|Enchanted Hide Armor crafted through skinning.|4x exotic_hide, 1x arcane_dust|none
+skinning|skinning_enchanted_trophy|Enchanted Trophy|5|Enchanted Trophy crafted through skinning.|4x exotic_hide, 1x arcane_dust|none
+skinning|skinning_enchanted_pelt|Enchanted Pelt|5|Enchanted Pelt crafted through skinning.|4x exotic_hide, 1x arcane_dust|none
+skinning|skinning_masterwork_leather|Masterwork Leather|7|Masterwork Leather crafted through skinning.|5x dragon_hide, 1x spirit_essence|none
+skinning|skinning_masterwork_hide_armor|Masterwork Hide Armor|7|Masterwork Hide Armor crafted through skinning.|5x dragon_hide, 1x spirit_essence|none
+skinning|skinning_masterwork_trophy|Masterwork Trophy|7|Masterwork Trophy crafted through skinning.|5x dragon_hide, 1x spirit_essence|none
+skinning|skinning_masterwork_pelt|Masterwork Pelt|7|Masterwork Pelt crafted through skinning.|5x dragon_hide, 1x spirit_essence|none
+skinning|skinning_mythic_leather|Mythic Leather|9|Mythic Leather crafted through skinning.|6x divine_hide, 1x primordial_essence, 1x rare_essence|none
+skinning|skinning_mythic_hide_armor|Mythic Hide Armor|9|Mythic Hide Armor crafted through skinning.|6x divine_hide, 1x primordial_essence, 1x rare_essence|none
+skinning|skinning_mythic_trophy|Mythic Trophy|9|Mythic Trophy crafted through skinning.|6x divine_hide, 1x primordial_essence, 1x rare_essence|none
+skinning|skinning_mythic_pelt|Mythic Pelt|9|Mythic Pelt crafted through skinning.|6x divine_hide, 1x primordial_essence, 1x rare_essence|none
+tailoring|tailoring_basic_robe|Basic Robe|1|Basic Robe crafted through tailoring.|2x linen_cloth|none
+tailoring|tailoring_basic_cloak|Basic Cloak|1|Basic Cloak crafted through tailoring.|2x linen_cloth|none
+tailoring|tailoring_basic_gloves|Basic Gloves|1|Basic Gloves crafted through tailoring.|2x linen_cloth|none
+tailoring|tailoring_basic_bag|Basic Bag|1|Basic Bag crafted through tailoring.|2x linen_cloth|none
+tailoring|tailoring_sturdy_robe|Sturdy Robe|3|Sturdy Robe crafted through tailoring.|3x wool_cloth|none
+tailoring|tailoring_sturdy_cloak|Sturdy Cloak|3|Sturdy Cloak crafted through tailoring.|3x wool_cloth|none
+tailoring|tailoring_sturdy_gloves|Sturdy Gloves|3|Sturdy Gloves crafted through tailoring.|3x wool_cloth|none
+tailoring|tailoring_sturdy_bag|Sturdy Bag|3|Sturdy Bag crafted through tailoring.|3x wool_cloth|none
+tailoring|tailoring_enchanted_robe|Enchanted Robe|5|Enchanted Robe crafted through tailoring.|4x silk_cloth, 1x arcane_dust|none
+tailoring|tailoring_enchanted_cloak|Enchanted Cloak|5|Enchanted Cloak crafted through tailoring.|4x silk_cloth, 1x arcane_dust|none
+tailoring|tailoring_enchanted_gloves|Enchanted Gloves|5|Enchanted Gloves crafted through tailoring.|4x silk_cloth, 1x arcane_dust|none
+tailoring|tailoring_enchanted_bag|Enchanted Bag|5|Enchanted Bag crafted through tailoring.|4x silk_cloth, 1x arcane_dust|none
+tailoring|tailoring_masterwork_robe|Masterwork Robe|7|Masterwork Robe crafted through tailoring.|5x mageweave_cloth, 1x spirit_essence|none
+tailoring|tailoring_masterwork_cloak|Masterwork Cloak|7|Masterwork Cloak crafted through tailoring.|5x mageweave_cloth, 1x spirit_essence|none
+tailoring|tailoring_masterwork_gloves|Masterwork Gloves|7|Masterwork Gloves crafted through tailoring.|5x mageweave_cloth, 1x spirit_essence|none
+tailoring|tailoring_masterwork_bag|Masterwork Bag|7|Masterwork Bag crafted through tailoring.|5x mageweave_cloth, 1x spirit_essence|none
+tailoring|tailoring_mythic_robe|Mythic Robe|9|Mythic Robe crafted through tailoring.|6x mooncloth, 1x primordial_essence, 1x rare_essence|none
+tailoring|tailoring_mythic_cloak|Mythic Cloak|9|Mythic Cloak crafted through tailoring.|6x mooncloth, 1x primordial_essence, 1x rare_essence|none
+tailoring|tailoring_mythic_gloves|Mythic Gloves|9|Mythic Gloves crafted through tailoring.|6x mooncloth, 1x primordial_essence, 1x rare_essence|none
+tailoring|tailoring_mythic_bag|Mythic Bag|9|Mythic Bag crafted through tailoring.|6x mooncloth, 1x primordial_essence, 1x rare_essence|none

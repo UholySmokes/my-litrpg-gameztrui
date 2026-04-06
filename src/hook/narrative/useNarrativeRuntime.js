@@ -232,13 +232,22 @@ export function useNarrative(
           variantSeed: fallbackCounterRef.current,
         });
         setActionSuggestions(fallbackResult.suggestions);
-        setState((prevState) =>
-          replaceNarrativeEntryInState(prevState, streamEntryId, {
+        setState((prevState) => {
+          const nextState = replaceNarrativeEntryInState(prevState, streamEntryId, {
             text: fallbackResult.narrative,
             source: fallbackResult.source,
             mood: fallbackResult.mood,
-          }),
-        );
+          });
+          return fallbackResult.sceneMemory
+            ? {
+                ...nextState,
+                narrative: {
+                  ...nextState.narrative,
+                  sceneMemory: fallbackResult.sceneMemory,
+                },
+              }
+            : nextState;
+        });
         return fallbackResult;
       } finally {
         if (streamAbortRef.current === controller) {

@@ -74,6 +74,9 @@ function normalizeSceneMemory(value) {
     activeThreats: normalizeStringList(value.activeThreats),
     unresolvedHooks: normalizeStringList(value.unresolvedHooks),
     lastConsequence: normalizeString(value.lastConsequence),
+    familiarEntities: normalizeStringList(value.familiarEntities),
+    partyEntities: normalizeStringList(value.partyEntities),
+    socialSummary: normalizeString(value.socialSummary),
   };
 
   const hasContent = Object.values(sceneMemory).some((entry) =>

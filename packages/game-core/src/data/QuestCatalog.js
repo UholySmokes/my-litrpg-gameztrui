@@ -89,59 +89,6 @@ let BEGINNER_QUESTS = [
       favoredOrigins: ["ashmarked_prospector", "grove_exile", "deckhand_cadet"],
     },
   },
-  {
-    id: "bq_recovery_breath",
-    name: "Recovery Breath",
-    description:
-      "Take one deliberate rest after your first clash so you learn how to recover before pushing forward.",
-    objectives: [
-      {
-        id: "bq_recovery_breath_obj_1",
-        description: "Take a short rest once",
-        completed: false,
-        criteria: {
-          actionType: "rest",
-        },
-      },
-    ],
-    rewards: { xp: 5, items: [{ id: "minor_mana_potion", quantity: 1 }] },
-    tags: {
-      starter: true,
-      tones: ["serene", "neutral"],
-      favoredOrigins: ["freehold_scrapper", "ledger_apprentice", "grove_exile"],
-    },
-  },
-  {
-    id: "bq_arcane_awareness",
-    name: "Arcane Awareness",
-    description:
-      "Practice sensing local essence so you can read magical conditions before acting.",
-    objectives: [
-      {
-        id: "bq_arcane_awareness_obj_1",
-        description: "Use essence sensing once",
-        completed: false,
-        criteria: {
-          actionType: "magic_sense",
-        },
-      },
-      {
-        id: "bq_arcane_awareness_obj_2",
-        description: "Take a short rest after practice",
-        completed: false,
-        criteria: {
-          actionType: "rest",
-        },
-      },
-    ],
-    rewards: { xp: 35, items: [{ id: "mana_leaf", quantity: 1 }] },
-    tags: {
-      starter: true,
-      tones: ["mysterious"],
-      favoredClasses: ["mage", "battlemage", "cleric"],
-      favoredOrigins: ["salvage_adept", "tidebound_votary", "dreamwake_survivor"],
-    },
-  },
 ];
 
 let MAIN_QUESTS = [
@@ -389,29 +336,6 @@ let MAIN_QUESTS = [
 ];
 
 let SIDE_QUESTS = [
-  {
-    id: "sq_cryptic_cache",
-    name: "Cryptic Cache",
-    description:
-      "A courier dropped a stasis cube. Decode its rotating runes before it self-destructs.",
-    objectives: [
-      {
-        id: "sq_cryptic_cache_obj",
-        description: "Solve the rune-lock sequence",
-        completed: false,
-      },
-    ],
-    rewards: { xp: 45, items: [{ id: "encrypted_cube", quantity: 1 }] },
-    autoComplete: {
-      requiresItem: "encrypted_cube",
-    },
-    tags: {
-      biome: "city",
-      tones: ["mysterious"],
-      favoredClasses: ["mage", "battlemage"],
-      favoredRaces: ["mechanical_construct", "ancient_bloodline"],
-    },
-  },
   {
     id: "sq_ghoul_pit",
     name: "Ghoul Pit Cleanup",

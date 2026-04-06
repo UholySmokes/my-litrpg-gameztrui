@@ -160,6 +160,49 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("Skill Loadout: warrior_starter");
   });
 
+
+
+  it("injects devourer runtime context and taboo counters", () => {
+    const gameState = {
+      player: {
+        name: "Cipher",
+        level: 7,
+        hp: { current: 42, max: 60 },
+        mana: { current: 22, max: 40 },
+        xp: { current: 10, max: 100 },
+        inventory: [],
+        equipment: {},
+        archetypeSystem: {
+          id: "devourer_core",
+          name: "Devourer Core",
+          category: "System",
+          resource: { name: "Biomass", current: 31, max: 100 },
+          runtime: {
+            taint: 9,
+            sentientDevours: 2,
+            recentPrey: ["Bandit Raider"],
+            storedSamples: { humanoid: { count: 1 }, fire: { count: 2 } },
+            adaptations: { humanoid: { rank: 1 } },
+          },
+        },
+      },
+      world: { flags: {}, location: { current: "starting_zone" } },
+      quests: { active: [] },
+      narrative: { entries: [], summary: "" },
+      combat: { status: "inactive" },
+    };
+
+    const prompt = assemblePrompt(gameState, "digest humanoid", {
+      success: true,
+      actionType: "devourer_digest",
+      description: "Digest complete",
+    });
+
+    expect(prompt).toContain("Devourer Biomass: 31");
+    expect(prompt).toContain("Devourer Taint: 9");
+    expect(prompt).toContain("Devourer Sentient Devours: 2");
+    expect(prompt).toContain("cold, analytical big-sister system presence");
+  });
   it("includes authoritative scene state and structured response rules", () => {
     const gameState = {
       player: {

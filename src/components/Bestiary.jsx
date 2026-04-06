@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { DataRegistry } from "../data/DataRegistry.js";
+import { resolveDevourerFamilies, isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
 
 function getKnownItemIds(player = {}) {
   const inventoryIds = Array.isArray(player.inventory)
@@ -23,15 +24,29 @@ export default function Bestiary({ player, gameState }) {
     const items = DataRegistry.getItemSummaries();
     const titles = DataRegistry.getTitles();
 
+    const devourerRuntime = resolvedPlayer?.archetypeSystem?.runtime || {};
+    const devourerKnownPrey = devourerRuntime?.knownPrey || {};
+    const devourerAdaptations = devourerRuntime?.adaptations || {};
+    const devourerActive = isDevourerCorePlayer(resolvedPlayer);
+
     return {
-      enemies: enemies.map((enemy) => ({
-        id: enemy.id,
-        name: enemy.name,
-        subtitle: `Lvl ${enemy.level} ${enemy.type || "enemy"}`,
-        description: enemy.description,
-        discovered: Number(killMap[enemy.id] || 0) > 0,
-        progress: Number(killMap[enemy.id] || 0),
-      })),
+      enemies: enemies.map((enemy) => {
+        const families = resolveDevourerFamilies(enemy);
+        const knownFamilies = families.filter((family) => Number(devourerKnownPrey?.[family]?.digested || 0) > 0);
+        const refinedFamilies = families.filter((family) => Number(devourerAdaptations?.[family]?.rank || 0) > 0);
+
+        return {
+          id: enemy.id,
+          name: enemy.name,
+          subtitle: `Lvl ${enemy.level} ${enemy.type || "enemy"}`,
+          description: enemy.description,
+          discovered: Number(killMap[enemy.id] || 0) > 0,
+          progress: Number(killMap[enemy.id] || 0),
+          devourerFamilies: families,
+          devourerKnown: knownFamilies,
+          devourerRefined: refinedFamilies,
+        };
+      }),
       items: items.map((item) => ({
         id: item.id,
         name: item.name || item.id,
@@ -50,6 +65,7 @@ export default function Bestiary({ player, gameState }) {
         description: title.description,
         discovered: unlockedTitles.has(title.id),
       })),
+      devourerActive,
     };
   }, [gameState?.player, player]);
 
@@ -69,6 +85,11 @@ export default function Bestiary({ player, gameState }) {
       <div style={{ color: "var(--text-main)", fontSize: "0.85rem", marginBottom: "0.75rem" }}>
         Discovered {discoveredCount}/{activeEntries.length} in this category.
       </div>
+      {viewModel.devourerActive ? (
+        <div style={{ color: "var(--holo-gold)", fontSize: "0.8rem", marginBottom: "0.5rem" }}>
+          Devourer overlay active: harvest families and refinement status are shown for discovered enemies.
+        </div>
+      ) : null}
       <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.75rem", flexWrap: "wrap" }}>
         {tabs.map((tab) => (
           <button
@@ -107,6 +128,13 @@ export default function Bestiary({ player, gameState }) {
             <div style={{ color: "var(--text-main)", fontSize: "0.85rem", marginTop: "0.6rem" }}>
               {entry.discovered ? entry.description : "Discover this entry in play to reveal its details."}
             </div>
+            {activeTab === "enemies" && entry.discovered ? (
+              <div style={{ color: "var(--text-dim)", fontSize: "0.78rem", marginTop: "0.45rem" }}>
+                Prey families: {entry.devourerFamilies?.join(", ") || "unknown"}
+                {entry.devourerKnown?.length ? ` · known: ${entry.devourerKnown.join(", ")}` : ""}
+                {entry.devourerRefined?.length ? ` · refined: ${entry.devourerRefined.join(", ")}` : ""}
+              </div>
+            ) : null}
           </div>
         ))}
       </div>

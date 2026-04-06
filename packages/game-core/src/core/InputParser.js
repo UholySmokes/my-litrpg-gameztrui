@@ -27,6 +27,10 @@ export function parseAction(userInput, gameState) {
   const magicAction = parseMagic(cleanedInput);
   if (magicAction) return magicAction;
 
+  const devourerAction = parseDevourer(cleanedInput);
+  if (devourerAction) return devourerAction;
+
+
   // Parse different action types
   const useSkillAction = parseUseSkill(cleanedInput, gameState);
   if (useSkillAction) return useSkillAction;
@@ -349,6 +353,39 @@ function parseMagic(input) {
         originalInput: input,
       };
     }
+  }
+
+  return null;
+}
+
+function parseDevourer(input) {
+  {
+    const match = input.match(/^digest(?:\s+(.+))?$/i);
+    if (match) {
+      return {
+        type: "devourer_digest",
+        target: match[1] ? match[1].trim().toLowerCase() : null,
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(/^refine\s+([a-z0-9_-]+)(?:\s+sample)?$/i);
+    if (match) {
+      return {
+        type: "devourer_refine",
+        target: match[1].trim().toLowerCase(),
+        originalInput: input,
+      };
+    }
+  }
+
+  if (/^purge\s+taint$/i.test(input)) {
+    return {
+      type: "devourer_purge",
+      originalInput: input,
+    };
   }
 
   return null;

@@ -114,6 +114,21 @@ const MagicReleaseActionSchema = z.object({
   type: z.literal("magic_release"),
 });
 
+
+const DevourerDigestActionSchema = z.object({
+  type: z.literal("devourer_digest"),
+  target: z.string().nullable().optional(),
+});
+
+const DevourerRefineActionSchema = z.object({
+  type: z.literal("devourer_refine"),
+  target: z.string(),
+});
+
+const DevourerPurgeActionSchema = z.object({
+  type: z.literal("devourer_purge"),
+});
+
 export const ParsedActionSchema = z.discriminatedUnion('type', [
   UseItemActionSchema,
   MoveActionSchema,
@@ -133,6 +148,9 @@ export const ParsedActionSchema = z.discriminatedUnion('type', [
   MagicAnchorActionSchema,
   MagicPurgeActionSchema,
   MagicReleaseActionSchema,
+  DevourerDigestActionSchema,
+  DevourerRefineActionSchema,
+  DevourerPurgeActionSchema,
 ]);
 
 // State Schemas

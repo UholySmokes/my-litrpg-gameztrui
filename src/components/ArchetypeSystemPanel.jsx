@@ -31,6 +31,59 @@ function DetailList({ title, items }) {
   );
 }
 
+
+function DevourerConsole({ consoleData }) {
+  if (!consoleData) return null;
+
+  return (
+    <section className="holo-panel" style={{ padding: "1rem", display: "grid", gap: "0.75rem" }}>
+      <h3 style={{ color: "var(--holo-cyan)", margin: 0 }}>Devourer Console</h3>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "0.5rem" }}>
+        <div className="holo-panel" style={{ padding: "0.6rem" }}>
+          <div style={{ color: "var(--text-dim)", fontSize: "0.75rem" }}>Taint</div>
+          <div style={{ color: "var(--holo-gold)" }}>{consoleData.taint}</div>
+        </div>
+        <div className="holo-panel" style={{ padding: "0.6rem" }}>
+          <div style={{ color: "var(--text-dim)", fontSize: "0.75rem" }}>Known Prey</div>
+          <div style={{ color: "var(--text-main)" }}>{consoleData.knownPreyCount}</div>
+        </div>
+        <div className="holo-panel" style={{ padding: "0.6rem" }}>
+          <div style={{ color: "var(--text-dim)", fontSize: "0.75rem" }}>Sentient Devours</div>
+          <div style={{ color: "var(--holo-gold)" }}>{consoleData.sentientDevours}</div>
+        </div>
+      </div>
+
+      <div style={{ color: "var(--text-main)", fontSize: "0.85rem" }}>
+        Stored Samples: {consoleData.storedSamples.length
+          ? consoleData.storedSamples.map((entry) => `${entry.family} x${entry.count}`).join(", ")
+          : "none"}
+      </div>
+      <div style={{ color: "var(--text-main)", fontSize: "0.85rem" }}>
+        Adaptations: {consoleData.adaptations.length
+          ? consoleData.adaptations.map((entry) => `${entry.family} r${entry.rank}/${entry.maxRank}`).join(", ")
+          : "none"}
+      </div>
+      {consoleData.recentPrey.length ? (
+        <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>
+          Recent Prey: {consoleData.recentPrey.join(" | ")}
+        </div>
+      ) : null}
+      {consoleData.lastNotice ? (
+        <div style={{ color: "var(--text-main)", fontSize: "0.82rem", lineHeight: 1.4 }}>
+          {consoleData.lastNotice}
+        </div>
+      ) : null}
+      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        {consoleData.commands.map((command) => (
+          <button key={command} type="button" className="holo-button" title="Issue this command in terminal">
+            {command}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function ArchetypeSystemPanel({ player }) {
   const system = useMemo(() => buildArchetypeSystemViewModel(player), [player]);
 
@@ -119,6 +172,7 @@ export default function ArchetypeSystemPanel({ player }) {
             </div>
           </section>
 
+          <DevourerConsole consoleData={system.devourerConsole} />
           <DetailList title="Core Loop" items={system.coreLoop} />
           <DetailList title="Possible Uses" items={system.possibleUses} />
           <DetailList title="Limits" items={system.limits} />

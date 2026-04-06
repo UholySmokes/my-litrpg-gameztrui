@@ -86,6 +86,15 @@ function validateAction(action, gameState) {
     case "magic_purge":
       return validateMagicPurge(action);
 
+    case "devourer_digest":
+      return validateDevourerTargetedAction(action);
+
+    case "devourer_refine":
+      return validateDevourerTargetedAction(action);
+
+    case "devourer_purge":
+      return { valid: true };
+
     case 'magic_release':
       return { valid: true };
     
@@ -475,5 +484,19 @@ export function validateActionComprehensive(action, gameState) {
     return rulesValidation;
   }
 
+  return { valid: true };
+}
+
+
+function validateDevourerTargetedAction(action) {
+  if (action.target == null) return { valid: true };
+  if (typeof action.target !== "string") {
+    return { valid: false, reason: "Devourer target must be text." };
+  }
+  const trimmed = action.target.trim();
+  if (!trimmed) return { valid: true };
+  if (trimmed.length > 64) {
+    return { valid: false, reason: "Devourer target is too long." };
+  }
   return { valid: true };
 }

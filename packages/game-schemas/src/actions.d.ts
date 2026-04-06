@@ -16,7 +16,10 @@ export type ActionType =
   | "magic_weave"
   | "magic_anchor"
   | "magic_purge"
-  | "magic_release";
+  | "magic_release"
+  | "devourer_digest"
+  | "devourer_refine"
+  | "devourer_purge";
 
 // Mirrors current in-app parsed action shape (Phase 1 extraction).
 export type ParsedAction =
@@ -42,7 +45,10 @@ export type ParsedAction =
   | { type: "magic_weave"; essences: string[]; pattern: string }
   | { type: "magic_anchor"; kind: "self" | "area" | "item"; itemId?: string | null }
   | { type: "magic_purge"; essence?: string | null; amount?: number | null }
-  | { type: "magic_release" };
+  | { type: "magic_release" }
+  | { type: "devourer_digest"; target?: string | null }
+  | { type: "devourer_refine"; target: string }
+  | { type: "devourer_purge" };
 
 export type ValidationResult =
   | { valid: true }

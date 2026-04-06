@@ -26,7 +26,7 @@ const CHAMBER_DEFINITIONS = [
   {
     id: "oath-mirror",
     title: "Oath Mirror",
-    subtitle: "Choose where to begin, review the build, and seal the chronicle.",
+    subtitle: "Write the opening command, review the build, and seal the chronicle.",
     includedSteps: ["starting-point", "review"],
   },
 ];
@@ -107,10 +107,10 @@ export function validateCreationChamber(chamberId, checks = {}) {
       }
       return { valid: true };
     case "oath-mirror":
-      if (!checks.hasStartingPoint) {
+      if (!checks.hasStartingPrompt) {
         return {
           valid: false,
-          error: "Choose a starting point before sealing the chronicle.",
+          error: "Write a start command before sealing the chronicle.",
         };
       }
       if (!checks.canFinalize) {

@@ -118,7 +118,6 @@ export default function GameUI({ user }) {
     setUserInput,
     inputRef,
     actionSuggestions,
-    generateInitialNarrativeText,
     refreshActionSuggestions,
   } = useNarrative(
     setState,
@@ -135,10 +134,10 @@ export default function GameUI({ user }) {
     handleCharacterCreationComplete,
   } = useGameUiCharacterCreationFlow({
     addSystemMessage,
-    generateInitialNarrativeText,
     persistLocalAutosave,
     setState,
     state,
+    submitInput,
   });
 
   const {

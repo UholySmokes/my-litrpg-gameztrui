@@ -24,9 +24,8 @@ export default function CreationSummaryPanel({
   const grantedPassiveSkills = Array.isArray(selectionSummary.grantedPassiveSkills)
     ? selectionSummary.grantedPassiveSkills
     : [];
-  const originBiome = selectionSummary.originBiome
-    ? String(selectionSummary.originBiome).replace(/_/g, " ")
-    : null;
+  const startLocationName = selectionSummary.startLocationName || "Rebirth Alcove";
+  const startZoneName = selectionSummary.startZoneName || "Meridian Arcology";
 
   return (
     <div
@@ -75,16 +74,28 @@ export default function CreationSummaryPanel({
         >
           <div style={{ color: "var(--holo-cyan)" }}>
             <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              ORIGIN
+              START
             </div>
             <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
-              {selectionSummary.originName || "Origin not selected"}
+              {startLocationName}
             </div>
             <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              {selectionSummary.originDescription ||
-                "Choose an origin to shape your opening pressures."}
+              {selectionSummary.startLocationSummary ||
+                "The world will seed you at the safest valid entry your prompt supports."}
             </div>
-            {originBiome ? (
+            {selectionSummary.startingPrompt ? (
+              <div
+                style={{
+                  marginTop: "0.5rem",
+                  fontSize: "0.75rem",
+                  color: "var(--text-dim)",
+                  lineHeight: 1.45,
+                }}
+              >
+                <strong>Command:</strong> {selectionSummary.startingPrompt}
+              </div>
+            ) : null}
+            {startZoneName ? (
               <div
                 style={{
                   marginTop: "0.35rem",
@@ -92,7 +103,7 @@ export default function CreationSummaryPanel({
                   color: "var(--text-dim)",
                 }}
               >
-                <strong>Favored Biome:</strong> {originBiome}
+                <strong>Zone:</strong> {startZoneName}
               </div>
             ) : null}
           </div>

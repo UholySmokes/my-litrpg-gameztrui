@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { seedWorldAfterCharacterCreation } from "../../world/WorldInitializer.js";
-import { getZoneById } from "../../world/WorldDataRegistry.js";
+import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
 import {
   incrementCharactersCreated,
   isAdvancedCreationUnlocked,
@@ -52,10 +52,10 @@ export function buildCharacterCreationState(state, characterData) {
 
 export function useGameUiCharacterCreationFlow({
   addSystemMessage,
-  generateInitialNarrativeText,
   persistLocalAutosave,
   setState,
   state,
+  submitInput,
 }) {
   const [characterCreated, setCharacterCreated] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -126,7 +126,11 @@ export function useGameUiCharacterCreationFlow({
       persistLocalAutosave(nextState, "Character Creation Checkpoint");
 
       const playerObj = nextState?.player || characterData;
-      const zoneId = characterData?.startingZoneId || null;
+      const startingLocationId = characterData?.startingLocationId || null;
+      const startingLocation = startingLocationId
+        ? getLocationById(startingLocationId)
+        : null;
+      const zoneId = startingLocation?.zoneId || characterData?.startingZoneId || null;
       const zone = zoneId ? getZoneById(zoneId) : null;
       setTransitionSummary({
         name: playerObj?.name || "Adventurer",
@@ -134,7 +138,8 @@ export function useGameUiCharacterCreationFlow({
           (typeof playerObj?.class === "string"
             ? playerObj.class
             : playerObj?.class?.name) || "Unknown",
-        startingPoint: zone?.name || zoneId || null,
+        startingPoint:
+          startingLocation?.name || zone?.name || zoneId || null,
       });
       setIsTransitioning(true);
       if (transitionTimeoutRef.current) {
@@ -149,23 +154,33 @@ export function useGameUiCharacterCreationFlow({
         "Level 1 \u2014 Your chronicle has begun. Earn 100 XP to reach Level 2.",
         "system",
       );
-
-      try {
-        await generateInitialNarrativeText(nextState);
-      } catch (error) {
-        console.error("Failed to generate initial narrative:", error);
+      const startingPrompt =
+        typeof characterData?.startingPrompt === "string"
+          ? characterData.startingPrompt.trim()
+          : "";
+      if (!startingPrompt) {
         addSystemMessage(
           "Welcome to your adventure! Type commands to begin.",
           "system",
         );
+        return;
       }
+
+      addSystemMessage(`> ${startingPrompt}`, "user");
+      void submitInput(startingPrompt, nextState).catch((error) => {
+        console.error("Failed to process custom start command:", error);
+        addSystemMessage(
+          "Welcome to your adventure! Type commands to begin.",
+          "system",
+        );
+      });
     },
     [
       addSystemMessage,
-      generateInitialNarrativeText,
       persistLocalAutosave,
       setState,
       state,
+      submitInput,
     ],
   );
 

@@ -1,7 +1,7 @@
-import { listOpeningSceneChoices } from "../../data/OpeningScenes.js";
 import {
   getAccessibleLocationIds,
   getLocationById,
+  getZoneEntryLocationId,
   getZoneById,
 } from "../../world/WorldDataRegistry.js";
 import {
@@ -249,6 +249,8 @@ function getKnownEntities(state = {}) {
     : [];
   return [
     ...(Array.isArray(sceneMemory.presentEntities) ? sceneMemory.presentEntities : []),
+    ...(Array.isArray(sceneMemory.familiarEntities) ? sceneMemory.familiarEntities : []),
+    ...(Array.isArray(sceneMemory.partyEntities) ? sceneMemory.partyEntities : []),
     ...combatEnemies,
     ...quests,
     sceneMemory.locationLabel,
@@ -459,7 +461,8 @@ function buildTravelSuggestions(state, maxItems = 3) {
   const currentLocationId = getCurrentLocationId(state);
   const currentLocation = getLocationById(currentLocationId);
   const currentZoneId = currentLocation?.zoneId || state?.world?.location?.biome || "";
-  const accessibleIds = Array.from(getAccessibleLocationIds(state) || [])
+  const allowedLocationIds = getAccessibleLocationIds(state);
+  const accessibleIds = Array.from(allowedLocationIds || [])
     .filter((locationId) => typeof locationId === "string" && locationId !== currentLocationId)
     .map((locationId) => getLocationById(locationId))
     .filter(Boolean)
@@ -470,19 +473,47 @@ function buildTravelSuggestions(state, maxItems = 3) {
       return String(left.name || left.id).localeCompare(String(right.name || right.id));
     });
 
-  return accessibleIds.slice(0, maxItems).map((location, index) =>
-    createSuggestionRecord({
-      id: `travel-${location.id}-${index}`,
-      label: `Go to ${location.name}`,
-      command: `go to ${location.name}`,
-      weight: index === 0 ? 0.98 : 0.88 - index * 0.05,
-      category: "progress",
-      reason:
-        location.zoneId === currentZoneId
-          ? "A reachable route in the current region."
-          : `A connected route into ${getZoneById(location.zoneId)?.name || location.zoneId}.`,
-    }),
-  );
+  const seenZones = new Set();
+  const suggestions = [];
+
+  accessibleIds.forEach((location) => {
+    if (suggestions.length >= maxItems) return;
+    if (location.zoneId === currentZoneId) {
+      suggestions.push(
+        createSuggestionRecord({
+          id: `travel-${location.id}`,
+          label: `Go to ${location.name}`,
+          command: `go to ${location.name}`,
+          weight: suggestions.length === 0 ? 0.98 : 0.88 - suggestions.length * 0.05,
+          category: "progress",
+          reason: "A reachable route in the current region.",
+        }),
+      );
+      return;
+    }
+
+    if (seenZones.has(location.zoneId)) return;
+    const preferredZoneEntryId = getZoneEntryLocationId(location.zoneId, {
+      allowedLocationIds,
+    });
+    if (preferredZoneEntryId && preferredZoneEntryId !== location.id) {
+      return;
+    }
+    seenZones.add(location.zoneId);
+    const zoneName = getZoneById(location.zoneId)?.name || location.zoneId;
+    suggestions.push(
+      createSuggestionRecord({
+        id: `travel-zone-${location.zoneId}`,
+        label: `Go to ${zoneName}`,
+        command: `go to ${zoneName}`,
+        weight: suggestions.length === 0 ? 0.98 : 0.88 - suggestions.length * 0.05,
+        category: "progress",
+        reason: `A connected route into ${zoneName}.`,
+      }),
+    );
+  });
+
+  return suggestions.slice(0, maxItems);
 }
 
 function buildQuestDrivenSuggestions(state) {
@@ -599,45 +630,6 @@ export function buildActionSuggestions(state) {
   const inCombat = Boolean(
     state.combat?.inCombat ?? state.combat?.status === "active",
   );
-  const openingSceneId = state?.world?.vars?.startingSceneId || null;
-  const openingChoicePending = Boolean(
-    state?.world?.vars?.openingSceneChoicePending,
-  );
-
-  if (!inCombat && openingChoicePending && openingSceneId) {
-    const openingContext = listOpeningSceneChoices(openingSceneId)
-      .slice(0, 4)
-      .map((choice, index) =>
-        createSuggestionRecord({
-          id: choice?.id || `opening-choice-${index + 1}`,
-          label: choice.label,
-          command: choice.label,
-          weight: 1,
-          category: "progress",
-          reason: "An explicit opening-scene choice.",
-        }),
-      );
-    if (openingContext.length > 0) {
-      const fixedLabels = new Set(
-        openingContext.map((entry) =>
-          String(entry?.command || entry?.t || "").toLowerCase(),
-        ),
-      );
-      const fixedFallbacks = FIXED_ACTION_SUGGESTIONS.filter(
-        (entry) =>
-          !fixedLabels.has(String(entry?.command || entry?.t || "").toLowerCase()),
-      );
-      const contextualFillers = CONTEXT_SUGGESTION_FILLERS.filter(
-        (entry) =>
-          !fixedLabels.has(String(entry?.command || entry?.t || "").toLowerCase()),
-      );
-
-      return [...openingContext, ...fixedFallbacks, ...contextualFillers].slice(0, 8);
-    }
-
-    return [...FIXED_ACTION_SUGGESTIONS, ...CONTEXT_SUGGESTION_FILLERS].slice(0, 8);
-  }
-
   if (inCombat) {
     contextSuggestions.push(
       createSuggestionRecord({

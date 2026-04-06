@@ -7,6 +7,7 @@ import {
   getEssenceAnomalyById,
   getEssenceAnomalyIdsForBiome,
   resolveLocationId,
+  resolveTravelLocationId,
 } from "../../world/WorldDataRegistry.js";
 import { hasCreationPerk } from "../../core/creationPerks.js";
 
@@ -42,7 +43,9 @@ export function moveToLocation(state, locationId) {
     (typeof currentRaw === "string" ? currentRaw.trim() : null);
 
   const allowedLocationIds = getAccessibleLocationIds(state);
-  const resolvedTargetId = resolveLocationId(locationId, { allowedLocationIds });
+  const resolvedTargetId = resolveTravelLocationId(locationId, {
+    allowedLocationIds,
+  });
   if (!resolvedTargetId) {
     // Validator should have caught this; keep exploration system defensive.
     return state;

@@ -158,7 +158,10 @@ export default function CharacterCreationMode({
   const creation = useCharacterCreationReworked({ advancedUnlocked });
   const {
     steps,
-    selectedStartingPoint,
+    startingPrompt,
+    optimizedStartingPromptOptions,
+    inferredStartingLocation,
+    inferredStartingZone,
     selectedRace,
     selectedClass,
     selectedSecondaryClass,
@@ -174,7 +177,6 @@ export default function CharacterCreationMode({
     selectedStarterTreeIds,
     selectedAlignmentId,
     selectedSkillLoadoutId,
-    availableStartingPoints,
     availableRaces,
     availableClasses,
     availableSecondaryClasses,
@@ -195,7 +197,9 @@ export default function CharacterCreationMode({
     systemAttributeBias,
     creationPerkLimits,
     rerollsRemaining,
-    handleStartingPointSelect,
+    handleStartingPromptChange,
+    handleOptimizeStartingPrompt,
+    applyStartingPromptSuggestion,
     handleRaceSelect,
     handleClassSelect,
     handleSecondaryClassSelect,
@@ -338,9 +342,14 @@ export default function CharacterCreationMode({
       passiveSkills: selectedPassiveSkills.length > 0 ? selectedPassiveSkills : null,
       grantedActiveSkills,
       grantedPassiveSkills,
-      originName: selectedStartingPoint?.name || "Origin not selected",
-      originDescription: selectedStartingPoint?.summary || "Choose an origin to shape your opening pressures.",
-      originBiome: selectedStartingPoint?.type || null,
+      startingPrompt:
+        startingPrompt?.trim() || "Write how the run begins to lock the opening handoff.",
+      startLocationName:
+        inferredStartingLocation?.name || "Rebirth Alcove",
+      startLocationSummary:
+        inferredStartingLocation?.summary ||
+        "The world will seed you at the safest valid entry it can prove from your prompt.",
+      startZoneName: inferredStartingZone?.name || "Meridian Arcology",
     };
   }, [
     blockedSkillIds.length,
@@ -355,8 +364,10 @@ export default function CharacterCreationMode({
     selectedProfession,
     selectedRace,
     selectedActiveSkills,
-    selectedStartingPoint,
+    startingPrompt,
     systemAttributeBias,
+    inferredStartingLocation,
+    inferredStartingZone,
   ]);
 
   const canFinalize = useMemo(() => Boolean(validateReview?.()?.valid), [validateReview]);
@@ -379,7 +390,7 @@ export default function CharacterCreationMode({
           (creationPerkLimits?.maxPicks || Number.MAX_SAFE_INTEGER),
       "starter-tree": !advancedUnlocked || selectedStarterTreeIds.length === 1,
       alignment: Boolean(selectedAlignmentId),
-      "starting-point": Boolean(selectedStartingPoint),
+      "starting-point": Boolean(startingPrompt?.trim()),
       review: canFinalize,
     }),
     [
@@ -395,7 +406,7 @@ export default function CharacterCreationMode({
       selectedAlignmentId,
       selectedArchetypeSystem,
       selectedClass,
-      selectedStartingPoint,
+      startingPrompt,
       selectedPassiveSkills.length,
       selectedPerkIds.length,
       selectedProfession,
@@ -421,7 +432,7 @@ export default function CharacterCreationMode({
       perksLocked: completionById.perks,
       starterTreeLocked: completionById["starter-tree"],
       alignmentLocked: completionById.alignment,
-      hasStartingPoint: completionById["starting-point"],
+      hasStartingPrompt: completionById["starting-point"],
       canFinalize,
     }),
     [canFinalize, completionById],
@@ -499,8 +510,8 @@ export default function CharacterCreationMode({
         active: Boolean(selectedAlignmentId),
       },
       {
-        label: `Starting Point: ${selectedStartingPoint?.name || "pending"}`,
-        active: Boolean(selectedStartingPoint),
+        label: `Start Command: ${startingPrompt?.trim() ? "ready" : "pending"}`,
+        active: Boolean(startingPrompt?.trim()),
       },
     ],
     [
@@ -516,7 +527,7 @@ export default function CharacterCreationMode({
       selectedAlignmentId,
       selectedArchetypeSystem,
       selectedClass,
-      selectedStartingPoint,
+      startingPrompt,
       selectedPassiveSkills.length,
       selectedPerkIds.length,
       selectedProfession,
@@ -883,14 +894,24 @@ export default function CharacterCreationMode({
       case "oath-mirror":
         return (
           <div className="creation-chamber__stack">
-            <ChamberSection eyebrow="Starting Point" title="Choose where to begin">
+            <ChamberSection eyebrow="Start Command" title="Write how the chronicle begins">
               <CreationStartingPointPanel
-                startingPoints={availableStartingPoints}
-                selectedStartingPoint={selectedStartingPoint}
-                onStartingPointSelect={(point) => {
+                startingPrompt={startingPrompt}
+                onStartingPromptChange={(value) => {
                   setWizardError("");
-                  handleStartingPointSelect(point);
+                  handleStartingPromptChange(value);
                 }}
+                onOptimizePrompt={() => {
+                  setWizardError("");
+                  handleOptimizeStartingPrompt();
+                }}
+                optimizedPromptAlternates={optimizedStartingPromptOptions}
+                onSelectAlternate={(value) => {
+                  setWizardError("");
+                  applyStartingPromptSuggestion(value);
+                }}
+                inferredStartingLocation={inferredStartingLocation}
+                inferredStartingZone={inferredStartingZone}
               />
             </ChamberSection>
             <ChamberSection eyebrow="Review" title="Seal the chronicle">

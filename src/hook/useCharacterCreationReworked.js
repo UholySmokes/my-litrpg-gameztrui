@@ -79,16 +79,16 @@ const CREATION_STEPS = Object.freeze({
 });
 
 const AVAILABLE_STARTING_POINTS = Object.freeze([
-  { id: "city", name: "Meridian Arcology", type: "social", summary: "A neon sanctuary built atop ancient bones — guild offices, scroll shops, and back-alley deals." },
-  { id: "ruins", name: "Leyfall Ruins", type: "exploration", summary: "The Spirefall's scar — exposed foundations, broken wards, and relics half-buried in rubble." },
-  { id: "wilds", name: "Wildroot Fringe", type: "exploration", summary: "Grove networks and ash-fed growth reclaiming the old roads; beasts and druids both call truce here." },
-  { id: "skydocks", name: "Skyforge Skydocks", type: "combat", summary: "Platforms over open air where airship crews brawl and mercenaries compete for contracts." },
-  { id: "undercity", name: "Veilward Undercity", type: "combat", summary: "Tunnels and ledger vaults beneath the city — smugglers, thieves, and forgotten things." },
-  { id: "coast", name: "Tideward Coast", type: "exploration", summary: "Breakwaters and ward-stones line the shore; sea trade and salvage keep the docks alive." },
-  { id: "mountain", name: "Crystal Ridgeworks", type: "exploration", summary: "Frozen crystal veins run through the rock face — miners, hermits, and the occasional frost wyrm." },
-  { id: "desert", name: "Glassstep Sands", type: "combat", summary: "Sun-fused glass plains and buried tombs; nomad caravans skirmish with sand constructs." },
-  { id: "volcanic", name: "Emberline Caldera", type: "combat", summary: "Magma forges and obsidian spires — only the bold or the desperate settle here." },
-  { id: "dreamscape", name: "Mnemonic Dreamscape", type: "exploration", summary: "Psychic mists and memory fragments given form — reality bends at every step." },
+  { id: "city", name: "Meridian Arcology", type: "social", summary: "You open unfamiliar eyes on cold stone in a neon-lit alcove — guild signs flicker above, and your new body's first breath tastes like ozone and commerce." },
+  { id: "ruins", name: "Leyfall Ruins", type: "exploration", summary: "Consciousness returns among shattered wards and exposed foundations — leyline energy hums through a body that wasn't yours a moment ago." },
+  { id: "wilds", name: "Wildroot Fringe", type: "exploration", summary: "Wet earth, root-smell, and birdsong — you wake under tangled canopy with borrowed limbs and a system prompt blinking behind unfamiliar eyes." },
+  { id: "skydocks", name: "Skyforge Skydocks", type: "combat", summary: "Wind and engine roar slam into you as awareness returns — you're sprawled on open gantry with altitude all around and no memory of how you arrived." },
+  { id: "undercity", name: "Veilward Undercity", type: "combat", summary: "Darkness first, then dripping water, then the slow horror of waking in a body you don't recognize, somewhere below the world." },
+  { id: "coast", name: "Tideward Coast", type: "exploration", summary: "Salt spray across a face that isn't yours — you gasp awake on wet stone as the tide pulls back, revealing ward-carved pylons and a shore you've never seen." },
+  { id: "mountain", name: "Crystal Ridgeworks", type: "exploration", summary: "Thin air fills lungs that weren't yours a breath ago — you wake on frozen stone amid crystal veins that ring like tuning forks at your presence." },
+  { id: "desert", name: "Glassstep Sands", type: "combat", summary: "Heat and white light — the first sensations of a mind dropped into a body it doesn't recognize, half-buried in sun-fused glass sand." },
+  { id: "volcanic", name: "Emberline Caldera", type: "combat", summary: "A furnace-blast of awareness as you gasp awake on scorched rock — the air shimmers, your skin isn't your skin, and something molten glows below." },
+  { id: "dreamscape", name: "Mnemonic Dreamscape", type: "exploration", summary: "Thought before body — you exist as pure awareness in psychic mist before the world slowly gives you form, one uncertain sense at a time." },
 ]);
 const AVAILABLE_ARCHETYPE_SYSTEMS = getCharacterCreationArchetypeSystems().sort((left, right) => {
   const leftPriority = Number(left?.characterCreation?.ordering?.priority || 999);

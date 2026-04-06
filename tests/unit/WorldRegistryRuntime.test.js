@@ -61,7 +61,7 @@ describe("world registry runtime", () => {
     expect(locationSummary).toEqual(
       expect.objectContaining({
         id: "starting_zone",
-        name: "Gateway Plaza",
+        name: "Rebirth Alcove",
         zoneId: "city",
         travelPolicy: "public",
       }),

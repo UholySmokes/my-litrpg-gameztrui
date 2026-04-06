@@ -180,7 +180,7 @@ describe("assemblePrompt", () => {
       narrative: {
         summary: "You reached the terminal and survived the ambush.",
         sceneMemory: {
-          locationLabel: "Gateway Plaza",
+          locationLabel: "Rebirth Alcove",
           zoneLabel: "Threshold Ward",
           immediateObjective: "Find the courier signal.",
           presentEntities: ["Goblin Raider"],

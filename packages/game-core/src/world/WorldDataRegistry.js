@@ -133,10 +133,10 @@ export let locations = [
   {
     id: "starting_zone",
     zoneId: "city",
-    name: "Gateway Plaza",
+    name: "Rebirth Alcove",
     summary:
-      "A broad open plaza beneath the arcology's main arch where guild boards compete for attention and merchant stalls line the paths deeper into the district.",
-    aliases: ["starting zone", "gateway plaza", "plaza", "gate", "main arch"],
+      "A shallow stone alcove beneath the arcology's main arch, scored with fading summoning glyphs — where new arrivals open unfamiliar eyes for the first time, with guild boards and merchant stalls just beyond the threshold.",
+    aliases: ["starting zone", "rebirth alcove", "alcove", "summoning alcove", "awakening point"],
     travelPolicy: "public",
   },
   {

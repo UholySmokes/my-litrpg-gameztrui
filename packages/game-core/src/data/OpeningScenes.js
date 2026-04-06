@@ -129,7 +129,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "cracked plaza",
       factionHint = "arcane wardens",
     }) =>
-      `Static storms crackle above the ${locationHint} while ${factionHint} argue over ${mainQuestName}. Background murmurs hint at ${sideHookNames.join(" and ") || "other odd jobs"} awaiting anyone brave enough.`,
+      `Your eyes open to static storms crackling above a ${locationHint}. The body beneath you responds wrong—too light, too sharp, wired with senses you never had. Pale text burns across your vision: [System Initialized.] While you struggle to stand on borrowed legs, ${factionHint} argue over ${mainQuestName} as if your arrival is beneath notice. Background murmurs hint at ${sideHookNames.join(" and ") || "other odd jobs"} awaiting anyone still breathing.`,
     compatibleQuests: ["mq_fallen_spire", "sq_cryptic_cache"],
   },
   {
@@ -142,7 +142,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "Neon Bazaar",
       factionHint = "market enforcers",
     }) =>
-      `The ${locationHint} hums with synth drums as the ${factionHint} sweep stalls in search of clues tied to ${mainQuestName}. Whispers of ${sideHookNames.join(" & ") || "other side hustles"} tug at your sleeve.`,
+      `Consciousness slams in like a door kicked open. You're on your knees in the ${locationHint}, synth drums pounding through a skull that doesn't feel like yours, neon reflections burning across vision still calibrating to this world. [System Notice: Host anchored.] The ${factionHint} sweep stalls nearby in search of clues tied to ${mainQuestName}, paying no mind to another dazed soul. Whispers of ${sideHookNames.join(" & ") || "other side hustles"} tug at your borrowed ears.`,
     compatibleQuests: ["mq_whisper_market", "sq_cryptic_cache", "sq_skyfisher"],
   },
   {
@@ -155,7 +155,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "ember ridge",
       factionHint = "druid envoys",
     }) =>
-      `Ash petals fall around the ${locationHint} as ${factionHint} chant for balance. The fate of ${mainQuestName} rests on your arrival while rumours of ${sideHookNames.join(" and ") || "unclaimed favors"} circulate among the camps.`,
+      `Ash petals land on skin you don't recognize. You wake face-down on the ${locationHint}, lungs full of smoke-sweet air, limbs answering in a rhythm that isn't yours. [System Notice: Host integration complete.] As you rise, ${factionHint} chant for balance nearby, unbothered by another lost soul. The fate of ${mainQuestName} hangs in their words while rumours of ${sideHookNames.join(" and ") || "unclaimed favors"} circulate among the camps.`,
     compatibleQuests: ["mq_ember_bloom", "sq_mnemonic_dust"],
   },
   {
@@ -168,7 +168,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "skyforge platforms",
       factionHint = "dock sentinels",
     }) =>
-      `Engines roar across the ${locationHint} as ${factionHint} rally for ${mainQuestName}. Rumors of ${sideHookNames.join(" and ") || "urgent contracts"} drift across the catwalks.`,
+      `Wind tears across your face—a face you've never worn. You gasp awake on the ${locationHint}, altitude lurching in a stomach that isn't yours, engines screaming overhead. [System Notice: Spatial anchor locked.] The ${factionHint} rally below for ${mainQuestName} while rumors of ${sideHookNames.join(" and ") || "urgent contracts"} drift across the catwalks. No one stops to help the newly reborn.`,
     compatibleQuests: ["mq_starforge_siege", "sq_storm_capacitor"],
     favoredClasses: ["sharpshooter", "paladin"],
     favoredRaces: ["skybound", "stormforged"],
@@ -184,7 +184,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "vaulted tunnels",
       factionHint = "veil wardens",
     }) =>
-      `Damp air curls through the ${locationHint} as ${factionHint} whisper about ${mainQuestName}. The scent of ${sideHookNames.join(" and ") || "side deals"} draws you deeper.`,
+      `Darkness. Then sound: dripping, echoes, something breathing that might be you. Sensation floods in wrong—damp stone under palms, weight in limbs you don't remember having. You wake in the ${locationHint} with no past and a body that flinches at its own shadow. [System Notice: Host consciousness restored. Visibility: minimal.] The ${factionHint} whisper nearby about ${mainQuestName}. The scent of ${sideHookNames.join(" and ") || "side deals"} draws your new senses deeper.`,
     compatibleQuests: [
       "mq_veil_archive",
       "sq_venom_exchange",
@@ -204,7 +204,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "crystal ridgeline",
       factionHint = "forge caretakers",
     }) =>
-      `A low hum reverberates along the ${locationHint} while ${factionHint} prepare for ${mainQuestName}. ${sideHookNames.join(" and ") || "Auxiliary tasks"} remain unclaimed among the scaffolds.`,
+      `Cold hits first—bone-cold, the kind that makes a new body clench before the mind catches up. You open eyes that aren't yours on the ${locationHint}, crystal veins humming a frequency your borrowed nerves already recognize. [System Notice: Environmental calibration in progress.] The ${factionHint} prepare nearby for ${mainQuestName} without a second glance at the shivering newcomer. ${sideHookNames.join(" and ") || "Auxiliary tasks"} remain unclaimed among the scaffolds.`,
     compatibleQuests: ["mq_crystal_forge", "sq_rune_cache"],
     favoredClasses: ["tempest_reveler", "battlemage"],
     favoredRaces: ["crystal_being", "rune_sentinel"],
@@ -220,7 +220,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "tideward breakers",
       factionHint = "coastal wardens",
     }) =>
-      `Spray lashes the ${locationHint} as ${factionHint} brace for ${mainQuestName}. The call of ${sideHookNames.join(" and ") || "floating bounties"} rises with every surge.`,
+      `Salt water fills a mouth you don't recognize. You cough, roll, and drag yourself up on the ${locationHint}—soaked, shaking, alive in a body the sea just spat out. [System Notice: Host stabilized. Warning: exposure risk elevated.] The ${factionHint} brace for ${mainQuestName} along the strand, too pressed to notice one more drowned stranger. The call of ${sideHookNames.join(" and ") || "floating bounties"} rises with every surge.`,
     compatibleQuests: ["mq_tide_breach", "sq_astral_waypoint"],
     favoredClasses: ["tempest_reveler", "ranger"],
     favoredRaces: ["tidecaller", "frostborne"],
@@ -236,7 +236,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "sunlit dunes",
       factionHint = "mirage guides",
     }) =>
-      `Heat haze ripples across the ${locationHint} as ${factionHint} await ${mainQuestName}. Hushed offers of ${sideHookNames.join(" and ") || "lost routes"} linger in the wind.`,
+      `Light before anything else—blinding, total, the kind that bleaches thought. You surface into a body baking on the ${locationHint}, sand fused to skin you've never touched. [System Notice: Thermal warning. Host advised to seek shade.] The ${factionHint} shimmer at the edge of vision, waiting on ${mainQuestName} as if the desert births strangers every day. Hushed offers of ${sideHookNames.join(" and ") || "lost routes"} linger in the wind.`,
     compatibleQuests: ["mq_oracle_sundial", "sq_mirage_map"],
     favoredClasses: ["trickster", "mage"],
     favoredRaces: ["mirageborn", "sandstrider"],
@@ -252,7 +252,7 @@ const LEGACY_OPENING_SCENES = [
       locationHint = "ashen caldera",
       factionHint = "smoke wardens",
     }) =>
-      `Embers drift over the ${locationHint} while ${factionHint} plan for ${mainQuestName}. Calls for ${sideHookNames.join(" and ") || "hazard support"} echo through the smoke.`,
+      `Heat wakes you before consciousness does. You're on scorched rock in the ${locationHint}, embers drifting past a face that flinches with reflexes you haven't earned. The air tastes like iron and sulfur through lungs still learning to be yours. [System Notice: Host integrity holding. Ambient threat: high.] The ${factionHint} plan nearby for ${mainQuestName}. Calls for ${sideHookNames.join(" and ") || "hazard support"} echo through the smoke.`,
     compatibleQuests: ["mq_ashen_caldera", "sq_bloomed_spores"],
     favoredClasses: ["berserker", "spellbreaker"],
     favoredRaces: ["emberkin", "phoenix_reborn"],
@@ -358,14 +358,14 @@ export function pickOpeningScene({ seed, mainQuest, character } = {}) {
 }
 
 export function describeOpeningScene(scene, context) {
-  if (!scene) return "The world stirs as your journey begins.";
+  if (!scene) return "Consciousness floods in before memory does. You open eyes that are not yours, and the world sharpens around a body you have never worn.";
   if (typeof scene.text === "string" && scene.text.trim()) {
     return scene.text.trim();
   }
   try {
     return scene.descriptionTemplate(context);
   } catch {
-    return "The world stirs as your journey begins.";
+    return "Consciousness floods in before memory does. You open eyes that are not yours, and the world sharpens around a body you have never worn.";
   }
 }
 

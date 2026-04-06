@@ -15,6 +15,8 @@ describe("buildCharacterCreationState", () => {
         class: "paladin",
         race: "human",
         profession: { id: "blacksmith", name: "Blacksmith" },
+        startingPrompt: "I wake on the pier and ask for the safest route inland.",
+        startingLocationId: "coast_tideward_pier",
         startingZoneId: "coast",
       },
     );
@@ -25,7 +27,8 @@ describe("buildCharacterCreationState", () => {
       completed: [],
     });
     expect(nextState.world.vars.current_quest_id).toBeNull();
-    expect(typeof nextState.world.vars.startingSceneId).toBe("string");
+    expect(nextState.world.vars.startingSceneId).toBeNull();
+    expect(nextState.world.vars.openingSceneChoicePending).toBe(false);
 
     const startLocation = getLocationById(nextState.world.location.current);
     expect(startLocation?.zoneId).toBe("coast");

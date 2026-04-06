@@ -346,7 +346,18 @@ function getPriorSceneMemory(gameState = {}) {
 
 function normalizeSceneMemoryInput(value = {}) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
-    return {};
+    return {
+      locationLabel: "",
+      zoneLabel: "",
+      immediateObjective: "",
+      presentEntities: [],
+      activeThreats: [],
+      unresolvedHooks: [],
+      lastConsequence: "",
+      familiarEntities: [],
+      partyEntities: [],
+      socialSummary: "",
+    };
   }
   return {
     locationLabel: normalizeSceneString(value.locationLabel),

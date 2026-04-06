@@ -58,8 +58,9 @@ describe("WorldInitializer", () => {
       seed: 1,
     });
 
-    expect(typeof seeded.vars.startingSceneId).toBe("string");
+    expect(seeded.vars.startingSceneId).toBeNull();
     expect(seeded.vars.current_quest_id).toBe("mq_starforge_siege");
+    expect(seeded.vars.openingSceneChoicePending).toBe(false);
     expect(seeded.location.visited).toEqual([seeded.location.current]);
     expect(seeded.location.unlockedAreas).toEqual([seeded.location.current]);
 
@@ -110,6 +111,7 @@ describe("WorldInitializer", () => {
         class: "mage",
         race: "human",
         profession: { id: "blacksmith", name: "Blacksmith" },
+        startingLocationId: "coast_tideward_pier",
         startingZoneId: "coast",
       },
       quests: {
@@ -123,6 +125,7 @@ describe("WorldInitializer", () => {
     expect(loc).toBeTruthy();
     expect(loc.zoneId).toBe("coast");
     expect(seeded.vars.current_quest_id).toBeNull();
-    expect(typeof seeded.vars.startingSceneId).toBe("string");
+    expect(seeded.vars.startingSceneId).toBeNull();
+    expect(seeded.vars.openingSceneChoicePending).toBe(false);
   });
 });

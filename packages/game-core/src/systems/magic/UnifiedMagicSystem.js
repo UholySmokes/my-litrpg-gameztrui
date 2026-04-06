@@ -19,7 +19,6 @@ const ESSENCE_ALIASES = {
   holy: "light",
   radiant: "light",
   dark: "shadow",
-  void: "shadow",
   nature: "life",
   arcane: "creation",
 };

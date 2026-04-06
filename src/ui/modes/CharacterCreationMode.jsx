@@ -25,6 +25,10 @@ import {
   postTelemetryBatch,
 } from "../../core/telemetryClient.js";
 import {
+  patchCharacterCreationDraft,
+  readCharacterCreationDraft,
+} from "../../components/gameui/characterCreationDraft.js";
+import {
   getCharacterCreationRaceAbilitySummaries,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
 import {
@@ -222,11 +226,23 @@ export default function CharacterCreationMode({
   } = creation;
 
   const chambers = useMemo(() => buildCreationChamberManifest(advancedUnlocked), [advancedUnlocked]);
-  const [activeChamberIndex, setActiveChamberIndex] = useState(0);
-  const [unlockedChamberIndex, setUnlockedChamberIndex] = useState(0);
+  const initialDraft = useMemo(() => readCharacterCreationDraft(), []);
+  const [activeChamberIndex, setActiveChamberIndex] = useState(
+    Number.isFinite(initialDraft?.activeChamberIndex) ? initialDraft.activeChamberIndex : 0,
+  );
+  const [unlockedChamberIndex, setUnlockedChamberIndex] = useState(
+    Number.isFinite(initialDraft?.unlockedChamberIndex) ? initialDraft.unlockedChamberIndex : 0,
+  );
   const [wizardError, setWizardError] = useState("");
   const [openCrucibleSections, setOpenCrucibleSections] = useState({});
   const narrativeMemoryRef = useRef(null);
+
+  useEffect(() => {
+    patchCharacterCreationDraft({
+      activeChamberIndex,
+      unlockedChamberIndex,
+    });
+  }, [activeChamberIndex, unlockedChamberIndex]);
 
   const emitCreationTelemetry = useCallback(
     (event) => {

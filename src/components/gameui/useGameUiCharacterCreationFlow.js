@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { seedWorldAfterCharacterCreation } from "../../world/WorldInitializer.js";
 import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
+import { clearCharacterCreationDraft } from "./characterCreationDraft.js";
 import {
   incrementCharactersCreated,
   isAdvancedCreationUnlocked,
@@ -124,6 +125,7 @@ export function useGameUiCharacterCreationFlow({
 
       setState(nextState);
       persistLocalAutosave(nextState, "Character Creation Checkpoint");
+      clearCharacterCreationDraft();
 
       const playerObj = nextState?.player || characterData;
       const startingLocationId = characterData?.startingLocationId || null;

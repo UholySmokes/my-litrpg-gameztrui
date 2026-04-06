@@ -1,4 +1,5 @@
 import { getCharacterCreationSkillSelectionLimits } from "./CharacterCreationOptionsRegistry.js";
+import { getLocationById } from "../world/WorldDataRegistry.js";
 
 const BLUEPRINT_VERSION = 3;
 
@@ -40,6 +41,14 @@ export function migrateCharacterCreationBlueprint(legacy = {}) {
     normalizeId(source.archetypeSystemId) ||
     normalizeId(source.archetypeSystem?.id) ||
     normalizeId(source.archetypeSystem);
+  const startingLocationId =
+    normalizeId(source.startingLocationId) ||
+    normalizeId(source.startingLocation?.id) ||
+    normalizeId(source.startingLocation);
+  const derivedStartingZoneId =
+    startingLocationId && getLocationById(startingLocationId)?.zoneId
+      ? getLocationById(startingLocationId).zoneId
+      : null;
 
   return {
     version: Number.isFinite(source.version) ? source.version : BLUEPRINT_VERSION,
@@ -55,11 +64,8 @@ export function migrateCharacterCreationBlueprint(legacy = {}) {
       typeof source.startingPrompt === "string"
         ? source.startingPrompt.trim()
         : "",
-    startingLocationId:
-      normalizeId(source.startingLocationId) ||
-      normalizeId(source.startingLocation?.id) ||
-      normalizeId(source.startingLocation),
-    startingZoneId: normalizeId(source.startingZoneId),
+    startingLocationId,
+    startingZoneId: normalizeId(source.startingZoneId) || derivedStartingZoneId,
     professionId,
     archetypeSystemId,
     attributes: normalizeAttributes(source.attributes),

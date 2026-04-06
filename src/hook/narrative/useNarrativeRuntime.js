@@ -22,10 +22,6 @@ import {
   setInitialNarrativeCache,
 } from "./initialNarrativeCache.js";
 import {
-  applyOpeningSceneChoice as applyOpeningSceneChoiceFlow,
-  resolveOpeningChoiceFromInput as resolveOpeningChoiceFromInputFlow,
-} from "./openingScenePipeline.js";
-import {
   buildActionSuggestions as buildActionSuggestionsFlow,
   buildSummaryPrompt as buildSummaryPromptFlow,
   inferMood as inferMoodFlow,
@@ -264,82 +260,6 @@ export function useNarrative(
       setError(null);
 
       try {
-        const openingSceneId = currentState?.world?.vars?.startingSceneId || null;
-        const openingChoicePending = Boolean(
-          currentState?.world?.vars?.openingSceneChoicePending,
-        );
-
-        if (openingChoicePending && openingSceneId) {
-          const selectedOpeningChoice = resolveOpeningChoiceFromInputFlow(
-            nextUserInput,
-            openingSceneId,
-          );
-          if (selectedOpeningChoice) {
-            const openingResolution = applyOpeningSceneChoiceFlow(currentState, {
-              sceneId: openingSceneId,
-              choice: selectedOpeningChoice,
-            });
-            const resolvedState = openingResolution.state || currentState;
-
-            setState(resolvedState);
-            refreshActionSuggestions(resolvedState);
-            collectNarrativeOutcomeNotes(openingResolution.notes).forEach((note) =>
-              addSystemMessage(note, "system"),
-            );
-
-            if (typeof evaluateQuestProgress === "function") {
-              evaluateQuestProgress(resolvedState);
-            }
-
-            setIsNarrating(true);
-            try {
-              const openingActionResult = {
-                success: true,
-                actionType: "opening_choice",
-                description:
-                  openingResolution.outcomeText ||
-                  `You choose: ${selectedOpeningChoice.label}`,
-                state: resolvedState,
-                readOnly: false,
-                openingNarrativeSeed: openingResolution.openingNarrativeSeed,
-              };
-              const mode = resolvePromptMode(resolvedState, openingActionResult);
-              const prompt = assemblePrompt(
-                resolvedState,
-                nextUserInput,
-                openingActionResult,
-              );
-              const narrativeResult = await streamNarrative(prompt, resolvedState, {
-                mode,
-                userInput: nextUserInput,
-                actionResult: openingActionResult,
-              });
-              const intentResolution = applyNarrativeStateIntents(
-                resolvedState,
-                narrativeResult?.stateIntents,
-              );
-              if (intentResolution.state !== resolvedState) {
-                setState(intentResolution.state);
-                if (typeof evaluateQuestProgress === "function") {
-                  evaluateQuestProgress(intentResolution.state);
-                }
-              }
-              collectNarrativeOutcomeNotes(intentResolution.notes).forEach((note) =>
-                addSystemMessage(note, "system"),
-              );
-            } catch (err) {
-              if (err?.name === "AbortError") return;
-              if (shouldLogNarrativeError(err)) {
-                console.error("Opening choice narrative generation failed:", err);
-              }
-            } finally {
-              setIsNarrating(false);
-            }
-
-            return;
-          }
-        }
-
         const stepResult = submitAction?.({ kind: "text", text: nextUserInput });
         const action = stepResult?.action;
 

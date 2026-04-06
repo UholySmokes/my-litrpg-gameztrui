@@ -7,6 +7,7 @@ import { getItemData } from '../entities/ItemRegistry.js';
 import {
   getAccessibleLocationIds,
   resolveLocationId,
+  resolveTravelLocationId,
 } from "../world/WorldDataRegistry.js";
 
 /**
@@ -178,7 +179,7 @@ function validateMove(action, gameState) {
   // If target location is specified
   if (action.targetLocation) {
     const allowedLocationIds = getAccessibleLocationIds(gameState);
-    const targetId = resolveLocationId(action.targetLocation, {
+    const targetId = resolveTravelLocationId(action.targetLocation, {
       allowedLocationIds,
     });
 

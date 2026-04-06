@@ -53,6 +53,11 @@ import {
   listCharacterCreationStarterTrees,
 } from "@voidverse/game-core/characterCreation/CharacterCreationOptionsRegistry.js";
 import { resolveCharacterCreationOptionsBySystem } from "@voidverse/game-core/characterCreation/CharacterCreationSystemInfluence.js";
+import {
+  inferStartingLocation,
+  optimizeStartCommand,
+  sanitizeStartCommand,
+} from "../core/customStart.js";
 
 const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;
@@ -234,7 +239,8 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   const [selectedAlignmentId, setSelectedAlignmentId] = useState(null);
   const [selectedSkillLoadoutId, setSelectedSkillLoadoutId] = useState(null);
   const [selectedProfession, setSelectedProfession] = useState(null);
-  const [selectedStartingPoint, setSelectedStartingPoint] = useState(null);
+  const [startingPrompt, setStartingPrompt] = useState("");
+  const [optimizedStartingPromptOptions, setOptimizedStartingPromptOptions] = useState([]);
 
   const creationPerkLimits = getCharacterCreationPerkLimits();
   const availableCreationAlignments = listCharacterCreationAlignments();
@@ -397,14 +403,36 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setSelectedStarterTreeIds([]);
     setSelectedAlignmentId(null);
     setSelectedSkillLoadoutId(null);
-    setSelectedStartingPoint(null);
+    setStartingPrompt("");
+    setOptimizedStartingPromptOptions([]);
     setSelectedActiveSkills([]);
     setSelectedPassiveSkills([]);
     setAttributePoints(createAttributeBaseline(BASE_ATTRIBUTE_VALUE));
   }, [rerollsRemaining]);
 
-  const handleStartingPointSelect = useCallback((point) => {
-    setSelectedStartingPoint(point || null);
+  const inferredStartingLocation = useMemo(
+    () => inferStartingLocation(startingPrompt),
+    [startingPrompt],
+  );
+  const inferredStartingLocationId = inferredStartingLocation.locationId || "starting_zone";
+  const inferredStartingLocationData = inferredStartingLocation.location || null;
+  const inferredStartingZone = inferredStartingLocation.zone || null;
+
+  const handleStartingPromptChange = useCallback((value) => {
+    setStartingPrompt(value);
+  }, []);
+
+  const handleOptimizeStartingPrompt = useCallback(() => {
+    const optimized = optimizeStartCommand(startingPrompt);
+    if (!optimized.optimized) return;
+    setStartingPrompt(optimized.optimized);
+    setOptimizedStartingPromptOptions(optimized.alternatives);
+  }, [startingPrompt]);
+
+  const applyStartingPromptSuggestion = useCallback((value) => {
+    const sanitized = sanitizeStartCommand(value);
+    if (!sanitized) return;
+    setStartingPrompt(sanitized);
   }, []);
 
   // Calculate remaining points
@@ -700,10 +728,12 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     return { valid: true };
   }, [name]);
 
-  const validateStartingPoint = useCallback(() => {
-    if (!selectedStartingPoint) return { valid: false, error: "Starting point is required" };
+  const validateStartingPrompt = useCallback(() => {
+    if (!sanitizeStartCommand(startingPrompt)) {
+      return { valid: false, error: "Start command is required" };
+    }
     return { valid: true };
-  }, [selectedStartingPoint]);
+  }, [startingPrompt]);
 
   const validateRace = useCallback(() => {
     if (!selectedRace) return { valid: false, error: "Race is required" };
@@ -790,7 +820,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       validatePerks,
       ...(advancedUnlocked ? [validateStarterTree] : []),
       validateAlignment,
-      validateStartingPoint,
+      validateStartingPrompt,
     ];
     for (const check of checks) {
       const result = check();
@@ -803,7 +833,9 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         gender,
         raceId: selectedRace?.id,
         classId: selectedClass?.id,
-        startingZoneId: selectedStartingPoint?.id,
+        startingPrompt: sanitizeStartCommand(startingPrompt),
+        startingLocationId: inferredStartingLocationId,
+        startingZoneId: inferredStartingZone?.id || null,
         professionId: selectedProfession?.id,
         archetypeSystemId: selectedArchetypeSystem?.id,
         attributes: buildCharacterCreationAttributes({
@@ -850,13 +882,15 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     validateAttributes,
     validateAlignment,
     validateClass,
-    validateStartingPoint,
+    validateStartingPrompt,
     validateMulticlass,
     validatePerks,
     selectedArchetypeSystem,
     selectedClass,
     selectedSecondaryClass,
-    selectedStartingPoint,
+    inferredStartingLocationId,
+    inferredStartingZone?.id,
+    startingPrompt,
     selectedPassiveSkills,
     selectedPerkIds,
     selectedProfession,
@@ -898,7 +932,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       case STEPS.ALIGNMENT:
         return validateAlignment();
       case STEPS.STARTING_POINT:
-        return validateStartingPoint();
+        return validateStartingPrompt();
       case STEPS.REVIEW:
       default:
         return validateReview();
@@ -923,7 +957,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     validateArchetype,
     validateAttributes,
     validateClass,
-    validateStartingPoint,
+    validateStartingPrompt,
     validateMulticlass,
     validatePerks,
     validateProfession,
@@ -1028,6 +1062,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       loadout: selectionValidation.loadout,
       talentIds: assignedTalentIds,
     });
+    const sanitizedStartingPrompt = sanitizeStartCommand(startingPrompt);
     const blueprint = createCharacterCreationBlueprint({
       name: name.trim(),
       gender,
@@ -1035,7 +1070,9 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       classId: selectedClass?.id,
       secondaryClassId:
         advancedUnlocked ? selectedSecondaryClass?.id || null : null,
-      startingZoneId: selectedStartingPoint?.id,
+      startingPrompt: sanitizedStartingPrompt,
+      startingLocationId: inferredStartingLocationId,
+      startingZoneId: inferredStartingZone?.id || null,
       professionId,
       archetypeSystemId: selectedArchetypeSystem?.id,
       attributes: derivedState.attributes,
@@ -1055,7 +1092,9 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       secondaryClass: advancedUnlocked
         ? normalizeEntityRef(selectedSecondaryClass, "None")
         : null,
-      startingZoneId: selectedStartingPoint?.id || null,
+      startingPrompt: sanitizedStartingPrompt,
+      startingLocationId: inferredStartingLocationId,
+      startingZoneId: inferredStartingZone?.id || null,
       alignment: selectedAlignmentId,
       perks: selectedPerkIds,
       starterTrees: advancedUnlocked ? selectedStarterTreeIds : [],
@@ -1129,7 +1168,8 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     attributePoints,
     name,
     gender,
-    selectedStartingPoint,
+    inferredStartingLocationId,
+    inferredStartingZone?.id,
     selectedRace,
     selectedSecondaryClass,
     selectedClass,
@@ -1142,6 +1182,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     resolveSelectedSkillValidation,
     skillPools.grantedActive,
     skillPools.grantedPassive,
+    startingPrompt,
     blockedSkillIds,
   ]);
 
@@ -1158,7 +1199,10 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     name,
     characterName: name,
     gender,
-    selectedStartingPoint,
+    startingPrompt,
+    optimizedStartingPromptOptions,
+    inferredStartingLocation: inferredStartingLocationData,
+    inferredStartingZone,
     selectedRace,
     selectedClass,
     selectedSecondaryClass,
@@ -1172,7 +1216,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     selectedSkillLoadoutId,
     attributePoints,
     remainingPoints,
-    availableStartingPoints: AVAILABLE_STARTING_POINTS,
     availableRaces,
     availableClasses,
     availableSecondaryClasses,
@@ -1197,9 +1240,12 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     // Setters
     setName,
     setGender,
+    setStartingPrompt,
 
     // Actions
-    handleStartingPointSelect,
+    handleStartingPromptChange,
+    handleOptimizeStartingPrompt,
+    applyStartingPromptSuggestion,
     handleRaceSelect,
     handleClassSelect,
     handleSecondaryClassSelect,

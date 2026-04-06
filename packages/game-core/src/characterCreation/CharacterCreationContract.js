@@ -1,6 +1,6 @@
 import { getCharacterCreationSkillSelectionLimits } from "./CharacterCreationOptionsRegistry.js";
 
-const BLUEPRINT_VERSION = 2;
+const BLUEPRINT_VERSION = 3;
 
 function normalizeId(value) {
   if (typeof value !== "string") return null;
@@ -51,6 +51,14 @@ export function migrateCharacterCreationBlueprint(legacy = {}) {
       normalizeId(source.secondaryClassId) ||
       normalizeId(source.secondaryClass?.id) ||
       normalizeId(source.secondaryClass),
+    startingPrompt:
+      typeof source.startingPrompt === "string"
+        ? source.startingPrompt.trim()
+        : "",
+    startingLocationId:
+      normalizeId(source.startingLocationId) ||
+      normalizeId(source.startingLocation?.id) ||
+      normalizeId(source.startingLocation),
     startingZoneId: normalizeId(source.startingZoneId),
     professionId,
     archetypeSystemId,
@@ -89,6 +97,8 @@ export function validateCharacterCreationBlueprint(blueprint = {}, options = {})
   if (!source.classId) errors.push("Class is required.");
   if (!source.professionId) errors.push("Profession is required.");
   if (!source.archetypeSystemId) errors.push("Archetype system is required.");
+  if (!source.startingPrompt) errors.push("Starting prompt is required.");
+  if (!source.startingLocationId) errors.push("Starting location is required.");
   if (!source.attributes || Object.keys(source.attributes).length === 0) {
     errors.push("Attributes are required.");
   }

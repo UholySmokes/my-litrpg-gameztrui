@@ -241,4 +241,4 @@ See [docs/ANDROID_TOOLCHAIN_CONTRACT.md](docs/ANDROID_TOOLCHAIN_CONTRACT.md) and
 
 ## License
 
-Internal / TBD. Contact the maintainers before distribution.
+All rights reserved. Contact the maintainers for licensing inquiries.

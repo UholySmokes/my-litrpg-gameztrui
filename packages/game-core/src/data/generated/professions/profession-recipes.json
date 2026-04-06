@@ -6,7 +6,7 @@
         "name": "Minor Healing Potion",
         "profession": "alchemy",
         "tier": 1,
-        "description": "",
+        "description": "Minor Healing Potion crafted through alchemy.",
         "ingredients": [
           {
             "id": "common_herb",
@@ -32,7 +32,7 @@
         "name": "Minor Mana Potion",
         "profession": "alchemy",
         "tier": 1,
-        "description": "",
+        "description": "Minor Mana Potion crafted through alchemy.",
         "ingredients": [
           {
             "id": "spirit_flower",
@@ -58,7 +58,7 @@
         "name": "Healing Potion",
         "profession": "alchemy",
         "tier": 3,
-        "description": "",
+        "description": "Healing Potion crafted through alchemy.",
         "ingredients": [
           {
             "id": "medicinal_herb",
@@ -84,7 +84,7 @@
         "name": "Antidote",
         "profession": "alchemy",
         "tier": 3,
-        "description": "",
+        "description": "Antidote crafted through alchemy.",
         "ingredients": [
           {
             "id": "antidote_herb",
@@ -110,7 +110,7 @@
         "name": "Mind Focus Elixir",
         "profession": "alchemy",
         "tier": 5,
-        "description": "",
+        "description": "Mind Focus Elixir crafted through alchemy.",
         "ingredients": [
           {
             "id": "spirit_flower",
@@ -142,7 +142,7 @@
         "name": "Aurora Flux",
         "profession": "alchemy",
         "tier": 7,
-        "description": "",
+        "description": "Aurora Flux crafted through alchemy.",
         "ingredients": [
           {
             "id": "void_essence",
@@ -621,7 +621,7 @@
         "name": "Iron Ingot",
         "profession": "blacksmithing",
         "tier": 1,
-        "description": "",
+        "description": "Iron Ingot crafted through blacksmithing.",
         "ingredients": [
           {
             "id": "iron_ore",
@@ -640,7 +640,7 @@
         "name": "Iron Dagger",
         "profession": "blacksmithing",
         "tier": 1,
-        "description": "",
+        "description": "Iron Dagger crafted through blacksmithing.",
         "ingredients": [
           {
             "id": "iron_ingot",
@@ -659,7 +659,7 @@
         "name": "Iron Chainmail",
         "profession": "blacksmithing",
         "tier": 1,
-        "description": "",
+        "description": "Iron Chainmail crafted through blacksmithing.",
         "ingredients": [
           {
             "id": "iron_ingot",
@@ -678,7 +678,7 @@
         "name": "Steel Ingot",
         "profession": "blacksmithing",
         "tier": 3,
-        "description": "",
+        "description": "Steel Ingot crafted through blacksmithing.",
         "ingredients": [
           {
             "id": "iron_ingot",
@@ -701,7 +701,7 @@
         "name": "Steel Sword",
         "profession": "blacksmithing",
         "tier": 3,
-        "description": "",
+        "description": "Steel Sword crafted through blacksmithing.",
         "ingredients": [
           {
             "id": "steel_ingot",
@@ -724,7 +724,7 @@
         "name": "Mythril Ingot",
         "profession": "blacksmithing",
         "tier": 5,
-        "description": "",
+        "description": "Mythril Ingot crafted through blacksmithing.",
         "ingredients": [
           {
             "id": "mythril_ore",
@@ -747,7 +747,7 @@
         "name": "Mythril Blade",
         "profession": "blacksmithing",
         "tier": 5,
-        "description": "",
+        "description": "Mythril Blade crafted through blacksmithing.",
         "ingredients": [
           {
             "id": "mythril_ingot",
@@ -770,7 +770,7 @@
         "name": "Soulforged Helmet",
         "profession": "blacksmithing",
         "tier": 7,
-        "description": "",
+        "description": "Soulforged Helmet crafted through blacksmithing.",
         "ingredients": [
           {
             "id": "adamantine_ingot",
@@ -2584,7 +2584,7 @@
         "name": "Simple Meal",
         "profession": "cooking",
         "tier": 1,
-        "description": "",
+        "description": "Simple Meal crafted through cooking.",
         "ingredients": [
           {
             "id": "raw_meat",
@@ -2611,7 +2611,7 @@
         "name": "Bread",
         "profession": "cooking",
         "tier": 1,
-        "description": "",
+        "description": "Bread crafted through cooking.",
         "ingredients": [
           {
             "id": "flour",
@@ -2638,7 +2638,7 @@
         "name": "Hearty Stew",
         "profession": "cooking",
         "tier": 3,
-        "description": "",
+        "description": "Hearty Stew crafted through cooking.",
         "ingredients": [
           {
             "id": "prime_meat",
@@ -3562,7 +3562,7 @@
         "name": "Mindshield Charm",
         "profession": "enchanting",
         "tier": 3,
-        "description": "",
+        "description": "Mindshield Charm crafted through enchanting.",
         "ingredients": [
           {
             "id": "silver_ring",
@@ -3593,7 +3593,7 @@
         "name": "Stormbrand Enchant",
         "profession": "enchanting",
         "tier": 6,
-        "description": "",
+        "description": "Stormbrand Enchant crafted through enchanting.",
         "ingredients": [
           {
             "id": "mythril_blade",
@@ -6300,7 +6300,7 @@
         "name": "Scroll of Light",
         "profession": "inscription",
         "tier": 1,
-        "description": "",
+        "description": "Scroll of Light crafted through inscription.",
         "ingredients": [
           {
             "id": "parchment",
@@ -6327,7 +6327,7 @@
         "name": "Basic Glyph",
         "profession": "inscription",
         "tier": 1,
-        "description": "",
+        "description": "Basic Glyph crafted through inscription.",
         "ingredients": [
           {
             "id": "stone_tablet",
@@ -10367,7 +10367,7 @@
       "name": "Antidote",
       "profession": "alchemy",
       "tier": 3,
-      "description": "",
+      "description": "Antidote crafted through alchemy.",
       "ingredients": [
         {
           "id": "antidote_herb",
@@ -10393,7 +10393,7 @@
       "name": "Aurora Flux",
       "profession": "alchemy",
       "tier": 7,
-      "description": "",
+      "description": "Aurora Flux crafted through alchemy.",
       "ingredients": [
         {
           "id": "void_essence",
@@ -10426,7 +10426,7 @@
       "name": "Basic Glyph",
       "profession": "inscription",
       "tier": 1,
-      "description": "",
+      "description": "Basic Glyph crafted through inscription.",
       "ingredients": [
         {
           "id": "stone_tablet",
@@ -10897,7 +10897,7 @@
       "name": "Bread",
       "profession": "cooking",
       "tier": 1,
-      "description": "",
+      "description": "Bread crafted through cooking.",
       "ingredients": [
         {
           "id": "flour",
@@ -15364,7 +15364,7 @@
       "name": "Healing Potion",
       "profession": "alchemy",
       "tier": 3,
-      "description": "",
+      "description": "Healing Potion crafted through alchemy.",
       "ingredients": [
         {
           "id": "medicinal_herb",
@@ -15390,7 +15390,7 @@
       "name": "Hearty Stew",
       "profession": "cooking",
       "tier": 3,
-      "description": "",
+      "description": "Hearty Stew crafted through cooking.",
       "ingredients": [
         {
           "id": "prime_meat",
@@ -16310,7 +16310,7 @@
       "name": "Iron Chainmail",
       "profession": "blacksmithing",
       "tier": 1,
-      "description": "",
+      "description": "Iron Chainmail crafted through blacksmithing.",
       "ingredients": [
         {
           "id": "iron_ingot",
@@ -16329,7 +16329,7 @@
       "name": "Iron Dagger",
       "profession": "blacksmithing",
       "tier": 1,
-      "description": "",
+      "description": "Iron Dagger crafted through blacksmithing.",
       "ingredients": [
         {
           "id": "iron_ingot",
@@ -16348,7 +16348,7 @@
       "name": "Iron Ingot",
       "profession": "blacksmithing",
       "tier": 1,
-      "description": "",
+      "description": "Iron Ingot crafted through blacksmithing.",
       "ingredients": [
         {
           "id": "iron_ore",
@@ -17255,7 +17255,7 @@
       "name": "Mind Focus Elixir",
       "profession": "alchemy",
       "tier": 5,
-      "description": "",
+      "description": "Mind Focus Elixir crafted through alchemy.",
       "ingredients": [
         {
           "id": "spirit_flower",
@@ -17287,7 +17287,7 @@
       "name": "Mindshield Charm",
       "profession": "enchanting",
       "tier": 3,
-      "description": "",
+      "description": "Mindshield Charm crafted through enchanting.",
       "ingredients": [
         {
           "id": "silver_ring",
@@ -17762,7 +17762,7 @@
       "name": "Minor Healing Potion",
       "profession": "alchemy",
       "tier": 1,
-      "description": "",
+      "description": "Minor Healing Potion crafted through alchemy.",
       "ingredients": [
         {
           "id": "common_herb",
@@ -17788,7 +17788,7 @@
       "name": "Minor Mana Potion",
       "profession": "alchemy",
       "tier": 1,
-      "description": "",
+      "description": "Minor Mana Potion crafted through alchemy.",
       "ingredients": [
         {
           "id": "spirit_flower",
@@ -17814,7 +17814,7 @@
       "name": "Mythril Blade",
       "profession": "blacksmithing",
       "tier": 5,
-      "description": "",
+      "description": "Mythril Blade crafted through blacksmithing.",
       "ingredients": [
         {
           "id": "mythril_ingot",
@@ -17837,7 +17837,7 @@
       "name": "Mythril Ingot",
       "profession": "blacksmithing",
       "tier": 5,
-      "description": "",
+      "description": "Mythril Ingot crafted through blacksmithing.",
       "ingredients": [
         {
           "id": "mythril_ore",
@@ -18748,7 +18748,7 @@
       "name": "Scroll of Light",
       "profession": "inscription",
       "tier": 1,
-      "description": "",
+      "description": "Scroll of Light crafted through inscription.",
       "ingredients": [
         {
           "id": "parchment",
@@ -18775,7 +18775,7 @@
       "name": "Simple Meal",
       "profession": "cooking",
       "tier": 1,
-      "description": "",
+      "description": "Simple Meal crafted through cooking.",
       "ingredients": [
         {
           "id": "raw_meat",
@@ -19246,7 +19246,7 @@
       "name": "Soulforged Helmet",
       "profession": "blacksmithing",
       "tier": 7,
-      "description": "",
+      "description": "Soulforged Helmet crafted through blacksmithing.",
       "ingredients": [
         {
           "id": "adamantine_ingot",
@@ -19276,7 +19276,7 @@
       "name": "Steel Ingot",
       "profession": "blacksmithing",
       "tier": 3,
-      "description": "",
+      "description": "Steel Ingot crafted through blacksmithing.",
       "ingredients": [
         {
           "id": "iron_ingot",
@@ -19299,7 +19299,7 @@
       "name": "Steel Sword",
       "profession": "blacksmithing",
       "tier": 3,
-      "description": "",
+      "description": "Steel Sword crafted through blacksmithing.",
       "ingredients": [
         {
           "id": "steel_ingot",
@@ -19322,7 +19322,7 @@
       "name": "Stormbrand Enchant",
       "profession": "enchanting",
       "tier": 6,
-      "description": "",
+      "description": "Stormbrand Enchant crafted through enchanting.",
       "ingredients": [
         {
           "id": "mythril_blade",

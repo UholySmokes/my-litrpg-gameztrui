@@ -102,6 +102,12 @@ async function runNarration(body) {
 			: body?.npc_context && typeof body.npc_context === "object"
 				? body.npc_context
 				: undefined;
+	const reactionContext =
+		body?.reactionContext && typeof body.reactionContext === "object"
+			? body.reactionContext
+			: body?.reaction_context && typeof body.reaction_context === "object"
+				? body.reaction_context
+				: undefined;
 	const input =
 		prompt ||
 		`Narrate the next scene based on: ${JSON.stringify(body || {})}`;
@@ -113,6 +119,7 @@ async function runNarration(body) {
 			prompt: input,
 			mode,
 			npc_context: npcContext,
+			reaction_context: reactionContext,
 		},
 		model: body?.model,
 		temperature: body?.temperature,

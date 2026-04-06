@@ -309,6 +309,10 @@ describe("handlers narrate endpoints", () => {
           spokenText: "Why are you all just watching me?",
           requiresResponse: true,
         },
+        reactionContext: {
+          focusEntity: "Spirit Beast Clan Patrol",
+          pressure: "approach-or-assist",
+        },
       },
     };
     const res = createRes();
@@ -323,6 +327,10 @@ describe("handlers narrate endpoints", () => {
           npc_context: expect.objectContaining({
             targetLabel: "Spirit Beast Clan Patrol",
             requiresResponse: true,
+          }),
+          reaction_context: expect.objectContaining({
+            focusEntity: "Spirit Beast Clan Patrol",
+            pressure: "approach-or-assist",
           }),
         }),
       }),

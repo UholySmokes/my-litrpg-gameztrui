@@ -170,6 +170,140 @@ function resolveDialogueTargetLabel(targetLabel, candidates) {
   return exact || (candidates.length === 1 ? candidates[0] : null);
 }
 
+function isGroupEntityLabel(value = "") {
+  return /\b(patrol|guards?|scouts?|caravan|hands?|volunteers?|companions?|travelers?|workers?|group|party|pilgrims?|pack|clan|crew)\b/i.test(
+    String(value || ""),
+  );
+}
+
+function pickAmbientReactionEntity(sceneMemory = {}, dialogue = null) {
+  const partyEntities = normalizeEntityLabels(sceneMemory?.partyEntities || []);
+  const familiarEntities = normalizeEntityLabels(sceneMemory?.familiarEntities || []);
+  const presentEntities = normalizeEntityLabels(sceneMemory?.presentEntities || []);
+  const activeThreats = new Set(
+    normalizeEntityLabels(sceneMemory?.activeThreats || []).map((entry) =>
+      normalizeLookupKey(entry),
+    ),
+  );
+  const candidates = Array.from(
+    new Set([...partyEntities, ...familiarEntities, ...presentEntities]),
+  );
+  const dialogueTarget = resolveDialogueTargetLabel(dialogue?.targetLabel, candidates);
+  if (dialogueTarget) return dialogueTarget;
+
+  return (
+    candidates.find(
+      (entry) =>
+        isGroupEntityLabel(entry) && !activeThreats.has(normalizeLookupKey(entry)),
+    ) ||
+    candidates.find((entry) => !activeThreats.has(normalizeLookupKey(entry))) ||
+    null
+  );
+}
+
+function classifyAmbientReactionPressure({
+  userInput = "",
+  actionResult = {},
+  sceneMemory = {},
+} = {}) {
+  const safeInput = sanitizeUserInput(userInput).toLowerCase();
+  const dialogue =
+    actionResult?.dialogue && typeof actionResult.dialogue === "object"
+      ? actionResult.dialogue
+      : null;
+  const activeThreats = normalizeEntityLabels(sceneMemory?.activeThreats || []);
+  const hpCurrent = toNumber(
+    actionResult?.state?.player?.hp?.current ?? actionResult?.state?.player?.hp,
+    NaN,
+  );
+  const hpMax = toNumber(
+    actionResult?.state?.player?.hp?.max ?? actionResult?.state?.player?.maxHp,
+    NaN,
+  );
+  const hpRatio =
+    Number.isFinite(hpCurrent) && Number.isFinite(hpMax) && hpMax > 0
+      ? hpCurrent / hpMax
+      : 1;
+  const vulnerable =
+    hpRatio <= 0.45 ||
+    /\b(hurt|injured|bleed|bleeding|cry|crying|afraid|scared|confused|lost|help)\b/i.test(
+      safeInput,
+    );
+  const noticeable =
+    Boolean(actionResult?.changes?.location) ||
+    ["move", "attack", "use", "cast", "dialogue", "narrative"].includes(
+      actionResult?.actionType,
+    ) ||
+    /\b(run|stumble|trip|fall|wave|call|shout|cry|crawl|reach|approach|grab)\b/i.test(
+      safeInput,
+    );
+
+  if (dialogue?.requiresResponse) {
+    return {
+      pressure: "answer-or-refuse",
+      urgency: "high",
+      trigger: "The player directly addressed a nearby sentient NPC or group.",
+      policy:
+        "Have the focus entity answer, refuse with a reason, or make a clear visible social move this turn.",
+    };
+  }
+
+  if (vulnerable && activeThreats.length > 0) {
+    return {
+      pressure: "protect-or-warn",
+      urgency: "high",
+      trigger:
+        "The player looks vulnerable while danger or tension is already active in the scene.",
+      policy:
+        "Have the focus entity warn, shield, reposition, herd, or otherwise react protectively if grounded.",
+    };
+  }
+
+  if (vulnerable) {
+    return {
+      pressure: "approach-or-assist",
+      urgency: "medium",
+      trigger:
+        "The player appears vulnerable, frightened, lost, or physically compromised in front of nearby entities.",
+      policy:
+        "Have the focus entity approach, steady, question, comfort, or block the player rather than remaining inert.",
+    };
+  }
+
+  if (actionResult?.success === false) {
+    return {
+      pressure: "react-to-failure",
+      urgency: "medium",
+      trigger: "The player's attempted action visibly failed in front of nearby entities.",
+      policy:
+        "Have the focus entity react with comment, caution, intervention, or body language if grounded.",
+    };
+  }
+
+  if (activeThreats.length > 0 && noticeable) {
+    return {
+      pressure: "warn-or-cover",
+      urgency: "medium",
+      trigger:
+        "The player did something noticeable while threats or tension remain in the scene.",
+      policy:
+        "Have the focus entity acknowledge the move with warning, cover, pursuit, or tactical repositioning.",
+    };
+  }
+
+  if (noticeable) {
+    return {
+      pressure: "acknowledge",
+      urgency: "low",
+      trigger: "The player did something noticeable near established entities.",
+      policy:
+        "Have the focus entity visibly acknowledge the action if grounded, even with a short glance, movement, or brief line.",
+    };
+  }
+
+  return null;
+}
+
 export function buildDialogueNpcContext(gameState = {}, userInput = "", actionResult = {}) {
   const result = actionResult && typeof actionResult === "object" ? actionResult : {};
   const dialogue =
@@ -215,6 +349,45 @@ export function buildDialogueNpcContext(gameState = {}, userInput = "", actionRe
     unresolvedHooks: normalizeEntityLabels(sceneMemory?.unresolvedHooks || []),
     lastConsequence: sceneMemory?.lastConsequence || null,
     socialSummary: socialSummary || null,
+  };
+}
+
+export function buildAmbientReactionContext(
+  gameState = {},
+  userInput = "",
+  actionResult = {},
+) {
+  const result = actionResult && typeof actionResult === "object" ? actionResult : {};
+  const sceneMemory =
+    gameState?.narrative && typeof gameState.narrative === "object"
+      ? gameState.narrative.sceneMemory || buildSceneMemorySeed(gameState, result)
+      : buildSceneMemorySeed(gameState, result);
+  const dialogue =
+    result.dialogue && typeof result.dialogue === "object" ? result.dialogue : null;
+  const focusEntity = pickAmbientReactionEntity(sceneMemory, dialogue);
+  if (!focusEntity) return null;
+
+  const pressure = classifyAmbientReactionPressure({
+    userInput,
+    actionResult: result,
+    sceneMemory,
+  });
+  if (!pressure) return null;
+
+  return {
+    focusEntity,
+    pressure: pressure.pressure,
+    urgency: pressure.urgency,
+    trigger: pressure.trigger,
+    policy: pressure.policy,
+    locationLabel: sceneMemory?.locationLabel || null,
+    zoneLabel: sceneMemory?.zoneLabel || null,
+    activeThreats: normalizeEntityLabels(sceneMemory?.activeThreats || []),
+    presentEntities: normalizeEntityLabels(sceneMemory?.presentEntities || []),
+    socialSummary:
+      typeof sceneMemory?.socialSummary === "string" && sceneMemory.socialSummary.trim()
+        ? sceneMemory.socialSummary.trim()
+        : null,
   };
 }
 
@@ -272,7 +445,16 @@ export function assemblePrompt(gameState, userInput, actionResult) {
     resolvedActionResult,
   );
   const historySection = buildHistorySection(gameState);
-  const actionSection = buildActionSection(userInput, resolvedActionResult);
+  const reactionContext = buildAmbientReactionContext(
+    gameState,
+    userInput,
+    resolvedActionResult,
+  );
+  const actionSection = buildActionSection(
+    userInput,
+    resolvedActionResult,
+    reactionContext,
+  );
 
   return `${systemPrompt}
 
@@ -1296,7 +1478,7 @@ ${recentHistory.join("\n")}`;
 /**
  * Builds the action section describing what the user did and what happened
  */
-function buildActionSection(userInput, actionResult) {
+function buildActionSection(userInput, actionResult, reactionContext = null) {
   const safeUserInput = sanitizeUserInput(userInput);
   const shouldFavorDialogue = Boolean(
     actionResult?.dialogue?.requiresResponse || detectDialogueIntent(safeUserInput),
@@ -1383,9 +1565,17 @@ The action succeeded. ${result.description || "Action completed."}`;
         actionDescription += `\nDialogue topic: ${dialogue.topic}`;
       }
     }
+    if (reactionContext?.focusEntity) {
+      actionDescription += `\nAmbient reaction cue: ${reactionContext.focusEntity} should ${reactionContext.pressure}.`;
+      actionDescription += `\nAmbient reaction trigger: ${reactionContext.trigger}`;
+    }
   } else {
     actionDescription = `The player attempted (untrusted user input): "${safeUserInput}"
 The action failed. ${result.reason || "Action could not be completed."}`;
+    if (reactionContext?.focusEntity) {
+      actionDescription += `\nAmbient reaction cue: ${reactionContext.focusEntity} should ${reactionContext.pressure}.`;
+      actionDescription += `\nAmbient reaction trigger: ${reactionContext.trigger}`;
+    }
   }
 
   return `=== PLAYER ACTION ===
@@ -1408,6 +1598,7 @@ Hard rules:
 - Even low-level survival actions should feel consequential when the player is injured, exposed, hungry, unstable, or being hunted.
 - When the player directly addresses nearby sentient NPCs, do not answer with vague silence alone. Resolve the turn with an answer, refusal, or visible social reaction.
 - When present entities are already watching, alerted, wary, or socially engaged, at least one of them should react in a concrete way to noticeable player actions if that reaction is grounded by scene state.
+- If an ambient reaction cue is provided, let that focus entity visibly react in line with the stated pressure unless current threats or established state make that impossible.
 - Each suggestion must be feasible from the current scene and distinct in category from the others.
 - Suggestions must not be simple paraphrases of the same move.
 - stateIntents is optional. Include it only when a concrete, grounded world consequence should be persisted.

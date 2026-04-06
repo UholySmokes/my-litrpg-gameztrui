@@ -388,7 +388,10 @@ export function applyNarrationGuards(response) {
  * @param {string} prompt - The complete prompt string
  * @returns {Promise<object>} The parsed JSON response with story, mood, and suggestions
  */
-export async function generateNarrative(prompt, { mode, npcContext } = {}) {
+export async function generateNarrative(
+  prompt,
+  { mode, npcContext, reactionContext } = {},
+) {
   const cooldownError = createNarratorCooldownError();
   if (cooldownError) throw cooldownError;
 
@@ -423,7 +426,7 @@ export async function generateNarrative(prompt, { mode, npcContext } = {}) {
           {
             method: "POST",
             headers,
-            body: JSON.stringify({ prompt, mode, npcContext }),
+            body: JSON.stringify({ prompt, mode, npcContext, reactionContext }),
           },
           timeoutMs,
         );
@@ -571,7 +574,7 @@ export async function generateInitialNarrative(initialPrompt) {
  */
 export async function generateNarrativeStream(
   prompt,
-  { onChunk, onDone, signal, mode, npcContext } = {},
+  { onChunk, onDone, signal, mode, npcContext, reactionContext } = {},
 ) {
   const cooldownError = createNarratorCooldownError();
   if (cooldownError) throw cooldownError;
@@ -585,7 +588,11 @@ export async function generateNarrativeStream(
 
   // No stream endpoints configured — transparent fallback
   if (!endpoints) {
-    const result = await generateNarrative(prompt, { mode });
+    const result = await generateNarrative(prompt, {
+      mode,
+      npcContext,
+      reactionContext,
+    });
     if (typeof onDone === "function") onDone(result);
     return result;
   }
@@ -599,7 +606,7 @@ export async function generateNarrativeStream(
         {
           method: "POST",
           headers: startHeaderVariants[i],
-          body: JSON.stringify({ prompt, mode, npcContext }),
+          body: JSON.stringify({ prompt, mode, npcContext, reactionContext }),
           signal,
         },
         30000,
@@ -628,7 +635,11 @@ export async function generateNarrativeStream(
     if (isDev && !shouldUseNarrativeLocalFallback(error)) {
       console.warn("Stream start failed, falling back:", error);
     }
-    const result = await generateNarrative(prompt, { mode, npcContext });
+    const result = await generateNarrative(prompt, {
+      mode,
+      npcContext,
+      reactionContext,
+    });
     if (typeof onDone === "function") onDone(result);
     return result;
   }
@@ -668,7 +679,11 @@ export async function generateNarrativeStream(
     if (isDev) {
       console.warn("Stream start returned no run identifiers, falling back");
     }
-    const result = await generateNarrative(prompt, { mode, npcContext });
+    const result = await generateNarrative(prompt, {
+      mode,
+      npcContext,
+      reactionContext,
+    });
     if (typeof onDone === "function") onDone(result);
     return result;
   }
@@ -724,7 +739,11 @@ export async function generateNarrativeStream(
         if (isDev) {
           console.warn("Stream poll unauthorized, falling back to sync narrate");
         }
-        const result = await generateNarrative(prompt, { mode, npcContext });
+        const result = await generateNarrative(prompt, {
+          mode,
+          npcContext,
+          reactionContext,
+        });
         if (typeof onDone === "function") onDone(result);
         return result;
       }
@@ -769,7 +788,11 @@ export async function generateNarrativeStream(
     if (Date.now() - stallStart > STREAM_STALL_TIMEOUT_MS) {
       if (isDev)
         console.warn("Stream stalled, falling back to sync narrate");
-      const result = await generateNarrative(prompt, { mode, npcContext });
+      const result = await generateNarrative(prompt, {
+        mode,
+        npcContext,
+        reactionContext,
+      });
       if (typeof onDone === "function") onDone(result);
       return result;
     }
@@ -777,7 +800,11 @@ export async function generateNarrativeStream(
 
   // Exceeded max polls — fall back
   if (isDev) console.warn("Stream exceeded max polls, falling back");
-  const result = await generateNarrative(prompt, { mode, npcContext });
+  const result = await generateNarrative(prompt, {
+    mode,
+    npcContext,
+    reactionContext,
+  });
   if (typeof onDone === "function") onDone(result);
   return result;
 }

@@ -126,12 +126,14 @@ function buildInputPrompt(agentId, input) {
 	const blocks = [];
 	if (agentId === "narrator") {
 		blocks.push(blockFromValue("GAME_STATE", payload.game_state ?? payload));
+		blocks.push(blockFromValue("REACTION_CONTEXT", payload.reaction_context));
 	}
 	if (agentId === "combat") {
 		blocks.push(blockFromValue("COMBAT_STATE", payload.combat_state ?? payload));
 	}
 	if (agentId === "dialogue") {
 		blocks.push(blockFromValue("NPC_CONTEXT", payload.npc_context ?? payload));
+		blocks.push(blockFromValue("REACTION_CONTEXT", payload.reaction_context));
 	}
 	if (agentId === "world") {
 		blocks.push(blockFromValue("WORLD_CONTEXT", payload.world_context ?? payload));

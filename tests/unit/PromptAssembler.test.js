@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import {
   assemblePrompt,
+  buildAmbientReactionContext,
   buildDialogueNpcContext,
   buildInitialPrompt,
   buildSceneMemorySeed,
@@ -317,6 +318,81 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("coldly helpful notices");
     expect(prompt).toContain("Treat the player's command as a real attempted action");
     expect(prompt).toContain("Only hard-refuse or narrow an action when it would force unearned mechanics or canon state");
+  });
+
+  it("builds a deterministic ambient reaction cue for vulnerable turns near NPCs", () => {
+    const reactionContext = buildAmbientReactionContext(
+      {
+        player: {
+          hp: { current: 4, max: 12 },
+        },
+        world: { location: { current: "city_neon_bazaar" } },
+        quests: { active: [] },
+        narrative: {
+          sceneMemory: {
+            locationLabel: "Spirit Crossing",
+            zoneLabel: "Wildroot Verge",
+            presentEntities: ["Spirit Beast Clan Patrol"],
+            socialSummary: "The patrol is watching the cub closely.",
+          },
+        },
+      },
+      "go to him scared and confused",
+      {
+        success: true,
+        actionType: "narrative",
+        description: "You stumble toward the patrol on shaking paws.",
+      },
+    );
+
+    expect(reactionContext).toEqual(
+      expect.objectContaining({
+        focusEntity: "Spirit Beast Clan Patrol",
+        pressure: "approach-or-assist",
+        urgency: "medium",
+      }),
+    );
+  });
+
+  it("includes the ambient reaction cue in the assembled prompt", () => {
+    const prompt = assemblePrompt(
+      {
+        player: {
+          name: "Cub",
+          level: 1,
+          hp: { current: 4, max: 12 },
+          mana: { current: 0, max: 0 },
+          xp: { current: 0, max: 10 },
+          inventory: [],
+          equipment: {},
+        },
+        world: { location: { current: "city_neon_bazaar" } },
+        quests: { active: [] },
+        narrative: {
+          summary: "A patrol has noticed you.",
+          sceneMemory: {
+            locationLabel: "Spirit Crossing",
+            zoneLabel: "Wildroot Verge",
+            presentEntities: ["Spirit Beast Clan Patrol"],
+            socialSummary: "The patrol is watching the cub closely.",
+          },
+          entries: [],
+        },
+      },
+      "go to him scared and confused",
+      {
+        success: true,
+        actionType: "narrative",
+        description: "You stumble toward the patrol on shaking paws.",
+      },
+    );
+
+    expect(prompt).toContain(
+      "Ambient reaction cue: Spirit Beast Clan Patrol should approach-or-assist.",
+    );
+    expect(prompt).toContain(
+      "If an ambient reaction cue is provided, let that focus entity visibly react",
+    );
   });
 
   it("builds npc context and requires direct dialogue resolution", () => {

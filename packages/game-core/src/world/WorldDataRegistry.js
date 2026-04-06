@@ -133,10 +133,10 @@ export let locations = [
   {
     id: "starting_zone",
     zoneId: "city",
-    name: "Arrival Terminal",
+    name: "Gateway Plaza",
     summary:
-      "A humming arrivals concourse where the arcology pretends nothing is broken.",
-    aliases: ["starting zone", "arrival terminal", "terminal", "gate"],
+      "A broad open plaza beneath the arcology's main arch where guild boards compete for attention and merchant stalls line the paths deeper into the district.",
+    aliases: ["starting zone", "gateway plaza", "plaza", "gate", "main arch"],
     travelPolicy: "public",
   },
   {

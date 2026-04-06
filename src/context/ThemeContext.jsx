@@ -548,7 +548,7 @@ export function useTheme() {
 export function ThemeDock() {
   const { currentThemeId, setTheme, theme, themes } = useTheme();
   const gridId = useId();
-  const [isReduced, setIsReduced] = useState(false);
+  const [isReduced, setIsReduced] = useState(true);
   const dockRef = useRef(null);
 
   useEffect(() => {

@@ -1987,19 +1987,19 @@ body,
 .surface-dialog__actions .holo-button:hover {
   border-color: color-mix(in srgb, var(--holo-gold) 38%, transparent);
   background: var(--shell-button-hover-gradient);
-  color: var(--holo-ink);
+  color: var(--text-main);
 }
 
 .holo-button--solid {
   background: var(--shell-button-solid-gradient);
   border-color: color-mix(in srgb, var(--holo-gold) 38%, transparent);
-  color: var(--holo-ink);
+  color: var(--text-on-accent);
 }
 
 .holo-button--danger {
   background: var(--shell-button-danger-gradient);
   border-color: color-mix(in srgb, var(--holo-alert) 42%, transparent);
-  color: var(--text-main);
+  color: var(--text-on-danger);
 }
 
 .character-hub,

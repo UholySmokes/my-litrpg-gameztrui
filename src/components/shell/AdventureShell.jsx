@@ -140,16 +140,16 @@ export default function AdventureShell({
 
   return (
     <section className="adventure-shell adventure-shell--atrium">
-      <header className="adventure-shell__topbar adventure-shell__topbar--atrium">
+      <header className="adventure-shell__topbar adventure-shell__topbar--atrium anime-slide-down">
         <div className="adventure-shell__brand">
-          <div className="adventure-shell__eyebrow">World Atrium</div>
+          <div className="adventure-shell__eyebrow anime-shimmer">World Atrium</div>
           <h2 className="adventure-shell__title">{playerIdentity.name}</h2>
           <div className="adventure-shell__meta">
             Level {playerIdentity.level} {playerIdentity.race} {playerIdentity.classLabel}
           </div>
         </div>
 
-        <div className="adventure-shell__statusstrip">
+        <div className="adventure-shell__statusstrip anime-stagger">
           <AtriumCard label="Profile" value={profileLabel} />
           <AtriumCard label="Location" value={location?.name || "Unknown Reach"} />
           <AtriumCard label="Zone" value={zone?.name || location?.zoneId || "Unmapped"} />
@@ -158,7 +158,7 @@ export default function AdventureShell({
       </header>
 
       <div className="atrium-layout">
-        <section className="atrium-hero">
+        <section className="atrium-hero anime-slide-up">
           <div className="atrium-hero__copy">
             <div className="atrium-hero__kicker">
               {zone?.name || "Unknown Zone"} / {location?.name || "Unknown Reach"}
@@ -186,7 +186,7 @@ export default function AdventureShell({
             <div className="atrium-pulse__status">{combatStatus}</div>
           </div>
 
-          <div className="atrium-pulse__passage">{latestPassage}</div>
+          <div className="atrium-pulse__passage anime-pulse">{latestPassage}</div>
 
           <div className="atrium-pulse__timeline">
             <CommandTerminalPanel
@@ -210,7 +210,7 @@ export default function AdventureShell({
             <div className="adventure-shell__eyebrow">Core Rooms</div>
             <h3 className="surface-section__title">Traverse the primary chambers</h3>
           </div>
-          <div className="atrium-room-grid">
+          <div className="atrium-room-grid anime-stagger">
             {primaryRooms.map((room) => (
               <RoomGateway
                 key={room.id}
@@ -226,7 +226,7 @@ export default function AdventureShell({
             <div className="adventure-shell__eyebrow">System Rooms</div>
             <h3 className="surface-section__title">Open supporting sanctums</h3>
           </div>
-          <div className="atrium-systems-grid">
+          <div className="atrium-systems-grid anime-stagger">
             {systemRooms.map((room) => (
               <RoomGateway
                 key={room.id}

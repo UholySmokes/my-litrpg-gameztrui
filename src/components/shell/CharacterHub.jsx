@@ -1,3 +1,5 @@
+import animeCrystalSword from "../../assets/anime-crystal-sword.svg";
+
 const ARRIVAL_RITES = [
   {
     title: "Bind The Lattice",
@@ -30,9 +32,10 @@ export default function CharacterHub({
 
   return (
     <section className="character-hub character-hub--arrival">
-      <div className="character-hub__intro character-hub__hero">
-        <div className="character-hub__eyebrow">Arrival Chamber</div>
-        <h2 className="character-hub__title">Enter the genesis atrium.</h2>
+      <img src={animeCrystalSword} alt="" className="character-hub__deco-sword anime-float" aria-hidden="true" />
+      <div className="character-hub__intro character-hub__hero anime-slide-up">
+        <div className="character-hub__eyebrow anime-shimmer">Arrival Chamber</div>
+        <h2 className="character-hub__title anime-dramatic">Enter the genesis atrium.</h2>
         <p className="character-hub__copy">
           The chamber is quiet until you bind a system and begin forging the next
           chronicle. No premade champion stands in for you here. The run starts only
@@ -49,9 +52,9 @@ export default function CharacterHub({
           <div className="character-hub__panel-kicker">Ritual Sequence</div>
           <h3 className="character-hub__panel-title">A full-room genesis ritual awaits.</h3>
 
-          <div className="character-hub__feature-list">
+          <div className="character-hub__feature-list anime-stagger">
             {ARRIVAL_RITES.map((rite, index) => (
-              <article key={rite.title} className="character-hub__feature">
+              <article key={rite.title} className="character-hub__feature anime-slide-up">
                 <span className="character-hub__feature-index">{`0${index + 1}`}</span>
                 <div>
                   <h4>{rite.title}</h4>
@@ -66,9 +69,9 @@ export default function CharacterHub({
           <div className="character-hub__panel-kicker">Atrium Signals</div>
           <h3 className="character-hub__panel-title">What the chamber guarantees</h3>
 
-          <div className="character-hub__pathway">
+          <div className="character-hub__pathway anime-stagger">
             {ARRIVAL_SIGNALS.map((signal) => (
-              <div key={signal} className="character-hub__path-step">
+              <div key={signal} className="character-hub__path-step anime-slide-left">
                 <span>+</span>
                 <strong>{signal}</strong>
               </div>
@@ -83,7 +86,7 @@ export default function CharacterHub({
           <div className="character-hub__launch-footer">
             <button
               type="button"
-              className="holo-button holo-button--solid"
+              className="holo-button holo-button--solid anime-glow"
               onClick={() => onStartCreation?.()}
             >
               Enter Character Genesis

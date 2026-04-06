@@ -2,7 +2,7 @@ import { describe, expect, it, jest } from "@jest/globals";
 import {
   buildDevConsoleSessionLog,
   executeDevConsoleCommand,
-} from "../../src/components/gameui/DevConsoleDock.jsx";
+} from "../../src/components/gameui/devConsoleModel.js";
 
 describe("DevConsoleDock helpers", () => {
   it("builds a deduped combined timeline from retained log sources", () => {

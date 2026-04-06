@@ -7,7 +7,7 @@ describe("adventure room catalog", () => {
 
     expect(
       catalog.filter((room) => room.group === "primary").map((room) => room.id),
-    ).toEqual(["chronicle", "command", "battle", "inventory", "quests", "loadout"]);
+    ).toEqual(["chronicle", "command", "battle", "magic-study", "inventory", "quests", "map", "loadout"]);
   });
 
   it("adds optional rooms only when their runtime flags are enabled", () => {

@@ -2710,6 +2710,26 @@ body,
   gap: 0.25rem;
 }
 
+.creation-option-btn {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 30%, transparent);
+  color: var(--text-main);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.creation-option-btn:hover {
+  border-color: color-mix(in srgb, var(--holo-cyan) 60%, transparent);
+  background: rgba(0, 243, 255, 0.08);
+}
+
+.creation-option-btn--selected {
+  border-color: var(--holo-cyan);
+  background: rgba(0, 243, 255, 0.18);
+  box-shadow: 0 0 8px rgba(0, 243, 255, 0.25);
+}
+
 @media (max-width: 1180px) {
   .character-hub__arrival-grid,
   .atrium-layout,

@@ -28,6 +28,6 @@ export function incrementCharactersCreated(value) {
   };
 }
 
-export function isAdvancedCreationUnlocked(value) {
-  return getCharactersCreated(value) >= 1;
+export function isAdvancedCreationUnlocked(_value) {
+  return true;
 }

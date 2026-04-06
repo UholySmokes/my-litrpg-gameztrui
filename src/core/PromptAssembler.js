@@ -313,7 +313,7 @@ function buildSystemPrompt({
 8. Avoid markdown formatting entirely (no **bold**, *italic*, backticks, headings, or lists)
 9. Avoid repetitive keyword loops; do not reuse signature archetype terms more than once unless strictly necessary
 10. Advance the scene each turn with at least one new concrete detail or consequence
-11. Open with the most recent validated state change before atmosphere or reflection
+11. Treat the player's command as a real attempted action and show what immediately happens because of it before drifting into atmosphere or reflection
 12. Return exactly one valid JSON object and nothing else
 13. Keep the narration emotionally reactive rather than distant or stately
 14. Use close internal beats sparingly to show shock, hunger, pride, fear, irritation, or stubborn resolve
@@ -326,6 +326,8 @@ function buildSystemPrompt({
 21. Avoid generic epic grandeur; prefer sharp, intimate, slightly dangerous prose grounded in the present moment
 22. Entities listed as familiar or party are already known to the player and must never be reintroduced as mysterious strangers unless the state explicitly says the bond broke
 23. If a companion group is unnamed, use a stable role label such as scouts, caravan hands, or volunteers instead of vague stranger language
+24. If the scene is missing minor connective details, invent the smallest plausible sensory, positional, or bystander detail needed to carry the attempted action forward
+25. Only hard-refuse or narrow an action when it would force unearned mechanics or canon state, such as free levels, impossible rewards, instant travel, retroactive quest completion, or other persistent changes unsupported by state
 ${modeDirective}
 ${moodDirective}
 ${repetitionDirective}
@@ -1393,10 +1395,14 @@ ${actionDescription}
 Generate a structured narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. ${shouldFavorDialogue ? "This is a direct social turn. If a present sentient NPC or group is being addressed, the scene must resolve with one of: a direct answer, a concrete refusal with a reason, or a clear visible social action. Do not leave a direct question hanging in unexplained silence." : "Do not open with quoted dialogue; begin with immediate scene action or sensory detail."}
 
 Hard rules:
-- Do not add or remove present entities unless supported by state, recent history, or the validated action consequence.
+- Treat the player's command as something the character genuinely attempts unless it explicitly tries to force impossible or unearned mechanics.
+- You may introduce minor, non-persistent scene details, fleeting bystander reactions, footing issues, pathing beats, or connective motion to make the attempted action legible.
+- Do not add or remove major present entities unless supported by state, recent history, or the attempted action's grounded consequence.
 - Do not narrate ongoing combat when combat is inactive.
-- Do not invent enemies, items, rewards, or locations not present in authoritative state.
-- Begin the first sentence with the concrete result of the validated action, state change, or failed attempt.
+- Do not grant levels, stats, loot, quest completion, permanent alliances, major location changes, or other persistent rewards unless validated by state or emitted through stateIntents.
+- Do not contradict established core state such as current location, combat status, confirmed major entities, or resolved quest outcomes.
+- When scene data is incomplete, choose the most plausible grounded continuation instead of stalling on missing micro-details.
+- Begin the first sentence with the concrete result of the attempted action, grounded reaction, or failed attempt.
 - Favor immediate physical consequence, sensory detail, and body-awareness over distant summary when the player is vulnerable, transformed, or under pressure.
 - If system flavor appears, keep it to 1-2 short bracketed notices integrated into the scene rather than a detached explanation.
 - Even low-level survival actions should feel consequential when the player is injured, exposed, hungry, unstable, or being hunted.

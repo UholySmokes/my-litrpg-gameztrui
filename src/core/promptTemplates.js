@@ -18,6 +18,7 @@ export function getModeDirective(mode) {
     case PROMPT_MODES.DIALOGUE:
       return [
         "Mode: DIALOGUE.",
+        "Treat direct speech or social intent as something the world should answer rather than dodge.",
         "Include short, believable NPC lines when appropriate.",
         "Keep dialogue grounded in the current location, quests, and recent events.",
       ].join(" ");
@@ -38,6 +39,7 @@ export function getModeDirective(mode) {
       return [
         "Mode: EXPLORATION.",
         "Maintain a steady pace and a sense of discovery.",
+        "Follow the player's attempted action with a plausible scene response instead of stalling on missing micro-details.",
         "Offer 1-2 subtle points of interest that invite player choice.",
       ].join(" ");
   }

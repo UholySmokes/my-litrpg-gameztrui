@@ -11,6 +11,7 @@ import AutosaveResumeOverlay from "./AutosaveResumeOverlay.jsx";
 import PwaInstallPrompt from "../PwaInstallPrompt.jsx";
 import SaveResetGate from "./SaveResetGate.jsx";
 import SystemFailureOverlay from "./SystemFailureOverlay.jsx";
+import { resolveGameUiSurfaceState } from "./gameUiSurfaceState.js";
 import { useGameUiCharacterCreationFlow } from "./useGameUiCharacterCreationFlow.js";
 import { useGameUiInteractionHandlers } from "./useGameUiInteractionHandlers.js";
 import { buildNarrativePanelView } from "./gameUiSelectors.js";
@@ -110,6 +111,17 @@ export default function GameUI({ user }) {
   useEffect(() => {
     clearLegacyShellState();
   }, []);
+
+  const hasCharacterSnapshot = hasCreatedCharacterSnapshot(state);
+
+  useEffect(() => {
+    if (isTransitioning || hasCharacterSnapshot || activeSurface !== "adventure") {
+      return;
+    }
+
+    setCharacterCreated(false);
+    setActiveSurface("hub");
+  }, [activeSurface, hasCharacterSnapshot, isTransitioning, setCharacterCreated]);
 
   const {
     submitInput,
@@ -486,13 +498,16 @@ export default function GameUI({ user }) {
     ],
   );
 
-  const hasCharacterSnapshot = hasCreatedCharacterSnapshot(state);
-  const shouldShowAdventure =
-    !isTransitioning &&
-    (activeSurface === "adventure" || characterCreated || hasCharacterSnapshot);
-  const shouldShowCreation =
-    activeSurface === "creation" || (isTransitioning && hasCharacterSnapshot);
-  const shouldShowHub = !shouldShowAdventure && !shouldShowCreation;
+  const {
+    shouldShowAdventure,
+    shouldShowCreation,
+    shouldShowHub,
+  } = resolveGameUiSurfaceState({
+    activeSurface,
+    characterCreated,
+    hasCharacterSnapshot,
+    isTransitioning,
+  });
 
   if (!saveResetState.ready) {
     const isRetryable = !saveResetState.busy && Boolean(saveResetState.error);

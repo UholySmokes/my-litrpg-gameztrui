@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import GameQuickActions from "../gameui/GameQuickActions.jsx";
 import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
 import { buildPlayerIdentity } from "./shellState.js";
@@ -82,6 +82,7 @@ export default function AdventureShell({
     command,
   } = view;
   const [activeRoomId, setActiveRoomId] = useState(null);
+  const previousCombatStatusRef = useRef(null);
 
   const playerIdentity = buildPlayerIdentity(player);
   const profileLabel =
@@ -118,6 +119,15 @@ export default function AdventureShell({
     combatState?.status === "active"
       ? `${Array.isArray(combatState?.enemies) ? combatState.enemies.length : 0} threats`
       : "Quiet field";
+
+  useEffect(() => {
+    const currentStatus = combatState?.status || "inactive";
+    const previousStatus = previousCombatStatusRef.current;
+    if (currentStatus === "active" && previousStatus !== "active") {
+      setActiveRoomId((current) => (current === "battle" ? current : "battle"));
+    }
+    previousCombatStatusRef.current = currentStatus;
+  }, [combatState?.status]);
 
   const handleOpenRoom = (room) => {
     if (room.group === "system") {

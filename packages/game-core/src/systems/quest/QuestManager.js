@@ -11,7 +11,6 @@ import {
 const TUTORIAL_QUEST_IDS = [
   "bq_first_stride",
   "bq_first_conflict",
-  "bq_recovery_breath",
 ];
 
 export class QuestManager {

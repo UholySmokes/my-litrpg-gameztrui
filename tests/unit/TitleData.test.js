@@ -36,7 +36,6 @@ const richState = {
       { id: "bq_first_stride" },
       { id: "bq_system_basics" },
       { id: "bq_first_conflict" },
-      { id: "bq_arcane_awareness" },
       { id: "mq_fallen_spire" },
       { id: "mq_whisper_market" },
       { id: "mq_ember_bloom" },

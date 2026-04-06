@@ -130,7 +130,7 @@ const LEGACY_OPENING_SCENES = [
       factionHint = "arcane wardens",
     }) =>
       `Your eyes open to static storms crackling above a ${locationHint}. The body beneath you responds wrong—too light, too sharp, wired with senses you never had. Pale text burns across your vision: [System Initialized.] While you struggle to stand on borrowed legs, ${factionHint} argue over ${mainQuestName} as if your arrival is beneath notice. Background murmurs hint at ${sideHookNames.join(" and ") || "other odd jobs"} awaiting anyone still breathing.`,
-    compatibleQuests: ["mq_fallen_spire", "sq_cryptic_cache"],
+    compatibleQuests: ["mq_fallen_spire"],
   },
   {
     id: "scene_neon_market",
@@ -143,7 +143,7 @@ const LEGACY_OPENING_SCENES = [
       factionHint = "market enforcers",
     }) =>
       `Consciousness slams in like a door kicked open. You're on your knees in the ${locationHint}, synth drums pounding through a skull that doesn't feel like yours, neon reflections burning across vision still calibrating to this world. [System Notice: Host anchored.] The ${factionHint} sweep stalls nearby in search of clues tied to ${mainQuestName}, paying no mind to another dazed soul. Whispers of ${sideHookNames.join(" & ") || "other side hustles"} tug at your borrowed ears.`,
-    compatibleQuests: ["mq_whisper_market", "sq_cryptic_cache", "sq_skyfisher"],
+    compatibleQuests: ["mq_whisper_market", "sq_skyfisher"],
   },
   {
     id: "scene_ember_ridge",

@@ -315,6 +315,8 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("Allow touches of dark humor");
     expect(prompt).toContain("Favor immediate bodily awareness");
     expect(prompt).toContain("coldly helpful notices");
+    expect(prompt).toContain("Treat the player's command as a real attempted action");
+    expect(prompt).toContain("Only hard-refuse or narrow an action when it would force unearned mechanics or canon state");
   });
 
   it("builds npc context and requires direct dialogue resolution", () => {
@@ -433,6 +435,42 @@ describe("assemblePrompt", () => {
 
     expect(prompt).toContain(
       "When present entities are already watching, alerted, wary, or socially engaged, at least one of them should react in a concrete way",
+    );
+  });
+
+  it("distinguishes adaptive scene narration from mechanical cheating", () => {
+    const prompt = assemblePrompt(
+      {
+        player: {
+          name: "Nessa",
+          level: 2,
+          hp: { current: 12, max: 12 },
+          mana: { current: 6, max: 6 },
+          xp: { current: 0, max: 10 },
+          inventory: [],
+          equipment: {},
+        },
+        world: { location: { current: "city_neon_bazaar" } },
+        quests: { active: [] },
+        narrative: { entries: [], summary: "" },
+        combat: { status: "inactive", inCombat: false, enemies: [] },
+      },
+      "i vault the stall and scramble under a cart",
+      {
+        success: true,
+        actionType: "narrative",
+        description: "You make a desperate scramble for cover.",
+      },
+    );
+
+    expect(prompt).toContain(
+      "You may introduce minor, non-persistent scene details, fleeting bystander reactions, footing issues, pathing beats, or connective motion",
+    );
+    expect(prompt).toContain(
+      "Do not grant levels, stats, loot, quest completion, permanent alliances, major location changes, or other persistent rewards",
+    );
+    expect(prompt).toContain(
+      "When scene data is incomplete, choose the most plausible grounded continuation instead of stalling on missing micro-details.",
     );
   });
 });

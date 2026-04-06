@@ -103,10 +103,8 @@ export class QuestManager {
       (quest) => !tutorialQuestIds.has(quest.id),
     );
 
-    const beginnerQuestCount = Math.min(
-      Math.max(0, 3 - tutorialQuests.length),
-      beginnerPool.length,
-    );
+    // Non-tutorial quests require player acceptance; no auto-assignment
+    const beginnerQuestCount = 0;
     for (let i = 0; i < beginnerQuestCount; i++) {
       if (beginnerPool.length === 0) break;
       const quest = this.pullQuestByPriority(beginnerPool, player);

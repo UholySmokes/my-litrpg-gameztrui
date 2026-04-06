@@ -1035,7 +1035,7 @@ export function resolveStartingLocationId(raw, { fallbackLocationId } = {}) {
 
 /**
  * Runtime helper: compute location ids a player can travel to right now.
- * Includes visited/unlocked/current, plus "public" hubs in the current zone.
+ * Includes current-zone reachable locations and connected-zone entry points.
  */
 export function getAccessibleLocationIds(gameState) {
   return worldRuntime.getAccessibleLocationIds(gameState);

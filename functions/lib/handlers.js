@@ -65,9 +65,9 @@ async function cleanupNarrateRuns() {
 function buildNarrativePayload(rawText, mode, metadata = {}) {
 	const structured = tryParseStructured(rawText);
 	const normalized = normalizeNarrationPayload(
-    structured || { narrative: String(rawText || "") },
+		structured || { story: String(rawText || "") },
     {
-      narrative: String(rawText || ""),
+			story: String(rawText || ""),
       mood: inferMood(String(rawText || "")),
       suggestions: buildDefaultSuggestions(mode),
       provider: metadata.provider || "firebase-genkit",
@@ -77,7 +77,7 @@ function buildNarrativePayload(rawText, mode, metadata = {}) {
 
 	return {
 		...normalized,
-		outputHash: hashContent(normalized.narrative),
+		outputHash: hashContent(normalized.story),
 	};
 }
 
@@ -234,6 +234,7 @@ async function narrate(req, res) {
 		const result = await runNarration(body);
 		return json(res, 200, {
 			ok: true,
+			story: result.story,
 			narrative: result.narrative,
 			mood: result.mood,
 			suggestions: result.suggestions,
@@ -340,6 +341,7 @@ async function narrateStart(req, res) {
 			done: true,
 			mode: result.mode,
 			agentId: result.agentId,
+				story: result.story,
 			narrative: result.narrative,
 			mood: result.mood,
 			suggestions: result.suggestions,
@@ -411,9 +413,10 @@ async function narratePoll(req, res) {
 		};
 
 		if (run.narrative) {
+			response.story = run.narrative;
 			response.narrative = run.narrative;
 			const normalized = normalizeNarrationPayload(run, {
-        narrative: run.narrative,
+        story: run.story || run.narrative,
         mood: run.mood || inferMood(run.narrative),
         suggestions: buildDefaultSuggestions(response.mode),
         sceneMemory: run.scene_memory,
@@ -421,12 +424,14 @@ async function narratePoll(req, res) {
         provider: "firebase-genkit",
         fallbackUsed: false,
       });
-      response.mood = normalized.mood;
-      response.suggestions = normalized.suggestions;
-      response.sceneMemory = normalized.sceneMemory;
-      response.choiceMeta = normalized.choiceMeta;
-      response.provider = normalized.provider;
-      response.fallbackUsed = normalized.fallbackUsed;
+			response.story = normalized.story;
+			response.narrative = normalized.narrative;
+			response.mood = normalized.mood;
+			response.suggestions = normalized.suggestions;
+			response.sceneMemory = normalized.sceneMemory;
+			response.choiceMeta = normalized.choiceMeta;
+			response.provider = normalized.provider;
+			response.fallbackUsed = normalized.fallbackUsed;
 			response.outputHash = run.output_hash || hashContent(run.narrative);
 		}
 

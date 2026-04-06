@@ -7,6 +7,62 @@ export const VOIDVERSE_START_SCENE_PACK = {
   },
   scenes: [
     {
+      id: "start_moonlit_fox_awakening",
+      title: "Moonlit Awakening in the Den",
+      tags: ["xianxia", "lightnovel", "systems", "tutorial", "wilds"],
+      text: "Hunger arrives before memory makes sense.\n\nCold dirt presses against your side. Roots hang from the ceiling of a cramped den, and moonlight leaks through a slit in the stone just wide enough to insult you with freedom. When you try to sit up, your balance goes wrong in three different directions at once.\n\nPaws. Fur. A tail that absolutely was not part of yesterday.\n\nA shallow pond outside the den catches the moon and throws back the outline of a tiny fox with bright, furious eyes. Before panic can finish blooming, pale text flickers across your vision like something between a blessing and a clerical mistake.\n\n[System Notice: Host consciousness stabilized.]\n[Warning: Survival odds improve dramatically if Host stops staring and starts acting.]\n\nSomewhere in the grass beyond the den, something small rustles. Somewhere farther off, something bigger exhales.\n\nYour first problem is not destiny. It is staying alive long enough to argue with it.",
+      choices: [
+        {
+          label: "Check the pond, confirm the body, and read every system line.",
+          next: "fox_status_reflection",
+          outcomeText:
+            "You creep to the pond and force yourself to look. The reflection is undeniable: soft white fur, too-large ears, a body built for darting instead of dignity. More text blooms across your vision, cold and helpful in equal measure, and your shock finally sharpens into usable focus.",
+          effects: {
+            addClue: "clue_moonlit_fox_body",
+            addQuest: "quest_learn_the_rules_of_your_new_body",
+            setFlag: ["fox_form_confirmed", "system_panel_seen"],
+          },
+          aiHints: [
+            "body horror kept light",
+            "system tutorial tone",
+            "reflection and identity shock",
+          ],
+        },
+        {
+          label: "Stalk the rustle in the grass before the bigger thing finds you first.",
+          next: "fox_first_hunt",
+          outcomeText:
+            "You flatten low, test your new limbs, and slip into the grass on instinct you do not remember earning. The prey is small, fast, and suddenly the distance between starving and surviving feels razor-thin. Whatever else this life becomes, it begins with a hunt.",
+          effects: {
+            unlockSkill: "skill_silent_pounce",
+            addQuest: "quest_first_hunt_first_level",
+            setFlag: ["fox_first_hunt_started", "chose_hunger_over_panic"],
+          },
+          aiHints: [
+            "survival first",
+            "small prey treated as major milestone",
+            "predator instinct awakening",
+          ],
+        },
+        {
+          label: "Hide in the den mouth and map every sound before moving.",
+          next: "fox_den_listen",
+          outcomeText:
+            "You press yourself into shadow and listen until the forest separates into layers: insects, drifting leaves, one soft prey-path, one heavy hunter-route. Fear does not leave, but it becomes measurable, and that is close enough to useful.",
+          effects: {
+            unlockSkill: "skill_hide",
+            addQuest: "quest_scout_the_moonlit_den",
+            setFlag: ["fox_den_scouted", "listened_before_moving"],
+          },
+          aiHints: [
+            "cautious opening",
+            "soundscape focus",
+            "fear converted into method",
+          ],
+        },
+      ],
+    },
+    {
       id: "start_fog_clan_ashes",
       title: "Fate in the Fog",
       tags: ["xianxia", "combat", "mystic", "tutorial"],

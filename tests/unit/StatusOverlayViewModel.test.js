@@ -97,6 +97,14 @@ describe("StatusOverlay view model", () => {
 
     expect(viewModel.summary.talentLabel).toContain("Arcane Focus");
     expect(viewModel.summary.talentLabel).toContain("Oathbound");
+    expect(viewModel.summary.talents).toHaveLength(2);
+    expect(viewModel.summary.talents[0]).toEqual(
+      expect.objectContaining({ id: "arcane_focus", name: "Arcane Focus" }),
+    );
+    expect(viewModel.summary.talents[1]).toEqual(
+      expect.objectContaining({ id: "oathbound", name: "Oathbound" }),
+    );
+    expect(viewModel.summary.talents[0].description).toBeTruthy();
     expect(viewModel.magic.reserveRows[0]).toEqual(
       expect.objectContaining({
         essence: "fire",
@@ -148,5 +156,70 @@ describe("StatusOverlay view model", () => {
     expect(viewModel.magic.reserveRows).toEqual([]);
     expect(viewModel.progression.classEvolutionOptions).toEqual([]);
     expect(viewModel.collections.inventoryList).toEqual([]);
+  });
+
+  it("builds prestige summaries and upgrade affordances from player state", () => {
+    const viewModel = buildStatusOverlayViewModel({
+      player: {
+        name: "Ascendant",
+        level: 55,
+        class: null,
+        race: null,
+        attributes: {},
+        prestige: {
+          prestigeLevel: 2,
+          soulShards: 34,
+          xpMultiplier: 1.2,
+          upgrades: {
+            damage: 1,
+            gold: 0,
+            mana: 2,
+            health: 0,
+          },
+        },
+        progress: {
+          prestigeHistory: [
+            { atLevel: 50, prestigeLevel: 1, shardsEarned: 3 },
+            { atLevel: 54, prestigeLevel: 2, shardsEarned: 3 },
+          ],
+        },
+      },
+      world: null,
+      config: null,
+      interactionState: {},
+    });
+
+    expect(viewModel.summary.prestigeLevel).toBe(2);
+    expect(viewModel.summary.prestigeSoulShards).toBe(34);
+    expect(viewModel.progression.prestige).toEqual(
+      expect.objectContaining({
+        canPrestige: true,
+        shardPreview: expect.any(Number),
+        soulShards: 34,
+      }),
+    );
+    expect(viewModel.progression.prestige.upgradeRows).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: "damage",
+          level: 1,
+          nextCost: 20,
+          canAfford: true,
+        }),
+        expect.objectContaining({
+          type: "mana",
+          level: 2,
+          nextCost: 30,
+          canAfford: true,
+        }),
+      ]),
+    );
+    expect(viewModel.progression.prestige.history[0]).toEqual(
+      expect.objectContaining({
+        prestigeLevel: 2,
+        atLevel: 54,
+        shardsEarned: 3,
+      }),
+    );
   });
 });

@@ -11,6 +11,12 @@ import { canEvolveSkill } from "../../systems/skills/SkillEvolutionSystem.js";
 import { canFuseSkills } from "../../systems/skills/SkillFusionSystem.js";
 import { isSpellSkill } from "../../systems/skills/SpellStudySystem.js";
 import { getTalentById } from "../../systems/skills/TalentContentPack.js";
+import {
+  PRESTIGE_MIN_LEVEL,
+  calculatePrestigeShards,
+  defaultPrestigeStats,
+  getUpgradeCost,
+} from "../../../packages/game-core/src/systems/PrestigeSystem.ts";
 import { buildArchetypeSystemViewModel } from "../archetypeSystem/archetypeSystemViewModel.js";
 import {
   getProgressionModifiers,
@@ -265,13 +271,48 @@ export function buildStatusOverlayViewModel({
       ? player.class
       : player?.class?.name || player?.class?.id || "";
   const talentIds = Array.isArray(player?.talents) ? player.talents : [];
-  const resolvedTalentNames = talentIds
-    .map((id) => getTalentById(id)?.name || id)
+  const resolvedTalents = talentIds
+    .map((id) => getTalentById(id) || { id, name: id, description: "", affinities: [], bucket: "unknown" })
     .filter(Boolean);
+  const resolvedTalentNames = resolvedTalents.map((t) => t.name);
   const talentLabel =
     resolvedTalentNames.length > 0
       ? resolvedTalentNames.join(", ")
       : player?.talent || "None";
+  const prestigeState =
+    player?.prestige && typeof player.prestige === "object" && !Array.isArray(player.prestige)
+      ? { ...defaultPrestigeStats(), ...player.prestige }
+      : defaultPrestigeStats();
+  const prestigeLevel = Math.max(0, Math.floor(getNumeric(prestigeState.prestigeLevel, 0)));
+  const prestigeSoulShards = Math.max(0, Math.floor(getNumeric(prestigeState.soulShards, 0)));
+  const prestigeXpMultiplier = getNumeric(prestigeState.xpMultiplier, 1);
+  const canPrestige = (player?.level || 1) >= PRESTIGE_MIN_LEVEL;
+  const shardPreview = calculatePrestigeShards(player?.level || 1);
+  const prestigeHistory = Array.isArray(player?.progress?.prestigeHistory)
+    ? player.progress.prestigeHistory
+        .slice(-3)
+        .reverse()
+        .map((entry, index) => ({
+          id: `${entry?.prestigeLevel || 0}-${entry?.atLevel || 0}-${index}`,
+          prestigeLevel: Math.max(0, Math.floor(getNumeric(entry?.prestigeLevel, 0))),
+          atLevel: Math.max(0, Math.floor(getNumeric(entry?.atLevel, 0))),
+          shardsEarned: Math.max(0, Math.floor(getNumeric(entry?.shardsEarned, 0))),
+        }))
+    : [];
+  const prestigeUpgradeRows = Object.entries(prestigeState.upgrades || {})
+    .map(([type, level]) => {
+      const normalizedLevel = Math.max(0, Math.floor(getNumeric(level, 0)));
+      const nextCost = getUpgradeCost(normalizedLevel);
+      const label = type.charAt(0).toUpperCase() + type.slice(1);
+      return {
+        type,
+        label,
+        level: normalizedLevel,
+        nextCost,
+        canAfford: prestigeSoulShards >= nextCost,
+      };
+    })
+    .sort((left, right) => left.label.localeCompare(right.label));
   const archetypeSystem = buildArchetypeSystemViewModel(player);
   const archetypeSystemLabel = archetypeSystem?.label || "None";
   const secondaryClassLabel =
@@ -418,6 +459,10 @@ export function buildStatusOverlayViewModel({
       titleLabel,
       raceLabel,
       talentLabel,
+      talents: resolvedTalents,
+      prestigeLevel,
+      prestigeSoulShards,
+      prestigeXpMultiplier,
       archetypeSystem,
       archetypeSystemLabel,
       secondaryClassLabel,
@@ -481,6 +526,16 @@ export function buildStatusOverlayViewModel({
       selectedSpell,
       canFuseSelection,
       professionEntries,
+      prestige: {
+        level: prestigeLevel,
+        soulShards: prestigeSoulShards,
+        xpMultiplier: prestigeXpMultiplier,
+        minLevel: PRESTIGE_MIN_LEVEL,
+        canPrestige,
+        shardPreview,
+        upgradeRows: prestigeUpgradeRows,
+        history: prestigeHistory,
+      },
     },
     collections: {
       professionEntries,

@@ -42,7 +42,6 @@ import {
   getCharacterCreationArchetypeSystemById,
   getCharacterCreationArchetypeSystems,
   getCharacterCreationClassesByTier,
-  getCharacterCreationOrigins,
   getCharacterCreationRaces,
   getCharacterCreationSkillSummaryById,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
@@ -66,25 +65,37 @@ const {
 const CREATION_STEPS = Object.freeze({
   NAME: 1,
   ARCHETYPE: 2,
-  IDENTITY: 3,
-  RACE: 4,
-  CLASS: 5,
-  MULTICLASS: 6,
-  PROFESSION: 7,
-  ATTRIBUTES: 8,
-  SKILLS: 9,
-  PERKS: 10,
-  STARTER_TREE: 11,
-  ALIGNMENT: 12,
+  RACE: 3,
+  CLASS: 4,
+  MULTICLASS: 5,
+  PROFESSION: 6,
+  ATTRIBUTES: 7,
+  SKILLS: 8,
+  PERKS: 9,
+  STARTER_TREE: 10,
+  ALIGNMENT: 11,
+  STARTING_POINT: 12,
   REVIEW: 13,
 });
+
+const AVAILABLE_STARTING_POINTS = Object.freeze([
+  { id: "city", name: "Meridian Arcology", type: "social", summary: "You open unfamiliar eyes on cold stone in a neon-lit alcove — guild signs flicker above, and your new body's first breath tastes like ozone and commerce." },
+  { id: "ruins", name: "Leyfall Ruins", type: "exploration", summary: "Consciousness returns among shattered wards and exposed foundations — leyline energy hums through a body that wasn't yours a moment ago." },
+  { id: "wilds", name: "Wildroot Fringe", type: "exploration", summary: "Wet earth, root-smell, and birdsong — you wake under tangled canopy with borrowed limbs and a system prompt blinking behind unfamiliar eyes." },
+  { id: "skydocks", name: "Skyforge Skydocks", type: "combat", summary: "Wind and engine roar slam into you as awareness returns — you're sprawled on open gantry with altitude all around and no memory of how you arrived." },
+  { id: "undercity", name: "Veilward Undercity", type: "combat", summary: "Darkness first, then dripping water, then the slow horror of waking in a body you don't recognize, somewhere below the world." },
+  { id: "coast", name: "Tideward Coast", type: "exploration", summary: "Salt spray across a face that isn't yours — you gasp awake on wet stone as the tide pulls back, revealing ward-carved pylons and a shore you've never seen." },
+  { id: "mountain", name: "Crystal Ridgeworks", type: "exploration", summary: "Thin air fills lungs that weren't yours a breath ago — you wake on frozen stone amid crystal veins that ring like tuning forks at your presence." },
+  { id: "desert", name: "Glassstep Sands", type: "combat", summary: "Heat and white light — the first sensations of a mind dropped into a body it doesn't recognize, half-buried in sun-fused glass sand." },
+  { id: "volcanic", name: "Emberline Caldera", type: "combat", summary: "A furnace-blast of awareness as you gasp awake on scorched rock — the air shimmers, your skin isn't your skin, and something molten glows below." },
+  { id: "dreamscape", name: "Mnemonic Dreamscape", type: "exploration", summary: "Thought before body — you exist as pure awareness in psychic mist before the world slowly gives you form, one uncertain sense at a time." },
+]);
 const AVAILABLE_ARCHETYPE_SYSTEMS = getCharacterCreationArchetypeSystems().sort((left, right) => {
   const leftPriority = Number(left?.characterCreation?.ordering?.priority || 999);
   const rightPriority = Number(right?.characterCreation?.ordering?.priority || 999);
   if (leftPriority !== rightPriority) return leftPriority - rightPriority;
   return String(left?.name || left?.id).localeCompare(String(right?.name || right?.id));
 });
-const AVAILABLE_CREATION_ORIGINS = getCharacterCreationOrigins();
 const AVAILABLE_CREATION_RACES = getCharacterCreationRaces();
 const AVAILABLE_CREATION_CLASSES = getCharacterCreationClassesByTier(1);
 const AVAILABLE_CREATION_PROFESSIONS = getProfessionSummaries();
@@ -105,20 +116,6 @@ function normalizeEntityRef(value, fallback) {
   }
   if (typeof value === "string" && value) return value;
   return fallback;
-}
-
-function cloneOrigin(origin) {
-  if (!origin || typeof origin !== "object" || Array.isArray(origin)) return null;
-  return {
-    ...origin,
-    attributeBonuses:
-      origin.attributeBonuses && typeof origin.attributeBonuses === "object"
-        ? { ...origin.attributeBonuses }
-        : {},
-    favoredQuestTags: Array.isArray(origin.favoredQuestTags)
-      ? [...origin.favoredQuestTags]
-      : [],
-  };
 }
 
 function getAttributeBonuses(entity, preferredKey = "attributeBonuses") {
@@ -162,19 +159,16 @@ export function buildCharacterCreationAttributes({
   attributePoints,
   selectedRace,
   selectedClass,
-  selectedOrigin,
 } = {}) {
   const baseAttributes = ensureAttributeShape(attributePoints, BASE_ATTRIBUTE_VALUE);
   const raceBonuses = getAttributeBonuses(selectedRace);
   const classBonuses = getAttributeBonuses(selectedClass, "baseStats");
-  const originBonuses = getAttributeBonuses(selectedOrigin);
 
   return CANONICAL_ATTRIBUTES.reduce((acc, key) => {
     acc[key] =
       (baseAttributes[key] ?? BASE_ATTRIBUTE_VALUE) +
       (raceBonuses[key] ?? 0) +
-      (classBonuses[key] ?? 0) +
-      (originBonuses[key] ?? 0);
+      (classBonuses[key] ?? 0);
     return acc;
   }, createAttributeBaseline(0));
 }
@@ -183,13 +177,11 @@ export function buildCharacterCreationDerivedState({
   attributePoints,
   selectedRace,
   selectedClass,
-  selectedOrigin,
 } = {}) {
   const attributes = buildCharacterCreationAttributes({
     attributePoints,
     selectedRace,
     selectedClass,
-    selectedOrigin,
   });
   const resourceSystem =
     selectedClass?.resourceSystem || selectedClass?.resource || null;
@@ -233,7 +225,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
 
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
-  const [selectedOrigin, setSelectedOrigin] = useState(null);
   const [selectedRace, setSelectedRace] = useState(null);
   const [selectedClass, setSelectedClass] = useState(null);
   const [selectedSecondaryClass, setSelectedSecondaryClass] = useState(null);
@@ -243,6 +234,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   const [selectedAlignmentId, setSelectedAlignmentId] = useState(null);
   const [selectedSkillLoadoutId, setSelectedSkillLoadoutId] = useState(null);
   const [selectedProfession, setSelectedProfession] = useState(null);
+  const [selectedStartingPoint, setSelectedStartingPoint] = useState(null);
 
   const creationPerkLimits = getCharacterCreationPerkLimits();
   const availableCreationAlignments = listCharacterCreationAlignments();
@@ -256,7 +248,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     () =>
       resolveCharacterCreationOptionsBySystem({
         systemId: selectedArchetypeSystem?.id || null,
-        origins: AVAILABLE_CREATION_ORIGINS,
         races: AVAILABLE_CREATION_RACES,
         classes: AVAILABLE_CREATION_CLASSES,
         professions: AVAILABLE_CREATION_PROFESSIONS,
@@ -266,10 +257,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     [selectedArchetypeSystem?.id],
   );
 
-  const availableOrigins = useMemo(
-    () => cloneList(systemOptionState.origins?.options || []),
-    [systemOptionState.origins?.options],
-  );
   const availableRaces = useMemo(
     () => cloneList(systemOptionState.races?.options || []),
     [systemOptionState.races?.options],
@@ -298,7 +285,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     [systemOptionState.starterTrees?.options],
   );
 
-  const recommendedOriginIds = systemOptionState.origins?.recommendedIds || [];
   const recommendedRaceIds = systemOptionState.races?.recommendedIds || [];
   const recommendedClassIds = systemOptionState.classes?.recommendedIds || [];
   const recommendedProfessionIds =
@@ -402,7 +388,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setShowBootSequence(false);
     setName("");
     setGender("");
-    setSelectedOrigin(null);
     setSelectedRace(null);
     setSelectedClass(null);
     setSelectedSecondaryClass(null);
@@ -412,13 +397,14 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setSelectedStarterTreeIds([]);
     setSelectedAlignmentId(null);
     setSelectedSkillLoadoutId(null);
+    setSelectedStartingPoint(null);
     setSelectedActiveSkills([]);
     setSelectedPassiveSkills([]);
     setAttributePoints(createAttributeBaseline(BASE_ATTRIBUTE_VALUE));
   }, [rerollsRemaining]);
 
-  const handleOriginSelect = useCallback((origin) => {
-    setSelectedOrigin(origin ? cloneOrigin(origin) : null);
+  const handleStartingPointSelect = useCallback((point) => {
+    setSelectedStartingPoint(point || null);
   }, []);
 
   // Calculate remaining points
@@ -568,12 +554,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
   }, [availablePassiveSkills]);
 
   useEffect(() => {
-    if (selectedOrigin && !containsById(availableOrigins, selectedOrigin.id)) {
-      setSelectedOrigin(null);
-    }
-  }, [availableOrigins, selectedOrigin]);
-
-  useEffect(() => {
     if (selectedRace && !containsById(availableRaces, selectedRace.id)) {
       setSelectedRace(null);
     }
@@ -720,10 +700,10 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     return { valid: true };
   }, [name]);
 
-  const validateIdentity = useCallback(() => {
-    if (!selectedOrigin) return { valid: false, error: "Origin is required" };
+  const validateStartingPoint = useCallback(() => {
+    if (!selectedStartingPoint) return { valid: false, error: "Starting point is required" };
     return { valid: true };
-  }, [selectedOrigin]);
+  }, [selectedStartingPoint]);
 
   const validateRace = useCallback(() => {
     if (!selectedRace) return { valid: false, error: "Race is required" };
@@ -801,7 +781,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     const checks = [
       validateNameStep,
       validateArchetype,
-      validateIdentity,
       validateRace,
       validateClass,
       ...(advancedUnlocked ? [validateMulticlass] : []),
@@ -811,6 +790,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       validatePerks,
       ...(advancedUnlocked ? [validateStarterTree] : []),
       validateAlignment,
+      validateStartingPoint,
     ];
     for (const check of checks) {
       const result = check();
@@ -823,14 +803,13 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         gender,
         raceId: selectedRace?.id,
         classId: selectedClass?.id,
-        originId: selectedOrigin?.id,
+        startingZoneId: selectedStartingPoint?.id,
         professionId: selectedProfession?.id,
         archetypeSystemId: selectedArchetypeSystem?.id,
         attributes: buildCharacterCreationAttributes({
           attributePoints,
           selectedRace,
           selectedClass,
-          selectedOrigin,
         }),
         activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
         passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
@@ -871,13 +850,13 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     validateAttributes,
     validateAlignment,
     validateClass,
-    validateIdentity,
+    validateStartingPoint,
     validateMulticlass,
     validatePerks,
     selectedArchetypeSystem,
     selectedClass,
     selectedSecondaryClass,
-    selectedOrigin,
+    selectedStartingPoint,
     selectedPassiveSkills,
     selectedPerkIds,
     selectedProfession,
@@ -900,8 +879,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         return validateNameStep();
       case STEPS.ARCHETYPE:
         return validateArchetype();
-      case STEPS.IDENTITY:
-        return validateIdentity();
       case STEPS.RACE:
         return validateRace();
       case STEPS.CLASS:
@@ -920,6 +897,8 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         return validateStarterTree();
       case STEPS.ALIGNMENT:
         return validateAlignment();
+      case STEPS.STARTING_POINT:
+        return validateStartingPoint();
       case STEPS.REVIEW:
       default:
         return validateReview();
@@ -930,7 +909,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     STEPS.ATTRIBUTES,
     STEPS.CLASS,
     STEPS.MULTICLASS,
-    STEPS.IDENTITY,
+    STEPS.STARTING_POINT,
     STEPS.ALIGNMENT,
     STEPS.PERKS,
     STEPS.PROFESSION,
@@ -944,7 +923,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     validateArchetype,
     validateAttributes,
     validateClass,
-    validateIdentity,
+    validateStartingPoint,
     validateMulticlass,
     validatePerks,
     validateProfession,
@@ -990,7 +969,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       attributePoints,
       selectedRace,
       selectedClass,
-      selectedOrigin,
     });
 
     // Add profession skills at tier 1
@@ -1057,7 +1035,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       classId: selectedClass?.id,
       secondaryClassId:
         advancedUnlocked ? selectedSecondaryClass?.id || null : null,
-      originId: selectedOrigin?.id,
+      startingZoneId: selectedStartingPoint?.id,
       professionId,
       archetypeSystemId: selectedArchetypeSystem?.id,
       attributes: derivedState.attributes,
@@ -1077,7 +1055,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       secondaryClass: advancedUnlocked
         ? normalizeEntityRef(selectedSecondaryClass, "None")
         : null,
-      origin: cloneOrigin(selectedOrigin),
+      startingZoneId: selectedStartingPoint?.id || null,
       alignment: selectedAlignmentId,
       perks: selectedPerkIds,
       starterTrees: advancedUnlocked ? selectedStarterTreeIds : [],
@@ -1151,7 +1129,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     attributePoints,
     name,
     gender,
-    selectedOrigin,
+    selectedStartingPoint,
     selectedRace,
     selectedSecondaryClass,
     selectedClass,
@@ -1180,7 +1158,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     name,
     characterName: name,
     gender,
-    selectedOrigin,
+    selectedStartingPoint,
     selectedRace,
     selectedClass,
     selectedSecondaryClass,
@@ -1194,7 +1172,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     selectedSkillLoadoutId,
     attributePoints,
     remainingPoints,
-    availableOrigins,
+    availableStartingPoints: AVAILABLE_STARTING_POINTS,
     availableRaces,
     availableClasses,
     availableSecondaryClasses,
@@ -1206,7 +1184,6 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     availableCreationStarterTrees,
     availableCreationAlignments,
     availableCreationSkillLoadouts,
-    recommendedOriginIds,
     recommendedRaceIds,
     recommendedClassIds,
     recommendedProfessionIds,
@@ -1222,7 +1199,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     setGender,
 
     // Actions
-    handleOriginSelect,
+    handleStartingPointSelect,
     handleRaceSelect,
     handleClassSelect,
     handleSecondaryClassSelect,

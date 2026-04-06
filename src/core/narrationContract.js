@@ -18,6 +18,7 @@ const ALLOWED_STATE_INTENT_TYPES = new Set([
   "world.flag.set",
   "clue.add",
   "player.reputation.delta",
+  "magic.journal.add",
 ]);
 
 function normalizeString(value) {
@@ -69,7 +70,7 @@ function normalizeSuggestions(suggestions, fallbackSuggestions = []) {
   return source
     .map((entry) => normalizeSuggestionEntry(entry))
     .filter(Boolean)
-    .slice(0, 3);
+    .slice(0, 8);
 }
 
 function normalizeStringList(value, maxItems = 6) {
@@ -162,6 +163,12 @@ function normalizeStateIntentEntry(value) {
     };
   }
 
+  if (type === "magic.journal.add") {
+    const note = normalizeString(value.note);
+    if (!note) return null;
+    return { type, note };
+  }
+
   return null;
 }
 
@@ -175,9 +182,11 @@ function normalizeStateIntents(stateIntents) {
 }
 
 export function normalizeNarrationPayload(payload, fallback = {}) {
-  const narrative = normalizeString(payload?.narrative || fallback.narrative);
-  if (!narrative) {
-    throw new Error("Narrative response missing.");
+  const story = normalizeString(
+    payload?.story || payload?.narrative || fallback.story || fallback.narrative,
+  );
+  if (!story) {
+    throw new Error("Story response missing.");
   }
 
   const suggestions = normalizeSuggestions(payload?.suggestions, fallback.suggestions);
@@ -193,7 +202,8 @@ export function normalizeNarrationPayload(payload, fallback = {}) {
   );
 
   return {
-    narrative,
+    story,
+    narrative: story,
     mood: normalizeMood(payload?.mood, normalizeMood(fallback.mood, "neutral")),
     suggestions,
     provider: normalizeString(payload?.provider || payload?.backend || fallback.provider) ||

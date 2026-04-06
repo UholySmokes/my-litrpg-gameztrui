@@ -30,8 +30,10 @@ describe("narrative suggestion helpers", () => {
       player: {},
     });
 
-    expect(suggestions[0].t).toBe("look around");
+    expect(suggestions[0].t).toBe("Run. Live now, revenge later.");
     expect(suggestions.some((entry) => entry.t.includes("Run. Live now"))).toBe(true);
+    expect(suggestions.slice(0, 3).every((entry) => entry.category === "progress")).toBe(true);
+    expect(suggestions.findIndex((entry) => entry.t === "look around")).toBeGreaterThan(2);
   });
 
   it("builds compact summary prompts and computes dominant mood", () => {
@@ -206,5 +208,49 @@ describe("narrative suggestion helpers", () => {
         enabled: true,
       },
     ]);
+  });
+
+  it("keeps remaining opening-scene choices visible before generic defaults", () => {
+    const resolved = compactSuggestions(
+      resolveActionSuggestions({
+        preferredSuggestions: [
+          "Take your first step into the foundry",
+          "Look around the scaffolds",
+          "Search for the first threat",
+        ],
+        preferredChoiceMeta: [
+          { category: "progress", urgency: 0.96, groundedInState: true },
+          { category: "progress", urgency: 0.82, groundedInState: true },
+          { category: "progress", urgency: 0.74, groundedInState: true },
+        ],
+        fallbackSuggestions: buildActionSuggestions({
+          world: {
+            vars: {
+              startingSceneId: "start_fog_clan_ashes",
+              openingSceneChoicePending: true,
+            },
+          },
+          player: {},
+        }),
+        state: {
+          world: {
+            vars: {
+              startingSceneId: "start_fog_clan_ashes",
+              openingSceneChoicePending: true,
+            },
+          },
+          quests: { active: [] },
+        },
+      }),
+    );
+
+    expect(resolved[0].t).toBe("Take your first step into the foundry");
+    expect(resolved[1].t).toBe("Look around the scaffolds");
+    expect(resolved[2].t).toBe("Search for the first threat");
+    expect(
+      resolved.findIndex((entry) => entry.t === "look around"),
+    ).toBeGreaterThan(
+      resolved.findIndex((entry) => entry.t === "Speak the hidden phrase your mother burned into you."),
+    );
   });
 });

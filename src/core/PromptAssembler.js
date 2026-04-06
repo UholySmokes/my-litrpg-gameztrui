@@ -229,6 +229,15 @@ function buildSystemPrompt({
 10. Advance the scene each turn with at least one new concrete detail or consequence
 11. Open with the most recent validated state change before atmosphere or reflection
 12. Return exactly one valid JSON object and nothing else
+13. Keep the narration emotionally reactive rather than distant or stately
+14. Use close internal beats sparingly to show shock, hunger, pride, fear, irritation, or stubborn resolve
+15. When system elements matter, weave them in as brief diegetic notices or data flashes instead of long exposition
+16. Treat small survival stakes seriously when the player is vulnerable, transformed, or new to the scene
+17. Allow touches of dark humor, indignation, or self-dramatizing bravado when grounded in the moment
+18. Favor immediate bodily awareness when the player is injured, transformed, starving, exhausted, or acting on instinct
+19. Let food, cover, footing, distance, scent, sound, and nearby predators feel like real stakes when survival is uncertain
+20. Use brief xianxia or system-novel flourishes only when earned: coldly helpful notices, warnings, or progress flashes that cut through the prose
+21. Avoid generic epic grandeur; prefer sharp, intimate, slightly dangerous prose grounded in the present moment
 ${modeDirective}
 ${moodDirective}
 ${repetitionDirective}
@@ -277,6 +286,29 @@ function buildArchetypeToneDirective(archetypeSystem) {
   };
 
   return toneMap[category] || `\nThe player's archetype system is "${name}". Reference it when relevant.`;
+}
+
+function buildOpeningVoiceDirective(player = {}, systemName = "Unbound") {
+  const raceName =
+    typeof player?.race === "string"
+      ? player.race
+      : player?.race?.name || "";
+  const bodyDirective =
+    raceName && !/^human$/i.test(raceName)
+      ? `- The player's ${raceName} body should feel immediate and slightly unfamiliar when the opening starts.`
+      : "- If the opening implies transformation, awakening, or bodily wrongness, make it feel immediate and physical.";
+
+  return [
+    "=== OPENING VOICE RULES ===",
+    "- Keep second-person narration, but let close internal reactions leak through so the player feels the moment instead of receiving a distant summary.",
+    "- Let the opening pivot quickly between fear, hunger, indignation, curiosity, relief, and opportunistic resolve when the scene supports it.",
+    `- When the player's system ("${systemName}") intrudes, you may use 1-2 short diegetic notices such as [System Notice: ...] or [Quest Updated: ...].`,
+    "- If you use a notice, make it feel coldly helpful, faintly rude, or ominously precise rather than like a UI manual.",
+    bodyDirective,
+    "- Treat first survival problems as dramatic milestones rather than generic tutorial chores.",
+    "- Favor sharp sensory detail, body-awareness, and slight menace over distant epic grandeur.",
+    "- Avoid overly solemn epic diction unless the current scene truly earns it; lively, sharp, slightly dangerous prose is preferred.",
+  ].join("\n");
 }
 
 function formatNumber(value, digits = 2) {
@@ -974,6 +1006,9 @@ Hard rules:
 - Do not narrate ongoing combat when combat is inactive.
 - Do not invent enemies, items, rewards, or locations not present in authoritative state.
 - Begin the first sentence with the concrete result of the validated action, state change, or failed attempt.
+- Favor immediate physical consequence, sensory detail, and body-awareness over distant summary when the player is vulnerable, transformed, or under pressure.
+- If system flavor appears, keep it to 1-2 short bracketed notices integrated into the scene rather than a detached explanation.
+- Even low-level survival actions should feel consequential when the player is injured, exposed, hungry, unstable, or being hunted.
 - Each suggestion must be feasible from the current scene and distinct in category from the others.
 - Suggestions must not be simple paraphrases of the same move.
 - stateIntents is optional. Include it only when a concrete, grounded world consequence should be persisted.
@@ -982,7 +1017,7 @@ Hard rules:
 === RESPONSE FORMAT ===
 Return one valid JSON object with this shape:
 {
-  "narrative": "Plain text only. 4-8 sentences. Under 1200 characters.",
+  "story": "Plain text only. 4-8 sentences. Under 1200 characters.",
   "mood": "neutral|tense|triumphant|mysterious|serene|desperate",
   "suggestions": [
     {
@@ -999,7 +1034,8 @@ Return one valid JSON object with this shape:
   "stateIntents": [
     { "type": "world.flag.set", "flag": "string_flag_id", "value": true },
     { "type": "clue.add", "clueId": "string_clue_id" },
-    { "type": "player.reputation.delta", "value": 1 }
+    { "type": "player.reputation.delta", "value": 1 },
+    { "type": "magic.journal.add", "note": "brief magic insight from narrative" }
   ],
   "sceneMemory": {
     "locationLabel": "Current place name",
@@ -1012,7 +1048,7 @@ Return one valid JSON object with this shape:
   }
 }
 
-Return exactly 3 suggestions and 3 aligned choiceMeta entries when possible.`;
+Return 5-8 suggestions and the same number of aligned choiceMeta entries when possible.`;
 }
 
 /**
@@ -1080,26 +1116,49 @@ export function buildInitialPrompt(gameState = {}) {
   const openingZone = openingLocation?.zoneId
     ? getZoneById(openingLocation.zoneId)
     : null;
+  const startingPointZone = player.startingZoneId
+    ? getZoneById(player.startingZoneId)
+    : null;
+  const startingPointName =
+    startingPointZone?.name || openingZone?.name || null;
+  const hasQuestThreads = activeQuests.length > 0;
   const sceneDescription = describeOpeningScene(scene, {
-    mainQuestName: mainQuest?.name || "the looming mystery",
+    mainQuestName: mainQuest?.name || "the first strange trouble in reach",
     sideHookNames: sideQuests.map((q) => q.name),
     locationHint:
       openingLocation?.name || openingZone?.name || scene?.biome || "district",
     factionHint: scene?.tone || "locals",
   });
 
-  const questLines = [
-    mainQuest
-      ? `Main Quest -> ${mainQuest.name}: ${mainQuest.description}`
-      : "Main Quest -> Pending discovery.",
+  const openingPressureLines = [
+    "Immediate Lead -> Let the first meaningful opportunity emerge from the opening scene itself.",
+    startingPointName
+      ? `Starting Point Pressure -> ${startingPointName} should shape the first tension, contact, or curiosity.`
+      : null,
+    openingLocation?.name
+      ? `Current Locale -> ${openingLocation.name}`
+      : null,
+    openingChoicePending && openingChoiceLines.length
+      ? "Opening Choice -> One of the listed opening choices should feel naturally tempting, but no formal quest has been assigned yet."
+      : "Opening Momentum -> No formal quest has been assigned yet. End on a clear immediate action the player can choose.",
   ]
-    .concat(sideQuests.map((q) => `Side Hook -> ${q.name}: ${q.description}`))
+    .filter(Boolean)
     .join("\n");
+  const threadLines = hasQuestThreads
+    ? [
+        `Main Quest -> ${mainQuest.name}: ${mainQuest.description}`,
+        ...sideQuests.map((q) => `Side Hook -> ${q.name}: ${q.description}`),
+      ].join("\n")
+    : openingPressureLines;
+  const threadSectionTitle = hasQuestThreads
+    ? "=== QUEST THREADS ==="
+    : "=== OPENING PRESSURES ===";
 
   const narrativeHooks = Array.isArray(archetypeSystem?.narrativeHooks)
     ? archetypeSystem.narrativeHooks.slice(0, 2)
     : [];
   const toneDirective = buildArchetypeToneDirective(archetypeSystem);
+  const openingVoiceDirective = buildOpeningVoiceDirective(player, systemName);
 
   const skillNames = Array.isArray(player.activeSkills)
     ? player.activeSkills.map((s) => s.name || s.id).filter(Boolean).slice(0, 4)
@@ -1117,6 +1176,7 @@ Class: ${className}
 System: ${systemName}${systemCategory}
 ${systemSummary ? `System Summary: ${systemSummary}` : ""}
 Profession: ${professionName}
+${startingPointName ? `Starting Point: ${startingPointName}` : ""}
 ${skillLine}
 
 === OPENING SCENE ===
@@ -1128,17 +1188,49 @@ ${resolvedOpeningSeed
     ? `\n=== RESOLVED OPENING SEED ===\n${resolvedOpeningSeed}`
     : ""}
 
-=== QUEST THREADS ===
-${questLines}
+${threadSectionTitle}
+${threadLines}
 ${systemHooks.length ? `\n=== SYSTEM HOOKS ===\n${systemHooks.join("\n")}` : ""}
 ${narrativeHooks.length ? `\n=== NARRATIVE HOOKS ===\n${narrativeHooks.join("\n")}` : ""}
+${openingVoiceDirective ? `\n${openingVoiceDirective}` : ""}
 
 TASK: Deliver an atmospheric opening (6-9 sentences) that:
-- Establishes the scene and immediate surroundings
+- Establishes the scene and immediate surroundings${startingPointName ? `\n- Names the player's starting point ("${startingPointName}") within the first two sentences` : ""}
 - References the player's system ("${systemName}") naturally, as if it is part of the world
-- Hints at one quest thread without being heavy-handed
+- ${hasQuestThreads
+    ? "Hints at one quest thread without being heavy-handed"
+    : "Hints at one immediate tension, opportunity, or mystery without framing it as a formal quest"}
+- Uses at least one emotionally reactive beat rather than staying purely external
 - Ends with a compelling hook that invites the player's first action${openingChoicePending && openingChoiceLines.length ? " and nudges one opening choice naturally." : ""}
 Hard limit: keep the response under 1200 characters.
 
-Respond with narrative text only.`;
+=== RESPONSE FORMAT ===
+Return one valid JSON object with this shape:
+{
+  "story": "Plain text only. 6-9 sentences. Under 1200 characters.",
+  "mood": "neutral|tense|triumphant|mysterious|serene|desperate",
+  "suggestions": [
+    {
+      "label": "Short actionable next move",
+      "command": "Exact executable command",
+      "weight": 0.0,
+      "enabled": true,
+      "reason": "Why this move fits now"
+    }
+  ],
+  "choiceMeta": [
+    { "intent": "brief rationale", "category": "observe|social|progress|recovery|power|risk", "urgency": 0.0, "groundedInState": true }
+  ],
+  "sceneMemory": {
+    "locationLabel": "Current place name",
+    "zoneLabel": "Current zone name",
+    "immediateObjective": "Immediate goal",
+    "presentEntities": ["Confirmed entity"],
+    "activeThreats": ["Confirmed threat"],
+    "unresolvedHooks": ["Open thread"],
+    "lastConsequence": "Most important opening consequence"
+  }
+}
+
+Return 5-8 suggestions and the same number of aligned choiceMeta entries when possible.`;
 }

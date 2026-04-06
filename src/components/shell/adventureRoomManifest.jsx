@@ -99,7 +99,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       subtitle: "Read full attributes, systems, evolution lanes, and magical strain.",
       tone: "azure",
       entryAction: "Inspect status",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: true,
       isOpen: Boolean(surfaces.showStatusOverlay),
@@ -120,6 +120,8 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
           onEvolveClass={actions.onEvolveClass}
           onEvolveRace={actions.onEvolveRace}
           onStudySpell={actions.onStudySpell}
+          onPerformPrestige={actions.onPerformPrestige}
+          onBuyPrestigeUpgrade={actions.onBuyPrestigeUpgrade}
           onOpenArchetypeSystem={surfaces.handleToggleArchetypeSystem}
         />
       ),
@@ -130,7 +132,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       subtitle: "Catalog witnessed enemies, relic drops, and recorded discoveries.",
       tone: "verdigris",
       entryAction: "Open conservatory",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: true,
       isOpen: Boolean(surfaces.showBestiary),
@@ -144,7 +146,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       subtitle: "Inspect the active archetype system and its progression doctrine.",
       tone: "violet",
       entryAction: "Open observatory",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: true,
       isOpen: Boolean(surfaces.showArchetypeSystem),
@@ -155,10 +157,10 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
     {
       id: "titles",
       title: "Title Reliquary",
-      subtitle: "Manage earned titles, ceremonial bonuses, and prestige loadouts.",
+      subtitle: "Manage earned titles, ceremonial bonuses, and prestige rites.",
       tone: "gold",
       entryAction: "Open reliquary",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: true,
       isOpen: Boolean(surfaces.showTitleSystem),
@@ -172,6 +174,8 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
           onEquip={actions.onTitleEquip}
           onUnequip={actions.onTitleUnequip}
           onPurchase={actions.onTitlePurchase}
+          onPerformPrestige={actions.onPerformPrestige}
+          onBuyPrestigeUpgrade={actions.onBuyPrestigeUpgrade}
           variant="modal"
         />
       ),
@@ -182,7 +186,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       subtitle: "Advance crafted output, recipes, and profession progression lanes.",
       tone: "ember",
       entryAction: "Open workshop",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: true,
       isOpen: Boolean(surfaces.showProfessions),
@@ -204,7 +208,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       subtitle: "Trade for consumables, upgrades, and expedition support.",
       tone: "gold",
       entryAction: "Enter caravan",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: true,
       isOpen: Boolean(surfaces.showShop),
@@ -226,7 +230,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       subtitle: "Invoke the lattice for randomized pulls and relic acquisition.",
       tone: "violet",
       entryAction: "Open constellarium",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: true,
       isOpen: Boolean(surfaces.showGacha),
@@ -248,7 +252,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       subtitle: "Preserve or restore the current chronicle thread.",
       tone: "azure",
       entryAction: "Open vault",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: true,
       isOpen: Boolean(surfaces.showSaveLoad),
@@ -272,7 +276,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       subtitle: "Developer diagnostics for replay and sync inspection.",
       tone: "void",
       entryAction: "Inspect replay",
-      size: "xl",
+      size: "fullscreen",
       group: "system",
       availability: Boolean(isDevBuild),
       isOpen: Boolean(isDevBuild && surfaces.showReplayInspector),

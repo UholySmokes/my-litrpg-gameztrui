@@ -14,6 +14,7 @@ const isStandaloneDisplay = () => {
 export default function PwaInstallPrompt({ enabled = true }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(isStandaloneDisplay);
+  const [delayElapsed, setDelayElapsed] = useState(false);
   const [dismissed, setDismissed] = useState(() => {
     if (typeof window === "undefined") return false;
     try {
@@ -22,6 +23,12 @@ export default function PwaInstallPrompt({ enabled = true }) {
       return false;
     }
   });
+
+  useEffect(() => {
+    if (!enabled) return undefined;
+    const timer = setTimeout(() => setDelayElapsed(true), 10000);
+    return () => clearTimeout(timer);
+  }, [enabled]);
 
   useEffect(() => {
     if (!enabled || typeof window === "undefined") return undefined;
@@ -66,7 +73,7 @@ export default function PwaInstallPrompt({ enabled = true }) {
     [],
   );
 
-  if (!enabled || isInstalled || dismissed) return null;
+  if (!enabled || isInstalled || dismissed || !delayElapsed) return null;
 
   const dismiss = () => {
     setDismissed(true);

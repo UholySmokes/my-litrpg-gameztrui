@@ -24,6 +24,7 @@ describe("narrative fallback builder", () => {
     expect(result).toContain("Ari, a Vanguard, arrives at Ashen Gate.");
     expect(result).toContain("Authority");
     expect(result).toContain('"First Directive"');
+    expect(result).toContain("[Authority:");
   });
 
   it("builds action fallback text deterministically for failed attempts", () => {
@@ -44,5 +45,6 @@ describe("narrative fallback builder", () => {
     expect(result).toContain("You attempt to inspect sigil");
     expect(result).toContain("the sigil stays dark");
     expect(result).toContain("Overlay");
+    expect(result).toContain("[Overlay:");
   });
 });

@@ -8,8 +8,8 @@ const CHAMBER_DEFINITIONS = [
   {
     id: "lineage-vault",
     title: "Lineage Vault",
-    subtitle: "Anchor origin, bloodline, and personal identity.",
-    includedSteps: ["identity", "race"],
+    subtitle: "Anchor bloodline and personal identity.",
+    includedSteps: ["race"],
   },
   {
     id: "doctrine-forge",
@@ -26,8 +26,8 @@ const CHAMBER_DEFINITIONS = [
   {
     id: "oath-mirror",
     title: "Oath Mirror",
-    subtitle: "Review the whole build and seal the chronicle.",
-    includedSteps: ["review"],
+    subtitle: "Choose where to begin, review the build, and seal the chronicle.",
+    includedSteps: ["starting-point", "review"],
   },
 ];
 
@@ -52,61 +52,67 @@ export function validateCreationChamber(chamberId, checks = {}) {
   switch (chamberId) {
     case "binding-hall":
       if (!checks.hasName) {
-        return { valid: false, error: "Choose a designation before leaving the Binding Hall." };
+        return { valid: false, error: "A designation is required to proceed from the Binding Hall." };
       }
       if (!checks.hasSystem) {
-        return { valid: false, error: "Bind a system before leaving the Binding Hall." };
+        return { valid: false, error: "Bind a governing system to proceed. Your designation is set." };
       }
       return { valid: true };
     case "lineage-vault":
-      if (!checks.hasOrigin) {
-        return { valid: false, error: "Select an origin before leaving the Lineage Vault." };
-      }
       if (!checks.hasRace) {
-        return { valid: false, error: "Choose a race before leaving the Lineage Vault." };
+        return { valid: false, error: "Select a race to proceed from the Lineage Vault." };
       }
       return { valid: true };
     case "doctrine-forge":
+      if (!checks.hasClass && !checks.hasProfession) {
+        return { valid: false, error: "Select a class and profession to proceed from the Doctrine Forge." };
+      }
       if (!checks.hasClass) {
-        return { valid: false, error: "Choose a class before leaving the Doctrine Forge." };
+        return { valid: false, error: "Select a class to proceed. Your profession is set." };
       }
       if (!checks.hasProfession) {
-        return { valid: false, error: "Choose a profession before leaving the Doctrine Forge." };
+        return { valid: false, error: "Select a profession to proceed. Your class is set." };
       }
       return { valid: true };
     case "soul-crucible":
       if (!checks.attributesLocked) {
         return {
           valid: false,
-          error: "Allocate all attribute points before leaving the Soul Crucible.",
+          error: "Allocate all attribute points before proceeding.",
         };
       }
       if (!checks.skillsLocked) {
         return {
           valid: false,
-          error: "Complete the required active and passive skill selections first.",
+          error: "Complete the required active and passive skill selections. Attributes are locked.",
         };
       }
       if (!checks.perksLocked) {
         return {
           valid: false,
-          error: "Choose the required perk package before leaving the Soul Crucible.",
+          error: "Choose the required perk package. Attributes and skills are locked.",
         };
       }
       if (!checks.starterTreeLocked) {
         return {
           valid: false,
-          error: "Choose a starter tree before leaving the Soul Crucible.",
+          error: "Choose a starter tree. Attributes, skills, and perks are locked.",
         };
       }
       if (!checks.alignmentLocked) {
         return {
           valid: false,
-          error: "Choose an alignment before leaving the Soul Crucible.",
+          error: "Choose an alignment to complete the Soul Crucible.",
         };
       }
       return { valid: true };
     case "oath-mirror":
+      if (!checks.hasStartingPoint) {
+        return {
+          valid: false,
+          error: "Choose a starting point before sealing the chronicle.",
+        };
+      }
       if (!checks.canFinalize) {
         return {
           valid: false,

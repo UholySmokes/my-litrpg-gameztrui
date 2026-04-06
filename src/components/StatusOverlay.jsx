@@ -17,6 +17,8 @@ export default function StatusOverlay({
   onEvolveClass,
   onEvolveRace,
   onStudySpell,
+  onPerformPrestige,
+  onBuyPrestigeUpgrade,
   variant = "modal",
 }) {
   const [fusionSkillA, setFusionSkillA] = useState("");
@@ -98,6 +100,7 @@ export default function StatusOverlay({
     selectedSpell,
     canFuseSelection,
     professionEntries,
+    prestige,
   } = progression;
   const { equipmentEntries, inventoryList } = collections;
   const equipment = player?.equipment || {};
@@ -167,9 +170,18 @@ export default function StatusOverlay({
                 value={`${summary.xpCurrent} / ${summary.xpMax}`}
               />
               <StatusStatCard label="Title" value={summary.titleLabel} />
+              <StatusStatCard
+                label="Prestige"
+                value={`P${summary.prestigeLevel} · ${summary.prestigeSoulShards} shards`}
+                tooltip={`XP multiplier ${summary.prestigeXpMultiplier.toFixed(2)}x`}
+              />
               <StatusStatCard label="System" value={summary.archetypeSystemLabel} />
               <StatusStatCard label="Race" value={summary.raceLabel} />
-              <StatusStatCard label="Talents" value={summary.talentLabel} />
+              <StatusStatCard
+                label="Talents"
+                value={summary.talents.length > 0 ? `${summary.talents.length} active` : "None"}
+                tooltip={summary.talentLabel}
+              />
               <StatusStatCard label="Secondary Class" value={summary.secondaryClassLabel} />
               <StatusStatCard label="Alignment" value={summary.alignmentLabel} />
               <StatusStatCard label="Starter Trees" value={summary.starterTreeLabel} />
@@ -226,6 +238,75 @@ export default function StatusOverlay({
 
           <StatusMagicSection magic={magic} />
 
+          {summary.talents.length > 0 && (
+            <section>
+              <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
+                Talent Attunement
+              </h3>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                  gap: "0.75rem",
+                }}
+              >
+                {summary.talents.map((talent) => (
+                  <div
+                    key={talent.id}
+                    className="holo-panel"
+                    style={{ padding: "0.75rem", display: "grid", gap: "0.35rem" }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "baseline",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <span style={{ color: "var(--holo-cyan)", fontWeight: "bold" }}>
+                        {talent.name}
+                      </span>
+                      <span
+                        style={{
+                          color: talent.bucket === "ex_rank" ? "var(--holo-gold)" : "var(--text-dim)",
+                          fontSize: "0.75rem",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {talent.bucket === "ex_rank" ? "EX" : "Standard"}
+                      </span>
+                    </div>
+                    {talent.description && (
+                      <div style={{ color: "var(--text-main)", fontSize: "0.85rem", lineHeight: 1.4 }}>
+                        {talent.description}
+                      </div>
+                    )}
+                    {Array.isArray(talent.affinities) && talent.affinities.length > 0 && (
+                      <div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap" }}>
+                        {talent.affinities.map((aff) => (
+                          <span
+                            key={aff}
+                            style={{
+                              fontSize: "0.7rem",
+                              padding: "0.15rem 0.4rem",
+                              border: "1px solid rgba(0, 243, 255, 0.3)",
+                              borderRadius: "3px",
+                              color: "var(--text-dim)",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            {aff}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
           <section>
             <h3 style={{ color: "var(--holo-cyan)", marginBottom: "0.5rem" }}>
               Derived Combat Stats
@@ -245,6 +326,150 @@ export default function StatusOverlay({
                   tooltip={stat.hint}
                 />
               ))}
+            </div>
+          </section>
+
+          <section>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                gap: "0.75rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <h3 style={{ color: "var(--holo-cyan)", margin: 0 }}>
+                Prestige Protocol
+              </h3>
+              <div style={{ color: "var(--text-main)", fontSize: "0.85rem" }}>
+                {prestige.canPrestige
+                  ? `Ready to ascend for ${prestige.shardPreview} shards`
+                  : `Unlocks at level ${prestige.minLevel}`}
+              </div>
+            </div>
+            <div
+              className="holo-panel"
+              style={{
+                padding: "0.85rem",
+                display: "grid",
+                gap: "0.75rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+                  gap: "0.75rem",
+                }}
+              >
+                <StatusStatCard label="Prestige Level" value={prestige.level} />
+                <StatusStatCard label="Soul Shards" value={prestige.soulShards} />
+                <StatusStatCard
+                  label="XP Multiplier"
+                  value={`${prestige.xpMultiplier.toFixed(2)}x`}
+                />
+                <StatusStatCard
+                  label="Shard Preview"
+                  value={prestige.canPrestige ? prestige.shardPreview : 0}
+                  tooltip={`Prestige resets to level 1 after level ${prestige.minLevel}+ ascensions.`}
+                />
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                  gap: "0.75rem",
+                }}
+              >
+                {prestige.upgradeRows.map((upgrade) => (
+                  <div
+                    key={upgrade.type}
+                    className="holo-panel"
+                    style={{
+                      padding: "0.75rem",
+                      display: "grid",
+                      gap: "0.4rem",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "baseline",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <span style={{ color: "var(--holo-cyan)", fontWeight: "bold" }}>
+                        {upgrade.label}
+                      </span>
+                      <span style={{ color: "var(--text-main)", fontSize: "0.85rem" }}>
+                        Rank {upgrade.level}
+                      </span>
+                    </div>
+                    <div style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>
+                      Next upgrade costs {upgrade.nextCost} shards.
+                    </div>
+                    <button
+                      className="holo-button"
+                      type="button"
+                      onClick={() => onBuyPrestigeUpgrade?.(upgrade.type)}
+                      disabled={
+                        typeof onBuyPrestigeUpgrade !== "function" || !upgrade.canAfford
+                      }
+                      style={{
+                        justifySelf: "start",
+                        opacity: upgrade.canAfford ? 1 : 0.6,
+                      }}
+                    >
+                      Upgrade {upgrade.label}
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div style={{ color: "var(--text-main)", fontSize: "0.9rem" }}>
+                  Ascension resets level and experience, but preserves prestige ranks and shards.
+                </div>
+                <button
+                  className="holo-button"
+                  type="button"
+                  onClick={() => onPerformPrestige?.()}
+                  disabled={typeof onPerformPrestige !== "function" || !prestige.canPrestige}
+                  style={{
+                    borderColor: prestige.canPrestige ? "var(--holo-gold)" : "rgba(0, 243, 255, 0.4)",
+                    color: prestige.canPrestige ? "var(--holo-gold)" : "var(--text-dim)",
+                  }}
+                >
+                  {prestige.canPrestige
+                    ? `Ascend for ${prestige.shardPreview} shards`
+                    : `Requires level ${prestige.minLevel}`}
+                </button>
+              </div>
+              {prestige.history.length > 0 ? (
+                <div style={{ display: "grid", gap: "0.4rem" }}>
+                  <div style={{ color: "var(--holo-cyan)", fontWeight: "bold" }}>
+                    Recent Ascensions
+                  </div>
+                  {prestige.history.map((entry) => (
+                    <div
+                      key={entry.id}
+                      style={{ color: "var(--text-main)", fontSize: "0.85rem" }}
+                    >
+                      Prestige {entry.prestigeLevel} at level {entry.atLevel} · +
+                      {entry.shardsEarned} shards
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </section>
 

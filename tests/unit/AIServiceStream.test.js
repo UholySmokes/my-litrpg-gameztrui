@@ -230,6 +230,10 @@ describe("AIService streaming narrative", () => {
         spokenText: "Why are you all just watching me?",
         requiresResponse: true,
       },
+      reactionContext: {
+        focusEntity: "Spirit Beast Clan Patrol",
+        pressure: "approach-or-assist",
+      },
     });
 
     const startRequest = JSON.parse(globalThis.fetch.mock.calls[0][1]?.body || "{}");
@@ -238,6 +242,12 @@ describe("AIService streaming narrative", () => {
       expect.objectContaining({
         targetLabel: "Spirit Beast Clan Patrol",
         requiresResponse: true,
+      }),
+    );
+    expect(startRequest.reactionContext).toEqual(
+      expect.objectContaining({
+        focusEntity: "Spirit Beast Clan Patrol",
+        pressure: "approach-or-assist",
       }),
     );
     expect(result.story).toContain("The patrol leader finally answers.");

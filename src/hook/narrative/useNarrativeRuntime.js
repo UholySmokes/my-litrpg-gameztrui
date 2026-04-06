@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import {
   assemblePrompt,
+  buildAmbientReactionContext,
   buildDialogueNpcContext,
   buildSceneMemorySeed,
   buildInitialPrompt,
@@ -155,7 +156,7 @@ export function useNarrative(
     async (
       prompt,
       prevStateForFallback,
-      { mode, userInput: turnUserInput, actionResult, npcContext } = {},
+      { mode, userInput: turnUserInput, actionResult, npcContext, reactionContext } = {},
     ) => {
       if (streamAbortRef.current) {
         streamAbortRef.current.abort();
@@ -179,6 +180,7 @@ export function useNarrative(
           signal: controller.signal,
           mode,
           npcContext,
+          reactionContext,
           onChunk: (_delta, fullText) => {
             setState((prevState) =>
               replaceNarrativeEntryInState(prevState, streamEntryId, {
@@ -293,10 +295,16 @@ export function useNarrative(
               success: false,
               actionType: action?.type,
             });
+            const reactionContext = buildAmbientReactionContext(
+              currentState,
+              nextUserInput,
+              failedActionResult,
+            );
             await streamNarrative(failurePrompt, currentState, {
               mode,
               userInput: nextUserInput,
               actionResult: failedActionResult,
+              reactionContext,
             });
           } catch (err) {
             if (err?.name === "AbortError") return;
@@ -362,11 +370,17 @@ export function useNarrative(
             nextUserInput,
             actionResult,
           );
+          const reactionContext = buildAmbientReactionContext(
+            promptState,
+            nextUserInput,
+            actionResult,
+          );
           const narrativeResult = await streamNarrative(prompt, promptState, {
             mode,
             userInput: nextUserInput,
             actionResult,
             npcContext,
+            reactionContext,
           });
           const intentResolution = applyNarrativeStateIntents(
             promptState,

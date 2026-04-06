@@ -229,7 +229,10 @@ export function resolvePromptMode(gameState, actionResult) {
   if (actionResult?.changes?.location) {
     return PROMPT_MODES.SCENE_TRANSITION;
   }
-  if (actionType === "narrative" && actionResult?.dialogueIntent) {
+  if (
+    (actionType === "narrative" || actionType === "dialogue") &&
+    actionResult?.dialogueIntent
+  ) {
     return PROMPT_MODES.DIALOGUE;
   }
   return PROMPT_MODES.EXPLORATION;
@@ -1398,6 +1401,7 @@ Hard rules:
 - If system flavor appears, keep it to 1-2 short bracketed notices integrated into the scene rather than a detached explanation.
 - Even low-level survival actions should feel consequential when the player is injured, exposed, hungry, unstable, or being hunted.
 - When the player directly addresses nearby sentient NPCs, do not answer with vague silence alone. Resolve the turn with an answer, refusal, or visible social reaction.
+- When present entities are already watching, alerted, wary, or socially engaged, at least one of them should react in a concrete way to noticeable player actions if that reaction is grounded by scene state.
 - Each suggestion must be feasible from the current scene and distinct in category from the others.
 - Suggestions must not be simple paraphrases of the same move.
 - stateIntents is optional. Include it only when a concrete, grounded world consequence should be persisted.

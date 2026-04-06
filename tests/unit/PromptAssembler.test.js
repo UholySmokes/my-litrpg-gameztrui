@@ -5,6 +5,7 @@ import {
   buildInitialPrompt,
   buildSceneMemorySeed,
   buildHistorySection,
+  resolvePromptMode,
 } from "../../src/core/PromptAssembler.js";
 
 const makeEntry = ({ id, type, text, timestamp, sequence }) => ({
@@ -377,6 +378,62 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("This is a direct social turn.");
     expect(prompt).toContain("Do not leave a direct question hanging in unexplained silence.");
     expect(prompt).toContain("Dialogue resolution required: yes.");
+  });
+
+  it("routes dialogue actions into dialogue mode", () => {
+    const mode = resolvePromptMode(
+      { combat: { status: "inactive", inCombat: false } },
+      {
+        actionType: "dialogue",
+        dialogueIntent: true,
+      },
+    );
+
+    expect(mode).toBe("dialogue");
+  });
+
+  it("requires concrete reactions from alerted present entities", () => {
+    const prompt = assemblePrompt(
+      {
+        player: {
+          name: "Suri",
+          level: 2,
+          hp: { current: 7, max: 12 },
+          mana: { current: 3, max: 6 },
+          xp: { current: 0, max: 10 },
+          inventory: [],
+          equipment: {},
+        },
+        world: { location: { current: "wildroot_fringe" } },
+        quests: { active: [] },
+        narrative: {
+          entries: [],
+          summary: "The patrol has gone still and watchful.",
+          sceneMemory: {
+            locationLabel: "Rootbound Alcove",
+            zoneLabel: "Wildroot Fringe",
+            immediateObjective: "Survive first contact.",
+            presentEntities: ["Spirit Beast Patrol"],
+            activeThreats: [],
+            unresolvedHooks: ["Why the patrol has not helped"],
+            lastConsequence: "The patrol is watching from the brush.",
+            socialSummary: "The patrol is wary, alert, and evaluating the cub.",
+          },
+        },
+        combat: { status: "inactive", inCombat: false, enemies: [] },
+      },
+      "i run and trip over my paws",
+      {
+        success: true,
+        actionType: "narrative",
+        dialogueIntent: false,
+        description: "You lurch forward and tumble into the roots.",
+      },
+    );
+
+    expect(prompt).toContain(
+      "When present entities are already watching, alerted, wary, or socially engaged, at least one of them should react in a concrete way",
+    );
   });
 });
 

@@ -9,6 +9,7 @@ import {
   generateNarrative,
   generateNarrativeStream,
   generateInitialNarrative,
+  shouldUseNarrativeLocalFallback,
 } from "../../core/AIService.js";
 import { renderStatusBlock } from "../../util/statusrenderer.js";
 import { SimBridge } from "../../simulation/bridge/SimulationBridge.js";
@@ -46,6 +47,10 @@ import {
   createInitialNarrativeState,
   replaceNarrativeEntryInState,
 } from "./narrativeStateUpdater.js";
+
+function shouldLogNarrativeError(error) {
+  return !shouldUseNarrativeLocalFallback(error);
+}
 
 /**
  * Custom hook for managing AI narrative and user actions.
@@ -140,6 +145,15 @@ export function useNarrative(
     [setState],
   );
 
+  const refreshActionSuggestions = useCallback((stateSnapshot) => {
+    setActionSuggestions(
+      resolveActionSuggestionsFlow({
+        fallbackSuggestions: buildActionSuggestionsFlow(stateSnapshot),
+        state: stateSnapshot,
+      }),
+    );
+  }, []);
+
   const streamNarrative = useCallback(
     async (
       prompt,
@@ -211,7 +225,9 @@ export function useNarrative(
         return resolvedResult;
       } catch (err) {
         if (err?.name === "AbortError") throw err;
-        console.error("Stream narrative failed:", err);
+        if (shouldLogNarrativeError(err)) {
+          console.error("Stream narrative failed:", err);
+        }
         fallbackCounterRef.current += 1;
         const fallbackResult = resolveNarrativeRuntimeOutcome({
           state: prevStateForFallback,
@@ -266,12 +282,7 @@ export function useNarrative(
             const resolvedState = openingResolution.state || currentState;
 
             setState(resolvedState);
-            setActionSuggestions(
-              resolveActionSuggestionsFlow({
-                fallbackSuggestions: buildActionSuggestionsFlow(resolvedState),
-                state: resolvedState,
-              }),
-            );
+            refreshActionSuggestions(resolvedState);
             collectNarrativeOutcomeNotes(openingResolution.notes).forEach((note) =>
               addSystemMessage(note, "system"),
             );
@@ -318,7 +329,9 @@ export function useNarrative(
               );
             } catch (err) {
               if (err?.name === "AbortError") return;
-              console.error("Opening choice narrative generation failed:", err);
+              if (shouldLogNarrativeError(err)) {
+                console.error("Opening choice narrative generation failed:", err);
+              }
             } finally {
               setIsNarrating(false);
             }
@@ -356,7 +369,9 @@ export function useNarrative(
             });
           } catch (err) {
             if (err?.name === "AbortError") return;
-            console.error("AI narrative generation failed:", err);
+            if (shouldLogNarrativeError(err)) {
+              console.error("AI narrative generation failed:", err);
+            }
           }
 
           setIsLoading(false);
@@ -393,12 +408,7 @@ export function useNarrative(
         };
 
         const suggestionSource = actionResult.readOnly ? currentState : newState;
-        setActionSuggestions(
-          resolveActionSuggestionsFlow({
-            fallbackSuggestions: buildActionSuggestionsFlow(suggestionSource),
-            state: suggestionSource,
-          }),
-        );
+        refreshActionSuggestions(suggestionSource);
 
         if (action?.type === "status") {
           const statusString = renderStatusBlock(
@@ -439,7 +449,9 @@ export function useNarrative(
           });
         } catch (err) {
           if (err?.name === "AbortError") return;
-          console.error("AI narrative generation failed:", err);
+          if (shouldLogNarrativeError(err)) {
+            console.error("AI narrative generation failed:", err);
+          }
         } finally {
           setIsNarrating(false);
         }
@@ -458,6 +470,7 @@ export function useNarrative(
     [
       addSystemMessage,
       evaluateQuestProgress,
+      refreshActionSuggestions,
       setState,
       streamNarrative,
       submitAction,
@@ -524,8 +537,10 @@ export function useNarrative(
           }),
         );
       } catch (err) {
-        console.error("Error generating initial narrative:", err);
-        setError(err.message || "Failed to generate initial narrative.");
+        if (shouldLogNarrativeError(err)) {
+          console.error("Error generating initial narrative:", err);
+          setError(err.message || "Failed to generate initial narrative.");
+        }
         fallbackCounterRef.current += 1;
         const fallbackResult = resolveNarrativeRuntimeOutcome({
           state: currentState,
@@ -570,5 +585,6 @@ export function useNarrative(
     setUserInput,
     inputRef,
     actionSuggestions,
+    refreshActionSuggestions,
   };
 }

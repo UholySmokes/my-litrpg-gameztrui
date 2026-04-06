@@ -74,6 +74,18 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
   const magic = player?.magic && typeof player.magic === "object" ? player.magic : {};
   const unlockedPatternCount = Object.keys(magic.unlockedPatterns || {}).length;
   const reserveCount = Object.keys(magic.reserves || {}).length;
+  const journal = Array.isArray(magic.journal) ? magic.journal : [];
+  const stability = magic.stability || {};
+  const resonance = magic.resonance || {};
+  const attunement = magic.attunement || {};
+  const reserves = magic.reserves || {};
+  const charges = Array.isArray(magic.charges) ? magic.charges : [];
+  const activeWorkings = Array.isArray(magic.activeWorkings) ? magic.activeWorkings : [];
+  const strain = magic.strain || {};
+  const interference = magic.interference || {};
+  const anchors = magic.anchors || {};
+  const grammar = magic.grammar || {};
+  const prepared = magic.prepared;
 
   return (
     <div className="atrium-room-stack">
@@ -93,13 +105,91 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
               <strong>{unlockedPatternCount}</strong>
             </div>
             <div>
-              <span>Resonance reserves tracked</span>
+              <span>Reserves tracked</span>
               <strong>{reserveCount}</strong>
+            </div>
+            <div>
+              <span>Journal entries</span>
+              <strong>{journal.length}</strong>
+            </div>
+            <div>
+              <span>Active workings</span>
+              <strong>{activeWorkings.length}</strong>
             </div>
           </div>
           <p style={{ marginTop: "0.65rem" }}>
             Latest generated text: {latestEntryText || "No recent narrative output yet."}
           </p>
+        </div>
+      </section>
+
+      <section className="surface-section">
+        <div className="surface-section__header">
+          <div className="surface-section__eyebrow">Live State</div>
+          <h3 className="surface-section__title">Magic Vitals</h3>
+        </div>
+        <div className="surface-section__body">
+          <div className="atrium-room-idle__metrics">
+            <div><span>Mana</span><strong>{magic.mana?.current ?? "?"}/{magic.mana?.max ?? "?"}</strong></div>
+            <div><span>Strain</span><strong>{strain.current ?? 0}/{strain.max ?? 100} ({strain.state || "steady"})</strong></div>
+            <div><span>Resonance</span><strong>{resonance.current ?? 0}/{resonance.max ?? 100} ({resonance.state || "quiet"})</strong></div>
+            <div><span>Interference</span><strong>{interference.score ?? 0}</strong></div>
+          </div>
+          <h4 style={{ marginTop: "0.75rem" }}>Stability</h4>
+          <div className="atrium-room-idle__metrics">
+            <div><span>Body</span><strong>{stability.body?.current ?? "?"}/{stability.body?.max ?? "?"}</strong></div>
+            <div><span>Mind</span><strong>{stability.mind?.current ?? "?"}/{stability.mind?.max ?? "?"}</strong></div>
+            <div><span>Cognitive</span><strong>{stability.cognitive?.current ?? "?"}/{stability.cognitive?.max ?? "?"}</strong></div>
+          </div>
+          <h4 style={{ marginTop: "0.75rem" }}>Attunement</h4>
+          <p>Stance: <strong>{attunement.stance || "open"}</strong>{attunement.focusedEssence ? ` · Focus: ${attunement.focusedEssence}` : ""}</p>
+          {prepared ? (
+            <p style={{ marginTop: "0.35rem" }}>Prepared: <strong>{JSON.stringify(prepared)}</strong></p>
+          ) : null}
+          <h4 style={{ marginTop: "0.75rem" }}>Anchors</h4>
+          <p>Self: {anchors.self || "none"} · Area: {anchors.area || "none"} · Item: {anchors.itemId || "none"}</p>
+        </div>
+      </section>
+
+      <section className="surface-section">
+        <div className="surface-section__header">
+          <div className="surface-section__eyebrow">Reserves &amp; Charges</div>
+          <h3 className="surface-section__title">Essence Reserves</h3>
+        </div>
+        <div className="surface-section__body">
+          {Object.keys(reserves).length > 0 ? (
+            <ul>
+              {Object.entries(reserves).map(([essence, amount]) => (
+                <li key={essence}><strong>{essence}</strong>: {typeof amount === "object" ? JSON.stringify(amount) : amount}</li>
+              ))}
+            </ul>
+          ) : <p style={{ opacity: 0.7 }}>No essence reserves yet.</p>}
+          {charges.length > 0 ? (
+            <>
+              <h4 style={{ marginTop: "0.5rem" }}>Charges</h4>
+              <ul>
+                {charges.map((c, i) => (
+                  <li key={i}>{typeof c === "object" ? `${c.essence || "?"} (tier ${c.tier ?? "?"})` : String(c)}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="surface-section">
+        <div className="surface-section__header">
+          <div className="surface-section__eyebrow">Grammar</div>
+          <h3 className="surface-section__title">Known Essences, Forms &amp; Patterns</h3>
+        </div>
+        <div className="surface-section__body">
+          <p><strong>Essences:</strong> {(grammar.essences || []).join(", ") || "none"}</p>
+          <p><strong>Forms:</strong> {(grammar.forms || []).join(", ") || "none"}</p>
+          <p><strong>Patterns:</strong> {Object.keys(magic.unlockedPatterns || {}).join(", ") || "none"}</p>
+          <p><strong>Deliveries:</strong> {(grammar.deliveries || []).join(", ") || "none"}</p>
+          {Array.isArray(grammar.recipes) && grammar.recipes.length > 0 ? (
+            <p><strong>Recipes:</strong> {grammar.recipes.map(r => typeof r === "string" ? r : r?.id || JSON.stringify(r)).join(", ")}</p>
+          ) : null}
         </div>
       </section>
 
@@ -112,6 +202,29 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
           {STUDY_METHODS.map((method) => (
             <StudyAction key={method.id} method={method} onSubmitCommand={onSubmitCommand} />
           ))}
+        </div>
+      </section>
+
+      <section className="surface-section">
+        <div className="surface-section__header">
+          <div className="surface-section__eyebrow">Magic Journal</div>
+          <h3 className="surface-section__title">Research Log ({journal.length} entries)</h3>
+        </div>
+        <div className="surface-section__body">
+          {journal.length > 0 ? (
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              {journal.slice(-10).reverse().map((entry, i) => (
+                <li key={i} style={{ marginBottom: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "0.4rem" }}>
+                  <strong>T{entry.turn}</strong> · {entry.topic?.replace(/_/g, " ") || "note"}
+                  {entry.target ? ` — target: ${entry.target}` : ""}
+                  <br />
+                  <em style={{ opacity: 0.85 }}>{entry.notes}</em>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p style={{ opacity: 0.7 }}>No journal entries yet. Use <strong>STUDY &lt;target&gt;</strong> or <strong>JOURNAL NOTE "..."</strong> to record observations.</p>
+          )}
         </div>
       </section>
 

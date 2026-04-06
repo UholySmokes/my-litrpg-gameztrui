@@ -162,6 +162,7 @@ const initialGameState = {
       },
       reserves: {},
       charges: [],
+      journal: [],
     },
     attributes: INITIAL_ATTRIBUTES,
     attributeInvestments: {},

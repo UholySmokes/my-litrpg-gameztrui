@@ -15,7 +15,7 @@ describe("CharacterCreationContract", () => {
       name: "Aela",
       raceId: "neo_human",
       classId: "warrior",
-      originId: "street_urchin",
+      startingZoneId: "city",
       professionId: "blacksmith",
       archetypeSystemId: "balanced",
       attributes: { strength: 8 },

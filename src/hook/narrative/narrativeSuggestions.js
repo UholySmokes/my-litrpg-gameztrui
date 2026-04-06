@@ -169,7 +169,7 @@ function normalizeSingleActionSuggestion(suggestion, choiceMetaEntry) {
 
 export function normalizeActionSuggestions(
   suggestions = [],
-  { maxItems = 6, choiceMeta = [] } = {},
+  { maxItems = 8, choiceMeta = [] } = {},
 ) {
   const normalized = (Array.isArray(suggestions) ? suggestions : [])
     .map((suggestion, index) =>
@@ -331,7 +331,7 @@ export function resolveActionSuggestions({
   preferredChoiceMeta,
   fallbackSuggestions = DEFAULT_ACTION_SUGGESTIONS,
   state,
-  maxItems = 3,
+  maxItems = 8,
 } = {}) {
   const accepted = [];
   const seen = new Set();
@@ -459,7 +459,7 @@ function buildTravelSuggestions(state, maxItems = 3) {
   const currentLocationId = getCurrentLocationId(state);
   const currentLocation = getLocationById(currentLocationId);
   const currentZoneId = currentLocation?.zoneId || state?.world?.location?.biome || "";
-  const accessibleIds = getAccessibleLocationIds(state)
+  const accessibleIds = Array.from(getAccessibleLocationIds(state) || [])
     .filter((locationId) => typeof locationId === "string" && locationId !== currentLocationId)
     .map((locationId) => getLocationById(locationId))
     .filter(Boolean)
@@ -617,10 +617,25 @@ export function buildActionSuggestions(state) {
           reason: "An explicit opening-scene choice.",
         }),
       );
-    const fallbackContext = CONTEXT_SUGGESTION_FILLERS.slice(0, 4);
-    const resolvedContext =
-      openingContext.length > 0 ? openingContext : fallbackContext;
-    return [...FIXED_ACTION_SUGGESTIONS, ...resolvedContext];
+    if (openingContext.length > 0) {
+      const fixedLabels = new Set(
+        openingContext.map((entry) =>
+          String(entry?.command || entry?.t || "").toLowerCase(),
+        ),
+      );
+      const fixedFallbacks = FIXED_ACTION_SUGGESTIONS.filter(
+        (entry) =>
+          !fixedLabels.has(String(entry?.command || entry?.t || "").toLowerCase()),
+      );
+      const contextualFillers = CONTEXT_SUGGESTION_FILLERS.filter(
+        (entry) =>
+          !fixedLabels.has(String(entry?.command || entry?.t || "").toLowerCase()),
+      );
+
+      return [...openingContext, ...fixedFallbacks, ...contextualFillers].slice(0, 8);
+    }
+
+    return [...FIXED_ACTION_SUGGESTIONS, ...CONTEXT_SUGGESTION_FILLERS].slice(0, 8);
   }
 
   if (inCombat) {
@@ -885,7 +900,7 @@ export function buildActionSuggestions(state) {
             String(fallback?.command || fallback?.t || "").toLowerCase(),
         ),
     ),
-  ].slice(0, 4);
+  ].slice(0, 5);
 
   return [...FIXED_ACTION_SUGGESTIONS, ...normalizedContext];
 }

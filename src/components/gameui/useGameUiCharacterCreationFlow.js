@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { QuestManager } from "../../systems/quest/QuestManager.js";
 import { seedWorldAfterCharacterCreation } from "../../world/WorldInitializer.js";
+import { getZoneById } from "../../world/WorldDataRegistry.js";
 import {
   incrementCharactersCreated,
   isAdvancedCreationUnlocked,
 } from "../../core/playerProfile.js";
 
-const TRANSITION_DURATION_MS = 1200;
+const TRANSITION_DURATION_MS = 2500;
 
 function buildTransitionAudioProfile(classId) {
   switch (classId) {
@@ -31,9 +31,9 @@ function buildTransitionAudioProfile(classId) {
   }
 }
 
-function buildCharacterCreationState(state, characterData, initialQuests) {
+export function buildCharacterCreationState(state, characterData) {
   const nextQuests = {
-    active: initialQuests,
+    active: [],
     completed: [],
   };
   const seededWorld = seedWorldAfterCharacterCreation(state?.world, {
@@ -59,6 +59,7 @@ export function useGameUiCharacterCreationFlow({
 }) {
   const [characterCreated, setCharacterCreated] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionSummary, setTransitionSummary] = useState(null);
   const transitionTimeoutRef = useRef(null);
   const transitionAudioRef = useRef(null);
 
@@ -119,27 +120,22 @@ export function useGameUiCharacterCreationFlow({
       console.log("=== CHARACTER CREATION COMPLETE ===");
       console.log("Character data received:", characterData);
 
-      let initialQuests = [];
-      try {
-        initialQuests = QuestManager.generateInitialQuests(characterData);
-        console.log("Generated initial quests:", initialQuests);
-      } catch (error) {
-        console.error("Failed to generate initial quests:", error);
-        addSystemMessage(
-          "Quest generation failed, but you can continue your adventure.",
-          "system",
-        );
-      }
-
-      const nextState = buildCharacterCreationState(
-        state,
-        characterData,
-        initialQuests,
-      );
+      const nextState = buildCharacterCreationState(state, characterData);
 
       setState(nextState);
       persistLocalAutosave(nextState, "Character Creation Checkpoint");
 
+      const playerObj = nextState?.player || characterData;
+      const zoneId = characterData?.startingZoneId || null;
+      const zone = zoneId ? getZoneById(zoneId) : null;
+      setTransitionSummary({
+        name: playerObj?.name || "Adventurer",
+        className:
+          (typeof playerObj?.class === "string"
+            ? playerObj.class
+            : playerObj?.class?.name) || "Unknown",
+        startingPoint: zone?.name || zoneId || null,
+      });
       setIsTransitioning(true);
       if (transitionTimeoutRef.current) {
         clearTimeout(transitionTimeoutRef.current);
@@ -148,6 +144,11 @@ export function useGameUiCharacterCreationFlow({
         setCharacterCreated(true);
         setIsTransitioning(false);
       }, TRANSITION_DURATION_MS);
+
+      addSystemMessage(
+        "Level 1 \u2014 Your chronicle has begun. Earn 100 XP to reach Level 2.",
+        "system",
+      );
 
       try {
         await generateInitialNarrativeText(nextState);
@@ -172,6 +173,7 @@ export function useGameUiCharacterCreationFlow({
     advancedCreationUnlocked,
     characterCreated,
     isTransitioning,
+    transitionSummary,
     setCharacterCreated,
     handleCharacterCreationComplete,
   };

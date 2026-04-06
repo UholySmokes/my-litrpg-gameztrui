@@ -119,6 +119,7 @@ export default function GameUI({ user }) {
     inputRef,
     actionSuggestions,
     generateInitialNarrativeText,
+    refreshActionSuggestions,
   } = useNarrative(
     setState,
     addSystemMessage,
@@ -129,6 +130,7 @@ export default function GameUI({ user }) {
     advancedCreationUnlocked,
     characterCreated,
     isTransitioning,
+    transitionSummary,
     setCharacterCreated,
     handleCharacterCreationComplete,
   } = useGameUiCharacterCreationFlow({
@@ -186,6 +188,8 @@ export default function GameUI({ user }) {
     handleRest,
     handleSetCombatLane,
     handleSkillUse,
+    handleBuyPrestigeUpgrade,
+    handlePerformPrestige,
     handleStudySpell,
     handleTitleEquip,
     handleTitlePurchase,
@@ -231,6 +235,7 @@ export default function GameUI({ user }) {
     (loadedState, options = {}) => {
       if (!isRecord(loadedState)) return;
       loadState(loadedState);
+      refreshActionSuggestions(loadedState);
       const hasCharacter = hasCreatedCharacterSnapshot(loadedState);
       setCharacterCreated(hasCharacter);
       setActiveSurface(hasCharacter ? "adventure" : "hub");
@@ -242,7 +247,13 @@ export default function GameUI({ user }) {
         addSystemMessage(options.message || "Loaded save game.", "system");
       }
     },
-    [addSystemMessage, loadState, setCharacterCreated, setShowSaveLoad],
+    [
+      addSystemMessage,
+      loadState,
+      refreshActionSuggestions,
+      setCharacterCreated,
+      setShowSaveLoad,
+    ],
   );
 
   const handleSubmit = useCallback(
@@ -386,6 +397,8 @@ export default function GameUI({ user }) {
         onTitleEquip: handleTitleEquip,
         onTitleUnequip: handleTitleUnequip,
         onTitlePurchase: handleTitlePurchase,
+        onPerformPrestige: handlePerformPrestige,
+        onBuyPrestigeUpgrade: handleBuyPrestigeUpgrade,
         onShopPurchase: handleShopPurchase,
         onGachaPull: handleGachaPull,
         onCraft: handleCraft,
@@ -435,6 +448,8 @@ export default function GameUI({ user }) {
       handleShopPurchase,
       handleSetCombatLane,
       handleSkillUse,
+      handleBuyPrestigeUpgrade,
+      handlePerformPrestige,
       handleStudySpell,
       handleSuggestionClick,
       handleSubmit,
@@ -509,6 +524,18 @@ export default function GameUI({ user }) {
             />
         ) : null}
 
+        {isTransitioning && transitionSummary ? (
+          <div className="creation-handoff-overlay anime-dramatic" role="status" aria-live="polite">
+            <p className="creation-handoff-overlay__name anime-slide-up">{transitionSummary.name}</p>
+            <p className="creation-handoff-overlay__class anime-slide-up">{transitionSummary.className}</p>
+            {transitionSummary.startingPoint ? (
+              <p className="creation-handoff-overlay__destination">
+                Your chronicle begins in {transitionSummary.startingPoint}\u2026
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+
         {shouldShowAdventure ? (
           <AdventureShell
             view={adventureView}
@@ -529,6 +556,28 @@ export default function GameUI({ user }) {
       {state?.player?.isDead && (
         <SystemFailureOverlay onRestart={() => window.location.reload()} />
       )}
+
+      {IS_DEV_BUILD ? (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 4,
+            left: 4,
+            padding: "2px 6px",
+            fontSize: "0.6rem",
+            fontFamily: "monospace",
+            background: characterCreated ? "rgba(255,200,50,0.15)" : "rgba(50,255,100,0.15)",
+            color: characterCreated ? "#ffc832" : "#32ff64",
+            border: `1px solid ${characterCreated ? "rgba(255,200,50,0.3)" : "rgba(50,255,100,0.3)"}`,
+            borderRadius: 3,
+            zIndex: 9999,
+            pointerEvents: "none",
+            userSelect: "none",
+          }}
+        >
+          {characterCreated ? "RESUMED SESSION" : "CLEAN SESSION"}
+        </div>
+      ) : null}
 
       {IS_DEV_BUILD ? (
         <AdminTools dispatch={dispatchSystemEvent} getState={() => state} />

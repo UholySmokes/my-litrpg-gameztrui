@@ -133,10 +133,10 @@ export let locations = [
   {
     id: "starting_zone",
     zoneId: "city",
-    name: "Arrival Terminal",
+    name: "Rebirth Alcove",
     summary:
-      "A humming arrivals concourse where the arcology pretends nothing is broken.",
-    aliases: ["starting zone", "arrival terminal", "terminal", "gate"],
+      "A shallow stone alcove beneath the arcology's main arch, scored with fading summoning glyphs — where new arrivals open unfamiliar eyes for the first time, with guild boards and merchant stalls just beyond the threshold.",
+    aliases: ["starting zone", "rebirth alcove", "alcove", "summoning alcove", "awakening point"],
     travelPolicy: "public",
   },
   {

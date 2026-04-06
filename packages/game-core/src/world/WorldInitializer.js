@@ -127,9 +127,6 @@ export function seedWorldAfterCharacterCreation(
   const activeQuests = Array.isArray(quests?.active) ? quests.active : [];
   const mainQuest = activeQuests[0] || null;
 
-  const requestedBiome = mainQuest?.tags?.biome;
-  const zoneId = getZoneById(requestedBiome) ? requestedBiome : "city";
-
   const resolvedSeed = seed ?? baseWorld?.vars?.worldSeed ?? SimBridge.now();
 
   const character = resolvePlayerArchetypeIds(player);
@@ -139,6 +136,17 @@ export function seedWorldAfterCharacterCreation(
     character,
   });
   const startingSceneId = opening?.scene?.id || null;
+
+  const playerZoneId = player?.startingZoneId || null;
+  const sceneBiome = opening?.scene?.biome;
+  const questBiome = mainQuest?.tags?.biome;
+  const zoneId = (playerZoneId && getZoneById(playerZoneId))
+    ? playerZoneId
+    : getZoneById(sceneBiome)
+      ? sceneBiome
+      : getZoneById(questBiome)
+        ? questBiome
+        : "city";
 
   const startLocationId = pickStartLocationId({
     zoneId,

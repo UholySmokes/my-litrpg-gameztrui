@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { generateNarrativeStream } from "../../src/core/AIService.js";
+import {
+  __resetNarratorAvailabilityStateForTests,
+  generateNarrativeStream,
+} from "../../src/core/AIService.js";
 
 describe("AIService streaming narrative", () => {
   beforeEach(() => {
@@ -11,6 +14,7 @@ describe("AIService streaming narrative", () => {
     delete globalThis.fetch;
     delete globalThis.window;
     delete globalThis.__RUNTIME_CONFIG__;
+    __resetNarratorAvailabilityStateForTests();
   });
 
   it("preserves mood and suggestions from a completed poll response", async () => {
@@ -37,7 +41,7 @@ describe("AIService streaming narrative", () => {
             ok: true,
             status: "completed",
             done: true,
-            narrative: "A hush settles over the shrine courtyard.",
+            story: "A hush settles over the shrine courtyard.",
             mood: "serene",
             suggestions: [{ t: "kneel at the altar", w: 0.92 }],
             sceneMemory: {
@@ -70,7 +74,9 @@ describe("AIService streaming narrative", () => {
     const result = await promise;
 
     expect(result.mood).toBe("serene");
-    expect(result.suggestions).toEqual([{ t: "kneel at the altar", w: 0.92 }]);
+    expect(result.suggestions).toEqual([
+      expect.objectContaining({ t: "kneel at the altar", w: 0.92 }),
+    ]);
     expect(result.sceneMemory?.locationLabel).toBe("Shrine Courtyard");
     expect(result.choiceMeta?.[0]?.category).toBe("observe");
     expect(globalThis.fetch).toHaveBeenCalledTimes(2);
@@ -111,7 +117,7 @@ describe("AIService streaming narrative", () => {
             ok: true,
             status: "completed",
             done: true,
-            narrative: "The conduit stabilizes under your command.",
+            story: "The conduit stabilizes under your command.",
             mood: "steady",
             suggestions: [{ t: "Advance", w: 0.8 }],
           }),
@@ -126,8 +132,9 @@ describe("AIService streaming narrative", () => {
     await jest.advanceTimersByTimeAsync(1500);
     const result = await promise;
 
-    expect(typeof result.narrative).toBe("string");
-    expect(result.narrative.length).toBeGreaterThan(0);
+    expect(typeof result.story).toBe("string");
+    expect(result.story.length).toBeGreaterThan(0);
+    expect(result.narrative).toBe(result.story);
     expect(globalThis.fetch).toHaveBeenCalledTimes(3);
     const firstHeaders = globalThis.fetch.mock.calls[0][1]?.headers || {};
     const secondHeaders = globalThis.fetch.mock.calls[1][1]?.headers || {};
@@ -175,7 +182,7 @@ describe("AIService streaming narrative", () => {
         new Response(
           JSON.stringify({
             ok: true,
-            narrative: "Fallback sync narration recovered the turn.",
+            story: "Fallback sync narration recovered the turn.",
             mood: "focused",
             suggestions: [{ t: "Continue", w: 0.8 }],
           }),
@@ -190,7 +197,8 @@ describe("AIService streaming narrative", () => {
     await jest.advanceTimersByTimeAsync(1500);
     const result = await promise;
 
-    expect(result.narrative).toContain("Fallback sync narration recovered");
+    expect(result.story).toContain("Fallback sync narration recovered");
+    expect(result.narrative).toBe(result.story);
     expect(globalThis.fetch).toHaveBeenCalledTimes(4);
     expect(globalThis.fetch.mock.calls[3][0]).toBe("/api/narrate");
   });

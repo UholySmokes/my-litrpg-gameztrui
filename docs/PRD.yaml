@@ -1,0 +1,169 @@
+prd_id: playtest-redesign-20260405
+version: 0.2.0
+status: completed
+user_stories:
+  - id: us-fresh-run-golden-path
+    as_a: review_orchestrator
+    i_want: multiple agents to play the current browser game from fresh load through character creation and early gameplay
+    so_that: the team gets evidence on functional behavior, story feel, UI feel, and onboarding quality from a new-player perspective
+  - id: us-balanced-review-output
+    as_a: design_and_qa_lead
+    i_want: the review to weight story, UI, and functional behavior evenly
+    so_that: recommendations do not overfit to only bugs or only aesthetics
+  - id: us-redesign-recommendations
+    as_a: product_owner
+    i_want: larger redesign recommendations plus 10 random improvement suggestions
+    so_that: the review yields both strategic direction and opportunistic ideas
+scope:
+  in_scope:
+    - Current web root flow at '/'
+    - Fresh browser load, entry shell, local or accessible onboarding path, character genesis, and immediate post-creation gameplay
+    - Golden path plus light exploration
+    - Functional checks, story feel review, UI feel review, and redesign recommendation synthesis
+    - Early gameplay evaluation with level 1 treated as fresh-start completion and level 2 treated as the first earned milestone at 100 XP
+    - Current active shell path only: App.jsx -> GameUIRoot.jsx -> CharacterHub / CharacterCreationShell / AdventureShell
+    - Narrative/runtime behavior as surfaced through the UI, including the separated narrative runtime used by useNarrativeRuntime.js
+  out_of_scope:
+    - Implementing redesign changes
+    - Treating legacy or inactive UI architectures as current behavior under test
+    - Deep progression balance review beyond early gameplay
+    - Non-browser runtimes as the primary playtest target for this PRD
+  environments:
+    primary_url: http://127.0.0.1:5173/
+    notes:
+      - Web gameplay may require VITE_WEB_GAMEPLAY_ENABLED=true or VITE_ENABLE_WEB_GAMEPLAY=true
+      - Full-stack local behavior may require the paired backend or emulator flow alongside the Vite client
+acceptance_criteria:
+  - Multi-agent playtest plan treats the browser web shell as the test target and starts from a fresh browser session
+  - Playtest execution covers the golden path from initial load to completed character creation and immediate level 1 adventure readiness
+  - Light exploration samples at least a small set of non-blocking alternate choices or interactions without replacing the golden path focus
+  - Review output captures findings across functional behavior, story feel, and UI feel with balanced weighting
+  - Output distinguishes blocking defects, quality issues, larger redesign recommendations, and 10 random improvement suggestions
+  - Output explicitly notes that level 1 is the initial post-creation state and level 2 at 100 XP is the first earned progression milestone
+  - Output excludes legacy or inactive web UI paths unless cited only as redesign inspiration
+needs_clarification:
+  - id: nc-stop-point
+    question: Should future execution stop once fresh-start completion is reached at post-creation level 1, or continue until the first earned milestone at level 2?
+    impact: Changes runtime length, evidence depth, and whether milestone pacing is judged from observed play rather than setup completion
+    current_assumption: Plan for level 1 completion as the minimum bar and record level 2 as an optional extended checkpoint unless later promoted to required scope
+features:
+  - id: feature-multi-agent-playtest
+    status: complete
+    summary: Coordinate multiple agents acting as gamers with distinct but comparable fresh-start runs
+    requirements:
+      - Use the current browser shell at '/'
+      - Preserve a clean-session assumption for each agent run
+      - Capture both golden-path evidence and light exploration notes
+  - id: feature-experience-review
+    status: complete
+    summary: Evaluate onboarding, story presentation, controls, readability, responsiveness, and immediate adventure flow
+    requirements:
+      - Score or summarize story feel, UI feel, and functional behavior with balanced emphasis
+      - Identify blocked onboarding, confusing transitions, and weak narrative payoff
+  - id: feature-redesign-synthesis
+    status: complete
+    summary: Produce recommendation-only redesign outputs from the observed playtests
+    requirements:
+      - Include larger redesign ideas grounded in observed friction or missed fantasy
+      - Include 10 random improvement suggestions separated from core recommendations
+state_machines:
+  - id: fresh-browser-onboarding
+    initial_state: browser_launch
+    states:
+      - id: browser_launch
+        on:
+          app_loaded: entry_shell
+          startup_failure: startup_failure
+      - id: entry_shell
+        on:
+          onboarding_available: character_hub
+          onboarding_blocked: blocked_onboarding
+      - id: character_hub
+        on:
+          start_creation: character_creation
+      - id: character_creation
+        on:
+          creation_completed: level_1_ready
+          narration_unavailable: narration_degraded
+          onboarding_blocked: blocked_onboarding
+      - id: narration_degraded
+        on:
+          continue_with_fallback: character_creation
+          abandon_run: review_failed
+      - id: level_1_ready
+        on:
+          begin_adventure: early_gameplay
+          stop_review: review_complete
+      - id: early_gameplay
+        on:
+          review_checkpoint: review_complete
+          reach_level_2: first_earned_milestone
+      - id: first_earned_milestone
+        on:
+          review_checkpoint: review_complete
+      - id: blocked_onboarding
+        on:
+          retry_success: character_hub
+          abandon_run: review_failed
+      - id: startup_failure
+        on:
+          retry_success: entry_shell
+          abandon_run: review_failed
+      - id: review_complete
+      - id: review_failed
+  - id: playtest-outcome-status
+    initial_state: planned
+    states:
+      - id: planned
+        on:
+          run_started: in_progress
+      - id: in_progress
+        on:
+          blocker_found: at_risk
+          run_completed: synthesized
+      - id: at_risk
+        on:
+          blocker_resolved: in_progress
+          run_abandoned: failed
+      - id: synthesized
+        on:
+          recommendations_compiled: complete
+      - id: complete
+      - id: failed
+errors:
+  - id: startup_failure
+    audience: public
+    trigger: The browser app does not reach the current entry shell or the current web shell is effectively unusable from fresh load
+    expected_handling: Report startup context, likely environment gate or stack dependency, and mark the run blocked before gameplay conclusions are made
+  - id: narration_unavailable
+    audience: public
+    trigger: Narrative generation or narrative polling is unavailable, degraded, or stuck during onboarding or early play
+    expected_handling: Continue if fallback text or degraded-mode play remains usable; otherwise mark story review as limited and record the failure explicitly
+  - id: blocked_onboarding
+    audience: public
+    trigger: The player cannot reasonably progress from entry shell to character creation or cannot complete character genesis
+    expected_handling: Treat as a critical onboarding defect and stop attributing later quality issues to downstream systems
+decisions:
+  - id: decision-current-browser-target
+    date: 2026-04-05
+    decision: The current browser web shell rooted at '/' is the active test target for this PRD
+    rationale: The active React path is App.jsx -> GameUIRoot.jsx -> CharacterHub / CharacterCreationShell / AdventureShell, and legacy shells are not reliable representations of current behavior
+  - id: decision-level-milestone-framing
+    date: 2026-04-05
+    decision: Treat level 1 immediately after character creation as fresh-start completion, and frame level 2 at 100 XP as the first earned milestone
+    rationale: This aligns playtest expectations with the current progression model and prevents false assumptions that level 1 must be earned during setup
+  - id: decision-redesign-output-boundary
+    date: 2026-04-05
+    decision: Larger redesign ideas are recommendation-only outputs and are not part of implementation scope in this PRD
+    rationale: The review should generate direction and prioritization without collapsing into speculative build scope
+  - id: decision-legacy-ui-boundary
+    date: 2026-04-05
+    decision: Legacy or inactive UI architectures may be referenced only as redesign inspiration, not as current behavior under test
+    rationale: This keeps the review anchored to the live path and avoids mixing obsolete flows into test evidence
+changes:
+  - date: 2026-04-05
+    version: 0.1.0
+    summary: Initial draft PRD created as source of truth for multi-agent browser playtest and redesign review planning
+  - date: 2026-04-05
+    version: 0.2.0
+    summary: Marked the PRD complete after the runtime audit, persona playtests, synthesis, and stakeholder-facing redesign recommendations were delivered

@@ -4,11 +4,52 @@ export function resolveArchetypeSystemLabel(player = {}) {
   return getPlayerArchetypeSystemLabel(player);
 }
 
+function resolveRaceLabel(player = {}) {
+  return typeof player?.race === "string"
+    ? player.race
+    : player?.race?.name || "";
+}
+
 function pickVariant(options, seed) {
   if (!Array.isArray(options) || options.length === 0) return "";
   const safeSeed = Number.isFinite(seed) ? seed : Date.now();
   const index = Math.abs(Math.floor(safeSeed)) % options.length;
   return options[index];
+}
+
+function buildSystemNotice(systemLabel, seed) {
+  if (systemLabel) {
+    return pickVariant(
+      [
+        `[${systemLabel}: observation window active.]`,
+        `[${systemLabel}: leverage point pending.]`,
+        `[${systemLabel}: anomaly log updated.]`,
+      ],
+      seed,
+    );
+  }
+
+  return pickVariant(
+    [
+      "[System Notice: ambient calibration incomplete.]",
+      "[System Notice: no clean directive available.]",
+      "[System Notice: passive scan continues.]",
+    ],
+    seed,
+  );
+}
+
+function buildBodyAwarenessLine(raceLabel, seed) {
+  if (!raceLabel || /^human$/i.test(raceLabel)) return "";
+  const lowered = raceLabel.toLowerCase();
+  return pickVariant(
+    [
+      `Your ${lowered} body answers a half-step before thought does.`,
+      `Every small motion reminds you this ${lowered} body is not a habit yet.`,
+      `Instinct keeps trying to take the lead inside your ${lowered} frame.`,
+    ],
+    seed,
+  );
 }
 
 export function buildFallbackNarrative({
@@ -20,6 +61,7 @@ export function buildFallbackNarrative({
 }) {
   const player = state?.player || {};
   const systemLabel = resolveArchetypeSystemLabel(player);
+  const raceLabel = resolveRaceLabel(player);
   const location =
     state?.world?.location?.current ||
     state?.world?.location ||
@@ -37,24 +79,24 @@ export function buildFallbackNarrative({
     const questHint = quests.length
       ? `A new directive forms around "${quests[0].name}".`
       : "No directives surface yet, only the weight of possibility.";
-    const systemLine = systemLabel
-      ? pickVariant(
-          [
-            `The ${systemLabel} hums softly, ready to shape your path.`,
-            `The ${systemLabel} awakens, its protocols aligning to your steps.`,
-            `The ${systemLabel} steadies, searching for its first leverage point.`,
-          ],
-          variantSeed,
-        )
-      : pickVariant(
-          [
-            "The world hums with latent system energy.",
-            "A low-grade system pulse flickers through the air.",
-            "Something unseen calibrates the world around you.",
-          ],
-          variantSeed,
-        );
-    return `${name}, a ${classLabel}, arrives at ${location}. ${systemLine} ${questHint}`;
+    const bodyLine = buildBodyAwarenessLine(raceLabel, variantSeed);
+    const reactionLine = pickVariant(
+      [
+        "The opening feels too sharp to ignore, as if even a small mistake would matter immediately.",
+        "The moment lands with the bright, dangerous clarity of a first trial.",
+        "Even the quiet here feels loaded, waiting to see what you do next.",
+      ],
+      variantSeed,
+    );
+    return [
+      `${name}, a ${classLabel}, arrives at ${location}.`,
+      bodyLine,
+      buildSystemNotice(systemLabel, variantSeed),
+      questHint,
+      reactionLine,
+    ]
+      .filter(Boolean)
+      .join(" ");
   }
 
   const trimmedInput = typeof userInput === "string" ? userInput.trim() : "";
@@ -107,39 +149,29 @@ export function buildFallbackNarrative({
   const successLine = actionResult?.success
     ? pickVariant(
         [
-          `${actionText}. The world shifts around you, then settles.`,
-          `${actionText}. A faint current passes through the air.`,
-          `${actionText}. The moment answers with a subtle change of tone.`,
-          `${actionText}. Your intent echoes, then quiets.`,
+          `${actionText}. The moment answers at once, sharper and stranger than it has any right to be.`,
+          `${actionText}. The scene tightens around the choice, as if even this small move matters more than it should.`,
+          `${actionText}. For one taut breath, the world feels close enough to bite back.`,
+          `${actionText}. The air changes first, and your nerves catch up a heartbeat later.`,
         ],
         variantSeed,
       )
     : pickVariant(
         [
-          `${actionText}, but ${reasonText}.`,
-          `${actionText}. ${reasonText} blocks the attempt.`,
-          `${actionText}, yet ${reasonText} keeps it out of reach.`,
+          `${actionText}, but ${reasonText}. The failure lands harder than pride would prefer.`,
+          `${actionText}. ${reasonText} blocks the attempt, leaving the moment raw and unfinished.`,
+          `${actionText}, yet ${reasonText} keeps it out of reach and makes the next move feel urgent.`,
         ],
         variantSeed,
       );
-  const systemLine = systemLabel
-    ? pickVariant(
-        [
-          `Your ${systemLabel} stirs, watching for leverage.`,
-          `The ${systemLabel} records the moment, seeking an opening.`,
-          `A muted pulse from the ${systemLabel} lingers at the edge of thought.`,
-          `${systemLabel} remains attentive, mapping possible outcomes.`,
-        ],
-        variantSeed,
-      )
-    : pickVariant(
-        [
-          "The system remains watchful.",
-          "A soft system ping fades into silence.",
-          "No system directive follows-only the ambient hum.",
-        ],
-        variantSeed,
-      );
+  const reactionLine = pickVariant(
+    [
+      "Instinct, caution, and stubbornness all try to speak first.",
+      "It is a small beat, but it feels like the kind that can tilt a whole run.",
+      "The scene does not relax; it simply waits for your next mistake or breakthrough.",
+    ],
+    variantSeed,
+  );
 
-  return `${successLine} ${systemLine}`;
+  return `${successLine} ${reactionLine} ${buildSystemNotice(systemLabel, variantSeed)}`;
 }

@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import styles from './CommandTerminalPanel.module.css';
 
+const NOOP = () => {};
+
 export default function CommandTerminalPanel({
-  userInput,
-  onInputChange,
+  userInput = "",
+  onInputChange = NOOP,
   onSubmit,
-  isLoading,
-  error,
+  isLoading = false,
+  error = null,
   inputRef,
+  placeholder = "",
 }) {
   const [landscapeMobile, setLandscapeMobile] = useState(false);
   const errorId = error ? "command-terminal-error" : undefined;
@@ -55,6 +58,7 @@ export default function CommandTerminalPanel({
           autoCapitalize="off"
           autoCorrect="off"
           enterKeyHint="send"
+          placeholder={placeholder}
           aria-describedby={errorId}
           aria-invalid={Boolean(error)}
         />

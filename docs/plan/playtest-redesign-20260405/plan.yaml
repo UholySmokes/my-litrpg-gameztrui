@@ -1,0 +1,612 @@
+plan_id: playtest-redesign-20260405
+objective: Orchestrate multiple agents acting as gamers to play the browser game from fresh load through character creation and early gameplay, evaluate function/story/UI feel, and produce larger redesign recommendations plus 10 random improvement suggestions.
+created_at: 2026-04-05T00:00:00Z
+created_by: gem-planner
+status: completed
+research_confidence: low
+
+plan_metrics:
+  wave_1_task_count: 3
+  total_dependencies: 16
+  risk_score: medium
+
+tldr: |
+  This DAG keeps the browser-first review anchored to the current root flow at '/'.
+  It splits runtime validation, clean-session protocol, persona definition, live browser runs, synthesis,
+  and final packaging into smaller atomic work packages so report delivery does not depend on broad combined tasks.
+  Fresh-start completion remains immediate post-creation level 1, while level 2 / 100 XP observation remains opportunistic and non-blocking.
+  The scope stays recommendation-only and routes final outputs into audit artifacts under docs/audits/ rather than back into the plan file.
+
+open_questions:
+  - None. Scope, stop-point framing, current-shell boundary, and recommendation-only output remain locked by the PRD.
+
+pre_mortem:
+  overall_risk_level: medium
+  critical_failure_modes:
+    - scenario: Runtime is reachable but gated, degraded, or missing required paired services, causing playtest agents to mistake environment failures for game defects.
+      likelihood: medium
+      impact: high
+      mitigation: Front-load runtime validation and make synthesis depend directly on the validated runtime brief before conclusions are packaged.
+    - scenario: Browser sessions are not fully reset between persona runs, contaminating onboarding evidence with autosave or cached state.
+      likelihood: medium
+      impact: high
+      mitigation: Separate clean-session protocol into its own task and require persona runs to consume that protocol before execution.
+    - scenario: Persona coverage collapses into two similar play styles, reducing the value of multiple browser runs.
+      likelihood: medium
+      impact: medium
+      mitigation: Define differentiated heuristics explicitly before execution and require each run to record where persona behavior altered choices or interpretation.
+  assumptions:
+    - The active browser path under review is App.jsx -> GameUIRoot.jsx -> CharacterHub / CharacterCreationShell / AdventureShell.
+    - Local execution targets the Vite web shell at http://127.0.0.1:5173/ with isolated browser state per persona run.
+    - Final outputs are audit artifacts only; any break-fix or redesign implementation requires separate replanning.
+
+implementation_specification:
+  code_structure: Review-only orchestration plan. Execution work is divided into runtime readiness, session hygiene, persona framing, persona-specific browser runs, optional milestone follow-through, synthesis, and stakeholder-facing audit artifact packaging without changing application code.
+  affected_areas:
+    - docs/PRD.yaml
+    - docs/PLAYTEST_CHECKLIST.md
+    - src/App.jsx
+    - src/components/gameui/GameUIRoot.jsx
+    - src/components/shell/
+    - src/hook/narrative/useNarrativeRuntime.js
+    - docs/audits/playtest-redesign-20260405/
+  component_details:
+    - component: Runtime readiness brief
+      responsibility: Confirm the browser entry path, gameplay gating, required flags or paired services, and hard blocker conditions for the current root flow.
+      interfaces:
+        - Root URL '/'
+        - Web gameplay gate via runtime and build flags
+        - Local-game or accessible onboarding entry path
+    - component: Clean-session protocol
+      responsibility: Define how browser state is reset, what evidence metadata is captured, and what invalidates a run before persona execution begins.
+      interfaces:
+        - Browser storage reset steps
+        - Session validity checklist
+        - Evidence capture template
+    - component: Persona heuristics
+      responsibility: Establish differentiated gamer lenses so multiple browser runs are comparable but not redundant.
+      interfaces:
+        - Persona A: impatient systems-first runner heuristic
+        - Persona B: lore-first cautious explorer heuristic
+        - Choice and note-taking constraints per persona
+    - component: Live browser evidence
+      responsibility: Execute persona-scoped fresh-start runs through mandatory level 1 completion and capture optional deeper evidence only when report-safe.
+      interfaces:
+        - Character hub launch action
+        - Character creation completion callback
+        - Adventure shell early gameplay interactions
+    - component: Audit synthesis
+      responsibility: Merge validated runtime context, rubric context, and persona evidence into balanced findings, redesign themes, and separated random suggestions.
+      interfaces:
+        - Runtime readiness brief
+        - Persona evidence packets
+        - Balanced scoring rubric
+        - Final audit outline
+    - component: Final audit artifacts
+      responsibility: Package stakeholder-readable reports into explicit audit files under docs/audits/ with a non-blocking optional milestone addendum.
+      interfaces:
+        - docs/audits/playtest-redesign-20260405/browser-playtest-redesign-audit.md
+        - docs/audits/playtest-redesign-20260405/level2-milestone-addendum.md
+  dependencies:
+    - component: Clean-session protocol
+      relationship: Depends on runtime readiness so reset guidance matches the actual runnable browser path.
+    - component: Persona-specific browser runs
+      relationship: Depend on runtime readiness, session hygiene, and explicit persona heuristics before execution.
+    - component: Audit synthesis
+      relationship: Depends directly on runtime readiness, rubric framing, and completed persona evidence packets.
+    - component: Final audit artifacts
+      relationship: Depend on synthesized mandatory findings; optional milestone packaging must not block core audit delivery.
+  integration_points:
+    - Web entry shell and gameplay gating in src/App.jsx
+    - Shell orchestration and autosave transitions in src/components/gameui/GameUIRoot.jsx
+    - Onboarding and adventure surfaces in src/components/shell/
+    - Narrative runtime behavior surfaced through src/hook/narrative/useNarrativeRuntime.js
+    - Audit artifact directory under docs/audits/playtest-redesign-20260405/
+
+contracts:
+  - from_task: T1
+    to_task: T2
+    interface: Runtime readiness brief including URL, required flags, paired-service expectations, and blocker conditions.
+    format: checklist
+  - from_task: T1
+    to_task: T5
+    interface: Validated runtime entry and hard blocker conditions for persona execution.
+    format: checklist
+  - from_task: T1
+    to_task: T6
+    interface: Validated runtime entry and hard blocker conditions for persona execution.
+    format: checklist
+  - from_task: T2
+    to_task: T5
+    interface: Clean-session reset steps and run invalidation rules.
+    format: execution protocol
+  - from_task: T2
+    to_task: T6
+    interface: Clean-session reset steps and run invalidation rules.
+    format: execution protocol
+  - from_task: T3
+    to_task: T5
+    interface: Persona A heuristic, pacing, and evidence emphasis.
+    format: persona brief
+  - from_task: T3
+    to_task: T6
+    interface: Persona B heuristic, pacing, and evidence emphasis.
+    format: persona brief
+  - from_task: T4
+    to_task: T8
+    interface: Balanced rubric covering functional behavior, story feel, and UI feel for the active shell.
+    format: scoring rubric
+  - from_task: T5
+    to_task: T7
+    interface: Stability note and milestone-candidate assessment from Persona A run.
+    format: decision note
+  - from_task: T6
+    to_task: T7
+    interface: Stability note and milestone-candidate assessment from Persona B run.
+    format: decision note
+  - from_task: T5
+    to_task: T8
+    interface: Persona A evidence packet covering steps, blockers, story impressions, and UI observations.
+    format: structured audit notes
+  - from_task: T6
+    to_task: T8
+    interface: Persona B evidence packet covering alternate choices, pacing, and onboarding interpretation.
+    format: structured audit notes
+  - from_task: T7
+    to_task: T10
+    interface: Optional level 2 milestone observations, if usable evidence exists.
+    format: milestone addendum notes
+  - from_task: T8
+    to_task: T9
+    interface: Consolidated mandatory findings, redesign themes, and 10 random improvement suggestions.
+    format: report outline
+
+tasks:
+  - id: T1
+    title: Validate browser runtime and gameplay gating
+    description: |
+      Confirm that the current root flow at '/' is reachable in a valid browser-gameplay configuration.
+      Document required flags, paired backend or emulator expectations, and conditions that would block meaningful gameplay conclusions.
+      State clearly that fresh-start completion means immediate post-creation level 1 and that level 2 / 100 XP remains optional.
+    wave: 1
+    agent: gem-researcher
+    priority: high
+    status: completed
+    dependencies: []
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Source-of-truth scope, environment notes, and stop-point framing.
+      - path: src/App.jsx
+        description: Entry shell and onboarding launch path.
+      - path: src/core/WebGameplayGate.js
+        description: Runtime gate logic for browser gameplay availability.
+    estimated_effort: small
+    estimated_files: 3
+    estimated_lines: 160
+    focus_area: runtime readiness
+    verification:
+      - Confirm the active root URL and launch conditions for the browser shell.
+      - Confirm required flags or service dependencies that affect browser playability.
+      - Confirm level 1 mandatory and level 2 optional milestone framing.
+    acceptance_criteria:
+      - Produces a runtime readiness brief usable by downstream browser tasks.
+      - Identifies environment blockers before gameplay conclusions are recorded.
+      - Preserves the PRD stop-point framing without expanding scope.
+    failure_modes:
+      - scenario: Runtime notes omit a required flag or paired-service dependency.
+        likelihood: medium
+        impact: high
+        mitigation: Cross-check the PRD environment notes, package scripts, and gameplay gate source before handoff.
+    tech_stack:
+      - Vite web runtime
+      - React browser shell
+      - Firebase or local-game entry context
+    test_coverage: null
+
+  - id: T3
+    title: Define differentiated gamer personas and heuristics
+    description: |
+      Create explicit browser-playtest personas so multi-run evidence is complementary rather than duplicated.
+      Persona A is an impatient systems-first runner who skims copy, clicks quickly, and prioritizes fast access to agency.
+      Persona B is a lore-first cautious explorer who reads narrative carefully, samples affordances, and values fantasy payoff and clarity.
+      Record how each persona should behave, what they emphasize, and which choices remain in-bounds for comparable evidence.
+    wave: 1
+    agent: gem-reviewer
+    priority: high
+    status: completed
+    dependencies: []
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Multi-agent playtest and balanced-review requirements.
+      - path: docs/PLAYTEST_CHECKLIST.md
+        description: Existing test framing that can be adapted into persona heuristics.
+    estimated_effort: small
+    estimated_files: 2
+    estimated_lines: 140
+    focus_area: persona framing
+    verification:
+      - Confirm the personas are behaviorally distinct.
+      - Confirm both personas stay within the current-shell and recommendation-only scope.
+      - Confirm heuristic differences are concrete enough to shape browser behavior.
+    acceptance_criteria:
+      - Defines at least two differentiated gamer personas with explicit heuristics.
+      - Makes persona evidence comparable by limiting out-of-scope divergence.
+      - Prepares browser agents to explain why a persona-specific observation matters.
+    failure_modes:
+      - scenario: Persona heuristics are too similar to produce materially different evidence.
+        likelihood: medium
+        impact: medium
+        mitigation: Force explicit differences in reading behavior, pacing, and tolerance for friction.
+    requires_review: true
+    review_depth: standard
+    review_security_sensitive: false
+
+  - id: T4
+    title: Build the balanced review rubric for the active shell
+    description: |
+      Inspect the current shell and narrative-facing surfaces to define a balanced scoring frame across functional behavior,
+      story feel, and UI feel before live evidence is synthesized.
+      This is rubric preparation only; it should not replace lived browser evidence.
+    wave: 1
+    agent: gem-reviewer
+    priority: medium
+    status: completed
+    dependencies: []
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Balanced weighting and audit-output expectations.
+      - path: src/components/gameui/GameUIRoot.jsx
+        description: Active shell routing and transition logic.
+      - path: src/hook/narrative/useNarrativeRuntime.js
+        description: Narrative runtime surfaces exposed to the UI.
+    estimated_effort: small
+    estimated_files: 3
+    estimated_lines: 180
+    focus_area: review framing
+    verification:
+      - Confirm the rubric weights function, story, and UI evenly.
+      - Confirm inactive or legacy flows are excluded from current-behavior scoring.
+      - Confirm recommendations remain implementation-free.
+    acceptance_criteria:
+      - Produces a balanced rubric aligned to the active shell path.
+      - Captures onboarding, narrative, and readability checkpoints needed by synthesis.
+      - Excludes implementation planning from the rubric output.
+    failure_modes:
+      - scenario: Static review over-weights code intent instead of player friction.
+        likelihood: medium
+        impact: medium
+        mitigation: Treat the rubric as a weighting aid only and require browser evidence to substantiate conclusions.
+    requires_review: true
+    review_depth: standard
+    review_security_sensitive: false
+
+  - id: T2
+    title: Define clean-session reset and evidence protocol
+    description: |
+      Translate the runtime brief into a repeatable browser-session protocol.
+      Document how storage is cleared, what counts as a fresh run, what metadata each persona run must capture,
+      and what conditions invalidate a run before evidence is trusted.
+    wave: 2
+    agent: gem-researcher
+    priority: high
+    status: completed
+    dependencies:
+      - T1
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Fresh-session expectation and failure handling language.
+      - path: docs/PLAYTEST_CHECKLIST.md
+        description: Existing test execution framing to reuse safely.
+      - path: src/components/gameui/GameUIRoot.jsx
+        description: Autosave and transition behaviors that may contaminate fresh-start evidence.
+    estimated_effort: small
+    estimated_files: 3
+    estimated_lines: 150
+    focus_area: session hygiene
+    verification:
+      - Confirm the protocol resets browser state sufficiently for fresh-start evidence.
+      - Confirm run invalidation rules are explicit.
+      - Confirm evidence metadata supports later comparison across personas.
+    acceptance_criteria:
+      - Produces a reusable clean-session protocol for browser playtests.
+      - Defines invalid evidence conditions such as autosave resume or stale storage.
+      - Standardizes what each persona run must record.
+    failure_modes:
+      - scenario: The reset protocol is incomplete and allows state contamination to persist.
+        likelihood: medium
+        impact: high
+        mitigation: Tie the protocol to observed storage and entry behaviors from the validated runtime path.
+    tech_stack:
+      - Browser storage reset workflow
+      - Vite runtime session handling
+    test_coverage: null
+
+  - id: T5
+    title: Run Persona A fresh-start golden path to level 1
+    description: |
+      Execute the impatient systems-first runner playtest from a clean browser session.
+      Start at '/', move quickly through onboarding and character creation, and capture where the path supports or frustrates a player seeking fast agency.
+      Reach immediate post-creation level 1 as the mandatory checkpoint and note any stable opportunity to continue deeper without delaying report delivery.
+    wave: 3
+    agent: gem-browser-tester
+    priority: high
+    status: completed
+    dependencies:
+      - T1
+      - T2
+      - T3
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Golden-path requirements and stop-point framing.
+      - path: src/App.jsx
+        description: Entry route and launch behavior under test.
+      - path: src/components/gameui/GameUIRoot.jsx
+        description: Current shell transitions from hub to creation to adventure.
+    estimated_effort: small
+    estimated_files: 3
+    estimated_lines: 220
+    focus_area: persona A run
+    verification:
+      - Verify the run starts from a clean session at '/'.
+      - Verify character creation reaches immediate post-creation level 1.
+      - Verify evidence explains where speed-focused behavior changed the player experience.
+    acceptance_criteria:
+      - Produces a chronological evidence packet for Persona A.
+      - Distinguishes onboarding blockers, speed bumps, and payoff failures from later quality issues.
+      - Records whether further milestone observation looked safe but remains non-blocking.
+    failure_modes:
+      - scenario: Retained state bypasses onboarding and invalidates the fast-path evidence.
+        likelihood: medium
+        impact: high
+        mitigation: Re-run only after the clean-session protocol is re-applied and contamination is ruled out.
+      - scenario: Fast clicking causes missed content without recording whether the UI supported recovery.
+        likelihood: medium
+        impact: medium
+        mitigation: Require notes on whether confusion came from persona impatience or genuine UI ambiguity.
+    validation_matrix:
+      - scenario: Fresh-load speedrunner path
+        steps:
+          - Open '/'
+          - Follow the fastest available onboarding route
+          - Complete character genesis and enter immediate adventure readiness
+        expected_result: Level 1 readiness is reached or a concrete blocker is captured.
+      - scenario: First-action responsiveness
+        steps:
+          - Trigger the first available gameplay action or suggestion
+          - Observe feedback speed, clarity, and control recovery
+        expected_result: The run yields evidence on fast-agency support without requiring level 2 progress.
+
+  - id: T6
+    title: Run Persona B fresh-start exploratory path to level 1
+    description: |
+      Execute the lore-first cautious explorer playtest from a separate clean browser session.
+      Read narrative and onboarding copy carefully, sample a small number of non-blocking alternate interactions,
+      and capture where the current flow strengthens or weakens fantasy payoff, clarity, and trust.
+      Reach immediate post-creation level 1 as the mandatory checkpoint without turning exploration into broad coverage.
+    wave: 3
+    agent: gem-browser-tester
+    priority: high
+    status: completed
+    dependencies:
+      - T1
+      - T2
+      - T3
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Light-exploration scope and milestone framing.
+      - path: src/components/shell/CharacterHub.jsx
+        description: Entry messaging and first-run affordances.
+      - path: src/components/shell/AdventureShell.jsx
+        description: Early gameplay shell and command surface.
+    estimated_effort: small
+    estimated_files: 3
+    estimated_lines: 240
+    focus_area: persona B run
+    verification:
+      - Verify the run starts from an isolated clean session.
+      - Verify alternate touches remain light and comparable.
+      - Verify evidence explains where read-first behavior changed the experience.
+    acceptance_criteria:
+      - Produces a structured evidence packet for Persona B.
+      - Captures narrative, UI, and trust signals that a cautious player would notice.
+      - Notes whether alternate touches changed clarity, tone, or resilience without replacing the main flow.
+    failure_modes:
+      - scenario: Exploration scope expands and delays mandatory audit delivery.
+        likelihood: medium
+        impact: medium
+        mitigation: Limit alternates to a small number of non-blocking interactions and stop once level 1 evidence is sufficient.
+      - scenario: Narrative degradation makes it unclear whether story issues are content quality or runtime availability problems.
+        likelihood: medium
+        impact: high
+        mitigation: Separate story-quality notes from narrative-runtime failure notes in the evidence packet.
+    validation_matrix:
+      - scenario: Read-first onboarding path
+        steps:
+          - Open '/'
+          - Read onboarding and character-creation prompts carefully
+          - Complete character genesis and enter immediate adventure readiness
+        expected_result: Level 1 readiness is reached or a concrete onboarding blocker is captured with narrative context.
+      - scenario: Light alternate-touch sampling
+        steps:
+          - Sample a small number of alternate interactions during onboarding or early play
+          - Observe whether tone, readability, or control trust shifts
+        expected_result: The run surfaces branch-specific clarity or fantasy signals without broad exploratory sprawl.
+
+  - id: T7
+    title: Capture opportunistic level 2 milestone observations
+    description: |
+      Review the mandatory persona runs, choose the most stable path, and continue only if the browser flow remains reliable enough
+      to gather level 2 / 100 XP observations without delaying mandatory audit synthesis.
+      This task exists to enrich pacing and early progression commentary, not to gate report completion.
+    wave: 4
+    agent: gem-browser-tester
+    priority: low
+    status: completed
+    dependencies:
+      - T5
+      - T6
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Optional milestone framing and boundary on deeper progression review.
+      - path: src/components/shell/AdventureShell.jsx
+        description: Early gameplay surface used for opportunistic continuation.
+    estimated_effort: small
+    estimated_files: 2
+    estimated_lines: 160
+    focus_area: optional milestone observation
+    verification:
+      - Confirm this task starts only after mandatory level 1 evidence exists.
+      - Confirm continuation remains optional and non-blocking.
+      - Confirm notes stay limited to early pacing and first-earned-milestone observations.
+    acceptance_criteria:
+      - Produces usable level 2 observations when the run remains stable enough.
+      - Leaves the core audit complete even if the task is skipped or abandoned.
+      - Avoids expanding into broader progression or balance review.
+    failure_modes:
+      - scenario: Optional continuation absorbs time needed for mandatory synthesis.
+        likelihood: low
+        impact: medium
+        mitigation: Stop immediately if the run becomes unstable or synthesis is waiting on staff time.
+    validation_matrix:
+      - scenario: Stable milestone follow-through
+        steps:
+          - Select the more reliable persona path based on mandatory run evidence
+          - Continue early gameplay only while the run stays stable
+          - Stop at level 2 / 100 XP or earlier if evidence quality degrades
+        expected_result: Optional pacing evidence is captured without blocking the core audit.
+
+  - id: T8
+    title: Synthesize mandatory findings into redesign themes
+    description: |
+      Merge runtime validation, persona heuristics, the balanced rubric, and the two mandatory persona evidence packets
+      into a single audit synthesis.
+      Separate blocking defects, quality issues, larger redesign recommendations, and exactly 10 random improvement suggestions.
+      Keep level 1 as the core completion target and reference level 2 only if optional evidence exists later.
+    wave: 4
+    agent: gem-reviewer
+    priority: high
+    status: completed
+    dependencies:
+      - T1
+      - T3
+      - T4
+      - T5
+      - T6
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Acceptance criteria and recommendation-only scope.
+      - path: docs/PLAYTEST_CHECKLIST.md
+        description: Existing playtest framing that can inform synthesis structure.
+      - path: src/components/gameui/GameUIRoot.jsx
+        description: Active shell transitions for mapping evidence to the current flow.
+    estimated_effort: medium
+    estimated_files: 3
+    estimated_lines: 260
+    focus_area: synthesis
+    verification:
+      - Confirm synthesis depends directly on runtime validation, not only browser-run notes.
+      - Confirm balanced weighting across story, UI, and functional behavior.
+      - Confirm recommendations remain recommendation-only and distinct from random suggestions.
+    acceptance_criteria:
+      - Produces a consolidated findings set with evidence-backed priorities.
+      - Includes larger redesign recommendations grounded in observed friction or missed fantasy.
+      - Includes exactly 10 random improvement suggestions separated from core redesign recommendations.
+    failure_modes:
+      - scenario: Severe defects dominate the report and crowd out story or UI assessment.
+        likelihood: medium
+        impact: high
+        mitigation: Use the rubric and persona contrast to force explicit coverage of all three review dimensions.
+    requires_review: true
+    review_depth: full
+    review_security_sensitive: false
+
+  - id: T9
+    title: Package the final browser playtest redesign audit
+    description: |
+      Turn the synthesized mandatory findings into the primary stakeholder-facing audit artifact.
+      The report must stay scoped to the current root flow at '/', clearly disclose runtime assumptions and evidence limits,
+      preserve the distinction between findings, redesign recommendations, and 10 random suggestions,
+      and write the final deliverable to docs/audits/playtest-redesign-20260405/browser-playtest-redesign-audit.md.
+    wave: 5
+    agent: gem-documentation-writer
+    priority: medium
+    status: completed
+    dependencies:
+      - T8
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Scope and acceptance criteria to reflect in final report framing.
+      - path: docs/PLAYTEST_CHECKLIST.md
+        description: Supporting execution language and structure.
+    estimated_effort: small
+    estimated_files: 1
+    estimated_lines: 200
+    focus_area: final audit artifact
+    verification:
+      - Confirm the final report is readable without code-level context.
+      - Confirm level 1 core completion and level 2 opportunistic framing are explicit.
+      - Confirm the artifact path targets docs/audits rather than the plan file.
+    acceptance_criteria:
+      - Produces the primary stakeholder-facing audit artifact at the explicit docs/audits path.
+      - Preserves evidence-backed separation of findings, redesign recommendations, and random suggestions.
+      - Reflects the actual mandatory evidence boundaries from the browser runs.
+    failure_modes:
+      - scenario: Final packaging flattens nuanced findings into vague summary language.
+        likelihood: medium
+        impact: medium
+        mitigation: Preserve evidence-backed phrasing and category structure from synthesis.
+    task_type: walkthrough
+    audience: stakeholders
+    coverage_matrix:
+      - Runtime assumptions and fresh-session protocol
+      - Persona A and Persona B execution coverage
+      - Balanced findings across function, story, and UI
+      - Larger redesign recommendations
+      - 10 random improvement suggestions
+
+  - id: T10
+    title: Package the optional level 2 milestone addendum
+    description: |
+      If T7 yields usable evidence, package that material as a separate addendum at
+      docs/audits/playtest-redesign-20260405/level2-milestone-addendum.md.
+      The addendum must remain clearly optional, limited to early progression pacing and first-earned-milestone observations,
+      and must not become a hidden dependency for the primary audit artifact.
+    wave: 5
+    agent: gem-documentation-writer
+    priority: low
+    status: completed
+    dependencies:
+      - T7
+    conflicts_with: []
+    context_files:
+      - path: docs/PRD.yaml
+        description: Optional milestone framing and out-of-scope guardrails.
+      - path: docs/PLAYTEST_CHECKLIST.md
+        description: Supporting playtest terminology for addendum packaging.
+    estimated_effort: small
+    estimated_files: 1
+    estimated_lines: 120
+    focus_area: optional addendum artifact
+    verification:
+      - Confirm the addendum remains optional and non-blocking.
+      - Confirm the content is limited to level 2 pacing observations.
+      - Confirm the artifact path is separate from the primary audit.
+    acceptance_criteria:
+      - Produces a separate optional addendum only when usable milestone evidence exists.
+      - Avoids expanding into deep progression, balance, or implementation planning.
+      - Keeps the primary audit artifact valid even if this addendum is not produced.
+    task_type: update
+    audience: stakeholders
+    coverage_matrix:
+      - First-earned-milestone reach status
+      - Early progression pacing observations
+      - Explicit optionality and evidence limits

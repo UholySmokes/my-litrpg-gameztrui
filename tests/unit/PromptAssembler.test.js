@@ -1,6 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import {
   assemblePrompt,
+  buildInitialPrompt,
   buildSceneMemorySeed,
   buildHistorySection,
 } from "../../src/core/PromptAssembler.js";
@@ -179,7 +180,7 @@ describe("assemblePrompt", () => {
       narrative: {
         summary: "You reached the terminal and survived the ambush.",
         sceneMemory: {
-          locationLabel: "Arrival Terminal",
+          locationLabel: "Rebirth Alcove",
           zoneLabel: "Threshold Ward",
           immediateObjective: "Find the courier signal.",
           presentEntities: ["Goblin Raider"],
@@ -205,6 +206,7 @@ describe("assemblePrompt", () => {
     expect(prompt).toContain("=== AUTHORITATIVE SCENE STATE ===");
     expect(prompt).toContain("Recent Summary: You reached the terminal and survived the ambush.");
     expect(prompt).toContain("Return one valid JSON object with this shape:");
+    expect(prompt).toContain('"story"');
     expect(prompt).toContain('"sceneMemory"');
     expect(prompt).toContain("Active Threats: None confirmed");
     expect(prompt).not.toContain("Present Entities: Goblin Raider");
@@ -237,5 +239,101 @@ describe("assemblePrompt", () => {
     expect(sceneMemory.activeThreats).toEqual([]);
     expect(sceneMemory.immediateObjective).toBe("Restore shrine power.");
     expect(sceneMemory.lastConsequence).toBe("You steady yourself by the shrine gate.");
+  });
+
+  it("keeps the runtime prompt contract JSON-only and adds reactive LitRPG voice cues", () => {
+    const prompt = assemblePrompt(
+      {
+        player: {
+          name: "Nessa",
+          level: 2,
+          hp: { current: 12, max: 12 },
+          mana: { current: 6, max: 6 },
+          xp: { current: 0, max: 10 },
+          inventory: [],
+          equipment: {},
+        },
+        world: { location: { current: "starting_zone" } },
+        quests: { active: [] },
+        narrative: { entries: [], summary: "" },
+      },
+      "look around",
+      {
+        success: true,
+        description: "You steady yourself and look around.",
+      },
+    );
+
+    expect(prompt).toContain("Return exactly one valid JSON object and nothing else");
+    expect(prompt).not.toContain("Do not include JSON");
+    expect(prompt).toContain("Keep the narration emotionally reactive");
+    expect(prompt).toContain("Allow touches of dark humor");
+    expect(prompt).toContain("Favor immediate bodily awareness");
+    expect(prompt).toContain("coldly helpful notices");
+  });
+});
+
+describe("buildInitialPrompt", () => {
+  it("uses the structured JSON contract and opening voice rules", () => {
+    const prompt = buildInitialPrompt({
+      player: {
+        name: "Suri",
+        race: { name: "Foxkin" },
+        class: { name: "Scout" },
+        profession: { name: "Forager" },
+        activeSkills: [{ name: "Pounce" }],
+      },
+      world: {
+        location: { current: "starting_zone" },
+        vars: {
+          startingSceneId: "start_moonlit_fox_awakening",
+          openingSceneChoicePending: true,
+        },
+      },
+      quests: {
+        active: [{ name: "Stay Alive", description: "Survive the first night." }],
+      },
+    });
+
+    expect(prompt).toContain("=== OPENING VOICE RULES ===");
+    expect(prompt).toContain("Foxkin body should feel immediate");
+    expect(prompt).toContain('[System Notice: ...]');
+    expect(prompt).toContain("coldly helpful");
+    expect(prompt).toContain("sharp sensory detail");
+    expect(prompt).toContain("Return one valid JSON object with this shape:");
+    expect(prompt).toContain('"story"');
+    expect(prompt).toContain('"sceneMemory"');
+  });
+
+  it("treats a questless start as a deliberate opening state", () => {
+    const prompt = buildInitialPrompt({
+      player: {
+        name: "Ari",
+        race: { name: "Human" },
+        class: { name: "Paladin" },
+        profession: { name: "Blacksmith" },
+        startingZoneId: "coast",
+      },
+      world: {
+        location: { current: "starting_zone" },
+        vars: {
+          startingSceneId: "start_inn_raid_midnight",
+          openingSceneChoicePending: true,
+        },
+      },
+      quests: {
+        active: [],
+      },
+    });
+
+    expect(prompt).toContain("=== OPENING PRESSURES ===");
+    expect(prompt).toContain(
+      "Immediate Lead -> Let the first meaningful opportunity emerge from the opening scene itself.",
+    );
+    expect(prompt).toContain("no formal quest has been assigned yet");
+    expect(prompt).not.toContain("Main Quest -> Pending discovery.");
+    expect(prompt).not.toContain("=== QUEST THREADS ===");
+    expect(prompt).toContain("Return one valid JSON object with this shape:");
+    expect(prompt).toContain('"sceneMemory"');
   });
 });

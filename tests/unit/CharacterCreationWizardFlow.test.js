@@ -12,16 +12,16 @@ import {
 const STEPS = {
   NAME: 1,
   ARCHETYPE: 2,
-  IDENTITY: 3,
-  RACE: 4,
-  CLASS: 5,
-  MULTICLASS: 6,
-  PROFESSION: 7,
-  ATTRIBUTES: 8,
-  SKILLS: 9,
-  PERKS: 10,
-  STARTER_TREE: 11,
-  ALIGNMENT: 12,
+  RACE: 3,
+  CLASS: 4,
+  MULTICLASS: 5,
+  PROFESSION: 6,
+  ATTRIBUTES: 7,
+  SKILLS: 8,
+  PERKS: 9,
+  STARTER_TREE: 10,
+  ALIGNMENT: 11,
+  STARTING_POINT: 12,
   REVIEW: 13,
 };
 
@@ -31,7 +31,6 @@ describe("character creation wizard flow", () => {
     expect(flow.map((entry) => entry.id)).toEqual([
       "name",
       "system",
-      "identity",
       "race",
       "class",
       "profession",
@@ -39,6 +38,7 @@ describe("character creation wizard flow", () => {
       "skills",
       "perks",
       "alignment",
+      "starting-point",
       "review",
     ]);
   });
@@ -48,7 +48,6 @@ describe("character creation wizard flow", () => {
     expect(flow.map((entry) => entry.id)).toEqual([
       "name",
       "system",
-      "identity",
       "race",
       "class",
       "multiclass",
@@ -58,6 +57,7 @@ describe("character creation wizard flow", () => {
       "perks",
       "starter-tree",
       "alignment",
+      "starting-point",
       "review",
     ]);
   });
@@ -67,7 +67,6 @@ describe("character creation wizard flow", () => {
     const progress = calculateCreationSyncProgress(flow, {
       name: true,
       system: true,
-      identity: true,
       race: true,
       class: true,
       profession: true,
@@ -75,9 +74,10 @@ describe("character creation wizard flow", () => {
       skills: false,
       perks: false,
       alignment: false,
+      "starting-point": false,
       review: false,
     });
-    expect(progress).toBe(60);
+    expect(progress).toBe(50);
   });
 });
 

@@ -1,49 +1,70 @@
-/* Glass Panel - Base component for all UI panels */
+/* ═══ Glass Panel — Anime-themed base component for all UI panels ═══ */
 .holo-panel {
   background:
     linear-gradient(
+      135deg,
+      rgba(168, 85, 247, 0.08),
+      rgba(236, 72, 153, 0.04),
+      rgba(56, 189, 248, 0.06)
+    ),
+    linear-gradient(
       180deg,
       rgba(255, 255, 255, 0.06),
-      rgba(0, 0, 0, 0.35)
+      rgba(15, 10, 30, 0.85)
     ),
     var(--bg-panel);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  border: var(--border-glass);
-  border-left: 4px solid var(--holo-cyan);
+  border: 1px solid rgba(var(--anime-violet-rgb), 0.25);
+  border-left: 4px solid var(--anime-pink);
   box-shadow:
-    0 18px 30px rgba(0, 0, 0, 0.55),
+    0 18px 40px rgba(10, 6, 24, 0.5),
+    0 0 20px rgba(var(--anime-violet-rgb), 0.1),
     var(--glow-subtle);
   border-radius: var(--border-radius);
   color: var(--text-main);
   padding: 1.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Status Terminal - For ASCII status blocks */
+.holo-panel:hover {
+  border-color: rgba(var(--anime-pink-rgb), 0.35);
+  box-shadow:
+    0 20px 50px rgba(10, 6, 24, 0.55),
+    0 0 30px rgba(var(--anime-pink-rgb), 0.15),
+    var(--glow-subtle);
+}
+
+/* Status Terminal — Anime crystal console look */
 .status-terminal {
   font-family: var(--font-code);
   font-size: 0.85rem;
-  color: var(--holo-cyan);
-  background: rgba(8, 19, 32, 0.8);
+  color: var(--anime-sky);
+  background:
+    linear-gradient(135deg, rgba(15, 10, 30, 0.9), rgba(26, 14, 56, 0.85));
   padding: 15px;
-  border: 1px solid rgba(var(--holo-cyan-rgb), 0.35);
-  box-shadow: inset 0 0 12px rgba(var(--holo-cyan-rgb), 0.16);
-  text-shadow: 0 0 1px rgba(var(--holo-cyan-rgb), 0.25);
+  border: 1px solid rgba(var(--anime-violet-rgb), 0.35);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 0 20px rgba(var(--anime-violet-rgb), 0.12),
+    0 0 12px rgba(var(--anime-sky-rgb), 0.08);
+  text-shadow: 0 0 6px rgba(var(--anime-sky-rgb), 0.3);
   white-space: pre-wrap;
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0;
 }
 
-/* Outer frame for the entire cockpit UI */
+/* Outer frame — Anime cosmic arena */
 .app-frame {
   width: 100%;
   height: 100%;
   padding: 1.5rem;
   background:
-    radial-gradient(circle at 15% 20%, rgba(var(--holo-cyan-rgb), 0.18), transparent 45%),
-    radial-gradient(circle at 85% 10%, rgba(var(--holo-gold-rgb), 0.14), transparent 45%),
-    radial-gradient(circle at 30% 80%, rgba(var(--holo-alert-rgb), 0.1), transparent 55%),
-    linear-gradient(135deg, #0b1320 0%, #0a1422 40%, #08101a 75%, #070b12 100%);
+    radial-gradient(ellipse at 10% 15%, rgba(var(--anime-pink-rgb), 0.15), transparent 35%),
+    radial-gradient(ellipse at 90% 10%, rgba(var(--anime-violet-rgb), 0.18), transparent 35%),
+    radial-gradient(ellipse at 50% 85%, rgba(var(--anime-sky-rgb), 0.12), transparent 40%),
+    radial-gradient(ellipse at 25% 60%, rgba(var(--anime-amber-rgb), 0.06), transparent 30%),
+    linear-gradient(150deg, #1a0e38 0%, #150c30 35%, #0f0a1e 70%, #0a0618 100%);
   display: flex;
   align-items: stretch;
   justify-content: stretch;
@@ -57,20 +78,22 @@
   content: "";
   position: absolute;
   inset: 0.5rem;
-  border: 1px solid rgba(var(--holo-cyan-rgb), 0.25);
+  border: 1px solid rgba(var(--anime-violet-rgb), 0.2);
+  border-radius: 28px;
   pointer-events: none;
   box-shadow:
-    0 0 25px rgba(var(--holo-cyan-rgb), 0.12),
-    inset 0 0 40px rgba(var(--holo-cyan-rgb), 0.08);
+    0 0 30px rgba(var(--anime-pink-rgb), 0.08),
+    inset 0 0 50px rgba(var(--anime-violet-rgb), 0.05);
 }
 
 .app-frame::after {
   inset: 1.25rem;
-  border-color: rgba(var(--holo-gold-rgb), 0.24);
-  opacity: 0.85;
+  border-color: rgba(var(--anime-pink-rgb), 0.15);
+  border-radius: 22px;
+  opacity: 0.7;
 }
 
-/* App Container - Full screen cockpit layout */
+/* App Container — Anime crystal UI layout */
 .app-container {
   width: 100%;
   height: 100%;
@@ -80,14 +103,17 @@
   grid-template-areas: "rail main";
   gap: 1.5rem;
   padding: 1.5rem;
-  background: rgba(8, 18, 31, 0.7);
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(var(--anime-violet-rgb), 0.06), transparent 50%),
+    rgba(15, 10, 30, 0.7);
   position: relative;
   overflow: hidden;
-  border-radius: calc(var(--border-radius) + 6px);
-  border: 1px solid rgba(var(--holo-cyan-rgb), 0.2);
+  border-radius: calc(var(--border-radius) + 8px);
+  border: 1px solid rgba(var(--anime-violet-rgb), 0.2);
   box-shadow:
-    inset 0 0 40px rgba(var(--holo-cyan-rgb), 0.08),
-    0 18px 30px rgba(0, 0, 0, 0.45);
+    inset 0 0 50px rgba(var(--anime-violet-rgb), 0.06),
+    0 20px 40px rgba(10, 6, 24, 0.5),
+    0 0 20px rgba(var(--anime-pink-rgb), 0.05);
   min-height: 0;
 }
 
@@ -120,15 +146,17 @@
 .mode-shell--fade-out {
   opacity: 0;
   transform: translateY(-12px) scale(0.99);
+  filter: blur(4px);
 }
 
 .mode-shell--fade-in {
   opacity: 1;
   transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
 .game-window {
-  animation: windowPop 0.25s ease;
+  animation: animeSlideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   max-width: 100%;
 }
 
@@ -148,12 +176,12 @@
 }
 
 .game-window__body::-webkit-scrollbar-thumb {
-  background: rgba(0, 243, 255, 0.5);
+  background: linear-gradient(180deg, var(--anime-pink), var(--anime-violet));
   border-radius: 6px;
 }
 
 .game-window__body::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(15, 10, 30, 0.3);
 }
 
 @keyframes windowPop {
@@ -175,27 +203,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(
-      circle at 50% 20%,
-      rgba(0, 243, 255, 0.12),
-      transparent 55%
-    ),
-    rgba(5, 8, 12, 0.65);
-  backdrop-filter: blur(4px);
-  border-radius: calc(var(--border-radius) + 6px);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(var(--anime-violet-rgb), 0.2), transparent 50%),
+    radial-gradient(circle at 30% 70%, rgba(var(--anime-pink-rgb), 0.12), transparent 40%),
+    rgba(10, 6, 24, 0.75);
+  backdrop-filter: blur(8px);
+  border-radius: calc(var(--border-radius) + 8px);
   text-transform: uppercase;
   letter-spacing: 0.3rem;
-  color: var(--holo-cyan);
-  font-family: var(--font-code);
+  color: var(--anime-pink);
+  font-family: var(--font-hud);
   pointer-events: none;
   opacity: 0;
   animation: mode-overlay-fade 1.1s ease forwards;
 }
 
 .mode-transition-overlay__copy {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
-  text-shadow: 0 0 12px rgba(0, 243, 255, 0.5);
+  text-shadow:
+    0 0 14px rgba(var(--anime-pink-rgb), 0.6),
+    0 0 28px rgba(var(--anime-violet-rgb), 0.3);
 }
 
 .mode-transition-overlay__subcopy {

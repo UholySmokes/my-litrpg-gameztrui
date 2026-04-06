@@ -329,6 +329,28 @@ function parseMagic(input) {
     return { type: "magic_release", originalInput: input };
   }
 
+  {
+    const match = input.match(/^study\s+(.+)$/i);
+    if (match) {
+      return {
+        type: "magic_study",
+        target: match[1].trim().toLowerCase(),
+        originalInput: input,
+      };
+    }
+  }
+
+  {
+    const match = input.match(/^journal(?:\s+note\s+"([^"]+)")?$/i);
+    if (match) {
+      return {
+        type: "magic_journal",
+        note: match[1] || null,
+        originalInput: input,
+      };
+    }
+  }
+
   return null;
 }
 

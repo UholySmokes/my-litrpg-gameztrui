@@ -1,0 +1,338 @@
+/* ═══════════════════════════════════════════════════════════════
+   Anime Theme — Animation Library (anime-animations.css)
+   Bright / colorful / anime-inspired motion design system
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Sakura Petal Fall ── */
+@keyframes sakuraFall {
+  0% {
+    transform: translateY(-10vh) translateX(0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 0.8; }
+  100% {
+    transform: translateY(105vh) translateX(80px) rotate(720deg) scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes sakuraDrift {
+  0%, 100% { transform: translateX(0px); }
+  25% { transform: translateX(15px); }
+  50% { transform: translateX(-10px); }
+  75% { transform: translateX(20px); }
+}
+
+/* ── Energy Pulse / Power-up ── */
+@keyframes energyPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(168, 85, 247, 0.3),
+      0 0 40px rgba(236, 72, 153, 0.15),
+      inset 0 0 20px rgba(168, 85, 247, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 35px rgba(168, 85, 247, 0.5),
+      0 0 70px rgba(236, 72, 153, 0.25),
+      inset 0 0 30px rgba(168, 85, 247, 0.2);
+  }
+}
+
+@keyframes powerUpGlow {
+  0% {
+    filter: brightness(1) saturate(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.3) saturate(1.4);
+    transform: scale(1.02);
+  }
+  100% {
+    filter: brightness(1) saturate(1);
+    transform: scale(1);
+  }
+}
+
+/* ── Anime Slide-In Variants ── */
+@keyframes animeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes animeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes animeSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes animeSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Dramatic Reveal (for titles / hero text) ── */
+@keyframes dramaticReveal {
+  0% {
+    opacity: 0;
+    transform: scale(1.5) translateY(-20px);
+    filter: blur(12px);
+    letter-spacing: 0.5em;
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02) translateY(0);
+    filter: blur(0);
+    letter-spacing: 0.15em;
+  }
+  80% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+    letter-spacing: 0.08em;
+  }
+}
+
+/* ── Floating / Levitate ── */
+@keyframes animeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes floatRotate {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(3deg);
+  }
+}
+
+/* ── Sparkle Shimmer ── */
+@keyframes sparkleShimmer {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes starTwinkle {
+  0%, 40%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+  60% { opacity: 0.5; transform: scale(0.5); }
+}
+
+/* ── Rainbow Gradient Shift ── */
+@keyframes rainbowShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes chromaText {
+  0% { color: #f472b6; }
+  16% { color: #fb923c; }
+  33% { color: #fbbf24; }
+  50% { color: #34d399; }
+  66% { color: #60a5fa; }
+  83% { color: #a78bfa; }
+  100% { color: #f472b6; }
+}
+
+/* ── Speed Lines (manga-style) ── */
+@keyframes speedLineFlash {
+  0% {
+    opacity: 0;
+    transform: scaleX(0) translateX(-50%);
+  }
+  20% {
+    opacity: 0.8;
+    transform: scaleX(1) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1.5) translateX(50%);
+  }
+}
+
+/* ── Magic Circle Spin ── */
+@keyframes magicCircleSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes magicCircleCounterSpin {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* ── Level-Up Burst ── */
+@keyframes levelUpBurst {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+    filter: brightness(3) saturate(2);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: brightness(1.5) saturate(1.5);
+  }
+  60% {
+    transform: scale(0.95);
+    filter: brightness(1) saturate(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1) saturate(1);
+  }
+}
+
+/* ── Ripple Effect ── */
+@keyframes rippleExpand {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ── Neon Flicker ── */
+@keyframes neonFlicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 7px currentColor,
+      0 0 10px currentColor,
+      0 0 21px currentColor,
+      0 0 42px currentColor;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+/* ── Bounce Pop (for buttons, cards) ── */
+@keyframes bouncePop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ── Shimmer Sweep (loading / highlight) ── */
+@keyframes shimmerSweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ── Heartbeat for health bars ── */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.05); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.08); }
+  56% { transform: scale(1); }
+}
+
+/* ── Utility Classes ── */
+.anime-float { animation: animeFloat 4s ease-in-out infinite; }
+.anime-pulse { animation: energyPulse 3s ease-in-out infinite; }
+.anime-glow { animation: powerUpGlow 2s ease-in-out infinite; }
+.anime-shimmer {
+  background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmerSweep 2.5s ease-in-out infinite;
+}
+.anime-slide-up { animation: animeSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anime-slide-down { animation: animeSlideDown 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anime-slide-left { animation: animeSlideLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anime-slide-right { animation: animeSlideRight 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anime-pop { animation: bouncePop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anime-dramatic { animation: dramaticReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anime-heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
+.anime-neon { animation: neonFlicker 2s infinite; }
+.anime-rainbow {
+  background: linear-gradient(90deg, #f472b6, #fb923c, #fbbf24, #34d399, #60a5fa, #a78bfa, #f472b6);
+  background-size: 300% 100%;
+  animation: rainbowShift 6s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.anime-chroma { animation: chromaText 8s linear infinite; }
+
+/* Stagger utility — apply as parent, children auto-stagger */
+.anime-stagger > * {
+  animation: animeSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anime-stagger > *:nth-child(1) { animation-delay: 0.0s; }
+.anime-stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.anime-stagger > *:nth-child(3) { animation-delay: 0.16s; }
+.anime-stagger > *:nth-child(4) { animation-delay: 0.24s; }
+.anime-stagger > *:nth-child(5) { animation-delay: 0.32s; }
+.anime-stagger > *:nth-child(6) { animation-delay: 0.4s; }
+.anime-stagger > *:nth-child(7) { animation-delay: 0.48s; }
+.anime-stagger > *:nth-child(8) { animation-delay: 0.56s; }
+.anime-stagger > *:nth-child(9) { animation-delay: 0.64s; }
+.anime-stagger > *:nth-child(10) { animation-delay: 0.72s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anime-float,
+  .anime-pulse,
+  .anime-glow,
+  .anime-shimmer,
+  .anime-heartbeat,
+  .anime-neon,
+  .anime-chroma,
+  .anime-stagger > * {
+    animation: none !important;
+  }
+}

@@ -118,8 +118,9 @@ export default function CreationProfessionPanel({
                           <StatChip label={profession.primaryStat} />
                           <StatChip label={profession.secondaryStat} />
                           {recommended.has(profession.id) ? (
-                            <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>
-                              SYSTEM MATCH
+                            <span style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-end" }}>
+                              <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>SYSTEM MATCH</span>
+                              <span style={{ fontSize: "0.45rem", color: "#8CE99A", opacity: 0.7 }}>Favored by your bound system</span>
                             </span>
                           ) : null}
                         </div>

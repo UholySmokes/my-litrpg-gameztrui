@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" fill="none">
+  <defs>
+    <linearGradient id="heroGlow" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#ff6bdf"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="swordGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <filter id="heroBloom">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="sparkle">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+  <!-- Aura ring -->
+  <ellipse cx="200" cy="320" rx="140" ry="20" fill="url(#heroGlow)" opacity="0.3">
+    <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="rx" values="130;150;130" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+  <!-- Hero body silhouette -->
+  <path d="M200 90 C180 90 155 125 155 170 L155 230 C140 240 120 260 115 290 L110 340 C108 360 125 380 145 380 L150 380 L148 480 C147 510 160 540 200 540 C240 540 253 510 252 480 L250 380 L255 380 C275 380 292 360 290 340 L285 290 C280 260 260 240 245 230 L245 170 C245 125 220 90 200 90Z" fill="url(#heroGlow)" filter="url(#heroBloom)" opacity="0.85"/>
+  <!-- Cape flowing -->
+  <path d="M155 200 C130 220 90 320 85 420 C82 460 100 500 140 530 L155 380 Z" fill="#7c3aed" opacity="0.6">
+    <animate attributeName="d" values="M155 200 C130 220 90 320 85 420 C82 460 100 500 140 530 L155 380 Z;M155 200 C125 225 80 330 78 425 C75 465 95 505 135 535 L155 380 Z;M155 200 C130 220 90 320 85 420 C82 460 100 500 140 530 L155 380 Z" dur="4s" repeatCount="indefinite"/>
+  </path>
+  <path d="M245 200 C270 220 310 320 315 420 C318 460 300 500 260 530 L245 380 Z" fill="#7c3aed" opacity="0.6">
+    <animate attributeName="d" values="M245 200 C270 220 310 320 315 420 C318 460 300 500 260 530 L245 380 Z;M245 200 C275 225 320 330 322 425 C325 465 305 505 265 535 L245 380 Z;M245 200 C270 220 310 320 315 420 C318 460 300 500 260 530 L245 380 Z" dur="4s" repeatCount="indefinite"/>
+  </path>
+  <!-- Sword -->
+  <line x1="260" y1="120" x2="320" y2="20" stroke="url(#swordGlow)" stroke-width="6" stroke-linecap="round" filter="url(#heroBloom)"/>
+  <line x1="295" y1="55" x2="345" y2="50" stroke="url(#swordGlow)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Energy particles -->
+  <circle cx="120" cy="200" r="3" fill="#f472b6" filter="url(#sparkle)">
+    <animate attributeName="cy" values="200;160;200" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="280" cy="250" r="2.5" fill="#818cf8" filter="url(#sparkle)">
+    <animate attributeName="cy" values="250;200;250" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="170" cy="150" r="2" fill="#fbbf24" filter="url(#sparkle)">
+    <animate attributeName="cy" values="150;120;150" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="230" cy="300" r="3.5" fill="#34d399" filter="url(#sparkle)">
+    <animate attributeName="cy" values="300;260;300" dur="3.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;0" dur="3.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="310" cy="180" r="2" fill="#f472b6" filter="url(#sparkle)">
+    <animate attributeName="cy" values="180;140;180" dur="2.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;0" dur="2.8s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Glowing eyes -->
+  <circle cx="188" cy="115" r="4" fill="#38bdf8">
+    <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="212" cy="115" r="4" fill="#38bdf8">
+    <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</svg>

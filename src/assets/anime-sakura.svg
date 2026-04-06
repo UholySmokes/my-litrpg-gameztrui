@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <defs>
+    <linearGradient id="petalGrad" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#fda4af"/>
+      <stop offset="100%" stop-color="#f472b6"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(20,20)">
+    <path d="M0,-14 C4,-10 6,-4 0,0 C-6,-4 -4,-10 0,-14Z" fill="url(#petalGrad)" opacity="0.9"/>
+    <path d="M0,-14 C4,-10 6,-4 0,0 C-6,-4 -4,-10 0,-14Z" fill="url(#petalGrad)" opacity="0.9" transform="rotate(72)"/>
+    <path d="M0,-14 C4,-10 6,-4 0,0 C-6,-4 -4,-10 0,-14Z" fill="url(#petalGrad)" opacity="0.9" transform="rotate(144)"/>
+    <path d="M0,-14 C4,-10 6,-4 0,0 C-6,-4 -4,-10 0,-14Z" fill="url(#petalGrad)" opacity="0.9" transform="rotate(216)"/>
+    <path d="M0,-14 C4,-10 6,-4 0,0 C-6,-4 -4,-10 0,-14Z" fill="url(#petalGrad)" opacity="0.9" transform="rotate(288)"/>
+    <circle cx="0" cy="0" r="3" fill="#fbbf24"/>
+  </g>
+</svg>

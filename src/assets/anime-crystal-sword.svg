@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 400" fill="none">
+  <defs>
+    <linearGradient id="blade" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="30%" stop-color="#7dd3fc"/>
+      <stop offset="70%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <linearGradient id="guard" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="grip" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+    <filter id="swordBloom">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="sparkGlow"><feGaussianBlur stdDeviation="2"/></filter>
+  </defs>
+  <!-- Blade -->
+  <path d="M60 10 L75 200 L60 260 L45 200 Z" fill="url(#blade)" filter="url(#swordBloom)" opacity="0.9"/>
+  <!-- Blade edge highlight -->
+  <line x1="60" y1="20" x2="60" y2="250" stroke="white" stroke-width="1" opacity="0.5"/>
+  <!-- Cross guard -->
+  <rect x="20" y="255" width="80" height="14" rx="7" fill="url(#guard)" filter="url(#swordBloom)"/>
+  <!-- Gem in guard -->
+  <circle cx="60" cy="262" r="6" fill="#ec4899">
+    <animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Grip -->
+  <rect x="50" y="270" width="20" height="80" rx="4" fill="url(#grip)"/>
+  <!-- Grip wrapping -->
+  <line x1="50" y1="285" x2="70" y2="280" stroke="#8b5cf6" stroke-width="2" opacity="0.6"/>
+  <line x1="50" y1="300" x2="70" y2="295" stroke="#8b5cf6" stroke-width="2" opacity="0.6"/>
+  <line x1="50" y1="315" x2="70" y2="310" stroke="#8b5cf6" stroke-width="2" opacity="0.6"/>
+  <line x1="50" y1="330" x2="70" y2="325" stroke="#8b5cf6" stroke-width="2" opacity="0.6"/>
+  <!-- Pommel -->
+  <circle cx="60" cy="358" r="12" fill="url(#guard)" filter="url(#swordBloom)"/>
+  <circle cx="60" cy="358" r="5" fill="#a855f7">
+    <animate attributeName="fill" values="#a855f7;#ec4899;#a855f7" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Sparkles around blade -->
+  <circle cx="40" cy="80" r="2" fill="#e0f2fe" filter="url(#sparkGlow)">
+    <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="78" cy="140" r="1.5" fill="#c4b5fd" filter="url(#sparkGlow)">
+    <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="35" cy="180" r="2" fill="#fbcfe8" filter="url(#sparkGlow)">
+    <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="85" cy="60" r="1.5" fill="#bae6fd" filter="url(#sparkGlow)">
+    <animate attributeName="opacity" values="0;1;0" dur="2.2s" begin="0.3s" repeatCount="indefinite"/>
+  </circle>
+</svg>

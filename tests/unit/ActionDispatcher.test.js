@@ -187,7 +187,6 @@ describe("ActionDispatcher", () => {
         ...baseState,
         world: { ...baseState.world, turnCount: 5 },
       };
-
       const result = executeAction(state, { type: "rest" });
       expect(result.success).toBe(true);
       expect(result.state.world.turnCount).toBe(6);
@@ -269,6 +268,31 @@ describe("ActionDispatcher", () => {
       });
       expect(result.success).toBe(true);
       expect(result.state.world.turnCount).toBe(3);
+    });
+  });
+
+  describe("dialogue action", () => {
+    it("preserves dialogue metadata without mutating state", () => {
+      const result = executeAction(baseState, {
+        type: "dialogue",
+        intent: "question",
+        originalInput: "Why are you all just staring at me?",
+        spokenText: "Why are you all just staring at me?",
+        targetLabel: "Spirit Beast Clan Patrol",
+        topic: "their silence",
+        description: 'Player asked: "Why are you all just staring at me?"',
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.readOnly).toBe(true);
+      expect(result.state).toBe(baseState);
+      expect(result.dialogue).toEqual({
+        intent: "question",
+        targetLabel: "Spirit Beast Clan Patrol",
+        topic: "their silence",
+        spokenText: "Why are you all just staring at me?",
+        requiresResponse: true,
+      });
     });
   });
 

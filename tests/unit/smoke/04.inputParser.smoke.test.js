@@ -8,4 +8,20 @@ describe("smoke: InputParser", () => {
     expect(action).toBeDefined();
     expect(action.type).toBe("rest");
   });
+
+  it("parses a natural question as dialogue when NPCs are present", () => {
+    const action = parseAction("Why are you all just watching me?", {
+      ...initialGameState,
+      narrative: {
+        ...(initialGameState.narrative || {}),
+        sceneMemory: {
+          presentEntities: ["Spirit Beast Clan Patrol"],
+        },
+      },
+    });
+
+    expect(action).toBeDefined();
+    expect(action.type).toBe("dialogue");
+    expect(action.intent).toBe("question");
+  });
 });

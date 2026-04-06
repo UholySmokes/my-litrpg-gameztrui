@@ -45,6 +45,7 @@ function validateAction(action, gameState) {
     case 'inventory':
     case 'status':
     case 'narrative':
+    case 'dialogue':
       // These actions are always valid (read-only)
       return { valid: true };
 

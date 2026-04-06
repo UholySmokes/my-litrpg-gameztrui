@@ -202,4 +202,44 @@ describe("AIService streaming narrative", () => {
     expect(globalThis.fetch).toHaveBeenCalledTimes(4);
     expect(globalThis.fetch.mock.calls[3][0]).toBe("/api/narrate");
   });
+
+  it("sends npc context in the stream start request for dialogue turns", async () => {
+    globalThis.fetch = jest
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            status: "completed",
+            done: true,
+            story: "The patrol leader finally answers.",
+            mood: "mysterious",
+            suggestions: [{ t: "Ask what they want", w: 0.82 }],
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      );
+
+    const result = await generateNarrativeStream("Resolve the question.", {
+      mode: "dialogue",
+      npcContext: {
+        targetLabel: "Spirit Beast Clan Patrol",
+        spokenText: "Why are you all just watching me?",
+        requiresResponse: true,
+      },
+    });
+
+    const startRequest = JSON.parse(globalThis.fetch.mock.calls[0][1]?.body || "{}");
+    expect(startRequest.mode).toBe("dialogue");
+    expect(startRequest.npcContext).toEqual(
+      expect.objectContaining({
+        targetLabel: "Spirit Beast Clan Patrol",
+        requiresResponse: true,
+      }),
+    );
+    expect(result.story).toContain("The patrol leader finally answers.");
+  });
 });

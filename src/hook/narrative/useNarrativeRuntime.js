@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import {
   assemblePrompt,
+  buildDialogueNpcContext,
   buildSceneMemorySeed,
   buildInitialPrompt,
   resolvePromptMode,
@@ -154,7 +155,7 @@ export function useNarrative(
     async (
       prompt,
       prevStateForFallback,
-      { mode, userInput: turnUserInput, actionResult } = {},
+      { mode, userInput: turnUserInput, actionResult, npcContext } = {},
     ) => {
       if (streamAbortRef.current) {
         streamAbortRef.current.abort();
@@ -177,6 +178,7 @@ export function useNarrative(
         const result = await generateNarrativeStream(prompt, {
           signal: controller.signal,
           mode,
+          npcContext,
           onChunk: (_delta, fullText) => {
             setState((prevState) =>
               replaceNarrativeEntryInState(prevState, streamEntryId, {
@@ -329,6 +331,7 @@ export function useNarrative(
         }
 
         const actionResult = {
+          ...(stepResult.actionResult || {}),
           success: true,
           actionType: action?.type,
           description: stepResult.summary || `Player said: "${nextUserInput}"`,
@@ -354,10 +357,16 @@ export function useNarrative(
           const promptState = actionResult.readOnly ? currentState : newState;
           const mode = resolvePromptMode(promptState, actionResult);
           const prompt = assemblePrompt(promptState, nextUserInput, actionResult);
+          const npcContext = buildDialogueNpcContext(
+            promptState,
+            nextUserInput,
+            actionResult,
+          );
           const narrativeResult = await streamNarrative(prompt, promptState, {
             mode,
             userInput: nextUserInput,
             actionResult,
+            npcContext,
           });
           const intentResolution = applyNarrativeStateIntents(
             promptState,

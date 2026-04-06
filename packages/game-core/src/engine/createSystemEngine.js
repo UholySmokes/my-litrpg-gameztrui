@@ -140,6 +140,7 @@ export function createSystemEngine(config = {}) {
       events,
       action,
       summary: result.description,
+      actionResult: result,
     };
   }
 

@@ -68,9 +68,10 @@ const sanitizeUserInput = (input) => {
 };
 
 function detectDialogueIntent(input = "") {
+  const value = String(input || "").trim();
   return /(^["'])|\b(say|ask|tell|speak|talk|shout|whisper|yell|reply|negotiate|question)\b/i.test(
-    String(input || ""),
-  );
+    value,
+  ) || /\?\s*$/.test(value);
 }
 
 function tokenizeForRepetition(text = "") {
@@ -138,6 +139,85 @@ function resolveEntityLabel(value, fallback = "None") {
   return fallback;
 }
 
+function normalizeEntityLabels(values = []) {
+  return values
+    .map((value) => resolveEntityLabel(value, ""))
+    .filter(Boolean);
+}
+
+function normalizeLookupKey(value = "") {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\b(the|a|an|nearby)\b/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function resolveDialogueTargetLabel(targetLabel, candidates) {
+  const normalizedTarget = normalizeLookupKey(targetLabel);
+  if (!normalizedTarget) return candidates.length === 1 ? candidates[0] : null;
+
+  const exact = candidates.find((candidate) => {
+    const normalizedCandidate = normalizeLookupKey(candidate);
+    return (
+      normalizedCandidate === normalizedTarget ||
+      normalizedCandidate.includes(normalizedTarget) ||
+      normalizedTarget.includes(normalizedCandidate)
+    );
+  });
+
+  return exact || (candidates.length === 1 ? candidates[0] : null);
+}
+
+export function buildDialogueNpcContext(gameState = {}, userInput = "", actionResult = {}) {
+  const result = actionResult && typeof actionResult === "object" ? actionResult : {};
+  const dialogue =
+    result.dialogue && typeof result.dialogue === "object" ? result.dialogue : null;
+  const dialogueIntent = Boolean(dialogue?.requiresResponse || result?.dialogueIntent);
+  if (!dialogueIntent) return null;
+
+  const sceneMemory =
+    gameState?.narrative && typeof gameState.narrative === "object"
+      ? gameState.narrative.sceneMemory || buildSceneMemorySeed(gameState)
+      : buildSceneMemorySeed(gameState);
+  const presentEntities = normalizeEntityLabels(sceneMemory?.presentEntities || []);
+  const familiarEntities = normalizeEntityLabels(sceneMemory?.familiarEntities || []);
+  const partyEntities = normalizeEntityLabels(sceneMemory?.partyEntities || []);
+  const candidateEntities = Array.from(
+    new Set([...presentEntities, ...familiarEntities, ...partyEntities]),
+  );
+  const targetLabel = resolveDialogueTargetLabel(dialogue?.targetLabel, candidateEntities);
+  const socialSummary =
+    typeof sceneMemory?.socialSummary === "string" ? sceneMemory.socialSummary.trim() : "";
+
+  return {
+    playerInput: sanitizeUserInput(userInput),
+    spokenText: sanitizeUserInput(dialogue?.spokenText || userInput),
+    intent: dialogue?.intent || "speech",
+    topic: dialogue?.topic || null,
+    targetLabel,
+    responderRole:
+      targetLabel ||
+      (candidateEntities.length > 0
+        ? "the nearest relevant present sentient NPC or group"
+        : "no confirmed respondent"),
+    requiresResponse: true,
+    responsePolicy:
+      "If a present sentient NPC or group can respond, answer directly. Otherwise refuse with a concrete reason or show a clear visible social action.",
+    locationLabel: sceneMemory?.locationLabel || null,
+    zoneLabel: sceneMemory?.zoneLabel || null,
+    immediateObjective: sceneMemory?.immediateObjective || null,
+    presentEntities,
+    familiarEntities,
+    partyEntities,
+    activeThreats: normalizeEntityLabels(sceneMemory?.activeThreats || []),
+    unresolvedHooks: normalizeEntityLabels(sceneMemory?.unresolvedHooks || []),
+    lastConsequence: sceneMemory?.lastConsequence || null,
+    socialSummary: socialSummary || null,
+  };
+}
+
 export function resolvePromptMode(gameState, actionResult) {
   const actionType = actionResult?.actionType;
   const inCombat = Boolean(
@@ -164,7 +244,9 @@ export function resolvePromptMode(gameState, actionResult) {
  */
 export function assemblePrompt(gameState, userInput, actionResult) {
   const archetypeSystem = resolvePlayerArchetypeSystem(gameState?.player);
-  const dialogueIntent = detectDialogueIntent(userInput);
+  const dialogueIntent = Boolean(
+    actionResult?.dialogue?.requiresResponse || detectDialogueIntent(userInput),
+  );
   const resolvedActionResult =
     actionResult && typeof actionResult === "object"
       ? { ...actionResult, dialogueIntent }
@@ -1211,11 +1293,15 @@ ${recentHistory.join("\n")}`;
  */
 function buildActionSection(userInput, actionResult) {
   const safeUserInput = sanitizeUserInput(userInput);
-  const shouldFavorDialogue = detectDialogueIntent(safeUserInput);
+  const shouldFavorDialogue = Boolean(
+    actionResult?.dialogue?.requiresResponse || detectDialogueIntent(safeUserInput),
+  );
   const result =
     actionResult && typeof actionResult === "object"
       ? actionResult
       : { success: false, reason: "No action result provided." };
+  const dialogue =
+    result.dialogue && typeof result.dialogue === "object" ? result.dialogue : null;
   let actionDescription = "";
 
   if (result.success) {
@@ -1283,6 +1369,15 @@ The action succeeded. ${result.description || "Action completed."}`;
     ) {
       actionDescription += `\nOpening scene seed:\n${result.openingNarrativeSeed.trim()}`;
     }
+    if (dialogue?.requiresResponse) {
+      actionDescription += `\nDialogue resolution required: yes.`;
+      if (dialogue?.targetLabel) {
+        actionDescription += `\nAddressed target: ${dialogue.targetLabel}`;
+      }
+      if (dialogue?.topic) {
+        actionDescription += `\nDialogue topic: ${dialogue.topic}`;
+      }
+    }
   } else {
     actionDescription = `The player attempted (untrusted user input): "${safeUserInput}"
 The action failed. ${result.reason || "Action could not be completed."}`;
@@ -1292,7 +1387,7 @@ The action failed. ${result.reason || "Action could not be completed."}`;
 ${actionDescription}
 
 === YOUR TASK ===
-Generate a structured narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. ${shouldFavorDialogue ? "Dialogue can appear when it directly matches the player's intent, but keep it brief and purposeful." : "Do not open with quoted dialogue; begin with immediate scene action or sensory detail."}
+Generate a structured narrative response describing what happened. Be vivid and immersive. If the action failed, describe why it failed in a way that fits the game world. ${shouldFavorDialogue ? "This is a direct social turn. If a present sentient NPC or group is being addressed, the scene must resolve with one of: a direct answer, a concrete refusal with a reason, or a clear visible social action. Do not leave a direct question hanging in unexplained silence." : "Do not open with quoted dialogue; begin with immediate scene action or sensory detail."}
 
 Hard rules:
 - Do not add or remove present entities unless supported by state, recent history, or the validated action consequence.
@@ -1302,6 +1397,7 @@ Hard rules:
 - Favor immediate physical consequence, sensory detail, and body-awareness over distant summary when the player is vulnerable, transformed, or under pressure.
 - If system flavor appears, keep it to 1-2 short bracketed notices integrated into the scene rather than a detached explanation.
 - Even low-level survival actions should feel consequential when the player is injured, exposed, hungry, unstable, or being hunted.
+- When the player directly addresses nearby sentient NPCs, do not answer with vague silence alone. Resolve the turn with an answer, refusal, or visible social reaction.
 - Each suggestion must be feasible from the current scene and distinct in category from the others.
 - Suggestions must not be simple paraphrases of the same move.
 - stateIntents is optional. Include it only when a concrete, grounded world consequence should be persisted.

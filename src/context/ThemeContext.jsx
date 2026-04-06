@@ -536,6 +536,10 @@ function getReadableAccentText(accentColor) {
   return relativeLuminance(accentColor) > 0.42 ? "#13080a" : "#fffaf5";
 }
 
+function getReadableOutlineText(baseColor) {
+  return relativeLuminance(baseColor) > 0.42 ? "rgba(7, 9, 14, 0.58)" : "rgba(255, 250, 245, 0.46)";
+}
+
 function getDerivedThemeTokens(theme) {
   const tokens = theme?.tokens || {};
   const textMain = tokens["--text-main"] || (theme?.colorScheme === "light" ? "#111827" : "#f8fafc");
@@ -550,6 +554,8 @@ function getDerivedThemeTokens(theme) {
     "--text-muted": toRgba(textMain, mutedAlpha),
     "--text-on-accent": getReadableAccentText(primaryAccent),
     "--text-on-danger": getReadableAccentText(alertAccent),
+    "--text-outline-soft": getReadableOutlineText(textMain),
+    "--text-outline-strong": getReadableOutlineText(primaryAccent),
   };
 }
 

@@ -1977,6 +1977,11 @@ body,
   border-color: color-mix(in srgb, var(--holo-cyan) 30%, transparent);
   background: var(--shell-button-gradient);
   color: var(--text-main);
+  text-shadow:
+    -1px 0 var(--text-outline-soft),
+    1px 0 var(--text-outline-soft),
+    0 -1px var(--text-outline-soft),
+    0 1px var(--text-outline-soft);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
     0 12px 26px rgba(0, 0, 0, 0.14);
@@ -1994,12 +1999,22 @@ body,
   background: var(--shell-button-solid-gradient);
   border-color: color-mix(in srgb, var(--holo-gold) 38%, transparent);
   color: var(--text-on-accent);
+  text-shadow:
+    -1px 0 var(--text-outline-strong),
+    1px 0 var(--text-outline-strong),
+    0 -1px var(--text-outline-strong),
+    0 1px var(--text-outline-strong);
 }
 
 .holo-button--danger {
   background: var(--shell-button-danger-gradient);
   border-color: color-mix(in srgb, var(--holo-alert) 42%, transparent);
   color: var(--text-on-danger);
+  text-shadow:
+    -1px 0 var(--text-outline-strong),
+    1px 0 var(--text-outline-strong),
+    0 -1px var(--text-outline-strong),
+    0 1px var(--text-outline-strong);
 }
 
 .character-hub,
@@ -2060,6 +2075,11 @@ body,
 .entry-shell__title {
   color: var(--text-main);
   font-family: var(--font-hud);
+  text-shadow:
+    -1px 0 var(--text-outline-soft),
+    1px 0 var(--text-outline-soft),
+    0 -1px var(--text-outline-soft),
+    0 1px var(--text-outline-soft);
 }
 
 .character-hub__copy,
@@ -2073,6 +2093,28 @@ body,
 .entry-shell__description,
 .entry-shell__footer {
   color: var(--text-dim);
+  text-shadow:
+    -1px 0 var(--text-outline-soft),
+    1px 0 var(--text-outline-soft),
+    0 -1px var(--text-outline-soft),
+    0 1px var(--text-outline-soft);
+}
+
+.character-hub__feature h4,
+.character-hub__path-step strong,
+.character-hub__account strong,
+.character-hub__metric strong,
+.adventure-shell__statuspill strong,
+.adventure-shell__meter strong,
+.adventure-shell__combat-drawer-stat strong,
+.combat-stage__lane strong,
+.combat-stage__skill-chip strong {
+  color: var(--text-main);
+  text-shadow:
+    -1px 0 var(--text-outline-soft),
+    1px 0 var(--text-outline-soft),
+    0 -1px var(--text-outline-soft),
+    0 1px var(--text-outline-soft);
 }
 
 .adventure-shell__eyebrow,
@@ -2084,6 +2126,11 @@ body,
 .character-hub__panel-kicker,
 .entry-shell__eyebrow {
   color: color-mix(in srgb, var(--holo-cyan) 72%, white);
+  text-shadow:
+    -1px 0 var(--text-outline-soft),
+    1px 0 var(--text-outline-soft),
+    0 -1px var(--text-outline-soft),
+    0 1px var(--text-outline-soft);
 }
 
 .character-hub__account {

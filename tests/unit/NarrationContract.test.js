@@ -83,6 +83,9 @@ function runSharedContractAssertions(normalizePayload) {
     activeThreats: ["Shifting ward"],
     unresolvedHooks: ["Missing key"],
     lastConsequence: "The inner seal unlocked.",
+    familiarEntities: [],
+    partyEntities: [],
+    socialSummary: "",
   });
   expect(structured.choiceMeta).toEqual([
     {

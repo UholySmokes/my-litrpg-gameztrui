@@ -94,6 +94,12 @@ describe("narrative runtime outcome policy", () => {
     expect(result.narrative).toContain("the sigil stays dark");
     expect(result.narrative).toBe(result.story);
     expect(result.suggestions.length).toBeGreaterThan(0);
-    expect(result.sceneMemory).toBeUndefined();
+    expect(result.sceneMemory).toEqual(
+      expect.objectContaining({
+        locationLabel: "Sigil Hall",
+        zoneLabel: "Threshold",
+        presentEntities: ["Caretaker Echo"],
+      }),
+    );
   });
 });

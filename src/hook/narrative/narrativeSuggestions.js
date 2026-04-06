@@ -262,7 +262,7 @@ function getKnownEntities(state = {}) {
 
 function extractReferencedEntity(label = "") {
   const match = String(label || "").match(
-    /\b(?:talk to|speak with|ask|follow|attack|inspect|approach|help|protect|escort)\s+([a-z][a-z' -]{2,})/i,
+    /\b(?:talk to|speak with|ask|follow|attack|inspect|approach|help|protect|escort)\s+([a-z][a-z' -]{2,}?)(?=\s+(?:about|toward|towards|for)\b|$)/i,
   );
   return String(match?.[1] || "")
     .replace(/^(?:(?:about|toward|towards|the|a|an)\s+)+/i, "")
@@ -473,47 +473,57 @@ function buildTravelSuggestions(state, maxItems = 3) {
       return String(left.name || left.id).localeCompare(String(right.name || right.id));
     });
 
-  const seenZones = new Set();
-  const suggestions = [];
-
-  accessibleIds.forEach((location) => {
-    if (suggestions.length >= maxItems) return;
-    if (location.zoneId === currentZoneId) {
-      suggestions.push(
-        createSuggestionRecord({
-          id: `travel-${location.id}`,
-          label: `Go to ${location.name}`,
-          command: `go to ${location.name}`,
-          weight: suggestions.length === 0 ? 0.98 : 0.88 - suggestions.length * 0.05,
-          category: "progress",
-          reason: "A reachable route in the current region.",
-        }),
-      );
-      return;
-    }
-
-    if (seenZones.has(location.zoneId)) return;
-    const preferredZoneEntryId = getZoneEntryLocationId(location.zoneId, {
-      allowedLocationIds,
-    });
-    if (preferredZoneEntryId && preferredZoneEntryId !== location.id) {
-      return;
-    }
-    seenZones.add(location.zoneId);
-    const zoneName = getZoneById(location.zoneId)?.name || location.zoneId;
-    suggestions.push(
+  const sameZoneSuggestions = accessibleIds
+    .filter((location) => location.zoneId === currentZoneId)
+    .map((location) =>
       createSuggestionRecord({
+        id: `travel-${location.id}`,
+        label: `Go to ${location.name}`,
+        command: `go to ${location.name}`,
+        category: "progress",
+        reason: "A reachable route in the current region.",
+      }),
+    );
+
+  const seenZones = new Set();
+  const otherZoneSuggestions = accessibleIds
+    .filter((location) => location.zoneId !== currentZoneId)
+    .filter((location) => {
+      if (seenZones.has(location.zoneId)) return false;
+      const preferredZoneEntryId = getZoneEntryLocationId(location.zoneId, {
+        allowedLocationIds,
+      });
+      if (preferredZoneEntryId && preferredZoneEntryId !== location.id) {
+        return false;
+      }
+      seenZones.add(location.zoneId);
+      return true;
+    })
+    .map((location) => {
+      const zoneName = getZoneById(location.zoneId)?.name || location.zoneId;
+      return createSuggestionRecord({
         id: `travel-zone-${location.zoneId}`,
         label: `Go to ${zoneName}`,
         command: `go to ${zoneName}`,
-        weight: suggestions.length === 0 ? 0.98 : 0.88 - suggestions.length * 0.05,
         category: "progress",
         reason: `A connected route into ${zoneName}.`,
-      }),
-    );
-  });
+      });
+    });
 
-  return suggestions.slice(0, maxItems);
+  const orderedSuggestions = [
+    ...sameZoneSuggestions.slice(0, 1),
+    ...otherZoneSuggestions,
+    ...sameZoneSuggestions.slice(1),
+  ]
+    .filter(Boolean)
+    .slice(0, maxItems)
+    .map((suggestion, index) => ({
+      ...suggestion,
+      weight: index === 0 ? 0.98 : 0.88 - index * 0.05,
+      w: index === 0 ? 0.98 : 0.88 - index * 0.05,
+    }));
+
+  return orderedSuggestions;
 }
 
 function buildQuestDrivenSuggestions(state) {

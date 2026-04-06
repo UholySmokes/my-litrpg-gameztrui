@@ -19,21 +19,33 @@ function compactSuggestions(entries) {
 }
 
 describe("narrative suggestion helpers", () => {
-  it("surfaces opening scene choices ahead of generic fillers", () => {
+  it("offers zone-aware travel suggestions alongside safe defaults", () => {
     const suggestions = buildActionSuggestions({
       world: {
-        vars: {
-          startingSceneId: "start_fog_clan_ashes",
-          openingSceneChoicePending: true,
+        location: {
+          current: "starting_zone",
+          visited: ["starting_zone"],
+          unlockedAreas: ["starting_zone"],
+          biome: "city",
         },
       },
       player: {},
+      quests: { active: [] },
     });
 
-    expect(suggestions[0].t).toBe("Run. Live now, revenge later.");
-    expect(suggestions.some((entry) => entry.t.includes("Run. Live now"))).toBe(true);
-    expect(suggestions.slice(0, 3).every((entry) => entry.category === "progress")).toBe(true);
-    expect(suggestions.findIndex((entry) => entry.t === "look around")).toBeGreaterThan(2);
+    expect(
+      suggestions.some((entry) =>
+        [
+          "go to Stormglass Ruins",
+          "go to Wildroot Fringe",
+          "go to Skyforge Skydocks",
+          "go to Veilward Undercity",
+          "go to Tideward Coast",
+        ].includes(entry.t),
+      ),
+    ).toBe(true);
+    expect(suggestions.some((entry) => entry.t === "go to Neon Bazaar")).toBe(true);
+    expect(suggestions.some((entry) => entry.t === "look around")).toBe(true);
   });
 
   it("builds compact summary prompts and computes dominant mood", () => {
@@ -210,33 +222,46 @@ describe("narrative suggestion helpers", () => {
     ]);
   });
 
-  it("keeps remaining opening-scene choices visible before generic defaults", () => {
+  it("treats familiar and party entities as grounded social targets", () => {
     const resolved = compactSuggestions(
       resolveActionSuggestions({
         preferredSuggestions: [
-          "Take your first step into the foundry",
-          "Look around the scaffolds",
-          "Search for the first threat",
+          "follow the rootbound scouts",
+          "ask the rootbound scouts about the fringe trail",
+          "check status",
         ],
         preferredChoiceMeta: [
           { category: "progress", urgency: 0.96, groundedInState: true },
-          { category: "progress", urgency: 0.82, groundedInState: true },
-          { category: "progress", urgency: 0.74, groundedInState: true },
+          { category: "social", urgency: 0.82, groundedInState: true },
+          { category: "observe", urgency: 0.74, groundedInState: true },
         ],
         fallbackSuggestions: buildActionSuggestions({
           world: {
-            vars: {
-              startingSceneId: "start_fog_clan_ashes",
-              openingSceneChoicePending: true,
+            location: {
+              current: "wilds_rootbound_camp",
+              visited: ["wilds_rootbound_camp"],
+              unlockedAreas: ["wilds_rootbound_camp"],
+              biome: "wilds",
             },
           },
           player: {},
+          quests: { active: [] },
         }),
         state: {
           world: {
-            vars: {
-              startingSceneId: "start_fog_clan_ashes",
-              openingSceneChoicePending: true,
+            location: {
+              current: "wilds_rootbound_camp",
+              visited: ["wilds_rootbound_camp"],
+              unlockedAreas: ["wilds_rootbound_camp"],
+              biome: "wilds",
+            },
+          },
+          narrative: {
+            sceneMemory: {
+              locationLabel: "Rootbound Camp",
+              zoneLabel: "Wildroot Fringe",
+              familiarEntities: ["the rootbound scouts"],
+              partyEntities: ["the rootbound scouts"],
             },
           },
           quests: { active: [] },
@@ -244,13 +269,8 @@ describe("narrative suggestion helpers", () => {
       }),
     );
 
-    expect(resolved[0].t).toBe("Take your first step into the foundry");
-    expect(resolved[1].t).toBe("Look around the scaffolds");
-    expect(resolved[2].t).toBe("Search for the first threat");
-    expect(
-      resolved.findIndex((entry) => entry.t === "look around"),
-    ).toBeGreaterThan(
-      resolved.findIndex((entry) => entry.t === "Speak the hidden phrase your mother burned into you."),
-    );
+    expect(resolved[0].t).toBe("follow the rootbound scouts");
+    expect(resolved[1].t).toBe("ask the rootbound scouts about the fringe trail");
+    expect(resolved.some((entry) => entry.t === "check status")).toBe(true);
   });
 });

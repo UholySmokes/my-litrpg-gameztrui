@@ -15,6 +15,8 @@ describe("CharacterCreationContract", () => {
       name: "Aela",
       raceId: "neo_human",
       classId: "warrior",
+      startingPrompt: "I wake in Rebirth Alcove and look around.",
+      startingLocationId: "starting_zone",
       startingZoneId: "city",
       professionId: "blacksmith",
       archetypeSystemId: "balanced",

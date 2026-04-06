@@ -72,6 +72,19 @@ describe("InputValidator", () => {
     expect(result.valid).toBe(true);
   });
 
+  it("accepts connected zone names such as Wildroot Fringe", () => {
+    const state = cloneState(initialGameState);
+    state.world.location.current = "starting_zone";
+    state.world.location.visited = ["starting_zone"];
+    state.world.location.unlockedAreas = ["starting_zone"];
+
+    const result = validateActionComprehensive(
+      { type: "move", targetLocation: "Wildroot Fringe" },
+      state,
+    );
+    expect(result.valid).toBe(true);
+  });
+
   it("rejects movement when dead", () => {
     const state = cloneState(initialGameState);
     state.player.isDead = true;

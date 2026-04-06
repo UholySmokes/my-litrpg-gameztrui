@@ -1,5 +1,6 @@
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import {
+  DEFAULT_START_LOCATION_ID,
   WORLD_META,
   MAJOR_FACTION_IDS,
   getZoneById,
@@ -8,7 +9,7 @@ import {
   resolveStartingLocationId,
 } from "./WorldDataRegistry.js";
 
-export const STARTING_LOCATION_ID = "starting_zone";
+export const STARTING_LOCATION_ID = DEFAULT_START_LOCATION_ID;
 
 function createDefaultWorldFlags() {
   return {

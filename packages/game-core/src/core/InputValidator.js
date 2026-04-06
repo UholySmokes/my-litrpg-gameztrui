@@ -5,6 +5,7 @@
 
 import { getItemData } from '../entities/ItemRegistry.js';
 import {
+  DEFAULT_START_LOCATION_ID,
   getAccessibleLocationIds,
   resolveLocationId,
   resolveTravelLocationId,
@@ -183,7 +184,7 @@ function validateMove(action, gameState) {
 
   const world = gameState.world || {};
   const currentRaw =
-    world.location?.current ?? world.location ?? "starting_zone";
+    world.location?.current ?? world.location ?? DEFAULT_START_LOCATION_ID;
 
   // If target location is specified
   if (action.targetLocation) {

@@ -93,6 +93,7 @@ export function createWorldRegistryRuntime({
   factions = [],
   zones = [],
   locations = [],
+  defaultStartLocationId = null,
 } = {}) {
   const factionById = new Map();
   const zoneById = new Map();
@@ -218,6 +219,16 @@ export function createWorldRegistryRuntime({
     return publicLocationId || null;
   };
 
+  const resolvedDefaultStartLocationId =
+    (typeof defaultStartLocationId === "string" &&
+    locationById.has(defaultStartLocationId)
+      ? defaultStartLocationId
+      : null) ||
+    getZoneEntryLocationId("city") ||
+    getStarterLocationEntries()[0]?.id ||
+    locationSearchEntries[0]?.id ||
+    null;
+
   return {
     getFactionById(id) {
       if (!id) return null;
@@ -317,10 +328,13 @@ export function createWorldRegistryRuntime({
       if (!zoneId) return null;
       return getZoneEntryLocationId(zoneId, { allowedLocationIds });
     },
-    resolveStartingLocationId(raw, { fallbackLocationId = "starting_zone" } = {}) {
+    resolveStartingLocationId(
+      raw,
+      { fallbackLocationId = resolvedDefaultStartLocationId } = {},
+    ) {
       const fallback = locationById.has(fallbackLocationId)
         ? fallbackLocationId
-        : "starting_zone";
+        : resolvedDefaultStartLocationId;
       const trimmed = typeof raw === "string" ? raw.trim() : "";
       const normalized = normalizeSearchText(trimmed);
       if (!normalized) return fallback;

@@ -33,6 +33,11 @@ import {
   translateLegacyMagicAction,
 } from "../systems/magic/UnifiedMagicSystem.js";
 import { hasCreationPerk } from "./creationPerks.js";
+import {
+  executeDevourerDigest,
+  executeDevourerRefine,
+  executeDevourerPurge,
+} from "../systems/archetype/devourerCore.js";
 
 const isLayerDEnabled = (state) => {
   const rollout =
@@ -293,6 +298,36 @@ export function executeAction(state, action, _options = {}) {
             newState = state;
           }
           incrementsTurn = false;
+          break;
+        }
+
+        case "devourer_digest": {
+          const result = executeDevourerDigest(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Digested prey sample";
+          break;
+        }
+
+        case "devourer_refine": {
+          const result = executeDevourerRefine(state, action);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Refined adaptation";
+          break;
+        }
+
+        case "devourer_purge": {
+          const result = executeDevourerPurge(state);
+          if (result && result.ok === false) {
+            return { success: false, reason: result.reason, state: result.state || state };
+          }
+          newState = result.state || state;
+          description = result.description || "Purged devourer taint";
           break;
         }
 

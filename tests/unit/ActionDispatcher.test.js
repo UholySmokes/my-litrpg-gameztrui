@@ -373,4 +373,55 @@ describe("ActionDispatcher", () => {
       expect(result.state.player.magic.reservesTaint.fire).toBeLessThan(0.6);
     });
   });
+
+
+  describe("devourer actions", () => {
+    const devourerState = {
+      ...baseState,
+      player: {
+        ...baseState.player,
+        archetypeSystem: {
+          id: "devourer_core",
+          name: "Devourer Core",
+          category: "System",
+          resource: { name: "Biomass", current: 20, max: 100, color: "#7DFFB3" },
+          runtime: {
+            taint: 6,
+            storedSamples: {
+              humanoid: { count: 1, biomass: 14, taint: 5, sentientCount: 1, lastEnemyName: "Bandit" },
+            },
+            knownPrey: { humanoid: { digested: 1 } },
+            adaptations: {},
+            sentientDevours: 0,
+            lastNotice: "",
+          },
+        },
+      },
+      world: { ...baseState.world, turnCount: 8 },
+    };
+
+    it("digests prey into biomass and taint", () => {
+      const result = executeAction(devourerState, { type: "devourer_digest", target: "humanoid" });
+      expect(result.success).toBe(true);
+      expect(result.state.player.archetypeSystem.resource.current).toBeGreaterThan(20);
+      expect(result.state.player.archetypeSystem.runtime.taint).toBeGreaterThan(6);
+      expect(result.state.player.archetypeSystem.runtime.sentientDevours).toBe(1);
+    });
+
+    it("refines known prey into permanent adaptation", () => {
+      const digestResult = executeAction(devourerState, { type: "devourer_digest", target: "humanoid" });
+      const result = executeAction(digestResult.state, { type: "devourer_refine", target: "humanoid" });
+      expect(result.success).toBe(true);
+      expect(result.state.player.archetypeSystem.runtime.adaptations.humanoid.rank).toBe(1);
+      expect(result.state.player.progressionModifiers.resourceGainMultiplier).toBeGreaterThan(0);
+    });
+
+    it("purges taint by consuming biomass", () => {
+      const result = executeAction(devourerState, { type: "devourer_purge" });
+      expect(result.success).toBe(true);
+      expect(result.state.player.archetypeSystem.runtime.taint).toBeLessThan(6);
+      expect(result.state.player.archetypeSystem.resource.current).toBeLessThan(20);
+    });
+  });
+
 });

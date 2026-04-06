@@ -108,6 +108,23 @@ describe("Magic input parsing", () => {
     expect(action.skillId).toBe("firebolt");
   });
 
+
+  it("parses devourer digest command", () => {
+    const action = parseAction("digest goblin sample", initialGameState);
+    expect(action.type).toBe("devourer_digest");
+    expect(action.target).toBe("goblin sample");
+  });
+
+  it("parses devourer refine command", () => {
+    const action = parseAction("refine humanoid", initialGameState);
+    expect(action.type).toBe("devourer_refine");
+    expect(action.target).toBe("humanoid");
+  });
+
+  it("parses purge taint as devourer purge", () => {
+    const action = parseAction("purge taint", initialGameState);
+    expect(action.type).toBe("devourer_purge");
+  });
   it("parses escape command in combat", () => {
     const state = {
       ...initialGameState,

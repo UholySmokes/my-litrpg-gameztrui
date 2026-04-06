@@ -15,6 +15,7 @@ import {
   resolveLocationId,
 } from "../world/WorldDataRegistry.js";
 import { resolvePlayerArchetypeSystem } from "../systems/archetype/resolvePlayerArchetypeSystem.js";
+import { isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
 import { toNumber } from "../utils/shared.js";
 import {
   PROMPT_MODES,
@@ -258,6 +259,9 @@ function buildArchetypeToneDirective(archetypeSystem) {
   const name = archetypeSystem.name || "Unknown";
 
   const tone = archetypeSystem.narrativeTone;
+  if (isDevourerCorePlayer({ archetypeSystem })) {
+    return `\nNarrative tone: a cold, analytical big-sister system presence. Use precise corrective notices, mild condescension, and optimization-focused guidance. Sentient devours should trigger immediate taboo and trust-fracture framing.`;
+  }
   if (tone && typeof tone === "object" && !Array.isArray(tone)) {
     const voice = tone.voice || "";
     const sentenceStyle = tone.sentenceStyle || "";
@@ -891,6 +895,37 @@ function buildMagicContextLines(player = {}, world = {}) {
   return lines;
 }
 
+
+function buildDevourerContextLines(player = {}) {
+  if (!isDevourerCorePlayer(player)) return [];
+  const runtime = player?.archetypeSystem?.runtime || {};
+  const resource = player?.archetypeSystem?.resource || {};
+  const biomass = Number.isFinite(Number(resource.current)) ? Math.floor(Number(resource.current)) : 0;
+  const taint = Number.isFinite(Number(runtime.taint)) ? Math.floor(Number(runtime.taint)) : 0;
+  const storedSamples = runtime?.storedSamples && typeof runtime.storedSamples === "object"
+    ? Object.entries(runtime.storedSamples)
+        .map(([family, sample]) => `${family}:${Math.max(0, Math.floor(Number(sample?.count || 0)))}`)
+        .filter((line) => !line.endsWith(":0"))
+    : [];
+  const adaptations = runtime?.adaptations && typeof runtime.adaptations === "object"
+    ? Object.entries(runtime.adaptations)
+        .map(([family, entry]) => ({ family, rank: Math.max(0, Math.floor(Number(entry?.rank || 0))) }))
+        .filter((entry) => entry.rank > 0)
+        .map((entry) => `${entry.family}:r${entry.rank}`)
+    : [];
+  const recentPrey = Array.isArray(runtime?.recentPrey) ? runtime.recentPrey.slice(-3) : [];
+  const sentientCount = Math.max(0, Math.floor(Number(runtime?.sentientDevours || 0)));
+
+  return [
+    `Devourer Biomass: ${biomass}`,
+    `Devourer Taint: ${taint}`,
+    `Devourer Stored Samples: ${storedSamples.length ? storedSamples.join(", ") : "none"}`,
+    `Devourer Adaptations: ${adaptations.length ? adaptations.join(", ") : "none"}`,
+    `Devourer Recent Prey: ${recentPrey.length ? recentPrey.join(" | ") : "none"}`,
+    `Devourer Sentient Devours: ${sentientCount}`,
+  ];
+}
+
 /**
  * Builds the context section from game state
  */
@@ -900,6 +935,7 @@ function buildContextSection(gameState) {
   const archetypeSystem = resolvePlayerArchetypeSystem(player);
   const systemLines = [];
   const magicLines = buildMagicContextLines(player, world);
+  const devourerLines = buildDevourerContextLines(player);
   const takeSystemPreview = (previewKey, fullKey, count = 2) => {
     if (!archetypeSystem || typeof archetypeSystem !== "object") return [];
     if (Array.isArray(archetypeSystem[previewKey])) {
@@ -1104,6 +1140,7 @@ function buildContextSection(gameState) {
     `Active Quests: ${activeQuests}`,
     ...magicLines,
     ...systemLines,
+    ...devourerLines,
     `World Flags: ${worldFlags}`,
   ].filter((line) => typeof line === "string" && line.trim().length > 0);
 

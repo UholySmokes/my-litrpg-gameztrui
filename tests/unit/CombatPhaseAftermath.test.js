@@ -72,4 +72,52 @@ describe("combatAftermath", () => {
     expect(next.combat.log.some((entry) => entry.includes("Practice Slime defeated!"))).toBe(true);
     expect(next.combat.log.at(-1)).toBe("Victory! All enemies defeated!");
   });
+
+
+  it("harvests devourer prey samples on enemy defeat", () => {
+    const state = {
+      ...initialGameState,
+      player: {
+        ...initialGameState.player,
+        archetypeSystem: {
+          id: "devourer_core",
+          name: "Devourer Core",
+          category: "System",
+          resource: { name: "Biomass", current: 0, max: 100, color: "#7DFFB3" },
+          runtime: {},
+        },
+        progress: {
+          totalKills: 0,
+          killsByEnemyId: {},
+          totalGoldEarned: 0,
+        },
+      },
+      combat: {
+        status: "active",
+        turn: "player",
+        enemies: [
+          {
+            id: "bandit_raider",
+            name: "Bandit Raider",
+            level: 2,
+            type: "humanoid",
+            sentient: true,
+            tags: ["humanoid", "shadow"],
+            xpReward: 9,
+            goldReward: 2,
+            dropTable: [],
+            stats: { hp: { current: 0, max: 12 } },
+          },
+        ],
+        log: ["Combat started."],
+      },
+    };
+
+    const next = handleEnemyDefeatPhase(state, 0);
+    const runtime = next.player.archetypeSystem.runtime;
+    expect(runtime.storedSamples.humanoid.count).toBeGreaterThan(0);
+    expect(runtime.storedSamples.shadow.count).toBeGreaterThan(0);
+    expect(next.combat.log.some((entry) => entry.includes("Sentient prey logged"))).toBe(true);
+  });
+
 });

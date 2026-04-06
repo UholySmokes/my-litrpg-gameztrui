@@ -88,6 +88,7 @@ export default function GameUI({ user }) {
   const [activeSurface, setActiveSurface] = useState(() =>
     hasCreatedCharacterSnapshot(state) ? "adventure" : "hub",
   );
+  const [hasHubInteracted, setHasHubInteracted] = useState(false);
 
   const {
     persistLocalAutosave,
@@ -305,6 +306,7 @@ export default function GameUI({ user }) {
 
   const handleStartCreation = useCallback(
     (selectedHero) => {
+      setHasHubInteracted(true);
       setActiveSurface("creation");
       if (selectedHero?.name) {
         addSystemMessage(
@@ -507,7 +509,7 @@ export default function GameUI({ user }) {
   return (
     <div className="runic-app">
       <div className="runic-app__stack">
-        <PwaInstallPrompt enabled={shouldShowHub} />
+        <PwaInstallPrompt enabled={shouldShowHub && hasHubInteracted} />
 
         {shouldShowHub ? (
           <CharacterHub user={user} onStartCreation={handleStartCreation} />

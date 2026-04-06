@@ -18,6 +18,7 @@ import {
 import { INITIAL_CONFIG } from "../data/initialState.js";
 import { describeBalanceConfig } from "../data/balance/balanceConfig.js";
 import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegistry.js";
+import { isDevourerCorePlayer, normalizeDevourerArchetypeState } from "../systems/archetype/devourerCore.js";
 import {
   WORLD_META,
   MAJOR_FACTION_IDS,
@@ -337,7 +338,7 @@ function normalizePlayer(rawPlayer, config) {
   const resolvedArchetype = rawArchetypeSystem?.id
     ? getArchetypeSystemById(rawArchetypeSystem.id)
     : null;
-  const archetypeSystem = resolvedArchetype
+  const archetypeSystemBase = resolvedArchetype
     ? {
         ...resolvedArchetype,
         ...(rawArchetypeSystem || {}),
@@ -349,6 +350,9 @@ function normalizePlayer(rawPlayer, config) {
         implementationProfile: resolvedArchetype.implementationProfile,
       }
     : rawArchetypeSystem;
+  const archetypeSystem = isDevourerCorePlayer({ archetypeSystem: archetypeSystemBase })
+    ? normalizeDevourerArchetypeState(archetypeSystemBase)
+    : archetypeSystemBase;
   const progressionModifiers = normalizeProgressionModifiers(
     player.progressionModifiers,
     archetypeSystem?.progressionImpact,

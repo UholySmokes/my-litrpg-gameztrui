@@ -10,6 +10,7 @@ import {
 import { getTitleBonuses } from "../titles/TitleSystem.js";
 import { random } from "../../utils/DeterministicRandom.js";
 import { hasCreationPerk } from "../../core/creationPerks.js";
+import { applyDevourerHarvestToState } from "../archetype/devourerCore.js";
 
 const createEnemyDefeatLog = ({
   combatLog,
@@ -173,6 +174,9 @@ export function handleEnemyDefeatPhase(state, enemyIndex) {
   );
   nextState = addXp(nextState, xpGained);
 
+  const devourerHarvest = applyDevourerHarvestToState(nextState, enemy);
+  nextState = devourerHarvest.state;
+
   const itemCount = adjustedItems.reduce(
     (sum, item) => sum + Math.max(1, Math.floor(toNumber(item?.quantity, 1))),
     0,
@@ -184,14 +188,17 @@ export function handleEnemyDefeatPhase(state, enemyIndex) {
     combat: {
       ...nextState.combat,
       enemies: newEnemies,
-      log: createEnemyDefeatLog({
-        combatLog: nextState.combat.log,
-        enemyName: enemy.name,
-        xpGained,
-        baseXp: drops.xp,
-        goldEarned,
-        itemCount,
-      }),
+      log: [
+        ...createEnemyDefeatLog({
+          combatLog: nextState.combat.log,
+          enemyName: enemy.name,
+          xpGained,
+          baseXp: drops.xp,
+          goldEarned,
+          itemCount,
+        }),
+        ...(Array.isArray(devourerHarvest.notices) ? devourerHarvest.notices : []),
+      ],
     },
   };
 

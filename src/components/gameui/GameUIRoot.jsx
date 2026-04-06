@@ -15,6 +15,7 @@ import { resolveGameUiSurfaceState } from "./gameUiSurfaceState.js";
 import { useGameUiCharacterCreationFlow } from "./useGameUiCharacterCreationFlow.js";
 import { useGameUiInteractionHandlers } from "./useGameUiInteractionHandlers.js";
 import { buildNarrativePanelView } from "./gameUiSelectors.js";
+import { hasCharacterCreationDraft } from "./characterCreationDraft.js";
 import {
   hasCreatedCharacterSnapshot,
   isRecord,
@@ -87,7 +88,11 @@ export default function GameUI({ user }) {
   const narrativeMemoryRef = useRef(null);
   const previousStateRef = useRef(null);
   const [activeSurface, setActiveSurface] = useState(() =>
-    hasCreatedCharacterSnapshot(state) ? "adventure" : "hub",
+    hasCreatedCharacterSnapshot(state)
+      ? "adventure"
+      : hasCharacterCreationDraft()
+        ? "creation"
+        : "hub",
   );
   const [hasHubInteracted, setHasHubInteracted] = useState(false);
 
@@ -150,8 +155,21 @@ export default function GameUI({ user }) {
     }
 
     setCharacterCreated(false);
-    setActiveSurface("hub");
+    setActiveSurface(hasCharacterCreationDraft() ? "creation" : "hub");
   }, [activeSurface, hasCharacterSnapshot, isTransitioning, setCharacterCreated]);
+
+  useEffect(() => {
+    if (
+      isTransitioning ||
+      hasCharacterSnapshot ||
+      activeSurface !== "hub" ||
+      !hasCharacterCreationDraft()
+    ) {
+      return;
+    }
+
+    setActiveSurface("creation");
+  }, [activeSurface, hasCharacterSnapshot, isTransitioning]);
 
   const {
     equipmentSelectSlot,

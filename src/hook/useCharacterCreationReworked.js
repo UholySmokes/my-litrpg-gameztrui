@@ -58,6 +58,10 @@ import {
   optimizeStartCommand,
   sanitizeStartCommand,
 } from "../core/customStart.js";
+import {
+  patchCharacterCreationDraft,
+  readCharacterCreationDraft,
+} from "../components/gameui/characterCreationDraft.js";
 
 const INITIAL_FREE_POINTS = 15;
 const BASE_ATTRIBUTE_VALUE = 5;
@@ -160,6 +164,21 @@ function uniqueById(values = []) {
   });
 }
 
+function getInitialCharacterCreationDraft() {
+  const draft = readCharacterCreationDraft();
+  return draft && typeof draft === "object" ? draft : null;
+}
+
+function findCreationRaceById(raceId) {
+  if (typeof raceId !== "string" || !raceId.trim()) return null;
+  return AVAILABLE_CREATION_RACES.find((entry) => entry?.id === raceId.trim()) || null;
+}
+
+function findCreationClassById(classId) {
+  if (typeof classId !== "string" || !classId.trim()) return null;
+  return AVAILABLE_CREATION_CLASSES.find((entry) => entry?.id === classId.trim()) || null;
+}
+
 export function buildCharacterCreationAttributes({
   attributePoints,
   selectedRace,
@@ -218,9 +237,18 @@ export function buildCharacterCreationSkillPools(cls, race, options = {}) {
 }
 
 export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) {
-  const [currentStep, setCurrentStep] = useState(CREATION_STEPS.NAME);
-  const [showBootSequence, setShowBootSequence] = useState(true);
-  const [rerollsRemaining, setRerollsRemaining] = useState(INITIAL_REROLLS);
+  const initialDraft = useMemo(() => getInitialCharacterCreationDraft(), []);
+  const [currentStep, setCurrentStep] = useState(
+    Number.isFinite(initialDraft?.currentStep)
+      ? initialDraft.currentStep
+      : CREATION_STEPS.NAME,
+  );
+  const [showBootSequence, setShowBootSequence] = useState(!initialDraft?.started);
+  const [rerollsRemaining, setRerollsRemaining] = useState(
+    Number.isFinite(initialDraft?.rerollsRemaining)
+      ? initialDraft.rerollsRemaining
+      : INITIAL_REROLLS,
+  );
 
   const STEPS = CREATION_STEPS;
   const stepSequence = useMemo(
@@ -228,27 +256,59 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     [STEPS, advancedUnlocked],
   );
 
-  const [name, setName] = useState("");
-  const [gender, setGender] = useState("");
-  const [selectedRace, setSelectedRace] = useState(null);
-  const [selectedClass, setSelectedClass] = useState(null);
-  const [selectedSecondaryClass, setSelectedSecondaryClass] = useState(null);
-  const [selectedArchetypeSystem, setSelectedArchetypeSystem] = useState(null);
-  const [selectedPerkIds, setSelectedPerkIds] = useState([]);
-  const [selectedStarterTreeIds, setSelectedStarterTreeIds] = useState([]);
-  const [selectedAlignmentId, setSelectedAlignmentId] = useState(null);
-  const [selectedSkillLoadoutId, setSelectedSkillLoadoutId] = useState(null);
-  const [selectedProfession, setSelectedProfession] = useState(null);
-  const [startingPrompt, setStartingPrompt] = useState("");
-  const [optimizedStartingPromptOptions, setOptimizedStartingPromptOptions] = useState([]);
+  const [name, setName] = useState(initialDraft?.name || "");
+  const [gender, setGender] = useState(initialDraft?.gender || "");
+  const [selectedRace, setSelectedRace] = useState(
+    () => findCreationRaceById(initialDraft?.selectedRaceId),
+  );
+  const [selectedClass, setSelectedClass] = useState(
+    () => findCreationClassById(initialDraft?.selectedClassId),
+  );
+  const [selectedSecondaryClass, setSelectedSecondaryClass] = useState(
+    () => findCreationClassById(initialDraft?.selectedSecondaryClassId),
+  );
+  const [selectedArchetypeSystem, setSelectedArchetypeSystem] = useState(
+    () => getCharacterCreationArchetypeSystemById(initialDraft?.selectedArchetypeSystemId) || null,
+  );
+  const [selectedPerkIds, setSelectedPerkIds] = useState(
+    Array.isArray(initialDraft?.selectedPerkIds) ? initialDraft.selectedPerkIds : [],
+  );
+  const [selectedStarterTreeIds, setSelectedStarterTreeIds] = useState(
+    Array.isArray(initialDraft?.selectedStarterTreeIds) ? initialDraft.selectedStarterTreeIds : [],
+  );
+  const [selectedAlignmentId, setSelectedAlignmentId] = useState(initialDraft?.selectedAlignmentId || null);
+  const [selectedSkillLoadoutId, setSelectedSkillLoadoutId] = useState(initialDraft?.selectedSkillLoadoutId || null);
+  const [selectedProfession, setSelectedProfession] = useState(
+    () => getProfessionSummaryById(initialDraft?.selectedProfessionId) || null,
+  );
+  const [startingPrompt, setStartingPrompt] = useState(initialDraft?.startingPrompt || "");
+  const [optimizedStartingPromptOptions, setOptimizedStartingPromptOptions] = useState(
+    Array.isArray(initialDraft?.optimizedStartingPromptOptions)
+      ? initialDraft.optimizedStartingPromptOptions
+      : [],
+  );
 
   const creationPerkLimits = getCharacterCreationPerkLimits();
   const starterTreeLimits = getCharacterCreationStarterTreeLimits();
   const availableCreationAlignments = listCharacterCreationAlignments();
-  const [selectedActiveSkills, setSelectedActiveSkills] = useState([]);
-  const [selectedPassiveSkills, setSelectedPassiveSkills] = useState([]);
+  const [selectedActiveSkills, setSelectedActiveSkills] = useState(
+    () =>
+      Array.isArray(initialDraft?.selectedActiveSkillIds)
+        ? initialDraft.selectedActiveSkillIds
+            .map((skillId) => getCharacterCreationSkillSummaryById(skillId))
+            .filter(Boolean)
+        : [],
+  );
+  const [selectedPassiveSkills, setSelectedPassiveSkills] = useState(
+    () =>
+      Array.isArray(initialDraft?.selectedPassiveSkillIds)
+        ? initialDraft.selectedPassiveSkillIds
+            .map((skillId) => getCharacterCreationSkillSummaryById(skillId))
+            .filter(Boolean)
+        : [],
+  );
   const [attributePoints, setAttributePoints] = useState(() =>
-    createAttributeBaseline(BASE_ATTRIBUTE_VALUE),
+    ensureAttributeShape(initialDraft?.attributePoints, BASE_ATTRIBUTE_VALUE),
   );
 
   const systemOptionState = useMemo(
@@ -357,6 +417,49 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       skillPools,
     ],
   );
+
+  useEffect(() => {
+    patchCharacterCreationDraft({
+      started: true,
+      currentStep,
+      rerollsRemaining,
+      name,
+      gender,
+      selectedRaceId: selectedRace?.id || null,
+      selectedClassId: selectedClass?.id || null,
+      selectedSecondaryClassId: selectedSecondaryClass?.id || null,
+      selectedArchetypeSystemId: selectedArchetypeSystem?.id || null,
+      selectedProfessionId: selectedProfession?.id || null,
+      selectedPerkIds,
+      selectedStarterTreeIds,
+      selectedAlignmentId,
+      selectedSkillLoadoutId,
+      selectedActiveSkillIds: selectedActiveSkills.map((skill) => skill.id),
+      selectedPassiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
+      attributePoints,
+      startingPrompt,
+      optimizedStartingPromptOptions,
+    });
+  }, [
+    attributePoints,
+    currentStep,
+    gender,
+    name,
+    optimizedStartingPromptOptions,
+    rerollsRemaining,
+    selectedActiveSkills,
+    selectedAlignmentId,
+    selectedArchetypeSystem,
+    selectedClass,
+    selectedPassiveSkills,
+    selectedPerkIds,
+    selectedProfession,
+    selectedRace,
+    selectedSecondaryClass,
+    selectedSkillLoadoutId,
+    selectedStarterTreeIds,
+    startingPrompt,
+  ]);
 
   const resolveSelectedSkillValidation = useCallback(() => {
     return validateCharacterCreationSkillSelections(

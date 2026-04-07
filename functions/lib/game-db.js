@@ -17,12 +17,15 @@ function normalizeBackend(value) {
 	if (["firestore", "firebase", "fsdb"].includes(normalized)) {
 		return "firestore";
 	}
+	if (["supabase", "postgres", "postgresql", "pg"].includes(normalized)) {
+		return "supabase";
+	}
 	return normalized;
 }
 
 function resolveGameDbBackend() {
 	const override = normalizeBackend(getOptionalEnv("GAME_DB_STORAGE"));
-	if (override === "file" || override === "firestore") {
+	if (override === "file" || override === "firestore" || override === "supabase") {
 		return override;
 	}
 

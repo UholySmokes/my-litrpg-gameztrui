@@ -1,5 +1,6 @@
 const { resolveGameDbBackend, fileDb } = require("./game-db");
 const { computeSaveStateHash } = require("./save-versioning");
+const supabaseStore = require("./supabase");
 
 let firebaseAdminApp = null;
 let firebaseAdminFirestore = null;
@@ -42,8 +43,10 @@ function resolveSavesBackend() {
 	if (["file", "filesystem", "fs", "json", "local"].includes(raw)) return "file";
 	if (["firestore", "firebase", "cloud-firestore"].includes(raw)) return "firestore";
 	if (["dataconnect", "data-connect", "dc"].includes(raw)) return "dataconnect";
+	if (["supabase", "postgres", "postgresql", "pg"].includes(raw)) return "supabase";
 	const gameBackend = resolveGameDbBackend();
 	if (gameBackend === "file") return "file";
+	if (gameBackend === "supabase") return "supabase";
 	return "dataconnect";
 }
 
@@ -366,6 +369,28 @@ function mapFirestoreSave(doc) {
 	};
 }
 
+function mapSupabaseSave(row) {
+	if (!row || typeof row !== "object") return null;
+	return {
+		id: String(row.id || ""),
+		user_id: String(row.user_id || ""),
+		save_name: String(row.save_name || "Auto Save"),
+		game_state:
+			typeof row.game_state === "string"
+				? row.game_state
+				: JSON.stringify(row.game_state || {}),
+		state_hash:
+			normalizeString(row.state_hash) ||
+			computeSaveStateHash(
+				typeof row.game_state === "string"
+					? row.game_state
+					: JSON.stringify(row.game_state || {}),
+			),
+		created_at: toIso(row.created_at),
+		updated_at: toIso(row.updated_at),
+	};
+}
+
 async function fireListSaves({ userId, limit }) {
 	const snapshot = await getFirestoreDb()
 		.collection(getCollectionName())
@@ -481,10 +506,121 @@ async function firePurgeUserProgress({ userId }) {
 	};
 }
 
-async function withBackend({ dataconnectFn, firestoreFn, fileFn }) {
+async function supaListSaves({ userId, limit }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.select("id, save_name, created_at, updated_at, state_hash")
+		.eq("user_id", String(userId))
+		.order("updated_at", { ascending: false })
+		.limit(normalizePositiveLimit(limit));
+
+	if (error) throw error;
+	return Array.isArray(data)
+		? data.map((row) => ({
+				id: String(row.id || ""),
+				save_name: String(row.save_name || "Auto Save"),
+				created_at: toIso(row.created_at),
+				updated_at: toIso(row.updated_at),
+				state_hash: normalizeString(row.state_hash) || null,
+			}))
+		: [];
+}
+
+async function supaGetSave({ userId, saveId }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.select("*")
+		.eq("id", String(saveId))
+		.eq("user_id", String(userId))
+		.limit(1);
+
+	if (error) throw error;
+	if (!Array.isArray(data) || data.length === 0) return null;
+	return mapSupabaseSave(data[0]);
+}
+
+async function supaCreateSave({ saveId, userId, saveName, gameState, now }) {
+	const iso = now || nowIso();
+	const stateHash = computeSaveStateHash(gameState);
+	const payload = {
+		id: String(saveId),
+		user_id: String(userId),
+		save_name: String(saveName),
+		game_state: safeParseJson(gameState, {}),
+		state_hash: stateHash,
+		created_at: iso,
+		updated_at: iso,
+	};
+
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.insert(payload)
+		.select("*")
+		.single();
+
+	if (error) throw error;
+	return mapSupabaseSave(data);
+}
+
+async function supaUpdateSave({ userId, saveId, saveName, gameState, now }) {
+	const iso = now || nowIso();
+	const stateHash = computeSaveStateHash(gameState);
+	const payload = {
+		save_name: String(saveName),
+		game_state: safeParseJson(gameState, {}),
+		state_hash: stateHash,
+		updated_at: iso,
+	};
+
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.update(payload)
+		.eq("id", String(saveId))
+		.eq("user_id", String(userId))
+		.select("*");
+
+	if (error) throw error;
+	if (!Array.isArray(data) || data.length === 0) return null;
+	return mapSupabaseSave(data[0]);
+}
+
+async function supaDeleteSave({ userId, saveId }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.delete()
+		.eq("id", String(saveId))
+		.eq("user_id", String(userId))
+		.select("id");
+
+	if (error) throw error;
+	return Array.isArray(data) && data.length > 0;
+}
+
+async function supaPurgeUserProgress({ userId }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { error, count } = await client
+		.from(getCollectionName())
+		.delete({ count: "exact" })
+		.eq("user_id", String(userId));
+
+	if (error) throw error;
+	return {
+		deletedSaveCount: Number(count) || 0,
+	};
+}
+
+async function withBackend({ supabaseFn, dataconnectFn, firestoreFn, fileFn }) {
 	const backend = resolveSavesBackend();
 	if (backend === "file") {
 		return fileFn();
+	}
+	if (backend === "supabase") {
+		return supabaseFn();
 	}
 	if (backend === "dataconnect") {
 		try {
@@ -501,6 +637,7 @@ async function withBackend({ dataconnectFn, firestoreFn, fileFn }) {
 
 async function listSaves({ userId, limit }) {
 	return withBackend({
+		supabaseFn: () => supaListSaves({ userId, limit }),
 		dataconnectFn: () => dcListSaves({ userId, limit }),
 		firestoreFn: () => fireListSaves({ userId, limit }),
 		fileFn: () => fileDb.listSaves({ userId, limit }),
@@ -509,6 +646,7 @@ async function listSaves({ userId, limit }) {
 
 async function getSave({ userId, saveId }) {
 	return withBackend({
+		supabaseFn: () => supaGetSave({ userId, saveId }),
 		dataconnectFn: () => dcGetSave({ userId, saveId }),
 		firestoreFn: () => fireGetSave({ userId, saveId }),
 		fileFn: () => fileDb.getSave({ userId, saveId }),
@@ -517,6 +655,8 @@ async function getSave({ userId, saveId }) {
 
 async function createSave({ saveId, userId, saveName, gameState, now }) {
 	return withBackend({
+		supabaseFn: () =>
+			supaCreateSave({ saveId, userId, saveName, gameState, now }),
 		dataconnectFn: () =>
 			dcCreateSave({ saveId, userId, saveName, gameState, now }),
 		firestoreFn: () =>
@@ -527,6 +667,8 @@ async function createSave({ saveId, userId, saveName, gameState, now }) {
 
 async function updateSave({ userId, saveId, saveName, gameState, now }) {
 	return withBackend({
+		supabaseFn: () =>
+			supaUpdateSave({ userId, saveId, saveName, gameState, now }),
 		dataconnectFn: () =>
 			dcUpdateSave({ userId, saveId, saveName, gameState, now }),
 		firestoreFn: () =>
@@ -537,6 +679,7 @@ async function updateSave({ userId, saveId, saveName, gameState, now }) {
 
 async function deleteSave({ userId, saveId }) {
 	return withBackend({
+		supabaseFn: () => supaDeleteSave({ userId, saveId }),
 		dataconnectFn: () => dcDeleteSave({ userId, saveId }),
 		firestoreFn: () => fireDeleteSave({ userId, saveId }),
 		fileFn: () => fileDb.deleteSave({ userId, saveId }),
@@ -546,6 +689,7 @@ async function deleteSave({ userId, saveId }) {
 async function purgeUserProgress({ ownerId, userId } = {}) {
 	const resolvedUserId = normalizeString(ownerId || userId);
 	return withBackend({
+		supabaseFn: () => supaPurgeUserProgress({ userId: resolvedUserId }),
 		dataconnectFn: () => dcPurgeUserProgress({ userId: resolvedUserId }),
 		firestoreFn: () => firePurgeUserProgress({ userId: resolvedUserId }),
 		fileFn: async () => {

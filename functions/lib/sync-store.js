@@ -3,6 +3,7 @@ const path = require("path");
 const { getApps, initializeApp } = require("firebase-admin/app");
 const { getFirestore, Timestamp } = require("firebase-admin/firestore");
 const { resolveGameDbBackend } = require("./game-db");
+const supabaseStore = require("./supabase");
 const dataconnectStore = require("./sync-dataconnect-store");
 const { normalizeSyncEvent } = require("./sync-core");
 
@@ -25,13 +26,29 @@ function nowTimestamp() {
 	return Timestamp.fromDate(new Date());
 }
 
+function toIso(value) {
+	if (!value) return null;
+	if (typeof value === "string") return value;
+	if (value instanceof Date) return value.toISOString();
+	if (typeof value.toDate === "function") {
+		try {
+			return value.toDate().toISOString();
+		} catch {
+			return null;
+		}
+	}
+	return null;
+}
+
 function resolveSyncBackend() {
 	const raw = getOptionalEnv("SYNC_DB_STORAGE").toLowerCase();
 	if (["file", "filesystem", "fs", "json", "local"].includes(raw)) return "file";
 	if (["firestore", "firebase", "cloud-firestore"].includes(raw)) return "firestore";
 	if (["dataconnect", "data-connect", "dc"].includes(raw)) return "dataconnect";
+	if (["supabase", "postgres", "postgresql", "pg"].includes(raw)) return "supabase";
 	const gameBackend = resolveGameDbBackend();
 	if (gameBackend === "file") return "file";
+	if (gameBackend === "supabase") return "supabase";
 	return "dataconnect";
 }
 
@@ -133,10 +150,13 @@ function ensureFirestore() {
 	return getFirestore();
 }
 
-async function withBackend({ dataconnectFn, firestoreFn, fileFn }) {
+async function withBackend({ supabaseFn, dataconnectFn, firestoreFn, fileFn }) {
 	const backend = resolveSyncBackend();
 	if (backend === "file") {
 		return fileFn();
+	}
+	if (backend === "supabase") {
+		return supabaseFn();
 	}
 	if (backend === "dataconnect") {
 		try {
@@ -208,6 +228,51 @@ function mapEventDoc(doc) {
 				: typeof data.created_at?.toDate === "function"
 					? data.created_at.toDate().toISOString()
 					: null,
+	};
+}
+
+function mapSupabaseRun(row) {
+	if (!row || typeof row !== "object") return null;
+	return {
+		owner_id: String(row.owner_id || ""),
+		run_id: String(row.run_id || ""),
+		state: row.state && typeof row.state === "object" ? row.state : null,
+		save_slot_id: typeof row.save_slot_id === "string" ? row.save_slot_id : "",
+		created_at: toIso(row.created_at),
+		updated_at: toIso(row.updated_at),
+	};
+}
+
+function mapSupabaseEvent(row) {
+	if (!row || typeof row !== "object") return null;
+	const normalized = normalizeSyncEvent(row || {});
+	return {
+		owner_id: String(row.owner_id || ""),
+		run_id: String(row.run_id || ""),
+		commit_id: String(row.commit_id || ""),
+		client_seq: Number.isFinite(Number(row.client_seq))
+			? Number(row.client_seq)
+			: null,
+		accepted: Boolean(row.accepted),
+		error_code: typeof row.error_code === "string" ? row.error_code : null,
+		message: typeof row.message === "string" ? row.message : null,
+		state_hash: typeof row.state_hash === "string" ? row.state_hash : null,
+		seq: Number.isFinite(Number(row.seq)) ? Number(row.seq) : null,
+		tick: Number.isFinite(Number(row.tick)) ? Number(row.tick) : null,
+		event_type:
+			typeof row.event_type === "string"
+				? row.event_type
+				: typeof normalized.eventType === "string"
+					? normalized.eventType
+					: "TRIGGER",
+		trigger_type:
+			typeof row.trigger_type === "string"
+				? row.trigger_type
+				: typeof normalized.triggerType === "string"
+					? normalized.triggerType
+					: null,
+		commit: row.commit && typeof row.commit === "object" ? row.commit : null,
+		created_at: toIso(row.created_at),
 	};
 }
 
@@ -464,8 +529,169 @@ async function firePurgeUserProgress({ ownerId }) {
 	};
 }
 
+async function supaGetRun({ ownerId, runId }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getRunsCollectionName())
+		.select("*")
+		.eq("owner_id", String(ownerId))
+		.eq("run_id", String(runId))
+		.limit(1);
+
+	if (error) throw error;
+	if (!Array.isArray(data) || data.length === 0) return null;
+	return mapSupabaseRun(data[0]);
+}
+
+async function supaPutRun({ ownerId, runId, state, saveSlotId = "" }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getRunsCollectionName())
+		.upsert(
+			{
+				owner_id: String(ownerId),
+				run_id: String(runId),
+				state,
+				save_slot_id: String(saveSlotId || ""),
+				updated_at: nowIso(),
+			},
+			{ onConflict: "owner_id,run_id" },
+		)
+		.select("*")
+		.single();
+
+	if (error) throw error;
+	return mapSupabaseRun(data);
+}
+
+async function supaGetEventByCommitId({ ownerId, runId, commitId }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getEventsCollectionName())
+		.select("*")
+		.eq("owner_id", String(ownerId))
+		.eq("run_id", String(runId))
+		.eq("commit_id", String(commitId))
+		.limit(1);
+
+	if (error) throw error;
+	if (!Array.isArray(data) || data.length === 0) return null;
+	return mapSupabaseEvent(data[0]);
+}
+
+async function supaAppendEvent({ ownerId, runId, event }) {
+	const normalizedEvent = normalizeSyncEvent(event || {});
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getEventsCollectionName())
+		.upsert(
+			{
+				owner_id: String(ownerId),
+				run_id: String(runId),
+				commit_id: String(event.commit_id || event.commitId || ""),
+				client_seq: Number.isFinite(Number(event.client_seq))
+					? Number(event.client_seq)
+					: null,
+				accepted: Boolean(event.accepted),
+				error_code: typeof event.error_code === "string" ? event.error_code : null,
+				message: typeof event.message === "string" ? event.message : null,
+				state_hash: typeof event.state_hash === "string" ? event.state_hash : null,
+				seq: Number.isFinite(Number(event.seq)) ? Number(event.seq) : null,
+				tick: Number.isFinite(Number(event.tick)) ? Number(event.tick) : null,
+				event_type: String(normalizedEvent.eventType || "TRIGGER"),
+				trigger_type:
+					typeof normalizedEvent.triggerType === "string"
+						? normalizedEvent.triggerType
+						: null,
+				commit: event.commit && typeof event.commit === "object" ? event.commit : null,
+				created_at: nowIso(),
+			},
+			{ onConflict: "owner_id,run_id,commit_id" },
+		)
+		.select("*")
+		.single();
+
+	if (error) throw error;
+	return mapSupabaseEvent(data);
+}
+
+async function supaListEvents({
+	ownerId,
+	runId,
+	afterSeq = 0,
+	limit = DEFAULT_PULL_EVENT_LIMIT,
+}) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const cappedLimit = Math.max(1, Math.min(500, Number(limit) || DEFAULT_PULL_EVENT_LIMIT));
+	const { data, error } = await client
+		.from(getEventsCollectionName())
+		.select("*")
+		.eq("owner_id", String(ownerId))
+		.eq("run_id", String(runId))
+		.gt("client_seq", Number(afterSeq || 0))
+		.order("client_seq", { ascending: true })
+		.limit(cappedLimit);
+
+	if (error) throw error;
+	return Array.isArray(data)
+		? data.map((row) => mapSupabaseEvent(row)).filter(Boolean)
+		: [];
+}
+
+async function supaGetMigrationVersion({ ownerId }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getProfilesCollectionName())
+		.select("migration_version")
+		.eq("owner_id", String(ownerId))
+		.limit(1);
+
+	if (error) throw error;
+	if (!Array.isArray(data) || data.length === 0) return 0;
+	return Math.max(0, Number(data[0]?.migration_version || 0) || 0);
+}
+
+async function supaMarkMigrationVersion({ ownerId, version, displayName = "" }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { error } = await client
+		.from(getProfilesCollectionName())
+		.upsert(
+			{
+				owner_id: String(ownerId),
+				display_name: String(displayName || "Traveler"),
+				migration_version: Math.max(0, Number(version) || 0),
+				updated_at: nowIso(),
+			},
+			{ onConflict: "owner_id" },
+		);
+
+	if (error) throw error;
+	return true;
+}
+
+async function supaPurgeUserProgress({ ownerId }) {
+	const client = supabaseStore.getSupabaseServiceClient();
+	const eventsDelete = await client
+		.from(getEventsCollectionName())
+		.delete({ count: "exact" })
+		.eq("owner_id", String(ownerId));
+	if (eventsDelete.error) throw eventsDelete.error;
+
+	const runsDelete = await client
+		.from(getRunsCollectionName())
+		.delete({ count: "exact" })
+		.eq("owner_id", String(ownerId));
+	if (runsDelete.error) throw runsDelete.error;
+
+	return {
+		deletedRunCount: Number(runsDelete.count) || 0,
+		deletedEventCount: Number(eventsDelete.count) || 0,
+	};
+}
+
 async function getRun({ ownerId, runId }) {
 	return withBackend({
+		supabaseFn: () => supaGetRun({ ownerId, runId }),
 		dataconnectFn: () => dataconnectStore.getRun({ ownerId, runId }),
 		firestoreFn: () => fireGetRun({ ownerId, runId }),
 		fileFn: () => fileGetRun({ ownerId, runId }),
@@ -474,6 +700,7 @@ async function getRun({ ownerId, runId }) {
 
 async function putRun({ ownerId, runId, state, saveSlotId = "" }) {
 	return withBackend({
+		supabaseFn: () => supaPutRun({ ownerId, runId, state, saveSlotId }),
 		dataconnectFn: () => dataconnectStore.putRun({ ownerId, runId, state, saveSlotId }),
 		firestoreFn: () => firePutRun({ ownerId, runId, state, saveSlotId }),
 		fileFn: () => filePutRun({ ownerId, runId, state, saveSlotId }),
@@ -482,6 +709,8 @@ async function putRun({ ownerId, runId, state, saveSlotId = "" }) {
 
 async function getEventByCommitId({ ownerId, runId, commitId }) {
 	return withBackend({
+		supabaseFn: () =>
+			supaGetEventByCommitId({ ownerId, runId, commitId }),
 		dataconnectFn: () =>
 			dataconnectStore.getEventByCommitId({ ownerId, runId, commitId }),
 		firestoreFn: () => fireGetEventByCommitId({ ownerId, runId, commitId }),
@@ -491,6 +720,7 @@ async function getEventByCommitId({ ownerId, runId, commitId }) {
 
 async function appendEvent({ ownerId, runId, event }) {
 	return withBackend({
+		supabaseFn: () => supaAppendEvent({ ownerId, runId, event }),
 		dataconnectFn: () => dataconnectStore.appendEvent({ ownerId, runId, event }),
 		firestoreFn: () => fireAppendEvent({ ownerId, runId, event }),
 		fileFn: () => fileAppendEvent({ ownerId, runId, event }),
@@ -499,6 +729,8 @@ async function appendEvent({ ownerId, runId, event }) {
 
 async function listEvents({ ownerId, runId, afterSeq = 0, limit = DEFAULT_PULL_EVENT_LIMIT }) {
 	return withBackend({
+		supabaseFn: () =>
+			supaListEvents({ ownerId, runId, afterSeq, limit }),
 		dataconnectFn: () =>
 			dataconnectStore.listEvents({ ownerId, runId, afterSeq, limit }),
 		firestoreFn: () => fireListEvents({ ownerId, runId, afterSeq, limit }),
@@ -508,6 +740,7 @@ async function listEvents({ ownerId, runId, afterSeq = 0, limit = DEFAULT_PULL_E
 
 async function getMigrationVersion({ ownerId }) {
 	return withBackend({
+		supabaseFn: () => supaGetMigrationVersion({ ownerId }),
 		dataconnectFn: () => dataconnectStore.getMigrationVersion({ ownerId }),
 		firestoreFn: () => fireGetMigrationVersion({ ownerId }),
 		fileFn: () => fileGetMigrationVersion({ ownerId }),
@@ -516,6 +749,8 @@ async function getMigrationVersion({ ownerId }) {
 
 async function markMigrationVersion({ ownerId, version, displayName = "" }) {
 	return withBackend({
+		supabaseFn: () =>
+			supaMarkMigrationVersion({ ownerId, version, displayName }),
 		dataconnectFn: () =>
 			dataconnectStore.markMigrationVersion({ ownerId, version, displayName }),
 		firestoreFn: () => fireMarkMigrationVersion({ ownerId, version, displayName }),
@@ -525,6 +760,7 @@ async function markMigrationVersion({ ownerId, version, displayName = "" }) {
 
 async function purgeUserProgress({ ownerId }) {
 	return withBackend({
+		supabaseFn: () => supaPurgeUserProgress({ ownerId }),
 		dataconnectFn: () => dataconnectStore.purgeUserProgress({ ownerId }),
 		firestoreFn: () => firePurgeUserProgress({ ownerId }),
 		fileFn: () => filePurgeUserProgress({ ownerId }),

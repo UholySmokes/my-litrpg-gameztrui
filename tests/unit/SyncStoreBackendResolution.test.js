@@ -44,6 +44,9 @@ describe("sync-store backend resolution", () => {
 
 		process.env.SYNC_DB_STORAGE = "dataconnect";
 		expect(syncStore.resolveSyncBackend()).toBe("dataconnect");
+
+		process.env.SYNC_DB_STORAGE = "supabase";
+		expect(syncStore.resolveSyncBackend()).toBe("supabase");
 	});
 
 	it("falls back to file when game backend is file", () => {
@@ -56,6 +59,12 @@ describe("sync-store backend resolution", () => {
 		delete process.env.SYNC_DB_STORAGE;
 		process.env.GAME_DB_STORAGE = "firestore";
 		expect(syncStore.resolveSyncBackend()).toBe("dataconnect");
+	});
+
+	it("inherits supabase when the shared game backend is supabase", () => {
+		delete process.env.SYNC_DB_STORAGE;
+		process.env.GAME_DB_STORAGE = "supabase";
+		expect(syncStore.resolveSyncBackend()).toBe("supabase");
 	});
 
 	it("persists migration metadata for file backend", async () => {

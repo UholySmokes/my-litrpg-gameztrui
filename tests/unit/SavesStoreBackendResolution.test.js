@@ -39,6 +39,9 @@ describe("saves-store backend resolution", () => {
 
 		process.env.GAME_SAVES_STORAGE = "dataconnect";
 		expect(savesStore.resolveSavesBackend()).toBe("dataconnect");
+
+		process.env.GAME_SAVES_STORAGE = "supabase";
+		expect(savesStore.resolveSavesBackend()).toBe("supabase");
 	});
 
 	it("falls back to file when game backend is file", () => {
@@ -51,6 +54,12 @@ describe("saves-store backend resolution", () => {
 		delete process.env.GAME_SAVES_STORAGE;
 		process.env.GAME_DB_STORAGE = "firestore";
 		expect(savesStore.resolveSavesBackend()).toBe("dataconnect");
+	});
+
+	it("inherits supabase when the shared game backend is supabase", () => {
+		delete process.env.GAME_SAVES_STORAGE;
+		process.env.GAME_DB_STORAGE = "supabase";
+		expect(savesStore.resolveSavesBackend()).toBe("supabase");
 	});
 
 	it("supports create/get/update/delete in file mode", async () => {

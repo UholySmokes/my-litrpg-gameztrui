@@ -12,6 +12,26 @@ This migration slice keeps the current request/auth layer intact. In other words
 
 Run [`supabase/schema.sql`](supabase/schema.sql) in the Supabase SQL editor or through the Supabase CLI.
 
+### Hosted path (recommended for this repo)
+
+If you already have a Supabase project, the simplest path is:
+
+1. Open the Supabase SQL editor for that project.
+2. Paste in [`supabase/schema.sql`](supabase/schema.sql).
+3. Run it once.
+
+This repo does not require a local Supabase stack for normal development. You can keep using the local web app plus Firebase Functions emulator while pointing persistence at a hosted Supabase project.
+
+### Local path (optional)
+
+If you want to run `npx supabase start` locally, make sure:
+
+1. Docker Desktop is installed.
+2. Docker Desktop is running and the engine is healthy.
+3. `docker version` works in the same terminal session.
+
+On Windows, `npx supabase start` will fail if Docker Desktop is missing, not started yet, or not on `PATH`. Also note that `supabase bootstrap` is not a repo-specific command here; use `npx supabase ...` or install the CLI globally if you want the bare `supabase` command.
+
 The schema creates:
 
 - `game_saves`

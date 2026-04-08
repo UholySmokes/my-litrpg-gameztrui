@@ -12,7 +12,7 @@ root_agent = LlmAgent(
     model=(
         os.getenv("NARRATOR_ADK_MODEL")
         or os.getenv("GEMINI_MODEL")
-        or "gemini-2.5-flash"
+        or "gemini-2.5"
     ),
     description=(
         'A specialized LitRPG narrator that turns game states into immersive '

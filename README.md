@@ -167,7 +167,8 @@ npm run vercel:deploy:preview
 ```
 
 - This repo does not commit `.vercel/project.json`; local Vercel linkage stays machine-local.
-- Protected previews use Vercel Authentication. For terminal checks, use `npx vercel curl / --deployment <deployment-url>` or `npx vercel curl /api/health --deployment <deployment-url>` after login.
+- Protected previews use Vercel Authentication. For terminal checks, use `npx vercel curl / --deployment <deployment-url>` after login.
+- This refresh does not migrate `functions/` into Vercel Functions. Browser previews on Vercel validate the web shell, while `/api/*` remains a Firebase-shaped runtime concern for local emulators and Firebase delivery.
 - The root React shell already mounts `@vercel/analytics` and `@vercel/speed-insights`. Enable Web Analytics and Speed Insights in the Vercel dashboard to start collecting data.
 - Recommended next steps: use preview deployments for UI/playtest review, add branch-scoped preview env vars for staging integrations, and defer Blob/Postgres/Cron Jobs/Services until backend ownership moves off Firebase/Supabase.
 

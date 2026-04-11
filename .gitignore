@@ -76,6 +76,7 @@ node_modules
 .parcel-cache/
 .turbo/
 .vite/
+.vercel/
 .eslintcache
 *.tsbuildinfo
 out/
@@ -101,3 +102,5 @@ godot/android/build/.gradle/
 godot/android/build/build/
 godot/android/build/**/build/
 godot/android/build/local.properties
+
+.vercel

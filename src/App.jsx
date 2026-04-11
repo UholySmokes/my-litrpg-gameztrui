@@ -1,4 +1,6 @@
 import { useState, useEffect, Suspense, lazy } from "react";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { getCurrentUser, onAuthStateChange } from "./core/AuthService.js";
 import { isWebGameplayEnabled } from "./core/WebGameplayGate.js";
 import { ThemeDock, ThemeProvider } from "./context/ThemeContext.jsx";
@@ -126,6 +128,8 @@ function App() {
     <ThemeProvider>
       <ThemeDock />
       <AppContent />
+      <Analytics />
+      <SpeedInsights />
     </ThemeProvider>
   );
 }

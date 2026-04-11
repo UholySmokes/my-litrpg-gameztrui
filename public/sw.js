@@ -68,15 +68,24 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== "basic") {
+      return fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type !== "basic") {
+            return response;
+          }
+          const clone = response.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, clone));
           return response;
-        }
-        const clone = response.clone();
-        caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, clone));
-        return response;
-      });
+        })
+        .catch(() => {
+          if (event.request.destination === "image") {
+            return caches.match("/icons/icon-any.svg");
+          }
+          return new Response("", {
+            status: 503,
+            statusText: "Offline",
+          });
+        });
     }),
   );
 });
-

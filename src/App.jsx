@@ -124,12 +124,15 @@ function AppContent() {
 
 // Wrap with ThemeProvider
 function App() {
+  const shouldLoadVercelScripts =
+    import.meta.env.PROD && import.meta.env.VITE_VERCEL_ANALYTICS !== "false";
+
   return (
     <ThemeProvider>
       <ThemeDock />
       <AppContent />
-      <Analytics />
-      <SpeedInsights />
+      {shouldLoadVercelScripts ? <Analytics /> : null}
+      {shouldLoadVercelScripts ? <SpeedInsights /> : null}
     </ThemeProvider>
   );
 }

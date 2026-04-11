@@ -14,6 +14,14 @@ function shouldSkipTelemetry(user) {
   return userId === "local" || userEmail === "local@game.dev";
 }
 
+function isTelemetryEnabled() {
+  if (typeof import.meta === "undefined" || !import.meta.env) return true;
+  const env = import.meta.env;
+  if (env.VITE_TELEMETRY_ENABLED === "true") return true;
+  if (env.VITE_TELEMETRY_ENABLED === "false") return false;
+  return !env.DEV;
+}
+
 export function createTelemetryEvent(type, { level = "info", message = null, data } = {}) {
   return {
     type,
@@ -32,6 +40,9 @@ export async function postTelemetryBatch({
 } = {}) {
   if (typeof fetch !== "function") return { ok: false, skipped: true };
   if (!Array.isArray(events) || events.length === 0) {
+    return { ok: false, skipped: true };
+  }
+  if (!isTelemetryEnabled()) {
     return { ok: false, skipped: true };
   }
   if (shouldSkipTelemetry(user)) {

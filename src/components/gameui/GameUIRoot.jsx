@@ -24,12 +24,55 @@ import { SAVE_RESET_EPOCH } from "./saveResetController.js";
 import { useGameUiSaveController } from "./useGameUiSaveController.js";
 import { useGameUiWindowController } from "./useGameUiWindowController.js";
 
-const IS_DEV_BUILD = Boolean(
-  import.meta?.env?.DEV ||
-    import.meta?.env?.MODE === "development" ||
-    (typeof window !== "undefined" &&
-      (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost")),
-);
+const getBuildEnv = () =>
+  typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
+
+const getRuntimeEnv = () => {
+  if (typeof globalThis === "undefined") return {};
+  const runtimeConfig = globalThis.__RUNTIME_CONFIG__;
+  return runtimeConfig && typeof runtimeConfig === "object" ? runtimeConfig : {};
+};
+
+const pickEnvValue = (...values) => {
+  for (const value of values) {
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return undefined;
+};
+
+const parseBooleanFlag = (value, fallback = false) => {
+  if (typeof value !== "string") return fallback;
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) return fallback;
+  if (["1", "true", "yes", "on"].includes(normalized)) return true;
+  if (["0", "false", "no", "off"].includes(normalized)) return false;
+  return fallback;
+};
+
+const resolveIsDevBuild = () => {
+  const buildEnv = getBuildEnv();
+  const runtimeEnv = getRuntimeEnv();
+  const explicit = pickEnvValue(
+    runtimeEnv.VITE_DEV_CONSOLE_ENABLED,
+    buildEnv.VITE_DEV_CONSOLE_ENABLED,
+    runtimeEnv.VITE_ENABLE_DEV_CONSOLE,
+    buildEnv.VITE_ENABLE_DEV_CONSOLE,
+  );
+
+  if (explicit !== undefined) {
+    return parseBooleanFlag(explicit, false);
+  }
+
+  return Boolean(
+    buildEnv.DEV ||
+      buildEnv.MODE === "development" ||
+      (typeof window !== "undefined" &&
+        (window.location.hostname === "127.0.0.1" ||
+          window.location.hostname === "localhost")),
+  );
+};
+
+const IS_DEV_BUILD = resolveIsDevBuild();
 const TYPEWRITER_CHAR_DELAY_MS = 28;
 
 const renderTypewriterText = (text = "") => {

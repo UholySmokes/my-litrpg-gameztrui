@@ -150,6 +150,27 @@ npm run dev:stack
 Leave `VITE_API_BASE_URL` empty to use same-origin `/api/*`.
 Runtime builds outside dev enable web gameplay by default unless a build profile overrides it.
 
+### Vercel Workflow
+
+The canonical Vercel project for this repo is `my-litrpg-gameztrui` in the `void-verse` scope. Git-based Vercel deployments stay enabled for preview and production, while the Firebase Actions workflow remains unchanged for Firebase hosting/functions delivery.
+
+```bash
+# One-time local linkage to the canonical Vercel project
+npm run vercel:link
+
+# Pull preview environment variables and project settings into .vercel/
+npm run vercel:pull
+
+# Build Vercel output locally, then publish a preview deployment
+npm run vercel:build
+npm run vercel:deploy:preview
+```
+
+- This repo does not commit `.vercel/project.json`; local Vercel linkage stays machine-local.
+- Protected previews use Vercel Authentication. For terminal checks, use `npx vercel curl / --deployment <deployment-url>` or `npx vercel curl /api/health --deployment <deployment-url>` after login.
+- The root React shell already mounts `@vercel/analytics` and `@vercel/speed-insights`. Enable Web Analytics and Speed Insights in the Vercel dashboard to start collecting data.
+- Recommended next steps: use preview deployments for UI/playtest review, add branch-scoped preview env vars for staging integrations, and defer Blob/Postgres/Cron Jobs/Services until backend ownership moves off Firebase/Supabase.
+
 ## AI Workspace
 
 The canonical AI workspace lives in [docs/ai/README.md](docs/ai/README.md).
@@ -177,6 +198,12 @@ npm run ai:check
 | `npm run ai:doctor` | Diagnose AI tool and env posture |
 | `npm run ai:check` | Validate AI workspace policy |
 | `npm run build` | Production build |
+| `npm run vercel:link` | Link this repo to the canonical Vercel project |
+| `npm run vercel:pull` | Pull preview env vars and project settings from Vercel |
+| `npm run vercel:build` | Produce `.vercel/output` for a reproducible Vercel build |
+| `npm run vercel:deploy:preview` | Deploy the prebuilt output as a Vercel preview |
+| `npm run vercel:logs` | Show recent Vercel logs for the linked project |
+| `npm run vercel:open` | Open the canonical Vercel project in the dashboard |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript check |
 

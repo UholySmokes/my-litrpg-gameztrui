@@ -16,7 +16,7 @@ const {
 	runFirebaseAgent,
 } = require("./lib/firebase-agents/runtime");
 
-const AI_RUNTIME_SECRETS = ["OPENAI_API_KEY"];
+const AI_RUNTIME_SECRETS = ["OPENAI_API_KEY", "OPENROUTER_API_KEY"];
 const HTTP_API_OPTIONS = {
 	region: "us-central1",
 	memory: "1GiB",

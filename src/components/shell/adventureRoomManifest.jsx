@@ -143,8 +143,8 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
     },
     {
       id: "system",
-      title: "System Observatory",
-      subtitle: "Inspect the active archetype system and its progression doctrine.",
+      title: "Archetype Sanctum",
+      subtitle: "Commune with your core progression doctrine and runtime variables.",
       tone: "violet",
       entryAction: "Open observatory",
       size: "fullscreen",

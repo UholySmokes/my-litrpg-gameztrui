@@ -50,39 +50,64 @@ function BattleTheaterIdle({ combatState }) {
   const combatLog = Array.isArray(combatState?.log) ? combatState.log : [];
   const latestEvents = combatLog.slice(-4);
   const showOverview = combatState?.status === "victory" && latestEvents.length > 0;
+  const previewLabel = enemyPreview || "No hostile signatures held in memory.";
 
   return (
-    <div className="atrium-room-idle">
-      <div className="atrium-room-idle__eyebrow">Battle Theater</div>
-      <h4 className="atrium-room-idle__title">No encounter is live</h4>
-      <p className="atrium-room-idle__copy">
-        The theater is primed, but no hostile pattern is currently bound to the atrium.
-      </p>
-      <div className="atrium-room-idle__metrics">
-        <div>
-          <span>Visible threat count</span>
-          <strong>{enemies.length}</strong>
-        </div>
-        <div>
-          <span>Tracked signatures</span>
-          <strong>{enemyPreview || "None"}</strong>
-        </div>
-      </div>
-      {showOverview ? (
-        <div className="atrium-room-idle__metrics" style={{ marginTop: "0.85rem" }}>
-          <div style={{ width: "100%" }}>
-            <span>Battle Overview</span>
-            <strong>Last encounter resolved in victory.</strong>
-            <ul style={{ margin: "0.5rem 0 0", paddingLeft: "1rem" }}>
-              {latestEvents.map((event, index) => (
-                <li key={`${index}-${String(event)}`}>
-                  {typeof event === "string" ? event : event?.text || "Combat event recorded."}
-                </li>
-              ))}
-            </ul>
+    <div className="battle-theater-idle">
+      <header className="battle-theater-idle__hero">
+        <div className="battle-theater-idle__eyebrow">Battle Theater</div>
+        <h4 className="battle-theater-idle__title">Stage on standby</h4>
+        <p className="battle-theater-idle__copy">
+          No encounter is live, but the theater remains keyed to the next hostile surge. When
+          combat ignites, this room will pull focus automatically.
+        </p>
+      </header>
+
+      <div className="battle-theater-idle__grid">
+        <section className="battle-theater-idle__panel">
+          <div className="battle-theater-idle__label">Readiness</div>
+          <div className="battle-theater-idle__metrics">
+            <div className="battle-theater-idle__metric">
+              <span>Visible threats</span>
+              <strong>{enemies.length}</strong>
+            </div>
+            <div className="battle-theater-idle__metric">
+              <span>Stage status</span>
+              <strong>{showOverview ? "After-action glow" : "Primed"}</strong>
+            </div>
           </div>
-        </div>
-      ) : null}
+          <div className="battle-theater-idle__signature-strip">
+            <span>Tracked signatures</span>
+            <strong>{previewLabel}</strong>
+          </div>
+        </section>
+
+        <section className="battle-theater-idle__panel">
+          <div className="battle-theater-idle__label">
+            {showOverview ? "Last Resolution" : "Combat Cue"}
+          </div>
+          {showOverview ? (
+            <div className="battle-theater-idle__summary">
+              <strong>Last encounter resolved in victory.</strong>
+              <ul className="battle-theater-idle__event-list">
+                {latestEvents.map((event, index) => (
+                  <li key={`${index}-${String(event)}`}>
+                    {typeof event === "string" ? event : event?.text || "Combat event recorded."}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="battle-theater-idle__summary">
+              <strong>Hold the room clear until pressure arrives.</strong>
+              <p>
+                Use the Command Dais, Quest Codex, or Loadout surfaces while the field is quiet.
+                The Battle Theater is tuned for fast re-entry once a hostile state appears.
+              </p>
+            </div>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

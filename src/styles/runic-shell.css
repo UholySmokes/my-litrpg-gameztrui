@@ -1484,29 +1484,168 @@ body {
 }
 
 .combat-stage {
+  --combat-accent: color-mix(in srgb, var(--holo-alert) 78%, var(--holo-gold) 22%);
+  --combat-border: color-mix(in srgb, var(--holo-alert) 22%, transparent);
+  --combat-panel: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-glass) 92%, transparent),
+    color-mix(in srgb, var(--bg-panel) 86%, transparent)
+  );
+  --combat-panel-strong: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--bg-panel) 96%, transparent),
+    color-mix(in srgb, var(--bg-glass) 92%, transparent)
+  );
   display: grid;
-  gap: 1rem;
+  gap: 1.1rem;
   min-height: 0;
+  padding: 1.1rem;
+  border-radius: 28px;
+  border: 1px solid var(--combat-border);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--holo-alert) 12%, transparent), transparent 34%),
+    radial-gradient(circle at bottom left, color-mix(in srgb, var(--holo-cyan) 14%, transparent), transparent 40%),
+    linear-gradient(180deg, rgba(5, 10, 18, 0.28), rgba(5, 10, 18, 0.08));
 }
 
-.combat-stage__header {
-  display: flex;
-  justify-content: space-between;
+.combat-stage__hero,
+.combat-stage__spotlight,
+.combat-stage__battle-grid {
+  display: grid;
   gap: 1rem;
+}
+
+.combat-stage__hero {
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.95fr);
   align-items: start;
 }
 
+.combat-stage__hero-copy,
+.combat-stage__focus-card,
+.combat-stage__player-card,
+.combat-stage__panel {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+  border-radius: 24px;
+  border: 1px solid var(--combat-border);
+  background: var(--combat-panel);
+  backdrop-filter: blur(14px);
+}
+
 .combat-stage__eyebrow {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: #c026d3;
+  color: var(--combat-accent);
 }
 
 .combat-stage__title {
-  margin: 0.2rem 0 0;
-  font-size: 1.7rem;
-  color: #4a1942;
+  margin: 0;
+  font-size: clamp(1.7rem, 2vw, 2.2rem);
+  color: var(--text-main);
+}
+
+.combat-stage__lede,
+.combat-stage__section-copy {
+  margin: 0;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.combat-stage__status-grid,
+.combat-stage__focus-grid,
+.combat-stage__player-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.combat-stage__status-card,
+.combat-stage__player-stat {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 14%, transparent);
+  background: var(--combat-panel-strong);
+}
+
+.combat-stage__status-card span,
+.combat-stage__player-stat span,
+.combat-stage__section-label {
+  font-size: 0.73rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--text-dim) 88%, white 12%);
+  font-family: var(--font-code);
+}
+
+.combat-stage__status-card strong,
+.combat-stage__player-stat strong,
+.combat-stage__focus-name,
+.combat-stage__focus-level {
+  color: var(--text-main);
+}
+
+.combat-stage__status-card strong,
+.combat-stage__player-stat strong {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.combat-stage__status-card--inline strong {
+  font-size: 0.92rem;
+}
+
+.combat-stage__spotlight {
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.9fr);
+}
+
+.combat-stage__focus-card {
+  background:
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--holo-alert) 16%, transparent), transparent 26%),
+    var(--combat-panel);
+}
+
+.combat-stage__focus-header,
+.combat-stage__panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.combat-stage__focus-name {
+  margin: 0.12rem 0 0;
+  font-size: clamp(1.3rem, 1.7vw, 1.7rem);
+  font-family: var(--font-hud);
+}
+
+.combat-stage__focus-level {
+  align-self: center;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--holo-alert) 26%, transparent);
+  background: color-mix(in srgb, var(--bg-panel) 72%, transparent);
+  font-family: var(--font-code);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.combat-stage__focus-meter {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.combat-stage__meter-label {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+.combat-stage__player-card {
+  align-content: start;
 }
 
 .combat-stage__lane {
@@ -1532,30 +1671,36 @@ body {
 
 .combat-stage__enemy-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 0.8rem;
 }
 
 .combat-stage__enemy-card {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.48rem;
   text-align: left;
-  padding: 0.9rem;
-  border-radius: 18px;
-  border: 1px solid rgba(236, 72, 153, 0.14);
-  background: rgba(255, 248, 252, 0.94);
+  padding: 1rem;
+  border-radius: 22px;
+  border: 1px solid var(--combat-border);
+  background: var(--combat-panel-strong);
   cursor: pointer;
-  transition: transform 0.18s ease, border-color 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .combat-stage__enemy-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(236, 72, 153, 0.3);
+  border-color: color-mix(in srgb, var(--holo-alert) 28%, transparent);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.16);
 }
 
 .combat-stage__enemy-card--selected {
-  border-color: rgba(236, 72, 153, 0.5);
-  box-shadow: inset 0 0 0 1px rgba(236, 72, 153, 0.16);
+  border-color: color-mix(in srgb, var(--holo-alert) 48%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--holo-alert) 24%, transparent),
+    0 18px 42px rgba(0, 0, 0, 0.18);
 }
 
 .combat-stage__enemy-head {
@@ -1564,11 +1709,11 @@ body {
   gap: 0.75rem;
   align-items: baseline;
   font-weight: 700;
-  color: #4a1942;
+  color: var(--text-main);
 }
 
 .combat-stage__enemy-meta {
-  color: rgba(74, 25, 66, 0.68);
+  color: var(--text-dim);
   font-size: 0.84rem;
 }
 
@@ -1576,13 +1721,25 @@ body {
   height: 10px;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(236, 72, 153, 0.12);
+  background: color-mix(in srgb, var(--bg-panel) 72%, black 28%);
 }
 
 .combat-stage__meterfill {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #ec4899, #f59e0b);
+  background: linear-gradient(90deg, var(--holo-alert), var(--holo-gold));
+}
+
+.combat-stage__meterbar--compact {
+  height: 8px;
+}
+
+.combat-stage__meterfill--health {
+  background: linear-gradient(90deg, #ef4444, #f97316);
+}
+
+.combat-stage__meterfill--mana {
+  background: linear-gradient(90deg, var(--holo-cyan), #6366f1);
 }
 
 .combat-stage__core-actions,
@@ -1590,6 +1747,25 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
+}
+
+.combat-stage__core-actions {
+  align-items: stretch;
+}
+
+.combat-stage__battle-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+}
+
+.combat-stage__panel {
+  align-content: start;
+}
+
+.combat-stage__control-block,
+.combat-stage__support-grid,
+.combat-stage__ability-tray {
+  display: grid;
+  gap: 0.75rem;
 }
 
 .combat-stage__skill-row {
@@ -1604,26 +1780,25 @@ body {
   gap: 0.18rem;
   padding: 0.75rem 0.8rem;
   border-radius: 16px;
-  border: 1px solid rgba(102, 77, 47, 0.15);
-  background: rgba(255, 248, 252, 0.94);
-  color: #4a1942;
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 16%, transparent);
+  background: var(--combat-panel-strong);
+  color: var(--text-main);
   text-align: left;
 }
 
 .combat-stage__skill-chip strong {
   font-size: 0.78rem;
-  color: rgba(74, 25, 66, 0.68);
+  color: var(--text-dim);
 }
 
 .combat-stage__lane-chip--active {
-  background: rgba(236, 72, 153, 0.92);
-  color: #fff0f5;
-}
-
-.combat-stage__support-grid,
-.combat-stage__ability-tray {
-  display: grid;
-  gap: 0.75rem;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--holo-alert) 88%, transparent),
+    color-mix(in srgb, var(--holo-gold) 34%, transparent)
+  );
+  color: #fff7f0;
+  border-color: transparent;
 }
 
 .suggestionButton {
@@ -1693,7 +1868,13 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .combat-stage__hero,
+  .combat-stage__spotlight,
+  .combat-stage__battle-grid,
   .combat-stage__enemy-grid,
+  .combat-stage__status-grid,
+  .combat-stage__focus-grid,
+  .combat-stage__player-grid,
   .combat-stage__skill-row {
     grid-template-columns: 1fr;
   }
@@ -1791,7 +1972,9 @@ body,
 .character-hub__panel-title,
 .adventure-shell__title,
 .adventure-shell__scene-title,
-.combat-stage__title {
+.combat-stage__title,
+.combat-stage__focus-name,
+.battle-theater-idle__title {
   color: #0f1b3d;
 }
 
@@ -1802,7 +1985,12 @@ body,
 .adventure-shell__scene-objective,
 .adventure-shell__quiet-stage p,
 .adventure-shell__drawer-empty,
-.combat-stage__enemy-meta {
+.combat-stage__enemy-meta,
+.combat-stage__lede,
+.combat-stage__section-copy,
+.battle-theater-idle__copy,
+.battle-theater-idle__summary p,
+.battle-theater-idle__event-list {
   color: rgba(15, 27, 61, 0.66);
 }
 
@@ -2108,7 +2296,12 @@ body,
 .adventure-shell__meter strong,
 .adventure-shell__combat-drawer-stat strong,
 .combat-stage__lane strong,
-.combat-stage__skill-chip strong {
+.combat-stage__skill-chip strong,
+.combat-stage__status-card strong,
+.combat-stage__player-stat strong,
+.battle-theater-idle__metric strong,
+.battle-theater-idle__summary strong,
+.battle-theater-idle__signature-strip strong {
   color: var(--text-main);
   text-shadow:
     -1px 0 var(--text-outline-soft),
@@ -2122,8 +2315,11 @@ body,
 .save-reset-gate__eyebrow,
 .adventure-shell__scene-kicker,
 .combat-stage__eyebrow,
+.combat-stage__section-label,
 .adventure-shell__quiet-title,
 .character-hub__panel-kicker,
+.battle-theater-idle__eyebrow,
+.battle-theater-idle__label,
 .entry-shell__eyebrow {
   color: color-mix(in srgb, var(--holo-cyan) 72%, white);
   text-shadow:
@@ -2973,6 +3169,96 @@ button.dev-console-dock__hint-chip {
   gap: 0.8rem;
 }
 
+.battle-theater-idle {
+  display: grid;
+  gap: 1rem;
+}
+
+.battle-theater-idle__hero,
+.battle-theater-idle__panel {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1rem;
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--holo-alert) 16%, transparent);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--holo-alert) 12%, transparent), transparent 30%),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-glass) 90%, transparent),
+      color-mix(in srgb, var(--bg-panel) 84%, transparent)
+    );
+}
+
+.battle-theater-idle__eyebrow,
+.battle-theater-idle__label {
+  color: color-mix(in srgb, var(--holo-alert) 78%, white 22%);
+  font-family: var(--font-code);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.battle-theater-idle__title {
+  margin: 0;
+  color: var(--text-main);
+  font-family: var(--font-hud);
+  font-size: 1.6rem;
+}
+
+.battle-theater-idle__copy,
+.battle-theater-idle__summary p,
+.battle-theater-idle__event-list {
+  margin: 0;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.battle-theater-idle__grid,
+.battle-theater-idle__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.battle-theater-idle__metric,
+.battle-theater-idle__signature-strip {
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--holo-cyan) 14%, transparent);
+  background: color-mix(in srgb, var(--bg-panel) 78%, transparent);
+}
+
+.battle-theater-idle__metric span,
+.battle-theater-idle__signature-strip span {
+  color: var(--text-dim);
+  font-family: var(--font-code);
+  font-size: 0.73rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.battle-theater-idle__metric strong,
+.battle-theater-idle__signature-strip strong,
+.battle-theater-idle__summary strong {
+  color: var(--text-main);
+}
+
+.battle-theater-idle__signature-strip {
+  grid-column: 1 / -1;
+}
+
+.battle-theater-idle__summary {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.battle-theater-idle__event-list {
+  padding-left: 1.1rem;
+}
+
 .creation-flow--chambers {
   gap: 1.2rem;
 }
@@ -3091,7 +3377,9 @@ button.dev-console-dock__hint-chip {
 
 @media (max-width: 768px) {
   .atrium-hero__meters,
-  .creation-chamber__nav {
+  .creation-chamber__nav,
+  .battle-theater-idle__grid,
+  .battle-theater-idle__metrics {
     grid-template-columns: 1fr;
   }
 }

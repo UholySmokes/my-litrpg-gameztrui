@@ -459,56 +459,6 @@ export interface UserProfile_Key {
   __typename?: 'UserProfile_Key';
 }
 
-/** Generated Node Admin SDK operation action function for the 'UpsertMyProfile' Mutation. Allow users to execute without passing in DataConnect. */
-export function upsertMyProfile(dc: DataConnect, vars?: UpsertMyProfileVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertMyProfileData>>;
-/** Generated Node Admin SDK operation action function for the 'UpsertMyProfile' Mutation. Allow users to pass in custom DataConnect instances. */
-export function upsertMyProfile(vars?: UpsertMyProfileVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertMyProfileData>>;
-
-/** Generated Node Admin SDK operation action function for the 'MarkMyProfileMigration' Mutation. Allow users to execute without passing in DataConnect. */
-export function markMyProfileMigration(dc: DataConnect, vars: MarkMyProfileMigrationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkMyProfileMigrationData>>;
-/** Generated Node Admin SDK operation action function for the 'MarkMyProfileMigration' Mutation. Allow users to pass in custom DataConnect instances. */
-export function markMyProfileMigration(vars: MarkMyProfileMigrationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkMyProfileMigrationData>>;
-
-/** Generated Node Admin SDK operation action function for the 'CreateSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
-export function createSaveSlot(dc: DataConnect, vars: CreateSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSaveSlotData>>;
-/** Generated Node Admin SDK operation action function for the 'CreateSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createSaveSlot(vars: CreateSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSaveSlotData>>;
-
-/** Generated Node Admin SDK operation action function for the 'UpsertSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
-export function upsertSaveSlot(dc: DataConnect, vars: UpsertSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertSaveSlotData>>;
-/** Generated Node Admin SDK operation action function for the 'UpsertSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
-export function upsertSaveSlot(vars: UpsertSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertSaveSlotData>>;
-
-/** Generated Node Admin SDK operation action function for the 'DeleteSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
-export function deleteSaveSlot(dc: DataConnect, vars: DeleteSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteSaveSlotData>>;
-/** Generated Node Admin SDK operation action function for the 'DeleteSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
-export function deleteSaveSlot(vars: DeleteSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteSaveSlotData>>;
-
-/** Generated Node Admin SDK operation action function for the 'DeleteRunSession' Mutation. Allow users to execute without passing in DataConnect. */
-export function deleteRunSession(dc: DataConnect, vars: DeleteRunSessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteRunSessionData>>;
-/** Generated Node Admin SDK operation action function for the 'DeleteRunSession' Mutation. Allow users to pass in custom DataConnect instances. */
-export function deleteRunSession(vars: DeleteRunSessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteRunSessionData>>;
-
-/** Generated Node Admin SDK operation action function for the 'DeleteRunEvent' Mutation. Allow users to execute without passing in DataConnect. */
-export function deleteRunEvent(dc: DataConnect, vars: DeleteRunEventVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteRunEventData>>;
-/** Generated Node Admin SDK operation action function for the 'DeleteRunEvent' Mutation. Allow users to pass in custom DataConnect instances. */
-export function deleteRunEvent(vars: DeleteRunEventVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteRunEventData>>;
-
-/** Generated Node Admin SDK operation action function for the 'UpsertRunSession' Mutation. Allow users to execute without passing in DataConnect. */
-export function upsertRunSession(dc: DataConnect, vars: UpsertRunSessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertRunSessionData>>;
-/** Generated Node Admin SDK operation action function for the 'UpsertRunSession' Mutation. Allow users to pass in custom DataConnect instances. */
-export function upsertRunSession(vars: UpsertRunSessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertRunSessionData>>;
-
-/** Generated Node Admin SDK operation action function for the 'CreateRunEvent' Mutation. Allow users to execute without passing in DataConnect. */
-export function createRunEvent(dc: DataConnect, vars: CreateRunEventVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateRunEventData>>;
-/** Generated Node Admin SDK operation action function for the 'CreateRunEvent' Mutation. Allow users to pass in custom DataConnect instances. */
-export function createRunEvent(vars: CreateRunEventVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateRunEventData>>;
-
-/** Generated Node Admin SDK operation action function for the 'UpsertStoryMemory' Mutation. Allow users to execute without passing in DataConnect. */
-export function upsertStoryMemory(dc: DataConnect, vars: UpsertStoryMemoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertStoryMemoryData>>;
-/** Generated Node Admin SDK operation action function for the 'UpsertStoryMemory' Mutation. Allow users to pass in custom DataConnect instances. */
-export function upsertStoryMemory(vars: UpsertStoryMemoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertStoryMemoryData>>;
-
 /** Generated Node Admin SDK operation action function for the 'GetMyProfile' Query. Allow users to execute without passing in DataConnect. */
 export function getMyProfile(dc: DataConnect, options?: OperationOptions): Promise<ExecuteOperationResponse<GetMyProfileData>>;
 /** Generated Node Admin SDK operation action function for the 'GetMyProfile' Query. Allow users to pass in custom DataConnect instances. */
@@ -558,4 +508,54 @@ export function listAllMyRunEvents(options?: OperationOptions): Promise<ExecuteO
 export function listMyStoryMemories(dc: DataConnect, vars: ListMyStoryMemoriesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMyStoryMemoriesData>>;
 /** Generated Node Admin SDK operation action function for the 'ListMyStoryMemories' Query. Allow users to pass in custom DataConnect instances. */
 export function listMyStoryMemories(vars: ListMyStoryMemoriesVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<ListMyStoryMemoriesData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpsertMyProfile' Mutation. Allow users to execute without passing in DataConnect. */
+export function upsertMyProfile(dc: DataConnect, vars?: UpsertMyProfileVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertMyProfileData>>;
+/** Generated Node Admin SDK operation action function for the 'UpsertMyProfile' Mutation. Allow users to pass in custom DataConnect instances. */
+export function upsertMyProfile(vars?: UpsertMyProfileVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertMyProfileData>>;
+
+/** Generated Node Admin SDK operation action function for the 'MarkMyProfileMigration' Mutation. Allow users to execute without passing in DataConnect. */
+export function markMyProfileMigration(dc: DataConnect, vars: MarkMyProfileMigrationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkMyProfileMigrationData>>;
+/** Generated Node Admin SDK operation action function for the 'MarkMyProfileMigration' Mutation. Allow users to pass in custom DataConnect instances. */
+export function markMyProfileMigration(vars: MarkMyProfileMigrationVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<MarkMyProfileMigrationData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
+export function createSaveSlot(dc: DataConnect, vars: CreateSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSaveSlotData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createSaveSlot(vars: CreateSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateSaveSlotData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpsertSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
+export function upsertSaveSlot(dc: DataConnect, vars: UpsertSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertSaveSlotData>>;
+/** Generated Node Admin SDK operation action function for the 'UpsertSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
+export function upsertSaveSlot(vars: UpsertSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertSaveSlotData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteSaveSlot' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteSaveSlot(dc: DataConnect, vars: DeleteSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteSaveSlotData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteSaveSlot' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteSaveSlot(vars: DeleteSaveSlotVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteSaveSlotData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteRunSession' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteRunSession(dc: DataConnect, vars: DeleteRunSessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteRunSessionData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteRunSession' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteRunSession(vars: DeleteRunSessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteRunSessionData>>;
+
+/** Generated Node Admin SDK operation action function for the 'DeleteRunEvent' Mutation. Allow users to execute without passing in DataConnect. */
+export function deleteRunEvent(dc: DataConnect, vars: DeleteRunEventVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteRunEventData>>;
+/** Generated Node Admin SDK operation action function for the 'DeleteRunEvent' Mutation. Allow users to pass in custom DataConnect instances. */
+export function deleteRunEvent(vars: DeleteRunEventVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<DeleteRunEventData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpsertRunSession' Mutation. Allow users to execute without passing in DataConnect. */
+export function upsertRunSession(dc: DataConnect, vars: UpsertRunSessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertRunSessionData>>;
+/** Generated Node Admin SDK operation action function for the 'UpsertRunSession' Mutation. Allow users to pass in custom DataConnect instances. */
+export function upsertRunSession(vars: UpsertRunSessionVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertRunSessionData>>;
+
+/** Generated Node Admin SDK operation action function for the 'CreateRunEvent' Mutation. Allow users to execute without passing in DataConnect. */
+export function createRunEvent(dc: DataConnect, vars: CreateRunEventVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateRunEventData>>;
+/** Generated Node Admin SDK operation action function for the 'CreateRunEvent' Mutation. Allow users to pass in custom DataConnect instances. */
+export function createRunEvent(vars: CreateRunEventVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<CreateRunEventData>>;
+
+/** Generated Node Admin SDK operation action function for the 'UpsertStoryMemory' Mutation. Allow users to execute without passing in DataConnect. */
+export function upsertStoryMemory(dc: DataConnect, vars: UpsertStoryMemoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertStoryMemoryData>>;
+/** Generated Node Admin SDK operation action function for the 'UpsertStoryMemory' Mutation. Allow users to pass in custom DataConnect instances. */
+export function upsertStoryMemory(vars: UpsertStoryMemoryVariables, options?: OperationOptions): Promise<ExecuteOperationResponse<UpsertStoryMemoryData>>;
 

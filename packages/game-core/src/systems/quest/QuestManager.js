@@ -10,6 +10,7 @@ import {
 
 const TUTORIAL_QUEST_IDS = [
   "bq_first_stride",
+  "bq_system_basics",
   "bq_first_conflict",
 ];
 

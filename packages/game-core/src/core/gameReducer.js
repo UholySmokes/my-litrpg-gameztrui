@@ -403,6 +403,54 @@ const gameReducer = (state, action) =>
       }
       return normalizeGameState(action.payload);
 
+    case "MERGE_ONBOARDING_STATE": {
+      const currentWorld = isPlainObject(state.world) ? state.world : {};
+      const currentVars = isPlainObject(currentWorld.vars) ? currentWorld.vars : {};
+      const currentOnboarding = isPlainObject(currentVars.onboarding)
+        ? currentVars.onboarding
+        : {};
+      const incoming = isPlainObject(action.payload) ? action.payload : {};
+      const incomingMilestones = isPlainObject(incoming.milestones)
+        ? incoming.milestones
+        : null;
+
+      return {
+        ...state,
+        world: {
+          ...currentWorld,
+          vars: {
+            ...currentVars,
+            onboarding: {
+              ...currentOnboarding,
+              ...incoming,
+              milestones: incomingMilestones
+                ? {
+                    ...(isPlainObject(currentOnboarding.milestones)
+                      ? currentOnboarding.milestones
+                      : {}),
+                    ...incomingMilestones,
+                  }
+                : currentOnboarding.milestones,
+            },
+          },
+        },
+      };
+    }
+
+    case "TRACK_UI_ACTION": {
+      const actionType =
+        typeof action.payload?.actionType === "string"
+          ? action.payload.actionType.trim().toLowerCase()
+          : "";
+      if (!actionType) {
+        return state;
+      }
+      return syncQuestObjectivesForAction(state, state, {
+        type: actionType,
+        originalInput: actionType,
+      });
+    }
+
     case "APPLY_ENGINE_RESULT": {
       // Two-tier dispatch: applies a StepResult from SystemEngine.step()
       const result = action.payload;

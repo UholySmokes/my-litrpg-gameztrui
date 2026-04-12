@@ -16,6 +16,7 @@ import { useGameUiCharacterCreationFlow } from "./useGameUiCharacterCreationFlow
 import { useGameUiInteractionHandlers } from "./useGameUiInteractionHandlers.js";
 import { buildNarrativePanelView } from "./gameUiSelectors.js";
 import { hasCharacterCreationDraft } from "./characterCreationDraft.js";
+import { deriveAdventureOnboardingTier } from "../../core/creationOnboarding.js";
 import {
   hasCreatedCharacterSnapshot,
   isRecord,
@@ -499,11 +500,17 @@ export default function GameUI({ user }) {
       system: {
         onLoadState: handleLoadState,
         addSystemMessage,
+        trackUiAction: (actionType) =>
+          dispatch({
+            type: "TRACK_UI_ACTION",
+            payload: { actionType },
+          }),
       },
     }),
     [
       actionSuggestions,
       addSystemMessage,
+      dispatch,
       equipmentSelectLabel,
       equipmentSelectSlot,
       handleAllocateAttributePoint,
@@ -572,6 +579,107 @@ export default function GameUI({ user }) {
     ],
   );
 
+  const onboardingTier = useMemo(
+    () =>
+      deriveAdventureOnboardingTier({
+        state,
+        player: state?.player,
+        quests: state?.quests,
+      }),
+    [state],
+  );
+
+  useEffect(() => {
+    if (!hasAdventureSession) {
+      return;
+    }
+
+    const onboarding = state?.world?.vars?.onboarding || {};
+    const completedQuestIds = new Set(
+      (Array.isArray(state?.quests?.completed) ? state.quests.completed : [])
+        .map((quest) => quest?.id)
+        .filter(Boolean),
+    );
+    const currentMilestones =
+      onboarding && typeof onboarding.milestones === "object"
+        ? onboarding.milestones
+        : {};
+    const nextStage =
+      (state?.player?.level || 1) >= 2
+        ? "milestone"
+        : onboardingTier >= 2
+          ? "orientation"
+          : "arrival";
+
+    const patch = {};
+    const milestonePatch = {};
+
+    if (onboarding.hudTier !== onboardingTier) {
+      patch.hudTier = onboardingTier;
+    }
+    if (onboarding.stage !== nextStage) {
+      patch.stage = nextStage;
+    }
+    if (completedQuestIds.has("bq_first_stride") && !currentMilestones.firstStrideSeen) {
+      milestonePatch.firstStrideSeen = true;
+    }
+    if (completedQuestIds.has("bq_system_basics") && !currentMilestones.systemBasicsSeen) {
+      milestonePatch.systemBasicsSeen = true;
+    }
+    if (completedQuestIds.has("bq_first_conflict") && !currentMilestones.firstConflictSeen) {
+      milestonePatch.firstConflictSeen = true;
+    }
+
+    if (Object.keys(milestonePatch).length > 0) {
+      patch.milestones = milestonePatch;
+    }
+
+    if (Object.keys(patch).length === 0) {
+      return;
+    }
+
+    dispatch({
+      type: "MERGE_ONBOARDING_STATE",
+      payload: patch,
+    });
+  }, [dispatch, hasAdventureSession, onboardingTier, state]);
+
+  useEffect(() => {
+    if (!hasAdventureSession) {
+      return;
+    }
+
+    const playerLevel = Number(state?.player?.level || 1);
+    const onboarding = state?.world?.vars?.onboarding || {};
+    const milestoneFlags =
+      onboarding && typeof onboarding.milestones === "object"
+        ? onboarding.milestones
+        : {};
+
+    if (playerLevel < 2 || milestoneFlags.level2Celebrated) {
+      return;
+    }
+
+    addSystemMessage(
+      "Level 2 reached. The World Atrium recognizes your first earned milestone.",
+      "system",
+    );
+    addSystemMessage(
+      "Status reads, loadout tools, and deeper system rooms are now open. Review the build, then push into the next directive.",
+      "status-update",
+    );
+    dispatch({
+      type: "MERGE_ONBOARDING_STATE",
+      payload: {
+        stage: "milestone",
+        hudTier: 3,
+        milestones: {
+          level2Celebrated: true,
+        },
+      },
+    });
+  }, [addSystemMessage, dispatch, hasAdventureSession, state]);
+
   const {
     shouldShowAdventure,
     shouldShowCreation,
@@ -628,6 +736,16 @@ export default function GameUI({ user }) {
           <div className="creation-handoff-overlay anime-dramatic" role="status" aria-live="polite">
             <p className="creation-handoff-overlay__name anime-slide-up">{transitionSummary.name}</p>
             <p className="creation-handoff-overlay__class anime-slide-up">{transitionSummary.className}</p>
+            {transitionSummary.startingPoint ? (
+              <p className="creation-handoff-overlay__class anime-slide-up">
+                Chronicle begins in {transitionSummary.startingPoint}
+              </p>
+            ) : null}
+            {transitionSummary.starterKitLabel ? (
+              <p className="creation-handoff-overlay__class anime-slide-up">
+                {transitionSummary.starterKitLabel}
+              </p>
+            ) : null}
           </div>
         ) : null}
 

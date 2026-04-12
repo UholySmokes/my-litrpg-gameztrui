@@ -15,6 +15,7 @@ import {
   splitAdventureRooms,
 } from "./adventureRoomManifest.jsx";
 import { buildArchetypeSystemViewModel } from "../archetypeSystem/archetypeSystemViewModel.js";
+import { deriveAdventureOnboardingTier } from "../../core/creationOnboarding.js";
 
 function formatMeter(current, max) {
   return `${Number(current || 0)}/${Number(max || 0)}`;
@@ -53,6 +54,17 @@ function AtriumCard({ title, label, value }) {
   );
 }
 
+function summarizeOathText(player) {
+  const raw =
+    typeof player?.startingPrompt === "string"
+      ? player.startingPrompt
+      : player?.characterCreationBlueprint?.startingPrompt;
+  const text = String(raw || "").trim();
+  if (!text) return "Unsealed";
+  if (text.length <= 36) return text;
+  return `${text.slice(0, 33).trimEnd()}...`;
+}
+
 function RoomGateway({ room, onOpen, compact = false }) {
   return (
     <button
@@ -85,6 +97,7 @@ export default function AdventureShell({
     combatState,
     narrative,
     command,
+    system,
   } = view;
   const [activeRoomId, setActiveRoomId] = useState(null);
   const previousCombatStatusRef = useRef(null);
@@ -100,13 +113,55 @@ export default function AdventureShell({
   const zone = getZoneById(location?.zoneId);
   const objective = useMemo(() => resolvePrimaryObjective(quests), [quests]);
   const archetypeView = useMemo(() => buildArchetypeSystemViewModel(player), [player]);
+  const onboardingTier = useMemo(
+    () => deriveAdventureOnboardingTier({ state, player, quests }),
+    [player, quests, state],
+  );
+  const temporaryEffectCount = Array.isArray(player?.statusEffects)
+    ? player.statusEffects.length
+    : 0;
+  const identityBadges = useMemo(
+    () => [
+      {
+        label: "Origin",
+        value: player?.origin?.name || playerIdentity.race,
+        tone: "identity",
+      },
+      {
+        label: "Class",
+        value: playerIdentity.classLabel,
+        tone: "identity",
+      },
+      {
+        label: "Oath",
+        value: summarizeOathText(player),
+        tone: "identity",
+      },
+      {
+        label: "System",
+        value: archetypeView?.name || player?.archetypeSystem?.name || "Core path",
+        tone: "identity",
+      },
+      {
+        label: "Temporary",
+        value: temporaryEffectCount > 0 ? `${temporaryEffectCount} active` : "None",
+        tone: "temporary",
+      },
+    ],
+    [archetypeView?.name, player, playerIdentity.classLabel, playerIdentity.race, temporaryEffectCount],
+  );
   const topMeters = useMemo(() => {
     const meters = [
       { label: "HP", value: formatMeter(player?.hp?.current, player?.hp?.max) },
       { label: "MP", value: formatMeter(player?.mana?.current, player?.mana?.max) },
       { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
-      { label: "Gold", value: String(player?.currency?.goldCoins ?? player?.gold ?? 0) },
     ];
+    if (onboardingTier >= 2) {
+      meters.push({
+        label: "Gold",
+        value: String(player?.currency?.goldCoins ?? player?.gold ?? 0),
+      });
+    }
     if (archetypeView?.resource) {
       meters.push({
         label: archetypeView.resource.name,
@@ -114,7 +169,7 @@ export default function AdventureShell({
       });
     }
     return meters;
-  }, [player, archetypeView]);
+  }, [archetypeView, onboardingTier, player]);
 
   const roomManifest = useMemo(
     () => buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild }),
@@ -149,6 +204,7 @@ export default function AdventureShell({
       room.onOpen?.();
       return;
     }
+    room.onOpen?.();
     setActiveRoomId(room.id);
   };
 
@@ -190,6 +246,54 @@ export default function AdventureShell({
             </div>
             <h3 className="atrium-hero__title">{objective.questName}</h3>
             <p className="atrium-hero__objective">{objective.objectiveText}</p>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "0.55rem",
+                marginTop: "0.85rem",
+              }}
+            >
+              {identityBadges.map((badge) => (
+                <span
+                  key={`${badge.label}-${badge.value}`}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    padding: "0.35rem 0.6rem",
+                    borderRadius: "999px",
+                    border:
+                      badge.tone === "temporary"
+                        ? "1px solid rgba(255, 176, 59, 0.45)"
+                        : "1px solid rgba(106, 227, 255, 0.35)",
+                    background:
+                      badge.tone === "temporary"
+                        ? "rgba(255, 176, 59, 0.12)"
+                        : "rgba(71, 104, 142, 0.2)",
+                    fontSize: "0.72rem",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <strong style={{ opacity: 0.7 }}>{badge.label}</strong>
+                  <span>{badge.value}</span>
+                </span>
+              ))}
+            </div>
+            {onboardingTier < 3 ? (
+              <p
+                style={{
+                  marginTop: "0.95rem",
+                  maxWidth: "48rem",
+                  color: "rgba(223, 236, 255, 0.86)",
+                }}
+              >
+                {onboardingTier === 1
+                  ? "Take one clean action to get your bearings. The shell is keeping only the essential surfaces live until the first loop clicks."
+                  : "Your field tools are opening up. Review status and inventory, then clear one small threat to lock in the first earned milestone."}
+              </p>
+            ) : null}
           </div>
 
           <div className="atrium-hero__meters">
@@ -268,7 +372,13 @@ export default function AdventureShell({
             <div className="adventure-shell__eyebrow">Direct Controls</div>
             <h3 className="surface-section__title">Act without leaving the floor</h3>
           </div>
-          <GameQuickActions {...quickActionsProps} isDevBuild={isDevBuild} />
+          <GameQuickActions
+            {...quickActionsProps}
+            isDevBuild={isDevBuild}
+            onboardingTier={onboardingTier}
+            onOpenInventory={() => setActiveRoomId("inventory")}
+            onTrackUiAction={system?.trackUiAction}
+          />
         </section>
       </div>
 

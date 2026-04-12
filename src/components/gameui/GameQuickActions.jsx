@@ -120,9 +120,12 @@ function runStructuredAction(submitAction, action, onFallback) {
 export default function GameQuickActions({
   isDevBuild,
   combatState,
+  onboardingTier = 3,
   onAttack,
   onEscape,
+  onOpenInventory,
   onRest,
+  onTrackUiAction,
   onUseItem,
   onUseSkill,
   onToggleArchetypeSystem,
@@ -251,6 +254,18 @@ export default function GameQuickActions({
     (!submitAction && typeof onEscape !== "function") || !combatReady;
   const skillDisabled = skills.length === 0;
   const itemDisabled = items.length === 0;
+  const showTierTwoSupport = onboardingTier >= 2;
+  const showTierThreeSupport = onboardingTier >= 3;
+
+  const handleStatusOpen = useCallback(() => {
+    onTrackUiAction?.("status");
+    onToggleStatus?.();
+  }, [onToggleStatus, onTrackUiAction]);
+
+  const handleInventoryOpen = useCallback(() => {
+    onTrackUiAction?.("inventory");
+    onOpenInventory?.();
+  }, [onOpenInventory, onTrackUiAction]);
 
   return (
     <div className="command-deck__quick-actions">
@@ -306,35 +321,56 @@ export default function GameQuickActions({
         <button type="button" className="holo-button" onClick={onToggleQuests}>
           Quests
         </button>
-        <button type="button" className="holo-button" onClick={onToggleBestiary}>
-          Bestiary
-        </button>
-        <button type="button" className="holo-button" onClick={onToggleShop}>
-          Shop
-        </button>
-        <button type="button" className="holo-button" onClick={onToggleGacha}>
-          Gacha
-        </button>
-        <button type="button" className="holo-button" onClick={onToggleCraft}>
-          Craft
-        </button>
-        <button type="button" className="holo-button" onClick={onToggleStatus}>
-          Status
-        </button>
-        <button
-          type="button"
-          className="holo-button"
-          onClick={onToggleArchetypeSystem}
-        >
-          System
-        </button>
-        <button type="button" className="holo-button" onClick={onToggleTitles}>
-          Titles
-        </button>
-        <button type="button" className="holo-button" onClick={onToggleSaveLoad}>
-          Save and Load
-        </button>
-        {isDevBuild ? (
+        {showTierTwoSupport ? (
+          <button type="button" className="holo-button" onClick={handleStatusOpen}>
+            Status
+          </button>
+        ) : null}
+        {showTierTwoSupport ? (
+          <button type="button" className="holo-button" onClick={handleInventoryOpen}>
+            Inventory
+          </button>
+        ) : null}
+        {showTierTwoSupport ? (
+          <button type="button" className="holo-button" onClick={onToggleSaveLoad}>
+            Save and Load
+          </button>
+        ) : null}
+        {showTierThreeSupport ? (
+          <button type="button" className="holo-button" onClick={onToggleBestiary}>
+            Bestiary
+          </button>
+        ) : null}
+        {showTierThreeSupport ? (
+          <button type="button" className="holo-button" onClick={onToggleShop}>
+            Shop
+          </button>
+        ) : null}
+        {showTierThreeSupport ? (
+          <button type="button" className="holo-button" onClick={onToggleGacha}>
+            Gacha
+          </button>
+        ) : null}
+        {showTierThreeSupport ? (
+          <button type="button" className="holo-button" onClick={onToggleCraft}>
+            Craft
+          </button>
+        ) : null}
+        {showTierThreeSupport ? (
+          <button
+            type="button"
+            className="holo-button"
+            onClick={onToggleArchetypeSystem}
+          >
+            System
+          </button>
+        ) : null}
+        {showTierThreeSupport ? (
+          <button type="button" className="holo-button" onClick={onToggleTitles}>
+            Titles
+          </button>
+        ) : null}
+        {isDevBuild && showTierThreeSupport ? (
           <button
             type="button"
             className="holo-button"

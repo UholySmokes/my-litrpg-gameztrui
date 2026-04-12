@@ -1,4 +1,10 @@
 import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
+import {
+  resolveAllowExternalApiBaseUrl,
+  resolveAllowedApiHosts,
+  resolveApiBaseCandidates,
+  sanitizeEndpoint,
+} from "./apiEndpointResolution.js";
 
 const DEFAULT_TIMEOUT_MS = 15000;
 
@@ -19,44 +25,47 @@ const pickEnvValue = (...values) => {
 };
 
 const normalizeBaseUrl = (value) => value.replace(/\/+$/g, "");
-const isExternalUrl = (value) =>
-  /^[a-z][a-z0-9+.-]*:\/\//i.test(value) || value.startsWith("//");
-const sanitizeEndpointPath = (value) => {
-  const trimmed = typeof value === "string" ? value.trim() : "";
-  if (!trimmed) return undefined;
-  if (isExternalUrl(trimmed)) return undefined;
-  return trimmed;
-};
 
 const resolveAgentEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const apiBaseUrl = sanitizeEndpointPath(
-    pickEnvValue(
-      runtimeEnv.VITE_API_BASE_URL,
-      buildEnv.VITE_API_BASE_URL,
-      runtimeEnv.VITE_API_BASE,
-      buildEnv.VITE_API_BASE,
-    ),
+  const allowExternal = resolveAllowExternalApiBaseUrl({ runtimeEnv, buildEnv });
+  const allowedHosts = resolveAllowedApiHosts({ runtimeEnv, buildEnv });
+
+  const baseCandidates = resolveApiBaseCandidates({
+    runtimeEnv,
+    buildEnv,
+    allowExternal,
+    allowedHosts,
+    pickEnvValue,
+  });
+  const derivedBases = baseCandidates.map(
+    (base) => `${normalizeBaseUrl(base)}/api/agents`,
   );
-  const explicitList = sanitizeEndpointPath(
+
+  const explicitList = sanitizeEndpoint(
     pickEnvValue(
       runtimeEnv.VITE_AGENT_LIST_ENDPOINT,
       buildEnv.VITE_AGENT_LIST_ENDPOINT,
     ),
+    { allowExternal, allowedHosts },
   );
-  const explicitRun = sanitizeEndpointPath(
+  const explicitRun = sanitizeEndpoint(
     pickEnvValue(
       runtimeEnv.VITE_AGENT_RUN_ENDPOINT,
       buildEnv.VITE_AGENT_RUN_ENDPOINT,
     ),
+    { allowExternal, allowedHosts },
   );
 
-  const derivedBase = apiBaseUrl ? `${normalizeBaseUrl(apiBaseUrl)}/api/agents` : undefined;
-  const listEndpoints = [explicitList, derivedBase, "/api/agents"].filter(Boolean);
+  const listEndpoints = [
+    explicitList,
+    ...derivedBases,
+    "/api/agents",
+  ].filter(Boolean);
   const runEndpoints = [
     explicitRun,
-    derivedBase ? `${normalizeBaseUrl(derivedBase)}/run` : undefined,
+    ...derivedBases.map((base) => `${normalizeBaseUrl(base)}/run`),
     "/api/agents/run",
   ].filter(Boolean);
 
@@ -84,7 +93,6 @@ async function fetchWithTimeout(url, options, timeoutMs) {
     return await fetch(url, {
       ...options,
       signal: controller.signal,
-      credentials: "include",
     });
   } finally {
     clearTimeout(timeoutId);

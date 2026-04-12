@@ -1,4 +1,10 @@
 import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
+import {
+  resolveAllowExternalApiBaseUrl,
+  resolveAllowedApiHosts,
+  resolveApiBaseCandidates,
+  sanitizeEndpoint,
+} from "./apiEndpointResolution.js";
 
 const DEFAULT_TIMEOUT_MS = 10000;
 
@@ -19,40 +25,34 @@ const pickEnvValue = (...values) => {
 };
 
 const normalizeBaseUrl = (value) => value.replace(/\/+$/g, "");
-const isExternalUrl = (value) =>
-  /^[a-z][a-z0-9+.-]*:\/\//i.test(value) || value.startsWith("//");
-const sanitizeEndpointPath = (value) => {
-  const trimmed = typeof value === "string" ? value.trim() : "";
-  if (!trimmed) return undefined;
-  if (isExternalUrl(trimmed)) return undefined;
-  return trimmed;
-};
 
 const resolveReplayEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const explicit = sanitizeEndpointPath(
+  const allowExternal = resolveAllowExternalApiBaseUrl({ runtimeEnv, buildEnv });
+  const allowedHosts = resolveAllowedApiHosts({ runtimeEnv, buildEnv });
+  const explicit = sanitizeEndpoint(
     pickEnvValue(
       runtimeEnv.VITE_SYNC_REPLAY_ENDPOINT,
       buildEnv.VITE_SYNC_REPLAY_ENDPOINT,
       runtimeEnv.VITE_REPLAY_ENDPOINT,
       buildEnv.VITE_REPLAY_ENDPOINT,
     ),
+    { allowExternal, allowedHosts },
   );
-  const apiBaseUrl = sanitizeEndpointPath(
-    pickEnvValue(
-      runtimeEnv.VITE_API_BASE_URL,
-      buildEnv.VITE_API_BASE_URL,
-      runtimeEnv.VITE_API_BASE,
-      buildEnv.VITE_API_BASE,
-    ),
+
+  const baseCandidates = resolveApiBaseCandidates({
+    runtimeEnv,
+    buildEnv,
+    allowExternal,
+    allowedHosts,
+    pickEnvValue,
+  });
+  const derived = baseCandidates.map(
+    (base) => `${normalizeBaseUrl(base)}/api/sync/replay`,
   );
-  const derived = apiBaseUrl
-    ? `${normalizeBaseUrl(apiBaseUrl)}/api/sync/replay`
-    : undefined;
-  return [explicit, derived, "/api/sync/replay"]
-    .filter(Boolean)
-    .filter((value, index, arr) => arr.indexOf(value) === index);
+
+  return [...new Set([explicit, ...derived, "/api/sync/replay"].filter(Boolean))];
 };
 
 const resolveTimeoutMs = () => {
@@ -73,7 +73,6 @@ async function fetchWithTimeout(url, options, timeoutMs) {
     return await fetch(url, {
       ...options,
       signal: controller.signal,
-      credentials: "include",
     });
   } finally {
     clearTimeout(timeoutId);

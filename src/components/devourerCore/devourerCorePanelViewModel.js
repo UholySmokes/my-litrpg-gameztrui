@@ -5,7 +5,7 @@ import {
   normalizeDevourerArchetypeState,
   resolveDevourerRefineBiomassCost,
   resolveDevourerSampleMetrics,
-} from "@voidverse/game-core/systems/archetype/devourerCore.js";
+} from "../../systems/archetype/devourerCore.js";
 import { resolvePlayerArchetypeSystem } from "../../systems/archetype/resolvePlayerArchetypeSystem.js";
 
 function isPlainObject(value) {

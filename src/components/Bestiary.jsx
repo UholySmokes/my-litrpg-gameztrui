@@ -1,6 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { DataRegistry } from "../data/DataRegistry.js";
-import { resolveDevourerFamilies, isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
+import {
+  resolveDevourerFamilies,
+  isDevourerCorePlayer,
+} from "../systems/archetype/devourerCore.js";
 
 function getKnownItemIds(player = {}) {
   const inventoryIds = Array.isArray(player.inventory)

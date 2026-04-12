@@ -3,9 +3,17 @@ import { useCallback, useMemo, useState } from "react";
 import ActionButtons from "./ActionButtons.jsx";
 import ItemPicker from "./ItemPicker.jsx";
 import SkillPicker from "./SkillPicker.jsx";
-import { isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
 
 const normalizeText = (value) => String(value || "").trim();
+const DEVOURER_IDS = new Set(["devourer_core", "devourer_system"]);
+
+function isDevourerCorePlayer(player = {}) {
+  const archetypeSystem = player?.archetypeSystem;
+  if (typeof archetypeSystem === "string") {
+    return DEVOURER_IDS.has(archetypeSystem.trim().toLowerCase());
+  }
+  return DEVOURER_IDS.has(String(archetypeSystem?.id || "").trim().toLowerCase());
+}
 
 const toTitleCase = (value) => {
   const text = normalizeText(value);

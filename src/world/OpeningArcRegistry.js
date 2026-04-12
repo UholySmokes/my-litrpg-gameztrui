@@ -1,1 +1,1 @@
-export * from "@voidverse/game-core/world/OpeningArcRegistry.js";
+export * from "../../packages/game-core/src/world/OpeningArcRegistry.js";

@@ -1,1 +1,1 @@
-export * from "@voidverse/game-core/chronicle/ChronicleRuntime.js";
+export * from "../../packages/game-core/src/chronicle/ChronicleRuntime.js";

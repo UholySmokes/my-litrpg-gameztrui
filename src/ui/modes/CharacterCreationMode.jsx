@@ -235,6 +235,7 @@ export default function CharacterCreationMode({
   );
   const [wizardError, setWizardError] = useState("");
   const [openCrucibleSections, setOpenCrucibleSections] = useState({});
+  const [selectedStartingPoint, setSelectedStartingPoint] = useState(null);
   const narrativeMemoryRef = useRef(null);
 
   useEffect(() => {
@@ -359,6 +360,9 @@ export default function CharacterCreationMode({
       grantedPassiveSkills,
       startingPrompt:
         startingPrompt?.trim() || "Write how the run begins to lock the opening handoff.",
+      originName: selectedStartingPoint?.name || "Origin not selected",
+      originDescription: selectedStartingPoint?.summary || "Choose an origin to shape your opening pressures.",
+      originBiome: selectedStartingPoint?.type || null,
     };
   }, [
     blockedSkillIds.length,
@@ -373,6 +377,7 @@ export default function CharacterCreationMode({
     selectedProfession,
     selectedRace,
     selectedActiveSkills,
+    selectedStartingPoint,
     startingPrompt,
     systemAttributeBias,
   ]);

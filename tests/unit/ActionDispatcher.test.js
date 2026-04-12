@@ -466,6 +466,8 @@ describe("ActionDispatcher", () => {
       expect(result.state.player.archetypeSystem.resource.current).toBeGreaterThan(20);
       expect(result.state.player.archetypeSystem.runtime.taint).toBeGreaterThan(6);
       expect(result.state.player.archetypeSystem.runtime.sentientDevours).toBe(1);
+      expect(result.state.player.archetypeSystem.runtime.storedSamples.humanoid.count).toBe(0);
+      expect(result.state.player.archetypeSystem.runtime.knownPrey.humanoid.digested).toBe(2);
     });
 
     it("refines known prey into permanent adaptation", () => {

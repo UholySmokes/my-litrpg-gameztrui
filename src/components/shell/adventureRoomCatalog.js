@@ -99,6 +99,15 @@ const BASE_CATALOG = [
     group: "system",
   },
   {
+    id: "devourer",
+    title: "Devourer Core",
+    subtitle: "Review safe prey intake, queued risk, and permanent adaptation pressure.",
+    tone: "verdigris",
+    entryAction: "Open core",
+    size: "xl",
+    group: "system",
+  },
+  {
     id: "titles",
     title: "Title Reliquary",
     subtitle: "Manage earned titles, ceremonial bonuses, and prestige loadouts.",

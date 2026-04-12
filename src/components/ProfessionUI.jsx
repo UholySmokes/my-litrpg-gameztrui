@@ -52,7 +52,7 @@ export default function ProfessionUI({
     return (
       <div className="holo-panel" style={{ padding: "1rem" }}>
         <div style={{ color: "var(--holo-cyan)", marginBottom: "1rem" }}>
-          Professions unavailable
+          Path nodes disconnected
         </div>
         <div style={{ color: "rgba(0, 243, 255, 0.7)", fontSize: "0.9rem" }}>
           Character data not loaded. Please complete character creation first.

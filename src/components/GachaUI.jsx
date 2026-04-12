@@ -59,7 +59,7 @@ export default function GachaUI({
   if (!gameState || !gameState.player) {
     return (
       <div className="holo-panel gacha-empty">
-        <div className="gacha-empty__title">Gacha unavailable</div>
+        <div className="gacha-empty__title">Probability Matrix inaccessible</div>
         <div className="gacha-empty__body">
           Character data not loaded. Please complete character creation first.
         </div>

@@ -75,7 +75,7 @@ export default function CreationSummaryPanel({
               OPENING
             </div>
             <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              Your first command defines the opening beat. Locations stay part of the wider world and unfold through play.
+              Your first command defines the opening beat and auto-runs in the chosen origin.
             </div>
             {selectionSummary.startingPrompt ? (
               <div
@@ -229,6 +229,19 @@ export default function CreationSummaryPanel({
                 {selectionSummary.systemMatchSummary}
               </div>
             ) : null}
+          </div>
+          <div style={{ color: "var(--holo-cyan)" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
+              STARTER KIT
+            </div>
+            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)", lineHeight: 1.45 }}>
+              {selectionSummary.starterKitLabel || "Starter kit pending doctrine and profession."}
+            </div>
+            <div style={{ marginTop: "0.35rem", fontSize: "0.74rem", color: "var(--text-dim)", lineHeight: 1.45 }}>
+              <div><strong>Weapon:</strong> {selectionSummary.starterWeaponName || "Pending"}</div>
+              <div><strong>Armor:</strong> {selectionSummary.starterArmorName || "Pending"}</div>
+              <div><strong>Pack:</strong> {selectionSummary.starterSupportName || "Pending"} + {selectionSummary.starterConsumableName || "Pending"}</div>
+            </div>
           </div>
         </div>
         <div

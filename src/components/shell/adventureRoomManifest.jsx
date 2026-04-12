@@ -17,6 +17,7 @@ import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../../ui/panels/ActionSuggestionsPanel.jsx";
 import MagicStudyPanel from "../../ui/panels/MagicStudyPanel.jsx";
 import WorldMapPanel from "../../ui/panels/WorldMapPanel.jsx";
+import { deriveAdventureOnboardingTier } from "../../core/creationOnboarding.js";
 
 function RoomSection({ eyebrow, title, children }) {
   return (
@@ -92,6 +93,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
     actions,
     system,
   } = view;
+  const onboardingTier = deriveAdventureOnboardingTier({ state, player, quests });
 
   const systemRooms = [
     {
@@ -102,9 +104,12 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Inspect status",
       size: "fullscreen",
       group: "system",
-      availability: true,
+      availability: onboardingTier >= 2,
       isOpen: Boolean(surfaces.showStatusOverlay),
-      onOpen: quickActionsProps.onToggleStatus,
+      onOpen: () => {
+        system.trackUiAction?.("status");
+        quickActionsProps.onToggleStatus?.();
+      },
       onClose: surfaces.handleCloseStatusOverlay,
       render: () => (
         <StatusOverlay
@@ -135,7 +140,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open conservatory",
       size: "fullscreen",
       group: "system",
-      availability: true,
+      availability: onboardingTier >= 3,
       isOpen: Boolean(surfaces.showBestiary),
       onOpen: quickActionsProps.onToggleBestiary,
       onClose: surfaces.handleCloseBestiary,
@@ -149,7 +154,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open observatory",
       size: "fullscreen",
       group: "system",
-      availability: true,
+      availability: onboardingTier >= 3,
       isOpen: Boolean(surfaces.showArchetypeSystem),
       onOpen: quickActionsProps.onToggleArchetypeSystem,
       onClose: surfaces.handleCloseArchetypeSystem,
@@ -163,7 +168,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open reliquary",
       size: "fullscreen",
       group: "system",
-      availability: true,
+      availability: onboardingTier >= 3,
       isOpen: Boolean(surfaces.showTitleSystem),
       onOpen: quickActionsProps.onToggleTitles,
       onClose: surfaces.handleCloseTitleSystem,
@@ -189,7 +194,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open workshop",
       size: "fullscreen",
       group: "system",
-      availability: true,
+      availability: onboardingTier >= 3,
       isOpen: Boolean(surfaces.showProfessions),
       onOpen: quickActionsProps.onToggleCraft,
       onClose: surfaces.handleCloseProfessions,
@@ -211,7 +216,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Enter caravan",
       size: "fullscreen",
       group: "system",
-      availability: true,
+      availability: onboardingTier >= 3,
       isOpen: Boolean(surfaces.showShop),
       onOpen: quickActionsProps.onToggleShop,
       onClose: surfaces.handleCloseShop,
@@ -233,7 +238,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open constellarium",
       size: "fullscreen",
       group: "system",
-      availability: true,
+      availability: onboardingTier >= 3,
       isOpen: Boolean(surfaces.showGacha),
       onOpen: quickActionsProps.onToggleGacha,
       onClose: surfaces.handleCloseGacha,
@@ -255,7 +260,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open vault",
       size: "fullscreen",
       group: "system",
-      availability: true,
+      availability: onboardingTier >= 2,
       isOpen: Boolean(surfaces.showSaveLoad),
       onOpen: quickActionsProps.onToggleSaveLoad,
       onClose: surfaces.handleCloseSaveLoad,
@@ -279,7 +284,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Inspect replay",
       size: "fullscreen",
       group: "system",
-      availability: Boolean(isDevBuild),
+      availability: Boolean(isDevBuild) && onboardingTier >= 3,
       isOpen: Boolean(isDevBuild && surfaces.showReplayInspector),
       onOpen: quickActionsProps.onToggleReplayInspector,
       onClose: surfaces.handleCloseReplayInspector,
@@ -293,7 +298,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Inspect slot",
       size: "lg",
       group: "system",
-      availability: Boolean(surfaces.equipmentSelectSlot),
+      availability: onboardingTier >= 2 && Boolean(surfaces.equipmentSelectSlot),
       isOpen: Boolean(surfaces.equipmentSelectSlot),
       onOpen: () => {},
       onClose: surfaces.handleCloseEquipmentSelect,
@@ -357,7 +362,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Enter theater",
       size: "xl",
       group: "primary",
-      availability: true,
+      availability: onboardingTier >= 2,
       render: () =>
         combatState?.status === "active" ? (
           <CombatUI
@@ -382,7 +387,10 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open vault",
       size: "lg",
       group: "primary",
-      availability: true,
+      availability: onboardingTier >= 2,
+      onOpen: () => {
+        system.trackUiAction?.("inventory");
+      },
       render: () => <InventoryPanel inventory={player?.inventory || []} />,
     },
     {
@@ -406,7 +414,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open cartograph",
       size: "xl",
       group: "primary",
-      availability: true,
+      availability: onboardingTier >= 2,
       render: () => <WorldMapPanel state={state} />,
     },
     {
@@ -417,7 +425,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open forge",
       size: "lg",
       group: "primary",
-      availability: true,
+      availability: onboardingTier >= 2,
       render: () => (
         <EquipmentPanel
           player={player}
@@ -433,7 +441,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Enter study",
       size: "xl",
       group: "primary",
-      availability: true,
+      availability: onboardingTier >= 2,
       render: () => (
         <MagicStudyPanel
           player={player}

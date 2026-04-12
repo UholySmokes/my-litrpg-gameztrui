@@ -107,10 +107,16 @@ export function validateCreationChamber(chamberId, checks = {}) {
       }
       return { valid: true };
     case "oath-mirror":
+      if (!checks.hasOrigin) {
+        return {
+          valid: false,
+          error: "The Oath needs an origin before it can bind a real first destination.",
+        };
+      }
       if (!checks.hasStartingPrompt) {
         return {
           valid: false,
-          error: "The chronicle requires an opening command to begin.",
+          error: "The chronicle requires an opening command before the first turn can begin.",
         };
       }
       if (!checks.canFinalize) {

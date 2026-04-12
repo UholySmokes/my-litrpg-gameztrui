@@ -550,6 +550,10 @@ export default function CharacterCreationMode({
         active: Boolean(selectedProfession),
       },
       {
+        label: `Origin: ${selectedStartingPoint?.name || "pending"}`,
+        active: Boolean(selectedStartingPoint),
+      },
+      {
         label: `Attribute points: ${availablePoints === 0 ? "locked" : "open"}`,
         active: availablePoints === 0,
       },
@@ -594,6 +598,7 @@ export default function CharacterCreationMode({
       selectedAlignmentId,
       selectedArchetypeSystem,
       selectedClass,
+      selectedStartingPoint,
       startingPrompt,
       selectedPassiveSkills.length,
       selectedPerkIds.length,
@@ -621,6 +626,9 @@ export default function CharacterCreationMode({
     if (selectedProfession) {
       entries.push({ timestamp: "profession", text: `Profession chosen: ${selectedProfession.name}` });
     }
+    if (selectedStartingPoint) {
+      entries.push({ timestamp: "origin", text: `Origin sealed: ${selectedStartingPoint.name}` });
+    }
     return entries;
   }, [
     characterName,
@@ -628,12 +636,130 @@ export default function CharacterCreationMode({
     selectedClass,
     selectedProfession,
     selectedRace,
+    selectedStartingPoint,
   ]);
 
   const latestEntry =
     creationMemoryEntries.length > 0
       ? creationMemoryEntries[creationMemoryEntries.length - 1]
       : null;
+  const impactPreviewGroups = useMemo(() => {
+    const groups = [];
+
+    if (selectedArchetypeSystem) {
+      const lines = [];
+      if (selectionSummary.systemMatchSummary) {
+        lines.push(selectionSummary.systemMatchSummary);
+      }
+      if (systemAttributeBias?.primary?.length) {
+        lines.push(`Primary pressure lanes: ${systemAttributeBias.primary.join(", ")}.`);
+      }
+      groups.push({
+        label: "System",
+        title: selectedArchetypeSystem.name,
+        accent: "var(--holo-cyan)",
+        lines,
+      });
+    }
+
+    if (selectedRace) {
+      const lines = [];
+      const raceBonuses = summarizePositiveBonuses(selectedRace.attributeBonuses || selectedRace.statBonuses);
+      if (raceBonuses.length) {
+        lines.push(`Early stat edge: ${raceBonuses.join(", ")}.`);
+      }
+      if (selectionSummary.racePassiveAbility?.name) {
+        lines.push(`Inherited passive: ${selectionSummary.racePassiveAbility.name}.`);
+      }
+      if (selectionSummary.raceActiveAbility?.name) {
+        lines.push(`Opening active: ${selectionSummary.raceActiveAbility.name}.`);
+      }
+      groups.push({
+        label: "Lineage",
+        title: selectedRace.name,
+        accent: "#8ce99a",
+        lines,
+      });
+    }
+
+    if (selectedClass) {
+      const lines = [];
+      const classBonuses = summarizePositiveBonuses(selectedClass.baseStats);
+      if (classBonuses.length) {
+        lines.push(`Opening stat edge: ${classBonuses.join(", ")}.`);
+      }
+      if (selectedClass.resourceSystem || selectedClass.resource) {
+        lines.push(`Combat loop resource: ${selectedClass.resourceSystem || selectedClass.resource}.`);
+      }
+      if (selectedClass.archetype) {
+        lines.push(`Role pressure: ${selectedClass.archetype}.`);
+      }
+      groups.push({
+        label: "Doctrine",
+        title: selectedClass.name,
+        accent: "#ffd43b",
+        lines,
+      });
+    }
+
+    if (selectedProfession) {
+      const lines = [];
+      const t1Skills = summarizeNames(selectedProfession.tierUnlocks?.[1]?.skills || selectedProfession.tier1Skills || []);
+      if (t1Skills) {
+        lines.push(`Tier-one support skills: ${t1Skills}.`);
+      }
+      if (starterKitPreview.supportItem?.name) {
+        lines.push(`Starter support item: ${starterKitPreview.supportItem.name}.`);
+      }
+      groups.push({
+        label: "Profession",
+        title: selectedProfession.name,
+        accent: "#74c0fc",
+        lines,
+      });
+    }
+
+    if (selectedStartingPoint) {
+      groups.push({
+        label: "Origin",
+        title: selectedStartingPoint.name,
+        accent:
+          selectedStartingPoint.type === "combat"
+            ? "#ff8787"
+            : selectedStartingPoint.type === "social"
+              ? "#c77dff"
+              : "#4ade9a",
+        lines: [
+          `Opening pressure: ${selectedStartingPoint.type}.`,
+          selectedStartingPoint.summary,
+        ],
+      });
+    }
+
+    groups.push({
+      label: "Starter Kit",
+      title: starterKitPreview.starterKitLabel,
+      accent: "#ffa94d",
+      lines: [
+        `Weapon: ${starterKitPreview.weapon?.name || "Pending doctrine"}.`,
+        `Armor: ${starterKitPreview.armor?.name || "Pending doctrine"}.`,
+        `Pack: ${starterKitPreview.supportItem?.name || "Pending profession"} + ${starterKitPreview.consumable?.name || "Pending class"}.`,
+      ],
+    });
+
+    return groups;
+  }, [
+    selectedArchetypeSystem,
+    selectedClass,
+    selectedProfession,
+    selectedRace,
+    selectedStartingPoint,
+    selectionSummary.raceActiveAbility,
+    selectionSummary.racePassiveAbility,
+    selectionSummary.systemMatchSummary,
+    starterKitPreview,
+    systemAttributeBias?.primary,
+  ]);
   const activeChamber = chambers[activeChamberIndex] || chambers[0];
   const asciiArt = selectedRace ? RACE_ASCII[selectedRace.id] || RACE_ASCII.default : RACE_ASCII.default;
 
@@ -656,6 +782,10 @@ export default function CharacterCreationMode({
 
   const handleFinalize = useCallback(async () => {
     setWizardError("");
+    if (!selectedStartingPoint) {
+      setWizardError("Choose an origin before sealing the chronicle.");
+      return;
+    }
     const result = finalizeCharacter();
     if (!result?.valid || !result?.characterData) {
       setWizardError(
@@ -666,19 +796,24 @@ export default function CharacterCreationMode({
       return;
     }
     try {
-      await onComplete?.(result.characterData);
+      const finalCharacterData = mergeCreationOnboardingData(
+        result.characterData,
+        selectedStartingPoint,
+      );
+      await onComplete?.(finalCharacterData);
       emitCreationTelemetry(
         createTelemetryEvent("character_create_finished", {
           data: {
             chamberCount: chambers.length,
-            hasSecondaryClass: Boolean(result.characterData.secondaryClass),
+            hasSecondaryClass: Boolean(finalCharacterData.secondaryClass),
+            startingZoneId: finalCharacterData.startingZoneId,
           },
         }),
       );
     } catch (error) {
       setWizardError(error?.message || "Character initialization failed.");
     }
-  }, [chambers.length, emitCreationTelemetry, finalizeCharacter, onComplete]);
+  }, [chambers.length, emitCreationTelemetry, finalizeCharacter, onComplete, selectedStartingPoint]);
 
   const handleNext = () => {
     const validation = validateCreationChamber(activeChamber.id, chamberChecks);
@@ -978,7 +1113,7 @@ export default function CharacterCreationMode({
             <ChamberSection eyebrow="Origin" title="Choose where consciousness returns">
               <p style={{ fontSize: "0.82rem", opacity: 0.72, marginBottom: "1rem", lineHeight: 1.5 }}>
                 The origin locks the biome pressure, opening contacts, and environmental texture of your first scene.
-                It is optional but shapes every opening beat.
+                This choice is required and becomes the canonical source of truth for the first spawn.
               </p>
               <div
                 style={{
@@ -1046,6 +1181,7 @@ export default function CharacterCreationMode({
             </ChamberSection>
             <ChamberSection eyebrow="Start Command" title="Write how the chronicle begins">
               <CreationStartingPointPanel
+                selectedOriginName={selectedStartingPoint?.name || ""}
                 startingPrompt={startingPrompt}
                 onStartingPromptChange={(value) => {
                   setWizardError("");
@@ -1072,7 +1208,7 @@ export default function CharacterCreationMode({
                 maxPassiveSkills={MAX_PASSIVE_SKILLS}
                 typewriterText={typewriterText}
                 syncProgress={syncProgress}
-                canFinalize={canFinalize}
+                canFinalize={canSealChronicle}
                 onFinalize={handleFinalize}
               />
             </ChamberSection>
@@ -1089,7 +1225,7 @@ export default function CharacterCreationMode({
             maxPassiveSkills={MAX_PASSIVE_SKILLS}
             typewriterText={typewriterText}
             syncProgress={syncProgress}
-            canFinalize={canFinalize}
+            canFinalize={canSealChronicle}
             onFinalize={handleFinalize}
           />
         );
@@ -1154,6 +1290,9 @@ export default function CharacterCreationMode({
             />
           </div>
           <div className="creation-flow__sidebar-card">
+            <CreationImpactPreviewPanel groups={impactPreviewGroups} />
+          </div>
+          <div className="creation-flow__sidebar-card">
             <NarrativeMemoryPanel
               summary=""
               entries={creationMemoryEntries}
@@ -1190,7 +1329,7 @@ export default function CharacterCreationMode({
               <button
                 type="button"
                 className="holo-button holo-button--solid"
-                disabled={!canFinalize}
+                disabled={!canSealChronicle}
                 onClick={handleFinalize}
               >
                 Seal The Oath

@@ -10,7 +10,7 @@ let BEGINNER_QUESTS = [
     id: "bq_first_stride",
     name: "First Stride",
     description:
-      "Take your first calm steps in the region and learn how movement and leveling feel.",
+      "Take your first calm steps in the region and get your bearings before real danger closes in.",
     objectives: [
       {
         id: "bq_first_stride_obj_1",
@@ -19,14 +19,6 @@ let BEGINNER_QUESTS = [
         criteria: {
           actionType: "move",
           requiresLocationChange: true,
-        },
-      },
-      {
-        id: "bq_first_stride_obj_2",
-        description: "Reach level 2",
-        completed: false,
-        criteria: {
-          minLevel: 2,
         },
       },
     ],
@@ -41,7 +33,7 @@ let BEGINNER_QUESTS = [
     id: "bq_system_basics",
     name: "System Basics",
     description:
-      "Familiarize yourself with your interface and personal resources before taking bigger risks.",
+      "Check your build and field supplies so the shell feels readable before the first serious test.",
     objectives: [
       {
         id: "bq_system_basics_obj_1",
@@ -60,7 +52,7 @@ let BEGINNER_QUESTS = [
         },
       },
     ],
-    rewards: { xp: 5, items: [{ id: "minor_health_potion", quantity: 1 }] },
+    rewards: { xp: 20, items: [{ id: "minor_health_potion", quantity: 1 }] },
     tags: {
       starter: true,
       tones: ["neutral"],
@@ -71,7 +63,7 @@ let BEGINNER_QUESTS = [
     id: "bq_first_conflict",
     name: "First Conflict",
     description:
-      "Handle one small threat to prove you can survive a basic encounter.",
+      "Handle one small threat to prove your build can survive a real encounter.",
     objectives: [
       {
         id: "bq_first_conflict_obj_1",
@@ -82,7 +74,7 @@ let BEGINNER_QUESTS = [
         },
       },
     ],
-    rewards: { xp: 25, items: [{ id: "bandage_roll", quantity: 2 }] },
+    rewards: { xp: 35, items: [{ id: "bandage_roll", quantity: 2 }] },
     tags: {
       starter: true,
       tones: ["tense"],

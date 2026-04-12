@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { seedWorldAfterCharacterCreation } from "../../world/WorldInitializer.js";
 import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
 import { clearCharacterCreationDraft } from "./characterCreationDraft.js";
+import { QuestManager } from "../../systems/quest/QuestManager.js";
 import {
   incrementCharactersCreated,
   isAdvancedCreationUnlocked,
@@ -34,21 +35,39 @@ function buildTransitionAudioProfile(classId) {
 }
 
 export function buildCharacterCreationState(state, characterData) {
+  const seededQuests = QuestManager.generateInitialQuests(characterData);
   const nextQuests = {
-    active: [],
+    active: seededQuests,
     completed: [],
   };
   const seededWorld = seedWorldAfterCharacterCreation(state?.world, {
     player: characterData,
     quests: nextQuests,
   });
+  const onboardingVars = {
+    stage: "arrival",
+    hudTier: 1,
+    milestones: {
+      creationComplete: true,
+      firstStrideSeen: false,
+      systemBasicsSeen: false,
+      firstConflictSeen: false,
+      level2Celebrated: false,
+    },
+  };
 
   return {
     ...state,
     player_profile: incrementCharactersCreated(state?.player_profile),
     player: characterData,
     quests: nextQuests,
-    world: seededWorld,
+    world: {
+      ...seededWorld,
+      vars: {
+        ...(seededWorld.vars || {}),
+        onboarding: onboardingVars,
+      },
+    },
   };
 }
 
@@ -152,6 +171,7 @@ export function useGameUiCharacterCreationFlow({
             : playerObj?.class?.name) || "Unknown",
         startingPoint:
           startingLocation?.name || zone?.name || zoneId || null,
+        starterKitLabel: characterData?.starterKitLabel || null,
       });
       setIsTransitioning(true);
       if (transitionTimeoutRef.current) {
@@ -165,6 +185,18 @@ export function useGameUiCharacterCreationFlow({
         "Level 1 \u2014 Your chronicle has begun. Earn 100 XP to reach Level 2.",
         "system",
       );
+      if (characterData?.starterKitLabel) {
+        addSystemMessage(
+          `Starter kit bound: ${characterData.starterKitLabel}.`,
+          "system",
+        );
+      }
+      if (startingLocation?.name || zone?.name) {
+        addSystemMessage(
+          `Origin sealed: ${startingLocation?.name || zone?.name}. Your first directive is ready in the World Atrium.`,
+          "system",
+        );
+      }
       const startingPrompt =
         typeof characterData?.startingPrompt === "string"
           ? characterData.startingPrompt.trim()

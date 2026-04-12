@@ -5,6 +5,7 @@ const EXAMPLE_STARTS = [
 ];
 
 export default function CreationStartingPointPanel({
+  selectedOriginName = "",
   startingPrompt = "",
   onStartingPromptChange,
   onOptimizePrompt,
@@ -15,7 +16,7 @@ export default function CreationStartingPointPanel({
     <div className="creation-starting-point-panel">
       <p style={{ fontSize: "0.82rem", opacity: 0.72, marginBottom: "1rem", lineHeight: 1.5 }}>
         Write the exact opening you want. This command defines the first beat of the chronicle,
-        then auto-runs as your opening turn.
+        then auto-runs as your opening turn{selectedOriginName ? ` in ${selectedOriginName}` : ""}.
       </p>
 
       <label
@@ -35,7 +36,11 @@ export default function CreationStartingPointPanel({
         id="creation-start-command"
         value={startingPrompt}
         onChange={(event) => onStartingPromptChange?.(event.target.value)}
-        placeholder="I wake in Rootbound Camp, fall in with the caravan hands, and ask who is heading toward the Wildroot Fringe."
+        placeholder={
+          selectedOriginName
+            ? `I steady myself in ${selectedOriginName}, read the room, and ask who needs help first.`
+            : "I steady myself, read the room, and ask who needs help first."
+        }
         rows={5}
         style={{
           width: "100%",

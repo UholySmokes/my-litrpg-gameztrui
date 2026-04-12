@@ -102,6 +102,17 @@ export type PlayerState = {
     favoredFactionId?: string | null;
     favoredQuestTags?: string[];
   } | null;
+  oathOrigin?: {
+    id: string;
+    name: string;
+    zoneId: string;
+    locationId?: string | null;
+    type?: string | null;
+    summary?: string | null;
+  } | null;
+  openingArcId?: string | null;
+  entrySceneId?: string | null;
+  tutorialBundleId?: string | null;
   profession?: unknown;
   professions?: Record<string, unknown>;
   progress?: Record<string, unknown>;
@@ -144,6 +155,14 @@ export type PlayerState = {
   };
 };
 
+export type ChronicleState = {
+  entries: unknown[];
+  firsts: Record<string, unknown>;
+  majorChoices: unknown[];
+  discoveries: unknown[];
+  factionMilestones: unknown[];
+};
+
 export type GameState = {
   config: Record<string, unknown>;
   player: PlayerState;
@@ -155,6 +174,7 @@ export type GameState = {
   chatLog?: unknown[];
   narrative?: unknown;
   combat?: unknown;
+  chronicle?: ChronicleState;
   /** Content pack version string, e.g. "core@2026.02.07+sha256:..." */
   contentVersion?: string;
   /** State schema migration key */

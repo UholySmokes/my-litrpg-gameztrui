@@ -1,4 +1,5 @@
 import { xpForNextLevel } from "../core/xpCurve.js";
+import { createInitialChronicleState } from "../chronicle/ChronicleRuntime.js";
 import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
 import { createInitialWorldState } from "../world/WorldInitializer.js";
 import {
@@ -212,6 +213,10 @@ const initialGameState = {
     talents: [],
     archetypeSystem: null,
     origin: null,
+    oathOrigin: null,
+    openingArcId: null,
+    entrySceneId: null,
+    tutorialBundleId: null,
     profession: null,
     professions: {},
     progress: {
@@ -243,6 +248,7 @@ const initialGameState = {
     entries: [],
     sequence: 0,
   },
+  chronicle: createInitialChronicleState(),
   contentVersion: "core@0.1.0",
   stateVersion: GAME_STATE_VERSION,
 };

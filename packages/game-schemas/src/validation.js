@@ -286,6 +286,17 @@ const PlayerStateSchema = z.object({
     favoredFactionId: z.string().nullable().optional(),
     favoredQuestTags: z.array(z.string()).optional(),
   }).nullable().optional(),
+  oathOrigin: z.object({
+    id: z.string(),
+    name: z.string(),
+    zoneId: z.string(),
+    locationId: z.string().nullable().optional(),
+    type: z.string().nullable().optional(),
+    summary: z.string().nullable().optional(),
+  }).nullable().optional(),
+  openingArcId: z.string().nullable().optional(),
+  entrySceneId: z.string().nullable().optional(),
+  tutorialBundleId: z.string().nullable().optional(),
   profession: z.unknown().optional(),
   professions: z.record(z.string(), z.unknown()).optional(),
   progress: z.record(z.string(), z.unknown()).optional(),
@@ -362,6 +373,14 @@ const QuestsStateSchema = z.object({
   completed: z.array(z.unknown()),
 });
 
+const ChronicleStateSchema = z.object({
+  entries: z.array(z.unknown()),
+  firsts: z.record(z.string(), z.unknown()),
+  majorChoices: z.array(z.unknown()),
+  discoveries: z.array(z.unknown()),
+  factionMilestones: z.array(z.unknown()),
+});
+
 export const GameStateSchema = z.object({
   config: z.record(z.string(), z.unknown()),
   player: PlayerStateSchema,
@@ -370,6 +389,7 @@ export const GameStateSchema = z.object({
   chatLog: z.array(z.unknown()).optional(),
   narrative: z.unknown().optional(),
   combat: z.unknown().optional(),
+  chronicle: ChronicleStateSchema.optional(),
 });
 
 // Validation Functions

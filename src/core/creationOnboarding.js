@@ -1,5 +1,6 @@
 import { getItemData } from "../data/registries/ItemDataRegistry.js";
 import { getZoneEntryLocationId } from "../world/WorldDataRegistry.js";
+import { buildOpeningArcPayload } from "../world/OpeningArcRegistry.js";
 
 const CASTER_CLASS_PATTERN = /mage|archmage|wizard|sorcer|warlock|necromancer|spell/i;
 const SKIRMISH_CLASS_PATTERN = /rogue|ranger|assassin|shadow|hunter|scout/i;
@@ -151,22 +152,27 @@ export function buildStarterKitPreview(characterData = {}) {
 export function resolveStartingPointPayload(startingPoint = null) {
   if (!startingPoint?.id) {
     return {
-      origin: null,
+      oathOrigin: null,
       startingZoneId: null,
       startingLocationId: null,
+      openingArcId: null,
+      entrySceneId: null,
+      tutorialBundleId: null,
     };
   }
 
+  const openingArcPayload = buildOpeningArcPayload(startingPoint);
+
   return {
-    origin: {
-      id: startingPoint.id,
-      name: startingPoint.name,
-      type: startingPoint.type || "exploration",
-      summary: startingPoint.summary || "",
-      favoredBiome: startingPoint.id,
-    },
+    oathOrigin: openingArcPayload.oathOrigin,
     startingZoneId: startingPoint.id,
-    startingLocationId: getZoneEntryLocationId(startingPoint.id) || null,
+    startingLocationId:
+      openingArcPayload.oathOrigin?.locationId ||
+      getZoneEntryLocationId(startingPoint.id) ||
+      null,
+    openingArcId: openingArcPayload.openingArcId,
+    entrySceneId: openingArcPayload.entrySceneId,
+    tutorialBundleId: openingArcPayload.tutorialBundleId,
   };
 }
 
@@ -188,6 +194,10 @@ export function mergeCreationOnboardingData(characterData = {}, startingPoint = 
       ...(characterData.characterCreationBlueprint || {}),
       startingLocationId: originPayload.startingLocationId,
       startingZoneId: originPayload.startingZoneId,
+      oathOriginId: originPayload.oathOrigin?.id || null,
+      openingArcId: originPayload.openingArcId,
+      entrySceneId: originPayload.entrySceneId,
+      tutorialBundleId: originPayload.tutorialBundleId,
     },
   };
 }

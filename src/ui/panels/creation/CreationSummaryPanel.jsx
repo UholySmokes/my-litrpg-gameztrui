@@ -92,6 +92,45 @@ export default function CreationSummaryPanel({
           </div>
           <div style={{ color: "var(--holo-cyan)" }}>
             <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
+              ORIGIN
+            </div>
+            {(() => {
+              const biomeColors = {
+                social:      { badge: "#c77dff", border: "rgba(155, 89, 182, 0.55)" },
+                exploration: { badge: "#4ade9a", border: "rgba(0, 200, 130, 0.45)" },
+                combat:      { badge: "#ff6b6b", border: "rgba(230, 80, 60, 0.45)" },
+              };
+              const biome = selectionSummary.originBiome;
+              const colors = biomeColors[biome] || null;
+              return (
+                <>
+                  <div style={{ fontSize: "1rem", marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.45rem", flexWrap: "wrap" }}>
+                    {selectionSummary.originName}
+                    {colors && biome && (
+                      <span
+                        style={{
+                          fontSize: "0.6rem",
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          color: colors.badge,
+                          border: `1px solid ${colors.badge}`,
+                          borderRadius: "4px",
+                          padding: "0.05rem 0.32rem",
+                        }}
+                      >
+                        {biome}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-dim)", lineHeight: 1.45 }}>
+                    {selectionSummary.originDescription}
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+          <div style={{ color: "var(--holo-cyan)" }}>
+            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
               RACE
             </div>
             <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>

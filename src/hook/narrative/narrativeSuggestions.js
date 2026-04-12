@@ -9,6 +9,11 @@ import {
   resolvePlayerArchetypeSystem,
 } from "../../systems/archetype/resolvePlayerArchetypeSystem.js";
 import { toNumber } from "../../utils/shared.js";
+import {
+  deriveAdventureOnboardingTier,
+  getAdventureOnboardingContext,
+  isAdventureSurfaceUnlocked,
+} from "../../core/creationOnboarding.js";
 
 const toSuggestionId = (value) =>
   String(value || "")
@@ -526,6 +531,64 @@ function buildTravelSuggestions(state, maxItems = 3) {
   return orderedSuggestions;
 }
 
+function buildBaseActionSuggestions(state) {
+  const onboardingContext = getAdventureOnboardingContext({ state });
+  const onboardingScoped = Boolean(onboardingContext?.bundleId);
+  const tier = deriveAdventureOnboardingTier({ state });
+  const statusUnlocked = onboardingScoped
+    ? isAdventureSurfaceUnlocked("status", { state })
+    : tier >= 2;
+  const inventoryUnlocked = onboardingScoped
+    ? isAdventureSurfaceUnlocked("inventory", { state })
+    : tier >= 2;
+  const suggestions = [
+    createSuggestionRecord({
+      id: "look-around",
+      label: "Look Around",
+      command: "look around",
+      weight: 1,
+      category: "observe",
+    }),
+  ];
+
+  if (statusUnlocked) {
+    suggestions.push(
+      createSuggestionRecord({
+        id: "check-status",
+        label: "Check Status",
+        command: "check status",
+        weight: 0.94,
+        category: "power",
+      }),
+    );
+  }
+
+  if (inventoryUnlocked) {
+    suggestions.push(
+      createSuggestionRecord({
+        id: "open-inventory",
+        label: "Open Inventory",
+        command: "open inventory",
+        weight: 0.9,
+        category: "power",
+      }),
+    );
+  }
+
+  return suggestions;
+}
+
+function buildOnboardingStepSuggestions(state) {
+  const onboarding = getAdventureOnboardingContext({ state });
+  if (!onboarding?.active || !onboarding.currentStep) {
+    return [];
+  }
+
+  return normalizeActionSuggestions(onboarding.currentStep.suggestionSet, {
+    maxItems: 4,
+  });
+}
+
 function buildQuestDrivenSuggestions(state) {
   const activeQuests = Array.isArray(state?.quests?.active) ? state.quests.active : [];
   const primaryQuest = activeQuests[0];
@@ -590,6 +653,9 @@ export function buildActionSuggestions(state) {
     return DEFAULT_ACTION_SUGGESTIONS;
   }
 
+  const baseSuggestions = buildBaseActionSuggestions(state);
+  const onboardingSuggestions = buildOnboardingStepSuggestions(state);
+  const onboardingContext = getAdventureOnboardingContext({ state });
   const contextSuggestions = [];
   const player = state.player || {};
   const magic =
@@ -732,7 +798,11 @@ export function buildActionSuggestions(state) {
       );
     }
   } else {
-    contextSuggestions.push(...buildQuestDrivenSuggestions(state), ...buildTravelSuggestions(state, 2));
+    if (onboardingContext?.active) {
+      contextSuggestions.push(...buildTravelSuggestions(state, 2));
+    } else {
+      contextSuggestions.push(...buildQuestDrivenSuggestions(state), ...buildTravelSuggestions(state, 2));
+    }
 
     if (!hasAmbientSnapshot) {
       contextSuggestions.push(
@@ -878,7 +948,7 @@ export function buildActionSuggestions(state) {
   }
 
   const fixedLabels = new Set(
-    FIXED_ACTION_SUGGESTIONS.map((suggestion) =>
+    [...baseSuggestions, ...onboardingSuggestions].map((suggestion) =>
       String(suggestion?.command || suggestion?.t || "").toLowerCase(),
     ),
   );
@@ -892,17 +962,23 @@ export function buildActionSuggestions(state) {
       !fixedLabels.has(String(suggestion?.command || suggestion?.t || "").toLowerCase()),
   );
 
+  const fillerCandidates =
+    onboardingSuggestions.length >= 2
+      ? []
+      : CONTEXT_SUGGESTION_FILLERS.filter(
+          (fallback) =>
+            !uniqueContextSuggestions.some(
+              (entry) =>
+                String(entry?.command || entry?.t || "").toLowerCase() ===
+                String(fallback?.command || fallback?.t || "").toLowerCase(),
+            ),
+        );
+
   const normalizedContext = [
+    ...onboardingSuggestions,
     ...uniqueContextSuggestions,
-    ...CONTEXT_SUGGESTION_FILLERS.filter(
-      (fallback) =>
-        !uniqueContextSuggestions.some(
-          (entry) =>
-            String(entry?.command || entry?.t || "").toLowerCase() ===
-            String(fallback?.command || fallback?.t || "").toLowerCase(),
-        ),
-    ),
+    ...fillerCandidates,
   ].slice(0, 5);
 
-  return [...FIXED_ACTION_SUGGESTIONS, ...normalizedContext];
+  return [...baseSuggestions, ...normalizedContext].slice(0, 8);
 }

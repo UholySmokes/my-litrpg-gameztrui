@@ -15,6 +15,7 @@ import { handleCombatAction } from "./reducer/combatActionHandlers.js";
 import { handleInventoryAction } from "./reducer/inventoryActionHandlers.js";
 import { handleProgressionAction } from "./reducer/progressionActionHandlers.js";
 import { handleSkillAction } from "./reducer/skillActionHandlers.js";
+import { promoteOnboardingAfterQuestCompletion } from "../world/OpeningTutorialBundleRegistry.js";
 
 const ensureCombatStructure = (state) =>
   state.combat || {
@@ -302,6 +303,7 @@ const progressQuestObjectives = (prevState, nextState, action) => {
       .map((entry) => entry?.id)
       .filter((id) => typeof id === "string" && id),
   );
+  const newlyCompletedQuestIds = [];
 
   let rewardsState = nextState;
   let changed = false;
@@ -334,11 +336,11 @@ const progressQuestObjectives = (prevState, nextState, action) => {
       nextObjectives.length > 0 &&
       nextObjectives.every((objective) => objective?.completed);
 
-    if (allCompleted) {
-      changed = true;
-      if (!completedQuestIds.has(quest.id)) {
-        completedQuestIds.add(quest.id);
-        completedQuests.push({
+      if (allCompleted) {
+        changed = true;
+        if (!completedQuestIds.has(quest.id)) {
+          completedQuestIds.add(quest.id);
+          completedQuests.push({
           id: quest.id,
           date: SimBridge.now(),
           meta: questMeta || null,
@@ -349,6 +351,7 @@ const progressQuestObjectives = (prevState, nextState, action) => {
             announce: true,
           });
         }
+        newlyCompletedQuestIds.push(quest.id);
       }
       continue;
     }
@@ -367,7 +370,7 @@ const progressQuestObjectives = (prevState, nextState, action) => {
 
   if (!changed) return rewardsState;
 
-  return {
+  let resolvedState = {
     ...rewardsState,
     quests: {
       ...(rewardsState.quests || {}),
@@ -375,6 +378,12 @@ const progressQuestObjectives = (prevState, nextState, action) => {
       completed: completedQuests,
     },
   };
+
+  newlyCompletedQuestIds.forEach((questId) => {
+    resolvedState = promoteOnboardingAfterQuestCompletion(resolvedState, questId);
+  });
+
+  return resolvedState;
 };
 
 const syncQuestObjectivesForAction = (prevState, nextState, actionLike) => {

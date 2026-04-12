@@ -34,7 +34,7 @@ function buildChronicleEntry({
   };
 }
 
-function buildOpeningArcSceneMemory(characterData = {}) {
+function buildOpeningArcSceneMemory(characterData = {}, initialQuest = null) {
   const oathOrigin = characterData?.oathOrigin;
   const openingArc = getOpeningArcByOathOriginId(
     oathOrigin?.id || characterData?.startingZoneId,
@@ -47,10 +47,15 @@ function buildOpeningArcSceneMemory(characterData = {}) {
     locationLabel: oathOrigin.name || zone?.name || oathOrigin.id,
     zoneLabel: zone?.name || oathOrigin.name || oathOrigin.id,
     immediateObjective:
-      openingArc.firstQuest?.name || openingArc.firstPressure || "Stabilize your footing.",
+      initialQuest?.name || openingArc.firstQuest?.name || openingArc.firstPressure || "Stabilize your footing.",
     presentEntities: signatureNpcName ? [signatureNpcName] : [],
     activeThreats: openingArc.firstPressure ? [openingArc.firstPressure] : [],
-    unresolvedHooks: openingArc.firstQuest?.name ? [openingArc.firstQuest.name] : [],
+    unresolvedHooks:
+      initialQuest?.name
+        ? [initialQuest.name]
+        : openingArc.firstQuest?.name
+          ? [openingArc.firstQuest.name]
+          : [],
     lastConsequence: `The chronicle sealed in ${oathOrigin.name || oathOrigin.id}.`,
     familiarEntities: signatureNpcName ? [signatureNpcName] : [],
     partyEntities: [],
@@ -189,9 +194,9 @@ function buildTransitionAudioProfile(classId) {
 }
 
 export function buildCharacterCreationState(state, characterData) {
-  const seededQuests = QuestManager.generateInitialQuests(characterData);
+  const questPlan = QuestManager.generateInitialQuestPlan(characterData);
   const nextQuests = {
-    active: seededQuests,
+    active: questPlan.activeQuests,
     completed: [],
   };
   const seededWorld = seedWorldAfterCharacterCreation(state?.world, {
@@ -201,11 +206,19 @@ export function buildCharacterCreationState(state, characterData) {
   const openingArc = getOpeningArcByOathOriginId(
     characterData?.oathOrigin?.id || characterData?.startingZoneId,
   );
-  const openingSceneMemory = buildOpeningArcSceneMemory(characterData);
+  const openingSceneMemory = buildOpeningArcSceneMemory(
+    characterData,
+    nextQuests.active[0] || null,
+  );
   const chronicle = buildInitialChronicleState(characterData, seededWorld, nextQuests);
   const onboardingVars = {
     stage: "arrival",
     hudTier: 1,
+    bundleId: questPlan.bundleId || characterData?.tutorialBundleId || null,
+    currentStepId: questPlan.currentStepId || null,
+    completedStepIds: [],
+    deferredMainQuestId: questPlan.deferredMainQuestId || null,
+    deferredMainQuestReady: questPlan.deferredMainQuestReady === true,
     openingArcId: characterData?.openingArcId || openingArc?.id || null,
     entrySceneId: characterData?.entrySceneId || openingArc?.entrySceneId || null,
     tutorialBundleId:
@@ -346,6 +359,9 @@ export function useGameUiCharacterCreationFlow({
       const openingArc = getOpeningArcByOathOriginId(
         oathOrigin?.id || characterData?.startingZoneId,
       );
+      const activeDirective = Array.isArray(nextState?.quests?.active)
+        ? nextState.quests.active[0] || null
+        : null;
       const startingLocationId = characterData?.startingLocationId || null;
       const startingLocation = startingLocationId
         ? getLocationById(startingLocationId)
@@ -361,7 +377,7 @@ export function useGameUiCharacterCreationFlow({
         startingPoint:
           oathOrigin?.name || startingLocation?.name || zone?.name || zoneId || null,
         starterKitLabel: characterData?.starterKitLabel || null,
-        firstDirective: openingArc?.firstQuest?.name || null,
+        firstDirective: activeDirective?.name || openingArc?.firstQuest?.name || null,
       });
       setIsTransitioning(true);
       if (transitionTimeoutRef.current) {
@@ -387,9 +403,9 @@ export function useGameUiCharacterCreationFlow({
           "system",
         );
       }
-      if (openingArc?.firstQuest?.name) {
+      if (activeDirective?.name || openingArc?.firstQuest?.name) {
         addSystemMessage(
-          `First directive: ${openingArc.firstQuest.name}.`,
+          `First directive: ${activeDirective?.name || openingArc.firstQuest.name}.`,
           "system",
         );
       }

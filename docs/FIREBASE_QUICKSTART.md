@@ -173,7 +173,8 @@ The frontend uses same-origin API paths only:
 
 - `VITE_API_BASE_URL` (optional path prefix such as `/`) for `/api/*`.
 - If unset, it will call same-origin `/api/*`.
-- Absolute external URLs are ignored by runtime config and client endpoint resolvers.
+- By default, absolute external URLs are ignored by runtime config and client endpoint resolvers.
+- Optional escape hatch for static/custom-domain shells: set `VITE_ALLOW_EXTERNAL_API_BASE_URL=true` and provide `VITE_API_FALLBACK_BASE_URL` (for example the Firebase `web.app` origin) so the client can fall back when same-origin `/api/*` returns 404.
 
 Frontend auth config (Firebase Auth):
 

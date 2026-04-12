@@ -2,8 +2,26 @@ import { describe, it, expect } from "@jest/globals";
 import { executeAction } from "../../packages/game-core/src/core/ActionDispatcher.js";
 import { initialGameState } from "../../packages/game-core/src/data/initialState.js";
 import { startCombat } from "../../packages/game-core/src/systems/combat/CombatSystem.js";
+import { SimBridge } from "../../packages/game-core/src/simulation/bridge/SimulationContext.js";
+import { jest } from "@jest/globals";
 
 describe("ActionDispatcher", () => {
+  let consoleSpy;
+
+  beforeAll(() => {
+    consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    SimBridge.initialize(1337);
+  });
+
+  beforeEach(() => {
+    SimBridge.reset();
+  });
+
+  afterAll(() => {
+    SimBridge.deactivate();
+    consoleSpy?.mockRestore?.();
+  });
+
   const baseState = {
     ...initialGameState,
     player: {

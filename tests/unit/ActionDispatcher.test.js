@@ -14,6 +14,42 @@ describe("ActionDispatcher", () => {
     combat: { status: "inactive" },
   };
 
+  describe("magic study action", () => {
+    it("records a journal entry and unlocks a recipe for explicit spell study", () => {
+      const state = {
+        ...baseState,
+        world: { ...(baseState.world || {}), turnCount: 7 },
+      };
+
+      const result = executeAction(state, { type: "magic_study", target: "spell fire bolt" });
+      expect(result.success).toBe(true);
+      expect(result.state.world.turnCount).toBe(8);
+
+      const magic = result.state.player.magic;
+      const entry = magic.journal[magic.journal.length - 1];
+      expect(entry.target).toBe("spell fire bolt");
+      expect(entry.method).toBe("spell_study");
+      expect(entry.result).toBe("breakthrough");
+      expect(magic.grammar.recipes).toContain("study:magic:fire:bolt");
+    });
+
+    it("records rune study observations without requiring a spell recipe unlock", () => {
+      const state = {
+        ...baseState,
+        world: { ...(baseState.world || {}), turnCount: 3 },
+      };
+
+      const result = executeAction(state, { type: "magic_study", target: "rune aeth" });
+      expect(result.success).toBe(true);
+      expect(result.state.world.turnCount).toBe(4);
+
+      const magic = result.state.player.magic;
+      const entry = magic.journal[magic.journal.length - 1];
+      expect(entry.target).toBe("rune aeth");
+      expect(entry.method).toBe("rune_analysis");
+    });
+  });
+
   describe("rest action", () => {
     it("restores HP and mana when config values are zero", () => {
       const state = {
@@ -449,4 +485,3 @@ describe("ActionDispatcher", () => {
   });
 
 });
-

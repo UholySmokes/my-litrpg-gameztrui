@@ -225,37 +225,256 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_study": {
-          const magic = state.player?.magic || {};
-          const target = action.target || "unknown";
-          const journal = Array.isArray(magic.journal) ? magic.journal : [];
+          let workingState = state;
+          const rawTarget =
+            typeof action.target === "string" && action.target.trim()
+              ? action.target.trim().toLowerCase()
+              : "unknown";
           const turn = state.world?.turnCount || 0;
+
+          const baselineMagic = workingState.player?.magic || {};
+          const baselineGrammar = baselineMagic.grammar || {};
+          const knownEssences = new Set([
+            ...normalizeStringList(baselineGrammar.essences),
+            ...normalizeStringList(Object.keys(baselineMagic.affinities || {})),
+          ]);
+          const knownForms = new Set(normalizeStringList(baselineGrammar.forms));
+
+          const tokens = rawTarget.split(/\s+/).filter(Boolean);
+          const isSpellStudy =
+            tokens[0] === "spell" ||
+            tokens.includes("spell") ||
+            tokens.includes("buildup") ||
+            tokens.includes("buildups");
+          const isRuneStudy =
+            tokens.includes("rune") ||
+            tokens.includes("runes") ||
+            tokens.includes("symbol") ||
+            tokens.includes("symbols");
+          const isInscriptionStudy =
+            tokens.includes("inscription") ||
+            tokens.includes("inscriptions") ||
+            tokens.includes("glyph") ||
+            tokens.includes("text");
+          const isPhenomenaStudy =
+            tokens.includes("phenomena") ||
+            tokens.includes("phenomenon") ||
+            tokens.includes("leyline") ||
+            tokens.includes("storm") ||
+            tokens.includes("tide") ||
+            tokens.includes("mirage");
+          const isEpiphanyStudy =
+            tokens.includes("epiphany") || tokens.includes("insight");
+
+          let requestedEssence = null;
+          let requestedForm = null;
+          if (tokens[0] === "spell") {
+            requestedEssence = tokens[1] || null;
+            requestedForm = tokens[2] || null;
+          } else if (isSpellStudy) {
+            requestedEssence = tokens.find((token) => knownEssences.has(token)) || null;
+            requestedForm = tokens.find((token) => knownForms.has(token)) || null;
+          }
+
+          let recipeUnlocked = false;
+          if (isSpellStudy) {
+            const progressed = applySkillProgressionAction(workingState, {
+              type: "STUDY_SPELL",
+              payload: {
+                essence: requestedEssence,
+                form: requestedForm,
+              },
+            });
+            if (progressed) {
+              workingState = progressed;
+              recipeUnlocked = true;
+            }
+          }
+
+          const magic = workingState.player?.magic || {};
+          const journal = Array.isArray(magic.journal) ? magic.journal : [];
+          const unlocked = [];
+          const nextMagic = { ...magic };
+
+          // Baseline: study costs focus (strain), with a chance of calm insight.
+          const strainMax = Number.isFinite(magic.strain?.max) ? magic.strain.max : 100;
+          const strainCurrent = Number.isFinite(magic.strain?.current) ? magic.strain.current : 0;
+          const strainDelta = isEpiphanyStudy ? randomInt(0, 1) : randomInt(1, 3);
+          nextMagic.strain = {
+            ...(magic.strain || {}),
+            current: clamp(strainCurrent + strainDelta, 0, strainMax),
+            max: strainMax,
+            state: magic.strain?.state || "steady",
+          };
+
+          if (magic.resonance) {
+            const resonanceMax = Number.isFinite(magic.resonance?.max) ? magic.resonance.max : 100;
+            const resonanceCurrent = Number.isFinite(magic.resonance?.current) ? magic.resonance.current : 0;
+            const resonanceDelta = isEpiphanyStudy ? randomInt(2, 6) : randomInt(0, 2);
+            nextMagic.resonance = {
+              ...(magic.resonance || {}),
+              current: clamp(resonanceCurrent + resonanceDelta, 0, resonanceMax),
+              max: resonanceMax,
+              state: magic.resonance?.state || "quiet",
+            };
+          }
+
+          const grammar = { ...(magic.grammar || {}) };
+          const grammarPatterns = { ...(grammar.patterns || {}) };
+          const shapePatterns = normalizeStringList(grammarPatterns.shape);
+          const weavePatterns = normalizeStringList(grammarPatterns.weave);
+          const deliveries = normalizeStringList(grammar.deliveries);
+          let essences = normalizeStringList(grammar.essences);
+          let forms = normalizeStringList(grammar.forms);
+
+          const affinityTarget =
+            requestedEssence ||
+            essences[0] ||
+            (typeof magic.attunement?.focusedEssence === "string"
+              ? magic.attunement.focusedEssence
+              : null);
+          if (affinityTarget) {
+            const nextAffinities = { ...(magic.affinities || {}) };
+            const current = Number(nextAffinities[affinityTarget]) || 0;
+            const gain = isEpiphanyStudy ? randomInt(1, 3) : randomInt(0, 2);
+            nextAffinities[affinityTarget] = current + gain;
+            nextMagic.affinities = nextAffinities;
+            if (gain > 0) unlocked.push(`affinity +${gain} (${affinityTarget})`);
+          }
+
+          if (isRuneStudy) {
+            const unlockPool = ["lance", "cone", "veil", "vortex"];
+            if (randomBool(isEpiphanyStudy ? 0.65 : 0.35)) {
+              const next = randomChoice(unlockPool.filter((p) => !shapePatterns.includes(p)));
+              if (next) {
+                const nextShape = pushUnique(shapePatterns, next);
+                grammarPatterns.shape = nextShape;
+                nextMagic.unlockedPatterns = {
+                  ...(nextMagic.unlockedPatterns || {}),
+                  shape: nextShape,
+                  weave: Array.isArray(nextMagic.unlockedPatterns?.weave)
+                    ? nextMagic.unlockedPatterns.weave
+                    : weavePatterns,
+                };
+                unlocked.push(`pattern:${next}`);
+              }
+            }
+          }
+
+          if (isInscriptionStudy) {
+            const deliveryPool = ["instant", "sustained", "channeled"];
+            const formPool = ["lance", "cone", "wall", "veil", "vortex", "lattice"];
+
+            if (randomBool(isEpiphanyStudy ? 0.55 : 0.25)) {
+              const nextDelivery = randomChoice(deliveryPool.filter((d) => !deliveries.includes(d)));
+              if (nextDelivery) {
+                deliveries.push(nextDelivery);
+                unlocked.push(`delivery:${nextDelivery}`);
+              }
+            }
+
+            if (randomBool(isEpiphanyStudy ? 0.55 : 0.25)) {
+              const nextForm = randomChoice(formPool.filter((f) => !forms.includes(f)));
+              if (nextForm) {
+                forms.push(nextForm);
+                unlocked.push(`form:${nextForm}`);
+              }
+            }
+
+            if (magic.interference) {
+              const score = Number.isFinite(magic.interference?.score) ? magic.interference.score : 0;
+              nextMagic.interference = {
+                ...(magic.interference || {}),
+                score: clamp(score - 0.02, 0, 1),
+              };
+            }
+          }
+
+          if (isPhenomenaStudy) {
+            const essencePool = [
+              "lightning",
+              "shadow",
+              "light",
+              "life",
+              "creation",
+              "destruction",
+              "space",
+              "time",
+            ];
+            if (randomBool(isEpiphanyStudy ? 0.45 : 0.18)) {
+              const nextEssence = randomChoice(essencePool.filter((e) => !essences.includes(e)));
+              if (nextEssence) {
+                essences.push(nextEssence);
+                unlocked.push(`essence:${nextEssence}`);
+              }
+            }
+          }
+
+          // Ensure core spell-study keys show up as part of grammar even if the action inferred them.
+          if (requestedEssence) essences = pushUnique(essences, requestedEssence);
+          if (requestedForm) forms = pushUnique(forms, requestedForm);
+
+          nextMagic.grammar = {
+            ...grammar,
+            essences,
+            forms,
+            deliveries,
+            patterns: {
+              shape: Array.isArray(grammarPatterns.shape) ? grammarPatterns.shape : shapePatterns,
+              weave: Array.isArray(grammarPatterns.weave) ? grammarPatterns.weave : weavePatterns,
+            },
+          };
+
+          const method = isSpellStudy
+            ? "spell_study"
+            : isRuneStudy
+              ? "rune_analysis"
+              : isInscriptionStudy
+                ? "inscription_decoding"
+                : isEpiphanyStudy
+                  ? "epiphany"
+                  : "observation";
+          const notes = [
+            `Studied ${rawTarget} at turn ${turn}.`,
+            recipeUnlocked ? "A stable spell recipe crystallized." : null,
+            unlocked.length > 0 ? `Unlocked: ${unlocked.join(", ")}.` : null,
+          ]
+            .filter(Boolean)
+            .join(" ");
+
           const entry = {
             turn,
-            topic: `study_${target.replace(/\s+/g, "_")}`,
-            target,
-            method: "observation",
-            result: "recorded",
-            notes: `Studied ${target} at turn ${turn}.`,
+            topic: `study_${rawTarget.replace(/\s+/g, "_")}`,
+            target: rawTarget,
+            method,
+            result: recipeUnlocked ? "breakthrough" : unlocked.length > 0 ? "unlocked" : "recorded",
+            notes,
           };
-          const nextJournal = [...journal, entry].slice(-50);
-          const nextMagic = { ...magic, journal: nextJournal };
+
+          nextMagic.journal = [...journal, entry].slice(-50);
+
           newState = {
-            ...state,
+            ...workingState,
             player: syncPlayerAbilityState(
               {
-                ...state.player,
+                ...workingState.player,
                 magic: nextMagic,
               },
               {
-                ...(state.player?.abilityState || {}),
+                ...(workingState.player?.abilityState || {}),
                 families: {
-                  ...(state.player?.abilityState?.families || {}),
+                  ...(workingState.player?.abilityState?.families || {}),
                   magic: nextMagic,
                 },
               },
             ),
           };
-          description = `Studied ${target} — observation logged in magic journal.`;
+
+          description = recipeUnlocked
+            ? `Study complete: ${rawTarget} (recipe recorded).`
+            : unlocked.length > 0
+              ? `Study complete: ${rawTarget} (unlocks: ${unlocked.join(", ")}).`
+              : `Studied ${rawTarget} - observation logged in magic journal.`;
           break;
         }
 

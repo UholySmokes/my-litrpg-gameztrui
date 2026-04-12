@@ -1,4 +1,5 @@
 import { ensureAttributeShape } from "../constants/attributes.js";
+import { normalizeChronicleState } from "../chronicle/ChronicleRuntime.js";
 import { DataRegistry } from "../data/DataRegistry.js";
 import { titleDatabase } from "../data/titleData.js";
 import { xpForNextLevel } from "../systems/leveling/LevelingSystem.js";
@@ -25,6 +26,8 @@ import {
   MAJOR_FACTION_IDS,
   resolveLocationId,
   getLocationById,
+  getZoneById,
+  getZoneEntryLocationId,
   getBiomeEssenceProfile,
   getEssenceAnomalyById,
 } from "../world/WorldDataRegistry.js";
@@ -182,6 +185,49 @@ function normalizeOriginRef(value, fallback = null) {
   return fallback ?? null;
 }
 
+function normalizeOathOriginRef(value, fallback = null) {
+  const source =
+    isPlainObject(value) && typeof value.id === "string" && value.id.trim()
+      ? value
+      : null;
+  const zoneId =
+    (typeof value === "string" && value.trim()) ||
+    source?.zoneId ||
+    source?.id ||
+    fallback?.zoneId ||
+    fallback?.id ||
+    null;
+
+  if (!zoneId) return fallback ?? null;
+
+  const resolvedZoneId = String(zoneId).trim();
+  const resolvedLocationId =
+    (typeof source?.locationId === "string" && source.locationId.trim()) ||
+    (typeof fallback?.locationId === "string" && fallback.locationId.trim()) ||
+    getZoneEntryLocationId(resolvedZoneId) ||
+    null;
+  const zone = getZoneById(resolvedZoneId);
+
+  return {
+    id: resolvedZoneId,
+    name:
+      (typeof source?.name === "string" && source.name.trim()) ||
+      (typeof fallback?.name === "string" && fallback.name.trim()) ||
+      zone?.name ||
+      resolvedZoneId,
+    zoneId: resolvedZoneId,
+    locationId: resolvedLocationId,
+    type:
+      (typeof source?.type === "string" && source.type.trim()) ||
+      (typeof fallback?.type === "string" && fallback.type.trim()) ||
+      "exploration",
+    summary:
+      (typeof source?.summary === "string" && source.summary.trim()) ||
+      (typeof fallback?.summary === "string" && fallback.summary.trim()) ||
+      "",
+  };
+}
+
 function normalizeConfig(rawConfig) {
   const source = isPlainObject(rawConfig) ? rawConfig : {};
 
@@ -328,6 +374,22 @@ function normalizePlayer(rawPlayer, config) {
     fallback: null,
   });
   const normalizedOrigin = normalizeOriginRef(player.origin, null);
+  const legacyOathOriginFallback =
+    typeof player.startingZoneId === "string" && player.startingZoneId.trim()
+      ? {
+          id: player.startingZoneId.trim(),
+          zoneId: player.startingZoneId.trim(),
+          locationId:
+            (typeof player.startingLocationId === "string" &&
+              player.startingLocationId.trim()) ||
+            getZoneEntryLocationId(player.startingZoneId.trim()) ||
+            null,
+        }
+      : null;
+  const normalizedOathOrigin = normalizeOathOriginRef(
+    player.oathOrigin,
+    legacyOathOriginFallback,
+  );
   const attributes = normalizeAttributes(
     player.attributes,
     config.baseAttributeValue,
@@ -396,6 +458,7 @@ function normalizePlayer(rawPlayer, config) {
     race: normalizedRace,
     class: normalizedClass,
     origin: normalizedOrigin,
+    oathOrigin: normalizedOathOrigin,
     attributes,
     attributeInvestments: isPlainObject(player.attributeInvestments)
         ? player.attributeInvestments
@@ -422,6 +485,18 @@ function normalizePlayer(rawPlayer, config) {
     archetypeSystem,
     progressionModifiers,
     talents: Array.isArray(player.talents) ? player.talents : [],
+    openingArcId:
+      typeof player.openingArcId === "string" && player.openingArcId.trim()
+        ? player.openingArcId.trim()
+        : null,
+    entrySceneId:
+      typeof player.entrySceneId === "string" && player.entrySceneId.trim()
+        ? player.entrySceneId.trim()
+        : null,
+    tutorialBundleId:
+      typeof player.tutorialBundleId === "string" && player.tutorialBundleId.trim()
+        ? player.tutorialBundleId.trim()
+        : null,
     professions: isPlainObject(player.professions) ? player.professions : {},
     prestige: isPlainObject(player.prestige)
       ? { ...defaultPrestigeStats(), ...player.prestige }
@@ -1156,6 +1231,7 @@ export function normalizeGameState(rawState) {
   const world = normalizeObject(state.world);
   const narrative = normalizeObject(state.narrative);
   const combat = normalizeObject(state.combat);
+  const chronicle = normalizeChronicleState(state.chronicle);
 
   const baseWorldVars = normalizeObject(world.vars);
   const baseWorldCounters = normalizeObject(world.counters);
@@ -1226,10 +1302,17 @@ export function normalizeGameState(rawState) {
       ...combat,
       status: combat.status ?? "inactive",
       turn: combat.turn ?? "player",
+      stance:
+        typeof combat.stance === "string" && combat.stance.trim()
+          ? combat.stance
+          : "focused",
       enemies: normalizeArray(combat.enemies),
       skillCooldowns: normalizeObject(combat.skillCooldowns),
       classAbilityCooldowns: normalizeObject(combat.classAbilityCooldowns),
       raceAbilityCooldowns: normalizeObject(combat.raceAbilityCooldowns),
+      telegraphs: normalizeArray(combat.telegraphs),
+      arenaTags: normalizeArray(combat.arenaTags),
+      tacticalVerbs: normalizeArray(combat.tacticalVerbs),
       log: normalizeArray(combat.log),
     },
     chatLog: normalizeArray(state.chatLog),
@@ -1243,6 +1326,7 @@ export function normalizeGameState(rawState) {
         ...legacyEntries.map((entry) => entry.sequence || 0),
       ),
     },
+    chronicle,
     contentVersion: state.contentVersion ?? "core@0.1.0",
     stateVersion:
       typeof state.stateVersion === "number"

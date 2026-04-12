@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { seedWorldAfterCharacterCreation } from "../../world/WorldInitializer.js";
 import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
+import { createInitialChronicleState } from "../../core/ChronicleRuntime.js";
 import { clearCharacterCreationDraft } from "./characterCreationDraft.js";
 import { QuestManager } from "../../systems/quest/QuestManager.js";
 import {
@@ -8,8 +9,147 @@ import {
   isAdvancedCreationUnlocked,
 } from "../../core/playerProfile.js";
 import { evaluateCharacterReadiness } from "./characterReadiness.js";
+import { getOpeningArcByOathOriginId } from "../../world/OpeningArcRegistry.js";
 
 const TRANSITION_DURATION_MS = 2500;
+
+function buildChronicleEntry({
+  id,
+  kind,
+  title,
+  body,
+  zoneId = null,
+  locationId = null,
+  meta = {},
+}) {
+  return {
+    id,
+    kind,
+    title,
+    body,
+    zoneId,
+    locationId,
+    timestamp: Date.now(),
+    meta,
+  };
+}
+
+function buildOpeningArcSceneMemory(characterData = {}) {
+  const oathOrigin = characterData?.oathOrigin;
+  const openingArc = getOpeningArcByOathOriginId(
+    oathOrigin?.id || characterData?.startingZoneId,
+  );
+  if (!openingArc || !oathOrigin?.id) return null;
+
+  const zone = getZoneById(oathOrigin.zoneId || oathOrigin.id);
+  const signatureNpcName = openingArc.signatureNpc?.name || null;
+  return {
+    locationLabel: oathOrigin.name || zone?.name || oathOrigin.id,
+    zoneLabel: zone?.name || oathOrigin.name || oathOrigin.id,
+    immediateObjective:
+      openingArc.firstQuest?.name || openingArc.firstPressure || "Stabilize your footing.",
+    presentEntities: signatureNpcName ? [signatureNpcName] : [],
+    activeThreats: openingArc.firstPressure ? [openingArc.firstPressure] : [],
+    unresolvedHooks: openingArc.firstQuest?.name ? [openingArc.firstQuest.name] : [],
+    lastConsequence: `The chronicle sealed in ${oathOrigin.name || oathOrigin.id}.`,
+    familiarEntities: signatureNpcName ? [signatureNpcName] : [],
+    partyEntities: [],
+    socialSummary: signatureNpcName
+      ? `${signatureNpcName} is the first reliable contact pulling the opening arc into motion.`
+      : "",
+  };
+}
+
+function buildInitialChronicleState(characterData = {}, seededWorld = {}, nextQuests = {}) {
+  const chronicle = createInitialChronicleState();
+  const oathOrigin = characterData?.oathOrigin || null;
+  const openingArc = getOpeningArcByOathOriginId(
+    oathOrigin?.id || characterData?.startingZoneId,
+  );
+  const locationId = seededWorld?.location?.current || oathOrigin?.locationId || null;
+  const zoneId =
+    seededWorld?.location?.biome || oathOrigin?.zoneId || characterData?.startingZoneId || null;
+  const initialQuest = Array.isArray(nextQuests?.active) ? nextQuests.active[0] || null : null;
+
+  chronicle.entries = [
+    buildChronicleEntry({
+      id: "chronicle_character_sealed",
+      kind: "milestone",
+      title: "Character Sealed",
+      body: oathOrigin?.name
+        ? `${characterData?.name || "The adventurer"} sealed the oath in ${oathOrigin.name}.`
+        : `${characterData?.name || "The adventurer"} sealed the chronicle.`,
+      zoneId,
+      locationId,
+      meta: {
+        oathOriginId: oathOrigin?.id || null,
+        openingArcId: openingArc?.id || characterData?.openingArcId || null,
+      },
+    }),
+    buildChronicleEntry({
+      id: "chronicle_first_zone_entered",
+      kind: "first",
+      title: "First Zone Entered",
+      body: oathOrigin?.name
+        ? `The first waking zone is ${oathOrigin.name}.`
+        : "A first zone has been entered.",
+      zoneId,
+      locationId,
+    }),
+  ];
+  chronicle.firsts = {
+    characterSealed: chronicle.entries[0].timestamp,
+    zoneEntered: chronicle.entries[1].timestamp,
+  };
+  chronicle.discoveries = oathOrigin?.name
+    ? [
+        {
+          id: `discovery_zone_${oathOrigin.id}`,
+          label: oathOrigin.name,
+          type: "zone",
+          zoneId,
+          locationId,
+        },
+      ]
+    : [];
+  chronicle.majorChoices = oathOrigin?.id
+    ? [
+        {
+          id: `choice_oath_origin_${oathOrigin.id}`,
+          kind: "oathOrigin",
+          label: oathOrigin.name,
+          zoneId,
+          locationId,
+        },
+      ]
+    : [];
+  chronicle.factionMilestones =
+    openingArc?.signatureNpc?.factionId && openingArc?.signatureNpc?.name
+      ? [
+          {
+            id: `faction_contact_${openingArc.signatureNpc.factionId}`,
+            factionId: openingArc.signatureNpc.factionId,
+            label: openingArc.signatureNpc.name,
+            status: "contact-seeded",
+          },
+        ]
+      : [];
+
+  if (initialQuest?.name) {
+    chronicle.entries.push(
+      buildChronicleEntry({
+        id: `chronicle_initial_directive_${initialQuest.id || "opening"}`,
+        kind: "quest",
+        title: "First Directive",
+        body: initialQuest.name,
+        zoneId,
+        locationId,
+      }),
+    );
+  }
+
+  return chronicle;
+}
 
 function buildTransitionAudioProfile(classId) {
   switch (classId) {
@@ -44,9 +184,18 @@ export function buildCharacterCreationState(state, characterData) {
     player: characterData,
     quests: nextQuests,
   });
+  const openingArc = getOpeningArcByOathOriginId(
+    characterData?.oathOrigin?.id || characterData?.startingZoneId,
+  );
+  const openingSceneMemory = buildOpeningArcSceneMemory(characterData);
+  const chronicle = buildInitialChronicleState(characterData, seededWorld, nextQuests);
   const onboardingVars = {
     stage: "arrival",
     hudTier: 1,
+    openingArcId: characterData?.openingArcId || openingArc?.id || null,
+    entrySceneId: characterData?.entrySceneId || openingArc?.entrySceneId || null,
+    tutorialBundleId:
+      characterData?.tutorialBundleId || openingArc?.tutorialBundleId || null,
     milestones: {
       creationComplete: true,
       firstStrideSeen: false,
@@ -66,8 +215,30 @@ export function buildCharacterCreationState(state, characterData) {
       vars: {
         ...(seededWorld.vars || {}),
         onboarding: onboardingVars,
+        openingArcId: characterData?.openingArcId || openingArc?.id || null,
+        entrySceneId: characterData?.entrySceneId || openingArc?.entrySceneId || null,
+        tutorialBundleId:
+          characterData?.tutorialBundleId || openingArc?.tutorialBundleId || null,
+        openingArc: openingArc
+          ? {
+              id: openingArc.id,
+              title: openingArc.title,
+              signatureNpc: openingArc.signatureNpc,
+              firstPressure: openingArc.firstPressure,
+              actionVocabulary: openingArc.actionVocabulary,
+              landmarks: openingArc.landmarks,
+              unlockReward: openingArc.unlockReward,
+            }
+          : null,
       },
     },
+    narrative: openingSceneMemory
+      ? {
+          ...(state?.narrative || {}),
+          sceneMemory: openingSceneMemory,
+        }
+      : state?.narrative,
+    chronicle,
   };
 }
 
@@ -157,6 +328,10 @@ export function useGameUiCharacterCreationFlow({
       setCharacterCreated(true);
 
       const playerObj = nextState?.player || characterData;
+      const oathOrigin = playerObj?.oathOrigin || characterData?.oathOrigin || null;
+      const openingArc = getOpeningArcByOathOriginId(
+        oathOrigin?.id || characterData?.startingZoneId,
+      );
       const startingLocationId = characterData?.startingLocationId || null;
       const startingLocation = startingLocationId
         ? getLocationById(startingLocationId)
@@ -170,8 +345,9 @@ export function useGameUiCharacterCreationFlow({
             ? playerObj.class
             : playerObj?.class?.name) || "Unknown",
         startingPoint:
-          startingLocation?.name || zone?.name || zoneId || null,
+          oathOrigin?.name || startingLocation?.name || zone?.name || zoneId || null,
         starterKitLabel: characterData?.starterKitLabel || null,
+        firstDirective: openingArc?.firstQuest?.name || null,
       });
       setIsTransitioning(true);
       if (transitionTimeoutRef.current) {
@@ -193,7 +369,13 @@ export function useGameUiCharacterCreationFlow({
       }
       if (startingLocation?.name || zone?.name) {
         addSystemMessage(
-          `Origin sealed: ${startingLocation?.name || zone?.name}. Your first directive is ready in the World Atrium.`,
+          `Origin sealed: ${oathOrigin?.name || startingLocation?.name || zone?.name}. Your first directive is ready in the World Atrium.`,
+          "system",
+        );
+      }
+      if (openingArc?.firstQuest?.name) {
+        addSystemMessage(
+          `First directive: ${openingArc.firstQuest.name}.`,
           "system",
         );
       }

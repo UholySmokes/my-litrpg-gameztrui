@@ -13,12 +13,77 @@ function toPercent(current, max) {
   return Math.max(0, Math.min(100, (current / max) * 100));
 }
 
+function readNumericValue(value, preferredKeys = [], fallback = 0) {
+  if (Number.isFinite(Number(value))) {
+    return Number(value);
+  }
+
+  if (value && typeof value === "object") {
+    for (const key of preferredKeys) {
+      if (Number.isFinite(Number(value?.[key]))) {
+        return Number(value[key]);
+      }
+    }
+  }
+
+  return fallback;
+}
+
+function normalizeTextValue(value, fallback = "") {
+  if (typeof value === "string") {
+    return value.trim() || fallback;
+  }
+
+  if (Number.isFinite(Number(value))) {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    const parts = value
+      .map((entry) => normalizeTextValue(entry))
+      .filter(Boolean);
+    return parts.length ? parts.join(", ") : fallback;
+  }
+
+  if (value && typeof value === "object") {
+    const objectText =
+      value.label ??
+      value.name ??
+      value.reason ??
+      value.source ??
+      value.text ??
+      value.message;
+
+    if (objectText !== undefined) {
+      return normalizeTextValue(objectText, fallback);
+    }
+
+    const current = readNumericValue(value, ["current", "value"], Number.NaN);
+    const max = readNumericValue(value, ["max", "maximum", "cap"], Number.NaN);
+    if (Number.isFinite(current) && Number.isFinite(max)) {
+      return `${current}/${max}`;
+    }
+  }
+
+  return fallback;
+}
+
 function readPool(entity, poolName) {
-  const directPool = entity?.stats?.[poolName];
-  if (directPool && typeof directPool === "object") {
+  const statsPool = entity?.stats?.[poolName];
+  const statsAliasPool =
+    poolName === "mp" ? entity?.stats?.mana : poolName === "hp" ? entity?.stats?.health : null;
+  const directPool =
+    entity?.[poolName] ||
+    (poolName === "mp" ? entity?.mana : poolName === "hp" ? entity?.health : null);
+  const resolvedPool =
+    [statsPool, statsAliasPool, directPool].find(
+      (value) => value && typeof value === "object",
+    ) || null;
+
+  if (resolvedPool) {
     return {
-      current: directPool.current ?? 0,
-      max: directPool.max ?? 0,
+      current: readNumericValue(resolvedPool, ["current", "value"], 0),
+      max: readNumericValue(resolvedPool, ["max", "maximum", "cap", "value"], 0),
     };
   }
 
@@ -32,9 +97,19 @@ function readPool(entity, poolName) {
     }
   }
 
+  const currentCandidate =
+    entity?.[poolName] ??
+    (poolName === "mp" ? entity?.mana : poolName === "hp" ? entity?.health : undefined);
+  const maxCandidate = [
+    entity?.[`max${poolName.toUpperCase()}`],
+    entity?.[`max${poolName.charAt(0).toUpperCase()}${poolName.slice(1)}`],
+    poolName === "hp" ? entity?.maxHealth : undefined,
+    poolName === "mp" ? entity?.maxMana : undefined,
+  ].find((value) => value !== undefined && value !== null);
+
   return {
-    current: entity?.[poolName] ?? 0,
-    max: entity?.[`max${poolName.toUpperCase()}`] ?? 0,
+    current: readNumericValue(currentCandidate, ["current", "value"], 0),
+    max: readNumericValue(maxCandidate, ["max", "maximum", "current", "value"], 0),
   };
 }
 
@@ -104,7 +179,8 @@ export default function CombatUI({
     : (selectedEnemyData?.lane ?? 1);
   const playerHp = readPool(player, "hp");
   const playerMp = readPool(player, "mp");
-  const latestEvent = normalizeLogText((combat?.log || []).slice(-1)[0]) || "No actions resolved yet.";
+  const latestEvent =
+    normalizeTextValue(normalizeLogText((combat?.log || []).slice(-1)[0]), "No actions resolved yet.");
   const isPlayerTurn = combat?.turn === "player";
   const currentTurnLabel = isPlayerTurn
     ? "Player turn"
@@ -117,12 +193,13 @@ export default function CombatUI({
     const enemyName = String(selectedEnemyData?.name || "").toLowerCase();
     return telegraphName && enemyName ? telegraphName === enemyName : false;
   });
-  const leadPressure =
+  const leadPressure = normalizeTextValue(
     selectedTelegraphs[0]?.counterText ||
-    selectedTelegraphs[0]?.pressure ||
-    tacticalVerbs[0]?.reason ||
-    tacticalVerbs[0]?.label ||
-    "Hold formation";
+      selectedTelegraphs[0]?.pressure ||
+      tacticalVerbs[0]?.reason ||
+      tacticalVerbs[0]?.label,
+    "Hold formation",
+  );
   const threatCount = livingEnemies.length;
   const maxEnemyLevel = livingEnemies.reduce(
     (highest, { enemy }) => Math.max(highest, Number(enemy?.level) || 0),
@@ -471,9 +548,15 @@ export default function CombatUI({
                     className="combat-stage__skill-chip"
                   >
                     <span>
-                      {telegraph?.enemyName || "Enemy"}: {telegraph?.label || "Incoming pattern"}
+                      {normalizeTextValue(telegraph?.enemyName, "Enemy")}:{" "}
+                      {normalizeTextValue(telegraph?.label, "Incoming pattern")}
                     </span>
-                    <strong>{telegraph?.counterText || telegraph?.pressure || "react"}</strong>
+                    <strong>
+                      {normalizeTextValue(
+                        telegraph?.counterText || telegraph?.pressure,
+                        "react",
+                      )}
+                    </strong>
                   </div>
                 ))}
               </div>
@@ -486,8 +569,8 @@ export default function CombatUI({
               <div className="combat-stage__skill-row">
                 {tacticalVerbs.map((verb) => (
                   <div key={verb?.id || verb?.label} className="combat-stage__skill-chip">
-                    <span>{verb?.label || "Tactical verb"}</span>
-                    <strong>{verb?.reason || verb?.source || "build"}</strong>
+                    <span>{normalizeTextValue(verb?.label, "Tactical verb")}</span>
+                    <strong>{normalizeTextValue(verb?.reason || verb?.source, "build")}</strong>
                   </div>
                 ))}
               </div>

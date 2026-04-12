@@ -132,3 +132,23 @@ Top consensus priorities:
 
 Outcome: architecture direction remains strong; next cycle should emphasize completion + integration hardening over net-new feature breadth.
 - Full tracked report: `docs/agent-output/swarm_consensus_review_2026-03-26.md`.
+
+---
+
+## Stability Fix Update (2026-04-12)
+
+- Patched `src/components/CombatUI.jsx` to normalize pooled combat/resource values before render.
+  This prevents React from trying to render raw `{ current, max }` objects in the battle theater when HP/MP data arrives through mixed state shapes.
+- Hardened `CombatUI` battlefield labels so telegraph/tactical copy is coerced to string-safe display text before hitting JSX.
+- Patched `src/components/DevourerCorePanel.jsx` recent-prey chip keys to stay stable even when the same prey name repeats multiple times (for example repeated `Slime` harvests).
+- Refactored `src/components/gameui/GameUIRoot.jsx` to derive invalid surface fallbacks in render state instead of synchronously correcting them inside effects.
+  This removes the local `react-hooks/set-state-in-effect` violations from the shell orchestrator and reduces cascading render churn around surface transitions.
+
+Validation update:
+- `npx eslint src/components/CombatUI.jsx src/components/DevourerCorePanel.jsx`
+- `npx eslint src/components/CombatUI.jsx src/components/DevourerCorePanel.jsx src/components/gameui/GameUIRoot.jsx src/components/gameui/useGameUiWindowController.js`
+- `npm run build`
+
+Browser verification note:
+- Attempted the bundled `develop-web-game` Playwright client and a direct Playwright probe against `http://127.0.0.1:5173/`.
+- In this environment, both headless verification attempts hung before returning a usable console report, so the runtime fix is code-validated and build-validated, but not fully browser-smoke-validated from this session.

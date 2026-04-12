@@ -170,6 +170,8 @@ export default function GameUI({ user }) {
   }, []);
 
   const hasCharacterSnapshot = hasCreatedCharacterSnapshot(state);
+  const hasCharacterCreationDraftSnapshot =
+    !hasCharacterSnapshot && hasCharacterCreationDraft();
 
   const {
     submitInput,
@@ -200,29 +202,29 @@ export default function GameUI({ user }) {
     state,
     submitInput,
   });
-  const hasAdventureSession = characterCreated || hasCharacterSnapshot;
-
-  useEffect(() => {
-    if (isTransitioning || hasAdventureSession || activeSurface !== "adventure") {
-      return;
+  const hasAdventureSession = hasCharacterSnapshot || (characterCreated && Boolean(state?.player));
+  const resolvedActiveSurface = useMemo(() => {
+    if (activeSurface === "adventure" && !hasAdventureSession && !isTransitioning) {
+      return hasCharacterCreationDraftSnapshot ? "creation" : "hub";
     }
 
-    setCharacterCreated(false);
-    setActiveSurface(hasCharacterCreationDraft() ? "creation" : "hub");
-  }, [activeSurface, hasAdventureSession, isTransitioning, setCharacterCreated]);
-
-  useEffect(() => {
     if (
-      isTransitioning ||
-      hasCharacterSnapshot ||
-      activeSurface !== "hub" ||
-      !hasCharacterCreationDraft()
+      activeSurface === "hub" &&
+      hasCharacterCreationDraftSnapshot &&
+      !hasCharacterSnapshot &&
+      !isTransitioning
     ) {
-      return;
+      return "creation";
     }
 
-    setActiveSurface("creation");
-  }, [activeSurface, hasCharacterSnapshot, isTransitioning]);
+    return activeSurface;
+  }, [
+    activeSurface,
+    hasAdventureSession,
+    hasCharacterCreationDraftSnapshot,
+    hasCharacterSnapshot,
+    isTransitioning,
+  ]);
 
   const {
     equipmentSelectSlot,
@@ -719,8 +721,8 @@ export default function GameUI({ user }) {
     shouldShowCreation,
     shouldShowHub,
   } = resolveGameUiSurfaceState({
-    activeSurface,
-    characterCreated,
+    activeSurface: resolvedActiveSurface,
+    characterCreated: hasAdventureSession,
     hasCharacterSnapshot,
     isTransitioning,
   });
@@ -818,16 +820,16 @@ export default function GameUI({ user }) {
             padding: "2px 6px",
             fontSize: "0.6rem",
             fontFamily: "monospace",
-            background: characterCreated ? "rgba(255,200,50,0.15)" : "rgba(50,255,100,0.15)",
-            color: characterCreated ? "#ffc832" : "#32ff64",
-            border: `1px solid ${characterCreated ? "rgba(255,200,50,0.3)" : "rgba(50,255,100,0.3)"}`,
+            background: hasAdventureSession ? "rgba(255,200,50,0.15)" : "rgba(50,255,100,0.15)",
+            color: hasAdventureSession ? "#ffc832" : "#32ff64",
+            border: `1px solid ${hasAdventureSession ? "rgba(255,200,50,0.3)" : "rgba(50,255,100,0.3)"}`,
             borderRadius: 3,
             zIndex: 9999,
             pointerEvents: "none",
             userSelect: "none",
           }}
         >
-          {characterCreated ? "RESUMED SESSION" : "CLEAN SESSION"}
+          {hasAdventureSession ? "RESUMED SESSION" : "CLEAN SESSION"}
         </div>
       ) : null}
     </div>

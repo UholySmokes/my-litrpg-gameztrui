@@ -2,8 +2,6 @@
 // TITLE DATABASE - Titles with secondary and main bonuses
 // =================================================================
 
-import { hasQuestOrOnboardingMilestoneCompleted } from "../world/OpeningTutorialBundleRegistry.js";
-
 export let titleDatabase = [
   {
     id: 'novice_adventurer',
@@ -164,7 +162,7 @@ function checkTitleUnlockConditions(title, gameState) {
   }
 
   if (conditions.quest) {
-    if (!hasQuestOrOnboardingMilestoneCompleted(state, conditions.quest)) {
+    if (!hasLegacyOnboardingCompletion(state, conditions.quest)) {
       return false;
     }
   }
@@ -279,3 +277,44 @@ const additionalTitles = additionalTitleSpecs.map(([id, name, description, secon
 }));
 
 titleDatabase.push(...additionalTitles);
+const LEGACY_ONBOARDING_QUESTS = Object.freeze({
+  bq_first_stride: "anchor",
+  bq_system_basics: "readout",
+  bq_first_conflict: "pressure",
+});
+
+function hasLegacyOnboardingCompletion(state, questId) {
+  const normalizedQuestId = String(questId || "").trim();
+  if (!normalizedQuestId) return false;
+  const completed = Array.isArray(state?.quests?.completed) ? state.quests.completed : [];
+  if (completed.some((quest) => quest?.id === normalizedQuestId)) {
+    return true;
+  }
+
+  const onboarding =
+    state?.world?.vars?.onboarding &&
+    typeof state.world.vars.onboarding === "object" &&
+    !Array.isArray(state.world.vars.onboarding)
+      ? state.world.vars.onboarding
+      : {};
+  const milestoneId = LEGACY_ONBOARDING_QUESTS[normalizedQuestId];
+  if (!milestoneId) {
+    return false;
+  }
+
+  const completedStepIds = Array.isArray(onboarding.completedStepIds)
+    ? onboarding.completedStepIds
+    : [];
+  if (completedStepIds.includes(milestoneId)) {
+    return true;
+  }
+
+  const milestones =
+    onboarding.milestones && typeof onboarding.milestones === "object"
+      ? onboarding.milestones
+      : {};
+  if (milestoneId === "anchor" && milestones.firstStrideSeen) return true;
+  if (milestoneId === "readout" && milestones.systemBasicsSeen) return true;
+  if (milestoneId === "pressure" && milestones.firstConflictSeen) return true;
+  return false;
+}

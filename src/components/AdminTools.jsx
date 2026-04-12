@@ -4,8 +4,87 @@ import { mergeInventoryItems } from "../utils/shared.js";
 import { listAgents, runAgent } from "../core/AgentService.js";
 import "./AdminTools.css";
 
+const EXTRA_COMMANDS = [
+  { label: "Give Iron Sword", type: "give_item", id: "iron_sword", name: "Iron Sword", itemType: "equipment", qty: 1 },
+  { label: "Give Iron Axe", type: "give_item", id: "iron_axe", name: "Iron Axe", itemType: "equipment", qty: 1 },
+  { label: "Give Iron Bow", type: "give_item", id: "iron_bow", name: "Iron Bow", itemType: "equipment", qty: 1 },
+  { label: "Give Iron Dagger", type: "give_item", id: "iron_dagger", name: "Iron Dagger", itemType: "equipment", qty: 1 },
+  { label: "Give Iron Staff", type: "give_item", id: "iron_staff", name: "Iron Staff", itemType: "equipment", qty: 1 },
+  { label: "Give Steel Sword", type: "give_item", id: "steel_sword", name: "Steel Sword", itemType: "equipment", qty: 1 },
+  { label: "Give Steel Axe", type: "give_item", id: "steel_axe", name: "Steel Axe", itemType: "equipment", qty: 1 },
+  { label: "Give Steel Bow", type: "give_item", id: "steel_bow", name: "Steel Bow", itemType: "equipment", qty: 1 },
+  { label: "Give Steel Dagger", type: "give_item", id: "steel_dagger", name: "Steel Dagger", itemType: "equipment", qty: 1 },
+  { label: "Give Steel Staff", type: "give_item", id: "steel_staff", name: "Steel Staff", itemType: "equipment", qty: 1 },
+  { label: "Give Mithril Sword", type: "give_item", id: "mithril_sword", name: "Mithril Sword", itemType: "equipment", qty: 1 },
+  { label: "Give Mithril Axe", type: "give_item", id: "mithril_axe", name: "Mithril Axe", itemType: "equipment", qty: 1 },
+  { label: "Give Mithril Bow", type: "give_item", id: "mithril_bow", name: "Mithril Bow", itemType: "equipment", qty: 1 },
+  { label: "Give Mithril Dagger", type: "give_item", id: "mithril_dagger", name: "Mithril Dagger", itemType: "equipment", qty: 1 },
+  { label: "Give Mithril Staff", type: "give_item", id: "mithril_staff", name: "Mithril Staff", itemType: "equipment", qty: 1 },
+  { label: "Give Leather Armor", type: "give_item", id: "leather_armor", name: "Leather Armor", itemType: "equipment", qty: 1 },
+  { label: "Give Hard Leather Armor", type: "give_item", id: "hard_leather", name: "Hard Leather", itemType: "equipment", qty: 1 },
+  { label: "Give Iron Mail", type: "give_item", id: "iron_mail", name: "Iron Mail", itemType: "equipment", qty: 1 },
+  { label: "Give Iron Plate", type: "give_item", id: "iron_plate", name: "Iron Plate", itemType: "equipment", qty: 1 },
+  { label: "Give Steel Mail", type: "give_item", id: "steel_mail", name: "Steel Mail", itemType: "equipment", qty: 1 },
+  { label: "Give Steel Plate", type: "give_item", id: "steel_plate", name: "Steel Plate", itemType: "equipment", qty: 1 },
+  { label: "Give Mithril Mail", type: "give_item", id: "mithril_mail", name: "Mithril Mail", itemType: "equipment", qty: 1 },
+  { label: "Give Mithril Plate", type: "give_item", id: "mithril_plate", name: "Mithril Plate", itemType: "equipment", qty: 1 },
+  { label: "Give Void Robes", type: "give_item", id: "void_robes", name: "Void Robes", itemType: "equipment", qty: 1 },
+  { label: "Give Elven Cloak", type: "give_item", id: "elven_cloak", name: "Elven Cloak", itemType: "equipment", qty: 1 },
+  { label: "Minor Health Potion", type: "give_item", id: "minor_hp", name: "Minor Health Potion", itemType: "consumable", qty: 5 },
+  { label: "Basic Health Potion", type: "give_item", id: "basic_hp", name: "Basic Health Potion", itemType: "consumable", qty: 5 },
+  { label: "Greater Health Potion", type: "give_item", id: "greater_hp", name: "Greater Health Potion", itemType: "consumable", qty: 5 },
+  { label: "Superior Health Potion", type: "give_item", id: "superior_hp", name: "Superior Health Potion", itemType: "consumable", qty: 5 },
+  { label: "Minor Mana Potion", type: "give_item", id: "minor_mp", name: "Minor Mana Potion", itemType: "consumable", qty: 5 },
+  { label: "Basic Mana Potion", type: "give_item", id: "basic_mp", name: "Basic Mana Potion", itemType: "consumable", qty: 5 },
+  { label: "Greater Mana Potion", type: "give_item", id: "greater_mp", name: "Greater Mana Potion", itemType: "consumable", qty: 5 },
+  { label: "Superior Mana Potion", type: "give_item", id: "superior_mp", name: "Superior Mana Potion", itemType: "consumable", qty: 5 },
+  { label: "Rejuvenation Elixir", type: "give_item", id: "rejuv_elixir", name: "Rejuvenation Elixir", itemType: "consumable", qty: 1 },
+  { label: "Panacea", type: "give_item", id: "panacea", name: "Panacea", itemType: "consumable", qty: 1 },
+  { label: "Give Scrap Wood", type: "give_item", id: "scrap_wood", name: "Scrap Wood", itemType: "material", qty: 10 },
+  { label: "Give Pine Logs", type: "give_item", id: "pine_logs", name: "Pine Logs", itemType: "material", qty: 10 },
+  { label: "Give Oak Logs", type: "give_item", id: "oak_logs", name: "Oak Logs", itemType: "material", qty: 10 },
+  { label: "Give Iron Ore", type: "give_item", id: "iron_ore", name: "Iron Ore", itemType: "material", qty: 10 },
+  { label: "Give Steel Ingot", type: "give_item", id: "steel_ingot", name: "Steel Ingot", itemType: "material", qty: 10 },
+  { label: "Give Mithril Ore", type: "give_item", id: "mithril_ore", name: "Mithril Ore", itemType: "material", qty: 10 },
+  { label: "Give Gold Nugget", type: "give_item", id: "gold_nugget", name: "Gold Nugget", itemType: "material", qty: 10 },
+  { label: "Give Diamond", type: "give_item", id: "diamond", name: "Diamond", itemType: "material", qty: 1 },
+  { label: "Give Ruby", type: "give_item", id: "ruby", name: "Ruby", itemType: "material", qty: 1 },
+  { label: "Give Emerald", type: "give_item", id: "emerald", name: "Emerald", itemType: "material", qty: 1 },
+  { label: "Set Level 1", type: "set_level", level: 1 },
+  { label: "Set Level 5", type: "set_level", level: 5 },
+  { label: "Set Level 10", type: "set_level", level: 10 },
+  { label: "Set Level 25", type: "set_level", level: 25 },
+  { label: "Set Level 50", type: "set_level", level: 50 },
+  { label: "Set Level 100", type: "set_level", level: 100 },
+  { label: "Teleport: Starter Village", type: "set_location", location: "Starter Village" },
+  { label: "Teleport: Dark Forest", type: "set_location", location: "Dark Forest" },
+  { label: "Teleport: Goblin Caverns", type: "set_location", location: "Goblin Caverns" },
+  { label: "Teleport: Dragon Peak", type: "set_location", location: "Dragon Peak" },
+  { label: "Teleport: The Void", type: "set_location", location: "The Void" },
+  { label: "Add Status: Poison", type: "add_status", status: "Poison" },
+  { label: "Add Status: Burn", type: "add_status", status: "Burn" },
+  { label: "Add Status: Bleed", type: "add_status", status: "Bleed" },
+  { label: "Add Status: Regen", type: "add_status", status: "Regen" },
+  { label: "Add Status: Haste", type: "add_status", status: "Haste" },
+  { label: "Add Status: Shield", type: "add_status", status: "Shield" },
+  { label: "Add Status: Frenzy", type: "add_status", status: "Frenzy" },
+  { label: "Clear All Statuses", type: "clear_status" },
+  { label: "Unlock Skill: Fireball", type: "unlock_skill", skill: "Fireball" },
+  { label: "Unlock Skill: Heal", type: "unlock_skill", skill: "Heal" },
+  { label: "Unlock Skill: Slash", type: "unlock_skill", skill: "Slash" },
+  { label: "Unlock Skill: Stealth", type: "unlock_skill", skill: "Stealth" },
+  { label: "Unlock Skill: Bash", type: "unlock_skill", skill: "Bash" },
+  { label: "Unlock Skill: Taunt", type: "unlock_skill", skill: "Taunt" },
+  { label: "Unlock Skill: Fly", type: "unlock_skill", skill: "Fly" },
+  { label: "Add Quest: Rat Problem", type: "add_quest", quest: "Rat Problem" },
+  { label: "Add Quest: Dragon Slayer", type: "add_quest", quest: "Dragon Slayer" },
+  { label: "Add Quest: Missing Artifact", type: "add_quest", quest: "Missing Artifact" },
+  { label: "Complete All Quests", type: "complete_quests" },
+  { label: "Reset All Quests", type: "reset_quests" },
+];
+
 export default function AdminTools({ dispatch, getState }) {
-  const isDevBuild = Boolean(import.meta.env.DEV);
+  const isDevBuild = true; // Boolean(import.meta.env.DEV);
 
   const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("player");
@@ -430,6 +509,120 @@ export default function AdminTools({ dispatch, getState }) {
     }
   };
 
+  const runMacro = (macro) => {
+    const snapshot = readState();
+    if (!snapshot) {
+      setOutput("No snapshot available.");
+      return;
+    }
+    
+    try {
+      if (macro.type === "give_item") {
+        if (!snapshot.player) return;
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: {
+            player: {
+              ...snapshot.player,
+              inventory: mergeInventoryItems(snapshot.player.inventory || [], [
+                { id: macro.id, name: macro.name, type: macro.itemType || "item", quantity: macro.qty || 1 }
+              ])
+            }
+          }
+        });
+        setOutput(`Given ${macro.qty || 1}x ${macro.name}`);
+      } else if (macro.type === "set_level") {
+        if (!snapshot.player) return;
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: { player: { ...snapshot.player, level: macro.level } }
+        });
+        setOutput(`Level set to ${macro.level}`);
+      } else if (macro.type === "set_location") {
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: { location: macro.location }
+        });
+        setOutput(`Location set to ${macro.location}`);
+      } else if (macro.type === "add_status") {
+        if (!snapshot.player) return;
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: {
+            player: {
+              ...snapshot.player,
+              statusEffects: [...(snapshot.player.statusEffects || []), macro.status]
+            }
+          }
+        });
+        setOutput(`Added status: ${macro.status}`);
+      } else if (macro.type === "clear_status") {
+        if (!snapshot.player) return;
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: { player: { ...snapshot.player, statusEffects: [] } }
+        });
+        setOutput('Cleared all status effects');
+      } else if (macro.type === "unlock_skill") {
+        if (!snapshot.player) return;
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: {
+            player: {
+              ...snapshot.player,
+              skills: [...(snapshot.player.skills || []), macro.skill]
+            }
+          }
+        });
+        setOutput(`Unlocked skill: ${macro.skill}`);
+      } else if (macro.type === "add_quest") {
+        if (!snapshot.player) return;
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: {
+            player: {
+              ...snapshot.player,
+              quests: [...(snapshot.player.quests || []), { id: macro.quest, status: "active" }]
+            }
+          }
+        });
+        setOutput(`Added quest: ${macro.quest}`);
+      } else if (macro.type === "complete_quests") {
+        if (!snapshot.player) return;
+        const quests = (snapshot.player.quests || []).map(q => ({ ...q, status: "completed" }));
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: { player: { ...snapshot.player, quests } }
+        });
+        setOutput('Completed all quests');
+      } else if (macro.type === "reset_quests") {
+        if (!snapshot.player) return;
+        handleDispatch({
+          type: "UPDATE_STATE",
+          payload: { player: { ...snapshot.player, quests: [] } }
+        });
+        setOutput('Reset all quests');
+      }
+    } catch(e) {
+      setOutput(`Macro error: ${e.message}`);
+    }
+  };
+
+  const renderCommandsTab = () => (
+    <div>
+      <div className="admin-tools-section">
+        <h3>Extra Commands ({EXTRA_COMMANDS.length})</h3>
+        <div className="admin-tools-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '8px' }}>
+          {EXTRA_COMMANDS.map((cmd, i) => (
+            <button key={i} className="admin-tools-button" onClick={() => runMacro(cmd)}>
+              {cmd.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   const renderPlayerTab = () => (
     <div>
       <div className="admin-tools-section">
@@ -675,6 +868,7 @@ export default function AdminTools({ dispatch, getState }) {
             <button className={`admin-tools-tab ${activeTab === 'content' ? 'active' : ''}`} onClick={() => setActiveTab('content')}>Content</button>
             <button className={`admin-tools-tab ${activeTab === 'system' ? 'active' : ''}`} onClick={() => setActiveTab('system')}>System</button>
             <button className={`admin-tools-tab ${activeTab === 'agents' ? 'active' : ''}`} onClick={() => setActiveTab('agents')}>Agents</button>
+            <button className={`admin-tools-tab ${activeTab === 'commands' ? 'active' : ''}`} onClick={() => setActiveTab('commands')}>Commands</button>
           </div>
 
           <div className="admin-tools-content">
@@ -682,6 +876,7 @@ export default function AdminTools({ dispatch, getState }) {
             {activeTab === 'content' && renderContentTab()}
             {activeTab === 'system' && renderSystemTab()}
             {activeTab === 'agents' && renderAgentsTab()}
+            {activeTab === 'commands' && renderCommandsTab()}
 
             {output && (
                 <div className="admin-tools-section">

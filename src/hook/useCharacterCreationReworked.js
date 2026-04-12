@@ -1328,6 +1328,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     availableActiveSkills,
     availablePassiveSkills,
     availableArchetypeSystems: AVAILABLE_ARCHETYPE_SYSTEMS,
+    availableStartingPoints: AVAILABLE_STARTING_POINTS,
     availableCreationPerks,
     availableCreationStarterTrees,
     availableCreationAlignments,

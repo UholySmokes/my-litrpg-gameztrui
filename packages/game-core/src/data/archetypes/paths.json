@@ -456,4 +456,86 @@
       }
     ]
   }
+,  {
+    "id": "path_iron_monarch",
+    "name": "Path of the Iron Monarch",
+    "category": "Path",
+    "summary": "A transformational Path demanding conquest and rigid structural order.",
+    "description": "Reduces your reliance on System UI by enforcing a chain of physical breakthroughs. Conquest yields tangible Authority.",
+    "coreLoop": [
+      "Target high-threat structural points in enemy formations.",
+      "Convert taken territory into Mandate resources.",
+      "Reinvest Mandate into permanent physical durability.",
+      "Sacrifice mobility for overwhelming local stability."
+    ],
+    "progression": [
+      "Tier I grants innate kinetic resistance and reduces stamina costs for braced attacks.",
+      "Tier II locks your evolution, demanding a warlord's challenge to progress.",
+      "Tier III permanently boosts allied morale nearby and scales with territory held."
+    ],
+    "narrativeHooks": [
+      "Nobility factions will recognize your Path as a threat to their sovereignty.",
+      "Armies respect your visible durability and expect you to lead from the front.",
+      "Tributes and demands naturally flow to you, replacing normal quest logic."
+    ],
+    "possibleUses": [
+      "In gameplay, Iron Monarch is excellent for front-line lockdown, zone control, and enduring heavy strikes."
+    ],
+    "limits": [
+      "Iron Monarch demands conquest; sitting idle stalls progression completely."
+    ],
+    "costs": [
+      "Mandate costs limit early flexibility, and moving across open ground is difficult."
+    ],
+    "worldCompatibility": [
+      "Iron Monarch advances through conquest but remains beneath Void-level order."
+    ],
+    "factionReactions": [
+      "Established kingdoms will naturally react defensively or aggressively against a new Monarch.",
+      "Mercenaries and warlords will gravitate towards you to test your rule."
+    ],
+    "questHooks": [
+      "Seize a key chokepoint before an enemy army arrives to secure your next Tier.",
+      "Defend your acquired stronghold against a coordinated siege to permanently cement your Mandate."
+    ],
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 2,
+    "tags": [
+      "combat",
+      "progression",
+      "authority",
+      "ascension"
+    ],
+    "statModifiers": {
+      "strength": 15,
+      "vitality": 20,
+      "agility": -5
+    },
+    "archetypeResource": {
+      "name": "Iron Mandate",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 5,
+      "color": "#9E9E9E"
+    },
+    "narrativeTone": {
+      "voice": "commanding and relentless",
+      "vocabulary": [
+        "conquest",
+        "mandate",
+        "unbreakable",
+        "sovereign"
+      ],
+      "sentenceStyle": "authoritative, brief, resolute"
+    },
+    "archetypePassives": [
+      {
+        "id": "path_iron_monarch_passive_1",
+        "trigger": "passive",
+        "effect": "stat_boost",
+        "amount": 1
+      }
+    ]
+  }
 ]

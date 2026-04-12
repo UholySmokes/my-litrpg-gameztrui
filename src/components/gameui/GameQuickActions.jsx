@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import ActionButtons from "./ActionButtons.jsx";
 import ItemPicker from "./ItemPicker.jsx";
 import SkillPicker from "./SkillPicker.jsx";
+import { isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
 
 const normalizeText = (value) => String(value || "").trim();
 
@@ -131,6 +132,7 @@ export default function GameQuickActions({
   onToggleArchetypeSystem,
   onToggleBestiary,
   onToggleCraft,
+  onToggleDevourerCore,
   onToggleGacha,
   onToggleQuests,
   onToggleReplayInspector,
@@ -256,6 +258,7 @@ export default function GameQuickActions({
   const itemDisabled = items.length === 0;
   const showTierTwoSupport = onboardingTier >= 2;
   const showTierThreeSupport = onboardingTier >= 3;
+  const devourerActive = isDevourerCorePlayer(player);
 
   const handleStatusOpen = useCallback(() => {
     onTrackUiAction?.("status");
@@ -363,6 +366,11 @@ export default function GameQuickActions({
             onClick={onToggleArchetypeSystem}
           >
             System
+          </button>
+        ) : null}
+        {showTierThreeSupport && devourerActive ? (
+          <button type="button" className="holo-button" onClick={onToggleDevourerCore}>
+            Devourer
           </button>
         ) : null}
         {showTierThreeSupport ? (

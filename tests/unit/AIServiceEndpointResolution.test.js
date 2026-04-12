@@ -157,4 +157,37 @@ describe("AIService endpoint resolution", () => {
       "https://my-litrpg-gameztrui-3416-da75c.web.app/api/narrate",
     );
   });
+
+  it("treats local same-origin 500s as narrator-unavailable cooldown candidates", async () => {
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_NARRATE_ENDPOINT: "/api/narrate",
+    };
+    globalThis.window = { location: { hostname: "127.0.0.1" } };
+
+    globalThis.fetch = jest.fn().mockResolvedValue(
+      new Response(null, {
+        status: 500,
+        headers: { "content-type": "text/plain" },
+      }),
+    );
+
+    await generateNarrative("test prompt")
+      .then(() => {
+        throw new Error("Expected generateNarrative to reject.");
+      })
+      .catch((error) => {
+        expect(error.code).toBe("NARRATOR_SERVICE_UNREACHABLE");
+      });
+
+    await generateNarrative("retry prompt")
+      .then(() => {
+        throw new Error("Expected cooldown retry to reject.");
+      })
+      .catch((error) => {
+        expect(error.code).toBe("NARRATOR_UNAVAILABLE_COOLDOWN");
+        expect(error.causeCode).toBe("NARRATOR_SERVICE_UNREACHABLE");
+      });
+
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+  });
 });

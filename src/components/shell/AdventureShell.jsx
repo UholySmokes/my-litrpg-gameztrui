@@ -124,7 +124,8 @@ export default function AdventureShell({
     () => [
       {
         label: "Origin",
-        value: player?.origin?.name || playerIdentity.race,
+        value:
+          player?.oathOrigin?.name || player?.origin?.name || playerIdentity.race,
         tone: "identity",
       },
       {
@@ -148,7 +149,13 @@ export default function AdventureShell({
         tone: "temporary",
       },
     ],
-    [archetypeView?.name, player, playerIdentity.classLabel, playerIdentity.race, temporaryEffectCount],
+    [
+      archetypeView?.name,
+      player,
+      playerIdentity.classLabel,
+      playerIdentity.race,
+      temporaryEffectCount,
+    ],
   );
   const topMeters = [
     { label: "HP", value: formatMeter(player?.hp?.current, player?.hp?.max) },

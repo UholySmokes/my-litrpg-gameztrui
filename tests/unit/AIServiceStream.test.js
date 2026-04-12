@@ -314,4 +314,26 @@ describe("AIService streaming narrative", () => {
       "https://my-litrpg-gameztrui-3416-da75c.web.app/api/narrate-poll?threadId=thread-fallback&runId=run-fallback",
     );
   });
+
+  it("bubbles local same-origin narrator outages so the runtime can use offline fallback", async () => {
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_API_BASE_URL: "/",
+    };
+    globalThis.window = { location: { hostname: "127.0.0.1" } };
+    globalThis.fetch = jest.fn().mockResolvedValue(
+      new Response(null, {
+        status: 500,
+        headers: { "content-type": "text/plain" },
+      }),
+    );
+
+    await expect(
+      generateNarrativeStream("Recover the opening beat."),
+    ).rejects.toMatchObject({
+      code: "NARRATOR_SERVICE_UNREACHABLE",
+    });
+
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1);
+    expect(globalThis.fetch.mock.calls[0][0]).toBe("/api/narrate-start");
+  });
 });

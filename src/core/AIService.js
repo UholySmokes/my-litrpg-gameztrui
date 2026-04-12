@@ -22,6 +22,8 @@ const NARRATOR_LOCAL_FALLBACK_CODES = new Set([
   "NARRATOR_SERVICE_UNREACHABLE",
   "NARRATOR_UNAVAILABLE_COOLDOWN",
 ]);
+const LOCAL_NARRATOR_UNREACHABLE_MESSAGE =
+  "Narrator service unreachable. Start local API with `npm run dev:api` (or `npm run dev:stack`) and retry.";
 
 const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
@@ -86,6 +88,9 @@ const resolveNarrateEndpoints = () => {
   const derived = baseCandidates.map(
     (base) => `${normalizeBaseUrl(base)}/api/narrate`,
   );
+  if (!narrateEndpoint && baseCandidates.length === 0 && isLocalDevRuntime()) {
+    return [];
+  }
   return unique([narrateEndpoint, ...derived, "/api/narrate"]);
 };
 
@@ -101,6 +106,10 @@ const resolveStreamEndpointCandidates = () => {
     allowedHosts,
     pickEnvValue,
   });
+
+  if (baseCandidates.length === 0 && isLocalDevRuntime()) {
+    return [];
+  }
 
   const bases = baseCandidates.length > 0 ? baseCandidates : [""];
   const pairs = bases.map((base) => {
@@ -164,6 +173,44 @@ const createNarratorCooldownError = () => {
   error.silent = true;
   return error;
 };
+
+const createNarratorServiceUnreachableError = (
+  message = LOCAL_NARRATOR_UNREACHABLE_MESSAGE,
+) => {
+  const error = new Error(message);
+  error.code = "NARRATOR_SERVICE_UNREACHABLE";
+  return error;
+};
+
+const isSameOriginNarrateEndpoint = (endpoint) =>
+  typeof endpoint === "string" && endpoint.startsWith("/api/");
+
+const isLocalDevRuntime = () => {
+  const runtimeEnv = getRuntimeEnv();
+  const buildEnv = getBuildEnv();
+  const hostnames = [
+    globalThis?.location?.hostname,
+    globalThis?.window?.location?.hostname,
+  ].filter(Boolean);
+  return Boolean(
+    buildEnv.DEV ||
+      runtimeEnv?.NODE_ENV === "development" ||
+      runtimeEnv?.MODE === "development" ||
+      hostnames.some((hostname) => hostname === "127.0.0.1" || hostname === "localhost"),
+  );
+};
+
+const isLocalDevNarratorProxyFailure = ({
+  endpoint,
+  status,
+  rawText,
+}) =>
+  Boolean(
+    isLocalDevRuntime() &&
+      isSameOriginNarrateEndpoint(endpoint) &&
+      Number(status) >= 500 &&
+      !String(rawText || "").trim(),
+  );
 
 export function shouldUseNarrativeLocalFallback(error) {
   const code = String(error?.code || "").trim();
@@ -314,6 +361,15 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
       const rawText = await clone.text().catch(() => "");
 
       if (RETRY_STATUS.has(response.status) && attempt < MAX_RETRIES) {
+        if (
+          isLocalDevNarratorProxyFailure({
+            endpoint: url,
+            status: response.status,
+            rawText,
+          })
+        ) {
+          return { response, data, rawText };
+        }
         const errorCode = data?.errorCode;
         if (
           response.status === 504 &&
@@ -416,6 +472,7 @@ export async function generateNarrative(
     attemptedEndpoints += 1;
     attemptedUrls.push(endpoint);
     let endpointMissing = false;
+    let endpointUnavailable = false;
     for (let i = 0; i < headerVariants.length; i += 1) {
       const headers = headerVariants[i];
       try {
@@ -452,6 +509,19 @@ export async function generateNarrative(
             throw new Error(
               "Narrator API requires sign-in. Use Firebase Google sign-in, or set VITE_DEV_USER_ID for local dev headers.",
             );
+          }
+
+          if (
+            isLocalDevNarratorProxyFailure({
+              endpoint,
+              status: response.status,
+              rawText,
+              isDev,
+            })
+          ) {
+            const error = createNarratorServiceUnreachableError();
+            markNarratorUnavailable(error.code, error.message);
+            throw error;
           }
 
           const message =
@@ -492,13 +562,20 @@ export async function generateNarrative(
         );
       } catch (error) {
         lastError = error;
-        if (isDev) {
+        if (shouldUseNarrativeLocalFallback(error)) {
+          endpointUnavailable = true;
+          break;
+        }
+        if (isDev && !shouldUseNarrativeLocalFallback(error)) {
           console.error("AI Service Error:", error);
         }
       }
     }
     if (endpointMissing) {
       missingEndpointCount += 1;
+      continue;
+    }
+    if (endpointUnavailable) {
       continue;
     }
   }
@@ -531,12 +608,13 @@ export async function generateNarrative(
       lastError.message.includes("fetch") ||
       lastError.message.includes("Connection error"))
   ) {
-    const error = new Error(
-      "Narrator service unreachable. Start local API with `npm run dev:api` (or `npm run dev:stack`) and retry.",
-    );
-    error.code = "NARRATOR_SERVICE_UNREACHABLE";
+    const error = createNarratorServiceUnreachableError();
     markNarratorUnavailable(error.code, error.message);
     throw error;
+  }
+
+  if (shouldUseNarrativeLocalFallback(lastError)) {
+    throw lastError;
   }
 
   if (isDev) {
@@ -612,6 +690,7 @@ export async function generateNarrativeStream(
           },
           30000,
         );
+        const rawStartText = await res.clone().text().catch(() => "");
         startData = await res.json().catch(() => null);
         if (
           (res.status === 401 || res.status === 403) &&
@@ -627,6 +706,18 @@ export async function generateNarrativeStream(
             error.code = "NARRATOR_ENDPOINT_MISSING";
             lastStartError = error;
             break;
+          }
+          if (
+            isLocalDevNarratorProxyFailure({
+              endpoint: endpoints.start,
+              status: res.status,
+              rawText: rawStartText,
+              isDev,
+            })
+          ) {
+            const error = createNarratorServiceUnreachableError();
+            markNarratorUnavailable(error.code, error.message);
+            throw error;
           }
           throw error;
         }
@@ -645,8 +736,9 @@ export async function generateNarrativeStream(
     }
   } catch (error) {
     if (error?.name === "AbortError") throw error;
+    if (shouldUseNarrativeLocalFallback(error)) throw error;
     // Fall back to synchronous narrate
-    if (isDev && !shouldUseNarrativeLocalFallback(error)) {
+    if (isDev) {
       console.warn("Stream start failed, falling back:", error);
     }
     const result = await generateNarrative(prompt, {
@@ -724,6 +816,7 @@ export async function generateNarrativeStream(
           15000,
         );
         pollResponse = res;
+        const rawPollText = await res.clone().text().catch(() => "");
         pollData = await res.json().catch(() => null);
         if (
           (res.status === 401 || res.status === 403) &&
@@ -732,9 +825,22 @@ export async function generateNarrativeStream(
           continue;
         }
         if (!res.ok) {
-          pollError = new Error(
-            pollData?.message || `Stream poll failed (${res.status})`,
-          );
+          if (
+            isLocalDevNarratorProxyFailure({
+              endpoint: selectedEndpoints.poll,
+              status: res.status,
+              rawText: rawPollText,
+              isDev,
+            })
+          ) {
+            const error = createNarratorServiceUnreachableError();
+            markNarratorUnavailable(error.code, error.message);
+            pollError = error;
+          } else {
+            pollError = new Error(
+              pollData?.message || `Stream poll failed (${res.status})`,
+            );
+          }
         }
         break;
       }
@@ -746,6 +852,7 @@ export async function generateNarrativeStream(
       }
     } catch (error) {
       if (error?.name === "AbortError") throw error;
+      if (shouldUseNarrativeLocalFallback(error)) throw error;
       if (isDev) console.warn("Stream poll error:", error);
       if (
         String(error?.message || "").toLowerCase().includes("unauthorized")

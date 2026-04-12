@@ -1,6 +1,11 @@
 import { getItemData } from "../data/registries/ItemDataRegistry.js";
 import { getZoneEntryLocationId } from "../world/WorldDataRegistry.js";
 import { buildOpeningArcPayload } from "../world/OpeningArcRegistry.js";
+import {
+  deriveOnboardingTierFromState,
+  getOpeningTutorialContext,
+  isOnboardingSurfaceUnlocked,
+} from "../world/OpeningTutorialBundleRegistry.js";
 
 const CASTER_CLASS_PATTERN = /mage|archmage|wizard|sorcer|warlock|necromancer|spell/i;
 const SKIRMISH_CLASS_PATTERN = /rogue|ranger|assassin|shadow|hunter|scout/i;
@@ -203,24 +208,37 @@ export function mergeCreationOnboardingData(characterData = {}, startingPoint = 
 }
 
 export function deriveAdventureOnboardingTier({ state, player, quests } = {}) {
-  const completedIds = new Set(
-    (Array.isArray(quests?.completed) ? quests.completed : [])
-      .map((quest) => quest?.id)
-      .filter(Boolean),
-  );
-
-  if ((player?.level || 1) >= 2 || completedIds.has("bq_first_conflict")) {
-    return 3;
+  const fallbackState = {
+    ...(state || {}),
+    player: player || state?.player,
+    quests: quests || state?.quests,
+  };
+  const onboardingContext = getOpeningTutorialContext(fallbackState);
+  const derivedTier = deriveOnboardingTierFromState(fallbackState);
+  if (derivedTier > 1 || onboardingContext?.bundleId) {
+    return derivedTier;
   }
-
-  if (
-    completedIds.has("bq_first_stride") ||
-    completedIds.has("bq_system_basics") ||
-    (state?.world?.turnCount || 0) > 0 ||
-    (player?.xp?.current || 0) > 0
-  ) {
+  if ((state?.world?.turnCount || 0) > 0 || (player?.xp?.current || 0) > 0) {
     return 2;
   }
-
   return 1;
+}
+
+export function getAdventureOnboardingContext({ state, player, quests } = {}) {
+  return getOpeningTutorialContext({
+    ...(state || {}),
+    player: player || state?.player,
+    quests: quests || state?.quests,
+  });
+}
+
+export function isAdventureSurfaceUnlocked(surfaceId, { state, player, quests } = {}) {
+  return isOnboardingSurfaceUnlocked(
+    {
+      ...(state || {}),
+      player: player || state?.player,
+      quests: quests || state?.quests,
+    },
+    surfaceId,
+  );
 }

@@ -6,6 +6,7 @@ import {
 import { titleDatabase } from "../data/titleData.js";
 import { getSetBonuses } from "../systems/items/SetBonusSystem.js";
 import { toNumber } from "../utils/shared.js";
+import { hasQuestOrOnboardingMilestoneCompleted } from "../world/OpeningTutorialBundleRegistry.js";
 
 export function getTitleById(titleId) {
   if (!titleId) return null;
@@ -172,11 +173,9 @@ export function areNonPurchaseUnlockConditionsMet(titleOrId, gameState) {
   }
 
   if (conditions.quest) {
-    const completed = Array.isArray(state.quests?.completed)
-      ? state.quests.completed
-      : [];
-    const questCompleted = completed.some((q) => q?.id === conditions.quest);
-    if (!questCompleted) return false;
+    if (!hasQuestOrOnboardingMilestoneCompleted(state, conditions.quest)) {
+      return false;
+    }
   }
 
   if (conditions.killCount) {

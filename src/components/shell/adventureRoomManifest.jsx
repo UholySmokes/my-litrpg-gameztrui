@@ -18,7 +18,11 @@ import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../../ui/panels/ActionSuggestionsPanel.jsx";
 import MagicStudyPanel from "../../ui/panels/MagicStudyPanel.jsx";
 import WorldMapPanel from "../../ui/panels/WorldMapPanel.jsx";
-import { deriveAdventureOnboardingTier } from "../../core/creationOnboarding.js";
+import {
+  deriveAdventureOnboardingTier,
+  getAdventureOnboardingContext,
+  isAdventureSurfaceUnlocked,
+} from "../../core/creationOnboarding.js";
 
 function RoomSection({ eyebrow, title, children }) {
   return (
@@ -96,6 +100,12 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
     system,
   } = view;
   const onboardingTier = deriveAdventureOnboardingTier({ state, player, quests });
+  const onboardingContext = getAdventureOnboardingContext({ state, player, quests });
+  const onboardingActive = onboardingContext?.active === true;
+  const hasUnlockedSurface = (surfaceId) =>
+    isAdventureSurfaceUnlocked(surfaceId, { state, player, quests });
+  const allowEarlySurface = (surfaceId, fallback) =>
+    onboardingActive ? hasUnlockedSurface(surfaceId) : fallback;
 
   const systemRooms = [
     {
@@ -106,7 +116,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Inspect status",
       size: "fullscreen",
       group: "system",
-      availability: onboardingTier >= 2,
+      availability: allowEarlySurface("status", onboardingTier >= 2),
       isOpen: Boolean(surfaces.showStatusOverlay),
       onOpen: () => {
         system.trackUiAction?.("status");
@@ -262,7 +272,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open vault",
       size: "fullscreen",
       group: "system",
-      availability: onboardingTier >= 2,
+      availability: allowEarlySurface("save", onboardingTier >= 2),
       isOpen: Boolean(surfaces.showSaveLoad),
       onOpen: quickActionsProps.onToggleSaveLoad,
       onClose: surfaces.handleCloseSaveLoad,
@@ -300,7 +310,9 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Inspect slot",
       size: "lg",
       group: "system",
-      availability: onboardingTier >= 2 && Boolean(surfaces.equipmentSelectSlot),
+      availability:
+        allowEarlySurface("inventory", onboardingTier >= 2) &&
+        Boolean(surfaces.equipmentSelectSlot),
       isOpen: Boolean(surfaces.equipmentSelectSlot),
       onOpen: () => {},
       onClose: surfaces.handleCloseEquipmentSelect,
@@ -381,7 +393,10 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Enter theater",
       size: "xl",
       group: "primary",
-      availability: onboardingTier >= 2,
+      availability:
+        onboardingActive
+          ? combatState?.status === "active" || hasUnlockedSurface("battle")
+          : onboardingTier >= 2,
       render: () =>
         combatState?.status === "active" ? (
           <CombatUI
@@ -407,7 +422,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open vault",
       size: "lg",
       group: "primary",
-      availability: onboardingTier >= 2,
+      availability: allowEarlySurface("inventory", onboardingTier >= 2),
       onOpen: () => {
         system.trackUiAction?.("inventory");
       },
@@ -434,7 +449,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open cartograph",
       size: "xl",
       group: "primary",
-      availability: onboardingTier >= 2,
+      availability: allowEarlySurface("map", onboardingTier >= 2),
       render: () => <WorldMapPanel state={state} />,
     },
     {
@@ -445,7 +460,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open forge",
       size: "lg",
       group: "primary",
-      availability: onboardingTier >= 2,
+      availability: onboardingActive ? false : onboardingTier >= 2,
       render: () => (
         <EquipmentPanel
           player={player}
@@ -461,7 +476,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Enter study",
       size: "xl",
       group: "primary",
-      availability: onboardingTier >= 2,
+      availability: onboardingActive ? false : onboardingTier >= 2,
       render: () => (
         <MagicStudyPanel
           player={player}

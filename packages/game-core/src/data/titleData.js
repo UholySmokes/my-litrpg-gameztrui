@@ -2,6 +2,8 @@
 // TITLE DATABASE - Titles with secondary and main bonuses
 // =================================================================
 
+import { hasQuestOrOnboardingMilestoneCompleted } from "../world/OpeningTutorialBundleRegistry.js";
+
 export let titleDatabase = [
   {
     id: 'novice_adventurer',
@@ -162,10 +164,7 @@ function checkTitleUnlockConditions(title, gameState) {
   }
 
   if (conditions.quest) {
-    const questCompleted = Array.isArray(state.quests?.completed)
-      ? state.quests.completed.some((q) => q?.id === conditions.quest)
-      : false;
-    if (!questCompleted) {
+    if (!hasQuestOrOnboardingMilestoneCompleted(state, conditions.quest)) {
       return false;
     }
   }

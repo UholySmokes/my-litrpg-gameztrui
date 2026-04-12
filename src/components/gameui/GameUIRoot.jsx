@@ -17,6 +17,7 @@ import { useGameUiInteractionHandlers } from "./useGameUiInteractionHandlers.js"
 import { buildNarrativePanelView } from "./gameUiSelectors.js";
 import { hasCharacterCreationDraft } from "./characterCreationDraft.js";
 import { deriveAdventureOnboardingTier } from "../../core/creationOnboarding.js";
+import { hasCompletedOnboardingMilestone } from "../../world/OpeningTutorialBundleRegistry.js";
 import {
   hasCreatedCharacterSnapshot,
   isRecord,
@@ -624,11 +625,6 @@ export default function GameUI({ user }) {
     }
 
     const onboarding = state?.world?.vars?.onboarding || {};
-    const completedQuestIds = new Set(
-      (Array.isArray(state?.quests?.completed) ? state.quests.completed : [])
-        .map((quest) => quest?.id)
-        .filter(Boolean),
-    );
     const currentMilestones =
       onboarding && typeof onboarding.milestones === "object"
         ? onboarding.milestones
@@ -649,13 +645,13 @@ export default function GameUI({ user }) {
     if (onboarding.stage !== nextStage) {
       patch.stage = nextStage;
     }
-    if (completedQuestIds.has("bq_first_stride") && !currentMilestones.firstStrideSeen) {
+    if (hasCompletedOnboardingMilestone(state, "anchor") && !currentMilestones.firstStrideSeen) {
       milestonePatch.firstStrideSeen = true;
     }
-    if (completedQuestIds.has("bq_system_basics") && !currentMilestones.systemBasicsSeen) {
+    if (hasCompletedOnboardingMilestone(state, "readout") && !currentMilestones.systemBasicsSeen) {
       milestonePatch.systemBasicsSeen = true;
     }
-    if (completedQuestIds.has("bq_first_conflict") && !currentMilestones.firstConflictSeen) {
+    if (hasCompletedOnboardingMilestone(state, "pressure") && !currentMilestones.firstConflictSeen) {
       milestonePatch.firstConflictSeen = true;
     }
 

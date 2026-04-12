@@ -15,7 +15,10 @@ import {
   splitAdventureRooms,
 } from "./adventureRoomManifest.jsx";
 import { buildArchetypeSystemViewModel } from "../archetypeSystem/archetypeSystemViewModel.js";
-import { deriveAdventureOnboardingTier } from "../../core/creationOnboarding.js";
+import {
+  deriveAdventureOnboardingTier,
+  getAdventureOnboardingContext,
+} from "../../core/creationOnboarding.js";
 
 function formatMeter(current, max) {
   return `${Number(current || 0)}/${Number(max || 0)}`;
@@ -117,6 +120,10 @@ export default function AdventureShell({
     () => deriveAdventureOnboardingTier({ state, player, quests }),
     [player, quests, state],
   );
+  const onboardingContext = useMemo(
+    () => getAdventureOnboardingContext({ state, player, quests }),
+    [player, quests, state],
+  );
   const temporaryEffectCount = Array.isArray(player?.statusEffects)
     ? player.statusEffects.length
     : 0;
@@ -193,6 +200,17 @@ export default function AdventureShell({
     combatState?.status === "active"
       ? `${Array.isArray(combatState?.enemies) ? combatState.enemies.length : 0} threats`
       : "Quiet field";
+  const currentPressure = onboardingContext?.active
+    ? {
+        title:
+          onboardingContext?.currentStep?.questTemplate?.name ||
+          objective.questName,
+        text:
+          onboardingContext?.currentStep?.questTemplate?.description ||
+          objective.objectiveText,
+        progressLabel: `${onboardingContext.completedStepIds.length + 1}/3`,
+      }
+    : null;
 
   useEffect(() => {
     const currentStatus = combatState?.status || "inactive";
@@ -250,6 +268,42 @@ export default function AdventureShell({
             </div>
             <h3 className="atrium-hero__title">{objective.questName}</h3>
             <p className="atrium-hero__objective">{objective.objectiveText}</p>
+            {currentPressure ? (
+              <div
+                style={{
+                  marginTop: "0.9rem",
+                  padding: "0.9rem 1rem",
+                  borderRadius: "16px",
+                  border: "1px solid rgba(106, 227, 255, 0.25)",
+                  background: "rgba(13, 23, 39, 0.78)",
+                  maxWidth: "46rem",
+                }}
+              >
+                <div className="adventure-shell__eyebrow">Current Pressure</div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "0.8rem",
+                    alignItems: "baseline",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <strong>{currentPressure.title}</strong>
+                  <span style={{ opacity: 0.74, fontSize: "0.78rem" }}>
+                    Step {currentPressure.progressLabel}
+                  </span>
+                </div>
+                <p
+                  style={{
+                    margin: "0.45rem 0 0",
+                    color: "rgba(223, 236, 255, 0.88)",
+                  }}
+                >
+                  {currentPressure.text}
+                </p>
+              </div>
+            ) : null}
             <div
               style={{
                 display: "flex",

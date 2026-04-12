@@ -8,6 +8,10 @@ import {
   resolvePlayerArchetypeSystem,
 } from "../archetype/resolvePlayerArchetypeSystem.js";
 import { getOpeningArcForPlayer } from "../../world/OpeningArcRegistry.js";
+import {
+  createOpeningTutorialQuest,
+  getOpeningTutorialBundle,
+} from "../../world/OpeningTutorialBundleRegistry.js";
 
 const TUTORIAL_QUEST_IDS = [
   "bq_first_stride",
@@ -93,7 +97,7 @@ export class QuestManager {
     );
   }
 
-  static generateInitialQuests(player) {
+  static generateLegacyInitialQuestPlan(player) {
     const quests = [];
     const openingArc = getOpeningArcForPlayer(player);
 
@@ -127,7 +131,6 @@ export class QuestManager {
       (quest) => !tutorialQuestIds.has(quest.id),
     );
 
-    // Non-tutorial quests require player acceptance; no auto-assignment
     const beginnerQuestCount = 0;
     for (let i = 0; i < beginnerQuestCount; i++) {
       if (beginnerPool.length === 0) break;
@@ -170,7 +173,58 @@ export class QuestManager {
       quests.push(this.initializeQuest(systemQuest));
     }
 
-    return quests;
+    return {
+      activeQuests: quests,
+      bundleId: null,
+      currentStepId: null,
+      deferredMainQuestId: null,
+      deferredMainQuestReady: false,
+    };
+  }
+
+  static generateInitialQuestPlan(player) {
+    const bundleId =
+      typeof player?.tutorialBundleId === "string" && player.tutorialBundleId.trim()
+        ? player.tutorialBundleId.trim()
+        : getOpeningArcForPlayer(player)?.tutorialBundleId || null;
+    const bundle = getOpeningTutorialBundle(bundleId);
+
+    if (!bundle) {
+      return this.generateLegacyInitialQuestPlan(player);
+    }
+
+    const activeQuests = [];
+    const anchorQuest = createOpeningTutorialQuest(bundle.id, "anchor");
+    if (anchorQuest) {
+      activeQuests.push(anchorQuest);
+    }
+
+    const suitableMainQuests = MAIN_QUESTS.filter((quest) =>
+      this.isQuestSuitable(quest, player),
+    );
+    const deferredMainQuest =
+      suitableMainQuests.length > 0
+        ? this.pullQuestByPriority([...suitableMainQuests], player)
+        : null;
+
+    const archetypeSystem = this.resolveArchetypeSystem(player);
+    if ((player?.level || 1) >= 4 && archetypeSystem?.questHooks?.length) {
+      const hookIndex = randomInt(0, archetypeSystem.questHooks.length - 1);
+      const hook = archetypeSystem.questHooks[hookIndex];
+      activeQuests.push(this.initializeQuest(this.buildSystemQuest(archetypeSystem, hook)));
+    }
+
+    return {
+      activeQuests,
+      bundleId: bundle.id,
+      currentStepId: "anchor",
+      deferredMainQuestId: deferredMainQuest?.id || null,
+      deferredMainQuestReady: false,
+    };
+  }
+
+  static generateInitialQuests(player) {
+    return this.generateInitialQuestPlan(player).activeQuests;
   }
 
   static generateQuestFromSuggestion(actionText, state) {

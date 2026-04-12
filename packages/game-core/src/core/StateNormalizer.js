@@ -30,7 +30,10 @@ import {
 } from "../world/WorldDataRegistry.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { defaultPrestigeStats } from "../systems/PrestigeSystem";
-import { normalizeUnifiedMagicState } from "../systems/magic/UnifiedMagicSystem.js";
+import {
+  normalizeAbilityState,
+  syncPlayerAbilityState,
+} from "../systems/abilities/UnifiedAbilityEngine.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
 const { GAME_STATE_VERSION } = saveCutover;
@@ -377,15 +380,16 @@ function normalizePlayer(rawPlayer, config) {
   const hpMaxDefault = calculateMaxHp(effectiveAttributes);
   const manaMaxDefault = calculateMaxMana(effectiveAttributes);
   const normalizedMana = normalizeGauge(player.mana, manaMaxDefault);
-  const magic = normalizeUnifiedMagicState(player.magic, {
+  const normalizedAbilityState = normalizeAbilityState(player.abilityState, {
     player: {
       ...player,
       class: normalizedClass,
       mana: normalizedMana,
+      magic: player.magic,
     },
   });
 
-  return {
+  const normalizedPlayer = {
     ...player,
     name: player.name ?? "Wanderer",
     level,
@@ -399,7 +403,8 @@ function normalizePlayer(rawPlayer, config) {
     xp: normalizeXp(player.xp, level, config),
     hp: normalizeGauge(player.hp, hpMaxDefault),
     mana: normalizedMana,
-    magic,
+    abilityState: normalizedAbilityState,
+    magic: normalizedAbilityState.families.magic,
     resources: normalizeResources(player.resources),
     inventory: Array.isArray(player.inventory) ? player.inventory : [],
     equipment: isPlainObject(player.equipment) ? player.equipment : {},
@@ -435,6 +440,8 @@ function normalizePlayer(rawPlayer, config) {
       ),
     },
   };
+
+  return syncPlayerAbilityState(normalizedPlayer, normalizedPlayer.abilityState);
 }
 
 function normalizeArray(value) {
@@ -1296,6 +1303,11 @@ export function normalizeGameState(rawState) {
       },
     };
   }
+
+  normalized = {
+    ...normalized,
+    player: syncPlayerAbilityState(normalized.player, normalized.player?.abilityState),
+  };
 
   return normalized;
 }

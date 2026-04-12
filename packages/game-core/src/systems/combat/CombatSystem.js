@@ -26,9 +26,11 @@ import {
 } from "../skills/TalentManager.js";
 import { getModifiedSkill } from "../skills/SkillRegistry.js";
 import { effectApplicationSystem } from "../effects/EffectApplicationSystem.js";
-import { consumeMana } from "../magic/ManaSystem.js";
-import { calculateManaCost } from "../magic/ManaBalance.js";
-import { resolveCombatSkillMagic } from "../magic/UnifiedMagicSystem.js";
+import {
+  consumeAbilityCostForActor,
+  resolveCombatAbilityMagic,
+  syncPlayerAbilityState,
+} from "../abilities/UnifiedAbilityEngine.js";
 import { emit } from "../../core/EventBus.js";
 import {
   allowsZeroDamage,
@@ -107,36 +109,46 @@ export function applyCastingInterruptionFromDamage(state, damageApplied) {
   const bodyLoss = outcome === "backlash" ? Math.max(2, Math.floor(dmg * 0.4)) : outcome === "partial" ? Math.max(1, Math.floor(dmg * 0.15)) : 0;
   const nextResonance = Math.max(0, Math.min(100, resonance + (outcome === "backlash" ? 12 : outcome === "partial" ? 8 : 5)));
   const resonanceState = nextResonance >= 75 ? "shrieking" : nextResonance >= 50 ? "ringing" : nextResonance >= 25 ? "humming" : "quiet";
-  return {
-    ...state,
-    player: {
-      ...state.player,
-      magic: {
-        ...state.player.magic,
-        casting: null,
-        prepared: null,
-        resonance: {
-          ...(state.player.magic.resonance || {}),
-          current: nextResonance,
-          state: resonanceState,
-        },
-        stability: {
-          ...state.player.magic.stability,
-          mind: {
-            ...state.player.magic.stability.mind,
-            current: Math.max(0, Math.min(mindMax, (state.player.magic.stability.mind.current || 0) - mindLoss)),
-          },
-          cognitive: {
-            ...state.player.magic.stability.cognitive,
-            current: Math.max(0, Math.min(cogMax, (state.player.magic.stability.cognitive.current || 0) - cogLoss)),
-          },
-          body: {
-            ...state.player.magic.stability.body,
-            current: Math.max(0, Math.min(bodyMax, (state.player.magic.stability.body.current || 0) - bodyLoss)),
-          },
-        },
+  const nextMagic = {
+    ...state.player.magic,
+    casting: null,
+    prepared: null,
+    resonance: {
+      ...(state.player.magic.resonance || {}),
+      current: nextResonance,
+      state: resonanceState,
+    },
+    stability: {
+      ...state.player.magic.stability,
+      mind: {
+        ...state.player.magic.stability.mind,
+        current: Math.max(0, Math.min(mindMax, (state.player.magic.stability.mind.current || 0) - mindLoss)),
+      },
+      cognitive: {
+        ...state.player.magic.stability.cognitive,
+        current: Math.max(0, Math.min(cogMax, (state.player.magic.stability.cognitive.current || 0) - cogLoss)),
+      },
+      body: {
+        ...state.player.magic.stability.body,
+        current: Math.max(0, Math.min(bodyMax, (state.player.magic.stability.body.current || 0) - bodyLoss)),
       },
     },
+  };
+  return {
+    ...state,
+    player: syncPlayerAbilityState(
+      {
+        ...state.player,
+        magic: nextMagic,
+      },
+      {
+        ...(state.player?.abilityState || {}),
+        families: {
+          ...(state.player?.abilityState?.families || {}),
+          magic: nextMagic,
+        },
+      },
+    ),
     combat: state.combat
       ? {
           ...state.combat,
@@ -2036,7 +2048,7 @@ export function executeSkill(attacker, defender, skillInput, config = {}, option
       : null;
   const resolvedSkillMagic =
     !options?.unifiedMagic && stateForUnifiedMagic
-      ? resolveCombatSkillMagic(stateForUnifiedMagic, skill)
+      ? resolveCombatAbilityMagic(stateForUnifiedMagic, skill)
       : null;
   if (resolvedSkillMagic?.ok === false) {
     return {
@@ -2055,18 +2067,14 @@ export function executeSkill(attacker, defender, skillInput, config = {}, option
   const cd = Number.isFinite(unifiedMagic?.cooldown)
     ? unifiedMagic.cooldown
     : applyCooldownOverride(skill.cooldown || 0, bypasses);
-  // Calculate mana cost using the new balance system
-  const calculatedCost = Number.isFinite(unifiedMagic?.manaCost)
-    ? unifiedMagic.manaCost
-    : calculateManaCost(skill, attacker.level || 1);
   const cost = Number.isFinite(unifiedMagic?.manaCost)
     ? unifiedMagic.manaCost
-    : applyCostOverride(calculatedCost, bypasses);
-  // Validate and consume mana using the new system
-  const consumption = consumeMana({ ...skill, manaCost: cost }, attacker, {
-    showFeedback: false, // Feedback handled by UI
-    scaleWithLevel: false, // Already scaled above
-  });
+    : applyCostOverride(skill.manaCost || 0, bypasses);
+  const consumption = consumeAbilityCostForActor(
+    { ...skill, manaCost: cost, unifiedMagic },
+    attacker,
+    stateForUnifiedMagic,
+  );
   if (!consumption.success) {
     return {
       damage: 0,
@@ -2076,57 +2084,7 @@ export function executeSkill(attacker, defender, skillInput, config = {}, option
       insufficientMana: true,
     };
   }
-  // Update attacker's mana
-  let updatedAttacker = { ...attacker };
-  if (
-    updatedAttacker.mana &&
-    typeof updatedAttacker.mana.current === "number"
-  ) {
-    updatedAttacker = {
-      ...updatedAttacker,
-      mana: {
-        ...updatedAttacker.mana,
-        current: consumption.remainingMana,
-      },
-    };
-  }
-  if (unifiedMagic?.attackerMagic && typeof unifiedMagic.attackerMagic === "object") {
-    updatedAttacker = {
-      ...updatedAttacker,
-      magic: {
-        ...unifiedMagic.attackerMagic,
-        mana: {
-          ...(unifiedMagic.attackerMagic.mana || {}),
-          current: consumption.remainingMana,
-          max:
-            unifiedMagic.attackerMagic.mana?.max ??
-            updatedAttacker.mana?.max ??
-            attacker?.mana?.max ??
-            consumption.remainingMana,
-        },
-      },
-    };
-  } else if (
-    updatedAttacker.magic &&
-    typeof updatedAttacker.magic === "object" &&
-    !Array.isArray(updatedAttacker.magic)
-  ) {
-    updatedAttacker = {
-      ...updatedAttacker,
-      magic: {
-        ...updatedAttacker.magic,
-        mana: {
-          ...(updatedAttacker.magic.mana || {}),
-          current: consumption.remainingMana,
-          max:
-            updatedAttacker.magic.mana?.max ??
-            updatedAttacker.mana?.max ??
-            attacker?.mana?.max ??
-            consumption.remainingMana,
-        },
-      },
-    };
-  }
+  let updatedAttacker = consumption.updatedActor || { ...attacker };
   // Skill-side utility hooks (keep parity with class/race ability templates)
   if (skill.cleanse?.types?.length) {
     updatedAttacker = removeEffectsByTypes(updatedAttacker, skill.cleanse.types);
@@ -2246,7 +2204,7 @@ export function executeSkill(attacker, defender, skillInput, config = {}, option
     cooldown: cd,
     cost,
     log: result.log,
-    remainingMana: consumption.remainingMana,
+    remainingMana: consumption.remainingResource,
     updatedAttacker,
     updatedDefender,
     reactionMessages: reactionResult.messages,

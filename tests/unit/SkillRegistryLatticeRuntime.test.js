@@ -21,6 +21,8 @@ describe("SkillRegistry lattice runtime helpers", () => {
     expect(modified?.id).toBe(baseSkill.id);
     expect(modified?.lattice?.id).toBe(baseSkill.id);
     expect(modified?.latticeFamily).toBe(baseSkill.latticeFamily);
+    expect(modified?.engineProfile?.family).toBeTruthy();
+    expect(modified?.engineProfile?.recipeKey).toBeTruthy();
     expect(modified?.grandmaVoidBoundaryId).toBe("grandma_void");
     expect(modified?.activeTalentMigrationLanes).toEqual(
       expect.arrayContaining([

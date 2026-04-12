@@ -7,6 +7,7 @@ import {
   describeBalanceConfig,
 } from "./balance/balanceConfig.js";
 import * as saveCutover from "../../../../shared/save-cutover.js";
+import { normalizeAbilityState } from "../systems/abilities/UnifiedAbilityEngine.js";
 
 const { GAME_STATE_VERSION } = saveCutover;
 
@@ -90,6 +91,78 @@ const INITIAL_MAGIC_AFFINITIES = {
   time: 0,
 };
 
+const INITIAL_MAGIC_STATE = {
+  mana: {
+    current: INITIAL_MANA_MAX,
+    max: INITIAL_MANA_MAX,
+  },
+  strain: {
+    current: 0,
+    max: 100,
+    state: "steady",
+  },
+  stability: {
+    body: { current: 100, max: 100 },
+    mind: { current: 100, max: 100 },
+    cognitive: { current: 100, max: 100 },
+  },
+  attunement: {
+    stance: "open",
+    focusedEssence: null,
+    environment: null,
+  },
+  affinities: INITIAL_MAGIC_AFFINITIES,
+  classBias: {
+    manaMultiplier: 1,
+    strainMultiplier: 1,
+    potencyByEssence: {},
+  },
+  grammar: {
+    essences: ["fire", "water", "earth", "air"],
+    forms: ["bolt", "pulse", "shield"],
+    patterns: INITIAL_MAGIC_PATTERNS,
+    deliveries: ["instant", "sustained", "channeled"],
+    recipes: [],
+  },
+  unlockedPatterns: INITIAL_MAGIC_PATTERNS,
+  prepared: null,
+  activeWorkings: [],
+  casting: null,
+  resonance: {
+    current: 0,
+    max: 100,
+    state: "quiet",
+  },
+  interference: {
+    score: 0,
+  },
+  anchors: {
+    self: null,
+    area: null,
+    itemId: null,
+  },
+  reserves: {},
+  charges: [],
+  journal: [],
+};
+
+const INITIAL_ABILITY_STATE = normalizeAbilityState(
+  {
+    families: {
+      magic: INITIAL_MAGIC_STATE,
+    },
+  },
+  {
+    player: {
+      class: "wanderer",
+      mana: {
+        current: INITIAL_MANA_MAX,
+        max: INITIAL_MANA_MAX,
+      },
+    },
+  },
+);
+
 const initialGameState = {
   config: INITIAL_CONFIG,
   player_profile: {
@@ -110,60 +183,8 @@ const initialGameState = {
       current: INITIAL_MANA_MAX,
       max: INITIAL_MANA_MAX,
     },
-    magic: {
-      mana: {
-        current: INITIAL_MANA_MAX,
-        max: INITIAL_MANA_MAX,
-      },
-      strain: {
-        current: 0,
-        max: 100,
-        state: "steady",
-      },
-      stability: {
-        body: { current: 100, max: 100 },
-        mind: { current: 100, max: 100 },
-        cognitive: { current: 100, max: 100 },
-      },
-      attunement: {
-        stance: "open",
-        focusedEssence: null,
-        environment: null,
-      },
-      affinities: INITIAL_MAGIC_AFFINITIES,
-      classBias: {
-        manaMultiplier: 1,
-        strainMultiplier: 1,
-        potencyByEssence: {},
-      },
-      grammar: {
-        essences: ["fire", "water", "earth", "air"],
-        forms: ["bolt", "pulse", "shield"],
-        patterns: INITIAL_MAGIC_PATTERNS,
-        deliveries: ["instant", "sustained", "channeled"],
-        recipes: [],
-      },
-      unlockedPatterns: INITIAL_MAGIC_PATTERNS,
-      prepared: null,
-      activeWorkings: [],
-      casting: null,
-      resonance: {
-        current: 0,
-        max: 100,
-        state: "quiet",
-      },
-      interference: {
-        score: 0,
-      },
-      anchors: {
-        self: null,
-        area: null,
-        itemId: null,
-      },
-      reserves: {},
-      charges: [],
-      journal: [],
-    },
+    abilityState: INITIAL_ABILITY_STATE,
+    magic: INITIAL_ABILITY_STATE.families.magic,
     attributes: INITIAL_ATTRIBUTES,
     attributeInvestments: {},
     resources: {

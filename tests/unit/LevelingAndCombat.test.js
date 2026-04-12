@@ -97,12 +97,12 @@ describe("Leveling and combat invariants", () => {
       const attack = playerAttack(state, 0);
 
       expect(attack.success).toBe(true);
-      expect(attack.state.combat.enemies[0].stats.hp.current).toBe(11);
+      expect(attack.state.combat.enemies[0].stats.hp.current).toBe(9);
 
       const afterEnemies = processEnemyTurns(attack.state);
       expect(afterEnemies.combat.turn).toBe("player");
       expect(afterEnemies.player.hp.current).toBe(
-        initialGameState.player.hp.current - 1,
+        initialGameState.player.hp.current - 2,
       );
     } finally {
       Math.random = originalRandom;
@@ -157,15 +157,12 @@ describe("Leveling and combat invariants", () => {
     };
 
     const next = gameReducer(state, { type: "STUDY_SPELL" });
-    // If spell creation succeeded, a system message should be in narrative.entries
-    if (next.player.abilities.length > 0) {
-      expect(next.narrative.entries.length).toBeGreaterThan(0);
-      const lastEntry = next.narrative.entries[next.narrative.entries.length - 1];
-      expect(lastEntry.type).toBe("system");
-      expect(lastEntry.text).toContain("Study complete:");
-      // Verify it does NOT write to legacy chatLog
-      expect(next.chatLog?.length ?? 0).toBe(0);
-    }
+    expect(Object.keys(next.player.abilityState.recipeBook.entries).length).toBeGreaterThan(0);
+    expect(next.narrative.entries.length).toBeGreaterThan(0);
+    const lastEntry = next.narrative.entries[next.narrative.entries.length - 1];
+    expect(lastEntry.type).toBe("system");
+    expect(lastEntry.text).toContain("Study complete:");
+    expect(next.chatLog?.length ?? 0).toBe(0);
   });
 
   it("executeSkill scales physical skills with STR + weapon attack", () => {

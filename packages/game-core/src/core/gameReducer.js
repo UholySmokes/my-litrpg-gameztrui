@@ -445,7 +445,7 @@ const gameReducer = (state, action) =>
       if (!actionType) {
         return state;
       }
-      return syncQuestObjectivesForAction(state, state, {
+      return progressQuestObjectives(state, state, {
         type: actionType,
         originalInput: actionType,
       });

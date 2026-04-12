@@ -150,26 +150,23 @@ export default function AdventureShell({
     ],
     [archetypeView?.name, player, playerIdentity.classLabel, playerIdentity.race, temporaryEffectCount],
   );
-  const topMeters = useMemo(() => {
-    const meters = [
-      { label: "HP", value: formatMeter(player?.hp?.current, player?.hp?.max) },
-      { label: "MP", value: formatMeter(player?.mana?.current, player?.mana?.max) },
-      { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
-    ];
-    if (onboardingTier >= 2) {
-      meters.push({
-        label: "Gold",
-        value: String(player?.currency?.goldCoins ?? player?.gold ?? 0),
-      });
-    }
-    if (archetypeView?.resource) {
-      meters.push({
-        label: archetypeView.resource.name,
-        value: formatMeter(archetypeView.resource.current, archetypeView.resource.max)
-      });
-    }
-    return meters;
-  }, [archetypeView, onboardingTier, player]);
+  const topMeters = [
+    { label: "HP", value: formatMeter(player?.hp?.current, player?.hp?.max) },
+    { label: "MP", value: formatMeter(player?.mana?.current, player?.mana?.max) },
+    { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
+  ];
+  if (onboardingTier >= 2) {
+    topMeters.push({
+      label: "Gold",
+      value: String(player?.currency?.goldCoins ?? player?.gold ?? 0),
+    });
+  }
+  if (archetypeView?.resource) {
+    topMeters.push({
+      label: archetypeView.resource.name,
+      value: formatMeter(archetypeView.resource.current, archetypeView.resource.max),
+    });
+  }
 
   const roomManifest = useMemo(
     () => buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild }),

@@ -328,26 +328,26 @@ export default function CharacterCreationMode({
     }
 
     return {
-      raceName: selectedRace?.name || "Race not selected",
+      raceName: selectedRace?.name || "Lineage Unbound",
       raceDescription: selectedRace?.description || "Choose a race to view inherited bonuses.",
       racePassiveAbility: selectedRace?.passiveAbility || null,
       raceActiveAbility: selectedRace
         ? getCharacterCreationRaceAbilitySummaries(selectedRace.id)[0] || null
         : null,
-      className: selectedClass?.name || "Class not selected",
+      className: selectedClass?.name || "Doctrine Unformed",
       classDescription: selectedClass?.description || "Choose a class to view combat doctrine.",
       talentName: selectedClass ? "Auto-assigned after creation" : "Talents pending",
       talentDescription: selectedClass
         ? `Talents will be assigned from the ${selectedClass.name} doctrine.`
         : "Select a class to determine the talent pool.",
-      professionName: selectedProfession?.name || "Profession not selected",
+      professionName: selectedProfession?.name || "Path Undefined",
       professionDescription:
         selectedProfession?.description ||
         "Choose a profession to gain tier-one support skills.",
       professionSkills: Array.isArray(selectedProfession?.tierUnlocks?.[1]?.skills)
         ? selectedProfession.tierUnlocks[1].skills
         : null,
-      systemName: selectedArchetypeSystem?.name || "System not selected",
+      systemName: selectedArchetypeSystem?.name || "Awaiting System Governance",
       systemDescription:
         selectedArchetypeSystem?.summary ||
         selectedArchetypeSystem?.description ||

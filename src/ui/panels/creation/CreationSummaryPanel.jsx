@@ -152,11 +152,11 @@ export default function CreationSummaryPanel({
               PROFESSION
             </div>
             <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
-              {selectionSummary.professionName || "Profession not selected"}
+              {selectionSummary.professionName || "Path Undefined"}
             </div>
             <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
               {selectionSummary.professionDescription ||
-                "Choose a profession to gain tier-1 skills."}
+                "Commit to a path to unlock nascent skills."}
             </div>
             {professionSkills.length ? (
               <div
@@ -256,7 +256,7 @@ export default function CreationSummaryPanel({
               {selectionSummary.activeSkills ? (
                 selectionSummary.activeSkills.map((skill) => {
                   const rank = skill.level || skill.rank || 1;
-                  const desc = skill.description || "Details unavailable.";
+                  const desc = skill.description || "System memory fragmented.";
                   return (
                     <li key={skill.id}>
                       <strong>{skill.name}</strong> - {desc} (Rank {rank})
@@ -291,7 +291,7 @@ export default function CreationSummaryPanel({
               {selectionSummary.passiveSkills ? (
                 selectionSummary.passiveSkills.map((skill) => {
                   const rank = skill.level || skill.rank || 1;
-                  const desc = skill.description || "Details unavailable.";
+                  const desc = skill.description || "System memory fragmented.";
                   return (
                     <li key={skill.id}>
                       <strong>{skill.name}</strong> - {desc} (Rank {rank})
@@ -351,11 +351,11 @@ export default function CreationSummaryPanel({
       <div>
         {canFinalize ? (
           <div style={{ color: "green", marginBottom: "1rem" }}>
-            Ready to initialize!
+            Soul synthesis verified. Ready for manifestation.
           </div>
         ) : (
           <div style={{ color: "orange", marginBottom: "1rem" }}>
-            Complete all requirements to initialize
+            Soul synthesis incomplete. Fulfill all chamber designations.
           </div>
         )}
         {canFinalize ? (
@@ -396,7 +396,7 @@ export default function CreationSummaryPanel({
               event.target.style.boxShadow = "none";
             }}
           >
-            {isInitializing ? "INITIALIZING..." : "INITIALIZE AVATAR"}
+            {isInitializing ? "MANIFESTING..." : "MANIFEST AVATAR"}
           </button>
         ) : null}
       </div>

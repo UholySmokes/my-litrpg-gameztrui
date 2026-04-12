@@ -52,57 +52,57 @@ export function validateCreationChamber(chamberId, checks = {}) {
   switch (chamberId) {
     case "binding-hall":
       if (!checks.hasName) {
-        return { valid: false, error: "A designation is required to proceed from the Binding Hall." };
+        return { valid: false, error: "The Binding Hall demands a designation before granting passage." };
       }
       if (!checks.hasSystem) {
-        return { valid: false, error: "Bind a governing system to proceed. Your designation is set." };
+        return { valid: false, error: "A governing system must be bound to proceed." };
       }
       return { valid: true };
     case "lineage-vault":
       if (!checks.hasRace) {
-        return { valid: false, error: "Select a race to proceed from the Lineage Vault." };
+        return { valid: false, error: "The Lineage Vault requires a sealed bloodline to permit exit." };
       }
       return { valid: true };
     case "doctrine-forge":
       if (!checks.hasClass && !checks.hasProfession) {
-        return { valid: false, error: "Select a class and profession to proceed from the Doctrine Forge." };
+        return { valid: false, error: "The Doctrine Forge requires a chosen Class and Path to proceed." };
       }
       if (!checks.hasClass) {
-        return { valid: false, error: "Select a class to proceed. Your profession is set." };
+        return { valid: false, error: "Your soul demands a Doctrine. Bind a class." };
       }
       if (!checks.hasProfession) {
-        return { valid: false, error: "Select a profession to proceed. Your class is set." };
+        return { valid: false, error: "Your doctrine is bound, but your path requires a profession." };
       }
       return { valid: true };
     case "soul-crucible":
       if (!checks.attributesLocked) {
         return {
           valid: false,
-          error: "Allocate all attribute points before proceeding.",
+          error: "The crucible demands all potential be allocated before advancing.",
         };
       }
       if (!checks.skillsLocked) {
         return {
           valid: false,
-          error: "Complete the required active and passive skill selections. Attributes are locked.",
+          error: "Skill synthesis incomplete. Finalize loadout constraints.",
         };
       }
       if (!checks.perksLocked) {
         return {
           valid: false,
-          error: "Choose the required perk package. Attributes and skills are locked.",
+          error: "Perk manifestation incomplete.",
         };
       }
       if (checks.requiresStarterTree && !checks.starterTreeLocked) {
         return {
           valid: false,
-          error: "Choose a starter tree. Attributes, skills, and perks are locked.",
+          error: "A starter talent tree must be grafted.",
         };
       }
       if (!checks.alignmentLocked) {
         return {
           valid: false,
-          error: "Choose an alignment to complete the Soul Crucible.",
+          error: "The Soul Crucible requires a cosmic alignment.",
         };
       }
       return { valid: true };
@@ -110,13 +110,13 @@ export function validateCreationChamber(chamberId, checks = {}) {
       if (!checks.hasStartingPrompt) {
         return {
           valid: false,
-          error: "Write a start command before sealing the chronicle.",
+          error: "The chronicle requires an opening command to begin.",
         };
       }
       if (!checks.canFinalize) {
         return {
           valid: false,
-          error: "The full genesis profile is not valid yet. Review the unresolved selections.",
+          error: "Your genesis profile is unstable. Resolve anomalies before sealing.",
         };
       }
       return { valid: true };

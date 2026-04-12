@@ -61,4 +61,18 @@ describe("DevConsoleDock helpers", () => {
     expect(addSystemMessage).toHaveBeenCalledWith("> look around", "user");
     expect(runStoryCommand).toHaveBeenCalledWith("look around");
   });
+
+  it("reports current location through /where when state is provided", async () => {
+    const result = await executeDevConsoleCommand("/where", {
+      state: {
+        world: {
+          location: { current: "coast_tideward_pier" },
+        },
+      },
+      resolveLocationById: (id) => ({ id, name: "Tideward Pier" }),
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.message).toBe("Location: coast_tideward_pier (Tideward Pier).");
+  });
 });

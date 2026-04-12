@@ -97,4 +97,76 @@ describe("GameQuickActions", () => {
     expect(markup).toContain("Shop");
     expect(markup).toContain("Replay Inspector");
   });
+
+  it("shows the Devourer quick action only for Devourer characters at tier three", () => {
+    const devourerMarkup = renderToStaticMarkup(
+      React.createElement(GameQuickActions, {
+        isDevBuild: false,
+        onboardingTier: 3,
+        combatState: { status: "inactive", enemies: [] },
+        player: {
+          archetypeSystem: {
+            id: "devourer_core",
+            name: "Devourer Core",
+            category: "System",
+          },
+          activeSkills: [],
+          inventory: [],
+        },
+        submitAction: () => ({ ok: true }),
+        onAttack: () => {},
+        onEscape: () => {},
+        onRest: () => {},
+        onUseItem: () => {},
+        onUseSkill: () => {},
+        onToggleArchetypeSystem: () => {},
+        onToggleBestiary: () => {},
+        onToggleCraft: () => {},
+        onToggleDevourerCore: () => {},
+        onToggleGacha: () => {},
+        onToggleQuests: () => {},
+        onToggleReplayInspector: () => {},
+        onToggleSaveLoad: () => {},
+        onToggleShop: () => {},
+        onToggleStatus: () => {},
+        onToggleTitles: () => {},
+      }),
+    );
+    const nonDevourerMarkup = renderToStaticMarkup(
+      React.createElement(GameQuickActions, {
+        isDevBuild: false,
+        onboardingTier: 3,
+        combatState: { status: "inactive", enemies: [] },
+        player: {
+          archetypeSystem: {
+            id: "revival_archive",
+            name: "Revival Archive",
+            category: "System",
+          },
+          activeSkills: [],
+          inventory: [],
+        },
+        submitAction: () => ({ ok: true }),
+        onAttack: () => {},
+        onEscape: () => {},
+        onRest: () => {},
+        onUseItem: () => {},
+        onUseSkill: () => {},
+        onToggleArchetypeSystem: () => {},
+        onToggleBestiary: () => {},
+        onToggleCraft: () => {},
+        onToggleDevourerCore: () => {},
+        onToggleGacha: () => {},
+        onToggleQuests: () => {},
+        onToggleReplayInspector: () => {},
+        onToggleSaveLoad: () => {},
+        onToggleShop: () => {},
+        onToggleStatus: () => {},
+        onToggleTitles: () => {},
+      }),
+    );
+
+    expect(devourerMarkup).toContain("Devourer");
+    expect(nonDevourerMarkup).not.toContain("Devourer");
+  });
 });

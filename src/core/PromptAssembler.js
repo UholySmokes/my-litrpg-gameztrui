@@ -16,7 +16,7 @@ import {
 } from "../world/WorldDataRegistry.js";
 import { getOpeningArcByOathOriginId } from "../world/OpeningArcRegistry.js";
 import { resolvePlayerArchetypeSystem } from "../systems/archetype/resolvePlayerArchetypeSystem.js";
-import { isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
+import { isDevourerCorePlayer } from "../systems/archetype/devourerCore.js";
 import { toNumber } from "../utils/shared.js";
 import {
   PROMPT_MODES,

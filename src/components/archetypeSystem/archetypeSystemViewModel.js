@@ -1,5 +1,5 @@
 import { resolvePlayerArchetypeSystem } from "../../systems/archetype/resolvePlayerArchetypeSystem.js";
-import { isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
+import { isDevourerCorePlayer } from "../../systems/archetype/devourerCore.js";
 
 function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);

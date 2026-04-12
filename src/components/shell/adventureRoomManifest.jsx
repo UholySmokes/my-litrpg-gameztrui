@@ -24,7 +24,8 @@ import {
   getAdventureOnboardingContext,
   isAdventureSurfaceUnlocked,
 } from "../../core/creationOnboarding.js";
-import { isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
+import { isDevourerCorePlayer } from "../../systems/archetype/devourerCore.js";
+import { isDevourerCoreRoomAvailable } from "./devourerRoomAvailability.js";
 
 function RoomSection({ eyebrow, title, children }) {
   return (
@@ -158,7 +159,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
       entryAction: "Open core",
       size: "fullscreen",
       group: "system",
-      availability: devourerActive && onboardingTier >= 3,
+      availability: isDevourerCoreRoomAvailable({ state, player, quests }),
       isOpen: Boolean(surfaces.showDevourerCore),
       onOpen: quickActionsProps.onToggleDevourerCore,
       onClose: surfaces.handleCloseDevourerCore,

@@ -2,9 +2,11 @@ const { getAgentDefinition, listFirebaseAgents, normalizeAgentId } = require("./
 
 const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
 const DEFAULT_OPENAI_MODEL = "gpt-5.4-mini";
+const DEFAULT_OPENROUTER_MODEL = "openai/gpt-4-turbo";
 const DEFAULT_LOCATION = "global";
 const DEFAULT_AI_TEXT_PROVIDER = "openai";
 const DEFAULT_OPENAI_TIMEOUT_MS = 120000;
+const DEFAULT_OPENROUTER_TIMEOUT_MS = 120000;
 const OPENAI_NARRATION_AGENTS = new Set([
 	"narrator",
 	"combat",
@@ -16,6 +18,7 @@ const OPENAI_NARRATION_AGENTS = new Set([
 
 let geminiRuntimePromise = null;
 let openAiClientPromise = null;
+let openRouterClientPromise = null;
 let runtimeTestOverrides = null;
 
 function parseNumber(value, fallback) {
@@ -41,6 +44,7 @@ function normalizeProvider(value) {
 	const raw = String(value || "").trim().toLowerCase();
 	if (raw === "gemini") return "gemini";
 	if (raw === "openai") return "openai";
+	if (raw === "openrouter") return "openrouter";
 	return DEFAULT_AI_TEXT_PROVIDER;
 }
 
@@ -68,6 +72,16 @@ function resolveOpenAiAllowedModels() {
 	return Array.from(fallback);
 }
 
+function resolveOpenRouterAllowedModels() {
+	const configured = parseCsvList(process.env.OPENROUTER_ALLOWED_MODELS || "");
+	if (configured.length > 0) return configured;
+
+	const fallback = new Set([DEFAULT_OPENROUTER_MODEL]);
+	const envDefault = (process.env.OPENROUTER_MODEL || "").trim();
+	if (envDefault) fallback.add(envDefault);
+	return Array.from(fallback);
+}
+
 function isOpenAiPrimaryAgent(agentId) {
 	return OPENAI_NARRATION_AGENTS.has(agentId);
 }
@@ -76,6 +90,7 @@ function resolvePrimaryProvider(agentId) {
 	if (agentId === "content_smith") return "gemini";
 	const configured = getConfiguredProvider();
 	if (configured === "gemini") return "gemini";
+	if (configured === "openrouter") return "openrouter";
 	if (isOpenAiPrimaryAgent(agentId)) return "openai";
 	return "gemini";
 }
@@ -282,6 +297,15 @@ function createMissingOpenAiKeyError() {
 	return error;
 }
 
+function createMissingOpenRouterKeyError() {
+	const error = new Error(
+		"Missing OpenRouter API key. Set OPENROUTER_API_KEY for OpenRouter provider execution.",
+	);
+	error.status = 500;
+	error.code = "OPENROUTER_API_KEY_MISSING";
+	return error;
+}
+
 function buildNarrationFallbackPayload(agentId) {
 	if (agentId === "combat") {
 		return {
@@ -468,13 +492,36 @@ async function initializeOpenAiClient() {
 	return client;
 }
 
+async function initializeOpenRouterClient() {
+	const apiKey = String(process.env.OPENROUTER_API_KEY || "").trim();
+	if (!apiKey) throw createMissingOpenRouterKeyError();
+
+	const mod = await import("openai");
+	const OpenAI = mod?.default || mod?.OpenAI;
+	const client = new OpenAI({
+		apiKey,
+		baseURL: "https://openrouter.io/api/v1",
+		defaultHeaders: {
+			"HTTP-Referer": "https://my-litrpg-gameztrui.web.app",
+		}
+	});
+	return client;
+}
+
 async function getOpenAiClient() {
 	if (!openAiClientPromise) openAiClientPromise = initializeOpenAiClient();
 	return openAiClientPromise;
 }
 
+async function getOpenRouterClient() {
+	if (!openRouterClientPromise) openRouterClientPromise = initializeOpenRouterClient();
+	return openRouterClientPromise;
+}
+
 function computeActiveTemperature(definition, provider, inputTemperature) {
-	const envKey = provider === "openai" ? "OPENAI_TEMPERATURE" : "GEMINI_TEMPERATURE";
+	let envKey = "GEMINI_TEMPERATURE";
+	if (provider === "openai") envKey = "OPENAI_TEMPERATURE";
+	if (provider === "openrouter") envKey = "OPENROUTER_TEMPERATURE";
 	return parseTemperature(
 		inputTemperature,
 		parseTemperature(process.env[envKey], definition.temperature),
@@ -649,6 +696,65 @@ async function executeOpenAiProvider({
 	});
 }
 
+async function executeOpenRouterProvider({
+	definition,
+	fullPrompt,
+	activeModel,
+	activeTemperature,
+	activeTopP,
+}) {
+	if (runtimeTestOverrides?.executeOpenRouterProvider) {
+		const overrideResult = await runtimeTestOverrides.executeOpenRouterProvider({
+			definition,
+			fullPrompt,
+			activeModel,
+			activeTemperature,
+			activeTopP,
+		});
+		return formatExecutionResult({
+			definition,
+			activeModel,
+			activeTemperature,
+			backend: overrideResult.backend || "openrouter",
+			text: String(overrideResult.text || "").trim(),
+		});
+	}
+
+	const client = await getOpenRouterClient();
+	const timeout = parseNumber(process.env.OPENROUTER_TIMEOUT_MS, DEFAULT_OPENROUTER_TIMEOUT_MS);
+	const response = await client.chat.completions.create(
+		{
+			model: activeModel,
+			messages: [
+				{
+					role: "user",
+					content: fullPrompt,
+				},
+			],
+			temperature: activeTemperature,
+			top_p: activeTopP,
+		},
+		{ timeout },
+	);
+
+	const finalText =
+		response?.choices?.[0]?.message?.content || "";
+	if (!finalText.trim()) {
+		const error = new Error("Model returned empty output.");
+		error.status = 502;
+		error.code = "NON_TEXT_OUTPUT";
+		throw error;
+	}
+
+	return formatExecutionResult({
+		definition,
+		activeModel,
+		activeTemperature,
+		backend: "openrouter",
+		text: finalText.trim(),
+	});
+}
+
 async function runFirebaseAgent({
 	agent,
 	input,
@@ -668,20 +774,24 @@ async function runFirebaseAgent({
 
 	const provider = resolvePrimaryProvider(definition.id);
 	const requestedModel = (typeof model === "string" && model.trim()) || "";
-	const activeModel =
-		provider === "openai"
-			? requestedModel || process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL
-			: requestedModel || process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
-	const allowedModels =
-		provider === "openai"
-			? resolveOpenAiAllowedModels()
-			: resolveGeminiAllowedModels();
+	let activeModel;
+	let allowedModels;
+
+	if (provider === "openai") {
+		activeModel = requestedModel || process.env.OPENAI_MODEL || DEFAULT_OPENAI_MODEL;
+		allowedModels = resolveOpenAiAllowedModels();
+	} else if (provider === "openrouter") {
+		activeModel = requestedModel || process.env.OPENROUTER_MODEL || DEFAULT_OPENROUTER_MODEL;
+		allowedModels = resolveOpenRouterAllowedModels();
+	} else {
+		activeModel = requestedModel || process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
+		allowedModels = resolveGeminiAllowedModels();
+	}
 	if (!allowedModels.includes(activeModel)) {
-		throw createModelNotAllowedError(
-			activeModel,
-			allowedModels,
-			provider === "openai" ? "OPENAI_ALLOWED_MODELS" : "GENKIT_ALLOWED_MODELS",
-		);
+		let configHint = "GENKIT_ALLOWED_MODELS";
+		if (provider === "openai") configHint = "OPENAI_ALLOWED_MODELS";
+		if (provider === "openrouter") configHint = "OPENROUTER_ALLOWED_MODELS";
+		throw createModelNotAllowedError(activeModel, allowedModels, configHint);
 	}
 
 	const activeTemperature = computeActiveTemperature(
@@ -692,6 +802,75 @@ async function runFirebaseAgent({
 	const activeTopP = Math.max(0, Math.min(1, parseNumber(topP, 1)));
 	const inputPrompt = buildInputPrompt(definition.id, input);
 	const fullPrompt = `${definition.instructions}\n\nINPUT\n${inputPrompt}`;
+
+	if (provider === "openrouter") {
+		try {
+			return await executeOpenRouterProvider({
+				definition,
+				fullPrompt,
+				activeModel,
+				activeTemperature,
+				activeTopP,
+			});
+		} catch (error) {
+			if (!isRetryableProviderError(error) && error?.code !== "OPENROUTER_API_KEY_MISSING") {
+				if (isFunctionsEmulatorEnvironment() && isCredentialConfigurationError(error)) {
+					return buildLocalEmulatorFallbackResult({
+						definition,
+						activeModel,
+						activeTemperature,
+						fallbackFrom: "openrouter",
+					});
+				}
+				throw error;
+			}
+
+			const fallbackModel = process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
+			const fallbackAllowedModels = resolveGeminiAllowedModels();
+			if (!fallbackAllowedModels.includes(fallbackModel)) {
+				throw createModelNotAllowedError(
+					fallbackModel,
+					fallbackAllowedModels,
+					"GENKIT_ALLOWED_MODELS",
+				);
+			}
+
+			console.warn(
+				`[firebase-agents] OpenRouter execution failed for '${definition.id}', falling back to Gemini.`,
+				{
+					status: resolveStatusCode(error),
+					code: error?.code || "",
+				},
+			);
+			try {
+				const fallbackResult = await executeGeminiProvider({
+					definition,
+					fullPrompt,
+					activeModel: fallbackModel,
+					activeTemperature: computeActiveTemperature(definition, "gemini", temperature),
+					activeTopP,
+				});
+				return {
+					...fallbackResult,
+					fallbackUsed: true,
+					fallbackFrom: "openrouter",
+				};
+			} catch (fallbackError) {
+				if (
+					isFunctionsEmulatorEnvironment() &&
+					isCredentialConfigurationError(fallbackError)
+				) {
+					return buildLocalEmulatorFallbackResult({
+						definition,
+						activeModel,
+						activeTemperature,
+						fallbackFrom: "google-ai-studio",
+					});
+				}
+				throw fallbackError;
+			}
+		}
+	}
 
 	if (provider === "openai") {
 		try {

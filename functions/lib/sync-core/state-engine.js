@@ -348,6 +348,7 @@ function applyCharacterCommandToState({ state, commit, character }) {
 		professionId: character.professionId,
 		archetypeSystemId: character.archetypeSystemId,
 		alignmentId: character.alignmentId,
+		skillCatalogVersion: character.skillCatalogVersion || character.blueprint?.skillCatalogVersion || null,
 		skillLoadoutId: character.skillLoadoutId,
 		activeSkillIds: [...character.activeSkillIds],
 		passiveSkillIds: [...character.passiveSkillIds],

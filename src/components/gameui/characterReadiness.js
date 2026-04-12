@@ -1,5 +1,7 @@
 import {
   createCharacterCreationBlueprint,
+  migrateCharacterCreationBlueprint,
+  SKILL_CATALOG_VERSION,
   validateCharacterCreationBlueprint,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContract.js";
 
@@ -53,7 +55,7 @@ function toIdArray(values) {
 }
 
 function buildPlayerBlueprint(player) {
-  return createCharacterCreationBlueprint({
+  const baseBlueprint = {
     name: typeof player?.name === "string" ? player.name.trim() : "",
     gender: normalizeId(player?.gender),
     raceId:
@@ -96,7 +98,11 @@ function buildPlayerBlueprint(player) {
     alignmentId:
       normalizeId(player?.alignment) ||
       normalizeId(player?.characterCreationBlueprint?.alignmentId),
-  });
+  };
+
+  return normalizeId(player?.skillCatalogVersion) === SKILL_CATALOG_VERSION
+    ? createCharacterCreationBlueprint(baseBlueprint)
+    : migrateCharacterCreationBlueprint(baseBlueprint);
 }
 
 function buildMissingSelectionLabels(blueprint) {
@@ -146,7 +152,7 @@ export function evaluateCharacterReadiness(snapshotState) {
 
   const player = snapshotState.player;
   const blueprint = isRecord(player.characterCreationBlueprint)
-    ? createCharacterCreationBlueprint(player.characterCreationBlueprint)
+    ? migrateCharacterCreationBlueprint(player.characterCreationBlueprint)
     : buildPlayerBlueprint(player);
   const validation = validateCharacterCreationBlueprint(blueprint);
   const missingSelections = buildMissingSelectionLabels(blueprint);

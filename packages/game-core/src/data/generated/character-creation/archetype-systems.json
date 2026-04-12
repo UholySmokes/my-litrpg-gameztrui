@@ -14842,6 +14842,115 @@
     }
   },
   {
+    "id": "path_iron_monarch",
+    "name": "Path of the Iron Monarch",
+    "category": "Path",
+    "summary": "A transformational Path demanding conquest and rigid structural order.",
+    "description": "Reduces your reliance on System UI by enforcing a chain of physical breakthroughs. Conquest yields tangible Authority.",
+    "rarity": "epic",
+    "stability": "stable",
+    "selectionWeight": 2,
+    "coreLoop": [
+      "Target high-threat structural points in enemy formations.",
+      "Convert taken territory into Mandate resources.",
+      "Reinvest Mandate into permanent physical durability.",
+      "Sacrifice mobility for overwhelming local stability."
+    ],
+    "progression": [
+      "Tier I grants innate kinetic resistance and reduces stamina costs for braced attacks.",
+      "Tier II locks your evolution, demanding a warlord's challenge to progress.",
+      "Tier III permanently boosts allied morale nearby and scales with territory held.",
+      "Tier I grants a baseline passive that accelerates one progression channel while introducing a clear tradeoff."
+    ],
+    "narrativeHooks": [
+      "Nobility factions will recognize your Path as a threat to their sovereignty.",
+      "Armies respect your visible durability and expect you to lead from the front.",
+      "Tributes and demands naturally flow to you, replacing normal quest logic."
+    ],
+    "questHooks": [
+      "Seize a key chokepoint before an enemy army arrives to secure your next Tier.",
+      "Defend your acquired stronghold against a coordinated siege to permanently cement your Mandate.",
+      "Complete a category-specific trial to unlock the next Path of the Iron Monarch milestone."
+    ],
+    "possibleUses": [
+      "In gameplay, Iron Monarch is excellent for front-line lockdown, zone control, and enduring heavy strikes.",
+      "Path of the Iron Monarch rewards long-form transformation through staged thresholds and breakthroughs."
+    ],
+    "limits": [
+      "Iron Monarch demands conquest; sitting idle stalls progression completely.",
+      "Path of the Iron Monarch depends on thresholds, bottlenecks, and compatibility with the next stage."
+    ],
+    "costs": [
+      "Mandate costs limit early flexibility, and moving across open ground is difficult.",
+      "Path of the Iron Monarch demands time, risk, and irreversible change in body, soul, or social standing."
+    ],
+    "worldCompatibility": [
+      "Iron Monarch advances through conquest but remains beneath Void-level order.",
+      "Path of the Iron Monarch is a transformational Path rather than a sovereign Authority or full System."
+    ],
+    "factionReactions": [
+      "Established kingdoms will naturally react defensively or aggressively against a new Monarch.",
+      "Mercenaries and warlords will gravitate towards you to test your rule."
+    ],
+    "tags": [
+      "combat",
+      "progression",
+      "authority",
+      "ascension",
+      "path",
+      "systemic-impact"
+    ],
+    "archetypeResource": {
+      "name": "Iron Mandate",
+      "startValue": 0,
+      "maxValue": 100,
+      "regenRate": 5,
+      "color": "#9E9E9E"
+    },
+    "narrativeTone": {
+      "voice": "commanding and relentless",
+      "vocabulary": [
+        "conquest",
+        "mandate",
+        "unbreakable",
+        "sovereign"
+      ],
+      "sentenceStyle": "authoritative, brief, resolute"
+    },
+    "progressionImpact": {
+      "xpGainMultiplier": 0.12000000000000001,
+      "questRewardMultiplier": 0.09000000000000001,
+      "skillGrowthMultiplier": 0.08,
+      "goldGainMultiplier": 0.04,
+      "resourceGainMultiplier": 0.07,
+      "lootQualityBonus": 0.05,
+      "resourceCapMultiplier": 0.13,
+      "classEvolutionStepReduction": 2,
+      "riskScale": 0.03
+    },
+    "characterCreation": null,
+    "quality": {
+      "depthScore": 100,
+      "hasPlaceholderText": false,
+      "categoryWeight": 92
+    },
+    "implementationProfile": {
+      "implementable": true,
+      "progressionDepth": "very_high",
+      "surfaces": [
+        "quest_generation",
+        "xp_progression",
+        "economy",
+        "resource_growth",
+        "loot_progression",
+        "skill_progression",
+        "class_evolution"
+      ],
+      "requiresResourceModel": true,
+      "requiresBranchChoice": false
+    }
+  },
+  {
     "id": "fate_selection_engine",
     "name": "Fate Selection Engine",
     "category": "Framework",

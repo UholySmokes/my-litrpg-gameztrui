@@ -29,6 +29,7 @@ import { xpForNextLevel } from "../core/xpCurve.js";
 import {
   createCharacterCreationBlueprint,
   createCharacterCreationOutcome,
+  SKILL_CATALOG_VERSION,
   validateCharacterCreationBlueprint,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContract.js";
 import {
@@ -1018,6 +1019,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
     availableCreationStarterTrees.length,
     creationPerkLimits.maxPicks,
     creationPerkLimits.minPicks,
+    starterTreeLimits.minPicks,
   ]);
 
   const validateCurrentStep = useCallback(() => {
@@ -1208,6 +1210,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       perks: selectedPerkIds,
       starterTrees: advancedUnlocked ? selectedStarterTreeIds : [],
       skillLoadoutId: selectedSkillLoadoutId,
+      skillCatalogVersion: SKILL_CATALOG_VERSION,
       characterCreationBlueprint: blueprint,
       latticeProfile,
       archetypeSystemId: selectedArchetypeSystem?.id || null,
@@ -1247,6 +1250,7 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
         ? {
             [professionId]: {
               xp: 0,
+              skillCatalogVersion: SKILL_CATALOG_VERSION,
             },
           }
         : {},

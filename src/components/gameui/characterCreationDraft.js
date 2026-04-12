@@ -1,3 +1,5 @@
+import { SKILL_CATALOG_VERSION } from "@voidverse/game-core";
+
 export const CHARACTER_CREATION_DRAFT_KEY = "characterCreationDraft:v1";
 
 const isRecord = (value) =>
@@ -24,7 +26,19 @@ export const readCharacterCreationDraft = (sessionStorageRef = null) => {
   try {
     const raw = storage.getItem(CHARACTER_CREATION_DRAFT_KEY);
     const parsed = safeParseJson(raw);
-    return isRecord(parsed) && parsed.started ? parsed : null;
+    if (!isRecord(parsed) || !parsed.started) return null;
+    const topLevelVersion =
+      typeof parsed.skillCatalogVersion === "string"
+        ? parsed.skillCatalogVersion.trim()
+        : "";
+    const blueprintVersion =
+      typeof parsed.characterCreationBlueprint?.skillCatalogVersion === "string"
+        ? parsed.characterCreationBlueprint.skillCatalogVersion.trim()
+        : "";
+    return topLevelVersion === SKILL_CATALOG_VERSION ||
+        blueprintVersion === SKILL_CATALOG_VERSION
+      ? parsed
+      : null;
   } catch {
     return null;
   }
@@ -52,8 +66,14 @@ export const patchCharacterCreationDraft = (
   patch,
   sessionStorageRef = null,
 ) => {
-  const current = readCharacterCreationDraft(sessionStorageRef) || { started: true };
-  return persistCharacterCreationDraft({ ...current, ...patch }, sessionStorageRef);
+  const current = readCharacterCreationDraft(sessionStorageRef) || {
+    started: true,
+    skillCatalogVersion: SKILL_CATALOG_VERSION,
+  };
+  return persistCharacterCreationDraft(
+    { ...current, ...patch, skillCatalogVersion: SKILL_CATALOG_VERSION },
+    sessionStorageRef,
+  );
 };
 
 export const clearCharacterCreationDraft = (sessionStorageRef = null) => {

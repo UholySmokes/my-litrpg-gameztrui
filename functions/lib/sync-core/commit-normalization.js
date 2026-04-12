@@ -144,6 +144,8 @@ function normalizeCharacterCreatePayload(input) {
 	const blueprintVersion = Number.isInteger(toInteger(blueprint.version))
 		? toInteger(blueprint.version)
 		: 1;
+	const skillCatalogVersion =
+		normalizeString(source.skillCatalogVersion || blueprint.skillCatalogVersion) || null;
 
 	return {
 		mode,
@@ -162,8 +164,10 @@ function normalizeCharacterCreatePayload(input) {
 		perkIds,
 		starterTreeIds,
 		attributes,
+		skillCatalogVersion,
 		blueprint: {
 			version: blueprintVersion,
+			skillCatalogVersion,
 			name,
 			gender,
 			raceId,

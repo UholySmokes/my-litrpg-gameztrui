@@ -150,7 +150,7 @@ npm run dev:stack
 
 Leave `VITE_API_BASE_URL` empty to use same-origin `/api/*`.
 Runtime builds outside dev enable web gameplay by default unless a build profile overrides it.
-Set `VITE_DEV_CONSOLE_ENABLED=true` when you want the in-game dev console and replay/debug shell outside `localhost` or a Vite dev build.
+Set `VITE_DEV_CONSOLE_ENABLED=true` when you want the in-game dev console and replay/debug shell outside `localhost` or a Vite dev build. Local Chronicle (offline) runs always mount the dev console for quick playtest diagnostics.
 
 ### Vercel Workflow
 

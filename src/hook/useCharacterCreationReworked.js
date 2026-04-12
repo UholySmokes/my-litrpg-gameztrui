@@ -165,6 +165,55 @@ function uniqueById(values = []) {
   });
 }
 
+export function buildValidatedCharacterCreationBlueprint({
+  name = "",
+  gender = null,
+  selectedRace = null,
+  selectedClass = null,
+  selectedSecondaryClass = null,
+  selectedProfession = null,
+  selectedArchetypeSystem = null,
+  attributePoints = {},
+  selectedActiveSkills = [],
+  selectedPassiveSkills = [],
+  selectedPerkIds = [],
+  selectedStarterTreeIds = [],
+  selectedAlignmentId = null,
+  selectedSkillLoadoutId = null,
+  startingPrompt = "",
+  advancedUnlocked = false,
+} = {}) {
+  return createCharacterCreationBlueprint({
+    name: String(name || "").trim(),
+    gender,
+    raceId: selectedRace?.id,
+    classId: selectedClass?.id,
+    secondaryClassId:
+      advancedUnlocked ? selectedSecondaryClass?.id || null : null,
+    startingPrompt: sanitizeStartCommand(startingPrompt),
+    professionId: selectedProfession?.id,
+    archetypeSystemId: selectedArchetypeSystem?.id,
+    attributes: buildCharacterCreationAttributes({
+      attributePoints,
+      selectedRace,
+      selectedClass,
+    }),
+    skillLoadoutId: selectedSkillLoadoutId,
+    activeSkillIds: (Array.isArray(selectedActiveSkills) ? selectedActiveSkills : []).map(
+      (skill) => skill.id,
+    ),
+    passiveSkillIds: (Array.isArray(selectedPassiveSkills) ? selectedPassiveSkills : []).map(
+      (skill) => skill.id,
+    ),
+    perkIds: Array.isArray(selectedPerkIds) ? selectedPerkIds : [],
+    starterTreeIds:
+      advancedUnlocked && Array.isArray(selectedStarterTreeIds)
+        ? selectedStarterTreeIds
+        : [],
+    alignmentId: selectedAlignmentId,
+  });
+}
+
 function getInitialCharacterCreationDraft() {
   const draft = readCharacterCreationDraft();
   return draft && typeof draft === "object" ? draft : null;
@@ -943,28 +992,28 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       if (!result.valid) return result;
     }
 
-    const blueprintValidation = validateCharacterCreationBlueprint(
+    const blueprint = buildValidatedCharacterCreationBlueprint(
       {
         name,
         gender,
-        raceId: selectedRace?.id,
-        classId: selectedClass?.id,
-        startingPrompt: sanitizeStartCommand(startingPrompt),
-        professionId: selectedProfession?.id,
-        archetypeSystemId: selectedArchetypeSystem?.id,
-        attributes: buildCharacterCreationAttributes({
-          attributePoints,
-          selectedRace,
-          selectedClass,
-        }),
-        activeSkillIds: selectedActiveSkills.map((skill) => skill.id),
-        passiveSkillIds: selectedPassiveSkills.map((skill) => skill.id),
-        secondaryClassId: advancedUnlocked ? selectedSecondaryClass?.id : null,
-        skillLoadoutId: selectedSkillLoadoutId,
-        perkIds: selectedPerkIds,
-        starterTreeIds: advancedUnlocked ? selectedStarterTreeIds : [],
-        alignmentId: selectedAlignmentId,
+        selectedRace,
+        selectedClass,
+        selectedSecondaryClass,
+        selectedProfession,
+        selectedArchetypeSystem,
+        attributePoints,
+        selectedActiveSkills,
+        selectedPassiveSkills,
+        selectedPerkIds,
+        selectedStarterTreeIds,
+        selectedAlignmentId,
+        selectedSkillLoadoutId,
+        startingPrompt,
+        advancedUnlocked,
       },
+    );
+    const blueprintValidation = validateCharacterCreationBlueprint(
+      blueprint,
       {
         requiredActiveSkillCount: effectiveMaxActiveSkills,
         requiredPassiveSkillCount: effectiveMaxPassiveSkills,
@@ -1178,23 +1227,23 @@ export function useCharacterCreationReworked({ advancedUnlocked = false } = {}) 
       talentIds: assignedTalentIds,
     });
     const sanitizedStartingPrompt = sanitizeStartCommand(startingPrompt);
-    const blueprint = createCharacterCreationBlueprint({
-      name: name.trim(),
+    const blueprint = buildValidatedCharacterCreationBlueprint({
+      name,
       gender,
-      raceId: selectedRace?.id,
-      classId: selectedClass?.id,
-      secondaryClassId:
-        advancedUnlocked ? selectedSecondaryClass?.id || null : null,
-      startingPrompt: sanitizedStartingPrompt,
-      professionId,
-      archetypeSystemId: selectedArchetypeSystem?.id,
-      attributes: derivedState.attributes,
-      skillLoadoutId: selectedSkillLoadoutId,
-      activeSkillIds: selectionValidation.activeSkillIds,
-      passiveSkillIds: selectionValidation.passiveSkillIds,
-      perkIds: selectedPerkIds,
-      starterTreeIds: advancedUnlocked ? selectedStarterTreeIds : [],
-      alignmentId: selectedAlignmentId,
+      selectedRace,
+      selectedClass,
+      selectedSecondaryClass,
+      selectedProfession,
+      selectedArchetypeSystem,
+      attributePoints,
+      selectedActiveSkills: selectionValidation.activeSkills,
+      selectedPassiveSkills: selectionValidation.passiveSkills,
+      selectedPerkIds,
+      selectedStarterTreeIds,
+      selectedAlignmentId,
+      selectedSkillLoadoutId,
+      startingPrompt,
+      advancedUnlocked,
     });
 
     const characterData = {

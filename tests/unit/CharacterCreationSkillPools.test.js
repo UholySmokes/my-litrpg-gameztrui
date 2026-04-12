@@ -1,9 +1,11 @@
 import { describe, expect, it } from "@jest/globals";
 import { DataRegistry } from "../../src/data/DataRegistry.js";
 import {
+  buildValidatedCharacterCreationBlueprint,
   buildCharacterCreationDerivedState,
   buildCharacterCreationSkillPools,
 } from "../../src/hook/useCharacterCreationReworked.js";
+import { validateCharacterCreationBlueprint } from "@voidverse/game-core";
 
 describe("character creation skill pools", () => {
   it("includes class-linked skills for every class option", () => {
@@ -93,5 +95,55 @@ describe("character creation skill pools", () => {
     expect(derived.attributes.charisma).toBeGreaterThanOrEqual(base.attributes.charisma);
     expect(derived.hp.current).toBe(derived.hp.max);
     expect(derived.mana.current).toBe(derived.mana.max);
+  });
+
+  it("builds a V2-ready review blueprint that passes contract validation", () => {
+    const warrior = DataRegistry.getClassById("warrior") || DataRegistry.getClasses()[0];
+    const human = DataRegistry.getRaceById("pure_human") || DataRegistry.getRaces()[0];
+    const profession = DataRegistry.getProfessionById("blacksmithing") || DataRegistry.getProfessions()[0];
+    const archetypeSystem = {
+      id: "skill_copy_interface",
+      name: "Skill Copy Interface",
+    };
+    const pools = buildCharacterCreationSkillPools(warrior, human, {
+      professionId: profession?.id || null,
+      systemId: archetypeSystem.id,
+    });
+
+    const blueprint = buildValidatedCharacterCreationBlueprint({
+      name: "Ari",
+      gender: "female",
+      selectedRace: human,
+      selectedClass: warrior,
+      selectedProfession: profession,
+      selectedArchetypeSystem: archetypeSystem,
+      attributePoints: {
+        strength: 8,
+        agility: 5,
+        dexterity: 5,
+        vitality: 7,
+        intelligence: 5,
+        wisdom: 5,
+        charisma: 5,
+        willpower: 5,
+        luck: 5,
+        soul: 5,
+      },
+      selectedActiveSkills: pools.active.slice(0, 3),
+      selectedPassiveSkills: pools.passive.slice(0, 6),
+      selectedPerkIds: ["quick_learner", "battle_focus"],
+      selectedAlignmentId: "true_neutral",
+      startingPrompt: "I wake on the shore and ask what threat is moving first.",
+      advancedUnlocked: false,
+    });
+
+    const result = validateCharacterCreationBlueprint(blueprint, {
+      minPerks: 2,
+      maxPerks: 2,
+    });
+
+    expect(result.valid).toBe(true);
+    expect(result.blueprint.version).toBe(4);
+    expect(result.blueprint.skillCatalogVersion).toBe("lattice_v2");
   });
 });

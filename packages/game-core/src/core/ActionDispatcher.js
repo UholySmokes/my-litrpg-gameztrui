@@ -269,8 +269,15 @@ export function executeAction(state, action, _options = {}) {
           let requestedEssence = null;
           let requestedForm = null;
           if (tokens[0] === "spell") {
-            requestedEssence = tokens[1] || null;
-            requestedForm = tokens[2] || null;
+            const maybeEssence = tokens[1] || null;
+            const maybeForm = tokens[2] || null;
+            if (maybeEssence && knownEssences.has(maybeEssence)) requestedEssence = maybeEssence;
+            if (maybeForm && knownForms.has(maybeForm)) requestedForm = maybeForm;
+
+            // Allow "study spell lance" (form-only) without misclassifying it as an essence.
+            if (!requestedEssence && !requestedForm && maybeEssence && knownForms.has(maybeEssence)) {
+              requestedForm = maybeEssence;
+            }
           } else if (isSpellStudy) {
             requestedEssence = tokens.find((token) => knownEssences.has(token)) || null;
             requestedForm = tokens.find((token) => knownForms.has(token)) || null;

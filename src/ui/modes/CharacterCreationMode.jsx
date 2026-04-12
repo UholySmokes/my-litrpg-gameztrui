@@ -186,6 +186,7 @@ export default function CharacterCreationMode({
     availableActiveSkills,
     availablePassiveSkills,
     availableArchetypeSystems,
+    availableStartingPoints,
     availableCreationPerks,
     availableCreationStarterTrees,
     availableCreationAlignments,
@@ -929,6 +930,75 @@ export default function CharacterCreationMode({
       case "oath-mirror":
         return (
           <div className="creation-chamber__stack">
+            <ChamberSection eyebrow="Origin" title="Choose where consciousness returns">
+              <p style={{ fontSize: "0.82rem", opacity: 0.72, marginBottom: "1rem", lineHeight: 1.5 }}>
+                The origin locks the biome pressure, opening contacts, and environmental texture of your first scene.
+                It is optional but shapes every opening beat.
+              </p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(14rem, 1fr))",
+                  gap: "0.65rem",
+                }}
+              >
+                {availableStartingPoints.map((point) => {
+                  const isSelected = selectedStartingPoint?.id === point.id;
+                  const biomeColors = {
+                    social: { bg: "rgba(155, 89, 182, 0.15)", border: "rgba(155, 89, 182, 0.55)", badge: "#c77dff" },
+                    exploration: { bg: "rgba(0, 180, 120, 0.12)", border: "rgba(0, 200, 130, 0.45)", badge: "#4ade9a" },
+                    combat: { bg: "rgba(220, 60, 60, 0.12)", border: "rgba(230, 80, 60, 0.45)", badge: "#ff6b6b" },
+                  };
+                  const colors = biomeColors[point.type] || biomeColors.exploration;
+                  return (
+                    <button
+                      key={point.id}
+                      type="button"
+                      onClick={() => setSelectedStartingPoint(isSelected ? null : point)}
+                      style={{
+                        textAlign: "left",
+                        background: isSelected ? colors.bg : "rgba(2, 8, 18, 0.7)",
+                        border: `1px solid ${isSelected ? colors.border : "rgba(255,255,255,0.1)"}`,
+                        borderRadius: "10px",
+                        padding: "0.85rem 0.9rem",
+                        cursor: "pointer",
+                        transition: "border-color 0.18s, background 0.18s, box-shadow 0.18s",
+                        boxShadow: isSelected ? `0 0 12px ${colors.border}` : "none",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.4rem",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <strong style={{ fontSize: "0.88rem", color: isSelected ? "var(--text-main)" : "var(--text-dim)", lineHeight: 1.2 }}>
+                          {point.name}
+                        </strong>
+                        <span
+                          style={{
+                            fontSize: "0.62rem",
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                            color: colors.badge,
+                            border: `1px solid ${colors.badge}`,
+                            borderRadius: "4px",
+                            padding: "0.05rem 0.35rem",
+                            flexShrink: 0,
+                          }}
+                        >
+                          {point.type}
+                        </span>
+                        {isSelected && (
+                          <span style={{ marginLeft: "auto", color: colors.badge, fontSize: "0.75rem", flexShrink: 0 }}>✓</span>
+                        )}
+                      </div>
+                      <p style={{ fontSize: "0.76rem", color: "var(--text-dim)", lineHeight: 1.45, margin: 0 }}>
+                        {point.summary}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            </ChamberSection>
             <ChamberSection eyebrow="Start Command" title="Write how the chronicle begins">
               <CreationStartingPointPanel
                 startingPrompt={startingPrompt}

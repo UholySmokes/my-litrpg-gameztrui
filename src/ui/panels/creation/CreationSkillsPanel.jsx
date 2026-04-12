@@ -154,7 +154,25 @@ export default function CreationSkillsPanel({
 }) {
   const activeCount = selectedActiveSkills?.length || 0;
   const passiveCount = selectedPassiveSkills?.length || 0;
+  const availableActiveCount = availableActiveSkills?.length || 0;
+  const availablePassiveCount = availablePassiveSkills?.length || 0;
   const blockedSet = new Set(blockedSkillIds || []);
+  const columnStyle = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.4rem",
+    minHeight: 0,
+  };
+  const listStyle = {
+    display: "grid",
+    gap: "0.3rem",
+    maxHeight: "400px",
+    overflowY: "auto",
+    overscrollBehavior: "contain",
+    scrollbarGutter: "stable",
+    paddingRight: "0.35rem",
+    minHeight: 0,
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -174,6 +192,9 @@ export default function CreationSkillsPanel({
           {selectedSystem.name} is actively shaping this pool. Granted skills are free bonuses and locked skills have been removed from the elective list.
         </div>
       ) : null}
+      <div style={{ fontSize: "0.68rem", color: "var(--text-dim)", lineHeight: "1.45" }}>
+        Starter elective pool: {availableActiveCount} active options and {availablePassiveCount} passive options. Full progression skills unlock after character creation.
+      </div>
       {selectedClass ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           {(grantedActiveSkills.length > 0 || grantedPassiveSkills.length > 0) && (
@@ -212,7 +233,7 @@ export default function CreationSkillsPanel({
             }}
           >
             {/* Active Skills Column */}
-            <div>
+            <div style={columnStyle}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
                 <span style={{ fontSize: "0.8rem", color: "var(--holo-gold)", fontWeight: "bold" }}>
                   ACTIVE SKILLS
@@ -227,17 +248,9 @@ export default function CreationSkillsPanel({
                 </span>
               </div>
               <div style={{ fontSize: "0.6rem", color: "var(--text-dim)", marginBottom: "0.3rem" }}>
-                Combat abilities triggered during encounters. Select {maxActiveSkills}.
+                Combat techniques available at creation. Select {maxActiveSkills}.
               </div>
-              <div
-                style={{
-                  display: "grid",
-                  gap: "0.3rem",
-                  maxHeight: "400px",
-                  overflowY: "auto",
-                  paddingRight: "0.15rem",
-                }}
-              >
+              <div style={listStyle}>
                 {(availableActiveSkills || []).map((skill) => (
                   <SkillCard
                     key={skill.id}
@@ -259,7 +272,7 @@ export default function CreationSkillsPanel({
             </div>
 
             {/* Passive Skills Column */}
-            <div>
+            <div style={columnStyle}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
                 <span style={{ fontSize: "0.8rem", color: "var(--holo-gold)", fontWeight: "bold" }}>
                   PASSIVE SKILLS
@@ -274,17 +287,9 @@ export default function CreationSkillsPanel({
                 </span>
               </div>
               <div style={{ fontSize: "0.6rem", color: "var(--text-dim)", marginBottom: "0.3rem" }}>
-                Always-on enhancements that shape your passive capabilities. Select {maxPassiveSkills}.
+                Persistent traits available at creation. Select {maxPassiveSkills}.
               </div>
-              <div
-                style={{
-                  display: "grid",
-                  gap: "0.3rem",
-                  maxHeight: "400px",
-                  overflowY: "auto",
-                  paddingRight: "0.15rem",
-                }}
-              >
+              <div style={listStyle}>
                 {(availablePassiveSkills || []).map((skill) => (
                   <SkillCard
                     key={skill.id}

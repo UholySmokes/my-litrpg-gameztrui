@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const STUDY_METHODS = [
   {
@@ -11,13 +11,13 @@ const STUDY_METHODS = [
     id: "spell-buildup",
     title: "Spell Buildups",
     detail: "Try different element anchors, sequencing, and release tempo to discover stable combinations.",
-    command: "test spell buildup combinations",
+    command: "study spell buildups",
   },
   {
     id: "epiphany",
     title: "Epiphany Trials",
     detail: "Push long-form study sessions where luck can trigger a sudden insight breakthrough.",
-    command: "perform focused study for epiphany",
+    command: "study epiphany trials",
   },
   {
     id: "inscriptions",
@@ -30,6 +30,12 @@ const STUDY_METHODS = [
     title: "Runes (Magic Symbols)",
     detail: "Analyze rune geometry and pairing behavior to build stronger symbol chains.",
     command: "study magical runes",
+  },
+  {
+    id: "spell-recipes",
+    title: "Spell Recipes (Workbench)",
+    detail: "Focus on a specific essence + form pairing to unlock stable recipes in the unified engine.",
+    command: "study spell",
   },
 ];
 
@@ -75,6 +81,7 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
   const unlockedPatternCount = Object.keys(magic.unlockedPatterns || {}).length;
   const reserveCount = Object.keys(magic.reserves || {}).length;
   const journal = Array.isArray(magic.journal) ? magic.journal : [];
+  const lastJournalEntry = journal.length > 0 ? journal[journal.length - 1] : null;
   const stability = magic.stability || {};
   const resonance = magic.resonance || {};
   const attunement = magic.attunement || {};
@@ -86,6 +93,74 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
   const anchors = magic.anchors || {};
   const grammar = magic.grammar || {};
   const prepared = magic.prepared;
+
+  const essenceOptions =
+    Array.isArray(grammar.essences) && grammar.essences.length > 0
+      ? grammar.essences
+      : ["fire", "water", "earth", "air"];
+  const formOptions =
+    Array.isArray(grammar.forms) && grammar.forms.length > 0
+      ? grammar.forms
+      : ["bolt", "pulse", "shield"];
+
+  const [selectedEssence, setSelectedEssence] = useState(
+    () => attunement.focusedEssence || essenceOptions[0] || "fire",
+  );
+  const [selectedForm, setSelectedForm] = useState(() => formOptions[0] || "bolt");
+
+  useEffect(() => {
+    if (!essenceOptions.includes(selectedEssence)) {
+      setSelectedEssence(attunement.focusedEssence || essenceOptions[0] || "fire");
+    }
+  }, [attunement.focusedEssence, essenceOptions, selectedEssence]);
+
+  useEffect(() => {
+    if (!formOptions.includes(selectedForm)) {
+      setSelectedForm(formOptions[0] || "bolt");
+    }
+  }, [formOptions, selectedForm]);
+
+  const guidedStudySuggestions = useMemo(() => {
+    if (!Array.isArray(suggestions)) return [];
+    return suggestions
+      .map((suggestion) => {
+        const label =
+          typeof suggestion === "string"
+            ? suggestion
+            : suggestion?.label ||
+              suggestion?.text ||
+              suggestion?.command ||
+              suggestion?.t ||
+              String(suggestion);
+        const command =
+          typeof suggestion === "string"
+            ? suggestion
+            : suggestion?.command ||
+              suggestion?.t ||
+              suggestion?.label ||
+              suggestion?.text ||
+              String(suggestion);
+        return { label, command };
+      })
+      .filter(
+        (entry) =>
+          typeof entry.command === "string" &&
+          entry.command.trim().toLowerCase().startsWith("study "),
+      )
+      .slice(0, 6);
+  }, [suggestions]);
+
+  const suggestedCombo = useMemo(() => {
+    const safeEssences = essenceOptions.length > 0 ? essenceOptions : ["fire"];
+    const safeForms = formOptions.length > 0 ? formOptions : ["bolt"];
+    const essence =
+      safeEssences[journal.length % safeEssences.length] ||
+      safeEssences[0] ||
+      "fire";
+    const form =
+      safeForms[(journal.length + 1) % safeForms.length] || safeForms[0] || "bolt";
+    return { essence, form };
+  }, [essenceOptions, formOptions, journal.length]);
 
   return (
     <div className="atrium-room-stack">
@@ -117,6 +192,12 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
               <strong>{activeWorkings.length}</strong>
             </div>
           </div>
+          {lastJournalEntry ? (
+            <p style={{ marginTop: "0.65rem", opacity: 0.85 }}>
+              Last study: <strong>{String(lastJournalEntry.topic || "note").replace(/_/g, " ")}</strong>
+              {lastJournalEntry.target ? ` â€” ${lastJournalEntry.target}` : ""}
+            </p>
+          ) : null}
           <p style={{ marginTop: "0.65rem" }}>
             Latest generated text: {latestEntryText || "No recent narrative output yet."}
           </p>
@@ -195,6 +276,126 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
 
       <section className="surface-section">
         <div className="surface-section__header">
+          <div className="surface-section__eyebrow">Workbench</div>
+          <h3 className="surface-section__title">Spell Study Workbench</h3>
+        </div>
+        <div className="surface-section__body">
+          <p style={{ opacity: 0.9 }}>
+            Targeted study can unlock stable <strong>spell recipes</strong> (visible above under Grammar â†’ Recipes).
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "0.75rem",
+              marginTop: "0.35rem",
+            }}
+          >
+            <label>
+              <div style={{ fontSize: "0.85rem", opacity: 0.85, marginBottom: "0.25rem" }}>
+                Essence
+              </div>
+              <select
+                value={selectedEssence}
+                onChange={(e) => setSelectedEssence(e.target.value)}
+                style={{ width: "100%" }}
+              >
+                {essenceOptions.map((essence) => (
+                  <option key={essence} value={essence}>
+                    {essence}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <div style={{ fontSize: "0.85rem", opacity: 0.85, marginBottom: "0.25rem" }}>
+                Form
+              </div>
+              <select
+                value={selectedForm}
+                onChange={(e) => setSelectedForm(e.target.value)}
+                style={{ width: "100%" }}
+              >
+                {formOptions.map((form) => (
+                  <option key={form} value={form}>
+                    {form}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div style={{ marginTop: "0.75rem" }}>
+            <button
+              type="button"
+              className="adventure-tab__action-btn"
+              onClick={() =>
+                onSubmitCommand?.({
+                  label: `Study spell: ${selectedEssence} ${selectedForm}`,
+                  command: `study spell ${selectedEssence} ${selectedForm}`,
+                })}
+              style={{
+                width: "100%",
+                justifyContent: "flex-start",
+                marginBottom: "0.4rem",
+              }}
+            >
+              <span className="adventure-tab__action-marker">::</span>
+              <span>
+                <strong>Study spell recipe</strong>
+                <em style={{ display: "block", fontStyle: "normal", opacity: 0.8 }}>
+                  Focused pairing: {selectedEssence} · {selectedForm}
+                </em>
+              </span>
+            </button>
+
+            <button
+              type="button"
+              className="adventure-tab__action-btn"
+              onClick={() =>
+                onSubmitCommand?.({
+                  label: `Study suggested: ${suggestedCombo.essence} ${suggestedCombo.form}`,
+                  command: `study spell ${suggestedCombo.essence} ${suggestedCombo.form}`,
+                })}
+              style={{ width: "100%", justifyContent: "flex-start" }}
+            >
+              <span className="adventure-tab__action-marker">::</span>
+              <span>
+                <strong>Study suggested combo</strong>
+                <em style={{ display: "block", fontStyle: "normal", opacity: 0.8 }}>
+                  Rotation drill: {suggestedCombo.essence} · {suggestedCombo.form}
+                </em>
+              </span>
+            </button>
+          </div>
+
+          {guidedStudySuggestions.length > 0 ? (
+            <div style={{ marginTop: "0.75rem" }}>
+              <h4 style={{ marginTop: 0 }}>Guided drills</h4>
+              {guidedStudySuggestions.map((entry, index) => (
+                <button
+                  key={`${entry.command}-${index}`}
+                  type="button"
+                  className="adventure-tab__action-btn"
+                  onClick={() => onSubmitCommand?.({ label: entry.label, command: entry.command })}
+                  style={{
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    marginBottom: index === guidedStudySuggestions.length - 1 ? 0 : "0.4rem",
+                  }}
+                >
+                  <span className="adventure-tab__action-marker">::</span>
+                  <span>{entry.label}</span>
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="surface-section">
+        <div className="surface-section__header">
           <div className="surface-section__eyebrow">Study Actions</div>
           <h3 className="surface-section__title">Ways to study magic</h3>
         </div>
@@ -238,6 +439,19 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
             {RUNES.map((rune) => (
               <li key={rune.name}>
                 <strong>{rune.symbol}</strong> {rune.name} — {rune.meaning}
+                <button
+                  type="button"
+                  className="adventure-tab__action-btn"
+                  onClick={() =>
+                    onSubmitCommand?.({
+                      label: `Study rune: ${rune.name}`,
+                      command: `study rune ${rune.name.toLowerCase()}`,
+                    })}
+                  style={{ width: "100%", justifyContent: "flex-start", marginTop: "0.35rem" }}
+                >
+                  <span className="adventure-tab__action-marker">::</span>
+                  <span>Study this rune</span>
+                </button>
               </li>
             ))}
           </ul>
@@ -254,6 +468,19 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
             {INSCRIPTION_ALPHABET.map((token) => (
               <li key={token.glyph}>
                 <strong>{token.glyph}</strong> · {token.term}: {token.effect}
+                <button
+                  type="button"
+                  className="adventure-tab__action-btn"
+                  onClick={() =>
+                    onSubmitCommand?.({
+                      label: `Study inscription: ${token.term}`,
+                      command: `study inscription ${token.term.toLowerCase()}`,
+                    })}
+                  style={{ width: "100%", justifyContent: "flex-start", marginTop: "0.35rem" }}
+                >
+                  <span className="adventure-tab__action-marker">::</span>
+                  <span>Study this inscription</span>
+                </button>
               </li>
             ))}
           </ul>

@@ -10,17 +10,33 @@ import {
 } from "../systems/world/TimeSystem.js";
 import { withTraceSpan } from "../observability/traceShim.js";
 import {
+  applySkillProgressionAction,
   buildCombatAbilitySkill,
   executeAbilityAction,
   processAbilityEcologyTurn,
   syncPlayerAbilityState,
 } from "../systems/abilities/UnifiedAbilityEngine.js";
+import { randomBool, randomChoice, randomInt } from "../utils/DeterministicRandom.js";
 import { hasCreationPerk } from "./creationPerks.js";
 import {
   executeDevourerDigest,
   executeDevourerRefine,
   executeDevourerPurge,
 } from "../systems/archetype/devourerCore.js";
+
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+function pushUnique(list, value) {
+  const next = Array.isArray(list) ? [...list] : [];
+  if (!value) return next;
+  if (!next.includes(value)) next.push(value);
+  return next;
+}
+
+function normalizeStringList(list) {
+  if (!Array.isArray(list)) return [];
+  return list.map((entry) => String(entry || "").trim().toLowerCase()).filter(Boolean);
+}
 
 /**
  * Executes an action and returns the result

@@ -135,6 +135,20 @@ function buildInitialChronicleState(characterData = {}, seededWorld = {}, nextQu
         ]
       : [];
 
+  if (openingArc?.signatureNpc?.factionId && openingArc?.signatureNpc?.name) {
+    chronicle.entries.push(
+      buildChronicleEntry({
+        id: `chronicle_first_faction_contact_${openingArc.signatureNpc.factionId}`,
+        kind: "social",
+        title: "First Faction Contact",
+        body: `First contact established with ${openingArc.signatureNpc.name}.`,
+        zoneId,
+        locationId,
+      }),
+    );
+    chronicle.firsts.factionContact = chronicle.entries[chronicle.entries.length - 1].timestamp;
+  }
+
   if (initialQuest?.name) {
     chronicle.entries.push(
       buildChronicleEntry({

@@ -7,6 +7,7 @@ import {
   getPlayerArchetypeSystemId,
   resolvePlayerArchetypeSystem,
 } from "../archetype/resolvePlayerArchetypeSystem.js";
+import { getOpeningArcForPlayer } from "../../world/OpeningArcRegistry.js";
 
 const TUTORIAL_QUEST_IDS = [
   "bq_first_stride",
@@ -31,6 +32,10 @@ export class QuestManager {
     return player?.origin?.id || player?.origin || null;
   }
 
+  static resolvePlayerOathOriginId(player) {
+    return player?.oathOrigin?.id || player?.oathOrigin || null;
+  }
+
   static getQuestAffinityWeight(quest, player) {
     let weight = 1;
     const tags = quest?.tags || {};
@@ -38,6 +43,7 @@ export class QuestManager {
     const raceId = this.resolvePlayerRaceId(player);
     const professionId = this.resolvePlayerProfessionId(player);
     const originId = this.resolvePlayerOriginId(player);
+    const oathOriginId = this.resolvePlayerOathOriginId(player);
 
     if (classId && Array.isArray(tags.favoredClasses) && tags.favoredClasses.includes(classId)) {
       weight += 2;
@@ -55,7 +61,17 @@ export class QuestManager {
     if (originId && Array.isArray(tags.favoredOrigins) && tags.favoredOrigins.includes(originId)) {
       weight += 2;
     }
+    if (
+      oathOriginId &&
+      Array.isArray(tags.favoredOrigins) &&
+      tags.favoredOrigins.includes(oathOriginId)
+    ) {
+      weight += 2;
+    }
     if (player?.origin?.favoredBiome && tags.biome === player.origin.favoredBiome) {
+      weight += 1;
+    }
+    if (player?.oathOrigin?.zoneId && tags.biome === player.oathOrigin.zoneId) {
       weight += 1;
     }
 
@@ -79,8 +95,15 @@ export class QuestManager {
 
   static generateInitialQuests(player) {
     const quests = [];
+    const openingArc = getOpeningArcForPlayer(player);
+
+    if (openingArc?.firstQuest?.id) {
+      quests.push(this.initializeQuest(openingArc.firstQuest));
+    }
+
+    const seededQuestIds = new Set(quests.map((quest) => quest?.id).filter(Boolean));
     const suitableBeginnerQuests = BEGINNER_QUESTS.filter((quest) =>
-      this.isQuestSuitable(quest, player),
+      this.isQuestSuitable(quest, player) && !seededQuestIds.has(quest.id),
     );
     const tutorialQuests = TUTORIAL_QUEST_IDS.map((questId) =>
       suitableBeginnerQuests.find((quest) => quest.id === questId),
@@ -91,7 +114,7 @@ export class QuestManager {
     });
 
     const suitableMainQuests = MAIN_QUESTS.filter((quest) =>
-      this.isQuestSuitable(quest, player),
+      this.isQuestSuitable(quest, player) && !seededQuestIds.has(quest.id),
     );
     if (suitableMainQuests.length > 0) {
       quests.push(
@@ -116,6 +139,7 @@ export class QuestManager {
       (quest) =>
         this.isQuestTrackable(quest) &&
         this.isQuestSuitable(quest, player) &&
+        !seededQuestIds.has(quest.id) &&
         (!quest.levelRequirement || quest.levelRequirement <= (player?.level || 1) + 2),
     );
     const sidePool = [...suitableSideQuests];

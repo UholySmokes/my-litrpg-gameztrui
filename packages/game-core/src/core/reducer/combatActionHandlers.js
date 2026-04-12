@@ -136,6 +136,37 @@ export function handleCombatAction(state, action, helpers) {
       });
     }
 
+    case "PLAYER_SET_COMBAT_STANCE": {
+      const combatState = ensureCombatStructure(state);
+      if (combatState.status !== "active") return state;
+      const stance = String(action.payload?.stance || "").trim().toLowerCase();
+      if (!["open", "focused", "guarded"].includes(stance)) {
+        return state;
+      }
+      if (combatState.stance === stance) {
+        return state;
+      }
+
+      return syncQuestObjectivesForAction(
+        state,
+        {
+          ...state,
+          combat: {
+            ...combatState,
+            stance,
+            log: [
+              ...(combatState.log || []),
+              `${state?.player?.name || "You"} settle into ${stance} stance.`,
+            ],
+          },
+        },
+        {
+          type: "stance",
+          stance,
+        },
+      );
+    }
+
     case "DUNGEON_START_RUN":
       return normalizeGameState(startDungeonRun(state, action.payload || {}));
 

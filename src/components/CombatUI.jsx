@@ -22,6 +22,7 @@ export default function CombatUI({
   onUseRaceAbility,
   onEscape,
   onSetCombatLane,
+  onSetCombatStance,
 }) {
   const combat = combatState;
   const player = playerState;
@@ -60,6 +61,10 @@ export default function CombatUI({
     (_, index) => index + 1,
   );
   const laneControlsDisabled = combat?.turn !== "player";
+  const activeStance = combat?.stance || "focused";
+  const telegraphs = Array.isArray(combat?.telegraphs) ? combat.telegraphs : [];
+  const arenaTags = Array.isArray(combat?.arenaTags) ? combat.arenaTags : [];
+  const tacticalVerbs = Array.isArray(combat?.tacticalVerbs) ? combat.tacticalVerbs : [];
 
   return (
     <div className="combat-stage">
@@ -132,6 +137,70 @@ export default function CombatUI({
           Attempt Escape
         </button>
       </div>
+
+      {typeof onSetCombatStance === "function" ? (
+        <div className="combat-stage__lane-row">
+          {["open", "focused", "guarded"].map((stance) => {
+            const isActive = stance === activeStance;
+            return (
+              <button
+                key={stance}
+                type="button"
+                className={`combat-stage__lane-chip ${
+                  isActive ? "combat-stage__lane-chip--active" : ""
+                }`}
+                onClick={() => onSetCombatStance(stance)}
+                disabled={isActive}
+                title={
+                  isActive
+                    ? `${stance} stance is already active.`
+                    : `Shift into ${stance} stance.`
+                }
+              >
+                {stance.charAt(0).toUpperCase() + stance.slice(1)}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+
+      {arenaTags.length ? (
+        <div className="combat-stage__skill-row">
+          {arenaTags.map((tag) => (
+            <div key={tag} className="combat-stage__skill-chip" aria-hidden="true">
+              <span>{String(tag).replace(/[-_]/g, " ")}</span>
+              <strong>terrain</strong>
+            </div>
+          ))}
+        </div>
+      ) : null}
+
+      {telegraphs.length ? (
+        <div className="combat-stage__skill-row">
+          {telegraphs.map((telegraph) => (
+            <div
+              key={telegraph?.id || `${telegraph?.enemyName}-${telegraph?.label}`}
+              className="combat-stage__skill-chip"
+            >
+              <span>
+                {telegraph?.enemyName || "Enemy"}: {telegraph?.label || "Incoming pattern"}
+              </span>
+              <strong>{telegraph?.counterText || telegraph?.pressure || "react"}</strong>
+            </div>
+          ))}
+        </div>
+      ) : null}
+
+      {tacticalVerbs.length ? (
+        <div className="combat-stage__skill-row">
+          {tacticalVerbs.map((verb) => (
+            <div key={verb?.id || verb?.label} className="combat-stage__skill-chip">
+              <span>{verb?.label || "Tactical verb"}</span>
+              <strong>{verb?.reason || verb?.source || "build"}</strong>
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       {availableSkills.length > 0 ? (
         <div className="combat-stage__skill-row">

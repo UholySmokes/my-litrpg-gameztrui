@@ -352,6 +352,17 @@ export function useGameUiInteractionHandlers({
     [dispatchSystemEvent, state],
   );
 
+  const handleSetCombatStance = useCallback(
+    (stance) => {
+      if (state?.combat?.status !== "active") return;
+      dispatchSystemEvent({
+        type: "PLAYER_SET_COMBAT_STANCE",
+        payload: { stance },
+      });
+    },
+    [dispatchSystemEvent, state],
+  );
+
   const handleRest = useCallback(() => {
     const result =
       typeof submitAction === "function"
@@ -455,6 +466,7 @@ export function useGameUiInteractionHandlers({
     handleShopPurchase,
     handleRest,
     handleSetCombatLane,
+    handleSetCombatStance,
     handleSkillUse,
     handleStudySpell,
     handleTitleEquip,

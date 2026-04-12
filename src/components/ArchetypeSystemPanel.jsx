@@ -32,54 +32,64 @@ function DetailList({ title, items }) {
 }
 
 
-function DevourerConsole({ consoleData }) {
-  if (!consoleData) return null;
+function formatRuntimeValue(value) {
+  if (value === null || value === undefined) return "None";
+  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
+  if (Array.isArray(value)) return value.length === 0 ? "none" : value.map(formatRuntimeValue).join(", ");
+  
+  if (typeof value === "object") {
+    const keys = Object.keys(value);
+    if (keys.length === 0) return "none";
+    if (keys.every(k => typeof value[k]?.count !== 'undefined')) {
+         return keys.map(k => `${k} x${value[k].count}`).join(", ");
+    }
+    if (keys.every(k => typeof value[k]?.rank !== 'undefined')) {
+         return keys.map(k => `${k} r${value[k].rank}/${value[k].maxRank || '?'}`).join(", ");
+    }
+    return keys.length + " entries";
+  }
+  return "Complex Data";
+}
+
+function ArchetypeRuntimeHooks({ runtime, name }) {
+  if (!runtime || Object.keys(runtime).length === 0) return null;
 
   return (
     <section className="holo-panel" style={{ padding: "1rem", display: "grid", gap: "0.75rem" }}>
-      <h3 style={{ color: "var(--holo-cyan)", margin: 0 }}>Devourer Console</h3>
+      <h3 style={{ color: "var(--holo-cyan)", margin: 0 }}>{name} Console</h3>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "0.5rem" }}>
-        <div className="holo-panel" style={{ padding: "0.6rem" }}>
-          <div style={{ color: "var(--text-dim)", fontSize: "0.75rem" }}>Taint</div>
-          <div style={{ color: "var(--holo-gold)" }}>{consoleData.taint}</div>
-        </div>
-        <div className="holo-panel" style={{ padding: "0.6rem" }}>
-          <div style={{ color: "var(--text-dim)", fontSize: "0.75rem" }}>Known Prey</div>
-          <div style={{ color: "var(--text-main)" }}>{consoleData.knownPreyCount}</div>
-        </div>
-        <div className="holo-panel" style={{ padding: "0.6rem" }}>
-          <div style={{ color: "var(--text-dim)", fontSize: "0.75rem" }}>Sentient Devours</div>
-          <div style={{ color: "var(--holo-gold)" }}>{consoleData.sentientDevours}</div>
-        </div>
+        {Object.entries(runtime).map(([key, value]) => {
+          if (Array.isArray(value)) return null;
+          if (typeof value === "object" && value !== null) return null;
+          if (key.toLowerCase().includes("notice")) return null;
+          
+          return (
+            <div key={key} className="holo-panel" style={{ padding: "0.6rem" }}>
+              <div style={{ color: "var(--text-dim)", fontSize: "0.75rem", textTransform: "uppercase" }}>
+                 {key.replace(/([A-Z])/g, ' $1').trim()}
+              </div>
+              <div style={{ color: "var(--holo-gold)" }}>{formatRuntimeValue(value)}</div>
+            </div>
+          );
+        })}
       </div>
-
-      <div style={{ color: "var(--text-main)", fontSize: "0.85rem" }}>
-        Stored Samples: {consoleData.storedSamples.length
-          ? consoleData.storedSamples.map((entry) => `${entry.family} x${entry.count}`).join(", ")
-          : "none"}
-      </div>
-      <div style={{ color: "var(--text-main)", fontSize: "0.85rem" }}>
-        Adaptations: {consoleData.adaptations.length
-          ? consoleData.adaptations.map((entry) => `${entry.family} r${entry.rank}/${entry.maxRank}`).join(", ")
-          : "none"}
-      </div>
-      {consoleData.recentPrey.length ? (
-        <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>
-          Recent Prey: {consoleData.recentPrey.join(" | ")}
+      
+      {Object.entries(runtime).map(([key, value]) => {
+        if (typeof value !== "object" || value === null) return null;
+        if (key.toLowerCase().includes("notice")) return null;
+        
+        return (
+          <div key={key} style={{ color: "var(--text-main)", fontSize: "0.85rem" }}>
+             <strong style={{ color: "var(--holo-cyan)" }}>{key.replace(/([A-Z])/g, ' $1').trim()}:</strong> {formatRuntimeValue(value)}
+          </div>
+        );
+      })}
+      
+      {runtime.lastNotice ? (
+        <div style={{ color: "var(--text-main)", fontSize: "0.82rem", lineHeight: 1.4, borderTop: "1px solid var(--border-subtle)", paddingTop: "0.4rem" }}>
+          {runtime.lastNotice}
         </div>
       ) : null}
-      {consoleData.lastNotice ? (
-        <div style={{ color: "var(--text-main)", fontSize: "0.82rem", lineHeight: 1.4 }}>
-          {consoleData.lastNotice}
-        </div>
-      ) : null}
-      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-        {consoleData.commands.map((command) => (
-          <button key={command} type="button" className="holo-button" title="Issue this command in terminal">
-            {command}
-          </button>
-        ))}
-      </div>
     </section>
   );
 }
@@ -172,7 +182,7 @@ export default function ArchetypeSystemPanel({ player }) {
             </div>
           </section>
 
-          <DevourerConsole consoleData={system.devourerConsole} />
+          <ArchetypeRuntimeHooks runtime={system.runtime} name={system.name} />
           <DetailList title="Core Loop" items={system.coreLoop} />
           <DetailList title="Possible Uses" items={system.possibleUses} />
           <DetailList title="Limits" items={system.limits} />

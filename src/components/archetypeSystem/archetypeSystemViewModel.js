@@ -152,6 +152,8 @@ export function buildArchetypeSystemViewModel(player = {}) {
   const devourerConsole = isDevourerCorePlayer({ archetypeSystem })
     ? buildDevourerConsole(archetypeSystem)
     : null;
+    
+  const runtime = isPlainObject(archetypeSystem.runtime) ? archetypeSystem.runtime : {};
 
   return {
     id: normalizeText(archetypeSystem.id, name),
@@ -164,6 +166,7 @@ export function buildArchetypeSystemViewModel(player = {}) {
     stability,
     profile,
     resource,
+    runtime,
     coreLoop: toList(archetypeSystem.coreLoop, 3),
     possibleUses: toList(archetypeSystem.possibleUses, 3),
     limits: toList(archetypeSystem.limits, 3),

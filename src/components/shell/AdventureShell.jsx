@@ -14,6 +14,7 @@ import {
   filterOpenAdventureRooms,
   splitAdventureRooms,
 } from "./adventureRoomManifest.jsx";
+import { buildArchetypeSystemViewModel } from "../archetypeSystem/archetypeSystemViewModel.js";
 
 function formatMeter(current, max) {
   return `${Number(current || 0)}/${Number(max || 0)}`;
@@ -98,12 +99,22 @@ export default function AdventureShell({
   const location = getLocationById(locationId);
   const zone = getZoneById(location?.zoneId);
   const objective = useMemo(() => resolvePrimaryObjective(quests), [quests]);
-  const topMeters = [
-    { label: "HP", value: formatMeter(player?.hp?.current, player?.hp?.max) },
-    { label: "MP", value: formatMeter(player?.mana?.current, player?.mana?.max) },
-    { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
-    { label: "Gold", value: String(player?.currency?.goldCoins ?? player?.gold ?? 0) },
-  ];
+  const archetypeView = useMemo(() => buildArchetypeSystemViewModel(player), [player]);
+  const topMeters = useMemo(() => {
+    const meters = [
+      { label: "HP", value: formatMeter(player?.hp?.current, player?.hp?.max) },
+      { label: "MP", value: formatMeter(player?.mana?.current, player?.mana?.max) },
+      { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
+      { label: "Gold", value: String(player?.currency?.goldCoins ?? player?.gold ?? 0) },
+    ];
+    if (archetypeView?.resource) {
+      meters.push({
+        label: archetypeView.resource.name,
+        value: formatMeter(archetypeView.resource.current, archetypeView.resource.max)
+      });
+    }
+    return meters;
+  }, [player, archetypeView]);
 
   const roomManifest = useMemo(
     () => buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild }),

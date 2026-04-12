@@ -117,4 +117,44 @@ describe("AIService endpoint resolution", () => {
     expect(firstHeaders["x-dev-user-id"]).toBe("local");
     expect(secondHeaders["x-dev-user-id"]).toBeUndefined();
   });
+
+  it("falls back to a configured external API base when same-origin is missing", async () => {
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_NARRATE_ENDPOINT: "/api/narrate",
+      VITE_API_BASE_URL: "/",
+      VITE_ALLOW_EXTERNAL_API_BASE_URL: "true",
+      VITE_API_FALLBACK_BASE_URL: "https://my-litrpg-gameztrui-3416-da75c.web.app",
+    };
+
+    globalThis.fetch = jest
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ message: "Not Found" }), {
+          status: 404,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            story: "A bridge of frost spans the chasm.",
+            mood: "focused",
+            suggestions: ["Cross carefully"],
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      );
+
+    const result = await generateNarrative("test prompt");
+    expect(result.story).toContain("bridge of frost");
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+    expect(globalThis.fetch.mock.calls[0][0]).toBe("/api/narrate");
+    expect(globalThis.fetch.mock.calls[1][0]).toBe(
+      "https://my-litrpg-gameztrui-3416-da75c.web.app/api/narrate",
+    );
+  });
 });

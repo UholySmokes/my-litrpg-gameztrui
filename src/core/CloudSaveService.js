@@ -1,6 +1,12 @@
 import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
 import { computeSaveStateHash } from "./saveVersioning.js";
 import {
+  resolveAllowExternalApiBaseUrl,
+  resolveAllowedApiHosts,
+  resolveApiBaseCandidates,
+  sanitizeEndpoint,
+} from "./apiEndpointResolution.js";
+import {
   buildTraceHeaders,
   createRequestTraceContext,
 } from "../observability/requestTrace.js";
@@ -26,38 +32,34 @@ const pickEnvValue = (...values) => {
 };
 
 const normalizeBaseUrl = (value) => value.replace(/\/+$/g, "");
-const isExternalUrl = (value) =>
-  /^[a-z][a-z0-9+.-]*:\/\//i.test(value) || value.startsWith("//");
-const sanitizeEndpointPath = (value) => {
-  const trimmed = typeof value === "string" ? value.trim() : "";
-  if (!trimmed) return undefined;
-  if (isExternalUrl(trimmed)) return undefined;
-  return trimmed;
-};
 
 const resolveSaveEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const explicit = sanitizeEndpointPath(
+  const allowExternal = resolveAllowExternalApiBaseUrl({ runtimeEnv, buildEnv });
+  const allowedHosts = resolveAllowedApiHosts({ runtimeEnv, buildEnv });
+  const explicit = sanitizeEndpoint(
     pickEnvValue(
       runtimeEnv.VITE_SAVES_ENDPOINT,
       buildEnv.VITE_SAVES_ENDPOINT,
       runtimeEnv.VITE_CLOUD_SAVES_ENDPOINT,
       buildEnv.VITE_CLOUD_SAVES_ENDPOINT,
     ),
+    { allowExternal, allowedHosts },
   );
-  const apiBaseUrl = sanitizeEndpointPath(
-    pickEnvValue(
-      runtimeEnv.VITE_API_BASE_URL,
-      buildEnv.VITE_API_BASE_URL,
-      runtimeEnv.VITE_API_BASE,
-      buildEnv.VITE_API_BASE,
-    ),
+
+  const baseCandidates = resolveApiBaseCandidates({
+    runtimeEnv,
+    buildEnv,
+    allowExternal,
+    allowedHosts,
+    pickEnvValue,
+  });
+  const derived = baseCandidates.map(
+    (base) => `${normalizeBaseUrl(base)}/api/saves`,
   );
-  const derived = apiBaseUrl
-    ? `${normalizeBaseUrl(apiBaseUrl)}/api/saves`
-    : undefined;
-  return [explicit, derived, "/api/saves"].filter(Boolean);
+
+  return [...new Set([explicit, ...derived, "/api/saves"].filter(Boolean))];
 };
 
 const resolveTimeoutMs = () => {
@@ -92,7 +94,6 @@ async function fetchWithTimeout(url, options, timeoutMs) {
     return await fetch(url, {
       ...options,
       signal: controller.signal,
-      credentials: "include",
     });
   } finally {
     clearTimeout(timeoutId);

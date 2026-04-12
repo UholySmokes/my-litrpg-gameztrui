@@ -1,6 +1,12 @@
 import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
 import { normalizeNarrationPayload } from "./narrationContract.js";
 import {
+  resolveAllowExternalApiBaseUrl,
+  resolveAllowedApiHosts,
+  resolveApiBaseCandidates,
+  sanitizeEndpoint,
+} from "./apiEndpointResolution.js";
+import {
   buildTraceHeaders,
   createRequestTraceContext,
 } from "../observability/requestTrace.js";
@@ -36,15 +42,6 @@ const pickEnvValue = (...values) => {
 };
 
 const normalizeBaseUrl = (value) => value.replace(/\/+$/g, "");
-const isExternalUrl = (value) =>
-  /^[a-z][a-z0-9+.-]*:\/\//i.test(value) || value.startsWith("//");
-
-const sanitizeEndpointPath = (value) => {
-  const trimmed = typeof value === "string" ? value.trim() : "";
-  if (!trimmed) return undefined;
-  if (isExternalUrl(trimmed)) return undefined;
-  return trimmed;
-};
 
 const unique = (values) => {
   const seen = new Set();
@@ -69,60 +66,61 @@ let narratorAvailabilityState = createNarratorAvailabilityState();
 const resolveNarrateEndpoints = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const narrateEndpoint = sanitizeEndpointPath(
+  const allowExternal = resolveAllowExternalApiBaseUrl({ runtimeEnv, buildEnv });
+  const allowedHosts = resolveAllowedApiHosts({ runtimeEnv, buildEnv });
+  const narrateEndpoint = sanitizeEndpoint(
     pickEnvValue(
       runtimeEnv["VITE_NARRATE_ENDPOINT"],
       buildEnv["VITE_NARRATE_ENDPOINT"],
     ),
+    { allowExternal, allowedHosts },
   );
-  const apiBaseUrl = sanitizeEndpointPath(
-    pickEnvValue(
-      runtimeEnv["VITE_API_BASE_URL"],
-      buildEnv["VITE_API_BASE_URL"],
-      runtimeEnv["VITE_API_BASE"],
-      buildEnv["VITE_API_BASE"],
-    ),
+
+  const baseCandidates = resolveApiBaseCandidates({
+    runtimeEnv,
+    buildEnv,
+    allowExternal,
+    allowedHosts,
+    pickEnvValue,
+  });
+  const derived = baseCandidates.map(
+    (base) => `${normalizeBaseUrl(base)}/api/narrate`,
   );
-  const derivedEndpoint = apiBaseUrl
-    ? `${normalizeBaseUrl(apiBaseUrl)}/api/narrate`
-    : undefined;
-  const endpoints = unique([narrateEndpoint, derivedEndpoint]);
-  if (endpoints.length === 0) {
-    endpoints.push("/api/narrate");
-  }
-  return endpoints;
+  return unique([narrateEndpoint, ...derived, "/api/narrate"]);
 };
 
-const resolveStreamEndpoints = () => {
+const resolveStreamEndpointCandidates = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const apiBaseUrl = sanitizeEndpointPath(
-    pickEnvValue(
-      runtimeEnv["VITE_API_BASE_URL"],
-      buildEnv["VITE_API_BASE_URL"],
-      runtimeEnv["VITE_API_BASE"],
-      buildEnv["VITE_API_BASE"],
-    ),
-  );
-  if (!apiBaseUrl) {
+  const allowExternal = resolveAllowExternalApiBaseUrl({ runtimeEnv, buildEnv });
+  const allowedHosts = resolveAllowedApiHosts({ runtimeEnv, buildEnv });
+  const baseCandidates = resolveApiBaseCandidates({
+    runtimeEnv,
+    buildEnv,
+    allowExternal,
+    allowedHosts,
+    pickEnvValue,
+  });
+
+  const bases = baseCandidates.length > 0 ? baseCandidates : [""];
+  const pairs = bases.map((base) => {
+    const normalized = normalizeBaseUrl(base || "");
     return {
-      start: "/api/narrate-start",
-      poll: "/api/narrate-poll",
+      start: normalized ? `${normalized}/api/narrate-start` : "/api/narrate-start",
+      poll: normalized ? `${normalized}/api/narrate-poll` : "/api/narrate-poll",
     };
-  }
-  const base = normalizeBaseUrl(apiBaseUrl);
-  return {
-    start: `${base}/api/narrate-start`,
-    poll: `${base}/api/narrate-poll`,
-  };
+  });
+
+  return unique(pairs.map((pair) => JSON.stringify(pair))).map((key) =>
+    JSON.parse(key),
+  );
 };
 
 const buildNarratorAvailabilitySignature = () => {
-  const stream = resolveStreamEndpoints();
+  const stream = resolveStreamEndpointCandidates();
   return JSON.stringify({
     narrate: resolveNarrateEndpoints(),
-    start: stream?.start || "",
-    poll: stream?.poll || "",
+    stream,
   });
 };
 
@@ -579,7 +577,7 @@ export async function generateNarrativeStream(
   const cooldownError = createNarratorCooldownError();
   if (cooldownError) throw cooldownError;
 
-  const endpoints = resolveStreamEndpoints();
+  const endpointCandidates = resolveStreamEndpointCandidates();
   const isDev = Boolean(getBuildEnv().DEV);
   const startHeaderVariants = await buildApiHeaderVariants({
     "Content-Type": "application/json",
@@ -587,7 +585,7 @@ export async function generateNarrativeStream(
   const pollHeaderVariants = await buildApiHeaderVariants();
 
   // No stream endpoints configured — transparent fallback
-  if (!endpoints) {
+  if (!endpointCandidates || endpointCandidates.length === 0) {
     const result = await generateNarrative(prompt, {
       mode,
       npcContext,
@@ -599,35 +597,51 @@ export async function generateNarrativeStream(
 
   // Step 1: Start the run (fast POST, returns threadId + runId)
   let startData;
+  let selectedEndpoints = null;
   try {
-    for (let i = 0; i < startHeaderVariants.length; i += 1) {
-      const res = await fetchWithTimeout(
-        endpoints.start,
-        {
-          method: "POST",
-          headers: startHeaderVariants[i],
-          body: JSON.stringify({ prompt, mode, npcContext, reactionContext }),
-          signal,
-        },
-        30000,
-      );
-      startData = await res.json().catch(() => null);
-      if (
-        (res.status === 401 || res.status === 403) &&
-        i < startHeaderVariants.length - 1
-      ) {
+    let lastStartError = null;
+    for (const endpoints of endpointCandidates) {
+      for (let i = 0; i < startHeaderVariants.length; i += 1) {
+        const res = await fetchWithTimeout(
+          endpoints.start,
+          {
+            method: "POST",
+            headers: startHeaderVariants[i],
+            body: JSON.stringify({ prompt, mode, npcContext, reactionContext }),
+            signal,
+          },
+          30000,
+        );
+        startData = await res.json().catch(() => null);
+        if (
+          (res.status === 401 || res.status === 403) &&
+          i < startHeaderVariants.length - 1
+        ) {
+          continue;
+        }
+        if (!res.ok || !startData?.ok) {
+          const error = new Error(
+            startData?.message || `Start failed (${res.status})`,
+          );
+          if (res.status === 404 || res.status === 405) {
+            error.code = "NARRATOR_ENDPOINT_MISSING";
+            lastStartError = error;
+            break;
+          }
+          throw error;
+        }
+        selectedEndpoints = endpoints;
+        lastStartError = null;
+        break;
+      }
+      if (selectedEndpoints) break;
+      if (lastStartError) {
         continue;
       }
-      if (!res.ok || !startData?.ok) {
-        const error = new Error(
-          startData?.message || `Start failed (${res.status})`,
-        );
-        if (res.status === 404 || res.status === 405) {
-          error.code = "NARRATOR_ENDPOINT_MISSING";
-        }
-        throw error;
-      }
-      break;
+    }
+
+    if (!selectedEndpoints) {
+      throw lastStartError || new Error("Stream start failed (no endpoints).");
     }
   } catch (error) {
     if (error?.name === "AbortError") throw error;
@@ -705,7 +719,7 @@ export async function generateNarrativeStream(
       let pollError = null;
       for (let i = 0; i < pollHeaderVariants.length; i += 1) {
         const res = await fetchWithTimeout(
-          `${endpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}${mode ? `&mode=${encodeURIComponent(mode)}` : ""}`,
+          `${selectedEndpoints.poll}?threadId=${encodeURIComponent(threadId)}&runId=${encodeURIComponent(runId)}${mode ? `&mode=${encodeURIComponent(mode)}` : ""}`,
           { method: "GET", headers: pollHeaderVariants[i], signal },
           15000,
         );

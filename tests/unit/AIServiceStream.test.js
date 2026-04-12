@@ -252,4 +252,66 @@ describe("AIService streaming narrative", () => {
     );
     expect(result.story).toContain("The patrol leader finally answers.");
   });
+
+  it("falls back to a configured external API base when stream start is missing", async () => {
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_API_BASE_URL: "/",
+      VITE_ALLOW_EXTERNAL_API_BASE_URL: "true",
+      VITE_API_FALLBACK_BASE_URL: "https://my-litrpg-gameztrui-3416-da75c.web.app",
+    };
+
+    globalThis.fetch = jest
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ message: "Not Found" }), {
+          status: 404,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            threadId: "thread-fallback",
+            runId: "run-fallback",
+            status: "running",
+            done: false,
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            ok: true,
+            status: "completed",
+            done: true,
+            story: "The lantern-light steadies as the path appears.",
+            mood: "serene",
+            suggestions: [{ t: "Follow the path", w: 0.9 }],
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          },
+        ),
+      );
+
+    const promise = generateNarrativeStream("Find the path.");
+    await jest.advanceTimersByTimeAsync(1500);
+    const result = await promise;
+
+    expect(result.story).toContain("lantern-light steadies");
+    expect(globalThis.fetch).toHaveBeenCalledTimes(3);
+    expect(globalThis.fetch.mock.calls[0][0]).toBe("/api/narrate-start");
+    expect(globalThis.fetch.mock.calls[1][0]).toBe(
+      "https://my-litrpg-gameztrui-3416-da75c.web.app/api/narrate-start",
+    );
+    expect(globalThis.fetch.mock.calls[2][0]).toBe(
+      "https://my-litrpg-gameztrui-3416-da75c.web.app/api/narrate-poll?threadId=thread-fallback&runId=run-fallback",
+    );
+  });
 });

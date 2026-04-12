@@ -12,7 +12,7 @@ import { DataRegistry } from "../../src/data/DataRegistry.js";
 describe("CharacterCreationSkillSelection", () => {
   const cls = DataRegistry.getClassById("warrior") || DataRegistry.getClasses()[0];
   const race = DataRegistry.getRaceById("pure_human") || DataRegistry.getRaces()[0];
-  const professionId = "blacksmith";
+  const professionId = "blacksmithing";
 
   it("builds lattice-aware creation pools", () => {
     const pools = buildCharacterCreationSkillPools(cls, race);
@@ -29,6 +29,22 @@ describe("CharacterCreationSkillSelection", () => {
     expect(typeof samplePassive.latticeSourceType).toBe("string");
     expect(samplePassive.latticeSourceType.length).toBeGreaterThan(0);
     expect(sampleActive.creationLabels.family.length).toBeGreaterThan(0);
+    expect(pools.active.length).toBeLessThanOrEqual(8);
+    expect(pools.passive.length).toBeLessThanOrEqual(13);
+  });
+
+  it("auto-grants the profession tier-1 passive instead of offering it as an elective", () => {
+    const pools = buildCharacterCreationSkillPools(cls, race, { professionId });
+    expect(Array.isArray(pools.grantedPassive)).toBe(true);
+    expect(pools.grantedPassive.length).toBeGreaterThan(0);
+    pools.grantedPassive.forEach((skill) => {
+      expect(skill.ownerType).toBe("profession");
+      expect(skill.ownerId).toBe(professionId);
+    });
+    const electivePassiveIds = new Set(pools.passive.map((skill) => skill.id));
+    pools.grantedPassive.forEach((skill) => {
+      expect(electivePassiveIds.has(skill.id)).toBe(false);
+    });
   });
 
   it("resolves contextual loadouts into concrete skill ids", () => {

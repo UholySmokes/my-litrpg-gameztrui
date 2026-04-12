@@ -47,8 +47,14 @@ describe("SkillRegistry canonical class ownership", () => {
     const professionIds = new Set(
       Object.values(PROFESSIONS).map((entry) => entry.id),
     );
+    const allowedRaceOwners = new Set(
+      getAllSkills()
+        .filter((skill) => skill.ownerType === "race")
+        .map((skill) => skill.ownerId),
+    );
     const allowedOwners = new Set([
       ...canonicalClassIds,
+      ...allowedRaceOwners,
       ...professionIds,
       "universal",
     ]);
@@ -58,13 +64,14 @@ describe("SkillRegistry canonical class ownership", () => {
     const invalidOwnerShapes = [];
     const allowedOwnerTypes = new Set([
       "class",
+      "race",
       "profession",
       "universal",
       "system",
     ]);
     allSkills.forEach((skill) => {
-      if (!allowedOwners.has(skill.class)) {
-        leakedOwners.push(skill.class);
+      if (!allowedOwners.has(skill.ownerId)) {
+        leakedOwners.push(skill.ownerId);
       }
       if (
         !allowedOwnerTypes.has(skill.ownerType) ||
@@ -77,6 +84,24 @@ describe("SkillRegistry canonical class ownership", () => {
 
     expect(leakedOwners).toHaveLength(0);
     expect(invalidOwnerShapes).toHaveLength(0);
+  });
+
+  it("returns deterministic canonical class packs without legacy alias fallback", () => {
+    const warriorPool = getSkillsByClass("warrior");
+    expect(warriorPool.active).toHaveLength(8);
+    expect(warriorPool.passive).toHaveLength(12);
+
+    const secondWarriorPool = getSkillsByClass("warrior");
+    expect(secondWarriorPool.active.map((skill) => skill.id)).toEqual(
+      warriorPool.active.map((skill) => skill.id),
+    );
+    expect(secondWarriorPool.passive.map((skill) => skill.id)).toEqual(
+      warriorPool.passive.map((skill) => skill.id),
+    );
+
+    const legacyPool = getSkillsByClass("knight");
+    expect(legacyPool.active).toHaveLength(0);
+    expect(legacyPool.passive).toHaveLength(0);
   });
 
   it("exposes lattice projections without changing the underlying class pool contract", () => {

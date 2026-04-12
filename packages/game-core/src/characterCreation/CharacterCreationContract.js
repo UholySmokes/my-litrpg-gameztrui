@@ -1,7 +1,8 @@
 import { getCharacterCreationSkillSelectionLimits } from "./CharacterCreationOptionsRegistry.js";
 import { getLocationById } from "../world/WorldDataRegistry.js";
+import { SKILL_CATALOG_VERSION } from "../systems/skills/LivingLatticeCatalog.js";
 
-const BLUEPRINT_VERSION = 3;
+const BLUEPRINT_VERSION = 4;
 
 function normalizeId(value) {
   if (typeof value !== "string") return null;
@@ -23,8 +24,9 @@ function normalizeAttributes(attributes) {
   return { ...attributes };
 }
 
-export function migrateCharacterCreationBlueprint(legacy = {}) {
+export function migrateCharacterCreationBlueprint(legacy = {}, options = {}) {
   const source = legacy && typeof legacy === "object" ? legacy : {};
+  const assumeCurrentVersion = options.assumeCurrentVersion === true;
   const classId =
     normalizeId(source.classId) ||
     normalizeId(source.class?.id) ||
@@ -51,7 +53,14 @@ export function migrateCharacterCreationBlueprint(legacy = {}) {
       : null;
 
   return {
-    version: Number.isFinite(source.version) ? source.version : BLUEPRINT_VERSION,
+    version: Number.isFinite(source.version)
+      ? source.version
+      : assumeCurrentVersion
+        ? BLUEPRINT_VERSION
+        : null,
+    skillCatalogVersion:
+      normalizeId(source.skillCatalogVersion) ||
+      (assumeCurrentVersion ? SKILL_CATALOG_VERSION : null),
     name: typeof source.name === "string" ? source.name.trim() : "",
     gender: normalizeId(source.gender),
     raceId,
@@ -79,16 +88,21 @@ export function migrateCharacterCreationBlueprint(legacy = {}) {
 }
 
 export function createCharacterCreationBlueprint(input = {}) {
-  const migrated = migrateCharacterCreationBlueprint(input);
+  const migrated = migrateCharacterCreationBlueprint(input, {
+    assumeCurrentVersion: true,
+  });
   return {
     ...migrated,
     version: BLUEPRINT_VERSION,
+    skillCatalogVersion: SKILL_CATALOG_VERSION,
   };
 }
 
 export function validateCharacterCreationBlueprint(blueprint = {}, options = {}) {
   const errors = [];
-  const source = createCharacterCreationBlueprint(blueprint);
+  const source = migrateCharacterCreationBlueprint(blueprint, {
+    assumeCurrentVersion: false,
+  });
   const selectionLimits = getCharacterCreationSkillSelectionLimits();
   const {
     requiredActiveSkillCount = selectionLimits.requiredActiveSkillCount,
@@ -106,6 +120,16 @@ export function validateCharacterCreationBlueprint(blueprint = {}, options = {})
   if (!source.startingPrompt) errors.push("Starting prompt is required.");
   if (!source.attributes || Object.keys(source.attributes).length === 0) {
     errors.push("Attributes are required.");
+  }
+  if (source.version !== BLUEPRINT_VERSION) {
+    errors.push(
+      `Blueprint version must be ${BLUEPRINT_VERSION}; received ${JSON.stringify(source.version)}.`,
+    );
+  }
+  if (source.skillCatalogVersion !== SKILL_CATALOG_VERSION) {
+    errors.push(
+      `Skill catalog version must be ${SKILL_CATALOG_VERSION}; received ${JSON.stringify(source.skillCatalogVersion)}.`,
+    );
   }
 
   if (Number.isFinite(requiredActiveSkillCount) && source.activeSkillIds.length !== requiredActiveSkillCount) {
@@ -137,12 +161,16 @@ export function createCharacterCreationOutcome({ blueprint, derivedState = {}, s
   return {
     blueprint: createCharacterCreationBlueprint(blueprint),
     derivedState: {
+      skillCatalogVersion: SKILL_CATALOG_VERSION,
       ...derivedState,
     },
     seedData: {
+      skillCatalogVersion: SKILL_CATALOG_VERSION,
       ...seedData,
     },
+    skillCatalogVersion: SKILL_CATALOG_VERSION,
   };
 }
 
 export { BLUEPRINT_VERSION as CHARACTER_CREATION_BLUEPRINT_VERSION };
+export { SKILL_CATALOG_VERSION };

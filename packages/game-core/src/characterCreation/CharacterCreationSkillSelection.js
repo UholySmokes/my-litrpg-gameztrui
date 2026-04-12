@@ -1,7 +1,5 @@
 import { getTalentMigrationLane } from "../systems/skills/TalentMigrationAudit.js";
 import {
-  getCharacterCreationClassAbilitySummaries,
-  getCharacterCreationRaceAbilitySummaries,
   getCharacterCreationSkillSummaries,
 } from "./CharacterCreationContentPack.js";
 import { resolveCharacterCreationSkillInfluence } from "./CharacterCreationSystemInfluence.js";
@@ -16,6 +14,13 @@ const BASE_CREATION_LEVEL = 1;
 export const CREATION_SKILL_SELECTION_LIMITS = Object.freeze({
   requiredActiveSkillCount: 3,
   requiredPassiveSkillCount: 6,
+});
+
+const STARTER_POOL_LIMITS = Object.freeze({
+  class: { active: 4, passive: 6 },
+  race: { active: 1, passive: 1 },
+  universal: { active: 2, passive: 4 },
+  influenceExpansion: { active: 1, passive: 2 },
 });
 
 const LOADOUT_TEMPLATES = Object.freeze([
@@ -253,6 +258,27 @@ function uniqueSkills(skills = []) {
   });
 }
 
+function isStarterBandSkill(skill) {
+  return normalizeLower(skill?.selectionBand, "starter") === "starter";
+}
+
+function sortSkillsForCreation(skills = []) {
+  return uniqueSkills(skills).sort((left, right) => {
+    const leftUnlock = Number(left?.unlockLevel || 0);
+    const rightUnlock = Number(right?.unlockLevel || 0);
+    if (leftUnlock !== rightUnlock) return leftUnlock - rightUnlock;
+    const leftName = normalizeLower(left?.name, left?.id || "");
+    const rightName = normalizeLower(right?.name, right?.id || "");
+    if (leftName !== rightName) return leftName.localeCompare(rightName);
+    return String(left?.id || "").localeCompare(String(right?.id || ""));
+  });
+}
+
+function limitSkills(skills = [], count = 0) {
+  if (!Number.isFinite(count) || count <= 0) return [];
+  return sortSkillsForCreation(skills).slice(0, count);
+}
+
 function normalizeEntry(entry, fallbackType, skillIndex) {
   if (!entry) return null;
   if (typeof entry === "string") {
@@ -278,32 +304,6 @@ function collectSkillEntries(entries, fallbackType, skillIndex, source) {
   return entries
     .map((entry) => normalizeEntry(entry, fallbackType, skillIndex))
     .map((entry) => enrichSkillForCreation(entry, source))
-    .filter(Boolean);
-}
-
-function normalizeAbilityEntries(
-  entries = [],
-  { source, defaultType = "active", fallbackDescription } = {},
-) {
-  if (!Array.isArray(entries)) return [];
-  return entries
-    .map((ability) => {
-      if (!ability || typeof ability !== "object") return null;
-      const id = normalizeId(ability.id);
-      if (!id) return null;
-      return enrichSkillForCreation(
-        {
-          ...ability,
-          id,
-          description:
-            ability.description || fallbackDescription || "No description available.",
-          type: ability.type || defaultType,
-          slotType: ability.slotType || ability.type || defaultType,
-          source: ability.source || source || "general",
-        },
-        source || "general",
-      );
-    })
     .filter(Boolean);
 }
 
@@ -495,25 +495,23 @@ export function buildCharacterCreationSkillPools(
     : skillCatalog
         .filter((skill) => {
           if (!isSkillUnlockedAtCreation(skill)) return false;
+          if (!isStarterBandSkill(skill)) return false;
           return normalizeLower(skill?.ownerType) === "class" && normalizeId(skill?.ownerId) === classId;
         })
         .map((skill) => enrichSkillForCreation(skill, "class"))
         .filter(Boolean);
-
-  const classAbilityEntries = normalizeAbilityEntries(
-    getCharacterCreationClassAbilitySummaries(classId),
-    { source: "class", defaultType: "active" },
-  );
-  const classPools = splitSkillsByType([
-    ...classSkillEntries,
-    ...classAbilityEntries,
-  ]);
+  const classPoolsRaw = splitSkillsByType(classSkillEntries);
+  const classPools = {
+    active: limitSkills(classPoolsRaw.active, STARTER_POOL_LIMITS.class.active),
+    passive: limitSkills(classPoolsRaw.passive, STARTER_POOL_LIMITS.class.passive),
+  };
 
   const raceSkillEntries = [];
   if (raceId) {
     const raceTaggedSkills = skillCatalog
       .filter((skill) => {
         if (!isSkillUnlockedAtCreation(skill)) return false;
+        if (!isStarterBandSkill(skill)) return false;
         if (normalizeLower(skill?.ownerType) === "race" && normalizeId(skill?.ownerId) === raceId) {
           return true;
         }
@@ -540,87 +538,74 @@ export function buildCharacterCreationSkillPools(
       ...collectSkillEntries(race?.passiveSkills, "passive", skillIndex, "race"),
     );
 
-    if (race?.passiveAbility) {
-      const passiveAbilityId =
-        race.passiveAbility.id || `${raceId}_passive_trait`;
-      raceSkillEntries.push(
-        ...normalizeAbilityEntries(
-          [{ ...race.passiveAbility, id: passiveAbilityId }],
-          {
-            source: "race",
-            defaultType: "passive",
-            fallbackDescription: "Innate racial trait.",
-          },
-        ),
-      );
-    }
-
-    if (race?.activeAbility) {
-      const activeAbilityId =
-        race.activeAbility.id || `${raceId}_active_trait`;
-      raceSkillEntries.push(
-        ...normalizeAbilityEntries(
-          [{ ...race.activeAbility, id: activeAbilityId }],
-          {
-            source: "race",
-            defaultType: "active",
-            fallbackDescription: "Innate racial technique.",
-          },
-        ),
-      );
-    }
-
-    raceSkillEntries.push(
-      ...normalizeAbilityEntries(getCharacterCreationRaceAbilitySummaries(raceId), {
-        source: "race",
-        defaultType: "active",
-      }),
-    );
   }
-
-  const racePools = splitSkillsByType(raceSkillEntries);
-  const professionSkillEntries = [];
+  const racePoolsRaw = splitSkillsByType(raceSkillEntries);
+  const racePools = {
+    active: limitSkills(racePoolsRaw.active, STARTER_POOL_LIMITS.race.active),
+    passive: limitSkills(racePoolsRaw.passive, STARTER_POOL_LIMITS.race.passive),
+  };
   const professionSummary = getProfessionSummaryById(professionId);
   const tier1SkillIds = Array.isArray(professionSummary?.tier1Skills)
     ? professionSummary.tier1Skills
     : Array.isArray(professionSummary?.tierUnlocks?.[1]?.skills)
       ? professionSummary.tierUnlocks[1].skills
       : [];
-  professionSkillEntries.push(
-    ...collectSkillEntries(tier1SkillIds, null, skillIndex, "profession"),
+  const professionGrantedPools = splitSkillsByType(
+    collectSkillEntries(tier1SkillIds, null, skillIndex, "profession"),
   );
-  const professionPools = splitSkillsByType(professionSkillEntries);
   const generalPools = splitSkillsByType(
     skillCatalog
       .filter((skill) => {
         const ownerType = normalizeLower(skill?.ownerType);
-        return ownerType === "universal" && normalizeId(skill?.ownerId) === "universal";
+        return (
+          ownerType === "universal" &&
+          normalizeId(skill?.ownerId) === "universal" &&
+          isStarterBandSkill(skill)
+        );
       })
       .map((skill) => enrichSkillForCreation(skill, "general"))
       .filter((skill) => isGeneralSkillCompatible(skill, classId, raceId)),
   );
+  const limitedGeneralPools = {
+    active: limitSkills(generalPools.active, STARTER_POOL_LIMITS.universal.active),
+    passive: limitSkills(generalPools.passive, STARTER_POOL_LIMITS.universal.passive),
+  };
+
+  const baseActiveVisible = uniqueSkills([
+    ...classPools.active,
+    ...racePools.active,
+    ...limitedGeneralPools.active,
+  ]);
+  const basePassiveVisible = uniqueSkills([
+    ...classPools.passive,
+    ...racePools.passive,
+    ...limitedGeneralPools.passive,
+  ]);
 
   const influence = resolveCharacterCreationSkillInfluence({
     systemId,
-    activeSkills: uniqueSkills([
-      ...classPools.active,
-      ...racePools.active,
-      ...professionPools.active,
-      ...generalPools.active,
-    ]),
-    passiveSkills: uniqueSkills([
-      ...classPools.passive,
-      ...racePools.passive,
-      ...professionPools.passive,
-      ...generalPools.passive,
-    ]),
+    activeSkills: baseActiveVisible,
+    passiveSkills: basePassiveVisible,
   });
 
+  const visibleActive = limitSkills(
+    influence.activeSkills,
+    baseActiveVisible.length + STARTER_POOL_LIMITS.influenceExpansion.active,
+  );
+  const visiblePassive = limitSkills(
+    influence.passiveSkills,
+    basePassiveVisible.length + STARTER_POOL_LIMITS.influenceExpansion.passive,
+  );
+  const grantedPassive = uniqueSkills([
+    ...professionGrantedPools.passive,
+    ...(Array.isArray(influence.grantedPassiveSkills) ? influence.grantedPassiveSkills : []),
+  ]);
+
   return {
-    active: influence.activeSkills,
-    passive: influence.passiveSkills,
+    active: visibleActive,
+    passive: visiblePassive,
     grantedActive: influence.grantedActiveSkills,
-    grantedPassive: influence.grantedPassiveSkills,
+    grantedPassive,
     blockedSkillIds: influence.blockedSkillIds,
     boostedSkillIds: influence.boostedSkillIds,
     slotBonuses: influence.slotBonuses,

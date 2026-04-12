@@ -2478,6 +2478,21 @@ body,
   color: var(--text-dim);
 }
 
+button.dev-console-dock__hint-chip {
+  appearance: none;
+  cursor: pointer;
+}
+
+.dev-console-dock__hint-chip--clickable:hover {
+  border-color: color-mix(in srgb, var(--holo-cyan) 22%, transparent);
+  color: var(--text-main);
+}
+
+.dev-console-dock__hint-chip--clickable:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--holo-cyan) 38%, transparent);
+  outline-offset: 2px;
+}
+
 .dev-console-dock__stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));

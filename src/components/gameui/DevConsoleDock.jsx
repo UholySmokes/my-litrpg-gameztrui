@@ -10,6 +10,7 @@ import { getLocationById } from "../../world/WorldDataRegistry.js";
 import {
   QUICK_COMMANDS,
   COMMAND_HINTS,
+  DEV_CONSOLE_COMMANDS,
   buildDevConsoleSessionLog,
   executeDevConsoleCommand,
   toNumber,
@@ -116,6 +117,7 @@ export default function DevConsoleDock({
         addSystemMessage,
         runStoryCommand,
         resolveLocationById: getLocationById,
+        state,
       });
       setResultMessage(result.message);
       if (result.ok) {
@@ -155,7 +157,7 @@ export default function DevConsoleDock({
             <div className="dev-console-dock__title">{summary.name}</div>
           </div>
           <div className="dev-console-dock__summary">
-            Level {summary.level} · {summary.location} · {deferredLog.length} retained log entries
+            Level {summary.level} | {summary.location} | {deferredLog.length} retained log entries
           </div>
         </div>
         <button
@@ -222,6 +224,27 @@ export default function DevConsoleDock({
                 {entry}
               </span>
             ))}
+          </div>
+
+          <div style={{ display: "grid", gap: "0.55rem", marginTop: "0.85rem" }}>
+            <div className="dev-console-dock__panel-label">Command Reference</div>
+            <div className="dev-console-dock__hint-list" aria-label="Command reference">
+              {DEV_CONSOLE_COMMANDS.map((entry) => (
+                <button
+                  key={entry.usage}
+                  type="button"
+                  className="dev-console-dock__hint-chip dev-console-dock__hint-chip--clickable"
+                  title={entry.description}
+                  onClick={() => {
+                    const next = entry.example || entry.usage;
+                    setCommandText(next);
+                    setResultMessage(entry.description);
+                  }}
+                >
+                  {entry.usage}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="dev-console-dock__stats">

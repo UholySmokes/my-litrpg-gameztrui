@@ -6,6 +6,7 @@ export function useGameUiWindowController() {
   const [showGacha, setShowGacha] = useState(false);
   const [showTitleSystem, setShowTitleSystem] = useState(false);
   const [showArchetypeSystem, setShowArchetypeSystem] = useState(false);
+  const [showDevourerCore, setShowDevourerCore] = useState(false);
   const [showProfessions, setShowProfessions] = useState(false);
   const [showStatusOverlay, setShowStatusOverlay] = useState(false);
   const [showSaveLoad, setShowSaveLoad] = useState(false);
@@ -51,6 +52,7 @@ export function useGameUiWindowController() {
     () => setShowArchetypeSystem(false),
     [],
   );
+  const handleCloseDevourerCore = useCallback(() => setShowDevourerCore(false), []);
   const handleCloseProfessions = useCallback(() => setShowProfessions(false), []);
   const handleCloseStatusOverlay = useCallback(() => setShowStatusOverlay(false), []);
   const handleCloseSaveLoad = useCallback(() => setShowSaveLoad(false), []);
@@ -85,6 +87,10 @@ export function useGameUiWindowController() {
       ),
     [showArchetypeSystem, toggleWindow],
   );
+  const handleToggleDevourerCore = useCallback(
+    () => toggleWindow("devourerCore", showDevourerCore, setShowDevourerCore),
+    [showDevourerCore, toggleWindow],
+  );
   const handleToggleCraft = useCallback(
     () => toggleWindow("craft", showProfessions, setShowProfessions),
     [showProfessions, toggleWindow],
@@ -116,6 +122,7 @@ export function useGameUiWindowController() {
       onToggleArchetypeSystem: handleToggleArchetypeSystem,
       onToggleBestiary: handleToggleBestiary,
       onToggleCraft: handleToggleCraft,
+      onToggleDevourerCore: handleToggleDevourerCore,
       onToggleGacha: handleToggleGacha,
       onToggleQuests: handleToggleQuests,
       onToggleReplayInspector: handleToggleReplayInspector,
@@ -128,6 +135,7 @@ export function useGameUiWindowController() {
       handleToggleArchetypeSystem,
       handleToggleBestiary,
       handleToggleCraft,
+      handleToggleDevourerCore,
       handleToggleGacha,
       handleToggleQuests,
       handleToggleReplayInspector,
@@ -144,6 +152,7 @@ export function useGameUiWindowController() {
     quickActionsProps,
     showBestiary,
     showArchetypeSystem,
+    showDevourerCore,
     showGacha,
     showProfessions,
     showQuests,
@@ -155,6 +164,7 @@ export function useGameUiWindowController() {
     handleCloseEquipmentSelect,
     handleCloseBestiary,
     handleCloseArchetypeSystem,
+    handleCloseDevourerCore,
     handleCloseGacha,
     handleCloseProfessions,
     handleCloseQuests,
@@ -165,6 +175,7 @@ export function useGameUiWindowController() {
     handleCloseTitleSystem,
     handleOpenEquipmentSlot,
     handleToggleArchetypeSystem,
+    handleToggleDevourerCore,
     setShowSaveLoad,
   };
 }

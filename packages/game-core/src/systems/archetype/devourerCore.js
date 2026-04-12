@@ -33,6 +33,8 @@ const FAMILY_BY_TAG = {
 
 const TAINT_TAGS = new Set(["shadow", "void", "demon", "aberration", "undead"]);
 const ADAPTATION_RANK_CAP = 5;
+export const DEVOURER_AUTO_ABSORB_MAX_TAINT_PER_SAMPLE = 2;
+export const DEVOURER_AUTO_ABSORB_MAX_TOTAL_TAINT = 10;
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
@@ -169,6 +171,10 @@ export function resolveDevourerFamilies(enemy = {}) {
   return Array.from(families);
 }
 
+export function resolvePrimaryDevourerFamily(enemy = {}) {
+  return resolveDevourerFamilies(enemy)[0] || null;
+}
+
 export function isSentientPrey(enemy = {}) {
   if (enemy.sentient === true) return true;
   const type = normalizeTag(enemy.type);
@@ -203,6 +209,59 @@ export function resolveDevourerHarvest(enemy = {}) {
 function getResource(archetypeSystem = {}) {
   const normalized = normalizeDevourerArchetypeState(archetypeSystem);
   return normalized.resource;
+}
+
+export function resolveDevourerSampleMetrics(sample = {}) {
+  const count = Math.max(0, Math.floor(toNumber(sample.count, 0)));
+  if (count <= 0) return null;
+
+  return {
+    count,
+    biomassPerSample: Math.max(1, Math.floor(toNumber(sample.biomass, 0) / count)),
+    taintPerSample: Math.max(0, Math.floor(toNumber(sample.taint, 0) / count)),
+    sentientPerSample: Math.max(0, Math.floor(toNumber(sample.sentientCount, 0) / count)),
+  };
+}
+
+export function resolveDevourerRefineBiomassCost(currentRank = 0) {
+  const normalizedRank = Math.max(0, Math.floor(toNumber(currentRank, 0)));
+  return 12 + normalizedRank * 8;
+}
+
+export function getDevourerAutoAbsorbBlockReason({ resource, runtime, sample } = {}) {
+  const metrics = resolveDevourerSampleMetrics(sample);
+  if (!metrics || !resource || !runtime) return null;
+
+  if (metrics.sentientPerSample > 0) {
+    return "sentient-risk";
+  }
+  if (metrics.taintPerSample > DEVOURER_AUTO_ABSORB_MAX_TAINT_PER_SAMPLE) {
+    return "taint-per-sample-too-high";
+  }
+  if (runtime.taint + metrics.taintPerSample > DEVOURER_AUTO_ABSORB_MAX_TOTAL_TAINT) {
+    return "current-taint-too-high";
+  }
+  if (resource.current + metrics.biomassPerSample > resource.max) {
+    return "biomass-full";
+  }
+
+  return null;
+}
+
+export function getDevourerAutoAbsorbBlockReasonText(reason, { family } = {}) {
+  const label = toRuntimeLabel(family);
+  switch (reason) {
+    case "sentient-risk":
+      return `${label} remains queued because sentient prey requires deliberate digestion.`;
+    case "taint-per-sample-too-high":
+      return `${label} exceeds the safe taint threshold for automatic absorption.`;
+    case "current-taint-too-high":
+      return `${label} stays queued until your current taint falls below the safe limit.`;
+    case "biomass-full":
+      return `${label} stays queued because Biomass reserves are already near capacity.`;
+    default:
+      return `${label} remains queued for manual review.`;
+  }
 }
 
 function appendRecentPrey(recentPrey = [], preyName) {
@@ -271,7 +330,20 @@ function resolveSampleTarget(runtime, requestedTarget = null) {
   return familyKeys.find((key) => key.includes(normalized) || normalized.includes(key)) || null;
 }
 
-export function executeDevourerDigest(state, action = {}) {
+function buildDevourerDigestNotice({ target, metrics, mode = "manual" }) {
+  const familyLabel = toRuntimeLabel(target);
+  if (mode === "auto") {
+    return `[Devourer Core] Auto-absorb complete: ${familyLabel} converted into ${metrics.biomassPerSample} Biomass.`;
+  }
+
+  if (metrics.sentientPerSample > 0) {
+    return `[Devourer Core] Sentient line digested (${familyLabel}). Output improved. Corruption drift accelerated.`;
+  }
+
+  return `[Devourer Core] ${familyLabel} metabolized. Biomass reserves increased by ${metrics.biomassPerSample}.`;
+}
+
+function digestDevourerSample(state, { requestedTarget = null, mode = "manual" } = {}) {
   if (!isDevourerCorePlayer(state?.player)) {
     return { ok: false, reason: "Devourer Core is not bound to this character.", state };
   }
@@ -279,28 +351,24 @@ export function executeDevourerDigest(state, action = {}) {
   const player = state.player || {};
   const archetype = normalizeDevourerArchetypeState(player.archetypeSystem);
   const runtime = normalizeDevourerRuntime(archetype.runtime);
-  const target = resolveSampleTarget(runtime, action.target || action.sample || null);
+  const target = resolveSampleTarget(runtime, requestedTarget);
   if (!target) {
     return { ok: false, reason: "No matching prey sample to digest.", state };
   }
 
   const sample = runtime.storedSamples[target] || {};
-  const count = Math.max(0, Math.floor(toNumber(sample.count, 0)));
-  if (count <= 0) {
+  const metrics = resolveDevourerSampleMetrics(sample);
+  if (!metrics) {
     return { ok: false, reason: "No stored sample remains for that prey line.", state };
   }
 
-  const biomassPerSample = Math.max(1, Math.floor(toNumber(sample.biomass, 0) / count));
-  const taintPerSample = Math.max(0, Math.floor(toNumber(sample.taint, 0) / count));
-  const sentientPerSample = Math.max(0, Math.floor(toNumber(sample.sentientCount, 0) / count));
-
-  const nextCount = count - 1;
+  const nextCount = metrics.count - 1;
   const nextSample = {
     ...sample,
     count: nextCount,
-    biomass: Math.max(0, toNumber(sample.biomass, 0) - biomassPerSample),
-    taint: Math.max(0, toNumber(sample.taint, 0) - taintPerSample),
-    sentientCount: Math.max(0, toNumber(sample.sentientCount, 0) - sentientPerSample),
+    biomass: Math.max(0, toNumber(sample.biomass, 0) - metrics.biomassPerSample),
+    taint: Math.max(0, toNumber(sample.taint, 0) - metrics.taintPerSample),
+    sentientCount: Math.max(0, toNumber(sample.sentientCount, 0) - metrics.sentientPerSample),
   };
 
   const knownPrey = clonePlainObject(runtime.knownPrey);
@@ -309,7 +377,7 @@ export function executeDevourerDigest(state, action = {}) {
     digested: Math.max(0, Math.floor(toNumber(priorKnowledge.digested, 0))) + 1,
     sentientDigests:
       Math.max(0, Math.floor(toNumber(priorKnowledge.sentientDigests, 0))) +
-      (sentientPerSample > 0 ? 1 : 0),
+      (metrics.sentientPerSample > 0 ? 1 : 0),
     lastEnemyId: sample.lastEnemyId || null,
     lastEnemyName: sample.lastEnemyName || toRuntimeLabel(target),
   };
@@ -317,22 +385,19 @@ export function executeDevourerDigest(state, action = {}) {
   const resource = getResource(archetype);
   const nextResource = {
     ...resource,
-    current: clamp(Math.floor(resource.current + biomassPerSample), 0, resource.max),
+    current: clamp(Math.floor(resource.current + metrics.biomassPerSample), 0, resource.max),
   };
 
   const nextRuntime = {
     ...runtime,
-    taint: runtime.taint + taintPerSample,
-    sentientDevours: runtime.sentientDevours + (sentientPerSample > 0 ? 1 : 0),
+    taint: runtime.taint + metrics.taintPerSample,
+    sentientDevours: runtime.sentientDevours + (metrics.sentientPerSample > 0 ? 1 : 0),
     storedSamples: {
       ...runtime.storedSamples,
       [target]: nextSample,
     },
     knownPrey,
-    lastNotice:
-      sentientPerSample > 0
-        ? `[Devourer Core] Sentient line digested (${toRuntimeLabel(target)}). Output improved. Corruption drift accelerated.`
-        : `[Devourer Core] ${toRuntimeLabel(target)} metabolized. Biomass reserves increased by ${biomassPerSample}.`,
+    lastNotice: buildDevourerDigestNotice({ target, metrics, mode }),
     recentPrey: appendRecentPrey(runtime.recentPrey, sample.lastEnemyName || toRuntimeLabel(target)),
   };
 
@@ -352,7 +417,16 @@ export function executeDevourerDigest(state, action = {}) {
     ok: true,
     state: nextState,
     description: nextRuntime.lastNotice,
+    target,
+    metrics,
   };
+}
+
+export function executeDevourerDigest(state, action = {}) {
+  return digestDevourerSample(state, {
+    requestedTarget: action.target || action.sample || null,
+    mode: "manual",
+  });
 }
 
 function resolveRefineTarget(runtime, requestedTarget = null) {
@@ -399,7 +473,7 @@ export function executeDevourerRefine(state, action = {}) {
   }
 
   const resource = getResource(archetype);
-  const biomassCost = 12 + currentRank * 8;
+  const biomassCost = resolveDevourerRefineBiomassCost(currentRank);
   if (resource.current < biomassCost) {
     return {
       ok: false,
@@ -450,6 +524,70 @@ export function executeDevourerRefine(state, action = {}) {
       },
     },
     description: notice,
+  };
+}
+
+export function evaluateDevourerAutoAbsorb(state, enemy = {}) {
+  if (!isDevourerCorePlayer(state?.player)) {
+    return { state, notices: [] };
+  }
+
+  const player = state.player || {};
+  const archetype = normalizeDevourerArchetypeState(player.archetypeSystem);
+  const runtime = normalizeDevourerRuntime(archetype.runtime);
+  const resource = getResource(archetype);
+  const target = resolvePrimaryDevourerFamily(enemy);
+  const sample = target ? runtime.storedSamples?.[target] : null;
+
+  if (!target || !sample) {
+    return { state, notices: [] };
+  }
+
+  const blockReason = getDevourerAutoAbsorbBlockReason({ resource, runtime, sample });
+  if (blockReason) {
+    const notice = `[Devourer Core] Auto-absorb withheld for ${toRuntimeLabel(target)}: ${getDevourerAutoAbsorbBlockReasonText(
+      blockReason,
+      { family: target },
+    )}`;
+
+    return {
+      state: {
+        ...state,
+        player: {
+          ...player,
+          archetypeSystem: {
+            ...archetype,
+            resource,
+            runtime: {
+              ...runtime,
+              lastNotice: notice,
+            },
+          },
+        },
+      },
+      notices: [notice],
+      target,
+      blockReason,
+    };
+  }
+
+  const result = digestDevourerSample(state, {
+    requestedTarget: target,
+    mode: "auto",
+  });
+
+  if (!result.ok) {
+    return {
+      state: result.state || state,
+      notices: result.reason ? [`[Devourer Core] Auto-absorb failed: ${result.reason}`] : [],
+      target,
+    };
+  }
+
+  return {
+    state: result.state || state,
+    notices: result.description ? [result.description] : [],
+    target,
   };
 }
 

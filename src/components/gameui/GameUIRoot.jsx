@@ -24,6 +24,7 @@ import {
 import { SAVE_RESET_EPOCH } from "./saveResetController.js";
 import { useGameUiSaveController } from "./useGameUiSaveController.js";
 import { useGameUiWindowController } from "./useGameUiWindowController.js";
+import { syncChronicleProgress } from "../../core/chronicleTracker.js";
 
 const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
@@ -136,6 +137,7 @@ export default function GameUI({ user }) {
   );
   const narrativeMemoryRef = useRef(null);
   const previousStateRef = useRef(null);
+  const chronicleSyncStateRef = useRef(state);
   const [activeSurface, setActiveSurface] = useState(() =>
     hasCreatedCharacterSnapshot(state)
       ? "adventure"
@@ -267,6 +269,7 @@ export default function GameUI({ user }) {
     handleShopPurchase,
     handleRest,
     handleSetCombatLane,
+    handleSetCombatStance,
     handleSkillUse,
     handleBuyPrestigeUpgrade,
     handlePerformPrestige,
@@ -295,6 +298,7 @@ export default function GameUI({ user }) {
       onEscape: handleCombatEscape,
       onRest: handleRest,
       onSetCombatLane: handleSetCombatLane,
+      onSetCombatStance: handleSetCombatStance,
       onUseItem: handleUseItem,
       onUseSkill: handleSkillUse,
     }),
@@ -303,6 +307,7 @@ export default function GameUI({ user }) {
       handleCombatEscape,
       handleRest,
       handleSetCombatLane,
+      handleSetCombatStance,
       handleSkillUse,
       handleUseItem,
       quickActionsProps,
@@ -425,6 +430,7 @@ export default function GameUI({ user }) {
       config: state?.config,
       quests: state?.quests,
       combatState: state?.combat,
+      chronicle: state?.chronicle,
       narrative: {
         summary: shouldShowNarrativeSummary ? narrativeSummary : "",
         currentMood: narrativeCurrentMood,
@@ -478,6 +484,7 @@ export default function GameUI({ user }) {
         onUseRaceAbility: handleRaceAbilityUse,
         onEscape: handleCombatEscape,
         onSetCombatLane: handleSetCombatLane,
+        onSetCombatStance: handleSetCombatStance,
         onEquipItem: handleEquipItem,
         onUnequipItem: handleUnequipItem,
         onEquipTitle: handleTitleEquip,
@@ -541,6 +548,7 @@ export default function GameUI({ user }) {
       handleRaceAbilityUse,
       handleShopPurchase,
       handleSetCombatLane,
+      handleSetCombatStance,
       handleSkillUse,
       handleBuyPrestigeUpgrade,
       handlePerformPrestige,
@@ -578,6 +586,27 @@ export default function GameUI({ user }) {
       userInput,
     ],
   );
+
+  useEffect(() => {
+    const previousState = chronicleSyncStateRef.current;
+    chronicleSyncStateRef.current = state;
+
+    if (!hasAdventureSession) {
+      return;
+    }
+
+    const nextChronicle = syncChronicleProgress(previousState, state);
+    if (!nextChronicle) {
+      return;
+    }
+
+    dispatch({
+      type: "UPDATE_STATE",
+      payload: {
+        chronicle: nextChronicle,
+      },
+    });
+  }, [dispatch, hasAdventureSession, state]);
 
   const onboardingTier = useMemo(
     () =>
@@ -744,6 +773,11 @@ export default function GameUI({ user }) {
             {transitionSummary.starterKitLabel ? (
               <p className="creation-handoff-overlay__class anime-slide-up">
                 {transitionSummary.starterKitLabel}
+              </p>
+            ) : null}
+            {transitionSummary.firstDirective ? (
+              <p className="creation-handoff-overlay__class anime-slide-up">
+                First directive: {transitionSummary.firstDirective}
               </p>
             ) : null}
           </div>

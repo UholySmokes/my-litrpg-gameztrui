@@ -14,6 +14,7 @@ import {
   getZoneById,
   resolveLocationId,
 } from "../world/WorldDataRegistry.js";
+import { getOpeningArcByOathOriginId } from "../world/OpeningArcRegistry.js";
 import { resolvePlayerArchetypeSystem } from "../systems/archetype/resolvePlayerArchetypeSystem.js";
 import { isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
 import { toNumber } from "../utils/shared.js";
@@ -875,6 +876,7 @@ function getAuthoredOpeningAuthority(gameState = {}) {
 
 export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
   const world = gameState?.world || {};
+  const player = gameState?.player || {};
   const priorSceneMemory = getPriorSceneMemory(gameState);
   const openingAuthority = getAuthoredOpeningAuthority(gameState);
   const locationRaw = world?.location?.current ?? world?.location ?? null;
@@ -885,6 +887,22 @@ export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
   const resolvedZone = resolvedLocation?.zoneId
     ? getZoneById(resolvedLocation.zoneId)
     : null;
+  const oathOriginId =
+    typeof player?.oathOrigin === "string"
+      ? player.oathOrigin
+      : player?.oathOrigin?.id || player?.startingZoneId || null;
+  const openingArc =
+    getOpeningArcByOathOriginId(oathOriginId) ||
+    (world?.vars?.openingArc && typeof world.vars.openingArc === "object"
+      ? world.vars.openingArc
+      : null);
+  const openingArcLandmarks = Array.isArray(openingArc?.landmarks)
+    ? openingArc.landmarks
+    : [];
+  const openingArcHooks = Array.isArray(openingArc?.actionVocabulary)
+    ? openingArc.actionVocabulary
+    : [];
+  const signatureNpc = openingArc?.signatureNpc?.name || null;
   const unresolvedHooks = dedupeStrings([
     ...(Array.isArray(priorSceneMemory.unresolvedHooks)
       ? priorSceneMemory.unresolvedHooks
@@ -892,6 +910,9 @@ export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
     ...((Array.isArray(gameState?.quests?.active) ? gameState.quests.active : [])
       .map((quest) => quest?.name)
       .filter(Boolean)),
+    ...(openingArc?.firstPressure ? [openingArc.firstPressure] : []),
+    ...openingArcLandmarks,
+    ...openingArcHooks,
   ]);
   const immediateObjective =
     resolveQuestObjective(gameState) ||
@@ -921,13 +942,27 @@ export function buildSceneMemorySeed(gameState = {}, actionResult = null) {
       resolvedZone?.name ||
       zoneLabelFallback,
     immediateObjective,
-    presentEntities: buildPresentEntities(gameState),
-    activeThreats: buildActiveThreats(gameState),
+    presentEntities: dedupeStrings([
+      ...buildPresentEntities(gameState),
+      ...(signatureNpc ? [signatureNpc] : []),
+    ]),
+    activeThreats: dedupeStrings([
+      ...buildActiveThreats(gameState),
+      ...(openingArc?.firstPressure ? [openingArc.firstPressure] : []),
+    ]),
     unresolvedHooks,
     lastConsequence,
-    familiarEntities: dedupeStrings(priorSceneMemory.familiarEntities || []),
+    familiarEntities: dedupeStrings([
+      ...(priorSceneMemory.familiarEntities || []),
+      ...(signatureNpc ? [signatureNpc] : []),
+    ]),
     partyEntities: dedupeStrings(priorSceneMemory.partyEntities || []),
-    socialSummary: normalizeSceneString(priorSceneMemory.socialSummary),
+    socialSummary: normalizeSceneString(
+      priorSceneMemory.socialSummary ||
+        (signatureNpc && openingArc?.firstPressure
+          ? `${signatureNpc} is tied to ${openingArc.firstPressure}.`
+          : priorSceneMemory.socialSummary),
+    ),
   };
 }
 
@@ -1672,6 +1707,19 @@ export function buildInitialPrompt(gameState = {}) {
     typeof player.profession === "string"
       ? player.profession
       : player.profession?.name || "Generalist";
+  const oathOriginId =
+    typeof player?.oathOrigin === "string"
+      ? player.oathOrigin
+      : player?.oathOrigin?.id || player?.startingZoneId || null;
+  const openingArc =
+    getOpeningArcByOathOriginId(oathOriginId) ||
+    (gameState?.world?.vars?.openingArc && typeof gameState.world.vars.openingArc === "object"
+      ? gameState.world.vars.openingArc
+      : null);
+  const oathOriginName =
+    typeof player?.oathOrigin === "string"
+      ? player.oathOrigin
+      : player?.oathOrigin?.name || null;
 
   const activeQuests = Array.isArray(gameState.quests?.active)
     ? gameState.quests.active
@@ -1712,7 +1760,9 @@ export function buildInitialPrompt(gameState = {}) {
     : null;
   const authoredOpeningActive = openingAuthority.active;
   const startingPointName =
-    authoredOpeningActive ? null : startingPointZone?.name || openingZone?.name || null;
+    authoredOpeningActive
+      ? null
+      : oathOriginName || startingPointZone?.name || openingZone?.name || null;
   const hasQuestThreads = activeQuests.length > 0;
   const sceneDescription = describeOpeningScene(scene, {
     mainQuestName: mainQuest?.name || "the first strange trouble in reach",
@@ -1751,6 +1801,25 @@ export function buildInitialPrompt(gameState = {}) {
   const threadSectionTitle = hasQuestThreads
     ? "=== QUEST THREADS ==="
     : "=== OPENING PRESSURES ===";
+  const openingArcSection = openingArc
+    ? [
+        "=== OPENING ARC ===",
+        `Arc Title: ${openingArc.title || "Unnamed opening arc"}`,
+        openingArc.signatureNpc?.name
+          ? `Signature NPC: ${openingArc.signatureNpc.name}${openingArc.signatureNpc.role ? ` (${openingArc.signatureNpc.role})` : ""}`
+          : null,
+        openingArc.firstPressure ? `First Pressure: ${openingArc.firstPressure}` : null,
+        Array.isArray(openingArc.landmarks) && openingArc.landmarks.length
+          ? `Nearby Landmarks: ${openingArc.landmarks.join(", ")}`
+          : null,
+        Array.isArray(openingArc.actionVocabulary) && openingArc.actionVocabulary.length
+          ? `Action Vocabulary: ${openingArc.actionVocabulary.join(", ")}`
+          : null,
+        openingArc.firstQuest?.name ? `Opening Quest: ${openingArc.firstQuest.name}` : null,
+      ]
+        .filter(Boolean)
+        .join("\n")
+    : "";
 
   const narrativeHooks = Array.isArray(archetypeSystem?.narrativeHooks)
     ? archetypeSystem.narrativeHooks.slice(0, 2)
@@ -1786,6 +1855,7 @@ ${openingChoicePending && openingChoiceLines.length
 ${resolvedOpeningSeed
     ? `\n=== RESOLVED OPENING SEED ===\n${resolvedOpeningSeed}`
     : ""}
+${openingArcSection ? `\n${openingArcSection}` : ""}
 
 ${threadSectionTitle}
 ${threadLines}
@@ -1800,6 +1870,7 @@ TASK: Deliver an atmospheric opening (6-9 sentences) that:
 - ${hasQuestThreads
     ? "Hints at one quest thread without being heavy-handed"
     : "Hints at one immediate tension, opportunity, or mystery without framing it as a formal quest"}
+- Echoes at least one landmark, pressure, or action verb from the opening arc when one is available
 - Uses at least one emotionally reactive beat rather than staying purely external
 - Ends with a compelling hook that invites the player's first action${openingChoicePending && openingChoiceLines.length ? " and nudges one opening choice naturally." : ""}
 Hard limit: keep the response under 1200 characters.

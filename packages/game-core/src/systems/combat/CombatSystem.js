@@ -201,6 +201,33 @@ import {
   getBalanceConfig,
 } from "../../data/balance/balanceConfig.js";
 const DEBUG_LOGGING_ENABLED = false;
+const STANCE_KEYS = new Set(["open", "focused", "guarded"]);
+const EXTRA_ELEMENTAL_REACTIONS = [
+  {
+    element: "lightning",
+    requires: ["soaked"],
+    multiplier: 1.3,
+    message: "Lightning forks harder across the soaked target.",
+    addEffects: [{ id: "shock", remainingDuration: 2, magnitude: 0.2 }],
+  },
+  {
+    element: "ice",
+    requires: ["soaked"],
+    multiplier: 1.2,
+    message: "The soaked target flash-freezes under the ice strike.",
+    addEffects: [{ id: "slow", remainingDuration: 2, magnitude: 0.25 }],
+  },
+  {
+    element: "physical",
+    requires: ["marked"],
+    multiplier: 1.2,
+    message: "The marked weakness turns the hit into a cleaner execution line.",
+  },
+];
+const normalizeCombatStance = (stance) => {
+  const value = String(stance || "").trim().toLowerCase();
+  return STANCE_KEYS.has(value) ? value : "focused";
+};
 const getLaneDistance = (combatState, enemyIndex) => {
   const playerLane = combatState?.lanes?.player;
   const enemyLane = combatState?.lanes?.enemies?.[enemyIndex];
@@ -266,7 +293,186 @@ const resolveSkillDefinition = (state, skillInput) => {
   }
   return pools.find((skill) => skill?.id === skillId) || null;
 };
-const ELEMENTAL_REACTIONS = DEFAULT_ELEMENTAL_REACTIONS;
+const ELEMENTAL_REACTIONS = [...DEFAULT_ELEMENTAL_REACTIONS, ...EXTRA_ELEMENTAL_REACTIONS];
+const getArenaTags = (state = {}) => {
+  if (Array.isArray(state?.combat?.arenaTags) && state.combat.arenaTags.length > 0) {
+    return state.combat.arenaTags;
+  }
+  const openingArcId = state?.player?.openingArcId || state?.world?.vars?.openingArcId || "";
+  const zoneId = state?.player?.oathOrigin?.zoneId || state?.world?.location?.biome || "";
+  if (openingArcId.includes("meridian") || zoneId === "city") {
+    return ["crowded-cover", "contract-crossfire"];
+  }
+  if (openingArcId.includes("tideward") || zoneId === "coast") {
+    return ["salt-slick-stone", "tide-pull"];
+  }
+  if (openingArcId.includes("skyforge") || zoneId === "skydocks") {
+    return ["wind-shear", "catwalk-drop"];
+  }
+  return zoneId ? [`terrain-${zoneId}`] : [];
+};
+const applyStanceModifier = (damageResult, stance, mode) => {
+  if (!damageResult) return damageResult;
+  const resolvedStance = normalizeCombatStance(stance);
+  let multiplier = 1;
+  let note = null;
+
+  if (mode === "outgoing") {
+    if (resolvedStance === "open") {
+      multiplier = 1.15;
+      note = "Open stance presses the attack.";
+    } else if (resolvedStance === "guarded") {
+      multiplier = 0.88;
+      note = "Guarded stance trades pressure for safety.";
+    }
+  } else if (mode === "incoming") {
+    if (resolvedStance === "open") {
+      multiplier = 1.12;
+      note = "Open stance exposes weak angles.";
+    } else if (resolvedStance === "guarded") {
+      multiplier = 0.8;
+      note = "Guarded stance blunts the impact.";
+    } else {
+      multiplier = 0.95;
+      note = "Focused stance trims the worst of the blow.";
+    }
+  }
+
+  return {
+    ...damageResult,
+    damage: Math.max(0, Math.floor((damageResult.damage || 0) * multiplier)),
+    messages: note
+      ? [...(Array.isArray(damageResult.messages) ? damageResult.messages : []), note]
+      : damageResult.messages,
+  };
+};
+const applyArenaTagModifier = (damageResult, arenaTags = [], context = {}) => {
+  if (!damageResult || !Array.isArray(arenaTags) || arenaTags.length === 0) {
+    return damageResult;
+  }
+
+  let multiplier = 1;
+  const notes = [];
+  const laneDistance = Number.isFinite(context.laneDistance) ? context.laneDistance : 0;
+  const stance = normalizeCombatStance(context.stance);
+  const actorRole = context.actorRole || "player";
+
+  if (arenaTags.includes("crowded-cover") && actorRole === "enemy") {
+    multiplier *= 0.92;
+    notes.push("Crowded cover clips the enemy attack lane.");
+  }
+  if (arenaTags.includes("salt-slick-stone") && stance === "open") {
+    multiplier *= actorRole === "player" ? 1.08 : 1.04;
+    notes.push("Salt-slick footing turns aggression into a riskier slide.");
+  }
+  if (arenaTags.includes("tide-pull") && laneDistance > 0) {
+    multiplier *= 0.9;
+    notes.push("The tide drag punishes attacks across the gap.");
+  }
+  if (arenaTags.includes("wind-shear") && laneDistance > 0) {
+    multiplier *= 0.9;
+    notes.push("Wind shear scatters cross-lane timing.");
+  }
+  if (arenaTags.includes("catwalk-drop") && actorRole === "player" && stance === "open") {
+    multiplier *= 1.1;
+    notes.push("The catwalk edge rewards a committed forward burst.");
+  }
+
+  if (multiplier === 1) {
+    return damageResult;
+  }
+
+  return {
+    ...damageResult,
+    damage: Math.max(0, Math.floor((damageResult.damage || 0) * multiplier)),
+    messages: [
+      ...(Array.isArray(damageResult.messages) ? damageResult.messages : []),
+      ...notes,
+    ],
+  };
+};
+const buildEnemyTelegraphs = (state = {}) => {
+  const enemies = Array.isArray(state?.combat?.enemies) ? state.combat.enemies : [];
+  const playerLane = Number.isFinite(state?.combat?.lanes?.player) ? state.combat.lanes.player : 1;
+  return enemies
+    .map((enemy, index) => ({ enemy, index }))
+    .filter(({ enemy }) => (enemy?.stats?.hp?.current || 0) > 0)
+    .slice(0, 3)
+    .map(({ enemy, index }) => {
+      const lane = Number.isFinite(state?.combat?.lanes?.enemies?.[index])
+        ? state.combat.lanes.enemies[index]
+        : enemy?.lane || 1;
+      const laneDistance = Math.abs(playerLane - lane);
+      const namedSkill =
+        Array.isArray(enemy?.skills) && enemy.skills.length > 0
+          ? getEnemySkillById(enemy.skills[0])?.name || "prepared skill"
+          : "driving strike";
+      return {
+        id: `telegraph_${enemy?.id || index}`,
+        enemyName: enemy?.name || "Unknown foe",
+        label: laneDistance > 0 ? `${namedSkill} across lane ${lane}` : namedSkill,
+        pressure: laneDistance > 0 ? "cross-lane" : "direct",
+        counterText:
+          laneDistance > 0
+            ? "Shift lane or guard the angle."
+            : "Guard or answer with focused pressure.",
+      };
+    });
+};
+const buildTacticalVerbs = (state = {}) => {
+  const player = state?.player || {};
+  const arenaTags = getArenaTags(state);
+  const knownNames = [
+    ...(Array.isArray(player?.activeSkills) ? player.activeSkills.map((entry) => entry?.name || entry?.id) : []),
+    ...(Array.isArray(player?.skills?.active) ? player.skills.active.map((entry) => entry?.name || entry?.id) : []),
+    ...(Array.isArray(player?.talents) ? player.talents : []),
+    ...(Array.isArray(player?.perks) ? player.perks.map((entry) => entry?.name || entry?.id || entry) : []),
+  ]
+    .filter(Boolean)
+    .map((value) => String(value).toLowerCase());
+  const verbs = [];
+
+  const pushVerb = (id, label, reason, source = "build") => {
+    if (verbs.some((entry) => entry.id === id)) return;
+    verbs.push({ id, label, reason, source });
+  };
+
+  if (arenaTags.includes("crowded-cover")) {
+    pushVerb("verb_use_cover", "Use the crowd as cover", "terrain");
+  }
+  if (arenaTags.includes("salt-slick-stone")) {
+    pushVerb("verb_hook_footing", "Hook their footing", "terrain");
+  }
+  if (arenaTags.includes("wind-shear")) {
+    pushVerb("verb_cut_wind", "Cut through the shear", "terrain");
+  }
+  if (arenaTags.includes("catwalk-drop")) {
+    pushVerb("verb_force_drop", "Force the catwalk drop", "terrain");
+  }
+  if (knownNames.some((entry) => /(shadow|stealth|vanish|rogue)/.test(entry))) {
+    pushVerb("verb_flank_blindside", "Flank into the blind side", "perk-locked");
+  }
+  if (knownNames.some((entry) => /(mark|hunter|aim|ranger)/.test(entry))) {
+    pushVerb("verb_mark_finish", "Mark then finish", "perk-locked");
+  }
+  if (knownNames.some((entry) => /(ward|shield|guard|paladin)/.test(entry))) {
+    pushVerb("verb_brace_line", "Brace the line", "perk-locked");
+  }
+  if (knownNames.some((entry) => /(storm|spark|lightning|mage)/.test(entry))) {
+    pushVerb("verb_chain_conduct", "Chain the conductive target", "perk-locked");
+  }
+
+  return verbs.slice(0, 4);
+};
+const refreshCombatIntel = (state = {}) => ({
+  ...state,
+  combat: {
+    ...state.combat,
+    arenaTags: getArenaTags(state),
+    telegraphs: buildEnemyTelegraphs(state),
+    tacticalVerbs: buildTacticalVerbs(state),
+  },
+});
 const applyElementalReactions = ({ attacker, defender, element, damage }) => {
   if (!element || !defender) {
     return { damage, defender, messages: [] };
@@ -497,7 +703,7 @@ export function startCombat(state, enemyIds) {
   if (hasRaceTag(raceId, "DEATH_SAVE")) {
     playerUpdates.deathSaveUsed = false;
   }
-  return {
+  return refreshCombatIntel({
     ...state,
     player: {
       ...state.player,
@@ -511,6 +717,7 @@ export function startCombat(state, enemyIds) {
       skillCooldowns: {},
       classAbilityCooldowns: {},
       raceAbilityCooldowns: {},
+      stance: "focused",
       playerTurnEffectsProcessed: false,
       log: combatLog,
       lanes: {
@@ -518,7 +725,7 @@ export function startCombat(state, enemyIds) {
         enemies: enemies.map((enemy) => enemy.lane ?? 1),
       },
     },
-  };
+  });
 }
 /**
  * Player attacks an enemy
@@ -707,6 +914,16 @@ export function playerAttack(state, enemyIndex, skillId = null) {
   const laneDistance = getLaneDistance(state.combat, enemyIndex);
   damageResult = applyLaneModifier(damageResult, laneDistance, state?.config, {
     allowZeroDamage: laneAllowZero,
+  });
+  damageResult = applyStanceModifier(
+    damageResult,
+    state?.combat?.stance,
+    "outgoing",
+  );
+  damageResult = applyArenaTagModifier(damageResult, getArenaTags(state), {
+    actorRole: "player",
+    stance: state?.combat?.stance,
+    laneDistance,
   });
   // === CHECK FOR CONFUSE EFFECT ===
   const resolvedState =
@@ -1662,6 +1879,12 @@ function enemyAttack(state, enemyIndex) {
   );
   const laneDistance = getLaneDistance(state.combat, enemyIndex);
   damageResult = applyLaneModifier(damageResult, laneDistance, state?.config);
+  damageResult = applyStanceModifier(damageResult, state?.combat?.stance, "incoming");
+  damageResult = applyArenaTagModifier(damageResult, getArenaTags(state), {
+    actorRole: "enemy",
+    stance: state?.combat?.stance,
+    laneDistance,
+  });
   const skillText = skill ? ` using ${skill.name}` : "";
   const newLog = [
     ...state.combat.log,
@@ -1949,14 +2172,14 @@ export function processEnemyTurns(state) {
     }
   }
   // Switch back to player turn
-  return {
+  return refreshCombatIntel({
     ...newState,
     combat: {
       ...newState.combat,
       turn: "player",
       playerTurnEffectsProcessed: false,
     },
-  };
+  });
 }
 /**
  * Escape from combat

@@ -9,6 +9,7 @@ import StatusOverlay from "../StatusOverlay.jsx";
 import TitleUI from "../TitleUI.jsx";
 import ArchetypeSystemPanel from "../ArchetypeSystemPanel.jsx";
 import NarrativeHubPanel from "../../ui/panels/NarrativeHubPanel.jsx";
+import ChronicleArchivePanel from "../../ui/panels/ChronicleArchivePanel.jsx";
 import QuestPanel from "../../ui/panels/QuestPanel.jsx";
 import InventoryPanel from "../../ui/panels/InventoryPanel.jsx";
 import EquipmentPanel from "../../ui/panels/EquipmentPanel.jsx";
@@ -87,6 +88,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
     config,
     quests,
     combatState,
+    chronicle,
     narrative,
     command,
     surfaces,
@@ -317,11 +319,11 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
 
   const primaryRooms = [
     {
-      id: "command",
-      title: "Command Dais",
-      subtitle: "Issue parser-safe intent and read the latest response in one shared chamber.",
-      tone: "gold",
-      entryAction: "Open dais",
+      id: "chronicle",
+      title: "Chronicle Archive",
+      subtitle: "Review your recorded firsts, discoveries, and the latest legend threading through the run.",
+      tone: "azure",
+      entryAction: "Open archive",
       size: "xl",
       group: "primary",
       availability: true,
@@ -335,6 +337,23 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
             memoryRef={narrative.memoryRef}
             currentMood={narrative.currentMood}
           />
+          <RoomSection eyebrow="Chronicle" title="Recorded Legend">
+            <ChronicleArchivePanel chronicle={chronicle} />
+          </RoomSection>
+        </div>
+      ),
+    },
+    {
+      id: "command",
+      title: "Command Dais",
+      subtitle: "Issue parser-safe intent and read the latest response in one shared chamber.",
+      tone: "gold",
+      entryAction: "Open dais",
+      size: "xl",
+      group: "primary",
+      availability: true,
+      render: () => (
+        <div className="atrium-room-stack">
           <RoomSection eyebrow="Command" title="What Do You Invoke?">
             <CommandTerminalPanel
               userInput={command.userInput}
@@ -374,6 +393,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
             onUseRaceAbility={actions.onUseRaceAbility}
             onEscape={actions.onEscape}
             onSetCombatLane={actions.onSetCombatLane}
+            onSetCombatStance={actions.onSetCombatStance}
           />
         ) : (
           <BattleTheaterIdle combatState={combatState} />

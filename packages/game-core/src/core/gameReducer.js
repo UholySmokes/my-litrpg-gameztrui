@@ -20,7 +20,11 @@ const ensureCombatStructure = (state) =>
   state.combat || {
     status: "inactive",
     turn: "player",
+    stance: "focused",
     enemies: [],
+    telegraphs: [],
+    arenaTags: [],
+    tacticalVerbs: [],
     log: [],
   };
 
@@ -619,6 +623,7 @@ const gameReducer = (state, action) =>
     case "PLAYER_USE_CLASS_ABILITY":
     case "PLAYER_USE_RACE_ABILITY":
     case "PLAYER_SET_COMBAT_LANE":
+    case "PLAYER_SET_COMBAT_STANCE":
     case "DUNGEON_START_RUN":
     case "DUNGEON_COMPLETE_ROOM":
     case "DUNGEON_ADVANCE_ROOM":

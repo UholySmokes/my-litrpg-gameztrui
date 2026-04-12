@@ -1,6 +1,10 @@
 import { describe, expect, it } from "@jest/globals";
 import { DataRegistry } from "../../src/data/DataRegistry.js";
 import {
+  getProfessionSummaryById,
+  getProfessionSummaries,
+} from "../../packages/game-core/src/systems/profession/ProfessionContentPack.js";
+import {
   buildValidatedCharacterCreationBlueprint,
   buildCharacterCreationDerivedState,
   buildCharacterCreationSkillPools,
@@ -100,7 +104,8 @@ describe("character creation skill pools", () => {
   it("builds a V2-ready review blueprint that passes contract validation", () => {
     const warrior = DataRegistry.getClassById("warrior") || DataRegistry.getClasses()[0];
     const human = DataRegistry.getRaceById("pure_human") || DataRegistry.getRaces()[0];
-    const profession = DataRegistry.getProfessionById("blacksmithing") || DataRegistry.getProfessions()[0];
+    const profession =
+      getProfessionSummaryById("blacksmithing") || getProfessionSummaries()[0];
     const archetypeSystem = {
       id: "skill_copy_interface",
       name: "Skill Copy Interface",

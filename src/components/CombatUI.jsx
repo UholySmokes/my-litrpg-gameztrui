@@ -13,6 +13,39 @@ function toPercent(current, max) {
   return Math.max(0, Math.min(100, (current / max) * 100));
 }
 
+function readPool(entity, poolName) {
+  const directPool = entity?.stats?.[poolName];
+  if (directPool && typeof directPool === "object") {
+    return {
+      current: directPool.current ?? 0,
+      max: directPool.max ?? 0,
+    };
+  }
+
+  if (poolName === "mp") {
+    const manaPool = entity?.stats?.mana;
+    if (manaPool && typeof manaPool === "object") {
+      return {
+        current: manaPool.current ?? 0,
+        max: manaPool.max ?? 0,
+      };
+    }
+  }
+
+  return {
+    current: entity?.[poolName] ?? 0,
+    max: entity?.[`max${poolName.toUpperCase()}`] ?? 0,
+  };
+}
+
+function normalizeLogText(entry) {
+  if (typeof entry === "string") {
+    return entry;
+  }
+
+  return entry?.text || entry?.message || "";
+}
+
 export default function CombatUI({
   combatState,
   playerState,
@@ -65,227 +98,412 @@ export default function CombatUI({
   const telegraphs = Array.isArray(combat?.telegraphs) ? combat.telegraphs : [];
   const arenaTags = Array.isArray(combat?.arenaTags) ? combat.arenaTags : [];
   const tacticalVerbs = Array.isArray(combat?.tacticalVerbs) ? combat.tacticalVerbs : [];
+  const selectedEnemyData = selectedEnemy?.enemy ?? null;
+  const selectedEnemyLane = Number.isFinite(combat?.lanes?.enemies?.[resolvedEnemyIndex])
+    ? combat.lanes.enemies[resolvedEnemyIndex]
+    : (selectedEnemyData?.lane ?? 1);
+  const playerHp = readPool(player, "hp");
+  const playerMp = readPool(player, "mp");
+  const latestEvent = normalizeLogText((combat?.log || []).slice(-1)[0]) || "No actions resolved yet.";
+  const isPlayerTurn = combat?.turn === "player";
+  const currentTurnLabel = isPlayerTurn
+    ? "Player turn"
+    : `${String(combat?.turn || "enemy").replace(/_/g, " ")} turn`;
+  const encounterCopy = isPlayerTurn
+    ? "Your window is open. Confirm a target, commit your stance, and spend resources with intent."
+    : "Enemy pressure is advancing. Read the telegraphs and prepare your next counterline.";
+  const selectedTelegraphs = telegraphs.filter((telegraph) => {
+    const telegraphName = String(telegraph?.enemyName || "").toLowerCase();
+    const enemyName = String(selectedEnemyData?.name || "").toLowerCase();
+    return telegraphName && enemyName ? telegraphName === enemyName : false;
+  });
+  const leadPressure =
+    selectedTelegraphs[0]?.counterText ||
+    selectedTelegraphs[0]?.pressure ||
+    tacticalVerbs[0]?.reason ||
+    tacticalVerbs[0]?.label ||
+    "Hold formation";
+  const threatCount = livingEnemies.length;
+  const maxEnemyLevel = livingEnemies.reduce(
+    (highest, { enemy }) => Math.max(highest, Number(enemy?.level) || 0),
+    0,
+  );
+  const playerHpPercent = toPercent(playerHp.current, playerHp.max);
+  const playerMpPercent = toPercent(playerMp.current, playerMp.max);
 
   return (
-    <div className="combat-stage">
-      <div className="combat-stage__header">
-        <div>
-          <div className="combat-stage__eyebrow">Encounter</div>
+    <div className="combat-stage combat-stage--live">
+      <header className="combat-stage__hero">
+        <div className="combat-stage__hero-copy">
+          <div className="combat-stage__eyebrow">Battle Theater</div>
           <h3 className="combat-stage__title">Active Combat</h3>
+          <p className="combat-stage__lede">{encounterCopy}</p>
         </div>
-        <div className="combat-stage__lane">
-          <span>Lane</span>
-          <strong>{Number.isFinite(playerLane) ? playerLane : 1}</strong>
+
+        <div className="combat-stage__status-grid">
+          <div className="combat-stage__status-card">
+            <span>Turn</span>
+            <strong>{currentTurnLabel}</strong>
+          </div>
+          <div className="combat-stage__status-card">
+            <span>Lane</span>
+            <strong>{Number.isFinite(playerLane) ? playerLane : 1}</strong>
+          </div>
+          <div className="combat-stage__status-card">
+            <span>Threats</span>
+            <strong>{threatCount}</strong>
+          </div>
+          <div className="combat-stage__status-card">
+            <span>Enemy peak</span>
+            <strong>{maxEnemyLevel > 0 ? `Lvl ${maxEnemyLevel}` : "Unknown"}</strong>
+          </div>
         </div>
-      </div>
+      </header>
 
-      <div className="combat-stage__enemy-grid">
-        {livingEnemies.map(({ enemy, index }) => {
-          const hpPercentage = toPercent(
-            enemy?.stats?.hp?.current ?? 0,
-            enemy?.stats?.hp?.max ?? 0,
-          );
-          const isSelected = index === selectedEnemyIndex;
+      <section className="combat-stage__spotlight">
+        <div className="combat-stage__focus-card">
+          <div className="combat-stage__focus-header">
+            <div>
+              <div className="combat-stage__section-label">Selected Threat</div>
+              <h4 className="combat-stage__focus-name">
+                {selectedEnemyData?.name || "No target locked"}
+              </h4>
+            </div>
+            <div className="combat-stage__focus-level">
+              {selectedEnemyData ? `Lvl ${selectedEnemyData.level || 1}` : "Stand by"}
+            </div>
+          </div>
 
-          return (
-            <button
-              key={`${enemy.id || "enemy"}-${index}`}
-              type="button"
-              className={`combat-stage__enemy-card ${
-                isSelected ? "combat-stage__enemy-card--selected" : ""
-              }`}
-              onClick={() => setSelectedEnemyIndex(index)}
-            >
-              <div className="combat-stage__enemy-head">
-                <span>{enemy.name}</span>
-                <strong>Lvl {enemy.level}</strong>
-              </div>
-              <div className="combat-stage__enemy-meta">
-                HP {enemy?.stats?.hp?.current ?? 0}/{enemy?.stats?.hp?.max ?? 0}
-              </div>
-              <div className="combat-stage__enemy-meta">
-                Lane{" "}
-                {Number.isFinite(combat?.lanes?.enemies?.[index])
-                  ? combat.lanes.enemies[index]
-                  : enemy.lane ?? 1}
-              </div>
-              <div className="combat-stage__meterbar">
+          <div className="combat-stage__focus-meter">
+            <div className="combat-stage__meterbar">
+              <div
+                className="combat-stage__meterfill"
+                style={{
+                  width: `${toPercent(
+                    selectedEnemyData?.stats?.hp?.current ?? 0,
+                    selectedEnemyData?.stats?.hp?.max ?? 0,
+                  )}%`,
+                }}
+              />
+            </div>
+            <div className="combat-stage__meter-label">
+              HP {selectedEnemyData?.stats?.hp?.current ?? 0}/
+              {selectedEnemyData?.stats?.hp?.max ?? 0}
+            </div>
+          </div>
+
+          <div className="combat-stage__focus-grid">
+            <div className="combat-stage__status-card combat-stage__status-card--inline">
+              <span>Lane</span>
+              <strong>{selectedEnemyLane}</strong>
+            </div>
+            <div className="combat-stage__status-card combat-stage__status-card--inline">
+              <span>Pressure</span>
+              <strong>{leadPressure}</strong>
+            </div>
+            <div className="combat-stage__status-card combat-stage__status-card--inline">
+              <span>Telegraphs</span>
+              <strong>{selectedTelegraphs.length || telegraphs.length}</strong>
+            </div>
+            <div className="combat-stage__status-card combat-stage__status-card--inline">
+              <span>Last event</span>
+              <strong>{latestEvent}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className="combat-stage__player-card">
+          <div className="combat-stage__section-label">Player Read</div>
+          <div className="combat-stage__player-grid">
+            <div className="combat-stage__player-stat">
+              <span>Health</span>
+              <strong>
+                {playerHp.current}/{playerHp.max || "?"}
+              </strong>
+              <div className="combat-stage__meterbar combat-stage__meterbar--compact">
                 <div
-                  className="combat-stage__meterfill"
-                  style={{ width: `${hpPercentage}%` }}
+                  className="combat-stage__meterfill combat-stage__meterfill--health"
+                  style={{ width: `${playerHpPercent}%` }}
                 />
               </div>
-            </button>
-          );
-        })}
-      </div>
+            </div>
+            <div className="combat-stage__player-stat">
+              <span>Mana</span>
+              <strong>
+                {playerMp.current}/{playerMp.max || "?"}
+              </strong>
+              <div className="combat-stage__meterbar combat-stage__meterbar--compact">
+                <div
+                  className="combat-stage__meterfill combat-stage__meterfill--mana"
+                  style={{ width: `${playerMpPercent}%` }}
+                />
+              </div>
+            </div>
+            <div className="combat-stage__player-stat">
+              <span>Stance</span>
+              <strong>{activeStance}</strong>
+            </div>
+            <div className="combat-stage__player-stat">
+              <span>Action cue</span>
+              <strong>{isPlayerTurn ? "Commit an action" : "Read incoming pressure"}</strong>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div className="combat-stage__core-actions">
-        <button
-          type="button"
-          className="holo-button holo-button--solid"
-          onClick={() => onAttack(resolvedEnemyIndex)}
-        >
-          Strike {selectedEnemy?.enemy?.name || "Target"}
-        </button>
+      <section className="combat-stage__panel">
+        <div className="combat-stage__panel-header">
+          <div className="combat-stage__section-label">Threat Roster</div>
+          <p className="combat-stage__section-copy">
+            Select a target to update your strike focus and pressure readout.
+          </p>
+        </div>
+        <div className="combat-stage__enemy-grid">
+          {livingEnemies.map(({ enemy, index }) => {
+            const hpPercentage = toPercent(
+              enemy?.stats?.hp?.current ?? 0,
+              enemy?.stats?.hp?.max ?? 0,
+            );
+            const isSelected = index === selectedEnemyIndex;
 
-        <button
-          type="button"
-          className="holo-button holo-button--danger"
-          onClick={onEscape}
-        >
-          Attempt Escape
-        </button>
-      </div>
-
-      {typeof onSetCombatStance === "function" ? (
-        <div className="combat-stage__lane-row">
-          {["open", "focused", "guarded"].map((stance) => {
-            const isActive = stance === activeStance;
             return (
               <button
-                key={stance}
+                key={`${enemy.id || "enemy"}-${index}`}
                 type="button"
-                className={`combat-stage__lane-chip ${
-                  isActive ? "combat-stage__lane-chip--active" : ""
+                className={`combat-stage__enemy-card ${
+                  isSelected ? "combat-stage__enemy-card--selected" : ""
                 }`}
-                onClick={() => onSetCombatStance(stance)}
-                disabled={isActive}
-                title={
-                  isActive
-                    ? `${stance} stance is already active.`
-                    : `Shift into ${stance} stance.`
-                }
+                onClick={() => setSelectedEnemyIndex(index)}
               >
-                {stance.charAt(0).toUpperCase() + stance.slice(1)}
+                <div className="combat-stage__enemy-head">
+                  <span>{enemy.name}</span>
+                  <strong>Lvl {enemy.level}</strong>
+                </div>
+                <div className="combat-stage__enemy-meta">
+                  HP {enemy?.stats?.hp?.current ?? 0}/{enemy?.stats?.hp?.max ?? 0}
+                </div>
+                <div className="combat-stage__enemy-meta">
+                  Lane{" "}
+                  {Number.isFinite(combat?.lanes?.enemies?.[index])
+                    ? combat.lanes.enemies[index]
+                    : enemy.lane ?? 1}
+                </div>
+                <div className="combat-stage__meterbar">
+                  <div
+                    className="combat-stage__meterfill"
+                    style={{ width: `${hpPercentage}%` }}
+                  />
+                </div>
               </button>
             );
           })}
         </div>
-      ) : null}
+      </section>
 
-      {arenaTags.length ? (
-        <div className="combat-stage__skill-row">
-          {arenaTags.map((tag) => (
-            <div key={tag} className="combat-stage__skill-chip" aria-hidden="true">
-              <span>{String(tag).replace(/[-_]/g, " ")}</span>
-              <strong>terrain</strong>
-            </div>
-          ))}
-        </div>
-      ) : null}
+      <div className="combat-stage__battle-grid">
+        <section className="combat-stage__panel">
+          <div className="combat-stage__panel-header">
+            <div className="combat-stage__section-label">Action Dock</div>
+            <p className="combat-stage__section-copy">
+              Your fastest route from target lock to committed move.
+            </p>
+          </div>
 
-      {telegraphs.length ? (
-        <div className="combat-stage__skill-row">
-          {telegraphs.map((telegraph) => (
-            <div
-              key={telegraph?.id || `${telegraph?.enemyName}-${telegraph?.label}`}
-              className="combat-stage__skill-chip"
+          <div className="combat-stage__core-actions">
+            <button
+              type="button"
+              className="holo-button holo-button--solid"
+              onClick={() => onAttack(resolvedEnemyIndex)}
             >
-              <span>
-                {telegraph?.enemyName || "Enemy"}: {telegraph?.label || "Incoming pattern"}
-              </span>
-              <strong>{telegraph?.counterText || telegraph?.pressure || "react"}</strong>
+              Strike {selectedEnemyData?.name || "Target"}
+            </button>
+
+            <button
+              type="button"
+              className="holo-button holo-button--danger"
+              onClick={onEscape}
+            >
+              Attempt Escape
+            </button>
+          </div>
+
+          {availableSkills.length > 0 ? (
+            <div className="combat-stage__control-block">
+              <div className="combat-stage__section-label">Skill Cadence</div>
+              <div className="combat-stage__skill-row">
+                {availableSkills.slice(0, 4).map((skill) => {
+                  const remainingCooldown = skillCooldowns?.[skill.id] || 0;
+                  const disabled = remainingCooldown > 0;
+
+                  return (
+                    <button
+                      key={skill.id}
+                      type="button"
+                      className="combat-stage__skill-chip"
+                      onClick={() => onUseSkill(skill.id, resolvedEnemyIndex)}
+                      disabled={disabled}
+                      title={
+                        disabled
+                          ? `${skill.name} is on cooldown (${remainingCooldown} turn(s) remaining)`
+                          : skill.description || skill.name
+                      }
+                    >
+                      <span>{skill.name}</span>
+                      <strong>
+                        {skill.manaCost ?? skill.cost?.mana ?? 0} MP
+                        {disabled ? ` | CD ${remainingCooldown}` : ""}
+                      </strong>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          ))}
-        </div>
-      ) : null}
+          ) : null}
 
-      {tacticalVerbs.length ? (
-        <div className="combat-stage__skill-row">
-          {tacticalVerbs.map((verb) => (
-            <div key={verb?.id || verb?.label} className="combat-stage__skill-chip">
-              <span>{verb?.label || "Tactical verb"}</span>
-              <strong>{verb?.reason || verb?.source || "build"}</strong>
+          {typeof onSetCombatStance === "function" ? (
+            <div className="combat-stage__control-block">
+              <div className="combat-stage__section-label">Stance Control</div>
+              <div className="combat-stage__lane-row">
+                {["open", "focused", "guarded"].map((stance) => {
+                  const isActive = stance === activeStance;
+                  return (
+                    <button
+                      key={stance}
+                      type="button"
+                      className={`combat-stage__lane-chip ${
+                        isActive ? "combat-stage__lane-chip--active" : ""
+                      }`}
+                      onClick={() => onSetCombatStance(stance)}
+                      disabled={isActive}
+                      title={
+                        isActive
+                          ? `${stance} stance is already active.`
+                          : `Shift into ${stance} stance.`
+                      }
+                    >
+                      {stance.charAt(0).toUpperCase() + stance.slice(1)}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          ))}
-        </div>
-      ) : null}
+          ) : null}
 
-      {availableSkills.length > 0 ? (
-        <div className="combat-stage__skill-row">
-          {availableSkills.slice(0, 4).map((skill) => {
-            const remainingCooldown = skillCooldowns?.[skill.id] || 0;
-            const disabled = remainingCooldown > 0;
+          {typeof onSetCombatLane === "function" ? (
+            <div className="combat-stage__control-block">
+              <div className="combat-stage__section-label">Lane Control</div>
+              <div className="combat-stage__lane-row">
+                {laneNumbers.map((laneNumber) => {
+                  const isActiveLane = laneNumber === playerLane;
+                  return (
+                    <button
+                      key={`lane-${laneNumber}`}
+                      type="button"
+                      className={`combat-stage__lane-chip ${
+                        isActiveLane ? "combat-stage__lane-chip--active" : ""
+                      }`}
+                      onClick={() => onSetCombatLane(laneNumber)}
+                      disabled={laneControlsDisabled || isActiveLane}
+                      title={
+                        isActiveLane
+                          ? `Already in lane ${laneNumber}`
+                          : laneControlsDisabled
+                            ? "You can only reposition on your turn."
+                            : `Shift to lane ${laneNumber}.`
+                      }
+                    >
+                      Lane {laneNumber}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
 
-            return (
-              <button
-                key={skill.id}
-                type="button"
-                className="combat-stage__skill-chip"
-                onClick={() => onUseSkill(skill.id, resolvedEnemyIndex)}
-                disabled={disabled}
-                title={
-                  disabled
-                    ? `${skill.name} is on cooldown (${remainingCooldown} turn(s) remaining)`
-                    : skill.description || skill.name
-                }
-              >
-                <span>{skill.name}</span>
-                <strong>
-                  {skill.manaCost ?? skill.cost?.mana ?? 0} MP
-                  {disabled ? ` | CD ${remainingCooldown}` : ""}
-                </strong>
-              </button>
-            );
-          })}
-        </div>
-      ) : null}
+          <div className="combat-stage__ability-tray">
+            {player && onUseClassAbility ? (
+              <ClassAbilities
+                player={player}
+                onUseAbility={onUseClassAbility}
+                cooldowns={combat?.classAbilityCooldowns || {}}
+              />
+            ) : null}
 
-      {typeof onSetCombatLane === "function" ? (
-        <div className="combat-stage__lane-row">
-          {laneNumbers.map((laneNumber) => {
-            const isActiveLane = laneNumber === playerLane;
-            return (
-              <button
-                key={`lane-${laneNumber}`}
-                type="button"
-                className={`combat-stage__lane-chip ${
-                  isActiveLane ? "combat-stage__lane-chip--active" : ""
-                }`}
-                onClick={() => onSetCombatLane(laneNumber)}
-                disabled={laneControlsDisabled || isActiveLane}
-                title={
-                  isActiveLane
-                    ? `Already in lane ${laneNumber}`
-                    : laneControlsDisabled
-                      ? "You can only reposition on your turn."
-                      : `Shift to lane ${laneNumber}.`
-                }
-              >
-                Lane {laneNumber}
-              </button>
-            );
-          })}
-        </div>
-      ) : null}
+            {player && onUseRaceAbility ? (
+              <RaceAbilities
+                player={player}
+                onUseAbility={onUseRaceAbility}
+                cooldowns={combat?.raceAbilityCooldowns || {}}
+              />
+            ) : null}
+          </div>
+        </section>
 
-      {player ? <ClassResourceBar player={player} /> : null}
+        <section className="combat-stage__panel">
+          <div className="combat-stage__panel-header">
+            <div className="combat-stage__section-label">Battlefield Read</div>
+            <p className="combat-stage__section-copy">
+              Terrain, warnings, and sustain tools that shape the next decision.
+            </p>
+          </div>
 
-      <div className="combat-stage__support-grid">
-        {player ? <StatusEffects player={player} /> : null}
-        {player ? <MinionPanel player={player} /> : null}
+          {arenaTags.length ? (
+            <div className="combat-stage__control-block">
+              <div className="combat-stage__section-label">Arena State</div>
+              <div className="combat-stage__skill-row">
+                {arenaTags.map((tag) => (
+                  <div key={tag} className="combat-stage__skill-chip" aria-hidden="true">
+                    <span>{String(tag).replace(/[-_]/g, " ")}</span>
+                    <strong>terrain</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {telegraphs.length ? (
+            <div className="combat-stage__control-block">
+              <div className="combat-stage__section-label">Incoming Telegraphs</div>
+              <div className="combat-stage__skill-row">
+                {telegraphs.map((telegraph) => (
+                  <div
+                    key={telegraph?.id || `${telegraph?.enemyName}-${telegraph?.label}`}
+                    className="combat-stage__skill-chip"
+                  >
+                    <span>
+                      {telegraph?.enemyName || "Enemy"}: {telegraph?.label || "Incoming pattern"}
+                    </span>
+                    <strong>{telegraph?.counterText || telegraph?.pressure || "react"}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {tacticalVerbs.length ? (
+            <div className="combat-stage__control-block">
+              <div className="combat-stage__section-label">Tactical Verbs</div>
+              <div className="combat-stage__skill-row">
+                {tacticalVerbs.map((verb) => (
+                  <div key={verb?.id || verb?.label} className="combat-stage__skill-chip">
+                    <span>{verb?.label || "Tactical verb"}</span>
+                    <strong>{verb?.reason || verb?.source || "build"}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {player ? <ClassResourceBar player={player} /> : null}
+
+          <div className="combat-stage__support-grid">
+            {player ? <StatusEffects player={player} /> : null}
+            {player ? <MinionPanel player={player} /> : null}
+          </div>
+
+          <CombatLog entries={combat?.log || []} />
+        </section>
       </div>
-
-      <div className="combat-stage__ability-tray">
-        {player && onUseClassAbility ? (
-          <ClassAbilities
-            player={player}
-            onUseAbility={onUseClassAbility}
-            cooldowns={combat?.classAbilityCooldowns || {}}
-          />
-        ) : null}
-
-        {player && onUseRaceAbility ? (
-          <RaceAbilities
-            player={player}
-            onUseAbility={onUseRaceAbility}
-            cooldowns={combat?.raceAbilityCooldowns || {}}
-          />
-        ) : null}
-      </div>
-
-      <CombatLog entries={combat?.log || []} />
     </div>
   );
 }

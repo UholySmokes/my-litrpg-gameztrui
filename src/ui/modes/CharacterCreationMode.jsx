@@ -15,11 +15,16 @@ import CreationChoicePanel from "../panels/creation/CreationChoicePanel.jsx";
 import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSystemPanel.jsx";
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 import CreationStartingPointPanel from "../panels/creation/CreationStartingPointPanel.jsx";
+import CreationImpactPreviewPanel from "../panels/creation/CreationImpactPreviewPanel.jsx";
 import { ensureAttributeShape } from "../../constants/attributes.js";
 import {
   buildCreationStepSequence,
   calculateCreationSyncProgress,
 } from "../../core/characterCreationWizardFlow.js";
+import {
+  buildStarterKitPreview,
+  mergeCreationOnboardingData,
+} from "../../core/creationOnboarding.js";
 import {
   createTelemetryEvent,
   postTelemetryBatch,
@@ -58,6 +63,22 @@ const RACE_ASCII = {
   orc: "\n    +-----------+\n    |    ORC    |\n    |   _/^^\\\\_  |\n    |  / o  o\\\\  |\n    | |   ^^  | |\n    | |  ____ | |\n    |  \\\\______/ |\n    +-----------+",
   default: "\n    +-----------+\n    | ADVENTURER|\n    |   _____   |\n    |  / o o \\\\  |\n    | |   ^   | |\n    | |  ___  | |\n    |  \\\\_____/  |\n    +-----------+",
 };
+
+function summarizePositiveBonuses(entry = {}, limit = 2) {
+  return Object.entries(entry || {})
+    .filter(([, value]) => Number(value) > 0)
+    .sort((left, right) => Number(right[1]) - Number(left[1]))
+    .slice(0, limit)
+    .map(([key, value]) => `+${value} ${key}`);
+}
+
+function summarizeNames(values = [], limit = 3) {
+  return (Array.isArray(values) ? values : [])
+    .map((value) => (typeof value === "string" ? value : value?.name || value?.id || ""))
+    .filter(Boolean)
+    .slice(0, limit)
+    .join(", ");
+}
 
 function playSystemSound(sound) {
   if (typeof window === "undefined") return;
@@ -236,15 +257,20 @@ export default function CharacterCreationMode({
   );
   const [wizardError, setWizardError] = useState("");
   const [openCrucibleSections, setOpenCrucibleSections] = useState({});
-  const [selectedStartingPoint, setSelectedStartingPoint] = useState(null);
+  const [selectedStartingPoint, setSelectedStartingPoint] = useState(
+    () =>
+      availableStartingPoints.find((point) => point.id === initialDraft?.selectedStartingPointId) ||
+      null,
+  );
   const narrativeMemoryRef = useRef(null);
 
   useEffect(() => {
     patchCharacterCreationDraft({
       activeChamberIndex,
       unlockedChamberIndex,
+      selectedStartingPointId: selectedStartingPoint?.id || null,
     });
-  }, [activeChamberIndex, unlockedChamberIndex]);
+  }, [activeChamberIndex, selectedStartingPoint?.id, unlockedChamberIndex]);
 
   const emitCreationTelemetry = useCallback(
     (event) => {
@@ -303,6 +329,15 @@ export default function CharacterCreationMode({
     selectedProfession?.description,
     selectedRace,
   ]);
+
+  const starterKitPreview = useMemo(
+    () =>
+      buildStarterKitPreview({
+        class: selectedClass,
+        profession: selectedProfession,
+      }),
+    [selectedClass, selectedProfession],
+  );
 
   const selectionSummary = useMemo(() => {
     const systemMatchSummaryParts = [];
@@ -364,6 +399,11 @@ export default function CharacterCreationMode({
       originName: selectedStartingPoint?.name || "Origin not selected",
       originDescription: selectedStartingPoint?.summary || "Choose an origin to shape your opening pressures.",
       originBiome: selectedStartingPoint?.type || null,
+      starterKitLabel: starterKitPreview.starterKitLabel,
+      starterWeaponName: starterKitPreview.weapon?.name || null,
+      starterArmorName: starterKitPreview.armor?.name || null,
+      starterSupportName: starterKitPreview.supportItem?.name || null,
+      starterConsumableName: starterKitPreview.consumable?.name || null,
     };
   }, [
     blockedSkillIds.length,
@@ -379,11 +419,13 @@ export default function CharacterCreationMode({
     selectedRace,
     selectedActiveSkills,
     selectedStartingPoint,
+    starterKitPreview,
     startingPrompt,
     systemAttributeBias,
   ]);
 
   const canFinalize = useMemo(() => Boolean(validateReview?.()?.valid), [validateReview]);
+  const canSealChronicle = canFinalize && Boolean(selectedStartingPoint);
 
   const completionById = useMemo(
     () => ({
@@ -407,8 +449,8 @@ export default function CharacterCreationMode({
           selectedStarterTreeIds.length <=
             (starterTreeLimits?.maxPicks || Number.MAX_SAFE_INTEGER)),
       alignment: Boolean(selectedAlignmentId),
-      "starting-point": Boolean(startingPrompt?.trim()),
-      review: canFinalize,
+      "starting-point": Boolean(selectedStartingPoint && startingPrompt?.trim()),
+      review: canSealChronicle,
     }),
     [
       MAX_ACTIVE_SKILLS,
@@ -416,6 +458,7 @@ export default function CharacterCreationMode({
       advancedUnlocked,
       availablePoints,
       canFinalize,
+      canSealChronicle,
       characterName,
       creationPerkLimits?.maxPicks,
       creationPerkLimits?.minPicks,
@@ -430,6 +473,7 @@ export default function CharacterCreationMode({
       selectedPerkIds.length,
       selectedProfession,
       selectedRace,
+      selectedStartingPoint,
       selectedStarterTreeIds.length,
     ],
   );
@@ -453,10 +497,11 @@ export default function CharacterCreationMode({
       requiresStarterTree:
         advancedUnlocked && (starterTreeLimits?.minPicks || 0) > 0,
       alignmentLocked: completionById.alignment,
+      hasOrigin: Boolean(selectedStartingPoint),
       hasStartingPrompt: completionById["starting-point"],
-      canFinalize,
+      canFinalize: canSealChronicle,
     }),
-    [advancedUnlocked, canFinalize, completionById, starterTreeLimits?.minPicks],
+    [advancedUnlocked, canSealChronicle, completionById, selectedStartingPoint, starterTreeLimits?.minPicks],
   );
 
   // Clear validation errors when the player makes a selection that changes chamber checks.

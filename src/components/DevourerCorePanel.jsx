@@ -129,9 +129,9 @@ export default function DevourerCorePanel({ player, onSubmitCommand }) {
       <Section title="Recent Prey">
         {viewModel.recentPrey.length > 0 ? (
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-            {viewModel.recentPrey.map((entry) => (
+            {viewModel.recentPrey.map((entry, index) => (
               <span
-                key={entry}
+                key={`recent-prey-${index}-${entry}`}
                 style={{
                   padding: "0.35rem 0.6rem",
                   borderRadius: "999px",

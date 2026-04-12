@@ -34,6 +34,9 @@ describe("Combat casting", () => {
     expect(cast.success).toBe(true);
     expect(cast.state.player.magic.strain.current).toBeGreaterThan(0);
     expect(cast.state.player.magic.resonance.current).toBeGreaterThan(0);
+    expect(cast.state.player.abilityState.families.magic.strain.current).toBe(
+      cast.state.player.magic.strain.current,
+    );
     expect(cast.state.player.mana.current).toBeLessThan(80);
   });
 
@@ -69,6 +72,7 @@ describe("Combat casting", () => {
     });
     expect(cast.success).toBe(true);
     expect(cast.state.player.magic.prepared).toBeNull();
+    expect(cast.state.player.abilityState.preparedDirective).toBeNull();
     expect(cast.state.player.magic.strain.current).toBeGreaterThan(0);
     expect(cast.state.player.magic.resonance.current).toBeGreaterThan(0);
     expect(cast.state.player.mana.current).toBeLessThan(60);
@@ -104,6 +108,7 @@ describe("Combat casting", () => {
     const next = applyCastingInterruptionFromDamage(state, 2);
     expect(next.player.magic.casting).toBeNull();
     expect(next.player.magic.prepared).toBeNull();
+    expect(next.player.abilityState?.families?.magic?.prepared ?? null).toBeNull();
     expect(next.combat.log.length).toBeGreaterThan(0);
   });
 

@@ -26,8 +26,9 @@ describe("skill progression systems", () => {
       payload: { skillId: "test_skill" },
     });
     expect(next.player.abilities.length).toBe(1);
-    expect(next.player.abilities[0].id).not.toBe("test_skill");
-    expect(next.player.abilities[0].level).toBe(11);
+    expect(next.player.abilities[0].id).toBe("test_skill");
+    expect(next.player.abilityState.mastery.skills.test_skill.level).toBe(11);
+    expect(next.player.abilityState.mastery.skills.test_skill.evolutionStage).toBe(1);
   });
 
   it("fuses two skills via reducer", () => {
@@ -59,12 +60,13 @@ describe("skill progression systems", () => {
       type: "FUSE_SKILLS",
       payload: { skillAId: "skill_a", skillBId: "skill_b" },
     });
-    expect(next.player.abilities.length).toBe(1);
-    const fused = next.player.abilities[0];
-    expect(typeof fused.name).toBe("string");
-    expect(fused.name.trim().length).toBeGreaterThan(0);
-    expect(fused.id).not.toBe("skill_a");
-    expect(fused.id).not.toBe("skill_b");
+    expect(next.player.abilities.length).toBe(2);
+    const recipeKeys = Object.keys(next.player.abilityState.recipeBook.entries);
+    expect(recipeKeys).toHaveLength(1);
+    expect(recipeKeys[0]).toContain("fusion:");
+    expect(next.player.abilityState.recipeBook.entries[recipeKeys[0]].sourceSkillIds).toEqual(
+      expect.arrayContaining(["skill_a", "skill_b"]),
+    );
   });
 
   it("evolves class when requirements are met", () => {

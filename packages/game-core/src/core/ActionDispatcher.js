@@ -10,52 +10,17 @@ import {
 } from "../systems/world/TimeSystem.js";
 import { withTraceSpan } from "../observability/traceShim.js";
 import {
-  magicSense,
-  magicAttune,
-  magicDraw,
-  magicRefine,
-  magicCompress,
-  magicAnchor,
-  magicShape,
-  magicWeave,
-  magicPurge,
-  magicRelease,
-  processEssenceEcologyTurn,
-} from "../systems/magic/EssenceWeavingSystem.js";
-import {
-  buildCombatMagicSkill,
-  castMagic,
-  castPreparedMagic,
-  prepareMagic,
-  senseMagic,
-  stabilizeMagic,
-  sustainMagic,
-  translateLegacyMagicAction,
-} from "../systems/magic/UnifiedMagicSystem.js";
+  buildCombatAbilitySkill,
+  executeAbilityAction,
+  processAbilityEcologyTurn,
+  syncPlayerAbilityState,
+} from "../systems/abilities/UnifiedAbilityEngine.js";
 import { hasCreationPerk } from "./creationPerks.js";
 import {
   executeDevourerDigest,
   executeDevourerRefine,
   executeDevourerPurge,
 } from "../systems/archetype/devourerCore.js";
-
-const isLayerDEnabled = (state) => {
-  const rollout =
-    state?.config?.magicRollout &&
-    typeof state.config.magicRollout === "object" &&
-    !Array.isArray(state.config.magicRollout)
-      ? state.config.magicRollout
-      : null;
-  if (!rollout) return true;
-  if (typeof rollout.layerD === "boolean") return rollout.layerD;
-  if (typeof rollout.layerD === "number") return rollout.layerD !== 0;
-  if (typeof rollout.layerD === "string") {
-    const normalized = rollout.layerD.trim().toLowerCase();
-    if (["false", "0", "no", "off", "disabled"].includes(normalized)) return false;
-    if (["true", "1", "yes", "on", "enabled"].includes(normalized)) return true;
-  }
-  return true;
-};
 
 /**
  * Executes an action and returns the result
@@ -96,7 +61,7 @@ export function executeAction(state, action, _options = {}) {
 
       switch (action.type) {
         case "magic_prepare": {
-          const result = prepareMagic(state, action);
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -108,7 +73,7 @@ export function executeAction(state, action, _options = {}) {
         case "magic_cast": {
           const inCombat = state.combat?.status === "active";
           if (inCombat) {
-            const combatMagic = buildCombatMagicSkill(state, action);
+            const combatMagic = buildCombatAbilitySkill(state, action);
             if (!combatMagic.ok) {
               return { success: false, reason: combatMagic.reason, state };
             }
@@ -127,7 +92,7 @@ export function executeAction(state, action, _options = {}) {
             break;
           }
 
-          const result = castMagic(state, action);
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -137,7 +102,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_sustain": {
-          const result = sustainMagic(state, action);
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -147,7 +112,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_stabilize": {
-          const result = stabilizeMagic(state, action);
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -158,7 +123,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_sense": {
-          const result = senseMagic(state, action);
+          const result = executeAbilityAction(state, action);
           return {
             success: true,
             description: result.description || "Sensed essence",
@@ -168,7 +133,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_attune": {
-          const result = stabilizeMagic(state, translateLegacyMagicAction(action));
+          const result = executeAbilityAction(state, action);
           newState = result.state || state;
           description = result.description || "Attuned";
           incrementsTurn = false;
@@ -176,7 +141,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_draw": {
-          const result = magicDraw(state, action);
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -186,7 +151,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_refine": {
-          const result = magicRefine(state, action);
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -196,7 +161,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_compress": {
-          const result = magicCompress(state, action);
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -206,7 +171,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_anchor": {
-          const result = magicAnchor(state, action);
+          const result = executeAbilityAction(state, action);
           newState = result.state || state;
           description = result.description || "Anchored";
           incrementsTurn = false;
@@ -214,7 +179,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_purge": {
-          const result = magicPurge(state, action);
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -224,7 +189,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_shape": {
-          const result = prepareMagic(state, translateLegacyMagicAction(action));
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -234,7 +199,7 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_weave": {
-          const result = prepareMagic(state, translateLegacyMagicAction(action));
+          const result = executeAbilityAction(state, action);
           if (result && result.ok === false) {
             return { success: false, reason: result.reason, state: result.state || state };
           }
@@ -257,12 +222,22 @@ export function executeAction(state, action, _options = {}) {
             notes: `Studied ${target} at turn ${turn}.`,
           };
           const nextJournal = [...journal, entry].slice(-50);
+          const nextMagic = { ...magic, journal: nextJournal };
           newState = {
             ...state,
-            player: {
-              ...state.player,
-              magic: { ...magic, journal: nextJournal },
-            },
+            player: syncPlayerAbilityState(
+              {
+                ...state.player,
+                magic: nextMagic,
+              },
+              {
+                ...(state.player?.abilityState || {}),
+                families: {
+                  ...(state.player?.abilityState?.families || {}),
+                  magic: nextMagic,
+                },
+              },
+            ),
           };
           description = `Studied ${target} — observation logged in magic journal.`;
           break;
@@ -282,12 +257,22 @@ export function executeAction(state, action, _options = {}) {
               notes: action.note,
             };
             const nextJournal = [...journal, entry].slice(-50);
+            const nextMagic = { ...magic, journal: nextJournal };
             newState = {
               ...state,
-              player: {
-                ...state.player,
-                magic: { ...magic, journal: nextJournal },
-              },
+              player: syncPlayerAbilityState(
+                {
+                  ...state.player,
+                  magic: nextMagic,
+                },
+                {
+                  ...(state.player?.abilityState || {}),
+                  families: {
+                    ...(state.player?.abilityState?.families || {}),
+                    magic: nextMagic,
+                  },
+                },
+              ),
             };
             description = `Journal updated: "${action.note}"`;
           } else {
@@ -332,10 +317,9 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "magic_release": {
-          const translated = translateLegacyMagicAction(action);
           const inCombat = state.combat?.status === "active";
           if (inCombat) {
-            const combatMagic = buildCombatMagicSkill(state, translated);
+            const combatMagic = buildCombatAbilitySkill(state, action);
             if (!combatMagic.ok) {
               return { success: false, reason: combatMagic.reason, state };
             }
@@ -352,7 +336,7 @@ export function executeAction(state, action, _options = {}) {
             });
             incrementsTurn = false;
           } else {
-            const result = castPreparedMagic(state, translated);
+            const result = executeAbilityAction(state, action);
             if (result && result.ok === false) {
               return { success: false, reason: result.reason, state: result.state || state };
             }
@@ -587,7 +571,7 @@ export function executeAction(state, action, _options = {}) {
         };
 
         newState = advanceWorldTimeAndWeather(newState, { turns: 1 });
-        newState = processEssenceEcologyTurn(newState);
+        newState = processAbilityEcologyTurn(newState);
 
         // Apply passive time-based effects (mana regen, race abilities)
         // when not in active combat (combat handles this via processEnemyTurns)

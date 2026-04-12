@@ -2,10 +2,10 @@
 import { describe, expect, it } from "@jest/globals";
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { getAllSkills } from '../../packages/game-core/src/systems/skills/SkillRegistry.js';
+import { validateEngineProfileShape } from '../../packages/game-core/src/systems/abilities/engineProfile.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillsDataDir = path.resolve(__dirname, '../../packages/game-core/src/data/skills');
+const skillsDataDir = path.resolve(process.cwd(), 'packages/game-core/src/data/skills');
 
 const getJsonFiles = (dir) => {
     const files = fs.readdirSync(dir);
@@ -68,6 +68,20 @@ describe("Skill JSON Schema Validation", () => {
                     expect(skill.cooldown).toBeGreaterThanOrEqual(0);
                 }
             });
+        });
+    });
+});
+
+describe("Skill engine profile validation", () => {
+    it("ensures every executable skill exposes a valid engine profile", () => {
+        const skills = getAllSkills().filter(
+            (skill) => skill && ['active', 'passive', 'buff', 'debuff'].includes(skill.type),
+        );
+        expect(skills.length).toBeGreaterThan(0);
+
+        skills.forEach((skill) => {
+            const validation = validateEngineProfileShape(skill.engineProfile);
+            expect(validation.valid).toBe(true);
         });
     });
 });

@@ -36,6 +36,11 @@ import {
 } from "./LivingLatticeSystem.js";
 import { getTalentMigrationLane } from "./TalentMigrationAudit.js";
 import {
+  attachEngineProfile,
+  deriveEngineProfile,
+  validateEngineProfileShape,
+} from "../abilities/engineProfile.js";
+import {
   getAllRaceAbilityIds,
   getRaceAbilityById,
   getRaceAbilitiesFor,
@@ -399,8 +404,7 @@ const normalizeSkillTemplate = (skill) => {
 
   const element = typeof next.element === "string" ? next.element : null;
   const template = next.template && typeof next.template === "object" ? next.template : {};
-
-  return attachLatticeMetadata({
+  const normalizedSkill = {
     ...next,
     ownerType,
     ownerId,
@@ -427,7 +431,22 @@ const normalizeSkillTemplate = (skill) => {
       source: template.source || "SkillRegistry",
       ...(template.meta && typeof template.meta === "object" ? { meta: template.meta } : {}),
     },
+  };
+  const withEngineProfile = attachEngineProfile(normalizedSkill);
+  const engineProfile = deriveEngineProfile(withEngineProfile);
+  const withLattice = attachLatticeMetadata(withEngineProfile, {
+    family: engineProfile.family,
+    runtimeRole: engineProfile.runtimeRole,
   });
+  const validation = validateEngineProfileShape(withLattice.engineProfile);
+
+  if (!validation.valid) {
+    throw new Error(
+      `Invalid engineProfile for skill ${withLattice.id || "(unknown)"}: ${validation.errors.join(", ")}`,
+    );
+  }
+
+  return withLattice;
 };
 
 // =================================================================

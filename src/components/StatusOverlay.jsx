@@ -10,6 +10,7 @@ export default function StatusOverlay({
   isOpen,
   onClose,
   onOpenArchetypeSystem,
+  archetypeActionLabel = "View System",
   onAllocateAttribute,
   onDeallocateAttribute,
   onEvolveSkill,
@@ -221,7 +222,7 @@ export default function StatusOverlay({
                     onClick={onOpenArchetypeSystem}
                     disabled={typeof onOpenArchetypeSystem !== "function"}
                   >
-                    View System
+                    {archetypeActionLabel}
                   </button>
                 </div>
                 <div style={{ color: "var(--text-main)", lineHeight: 1.45 }}>

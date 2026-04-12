@@ -8,6 +8,7 @@ import ShopUI from "../ShopUI.jsx";
 import StatusOverlay from "../StatusOverlay.jsx";
 import TitleUI from "../TitleUI.jsx";
 import ArchetypeSystemPanel from "../ArchetypeSystemPanel.jsx";
+import DevourerCorePanel from "../DevourerCorePanel.jsx";
 import NarrativeHubPanel from "../../ui/panels/NarrativeHubPanel.jsx";
 import ChronicleArchivePanel from "../../ui/panels/ChronicleArchivePanel.jsx";
 import QuestPanel from "../../ui/panels/QuestPanel.jsx";
@@ -23,6 +24,7 @@ import {
   getAdventureOnboardingContext,
   isAdventureSurfaceUnlocked,
 } from "../../core/creationOnboarding.js";
+import { isDevourerCorePlayer } from "@voidverse/game-core/systems/archetype/devourerCore.js";
 
 function RoomSection({ eyebrow, title, children }) {
   return (
@@ -102,6 +104,7 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
   const onboardingTier = deriveAdventureOnboardingTier({ state, player, quests });
   const onboardingContext = getAdventureOnboardingContext({ state, player, quests });
   const onboardingActive = onboardingContext?.active === true;
+  const devourerActive = isDevourerCorePlayer(player);
   const hasUnlockedSurface = (surfaceId) =>
     isAdventureSurfaceUnlocked(surfaceId, { state, player, quests });
   const allowEarlySurface = (surfaceId, fallback) =>
@@ -140,7 +143,29 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
           onStudySpell={actions.onStudySpell}
           onPerformPrestige={actions.onPerformPrestige}
           onBuyPrestigeUpgrade={actions.onBuyPrestigeUpgrade}
-          onOpenArchetypeSystem={surfaces.handleToggleArchetypeSystem}
+          onOpenArchetypeSystem={
+            devourerActive ? surfaces.handleToggleDevourerCore : surfaces.handleToggleArchetypeSystem
+          }
+          archetypeActionLabel={devourerActive ? "View Devourer Core" : "View System"}
+        />
+      ),
+    },
+    {
+      id: "devourer",
+      title: "Devourer Core",
+      subtitle: "Review safe prey intake, queued risks, and permanent adaptation opportunities.",
+      tone: "verdigris",
+      entryAction: "Open core",
+      size: "fullscreen",
+      group: "system",
+      availability: devourerActive && onboardingTier >= 3,
+      isOpen: Boolean(surfaces.showDevourerCore),
+      onOpen: quickActionsProps.onToggleDevourerCore,
+      onClose: surfaces.handleCloseDevourerCore,
+      render: () => (
+        <DevourerCorePanel
+          player={player}
+          onSubmitCommand={command.onSuggestionSelect}
         />
       ),
     },

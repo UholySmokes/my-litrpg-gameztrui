@@ -10,7 +10,10 @@ import {
 import { getTitleBonuses } from "../titles/TitleSystem.js";
 import { random } from "../../utils/DeterministicRandom.js";
 import { hasCreationPerk } from "../../core/creationPerks.js";
-import { applyDevourerHarvestToState } from "../archetype/devourerCore.js";
+import {
+  applyDevourerHarvestToState,
+  evaluateDevourerAutoAbsorb,
+} from "../archetype/devourerCore.js";
 
 const createEnemyDefeatLog = ({
   combatLog,
@@ -176,6 +179,8 @@ export function handleEnemyDefeatPhase(state, enemyIndex) {
 
   const devourerHarvest = applyDevourerHarvestToState(nextState, enemy);
   nextState = devourerHarvest.state;
+  const devourerAutoAbsorb = evaluateDevourerAutoAbsorb(nextState, enemy);
+  nextState = devourerAutoAbsorb.state;
 
   const itemCount = adjustedItems.reduce(
     (sum, item) => sum + Math.max(1, Math.floor(toNumber(item?.quantity, 1))),
@@ -198,6 +203,7 @@ export function handleEnemyDefeatPhase(state, enemyIndex) {
           itemCount,
         }),
         ...(Array.isArray(devourerHarvest.notices) ? devourerHarvest.notices : []),
+        ...(Array.isArray(devourerAutoAbsorb.notices) ? devourerAutoAbsorb.notices : []),
       ],
     },
   };

@@ -7,6 +7,10 @@ import {
   resolveCharacterCreationSkillLoadout,
   validateCharacterCreationSkillSelections,
 } from "@voidverse/game-core";
+import {
+  getCharacterCreationClasses,
+  getCharacterCreationRaces,
+} from "../../packages/game-core/src/characterCreation/CharacterCreationContentPack.js";
 import { DataRegistry } from "../../src/data/DataRegistry.js";
 
 describe("CharacterCreationSkillSelection", () => {
@@ -31,6 +35,27 @@ describe("CharacterCreationSkillSelection", () => {
     expect(sampleActive.creationLabels.family.length).toBeGreaterThan(0);
     expect(pools.active.length).toBeLessThanOrEqual(8);
     expect(pools.passive.length).toBeLessThanOrEqual(13);
+  });
+
+  it("uses catalog-owned class starter skills even when generated class summaries have empty skill arrays", () => {
+    const summaryClass =
+      getCharacterCreationClasses().find((entry) => entry.id === "warrior") ||
+      getCharacterCreationClasses()[0];
+    const summaryRace =
+      getCharacterCreationRaces().find((entry) => entry.id === "pure_human") ||
+      getCharacterCreationRaces()[0];
+
+    expect(Array.isArray(summaryClass?.skills)).toBe(true);
+    expect(summaryClass.skills).toHaveLength(0);
+
+    const pools = buildCharacterCreationSkillPools(summaryClass, summaryRace);
+    const activeOwnerTypes = new Set(pools.active.map((skill) => skill.ownerType));
+    const passiveOwnerTypes = new Set(pools.passive.map((skill) => skill.ownerType));
+
+    expect(pools.active).toHaveLength(7);
+    expect(pools.passive).toHaveLength(11);
+    expect(activeOwnerTypes.has("class")).toBe(true);
+    expect(passiveOwnerTypes.has("class")).toBe(true);
   });
 
   it("auto-grants the profession tier-1 passive instead of offering it as an elective", () => {

@@ -490,16 +490,18 @@ export function buildCharacterCreationSkillPools(
     : getCharacterCreationSkillSummaries();
   const skillIndex = buildSkillIndex(skillCatalog);
 
-  const classSkillEntries = Array.isArray(cls?.skills)
-    ? collectSkillEntries(cls.skills, null, skillIndex, "class")
-    : skillCatalog
-        .filter((skill) => {
-          if (!isSkillUnlockedAtCreation(skill)) return false;
-          if (!isStarterBandSkill(skill)) return false;
-          return normalizeLower(skill?.ownerType) === "class" && normalizeId(skill?.ownerId) === classId;
-        })
-        .map((skill) => enrichSkillForCreation(skill, "class"))
-        .filter(Boolean);
+  const classCatalogEntries = skillCatalog
+    .filter((skill) => {
+      if (!isSkillUnlockedAtCreation(skill)) return false;
+      if (!isStarterBandSkill(skill)) return false;
+      return normalizeLower(skill?.ownerType) === "class" && normalizeId(skill?.ownerId) === classId;
+    })
+    .map((skill) => enrichSkillForCreation(skill, "class"))
+    .filter(Boolean);
+  const classSkillEntries = uniqueSkills([
+    ...classCatalogEntries,
+    ...collectSkillEntries(cls?.skills, null, skillIndex, "class"),
+  ]);
   const classPoolsRaw = splitSkillsByType(classSkillEntries);
   const classPools = {
     active: limitSkills(classPoolsRaw.active, STARTER_POOL_LIMITS.class.active),

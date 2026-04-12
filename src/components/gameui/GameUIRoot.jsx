@@ -706,7 +706,7 @@ export default function GameUI({ user }) {
   return (
     <div className="runic-app">
       <div className="runic-app__stack">
-        {IS_DEV_BUILD ? (
+        {IS_DEV_BUILD || user?.id === "local" ? (
           <DevConsoleDock
             state={state}
             dispatch={dispatchSystemEvent}

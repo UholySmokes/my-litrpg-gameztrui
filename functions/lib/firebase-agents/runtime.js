@@ -265,6 +265,10 @@ function ensureSentence(value) {
 	return /[.!?]$/.test(text) ? text : `${text}.`;
 }
 
+function stripTrailingSentencePunctuation(value) {
+	return normalizeText(value).replace(/[.!?]+$/g, "");
+}
+
 function normalizeActionLead(input) {
 	const raw = normalizeText(input);
 	if (!raw) return "act on the nearest opening";
@@ -510,7 +514,7 @@ function buildTurnFallbackStory(context = {}) {
 	return [
 		firstLine,
 		context.actionSummary
-			? `${locationLead} takes the consequence immediately: ${context.actionSummary}.`
+			? `${locationLead} takes the consequence immediately: ${stripTrailingSentencePunctuation(context.actionSummary)}.`
 			: `At ${locationLead}, even a small move changes the pressure in the air.`,
 		primaryEntity
 			? `${primaryEntity} reacts first, making it clear you are no longer background noise here.`

@@ -9,6 +9,13 @@ const DEFAULT_AI_TEXT_PROVIDER = "openai";
 const DEFAULT_OPENAI_TIMEOUT_MS = 120000;
 const DEFAULT_OPENROUTER_TIMEOUT_MS = 120000;
 const DEFAULT_CEREBRAS_TIMEOUT_MS = 120000;
+const NARRATION_FALLBACK_AGENTS = new Set([
+	"narrator",
+	"combat",
+	"dialogue",
+	"world",
+	"system",
+]);
 const OPENAI_NARRATION_AGENTS = new Set([
 	"narrator",
 	"combat",
@@ -145,6 +152,380 @@ function blockFromValue(label, value) {
 	const text = toJsonString(value);
 	if (!text || !text.trim()) return "";
 	return `<${label}>\n${text}`;
+}
+
+function normalizeText(value) {
+	return typeof value === "string" ? value.trim() : "";
+}
+
+function dedupeStrings(values = [], maxItems = 6) {
+	const seen = new Set();
+	const normalized = [];
+	for (const entry of values) {
+		const item = normalizeText(entry);
+		const key = item.toLowerCase();
+		if (!item || seen.has(key)) continue;
+		seen.add(key);
+		normalized.push(item);
+		if (normalized.length >= maxItems) break;
+	}
+	return normalized;
+}
+
+function normalizeList(value, maxItems = 6) {
+	if (Array.isArray(value)) return dedupeStrings(value, maxItems);
+	const raw = normalizeText(value);
+	if (!raw || /^none(?:\s+(?:confirmed|stated))?$/i.test(raw)) return [];
+	return dedupeStrings(
+		raw
+			.split(/[;,]/)
+			.map((entry) => entry.trim())
+			.filter(Boolean),
+		maxItems,
+	);
+}
+
+function escapeRegExp(value) {
+	return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function extractPromptValue(prompt, label) {
+	const source = normalizeText(prompt);
+	if (!source) return "";
+	const matcher = new RegExp(
+		`^${escapeRegExp(label)}\\s*(?::|->)\\s*(.+)$`,
+		"im",
+	);
+	return normalizeText(source.match(matcher)?.[1]);
+}
+
+function extractPromptSection(prompt, title) {
+	const source = normalizeText(prompt);
+	if (!source) return "";
+	const matcher = new RegExp(
+		`===\\s*${escapeRegExp(title)}\\s*===\\s*([\\s\\S]*?)(?=\\n===\\s*[^\\n]+\\s*===|$)`,
+		"i",
+	);
+	return normalizeText(source.match(matcher)?.[1]);
+}
+
+function extractPromptChoices(prompt) {
+	const section = extractPromptSection(prompt, "OPENING CHOICES");
+	if (!section) return [];
+	return dedupeStrings(
+		Array.from(section.matchAll(/^\d+\.\s+(.+)$/gim), (match) => normalizeText(match[1])),
+		4,
+	);
+}
+
+function extractQuotedPlayerInput(prompt) {
+	const source = normalizeText(prompt);
+	if (!source) return "";
+	const match = source.match(/The player attempted \(untrusted user input\): "([^"]+)"/i);
+	return normalizeText(match?.[1]);
+}
+
+function extractActionSummary(prompt, success) {
+	const source = normalizeText(prompt);
+	if (!source) return "";
+	const pattern = success
+		? /The action succeeded\.\s*([^\n]+)/i
+		: /The action failed\.\s*([^\n]+)/i;
+	return normalizeText(source.match(pattern)?.[1]);
+}
+
+function extractFirstMeaningful(values = []) {
+	for (const value of values) {
+		const item = normalizeText(value);
+		if (!item) continue;
+		if (/^none(?:\s+(?:confirmed|stated))?$/i.test(item)) continue;
+		if (/^unknown(?:\s+zone)?$/i.test(item)) continue;
+		return item;
+	}
+	return "";
+}
+
+function cleanEntityLabel(value) {
+	return normalizeText(value).replace(/\s*\([^)]*\)\s*$/, "");
+}
+
+function cleanPromptSnippet(value, maxLength = 200) {
+	const raw = normalizeText(value)
+		.replace(/^[*-]\s*/gm, "")
+		.replace(/\s+/g, " ")
+		.trim();
+	if (!raw) return "";
+	if (raw.length <= maxLength) return raw;
+	return `${raw.slice(0, maxLength).trim().replace(/[,:;.\s]+$/, "")}.`;
+}
+
+function ensureSentence(value) {
+	const text = normalizeText(value).replace(/\s+/g, " ");
+	if (!text) return "";
+	return /[.!?]$/.test(text) ? text : `${text}.`;
+}
+
+function normalizeActionLead(input) {
+	const raw = normalizeText(input);
+	if (!raw) return "act on the nearest opening";
+	if (/^(look|inspect|read|listen|search|check|scan|follow|ask|speak|talk|move|enter|leave|steady|rest|attack|use|cast)\b/i.test(raw)) {
+		return raw;
+	}
+	return `try to ${raw}`;
+}
+
+function inferSuggestionCategory(text) {
+	const raw = normalizeText(text).toLowerCase();
+	if (!raw) return "progress";
+	if (/^(look|inspect|read|listen|check|scan|survey)\b/.test(raw)) return "observe";
+	if (/^(ask|speak|talk|hail|question|approach)\b/.test(raw)) return "social";
+	if (/^(rest|steady|recover|bandage|breathe)\b/.test(raw)) return "recovery";
+	if (/^(cast|use|channel|test|invoke)\b/.test(raw)) return "power";
+	if (/^(hide|take cover|prepare|withdraw|retreat|flee|warn)\b/.test(raw)) return "risk";
+	return "progress";
+}
+
+function buildChoiceMeta(suggestions = []) {
+	return suggestions.map((suggestion, index) => ({
+		intent: `The move keeps pressure on the most grounded lead in front of you.`,
+		category: inferSuggestionCategory(suggestion),
+		urgency: Math.max(0.4, 0.85 - index * 0.15),
+		groundedInState: true,
+	}));
+}
+
+function buildFallbackContext(input = {}) {
+	const payload =
+		input && typeof input === "object" && !Array.isArray(input)
+			? input
+			: { input };
+	const prompt = extractFirstMeaningful([
+		payload.prompt,
+		payload.player_request,
+		payload.request,
+		payload.content_request,
+	]);
+	const npcContext =
+		payload.npc_context && typeof payload.npc_context === "object"
+			? payload.npc_context
+			: {};
+	const reactionContext =
+		payload.reaction_context && typeof payload.reaction_context === "object"
+			? payload.reaction_context
+			: {};
+	const sceneMemory =
+		payload.sceneMemory && typeof payload.sceneMemory === "object"
+			? payload.sceneMemory
+			: {};
+	const playerInput = extractFirstMeaningful([
+		extractQuotedPlayerInput(prompt),
+		npcContext.spokenText,
+		payload.player_request,
+		payload.request,
+	]);
+	const actionSucceeded = /The action succeeded\./i.test(prompt)
+		? true
+		: /The action failed\./i.test(prompt)
+			? false
+			: null;
+	const signatureNpc = cleanEntityLabel(extractPromptValue(prompt, "Signature NPC"));
+	const targetLabel = cleanEntityLabel(
+		extractFirstMeaningful([
+			npcContext.targetLabel,
+			extractPromptValue(prompt, "Addressed target"),
+		]),
+	);
+	const focusEntity = cleanEntityLabel(reactionContext.focusEntity);
+	const openingChoices = extractPromptChoices(prompt);
+	const locationLabel = extractFirstMeaningful([
+		sceneMemory.locationLabel,
+		extractPromptValue(prompt, "Scene Location"),
+		extractPromptValue(prompt, "Current Locale"),
+		extractPromptValue(prompt, "Starting Point"),
+		extractPromptValue(prompt, "Location"),
+	]);
+	const zoneLabel = extractFirstMeaningful([
+		sceneMemory.zoneLabel,
+		extractPromptValue(prompt, "Scene Zone"),
+		extractPromptValue(prompt, "Zone"),
+	]);
+	const immediateObjective = extractFirstMeaningful([
+		sceneMemory.immediateObjective,
+		extractPromptValue(prompt, "Immediate Objective"),
+		extractPromptValue(prompt, "Opening Quest"),
+		extractPromptValue(prompt, "Main Quest"),
+		extractPromptValue(prompt, "First Pressure"),
+	]);
+	const presentEntities = dedupeStrings([
+		...(Array.isArray(sceneMemory.presentEntities) ? sceneMemory.presentEntities : []),
+		...normalizeList(extractPromptValue(prompt, "Present Entities")),
+		signatureNpc,
+		targetLabel,
+		focusEntity,
+	]);
+	const activeThreats = dedupeStrings([
+		...(Array.isArray(sceneMemory.activeThreats) ? sceneMemory.activeThreats : []),
+		...normalizeList(extractPromptValue(prompt, "Active Threats")),
+	]);
+	const unresolvedHooks = dedupeStrings([
+		...(Array.isArray(sceneMemory.unresolvedHooks) ? sceneMemory.unresolvedHooks : []),
+		...normalizeList(extractPromptValue(prompt, "Unresolved Hooks")),
+		extractPromptValue(prompt, "First Pressure"),
+		...normalizeList(extractPromptValue(prompt, "Nearby Landmarks")),
+		...openingChoices,
+	]);
+	const familiarEntities = dedupeStrings([
+		...(Array.isArray(sceneMemory.familiarEntities) ? sceneMemory.familiarEntities : []),
+		...normalizeList(extractPromptValue(prompt, "Familiar Entities")),
+	]);
+	const partyEntities = dedupeStrings([
+		...(Array.isArray(sceneMemory.partyEntities) ? sceneMemory.partyEntities : []),
+		...normalizeList(extractPromptValue(prompt, "Party Entities")),
+	]);
+	const socialSummary = extractFirstMeaningful([
+		sceneMemory.socialSummary,
+		extractPromptValue(prompt, "Social Summary"),
+	]);
+	const actionSummary = extractFirstMeaningful([
+		extractActionSummary(prompt, actionSucceeded === false ? false : true),
+		extractPromptValue(prompt, "Last Consequence"),
+		sceneMemory.lastConsequence,
+	]);
+	const openingScene = cleanPromptSnippet(extractPromptSection(prompt, "OPENING SCENE"), 220);
+	const systemName = cleanEntityLabel(extractPromptValue(prompt, "System"));
+	const playerName = extractPromptValue(prompt, "Name");
+	return {
+		prompt,
+		playerName,
+		playerInput,
+		actionSucceeded,
+		actionSummary,
+		locationLabel,
+		zoneLabel,
+		immediateObjective,
+		presentEntities,
+		activeThreats,
+		unresolvedHooks,
+		familiarEntities,
+		partyEntities,
+		socialSummary,
+		targetLabel,
+		focusEntity,
+		openingChoices,
+		openingScene,
+		systemName,
+		sceneMemory: {
+			locationLabel,
+			zoneLabel,
+			immediateObjective,
+			presentEntities,
+			activeThreats,
+			unresolvedHooks,
+			lastConsequence: actionSummary,
+			familiarEntities,
+			partyEntities,
+			socialSummary,
+		},
+	};
+}
+
+function buildFallbackSuggestions(context = {}) {
+	const suggestions = [];
+	const locationLead = context.locationLabel || context.zoneLabel;
+	if (context.openingChoices.length > 0) {
+		suggestions.push(...context.openingChoices.slice(0, 3));
+	}
+	if (suggestions.length < 3 && context.targetLabel) {
+		suggestions.push(`Ask ${context.targetLabel} what they know`);
+	}
+	if (suggestions.length < 3 && context.focusEntity && context.focusEntity !== context.targetLabel) {
+		suggestions.push(`Watch ${context.focusEntity} more closely`);
+	}
+	if (suggestions.length < 3 && context.unresolvedHooks[0]) {
+		suggestions.push(`Inspect ${context.unresolvedHooks[0]}`);
+	}
+	if (suggestions.length < 3 && context.presentEntities[0]) {
+		suggestions.push(`Approach ${context.presentEntities[0]}`);
+	}
+	if (suggestions.length < 3 && context.activeThreats[0]) {
+		suggestions.push(`Prepare for ${context.activeThreats[0]}`);
+	}
+	if (suggestions.length < 3 && locationLead) {
+		suggestions.push(`Look around ${locationLead}`);
+	}
+	if (suggestions.length < 3 && context.immediateObjective) {
+		suggestions.push(`Advance ${context.immediateObjective}`);
+	}
+	if (suggestions.length < 3) {
+		suggestions.push("Steady yourself and read the room");
+	}
+	return dedupeStrings(suggestions, 3);
+}
+
+function resolveFallbackMood(context = {}) {
+	if (context.actionSucceeded === false && context.activeThreats.length > 0) return "desperate";
+	if (context.activeThreats.length > 0) return "tense";
+	if (context.targetLabel || context.focusEntity) return "mysterious";
+	if (context.openingScene || context.unresolvedHooks.length > 0) return "mysterious";
+	return "neutral";
+}
+
+function buildOpeningFallbackStory(context = {}) {
+	const locationLead = context.locationLabel || context.zoneLabel || "the first threshold";
+	const primaryEntity = context.presentEntities[0];
+	const primaryHook = context.unresolvedHooks[0] || context.immediateObjective;
+	const systemNotice = context.systemName
+		? `[${context.systemName}: opening pressure acknowledged.]`
+		: "";
+	return [
+		`You come into ${locationLead} without any soft landing, only the immediate sense that this place expects a choice from you.`,
+		context.openingScene ||
+			`${locationLead} feels newly sharpened, as if every sound and angle is waiting to see what kind of problem you become.`,
+		primaryEntity
+			? `${primaryEntity} stands out at once, too central to fade into the background.`
+			: "",
+		primaryHook
+			? `${primaryHook} already feels like the pressure point most likely to decide your first real move.`
+			: "",
+		systemNotice,
+		`Nothing here reads like a tutorial. The opening narrows around your next step and dares you to prove you belong in it.`,
+	]
+		.filter(Boolean)
+		.map(ensureSentence)
+		.join(" ");
+}
+
+function buildTurnFallbackStory(context = {}) {
+	const locationLead = context.locationLabel || context.zoneLabel || "the scene";
+	const actionLead = normalizeActionLead(context.playerInput);
+	const primaryEntity = context.targetLabel || context.focusEntity || context.presentEntities[0];
+	const primaryHook = context.unresolvedHooks[0] || context.immediateObjective;
+	const threat = context.activeThreats[0];
+	const systemNotice = context.systemName
+		? `[${context.systemName}: leverage point pending.]`
+		: "";
+	const firstLine = context.actionSucceeded === false
+		? `You ${actionLead}, but the moment resists cleanly enough to leave the failure stinging.`
+		: `You ${actionLead}, and the scene answers quickly enough to make the choice feel real.`;
+	return [
+		firstLine,
+		context.actionSummary
+			? `${locationLead} takes the consequence immediately: ${context.actionSummary}.`
+			: `At ${locationLead}, even a small move changes the pressure in the air.`,
+		primaryEntity
+			? `${primaryEntity} reacts first, making it clear you are no longer background noise here.`
+			: "",
+		threat
+			? `${threat} keeps the edge on the moment, turning every hesitation into a risk.`
+			: "",
+		primaryHook
+			? `${primaryHook} remains the lead most likely to matter if you keep pressing forward.`
+			: "",
+		systemNotice,
+	]
+		.filter(Boolean)
+		.map(ensureSentence)
+		.join(" ");
 }
 
 function buildInputPrompt(agentId, input) {
@@ -291,6 +672,10 @@ function isCredentialConfigurationError(error) {
 		message.includes("application default credentials") ||
 		message.includes("default credentials") ||
 		message.includes("could not load the default credentials") ||
+		message.includes("unable to detect a project id") ||
+		message.includes("unable to detect a project id in the current environment") ||
+		message.includes("could not determine project id") ||
+		message.includes("missing google cloud project") ||
 		message.includes("permission denied")
 	);
 }
@@ -332,48 +717,66 @@ function createMissingCerebrasKeyError() {
 	return error;
 }
 
-function buildNarrationFallbackPayload(agentId) {
+function buildNarrationFallbackPayload(agentId, input) {
+	const context = buildFallbackContext(input);
+	const suggestions = buildFallbackSuggestions(context);
+	const mood = resolveFallbackMood(context);
+	const story =
+		context.playerInput || context.actionSucceeded !== null
+			? buildTurnFallbackStory(context)
+			: buildOpeningFallbackStory(context);
+
 	if (agentId === "combat") {
 		return {
-			narrative:
-				"Steel and breath hang in tense balance while the local emulator stands in for the live narrator service.",
-			mood: "tense",
-			suggestions: ["Hold your ground", "Read the battlefield", "Choose your next move"],
+			story,
+			narrative: story,
+			mood: context.activeThreats.length > 0 ? "tense" : mood,
+			suggestions,
+			choiceMeta: buildChoiceMeta(suggestions),
+			sceneMemory: context.sceneMemory,
 		};
 	}
 	if (agentId === "dialogue") {
 		return {
-			narrative:
-				"The conversation pauses for a heartbeat, with the local emulator filling in until the live narrator service is configured.",
-			mood: "mysterious",
-			suggestions: ["Ask another question", "Study their reaction", "End the exchange"],
+			story,
+			narrative: story,
+			mood: context.targetLabel ? "mysterious" : mood,
+			suggestions,
+			choiceMeta: buildChoiceMeta(suggestions),
+			sceneMemory: context.sceneMemory,
 		};
 	}
 	if (agentId === "world") {
 		return {
-			narrative:
-				"The world settles into a readable hush while the local emulator stands in for the live narrator service.",
-			mood: "serene",
-			suggestions: ["Survey the area", "Follow the path ahead", "Pause and prepare"],
+			story,
+			narrative: story,
+			mood: context.activeThreats.length > 0 ? "tense" : "mysterious",
+			suggestions,
+			choiceMeta: buildChoiceMeta(suggestions),
+			sceneMemory: context.sceneMemory,
 		};
 	}
 	if (agentId === "system") {
 		return {
-			narrative:
-				"The local emulator is active, so this response confirms the narrator API path without relying on a cloud model.",
-			mood: "neutral",
-			suggestions: ["Open the status panel", "Review your options", "Continue"],
+			story,
+			narrative: story,
+			mood,
+			suggestions,
+			choiceMeta: buildChoiceMeta(suggestions),
+			sceneMemory: context.sceneMemory,
 		};
 	}
 	return {
-		narrative:
-			"The local emulator is narrating this scene because no valid cloud AI credentials are configured for local development yet.",
-		mood: "neutral",
-		suggestions: ["Look around", "Check inventory", "Continue"],
+		story,
+		narrative: story,
+		mood,
+		suggestions,
+		choiceMeta: buildChoiceMeta(suggestions),
+		sceneMemory: context.sceneMemory,
 	};
 }
 
-function buildStructuredFallbackPayload(agentId) {
+function buildStructuredFallbackPayload(agentId, input) {
 	if (agentId === "quest") {
 		return {
 			ok: true,
@@ -465,7 +868,7 @@ function buildStructuredFallbackPayload(agentId) {
 		};
 	}
 
-	return buildNarrationFallbackPayload(agentId);
+	return buildNarrationFallbackPayload(agentId, input);
 }
 
 async function initializeGeminiRuntime() {
@@ -609,22 +1012,31 @@ function formatExecutionResult({
 	};
 }
 
-function buildLocalEmulatorFallbackResult({
+function buildDeterministicFallbackResult({
 	definition,
 	activeModel,
 	activeTemperature,
 	fallbackFrom,
+	input,
+	backend = "local-emulator-fallback",
 }) {
-	const payload = buildStructuredFallbackPayload(definition.id);
+	const payload = buildStructuredFallbackPayload(definition.id, input);
 	return formatExecutionResult({
 		definition,
 		activeModel,
 		activeTemperature,
-		backend: "local-emulator-fallback",
+		backend,
 		text: JSON.stringify(payload),
 		fallbackUsed: true,
 		fallbackFrom,
 	});
+}
+
+function shouldUseCredentialFallback(agentId, error) {
+	return (
+		isCredentialConfigurationError(error) &&
+		(isFunctionsEmulatorEnvironment() || NARRATION_FALLBACK_AGENTS.has(agentId))
+	);
 }
 
 function setRuntimeTestOverrides(overrides) {
@@ -938,12 +1350,16 @@ async function runFirebaseAgent({
 			});
 		} catch (error) {
 			if (!isRetryableProviderError(error) && error?.code !== "OPENROUTER_API_KEY_MISSING") {
-				if (isFunctionsEmulatorEnvironment() && isCredentialConfigurationError(error)) {
-					return buildLocalEmulatorFallbackResult({
+				if (shouldUseCredentialFallback(definition.id, error)) {
+					return buildDeterministicFallbackResult({
 						definition,
 						activeModel,
 						activeTemperature,
 						fallbackFrom: "openrouter",
+						input,
+						backend: isFunctionsEmulatorEnvironment()
+							? "local-emulator-fallback"
+							: "credential-fallback",
 					});
 				}
 				throw error;
@@ -980,15 +1396,16 @@ async function runFirebaseAgent({
 					fallbackFrom: "openrouter",
 				};
 			} catch (fallbackError) {
-				if (
-					isFunctionsEmulatorEnvironment() &&
-					isCredentialConfigurationError(fallbackError)
-				) {
-					return buildLocalEmulatorFallbackResult({
+				if (shouldUseCredentialFallback(definition.id, fallbackError)) {
+					return buildDeterministicFallbackResult({
 						definition,
 						activeModel,
 						activeTemperature,
 						fallbackFrom: "google-ai-studio",
+						input,
+						backend: isFunctionsEmulatorEnvironment()
+							? "local-emulator-fallback"
+							: "credential-fallback",
 					});
 				}
 				throw fallbackError;
@@ -1007,12 +1424,16 @@ async function runFirebaseAgent({
 			});
 		} catch (error) {
 			if (!isRetryableProviderError(error) && error?.code !== "OPENAI_API_KEY_MISSING") {
-				if (isFunctionsEmulatorEnvironment() && isCredentialConfigurationError(error)) {
-					return buildLocalEmulatorFallbackResult({
+				if (shouldUseCredentialFallback(definition.id, error)) {
+					return buildDeterministicFallbackResult({
 						definition,
 						activeModel,
 						activeTemperature,
 						fallbackFrom: "openai-responses",
+						input,
+						backend: isFunctionsEmulatorEnvironment()
+							? "local-emulator-fallback"
+							: "credential-fallback",
 					});
 				}
 				throw error;
@@ -1049,15 +1470,16 @@ async function runFirebaseAgent({
 					fallbackFrom: "openai-responses",
 				};
 			} catch (fallbackError) {
-				if (
-					isFunctionsEmulatorEnvironment() &&
-					isCredentialConfigurationError(fallbackError)
-				) {
-					return buildLocalEmulatorFallbackResult({
+				if (shouldUseCredentialFallback(definition.id, fallbackError)) {
+					return buildDeterministicFallbackResult({
 						definition,
 						activeModel,
 						activeTemperature,
 						fallbackFrom: "google-ai-studio",
+						input,
+						backend: isFunctionsEmulatorEnvironment()
+							? "local-emulator-fallback"
+							: "credential-fallback",
 					});
 				}
 				throw fallbackError;
@@ -1076,12 +1498,16 @@ async function runFirebaseAgent({
 			});
 		} catch (error) {
 			if (!isRetryableProviderError(error) && error?.code !== "CEREBRAS_API_KEY_MISSING") {
-				if (isFunctionsEmulatorEnvironment() && isCredentialConfigurationError(error)) {
-					return buildLocalEmulatorFallbackResult({
+				if (shouldUseCredentialFallback(definition.id, error)) {
+					return buildDeterministicFallbackResult({
 						definition,
 						activeModel,
 						activeTemperature,
 						fallbackFrom: "cerebras-chat-completions",
+						input,
+						backend: isFunctionsEmulatorEnvironment()
+							? "local-emulator-fallback"
+							: "credential-fallback",
 					});
 				}
 				throw error;
@@ -1118,15 +1544,16 @@ async function runFirebaseAgent({
 					fallbackFrom: "cerebras-chat-completions",
 				};
 			} catch (fallbackError) {
-				if (
-					isFunctionsEmulatorEnvironment() &&
-					isCredentialConfigurationError(fallbackError)
-				) {
-					return buildLocalEmulatorFallbackResult({
+				if (shouldUseCredentialFallback(definition.id, fallbackError)) {
+					return buildDeterministicFallbackResult({
 						definition,
 						activeModel,
 						activeTemperature,
 						fallbackFrom: "google-ai-studio",
+						input,
+						backend: isFunctionsEmulatorEnvironment()
+							? "local-emulator-fallback"
+							: "credential-fallback",
 					});
 				}
 				throw fallbackError;
@@ -1143,12 +1570,16 @@ async function runFirebaseAgent({
 			activeTopP,
 		});
 	} catch (error) {
-		if (isFunctionsEmulatorEnvironment() && isCredentialConfigurationError(error)) {
-			return buildLocalEmulatorFallbackResult({
+		if (shouldUseCredentialFallback(definition.id, error)) {
+			return buildDeterministicFallbackResult({
 				definition,
 				activeModel,
 				activeTemperature,
 				fallbackFrom: "google-ai-studio",
+				input,
+				backend: isFunctionsEmulatorEnvironment()
+					? "local-emulator-fallback"
+					: "credential-fallback",
 			});
 		}
 		throw error;

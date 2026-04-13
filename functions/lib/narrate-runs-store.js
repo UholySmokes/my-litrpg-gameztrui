@@ -10,6 +10,7 @@ const DEFAULT_FILE_PATH = path.resolve(
 	".data",
 	"narrate-runs.json",
 );
+const SERVERLESS_TEMP_SUBPATH = ["void-verse-data", "narrate-runs.json"];
 const DEFAULT_TTL_MS = 5 * 60 * 1000;
 let firebaseAdminModules = null;
 
@@ -23,9 +24,31 @@ function getTtlMs() {
 	return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_TTL_MS;
 }
 
+function isReadonlyServerlessRuntime() {
+	return Boolean(
+		getOptionalEnv("VERCEL") ||
+		getOptionalEnv("AWS_LAMBDA_FUNCTION_NAME") ||
+		getOptionalEnv("LAMBDA_TASK_ROOT"),
+	);
+}
+
+function getWritableTempDir() {
+	return (
+		getOptionalEnv("TMPDIR") ||
+		getOptionalEnv("TEMP") ||
+		getOptionalEnv("TMP") ||
+		"/tmp"
+	);
+}
+
+function resolveDefaultWritableFilePath() {
+	if (!isReadonlyServerlessRuntime()) return DEFAULT_FILE_PATH;
+	return path.resolve(getWritableTempDir(), ...SERVERLESS_TEMP_SUBPATH);
+}
+
 function getFilePath() {
 	const configured = getOptionalEnv("NARRATE_RUNS_FILE_PATH");
-	return configured ? path.resolve(configured) : DEFAULT_FILE_PATH;
+	return configured ? path.resolve(configured) : resolveDefaultWritableFilePath();
 }
 
 function nowMs() {

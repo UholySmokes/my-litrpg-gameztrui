@@ -15,6 +15,8 @@ function makeTempPath() {
 describe("narrate-runs-store file backend", () => {
   const originalBackend = process.env.GAME_DB_STORAGE;
   const originalFilePath = process.env.NARRATE_RUNS_FILE_PATH;
+  const originalVercel = process.env.VERCEL;
+  const originalTmpDir = process.env.TMPDIR;
 
   beforeEach(() => {
     process.env.GAME_DB_STORAGE = "file";
@@ -31,6 +33,18 @@ describe("narrate-runs-store file backend", () => {
       process.env.NARRATE_RUNS_FILE_PATH = originalFilePath;
     } else {
       delete process.env.NARRATE_RUNS_FILE_PATH;
+    }
+
+    if (typeof originalVercel === "string") {
+      process.env.VERCEL = originalVercel;
+    } else {
+      delete process.env.VERCEL;
+    }
+
+    if (typeof originalTmpDir === "string") {
+      process.env.TMPDIR = originalTmpDir;
+    } else {
+      delete process.env.TMPDIR;
     }
   });
 
@@ -163,5 +177,31 @@ describe("narrate-runs-store file backend", () => {
     expect(after).toBeNull();
 
     fs.unlinkSync(filePath);
+  });
+
+  it("uses a writable temp path on readonly serverless runtimes", async () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "narrate-runs-vercel-"));
+    const expectedPath = path.join(tempDir, "void-verse-data", "narrate-runs.json");
+    delete process.env.NARRATE_RUNS_FILE_PATH;
+    process.env.VERCEL = "1";
+    process.env.TMPDIR = tempDir;
+
+    await narrateRunsStore.createNarrateRun({
+      threadId: "thread-vercel",
+      runId: "run-vercel",
+      ownerId: "user-vercel",
+      mode: "exploration",
+    });
+
+    expect(fs.existsSync(expectedPath)).toBe(true);
+
+    const created = await narrateRunsStore.getNarrateRun({
+      threadId: "thread-vercel",
+      runId: "run-vercel",
+      ownerId: "user-vercel",
+    });
+    expect(created?.thread_id).toBe("thread-vercel");
+
+    fs.rmSync(tempDir, { recursive: true, force: true });
   });
 });

@@ -23,6 +23,24 @@ for (const key of ENV_KEYS) {
   originalEnv[key] = process.env[key];
 }
 
+const STORY_PROMPT = `=== AUTHORITATIVE SCENE STATE ===
+Scene Location: Meridian Arcology
+Scene Zone: Neon Bazaar
+Immediate Objective: Read the contract board before the crowd closes in
+Present Entities: Factor Ilyra Venn, Contract Board
+Active Threats: None confirmed
+Unresolved Hooks: Contract Board, First paying job
+Last Consequence: The market lights flicker as the oath settles.
+Familiar Entities: None confirmed
+Party Entities: None confirmed
+Social Summary: None confirmed
+
+=== PLAYER ACTION ===
+The player attempted (untrusted user input): "inspect the contract board"
+The action succeeded. You step toward the contract board and start reading the fresh postings.
+Ambient reaction cue: Factor Ilyra Venn should acknowledge.
+Ambient reaction trigger: The player did something noticeable near established entities.`;
+
 function restoreEnv() {
   for (const key of ENV_KEYS) {
     if (typeof originalEnv[key] === "undefined") {
@@ -249,7 +267,7 @@ describe("firebase agent runtime provider routing", () => {
 
     const result = await runtime.runFirebaseAgent({
       agent: "narrator",
-      input: { game_state: { location: "Ashen Gate" } },
+      input: { prompt: STORY_PROMPT },
     });
 
     expect(openAiExecutor).toHaveBeenCalledTimes(1);
@@ -257,7 +275,47 @@ describe("firebase agent runtime provider routing", () => {
     expect(result.backend).toBe("local-emulator-fallback");
     expect(result.fallbackUsed).toBe(true);
     expect(result.fallbackFrom).toBe("google-ai-studio");
-    expect(result.structured?.narrative).toContain("local emulator");
+    expect(result.structured?.story).toContain("Meridian Arcology");
+    expect(result.structured?.story).toContain("Factor Ilyra Venn");
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    warnSpy.mockRestore();
+  });
+
+  it("uses production credential fallback for narration when Gemini cannot resolve a project id", async () => {
+    const openAiExecutor = jest.fn(async () => {
+      const error = new Error("Missing OpenAI API key. Set OPENAI_API_KEY for OpenAI provider execution.");
+      error.status = 500;
+      error.code = "OPENAI_API_KEY_MISSING";
+      throw error;
+    });
+    const geminiExecutor = jest.fn(async () => {
+      const error = new Error("Unable to detect a Project Id in the current environment.");
+      error.status = 500;
+      throw error;
+    });
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    runtime.__setRuntimeTestOverrides({
+      executeOpenAiProvider: openAiExecutor,
+      executeGeminiProvider: geminiExecutor,
+    });
+
+    const result = await runtime.runFirebaseAgent({
+      agent: "narrator",
+      input: { prompt: STORY_PROMPT },
+    });
+
+    expect(openAiExecutor).toHaveBeenCalledTimes(1);
+    expect(geminiExecutor).toHaveBeenCalledTimes(1);
+    expect(result.backend).toBe("credential-fallback");
+    expect(result.fallbackUsed).toBe(true);
+    expect(result.fallbackFrom).toBe("google-ai-studio");
+    expect(result.structured?.story).toContain("Meridian Arcology");
+    expect(result.structured?.story).toContain("contract board");
+    expect(result.structured?.sceneMemory?.locationLabel).toBe("Meridian Arcology");
+    expect(result.structured?.sceneMemory?.presentEntities).toContain("Factor Ilyra Venn");
+    expect(Array.isArray(result.structured?.suggestions)).toBe(true);
+    expect(result.structured?.suggestions.length).toBeGreaterThan(0);
     expect(warnSpy).toHaveBeenCalledTimes(1);
     warnSpy.mockRestore();
   });

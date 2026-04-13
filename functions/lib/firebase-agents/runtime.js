@@ -3,10 +3,12 @@ const { getAgentDefinition, listFirebaseAgents, normalizeAgentId } = require("./
 const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
 const DEFAULT_OPENAI_MODEL = "gpt-5.4-mini";
 const DEFAULT_OPENROUTER_MODEL = "openai/gpt-4-turbo";
+const DEFAULT_CEREBRAS_MODEL = "llama3.1-8b";
 const DEFAULT_LOCATION = "global";
 const DEFAULT_AI_TEXT_PROVIDER = "openai";
 const DEFAULT_OPENAI_TIMEOUT_MS = 120000;
 const DEFAULT_OPENROUTER_TIMEOUT_MS = 120000;
+const DEFAULT_CEREBRAS_TIMEOUT_MS = 120000;
 const OPENAI_NARRATION_AGENTS = new Set([
 	"narrator",
 	"combat",
@@ -19,6 +21,7 @@ const OPENAI_NARRATION_AGENTS = new Set([
 let geminiRuntimePromise = null;
 let openAiClientPromise = null;
 let openRouterClientPromise = null;
+let cerebrasClientPromise = null;
 let runtimeTestOverrides = null;
 
 function parseNumber(value, fallback) {
@@ -45,6 +48,7 @@ function normalizeProvider(value) {
 	if (raw === "gemini") return "gemini";
 	if (raw === "openai") return "openai";
 	if (raw === "openrouter") return "openrouter";
+	if (raw === "cerebras") return "cerebras";
 	return DEFAULT_AI_TEXT_PROVIDER;
 }
 
@@ -82,6 +86,16 @@ function resolveOpenRouterAllowedModels() {
 	return Array.from(fallback);
 }
 
+function resolveCerebrasAllowedModels() {
+	const configured = parseCsvList(process.env.CEREBRAS_ALLOWED_MODELS || "");
+	if (configured.length > 0) return configured;
+
+	const fallback = new Set([DEFAULT_CEREBRAS_MODEL]);
+	const envDefault = (process.env.CEREBRAS_MODEL || "").trim();
+	if (envDefault) fallback.add(envDefault);
+	return Array.from(fallback);
+}
+
 function isOpenAiPrimaryAgent(agentId) {
 	return OPENAI_NARRATION_AGENTS.has(agentId);
 }
@@ -91,6 +105,7 @@ function resolvePrimaryProvider(agentId) {
 	const configured = getConfiguredProvider();
 	if (configured === "gemini") return "gemini";
 	if (configured === "openrouter") return "openrouter";
+	if (configured === "cerebras") return "cerebras";
 	if (isOpenAiPrimaryAgent(agentId)) return "openai";
 	return "gemini";
 }
@@ -258,6 +273,7 @@ function isRetryableProviderError(error) {
 
 function isCredentialConfigurationError(error) {
 	if (error?.code === "OPENAI_API_KEY_MISSING") return true;
+	if (error?.code === "CEREBRAS_API_KEY_MISSING") return true;
 
 	const message = String(error?.message || "").toLowerCase();
 	if (!message) return false;
@@ -271,6 +287,7 @@ function isCredentialConfigurationError(error) {
 	return (
 		message.includes("failed to authenticate") ||
 		message.includes("missing openai api key") ||
+		message.includes("missing cerebras api key") ||
 		message.includes("application default credentials") ||
 		message.includes("default credentials") ||
 		message.includes("could not load the default credentials") ||
@@ -303,6 +320,15 @@ function createMissingOpenRouterKeyError() {
 	);
 	error.status = 500;
 	error.code = "OPENROUTER_API_KEY_MISSING";
+	return error;
+}
+
+function createMissingCerebrasKeyError() {
+	const error = new Error(
+		"Missing Cerebras API key. Set CEREBRAS_API_KEY for Cerebras provider execution.",
+	);
+	error.status = 500;
+	error.code = "CEREBRAS_API_KEY_MISSING";
 	return error;
 }
 
@@ -508,6 +534,18 @@ async function initializeOpenRouterClient() {
 	return client;
 }
 
+async function initializeCerebrasClient() {
+	const apiKey = String(process.env.CEREBRAS_API_KEY || "").trim();
+	if (!apiKey) throw createMissingCerebrasKeyError();
+
+	const mod = require("@cerebras/cerebras_cloud_sdk");
+	const Cerebras = mod?.default || mod?.Cerebras || mod;
+	return new Cerebras({
+		apiKey,
+		warmTCPConnection: false,
+	});
+}
+
 async function getOpenAiClient() {
 	if (!openAiClientPromise) openAiClientPromise = initializeOpenAiClient();
 	return openAiClientPromise;
@@ -518,14 +556,35 @@ async function getOpenRouterClient() {
 	return openRouterClientPromise;
 }
 
+async function getCerebrasClient() {
+	if (!cerebrasClientPromise) cerebrasClientPromise = initializeCerebrasClient();
+	return cerebrasClientPromise;
+}
+
 function computeActiveTemperature(definition, provider, inputTemperature) {
 	let envKey = "GEMINI_TEMPERATURE";
 	if (provider === "openai") envKey = "OPENAI_TEMPERATURE";
 	if (provider === "openrouter") envKey = "OPENROUTER_TEMPERATURE";
+	if (provider === "cerebras") envKey = "CEREBRAS_TEMPERATURE";
 	return parseTemperature(
 		inputTemperature,
 		parseTemperature(process.env[envKey], definition.temperature),
 	);
+}
+
+function extractChatCompletionText(response) {
+	const content = response?.choices?.[0]?.message?.content;
+	if (typeof content === "string") return content.trim();
+	if (!Array.isArray(content)) return "";
+
+	return content
+		.map((part) => {
+			if (typeof part === "string") return part;
+			if (typeof part?.text === "string") return part.text;
+			return "";
+		})
+		.join("\n")
+		.trim();
 }
 
 function formatExecutionResult({
@@ -574,12 +633,16 @@ function setRuntimeTestOverrides(overrides) {
 	// Ensure each test run starts from a clean runtime cache.
 	geminiRuntimePromise = null;
 	openAiClientPromise = null;
+	openRouterClientPromise = null;
+	cerebrasClientPromise = null;
 }
 
 function resetRuntimeTestOverrides() {
 	runtimeTestOverrides = null;
 	geminiRuntimePromise = null;
 	openAiClientPromise = null;
+	openRouterClientPromise = null;
+	cerebrasClientPromise = null;
 }
 
 async function executeGeminiProvider({
@@ -737,8 +800,7 @@ async function executeOpenRouterProvider({
 		{ timeout },
 	);
 
-	const finalText =
-		response?.choices?.[0]?.message?.content || "";
+	const finalText = extractChatCompletionText(response);
 	if (!finalText.trim()) {
 		const error = new Error("Model returned empty output.");
 		error.status = 502;
@@ -752,6 +814,64 @@ async function executeOpenRouterProvider({
 		activeTemperature,
 		backend: "openrouter",
 		text: finalText.trim(),
+	});
+}
+
+async function executeCerebrasProvider({
+	definition,
+	fullPrompt,
+	activeModel,
+	activeTemperature,
+	activeTopP,
+}) {
+	if (runtimeTestOverrides?.executeCerebrasProvider) {
+		const overrideResult = await runtimeTestOverrides.executeCerebrasProvider({
+			definition,
+			fullPrompt,
+			activeModel,
+			activeTemperature,
+			activeTopP,
+		});
+		return formatExecutionResult({
+			definition,
+			activeModel,
+			activeTemperature,
+			backend: overrideResult.backend || "cerebras-chat-completions",
+			text: String(overrideResult.text || "").trim(),
+		});
+	}
+
+	const client = await getCerebrasClient();
+	const timeout = parseNumber(process.env.CEREBRAS_TIMEOUT_MS, DEFAULT_CEREBRAS_TIMEOUT_MS);
+	const response = await client.chat.completions.create(
+		{
+			model: activeModel,
+			messages: [
+				{
+					role: "user",
+					content: fullPrompt,
+				},
+			],
+			temperature: activeTemperature,
+			top_p: activeTopP,
+		},
+		{ timeout },
+	);
+
+	const finalText = extractChatCompletionText(response);
+	if (!finalText) {
+		const error = new Error("Model returned empty output.");
+		error.status = 502;
+		error.code = "NON_TEXT_OUTPUT";
+		throw error;
+	}
+
+	return formatExecutionResult({
+		definition,
+		activeModel,
+		activeTemperature,
+		backend: "cerebras-chat-completions",
+		text: finalText,
 	});
 }
 
@@ -783,6 +903,9 @@ async function runFirebaseAgent({
 	} else if (provider === "openrouter") {
 		activeModel = requestedModel || process.env.OPENROUTER_MODEL || DEFAULT_OPENROUTER_MODEL;
 		allowedModels = resolveOpenRouterAllowedModels();
+	} else if (provider === "cerebras") {
+		activeModel = requestedModel || process.env.CEREBRAS_MODEL || DEFAULT_CEREBRAS_MODEL;
+		allowedModels = resolveCerebrasAllowedModels();
 	} else {
 		activeModel = requestedModel || process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
 		allowedModels = resolveGeminiAllowedModels();
@@ -791,6 +914,7 @@ async function runFirebaseAgent({
 		let configHint = "GENKIT_ALLOWED_MODELS";
 		if (provider === "openai") configHint = "OPENAI_ALLOWED_MODELS";
 		if (provider === "openrouter") configHint = "OPENROUTER_ALLOWED_MODELS";
+		if (provider === "cerebras") configHint = "CEREBRAS_ALLOWED_MODELS";
 		throw createModelNotAllowedError(activeModel, allowedModels, configHint);
 	}
 
@@ -923,6 +1047,75 @@ async function runFirebaseAgent({
 					...fallbackResult,
 					fallbackUsed: true,
 					fallbackFrom: "openai-responses",
+				};
+			} catch (fallbackError) {
+				if (
+					isFunctionsEmulatorEnvironment() &&
+					isCredentialConfigurationError(fallbackError)
+				) {
+					return buildLocalEmulatorFallbackResult({
+						definition,
+						activeModel,
+						activeTemperature,
+						fallbackFrom: "google-ai-studio",
+					});
+				}
+				throw fallbackError;
+			}
+		}
+	}
+
+	if (provider === "cerebras") {
+		try {
+			return await executeCerebrasProvider({
+				definition,
+				fullPrompt,
+				activeModel,
+				activeTemperature,
+				activeTopP,
+			});
+		} catch (error) {
+			if (!isRetryableProviderError(error) && error?.code !== "CEREBRAS_API_KEY_MISSING") {
+				if (isFunctionsEmulatorEnvironment() && isCredentialConfigurationError(error)) {
+					return buildLocalEmulatorFallbackResult({
+						definition,
+						activeModel,
+						activeTemperature,
+						fallbackFrom: "cerebras-chat-completions",
+					});
+				}
+				throw error;
+			}
+
+			const fallbackModel = process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL;
+			const fallbackAllowedModels = resolveGeminiAllowedModels();
+			if (!fallbackAllowedModels.includes(fallbackModel)) {
+				throw createModelNotAllowedError(
+					fallbackModel,
+					fallbackAllowedModels,
+					"GENKIT_ALLOWED_MODELS",
+				);
+			}
+
+			console.warn(
+				`[firebase-agents] Cerebras execution failed for '${definition.id}', falling back to Gemini.`,
+				{
+					status: resolveStatusCode(error),
+					code: error?.code || "",
+				},
+			);
+			try {
+				const fallbackResult = await executeGeminiProvider({
+					definition,
+					fullPrompt,
+					activeModel: fallbackModel,
+					activeTemperature: computeActiveTemperature(definition, "gemini", temperature),
+					activeTopP,
+				});
+				return {
+					...fallbackResult,
+					fallbackUsed: true,
+					fallbackFrom: "cerebras-chat-completions",
 				};
 			} catch (fallbackError) {
 				if (

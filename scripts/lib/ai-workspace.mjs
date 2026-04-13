@@ -215,6 +215,8 @@ export function printStatus(level, label, detail) {
 export function parseEnvPresence(...envMaps) {
   return {
     hasOpenAiKey: envMaps.some((map) => Boolean(map.get("OPENAI_API_KEY"))) || Boolean(process.env.OPENAI_API_KEY),
+    hasCerebrasKey:
+      envMaps.some((map) => Boolean(map.get("CEREBRAS_API_KEY"))) || Boolean(process.env.CEREBRAS_API_KEY),
     hasGeminiKey:
       envMaps.some((map) => Boolean(map.get("GOOGLE_GENAI_API_KEY"))) || Boolean(process.env.GOOGLE_GENAI_API_KEY),
     provider:
@@ -223,6 +225,10 @@ export function parseEnvPresence(...envMaps) {
       null,
     openAiModel:
       envMaps.find((map) => map.get("OPENAI_MODEL"))?.get("OPENAI_MODEL") || process.env.OPENAI_MODEL || null,
+    cerebrasModel:
+      envMaps.find((map) => map.get("CEREBRAS_MODEL"))?.get("CEREBRAS_MODEL") ||
+      process.env.CEREBRAS_MODEL ||
+      null,
     geminiModel:
       envMaps.find((map) => map.get("GEMINI_MODEL"))?.get("GEMINI_MODEL") || process.env.GEMINI_MODEL || null,
     firebaseProjectId:

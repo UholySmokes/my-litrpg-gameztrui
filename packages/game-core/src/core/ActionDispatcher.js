@@ -22,6 +22,7 @@ import {
   executeDevourerDigest,
   executeDevourerRefine,
   executeDevourerPurge,
+  isDevourerCorePlayer,
 } from "../systems/archetype/devourerCore.js";
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -36,6 +37,94 @@ function pushUnique(list, value) {
 function normalizeStringList(list) {
   if (!Array.isArray(list)) return [];
   return list.map((entry) => String(entry || "").trim().toLowerCase()).filter(Boolean);
+}
+
+function hasStudyPhrase(rawTarget, phrases) {
+  return phrases.some((phrase) => rawTarget.includes(phrase));
+}
+
+function classifyMagicStudyTarget(rawTarget, knownEssences, knownForms, player) {
+  const tokens = rawTarget.split(/\s+/).filter(Boolean);
+  const tokenSet = new Set(tokens);
+  const hasToken = (...values) => values.some((value) => tokenSet.has(value));
+
+  const isSpellStudy =
+    tokens[0] === "spell" ||
+    hasToken("spell", "buildup", "buildups");
+  const isRuneStudy =
+    hasToken("rune", "runes", "symbol", "symbols");
+  const isInscriptionStudy =
+    hasToken("inscription", "inscriptions", "glyph", "text");
+  const isPhenomenaStudy =
+    hasToken("phenomena", "phenomenon", "leyline", "storm", "tide", "mirage");
+  const isEpiphanyStudy =
+    hasToken("epiphany", "insight");
+  const isSelfStudy =
+    hasToken("self", "body", "blood", "ichor", "vein", "veins", "pulse", "heartbeat", "marrow", "tissue", "flesh") ||
+    hasStudyPhrase(rawTarget, ["my own", "myself"]);
+  const isSampleStudy =
+    hasToken("blood", "ichor", "sample", "samples", "marrow", "tissue", "flesh");
+  const isInteractionStudy =
+    hasToken("interaction", "resonance", "reaction", "interface", "synergy", "crossflow") ||
+    hasStudyPhrase(rawTarget, [
+      "interaction with magic",
+      "interacts with magic",
+      "interaction between",
+      "against magic",
+      "with magic",
+    ]);
+
+  let requestedEssence = null;
+  let requestedForm = null;
+  if (tokens[0] === "spell") {
+    const maybeEssence = tokens[1] || null;
+    const maybeForm = tokens[2] || null;
+    if (maybeEssence && knownEssences.has(maybeEssence)) requestedEssence = maybeEssence;
+    if (maybeForm && knownForms.has(maybeForm)) requestedForm = maybeForm;
+
+    if (!requestedEssence && !requestedForm && maybeEssence && knownForms.has(maybeEssence)) {
+      requestedForm = maybeEssence;
+    }
+  } else if (isSpellStudy) {
+    requestedEssence = tokens.find((token) => knownEssences.has(token)) || null;
+    requestedForm = tokens.find((token) => knownForms.has(token)) || null;
+  }
+
+  const isSomaticAssay = isSelfStudy || isSampleStudy || (isInteractionStudy && hasToken("blood", "ichor", "body"));
+  const devourerActive = isDevourerCorePlayer(player);
+
+  const method = isSpellStudy
+    ? "spell_study"
+    : isRuneStudy
+      ? "rune_analysis"
+      : isInscriptionStudy
+        ? "inscription_decoding"
+        : isEpiphanyStudy
+          ? "epiphany"
+          : isPhenomenaStudy
+            ? "field_observation"
+            : isSomaticAssay
+              ? devourerActive
+                ? "devourer_assay"
+                : "somatic_assay"
+              : "observation";
+
+  return {
+    tokens,
+    isSpellStudy,
+    isRuneStudy,
+    isInscriptionStudy,
+    isPhenomenaStudy,
+    isEpiphanyStudy,
+    isSelfStudy,
+    isSampleStudy,
+    isInteractionStudy,
+    isSomaticAssay,
+    devourerActive,
+    requestedEssence,
+    requestedForm,
+    method,
+  };
 }
 
 /**
@@ -239,49 +328,25 @@ export function executeAction(state, action, _options = {}) {
             ...normalizeStringList(Object.keys(baselineMagic.affinities || {})),
           ]);
           const knownForms = new Set(normalizeStringList(baselineGrammar.forms));
-
-          const tokens = rawTarget.split(/\s+/).filter(Boolean);
-          const isSpellStudy =
-            tokens[0] === "spell" ||
-            tokens.includes("spell") ||
-            tokens.includes("buildup") ||
-            tokens.includes("buildups");
-          const isRuneStudy =
-            tokens.includes("rune") ||
-            tokens.includes("runes") ||
-            tokens.includes("symbol") ||
-            tokens.includes("symbols");
-          const isInscriptionStudy =
-            tokens.includes("inscription") ||
-            tokens.includes("inscriptions") ||
-            tokens.includes("glyph") ||
-            tokens.includes("text");
-          const isPhenomenaStudy =
-            tokens.includes("phenomena") ||
-            tokens.includes("phenomenon") ||
-            tokens.includes("leyline") ||
-            tokens.includes("storm") ||
-            tokens.includes("tide") ||
-            tokens.includes("mirage");
-          const isEpiphanyStudy =
-            tokens.includes("epiphany") || tokens.includes("insight");
-
-          let requestedEssence = null;
-          let requestedForm = null;
-          if (tokens[0] === "spell") {
-            const maybeEssence = tokens[1] || null;
-            const maybeForm = tokens[2] || null;
-            if (maybeEssence && knownEssences.has(maybeEssence)) requestedEssence = maybeEssence;
-            if (maybeForm && knownForms.has(maybeForm)) requestedForm = maybeForm;
-
-            // Allow "study spell lance" (form-only) without misclassifying it as an essence.
-            if (!requestedEssence && !requestedForm && maybeEssence && knownForms.has(maybeEssence)) {
-              requestedForm = maybeEssence;
-            }
-          } else if (isSpellStudy) {
-            requestedEssence = tokens.find((token) => knownEssences.has(token)) || null;
-            requestedForm = tokens.find((token) => knownForms.has(token)) || null;
-          }
+          const studyContext = classifyMagicStudyTarget(
+            rawTarget,
+            knownEssences,
+            knownForms,
+            workingState.player,
+          );
+          const {
+            isSpellStudy,
+            isRuneStudy,
+            isInscriptionStudy,
+            isPhenomenaStudy,
+            isEpiphanyStudy,
+            isInteractionStudy,
+            isSomaticAssay,
+            devourerActive,
+            requestedEssence,
+            requestedForm,
+            method,
+          } = studyContext;
 
           let recipeUnlocked = false;
           if (isSpellStudy) {
@@ -317,7 +382,11 @@ export function executeAction(state, action, _options = {}) {
           if (magic.resonance) {
             const resonanceMax = Number.isFinite(magic.resonance?.max) ? magic.resonance.max : 100;
             const resonanceCurrent = Number.isFinite(magic.resonance?.current) ? magic.resonance.current : 0;
-            const resonanceDelta = isEpiphanyStudy ? randomInt(2, 6) : randomInt(0, 2);
+            const resonanceDelta = isEpiphanyStudy
+              ? randomInt(2, 6)
+              : isInteractionStudy || isSomaticAssay
+                ? randomInt(1, 3)
+                : randomInt(0, 2);
             nextMagic.resonance = {
               ...(magic.resonance || {}),
               current: clamp(resonanceCurrent + resonanceDelta, 0, resonanceMax),
@@ -417,6 +486,14 @@ export function executeAction(state, action, _options = {}) {
             }
           }
 
+          if (isSomaticAssay && magic.interference) {
+            const score = Number.isFinite(magic.interference?.score) ? magic.interference.score : 0;
+            nextMagic.interference = {
+              ...(magic.interference || {}),
+              score: clamp(score - 0.01, 0, 1),
+            };
+          }
+
           // Ensure core spell-study keys show up as part of grammar even if the action inferred them.
           if (requestedEssence) essences = pushUnique(essences, requestedEssence);
           if (requestedForm) forms = pushUnique(forms, requestedForm);
@@ -432,19 +509,24 @@ export function executeAction(state, action, _options = {}) {
             },
           };
 
-          const method = isSpellStudy
-            ? "spell_study"
-            : isRuneStudy
-              ? "rune_analysis"
-              : isInscriptionStudy
-                ? "inscription_decoding"
-                : isEpiphanyStudy
-                  ? "epiphany"
-                  : "observation";
+          const assayNotes = [];
+          if (isSomaticAssay) {
+            assayNotes.push(
+              isInteractionStudy
+                ? "Living sample resonance mapped against active magic."
+                : "Living sample signatures logged for later comparison.",
+            );
+          }
+          if (devourerActive && isSomaticAssay) {
+            assayNotes.push(
+              "Devourer Core flagged the sample as a leverage point without forcing assimilation.",
+            );
+          }
           const notes = [
             `Studied ${rawTarget} at turn ${turn}.`,
             recipeUnlocked ? "A stable spell recipe crystallized." : null,
             unlocked.length > 0 ? `Unlocked: ${unlocked.join(", ")}.` : null,
+            ...assayNotes,
           ]
             .filter(Boolean)
             .join(" ");
@@ -481,7 +563,11 @@ export function executeAction(state, action, _options = {}) {
             ? `Study complete: ${rawTarget} (recipe recorded).`
             : unlocked.length > 0
               ? `Study complete: ${rawTarget} (unlocks: ${unlocked.join(", ")}).`
-              : `Studied ${rawTarget} - observation logged in magic journal.`;
+              : isSomaticAssay
+                ? devourerActive
+                  ? `Study complete: ${rawTarget} (Devourer Core trace logged).`
+                  : `Study complete: ${rawTarget} (living sample logged).`
+                : `Studied ${rawTarget} - observation logged in magic journal.`;
           break;
         }
 

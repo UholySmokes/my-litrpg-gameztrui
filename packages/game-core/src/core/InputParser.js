@@ -395,7 +395,9 @@ function parseMagic(input) {
   }
 
   {
-    const match = input.match(/^study\s+(.+)$/i);
+    const match = input.match(
+      /^(?:i\s+)?(?:(?:try|attempt)(?:ing)?\s+to\s+)?study\s+(.+)$/i,
+    );
     if (match) {
       return {
         type: "magic_study",

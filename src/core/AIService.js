@@ -1,4 +1,8 @@
-import { getAuthToken, getDevAuthHeaders } from "./AuthService.js";
+import {
+  getAuthToken,
+  getChronicleSessionHeaders,
+  getDevAuthHeaders,
+} from "./AuthService.js";
 import { normalizeNarrationPayload } from "./narrationContract.js";
 import {
   resolveAllowExternalApiBaseUrl,
@@ -341,6 +345,7 @@ async function buildApiHeaders(baseHeaders = {}) {
   const trace = createRequestTraceContext();
   const headers = {
     ...baseHeaders,
+    ...getChronicleSessionHeaders(),
     ...getDevAuthHeaders(),
     ...buildTraceHeaders(trace),
   };

@@ -17,6 +17,7 @@ const pickEnvValue = (...values) => {
 };
 
 const LOCAL_GAME_STORAGE_KEY = "localGame";
+const CHRONICLE_SESSION_STORAGE_KEY = "chronicleSessionId";
 const LOCAL_GAME_USER = Object.freeze({
   id: "local",
   email: "local@game.dev",
@@ -39,6 +40,41 @@ const getLocalGameUser = () => {
     return null;
   }
 };
+
+const getStorage = () => {
+  if (typeof window !== "undefined" && window?.localStorage) {
+    return window.localStorage;
+  }
+  if (typeof globalThis !== "undefined" && globalThis?.localStorage) {
+    return globalThis.localStorage;
+  }
+  return null;
+};
+
+const createChronicleSessionId = () => {
+  const cryptoApi = globalThis?.crypto;
+  if (cryptoApi?.randomUUID) {
+    return cryptoApi.randomUUID();
+  }
+  return `chronicle-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+};
+
+function getChronicleSessionId() {
+  const storage = getStorage();
+  if (!storage) return "";
+
+  try {
+    const existing = storage.getItem(CHRONICLE_SESSION_STORAGE_KEY);
+    if (typeof existing === "string" && existing.trim()) {
+      return existing.trim();
+    }
+    const next = createChronicleSessionId();
+    storage.setItem(CHRONICLE_SESSION_STORAGE_KEY, next);
+    return next;
+  } catch {
+    return "";
+  }
+}
 
 const resolveAuthProvider = () => {
   const runtimeEnv = getRuntimeEnv();
@@ -332,6 +368,14 @@ export function getDevAuthHeaders() {
   return {
     "x-dev-user-id": devUser.id,
     "x-dev-user-email": devUser.email,
+  };
+}
+
+export function getChronicleSessionHeaders() {
+  const sessionId = getChronicleSessionId();
+  if (!sessionId) return {};
+  return {
+    "x-chronicle-session-id": sessionId,
   };
 }
 

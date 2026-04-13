@@ -14,6 +14,14 @@ const MOOD_PATTERNS = [
 	{ mood: "desperate", patterns: [/flee/i, /escape/i, /wound/i, /bleed/i, /dying/i, /last/i, /barely/i] },
 ];
 
+const CHRONICLE_SESSION_ID_HEADER = "x-chronicle-session-id";
+const ANONYMOUS_NARRATOR_USER = Object.freeze({
+	id: "anonymous",
+	email: "anonymous@chronicle.local",
+	provider: "anonymous",
+	roles: Object.freeze(["anonymous"]),
+});
+
 function inferMood(text) {
 	const value = typeof text === "string" ? text : "";
 	if (!value.trim()) return "neutral";
@@ -91,6 +99,38 @@ async function requireAuthenticatedUser(req, res) {
 		message: "Sign in required.",
 	});
 	return null;
+}
+
+function getHeader(req, name) {
+	const headers = req?.headers;
+	if (!headers || typeof headers !== "object") return "";
+	const lower = String(name || "").toLowerCase();
+	const value = headers[lower] || headers[name];
+	return typeof value === "string" ? value.trim() : "";
+}
+
+function getNarrationSessionId(req) {
+	const raw = getHeader(req, CHRONICLE_SESSION_ID_HEADER);
+	if (!raw) return "";
+	const normalized = raw.replace(/[^a-zA-Z0-9:_-]/g, "").slice(0, 96);
+	return normalized;
+}
+
+function buildAnonymousNarrationUser(req) {
+	const sessionId = getNarrationSessionId(req);
+	if (!sessionId) return ANONYMOUS_NARRATOR_USER;
+	return {
+		id: `guest:${sessionId}`,
+		email: `guest+${sessionId}@chronicle.local`,
+		provider: "anonymous",
+		roles: ["anonymous"],
+	};
+}
+
+async function getNarrationUser(req) {
+	const user = await auth.getUserFromRequest(req);
+	if (user) return user;
+	return buildAnonymousNarrationUser(req);
 }
 
 async function runNarration(body) {
@@ -242,7 +282,7 @@ async function runAgent(req, res) {
 
 async function narrate(req, res) {
 	try {
-		if (!(await requireAuthenticatedUser(req, res))) return;
+		await getNarrationUser(req);
 
 		const body = await readJsonBody(req);
 		const result = await runNarration(body);
@@ -277,8 +317,7 @@ async function narrate(req, res) {
 
 async function narrateStart(req, res) {
 	try {
-		const user = await requireAuthenticatedUser(req, res);
-		if (!user) return;
+		const user = await getNarrationUser(req);
 
 		await cleanupNarrateRuns();
 		const body = await readJsonBody(req);
@@ -381,8 +420,7 @@ async function narrateStart(req, res) {
 
 async function narratePoll(req, res) {
 	try {
-		const user = await requireAuthenticatedUser(req, res);
-		if (!user) return;
+		const user = await getNarrationUser(req);
 
 		await cleanupNarrateRuns();
 		const threadId = req?.query?.threadId;

@@ -118,6 +118,40 @@ describe("AIService endpoint resolution", () => {
     expect(secondHeaders["x-dev-user-id"]).toBeUndefined();
   });
 
+  it("includes a stable chronicle session header for unauthenticated narration", async () => {
+    const storage = new Map();
+    globalThis.window = {
+      localStorage: {
+        getItem: (key) => storage.get(key) ?? null,
+        setItem: (key, value) => storage.set(key, value),
+      },
+    };
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_NARRATE_ENDPOINT: "/api/narrate",
+    };
+
+    globalThis.fetch = jest.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          ok: true,
+          story: "The city lights sharpen into focus.",
+          mood: "focused",
+          suggestions: ["Keep moving"],
+        }),
+        {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        },
+      ),
+    );
+
+    await generateNarrative("test prompt");
+
+    const headers = globalThis.fetch.mock.calls[0][1]?.headers || {};
+    expect(typeof headers["x-chronicle-session-id"]).toBe("string");
+    expect(headers["x-chronicle-session-id"].length).toBeGreaterThan(0);
+  });
+
   it("falls back to a configured external API base when same-origin is missing", async () => {
     globalThis.__RUNTIME_CONFIG__ = {
       VITE_NARRATE_ENDPOINT: "/api/narrate",

@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
-import { getDevAuthHeaders } from "../../src/core/AuthService.js";
+import {
+  getChronicleSessionHeaders,
+  getDevAuthHeaders,
+} from "../../src/core/AuthService.js";
 
 afterEach(() => {
   delete globalThis.window;
@@ -24,5 +27,22 @@ describe("AuthService local mode headers", () => {
       "x-dev-user-id": "local",
       "x-dev-user-email": "local@game.dev",
     });
+  });
+
+  it("creates and reuses a chronicle session header for guest narration", () => {
+    const storage = new Map();
+    globalThis.window = {
+      localStorage: {
+        getItem: (key) => storage.get(key) ?? null,
+        setItem: (key, value) => storage.set(key, value),
+      },
+    };
+
+    const first = getChronicleSessionHeaders();
+    const second = getChronicleSessionHeaders();
+
+    expect(typeof first["x-chronicle-session-id"]).toBe("string");
+    expect(first["x-chronicle-session-id"].length).toBeGreaterThan(0);
+    expect(second).toEqual(first);
   });
 });

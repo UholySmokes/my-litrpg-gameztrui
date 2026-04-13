@@ -12,6 +12,7 @@
 		"node": "20"
 	},
 	"dependencies": {
+		"@cerebras/cerebras_cloud_sdk": "^1.64.1",
 		"@dataconnect/admin-generated": "file:src/dataconnect-admin-generated",
 		"@genkit-ai/google-genai": "^1.28.0",
 		"@google-cloud/aiplatform": "^6.5.0",

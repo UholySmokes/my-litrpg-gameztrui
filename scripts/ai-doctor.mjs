@@ -43,10 +43,16 @@ printStatus(
 printSection("AI provider posture");
 printStatus(envPresence.provider ? "OK" : "WARN", "AI_TEXT_PROVIDER", envPresence.provider || "unset");
 printStatus(envPresence.openAiModel ? "OK" : "WARN", "OPENAI_MODEL", envPresence.openAiModel || "unset");
+printStatus(envPresence.cerebrasModel ? "OK" : "WARN", "CEREBRAS_MODEL", envPresence.cerebrasModel || "unset");
 printStatus(envPresence.geminiModel ? "OK" : "WARN", "GEMINI_MODEL", envPresence.geminiModel || "unset");
 printStatus(envPresence.authProvider ? "OK" : "WARN", "VITE_AUTH_PROVIDER", envPresence.authProvider || "unset");
 printStatus(envPresence.devUserId ? "OK" : "WARN", "VITE_DEV_USER_ID", envPresence.devUserId || "unset");
 printStatus(envPresence.hasOpenAiKey ? "OK" : "WARN", "OPENAI_API_KEY", envPresence.hasOpenAiKey ? "configured" : "missing");
+printStatus(
+  envPresence.hasCerebrasKey ? "OK" : "WARN",
+  "CEREBRAS_API_KEY",
+  envPresence.hasCerebrasKey ? "configured" : "missing",
+);
 printStatus(
   envPresence.hasGeminiKey ? "OK" : "WARN",
   "GOOGLE_GENAI_API_KEY",

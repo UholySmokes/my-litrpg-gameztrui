@@ -78,6 +78,9 @@ if (fileExists(functionsSecretFile)) {
   if (process.env.OPENAI_API_KEY) {
     secretLines.push(`OPENAI_API_KEY=${process.env.OPENAI_API_KEY}`);
   }
+  if (process.env.CEREBRAS_API_KEY) {
+    secretLines.push(`CEREBRAS_API_KEY=${process.env.CEREBRAS_API_KEY}`);
+  }
   if (process.env.GOOGLE_GENAI_API_KEY) {
     secretLines.push(`GOOGLE_GENAI_API_KEY=${process.env.GOOGLE_GENAI_API_KEY}`);
   }
@@ -89,13 +92,17 @@ if (fileExists(functionsSecretFile)) {
     printStatus(
       "WARN",
       "Functions secret file",
-      `${functionsSecretFile} not created because OPENAI_API_KEY / GOOGLE_GENAI_API_KEY are not set in the shell`,
+      `${functionsSecretFile} not created because OPENAI_API_KEY / CEREBRAS_API_KEY / GOOGLE_GENAI_API_KEY are not set in the shell`,
     );
   }
 }
 
 printSection("Next steps");
 printStatus("INFO", "Review local editor settings", ".vscode/settings.json is intentionally local-only");
-printStatus("INFO", "Add emulator AI secrets", "put OPENAI_API_KEY in functions/.secret.local for live local narrator calls");
+printStatus(
+  "INFO",
+  "Add emulator AI secrets",
+  "put OPENAI_API_KEY or CEREBRAS_API_KEY in functions/.secret.local for live local narrator calls",
+);
 printStatus("INFO", "Run diagnostics", "npm run ai:doctor");
 printStatus("INFO", "Run policy validation", "npm run ai:check");

@@ -103,6 +103,7 @@
     "generate:godot-assets:placeholder": "powershell -ExecutionPolicy Bypass -File scripts/generate-godot-placeholder-assets.ps1"
   },
   "dependencies": {
+    "@cerebras/cerebras_cloud_sdk": "^1.64.1",
     "@dataconnect/generated": "file:src/dataconnect-generated",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.52.0",

@@ -22,8 +22,11 @@ const NARRATOR_LOCAL_FALLBACK_CODES = new Set([
   "NARRATOR_SERVICE_UNREACHABLE",
   "NARRATOR_UNAVAILABLE_COOLDOWN",
 ]);
+const ABSOLUTE_URL_PATTERN = /^[a-z][a-z0-9+.-]*:\/\//i;
 const LOCAL_NARRATOR_UNREACHABLE_MESSAGE =
   "Narrator service unreachable. Start local API with `npm run dev:api` (or `npm run dev:stack`) and retry.";
+const REMOTE_NARRATOR_UNREACHABLE_MESSAGE =
+  "Narrator service temporarily unavailable. Please retry in a moment.";
 
 const getBuildEnv = () =>
   typeof import.meta !== "undefined" && import.meta.env ? import.meta.env : {};
@@ -174,11 +177,66 @@ const createNarratorCooldownError = () => {
   return error;
 };
 
-const createNarratorServiceUnreachableError = (
-  message = LOCAL_NARRATOR_UNREACHABLE_MESSAGE,
-) => {
+const getCurrentOrigin = () => {
+  const origin =
+    globalThis?.location?.origin ||
+    globalThis?.window?.location?.origin ||
+    "";
+  return typeof origin === "string" ? origin.trim() : "";
+};
+
+const isExternalNarrateEndpoint = (endpoint) => {
+  if (typeof endpoint !== "string" || !ABSOLUTE_URL_PATTERN.test(endpoint)) {
+    return false;
+  }
+
+  const currentOrigin = getCurrentOrigin();
+  if (!currentOrigin) return true;
+
+  try {
+    return new URL(endpoint).origin !== currentOrigin;
+  } catch {
+    return true;
+  }
+};
+
+const isNetworkErrorLike = (error) => {
+  const message = String(error?.message || "").toLowerCase();
+  return Boolean(
+    error?.name === "TypeError" ||
+      message.includes("failed to fetch") ||
+      message.includes("network") ||
+      message.includes("load failed") ||
+      message.includes("connection error") ||
+      message.includes("fetch"),
+  );
+};
+
+const shouldTreatEndpointResponseAsUnavailable = ({
+  endpoint,
+  status,
+  rawText,
+}) =>
+  Boolean(
+    isLocalDevNarratorProxyFailure({ endpoint, status, rawText }) ||
+      (isExternalNarrateEndpoint(endpoint) && Number(status) >= 500),
+  );
+
+const shouldTreatEndpointErrorAsUnavailable = ({ endpoint, error }) =>
+  Boolean(
+    isExternalNarrateEndpoint(endpoint) &&
+      error?.name !== "AbortError" &&
+      isNetworkErrorLike(error),
+  );
+
+const createNarratorServiceUnreachableError = (endpoint) => {
+  const message =
+    isLocalDevRuntime() && isSameOriginNarrateEndpoint(endpoint)
+      ? LOCAL_NARRATOR_UNREACHABLE_MESSAGE
+      : REMOTE_NARRATOR_UNREACHABLE_MESSAGE;
   const error = new Error(message);
   error.code = "NARRATOR_SERVICE_UNREACHABLE";
+  error.endpoint = endpoint;
   return error;
 };
 
@@ -362,7 +420,7 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
 
       if (RETRY_STATUS.has(response.status) && attempt < MAX_RETRIES) {
         if (
-          isLocalDevNarratorProxyFailure({
+          shouldTreatEndpointResponseAsUnavailable({
             endpoint: url,
             status: response.status,
             rawText,
@@ -390,6 +448,10 @@ async function fetchJsonWithRetry(url, options, timeoutMs) {
       lastError = error;
 
       if (error?.name === "AbortError") {
+        throw error;
+      }
+
+      if (shouldTreatEndpointErrorAsUnavailable({ endpoint: url, error })) {
         throw error;
       }
 
@@ -512,14 +574,13 @@ export async function generateNarrative(
           }
 
           if (
-            isLocalDevNarratorProxyFailure({
+            shouldTreatEndpointResponseAsUnavailable({
               endpoint,
               status: response.status,
               rawText,
-              isDev,
             })
           ) {
-            const error = createNarratorServiceUnreachableError();
+            const error = createNarratorServiceUnreachableError(endpoint);
             markNarratorUnavailable(error.code, error.message);
             throw error;
           }
@@ -561,6 +622,16 @@ export async function generateNarrative(
           }),
         );
       } catch (error) {
+        if (shouldTreatEndpointErrorAsUnavailable({ endpoint, error })) {
+          const unavailableError = createNarratorServiceUnreachableError(endpoint);
+          markNarratorUnavailable(
+            unavailableError.code,
+            unavailableError.message,
+          );
+          lastError = unavailableError;
+          endpointUnavailable = true;
+          break;
+        }
         lastError = error;
         if (shouldUseNarrativeLocalFallback(error)) {
           endpointUnavailable = true;
@@ -604,11 +675,9 @@ export async function generateNarrative(
 
   if (
     lastError?.message &&
-    (lastError.message.includes("network") ||
-      lastError.message.includes("fetch") ||
-      lastError.message.includes("Connection error"))
+    isNetworkErrorLike(lastError)
   ) {
-    const error = createNarratorServiceUnreachableError();
+    const error = createNarratorServiceUnreachableError(lastError?.endpoint);
     markNarratorUnavailable(error.code, error.message);
     throw error;
   }
@@ -680,50 +749,80 @@ export async function generateNarrativeStream(
     let lastStartError = null;
     for (const endpoints of endpointCandidates) {
       for (let i = 0; i < startHeaderVariants.length; i += 1) {
-        const res = await fetchWithTimeout(
-          endpoints.start,
-          {
-            method: "POST",
-            headers: startHeaderVariants[i],
-            body: JSON.stringify({ prompt, mode, npcContext, reactionContext }),
-            signal,
-          },
-          30000,
-        );
-        const rawStartText = await res.clone().text().catch(() => "");
-        startData = await res.json().catch(() => null);
-        if (
-          (res.status === 401 || res.status === 403) &&
-          i < startHeaderVariants.length - 1
-        ) {
-          continue;
-        }
-        if (!res.ok || !startData?.ok) {
-          const error = new Error(
-            startData?.message || `Start failed (${res.status})`,
+        try {
+          const res = await fetchWithTimeout(
+            endpoints.start,
+            {
+              method: "POST",
+              headers: startHeaderVariants[i],
+              body: JSON.stringify({ prompt, mode, npcContext, reactionContext }),
+              signal,
+            },
+            30000,
           );
-          if (res.status === 404 || res.status === 405) {
-            error.code = "NARRATOR_ENDPOINT_MISSING";
-            lastStartError = error;
-            break;
-          }
+          const rawStartText = await res.clone().text().catch(() => "");
+          startData = await res.json().catch(() => null);
           if (
-            isLocalDevNarratorProxyFailure({
-              endpoint: endpoints.start,
-              status: res.status,
-              rawText: rawStartText,
-              isDev,
-            })
+            (res.status === 401 || res.status === 403) &&
+            i < startHeaderVariants.length - 1
           ) {
-            const error = createNarratorServiceUnreachableError();
-            markNarratorUnavailable(error.code, error.message);
+            continue;
+          }
+          if (!res.ok || !startData?.ok) {
+            const error = new Error(
+              startData?.message || `Start failed (${res.status})`,
+            );
+            if (res.status === 404 || res.status === 405) {
+              error.code = "NARRATOR_ENDPOINT_MISSING";
+              lastStartError = error;
+              break;
+            }
+            if (
+              shouldTreatEndpointResponseAsUnavailable({
+                endpoint: endpoints.start,
+                status: res.status,
+                rawText: rawStartText,
+              })
+            ) {
+              const unavailableError = createNarratorServiceUnreachableError(
+                endpoints.start,
+              );
+              markNarratorUnavailable(
+                unavailableError.code,
+                unavailableError.message,
+              );
+              throw unavailableError;
+            }
             throw error;
           }
-          throw error;
+          selectedEndpoints = endpoints;
+          lastStartError = null;
+          break;
+        } catch (error) {
+          if (error?.name === "AbortError") {
+            throw error;
+          }
+          if (shouldUseNarrativeLocalFallback(error)) {
+            throw error;
+          }
+          if (
+            shouldTreatEndpointErrorAsUnavailable({
+              endpoint: endpoints.start,
+              error,
+            })
+          ) {
+            const unavailableError = createNarratorServiceUnreachableError(
+              endpoints.start,
+            );
+            markNarratorUnavailable(
+              unavailableError.code,
+              unavailableError.message,
+            );
+            throw unavailableError;
+          }
+          lastStartError = error;
+          break;
         }
-        selectedEndpoints = endpoints;
-        lastStartError = null;
-        break;
       }
       if (selectedEndpoints) break;
       if (lastStartError) {
@@ -826,14 +925,15 @@ export async function generateNarrativeStream(
         }
         if (!res.ok) {
           if (
-            isLocalDevNarratorProxyFailure({
+            shouldTreatEndpointResponseAsUnavailable({
               endpoint: selectedEndpoints.poll,
               status: res.status,
               rawText: rawPollText,
-              isDev,
             })
           ) {
-            const error = createNarratorServiceUnreachableError();
+            const error = createNarratorServiceUnreachableError(
+              selectedEndpoints.poll,
+            );
             markNarratorUnavailable(error.code, error.message);
             pollError = error;
           } else {
@@ -853,6 +953,21 @@ export async function generateNarrativeStream(
     } catch (error) {
       if (error?.name === "AbortError") throw error;
       if (shouldUseNarrativeLocalFallback(error)) throw error;
+      if (
+        shouldTreatEndpointErrorAsUnavailable({
+          endpoint: selectedEndpoints?.poll,
+          error,
+        })
+      ) {
+        const unavailableError = createNarratorServiceUnreachableError(
+          selectedEndpoints?.poll,
+        );
+        markNarratorUnavailable(
+          unavailableError.code,
+          unavailableError.message,
+        );
+        throw unavailableError;
+      }
       if (isDev) console.warn("Stream poll error:", error);
       if (
         String(error?.message || "").toLowerCase().includes("unauthorized")

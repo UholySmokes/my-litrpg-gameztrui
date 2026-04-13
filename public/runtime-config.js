@@ -13,10 +13,8 @@ try {
     : "";
   if (host === "void-verse.com" || host.endsWith(".void-verse.com")) {
     globalThis.__RUNTIME_CONFIG__.VITE_ALLOW_EXTERNAL_API_BASE_URL = "true";
-    globalThis.__RUNTIME_CONFIG__.VITE_API_BASE_URL =
+    globalThis.__RUNTIME_CONFIG__.VITE_API_FALLBACK_BASE_URL =
       "https://my-litrpg-gameztrui-3416-da75c.web.app";
-    globalThis.__RUNTIME_CONFIG__.VITE_NARRATE_ENDPOINT =
-      "https://my-litrpg-gameztrui-3416-da75c.web.app/api/narrate";
   }
 } catch {
   // No location available (non-browser execution).

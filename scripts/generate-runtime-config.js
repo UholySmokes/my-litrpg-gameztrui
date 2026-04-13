@@ -46,6 +46,19 @@ function withApiBase(configText, apiBaseValue) {
   return `${trimmed}\n${assignment}\n`;
 }
 
+function withApiFallbackBase(configText, apiBaseValue) {
+  const serialized = JSON.stringify(apiBaseValue);
+  const assignment =
+    `globalThis.__RUNTIME_CONFIG__.VITE_API_FALLBACK_BASE_URL = ${serialized};`;
+  const pattern =
+    /globalThis\.__RUNTIME_CONFIG__\.VITE_API_FALLBACK_BASE_URL\s*=\s*[^;]+;/;
+  if (pattern.test(configText)) {
+    return configText.replace(pattern, assignment);
+  }
+  const trimmed = ensureBase(configText).replace(/\s*$/, "");
+  return `${trimmed}\n${assignment}\n`;
+}
+
 function hasEndpoint(configText) {
   return /VITE_NARRATE_ENDPOINT/.test(configText);
 }
@@ -54,11 +67,27 @@ function hasApiBase(configText) {
   return /VITE_API_BASE_URL|VITE_API_BASE/.test(configText);
 }
 
+function hasApiFallbackBase(configText) {
+  return /VITE_API_FALLBACK_BASE_URL|VITE_API_BASE_FALLBACK|VITE_FALLBACK_API_BASE_URL/.test(
+    configText,
+  );
+}
+
 function hasWebGameplayFlag(configText) {
   return /VITE_WEB_GAMEPLAY_ENABLED/.test(configText);
 }
 
-function sanitizeEndpoint(value, keyName) {
+function isLocalHttpUrl(url) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "http:") return false;
+    return ["localhost", "127.0.0.1", "[::1]"].includes(parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
+function sanitizePrimaryConfigValue(value, keyName) {
   const trimmed = String(value || "").trim();
   if (!trimmed) return "";
   if (EXTERNAL_URL_PATTERN.test(trimmed) || trimmed.startsWith("//")) {
@@ -68,6 +97,34 @@ function sanitizeEndpoint(value, keyName) {
     return "";
   }
   return trimmed;
+}
+
+function sanitizeFallbackConfigValue(value, keyName) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) return "";
+  if (trimmed.startsWith("//")) {
+    console.warn(
+      `[runtime-config] ignoring ${keyName} because protocol-relative URLs are not allowed: ${trimmed}`,
+    );
+    return "";
+  }
+  if (!EXTERNAL_URL_PATTERN.test(trimmed)) {
+    return trimmed;
+  }
+
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol === "https:" || isLocalHttpUrl(trimmed)) {
+      return trimmed;
+    }
+  } catch {
+    // Fall through to warning below.
+  }
+
+  console.warn(
+    `[runtime-config] ignoring ${keyName} because only https (or local http) fallback URLs are allowed: ${trimmed}`,
+  );
+  return "";
 }
 
 function parseWebGameplayFlag(value) {
@@ -92,15 +149,22 @@ function withWebGameplayFlag(configText, boolLiteral) {
 }
 
 async function main() {
-  const envEndpoint = sanitizeEndpoint(
+  const envEndpoint = sanitizePrimaryConfigValue(
     process.env.VITE_NARRATE_ENDPOINT || "",
     "VITE_NARRATE_ENDPOINT",
   );
-  const envApiBase = sanitizeEndpoint(
+  const envApiBase = sanitizePrimaryConfigValue(
     process.env.VITE_API_BASE_URL ||
     process.env.VITE_API_BASE ||
     "",
     "VITE_API_BASE_URL",
+  );
+  const envApiFallbackBase = sanitizeFallbackConfigValue(
+    process.env.VITE_API_FALLBACK_BASE_URL ||
+    process.env.VITE_API_BASE_FALLBACK ||
+    process.env.VITE_FALLBACK_API_BASE_URL ||
+    "",
+    "VITE_API_FALLBACK_BASE_URL",
   );
   const webGameplayFlag = parseWebGameplayFlag(
     process.env.VITE_WEB_GAMEPLAY_ENABLED ||
@@ -112,13 +176,21 @@ async function main() {
   let output = publicConfig;
   let sourceLabel = "public";
 
-  if (envEndpoint || envApiBase || webGameplayFlag !== undefined) {
+  if (
+    envEndpoint ||
+    envApiBase ||
+    envApiFallbackBase ||
+    webGameplayFlag !== undefined
+  ) {
     output = ensureBase(publicConfig);
     if (envEndpoint) {
       output = withEndpoint(output, envEndpoint);
     }
     if (envApiBase) {
       output = withApiBase(output, envApiBase);
+    }
+    if (envApiFallbackBase) {
+      output = withApiFallbackBase(output, envApiFallbackBase);
     }
     if (webGameplayFlag !== undefined) {
       output = withWebGameplayFlag(output, webGameplayFlag);
@@ -127,6 +199,7 @@ async function main() {
   } else if (
     !hasEndpoint(publicConfig) &&
     !hasApiBase(publicConfig) &&
+    !hasApiFallbackBase(publicConfig) &&
     !hasWebGameplayFlag(publicConfig)
   ) {
     output = ensureBase(publicConfig);

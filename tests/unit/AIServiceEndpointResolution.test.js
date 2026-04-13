@@ -158,6 +158,45 @@ describe("AIService endpoint resolution", () => {
     );
   });
 
+  it("marks external fallback outages as narrator-unavailable cooldown candidates", async () => {
+    globalThis.__RUNTIME_CONFIG__ = {
+      VITE_NARRATE_ENDPOINT: "/api/narrate",
+      VITE_API_BASE_URL: "/",
+      VITE_ALLOW_EXTERNAL_API_BASE_URL: "true",
+      VITE_API_FALLBACK_BASE_URL: "https://my-litrpg-gameztrui-3416-da75c.web.app",
+    };
+
+    globalThis.fetch = jest
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ message: "Not Found" }), {
+          status: 404,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response("Temporarily unavailable", {
+          status: 503,
+          headers: { "content-type": "text/plain" },
+        }),
+      );
+
+    await expect(generateNarrative("test prompt")).rejects.toMatchObject({
+      code: "NARRATOR_SERVICE_UNREACHABLE",
+    });
+
+    await expect(generateNarrative("retry prompt")).rejects.toMatchObject({
+      code: "NARRATOR_UNAVAILABLE_COOLDOWN",
+      causeCode: "NARRATOR_SERVICE_UNREACHABLE",
+    });
+
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+    expect(globalThis.fetch.mock.calls[0][0]).toBe("/api/narrate");
+    expect(globalThis.fetch.mock.calls[1][0]).toBe(
+      "https://my-litrpg-gameztrui-3416-da75c.web.app/api/narrate",
+    );
+  });
+
   it("treats local same-origin 500s as narrator-unavailable cooldown candidates", async () => {
     globalThis.__RUNTIME_CONFIG__ = {
       VITE_NARRATE_ENDPOINT: "/api/narrate",

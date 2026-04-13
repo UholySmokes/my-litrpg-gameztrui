@@ -48,6 +48,43 @@ describe("ActionDispatcher", () => {
       expect(entry.target).toBe("rune aeth");
       expect(entry.method).toBe("rune_analysis");
     });
+
+    it("supports somatic blood study and logs devourer leverage notes", () => {
+      const state = {
+        ...baseState,
+        world: { ...(baseState.world || {}), turnCount: 11 },
+        player: {
+          ...baseState.player,
+          archetypeSystem: {
+            id: "devourer_core",
+            name: "Devourer Core",
+            category: "System",
+            runtime: {
+              taint: 0,
+              storedSamples: {},
+              knownPrey: {},
+              adaptations: {},
+              sentientDevours: 0,
+              lastNotice: "",
+            },
+          },
+        },
+      };
+
+      const result = executeAction(state, {
+        type: "magic_study",
+        target: "my own blood and its interaction with magic",
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.state.world.turnCount).toBe(12);
+
+      const magic = result.state.player.magic;
+      const entry = magic.journal[magic.journal.length - 1];
+      expect(entry.target).toBe("my own blood and its interaction with magic");
+      expect(entry.method).toBe("devourer_assay");
+      expect(entry.notes).toContain("Devourer Core flagged the sample as a leverage point");
+    });
   });
 
   describe("rest action", () => {

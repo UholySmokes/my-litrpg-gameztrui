@@ -88,6 +88,12 @@ function validateAction(action, gameState) {
     case "magic_purge":
       return validateMagicPurge(action);
 
+    case "magic_study":
+      return validateMagicStudy(action);
+
+    case "magic_journal":
+      return validateMagicJournal(action);
+
     case "devourer_digest":
       return validateDevourerTargetedAction(action);
 
@@ -426,6 +432,36 @@ function validateMagicPurge(action) {
   ) {
     return { valid: false, reason: "Invalid purge amount." };
   }
+  return { valid: true };
+}
+
+function validateMagicStudy(action) {
+  if (typeof action?.target !== "string") {
+    return { valid: false, reason: "Magic study target must be text." };
+  }
+
+  const trimmed = action.target.trim();
+  if (!trimmed) {
+    return { valid: false, reason: "Missing magic study target." };
+  }
+
+  if (trimmed.length > 180) {
+    return { valid: false, reason: "Magic study target is too long." };
+  }
+
+  return { valid: true };
+}
+
+function validateMagicJournal(action) {
+  if (action?.note == null) return { valid: true };
+  if (typeof action.note !== "string") {
+    return { valid: false, reason: "Magic journal note must be text." };
+  }
+
+  if (action.note.trim().length > 400) {
+    return { valid: false, reason: "Magic journal note is too long." };
+  }
+
   return { valid: true };
 }
 

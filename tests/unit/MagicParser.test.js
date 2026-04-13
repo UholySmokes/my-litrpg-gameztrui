@@ -91,6 +91,15 @@ describe("Magic input parsing", () => {
     expect(action.essence).toBeNull();
   });
 
+  it("parses expressive study phrasing with narrative lead-ins", () => {
+    const action = parseAction(
+      "I attempt to study my own blood and its interaction with magic",
+      initialGameState,
+    );
+    expect(action.type).toBe("magic_study");
+    expect(action.target).toBe("my own blood and its interaction with magic");
+  });
+
   it("parses combat skill command to attack with skill id", () => {
     const state = {
       ...initialGameState,
@@ -137,4 +146,3 @@ describe("Magic input parsing", () => {
     expect(action.type).toBe("escape");
   });
 });
-

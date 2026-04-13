@@ -189,5 +189,21 @@ describe("InputValidator", () => {
     );
     expect(invalidEssence.valid).toBe(false);
   });
+
+  it("accepts expressive magic study targets and journal notes", () => {
+    const state = cloneState(initialGameState);
+
+    const studyResult = validateActionComprehensive(
+      { type: "magic_study", target: "my own blood and its interaction with magic" },
+      state,
+    );
+    expect(studyResult.valid).toBe(true);
+
+    const journalResult = validateActionComprehensive(
+      { type: "magic_journal", note: "Sample resonance climbed when the cut touched ambient mana." },
+      state,
+    );
+    expect(journalResult.valid).toBe(true);
+  });
 });
 

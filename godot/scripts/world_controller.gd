@@ -1225,7 +1225,9 @@ func dev_set_quest_flag(flag_id: String, value: bool) -> bool:
 	_render_story()
 	_persist_dev_local_state(false)
 	_queue_story_refresh()
-	_append_dev_console_status("Set %s=%s." % [normalized_flag, String(value)])
+	_append_dev_console_status(
+		"Set %s=%s." % [normalized_flag, "true" if value else "false"]
+	)
 	_refresh_dev_console()
 	return true
 

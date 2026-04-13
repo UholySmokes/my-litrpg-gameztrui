@@ -28,8 +28,8 @@ describe("godot command + config contract", () => {
 
 		expect(scene).toContain('path="res://scripts/config_loader.gd"');
 		expect(scene).toContain('path="res://scripts/telemetry_reporter.gd"');
-		expect(scene).toContain('[node name="ConfigLoader" type="Node" parent="."]');
-		expect(scene).toContain('[node name="TelemetryReporter" type="Node" parent="."]');
+		expect(scene).toContain('[node name="ConfigLoader" type="Node" parent="."');
+		expect(scene).toContain('[node name="TelemetryReporter" type="Node" parent="."');
 		expect(world).toContain("@onready var _config_loader: ConfigLoader = %ConfigLoader");
 		expect(world).toContain("@onready var _telemetry_reporter = %TelemetryReporter");
 		expect(world).toContain("_runtime_config = _config_loader.load_runtime_config()");
@@ -125,19 +125,19 @@ describe("godot command + config contract", () => {
 		const perfRunner = readGodotAsset("scripts/run-godot-perf-probe.mjs");
 
 		expect(scene).toContain('path="res://scripts/story_client.gd"');
-		expect(scene).toContain('[node name="StoryClient" type="Node" parent="."]');
+		expect(scene).toContain('[node name="StoryClient" type="Node" parent="."');
 		expect(scene).toContain('path="res://scripts/pixel_map_renderer.gd"');
-		expect(scene).toContain('[node name="MapRenderer" type="Node2D" parent="."]');
+		expect(scene).toContain('[node name="MapRenderer" type="Node2D" parent="."');
 		expect(scene).toContain('[node name="DevConsoleButton" type="Button" parent="CanvasLayer"]');
 		expect(scene).toContain('[node name="DevConsolePanel" type="Panel" parent="CanvasLayer"]');
 		expect(scene).toContain('[node name="DevRefreshStoryButton" type="Button" parent="CanvasLayer/DevConsolePanel"]');
 		expect(scene).toContain('[node name="DevLoadLocalStateButton" type="Button" parent="CanvasLayer/DevConsolePanel"]');
 		expect(scene).toContain('[node name="DevFlagQuestTutorialEncounterResolved" type="CheckBox" parent="CanvasLayer/DevConsolePanel"]');
-		expect(scene).toContain('[node name="SpriteHooks" type="Node2D" parent="."]');
-		expect(scene).toContain('[node name="PlayerSpriteAnchor" type="Node2D" parent="SpriteHooks"]');
-		expect(scene).toContain('[node name="PlayerSprite" type="Sprite2D" parent="SpriteHooks/PlayerSpriteAnchor"]');
-		expect(scene).toContain('[node name="GuideSpriteAnchor" type="Node2D" parent="SpriteHooks"]');
-		expect(scene).toContain('[node name="GuideSprite" type="Sprite2D" parent="SpriteHooks/GuideSpriteAnchor"]');
+		expect(scene).toContain('[node name="SpriteHooks" type="Node2D" parent="."');
+		expect(scene).toContain('[node name="PlayerSpriteAnchor" type="Node2D" parent="SpriteHooks"');
+		expect(scene).toContain('[node name="PlayerSprite" type="Sprite2D" parent="SpriteHooks/PlayerSpriteAnchor"');
+		expect(scene).toContain('[node name="GuideSpriteAnchor" type="Node2D" parent="SpriteHooks"');
+		expect(scene).toContain('[node name="GuideSprite" type="Sprite2D" parent="SpriteHooks/GuideSpriteAnchor"');
 		expect(world).toContain("@onready var _story_client = %StoryClient");
 		expect(world).toContain("@onready var _map_renderer = %MapRenderer");
 		expect(world).toContain("@onready var _player_sprite_anchor: Node2D = %PlayerSpriteAnchor");

@@ -7,6 +7,10 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const { handleApiRequest } = require("../functions/lib/api-router.js");
 
+if (!process.env.DEV_AUTH_ENABLED) {
+	process.env.DEV_AUTH_ENABLED = "true";
+}
+
 function createRes() {
 	const res = {
 		statusCode: 0,

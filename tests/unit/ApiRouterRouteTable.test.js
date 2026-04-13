@@ -141,4 +141,27 @@ describe("api router route table", () => {
 		expect(res.statusCode).toBe(413);
 		expect(res.body.errorCode).toBe("PAYLOAD_TOO_LARGE");
 	});
+
+	it("handles allowed CORS preflight requests before route dispatch", async () => {
+		const req = {
+			method: "OPTIONS",
+			url: "/api/narrate",
+			headers: {
+				origin: "https://void-verse.com",
+				host: "my-litrpg-gameztrui-bff6iatu6-void-verse.vercel.app",
+				"x-forwarded-proto": "https",
+			},
+		};
+		const res = createRes();
+		res.send = jest.fn((value) => {
+			res.body = value;
+			return res;
+		});
+
+		await handleApiRequest(req, res);
+
+		expect(res.statusCode).toBe(204);
+		expect(res.headers["Access-Control-Allow-Origin"]).toBe("https://void-verse.com");
+		expect(res.body).toBe("");
+	});
 });

@@ -2,9 +2,119 @@ const { json } = require("./http");
 const { findApiRoute, normalizePath } = require("./api-route-table");
 const { checkRateLimit } = require("./rate-limit");
 const { createRequestTraceContext } = require("./request-tracing");
-const { handleCors } = require("./cors");
 
 const MAX_BODY_SIZE = 100 * 1024; // 100KB
+
+function parseCsv(value) {
+	if (typeof value !== "string") return [];
+	return value
+		.split(",")
+		.map((entry) => entry.trim())
+		.filter(Boolean);
+}
+
+function normalizeOrigin(value) {
+	return typeof value === "string" ? value.trim() : "";
+}
+
+function guessRequestOrigin(req) {
+	const protoHeader =
+		typeof req?.headers?.["x-forwarded-proto"] === "string"
+			? req.headers["x-forwarded-proto"]
+			: "";
+	const proto = (protoHeader.split(",")[0] || "").trim() || "https";
+	const host = typeof req?.headers?.host === "string" ? req.headers.host.trim() : "";
+	if (!host) return "";
+	return `${proto}://${host}`;
+}
+
+function matchesAllowedOrigin(origin, allowed) {
+	if (!origin || !allowed) return false;
+	if (allowed === "*") return true;
+	if (allowed.endsWith("*")) {
+		const prefix = allowed.slice(0, -1);
+		return origin.startsWith(prefix);
+	}
+	if (allowed.startsWith("*.")) {
+		try {
+			const url = new URL(origin);
+			const host = url.hostname.toLowerCase();
+			const suffix = allowed.slice(1).toLowerCase();
+			return host.endsWith(suffix);
+		} catch {
+			return false;
+		}
+	}
+	return origin === allowed;
+}
+
+function shouldAllowOrigin(origin, req) {
+	const normalized = normalizeOrigin(origin);
+	if (!normalized) return false;
+
+	const requestOrigin = guessRequestOrigin(req);
+	if (requestOrigin && normalized === requestOrigin) return true;
+
+	const configured = parseCsv(process.env.CORS_ALLOWED_ORIGINS);
+	const defaults = [
+		"https://void-verse.com",
+		"https://my-litrpg-gameztrui-3416-da75c.web.app",
+		"http://127.0.0.1:5173",
+		"http://localhost:5173",
+		"http://127.0.0.1:5000",
+		"http://localhost:5000",
+	];
+
+	const allowedList = configured.length > 0 ? configured : defaults;
+	return allowedList.some((allowed) => matchesAllowedOrigin(normalized, allowed));
+}
+
+function applyCorsHeaders(res, origin) {
+	if (!res || !origin) return;
+	res.set("Access-Control-Allow-Origin", origin);
+	res.set("Vary", "Origin");
+	res.set("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
+	res.set(
+		"Access-Control-Allow-Headers",
+		[
+			"Content-Type",
+			"Authorization",
+			"X-Dev-User-Id",
+			"X-Dev-User-Email",
+			"X-Trace-Id",
+			"X-Span-Id",
+			"X-Parent-Span-Id",
+		].join(", "),
+	);
+	res.set(
+		"Access-Control-Expose-Headers",
+		[
+			"X-Trace-Id",
+			"X-Span-Id",
+			"X-Parent-Span-Id",
+			"X-RateLimit-Limit",
+			"X-RateLimit-Remaining",
+			"Retry-After",
+		].join(", "),
+	);
+	res.set("Access-Control-Max-Age", "86400");
+}
+
+function handleCors(req, res) {
+	const origin = normalizeOrigin(req?.headers?.origin);
+	if (!origin) return false;
+	if (!shouldAllowOrigin(origin, req)) return false;
+
+	applyCorsHeaders(res, origin);
+
+	const method = String(req?.method || "GET").toUpperCase();
+	if (method === "OPTIONS") {
+		res.status(204).send("");
+		return true;
+	}
+
+	return false;
+}
 
 function getRequestPath(req) {
 	return normalizePath(req?.originalUrl || req?.url);

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { resolveGameDbBackend } = require("./game-db");
+const supabaseStore = require("./supabase");
 
 const DEFAULT_COLLECTION = "narrate_runs";
 const DEFAULT_FILE_PATH = path.resolve(
@@ -103,6 +104,45 @@ function mapFirestoreRun(doc) {
 		created_at: toIso(data.created_at),
 		updated_at: toIso(data.updated_at),
 		expires_at: toIso(data.expires_at),
+	};
+}
+
+function mapSupabaseRun(row) {
+	if (!row || typeof row !== "object") return null;
+	return {
+		key: String(row.key || normalizeRunKey(row.thread_id, row.run_id)),
+		thread_id: String(row.thread_id || ""),
+		run_id: String(row.run_id || ""),
+		owner_id: String(row.owner_id || ""),
+		mode: String(row.mode || "exploration"),
+		status: String(row.status || "running"),
+		done: Boolean(row.done),
+		ok:
+			typeof row.ok === "boolean"
+				? row.ok
+				: row.done
+					? row.status === "completed"
+					: null,
+		narrative:
+			typeof row.narrative === "string" ? row.narrative : undefined,
+		mood: typeof row.mood === "string" ? row.mood : undefined,
+		suggestions: Array.isArray(row.suggestions) ? row.suggestions : undefined,
+		scene_memory:
+			row.scene_memory && typeof row.scene_memory === "object"
+				? row.scene_memory
+				: undefined,
+		choice_meta: Array.isArray(row.choice_meta) ? row.choice_meta : undefined,
+		provider: typeof row.provider === "string" ? row.provider : undefined,
+		fallback_used:
+			typeof row.fallback_used === "boolean" ? row.fallback_used : undefined,
+		output_hash:
+			typeof row.output_hash === "string" ? row.output_hash : undefined,
+		error_code:
+			typeof row.error_code === "string" ? row.error_code : undefined,
+		message: typeof row.message === "string" ? row.message : undefined,
+		created_at: toIso(row.created_at),
+		updated_at: toIso(row.updated_at),
+		expires_at: toIso(row.expires_at),
 	};
 }
 
@@ -211,6 +251,109 @@ async function firePurgeExpiredRuns() {
 	}
 	await batch.commit();
 	return count;
+}
+
+async function supaCreateRun({ threadId, runId, ownerId, mode }) {
+	const now = new Date().toISOString();
+	const expiresAt = new Date(Date.now() + getTtlMs()).toISOString();
+	const payload = {
+		key: normalizeRunKey(threadId, runId),
+		thread_id: String(threadId),
+		run_id: String(runId),
+		owner_id: String(ownerId),
+		mode: String(mode || "exploration"),
+		status: "running",
+		done: false,
+		ok: null,
+		created_at: now,
+		updated_at: now,
+		expires_at: expiresAt,
+	};
+
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { error } = await client
+		.from(getCollectionName())
+		.upsert(payload, { onConflict: "key" });
+
+	if (error) throw error;
+}
+
+async function supaUpdateRun({ threadId, runId, ownerId, patch }) {
+	const key = normalizeRunKey(threadId, runId);
+	const existing = await supaGetRun({ threadId, runId, ownerId });
+	if (!existing) return null;
+
+	const now = new Date().toISOString();
+	const next = {
+		updated_at: now,
+		expires_at: new Date(Date.now() + getTtlMs()).toISOString(),
+	};
+	if (Object.prototype.hasOwnProperty.call(patch, "status")) {
+		next.status = String(patch.status || "running");
+	}
+	if (Object.prototype.hasOwnProperty.call(patch, "done")) {
+		next.done = Boolean(patch.done);
+	}
+	if (Object.prototype.hasOwnProperty.call(patch, "ok")) {
+		next.ok =
+			typeof patch.ok === "boolean" ? patch.ok : patch.ok === null ? null : undefined;
+	}
+	if (typeof patch.mode === "string") next.mode = patch.mode;
+	if (typeof patch.narrative === "string") next.narrative = patch.narrative;
+	if (typeof patch.mood === "string") next.mood = patch.mood;
+	if (Array.isArray(patch.suggestions)) next.suggestions = patch.suggestions;
+	if (patch.sceneMemory && typeof patch.sceneMemory === "object") {
+		next.scene_memory = patch.sceneMemory;
+	}
+	if (Array.isArray(patch.choiceMeta)) next.choice_meta = patch.choiceMeta;
+	if (typeof patch.provider === "string") next.provider = patch.provider;
+	if (typeof patch.fallbackUsed === "boolean") {
+		next.fallback_used = patch.fallbackUsed;
+	}
+	if (typeof patch.outputHash === "string") next.output_hash = patch.outputHash;
+	if (typeof patch.errorCode === "string") next.error_code = patch.errorCode;
+	if (typeof patch.message === "string") next.message = patch.message;
+
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.update(next)
+		.eq("key", key)
+		.eq("owner_id", String(ownerId))
+		.select("*")
+		.limit(1);
+
+	if (error) throw error;
+	if (!Array.isArray(data) || data.length === 0) return null;
+	return mapSupabaseRun(data[0]);
+}
+
+async function supaGetRun({ threadId, runId, ownerId }) {
+	const key = normalizeRunKey(threadId, runId);
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.select("*")
+		.eq("key", key)
+		.eq("owner_id", String(ownerId))
+		.limit(1);
+
+	if (error) throw error;
+	if (!Array.isArray(data) || data.length === 0) return null;
+	return mapSupabaseRun(data[0]);
+}
+
+async function supaPurgeExpiredRuns() {
+	const now = new Date().toISOString();
+	const client = supabaseStore.getSupabaseServiceClient();
+	const { data, error } = await client
+		.from(getCollectionName())
+		.delete()
+		.lte("expires_at", now)
+		.select("key");
+
+	if (error) throw error;
+	return Array.isArray(data) ? data.length : 0;
 }
 
 function readFileDb() {
@@ -342,16 +485,20 @@ function fileGetRun({ threadId, runId, ownerId }) {
 	};
 }
 
-async function withBackend({ firestoreFn, fileFn }) {
+async function withBackend({ supabaseFn, firestoreFn, fileFn }) {
 	const backend = resolveGameDbBackend();
 	if (backend === "file") {
 		return fileFn();
+	}
+	if (backend === "supabase") {
+		return supabaseFn();
 	}
 	return firestoreFn();
 }
 
 async function createNarrateRun({ threadId, runId, ownerId, mode }) {
 	return withBackend({
+		supabaseFn: () => supaCreateRun({ threadId, runId, ownerId, mode }),
 		firestoreFn: () => fireCreateRun({ threadId, runId, ownerId, mode }),
 		fileFn: () => fileCreateRun({ threadId, runId, ownerId, mode }),
 	});
@@ -359,6 +506,7 @@ async function createNarrateRun({ threadId, runId, ownerId, mode }) {
 
 async function updateNarrateRun({ threadId, runId, ownerId, patch }) {
 	return withBackend({
+		supabaseFn: () => supaUpdateRun({ threadId, runId, ownerId, patch }),
 		firestoreFn: () => fireUpdateRun({ threadId, runId, ownerId, patch }),
 		fileFn: () => fileUpdateRun({ threadId, runId, ownerId, patch }),
 	});
@@ -366,6 +514,7 @@ async function updateNarrateRun({ threadId, runId, ownerId, patch }) {
 
 async function getNarrateRun({ threadId, runId, ownerId }) {
 	return withBackend({
+		supabaseFn: () => supaGetRun({ threadId, runId, ownerId }),
 		firestoreFn: () => fireGetRun({ threadId, runId, ownerId }),
 		fileFn: () => fileGetRun({ threadId, runId, ownerId }),
 	});
@@ -373,6 +522,7 @@ async function getNarrateRun({ threadId, runId, ownerId }) {
 
 async function purgeExpiredNarrateRuns() {
 	return withBackend({
+		supabaseFn: () => supaPurgeExpiredRuns(),
 		firestoreFn: () => firePurgeExpiredRuns(),
 		fileFn: () => filePurgeExpiredRuns(),
 	});

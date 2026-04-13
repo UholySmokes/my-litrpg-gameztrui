@@ -55,10 +55,10 @@ describe("sync-store backend resolution", () => {
 		expect(syncStore.resolveSyncBackend()).toBe("file");
 	});
 
-	it("defaults to dataconnect when game backend is not file", () => {
+	it("falls back to file when the shared game backend is a legacy non-supabase backend", () => {
 		delete process.env.SYNC_DB_STORAGE;
 		process.env.GAME_DB_STORAGE = "firestore";
-		expect(syncStore.resolveSyncBackend()).toBe("dataconnect");
+		expect(syncStore.resolveSyncBackend()).toBe("file");
 	});
 
 	it("inherits supabase when the shared game backend is supabase", () => {

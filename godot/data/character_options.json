@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0.0",
-    "generatedAt": "2026-04-13T20:17:07.672Z",
+    "generatedAt": "2026-04-13T23:52:56.817Z",
     "generatedFrom": [
       "game-core/characterCreation",
       "game-core/systems/archetype",

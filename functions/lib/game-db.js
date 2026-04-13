@@ -1,4 +1,5 @@
 const fileDb = require("./game-db-file");
+const { isSupabaseConfigured } = require("./supabase");
 
 function getOptionalEnv(name) {
 	const value = process.env[name];
@@ -35,7 +36,11 @@ function resolveGameDbBackend() {
 		return "file";
 	}
 
-	return "firestore";
+	if (isSupabaseConfigured()) {
+		return "supabase";
+	}
+
+	return "file";
 }
 
 module.exports = {

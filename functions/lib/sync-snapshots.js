@@ -14,7 +14,7 @@ function resolveSnapshotPreference() {
 	const value = normalizeString(process.env.SYNC_CANONICAL_PERSISTENCE).toLowerCase();
 	if (["dataconnect", "data-connect", "dc"].includes(value)) return "dataconnect";
 	if (["firestore", "fallback", "legacy"].includes(value)) return "fallback";
-	return "dataconnect";
+	return "fallback";
 }
 
 function ensureUuid(value) {

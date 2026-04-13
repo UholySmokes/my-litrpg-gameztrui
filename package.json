@@ -14,7 +14,7 @@
     "ai:doctor": "node scripts/ai-doctor.mjs",
     "ai:check": "node scripts/ai-check.mjs",
     "dev": "npx kill-port 5173 && vite --host 127.0.0.1 --port 5173 --strictPort",
-    "dev:api": "npx kill-port 5000 5001 4000 4400 4500 && firebase emulators:start --only hosting,functions",
+    "dev:api": "npx kill-port 5000 && node scripts/dev-api-server.mjs",
     "dev:stack": "concurrently -k -n api,web -c blue,green \"npm run dev:api\" \"npm run dev\"",
     "build": "vite build",
     "vercel:link": "npx vercel link --yes --project my-litrpg-gameztrui --scope void-verse",

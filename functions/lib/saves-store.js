@@ -47,7 +47,7 @@ function resolveSavesBackend() {
 	const gameBackend = resolveGameDbBackend();
 	if (gameBackend === "file") return "file";
 	if (gameBackend === "supabase") return "supabase";
-	return "dataconnect";
+	return "file";
 }
 
 function isDataconnectStrictMode() {

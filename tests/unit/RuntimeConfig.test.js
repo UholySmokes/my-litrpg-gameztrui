@@ -25,15 +25,13 @@ async function loadRuntimeConfig(hostname) {
 }
 
 describe("runtime config", () => {
-  it("keeps void-verse on same-origin primary routes and exposes only a fallback host", async () => {
+  it("keeps void-verse on same-origin primary routes without a baked-in external fallback", async () => {
     const config = await loadRuntimeConfig("void-verse.com");
 
     expect(config.VITE_API_BASE_URL).toBe("/");
     expect(config.VITE_NARRATE_ENDPOINT).toBe("/api/narrate");
-    expect(config.VITE_ALLOW_EXTERNAL_API_BASE_URL).toBe("true");
-    expect(config.VITE_API_FALLBACK_BASE_URL).toBe(
-      "https://my-litrpg-gameztrui-3416-da75c.web.app",
-    );
+    expect(config.VITE_ALLOW_EXTERNAL_API_BASE_URL).toBeUndefined();
+    expect(config.VITE_API_FALLBACK_BASE_URL).toBeUndefined();
   });
 
   it("ignores absolute primary env overrides while allowing an explicit fallback base", async () => {

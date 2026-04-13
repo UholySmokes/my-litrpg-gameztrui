@@ -45,7 +45,7 @@ const resolveAuthProvider = () => {
   const buildEnv = getBuildEnv();
   return (
     pickEnvValue(runtimeEnv.VITE_AUTH_PROVIDER, buildEnv.VITE_AUTH_PROVIDER) ||
-    "microsoft.com"
+    "azure"
   );
 };
 
@@ -53,101 +53,53 @@ const normalizeProviderId = (value) => {
   const normalized = String(value || "")
     .trim()
     .toLowerCase();
-  if (!normalized || normalized === "aad" || normalized === "microsoft") {
-    return "microsoft.com";
+  if (
+    !normalized ||
+    normalized === "aad" ||
+    normalized === "microsoft" ||
+    normalized === "microsoft.com" ||
+    normalized === "azuread"
+  ) {
+    return "azure";
   }
-  if (normalized === "google") return "google.com";
+  if (normalized === "google.com") return "google";
   return normalized;
 };
 
-const resolveFirebaseAuthTenantId = () => {
+const resolveSupabaseUrl = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
   return pickEnvValue(
-    runtimeEnv.VITE_FIREBASE_AUTH_TENANT_ID,
-    buildEnv.VITE_FIREBASE_AUTH_TENANT_ID,
+    runtimeEnv.VITE_SUPABASE_URL,
+    buildEnv.VITE_SUPABASE_URL,
   );
 };
 
-const resolveFirebaseAuthEmulatorUrl = () => {
+const resolveSupabasePublishableKey = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
   return pickEnvValue(
-    runtimeEnv.VITE_FIREBASE_AUTH_EMULATOR_URL,
-    buildEnv.VITE_FIREBASE_AUTH_EMULATOR_URL,
+    runtimeEnv.VITE_SUPABASE_PUBLISHABLE_KEY,
+    buildEnv.VITE_SUPABASE_PUBLISHABLE_KEY,
+    runtimeEnv.VITE_SUPABASE_ANON_KEY,
+    buildEnv.VITE_SUPABASE_ANON_KEY,
   );
 };
 
-const resolveFirebaseConfig = () => {
+const resolveSupabaseAuthRedirectUrl = () => {
   const runtimeEnv = getRuntimeEnv();
   const buildEnv = getBuildEnv();
-  const rawConfig = pickEnvValue(
-    runtimeEnv.VITE_FIREBASE_CONFIG,
-    buildEnv.VITE_FIREBASE_CONFIG,
+  const explicit = pickEnvValue(
+    runtimeEnv.VITE_SUPABASE_AUTH_REDIRECT_URL,
+    buildEnv.VITE_SUPABASE_AUTH_REDIRECT_URL,
   );
-
-  let parsedConfig = {};
-  if (rawConfig) {
-    try {
-      const parsed = JSON.parse(rawConfig);
-      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-        parsedConfig = parsed;
-      }
-    } catch {
-      parsedConfig = {};
-    }
+  if (explicit) return explicit;
+  if (typeof window === "undefined" || !window?.location) return undefined;
+  try {
+    return new URL(window.location.href).toString();
+  } catch {
+    return undefined;
   }
-
-  const firebaseConfig = {
-    apiKey: pickEnvValue(
-      runtimeEnv.VITE_FIREBASE_API_KEY,
-      buildEnv.VITE_FIREBASE_API_KEY,
-      parsedConfig.apiKey,
-    ),
-    authDomain: pickEnvValue(
-      runtimeEnv.VITE_FIREBASE_AUTH_DOMAIN,
-      buildEnv.VITE_FIREBASE_AUTH_DOMAIN,
-      parsedConfig.authDomain,
-    ),
-    projectId: pickEnvValue(
-      runtimeEnv.VITE_FIREBASE_PROJECT_ID,
-      buildEnv.VITE_FIREBASE_PROJECT_ID,
-      parsedConfig.projectId,
-    ),
-    appId: pickEnvValue(
-      runtimeEnv.VITE_FIREBASE_APP_ID,
-      buildEnv.VITE_FIREBASE_APP_ID,
-      parsedConfig.appId,
-    ),
-    messagingSenderId: pickEnvValue(
-      runtimeEnv.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      buildEnv.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      parsedConfig.messagingSenderId,
-    ),
-    storageBucket: pickEnvValue(
-      runtimeEnv.VITE_FIREBASE_STORAGE_BUCKET,
-      buildEnv.VITE_FIREBASE_STORAGE_BUCKET,
-      parsedConfig.storageBucket,
-    ),
-    measurementId: pickEnvValue(
-      runtimeEnv.VITE_FIREBASE_MEASUREMENT_ID,
-      buildEnv.VITE_FIREBASE_MEASUREMENT_ID,
-      parsedConfig.measurementId,
-    ),
-  };
-
-  if (
-    !firebaseConfig.apiKey ||
-    !firebaseConfig.authDomain ||
-    !firebaseConfig.projectId ||
-    !firebaseConfig.appId
-  ) {
-    return null;
-  }
-
-  return Object.fromEntries(
-    Object.entries(firebaseConfig).filter(([, value]) => Boolean(value)),
-  );
 };
 
 const getDevUser = () => {
@@ -174,125 +126,66 @@ const getDevUser = () => {
   return null;
 };
 
-const mapFirebaseUser = (user) => {
-  if (!user || typeof user !== "object" || !user.uid) return null;
-  const primaryProvider = Array.isArray(user.providerData)
-    ? user.providerData.find((entry) => entry?.providerId)?.providerId
-    : "";
+const mapSupabaseUser = (user) => {
+  if (!user || typeof user !== "object" || !user.id) return null;
+  const primaryIdentity = Array.isArray(user.identities)
+    ? user.identities.find((entry) => entry?.provider)
+    : null;
+  const primaryProvider =
+    user.app_metadata?.provider ||
+    primaryIdentity?.provider ||
+    user.user_metadata?.provider ||
+    "";
+
   return {
-    id: String(user.uid),
-    email: user.email ? String(user.email) : String(user.uid),
-    provider: primaryProvider || "firebase",
+    id: String(user.id),
+    email: user.email ? String(user.email) : String(user.id),
+    provider: primaryProvider || "supabase",
     roles: ["authenticated"],
   };
 };
 
-let firebaseSdkPromise = null;
-let firebaseApp = null;
-let firebaseAuthEmulatorConnected = false;
+let supabaseSdkPromise = null;
+let supabaseClientPromise = null;
+let cachedSupabaseConfigKey = "";
 
-const loadFirebaseSdk = async () => {
-  if (!firebaseSdkPromise) {
-    firebaseSdkPromise = Promise.all([
-      import("firebase/app"),
-      import("firebase/auth"),
-    ]).then(([app, auth]) => ({
-      initializeApp: app.initializeApp,
-      getApps: app.getApps,
-      getApp: app.getApp,
-      getAuth: auth.getAuth,
-      onAuthStateChanged: auth.onAuthStateChanged,
-      signInWithPopup: auth.signInWithPopup,
-      signInWithRedirect: auth.signInWithRedirect,
-      signOut: auth.signOut,
-      OAuthProvider: auth.OAuthProvider,
-      GoogleAuthProvider: auth.GoogleAuthProvider,
-      connectAuthEmulator: auth.connectAuthEmulator,
+const loadSupabaseSdk = async () => {
+  if (!supabaseSdkPromise) {
+    supabaseSdkPromise = import("@supabase/supabase-js").then((sdk) => ({
+      createClient: sdk.createClient,
     }));
   }
-  return firebaseSdkPromise;
+  return supabaseSdkPromise;
 };
 
-const getFirebaseContext = async () => {
-  const config = resolveFirebaseConfig();
-  if (!config) return null;
+const getSupabaseClient = async () => {
+  const url = resolveSupabaseUrl();
+  const key = resolveSupabasePublishableKey();
+  if (!url || !key) return null;
 
-  const sdk = await loadFirebaseSdk();
-
-  if (!firebaseApp) {
-    firebaseApp = sdk.getApps().length ? sdk.getApp() : sdk.initializeApp(config);
+  const nextConfigKey = `${url}::${key}`;
+  if (supabaseClientPromise && cachedSupabaseConfigKey === nextConfigKey) {
+    return supabaseClientPromise;
   }
 
-  const auth = sdk.getAuth(firebaseApp);
-  const tenantId = resolveFirebaseAuthTenantId();
-  if (tenantId) {
-    auth.tenantId = tenantId;
-  }
-
-  const emulatorUrl = resolveFirebaseAuthEmulatorUrl();
-  if (emulatorUrl && !firebaseAuthEmulatorConnected) {
-    sdk.connectAuthEmulator(auth, emulatorUrl, { disableWarnings: true });
-    firebaseAuthEmulatorConnected = true;
-  }
-
-  return { sdk, auth };
-};
-
-const waitForFirebaseAuthReady = async ({ sdk, auth }) => {
-  if (auth && typeof auth.authStateReady === "function") {
-    await auth.authStateReady();
-    return;
-  }
-
-  await new Promise((resolve) => {
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      resolve();
-    };
-
-    const unsubscribe = sdk.onAuthStateChanged(
-      auth,
-      () => {
-        unsubscribe();
-        finish();
+  cachedSupabaseConfigKey = nextConfigKey;
+  supabaseClientPromise = loadSupabaseSdk().then(({ createClient }) =>
+    createClient(url, key, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+        flowType: "pkce",
       },
-      () => {
-        unsubscribe();
-        finish();
+      global: {
+        headers: {
+          "X-Client-Info": "voidverse-web-auth",
+        },
       },
-    );
-
-    setTimeout(() => {
-      unsubscribe();
-      finish();
-    }, 2500);
-  });
-};
-
-const buildFirebaseProvider = (sdk, providerId) => {
-  const normalized = normalizeProviderId(providerId);
-  if (normalized === "google.com") {
-    return new sdk.GoogleAuthProvider();
-  }
-
-  const provider = new sdk.OAuthProvider(normalized);
-  if (normalized === "microsoft.com") {
-    provider.addScope("openid");
-    provider.addScope("profile");
-    provider.addScope("email");
-  }
-  return provider;
-};
-
-const isPopupRedirectFallbackError = (error) => {
-  const code = String(error?.code || "");
-  return (
-    code === "auth/popup-blocked" ||
-    code === "auth/cancelled-popup-request" ||
-    code === "auth/operation-not-supported-in-this-environment"
+    }),
   );
+
+  return supabaseClientPromise;
 };
 
 export async function signUp() {
@@ -306,34 +199,39 @@ export async function signIn() {
   }
 
   try {
-    const firebase = await getFirebaseContext();
-    if (!firebase) {
+    const supabase = await getSupabaseClient();
+    if (!supabase) {
       return {
         success: false,
-        error: "Firebase Auth is not configured.",
+        error: "Supabase Auth is not configured.",
       };
     }
 
-    const providerId = resolveAuthProvider();
-    const provider = buildFirebaseProvider(firebase.sdk, providerId);
+    const provider = normalizeProviderId(resolveAuthProvider());
+    const redirectTo = resolveSupabaseAuthRedirectUrl();
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo,
+      },
+    });
 
-    try {
-      const result = await firebase.sdk.signInWithPopup(firebase.auth, provider);
-      return { success: true, user: mapFirebaseUser(result?.user) };
-    } catch (error) {
-      if (isPopupRedirectFallbackError(error)) {
-        await firebase.sdk.signInWithRedirect(firebase.auth, provider);
-        return { success: true };
-      }
+    if (error) {
       return {
         success: false,
-        error: String(error?.message || "Failed to sign in."),
+        error: String(error.message || "Failed to sign in."),
       };
     }
+
+    if (typeof window !== "undefined" && data?.url) {
+      window.location.assign(data.url);
+    }
+
+    return { success: true };
   } catch (error) {
     return {
       success: false,
-      error: String(error?.message || "Failed to initialize Firebase Auth."),
+      error: String(error?.message || "Failed to initialize Supabase Auth."),
     };
   }
 }
@@ -345,11 +243,17 @@ export async function signOut() {
   }
 
   try {
-    const firebase = await getFirebaseContext();
-    if (!firebase) {
+    const supabase = await getSupabaseClient();
+    if (!supabase) {
       return { success: true };
     }
-    await firebase.sdk.signOut(firebase.auth);
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      return {
+        success: false,
+        error: String(error.message || "Failed to sign out."),
+      };
+    }
     return { success: true };
   } catch (error) {
     return {
@@ -364,19 +268,20 @@ export async function getCurrentUser() {
   if (devUser) return devUser;
 
   try {
-    const firebase = await getFirebaseContext();
-    if (!firebase) return null;
-    await waitForFirebaseAuthReady(firebase);
-    return mapFirebaseUser(firebase.auth.currentUser);
+    const supabase = await getSupabaseClient();
+    if (!supabase) return null;
+    const { data, error } = await supabase.auth.getUser();
+    if (error) return null;
+    return mapSupabaseUser(data?.user);
   } catch (error) {
-    console.error("Get Firebase current user error:", error);
+    console.error("Get Supabase current user error:", error);
     return null;
   }
 }
 
 export function onAuthStateChange(callback) {
   let active = true;
-  let teardown = () => {};
+  let unsubscribe = () => {};
 
   const devUser = getDevUser();
   if (devUser) {
@@ -386,11 +291,13 @@ export function onAuthStateChange(callback) {
 
   const init = async () => {
     try {
-      const firebase = await getFirebaseContext();
-      if (!active || !firebase) return;
-      teardown = firebase.sdk.onAuthStateChanged(firebase.auth, (user) => {
-        if (active) callback(mapFirebaseUser(user));
+      const supabase = await getSupabaseClient();
+      if (!active || !supabase) return;
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (!active) return;
+        callback(mapSupabaseUser(session?.user || null));
       });
+      unsubscribe = () => data.subscription.unsubscribe();
     } catch (error) {
       console.error("Auth state listener init failed:", error);
     }
@@ -400,7 +307,7 @@ export function onAuthStateChange(callback) {
 
   return () => {
     active = false;
-    teardown();
+    unsubscribe();
   };
 }
 
@@ -409,12 +316,11 @@ export async function getAuthToken() {
   if (devUser) return "";
 
   try {
-    const firebase = await getFirebaseContext();
-    if (!firebase) return "";
-    await waitForFirebaseAuthReady(firebase);
-    const user = firebase.auth.currentUser;
-    if (!user || typeof user.getIdToken !== "function") return "";
-    return await user.getIdToken();
+    const supabase = await getSupabaseClient();
+    if (!supabase) return "";
+    const { data, error } = await supabase.auth.getSession();
+    if (error) return "";
+    return data?.session?.access_token || "";
   } catch {
     return "";
   }

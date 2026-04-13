@@ -1,32 +1,4 @@
-let firebaseAdminAppModule = null;
-let firebaseAdminAuthModule = null;
-let firebaseAdminLoadAttempted = false;
-
-function loadFirebaseAdminModules() {
-	if (firebaseAdminLoadAttempted) {
-		if (firebaseAdminAppModule && firebaseAdminAuthModule) {
-			return {
-				app: firebaseAdminAppModule,
-				auth: firebaseAdminAuthModule,
-			};
-		}
-		return null;
-	}
-
-	firebaseAdminLoadAttempted = true;
-	try {
-		firebaseAdminAppModule = require("firebase-admin/app");
-		firebaseAdminAuthModule = require("firebase-admin/auth");
-		return {
-			app: firebaseAdminAppModule,
-			auth: firebaseAdminAuthModule,
-		};
-	} catch {
-		firebaseAdminAppModule = null;
-		firebaseAdminAuthModule = null;
-		return null;
-	}
-}
+const supabase = require("./supabase");
 
 function parseOptionalBoolean(value) {
 	if (typeof value !== "string") return null;
@@ -38,12 +10,13 @@ function parseOptionalBoolean(value) {
 }
 
 const PRODUCTION_PROJECT_IDS = [
-	'my-litrpg-gameztrui-3416-da75c',
+	"my-litrpg-gameztrui-3416-da75c",
 ];
 
 function isProductionEnvironment() {
-	const projectId = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || '';
-	return PRODUCTION_PROJECT_IDS.includes(projectId);
+	const projectId = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || "";
+	const vercelEnv = String(process.env.VERCEL_ENV || "").trim().toLowerCase();
+	return PRODUCTION_PROJECT_IDS.includes(projectId) || vercelEnv === "production";
 }
 
 function isFunctionsEmulatorEnvironment() {
@@ -57,7 +30,7 @@ function isDevAuthEnabled() {
 		return true;
 	}
 
-	// SECURITY: Never allow dev auth against deployed production functions.
+	// SECURITY: Never allow dev auth against deployed production runtimes.
 	if (isProductionEnvironment()) return false;
 
 	if (explicit !== null) return explicit;
@@ -101,18 +74,6 @@ function getDevUser(req) {
 	return null;
 }
 
-function ensureFirebaseApp() {
-	const modules = loadFirebaseAdminModules();
-	if (!modules) return false;
-
-	const { getApps, initializeApp } = modules.app;
-	if (getApps().length === 0) {
-		initializeApp();
-	}
-
-	return true;
-}
-
 function extractBearerToken(req) {
 	const header = String(getHeader(req, "authorization") || "").trim();
 	if (!header) return "";
@@ -120,26 +81,37 @@ function extractBearerToken(req) {
 	return match ? String(match[1] || "").trim() : "";
 }
 
-async function getFirebaseUser(req) {
+function mapSupabaseUser(user) {
+	if (!user || typeof user !== "object" || !user.id) return null;
+	const primaryIdentity = Array.isArray(user.identities)
+		? user.identities.find((entry) => entry?.provider)
+		: null;
+	const primaryProvider =
+		user.app_metadata?.provider ||
+		primaryIdentity?.provider ||
+		user.user_metadata?.provider ||
+		"";
+
+	return {
+		id: String(user.id),
+		email:
+			typeof user.email === "string" && user.email.trim()
+				? user.email
+				: String(user.id),
+		provider: primaryProvider || "supabase",
+		roles: ["authenticated"],
+	};
+}
+
+async function getSupabaseUser(req) {
 	const token = extractBearerToken(req);
-	if (!token) return null;
+	if (!token || !supabase.isSupabaseConfigured()) return null;
 
 	try {
-		if (!ensureFirebaseApp()) return null;
-		const modules = loadFirebaseAdminModules();
-		if (!modules) return null;
-		const { getAuth } = modules.auth;
-		const decoded = await getAuth().verifyIdToken(token);
-		if (!decoded || !decoded.uid) return null;
-		return {
-			id: String(decoded.uid),
-			email:
-				typeof decoded.email === "string" && decoded.email.trim()
-					? decoded.email
-					: String(decoded.uid),
-			provider: "firebase",
-			roles: ["authenticated"],
-		};
+		const client = supabase.getSupabaseServiceClient();
+		const { data, error } = await client.auth.getUser(token);
+		if (error) return null;
+		return mapSupabaseUser(data?.user);
 	} catch {
 		return null;
 	}
@@ -149,8 +121,8 @@ async function getUserFromRequest(req) {
 	const devUser = getDevUser(req);
 	if (devUser) return devUser;
 
-	const firebaseUser = await getFirebaseUser(req);
-	if (firebaseUser) return firebaseUser;
+	const supabaseUser = await getSupabaseUser(req);
+	if (supabaseUser) return supabaseUser;
 
 	return null;
 }

@@ -116,6 +116,36 @@ describe("handlers narrate endpoints", () => {
     expect(res.body.choiceMeta?.[0]?.category).toBe("progress");
   });
 
+  it("allows guest narration runs by binding an anonymous chronicle session principal", async () => {
+    auth.getUserFromRequest = jest.fn(async () => null);
+    const req = {
+      method: "POST",
+      headers: {
+        "x-chronicle-session-id": "guest-session-1",
+      },
+      body: {
+        mode: "exploration",
+        prompt: "Describe the opening scene.",
+      },
+    };
+    const res = createRes();
+
+    await handlers.narrateStart(req, res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.ok).toBe(true);
+    expect(narrateRunsStore.createNarrateRun).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ownerId: "guest:guest-session-1",
+      }),
+    );
+    expect(narrateRunsStore.updateNarrateRun).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ownerId: "guest:guest-session-1",
+      }),
+    );
+  });
+
   it("persists failed run state and returns error details when narration fails", async () => {
     runtime.runFirebaseAgent = jest.fn(async () => {
       const err = new Error("Model returned empty output.");
@@ -198,6 +228,41 @@ describe("handlers narrate endpoints", () => {
     expect(res.body.provider).toBe("firebase-genkit");
     expect(res.body.sceneMemory?.locationLabel).toBe("Copper Roofs");
     expect(res.body.choiceMeta?.[0]?.category).toBe("progress");
+  });
+
+  it("uses the same guest chronicle session principal for narratePoll", async () => {
+    auth.getUserFromRequest = jest.fn(async () => null);
+    narrateRunsStore.getNarrateRun = jest.fn(async () => ({
+      thread_id: "t-guest",
+      run_id: "r-guest",
+      owner_id: "guest:guest-session-1",
+      mode: "exploration",
+      status: "completed",
+      done: true,
+      ok: true,
+      narrative: "The bazaar murmurs around you.",
+      mood: "mysterious",
+      suggestions: ["Listen closer."],
+      output_hash: "guest-hash",
+    }));
+
+    const req = {
+      method: "GET",
+      headers: {
+        "x-chronicle-session-id": "guest-session-1",
+      },
+      query: { threadId: "t-guest", runId: "r-guest" },
+    };
+    const res = createRes();
+
+    await handlers.narratePoll(req, res);
+
+    expect(res.statusCode).toBe(200);
+    expect(narrateRunsStore.getNarrateRun).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ownerId: "guest:guest-session-1",
+      }),
+    );
   });
 
   it("returns not found in narratePoll when run does not exist", async () => {

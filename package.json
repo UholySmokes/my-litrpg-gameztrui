@@ -98,8 +98,8 @@
     "android:preflight": "node scripts/android-preflight.mjs",
     "android:signing:configure": "node scripts/configure-android-signing.mjs",
     "android:export:singleplayer": "npm run generate:godot-config:singleplayer && node scripts/export-godot-android.mjs --preset \"Android Developer Singleplayer\" --mode debug --output \"build/android/developer-singleplayer.apk\"",
-    "android:export:internal": "node scripts/export-godot-android.mjs --preset \"Android Internal Debug\" --mode debug --output \"build/android/internal-debug.apk\"",
-    "android:export:release": "node scripts/export-godot-android.mjs --preset \"Android Release Candidate\" --mode release --output \"build/android/release-candidate.aab\"",
+    "android:export:internal": "npm run generate:godot-config:prod && node scripts/export-godot-android.mjs --preset \"Android Internal Debug\" --mode debug --output \"build/android/internal-debug.apk\"",
+    "android:export:release": "npm run generate:godot-config:prod && node scripts/export-godot-android.mjs --preset \"Android Release Candidate\" --mode release --output \"build/android/release-candidate.aab\"",
     "generate:godot-assets:placeholder": "powershell -ExecutionPolicy Bypass -File scripts/generate-godot-placeholder-assets.ps1"
   },
   "dependencies": {

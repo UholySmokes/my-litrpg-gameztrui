@@ -158,6 +158,7 @@ function buildGodotConfig({ runtimeConfig, source, profile, explicitApiBase }) {
 		source,
 		profile,
 		runtimeMode: profile === "singleplayer_local" ? "singleplayer_local" : "online",
+		devConsoleEnabled: profile === "singleplayer_local",
 		buildId: envBuildId || fileBuildId || "godot-dev",
 		apiBaseUrl: safeApiBaseUrl,
 		narrateEndpoint: normalizeRelativeApiPath(

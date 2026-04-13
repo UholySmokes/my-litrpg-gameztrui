@@ -93,6 +93,27 @@ func pull(run_id: String, after_seq: int = 0) -> Dictionary:
 	return await _authorized_json_request(endpoint, HTTPClient.METHOD_GET, null)
 
 
+func get_local_canonical_state(run_id: String = "") -> Dictionary:
+	var canonical := _load_local_state()
+	if String(canonical.get("runId", "")).is_empty() and not run_id.strip_edges().is_empty():
+		canonical["runId"] = run_id
+	return canonical.duplicate(true)
+
+
+func overwrite_local_canonical_state(state: Dictionary) -> void:
+	if typeof(state) != TYPE_DICTIONARY:
+		return
+	var canonical := state.duplicate(true)
+	_save_local_state(canonical)
+	var character := Dictionary(canonical.get("character", {})).duplicate(true)
+	if character.is_empty():
+		var entity_states: Dictionary = Dictionary(canonical.get("entityStates", {}))
+		character = Dictionary(entity_states.get("activeCharacter", {})).duplicate(true)
+	if not character.is_empty():
+		_save_json(LOCAL_CHARACTER_PATH, character)
+	_set_safe_mode(false)
+
+
 func _authorized_json_request(endpoint: String, method: int, payload: Variant) -> Dictionary:
 	var auth_client: FirebaseAuthClient = _auth_client()
 	var token := ""

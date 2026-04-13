@@ -18,6 +18,21 @@ const PERF_SAMPLE_LIMIT := 240
 const PLAYER_SPRITE_PATH := "res://assets/characters/traveler_idle_down.png"
 const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"
 const POINTER_MOVE_DEBOUNCE_MS := 110
+const DEV_CONSOLE_FLAG_IDS := [
+	"slice_intro_seen",
+	"quest_tutorial_started",
+	"quest_tutorial_talked_to_guide",
+	"quest_tutorial_gate_entered",
+	"quest_tutorial_gate_returned",
+	"quest_tutorial_ruins_unlocked",
+	"quest_tutorial_ruins_returned",
+	"quest_tutorial_encounter_resolved",
+]
+const DEV_CONSOLE_JUMP_TARGETS := {
+	"map_village_square": {"x": 3, "y": 3},
+	"map_training_glade": {"x": 2, "y": 2},
+	"map_ruined_outlook": {"x": 1, "y": 7},
+}
 
 @export var run_id: String = "slice-run-001"
 
@@ -39,6 +54,25 @@ const POINTER_MOVE_DEBOUNCE_MS := 110
 @onready var _cc_controller: CharacterCreationController = %CharacterCreationController
 @onready var _cc_panel: CharacterCreationPanel = %CharacterCreationPanel
 @onready var _cc_summary_panel: CharacterCreationSummaryPanel = %CharacterCreationSummaryPanel
+@onready var _dev_console_button: Button = %DevConsoleButton
+@onready var _dev_console_panel: Panel = %DevConsolePanel
+@onready var _dev_console_snapshot_label: RichTextLabel = %DevConsoleSnapshotLabel
+@onready var _dev_console_close_button: Button = %DevConsoleCloseButton
+@onready var _dev_refresh_snapshot_button: Button = %DevRefreshSnapshotButton
+@onready var _dev_refresh_story_button: Button = %DevRefreshStoryButton
+@onready var _dev_force_checkpoint_button: Button = %DevForceCheckpointButton
+@onready var _dev_load_local_state_button: Button = %DevLoadLocalStateButton
+@onready var _dev_jump_village_button: Button = %DevJumpVillageButton
+@onready var _dev_jump_glade_button: Button = %DevJumpGladeButton
+@onready var _dev_jump_ruins_button: Button = %DevJumpRuinsButton
+@onready var _dev_flag_slice_intro_seen: CheckBox = %DevFlagSliceIntroSeen
+@onready var _dev_flag_quest_tutorial_started: CheckBox = %DevFlagQuestTutorialStarted
+@onready var _dev_flag_quest_tutorial_talked_to_guide: CheckBox = %DevFlagQuestTutorialTalkedToGuide
+@onready var _dev_flag_quest_tutorial_gate_entered: CheckBox = %DevFlagQuestTutorialGateEntered
+@onready var _dev_flag_quest_tutorial_gate_returned: CheckBox = %DevFlagQuestTutorialGateReturned
+@onready var _dev_flag_quest_tutorial_ruins_unlocked: CheckBox = %DevFlagQuestTutorialRuinsUnlocked
+@onready var _dev_flag_quest_tutorial_ruins_returned: CheckBox = %DevFlagQuestTutorialRuinsReturned
+@onready var _dev_flag_quest_tutorial_encounter_resolved: CheckBox = %DevFlagQuestTutorialEncounterResolved
 
 var _manifest: Dictionary = {}
 var _content_version: String = ""
@@ -65,11 +99,16 @@ var _creating_character: bool = false
 var _player_profile: Dictionary = {}
 var _current_character_data: Dictionary = {}
 var _last_pointer_move_ms: int = 0
+var _dev_console_enabled: bool = false
+var _dev_console_open: bool = false
+var _dev_flag_checkboxes: Dictionary = {}
+var _dev_console_syncing_flags: bool = false
 
 
 func _ready() -> void:
 	_runtime_config = _config_loader.load_runtime_config()
 	_apply_runtime_config(_runtime_config)
+	_configure_dev_console()
 
 	_manifest = _load_manifest()
 	_content_version = _hash_manifest(_manifest)
@@ -134,10 +173,13 @@ func _ready() -> void:
 			}
 		)
 	_sync_client.sync_rejected.connect(_on_sync_rejected)
+	_sync_client.safe_mode_changed.connect(_on_safe_mode_changed)
 	await _auth_client.ensure_session()
 	await _flush_telemetry_if_needed()
 	if not _creating_character:
 		_queue_story_refresh()
+	_update_dev_console_visibility()
+	_refresh_dev_console()
 
 	_flush_timer = Timer.new()
 	_flush_timer.one_shot = false
@@ -178,6 +220,8 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 	_update_scene_for_map()
 	_apply_sprite_fallback_visibility()
 	_render_story()
+	_update_dev_console_visibility()
+	_refresh_dev_console()
 
 	if _sync_client and _sync_client.has_method("send_command"):
 		_client_seq += 1
@@ -236,11 +280,24 @@ func _on_character_creation_completed(character_data: Dictionary) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if _creating_character:
-		return  # let CharacterCreationPanel handle input
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
 	var key_event := event as InputEventKey
+	if _should_show_dev_console():
+		match key_event.keycode:
+			KEY_QUOTELEFT:
+				_set_dev_console_open(not _dev_console_open)
+				return
+			KEY_ESCAPE:
+				if _dev_console_open:
+					_set_dev_console_open(false)
+					return
+			_:
+				pass
+	if _creating_character:
+		return  # let CharacterCreationPanel handle input
+	if _dev_console_open:
+		return
 	match key_event.keycode:
 		KEY_W, KEY_UP:
 			await _try_move(Vector2i(0, -1))
@@ -262,6 +319,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _creating_character:
+		return
+	if _dev_console_open:
 		return
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
@@ -508,6 +567,7 @@ func _apply_canonical_state(canonical: Dictionary) -> void:
 	_update_scene_for_map()
 	_render_story()
 	_queue_story_refresh()
+	_refresh_dev_console()
 
 
 func _local_precheck_trigger(
@@ -913,6 +973,7 @@ func _write_local_checkpoint() -> void:
 	file.store_string(JSON.stringify(payload))
 	file.close()
 	_last_checkpoint_written_seq = _last_savepoint_seq
+	_refresh_dev_console()
 
 
 func _load_checkpoint_and_pull() -> void:
@@ -964,10 +1025,322 @@ func _on_sync_rejected(_payload: Dictionary) -> void:
 	)
 
 
+func _on_safe_mode_changed(_active: bool) -> void:
+	_refresh_dev_console()
+
+
+func _configure_dev_console() -> void:
+	_dev_flag_checkboxes = {
+		"slice_intro_seen": _dev_flag_slice_intro_seen,
+		"quest_tutorial_started": _dev_flag_quest_tutorial_started,
+		"quest_tutorial_talked_to_guide": _dev_flag_quest_tutorial_talked_to_guide,
+		"quest_tutorial_gate_entered": _dev_flag_quest_tutorial_gate_entered,
+		"quest_tutorial_gate_returned": _dev_flag_quest_tutorial_gate_returned,
+		"quest_tutorial_ruins_unlocked": _dev_flag_quest_tutorial_ruins_unlocked,
+		"quest_tutorial_ruins_returned": _dev_flag_quest_tutorial_ruins_returned,
+		"quest_tutorial_encounter_resolved": _dev_flag_quest_tutorial_encounter_resolved,
+	}
+	_dev_console_button.pressed.connect(_on_dev_console_button_pressed)
+	_dev_console_close_button.pressed.connect(_on_dev_console_close_button_pressed)
+	_dev_refresh_snapshot_button.pressed.connect(_on_dev_refresh_snapshot_button_pressed)
+	_dev_refresh_story_button.pressed.connect(_on_dev_refresh_story_button_pressed)
+	_dev_force_checkpoint_button.pressed.connect(_on_dev_force_checkpoint_button_pressed)
+	_dev_load_local_state_button.pressed.connect(_on_dev_load_local_state_button_pressed)
+	_dev_jump_village_button.pressed.connect(_on_dev_jump_village_button_pressed)
+	_dev_jump_glade_button.pressed.connect(_on_dev_jump_glade_button_pressed)
+	_dev_jump_ruins_button.pressed.connect(_on_dev_jump_ruins_button_pressed)
+	for flag_id in _dev_flag_checkboxes.keys():
+		var checkbox: CheckBox = _dev_flag_checkboxes[flag_id]
+		checkbox.toggled.connect(_on_dev_flag_toggled.bind(String(flag_id)))
+	_update_dev_console_visibility()
+	_refresh_dev_console()
+
+
+func _should_show_dev_console() -> bool:
+	return _dev_console_enabled and _is_local_runtime() and not _creating_character
+
+
+func _update_dev_console_visibility() -> void:
+	var should_show := _should_show_dev_console()
+	if _dev_console_button != null:
+		_dev_console_button.visible = should_show
+	if not should_show:
+		_dev_console_open = false
+	if _dev_console_panel != null:
+		_dev_console_panel.visible = should_show and _dev_console_open
+
+
+func _set_dev_console_open(open_state: bool) -> void:
+	_dev_console_open = open_state and _should_show_dev_console()
+	_update_dev_console_visibility()
+	if _dev_console_open:
+		_refresh_dev_console()
+
+
+func _refresh_dev_console() -> void:
+	if _dev_console_snapshot_label != null:
+		_dev_console_snapshot_label.clear()
+		_dev_console_snapshot_label.append_text(_format_dev_console_snapshot(get_dev_console_snapshot()))
+	_dev_console_syncing_flags = true
+	for flag_id in _dev_flag_checkboxes.keys():
+		var checkbox: CheckBox = _dev_flag_checkboxes[flag_id]
+		checkbox.button_pressed = bool(_quest_flags.get(String(flag_id), false))
+	_dev_console_syncing_flags = false
+
+
+func _format_dev_console_snapshot(snapshot: Dictionary) -> String:
+	var lines: PackedStringArray = []
+	lines.append("runtime=%s" % String(snapshot.get("runtimeMode", "")))
+	lines.append("build=%s" % String(snapshot.get("buildId", "")))
+	lines.append("run=%s" % String(snapshot.get("runId", "")))
+	lines.append("map=%s" % String(snapshot.get("mapId", "")))
+	var player_tile: Dictionary = Dictionary(snapshot.get("playerTile", {}))
+	lines.append(
+		"tile=(%d,%d) seq=%d" % [
+			int(player_tile.get("x", 0)),
+			int(player_tile.get("y", 0)),
+			int(snapshot.get("seq", 0)),
+		]
+	)
+	lines.append("safeMode=%s" % String(snapshot.get("safeMode", false)))
+	var last_savepoint: Dictionary = Dictionary(snapshot.get("lastSavepoint", {}))
+	if last_savepoint.is_empty():
+		lines.append("lastSavepoint=none")
+	else:
+		var save_tile: Dictionary = Dictionary(last_savepoint.get("playerPos", {}))
+		lines.append(
+			"lastSavepoint=%s (%d,%d) seq=%d" % [
+				String(last_savepoint.get("mapId", "")),
+				int(save_tile.get("x", 0)),
+				int(save_tile.get("y", 0)),
+				int(last_savepoint.get("seq", 0)),
+			]
+		)
+	var character: Dictionary = Dictionary(snapshot.get("character", {}))
+	lines.append("")
+	lines.append("Character")
+	lines.append("name=%s" % String(character.get("name", "")))
+	lines.append("system=%s / %s" % [
+		String(character.get("systemId", "")),
+		String(character.get("systemName", "")),
+	])
+	lines.append("race=%s" % String(character.get("race", "")))
+	lines.append("class=%s" % String(character.get("class", "")))
+	lines.append("profession=%s" % String(character.get("profession", "")))
+	lines.append("")
+	lines.append("Perf")
+	var perf_snapshot: Dictionary = Dictionary(snapshot.get("perf", {}))
+	lines.append(JSON.stringify(perf_snapshot, "\t"))
+	return "\n".join(lines)
+
+
+func get_dev_console_snapshot() -> Dictionary:
+	var player_tile := _get_player_tile()
+	var last_savepoint := _get_local_last_savepoint()
+	var character := _current_character_data.duplicate(true)
+	var system_entry: Dictionary = Dictionary(character.get("archetypeSystem", {}))
+	return {
+		"runtimeMode": _runtime_mode,
+		"buildId": _telemetry_build_id,
+		"runId": run_id,
+		"mapId": _current_map_id,
+		"playerTile": {
+			"x": player_tile.x,
+			"y": player_tile.y,
+		},
+		"seq": _client_seq,
+		"safeMode": bool(_sync_client.safe_mode_active if _sync_client != null else false),
+		"lastSavepoint": last_savepoint,
+		"character": {
+			"name": String(character.get("name", "")),
+			"systemId": String(character.get("archetypeSystemId", "")),
+			"systemName": String(system_entry.get("name", "")),
+			"race": _summarize_character_choice(character.get("race", {})),
+			"class": _summarize_character_choice(character.get("class", {})),
+			"profession": _summarize_character_choice(character.get("profession", {})),
+		},
+		"perf": get_perf_snapshot(),
+	}
+
+
+func dev_refresh_story() -> void:
+	if not _should_show_dev_console():
+		return
+	_last_story_context_key = ""
+	_pending_story_context_key = ""
+	_queue_story_refresh()
+	_append_dev_console_status("Story refresh queued.")
+	_refresh_dev_console()
+
+
+func dev_force_checkpoint() -> void:
+	if not _should_show_dev_console():
+		return
+	_last_savepoint_seq = _client_seq
+	_persist_dev_local_state(true)
+	_write_local_checkpoint()
+	_append_dev_console_status("Forced checkpoint at %s." % _current_map_id)
+	_refresh_dev_console()
+
+
+func dev_load_local_state() -> void:
+	if not _should_show_dev_console():
+		return
+	await _reconcile_from_pull()
+	_append_dev_console_status("Reloaded local canonical state.")
+	_refresh_dev_console()
+
+
+func dev_jump_to_map(map_id: String) -> bool:
+	if not _should_show_dev_console():
+		return false
+	var normalized_map_id := map_id.strip_edges()
+	if not DEV_CONSOLE_JUMP_TARGETS.has(normalized_map_id):
+		return false
+	var target: Dictionary = DEV_CONSOLE_JUMP_TARGETS[normalized_map_id]
+	_current_map_id = normalized_map_id
+	_set_player_tile(Vector2i(int(target.get("x", 0)), int(target.get("y", 0))))
+	if not _current_character_data.is_empty():
+		_current_character_data["mapId"] = _current_map_id
+		_current_character_data["playerPos"] = {
+			"x": int(target.get("x", 0)),
+			"y": int(target.get("y", 0)),
+		}
+	_update_scene_for_map()
+	_render_story()
+	_persist_dev_local_state(false)
+	_queue_story_refresh()
+	_append_dev_console_status("Jumped to %s." % normalized_map_id)
+	_refresh_dev_console()
+	return true
+
+
+func dev_set_quest_flag(flag_id: String, value: bool) -> bool:
+	if not _should_show_dev_console():
+		return false
+	var normalized_flag := flag_id.strip_edges()
+	if not DEV_CONSOLE_FLAG_IDS.has(normalized_flag):
+		return false
+	_quest_flags[normalized_flag] = value
+	_render_story()
+	_persist_dev_local_state(false)
+	_queue_story_refresh()
+	_append_dev_console_status("Set %s=%s." % [normalized_flag, String(value)])
+	_refresh_dev_console()
+	return true
+
+
+func _persist_dev_local_state(include_savepoint: bool) -> void:
+	if not _is_local_runtime() or _sync_client == null or not _sync_client.has_method("overwrite_local_canonical_state"):
+		return
+	var canonical := _build_dev_console_canonical_state(include_savepoint)
+	_sync_client.overwrite_local_canonical_state(canonical)
+
+
+func _build_dev_console_canonical_state(include_savepoint: bool) -> Dictionary:
+	var canonical: Dictionary = {}
+	if _sync_client != null and _sync_client.has_method("get_local_canonical_state"):
+		canonical = _sync_client.get_local_canonical_state(run_id)
+	var player_tile := _get_player_tile()
+	canonical["runId"] = run_id
+	canonical["mapId"] = _current_map_id
+	canonical["playerPos"] = {
+		"x": player_tile.x,
+		"y": player_tile.y,
+	}
+	canonical["seq"] = _client_seq
+	canonical["questFlags"] = _quest_flags.duplicate(true)
+	var entity_states: Dictionary = Dictionary(canonical.get("entityStates", {})).duplicate(true)
+	if not _current_character_data.is_empty():
+		var character := _current_character_data.duplicate(true)
+		character["mapId"] = _current_map_id
+		character["playerPos"] = Dictionary(canonical.get("playerPos", {})).duplicate(true)
+		canonical["character"] = character
+		entity_states["activeCharacter"] = character.duplicate(true)
+		entity_states["characterRoster"] = [character.duplicate(true)]
+	if include_savepoint:
+		entity_states["lastSavepoint"] = {
+			"seq": _client_seq,
+			"mapId": _current_map_id,
+			"playerPos": Dictionary(canonical.get("playerPos", {})).duplicate(true),
+		}
+	canonical["entityStates"] = entity_states
+	return canonical
+
+
+func _get_local_last_savepoint() -> Dictionary:
+	if not _is_local_runtime() or _sync_client == null or not _sync_client.has_method("get_local_canonical_state"):
+		return {}
+	var canonical: Dictionary = _sync_client.get_local_canonical_state(run_id)
+	var entity_states: Dictionary = Dictionary(canonical.get("entityStates", {}))
+	return Dictionary(entity_states.get("lastSavepoint", {})).duplicate(true)
+
+
+func _summarize_character_choice(value: Variant) -> String:
+	if typeof(value) == TYPE_DICTIONARY:
+		var entry: Dictionary = value
+		var preferred := String(entry.get("name", entry.get("label", entry.get("id", "")))).strip_edges()
+		if not preferred.is_empty():
+			return preferred
+	return String(value).strip_edges()
+
+
+func _append_dev_console_status(message: String) -> void:
+	if _prose_panel == null:
+		return
+	var normalized := message.strip_edges()
+	if normalized.is_empty():
+		return
+	_prose_panel.append_line("[DEV] %s" % normalized)
+
+
+func _on_dev_console_button_pressed() -> void:
+	_set_dev_console_open(true)
+
+
+func _on_dev_console_close_button_pressed() -> void:
+	_set_dev_console_open(false)
+
+
+func _on_dev_refresh_snapshot_button_pressed() -> void:
+	_refresh_dev_console()
+
+
+func _on_dev_refresh_story_button_pressed() -> void:
+	dev_refresh_story()
+
+
+func _on_dev_force_checkpoint_button_pressed() -> void:
+	dev_force_checkpoint()
+
+
+func _on_dev_load_local_state_button_pressed() -> void:
+	await dev_load_local_state()
+
+
+func _on_dev_jump_village_button_pressed() -> void:
+	dev_jump_to_map("map_village_square")
+
+
+func _on_dev_jump_glade_button_pressed() -> void:
+	dev_jump_to_map("map_training_glade")
+
+
+func _on_dev_jump_ruins_button_pressed() -> void:
+	dev_jump_to_map("map_ruined_outlook")
+
+
+func _on_dev_flag_toggled(pressed: bool, flag_id: String) -> void:
+	if _dev_console_syncing_flags:
+		return
+	dev_set_quest_flag(flag_id, pressed)
+
+
 func _apply_runtime_config(config: Dictionary) -> void:
 	_runtime_mode = String(config.get("runtimeMode", "online")).strip_edges().to_lower()
 	if _runtime_mode.is_empty():
 		_runtime_mode = "online"
+	_dev_console_enabled = bool(config.get("devConsoleEnabled", false))
 	if _auth_client != null:
 		_auth_client.runtime_mode = _runtime_mode
 	if _sync_client == null:

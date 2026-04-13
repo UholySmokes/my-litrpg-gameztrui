@@ -14,6 +14,7 @@ describe("godot command + config contract", () => {
 		expect(source).toContain('const CONFIG_PATH := "res://data/config.json"');
 		expect(source).toContain("func load_runtime_config(config_path: String = CONFIG_PATH) -> Dictionary:");
 		expect(source).toContain('"buildId": "godot-dev"');
+		expect(source).toContain('"devConsoleEnabled": false');
 		expect(source).toContain('"syncCommandPath": "/sync/command"');
 		expect(source).toContain('"syncPullPath": "/sync/pull"');
 		expect(source).toContain('"telemetryPath": "/telemetry"');
@@ -33,9 +34,23 @@ describe("godot command + config contract", () => {
 		expect(world).toContain("@onready var _telemetry_reporter = %TelemetryReporter");
 		expect(world).toContain("_runtime_config = _config_loader.load_runtime_config()");
 		expect(world).toContain("_apply_runtime_config(_runtime_config)");
+		expect(world).toContain('_dev_console_enabled = bool(config.get("devConsoleEnabled", false))');
 		expect(world).toContain("_sync_client.api_base_url = api_base_url");
 		expect(world).toContain("_telemetry_reporter.api_base_url = api_base_url");
 		expect(world).toContain("String(config.get(\"telemetryPath\", _telemetry_reporter.telemetry_path))");
+	});
+
+	it("regenerates the intended Godot config before each Android export", () => {
+		const packageJson = JSON.parse(readGodotAsset("package.json"));
+		expect(packageJson.scripts["android:export:singleplayer"]).toContain(
+			"generate:godot-config:singleplayer",
+		);
+		expect(packageJson.scripts["android:export:internal"]).toContain(
+			"generate:godot-config:prod",
+		);
+		expect(packageJson.scripts["android:export:release"]).toContain(
+			"generate:godot-config:prod",
+		);
 	});
 
 	it("sends immediate actions through command path and keeps reconcile hook", () => {
@@ -73,6 +88,7 @@ describe("godot command + config contract", () => {
 		const configJson = JSON.parse(readGodotAsset("godot/data/config.json"));
 		expect(configJson.apiBaseUrl).toBeTruthy();
 		expect(configJson.buildId).toBeTruthy();
+		expect(typeof configJson.devConsoleEnabled).toBe("boolean");
 		expect(configJson.syncCommandPath).toBe("/sync/command");
 		expect(configJson.syncPullPath).toBe("/sync/pull");
 		expect(configJson.telemetryPath).toBe("/telemetry");
@@ -112,6 +128,11 @@ describe("godot command + config contract", () => {
 		expect(scene).toContain('[node name="StoryClient" type="Node" parent="."]');
 		expect(scene).toContain('path="res://scripts/pixel_map_renderer.gd"');
 		expect(scene).toContain('[node name="MapRenderer" type="Node2D" parent="."]');
+		expect(scene).toContain('[node name="DevConsoleButton" type="Button" parent="CanvasLayer"]');
+		expect(scene).toContain('[node name="DevConsolePanel" type="Panel" parent="CanvasLayer"]');
+		expect(scene).toContain('[node name="DevRefreshStoryButton" type="Button" parent="CanvasLayer/DevConsolePanel"]');
+		expect(scene).toContain('[node name="DevLoadLocalStateButton" type="Button" parent="CanvasLayer/DevConsolePanel"]');
+		expect(scene).toContain('[node name="DevFlagQuestTutorialEncounterResolved" type="CheckBox" parent="CanvasLayer/DevConsolePanel"]');
 		expect(scene).toContain('[node name="SpriteHooks" type="Node2D" parent="."]');
 		expect(scene).toContain('[node name="PlayerSpriteAnchor" type="Node2D" parent="SpriteHooks"]');
 		expect(scene).toContain('[node name="PlayerSprite" type="Sprite2D" parent="SpriteHooks/PlayerSpriteAnchor"]');
@@ -123,6 +144,16 @@ describe("godot command + config contract", () => {
 		expect(world).toContain("@onready var _guide_sprite_anchor: Node2D = %GuideSpriteAnchor");
 		expect(world).toContain("@onready var _player_sprite: Sprite2D = %PlayerSprite");
 		expect(world).toContain("@onready var _guide_sprite: Sprite2D = %GuideSprite");
+		expect(world).toContain("@onready var _dev_console_button: Button = %DevConsoleButton");
+		expect(world).toContain("@onready var _dev_console_panel: Panel = %DevConsolePanel");
+		expect(world).toContain("func get_dev_console_snapshot() -> Dictionary:");
+		expect(world).toContain("func dev_refresh_story() -> void:");
+		expect(world).toContain("func dev_force_checkpoint() -> void:");
+		expect(world).toContain("func dev_load_local_state() -> void:");
+		expect(world).toContain("func dev_jump_to_map(map_id: String) -> bool:");
+		expect(world).toContain("func dev_set_quest_flag(flag_id: String, value: bool) -> bool:");
+		expect(world).toContain("_dev_console_button.visible = should_show");
+		expect(world).toContain("return _dev_console_enabled and _is_local_runtime() and not _creating_character");
 		expect(world).toContain('const PLAYER_SPRITE_PATH := "res://assets/characters/traveler_idle_down.png"');
 		expect(world).toContain('const GUIDE_SPRITE_PATH := "res://assets/characters/guide_idle_down.png"');
 		expect(world).toContain("func _assign_sprite_texture(sprite: Sprite2D, asset_path: String) -> void:");
@@ -143,6 +174,12 @@ describe("godot command + config contract", () => {
 		expect(story).toContain("func poll(thread_id: String, run_id: String, mode: String = \"\") -> Dictionary:");
 		expect(story).toContain("func request_story(prompt: String, mode: String = \"exploration\", extra_payload: Dictionary = {}) -> Dictionary:");
 		expect(story).toContain("return _fallback_result(normalized_mode, \"story_poll_timeout\")");
+		expect(readGodotAsset("godot/scripts/sync_client.gd")).toContain(
+			"func get_local_canonical_state(run_id: String = \"\") -> Dictionary:",
+		);
+		expect(readGodotAsset("godot/scripts/sync_client.gd")).toContain(
+			"func overwrite_local_canonical_state(state: Dictionary) -> void:",
+		);
 		expect(mapRenderer).toContain("class_name PixelMapRenderer");
 		expect(mapRenderer).toContain("func render_map(map_id: String, width: int, height: int, trigger_tiles: Array = []) -> void:");
 		expect(mapRenderer).toContain("func _marker_color_for_trigger(trigger_type: String) -> Color:");
@@ -172,5 +209,18 @@ describe("godot command + config contract", () => {
 		
 		expect(prose).toContain("Suggested actions:");
 		expect(prose).toContain("func _format_suggestions(suggestions: Array) -> String:");
+	});
+
+	it("extends the staging endpoint probe across the full Godot online surface", () => {
+		const probe = readGodotAsset("scripts/run-staging-endpoint-probe.mjs");
+		expect(probe).toContain("const pullAuthGuard =");
+		expect(probe).toContain("const storyStartAuthGuard =");
+		expect(probe).toContain("const storyPollAuthGuard =");
+		expect(probe).toContain("const pull = await httpRequest(");
+		expect(probe).toContain("const storyStart = await httpRequest(`${baseUrl}/api/story/start`");
+		expect(probe).toContain("const storyPoll = await httpRequest(");
+		expect(probe).toContain("`GET /api/sync/pull`");
+		expect(probe).toContain("`POST /api/story/start`");
+		expect(probe).toContain("`GET /api/story/poll`");
 	});
 });

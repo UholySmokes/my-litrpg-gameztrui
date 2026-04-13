@@ -73,14 +73,26 @@ function evaluateProbe(result) {
 		result.telemetry.ok && [401, 400, 202].includes(Number(result.telemetry.status));
 	const commandAuthGuard =
 		result.command.ok && [401, 400, 409, 200].includes(Number(result.command.status));
+	const pullAuthGuard =
+		result.pull.ok && [401, 400, 404, 409, 200].includes(Number(result.pull.status));
+	const storyStartAuthGuard =
+		result.storyStart.ok && [401, 400, 200].includes(Number(result.storyStart.status));
+	const storyPollAuthGuard =
+		result.storyPoll.ok && [401, 400, 404, 202, 200].includes(Number(result.storyPoll.status));
 	return {
 		rootReachable,
 		telemetryAuthGuard,
 		commandAuthGuard,
+		pullAuthGuard,
+		storyStartAuthGuard,
+		storyPollAuthGuard,
 		passed:
 			rootReachable &&
 			telemetryAuthGuard &&
 			commandAuthGuard &&
+			pullAuthGuard &&
+			storyStartAuthGuard &&
+			storyPollAuthGuard &&
 			Boolean(result.authReadiness?.ready),
 	};
 }
@@ -199,6 +211,8 @@ async function probeAuthReadiness(firebaseApiKey) {
 async function probeBase(baseUrl) {
 	const firebaseApiKey = await readFirebaseApiKeyFromBundle(baseUrl);
 	const authReadiness = await probeAuthReadiness(firebaseApiKey);
+	const probeRunId = "staging-probe-run";
+	const probeThreadId = "staging-probe-thread";
 	const telemetryBody = JSON.stringify({
 		source: "staging_probe",
 		events: [
@@ -211,7 +225,7 @@ async function probeBase(baseUrl) {
 	});
 	const commandBody = JSON.stringify({
 		id: "staging-probe-command",
-		runId: "staging-probe-run",
+		runId: probeRunId,
 		clientId: "staging-probe-client",
 		clientSeq: 1,
 		createdAt: new Date().toISOString(),
@@ -226,6 +240,18 @@ async function probeBase(baseUrl) {
 				x: 6,
 				y: 8,
 			},
+		},
+	});
+	const storyStartBody = JSON.stringify({
+		prompt:
+			"Provide two short lines of exploration narration for the staging endpoint probe.",
+		mode: "exploration",
+		runId: probeRunId,
+		mapId: "map_village_square",
+		clientSeq: 1,
+		questFlags: {},
+		character: {
+			name: "Probe Runner",
 		},
 	});
 
@@ -244,7 +270,30 @@ async function probeBase(baseUrl) {
 		},
 		body: commandBody,
 	});
-	const assessment = evaluateProbe({ root, telemetry, command, authReadiness });
+	const pull = await httpRequest(
+		`${baseUrl}/api/sync/pull?runId=${encodeURIComponent(probeRunId)}&afterSeq=0`,
+	);
+	const storyStart = await httpRequest(`${baseUrl}/api/story/start`, {
+		method: "POST",
+		headers: {
+			"content-type": "application/json",
+		},
+		body: storyStartBody,
+	});
+	const storyPoll = await httpRequest(
+		`${baseUrl}/api/story/poll?threadId=${encodeURIComponent(
+			probeThreadId,
+		)}&runId=${encodeURIComponent(probeRunId)}&mode=exploration`,
+	);
+	const assessment = evaluateProbe({
+		root,
+		telemetry,
+		command,
+		pull,
+		storyStart,
+		storyPoll,
+		authReadiness,
+	});
 	return {
 		baseUrl,
 		firebaseApiKeyPresent: Boolean(firebaseApiKey),
@@ -252,6 +301,9 @@ async function probeBase(baseUrl) {
 		root,
 		telemetry,
 		command,
+		pull,
+		storyStart,
+		storyPoll,
 		assessment,
 	};
 }
@@ -300,6 +352,9 @@ function buildReport({
 		row("root `/`", `\`${fmtStatus(probe.root)}\``),
 		row("`POST /api/telemetry`", `\`${fmtStatus(probe.telemetry)}\``),
 		row("`POST /api/sync/command`", `\`${fmtStatus(probe.command)}\``),
+		row("`GET /api/sync/pull`", `\`${fmtStatus(probe.pull)}\``),
+		row("`POST /api/story/start`", `\`${fmtStatus(probe.storyStart)}\``),
+		row("`GET /api/story/poll`", `\`${fmtStatus(probe.storyPoll)}\``),
 		row(
 			"auth configuration readiness",
 			`\`${probe.authReadiness.ready ? "ready" : "blocked"}\` (${probe.authReadiness.code})`,

@@ -10,10 +10,12 @@ const originalGetSupabaseServiceClient = supabase.getSupabaseServiceClient;
 
 beforeEach(() => {
 	jest.resetAllMocks();
+	auth.__resetSupabaseRuntimeForTests();
 	supabase.isSupabaseConfigured = jest.fn(() => true);
 });
 
 afterEach(() => {
+	auth.__resetSupabaseRuntimeForTests();
 	supabase.isSupabaseConfigured = originalIsSupabaseConfigured;
 	supabase.getSupabaseServiceClient = originalGetSupabaseServiceClient;
 });
@@ -70,5 +72,33 @@ describe("backend supabase bearer auth", () => {
 		});
 
 		expect(user).toBeNull();
+	});
+
+	it("returns null instead of crashing when the Supabase helper is unavailable", async () => {
+		const Module = require("module");
+		const originalLoad = Module._load;
+
+		Module._load = function patchedLoad(request, parent, isMain) {
+			if (request === "./supabase" && parent?.filename?.endsWith("functions\\lib\\auth.js")) {
+				const error = new Error("Cannot find module './supabase'");
+				error.code = "MODULE_NOT_FOUND";
+				throw error;
+			}
+			return originalLoad.call(this, request, parent, isMain);
+		};
+
+		try {
+			auth.__resetSupabaseRuntimeForTests();
+			const user = await auth.getUserFromRequest({
+				headers: {
+					authorization: "Bearer token-123",
+				},
+			});
+
+			expect(user).toBeNull();
+		} finally {
+			Module._load = originalLoad;
+			auth.__resetSupabaseRuntimeForTests();
+		}
 	});
 });

@@ -7,146 +7,6 @@ const connectorConfig = {
 };
 exports.connectorConfig = connectorConfig;
 
-const upsertMyProfileRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'UpsertMyProfile', inputVars);
-}
-upsertMyProfileRef.operationName = 'UpsertMyProfile';
-exports.upsertMyProfileRef = upsertMyProfileRef;
-
-exports.upsertMyProfile = function upsertMyProfile(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars);
-  return executeMutation(upsertMyProfileRef(dcInstance, inputVars));
-}
-;
-
-const markMyProfileMigrationRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'MarkMyProfileMigration', inputVars);
-}
-markMyProfileMigrationRef.operationName = 'MarkMyProfileMigration';
-exports.markMyProfileMigrationRef = markMyProfileMigrationRef;
-
-exports.markMyProfileMigration = function markMyProfileMigration(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(markMyProfileMigrationRef(dcInstance, inputVars));
-}
-;
-
-const createSaveSlotRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'CreateSaveSlot', inputVars);
-}
-createSaveSlotRef.operationName = 'CreateSaveSlot';
-exports.createSaveSlotRef = createSaveSlotRef;
-
-exports.createSaveSlot = function createSaveSlot(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(createSaveSlotRef(dcInstance, inputVars));
-}
-;
-
-const upsertSaveSlotRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'UpsertSaveSlot', inputVars);
-}
-upsertSaveSlotRef.operationName = 'UpsertSaveSlot';
-exports.upsertSaveSlotRef = upsertSaveSlotRef;
-
-exports.upsertSaveSlot = function upsertSaveSlot(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(upsertSaveSlotRef(dcInstance, inputVars));
-}
-;
-
-const deleteSaveSlotRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'DeleteSaveSlot', inputVars);
-}
-deleteSaveSlotRef.operationName = 'DeleteSaveSlot';
-exports.deleteSaveSlotRef = deleteSaveSlotRef;
-
-exports.deleteSaveSlot = function deleteSaveSlot(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(deleteSaveSlotRef(dcInstance, inputVars));
-}
-;
-
-const deleteRunSessionRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'DeleteRunSession', inputVars);
-}
-deleteRunSessionRef.operationName = 'DeleteRunSession';
-exports.deleteRunSessionRef = deleteRunSessionRef;
-
-exports.deleteRunSession = function deleteRunSession(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(deleteRunSessionRef(dcInstance, inputVars));
-}
-;
-
-const deleteRunEventRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'DeleteRunEvent', inputVars);
-}
-deleteRunEventRef.operationName = 'DeleteRunEvent';
-exports.deleteRunEventRef = deleteRunEventRef;
-
-exports.deleteRunEvent = function deleteRunEvent(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(deleteRunEventRef(dcInstance, inputVars));
-}
-;
-
-const upsertRunSessionRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'UpsertRunSession', inputVars);
-}
-upsertRunSessionRef.operationName = 'UpsertRunSession';
-exports.upsertRunSessionRef = upsertRunSessionRef;
-
-exports.upsertRunSession = function upsertRunSession(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(upsertRunSessionRef(dcInstance, inputVars));
-}
-;
-
-const createRunEventRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'CreateRunEvent', inputVars);
-}
-createRunEventRef.operationName = 'CreateRunEvent';
-exports.createRunEventRef = createRunEventRef;
-
-exports.createRunEvent = function createRunEvent(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(createRunEventRef(dcInstance, inputVars));
-}
-;
-
-const upsertStoryMemoryRef = (dcOrVars, vars) => {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'UpsertStoryMemory', inputVars);
-}
-upsertStoryMemoryRef.operationName = 'UpsertStoryMemory';
-exports.upsertStoryMemoryRef = upsertStoryMemoryRef;
-
-exports.upsertStoryMemory = function upsertStoryMemory(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
-  return executeMutation(upsertStoryMemoryRef(dcInstance, inputVars));
-}
-;
-
 const getMyProfileRef = (dc) => {
   const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
@@ -294,5 +154,145 @@ exports.listMyStoryMemories = function listMyStoryMemories(dcOrVars, varsOrOptio
   
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   return executeQuery(listMyStoryMemoriesRef(dcInstance, inputVars), inputOpts && inputOpts.fetchPolicy);
+}
+;
+
+const upsertMyProfileRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'UpsertMyProfile', inputVars);
+}
+upsertMyProfileRef.operationName = 'UpsertMyProfile';
+exports.upsertMyProfileRef = upsertMyProfileRef;
+
+exports.upsertMyProfile = function upsertMyProfile(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars);
+  return executeMutation(upsertMyProfileRef(dcInstance, inputVars));
+}
+;
+
+const markMyProfileMigrationRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'MarkMyProfileMigration', inputVars);
+}
+markMyProfileMigrationRef.operationName = 'MarkMyProfileMigration';
+exports.markMyProfileMigrationRef = markMyProfileMigrationRef;
+
+exports.markMyProfileMigration = function markMyProfileMigration(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(markMyProfileMigrationRef(dcInstance, inputVars));
+}
+;
+
+const createSaveSlotRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'CreateSaveSlot', inputVars);
+}
+createSaveSlotRef.operationName = 'CreateSaveSlot';
+exports.createSaveSlotRef = createSaveSlotRef;
+
+exports.createSaveSlot = function createSaveSlot(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(createSaveSlotRef(dcInstance, inputVars));
+}
+;
+
+const upsertSaveSlotRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'UpsertSaveSlot', inputVars);
+}
+upsertSaveSlotRef.operationName = 'UpsertSaveSlot';
+exports.upsertSaveSlotRef = upsertSaveSlotRef;
+
+exports.upsertSaveSlot = function upsertSaveSlot(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(upsertSaveSlotRef(dcInstance, inputVars));
+}
+;
+
+const deleteSaveSlotRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeleteSaveSlot', inputVars);
+}
+deleteSaveSlotRef.operationName = 'DeleteSaveSlot';
+exports.deleteSaveSlotRef = deleteSaveSlotRef;
+
+exports.deleteSaveSlot = function deleteSaveSlot(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(deleteSaveSlotRef(dcInstance, inputVars));
+}
+;
+
+const deleteRunSessionRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeleteRunSession', inputVars);
+}
+deleteRunSessionRef.operationName = 'DeleteRunSession';
+exports.deleteRunSessionRef = deleteRunSessionRef;
+
+exports.deleteRunSession = function deleteRunSession(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(deleteRunSessionRef(dcInstance, inputVars));
+}
+;
+
+const deleteRunEventRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeleteRunEvent', inputVars);
+}
+deleteRunEventRef.operationName = 'DeleteRunEvent';
+exports.deleteRunEventRef = deleteRunEventRef;
+
+exports.deleteRunEvent = function deleteRunEvent(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(deleteRunEventRef(dcInstance, inputVars));
+}
+;
+
+const upsertRunSessionRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'UpsertRunSession', inputVars);
+}
+upsertRunSessionRef.operationName = 'UpsertRunSession';
+exports.upsertRunSessionRef = upsertRunSessionRef;
+
+exports.upsertRunSession = function upsertRunSession(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(upsertRunSessionRef(dcInstance, inputVars));
+}
+;
+
+const createRunEventRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'CreateRunEvent', inputVars);
+}
+createRunEventRef.operationName = 'CreateRunEvent';
+exports.createRunEventRef = createRunEventRef;
+
+exports.createRunEvent = function createRunEvent(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(createRunEventRef(dcInstance, inputVars));
+}
+;
+
+const upsertStoryMemoryRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'UpsertStoryMemory', inputVars);
+}
+upsertStoryMemoryRef.operationName = 'UpsertStoryMemory';
+exports.upsertStoryMemoryRef = upsertStoryMemoryRef;
+
+exports.upsertStoryMemory = function upsertStoryMemory(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(upsertStoryMemoryRef(dcInstance, inputVars));
 }
 ;

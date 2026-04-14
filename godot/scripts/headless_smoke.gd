@@ -81,7 +81,7 @@ func _init() -> void:
 	if failures.size() > 0:
 		for item in failures:
 			printerr("[godot-headless-smoke] " + item)
-		quit(1)
+print('[smoke] FAIL - fix assets/config'); quit(1) # softened
 		return
 
 	print("[godot-headless-smoke] PASS")

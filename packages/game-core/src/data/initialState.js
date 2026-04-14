@@ -9,6 +9,7 @@ import {
 } from "./balance/balanceConfig.js";
 import * as saveCutover from "../../../../shared/save-cutover.js";
 import { normalizeAbilityState } from "../systems/abilities/UnifiedAbilityEngine.js";
+import { createDefaultCombatState } from "../systems/skirmish/SkirmishState.js";
 
 const { GAME_STATE_VERSION } = saveCutover;
 
@@ -239,6 +240,7 @@ const initialGameState = {
     activeRun: null,
     completedRuns: [],
   },
+  combat: createDefaultCombatState(),
   world: {
     ...createInitialWorldState({ seed: 1 }),
   },

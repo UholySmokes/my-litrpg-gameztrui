@@ -16,18 +16,10 @@ import { handleInventoryAction } from "./reducer/inventoryActionHandlers.js";
 import { handleProgressionAction } from "./reducer/progressionActionHandlers.js";
 import { handleSkillAction } from "./reducer/skillActionHandlers.js";
 import { promoteOnboardingAfterQuestCompletion } from "../world/OpeningTutorialBundleRegistry.js";
+import { createDefaultCombatState } from "../systems/skirmish/SkirmishState.js";
 
 const ensureCombatStructure = (state) =>
-  state.combat || {
-    status: "inactive",
-    turn: "player",
-    stance: "focused",
-    enemies: [],
-    telegraphs: [],
-    arenaTags: [],
-    tacticalVerbs: [],
-    log: [],
-  };
+  createDefaultCombatState(state?.combat || {});
 
 const getCurrentLocationId = (state) => {
   const raw = state?.world?.location;
@@ -631,6 +623,12 @@ const gameReducer = (state, action) =>
     case "PLAYER_USE_SKILL":
     case "PLAYER_USE_CLASS_ABILITY":
     case "PLAYER_USE_RACE_ABILITY":
+    case "PLAYER_SELECT_SKIRMISH_UNIT":
+    case "PLAYER_SELECT_SKIRMISH_TARGET":
+    case "PLAYER_SKIRMISH_MOVE":
+    case "PLAYER_SKIRMISH_USE_SKILL":
+    case "PLAYER_SKIRMISH_USE_ITEM":
+    case "PLAYER_SKIRMISH_WAIT":
     case "PLAYER_SET_COMBAT_LANE":
     case "PLAYER_SET_COMBAT_STANCE":
     case "DUNGEON_START_RUN":

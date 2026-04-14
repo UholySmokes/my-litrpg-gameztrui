@@ -1,7 +1,7 @@
 const EXAMPLE_STARTS = [
-  "I join the scouts, keep quiet, and ask who needs another blade.",
-  "I steady myself, watch the crowd, and wait for the first opening worth taking.",
-  "I ask the nearest locals what trouble is already moving and who is desperate enough to pay.",
+  "I arrive quietly, read the room, and ask who needs help first.",
+  "I keep my head low, look for the nearest tension point, and offer my blade where it matters.",
+  "I study the crowd, find the local authority, and ask what pressure is about to break.",
 ];
 
 export default function CreationStartingPointPanel({
@@ -14,124 +14,80 @@ export default function CreationStartingPointPanel({
 }) {
   return (
     <div className="creation-starting-point-panel">
-      <p style={{ fontSize: "0.82rem", opacity: 0.72, marginBottom: "1rem", lineHeight: 1.5 }}>
-        Write the exact opening you want. This command defines the first beat of the chronicle,
-        then auto-runs as your opening turn{selectedOriginName ? ` in ${selectedOriginName}` : ""}.
-      </p>
+      <div className="creation-starting-point-panel__intro">
+        <div className="creation-starting-point-panel__eyebrow">First Invocation</div>
+        <p>
+          Script the exact line that should open the chronicle. This text becomes the
+          first authored move and auto-runs{selectedOriginName ? ` in ${selectedOriginName}` : ""}.
+        </p>
+      </div>
 
-      <label
-        htmlFor="creation-start-command"
-        style={{
-          display: "block",
-          marginBottom: "0.45rem",
-          fontSize: "0.72rem",
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          color: "var(--holo-cyan)",
-        }}
-      >
-        Start Command
+      <label className="creation-starting-point-panel__label" htmlFor="creation-start-command">
+        Invocation Draft
       </label>
       <textarea
         id="creation-start-command"
+        className="creation-starting-point-panel__textarea"
         value={startingPrompt}
         onChange={(event) => onStartingPromptChange?.(event.target.value)}
         placeholder={
           selectedOriginName
-            ? `I steady myself in ${selectedOriginName}, read the room, and ask who needs help first.`
-            : "I steady myself, read the room, and ask who needs help first."
+            ? `I steady myself in ${selectedOriginName}, read the room, and ask where the pressure is building first.`
+            : "I steady myself, read the room, and ask where the pressure is building first."
         }
-        rows={5}
-        style={{
-          width: "100%",
-          minHeight: "8.5rem",
-          resize: "vertical",
-          padding: "0.85rem 0.95rem",
-          borderRadius: "10px",
-          border: "1px solid rgba(0, 243, 255, 0.35)",
-          background: "rgba(2, 8, 18, 0.92)",
-          color: "var(--text-main)",
-          fontSize: "0.92rem",
-          lineHeight: 1.5,
-          fontFamily: "inherit",
-        }}
+        rows={6}
       />
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          gap: "0.75rem",
-          marginTop: "0.9rem",
-        }}
-      >
+      <div className="creation-starting-point-panel__toolbar">
         <button
           type="button"
-          className="creation-option-btn"
+          className="holo-button"
           onClick={() => onOptimizePrompt?.()}
           disabled={!startingPrompt.trim()}
-          style={{ minWidth: "13rem" }}
         >
-          Optimize Prompt
+          Refine Invocation
         </button>
       </div>
 
-      <div style={{ marginTop: "1rem", display: "grid", gap: "0.65rem" }}>
-        <div style={{ fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-dim)" }}>
-          Alternate Rewrites
-        </div>
-        {optimizedPromptAlternates.length > 0 ? (
-          optimizedPromptAlternates.map((alternate) => (
-            <button
-              key={alternate}
-              type="button"
-              className="creation-option-btn"
-              onClick={() => onSelectAlternate?.(alternate)}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "0.2rem",
-                textAlign: "left",
-                padding: "0.75rem 0.85rem",
-              }}
-            >
-              <strong style={{ fontSize: "0.82rem" }}>Use This Rewrite</strong>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-dim)", lineHeight: 1.45 }}>
-                {alternate}
-              </span>
-            </button>
-          ))
-        ) : (
-          <div style={{ fontSize: "0.82rem", color: "var(--text-dim)", lineHeight: 1.5 }}>
-            Optimize the draft to get three cleaner opening variants you can still edit.
-          </div>
-        )}
-      </div>
+      <div className="creation-starting-point-panel__grid">
+        <section className="creation-starting-point-panel__panel">
+          <div className="creation-starting-point-panel__panel-title">Archive Rewrites</div>
+          {optimizedPromptAlternates.length > 0 ? (
+            <div className="creation-starting-point-panel__option-list">
+              {optimizedPromptAlternates.map((alternate) => (
+                <button
+                  key={alternate}
+                  type="button"
+                  className="creation-option-btn creation-starting-point-panel__option"
+                  onClick={() => onSelectAlternate?.(alternate)}
+                >
+                  <strong>Use this rewrite</strong>
+                  <span>{alternate}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="creation-starting-point-panel__empty">
+              Refine the draft to generate cleaner alternate invocations you can still edit.
+            </p>
+          )}
+        </section>
 
-      <div style={{ marginTop: "1.1rem", display: "grid", gap: "0.45rem" }}>
-        <div style={{ fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-dim)" }}>
-          Example Starts
-        </div>
-        {EXAMPLE_STARTS.map((example) => (
-          <button
-            key={example}
-            type="button"
-            onClick={() => onSelectAlternate?.(example)}
-            style={{
-              textAlign: "left",
-              background: "transparent",
-              color: "var(--text-dim)",
-              border: "1px dashed rgba(255,255,255,0.14)",
-              borderRadius: "10px",
-              padding: "0.7rem 0.8rem",
-              cursor: "pointer",
-            }}
-          >
-            {example}
-          </button>
-        ))}
+        <section className="creation-starting-point-panel__panel">
+          <div className="creation-starting-point-panel__panel-title">Seed Phrases</div>
+          <div className="creation-starting-point-panel__option-list">
+            {EXAMPLE_STARTS.map((example) => (
+              <button
+                key={example}
+                type="button"
+                className="creation-option-btn creation-starting-point-panel__seed"
+                onClick={() => onSelectAlternate?.(example)}
+              >
+                {example}
+              </button>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

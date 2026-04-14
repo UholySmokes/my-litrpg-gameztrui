@@ -1,0 +1,132 @@
+[
+  {
+    "id": "base_open_draw_fire",
+    "name": "Basic OPEN stance fire draw in high-fire biome",
+    "player": {"mana": {"max": 100}, "attunement": {"fire": 1}, "affinity": {"fire": 0}, "stability": {"body": 100, "mind": 100, "cognitive": 100}},
+    "world": {"ambient": {"fire": 0.8}},
+    "stance": "open",
+    "actions": [{"type": "draw", "essence": "fire", "amount": 20}]
+  },
+  {
+    "id": "focused_refine_compress",
+    "name": "FOCUSED water refine+compress tier2",
+    "player": {"mana": {"max": 100, "current": 80}, "attunement": {"water": 5}, "stability": {"body": 80, "mind": 90, "cognitive": 70}},
+    "world": {"ambient": {"water": 0.6}},
+    "stance": "focused",
+    "essence": "water",
+    "actions": [{"type": "draw", "amount": 15}, {"type": "refine", "method": "spiral", "amount": 12}, {"type": "compress", "tier": 2}]
+  },
+  {
+    "id": "shape_single_jet",
+    "name": "SHAPE fire jet magnitude test",
+    "player": {"charges": [{"essence": "fire", "amount": 10, "density": 1.5, "purity": 0.7}], "attunement": {"fire": 3}, "stability": {"body": 90, "mind": 85, "cognitive": 80}},
+    "actions": [{"type": "shape", "form": "jet", "amount": 8}]
+  },
+  {
+    "id": "weave_coherent_vortex",
+    "name": "WEAVE fire+air vortex (low opposition)",
+    "player": {"charges": [{"essence": "fire", "amount": 12, "density": 1.0, "purity": 0.8}, {"essence": "air", "amount": 9, "density": 1.0, "purity": 0.75}], "attunement": {"fire": 4, "air": 2}, "stability": {"body": 85, "mind": 88, "cognitive": 75}},
+    "actions": [{"type": "weave", "essences": ["fire", "air"], "pattern": "vortex"}]
+  },
+  {
+    "id": "weave_opposed_freeze",
+    "name": "WEAVE fire+water wall (high opposition 0.25)",
+    "player": {"charges": [{"essence": "fire", "amount": 10, "density": 1.2, "purity": 0.6}, {"essence": "water", "amount": 10, "density": 1.2, "purity": 0.6}], "stability": {"body": 70, "mind": 65, "cognitive": 50}},
+    "actions": [{"type": "weave", "essences": ["fire", "water"], "pattern": "wall"}]
+  },
+  {
+    "id": "compress_misfire_tier3",
+    "name": "Tier3 compress high risk/misfire test",
+    "player": {"reserves": {"lightning": 15}, "stability": {"body": 60, "mind": 55, "cognitive": 45}},
+    "actions": [{"type": "refine", "method": "pulse", "amount": 12}, {"type": "compress", "tier": 3}]
+  },
+  {
+    "id": "low_stability_backlash",
+    "name": "Low cognitive weave high backlash",
+    "player": {"charges": [{"essence": "shadow", "amount": 8, "density": 2.2, "purity": 0.5}], "stability": {"body": 50, "mind": 50, "cognitive": 30}},
+    "actions": [{"type": "shape", "form": "veil", "amount": 6}]
+  },
+  {
+    "id": "biome_stormglass_draw",
+    "name": "Stormglass Ruins (lightning/earth/air high)",
+    "world": {"ambient": {"lightning": 0.7, "earth": 0.6, "air": 0.5}},
+    "player": {"attunement": {"lightning": 2}},
+    "stance": "guarded",
+    "actions": [{"type": "draw", "essence": "lightning", "amount": 10}]
+  },
+  {
+    "id": "mana_full_overdraw",
+    "name": "Draw when manaFree low (should clamp)",
+    "player": {"mana": {"max": 100, "current": 5}, "reserves": {"earth": 90}},
+    "world": {"ambient": {"earth": 0.4}},
+    "actions": [{"type": "draw", "essence": "earth", "amount": 20}]
+  },
+  {
+    "id": "crisis_defense",
+    "name": "Crisis low HP auto defensive weave",
+    "player": {"hpPct": 0.1, "stability": {"mind": 60, "cognitive": 40}},
+    "world": {"ambient": {"water": 0.8}},
+    "actions": [{"type": "weave", "essences": ["water"], "pattern": "wall", "intent": "block"}]
+  },
+  {
+    "id": "charge_decay",
+    "name": "Charge lifetime test (50 turns base * purity)",
+    "player": {"charges": [{"essence": "light", "purity": 0.9, "createdTurn": 100}]},
+    "currentTurn": 140
+  },
+  {
+    "id": "sense_perception",
+    "name": "SENSE accuracy w/ attunement/mindStability",
+    "player": {"stability": {"mind": 70}, "attunement": {"shadow": 7}},
+    "world": {"ambient": {"shadow": 0.3}}
+  },
+  {
+    "id": "theory_coherence_boost",
+    "name": "Paradigm conservationist weave (theoryFactor=1.0)",
+    "player": {"paradigm": {"id": "conservationist", "tenets": ["transform_allowed"]}},
+    "actions": [{"type": "weave", "essences": ["earth", "air"], "pattern": "lattice"}]
+  },
+  {
+    "id": "opposition_extreme",
+    "name": "Light+shadow weave (penalty 0.35)",
+    "player": {"charges": [{"essence": "light", "amount": 10}, {"essence": "shadow", "amount": 10}], "stability": {"cognitive": 60}},
+    "actions": [{"type": "weave", "essences": ["light", "shadow"], "pattern": "pulse"}]
+  },
+  {
+    "id": "high_density_shape",
+    "name": "Tier3 shape potency (3.3 density)",
+    "player": {"charges": [{"essence": "air", "amount": 15, "density": 3.3, "purity": 0.85}], "attunement": {"air": 8}},
+    "actions": [{"type": "shape", "form": "step", "amount": 12}]
+  },
+  {
+    "id": "guarded_low_backlash",
+    "name": "GUARDED draw+shape low risk",
+    "player": {},
+    "stance": "guarded",
+    "actions": [{"type": "draw", "essence": "life", "amount": 5}, {"type": "shape", "form": "sip", "amount": 3}]
+  },
+  {
+    "id": "emberline_high_fire",
+    "name": "Emberline Caldera biome fire dominance",
+    "world": {"ambient": {"fire": 0.9, "earth": 0.7}},
+    "actions": [{"type": "draw", "essence": "fire", "amount": 25}]
+  },
+  {
+    "id": "multi_compress_misfire_chain",
+    "name": "Chain tier1-3 compress risk accumulation",
+    "player": {"reserves": {"lightning": 30}},
+    "actions": [{"type": "refine", "amount": 20}, {"type": "compress", "tier": 1}, {"type": "compress", "tier": 2}, {"type": "compress", "tier": 3}]
+  },
+  {
+    "id": "anchor_self_stability",
+    "name": "ANCHOR SELF binding cost",
+    "player": {"charges": [{"essence": "earth", "amount": 6}]},
+    "actions": [{"type": "anchor", "kind": "self"}]
+  },
+  {
+    "id": "release_consume",
+    "name": "Full RELEASE charge consumption",
+    "player": {"charges": [{"essence": "lightning", "amount": 5, "density": 2.2}]},
+    "actions": [{"type": "release"}]
+  }
+]

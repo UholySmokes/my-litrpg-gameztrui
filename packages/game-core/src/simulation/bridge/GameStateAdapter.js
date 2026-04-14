@@ -239,7 +239,10 @@ export function entityToCombatBoardUnit(entity, existingUnit = {}) {
  * Convert game state to simulation state
  */
 export function gameStateToSimulation(gameState) {
-  if (Array.isArray(gameState?.combat?.board?.units)) {
+  if (
+    Array.isArray(gameState?.combat?.board?.units) &&
+    gameState.combat.board.units.length > 0
+  ) {
     return combatBoardToSimulation(gameState.combat.board, gameState);
   }
 

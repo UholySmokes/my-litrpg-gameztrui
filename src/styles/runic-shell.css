@@ -1761,6 +1761,136 @@ body {
   align-content: start;
 }
 
+.combat-stage__board-shell {
+  min-width: 0;
+}
+
+.combat-stage__board-grid {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.combat-stage__board-header,
+.combat-stage__board-row {
+  display: grid;
+  grid-template-columns: 74px repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+.combat-stage__board-label,
+.combat-stage__board-header span {
+  display: grid;
+  place-items: center;
+  padding: 0.65rem 0.45rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--combat-border) 72%, transparent);
+  background: color-mix(in srgb, var(--combat-panel-strong) 88%, transparent);
+  color: var(--text-dim);
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.combat-stage__cell {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 112px;
+  padding: 0.85rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--combat-border) 86%, transparent);
+  background: var(--combat-panel-strong);
+  color: var(--text-main);
+  text-align: left;
+  align-content: start;
+}
+
+.combat-stage__cell--interactive {
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.combat-stage__cell--interactive:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--holo-cyan) 36%, transparent);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+}
+
+.combat-stage__cell--ally {
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--holo-cyan) 10%, transparent), transparent 32%),
+    var(--combat-panel-strong);
+}
+
+.combat-stage__cell--enemy {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--holo-alert) 12%, transparent), transparent 34%),
+    var(--combat-panel-strong);
+}
+
+.combat-stage__cell--active {
+  border-color: color-mix(in srgb, var(--holo-gold) 42%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--holo-gold) 20%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--holo-gold) 10%, transparent);
+}
+
+.combat-stage__cell--selected {
+  border-color: color-mix(in srgb, var(--holo-alert) 44%, transparent);
+}
+
+.combat-stage__cell--empty {
+  place-items: center;
+  justify-items: center;
+  text-align: center;
+  color: var(--text-dim);
+}
+
+.combat-stage__cell-empty {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.combat-stage__cell-empty span,
+.combat-stage__unit-meta,
+.combat-stage__initiative-chip strong {
+  color: var(--text-dim);
+  font-size: 0.76rem;
+}
+
+.combat-stage__unit-name {
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.combat-stage__initiative-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.65rem;
+}
+
+.combat-stage__initiative-chip {
+  display: grid;
+  gap: 0.18rem;
+  padding: 0.72rem 0.8rem;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--combat-border) 80%, transparent);
+  background: var(--combat-panel-strong);
+  color: var(--text-main);
+  text-align: left;
+}
+
+.combat-stage__initiative-chip--active {
+  border-color: color-mix(in srgb, var(--holo-gold) 46%, transparent);
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--holo-gold) 14%, transparent), transparent 34%),
+    var(--combat-panel-strong);
+}
+
 .combat-stage__control-block,
 .combat-stage__support-grid,
 .combat-stage__ability-tray {

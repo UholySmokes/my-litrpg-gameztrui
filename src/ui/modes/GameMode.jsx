@@ -88,9 +88,14 @@ export default function GameMode({
   quests,
   combatState,
   onAttack,
+  onMoveSkirmishUnit,
+  onSelectSkirmishTarget,
+  onSelectSkirmishUnit,
   onUseSkill,
   onUseClassAbility,
+  onUseItem,
   onUseRaceAbility,
+  onWait,
   onEscape,
   onSetCombatLane,
   showBestiary = false,
@@ -277,9 +282,14 @@ export default function GameMode({
             combatState={combatState}
             playerState={player}
             onAttack={onAttack}
+            onMoveSkirmishUnit={onMoveSkirmishUnit}
+            onSelectSkirmishTarget={onSelectSkirmishTarget}
+            onSelectSkirmishUnit={onSelectSkirmishUnit}
             onUseSkill={onUseSkill}
             onUseClassAbility={onUseClassAbility}
+            onUseItem={onUseItem}
             onUseRaceAbility={onUseRaceAbility}
+            onWait={onWait}
             onEscape={onEscape}
             onSetCombatLane={onSetCombatLane}
           />

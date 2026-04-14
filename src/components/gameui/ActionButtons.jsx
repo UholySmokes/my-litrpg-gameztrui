@@ -6,6 +6,8 @@ export default function ActionButtons({
   restDisabled = false,
   escapeDisabled = false,
   isCombatActive = false,
+  restLabel = "Rest",
+  restTitle = "Rest and recover health and mana.",
 }) {
   return (
     <div className="command-deck__action-buttons" aria-label="Core actions">
@@ -23,9 +25,9 @@ export default function ActionButtons({
         className="holo-button command-deck__action-button command-deck__action-button--rest"
         onClick={onRest}
         disabled={restDisabled}
-        title="Rest and recover health and mana."
+        title={restTitle}
       >
-        Rest
+        {restLabel}
       </button>
       <button
         type="button"
@@ -39,4 +41,3 @@ export default function ActionButtons({
     </div>
   );
 }
-

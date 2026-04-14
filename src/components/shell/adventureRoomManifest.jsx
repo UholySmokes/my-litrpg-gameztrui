@@ -454,9 +454,14 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
             combatState={combatState}
             playerState={player}
             onAttack={actions.onAttack}
+            onMoveSkirmishUnit={actions.onMoveSkirmishUnit}
+            onSelectSkirmishTarget={actions.onSelectSkirmishTarget}
+            onSelectSkirmishUnit={actions.onSelectSkirmishUnit}
             onUseSkill={actions.onUseSkill}
             onUseClassAbility={actions.onUseClassAbility}
+            onUseItem={actions.onUseItem}
             onUseRaceAbility={actions.onUseRaceAbility}
+            onWait={actions.onWait}
             onEscape={actions.onEscape}
             onSetCombatLane={actions.onSetCombatLane}
             onSetCombatStance={actions.onSetCombatStance}

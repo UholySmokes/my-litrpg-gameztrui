@@ -1,0 +1,176 @@
+{
+  "url": "http://127.0.0.1:5173/",
+  "title": "Void Verse",
+  "buttons": [
+    {
+      "text": "EXPAND",
+      "disabled": false
+    },
+    {
+      "text": "Twilight Crystal",
+      "disabled": false
+    },
+    {
+      "text": "Ember Scroll",
+      "disabled": false
+    },
+    {
+      "text": "Sakura Dawn",
+      "disabled": false
+    },
+    {
+      "text": "Spirit Forest",
+      "disabled": false
+    },
+    {
+      "text": "Neon Bloom",
+      "disabled": false
+    },
+    {
+      "text": "Dragon Forge",
+      "disabled": false
+    },
+    {
+      "text": "Frozen Echo",
+      "disabled": false
+    },
+    {
+      "text": "EXPAND",
+      "disabled": false
+    },
+    {
+      "text": "Execute",
+      "disabled": false
+    },
+    {
+      "text": "Look Around",
+      "disabled": false
+    },
+    {
+      "text": "Check Status",
+      "disabled": false
+    },
+    {
+      "text": "Rest",
+      "disabled": false
+    },
+    {
+      "text": "Where Am I",
+      "disabled": false
+    },
+    {
+      "text": "+100 XP",
+      "disabled": false
+    },
+    {
+      "text": "+250 Gold",
+      "disabled": false
+    },
+    {
+      "text": "Heal + Mana",
+      "disabled": false
+    },
+    {
+      "text": "Level Up",
+      "disabled": false
+    },
+    {
+      "text": "Clear Logs",
+      "disabled": false
+    },
+    {
+      "text": "System Ping",
+      "disabled": false
+    },
+    {
+      "text": "/help",
+      "disabled": false
+    },
+    {
+      "text": "/story <text>",
+      "disabled": false
+    },
+    {
+      "text": "<text>",
+      "disabled": false
+    },
+    {
+      "text": "/xp <amount>",
+      "disabled": false
+    },
+    {
+      "text": "/gold <amount>",
+      "disabled": false
+    },
+    {
+      "text": "/setgold <amount>",
+      "disabled": false
+    },
+    {
+      "text": "/soulpoints <amount>",
+      "disabled": false
+    },
+    {
+      "text": "/setsp <amount>",
+      "disabled": false
+    },
+    {
+      "text": "/hp <delta>",
+      "disabled": false
+    },
+    {
+      "text": "/mana <delta>",
+      "disabled": false
+    },
+    {
+      "text": "/heal",
+      "disabled": false
+    },
+    {
+      "text": "/refill",
+      "disabled": false
+    },
+    {
+      "text": "/attr <amount>",
+      "disabled": false
+    },
+    {
+      "text": "/levelup",
+      "disabled": false
+    },
+    {
+      "text": "/teleport <locationId>",
+      "disabled": false
+    },
+    {
+      "text": "/where",
+      "disabled": false
+    },
+    {
+      "text": "/clearlog",
+      "disabled": false
+    },
+    {
+      "text": "/system <message>",
+      "disabled": false
+    },
+    {
+      "text": "Copy Log",
+      "disabled": false
+    },
+    {
+      "text": "ENTER CHARACTER GENESIS",
+      "disabled": false
+    }
+  ],
+  "bodyText": "Twilight Crystal\nEXPAND\nLATTICE CONSOLE\nWanderer\nEXPAND\nARRIVAL CHAMBER\nENTER THE GENESIS ATRIUM.\n\nThe chamber is quiet until you bind a system and begin forging the next chronicle. No premade champion stands in for you here. The run starts only after the lattice recognizes a name, a lineage, and an oath.\n\nBound profile\nlocal-dev@example.com\nRITUAL SEQUENCE\nA full-room genesis ritual awaits.\n01\nBind The Lattice\n\nChoose the system that will color every recommendation, growth lane, and skill bias.\n\n02\nShape The Vessel\n\nDefine lineage, doctrine, profession, and the narrative role that will carry the run.\n\n03\nSeal The Oath\n\nLock the opening build only after the full chamber sequence resolves cleanly.\n\nATRIUM SIGNALS\nWhat the chamber guarantees\n+\nSystems determine recommendation pressure and opening loadouts.\n+\nEvery run begins from zero. No pre-authored hero path overrides genesis.\n+\nCreation remains reversible until the final oath is sealed.\n\nBegin the chamber walk to rebuild identity, doctrine, and the opening power profile from the ground up.\n\nENTER CHARACTER GENESIS\nCLEAN SESSION",
+  "consoleMessages": [
+    "debug: [vite] connecting...",
+    "debug: [vite] connected.",
+    "info: %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+    "log: Browser compatibility fixes initialized.",
+    "warning: Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]",
+    "log: [SimBridge] Initialized with seed: 1",
+    "log: [SimBridge] Initialized with seed: 1"
+  ]
+}

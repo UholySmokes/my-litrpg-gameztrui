@@ -1,0 +1,414 @@
+Buttons:
+- EXPAND
+- EXPAND
+- EXECUTE
+- Look Around
+look around
+- Survey the Gantry
+look at the gantry
+- Question Dockmarshal Renn Vale
+ask Dockmarshal Renn Vale what failed first
+- Inspect the Emergency Tether Rack
+look at the emergency tether rack
+- Go to Meridian Arcology
+go to Meridian Arcology
+- Go to Crystal Ridgeworks
+go to Crystal Ridgeworks
+- OPEN ARCHIVE
+Chronicle Archive
+
+Review your recorded firsts, discoveries, and the latest legend threading through the run.
+- OPEN DAIS
+Command Dais
+
+Issue parser-safe intent and read the latest response in one shared chamber.
+- ENTER THEATER
+Battle Theater
+
+Project live combat lanes, enemy pressure, and tactical actions.
+- OPEN CODEX
+Quest Codex
+
+Track active directives, objectives, and lead chains.
+- ATTACK
+- WAIT
+- ESCAPE
+- SKILL
+- ITEM
+- QUESTS
+- CLOSE
+- Skirmish Probe
+Ally | 2:1
+- Banner Knight
+Ally | 3:0
+- Shieldbearer
+Ally | 2:0
+- Bandit
+Hostile | 1:0
+- Giant Rat
+Hostile | 2:1
+- Dark Mage
+Hostile | 3:0
+- Vanguard
+profile | Lvl 1
+HP 152/152
+- Mid
+Move here
+- Back
+Move here
+- Shieldbearer
+profile | Lvl 1
+HP 171/171
+- Skirmish Probe
+Hero | Lvl 1
+HP 145/145
+- War Horn
+profile | Lvl 1
+HP 133/133
+- Banner Knight
+profile | Lvl 1
+HP 147/147
+- Mid
+Move here
+- Back
+Move here
+- Bandit
+enemy | Lvl 3
+HP 8/35
+- Giant Rat
+enemy | Lvl 2
+HP 25/25
+- Dark Mage
+enemy | Lvl 6
+HP 45/45
+- STRIKE TARGET
+- WAIT
+- ATTEMPT ESCAPE
+- Warpath Cleave
+0 MP
+- Warpath Roar
+0 MP
+- Warpath Rush
+0 MP
+- basic_attack
+0 MP
+- Enchanting Trail Rations
+x1
+- Minor Health Potion
+x1
+- WARPATH BEARING
+- WARPATH BRACE
+- WARPATH CLEAVE
+10 RAGE
+- WARPATH ENGINE
+- WARPATH GUARD
+10 RAGE
+- WARPATH RESERVE
+- WARPATH ROAR
+10 RAGE
+- WARPATH RUSH
+10 RAGE
+- WARPATH SCAR
+- WARPATH SEQUENCE
+- ADAPTIVE SURGE
+10 MANA
+- UNLIMITED POTENTIAL
+
+Body:
+Twilight Crystal
+EXPAND
+LATTICE CONSOLE
+Skirmish Probe
+EXPAND
+WORLD ATRIUM
+SKIRMISH PROBE
+LEVEL 1 PURE HUMAN WARRIOR
+PROFILE
+local-dev@example.com
+LOCATION
+Skyforge Platforms
+ZONE
+Skyforge Skydocks
+MOOD
+neutral
+SKYFORGE SKYDOCKS / SKYFORGE PLATFORMS
+Read the Redline Incident
+
+Survey the unstable skydock line.
+
+CURRENT PRESSURE
+Read the Redline Incident
+Step 1/3
+
+Skyforge is already mid-crisis. Survey the gantry, question the marshal, or read the failing line until the emergency stops feeling like background noise.
+
+ORIGIN
+SKYFORGE SKYDOCKS
+CLASS
+WARRIOR
+OATH
+I RUSH THE SABOTEUR AND ATTACK BE...
+SYSTEM
+SKILL COPY INTERFACE
+TEMPORARY
+NONE
+
+Take one clean action to get your bearings. The shell is keeping only the essential surfaces live until the first loop clicks.
+
+HP
+145/145
+MP
+71/71
+XP
+0/100
+SYSTEM ENERGY
+0/100
+COMMAND DAIS
+ISSUE YOUR NEXT COMMAND AND REVIEW THE LATEST GENERATED TEXT
+3 THREATS
+Ambient shifts. Time: day | Weather: clear (0.30) | Anomalies: leyline_storm. Notable: draw air x1.20; draw lightning x1.20; draw light x1.20.
+Command input
+EXECUTE
+Look Around
+look around
+Survey the Gantry
+look at the gantry
+Question Dockmarshal Renn Vale
+ask Dockmarshal Renn Vale what failed first
+Inspect the Emergency Tether Rack
+look at the emergency tether rack
+Go to Meridian Arcology
+go to Meridian Arcology
+Go to Crystal Ridgeworks
+go to Crystal Ridgeworks
+CORE ROOMS
+TRAVERSE THE PRIMARY CHAMBERS
+OPEN ARCHIVE
+Chronicle Archive
+
+Review your recorded firsts, discoveries, and the latest legend threading through the run.
+
+OPEN DAIS
+Command Dais
+
+Issue parser-safe intent and read the latest response in one shared chamber.
+
+ENTER THEATER
+Battle Theater
+
+Project live combat lanes, enemy pressure, and tactical actions.
+
+OPEN CODEX
+Quest Codex
+
+Track active directives, objectives, and lead chains.
+
+SYSTEM ROOMS
+OPEN SUPPORTING SANCTUMS
+DIRECT CONTROLS
+ACT WITHOUT LEAVING THE FLOOR
+ATTACK
+WAIT
+ESCAPE
+SKILL
+ITEM
+QUESTS
+BATTLE THEATER
+Project live combat lanes, enemy pressure, and tactical actions.
+CLOSE
+BATTLE THEATER
+Skirmish Battlemode
+
+Initiative decides the acting unit. Click allies to rotate your squad focus, click enemies to lock a target, and use the mirrored 3x3 boards to control formation.
+
+TURN
+Skirmish Probe is acting
+ENCOUNTER
+elite
+ALLIES
+5
+ENEMIES
+3
+ACTIVE UNIT
+Skirmish Probe
+ALLY | LVL 1
+HEALTH
+145/145
+MANA
+71/71
+CELL
+2:1
+LAST EVENT
+🎯 Vanguard uses cleave on Bandit (cost 5 MP, 2 ST, 1 AP).
+INITIATIVE RAIL
+Skirmish Probe
+Ally | 2:1
+Banner Knight
+Ally | 3:0
+Shieldbearer
+Ally | 2:0
+Bandit
+Hostile | 1:0
+Giant Rat
+Hostile | 2:1
+Dark Mage
+Hostile | 3:0
+PLAYER READ
+HEALTH
+145/145
+MANA
+71/71
+SELECTED TARGET
+Bandit
+TARGET HEALTH
+8/35
+ALLIED FORMATION
+
+Click an ally to make them the acting focus, or an open cell to reposition.
+
+LANE
+FRONT
+MID
+BACK
+TOP
+Vanguard
+profile | Lvl 1
+HP 152/152
+Mid
+Move here
+Back
+Move here
+MIDDLE
+Shieldbearer
+profile | Lvl 1
+HP 171/171
+Skirmish Probe
+Hero | Lvl 1
+HP 145/145
+War Horn
+profile | Lvl 1
+HP 133/133
+BOTTOM
+Banner Knight
+profile | Lvl 1
+HP 147/147
+Mid
+Move here
+Back
+Move here
+ENEMY FORMATION
+
+Click a hostile to update strike focus and item targeting context.
+
+LANE
+FRONT
+MID
+BACK
+TOP
+Bandit
+enemy | Lvl 3
+HP 8/35
+Mid
+Open
+Back
+Open
+MIDDLE
+Front
+Open
+Giant Rat
+enemy | Lvl 2
+HP 25/25
+Back
+Open
+BOTTOM
+Dark Mage
+enemy | Lvl 6
+HP 45/45
+Mid
+Open
+Back
+Open
+ACTION DOCK
+
+Actions resolve from the current acting unit. Reposition by clicking an open ally cell, then commit a skill, item, wait, or escape.
+
+STRIKE TARGET
+WAIT
+ATTEMPT ESCAPE
+ACTIVE UNIT SKILLS
+Warpath Cleave
+0 MP
+Warpath Roar
+0 MP
+Warpath Rush
+0 MP
+basic_attack
+0 MP
+BATTLE ITEMS
+Enchanting Trail Rations
+x1
+Minor Health Potion
+x1
+Class Abilities:
+WARPATH BEARING
+WARPATH BRACE
+WARPATH CLEAVE
+10 RAGE
+WARPATH ENGINE
+WARPATH GUARD
+10 RAGE
+WARPATH RESERVE
+WARPATH ROAR
+10 RAGE
+WARPATH RUSH
+10 RAGE
+WARPATH SCAR
+WARPATH SEQUENCE
+Race Ability:
+ADAPTIVE SURGE
+10 MANA
+UNLIMITED POTENTIAL
+BATTLEFIELD READ
+
+Use the target card, combat log, and sustain panels to keep the whole squad alive while the initiative rail cycles.
+
+SELECTED TARGET
+NAME
+Bandit
+FACTION
+enemy
+HEALTH
+8/35
+CELL
+1:0
+❖ System Energy
+0/100
+⚔️ Stance
+Balanced
+Combat Log:
+🎯 Vanguard uses cleave on Bandit (cost 5 MP, 2 ST, 1 AP).
+⚔️ Vanguard hits Bandit for 27 skill damage.
+⚡ Vanguard spends 1 AP (remaining: 0) for skill.
+📊 Vanguard's stamina changes from 12 to 10 (skill_cost).
+📊 Vanguard's mana changes from 28 to 23 (skill_cost).
+Goblin defeated! Gained 11 XP (Base: 10), 6 gold, and 1 item(s).
+🎯 War Horn uses opening_volley on enemy_goblin_0 (cost 5 MP, 2 ST, 1 AP).
+☠️ enemy_goblin_0 is slain by War Horn (skill).
+RESUMED SESSION
+
+Console:
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] Browser compatibility fixes initialized.
+[warning] Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] Browser compatibility fixes initialized.
+[warning] Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1

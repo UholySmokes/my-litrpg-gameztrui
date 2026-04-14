@@ -1,0 +1,1165 @@
+URL: http://127.0.0.1:5173/
+
+Buttons:
+- EXPAND
+- EXPAND
+- 01
+Binding Hall
+STABLE
+- 02
+Lineage Vault
+PENDING
+- 03
+Doctrine Forge
+PENDING
+- 04
+Soul Crucible
+PENDING
+- 05
+Oath Mirror
+PENDING
+- ▼ HUMAN VARIANTS
+3
+- PURE HUMAN
+SYSTEM MATCH
+Favored by your bound system
+A standard human with no special bloodline. Versatile and adaptable.
+LUC
++1
+SOU
++1
+Passive: Unlimited Potential -- Gain +10% Experience from all sources.
+Active: Adaptive Surge -- Sharpen instincts to boost might and speed. Pure Human begins with this technique already woven into the lattice.
+Skill List: Unlimited Potential, Adaptive Surge
+- ANCIENT BLOODLINE
+SYSTEM MATCH
+Favored by your bound system
+Descendant of an ancient powerful lineage. Natural affinity for cultivation.
+LUC
++2
+SOU
++3
+Passive: Ancient Mana Core -- Mana Regeneration +50%.
+Active: Arcane Reservoir -- Open your mana core and reinforce your defenses. Ancient Bloodline begins with this technique already woven into the lattice.
+Skill List: Ancient Mana Core, Arcane Reservoir
+- NEO-HUMAN
+Human with cybernetic enhancements. Enhanced physical capabilities.
+Passive: Targeting Array -- Accuracy is always 100%. Critical Hit Chance +5%.
+Active: Target Lock -- Calculate the strike and expose weak points. Neo-Human begins with this technique already woven into the lattice.
+Skill List: Targeting Array, Target Lock
+- ▼ BEAST & NATURE
+10
+- BEAST KIN
+Human with animalistic traits. Enhanced senses and physical prowess.
+LUC
++2
+SOU
++1
+Passive: Savage Strikes -- Crit Dmg +20%.
+Active: Blood Hunt -- Strike hard and unleash a brief frenzy. Beast Kin begins with this technique already woven into the lattice.
+Skill List: Savage Strikes, Blood Hunt
+- ECHO SPIRIT
+Spectral lineage that flickers between planes.
+LUC
++1
+SOU
++4
+Passive: Echo Step -- 20% chance to negate incoming damage.
+Active: Echo Strike -- A resonant strike that restores a sliver of health. Echo Spirit begins with this technique already woven into the lattice.
+Skill List: Echo Step, Echo Strike
+- FAE TOUCHED
+Touched by fae magic. Natural charm and illusion affinity.
+LUC
++3
+SOU
++2
+Passive: Fae Trickery -- 10% Evasion.
+Active: Glamour -- Weave a glamour that confuses the target. Fae Touched begins with this technique already woven into the lattice.
+Skill List: Fae Trickery, Glamour
+- IRONROOT
+Deepwood guardians with bark-hard skin and unyielding will.
+SOU
++2
+Passive: Stonebark -- Physical Damage taken -20%.
+Active: Stonebark Guard -- Harden into living bark and reflect hits. Ironroot begins with this technique already woven into the lattice.
+Skill List: Stonebark, Stonebark Guard
+- NATURE SPIRIT
+One with nature. Life energy and plant manipulation.
+LUC
++2
+SOU
++3
+Passive: Nature's Blessing -- Max HP +10%.
+Active: Verdant Renewal -- Cleanse afflictions and heal through nature. Nature Spirit begins with this technique already woven into the lattice.
+Skill List: Nature's Blessing, Verdant Renewal
+- SPIRIT BEAST
+A creature with spiritual energy flowing through its veins.
+LUC
++1
+SOU
++1
+Passive: Predator Reflexes -- Dodge Chance +10%.
+Active: Predator Pounce -- Leap in with a savage stun. Spirit Beast begins with this technique already woven into the lattice.
+Skill List: Predator Reflexes, Predator Pounce
+- VENOMTAIL
+Swift hunters with venomous instincts and lethal precision.
+LUC
++2
+SOU
++1
+Passive: Toxin Mastery -- Immune to Poison.
+Active: Venom Fang -- Inject a potent toxin. Venomtail begins with this technique already woven into the lattice.
+Skill List: Toxin Mastery, Venom Fang
+- VERDANT SHAPER
+Living sculptors of flora and life essence.
+LUC
++1
+SOU
++3
+Passive: Verdant Growth -- HP Regeneration +20%.
+Active: Thornburst -- Verdant thorns bind and pierce the foe. Verdant Shaper begins with this technique already woven into the lattice.
+Skill List: Verdant Growth, Thornburst
+- WHISPER FAE
+Soft-spoken fae who twist hearts and intentions.
+LUC
++2
+SOU
++2
+Passive: Soft Charm -- Charm effects are stronger.
+Active: Whispered Charm -- A silken whisper that enthralls the enemy. Whisper Fae begins with this technique already woven into the lattice.
+Skill List: Soft Charm, Whispered Charm
+- WILD MUTANT
+Unstable evolution with bursts of random mutation.
+LUC
++2
+SOU
++2
+Passive: Wild Start -- Gain a random buff at the start of battle.
+Active: Wild Surge -- A volatile surge with unpredictable results. Wild Mutant begins with this technique already woven into the lattice.
+Skill List: Wild Start, Wild Surge
+- ▼ ELEMENTAL
+9
+- ELEMENTAL ATTUNED
+Born with natural connection to elemental forces.
+LUC
++2
+SOU
++3
+Passive: Elemental Flux -- Elemental Dmg +15%.
+Active: Prismatic Burst -- Detonate a surge of mixed elements. Elemental Attuned begins with this technique already woven into the lattice.
+Skill List: Elemental Flux, Prismatic Burst
+- EMBERKIN
+Children of living flame, their blood runs hot with power.
+LUC
++1
+SOU
++1
+Passive: Cinder Blood -- Fire Damage +20%.
+Active: Cinderstorm -- Scatter burning embers across the field. Emberkin begins with this technique already woven into the lattice.
+Skill List: Cinder Blood, Cinderstorm
+- FLUX ATTUNED
+Elemental flux runs through their veins, shifting each battle.
+LUC
++1
+SOU
++3
+Passive: Flux Absorption -- Randomly absorb an element each battle.
+Active: Flux Shift -- Recalibrate elemental absorption and guard up. Flux Attuned begins with this technique already woven into the lattice.
+Skill List: Flux Absorption, Flux Shift
+- FROSTBORNE
+Born of glacial realms, calm and enduring.
+LUC
++1
+SOU
++2
+Passive: Glacial Focus -- Ice Damage +20%.
+Active: Glacial Prison -- Freeze the target in place. Frostborne begins with this technique already woven into the lattice.
+Skill List: Glacial Focus, Glacial Prison
+- GLACIERKIN
+Cold-blooded heirs of glacial peaks and frozen depths.
+LUC
++1
+SOU
++2
+Passive: Glacier Edge -- Ice Damage +20%.
+Active: Permafrost Lance -- Drive a lance of ancient ice. Glacierkin begins with this technique already woven into the lattice.
+Skill List: Glacier Edge, Permafrost Lance
+- QUAKEBORN
+Stone-blooded titans whose steps shake the ground.
+SOU
++1
+Passive: Seismic Stride -- Physical Damage taken -20%.
+Active: Seismic Slam -- A ground-shattering blow that stuns. Quakeborn begins with this technique already woven into the lattice.
+Skill List: Seismic Stride, Seismic Slam
+- SPARKBORN
+Charged bloodlines that crackle with ignition.
+LUC
++1
+SOU
++1
+Passive: Spark Guard -- Fire Resist +20%.
+Active: Arc Spark -- A crackling spark that jolts the foe. Sparkborn begins with this technique already woven into the lattice.
+Skill List: Spark Guard, Arc Spark
+- STORMFORGED
+Forged in perpetual storms, bodies crackle with charged steel.
+LUC
++1
+SOU
++1
+Passive: Stormheart -- Lightning Damage +15%.
+Active: Thunder Drive -- Drive a bolt through armor. Stormforged begins with this technique already woven into the lattice.
+Skill List: Stormheart, Thunder Drive
+- TIDECALLER
+Mystics of the sea, attuned to the pull of moons and tides.
+LUC
++1
+SOU
++2
+Passive: Riptide Regen -- Mana Regeneration +30%.
+Active: Riptide -- Crashing tide that slows the target. Tidecaller begins with this technique already woven into the lattice.
+Skill List: Riptide Regen, Riptide
+- ▼ CELESTIAL & DIVINE
+6
+- CELESTIAL DESCENDANT
+SYSTEM MATCH
+Favored by your bound system
+Bloodline touched by celestial beings. Radiant energy within.
+LUC
++2
+SOU
++2
+Passive: Celestial Radiance -- Healing effects +20%.
+Active: Celestial Benediction -- Restore vitality and wrap yourself in light. Celestial Descendant begins with this technique already woven into the lattice.
+Skill List: Celestial Radiance, Celestial Benediction
+- AURIC SERAPH
+Golden-winged protectors infused with radiant grace.
+LUC
++1
+SOU
++3
+Passive: Radiant Guard -- Holy Resist +50%.
+Active: Radiant Descent -- Crash down in a burst of holy light. Auric Seraph begins with this technique already woven into the lattice.
+Skill List: Radiant Guard, Radiant Descent
+- DIVINE SCION
+Child of a minor deity. Blessed with divine favor.
+LUC
++3
+SOU
++3
+Passive: Divine Providence -- All Stats +5%.
+Active: Divine Edict -- Call down judgment to stun the target. Divine Scion begins with this technique already woven into the lattice.
+Skill List: Divine Providence, Divine Edict
+- PHOENIX REBORN
+Reborn from ashes. Fire affinity and resurrection potential.
+LUC
++2
+SOU
++2
+Passive: Heart of Fire -- Fire Damage +20%.
+Active: Ashen Nova -- Explode in flame and reignite your vitality. Phoenix Reborn begins with this technique already woven into the lattice.
+Skill List: Heart of Fire, Ashen Nova
+- SUNBORN
+Radiant descendants of the dawn, fueled by solar vigor.
+LUC
++1
+SOU
++2
+Passive: Solar Vigor -- HP Regeneration +20%.
+Active: Solar Aegis -- Radiant light fortifies your defense. Sunborn begins with this technique already woven into the lattice.
+Skill List: Solar Vigor, Solar Aegis
+- SUNFORGED
+Forged under blazing suns, radiating heat and resolve.
+LUC
++1
+SOU
++2
+Passive: Solar Brand -- Fire Damage +20%.
+Active: Solar Hammer -- Bring down a blazing hammer blow. Sunforged begins with this technique already woven into the lattice.
+Skill List: Solar Brand, Solar Hammer
+- ▼ DARK & UNDEAD
+11
+- SHADOW WALKER
+SYSTEM MATCH
+Favored by your bound system
+Born from the void between realms. Natural stealth and darkness affinity.
+LUC
++1
+SOU
++2
+Passive: Shadow Form -- 20% chance to negate damage.
+Active: Umbral Veil -- Slip into shadow and evade retaliation. Shadow Walker begins with this technique already woven into the lattice.
+Skill List: Shadow Form, Umbral Veil
+- UMBRAL ORACLE
+SYSTEM MATCH
+Favored by your bound system
+Seers of the void who channel duskborn mana.
+LUC
++1
+SOU
++3
+Passive: Dark Insight -- Mana Regeneration +25%.
+Active: Void Prophecy -- A prophetic strike that clouds the mind. Umbral Oracle begins with this technique already woven into the lattice.
+Skill List: Dark Insight, Void Prophecy
+- ASHENBLOOD
+Ember-tainted lineage with smoldering power.
+LUC
++1
+SOU
++2
+Passive: Cinder Heart -- Fire Damage +20%.
+Active: Ashen Blast -- A blast of smoldering ash. Ashenblood begins with this technique already woven into the lattice.
+Skill List: Cinder Heart, Ashen Blast
+- BLOOD FRENZIED
+War-bred berserkers who thrive at the edge of death.
+SOU
++1
+Passive: Blood Fury -- Deal +20% damage below 50% HP.
+Active: Frenzy Rush -- A reckless rush that stokes a frenzy. Blood Frenzied begins with this technique already woven into the lattice.
+Skill List: Blood Fury, Frenzy Rush
+- BLOODWOVEN
+Warriors bound by crimson oaths that feed on battle.
+LUC
++1
+SOU
++2
+Passive: Crimson Pact -- Heal for 7% of damage dealt.
+Active: Crimson Rite -- A ritual strike that feeds your wounds. Bloodwoven begins with this technique already woven into the lattice.
+Skill List: Crimson Pact, Crimson Rite
+- DEMON KIN
+Mixed heritage with demonic ancestry. Dark power courses through you.
+LUC
+-1
+SOU
++2
+Passive: Siphoning Strikes -- Heal for 5% of damage dealt.
+Active: Abyssal Siphon -- Drain life with a dark strike. Demon Kin begins with this technique already woven into the lattice.
+Skill List: Siphoning Strikes, Abyssal Siphon
+- DUSKBORNE
+Born at the edge of night, masters of twilight evasion.
+LUC
++2
+SOU
++2
+Passive: Night Veil -- Dodge Chance +12%.
+Active: Twilight Step -- Blur into dusk and reposition. Duskborne begins with this technique already woven into the lattice.
+Skill List: Night Veil, Twilight Step
+- GLOOMSHADE
+Shadow-dwellers who vanish between breaths.
+LUC
++2
+SOU
++2
+Passive: Umbral Slip -- Dodge Chance +15%.
+Active: Umbral Slice -- Cut through shadows to weaken defenses. Gloomshade begins with this technique already woven into the lattice.
+Skill List: Umbral Slip, Umbral Slice
+- GRIM REVENANT
+Death-marked survivors who refuse to fall.
+SOU
++4
+Passive: Deathward -- Survive with 1 HP once per battle.
+Active: Death's Echo -- Strike from beyond and siphon resolve. Grim Revenant begins with this technique already woven into the lattice.
+Skill List: Deathward, Death's Echo
+- SHADOW VEIL
+Shrouded walkers who blur between sight and silence.
+LUC
++1
+SOU
++2
+Passive: Veil Steps -- Stealth effectiveness +50%.
+Active: Veil Cloak -- Dissolve into shadow to avoid detection. Shadow Veil begins with this technique already woven into the lattice.
+Skill List: Veil Steps, Veil Cloak
+- UNDEAD AWAKENED
+Returned from death with consciousness. Death energy flows through you.
+LUC
+-1
+SOU
++3
+Passive: Undying Will -- Survive with 1 HP once per battle.
+Active: Grave Chill -- Entomb the foe in necrotic cold. Undead Awakened begins with this technique already woven into the lattice.
+Skill List: Undying Will, Grave Chill
+- ▼ CONSTRUCT & VOID
+5
+- ASTRAL NOMAD
+Wanderers between stars who fold space with ease.
+LUC
++2
+SOU
++4
+Passive: Rift Wanderer -- Teleport abilities cost 0 mana.
+Active: Astral Step -- Slip through astral lanes to refuel. Astral Nomad begins with this technique already woven into the lattice.
+Skill List: Rift Wanderer, Astral Step
+- MECHANICAL CONSTRUCT
+Living machine with artificial intelligence. Perfect precision.
+SOU
+-1
+Passive: System Overclock -- Attack Speed +10%.
+Active: Overclock Core -- Push your systems beyond safe limits. Mechanical Construct begins with this technique already woven into the lattice.
+Skill List: System Overclock, Overclock Core
+- RIFTBORN
+Born in fractured space, able to slip between blows.
+LUC
++1
+SOU
++4
+Passive: Rift Phase -- 20% chance to negate incoming damage.
+Active: Rift Lunge -- Pierce the enemy from a spatial tear. Riftborn begins with this technique already woven into the lattice.
+Skill List: Rift Phase, Rift Lunge
+- RUNE SENTINEL
+Ancient wardens etched with runes of protection.
+SOU
++1
+Passive: Rune Barrier -- Physical Damage taken -15%.
+Active: Rune Cage -- Bind the target with sigils and weaken defense. Rune Sentinel begins with this technique already woven into the lattice.
+Skill List: Rune Barrier, Rune Cage
+- VOID WALKER
+Born in the void between dimensions. Space-time manipulation potential.
+LUC
++1
+SOU
++2
+Passive: Phase Shift -- Magic Penetration +10%.
+Active: Phase Rend -- Slice through space and slow the target. Void Walker begins with this technique already woven into the lattice.
+Skill List: Phase Shift, Phase Rend
+- ▼ DRAGON & MYTHIC
+2
+- CRYSTAL BEING
+Living crystal entity. Hard defense and energy storage.
+LUC
++1
+SOU
++3
+Passive: Prismatic Shell -- Reflect 10% Magic Dmg.
+Active: Prismatic Guard -- Form a crystalline shield that reflects harm. Crystal Being begins with this technique already woven into the lattice.
+Skill List: Prismatic Shell, Prismatic Guard
+- DRAGON BLOOD
+Ancient dragon heritage. Immense physical and magical potential.
+LUC
++1
+SOU
++2
+Passive: Draconic Resilience -- Phys/Magic Defense +15%.
+Active: Drakefire Roar -- Unleash a fiery roar that scorches the line. Dragon Blood begins with this technique already woven into the lattice.
+Skill List: Draconic Resilience, Drakefire Roar
+- ▼ CHAOS & EXOTIC
+8
+- STARSEER
+SYSTEM MATCH
+Favored by your bound system
+Celestial scholars who read fate in constellations.
+LUC
++2
+SOU
++3
+Passive: Stellar Alignment -- Gain +10% Experience from all sources.
+Active: Stellar Alignment -- Align with the stars to refuel mana. Starseer begins with this technique already woven into the lattice.
+Skill List: Stellar Alignment
+- CHAOS BORN
+Born from chaos energy. Unpredictable and powerful.
+LUC
++4
+SOU
++2
+Passive: Chaos Theory -- Damage variance 50-200%.
+Active: Entropy Lash -- A destabilizing strike that disorients the foe. Chaos Born begins with this technique already woven into the lattice.
+Skill List: Chaos Theory, Entropy Lash
+- CHAOS TOUCHED
+Entropy-bent souls whose magic is unstable but potent.
+LUC
++3
+SOU
++2
+Passive: Chaos Cast -- Magic casts can backfire or amplify.
+Active: Chaos Twist -- Unstable force that scrambles the target. Chaos Touched begins with this technique already woven into the lattice.
+Skill List: Chaos Cast, Chaos Twist
+- LUCKWEAVER
+Fate-bent wanderers who tug at probability threads.
+LUC
++4
+SOU
++3
+Passive: Fortunate Threads -- Critical Hit Chance +5%.
+Active: Fortune Twist -- Bend probability for a lucky surge. Luckweaver begins with this technique already woven into the lattice.
+Skill List: Fortunate Threads, Fortune Twist
+- MIRAGEBORN
+Desert phantoms who thrive on illusion and fortune.
+LUC
++3
+SOU
++1
+Passive: Gilded Mirage -- Gold gains +15%.
+Active: Mirage Split -- Divide into mirages to confuse the foe. Mirageborn begins with this technique already woven into the lattice.
+Skill List: Gilded Mirage, Mirage Split
+- MUTANT
+Genetic mutation grants unique abilities. Unpredictable potential.
+LUC
++3
+SOU
++2
+Passive: Adaptive Mutation -- Gain random buff at start of battle.
+Active: Mutation Spike -- Trigger a volatile mutation buff. Mutant begins with this technique already woven into the lattice.
+Skill List: Adaptive Mutation, Mutation Spike
+- SANDSTRIDER
+Nomads who cross deserts with effortless speed.
+LUC
++3
+SOU
++1
+Passive: Dune Runner -- Dodge Chance +10%.
+Active: Dust Vortex -- Kick up a blinding storm of sand. Sandstrider begins with this technique already woven into the lattice.
+Skill List: Dune Runner, Dust Vortex
+- SKYBOUND
+High-altitude wanderers who move like wind across the sky.
+LUC
++2
+SOU
++1
+Passive: Aerial Evasion -- Dodge Chance +15%.
+Active: Gale Dash -- Ride the wind with speed and evasion. Skybound begins with this technique already woven into the lattice.
+Skill List: Aerial Evasion, Gale Dash
+- ▼ OTHER
+1
+- IRONHIDE
+Iron-cored survivors with heavy endurance.
+SOU
++1
+Passive: Ironhide -- Immune to Bleed.
+Active: Iron Carapace -- Brace for impact with hardened plating. Ironhide begins with this technique already woven into the lattice.
+Skill List: Ironhide, Iron Carapace
+- PREVIOUS CHAMBER
+- OPEN NEXT CHAMBER
+
+Inputs:
+- INPUT type= placeholder=Type story text or /xp 100, /teleport coast_tideward_pier, /system ... value=
+- INPUT type=text placeholder=Search races... value=
+
+Body:
+Twilight Crystal
+EXPAND
+LATTICE CONSOLE
+Wanderer
+EXPAND
+CHARACTER GENESIS
+WALK THE CHAMBER SEQUENCE.
+
+Each chamber resolves a different piece of the chronicle. Bind the system, shape the vessel, and seal the oath only when the full pattern is stable.
+
+Designation: set
+System: Skill Copy Interface
+Gender: optional
+Race: pending
+Class: pending
+Multiclass: optional
+Profession: pending
+Origin: pending
+01
+Binding Hall
+STABLE
+02
+Lineage Vault
+PENDING
+03
+Doctrine Forge
+PENDING
+04
+Soul Crucible
+PENDING
+05
+Oath Mirror
+PENDING
+GENESIS STREAM
+Near-complete. The final parameters lock into place, forging your path forward.
+A mimicry System that records observed techniques and converts them into usable skills through analysis and adaptation._
+SYNC PROGRESS
+33%
+SYSTEM: Skill Copy Interface (System)
+✓
+1. Lock identity and origin
+✓
+2. Select lineage
+✓
+3. Define combat doctrine
+⚙
+4. Choose craft
+▤
+5. Bind progression system
+✓
+6. Allocate attributes
+⚡
+7. Load starting skills
+✔
+8. Finalize identity
+●
+Designation: set
+●
+System: Skill Copy Interface
+●
+Gender: optional
+○
+Race: pending
+○
+Class: pending
+●
+Multiclass: optional
+○
+Profession: pending
+○
+Origin: pending
+○
+Attribute points: open
+○
+Skills: 0/3 active, 0/6 passive
+○
+Perks: 0/2
+●
+Starter Tree: optional
+○
+Alignment: pending
+○
+Start Command: pending
+IMMEDIATE IMPACT
+READ THE FIRST-RUN CONSEQUENCES AS YOU BUILD.
+
+These previews stay practical: opening location pressure, starter kit identity, combat loop, and tier-one advantages.
+
+SYSTEM
+Skill Copy Interface
+Attribute bias: intelligence, dexterity, wisdom primary, luck, willpower secondary.
+Primary pressure lanes: intelligence, dexterity, wisdom.
+STARTER KIT
+Initiate / Wayfarer field kit
+Weapon: Initiate Vanguard Blade.
+Armor: Initiate Initiate Wrap.
+Pack: Wayfarer Trail Rations + Minor Health Potion.
+NARRATIVE MEMORY
+Designation set: Skirmish Probe
+System bound: Skill Copy Interface
+ACTIVE CHAMBER
+LINEAGE VAULT
+
+Anchor bloodline and personal identity.
+
+LINEAGE
+CHOOSE INHERITED FORM
+GENETIC TEMPLATE
+Each race carries unique stat bonuses, innate abilities, and narrative flavor.
+⌕
+Showing 55 of 55 races
+▼ HUMAN VARIANTS
+3
+PURE HUMAN
+SYSTEM MATCH
+Favored by your bound system
+A standard human with no special bloodline. Versatile and adaptable.
+LUC
++1
+SOU
++1
+Passive: Unlimited Potential -- Gain +10% Experience from all sources.
+Active: Adaptive Surge -- Sharpen instincts to boost might and speed. Pure Human begins with this technique already woven into the lattice.
+Skill List: Unlimited Potential, Adaptive Surge
+ANCIENT BLOODLINE
+SYSTEM MATCH
+Favored by your bound system
+Descendant of an ancient powerful lineage. Natural affinity for cultivation.
+LUC
++2
+SOU
++3
+Passive: Ancient Mana Core -- Mana Regeneration +50%.
+Active: Arcane Reservoir -- Open your mana core and reinforce your defenses. Ancient Bloodline begins with this technique already woven into the lattice.
+Skill List: Ancient Mana Core, Arcane Reservoir
+NEO-HUMAN
+Human with cybernetic enhancements. Enhanced physical capabilities.
+Passive: Targeting Array -- Accuracy is always 100%. Critical Hit Chance +5%.
+Active: Target Lock -- Calculate the strike and expose weak points. Neo-Human begins with this technique already woven into the lattice.
+Skill List: Targeting Array, Target Lock
+▼ BEAST & NATURE
+10
+BEAST KIN
+Human with animalistic traits. Enhanced senses and physical prowess.
+LUC
++2
+SOU
++1
+Passive: Savage Strikes -- Crit Dmg +20%.
+Active: Blood Hunt -- Strike hard and unleash a brief frenzy. Beast Kin begins with this technique already woven into the lattice.
+Skill List: Savage Strikes, Blood Hunt
+ECHO SPIRIT
+Spectral lineage that flickers between planes.
+LUC
++1
+SOU
++4
+Passive: Echo Step -- 20% chance to negate incoming damage.
+Active: Echo Strike -- A resonant strike that restores a sliver of health. Echo Spirit begins with this technique already woven into the lattice.
+Skill List: Echo Step, Echo Strike
+FAE TOUCHED
+Touched by fae magic. Natural charm and illusion affinity.
+LUC
++3
+SOU
++2
+Passive: Fae Trickery -- 10% Evasion.
+Active: Glamour -- Weave a glamour that confuses the target. Fae Touched begins with this technique already woven into the lattice.
+Skill List: Fae Trickery, Glamour
+IRONROOT
+Deepwood guardians with bark-hard skin and unyielding will.
+SOU
++2
+Passive: Stonebark -- Physical Damage taken -20%.
+Active: Stonebark Guard -- Harden into living bark and reflect hits. Ironroot begins with this technique already woven into the lattice.
+Skill List: Stonebark, Stonebark Guard
+NATURE SPIRIT
+One with nature. Life energy and plant manipulation.
+LUC
++2
+SOU
++3
+Passive: Nature's Blessing -- Max HP +10%.
+Active: Verdant Renewal -- Cleanse afflictions and heal through nature. Nature Spirit begins with this technique already woven into the lattice.
+Skill List: Nature's Blessing, Verdant Renewal
+SPIRIT BEAST
+A creature with spiritual energy flowing through its veins.
+LUC
++1
+SOU
++1
+Passive: Predator Reflexes -- Dodge Chance +10%.
+Active: Predator Pounce -- Leap in with a savage stun. Spirit Beast begins with this technique already woven into the lattice.
+Skill List: Predator Reflexes, Predator Pounce
+VENOMTAIL
+Swift hunters with venomous instincts and lethal precision.
+LUC
++2
+SOU
++1
+Passive: Toxin Mastery -- Immune to Poison.
+Active: Venom Fang -- Inject a potent toxin. Venomtail begins with this technique already woven into the lattice.
+Skill List: Toxin Mastery, Venom Fang
+VERDANT SHAPER
+Living sculptors of flora and life essence.
+LUC
++1
+SOU
++3
+Passive: Verdant Growth -- HP Regeneration +20%.
+Active: Thornburst -- Verdant thorns bind and pierce the foe. Verdant Shaper begins with this technique already woven into the lattice.
+Skill List: Verdant Growth, Thornburst
+WHISPER FAE
+Soft-spoken fae who twist hearts and intentions.
+LUC
++2
+SOU
++2
+Passive: Soft Charm -- Charm effects are stronger.
+Active: Whispered Charm -- A silken whisper that enthralls the enemy. Whisper Fae begins with this technique already woven into the lattice.
+Skill List: Soft Charm, Whispered Charm
+WILD MUTANT
+Unstable evolution with bursts of random mutation.
+LUC
++2
+SOU
++2
+Passive: Wild Start -- Gain a random buff at the start of battle.
+Active: Wild Surge -- A volatile surge with unpredictable results. Wild Mutant begins with this technique already woven into the lattice.
+Skill List: Wild Start, Wild Surge
+▼ ELEMENTAL
+9
+ELEMENTAL ATTUNED
+Born with natural connection to elemental forces.
+LUC
++2
+SOU
++3
+Passive: Elemental Flux -- Elemental Dmg +15%.
+Active: Prismatic Burst -- Detonate a surge of mixed elements. Elemental Attuned begins with this technique already woven into the lattice.
+Skill List: Elemental Flux, Prismatic Burst
+EMBERKIN
+Children of living flame, their blood runs hot with power.
+LUC
++1
+SOU
++1
+Passive: Cinder Blood -- Fire Damage +20%.
+Active: Cinderstorm -- Scatter burning embers across the field. Emberkin begins with this technique already woven into the lattice.
+Skill List: Cinder Blood, Cinderstorm
+FLUX ATTUNED
+Elemental flux runs through their veins, shifting each battle.
+LUC
++1
+SOU
++3
+Passive: Flux Absorption -- Randomly absorb an element each battle.
+Active: Flux Shift -- Recalibrate elemental absorption and guard up. Flux Attuned begins with this technique already woven into the lattice.
+Skill List: Flux Absorption, Flux Shift
+FROSTBORNE
+Born of glacial realms, calm and enduring.
+LUC
++1
+SOU
++2
+Passive: Glacial Focus -- Ice Damage +20%.
+Active: Glacial Prison -- Freeze the target in place. Frostborne begins with this technique already woven into the lattice.
+Skill List: Glacial Focus, Glacial Prison
+GLACIERKIN
+Cold-blooded heirs of glacial peaks and frozen depths.
+LUC
++1
+SOU
++2
+Passive: Glacier Edge -- Ice Damage +20%.
+Active: Permafrost Lance -- Drive a lance of ancient ice. Glacierkin begins with this technique already woven into the lattice.
+Skill List: Glacier Edge, Permafrost Lance
+QUAKEBORN
+Stone-blooded titans whose steps shake the ground.
+SOU
++1
+Passive: Seismic Stride -- Physical Damage taken -20%.
+Active: Seismic Slam -- A ground-shattering blow that stuns. Quakeborn begins with this technique already woven into the lattice.
+Skill List: Seismic Stride, Seismic Slam
+SPARKBORN
+Charged bloodlines that crackle with ignition.
+LUC
++1
+SOU
++1
+Passive: Spark Guard -- Fire Resist +20%.
+Active: Arc Spark -- A crackling spark that jolts the foe. Sparkborn begins with this technique already woven into the lattice.
+Skill List: Spark Guard, Arc Spark
+STORMFORGED
+Forged in perpetual storms, bodies crackle with charged steel.
+LUC
++1
+SOU
++1
+Passive: Stormheart -- Lightning Damage +15%.
+Active: Thunder Drive -- Drive a bolt through armor. Stormforged begins with this technique already woven into the lattice.
+Skill List: Stormheart, Thunder Drive
+TIDECALLER
+Mystics of the sea, attuned to the pull of moons and tides.
+LUC
++1
+SOU
++2
+Passive: Riptide Regen -- Mana Regeneration +30%.
+Active: Riptide -- Crashing tide that slows the target. Tidecaller begins with this technique already woven into the lattice.
+Skill List: Riptide Regen, Riptide
+▼ CELESTIAL & DIVINE
+6
+CELESTIAL DESCENDANT
+SYSTEM MATCH
+Favored by your bound system
+Bloodline touched by celestial beings. Radiant energy within.
+LUC
++2
+SOU
++2
+Passive: Celestial Radiance -- Healing effects +20%.
+Active: Celestial Benediction -- Restore vitality and wrap yourself in light. Celestial Descendant begins with this technique already woven into the lattice.
+Skill List: Celestial Radiance, Celestial Benediction
+AURIC SERAPH
+Golden-winged protectors infused with radiant grace.
+LUC
++1
+SOU
++3
+Passive: Radiant Guard -- Holy Resist +50%.
+Active: Radiant Descent -- Crash down in a burst of holy light. Auric Seraph begins with this technique already woven into the lattice.
+Skill List: Radiant Guard, Radiant Descent
+DIVINE SCION
+Child of a minor deity. Blessed with divine favor.
+LUC
++3
+SOU
++3
+Passive: Divine Providence -- All Stats +5%.
+Active: Divine Edict -- Call down judgment to stun the target. Divine Scion begins with this technique already woven into the lattice.
+Skill List: Divine Providence, Divine Edict
+PHOENIX REBORN
+Reborn from ashes. Fire affinity and resurrection potential.
+LUC
++2
+SOU
++2
+Passive: Heart of Fire -- Fire Damage +20%.
+Active: Ashen Nova -- Explode in flame and reignite your vitality. Phoenix Reborn begins with this technique already woven into the lattice.
+Skill List: Heart of Fire, Ashen Nova
+SUNBORN
+Radiant descendants of the dawn, fueled by solar vigor.
+LUC
++1
+SOU
++2
+Passive: Solar Vigor -- HP Regeneration +20%.
+Active: Solar Aegis -- Radiant light fortifies your defense. Sunborn begins with this technique already woven into the lattice.
+Skill List: Solar Vigor, Solar Aegis
+SUNFORGED
+Forged under blazing suns, radiating heat and resolve.
+LUC
++1
+SOU
++2
+Passive: Solar Brand -- Fire Damage +20%.
+Active: Solar Hammer -- Bring down a blazing hammer blow. Sunforged begins with this technique already woven into the lattice.
+Skill List: Solar Brand, Solar Hammer
+▼ DARK & UNDEAD
+11
+SHADOW WALKER
+SYSTEM MATCH
+Favored by your bound system
+Born from the void between realms. Natural stealth and darkness affinity.
+LUC
++1
+SOU
++2
+Passive: Shadow Form -- 20% chance to negate damage.
+Active: Umbral Veil -- Slip into shadow and evade retaliation. Shadow Walker begins with this technique already woven into the lattice.
+Skill List: Shadow Form, Umbral Veil
+UMBRAL ORACLE
+SYSTEM MATCH
+Favored by your bound system
+Seers of the void who channel duskborn mana.
+LUC
++1
+SOU
++3
+Passive: Dark Insight -- Mana Regeneration +25%.
+Active: Void Prophecy -- A prophetic strike that clouds the mind. Umbral Oracle begins with this technique already woven into the lattice.
+Skill List: Dark Insight, Void Prophecy
+ASHENBLOOD
+Ember-tainted lineage with smoldering power.
+LUC
++1
+SOU
++2
+Passive: Cinder Heart -- Fire Damage +20%.
+Active: Ashen Blast -- A blast of smoldering ash. Ashenblood begins with this technique already woven into the lattice.
+Skill List: Cinder Heart, Ashen Blast
+BLOOD FRENZIED
+War-bred berserkers who thrive at the edge of death.
+SOU
++1
+Passive: Blood Fury -- Deal +20% damage below 50% HP.
+Active: Frenzy Rush -- A reckless rush that stokes a frenzy. Blood Frenzied begins with this technique already woven into the lattice.
+Skill List: Blood Fury, Frenzy Rush
+BLOODWOVEN
+Warriors bound by crimson oaths that feed on battle.
+LUC
++1
+SOU
++2
+Passive: Crimson Pact -- Heal for 7% of damage dealt.
+Active: Crimson Rite -- A ritual strike that feeds your wounds. Bloodwoven begins with this technique already woven into the lattice.
+Skill List: Crimson Pact, Crimson Rite
+DEMON KIN
+Mixed heritage with demonic ancestry. Dark power courses through you.
+LUC
+-1
+SOU
++2
+Passive: Siphoning Strikes -- Heal for 5% of damage dealt.
+Active: Abyssal Siphon -- Drain life with a dark strike. Demon Kin begins with this technique already woven into the lattice.
+Skill List: Siphoning Strikes, Abyssal Siphon
+DUSKBORNE
+Born at the edge of night, masters of twilight evasion.
+LUC
++2
+SOU
++2
+Passive: Night Veil -- Dodge Chance +12%.
+Active: Twilight Step -- Blur into dusk and reposition. Duskborne begins with this technique already woven into the lattice.
+Skill List: Night Veil, Twilight Step
+GLOOMSHADE
+Shadow-dwellers who vanish between breaths.
+LUC
++2
+SOU
++2
+Passive: Umbral Slip -- Dodge Chance +15%.
+Active: Umbral Slice -- Cut through shadows to weaken defenses. Gloomshade begins with this technique already woven into the lattice.
+Skill List: Umbral Slip, Umbral Slice
+GRIM REVENANT
+Death-marked survivors who refuse to fall.
+SOU
++4
+Passive: Deathward -- Survive with 1 HP once per battle.
+Active: Death's Echo -- Strike from beyond and siphon resolve. Grim Revenant begins with this technique already woven into the lattice.
+Skill List: Deathward, Death's Echo
+SHADOW VEIL
+Shrouded walkers who blur between sight and silence.
+LUC
++1
+SOU
++2
+Passive: Veil Steps -- Stealth effectiveness +50%.
+Active: Veil Cloak -- Dissolve into shadow to avoid detection. Shadow Veil begins with this technique already woven into the lattice.
+Skill List: Veil Steps, Veil Cloak
+UNDEAD AWAKENED
+Returned from death with consciousness. Death energy flows through you.
+LUC
+-1
+SOU
++3
+Passive: Undying Will -- Survive with 1 HP once per battle.
+Active: Grave Chill -- Entomb the foe in necrotic cold. Undead Awakened begins with this technique already woven into the lattice.
+Skill List: Undying Will, Grave Chill
+▼ CONSTRUCT & VOID
+5
+ASTRAL NOMAD
+Wanderers between stars who fold space with ease.
+LUC
++2
+SOU
++4
+Passive: Rift Wanderer -- Teleport abilities cost 0 mana.
+Active: Astral Step -- Slip through astral lanes to refuel. Astral Nomad begins with this technique already woven into the lattice.
+Skill List: Rift Wanderer, Astral Step
+MECHANICAL CONSTRUCT
+Living machine with artificial intelligence. Perfect precision.
+SOU
+-1
+Passive: System Overclock -- Attack Speed +10%.
+Active: Overclock Core -- Push your systems beyond safe limits. Mechanical Construct begins with this technique already woven into the lattice.
+Skill List: System Overclock, Overclock Core
+RIFTBORN
+Born in fractured space, able to slip between blows.
+LUC
++1
+SOU
++4
+Passive: Rift Phase -- 20% chance to negate incoming damage.
+Active: Rift Lunge -- Pierce the enemy from a spatial tear. Riftborn begins with this technique already woven into the lattice.
+Skill List: Rift Phase, Rift Lunge
+RUNE SENTINEL
+Ancient wardens etched with runes of protection.
+SOU
++1
+Passive: Rune Barrier -- Physical Damage taken -15%.
+Active: Rune Cage -- Bind the target with sigils and weaken defense. Rune Sentinel begins with this technique already woven into the lattice.
+Skill List: Rune Barrier, Rune Cage
+VOID WALKER
+Born in the void between dimensions. Space-time manipulation potential.
+LUC
++1
+SOU
++2
+Passive: Phase Shift -- Magic Penetration +10%.
+Active: Phase Rend -- Slice through space and slow the target. Void Walker begins with this technique already woven into the lattice.
+Skill List: Phase Shift, Phase Rend
+▼ DRAGON & MYTHIC
+2
+CRYSTAL BEING
+Living crystal entity. Hard defense and energy storage.
+LUC
++1
+SOU
++3
+Passive: Prismatic Shell -- Reflect 10% Magic Dmg.
+Active: Prismatic Guard -- Form a crystalline shield that reflects harm. Crystal Being begins with this technique already woven into the lattice.
+Skill List: Prismatic Shell, Prismatic Guard
+DRAGON BLOOD
+Ancient dragon heritage. Immense physical and magical potential.
+LUC
++1
+SOU
++2
+Passive: Draconic Resilience -- Phys/Magic Defense +15%.
+Active: Drakefire Roar -- Unleash a fiery roar that scorches the line. Dragon Blood begins with this technique already woven into the lattice.
+Skill List: Draconic Resilience, Drakefire Roar
+▼ CHAOS & EXOTIC
+8
+STARSEER
+SYSTEM MATCH
+Favored by your bound system
+Celestial scholars who read fate in constellations.
+LUC
++2
+SOU
++3
+Passive: Stellar Alignment -- Gain +10% Experience from all sources.
+Active: Stellar Alignment -- Align with the stars to refuel mana. Starseer begins with this technique already woven into the lattice.
+Skill List: Stellar Alignment
+CHAOS BORN
+Born from chaos energy. Unpredictable and powerful.
+LUC
++4
+SOU
++2
+Passive: Chaos Theory -- Damage variance 50-200%.
+Active: Entropy Lash -- A destabilizing strike that disorients the foe. Chaos Born begins with this technique already woven into the lattice.
+Skill List: Chaos Theory, Entropy Lash
+CHAOS TOUCHED
+Entropy-bent souls whose magic is unstable but potent.
+LUC
++3
+SOU
++2
+Passive: Chaos Cast -- Magic casts can backfire or amplify.
+Active: Chaos Twist -- Unstable force that scrambles the target. Chaos Touched begins with this technique already woven into the lattice.
+Skill List: Chaos Cast, Chaos Twist
+LUCKWEAVER
+Fate-bent wanderers who tug at probability threads.
+LUC
++4
+SOU
++3
+Passive: Fortunate Threads -- Critical Hit Chance +5%.
+Active: Fortune Twist -- Bend probability for a lucky surge. Luckweaver begins with this technique already woven into the lattice.
+Skill List: Fortunate Threads, Fortune Twist
+MIRAGEBORN
+Desert phantoms who thrive on illusion and fortune.
+LUC
++3
+SOU
++1
+Passive: Gilded Mirage -- Gold gains +15%.
+Active: Mirage Split -- Divide into mirages to confuse the foe. Mirageborn begins with this technique already woven into the lattice.
+Skill List: Gilded Mirage, Mirage Split
+MUTANT
+Genetic mutation grants unique abilities. Unpredictable potential.
+LUC
++3
+SOU
++2
+Passive: Adaptive Mutation -- Gain random buff at start of battle.
+Active: Mutation Spike -- Trigger a volatile mutation buff. Mutant begins with this technique already woven into the lattice.
+Skill List: Adaptive Mutation, Mutation Spike
+SANDSTRIDER
+Nomads who cross deserts with effortless speed.
+LUC
++3
+SOU
++1
+Passive: Dune Runner -- Dodge Chance +10%.
+Active: Dust Vortex -- Kick up a blinding storm of sand. Sandstrider begins with this technique already woven into the lattice.
+Skill List: Dune Runner, Dust Vortex
+SKYBOUND
+High-altitude wanderers who move like wind across the sky.
+LUC
++2
+SOU
++1
+Passive: Aerial Evasion -- Dodge Chance +15%.
+Active: Gale Dash -- Ride the wind with speed and evasion. Skybound begins with this technique already woven into the lattice.
+Skill List: Aerial Evasion, Gale Dash
+▼ OTHER
+1
+IRONHIDE
+Iron-cored survivors with heavy endurance.
+SOU
++1
+Passive: Ironhide -- Immune to Bleed.
+Active: Iron Carapace -- Brace for impact with hardened plating. Ironhide begins with this technique already woven into the lattice.
+Skill List: Ironhide, Iron Carapace
+PREVIOUS CHAMBER
+OPEN NEXT CHAMBER
+CLEAN SESSION
+
+Console:
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] Browser compatibility fixes initialized.
+[warning] Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1

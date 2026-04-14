@@ -1,0 +1,555 @@
+URL: http://127.0.0.1:5173/
+
+Buttons:
+- EXPAND
+- EXPAND
+- 01
+Binding Hall
+STABLE
+- 02
+Lineage Vault
+STABLE
+- 03
+Doctrine Forge
+PENDING
+- 04
+Soul Crucible
+PENDING
+- 05
+Oath Mirror
+PENDING
+- ROGUE
+ENERGY
+SYSTEM MATCH
+Favored by your bound system
+Beginner-friendly agile class built around stealth and burst windows.
+Skill List
+Nightglass Film, Nightglass Hex, Nightglass Ledger, Nightglass Lunge, Nightglass Pace, Nightglass Silk, ...
+10 skills
+- MAGE
+MANA
+SYSTEM MATCH
+Favored by your bound system
+Beginner-friendly caster class using straightforward elemental spells.
+Skill List
+Spellthread Aegis, Spellthread Bind, Spellthread Bolt, Spellthread Brand, Spellthread Cadence, Spellthread Circuit, ...
+10 skills
+- RANGER
+FOCUS
+SYSTEM MATCH
+Favored by your bound system
+Beginner-friendly ranged class with tracking and companion support.
+Skill List
+Longtrail Blind, Longtrail Cover, Longtrail Mark, Longtrail Perch, Longtrail Reserve, Longtrail Scent, ...
+10 skills
+- MONK
+CHI
+SYSTEM MATCH
+Favored by your bound system
+Beginner-friendly martial class focused on combos and chi control.
+Skill List
+Stillwater Breath, Stillwater Flashstep, Stillwater Flow, Stillwater Hide, Stillwater Lock, Stillwater Meridian, ...
+10 skills
+- CLERIC
+MANA
+Beginner-friendly support class with healing and protective holy magic.
+Skill List
+Dawnseal Bulwark, Dawnseal Cadence, Dawnseal Crossstep, Dawnseal Grace, Dawnseal Judgment, Dawnseal Litany, ...
+10 skills
+- WARRIOR
+RAGE
+Beginner-friendly frontline fighter focused on direct melee combat.
+Skill List
+Warpath Bearing, Warpath Brace, Warpath Cleave, Warpath Engine, Warpath Guard, Warpath Reserve, ...
+10 skills
+- None (Single Class)
+- Rogue
+Beginner-friendly agile class built around stealth and burst windows.
+- Mage
+Beginner-friendly caster class using straightforward elemental spells.
+- Monk
+Beginner-friendly martial class focused on combos and chi control.
+- Cleric
+Beginner-friendly support class with healing and protective holy magic.
+- Ranger
+Beginner-friendly ranged class with tracking and companion support.
+- Warrior
+Beginner-friendly frontline fighter focused on direct melee combat.
+- ⚗️ ALCHEMY
+INT
+WISDOM
+Brew potions, elixirs, and flasks with magical effects.
+TIER 1 SKILLS
+basic brewing
+- ⚔️ BLACKSMITHING
+STR
+DEX
+Forge weapons, armor, and tools from raw metals.
+TIER 1 SKILLS
+basic smithing
+- 🏗️ CONSTRUCTION
+STR
+INT
+Build structures, fortifications, and housing.
+TIER 1 SKILLS
+basic construction
+- ✨ ENCHANTING
+INT
+SOUL
+SYSTEM MATCH
+Favored by your bound system
+Apply magical effects to existing gear.
+TIER 1 SKILLS
+basic enchanting
+- ⚙️ ENGINEERING
+INT
+DEX
+SYSTEM MATCH
+Favored by your bound system
+Build gadgets, bombs, and mechanical mounts.
+TIER 1 SKILLS
+basic engineering
+- 💎 JEWELCRAFTING
+DEX
+INT
+Create rings, necklaces, and gem sockets.
+TIER 1 SKILLS
+basic cutting
+- 🧵 TAILORING
+DEX
+CHA
+Create cloth armor, bags, and banners.
+TIER 1 SKILLS
+basic sewing
+- 🌾 FARMING & AGRICULTURE
+WISDOM
+STR
+Grow crops, produce, and raise animals.
+TIER 1 SKILLS
+basic farming
+- 🎣 FISHING
+DEX
+LUCK
+Catch fish, aquatic reagents, and treasure.
+TIER 1 SKILLS
+basic fishing
+- 🌿 HERBALISM
+WISDOM
+LUCK
+SYSTEM MATCH
+Favored by your bound system
+Gather plants, flowers, and fungi.
+TIER 1 SKILLS
+basic herbalism
+- 🪓 LOGGING & WOODCUTTING
+STR
+DEX
+Harvest timber, firewood, and specialty woods.
+TIER 1 SKILLS
+basic logging
+- ⛏️ MINING
+STR
+LUCK
+Extract ores, stones, and rare minerals.
+TIER 1 SKILLS
+basic mining
+- 🦊 SKINNING & TRACKING
+DEX
+WISDOM
+Harvest hides, pelts, and meats from creatures.
+TIER 1 SKILLS
+basic skinning
+- 🍺 BREWING & VINTING
+INT
+CHA
+Create drinks for mana regeneration and spirit buffs.
+TIER 1 SKILLS
+basic brewing drinks
+- 🥩 BUTCHERY
+STR
+DEX
+Process raw meat into cooking components.
+TIER 1 SKILLS
+basic butchery
+- 🍳 COOKING
+DEX
+INT
+Prepare food that grants stat buffs and regeneration.
+TIER 1 SKILLS
+basic cooking
+- 🎨 DYEING & CUSTOMIZATION
+CHA
+DEX
+Change the appearance of armor and items.
+TIER 1 SKILLS
+basic dyeing
+- 🩹 FIRST AID & MEDICINE
+WISDOM
+DEX
+Create bandages, healing kits, and cure status effects.
+TIER 1 SKILLS
+basic first aid
+- 📜 INSCRIPTION & SCRIBING
+INT
+WISDOM
+SYSTEM MATCH
+Favored by your bound system
+Create scrolls, glyphs, runes, and contracts.
+TIER 1 SKILLS
+basic inscription
+- 🌀 PORTAL CREATION
+INT
+SOUL
+SYSTEM MATCH
+Favored by your bound system
+Provide quick travel services through portals.
+TIER 1 SKILLS
+basic teleportation
+- 🔧 REPAIR & MAINTENANCE
+DEX
+INT
+Fix damaged gear and maintain equipment.
+TIER 1 SKILLS
+basic maintenance
+- PREVIOUS CHAMBER
+- OPEN NEXT CHAMBER
+
+Body:
+Twilight Crystal
+EXPAND
+LATTICE CONSOLE
+Wanderer
+EXPAND
+CHARACTER GENESIS
+WALK THE CHAMBER SEQUENCE.
+
+Each chamber resolves a different piece of the chronicle. Bind the system, shape the vessel, and seal the oath only when the full pattern is stable.
+
+Designation: set
+System: Skill Copy Interface
+Gender: optional
+Race: Pure Human
+Class: pending
+Multiclass: optional
+Profession: pending
+Origin: pending
+01
+Binding Hall
+STABLE
+02
+Lineage Vault
+STABLE
+03
+Doctrine Forge
+PENDING
+04
+Soul Crucible
+PENDING
+05
+Oath Mirror
+PENDING
+GENESIS STREAM
+Near-complete. The final parameters lock into place, forging your path forward.
+A mimicry System that records observed techniques and converts them into usable skills through analysis and adaptation. A standard human with no special bloodline. Versatile and adaptable._
+SYNC PROGRESS
+42%
+RACE: Pure Human
+SYSTEM: Skill Copy Interface (System)
+✓
+1. Lock identity and origin
+✓
+2. Select lineage
+✓
+3. Define combat doctrine
+✓
+4. Choose craft
+▤
+5. Bind progression system
+✓
+6. Allocate attributes
+⚡
+7. Load starting skills
+✔
+8. Finalize identity
+●
+Designation: set
+●
+System: Skill Copy Interface
+●
+Gender: optional
+●
+Race: Pure Human
+○
+Class: pending
+●
+Multiclass: optional
+○
+Profession: pending
+○
+Origin: pending
+○
+Attribute points: open
+○
+Skills: 0/3 active, 0/6 passive
+○
+Perks: 0/2
+●
+Starter Tree: optional
+○
+Alignment: pending
+○
+Start Command: pending
+IMMEDIATE IMPACT
+READ THE FIRST-RUN CONSEQUENCES AS YOU BUILD.
+
+These previews stay practical: opening location pressure, starter kit identity, combat loop, and tier-one advantages.
+
+SYSTEM
+Skill Copy Interface
+Race is a strong system match. Attribute bias: intelligence, dexterity, wisdom primary, luck, willpower secondary.
+Primary pressure lanes: intelligence, dexterity, wisdom.
+LINEAGE
+Pure Human
+Early stat edge: +2 cha, +2 will.
+Inherited passive: Unlimited Potential.
+Opening active: Adaptive Surge.
+STARTER KIT
+Initiate / Wayfarer field kit
+Weapon: Initiate Vanguard Blade.
+Armor: Initiate Initiate Wrap.
+Pack: Wayfarer Trail Rations + Minor Health Potion.
+NARRATIVE MEMORY
+Designation set: Skirmish Probe
+System bound: Skill Copy Interface
+Race locked: Pure Human
+ACTIVE CHAMBER
+DOCTRINE FORGE
+
+Shape class doctrine, branching role, and profession.
+
+CLASS
+SET THE PRIMARY DOCTRINE
+COMBAT PROTOCOL
+Your class defines combat style, resource mechanics, and skill progression.
+ROGUE
+ENERGY
+SYSTEM MATCH
+Favored by your bound system
+Beginner-friendly agile class built around stealth and burst windows.
+Skill List
+Nightglass Film, Nightglass Hex, Nightglass Ledger, Nightglass Lunge, Nightglass Pace, Nightglass Silk, ...
+10 skills
+MAGE
+MANA
+SYSTEM MATCH
+Favored by your bound system
+Beginner-friendly caster class using straightforward elemental spells.
+Skill List
+Spellthread Aegis, Spellthread Bind, Spellthread Bolt, Spellthread Brand, Spellthread Cadence, Spellthread Circuit, ...
+10 skills
+RANGER
+FOCUS
+SYSTEM MATCH
+Favored by your bound system
+Beginner-friendly ranged class with tracking and companion support.
+Skill List
+Longtrail Blind, Longtrail Cover, Longtrail Mark, Longtrail Perch, Longtrail Reserve, Longtrail Scent, ...
+10 skills
+MONK
+CHI
+SYSTEM MATCH
+Favored by your bound system
+Beginner-friendly martial class focused on combos and chi control.
+Skill List
+Stillwater Breath, Stillwater Flashstep, Stillwater Flow, Stillwater Hide, Stillwater Lock, Stillwater Meridian, ...
+10 skills
+CLERIC
+MANA
+Beginner-friendly support class with healing and protective holy magic.
+Skill List
+Dawnseal Bulwark, Dawnseal Cadence, Dawnseal Crossstep, Dawnseal Grace, Dawnseal Judgment, Dawnseal Litany, ...
+10 skills
+WARRIOR
+RAGE
+Beginner-friendly frontline fighter focused on direct melee combat.
+Skill List
+Warpath Bearing, Warpath Brace, Warpath Cleave, Warpath Engine, Warpath Guard, Warpath Reserve, ...
+10 skills
+MULTICLASS
+OPTIONAL BRANCHING DOCTRINE
+MULTICLASS
+Optional secondary class. Select none to remain single-classed.
+Picks: 0 (min 0) (max 1)
+None (Single Class)
+Rogue
+Beginner-friendly agile class built around stealth and burst windows.
+Mage
+Beginner-friendly caster class using straightforward elemental spells.
+Monk
+Beginner-friendly martial class focused on combos and chi control.
+Cleric
+Beginner-friendly support class with healing and protective holy magic.
+Ranger
+Beginner-friendly ranged class with tracking and companion support.
+Warrior
+Beginner-friendly frontline fighter focused on direct melee combat.
+PROFESSION
+ADD THE OPENING CRAFT
+PROFESSION
+Pick one craft or calling. You start with tier-1 skills from this profession.
+🔨 CRAFTING
+Transform raw materials into finished items.
+⚗️ ALCHEMY
+INT
+WISDOM
+Brew potions, elixirs, and flasks with magical effects.
+TIER 1 SKILLS
+basic brewing
+⚔️ BLACKSMITHING
+STR
+DEX
+Forge weapons, armor, and tools from raw metals.
+TIER 1 SKILLS
+basic smithing
+🏗️ CONSTRUCTION
+STR
+INT
+Build structures, fortifications, and housing.
+TIER 1 SKILLS
+basic construction
+✨ ENCHANTING
+INT
+SOUL
+SYSTEM MATCH
+Favored by your bound system
+Apply magical effects to existing gear.
+TIER 1 SKILLS
+basic enchanting
+⚙️ ENGINEERING
+INT
+DEX
+SYSTEM MATCH
+Favored by your bound system
+Build gadgets, bombs, and mechanical mounts.
+TIER 1 SKILLS
+basic engineering
+💎 JEWELCRAFTING
+DEX
+INT
+Create rings, necklaces, and gem sockets.
+TIER 1 SKILLS
+basic cutting
+🧵 TAILORING
+DEX
+CHA
+Create cloth armor, bags, and banners.
+TIER 1 SKILLS
+basic sewing
+🌿 GATHERING
+Collect raw materials from the environment.
+🌾 FARMING & AGRICULTURE
+WISDOM
+STR
+Grow crops, produce, and raise animals.
+TIER 1 SKILLS
+basic farming
+🎣 FISHING
+DEX
+LUCK
+Catch fish, aquatic reagents, and treasure.
+TIER 1 SKILLS
+basic fishing
+🌿 HERBALISM
+WISDOM
+LUCK
+SYSTEM MATCH
+Favored by your bound system
+Gather plants, flowers, and fungi.
+TIER 1 SKILLS
+basic herbalism
+🪓 LOGGING & WOODCUTTING
+STR
+DEX
+Harvest timber, firewood, and specialty woods.
+TIER 1 SKILLS
+basic logging
+⛏️ MINING
+STR
+LUCK
+Extract ores, stones, and rare minerals.
+TIER 1 SKILLS
+basic mining
+🦊 SKINNING & TRACKING
+DEX
+WISDOM
+Harvest hides, pelts, and meats from creatures.
+TIER 1 SKILLS
+basic skinning
+🍽️ COOKING & PROVISIONING
+Create consumables that provide temporary buffs.
+🍺 BREWING & VINTING
+INT
+CHA
+Create drinks for mana regeneration and spirit buffs.
+TIER 1 SKILLS
+basic brewing drinks
+🥩 BUTCHERY
+STR
+DEX
+Process raw meat into cooking components.
+TIER 1 SKILLS
+basic butchery
+🍳 COOKING
+DEX
+INT
+Prepare food that grants stat buffs and regeneration.
+TIER 1 SKILLS
+basic cooking
+📜 SERVICE & SUPPORT
+Provide unique services and create special items.
+🎨 DYEING & CUSTOMIZATION
+CHA
+DEX
+Change the appearance of armor and items.
+TIER 1 SKILLS
+basic dyeing
+🩹 FIRST AID & MEDICINE
+WISDOM
+DEX
+Create bandages, healing kits, and cure status effects.
+TIER 1 SKILLS
+basic first aid
+📜 INSCRIPTION & SCRIBING
+INT
+WISDOM
+SYSTEM MATCH
+Favored by your bound system
+Create scrolls, glyphs, runes, and contracts.
+TIER 1 SKILLS
+basic inscription
+🌀 PORTAL CREATION
+INT
+SOUL
+SYSTEM MATCH
+Favored by your bound system
+Provide quick travel services through portals.
+TIER 1 SKILLS
+basic teleportation
+🔧 REPAIR & MAINTENANCE
+DEX
+INT
+Fix damaged gear and maintain equipment.
+TIER 1 SKILLS
+basic maintenance
+PREVIOUS CHAMBER
+OPEN NEXT CHAMBER
+CLEAN SESSION
+
+Console:
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] Browser compatibility fixes initialized.
+[warning] Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1

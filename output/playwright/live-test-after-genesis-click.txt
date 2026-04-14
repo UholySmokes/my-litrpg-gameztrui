@@ -1,0 +1,300 @@
+URL: http://127.0.0.1:5173/
+
+Buttons:
+- EXPAND
+- EXPAND
+- 01
+Binding Hall
+PENDING
+- 02
+Lineage Vault
+PENDING
+- 03
+Doctrine Forge
+PENDING
+- 04
+Soul Crucible
+PENDING
+- 05
+Oath Mirror
+PENDING
+- Male
+- Female
+- Non-Binary
+- Other
+- Skill Copy Interface
+System
+A mimicry System that records observed techniques and converts them into usable skills through analysis and adaptation.
+- Devourer Core
+System
+A predatory growth System that converts consumed essence, traits, and fragments of power into permanent evolution.
+- Class Fusion Nexus
+System
+A hybridization System that fuses class lineages into original doctrines unavailable through normal advancement.
+- EXP Multiplier Matrix
+System
+A compounding growth System that amplifies earned experience through streaks, risk, and disciplined momentum.
+- Infinite Skill Points
+System
+A limitless allocation System that keeps generating upgrade currency until specialization itself becomes optional.
+- Talent Evolution Engine
+System
+An evolution System that upgrades innate talents into stronger, rarer, and more specialized forms over time.
+- Shadow Companion Core
+System
+A bonded companion System that manifests a living shadow able to scout, devour, protect, and evolve alongside its host.
+- Alchemy Compound Loop
+System
+A recursive crafting System that compounds alchemical output faster than ordinary costs and recovery curves allow.
+- Summoner Supreme (Permanent Summons & Control)
+System
+A supreme contract System that turns temporary summons into lasting assets and lets the bearer build a permanent ecosystem of bound allies.
+- Time-Loop Regressor (Return by Death)
+System
+A regression System that returns the bearer to a prior point after death while preserving memory and accumulated hard-won knowledge.
+- Save Point System (Checkpoint Revival)
+System
+A checkpoint System that records bounded save states and lets the bearer revive from them after catastrophic failure.
+- World-Hopper Agent (Transmigration Missions)
+System
+In this archetype, the character is bound to a transmigration system that sends them across multiple worlds or realms...
+- Absolute Defense Citadel
+Authority
+A protection-law Authority that imposes superior defense within declared thresholds, stances, or protected conditions.
+- Adaptive Evolution Class (Branching Job)
+System
+This archetype is a class or race that doesn't stay fixed; it evolves based on the character's actions and choices,...
+- AFK Growth Reactor
+System
+Offline time converts into levels and resources.
+- Alchemical Savant (Resource Multiplication)
+System
+The character's alchemy/crafting has a cheat where they can multiply outputs or create high-grade potions and materia...
+- Beast Contract Battery
+System
+A bond-growth System that turns contracted beasts into linked power cells, shared evolution engines, and tactical charge reservoirs.
+- Beast King Bond (Empathic Beast Master)
+System
+The character has a beast-taming system that forms a special bond with monsters or animals, granting mutual growth an...
+- Bloodline Unlock Prism
+Authority
+A lineage Authority that forces sealed ancestral power into active inheritance, awakening dormant claims and dangerous legitimacy.
+- Card Deck Mastery
+System
+Build decks of modular skills and summons.
+- Check-In Rewards Ledger
+System
+A persistence System that compounds disciplined check-ins into streak rewards, milestone caches, and growing passive privilege.
+- Class Fusion Master (Hybrid Class Creation)
+System
+Rather than having all classes separate, this archetype can merge two or more classes into a new, hybrid class that...
+- Class Unique Covenant
+Privilege
+A singular-class Privilege that binds the bearer to a one-of-one class line no ordinary claimant may legally or metaphysically hold.
+- Clone Legion (Self-Duplication)
+System
+The character can create clones or copies of themselves, each fully capable and contributing to growth.
+- PREVIOUS CHAMBER
+- OPEN NEXT CHAMBER
+
+Inputs:
+- INPUT type= placeholder=Type story text or /xp 100, /teleport coast_tideward_pier, /system ... value=
+- INPUT type=text placeholder=Enter designation value=
+
+Body:
+Twilight Crystal
+EXPAND
+LATTICE CONSOLE
+Wanderer
+EXPAND
+CHARACTER GENESIS
+WALK THE CHAMBER SEQUENCE.
+
+Each chamber resolves a different piece of the chronicle. Bind the system, shape the vessel, and seal the oath only when the full pattern is stable.
+
+Designation: pending
+System: pending
+Gender: optional
+Race: pending
+Class: pending
+Multiclass: optional
+Profession: pending
+Origin: pending
+01
+Binding Hall
+PENDING
+02
+Lineage Vault
+PENDING
+03
+Doctrine Forge
+PENDING
+04
+Soul Crucible
+PENDING
+05
+Oath Mirror
+PENDING
+GENESIS STREAM
+A profile coalesces. The system binds your selections into a coherent identity.
+Bind a designation, then choose the system that will shape the rest of genesis._
+SYNC PROGRESS
+17%
+⌖
+1. Lock identity and origin
+◇
+2. Select lineage
+✓
+3. Define combat doctrine
+⚙
+4. Choose craft
+▤
+5. Bind progression system
+✓
+6. Allocate attributes
+⚡
+7. Load starting skills
+✔
+8. Finalize identity
+○
+Designation: pending
+○
+System: pending
+●
+Gender: optional
+○
+Race: pending
+○
+Class: pending
+●
+Multiclass: optional
+○
+Profession: pending
+○
+Origin: pending
+○
+Attribute points: open
+○
+Skills: 0/3 active, 0/6 passive
+○
+Perks: 0/2
+●
+Starter Tree: optional
+○
+Alignment: pending
+○
+Start Command: pending
+IMMEDIATE IMPACT
+READ THE FIRST-RUN CONSEQUENCES AS YOU BUILD.
+
+These previews stay practical: opening location pressure, starter kit identity, combat loop, and tier-one advantages.
+
+STARTER KIT
+Initiate / Wayfarer field kit
+Weapon: Initiate Vanguard Blade.
+Armor: Initiate Initiate Wrap.
+Pack: Wayfarer Trail Rations + Minor Health Potion.
+No memory yet.
+ACTIVE CHAMBER
+BINDING HALL
+
+Set the designation and bind the governing system.
+
+DESIGNATION
+MARK THE CHRONICLE
+GENESIS TERMINAL
+Choose the name first. Your System is selected immediately after this and can reshape the rest of creation.
+DESIGNATION
+Gender (optional)
+Male
+Female
+Non-Binary
+Other
+SYSTEM
+BIND THE LATTICE
+SYSTEM
+Choose the core System that will shape the rest of creation.
+Skill Copy Interface
+System
+A mimicry System that records observed techniques and converts them into usable skills through analysis and adaptation.
+Devourer Core
+System
+A predatory growth System that converts consumed essence, traits, and fragments of power into permanent evolution.
+Class Fusion Nexus
+System
+A hybridization System that fuses class lineages into original doctrines unavailable through normal advancement.
+EXP Multiplier Matrix
+System
+A compounding growth System that amplifies earned experience through streaks, risk, and disciplined momentum.
+Infinite Skill Points
+System
+A limitless allocation System that keeps generating upgrade currency until specialization itself becomes optional.
+Talent Evolution Engine
+System
+An evolution System that upgrades innate talents into stronger, rarer, and more specialized forms over time.
+Shadow Companion Core
+System
+A bonded companion System that manifests a living shadow able to scout, devour, protect, and evolve alongside its host.
+Alchemy Compound Loop
+System
+A recursive crafting System that compounds alchemical output faster than ordinary costs and recovery curves allow.
+Summoner Supreme (Permanent Summons & Control)
+System
+A supreme contract System that turns temporary summons into lasting assets and lets the bearer build a permanent ecosystem of bound allies.
+Time-Loop Regressor (Return by Death)
+System
+A regression System that returns the bearer to a prior point after death while preserving memory and accumulated hard-won knowledge.
+Save Point System (Checkpoint Revival)
+System
+A checkpoint System that records bounded save states and lets the bearer revive from them after catastrophic failure.
+World-Hopper Agent (Transmigration Missions)
+System
+In this archetype, the character is bound to a transmigration system that sends them across multiple worlds or realms...
+Absolute Defense Citadel
+Authority
+A protection-law Authority that imposes superior defense within declared thresholds, stances, or protected conditions.
+Adaptive Evolution Class (Branching Job)
+System
+This archetype is a class or race that doesn't stay fixed; it evolves based on the character's actions and choices,...
+AFK Growth Reactor
+System
+Offline time converts into levels and resources.
+Alchemical Savant (Resource Multiplication)
+System
+The character's alchemy/crafting has a cheat where they can multiply outputs or create high-grade potions and materia...
+Beast Contract Battery
+System
+A bond-growth System that turns contracted beasts into linked power cells, shared evolution engines, and tactical charge reservoirs.
+Beast King Bond (Empathic Beast Master)
+System
+The character has a beast-taming system that forms a special bond with monsters or animals, granting mutual growth an...
+Bloodline Unlock Prism
+Authority
+A lineage Authority that forces sealed ancestral power into active inheritance, awakening dormant claims and dangerous legitimacy.
+Card Deck Mastery
+System
+Build decks of modular skills and summons.
+Check-In Rewards Ledger
+System
+A persistence System that compounds disciplined check-ins into streak rewards, milestone caches, and growing passive privilege.
+Class Fusion Master (Hybrid Class Creation)
+System
+Rather than having all classes separate, this archetype can merge two or more classes into a new, hybrid class that...
+Class Unique Covenant
+Privilege
+A singular-class Privilege that binds the bearer to a one-of-one class line no ordinary claimant may legally or metaphysically hold.
+Clone Legion (Self-Duplication)
+System
+The character can create clones or copies of themselves, each fully capable and contributing to growth.
+PREVIOUS CHAMBER
+OPEN NEXT CHAMBER
+CLEAN SESSION
+
+Console:
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] Browser compatibility fixes initialized.
+[warning] Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1

@@ -1,0 +1,281 @@
+URL: http://127.0.0.1:5173/
+
+Buttons:
+- EXPAND
+- EXPAND
+- 01
+Binding Hall
+STABLE
+- 02
+Lineage Vault
+STABLE
+- 03
+Doctrine Forge
+STABLE
+- 04
+Soul Crucible
+PENDING
+- 05
+Oath Mirror
+PENDING
+- ▶
+ATTRIBUTES
+DISTRIBUTE CORE POWER
+- -
+- +
+- -
+- +
+- -
+- +
+- -
+- +
+- -
+- +
+- -
+- +
+- -
+- +
+- -
+- +
+- -
+- +
+- -
+- +
+- RE-ROLL ATTRIBUTES (3 LEFT)
+- ▶
+SKILLS
+ASSEMBLE ACTIVE AND PASSIVE LOADOUT
+- ▶
+PERKS
+SELECT STARTING MUTATIONS
+- ▶
+STARTER TREE
+PRIME THE FIRST PROGRESSION TREE
+Optional: none selected
+- ▶
+ALIGNMENT
+SELECT ROLEPLAY TONE
+- PREVIOUS CHAMBER
+- OPEN NEXT CHAMBER
+
+Body:
+Twilight Crystal
+EXPAND
+LATTICE CONSOLE
+Wanderer
+EXPAND
+CHARACTER GENESIS
+WALK THE CHAMBER SEQUENCE.
+
+Each chamber resolves a different piece of the chronicle. Bind the system, shape the vessel, and seal the oath only when the full pattern is stable.
+
+Designation: set
+System: Skill Copy Interface
+Gender: optional
+Race: Pure Human
+Class: Warrior
+Multiclass: optional
+Profession: Enchanting
+Origin: pending
+01
+Binding Hall
+STABLE
+02
+Lineage Vault
+STABLE
+03
+Doctrine Forge
+STABLE
+04
+Soul Crucible
+PENDING
+05
+Oath Mirror
+PENDING
+GENESIS STREAM
+Configure lineage, archetype, and attributes to complete genesis.
+A mimicry System that records observed techniques and converts them into usable skills through analysis and adaptation. Beginner-friendly frontline fighter focused on direct melee combat. A standard human with no special bloodline. Versatile and adaptable. Apply magical effects to existing gear._
+SYNC PROGRESS
+58%
+RACE: Pure Human
+CLASS: Warrior
+SYSTEM: Skill Copy Interface (System)
+✓
+1. Lock identity and origin
+✓
+2. Select lineage
+✓
+3. Define combat doctrine
+✓
+4. Choose craft
+✓
+5. Bind progression system
+✓
+6. Allocate attributes
+✓
+7. Load starting skills
+✔
+8. Finalize identity
+●
+Designation: set
+●
+System: Skill Copy Interface
+●
+Gender: optional
+●
+Race: Pure Human
+●
+Class: Warrior
+●
+Multiclass: optional
+●
+Profession: Enchanting
+○
+Origin: pending
+○
+Attribute points: open
+○
+Skills: 0/3 active, 0/6 passive
+○
+Perks: 0/2
+●
+Starter Tree: optional
+○
+Alignment: pending
+○
+Start Command: pending
+IMMEDIATE IMPACT
+READ THE FIRST-RUN CONSEQUENCES AS YOU BUILD.
+
+These previews stay practical: opening location pressure, starter kit identity, combat loop, and tier-one advantages.
+
+SYSTEM
+Skill Copy Interface
+Race is a strong system match. Profession is boosted by the selected system. Attribute bias: intelligence, dexterity, wisdom primary, luck, willpower secondary.
+Primary pressure lanes: intelligence, dexterity, wisdom.
+LINEAGE
+Pure Human
+Early stat edge: +2 cha, +2 will.
+Inherited passive: Unlimited Potential.
+Opening active: Adaptive Surge.
+DOCTRINE
+Warrior
+Opening stat edge: +3 strength, +2 constitution.
+Combat loop resource: rage.
+PROFESSION
+Enchanting
+Tier-one support skills: basic_enchanting.
+Starter support item: Enchanting Trail Rations.
+STARTER KIT
+Warrior / Enchanting field kit
+Weapon: Warrior Vanguard Blade.
+Armor: Warrior Guard Harness.
+Pack: Enchanting Trail Rations + Minor Health Potion.
+NARRATIVE MEMORY
+Designation set: Skirmish Probe
+System bound: Skill Copy Interface
+Race locked: Pure Human
+Class doctrine: Warrior
+Profession chosen: Enchanting
+ACTIVE CHAMBER
+SOUL CRUCIBLE
+
+Allocate power, skill loadout, perks, and narrative alignment.
+
+Pure Human
+·
+Warrior
+·
+Skill Copy Interface
+1/5 complete
+▶
+ATTRIBUTES
+DISTRIBUTE CORE POWER
+PARAMETERS
+STAT ALLOCATION (15 points)
+STRENGTH
+5
+Physical power
+-
+5
++
+AGILITY
+5
+Speed / Evasion
+-
+5
++
+DEXTERITY
+5
+Precision / Crafting
+-
+5
++
+VITALITY
+5
+Endurance / Health
+-
+5
++
+INTELLIGENCE
+5
+Magic / Learning
+-
+5
++
+WISDOM
+5
+Insight / Perception
+-
+5
++
+CHARISMA
+5
+Influence / Presence
+-
+5
++
+WILLPOWER
+5
+Mental fortitude
+-
+5
++
+LUCK
+5
+Fortune / Crit
+-
+5
++
+SOUL
+5
+Spiritual force
+-
+5
++
+RE-ROLL ATTRIBUTES (3 LEFT)
+▶
+SKILLS
+ASSEMBLE ACTIVE AND PASSIVE LOADOUT
+▶
+PERKS
+SELECT STARTING MUTATIONS
+▶
+STARTER TREE
+PRIME THE FIRST PROGRESSION TREE
+Optional: none selected
+▶
+ALIGNMENT
+SELECT ROLEPLAY TONE
+PREVIOUS CHAMBER
+OPEN NEXT CHAMBER
+CLEAN SESSION
+
+Console:
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] Browser compatibility fixes initialized.
+[warning] Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1

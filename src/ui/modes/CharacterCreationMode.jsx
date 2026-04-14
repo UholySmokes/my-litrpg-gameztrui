@@ -1269,7 +1269,7 @@ export default function CharacterCreationMode({
             >
               <span>{`0${index + 1}`}</span>
               <strong>{chamber.title}</strong>
-              <em>{chamberCompletion[chamber.id] ? "stable" : "pending"}</em>
+              <em>{chamberCompletion[chamber.id] ? "bound" : "forming"}</em>
             </button>
           ))}
         </div>

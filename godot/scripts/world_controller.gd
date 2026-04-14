@@ -34,6 +34,86 @@ const DEV_CONSOLE_JUMP_TARGETS := {
 	"map_ruined_outlook": {"x": 1, "y": 7},
 }
 
+const DEV_CONSOLE_COMMANDS := {
+	# Stats (20)
+	"set_gold": {"type": "spinbox", "label": "Gold:", "min": 0, "max": 999999, "step": 100, "action": "set_gold"},
+	"add_gold": {"type": "spinbox", "label": "Add Gold:", "min": 0, "max": 99999, "step": 100, "action": "add_gold"},
+	"set_xp": {"type": "spinbox", "label": "XP:", "min": 0, "max": 999999, "step": 1000, "action": "set_xp"},
+	"add_xp": {"type": "spinbox", "label": "Add XP:", "min": 0, "max": 99999, "step": 1000, "action": "add_xp"},
+	"set_level": {"type": "spinbox", "label": "Level:", "min": 1, "max": 100, "step": 1, "action": "set_level"},
+	"set_hp": {"type": "spinbox", "label": "HP:", "min": 1, "max": 9999, "step": 10, "action": "set_hp"},
+	"set_mp": {"type": "spinbox", "label": "MP:", "min": 0, "max": 9999, "step": 10, "action": "set_mp"},
+	"max_stats": {"type": "button", "label": "Max Stats", "action": "max_stats"},
+	"heal_full": {"type": "button", "label": "Heal Full", "action": "heal_full"},
+	"set_regen": {"type": "spinbox", "label": "Regen %:", "min": 0, "max": 100, "step": 1, "action": "set_regen"},
+	"set_dodge": {"type": "spinbox", "label": "Dodge %:", "min": 0, "max": 50, "step": 1, "action": "set_dodge"},
+	"set_crit": {"type": "spinbox", "label": "Crit %:", "min": 0, "max": 50, "step": 1, "action": "set_crit"},
+	"set_speed": {"type": "spinbox", "label": "Speed x:", "min": 0.1, "max": 5.0, "step": 0.1, "action": "set_speed"},
+	"set_strength": {"type": "spinbox", "label": "STR:", "min": 1, "max": 100, "step": 1, "action": "set_str"},
+	"set_dex": {"type": "spinbox", "label": "DEX:", "min": 1, "max": 100, "step": 1, "action": "set_dex"},
+	"set_int": {"type": "spinbox", "label": "INT:", "min": 1, "max": 100, "step": 1, "action": "set_int"},
+	"set_wis": {"type": "spinbox", "label": "WIS:", "min": 1, "max": 100, "step": 1, "action": "set_wis"},
+	"set_con": {"type": "spinbox", "label": "CON:", "min": 1, "max": 100, "step": 1, "action": "set_con"},
+	"set_cha": {"type": "spinbox", "label": "CHA:", "min": 1, "max": 100, "step": 1, "action": "set_cha"},
+	"reset_stats": {"type": "button", "label": "Reset Stats", "action": "reset_stats"},
+
+	# Inventory/Items (10)
+	"give_potion": {"type": "button", "label": "Give Potion x10", "action": "give_potion"},
+	"give_sword": {"type": "button", "label": "Give Sword", "action": "give_sword"},
+	"give_armor": {"type": "button", "label": "Give Armor", "action": "give_armor"},
+	"clear_inv": {"type": "button", "label": "Clear Inv", "action": "clear_inventory"},
+	"max_inv": {"type": "button", "label": "Max Inventory", "action": "max_inventory"},
+	"give_gold_purse": {"type": "button", "label": "Gold Purse", "action": "give_gold_purse"},
+	"give_gem": {"type": "button", "label": "Give Gems x5", "action": "give_gem"},
+	"give_scroll": {"type": "button", "label": "Give Scroll", "action": "give_scroll"},
+	"give_artifact": {"type": "button", "label": "Give Artifact", "action": "give_artifact"},
+	"random_loot": {"type": "button", "label": "Random Loot", "action": "random_loot"},
+
+	# Skills/Quests (10)
+	"unlock_fireball": {"type": "button", "label": "Unlock Fireball", "action": "unlock_fireball"},
+	"level_sword": {"type": "button", "label": "Sword +1", "action": "level_sword"},
+	"unlock_heal": {"type": "button", "label": "Unlock Heal", "action": "unlock_heal"},
+	"complete_quest1": {"type": "button", "label": "Quest1 Done", "action": "complete_q1"},
+	"fail_quest2": {"type": "button", "label": "Quest2 Fail", "action": "fail_q2"},
+	"unlock_skilltree": {"type": "button", "label": "Unlock Tree", "action": "unlock_skilltree"},
+	"max_skills": {"type": "button", "label": "Max Skills", "action": "max_skills"},
+	"reset_skills": {"type": "button", "label": "Reset Skills", "action": "reset_skills"},
+	"give_questlog": {"type": "button", "label": "Full Questlog", "action": "full_questlog"},
+	"clear_quests": {"type": "button", "label": "Clear Quests", "action": "clear_quests"},
+
+	# Maps/Teleport (5)
+	"teleport_random": {"type": "button", "label": "Random Teleport", "action": "teleport_random"},
+	"unlock_all_maps": {"type": "button", "label": "Unlock Maps", "action": "unlock_maps"},
+	"noclip_toggle": {"type": "checkbox", "label": "Noclip", "action": "noclip_toggle"},
+	"speed_mult": {"type": "spinbox", "label": "Speed Mult:", "min": 1, "max": 10, "step": 1, "action": "speed_mult"},
+
+	# Tools/Misc (15)
+	"godmode": {"type": "checkbox", "label": "Godmode", "action": "godmode"},
+	"perf_baseline": {"type": "button", "label": "Perf Baseline", "action": "perf_baseline"},
+	"reset_run": {"type": "button", "label": "Reset Run", "action": "reset_run"},
+	"save_local": {"type": "button", "label": "Save Local", "action": "save_local"},
+	"load_local": {"type": "button", "label": "Load Local", "action": "load_local"},  # duplicate but ok
+	"set_time_day": {"type": "button", "label": "Day Time", "action": "set_day"},
+	"set_time_night": {"type": "button", "label": "Night Time", "action": "set_night"},
+	"spawn_mob": {"type": "button", "label": "Spawn Mob", "action": "spawn_mob"},
+	"clear_mobs": {"type": "button", "label": "Clear Mobs", "action": "clear_mobs"},
+	"debug_flags": {"type": "button", "label": "List Flags", "action": "list_flags"},
+	"export_state": {"type": "button", "label": "Export State", "action": "export_state"},
+	"import_state": {"type": "button", "label": "Import State", "action": "import_state"},
+	"toggle_music": {"type": "checkbox", "label": "Music On", "action": "music_toggle"},
+	"set_difficulty": {"type": "spinbox", "label": "Difficulty:", "min": 1, "max": 5, "step": 1, "action": "set_diff"},
+	"infinite_stamina": {"type": "checkbox", "label": "Inf Stamina", "action": "inf_stamina"},
+}
+
+const RANDOM_FUNCTIONS := [
+	"random_gold_boost",
+	"random_levelup",
+	"mystery_loot_box",
+	"chaos_quest",
+	"perf_stress_test",
+]
+
+
 @export var run_id: String = "slice-run-001"
 
 @onready var _map_background: ColorRect = %MapBackground
@@ -74,7 +154,12 @@ const DEV_CONSOLE_JUMP_TARGETS := {
 @onready var _dev_flag_quest_tutorial_ruins_returned: CheckBox = %DevFlagQuestTutorialRuinsReturned
 @onready var _dev_flag_quest_tutorial_encounter_resolved: CheckBox = %DevFlagQuestTutorialEncounterResolved
 
+@onready var _dev_scroll_container: ScrollContainer = ScrollContainer.new()
+@onready var _dev_commands_container: VBoxContainer = VBoxContainer.new()
+@onready var _dev_random_button: Button = Button.new()
+
 var _manifest: Dictionary = {}
+var _command_widgets: Dictionary = {}
 var _content_version: String = ""
 var _current_map_id: String = ""
 var _client_seq: int = 0
@@ -1052,6 +1137,57 @@ func _configure_dev_console() -> void:
 	for flag_id in _dev_flag_checkboxes.keys():
 		var checkbox: CheckBox = _dev_flag_checkboxes[flag_id]
 		checkbox.toggled.connect(_on_dev_flag_toggled.bind(String(flag_id)))
+
+	# Dynamic new commands
+	_dev_scroll_container.name = "DevScrollContainer"
+	_dev_scroll_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_dev_scroll_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_dev_scroll_container.anchor_right = 1.0
+	_dev_scroll_container.anchor_bottom = 1.0
+	_dev_scroll_container.offset_left = 16.0
+	_dev_scroll_container.offset_top = 56.0
+	_dev_scroll_container.offset_right = -16.0
+	_dev_scroll_container.offset_bottom = -16.0
+
+	_dev_commands_container.name = "DevCommandsContainer"
+	_dev_commands_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_dev_commands_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+
+	_dev_scroll_container.add_child(_dev_commands_container)
+	_dev_console_panel.add_child(_dev_scroll_container)
+
+	for cmd_name in DEV_CONSOLE_COMMANDS.keys():
+		var cmd := DEV_CONSOLE_COMMANDS[cmd_name]
+		var widget: Control
+		match cmd.get("type", "button"):
+			"button":
+				widget = Button.new()
+				widget.text = cmd.get("label", cmd_name)
+				widget.pressed.connect(func(): dev_execute_command(cmd_name))
+			"spinbox":
+				var sb := SpinBox.new()
+				sb.min_value = float(cmd.get("min", 0))
+				sb.max_value = float(cmd.get("max", 100))
+				sb.step = float(cmd.get("step", 1))
+				sb.value = float(cmd.get("default", sb.min_value))
+				sb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				sb.value_changed.connect(func(val): dev_execute_command(cmd_name, val))
+				widget = sb
+			"checkbox":
+				widget = CheckBox.new()
+				widget.text = cmd.get("label", cmd_name)
+				widget.toggled.connect(func(pressed): dev_execute_command(cmd_name, pressed))
+			_:
+				continue
+		widget.name = cmd_name.capitalize()
+		_dev_commands_container.add_child(widget)
+		_command_widgets[cmd_name] = widget
+
+	# Random function button
+	_dev_random_button.text = "Run Random Function (5 options)"
+	_dev_random_button.pressed.connect(_on_dev_random_function_pressed)
+	_dev_commands_container.add_child(_dev_random_button)
+
 	_update_dev_console_visibility()
 	_refresh_dev_console()
 
@@ -1139,6 +1275,12 @@ func get_dev_console_snapshot() -> Dictionary:
 	var last_savepoint := _get_local_last_savepoint()
 	var character := _current_character_data.duplicate(true)
 	var system_entry: Dictionary = Dictionary(character.get("archetypeSystem", {}))
+	character["gold"] = character.get("gold", 0)
+	character["xp"] = character.get("xp", 0)
+	character["level"] = character.get("level", 1)
+	character["hp"] = character.get("hp", 100)
+	character["mp"] = character.get("mp", 100)
+	character["godmode"] = character.get("godmode", false)
 	return {
 		"runtimeMode": _runtime_mode,
 		"buildId": _telemetry_build_id,
@@ -1153,6 +1295,12 @@ func get_dev_console_snapshot() -> Dictionary:
 		"lastSavepoint": last_savepoint,
 		"character": {
 			"name": String(character.get("name", "")),
+			"gold": character["gold"],
+			"xp": character["xp"],
+			"level": character["level"],
+			"hp": character["hp"],
+			"mp": character["mp"],
+			"godmode": character["godmode"],
 			"systemId": String(character.get("archetypeSystemId", "")),
 			"systemName": String(system_entry.get("name", "")),
 			"race": _summarize_character_choice(character.get("race", {})),
@@ -1337,6 +1485,87 @@ func _on_dev_flag_toggled(pressed: bool, flag_id: String) -> void:
 		return
 	dev_set_quest_flag(flag_id, pressed)
 
+# New dev command functions
+func dev_execute_command(cmd_name: String, value: Variant = null) -> void:
+	if not _should_show_dev_console():
+		return
+	var character := _current_character_data.duplicate(true)
+	match cmd_name:
+		"set_gold":
+			character["gold"] = int(value)
+		"add_gold":
+			character["gold"] = int(character.get("gold", 0)) + int(value)
+		"set_xp":
+			character["xp"] = int(value)
+		"add_xp":
+			character["xp"] = int(character.get("xp", 0)) + int(value)
+		"set_level":
+			character["level"] = int(value)
+		"set_hp":
+			character["hp"] = int(value)
+		"set_mp":
+			character["mp"] = int(value)
+		"max_stats":
+			character["level"] = 100
+			character["gold"] = 999999
+			character["xp"] = 999999
+			character["hp"] = 9999
+			character["mp"] = 9999
+		"heal_full":
+			character["hp"] = 9999
+		"godmode":
+			character["godmode"] = bool(value)
+		"perf_baseline":
+			run_perf_baseline()
+			_append_dev_console_status("Perf baseline run.")
+			return
+		"reset_stats":
+			character["gold"] = 0
+			character["xp"] = 0
+			character["level"] = 1
+			character["hp"] = 100
+			character["mp"] = 100
+		"give_potion":
+			var inv = character.get("inventory", [])
+			inv.append({"id": "potion", "qty": 10})
+			character["inventory"] = inv
+		"give_sword":
+			var inv = character.get("inventory", [])
+			inv.append({"id": "sword", "tier": 1})
+			character["inventory"] = inv
+		# Add stubs for other commands
+		"clear_inventory":
+			character["inventory"] = []
+		"max_inventory":
+			character["inventory_slots"] = 99
+		_,:
+			_append_dev_console_status("Dev command '%s' stubbed for expansion." % cmd_name)
+			return
+	_current_character_data = character
+	_persist_dev_local_state(false)
+	_refresh_dev_console()
+	_append_dev_console_status("Executed %s with %s" % [cmd_name, str(value)])
+
+func _on_dev_random_function_pressed():
+	var funcs = ["random_gold_boost", "random_levelup", "mystery_loot", "chaos_flags", "stress_perf"]
+	var rand_func = funcs[randi() % funcs.size()]
+	dev_run_random_function(rand_func)
+
+func dev_run_random_function(name: String):
+	match name:
+		"random_gold_boost":
+			dev_execute_command("add_gold", randi_range(500, 5000))
+		"random_levelup":
+			dev_execute_command("set_level", randi_range(3, 15))
+		"mystery_loot":
+			dev_execute_command("give_potion")
+		"chaos_flags":
+			for flag in DEV_CONSOLE_FLAG_IDS:
+				_quest_flags[flag] = randf() > 0.5
+				dev_set_quest_flag(flag, _quest_flags[flag])
+		"stress_perf":
+			run_perf_baseline(360)
+	_append_dev_console_status("Random func: %s" % name)
 
 func _apply_runtime_config(config: Dictionary) -> void:
 	_runtime_mode = String(config.get("runtimeMode", "online")).strip_edges().to_lower()

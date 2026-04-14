@@ -499,10 +499,10 @@ export function buildAdventureRoomManifest({ view, quickActionsProps, isDevBuild
     },
     {
       id: "map",
-      title: "Route Cartograph",
-      subtitle: "Display nearby routes, connected zones, and known but distant sites.",
+      title: "Celestial Atlas",
+      subtitle: "Survey the mythic world shell, Meridian inset, and bound lore hotspots.",
       tone: "azure",
-      entryAction: "Open cartograph",
+      entryAction: "Open atlas",
       size: "xl",
       group: "primary",
       availability: allowEarlySurface("map", onboardingTier >= 2),

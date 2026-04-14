@@ -19,13 +19,23 @@ Core premise:
 | Stability | Three-limit governor: Body / Mind / Cognitive |
 | Paradigm | Player’s equipped theory/laws; contradictions strain Cognitive Stability |
 
-## Essence Primes (v1)
+## Essence Primes and Aliases (Unified v2)
 
-Start with 8 primes:
-- Fire, Water, Earth, Air
-- Lightning
-- Shadow, Light
-- Life (optional: add Death later as a paired axis)
+Canonical 12 primes (consistent across unified casting, ecology, engine):
+fire, water, earth, air, lightning, shadow, light, life, creation, destruction, space, time
+
+**Aliases** (canonical mapping - use canonicalize(essence)):
+- ice/frost → water
+- holy/radiant → light
+- dark → shadow
+- nature → life
+- arcane → creation (resolves SpellStudy conflict to creation, not space)
+- void → space
+- temporal → time
+
+See src/systems/magic/constants.js ALIAS_MAP for full.
+
+**Note:** Updated from v1 8 primes to full set per mastertodolist.md.
 
 ## Player-Facing HUD (text)
 
@@ -122,8 +132,17 @@ manaUsed = sum(reserves[essence]) + sum(charge.amount / charge.density)
 manaFree = max(0, mana.max - manaUsed)
 ```
 
-Canonical constraint:
-- `mana.current` MUST be `manaFree`.
+**Hybrid Mana Reconciliation** (resolves ecology vs unified):
+manaUsed = sum(reserves) + sum(charge.amount / density)
+manaFree = max(mana.max - manaUsed)
+
+**Unified:** mana spendable (manaCost), reconciled manaCurrent = manaFree.
+
+**Strain/Resonance/Taint:** See ManaSystem.js (strain gain/overload/backfire, resonance states, taint/interference).
+
+See src/systems/magic/ManaSystem.js for full.
+
+Canonical constraint: reconciled via ManaSystem.reconcileMana().
 
 ### World/biome additions
 
@@ -318,9 +337,16 @@ Misfire outcomes (pick one):
 
 Define a spell attempt by:
 - Inputs: essences + amounts (from charges, optionally from reserves at higher risk)
-- Geometry: `cone | wall | jet | vortex | lattice | pulse | sphere`
-- Binding: `boundary | rhythm | anchor | symmetry`
-- Intent: e.g. `heat | push | freeze | reveal | bind | sever | shield`
+**Unified Forms** (superset resolving SpellStudy/ecology conflicts):
+bolt, pulse, lance, cone, wall, shield, vortex, veil, lattice, jet, burst, nova
+
+**Deliveries:** instant, sustained, channeled (governs extra costs)
+
+**Scale:** integer 1–5 (normalized power)
+
+Geometry/Binding/Intent as before, map to forms (e.g. vortex form).
+
+See src/systems/magic/constants.js FORM_DATA for baseMana/strain/damage.
 
 #### Shaping (single-essence)
 

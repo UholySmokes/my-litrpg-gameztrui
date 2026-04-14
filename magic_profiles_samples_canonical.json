@@ -1,0 +1,24 @@
+{
+  "fireball": {
+    "primary": "fire",
+    "secondary": [],
+    "form": "bolt",
+    "scale": 3,
+    "delivery": "instant"
+  },
+  "frostbolt": {
+    "primary": "water",
+    "secondary": [],
+    "form": "bolt",
+    "scale": 2,
+    "delivery": "instant"
+  },
+  "arcane_lance": {
+    "primary": "creation",
+    "secondary": [],
+    "form": "lance",
+    "scale": 4,
+    "delivery": "channeled"
+  }
+  // Extended with canonical essences/forms, aliases resolved
+}

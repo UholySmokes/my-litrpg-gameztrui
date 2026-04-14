@@ -1,0 +1,154 @@
+Bootstrap:
+{
+  "ready": {
+    "valid": true,
+    "blocking": false,
+    "blueprint": {
+      "version": 4,
+      "skillCatalogVersion": "lattice_v2",
+      "name": "Skirmish Probe",
+      "gender": "other",
+      "raceId": "pure_human",
+      "classId": "warrior",
+      "secondaryClassId": null,
+      "startingPrompt": "I rush the saboteur and attack before the gantry collapses.",
+      "startingLocationId": "skydocks_skyforge_platforms",
+      "startingZoneId": "skydocks",
+      "professionId": "enchanting",
+      "archetypeSystemId": "skill_copy_interface",
+      "attributes": {
+        "strength": 12,
+        "agility": 7,
+        "dexterity": 8,
+        "vitality": 9,
+        "intelligence": 7,
+        "wisdom": 5,
+        "charisma": 7,
+        "willpower": 7,
+        "luck": 6,
+        "soul": 8
+      },
+      "skillLoadoutId": "class_core",
+      "activeSkillIds": [
+        "warrior_warpath_cleave",
+        "warrior_warpath_roar",
+        "warrior_warpath_rush"
+      ],
+      "passiveSkillIds": [
+        "warrior_warpath_bearing",
+        "warrior_warpath_brace",
+        "warrior_warpath_engine",
+        "warrior_warpath_reserve",
+        "warrior_warpath_scar",
+        "warrior_warpath_sequence"
+      ],
+      "perkIds": [
+        "battle_focus",
+        "quick_learner"
+      ],
+      "starterTreeIds": [],
+      "alignmentId": "neutral_good"
+    },
+    "errors": [],
+    "missingSelections": []
+  },
+  "loadoutId": "class_core",
+  "activeSkillIds": [
+    "warrior_warpath_cleave",
+    "warrior_warpath_roar",
+    "warrior_warpath_rush"
+  ],
+  "passiveSkillIds": [
+    "warrior_warpath_bearing",
+    "warrior_warpath_brace",
+    "warrior_warpath_engine",
+    "warrior_warpath_reserve",
+    "warrior_warpath_scar",
+    "warrior_warpath_sequence"
+  ],
+  "currentLocation": "skydocks_skyforge_platforms",
+  "oathOrigin": {
+    "id": "skydocks",
+    "name": "Skyforge Skydocks",
+    "zoneId": "skydocks",
+    "locationId": "skydocks_skyforge_platforms",
+    "type": "combat",
+    "summary": "Wind and engine roar slam into you as awareness returns on an open gantry."
+  },
+  "firstQuest": "Read the Redline Incident"
+}
+
+Buttons:
+- EXPAND
+- EXPAND
+- ENTER CHARACTER GENESIS
+- CONTINUE AUTOSAVE
+- START FRESH
+
+Body:
+Twilight Crystal
+EXPAND
+LATTICE CONSOLE
+Wanderer
+EXPAND
+ARRIVAL CHAMBER
+ENTER THE GENESIS ATRIUM.
+
+The chamber is quiet until you bind a system and begin forging the next chronicle. No premade champion stands in for you here. The run starts only after the lattice recognizes a name, a lineage, and an oath.
+
+Bound profile
+local-dev@example.com
+RITUAL SEQUENCE
+A full-room genesis ritual awaits.
+01
+Bind The Lattice
+
+Choose the system that will color every recommendation, growth lane, and skill bias.
+
+02
+Shape The Vessel
+
+Define lineage, doctrine, profession, and the narrative role that will carry the run.
+
+03
+Seal The Oath
+
+Lock the opening build only after the full chamber sequence resolves cleanly.
+
+ATRIUM SIGNALS
+What the chamber guarantees
++
+Systems determine recommendation pressure and opening loadouts.
++
+Every run begins from zero. No pre-authored hero path overrides genesis.
++
+Creation remains reversible until the final oath is sealed.
+
+Begin the chamber walk to rebuild identity, doctrine, and the opening power profile from the ground up.
+
+ENTER CHARACTER GENESIS
+RESUME AUTOSAVE?
+
+A previous run was detected. Continue from the latest autosave or start a fresh character setup.
+
+Last update: 2026-04-14T09:58:58.134Z
+
+CONTINUE AUTOSAVE
+START FRESH
+CLEAN SESSION
+
+Console:
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] Browser compatibility fixes initialized.
+[warning] Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[log] Browser compatibility fixes initialized.
+[warning] Env missing [VITE_NARRATE_ENDPOINT or VITE_API_BASE_URL]
+[log] [SimBridge] Initialized with seed: 1
+[log] [SimBridge] Initialized with seed: 1

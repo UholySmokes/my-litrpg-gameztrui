@@ -1,0 +1,544 @@
+.root {
+  display: grid;
+  gap: 1rem;
+}
+
+.surface {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  padding: 1.35rem;
+  border: 1px solid rgba(var(--holo-cyan-rgb), 0.22);
+  background:
+    radial-gradient(circle at 14% 10%, rgba(var(--holo-cyan-rgb), 0.12), transparent 24%),
+    radial-gradient(circle at 86% 18%, rgba(var(--holo-gold-rgb), 0.1), transparent 20%),
+    linear-gradient(180deg, rgba(7, 11, 20, 0.98), rgba(8, 12, 19, 0.94));
+  box-shadow:
+    0 30px 84px rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(var(--holo-cyan-rgb), 0.08);
+}
+
+.surface::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(var(--holo-gold-rgb), 0.12);
+  pointer-events: none;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.45rem;
+  max-width: 52rem;
+}
+
+.eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--holo-cyan-rgb), 0.22);
+  background: rgba(8, 12, 19, 0.75);
+  color: var(--holo-cyan);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--holo-cyan);
+  box-shadow: 0 0 14px rgba(var(--holo-cyan-rgb), 0.6);
+}
+
+.title {
+  margin: 0;
+  color: var(--text-main);
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+}
+
+.copy {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.95fr);
+  gap: 1rem;
+  margin-top: 1.1rem;
+  align-items: start;
+}
+
+.canvas {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(var(--holo-cyan-rgb), 0.18);
+  background:
+    radial-gradient(circle at 24% 20%, rgba(var(--holo-cyan-rgb), 0.08), transparent 22%),
+    radial-gradient(circle at 78% 18%, rgba(var(--holo-gold-rgb), 0.08), transparent 20%),
+    linear-gradient(180deg, rgba(5, 10, 18, 0.98), rgba(4, 7, 15, 0.96));
+}
+
+.canvas::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(var(--holo-gold-rgb), 0.12);
+  pointer-events: none;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.star {
+  fill: rgba(255, 255, 255, 0.82);
+  opacity: 0.78;
+}
+
+.orbitRing,
+.orbitRingInner {
+  fill: none;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.orbitRing {
+  stroke: rgba(var(--holo-gold-rgb), 0.18);
+}
+
+.orbitRingInner {
+  stroke: rgba(var(--holo-cyan-rgb), 0.18);
+}
+
+.planetDisc {
+  stroke: rgba(var(--holo-gold-rgb), 0.18);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.fractureSeam {
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.78;
+  animation: seamPulse 7.8s ease-in-out infinite;
+}
+
+.hotspot {
+  cursor: pointer;
+  outline: none;
+}
+
+.hotspotSelected .regionLabel,
+.hotspotSelected .zoneLabel,
+.hotspot:focus-visible .regionLabel,
+.hotspot:focus-visible .zoneLabel {
+  fill: var(--text-main) !important;
+}
+
+.hotspotSelected .macroShape,
+.hotspot:focus-visible .macroShape,
+.hotspotSelected .zoneCore,
+.hotspot:focus-visible .zoneCore {
+  filter: drop-shadow(0 0 16px rgba(var(--holo-cyan-rgb), 0.2));
+}
+
+.macroHotspot {
+  transition: opacity 160ms ease;
+}
+
+.macroShape {
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    fill 160ms ease,
+    stroke 160ms ease;
+}
+
+.macroPulse {
+  fill: none;
+  stroke-width: 1.1;
+  stroke-dasharray: 8 8;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.66;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ringPulse 5.5s ease-in-out infinite;
+}
+
+.orbitTick,
+.regionCallout {
+  fill: none;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.62;
+}
+
+.regionLabel,
+.zoneLabel,
+.insetEyebrow,
+.insetTitle {
+  paint-order: stroke fill;
+  stroke: rgba(4, 7, 15, 0.92);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.regionLabel {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.insetFrame,
+.insetFrameInner {
+  fill: rgba(8, 12, 18, 0.86);
+  vector-effect: non-scaling-stroke;
+}
+
+.insetFrame {
+  stroke: rgba(var(--holo-gold-rgb), 0.34);
+  stroke-width: 1.2;
+}
+
+.insetFrameInner {
+  stroke: rgba(var(--holo-cyan-rgb), 0.16);
+  stroke-width: 1;
+}
+
+.insetEyebrow {
+  fill: var(--holo-gold);
+  font-size: 0.54rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.insetTitle {
+  fill: var(--text-main);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.connectionPath {
+  fill: none;
+  stroke: rgba(var(--holo-cyan-rgb), 0.34);
+  stroke-width: 1.3;
+  vector-effect: non-scaling-stroke;
+}
+
+.connectionDetached {
+  stroke: rgba(var(--holo-gold-rgb), 0.42);
+  stroke-dasharray: 3 7;
+  animation: dashDrift 13s linear infinite;
+}
+
+.zoneHotspot {
+  transition: opacity 160ms ease;
+}
+
+.zoneHalo {
+  opacity: 0.7;
+}
+
+.zoneCore {
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.zoneLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.currentBeacon,
+.detachedOrbit {
+  fill: none;
+  stroke-width: 1.15;
+  vector-effect: non-scaling-stroke;
+}
+
+.currentBeacon {
+  opacity: 0.82;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: beaconPulse 2.6s ease-in-out infinite;
+}
+
+.detachedOrbit {
+  stroke-dasharray: 2 8;
+  opacity: 0.72;
+  animation: dashDrift 14s linear infinite;
+}
+
+.hotspotCurrentTheater .regionLabel {
+  letter-spacing: 0.12em;
+}
+
+.hotspotCurrent .zoneLabel {
+  fill: var(--text-main) !important;
+}
+
+.zoneStatusKnown .zoneLabel {
+  opacity: 0.94;
+}
+
+.zoneStatusCurrent .zoneLabel {
+  font-size: 0.76rem;
+}
+
+.zoneStatusUnseen {
+  opacity: 0.56;
+}
+
+.zoneDetached {
+  opacity: 0.92;
+}
+
+.detailRail {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.detailCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  padding: 1rem;
+  border: 1px solid rgba(var(--holo-cyan-rgb), 0.16);
+  background:
+    radial-gradient(circle at top right, rgba(var(--holo-gold-rgb), 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(10, 14, 21, 0.96), rgba(7, 10, 17, 0.92));
+}
+
+.detailCard::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(var(--holo-gold-rgb), 0.08);
+  pointer-events: none;
+}
+
+.detailEyebrow,
+.sectionLabel {
+  position: relative;
+  z-index: 1;
+  color: var(--holo-cyan);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.detailTitle {
+  position: relative;
+  z-index: 1;
+  margin: 0.35rem 0 0;
+  color: var(--text-main);
+  font-size: 1.25rem;
+  line-height: 1.08;
+}
+
+.detailMeta {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.35rem;
+  color: var(--holo-gold);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.detailCopy,
+.doctrineCopy {
+  position: relative;
+  z-index: 1;
+  margin: 0.65rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.detailTokenRow,
+.legend {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.detailToken {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.currentFooting {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.55rem;
+  color: var(--text-main);
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.metaList {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+}
+
+.metaItem {
+  display: grid;
+  gap: 0.16rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.metaItem:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.metaItem strong {
+  color: var(--text-main);
+  font-size: 0.86rem;
+}
+
+.metaItem span {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+}
+
+.legendSwatch {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.legendCurrent {
+  border-color: rgba(var(--holo-gold-rgb), 0.72);
+  background: rgba(var(--holo-gold-rgb), 0.28);
+  box-shadow: 0 0 16px rgba(var(--holo-gold-rgb), 0.26);
+}
+
+.legendKnown {
+  border-color: rgba(var(--holo-cyan-rgb), 0.7);
+  background: rgba(var(--holo-cyan-rgb), 0.22);
+}
+
+.legendVeiled {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@keyframes seamPulse {
+  0%,
+  100% {
+    opacity: 0.64;
+  }
+
+  50% {
+    opacity: 0.96;
+  }
+}
+
+@keyframes ringPulse {
+  0%,
+  100% {
+    opacity: 0.44;
+  }
+
+  50% {
+    opacity: 0.82;
+  }
+}
+
+@keyframes beaconPulse {
+  0% {
+    opacity: 0.18;
+    transform: scale(0.96);
+  }
+
+  45% {
+    opacity: 0.84;
+    transform: scale(1.06);
+  }
+
+  100% {
+    opacity: 0.18;
+    transform: scale(1.16);
+  }
+}
+
+@keyframes dashDrift {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .surface {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .copy {
+    font-size: 0.86rem;
+  }
+}

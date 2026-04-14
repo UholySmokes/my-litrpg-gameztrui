@@ -10,6 +10,18 @@ describe("adventure room catalog", () => {
     ).toEqual(["chronicle", "command", "battle", "magic-study", "inventory", "quests", "map", "loadout"]);
   });
 
+  it("renames the map room without changing its catalog identity", () => {
+    const mapRoom = getAdventureRoomCatalog().find((room) => room.id === "map");
+
+    expect(mapRoom).toEqual(
+      expect.objectContaining({
+        id: "map",
+        title: "Celestial Atlas",
+        subtitle: "Survey the mythic world shell, Meridian inset, and bound lore hotspots.",
+      }),
+    );
+  });
+
   it("adds optional rooms only when their runtime flags are enabled", () => {
     const baseCatalog = getAdventureRoomCatalog();
     const expandedCatalog = getAdventureRoomCatalog({

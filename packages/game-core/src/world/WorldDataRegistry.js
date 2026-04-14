@@ -126,6 +126,114 @@ export const WORLD_META = {
   ],
 };
 
+function getRegionStubById(id) {
+  return (
+    WORLD_META.regionStubs.find((region) => region.id === id) || {
+      id,
+      name: id,
+      summary: "",
+      hooks: [],
+    }
+  );
+}
+
+export const WORLD_ATLAS_REGIONS = Object.freeze([
+  {
+    ...getRegionStubById("auric_crown"),
+    atlasPlacement: {
+      x: 286,
+      y: 110,
+      rx: 68,
+      ry: 30,
+      rotate: -8,
+      labelX: 286,
+      labelY: 58,
+      labelAnchor: "middle",
+    },
+  },
+  {
+    ...getRegionStubById("skybound_marches"),
+    atlasPlacement: {
+      x: 428,
+      y: 188,
+      rx: 76,
+      ry: 30,
+      rotate: 18,
+      labelX: 520,
+      labelY: 152,
+      labelAnchor: "start",
+    },
+  },
+  {
+    ...getRegionStubById("glassstep_expanse"),
+    atlasPlacement: {
+      x: 438,
+      y: 382,
+      rx: 84,
+      ry: 34,
+      rotate: 12,
+      labelX: 534,
+      labelY: 404,
+      labelAnchor: "start",
+    },
+  },
+  {
+    ...getRegionStubById("emberline_archipelago"),
+    atlasPlacement: {
+      x: 286,
+      y: 524,
+      rx: 86,
+      ry: 28,
+      rotate: -6,
+      labelX: 286,
+      labelY: 596,
+      labelAnchor: "middle",
+    },
+  },
+  {
+    ...getRegionStubById("veilward_depths"),
+    atlasPlacement: {
+      x: 150,
+      y: 440,
+      rx: 86,
+      ry: 38,
+      rotate: -22,
+      labelX: 64,
+      labelY: 472,
+      labelAnchor: "start",
+    },
+  },
+  {
+    ...getRegionStubById("wildroot_basin"),
+    atlasPlacement: {
+      x: 110,
+      y: 302,
+      rx: 82,
+      ry: 38,
+      rotate: -18,
+      labelX: 42,
+      labelY: 300,
+      labelAnchor: "start",
+    },
+  },
+  {
+    id: WORLD_META.id,
+    name: WORLD_META.name,
+    summary: WORLD_META.tagline,
+    hooks: [WORLD_META.era, WORLD_META.pillars[1]],
+    atlasPlacement: {
+      x: 232,
+      y: 298,
+      rx: 96,
+      ry: 60,
+      rotate: -14,
+      labelX: 84,
+      labelY: 212,
+      labelAnchor: "start",
+    },
+  },
+]);
+
 // =============================================================================
 // FACTIONS / ZONES / LOCATIONS
 // =============================================================================
@@ -615,6 +723,131 @@ export let zones = [
     dominantFactionIds: ["veil_wardens", "mirage_guides"],
   },
 ];
+
+export const MERIDIAN_ATLAS_LAYOUT = Object.freeze([
+  {
+    zoneId: "mountain",
+    radius: 15,
+    detailLocationIds: ["mountain_starforge_foundry", "mountain_crystal_ridgeline"],
+    atlasPlacement: {
+      x: 158,
+      y: 48,
+      labelDx: 0,
+      labelDy: -22,
+      labelAnchor: "middle",
+    },
+  },
+  {
+    zoneId: "ruins",
+    radius: 14,
+    detailLocationIds: ["ruins_leyline_plaza", "ruins_signal_spire"],
+    atlasPlacement: {
+      x: 78,
+      y: 88,
+      labelDx: -34,
+      labelDy: -10,
+      labelAnchor: "end",
+    },
+  },
+  {
+    zoneId: "city",
+    radius: 17,
+    detailLocationIds: ["city_neon_bazaar", "city_sunspire_temple"],
+    atlasPlacement: {
+      x: 158,
+      y: 136,
+      labelDx: 0,
+      labelDy: -24,
+      labelAnchor: "middle",
+    },
+  },
+  {
+    zoneId: "skydocks",
+    radius: 14,
+    detailLocationIds: ["skydocks_skyforge_platforms", "skydocks_engine_quay"],
+    atlasPlacement: {
+      x: 236,
+      y: 88,
+      labelDx: 34,
+      labelDy: -10,
+      labelAnchor: "start",
+    },
+  },
+  {
+    zoneId: "wilds",
+    radius: 14,
+    detailLocationIds: ["wilds_rootbound_camp", "wilds_seed_oath_grove"],
+    atlasPlacement: {
+      x: 92,
+      y: 218,
+      labelDx: -34,
+      labelDy: 12,
+      labelAnchor: "end",
+    },
+  },
+  {
+    zoneId: "undercity",
+    radius: 14,
+    detailLocationIds: ["undercity_veil_archive", "undercity_memory_auction"],
+    atlasPlacement: {
+      x: 158,
+      y: 204,
+      labelDx: 0,
+      labelDy: 24,
+      labelAnchor: "middle",
+    },
+  },
+  {
+    zoneId: "coast",
+    radius: 13,
+    detailLocationIds: ["coast_tideward_pier", "coast_breaker_shrine"],
+    atlasPlacement: {
+      x: 212,
+      y: 240,
+      labelDx: 30,
+      labelDy: 20,
+      labelAnchor: "start",
+    },
+  },
+  {
+    zoneId: "desert",
+    radius: 13,
+    detailLocationIds: ["desert_mirage_caravanserai", "desert_oracle_sundial"],
+    atlasPlacement: {
+      x: 258,
+      y: 210,
+      labelDx: 32,
+      labelDy: 0,
+      labelAnchor: "start",
+    },
+  },
+  {
+    zoneId: "volcanic",
+    radius: 13,
+    detailLocationIds: ["volcanic_smoke_warden_redoubt", "volcanic_ashen_caldera"],
+    atlasPlacement: {
+      x: 286,
+      y: 254,
+      labelDx: 30,
+      labelDy: 22,
+      labelAnchor: "start",
+    },
+  },
+  {
+    zoneId: "dreamscape",
+    radius: 14,
+    detached: true,
+    connectorFromZoneId: "desert",
+    detailLocationIds: ["dreamscape_wisp_meadow", "dreamscape_lucid_switchyard"],
+    atlasPlacement: {
+      x: 338,
+      y: 138,
+      labelDx: 34,
+      labelDy: -8,
+      labelAnchor: "start",
+    },
+  },
+]);
 
 export let factions = [
   // Major factions (8)

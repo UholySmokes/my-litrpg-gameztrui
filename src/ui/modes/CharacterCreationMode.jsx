@@ -366,21 +366,21 @@ export default function CharacterCreationMode({
 
     return {
       raceName: selectedRace?.name || "Lineage Unbound",
-      raceDescription: selectedRace?.description || "Choose a race to view inherited bonuses.",
+      raceDescription: selectedRace?.description || "Choose a lineage to reveal inherited advantages.",
       racePassiveAbility: selectedRace?.passiveAbility || null,
       raceActiveAbility: selectedRace
         ? getCharacterCreationRaceAbilitySummaries(selectedRace.id)[0] || null
         : null,
       className: selectedClass?.name || "Doctrine Unformed",
-      classDescription: selectedClass?.description || "Choose a class to view combat doctrine.",
-      talentName: selectedClass ? "Auto-assigned after creation" : "Talents pending",
+      classDescription: selectedClass?.description || "Choose a discipline to reveal its combat doctrine.",
+      talentName: selectedClass ? "Auto-inscribed after descent" : "Talents pending",
       talentDescription: selectedClass
-        ? `Talents will be assigned from the ${selectedClass.name} doctrine.`
+        ? `Talents will be inscribed from the ${selectedClass.name} discipline.`
         : "Select a class to determine the talent pool.",
       professionName: selectedProfession?.name || "Path Undefined",
       professionDescription:
         selectedProfession?.description ||
-        "Choose a profession to gain tier-one support skills.",
+        "Choose a trade to gain tier-one support skills.",
       professionSkills: Array.isArray(selectedProfession?.tierUnlocks?.[1]?.skills)
         ? selectedProfession.tierUnlocks[1].skills
         : null,
@@ -388,16 +388,16 @@ export default function CharacterCreationMode({
       systemDescription:
         selectedArchetypeSystem?.summary ||
         selectedArchetypeSystem?.description ||
-        "Choose a system to shape recommendations, pressure lanes, and skills.",
+        "Choose a system to shape recommendations, pressure lanes, and inscriptions.",
       systemMatchSummary: systemMatchSummaryParts.join(" "),
       activeSkills: selectedActiveSkills.length > 0 ? selectedActiveSkills : null,
       passiveSkills: selectedPassiveSkills.length > 0 ? selectedPassiveSkills : null,
       grantedActiveSkills,
       grantedPassiveSkills,
       startingPrompt:
-        startingPrompt?.trim() || "Write how the run begins to lock the opening handoff.",
-      originName: selectedStartingPoint?.name || "Origin not selected",
-      originDescription: selectedStartingPoint?.summary || "Choose an origin to shape your opening pressures.",
+        startingPrompt?.trim() || "Script the first invocation to lock the opening handoff.",
+      originName: selectedStartingPoint?.name || "Landing not selected",
+      originDescription: selectedStartingPoint?.summary || "Choose a landing to shape the opening pressure.",
       originBiome: selectedStartingPoint?.type || null,
       starterKitLabel: starterKitPreview.starterKitLabel,
       starterWeaponName: starterKitPreview.weapon?.name || null,
@@ -530,7 +530,7 @@ export default function CharacterCreationMode({
         label: `System: ${selectedArchetypeSystem?.name || "pending"}`,
         active: Boolean(selectedArchetypeSystem),
       },
-      { label: `Gender: ${gender || "optional"}`, active: true },
+      { label: `Presentation: ${gender || "optional"}`, active: true },
       {
         label: `Race: ${selectedRace?.name || "pending"}`,
         active: Boolean(selectedRace),
@@ -541,7 +541,7 @@ export default function CharacterCreationMode({
       },
       advancedUnlocked
         ? {
-            label: `Multiclass: ${selectedSecondaryClass?.name || "optional"}`,
+            label: `Branch: ${selectedSecondaryClass?.name || "optional"}`,
             active: true,
           }
         : { label: "Mode: basic path", active: true },
@@ -566,17 +566,17 @@ export default function CharacterCreationMode({
           selectedPassiveSkills.length >= MAX_PASSIVE_SKILLS,
       },
       {
-        label: `Perks: ${selectedPerkIds.length}/${creationPerkLimits?.maxPicks || 0}`,
+        label: `Blessings: ${selectedPerkIds.length}/${creationPerkLimits?.maxPicks || 0}`,
         active: completionById.perks,
       },
       advancedUnlocked
         ? {
-            label: `Starter Tree: ${selectedStarterTreeIds[0] || "optional"}`,
+            label: `Starter Branch: ${selectedStarterTreeIds[0] || "optional"}`,
             active: completionById["starter-tree"],
           }
-        : { label: "Starter Tree: unlock after first character", active: true },
+        : { label: "Starter Branch: unlock after first character", active: true },
       {
-        label: `Alignment: ${selectedAlignmentId || "pending"}`,
+        label: `Current: ${selectedAlignmentId || "pending"}`,
         active: Boolean(selectedAlignmentId),
       },
       {
@@ -1015,8 +1015,8 @@ export default function CharacterCreationMode({
                       <div className="creation-chamber__stack">
                         {availableCreationSkillLoadouts.length > 0 ? (
                           <CreationChoicePanel
-                            title="Skill Loadout"
-                            subtitle="Optional preset loadout. Manual picks below still apply."
+                            title="Opening Loadout"
+                            subtitle="Optional preset discipline pattern. Manual picks below still apply."
                             options={availableCreationSkillLoadouts}
                             selectedIds={selectedSkillLoadoutId ? [selectedSkillLoadoutId] : []}
                             onToggle={handleSkillLoadoutSelect}
@@ -1056,8 +1056,8 @@ export default function CharacterCreationMode({
                   return (
                     <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
                       <CreationChoicePanel
-                        title="Perks"
-                        subtitle="Choose the starting perk package."
+                        title="Blessings"
+                        subtitle="Choose the starting boon package."
                         options={availableCreationPerks}
                         selectedIds={selectedPerkIds}
                         onToggle={handlePerkToggle}
@@ -1071,8 +1071,8 @@ export default function CharacterCreationMode({
                   return (
                     <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
                       <CreationChoicePanel
-                        title="Starter Tree"
-                        subtitle="Optional initial progression tree. Select none to begin without one."
+                        title="Starter Branch"
+                        subtitle="Optional initial progression branch. Select none to begin without one."
                         options={availableCreationStarterTrees}
                         selectedIds={selectedStarterTreeIds}
                         onToggle={handleStarterTreeSelect}
@@ -1089,8 +1089,8 @@ export default function CharacterCreationMode({
                   return (
                     <CollapsibleChamberSection key={sec.id} eyebrow={sec.eyebrow} title={sec.title} summaryText={sec.summaryText} isOpen={isOpen} onToggle={toggle}>
                       <CreationChoicePanel
-                        title="Alignment"
-                        subtitle="Choose the narrative alignment that colors the run."
+                        title="Moral Current"
+                        subtitle="Choose the narrative current that colors the run."
                         options={availableCreationAlignments}
                         selectedIds={selectedAlignmentId ? [selectedAlignmentId] : []}
                         onToggle={handleAlignmentSelect}
@@ -1235,11 +1235,11 @@ export default function CharacterCreationMode({
   return (
     <section className="creation-flow creation-flow--chambers">
       <header className="creation-flow__hero creation-flow__hero--chambers">
-        <div className="creation-flow__eyebrow">Character Genesis</div>
-        <h2 className="creation-flow__title">Walk the chamber sequence.</h2>
+        <div className="creation-flow__eyebrow">The Archive</div>
+        <h2 className="creation-flow__title">Walk the starforging rite.</h2>
         <p className="creation-flow__copy">
-          Each chamber resolves a different piece of the chronicle. Bind the system,
-          shape the vessel, and seal the oath only when the full pattern is stable.
+          Each rite resolves a different fragment of the chronicle. Bind the system,
+          shape the vessel, and seal the first page only when the full pattern feels stable.
         </p>
         <div className="creation-flow__status-list">
           {statusLines.slice(0, 8).map((line) => (
@@ -1306,7 +1306,7 @@ export default function CharacterCreationMode({
         <div className="creation-flow__main">
           <div className="creation-flow__main-card creation-flow__main-card--chamber">
             <div className="creation-chamber__header">
-              <div className="creation-flow__eyebrow">Active Chamber</div>
+              <div className="creation-flow__eyebrow">Live Rite</div>
               <h3 className="surface-section__title">{activeChamber.title}</h3>
               <p className="creation-chamber__subtitle">{activeChamber.subtitle}</p>
             </div>
@@ -1319,11 +1319,11 @@ export default function CharacterCreationMode({
               disabled={activeChamberIndex === 0}
               onClick={() => navigateToChamber(activeChamberIndex - 1)}
             >
-              Previous Chamber
+              Previous Rite
             </button>
             {activeChamberIndex < chambers.length - 1 ? (
               <button type="button" className="holo-button holo-button--solid" onClick={handleNext}>
-                Open Next Chamber
+                Open Next Rite
               </button>
             ) : (
               <button
@@ -1332,7 +1332,7 @@ export default function CharacterCreationMode({
                 disabled={!canSealChronicle}
                 onClick={handleFinalize}
               >
-                Seal The Oath
+                Seal The Chronicle
               </button>
             )}
           </div>

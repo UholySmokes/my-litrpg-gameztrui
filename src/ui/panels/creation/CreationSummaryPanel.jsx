@@ -1,5 +1,53 @@
 import { useState } from "react";
 
+function SkillList({
+  title,
+  tone = "gold",
+  items = [],
+  emptyLabel,
+}) {
+  return (
+    <section className={`creation-summary__skill-card creation-summary__skill-card--${tone}`}>
+      <div className="creation-summary__skill-title">{title}</div>
+      {items.length > 0 ? (
+        <ul className="creation-summary__skill-list">
+          {items.map((item) => (
+            <li key={item.id || item.name}>
+              <strong>{item.name}</strong>
+              <span>
+                {item.description || "System memory fragmented."}
+                {item.level || item.rank ? ` (Rank ${item.level || item.rank})` : ""}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="creation-summary__empty">{emptyLabel}</p>
+      )}
+    </section>
+  );
+}
+
+function SummaryCard({
+  label,
+  title,
+  copy,
+  meta = null,
+  badge = null,
+}) {
+  return (
+    <article className="creation-summary__card">
+      <div className="creation-summary__card-label">{label}</div>
+      <div className="creation-summary__card-title-row">
+        <h4 className="creation-summary__card-title">{title}</h4>
+        {badge ? <span className="creation-summary__card-badge">{badge}</span> : null}
+      </div>
+      <p className="creation-summary__card-copy">{copy}</p>
+      {meta ? <div className="creation-summary__card-meta">{meta}</div> : null}
+    </article>
+  );
+}
+
 export default function CreationSummaryPanel({
   asciiArt,
   selectionSummary,
@@ -25,433 +73,204 @@ export default function CreationSummaryPanel({
     ? selectionSummary.grantedPassiveSkills
     : [];
 
+  const biomeBadge =
+    selectionSummary.originBiome && typeof selectionSummary.originBiome === "string"
+      ? selectionSummary.originBiome
+      : null;
+
+  const automaticInscriptions = [
+    ...grantedActiveSkills.map((skill) => ({
+      ...skill,
+      description: `${skill.description || "Automatic active inscription."} Active.`,
+    })),
+    ...grantedPassiveSkills.map((skill) => ({
+      ...skill,
+      description: `${skill.description || "Automatic passive inscription."} Passive.`,
+    })),
+  ];
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1.5rem",
-        fontFamily: "monospace",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "0.6rem",
-          lineHeight: "1.2",
-          whiteSpace: "pre",
-          maxWidth: "100%",
-          overflowX: "auto",
-        }}
-      >
-        <pre style={{ color: "var(--holo-cyan)", margin: 0, minWidth: "max-content" }}>
-          {asciiArt}
-        </pre>
+    <section className="creation-summary">
+      <div className="creation-summary__hero">
+        <div className="creation-summary__sigil-shell">
+          <div className="creation-summary__sigil-glow" aria-hidden="true" />
+          <pre className="creation-summary__ascii" aria-hidden="true">
+            {asciiArt}
+          </pre>
+        </div>
+
+        <div className="creation-summary__progress-shell">
+          <div className="creation-summary__eyebrow">Dossier Integrity</div>
+          <div className="creation-summary__progress-row">
+            <strong>Archive sync</strong>
+            <span>{syncProgress}%</span>
+          </div>
+          <div className="creation-summary__progress-track" aria-hidden="true">
+            <div
+              className="creation-summary__progress-fill"
+              style={{ width: `${syncProgress}%` }}
+            />
+          </div>
+          <p className="creation-summary__hero-copy">
+            {canFinalize
+              ? "The first page is stable. The archive recognizes the build as coherent."
+              : "The dossier is still unstable. Resolve the remaining rite fragments before descent."}
+          </p>
+        </div>
       </div>
-      <div
-        style={{
-          background: "rgba(0, 0, 0, 0.85)",
-          border: "1px solid var(--holo-cyan)",
-          padding: "1.25rem",
-          borderRadius: "6px",
-          fontSize: "0.9rem",
-          color: "var(--text-main)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "1rem",
-          }}
-        >
-          <div style={{ color: "var(--holo-cyan)" }}>
-            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              OPENING
-            </div>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              Your first command defines the opening beat and auto-runs in the chosen origin.
-            </div>
-            {selectionSummary.startingPrompt ? (
-              <div
-                style={{
-                  marginTop: "0.5rem",
-                  fontSize: "0.75rem",
-                  color: "var(--text-dim)",
-                  lineHeight: 1.45,
-                }}
-              >
-                <strong>Command:</strong> {selectionSummary.startingPrompt}
+
+      <div className="creation-summary__grid">
+        <SummaryCard
+          label="First Invocation"
+          title="Opening line"
+          copy={selectionSummary.startingPrompt}
+          meta="This line auto-runs as the first authored move."
+        />
+        <SummaryCard
+          label="Landing"
+          title={selectionSummary.originName}
+          copy={selectionSummary.originDescription}
+          badge={biomeBadge}
+        />
+        <SummaryCard
+          label="Lineage"
+          title={selectionSummary.raceName}
+          copy={selectionSummary.raceDescription}
+          meta={
+            <>
+              {racePassiveAbility ? (
+                <div>
+                  <strong>Passive:</strong> {racePassiveAbility.name}
+                </div>
+              ) : null}
+              {raceActiveAbility ? (
+                <div>
+                  <strong>Active:</strong> {raceActiveAbility.name}
+                </div>
+              ) : null}
+            </>
+          }
+        />
+        <SummaryCard
+          label="Doctrine"
+          title={selectionSummary.className}
+          copy={selectionSummary.classDescription}
+          meta={
+            <>
+              <div>
+                <strong>Inscription:</strong> {selectionSummary.talentName}
               </div>
-            ) : null}
-          </div>
-          <div style={{ color: "var(--holo-cyan)" }}>
-            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              ORIGIN
-            </div>
-            {(() => {
-              const biomeColors = {
-                social:      { badge: "#c77dff", border: "rgba(155, 89, 182, 0.55)" },
-                exploration: { badge: "#4ade9a", border: "rgba(0, 200, 130, 0.45)" },
-                combat:      { badge: "#ff6b6b", border: "rgba(230, 80, 60, 0.45)" },
-              };
-              const biome = selectionSummary.originBiome;
-              const colors = biomeColors[biome] || null;
-              return (
-                <>
-                  <div style={{ fontSize: "1rem", marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.45rem", flexWrap: "wrap" }}>
-                    {selectionSummary.originName}
-                    {colors && biome && (
-                      <span
-                        style={{
-                          fontSize: "0.6rem",
-                          letterSpacing: "0.1em",
-                          textTransform: "uppercase",
-                          color: colors.badge,
-                          border: `1px solid ${colors.badge}`,
-                          borderRadius: "4px",
-                          padding: "0.05rem 0.32rem",
-                        }}
-                      >
-                        {biome}
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-dim)", lineHeight: 1.45 }}>
-                    {selectionSummary.originDescription}
-                  </div>
-                </>
-              );
-            })()}
-          </div>
-          <div style={{ color: "var(--holo-cyan)" }}>
-            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              RACE
-            </div>
-            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
-              {selectionSummary.raceName}
-            </div>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              {selectionSummary.raceDescription}
-            </div>
-            {(racePassiveAbility || raceActiveAbility) && (
-              <div
-                style={{
-                  fontSize: "0.75rem",
-                  color: "var(--text-dim)",
-                  marginTop: "0.4rem",
-                  display: "grid",
-                  gap: "0.2rem",
-                }}
-              >
-                {racePassiveAbility ? (
-                  <div>
-                    <strong>Passive:</strong> {racePassiveAbility.name} -{" "}
-                    {racePassiveAbility.description}
-                  </div>
-                ) : null}
-                {raceActiveAbility ? (
-                  <div>
-                    <strong>Active:</strong> {raceActiveAbility.name} -{" "}
-                    {raceActiveAbility.description}
-                  </div>
-                ) : null}
-              </div>
-            )}
-          </div>
-          <div style={{ color: "var(--holo-cyan)" }}>
-            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              CLASS
-            </div>
-            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
-              {selectionSummary.className}
-            </div>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              {selectionSummary.classDescription}
-            </div>
-          </div>
-          <div style={{ color: "var(--holo-cyan)" }}>
-            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              TALENTS
-            </div>
-            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
-              {selectionSummary.talentName}
-            </div>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              {selectionSummary.talentDescription}
-            </div>
-          </div>
-          <div style={{ color: "var(--holo-cyan)" }}>
-            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              PROFESSION
-            </div>
-            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
-              {selectionSummary.professionName || "Path Undefined"}
-            </div>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              {selectionSummary.professionDescription ||
-                "Commit to a path to unlock nascent skills."}
-            </div>
-            {professionSkills.length ? (
-              <div
-                style={{
-                  marginTop: "0.35rem",
-                  fontSize: "0.75rem",
-                  color: "var(--text-dim)",
-                  lineHeight: 1.35,
-                }}
-              >
-                <strong>Tier 1:</strong>{" "}
+              <div>{selectionSummary.talentDescription}</div>
+            </>
+          }
+        />
+        <SummaryCard
+          label="Trade"
+          title={selectionSummary.professionName || "Path Undefined"}
+          copy={selectionSummary.professionDescription || "Commit to a trade to ground the opening page."}
+          meta={
+            professionSkills.length ? (
+              <div>
+                <strong>Tier one:</strong>{" "}
                 {professionSkills
                   .slice(0, 6)
                   .map((skill) => String(skill).replace(/_/g, " "))
                   .join(", ")}
               </div>
-            ) : null}
-          </div>
-          <div style={{ color: "var(--holo-cyan)" }}>
-            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              SYSTEM
-            </div>
-            <div style={{ fontSize: "1rem", marginBottom: "0.35rem" }}>
-              {selectionSummary.systemName}
-            </div>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              {selectionSummary.systemDescription}
-            </div>
-            {selectionSummary.systemMatchSummary ? (
-              <div style={{ fontSize: "0.75rem", color: "var(--text-dim)", marginTop: "0.35rem", lineHeight: 1.35 }}>
-                {selectionSummary.systemMatchSummary}
+            ) : null
+          }
+        />
+        <SummaryCard
+          label="System"
+          title={selectionSummary.systemName}
+          copy={selectionSummary.systemDescription}
+          meta={selectionSummary.systemMatchSummary || null}
+        />
+        <SummaryCard
+          label="Starter Kit"
+          title={selectionSummary.starterKitLabel || "Pending"}
+          copy="The first descent carries the following loadout."
+          meta={
+            <>
+              <div>
+                <strong>Weapon:</strong> {selectionSummary.starterWeaponName || "Pending"}
               </div>
-            ) : null}
-          </div>
-          <div style={{ color: "var(--holo-cyan)" }}>
-            <div style={{ fontWeight: "bold", marginBottom: "0.25rem" }}>
-              STARTER KIT
-            </div>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-dim)", lineHeight: 1.45 }}>
-              {selectionSummary.starterKitLabel || "Starter kit pending doctrine and profession."}
-            </div>
-            <div style={{ marginTop: "0.35rem", fontSize: "0.74rem", color: "var(--text-dim)", lineHeight: 1.45 }}>
-              <div><strong>Weapon:</strong> {selectionSummary.starterWeaponName || "Pending"}</div>
-              <div><strong>Armor:</strong> {selectionSummary.starterArmorName || "Pending"}</div>
-              <div><strong>Pack:</strong> {selectionSummary.starterSupportName || "Pending"} + {selectionSummary.starterConsumableName || "Pending"}</div>
-            </div>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "1rem",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                color: "#8CE99A",
-                fontWeight: "bold",
-                marginBottom: "0.25rem",
-              }}
-            >
-              SYSTEM-GRANTED
-            </div>
-            <ul
-              style={{
-                margin: 0,
-                paddingLeft: "1rem",
-                color: "var(--text-main)",
-                minHeight: "2.5rem",
-              }}
-            >
-              {grantedActiveSkills.length === 0 && grantedPassiveSkills.length === 0 ? (
-                <li style={{ color: "var(--text-dim)" }}>No automatic system skills.</li>
-              ) : (
-                <>
-                  {grantedActiveSkills.map((skill) => (
-                    <li key={`ga-${skill.id}`}>
-                      <strong>{skill.name}</strong> - Active
-                    </li>
-                  ))}
-                  {grantedPassiveSkills.map((skill) => (
-                    <li key={`gp-${skill.id}`}>
-                      <strong>{skill.name}</strong> - Passive
-                    </li>
-                  ))}
-                </>
-              )}
-            </ul>
-          </div>
-          <div>
-            <div
-              style={{
-              color: "var(--holo-gold)",
-              fontWeight: "bold",
-              marginBottom: "0.25rem",
-            }}
-          >
-              ACTIVE SKILLS ({selectedActiveSkills.length}/{maxActiveSkills})
-            </div>
-            <ul
-              style={{
-                margin: 0,
-                paddingLeft: "1rem",
-                color: "var(--text-main)",
-                minHeight: "2.5rem",
-              }}
-            >
-              {selectionSummary.activeSkills ? (
-                selectionSummary.activeSkills.map((skill) => {
-                  const rank = skill.level || skill.rank || 1;
-                  const desc = skill.description || "System memory fragmented.";
-                  return (
-                    <li key={skill.id}>
-                      <strong>{skill.name}</strong> - {desc} (Rank {rank})
-                    </li>
-                  );
-                })
-              ) : (
-                <li style={{ color: "var(--text-dim)" }}>
-                  Select {maxActiveSkills} active skills.
-                </li>
-              )}
-            </ul>
-          </div>
-          <div>
-            <div
-              style={{
-              color: "var(--holo-gold)",
-              fontWeight: "bold",
-              marginBottom: "0.25rem",
-            }}
-          >
-              PASSIVE SKILLS ({selectedPassiveSkills.length}/{maxPassiveSkills})
-            </div>
-            <ul
-              style={{
-                margin: 0,
-                paddingLeft: "1rem",
-                color: "var(--text-main)",
-                minHeight: "2.5rem",
-              }}
-            >
-              {selectionSummary.passiveSkills ? (
-                selectionSummary.passiveSkills.map((skill) => {
-                  const rank = skill.level || skill.rank || 1;
-                  const desc = skill.description || "System memory fragmented.";
-                  return (
-                    <li key={skill.id}>
-                      <strong>{skill.name}</strong> - {desc} (Rank {rank})
-                    </li>
-                  );
-                })
-              ) : (
-                <li style={{ color: "var(--text-dim)" }}>
-                  Select {maxPassiveSkills} passive skills.
-                </li>
-              )}
-            </ul>
-          </div>
-        </div>
-        <div
-          style={{
-            fontSize: "0.8rem",
-            color: "var(--text-dim)",
-            borderTop: "1px solid rgba(0, 243, 255, 0.2)",
-            paddingTop: "0.75rem",
-          }}
-        >
-          {typewriterText}
-          <span style={{ animation: "blink 1s infinite" }}>_</span>
-        </div>
+              <div>
+                <strong>Armor:</strong> {selectionSummary.starterArmorName || "Pending"}
+              </div>
+              <div>
+                <strong>Pack:</strong> {selectionSummary.starterSupportName || "Pending"} +{" "}
+                {selectionSummary.starterConsumableName || "Pending"}
+              </div>
+            </>
+          }
+        />
       </div>
-      <div>
-        <div
-          style={{
-            color: "var(--holo-cyan)",
-            fontFamily: "monospace",
-            marginBottom: "0.5rem",
-          }}
-        >
-          SYSTEM SYNC: {syncProgress}%
+
+      <div className="creation-summary__skills">
+        <SkillList
+          title="Automatic Inscriptions"
+          tone="emerald"
+          items={automaticInscriptions}
+          emptyLabel="No automatic system inscriptions."
+        />
+        <SkillList
+          title={`Active Disciplines (${selectedActiveSkills.length}/${maxActiveSkills})`}
+          tone="gold"
+          items={selectionSummary.activeSkills || []}
+          emptyLabel={`Select ${maxActiveSkills} active disciplines.`}
+        />
+        <SkillList
+          title={`Passive Disciplines (${selectedPassiveSkills.length}/${maxPassiveSkills})`}
+          tone="cyan"
+          items={selectionSummary.passiveSkills || []}
+          emptyLabel={`Select ${maxPassiveSkills} passive disciplines.`}
+        />
+      </div>
+
+      <div className="creation-summary__closing">
+        <div className="creation-summary__closing-copy">
+          <div className="creation-summary__eyebrow">Archive Whisper</div>
+          <p>{typewriterText}</p>
         </div>
-        <div
-          style={{
-            width: "100%",
-            height: "20px",
-            background: "rgba(0, 0, 0, 0.8)",
-            border: "1px solid var(--holo-cyan)",
-            borderRadius: "4px",
-            overflow: "hidden",
-          }}
-        >
+
+        <div className="creation-summary__seal">
           <div
-            style={{
-              width: `${syncProgress}%`,
-              height: "100%",
-              background: `linear-gradient(90deg, var(--holo-cyan), var(--holo-accent))`,
-              transition: "width 0.3s ease",
-            }}
-          />
+            className={[
+              "creation-summary__seal-status",
+              canFinalize ? "creation-summary__seal-status--ready" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            {canFinalize
+              ? "Chronicle stable. Ready to seal."
+              : "Chronicle unstable. Complete the remaining rites."}
+          </div>
+
+          {canFinalize ? (
+            <button
+              type="button"
+              className="holo-button holo-button--solid creation-summary__seal-button"
+              onClick={async () => {
+                if (isInitializing || typeof onFinalize !== "function") {
+                  return;
+                }
+                setIsInitializing(true);
+                try {
+                  await onFinalize();
+                } finally {
+                  setIsInitializing(false);
+                }
+              }}
+              disabled={isInitializing}
+              aria-busy={isInitializing}
+            >
+              {isInitializing ? "Sealing..." : "Seal The Chronicle"}
+            </button>
+          ) : null}
         </div>
       </div>
-      <div>
-        {canFinalize ? (
-          <div style={{ color: "green", marginBottom: "1rem" }}>
-            Soul synthesis verified. Ready for manifestation.
-          </div>
-        ) : (
-          <div style={{ color: "orange", marginBottom: "1rem" }}>
-            Soul synthesis incomplete. Fulfill all chamber designations.
-          </div>
-        )}
-        {canFinalize ? (
-          <button
-            type="button"
-            onClick={async () => {
-              if (isInitializing || typeof onFinalize !== "function") {
-                return;
-              }
-              setIsInitializing(true);
-              try {
-                await onFinalize();
-              } finally {
-                setIsInitializing(false);
-              }
-            }}
-            disabled={isInitializing}
-            aria-busy={isInitializing}
-            style={{
-              width: "100%",
-              padding: "1.5rem",
-              background: "linear-gradient(135deg, var(--holo-gold), #FFA500)",
-              border: "2px solid var(--holo-gold)",
-              color: "#000",
-              fontSize: "1.1rem",
-              fontWeight: "bold",
-              cursor: isInitializing ? "not-allowed" : "pointer",
-              opacity: isInitializing ? 0.75 : 1,
-              transition: "all 0.3s ease",
-            }}
-            onMouseEnter={(event) => {
-              if (isInitializing) return;
-              event.target.style.transform = "scale(1.02)";
-              event.target.style.boxShadow = "0 0 20px rgba(255, 215, 0, 0.5)";
-            }}
-            onMouseLeave={(event) => {
-              event.target.style.transform = "scale(1)";
-              event.target.style.boxShadow = "none";
-            }}
-          >
-            {isInitializing ? "MANIFESTING..." : "MANIFEST AVATAR"}
-          </button>
-        ) : null}
-      </div>
-    </div>
+    </section>
   );
 }

@@ -30,7 +30,7 @@ function resolvePrimaryObjective(quests) {
   if (!primaryQuest) {
     return {
       questName: "No active directive",
-      objectiveText: "Roam, study the field, and choose the next ritual gate.",
+      objectiveText: "Roam, study the field, and choose which archive wing to disturb next.",
     };
   }
 
@@ -47,12 +47,12 @@ function resolvePrimaryObjective(quests) {
   };
 }
 
-function AtriumCard({ title, label, value }) {
+function ArchiveFacet({ label, value, note }) {
   return (
-    <div className="atrium-stat-card">
+    <div className="archive-facet">
       <span>{label}</span>
       <strong>{value}</strong>
-      {title ? <em>{title}</em> : null}
+      {note ? <em>{note}</em> : null}
     </div>
   );
 }
@@ -64,8 +64,8 @@ function summarizeOathText(player) {
       : player?.characterCreationBlueprint?.startingPrompt;
   const text = String(raw || "").trim();
   if (!text) return "Unsealed";
-  if (text.length <= 36) return text;
-  return `${text.slice(0, 33).trimEnd()}...`;
+  if (text.length <= 42) return text;
+  return `${text.slice(0, 39).trimEnd()}...`;
 }
 
 function RoomGateway({ room, onOpen, compact = false }) {
@@ -73,8 +73,8 @@ function RoomGateway({ room, onOpen, compact = false }) {
     <button
       type="button"
       className={[
-        compact ? "atrium-system-gateway" : "atrium-room-gateway",
-        room.tone ? `atrium-room-gateway--${room.tone}` : "",
+        compact ? "archive-system-gateway" : "archive-room-gateway",
+        room.tone ? `archive-room-gateway--${room.tone}` : "",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -141,7 +141,7 @@ export default function AdventureShell({
         tone: "identity",
       },
       {
-        label: "Oath",
+        label: "Invocation",
         value: summarizeOathText(player),
         tone: "identity",
       },
@@ -151,9 +151,9 @@ export default function AdventureShell({
         tone: "identity",
       },
       {
-        label: "Temporary",
-        value: temporaryEffectCount > 0 ? `${temporaryEffectCount} active` : "None",
-        tone: "temporary",
+        label: "Flux",
+        value: temporaryEffectCount > 0 ? `${temporaryEffectCount} active` : "Stable",
+        tone: temporaryEffectCount > 0 ? "ember" : "identity",
       },
     ],
     [
@@ -195,11 +195,11 @@ export default function AdventureShell({
     [activeRoomId, roomManifest],
   );
 
-  const latestPassage = narrative.latestEntryText || "The lattice waits for your next move.";
+  const latestPassage = narrative.latestEntryText || "The archive waits for your next move.";
   const combatStatus =
     combatState?.status === "active"
-      ? `${Array.isArray(combatState?.enemies) ? combatState.enemies.length : 0} threats`
-      : "Quiet field";
+      ? `${Array.isArray(combatState?.enemies) ? combatState.enemies.length : 0} threats stirring`
+      : "Field quiet";
   const currentPressure = onboardingContext?.active
     ? {
         title:
@@ -211,6 +211,12 @@ export default function AdventureShell({
         progressLabel: `${onboardingContext.completedStepIds.length + 1}/3`,
       }
     : null;
+  const onboardingNote =
+    onboardingTier < 2
+      ? "Level 1 marks arrival, not the first earned milestone. Reach 100 XP to claim Level 2."
+      : onboardingTier < 3
+        ? "Your tools are opening. Review the build, clear one live pressure point, and lock in the first earned step."
+        : "The archive has widened. Push deeper directives or reopen any sealed wing.";
 
   useEffect(() => {
     const currentStatus = combatState?.status || "inactive";
@@ -242,140 +248,112 @@ export default function AdventureShell({
   };
 
   return (
-    <section className="adventure-shell adventure-shell--atrium">
-      <header className="adventure-shell__topbar adventure-shell__topbar--atrium anime-slide-down">
+    <section className="adventure-shell adventure-shell--archive">
+      <header className="adventure-shell__topbar adventure-shell__topbar--archive anime-slide-down">
         <div className="adventure-shell__brand">
-          <div className="adventure-shell__eyebrow anime-shimmer">World Atrium</div>
+          <div className="adventure-shell__eyebrow anime-shimmer">The Archive</div>
           <h2 className="adventure-shell__title">{playerIdentity.name}</h2>
           <div className="adventure-shell__meta">
             Level {playerIdentity.level} {playerIdentity.race} {playerIdentity.classLabel}
           </div>
         </div>
 
-        <div className="adventure-shell__statusstrip anime-stagger">
-          <AtriumCard label="Profile" value={profileLabel} />
-          <AtriumCard label="Location" value={location?.name || "Unknown Reach"} />
-          <AtriumCard label="Zone" value={zone?.name || location?.zoneId || "Unmapped"} />
-          <AtriumCard label="Mood" value={narrative.currentMood || "neutral"} />
+        <div className="archive-facet-strip anime-stagger">
+          <ArchiveFacet label="Profile" value={profileLabel} />
+          <ArchiveFacet label="Landing" value={location?.name || "Unknown Reach"} />
+          <ArchiveFacet label="Reach" value={zone?.name || location?.zoneId || "Unmapped"} />
+          <ArchiveFacet label="Mood" value={narrative.currentMood || "neutral"} />
         </div>
       </header>
 
-      <div className="atrium-layout">
-        <section className="atrium-hero anime-slide-up">
-          <div className="atrium-hero__copy">
-            <div className="atrium-hero__kicker">
+      <div className="archive-layout">
+        <section className="archive-portal anime-slide-up">
+          <div className="archive-portal__sigil-column" aria-hidden="true">
+            <div className="archive-portal__ring">
+              <div className="archive-portal__ring-middle">
+                <div className="archive-portal__ring-core">
+                  <span>{zone?.name || "Unknown Zone"}</span>
+                  <strong>{location?.name || "Unknown Reach"}</strong>
+                  <em>{playerIdentity.classLabel}</em>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="archive-portal__copy">
+            <div className="archive-portal__kicker">
               {zone?.name || "Unknown Zone"} / {location?.name || "Unknown Reach"}
             </div>
-            <h3 className="atrium-hero__title">{objective.questName}</h3>
-            <p className="atrium-hero__objective">{objective.objectiveText}</p>
-            {currentPressure ? (
-              <div
-                style={{
-                  marginTop: "0.9rem",
-                  padding: "0.9rem 1rem",
-                  borderRadius: "16px",
-                  border: "1px solid rgba(106, 227, 255, 0.25)",
-                  background: "rgba(13, 23, 39, 0.78)",
-                  maxWidth: "46rem",
-                }}
-              >
-                <div className="adventure-shell__eyebrow">Current Pressure</div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    gap: "0.8rem",
-                    alignItems: "baseline",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <strong>{currentPressure.title}</strong>
-                  <span style={{ opacity: 0.74, fontSize: "0.78rem" }}>
-                    Step {currentPressure.progressLabel}
-                  </span>
-                </div>
-                <p
-                  style={{
-                    margin: "0.45rem 0 0",
-                    color: "rgba(223, 236, 255, 0.88)",
-                  }}
-                >
-                  {currentPressure.text}
-                </p>
-              </div>
-            ) : null}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "0.55rem",
-                marginTop: "0.85rem",
-              }}
-            >
+            <h3 className="archive-portal__title">{objective.questName}</h3>
+            <p className="archive-portal__objective">{objective.objectiveText}</p>
+
+            <div className="archive-badge-row">
               {identityBadges.map((badge) => (
                 <span
                   key={`${badge.label}-${badge.value}`}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.35rem",
-                    padding: "0.35rem 0.6rem",
-                    borderRadius: "999px",
-                    border:
-                      badge.tone === "temporary"
-                        ? "1px solid rgba(255, 176, 59, 0.45)"
-                        : "1px solid rgba(106, 227, 255, 0.35)",
-                    background:
-                      badge.tone === "temporary"
-                        ? "rgba(255, 176, 59, 0.12)"
-                        : "rgba(71, 104, 142, 0.2)",
-                    fontSize: "0.72rem",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                  }}
+                  className={[
+                    "archive-badge",
+                    badge.tone === "ember" ? "archive-badge--ember" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                 >
-                  <strong style={{ opacity: 0.7 }}>{badge.label}</strong>
+                  <strong>{badge.label}</strong>
                   <span>{badge.value}</span>
                 </span>
               ))}
             </div>
-            {onboardingTier < 3 ? (
-              <p
-                style={{
-                  marginTop: "0.95rem",
-                  maxWidth: "48rem",
-                  color: "rgba(223, 236, 255, 0.86)",
-                }}
-              >
-                {onboardingTier === 1
-                  ? "Take one clean action to get your bearings. The shell is keeping only the essential surfaces live until the first loop clicks."
-                  : "Your field tools are opening up. Review status and inventory, then clear one small threat to lock in the first earned milestone."}
-              </p>
-            ) : null}
-          </div>
 
-          <div className="atrium-hero__meters">
-            {topMeters.map((meter) => (
-              <div key={meter.label} className="atrium-meter">
-                <span>{meter.label}</span>
-                <strong>{meter.value}</strong>
-              </div>
-            ))}
+            <p className="archive-portal__note">{onboardingNote}</p>
           </div>
         </section>
 
-        <section className="atrium-pulse">
-          <div className="atrium-pulse__header">
-            <div>
-              <div className="adventure-shell__eyebrow">Command Dais</div>
-              <h3 className="surface-section__title">Issue your next command and review the latest generated text</h3>
+        <aside className="archive-sidecar">
+          <section className="archive-sidecar__panel">
+            <div className="adventure-shell__eyebrow">Pressure Thread</div>
+            <h3 className="surface-section__title">Current weave</h3>
+            {currentPressure ? (
+              <div className="archive-pressure-card">
+                <div className="archive-pressure-card__row">
+                  <strong>{currentPressure.title}</strong>
+                  <span>Step {currentPressure.progressLabel}</span>
+                </div>
+                <p>{currentPressure.text}</p>
+              </div>
+            ) : (
+              <div className="archive-pressure-card archive-pressure-card--quiet">
+                <strong>No live onboarding thread</strong>
+                <p>Roam the archive wings, read the field, and choose which directive to disturb next.</p>
+              </div>
+            )}
+          </section>
+
+          <section className="archive-sidecar__panel">
+            <div className="adventure-shell__eyebrow">Vital Readout</div>
+            <h3 className="surface-section__title">Current reserves</h3>
+            <div className="archive-meter-grid">
+              {topMeters.map((meter) => (
+                <div key={meter.label} className="archive-meter">
+                  <span>{meter.label}</span>
+                  <strong>{meter.value}</strong>
+                </div>
+              ))}
             </div>
-            <div className="atrium-pulse__status">{combatStatus}</div>
+          </section>
+        </aside>
+
+        <section className="archive-console">
+          <div className="archive-console__header">
+            <div>
+              <div className="adventure-shell__eyebrow">Oracle Dais</div>
+              <h3 className="surface-section__title">Issue the next move and study the latest echo</h3>
+            </div>
+            <div className="archive-console__status">{combatStatus}</div>
           </div>
 
-          <div className="atrium-pulse__passage anime-pulse">{latestPassage}</div>
+          <div className="archive-console__passage anime-pulse">{latestPassage}</div>
 
-          <div className="atrium-pulse__timeline">
+          <div className="archive-console__timeline">
             <CommandTerminalPanel
               userInput={command?.userInput}
               onInputChange={command?.onInputChange}
@@ -383,7 +361,7 @@ export default function AdventureShell({
               isLoading={command?.isLoading}
               error={command?.error}
               inputRef={command?.inputRef}
-              placeholder={`What will you do in ${location?.name || zone?.name || "this place"}?`}
+              placeholder={`What do you do in ${location?.name || zone?.name || "this place"}?`}
             />
             <ActionSuggestionsPanel
               suggestions={command?.suggestions}
@@ -392,12 +370,12 @@ export default function AdventureShell({
           </div>
         </section>
 
-        <section className="atrium-room-cluster">
-          <div className="atrium-cluster__header">
-            <div className="adventure-shell__eyebrow">Core Rooms</div>
-            <h3 className="surface-section__title">Traverse the primary chambers</h3>
+        <section className="archive-room-cluster">
+          <div className="archive-cluster__header">
+            <div className="adventure-shell__eyebrow">Primary Wings</div>
+            <h3 className="surface-section__title">Open the central chambers</h3>
           </div>
-          <div className="atrium-room-grid anime-stagger">
+          <div className="archive-room-grid anime-stagger">
             {primaryRooms.map((room) => (
               <RoomGateway
                 key={room.id}
@@ -408,12 +386,12 @@ export default function AdventureShell({
           </div>
         </section>
 
-        <section className="atrium-systems-cluster">
-          <div className="atrium-cluster__header">
-            <div className="adventure-shell__eyebrow">System Rooms</div>
-            <h3 className="surface-section__title">Open supporting sanctums</h3>
+        <section className="archive-systems-cluster">
+          <div className="archive-cluster__header">
+            <div className="adventure-shell__eyebrow">Auxiliary Annex</div>
+            <h3 className="surface-section__title">Support rooms and sealed records</h3>
           </div>
-          <div className="atrium-systems-grid anime-stagger">
+          <div className="archive-systems-grid anime-stagger">
             {systemRooms.map((room) => (
               <RoomGateway
                 key={room.id}
@@ -425,9 +403,9 @@ export default function AdventureShell({
           </div>
         </section>
 
-        <section className="atrium-actions">
-          <div className="atrium-cluster__header">
-            <div className="adventure-shell__eyebrow">Direct Controls</div>
+        <section className="archive-actions">
+          <div className="archive-cluster__header">
+            <div className="adventure-shell__eyebrow">Immediate Sigils</div>
             <h3 className="surface-section__title">Act without leaving the floor</h3>
           </div>
           <GameQuickActions

@@ -321,7 +321,7 @@ export default function CharacterCreationMode({
 
     return (
       description ||
-      "Bind a designation, then choose the system that will shape the rest of genesis."
+      "Name the chronicle, then bind the ruling system that will shape the rest of the descent."
     );
   }, [
     selectedArchetypeSystem?.summary,
@@ -523,7 +523,7 @@ export default function CharacterCreationMode({
   const statusLines = useMemo(
     () => [
       {
-        label: `Designation: ${characterName?.trim() ? "set" : "pending"}`,
+        label: `Namesake: ${characterName?.trim() ? "set" : "pending"}`,
         active: Boolean(characterName?.trim()),
       },
       {
@@ -550,11 +550,11 @@ export default function CharacterCreationMode({
         active: Boolean(selectedProfession),
       },
       {
-        label: `Origin: ${selectedStartingPoint?.name || "pending"}`,
+        label: `Landing: ${selectedStartingPoint?.name || "pending"}`,
         active: Boolean(selectedStartingPoint),
       },
       {
-        label: `Attribute points: ${availablePoints === 0 ? "locked" : "open"}`,
+        label: `Aether threads: ${availablePoints === 0 ? "set" : "open"}`,
         active: availablePoints === 0,
       },
       {
@@ -580,7 +580,7 @@ export default function CharacterCreationMode({
         active: Boolean(selectedAlignmentId),
       },
       {
-        label: `Start Command: ${startingPrompt?.trim() ? "ready" : "pending"}`,
+        label: `First Invocation: ${startingPrompt?.trim() ? "ready" : "pending"}`,
         active: Boolean(startingPrompt?.trim()),
       },
     ],
@@ -612,7 +612,7 @@ export default function CharacterCreationMode({
   const creationMemoryEntries = useMemo(() => {
     const entries = [];
     if (characterName?.trim()) {
-      entries.push({ timestamp: "name", text: `Designation set: ${characterName.trim()}` });
+      entries.push({ timestamp: "name", text: `Namesake bound: ${characterName.trim()}` });
     }
     if (selectedArchetypeSystem) {
       entries.push({ timestamp: "system", text: `System bound: ${selectedArchetypeSystem.name}` });
@@ -627,7 +627,7 @@ export default function CharacterCreationMode({
       entries.push({ timestamp: "profession", text: `Profession chosen: ${selectedProfession.name}` });
     }
     if (selectedStartingPoint) {
-      entries.push({ timestamp: "origin", text: `Origin sealed: ${selectedStartingPoint.name}` });
+      entries.push({ timestamp: "origin", text: `First landing sealed: ${selectedStartingPoint.name}` });
     }
     return entries;
   }, [
@@ -783,7 +783,7 @@ export default function CharacterCreationMode({
   const handleFinalize = useCallback(async () => {
     setWizardError("");
     if (!selectedStartingPoint) {
-      setWizardError("Choose an origin before sealing the chronicle.");
+      setWizardError("Choose a first landing before sealing the chronicle.");
       return;
     }
     const result = finalizeCharacter();
@@ -849,7 +849,7 @@ export default function CharacterCreationMode({
       case "binding-hall":
         return (
           <div className="creation-chamber__grid creation-chamber__grid--split">
-            <ChamberSection eyebrow="Designation" title="Mark the chronicle">
+            <ChamberSection eyebrow="Namesake" title="Name the chronicle">
               <CreationNamePanel
                 characterName={characterName}
                 onNameChange={(value) => {
@@ -858,7 +858,7 @@ export default function CharacterCreationMode({
                 }}
               />
               <div className="creation-gender-select" style={{ marginTop: "1rem" }}>
-                <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", opacity: 0.7 }}>Gender (optional)</label>
+                <label style={{ display: "block", marginBottom: "0.5rem", fontSize: "0.85rem", opacity: 0.7 }}>Presentation (optional)</label>
                 <div style={{ display: "flex", gap: "0.5rem" }}>
                   {["male", "female", "non-binary", "other"].map((g) => (
                     <button
@@ -873,7 +873,7 @@ export default function CharacterCreationMode({
                 </div>
               </div>
             </ChamberSection>
-            <ChamberSection eyebrow="System" title="Bind the lattice">
+            <ChamberSection eyebrow="System" title="Bind the ruling lattice">
               <CreationArchetypeSystemPanel
                 systems={availableArchetypeSystems}
                 selectedSystem={selectedArchetypeSystem}
@@ -889,7 +889,7 @@ export default function CharacterCreationMode({
       case "lineage-vault":
         return (
           <div className="creation-chamber__grid creation-chamber__grid--split">
-            <ChamberSection eyebrow="Lineage" title="Choose inherited form">
+            <ChamberSection eyebrow="Lineage" title="Choose the inherited form">
               <CreationRacePanel
                 selectedRace={selectedRace}
                 races={availableRaces}
@@ -906,7 +906,7 @@ export default function CharacterCreationMode({
       case "doctrine-forge":
         return (
           <div className="creation-chamber__stack">
-            <ChamberSection eyebrow="Class" title="Set the primary doctrine">
+            <ChamberSection eyebrow="Doctrine" title="Set the primary discipline">
               <CreationClassPanel
                 selectedClass={selectedClass}
                 classes={availableClasses}
@@ -919,7 +919,7 @@ export default function CharacterCreationMode({
               />
             </ChamberSection>
             {advancedUnlocked ? (
-              <ChamberSection eyebrow="Multiclass" title="Optional branching doctrine">
+              <ChamberSection eyebrow="Branch" title="Optional secondary discipline">
                 <CreationChoicePanel
                   title="Multiclass"
                   subtitle="Optional secondary class. Select none to remain single-classed."
@@ -937,7 +937,7 @@ export default function CharacterCreationMode({
                 />
               </ChamberSection>
             ) : null}
-            <ChamberSection eyebrow="Profession" title="Add the opening craft">
+            <ChamberSection eyebrow="Trade" title="Choose the worldly craft">
               <CreationProfessionPanel
                 selectedProfession={selectedProfession}
                 professions={availableProfessions}
@@ -953,22 +953,22 @@ export default function CharacterCreationMode({
         );
       case "soul-crucible": {
         const crucibleSections = [
-          { id: "attributes", eyebrow: "Attributes", title: "Distribute core power", summaryText: completionById.attributes ? `${availablePoints === 0 ? "All" : availablePoints} points allocated` : null },
-          { id: "skills", eyebrow: "Skills", title: "Assemble active and passive loadout", summaryText: completionById.skills ? `${selectedActiveSkills.length} active, ${selectedPassiveSkills.length} passive` : null },
-          { id: "perks", eyebrow: "Perks", title: "Select starting mutations", summaryText: completionById.perks ? `${selectedPerkIds.length} perk${selectedPerkIds.length !== 1 ? "s" : ""} chosen` : null },
+          { id: "attributes", eyebrow: "Threads", title: "Distribute the first power weave", summaryText: completionById.attributes ? `${availablePoints === 0 ? "All" : availablePoints} threads assigned` : null },
+          { id: "skills", eyebrow: "Disciplines", title: "Assemble the opening active and passive pattern", summaryText: completionById.skills ? `${selectedActiveSkills.length} active, ${selectedPassiveSkills.length} passive` : null },
+          { id: "perks", eyebrow: "Blessings", title: "Choose the starting boons", summaryText: completionById.perks ? `${selectedPerkIds.length} boon${selectedPerkIds.length !== 1 ? "s" : ""} chosen` : null },
           ...(advancedUnlocked
             ? [{
                 id: "starter-tree",
-                eyebrow: "Starter Tree",
-                title: "Prime the first progression tree",
+                eyebrow: "Branch",
+                title: "Prime the first progression branch",
                 summaryText: completionById["starter-tree"]
                   ? selectedStarterTreeIds.length > 0
-                    ? `${selectedStarterTreeIds.length} tree selected`
+                    ? `${selectedStarterTreeIds.length} branch selected`
                     : "Optional: none selected"
                   : null,
               }]
             : []),
-          { id: "alignment", eyebrow: "Alignment", title: "Select roleplay tone", summaryText: completionById.alignment ? "Alignment set" : null },
+          { id: "alignment", eyebrow: "Current", title: "Choose the moral current", summaryText: completionById.alignment ? "Current aligned" : null },
         ];
         const firstIncompleteIdx = crucibleSections.findIndex((s) => !completionById[s.id]);
         const autoOpenIdx = firstIncompleteIdx === -1 ? crucibleSections.length - 1 : firstIncompleteIdx;
@@ -1110,10 +1110,10 @@ export default function CharacterCreationMode({
       case "oath-mirror":
         return (
           <div className="creation-chamber__stack">
-            <ChamberSection eyebrow="Origin" title="Choose where consciousness returns">
+            <ChamberSection eyebrow="Landing" title="Choose where the chronicle opens">
               <p style={{ fontSize: "0.82rem", opacity: 0.72, marginBottom: "1rem", lineHeight: 1.5 }}>
-                The origin locks the biome pressure, opening contacts, and environmental texture of your first scene.
-                This choice is required and becomes the canonical source of truth for the first spawn.
+                The chosen landing locks the opening pressure, first contacts, and environmental texture of the first scene.
+                This choice is required and becomes the canonical source of truth for the initial spawn.
               </p>
               <div
                 style={{
@@ -1179,7 +1179,7 @@ export default function CharacterCreationMode({
                 })}
               </div>
             </ChamberSection>
-            <ChamberSection eyebrow="Start Command" title="Write how the chronicle begins">
+            <ChamberSection eyebrow="Invocation" title="Script the first line">
               <CreationStartingPointPanel
                 selectedOriginName={selectedStartingPoint?.name || ""}
                 startingPrompt={startingPrompt}
@@ -1198,7 +1198,7 @@ export default function CharacterCreationMode({
                 }}
               />
             </ChamberSection>
-            <ChamberSection eyebrow="Review" title="Seal the chronicle">
+            <ChamberSection eyebrow="Dossier" title="Seal the first page">
               <CreationSummaryPanel
                 asciiArt={asciiArt}
                 selectionSummary={selectionSummary}

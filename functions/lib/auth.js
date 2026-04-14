@@ -1,5 +1,3 @@
-const supabase = require("./supabase");
-
 function parseOptionalBoolean(value) {
 	if (typeof value !== "string") return null;
 	const normalized = value.trim().toLowerCase();
@@ -12,6 +10,7 @@ function parseOptionalBoolean(value) {
 const PRODUCTION_PROJECT_IDS = [
 	"my-litrpg-gameztrui-3416-da75c",
 ];
+let cachedSupabaseModule = undefined;
 
 function isProductionEnvironment() {
 	const projectId = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || "";
@@ -41,6 +40,29 @@ function getHeader(req, name) {
 	if (!req || !req.headers) return "";
 	const lower = String(name || "").toLowerCase();
 	return req.headers[lower] || req.headers[name] || "";
+}
+
+function isMissingOptionalModuleError(error) {
+	return String(error?.code || "").toUpperCase() === "MODULE_NOT_FOUND";
+}
+
+function getSupabaseRuntime() {
+	if (cachedSupabaseModule !== undefined) return cachedSupabaseModule;
+
+	try {
+		cachedSupabaseModule = require("./supabase");
+	} catch (error) {
+		// Supabase bearer auth is optional for guest-friendly routes like narration.
+		// If the helper is absent from a serverless bundle, degrade to unauthenticated
+		// instead of crashing the entire API surface.
+		if (isMissingOptionalModuleError(error)) {
+			cachedSupabaseModule = null;
+		} else {
+			throw error;
+		}
+	}
+
+	return cachedSupabaseModule;
 }
 
 function getDevUser(req) {
@@ -105,7 +127,8 @@ function mapSupabaseUser(user) {
 
 async function getSupabaseUser(req) {
 	const token = extractBearerToken(req);
-	if (!token || !supabase.isSupabaseConfigured()) return null;
+	const supabase = getSupabaseRuntime();
+	if (!token || !supabase || !supabase.isSupabaseConfigured()) return null;
 
 	try {
 		const client = supabase.getSupabaseServiceClient();
@@ -131,4 +154,7 @@ module.exports = {
 	isDevAuthEnabled,
 	isProductionEnvironment,
 	getUserFromRequest,
+	__resetSupabaseRuntimeForTests() {
+		cachedSupabaseModule = undefined;
+	},
 };

@@ -183,11 +183,15 @@ The canonical AI workspace lives in [docs/ai/README.md](docs/ai/README.md).
 npm run ai:setup
 npm run ai:doctor
 npm run ai:check
+npm run hermes:doctor
+npm run hermes:setup
 ```
 
 - `ai:setup` seeds local-only scaffolding for Codex-first workstations.
 - `ai:doctor` reports tool and environment posture.
 - `ai:check` validates AI workspace policy and runs as part of `npm run check`.
+- `hermes:doctor` checks whether this machine has a supported Hermes install path.
+- `hermes:setup` bootstraps Hermes through the supported host or WSL2 path.
 
 ## Commands
 
@@ -201,6 +205,8 @@ npm run ai:check
 | `npm run ai:setup` | Seed local AI workspace files |
 | `npm run ai:doctor` | Diagnose AI tool and env posture |
 | `npm run ai:check` | Validate AI workspace policy |
+| `npm run hermes:doctor` | Diagnose Hermes install readiness |
+| `npm run hermes:setup` | Install Hermes on the supported host path |
 | `npm run build` | Production build |
 | `npm run vercel:link` | Link this repo to the canonical Vercel project |
 | `npm run vercel:pull` | Pull preview env vars and project settings from Vercel |

@@ -13,6 +13,8 @@
     "ai:setup": "node scripts/ai-setup.mjs",
     "ai:doctor": "node scripts/ai-doctor.mjs",
     "ai:check": "node scripts/ai-check.mjs",
+    "hermes:doctor": "node scripts/hermes-doctor.mjs",
+    "hermes:setup": "node scripts/hermes-setup.mjs",
     "dev": "npx kill-port 5173 && vite --host 127.0.0.1 --port 5173 --strictPort",
     "dev:api": "npx kill-port 5000 && node scripts/dev-api-server.mjs",
     "dev:stack": "concurrently -k -n api,web -c blue,green \"npm run dev:api\" \"npm run dev\"",

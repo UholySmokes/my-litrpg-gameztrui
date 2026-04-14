@@ -24,6 +24,22 @@ npm run ai:check
 - `ai:doctor` reports tool availability, env posture, and whether the workstation still matches the cloud-primary recommendation.
 - `ai:check` enforces the AI workspace policy and is part of the repo validation path.
 
+## Optional Hermes Agent
+
+Hermes is supported here as an optional developer tool, not as a replacement for the repo's Codex-first workflow.
+
+```bash
+npm run hermes:doctor
+npm run hermes:setup
+```
+
+- On Windows, Hermes must run inside WSL2 rather than PowerShell-native installs.
+- `hermes:doctor` checks for a usable non-`docker-desktop` distro and reports whether `hermes` is already installed.
+- `hermes:setup` uses the official Hermes installer on Linux/macOS or inside the healthiest WSL2 distro it can find, in non-interactive mode.
+- After installation, finish provider selection with `hermes model`.
+
+See [Hermes Agent Setup](hermes-agent-setup.md) for the repo-specific notes and troubleshooting path.
+
 ## Canonical Workflow
 
 1. Start in Codex with the repo bootstrap at `.codex/environments/environment.toml`.

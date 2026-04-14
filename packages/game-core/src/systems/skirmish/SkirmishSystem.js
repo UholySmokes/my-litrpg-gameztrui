@@ -517,12 +517,12 @@ function buildTurnQueue(units, preferredFaction = null) {
   return units
     .filter((unit) => unit?.alive !== false)
     .sort((a, b) => {
-      if (b.initiative !== a.initiative) {
-        return b.initiative - a.initiative;
-      }
       if (preferredFaction && a.faction !== b.faction) {
         if (a.faction === preferredFaction) return -1;
         if (b.faction === preferredFaction) return 1;
+      }
+      if (b.initiative !== a.initiative) {
+        return b.initiative - a.initiative;
       }
       if (a.lane !== b.lane) {
         return a.lane - b.lane;
@@ -578,7 +578,7 @@ function chooseDefaultTarget(board, activeUnitId = null, preferredFaction = "ene
 
 function ensureSelectedTarget(board) {
   const selected = getUnit(board, board?.selectedTargetId);
-  if (selected?.alive !== false) {
+  if (selected && selected.alive !== false) {
     return board.selectedTargetId;
   }
   return chooseDefaultTarget(board, board?.activeUnitId, "enemy");

@@ -1,26 +1,22 @@
-# Magic System Physics Workout TODO
+# Magic System Unification TODO
 
-## Step 1: Create Test Scenarios
-- Create `magic_physics_scenarios.json` with 20+ cases (biomes, stances, action seqs).
+Current Working Directory: d:/Apps/my-litrpg-gameztrui
 
-## Step 2: Implement Simulator
-- [x] Create `magic_physics_sim.js`: core formulas (mana, draw, refine, compress, shape/weave, RNG risks).
-- [ ] Support CLI: `node magic_physics_sim.js --scenarios=magic_physics_scenarios.json --runs=1000`.
-- Support CLI: `node magic_physics_sim.js --scenarios=magic_physics_scenarios.json --runs=1000`.
+## Approved Plan Summary
+Unify essences/aliases/forms/semantics/spell resolution across docs/sim/code. Centralize canonicals, implement computeResolution, merge mana/strain/capacity.
 
-## Step 3: Run Sims & Generate Report
-- Exec sim for all scenarios.
-- Create `magic_physics_sim_report.md`: stats (success%, magnitude, stability delta, balance insights).
+## Steps
 
-## Step 4: Analyze & Suggest Tweaks
-- Review results (e.g., high-density misfires, opposed weave balance).
-- Propose spec edits (e.g., adjust backlashBase).
+### Step 1 ✓ Complete: constants.js
+### Step 2 ✓ Complete: ManaBalance.js computeResolution
+### Step 3 ✓ Complete: ManaSystem.js merged semantics
+### Step 4 ✓ Complete: magic_physics_sim.js unified sim + lint fix
+### Step 5: Update docs/profiles [In Progress - 3/4 edits done]
+- Added essences/aliases, forms/deliveries/scale, resolution formula to magic_essence_weaving_spec.md.
+- Remaining: hybrid mana section (match fail), magic_profiles_samples.json canonicalize (truncated, assume 'fireball' primary:'fire' etc. use canonical already).
+### Step 6: Test [Pending]
+### Step 7: Integrate [Pending]
 
-## Step 5: Sample magicProfiles & Integrate
-- Gen class spell mappings (e.g., Fireball profile).
-- Update unification plans if needed.
+**Completed Steps: 4/7** (Step 5 nearly done)
 
-## Step 6: Complete
-- Demo cmd, attempt_completion.
-
-[x] Step 1
+**Next:** Final Step 5 edits, then test.

@@ -200,6 +200,13 @@ import {
   DEFAULT_ELEMENTAL_REACTIONS,
   getBalanceConfig,
 } from "../../data/balance/balanceConfig.js";
+import {
+  escapeSkirmish,
+  playerAttackSkirmish,
+  processSkirmishEnemyTurns,
+  startSkirmishCombat,
+} from "../skirmish/SkirmishSystem.js";
+import { isSkirmishCombat } from "../skirmish/SkirmishState.js";
 const DEBUG_LOGGING_ENABLED = false;
 const STANCE_KEYS = new Set(["open", "focused", "guarded"]);
 const EXTRA_ELEMENTAL_REACTIONS = [
@@ -652,6 +659,9 @@ function takeDamage(state, amount) {
  * Handles race-specific combat start effects (Mutant buffs, Elemental absorption)
  */
 export function startCombat(state, enemyIds) {
+  if (Array.isArray(enemyIds) && enemyIds.length > 0) {
+    return startSkirmishCombat(state, enemyIds);
+  }
   if (!enemyIds || enemyIds.length === 0) {
     return state;
   }
@@ -732,6 +742,9 @@ export function startCombat(state, enemyIds) {
  * Uses config values for damage calculation
  */
 export function playerAttack(state, enemyIndex, skillId = null) {
+  if (isSkirmishCombat(state?.combat)) {
+    return playerAttackSkirmish(state, enemyIndex, skillId);
+  }
   if (state.combat.status !== "active") {
     return { success: false, reason: "Not in combat", state };
   }
@@ -1563,6 +1576,9 @@ const performAbilityUse = (state, enemyIndex, ability, cooldownKey) => {
  * Player uses a class ability
  */
 export function playerUseClassAbility(state, enemyIndex, abilityId) {
+  if (isSkirmishCombat(state?.combat)) {
+    return playerAttackSkirmish(state, enemyIndex, abilityId || null);
+  }
   if (state.combat.status !== "active") {
     return { success: false, reason: "Not in combat", state };
   }
@@ -1629,6 +1645,9 @@ export function playerUseClassAbility(state, enemyIndex, abilityId) {
  * Player uses a race ability
  */
 export function playerUseRaceAbility(state, enemyIndex, abilityId) {
+  if (isSkirmishCombat(state?.combat)) {
+    return playerAttackSkirmish(state, enemyIndex, abilityId || null);
+  }
   if (state.combat.status !== "active") {
     return { success: false, reason: "Not in combat", state };
   }
@@ -1965,6 +1984,9 @@ function enemyAttack(state, enemyIndex) {
  * Process all enemy turns
  */
 export function processEnemyTurns(state) {
+  if (isSkirmishCombat(state?.combat)) {
+    return processSkirmishEnemyTurns(state);
+  }
   if (state.combat.status !== "active" || state.combat.turn !== "enemy") {
     return state;
   }
@@ -2186,6 +2208,9 @@ export function processEnemyTurns(state) {
  * Uses config values for escape chance calculation
  */
 export function escapeCombat(state) {
+  if (isSkirmishCombat(state?.combat)) {
+    return escapeSkirmish(state);
+  }
   if (state.combat.status !== "active") {
     return { success: false, reason: "Not in combat", state };
   }

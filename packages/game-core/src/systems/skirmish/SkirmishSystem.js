@@ -932,13 +932,40 @@ function appendCombatLog(state, entries = []) {
 }
 
 function applyRewardPhases(state, previousBoard, nextBoard) {
-  let workingState = state;
-  const previousEnemies = getLivingUnits(previousBoard, "enemy");
-  const previousEnemyIds = new Set(previousEnemies.map((unit) => unit.id));
-  const remainingEnemyIds = new Set(getLivingUnits(nextBoard, "enemy").map((unit) => unit.id));
+  const previousEnemies = projectEnemySummary(previousBoard);
+  const currentEnemies = projectEnemySummary(nextBoard);
+  const currentEnemyMap = new Map(
+    currentEnemies.map((enemy) => [enemy?.combatantId, enemy]),
+  );
   const defeatedIds = previousEnemies
-    .map((unit) => unit.id)
-    .filter((unitId) => previousEnemyIds.has(unitId) && !remainingEnemyIds.has(unitId));
+    .map((enemy) => enemy?.combatantId)
+    .filter((enemyId) => enemyId && !currentEnemyMap.has(enemyId));
+
+  if (defeatedIds.length === 0) {
+    return state;
+  }
+
+  let workingState = {
+    ...state,
+    combat: {
+      ...state.combat,
+      enemies: previousEnemies.map((enemy) =>
+        currentEnemyMap.has(enemy?.combatantId)
+          ? currentEnemyMap.get(enemy.combatantId)
+          : {
+              ...enemy,
+              isDead: true,
+              stats: {
+                ...(enemy?.stats || {}),
+                hp: {
+                  ...(enemy?.stats?.hp || {}),
+                  current: 0,
+                },
+              },
+            },
+      ),
+    },
+  };
 
   defeatedIds.forEach((defeatedId) => {
     const enemyIndex = (workingState.combat?.enemies || []).findIndex(
@@ -958,7 +985,7 @@ function finalizeSkirmishState(state, board) {
   const hero = getUnit(board, heroUnitId(board));
 
   if (livingEnemies.length === 0) {
-    const terminal = endCombatPhase(state, "victory");
+    const terminal = state?.combat?.status === "victory" ? state : endCombatPhase(state, "victory");
     return syncBoardToState(
       terminal,
       {
@@ -976,7 +1003,7 @@ function finalizeSkirmishState(state, board) {
   }
 
   if (!hero || hero.alive === false || livingAllies.length === 0) {
-    const terminal = endCombatPhase(state, "defeat");
+    const terminal = state?.combat?.status === "defeat" ? state : endCombatPhase(state, "defeat");
     return syncBoardToState(
       terminal,
       {
@@ -1339,7 +1366,7 @@ function calculateEscapeChance(state) {
     toNumber(state?.player?.attributes?.dexterity, 0);
   const base = toNumber(state?.config?.baseEscapeChance, 0.3);
   const bonus = toNumber(state?.config?.agilityEscapeBonus, 0.01);
-  return clamp(base + agility * bonus, 0.05, 0.95);
+  return clamp(base + agility * bonus, 0.05, 1);
 }
 
 export function escapeSkirmish(state) {

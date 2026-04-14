@@ -107,6 +107,15 @@ export function getQuickActionItems(player = {}) {
 
 export function getPrimaryCombatEnemyIndex(combatState = {}) {
   const enemies = Array.isArray(combatState.enemies) ? combatState.enemies : [];
+  const selectedTargetId = combatState?.board?.selectedTargetId;
+  if (selectedTargetId) {
+    const selectedIndex = enemies.findIndex(
+      (enemy) => enemy?.combatantId === selectedTargetId,
+    );
+    if (selectedIndex >= 0) {
+      return selectedIndex;
+    }
+  }
   const firstLivingIndex = enemies.findIndex(
     (enemy) => Number(enemy?.stats?.hp?.current ?? 0) > 0,
   );
@@ -267,6 +276,12 @@ export default function GameQuickActions({
   const showTierTwoSupport = onboardingTier >= 2;
   const showTierThreeSupport = onboardingTier >= 3;
   const devourerActive = isDevourerCorePlayer(player);
+  const isSkirmishCombat = combatState?.mode === "skirmish";
+  const restLabel = combatReady && isSkirmishCombat ? "Wait" : "Rest";
+  const restTitle =
+    combatReady && isSkirmishCombat
+      ? "Pass the active unit's turn and hold formation."
+      : "Rest and recover health and mana.";
 
   const handleStatusOpen = useCallback(() => {
     onTrackUiAction?.("status");
@@ -289,6 +304,8 @@ export default function GameQuickActions({
           escapeDisabled={escapeDisabled}
           isCombatActive={combatReady}
           restDisabled={restDisabled}
+          restLabel={restLabel}
+          restTitle={restTitle}
         />
         <button
           type="button"

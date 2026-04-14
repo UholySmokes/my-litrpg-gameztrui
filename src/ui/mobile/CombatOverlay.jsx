@@ -11,9 +11,14 @@ export default function CombatOverlay({
   config,
   combatState,
   onAttack,
+  onMoveSkirmishUnit,
+  onSelectSkirmishTarget,
+  onSelectSkirmishUnit,
   onUseSkill,
   onUseClassAbility,
+  onUseItem,
   onUseRaceAbility,
+  onWait,
   onEscape,
   onSetCombatLane,
 }) {
@@ -29,9 +34,14 @@ export default function CombatOverlay({
           playerState={player}
           combatState={combatState}
           onAttack={onAttack}
+          onMoveSkirmishUnit={onMoveSkirmishUnit}
+          onSelectSkirmishTarget={onSelectSkirmishTarget}
+          onSelectSkirmishUnit={onSelectSkirmishUnit}
           onUseSkill={onUseSkill}
           onUseClassAbility={onUseClassAbility}
+          onUseItem={onUseItem}
           onUseRaceAbility={onUseRaceAbility}
+          onWait={onWait}
           onEscape={onEscape}
           onSetCombatLane={onSetCombatLane}
         />

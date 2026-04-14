@@ -4,6 +4,7 @@
 // =================================================================
 
 import { getItemData } from '../entities/ItemRegistry.js';
+import { isSkirmishCombat } from "../systems/skirmish/SkirmishState.js";
 import {
   DEFAULT_START_LOCATION_ID,
   getAccessibleLocationIds,
@@ -163,7 +164,7 @@ function validateUseItem(action, gameState) {
   }
 
   // Check if effect would be redundant (e.g., healing at full HP)
-  if (itemData.effect && itemData.effect.heal) {
+  if (!isSkirmishCombat(gameState?.combat) && itemData.effect && itemData.effect.heal) {
     const currentHp = gameState.player.hp.current;
     const maxHp = gameState.player.hp.max;
     if (currentHp >= maxHp) {
@@ -298,6 +299,7 @@ function validateGameRules(action, gameState) {
     combat.status === "active" &&
     action.type !== "attack" &&
     action.type !== "escape" &&
+    action.type !== "use_item" &&
     action.type !== "look" &&
     !isMagic
   ) {

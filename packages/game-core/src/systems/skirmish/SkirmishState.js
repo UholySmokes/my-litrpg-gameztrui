@@ -52,6 +52,8 @@ export function isSkirmishCombat(combat) {
       combat.mode === SKIRMISH_MODE &&
       combat.board &&
       typeof combat.board === "object" &&
-      !Array.isArray(combat.board),
+      !Array.isArray(combat.board) &&
+      Array.isArray(combat.board.units) &&
+      combat.board.units.length > 0,
   );
 }

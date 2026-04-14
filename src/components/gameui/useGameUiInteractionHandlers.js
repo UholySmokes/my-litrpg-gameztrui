@@ -341,6 +341,47 @@ export function useGameUiInteractionHandlers({
     [dispatchSystemEvent, state],
   );
 
+  const handleSelectSkirmishUnit = useCallback(
+    (unitId) => {
+      if (!unitId || state?.combat?.status !== "active" || state?.combat?.mode !== "skirmish") {
+        return;
+      }
+      dispatchSystemEvent({
+        type: "PLAYER_SELECT_SKIRMISH_UNIT",
+        payload: { unitId },
+      });
+    },
+    [dispatchSystemEvent, state],
+  );
+
+  const handleSelectSkirmishTarget = useCallback(
+    (targetId) => {
+      if (
+        !targetId ||
+        state?.combat?.status !== "active" ||
+        state?.combat?.mode !== "skirmish"
+      ) {
+        return;
+      }
+      dispatchSystemEvent({
+        type: "PLAYER_SELECT_SKIRMISH_TARGET",
+        payload: { targetId },
+      });
+    },
+    [dispatchSystemEvent, state],
+  );
+
+  const handleMoveSkirmishUnit = useCallback(
+    (lane, slot) => {
+      if (state?.combat?.status !== "active" || state?.combat?.mode !== "skirmish") return;
+      dispatchSystemEvent({
+        type: "PLAYER_SKIRMISH_MOVE",
+        payload: { lane, slot },
+      });
+    },
+    [dispatchSystemEvent, state],
+  );
+
   const handleSetCombatLane = useCallback(
     (lane) => {
       if (state?.combat?.status !== "active") return;
@@ -364,6 +405,11 @@ export function useGameUiInteractionHandlers({
   );
 
   const handleRest = useCallback(() => {
+    if (state?.combat?.status === "active" && state?.combat?.mode === "skirmish") {
+      dispatchSystemEvent({ type: "PLAYER_SKIRMISH_WAIT" });
+      return;
+    }
+
     const result =
       typeof submitAction === "function"
         ? submitAction({
@@ -379,13 +425,20 @@ export function useGameUiInteractionHandlers({
       addSystemMessage(
         result.reason || "Rest is not available right now.",
         "system",
-      );
-    }
-  }, [addSystemMessage, submitAction]);
+        );
+      }
+  }, [addSystemMessage, dispatchSystemEvent, state, submitAction]);
 
   const handleSkillUse = useCallback(
     (skillId, enemyIndex = 0) => {
       if (state?.combat?.status !== "active") return;
+      if (state?.combat?.mode === "skirmish") {
+        dispatchSystemEvent({
+          type: "PLAYER_SKIRMISH_USE_SKILL",
+          payload: { skillId },
+        });
+        return;
+      }
       dispatchSystemEvent({
         type: "PLAYER_USE_SKILL",
         payload: { skillId, enemyIndex },
@@ -419,6 +472,13 @@ export function useGameUiInteractionHandlers({
   const handleUseItem = useCallback(
     (itemId, itemName = "") => {
       if (!itemId) return;
+      if (state?.combat?.status === "active" && state?.combat?.mode === "skirmish") {
+        dispatchSystemEvent({
+          type: "PLAYER_SKIRMISH_USE_ITEM",
+          payload: { itemId },
+        });
+        return;
+      }
       const result =
         typeof submitAction === "function"
           ? submitAction({
@@ -439,7 +499,7 @@ export function useGameUiInteractionHandlers({
         );
       }
     },
-    [addSystemMessage, submitAction],
+    [addSystemMessage, dispatchSystemEvent, state, submitAction],
   );
 
   const handleCombatEscape = useCallback(() => {
@@ -461,10 +521,13 @@ export function useGameUiInteractionHandlers({
     handleEvolveSkill,
     handleFuseSkills,
     handleGachaPull,
+    handleMoveSkirmishUnit,
     handlePerformPrestige,
     handleRaceAbilityUse,
     handleShopPurchase,
     handleRest,
+    handleSelectSkirmishTarget,
+    handleSelectSkirmishUnit,
     handleSetCombatLane,
     handleSetCombatStance,
     handleSkillUse,

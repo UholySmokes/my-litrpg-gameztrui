@@ -1,5 +1,7 @@
 import { DataRegistry } from "../data/DataRegistry.js";
 import { processEnemyTurns } from "../systems/combat/CombatSystem.js";
+import { useSkirmishItem } from "../systems/skirmish/SkirmishSystem.js";
+import { isSkirmishCombat } from "../systems/skirmish/SkirmishState.js";
 import { handleAttack } from "./actions/attackHandler.js";
 import { handleRest } from "./actions/restHandler.js";
 import { handleMove } from "./actions/moveHandler.js";
@@ -675,6 +677,22 @@ export function executeAction(state, action, _options = {}) {
         }
 
         case "use_item": {
+          if (state.combat?.status === "active" && isSkirmishCombat(state.combat)) {
+            const result = useSkirmishItem(state, action.itemId);
+            if (!result.success) {
+              return {
+                success: false,
+                reason: result.reason || `Cannot use ${action.itemName || action.itemId}`,
+                state: result.state || state,
+              };
+            }
+
+            newState = result.state || state;
+            description = `Used ${action.itemName || action.itemId}`;
+            changes.itemUsed = action.itemName || action.itemId;
+            break;
+          }
+
           // Validate item exists and is consumable
           const item = DataRegistry.getItemById(action.itemId);
           if (!item || item.type !== "consumable") {
@@ -872,18 +890,19 @@ export function executeAction(state, action, _options = {}) {
 
       if (
         newState.combat?.status === "active" &&
-        newState.combat.turn === "player" &&
         !action.readOnly &&
         incrementsTurn &&
         action.type !== "attack"
       ) {
-        newState = {
-          ...newState,
-          combat: {
-            ...newState.combat,
-            turn: "enemy",
-          },
-        };
+        if (!isSkirmishCombat(newState.combat) && newState.combat.turn === "player") {
+          newState = {
+            ...newState,
+            combat: {
+              ...newState.combat,
+              turn: "enemy",
+            },
+          };
+        }
         newState = processEnemyTurns(newState);
       }
 

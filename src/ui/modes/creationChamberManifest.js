@@ -1,32 +1,32 @@
 const CHAMBER_DEFINITIONS = [
   {
     id: "binding-hall",
-    title: "Binding Hall",
-    subtitle: "Set the designation and bind the governing system.",
+    title: "Sigil Vestibule",
+    subtitle: "Name the chronicle and bind the ruling system that will govern the descent.",
     includedSteps: ["name", "system"],
   },
   {
     id: "lineage-vault",
-    title: "Lineage Vault",
-    subtitle: "Anchor bloodline and personal identity.",
+    title: "Bloodline Gallery",
+    subtitle: "Choose the lineage that will carry the first memory and inherited edge.",
     includedSteps: ["race"],
   },
   {
     id: "doctrine-forge",
-    title: "Doctrine Forge",
-    subtitle: "Shape class doctrine, branching role, and profession.",
+    title: "Doctrine Loom",
+    subtitle: "Temper combat doctrine, branching path, and worldly trade into one opening role.",
     includedSteps: ["class", "multiclass", "profession"],
   },
   {
     id: "soul-crucible",
-    title: "Soul Crucible",
-    subtitle: "Allocate power, skill loadout, perks, and narrative alignment.",
+    title: "Aether Crucible",
+    subtitle: "Temper raw power, loadout, blessings, and alignment into a stable first form.",
     includedSteps: ["attributes", "skills", "perks", "starter-tree", "alignment"],
   },
   {
     id: "oath-mirror",
-    title: "Oath Mirror",
-    subtitle: "Write the opening command, review the build, and seal the chronicle.",
+    title: "First Dawn Seal",
+    subtitle: "Choose the landing, script the first invocation, and seal the opening page.",
     includedSteps: ["starting-point", "review"],
   },
 ];
@@ -52,57 +52,57 @@ export function validateCreationChamber(chamberId, checks = {}) {
   switch (chamberId) {
     case "binding-hall":
       if (!checks.hasName) {
-        return { valid: false, error: "The Binding Hall demands a designation before granting passage." };
+        return { valid: false, error: "The Sigil Vestibule will not open until the chronicle bears a namesake." };
       }
       if (!checks.hasSystem) {
-        return { valid: false, error: "A governing system must be bound to proceed." };
+        return { valid: false, error: "A ruling system must be bound before the descent can continue." };
       }
       return { valid: true };
     case "lineage-vault":
       if (!checks.hasRace) {
-        return { valid: false, error: "The Lineage Vault requires a sealed bloodline to permit exit." };
+        return { valid: false, error: "The Bloodline Gallery requires a lineage before it will release you." };
       }
       return { valid: true };
     case "doctrine-forge":
       if (!checks.hasClass && !checks.hasProfession) {
-        return { valid: false, error: "The Doctrine Forge requires a chosen Class and Path to proceed." };
+        return { valid: false, error: "The Doctrine Loom requires both a doctrine and a worldly trade." };
       }
       if (!checks.hasClass) {
-        return { valid: false, error: "Your soul demands a Doctrine. Bind a class." };
+        return { valid: false, error: "The loom remains slack. Bind a class before you proceed." };
       }
       if (!checks.hasProfession) {
-        return { valid: false, error: "Your doctrine is bound, but your path requires a profession." };
+        return { valid: false, error: "Doctrine alone is not enough. Choose the trade that grounds the first page." };
       }
       return { valid: true };
     case "soul-crucible":
       if (!checks.attributesLocked) {
         return {
           valid: false,
-          error: "The crucible demands all potential be allocated before advancing.",
+          error: "The Aether Crucible demands every unspent ember be assigned before the seal can advance.",
         };
       }
       if (!checks.skillsLocked) {
         return {
           valid: false,
-          error: "Skill synthesis incomplete. Finalize loadout constraints.",
+          error: "The loadout is still unresolved. Complete the first discipline pattern.",
         };
       }
       if (!checks.perksLocked) {
         return {
           valid: false,
-          error: "Perk manifestation incomplete.",
+          error: "The blessing pattern remains unfinished.",
         };
       }
       if (checks.requiresStarterTree && !checks.starterTreeLocked) {
         return {
           valid: false,
-          error: "A starter talent tree must be grafted.",
+          error: "A starter tree must be grafted before the crucible will stabilize.",
         };
       }
       if (!checks.alignmentLocked) {
         return {
           valid: false,
-          error: "The Soul Crucible requires a cosmic alignment.",
+          error: "Choose the moral current that will color the chronicle's opening pressure.",
         };
       }
       return { valid: true };
@@ -110,19 +110,19 @@ export function validateCreationChamber(chamberId, checks = {}) {
       if (!checks.hasOrigin) {
         return {
           valid: false,
-          error: "The Oath needs an origin before it can bind a real first destination.",
+          error: "The First Dawn Seal needs a landing before it can bind a real first destination.",
         };
       }
       if (!checks.hasStartingPrompt) {
         return {
           valid: false,
-          error: "The chronicle requires an opening command before the first turn can begin.",
+          error: "Write the first invocation before the archive turns the opening page.",
         };
       }
       if (!checks.canFinalize) {
         return {
           valid: false,
-          error: "Your genesis profile is unstable. Resolve anomalies before sealing.",
+          error: "The dossier is still unstable. Resolve the remaining fractures before sealing.",
         };
       }
       return { valid: true };

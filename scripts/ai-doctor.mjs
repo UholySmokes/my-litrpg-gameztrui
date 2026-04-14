@@ -22,7 +22,7 @@ for (const command of ["git", "node", "npm", "codex"]) {
 }
 
 printSection("Optional AI tools");
-for (const command of ["firebase", "claude", "ollama"]) {
+for (const command of ["firebase", "claude", "hermes", "ollama"]) {
   const info = commandInfo(command);
   printStatus(info.available ? "OK" : "WARN", command, info.path || "not found");
 }

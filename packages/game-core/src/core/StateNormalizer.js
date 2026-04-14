@@ -37,6 +37,7 @@ import {
   normalizeAbilityState,
   syncPlayerAbilityState,
 } from "../systems/abilities/UnifiedAbilityEngine.js";
+import { createDefaultCombatState } from "../systems/skirmish/SkirmishState.js";
 
 const DEFAULT_CONFIG = INITIAL_CONFIG;
 const { GAME_STATE_VERSION } = saveCutover;
@@ -1299,6 +1300,7 @@ export function normalizeGameState(rawState) {
       essence: normalizedWorldEssence,
     },
     combat: {
+      ...createDefaultCombatState(),
       ...combat,
       status: combat.status ?? "inactive",
       turn: combat.turn ?? "player",
@@ -1314,6 +1316,15 @@ export function normalizeGameState(rawState) {
       arenaTags: normalizeArray(combat.arenaTags),
       tacticalVerbs: normalizeArray(combat.tacticalVerbs),
       log: normalizeArray(combat.log),
+      board: {
+        ...createDefaultCombatState().board,
+        ...(combat?.board && typeof combat.board === "object" && !Array.isArray(combat.board)
+          ? combat.board
+          : {}),
+        units: normalizeArray(combat?.board?.units),
+        turnQueue: normalizeArray(combat?.board?.turnQueue),
+        eventLog: normalizeArray(combat?.board?.eventLog),
+      },
     },
     chatLog: normalizeArray(state.chatLog),
     narrative: {

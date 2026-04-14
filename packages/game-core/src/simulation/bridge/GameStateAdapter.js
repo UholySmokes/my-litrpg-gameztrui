@@ -108,10 +108,141 @@ export function enemyToEntity(enemy, index = 0) {
   };
 }
 
+export function combatBoardUnitToEntity(unit) {
+  if (!unit || typeof unit !== "object") return null;
+
+  const stats = unit.stats || {};
+  const health = stats.health || {};
+  const mana = stats.mana || {};
+  const stamina = stats.stamina || {};
+  const faction = unit.faction || "neutral";
+
+  return {
+    id: String(unit.id || unit.sourceId || `unit_${SimBridge.now()}`),
+    name: unit.name || unit.sourceId || "Combatant",
+    type:
+      unit.sourceType === "enemy"
+        ? "enemy"
+        : unit.sourceType === "hero"
+          ? "player"
+          : "npc",
+    level: normalizeNumber(unit.level, 1),
+    experience: 0,
+    stats: {
+      strength: normalizeNumber(stats.strength, 5),
+      dexterity: normalizeNumber(stats.dexterity, 5),
+      constitution: normalizeNumber(stats.constitution, 5),
+      intelligence: normalizeNumber(stats.intelligence, 5),
+      wisdom: normalizeNumber(stats.wisdom, 5),
+      charisma: normalizeNumber(stats.charisma, 5),
+      health: normalizeResource(health, { current: 1, maximum: 1 }),
+      mana: normalizeResource(mana, { current: 0, maximum: 0 }),
+      stamina: normalizeResource(stamina, { current: 1, maximum: 1 }),
+      attackPower: Math.max(1, normalizeNumber(stats.attackPower, 5)),
+      defense: Math.max(0, normalizeNumber(stats.defense, 0)),
+      speed: Math.max(1, normalizeNumber(stats.speed, 5)),
+      criticalChance: Math.max(0, Math.min(1, normalizeNumber(stats.criticalChance, 0.05))),
+      criticalMultiplier: Math.max(1, normalizeNumber(stats.criticalMultiplier, 1.5)),
+      evasion: Math.max(0, Math.min(1, normalizeNumber(stats.evasion, 0.05))),
+      accuracy: Math.max(0, Math.min(1, normalizeNumber(stats.accuracy, 0.85))),
+    },
+    position: {
+      lane: normalizeNumber(unit.lane, 1),
+      slot: normalizeNumber(unit.slot, 0),
+    },
+    actionPoints: Math.max(0, normalizeNumber(unit.actionPoints, 1)),
+    maxActionPoints: Math.max(1, normalizeNumber(unit.maxActionPoints, 1)),
+    initiative: Math.max(1, normalizeNumber(unit.initiative, stats.speed || 5)),
+    effects: convertEffects(unit.effects || []),
+    equipment: [],
+    cooldowns: Array.isArray(unit.cooldowns)
+      ? unit.cooldowns.map((entry, index) => normalizeCooldownEntry(entry, index))
+      : [],
+    faction,
+    tags: Array.isArray(unit.tags) ? unit.tags : [],
+    isDead: unit.alive === false,
+  };
+}
+
+export function entityToCombatBoardUnit(entity, existingUnit = {}) {
+  if (!entity || typeof entity !== "object") return null;
+
+  const existingStats = existingUnit?.stats || {};
+  const sourceType =
+    existingUnit?.sourceType ||
+    (entity.type === "player" ? "hero" : entity.type === "enemy" ? "enemy" : "profile");
+
+  return {
+    ...existingUnit,
+    id: entity.id,
+    name: entity.name,
+    faction: existingUnit?.faction || entity.faction || "neutral",
+    sourceType,
+    sourceId: existingUnit?.sourceId || entity.id,
+    lane: normalizeNumber(entity.position?.lane, existingUnit?.lane ?? 1),
+    slot: normalizeNumber(entity.position?.slot, existingUnit?.slot ?? 0),
+    level: normalizeNumber(entity.level, existingUnit?.level ?? 1),
+    stats: {
+      ...existingStats,
+      strength: normalizeNumber(entity.stats?.strength, existingStats.strength ?? 5),
+      dexterity: normalizeNumber(entity.stats?.dexterity, existingStats.dexterity ?? 5),
+      constitution: normalizeNumber(entity.stats?.constitution, existingStats.constitution ?? 5),
+      intelligence: normalizeNumber(entity.stats?.intelligence, existingStats.intelligence ?? 5),
+      wisdom: normalizeNumber(entity.stats?.wisdom, existingStats.wisdom ?? 5),
+      charisma: normalizeNumber(entity.stats?.charisma, existingStats.charisma ?? 5),
+      health: normalizeResource(entity.stats?.health, existingStats.health || { current: 1, maximum: 1 }),
+      mana: normalizeResource(entity.stats?.mana, existingStats.mana || { current: 0, maximum: 0 }),
+      stamina: normalizeResource(
+        entity.stats?.stamina,
+        existingStats.stamina || { current: 1, maximum: 1 },
+      ),
+      attackPower: Math.max(
+        1,
+        normalizeNumber(entity.stats?.attackPower, existingStats.attackPower ?? 5),
+      ),
+      defense: Math.max(0, normalizeNumber(entity.stats?.defense, existingStats.defense ?? 0)),
+      speed: Math.max(1, normalizeNumber(entity.stats?.speed, existingStats.speed ?? 5)),
+      criticalChance: Math.max(
+        0,
+        Math.min(
+          1,
+          normalizeNumber(entity.stats?.criticalChance, existingStats.criticalChance ?? 0.05),
+        ),
+      ),
+      criticalMultiplier: Math.max(
+        1,
+        normalizeNumber(
+          entity.stats?.criticalMultiplier,
+          existingStats.criticalMultiplier ?? 1.5,
+        ),
+      ),
+      evasion: Math.max(0, Math.min(1, normalizeNumber(entity.stats?.evasion, existingStats.evasion ?? 0.05))),
+      accuracy: Math.max(0, Math.min(1, normalizeNumber(entity.stats?.accuracy, existingStats.accuracy ?? 0.85))),
+    },
+    skills: Array.isArray(existingUnit?.skills) ? existingUnit.skills : [],
+    effects: Array.isArray(entity.effects)
+      ? entity.effects.map(convertEffectFromSim)
+      : [],
+    initiative: Math.max(1, normalizeNumber(entity.initiative, existingUnit?.initiative ?? 5)),
+    actionPoints: Math.max(0, normalizeNumber(entity.actionPoints, existingUnit?.actionPoints ?? 1)),
+    maxActionPoints: Math.max(
+      1,
+      normalizeNumber(entity.maxActionPoints, existingUnit?.maxActionPoints ?? 1),
+    ),
+    cooldowns: Array.isArray(entity.cooldowns) ? entity.cooldowns : [],
+    tags: Array.isArray(entity.tags) ? entity.tags : existingUnit?.tags || [],
+    alive: entity.isDead !== true,
+  };
+}
+
 /**
  * Convert game state to simulation state
  */
 export function gameStateToSimulation(gameState) {
+  if (Array.isArray(gameState?.combat?.board?.units)) {
+    return combatBoardToSimulation(gameState.combat.board, gameState);
+  }
+
   const entities = new Map();
 
   // Add player
@@ -128,38 +259,8 @@ export function gameStateToSimulation(gameState) {
     });
   }
 
-  const zones = new Map(
-    (Array.isArray(canonicalZones) ? canonicalZones : []).map((zone) => [
-      zone.id,
-      {
-        id: zone.id,
-        name: zone.name,
-        type: zone.type,
-        connections: Array.isArray(zone.connections) ? zone.connections : [],
-        defaultEntities: [],
-        environmentalEffects: [],
-      },
-    ]),
-  );
-
-  const flagEntries = Object.entries(gameState.world?.flags || {}).filter(
-    ([, value]) => typeof value === "boolean",
-  );
-  const counterEntries = Object.entries(gameState.world?.counters || {}).filter(
-    ([, value]) => Number.isFinite(value),
-  );
-
   return {
-    world: {
-      currentTick: gameState.world?.turnCount || 0,
-      currentTime: Number.isFinite(gameState.world?.time?.currentTime)
-        ? gameState.world.time.currentTime
-        : gameState.world?.time || 0,
-      zones,
-      globalFlags: new Map(flagEntries),
-      globalCounters: new Map(counterEntries),
-      activeEntities: Array.from(entities.keys()),
-    },
+    world: buildSimulationWorld(gameState, Array.from(entities.keys())),
     entities,
     eventLog: [],
     snapshots: new Map(),
@@ -234,6 +335,60 @@ export function entityToEnemy(entity) {
     cooldowns: entity.cooldowns,
     tags: entity.tags,
     isDead: entity.isDead,
+  };
+}
+
+function buildSimulationWorld(gameState, activeEntityIds) {
+  const zones = new Map(
+    (Array.isArray(canonicalZones) ? canonicalZones : []).map((zone) => [
+      zone.id,
+      {
+        id: zone.id,
+        name: zone.name,
+        type: zone.type,
+        connections: Array.isArray(zone.connections) ? zone.connections : [],
+        defaultEntities: [],
+        environmentalEffects: [],
+      },
+    ]),
+  );
+
+  const flagEntries = Object.entries(gameState.world?.flags || {}).filter(
+    ([, value]) => typeof value === "boolean",
+  );
+  const counterEntries = Object.entries(gameState.world?.counters || {}).filter(
+    ([, value]) => Number.isFinite(value),
+  );
+
+  return {
+    currentTick: gameState.world?.turnCount || 0,
+    currentTime: Number.isFinite(gameState.world?.time?.currentTime)
+      ? gameState.world.time.currentTime
+      : gameState.world?.time || 0,
+    zones,
+    globalFlags: new Map(flagEntries),
+    globalCounters: new Map(counterEntries),
+    activeEntities: activeEntityIds,
+  };
+}
+
+export function combatBoardToSimulation(board, gameState = {}) {
+  const entities = new Map();
+  (Array.isArray(board?.units) ? board.units : []).forEach((unit) => {
+    const entity = combatBoardUnitToEntity(unit);
+    if (entity?.id) {
+      entities.set(entity.id, entity);
+    }
+  });
+
+  return {
+    world: buildSimulationWorld(gameState, Array.from(entities.keys())),
+    entities,
+    eventLog: [],
+    snapshots: new Map(),
+    seed: gameState.simulationSeed ?? SimBridge.now(),
+    currentTick: gameState.world?.turnCount || 0,
+    isRunning: board?.status === "active",
   };
 }
 

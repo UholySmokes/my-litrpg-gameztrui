@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Void-Verse Archive Concept Board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #050912;
+        --panel: rgba(7, 14, 26, 0.82);
+        --panel-strong: rgba(9, 16, 31, 0.94);
+        --line: rgba(136, 239, 255, 0.18);
+        --cyan: #62f2ff;
+        --teal: #63ffd8;
+        --gold: #e5cf9f;
+        --amber: #ffb45f;
+        --mist: rgba(224, 238, 248, 0.82);
+        --muted: rgba(166, 187, 206, 0.78);
+        --paper: #f7ead0;
+        --shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: white;
+        font-family: "Manrope", sans-serif;
+        background:
+          radial-gradient(circle at 18% 12%, rgba(90, 54, 180, 0.24), transparent 30%),
+          radial-gradient(circle at 78% 14%, rgba(74, 219, 255, 0.18), transparent 22%),
+          radial-gradient(circle at 48% 82%, rgba(77, 255, 214, 0.12), transparent 24%),
+          linear-gradient(180deg, #070b14 0%, #08111d 45%, #050912 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.28;
+        background-image:
+          radial-gradient(circle at 12% 20%, rgba(255, 255, 255, 0.95) 0 1px, transparent 1px),
+          radial-gradient(circle at 74% 16%, rgba(98, 242, 255, 0.95) 0 1px, transparent 1px),
+          radial-gradient(circle at 35% 70%, rgba(255, 198, 122, 0.85) 0 1px, transparent 1px),
+          radial-gradient(circle at 86% 64%, rgba(255, 255, 255, 0.85) 0 1px, transparent 1px);
+        background-size: 260px 260px, 340px 340px, 320px 320px, 300px 300px;
+      }
+
+      .board {
+        width: min(1540px, calc(100vw - 36px));
+        margin: 28px auto 72px;
+        padding: 24px;
+        border-radius: 34px;
+        border: 1px solid rgba(136, 239, 255, 0.12);
+        background: linear-gradient(145deg, rgba(8, 12, 21, 0.85), rgba(10, 18, 34, 0.68));
+        backdrop-filter: blur(14px);
+        box-shadow: var(--shadow);
+      }
+
+      .intro,
+      .screen,
+      .note {
+        position: relative;
+        overflow: hidden;
+        border-radius: 28px;
+        border: 1px solid var(--line);
+        background:
+          radial-gradient(circle at 82% 14%, rgba(98, 242, 255, 0.18), transparent 18%),
+          radial-gradient(circle at 18% 86%, rgba(99, 255, 216, 0.1), transparent 22%),
+          linear-gradient(155deg, rgba(9, 14, 26, 0.96), rgba(10, 18, 32, 0.74));
+        box-shadow: var(--shadow);
+      }
+
+      .intro {
+        padding: 34px 38px;
+      }
+
+      .intro::before,
+      .screen::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(214, 173, 109, 0.16);
+        pointer-events: none;
+      }
+
+      .eyebrow,
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(136, 239, 255, 0.16);
+        background: rgba(10, 16, 31, 0.72);
+        color: var(--cyan);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before,
+      .tag::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--cyan);
+        box-shadow: 0 0 12px rgba(98, 242, 255, 0.82);
+      }
+
+      .intro-grid,
+      .hero-grid,
+      .split,
+      .ledger-grid,
+      .adventure-grid,
+      .status-row {
+        display: grid;
+        gap: 18px;
+      }
+
+      .intro-grid {
+        grid-template-columns: 1.3fr 0.8fr;
+        margin-top: 20px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: "Cinzel", serif;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--paper);
+      }
+
+      h1 {
+        font-size: clamp(2.4rem, 6vw, 4.25rem);
+        line-height: 0.98;
+      }
+
+      h2 {
+        font-size: clamp(1.6rem, 2.2vw, 2.7rem);
+      }
+
+      h3,
+      h4 {
+        margin: 0;
+        font-family: "Cormorant Garamond", serif;
+        color: var(--paper);
+      }
+
+      p,
+      li {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .audit-list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .audit {
+        padding: 16px 18px;
+        border-radius: 20px;
+        background: rgba(8, 13, 23, 0.64);
+        border: 1px solid rgba(136, 239, 255, 0.12);
+      }
+
+      .audit h4 {
+        font-size: 1.35rem;
+      }
+
+      .screens {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 22px;
+        margin-top: 26px;
+      }
+
+      .screen {
+        padding: 20px;
+        min-height: 560px;
+      }
+
+      .hero {
+        grid-column: span 7;
+        min-height: 760px;
+      }
+
+      .altar {
+        grid-column: span 5;
+        min-height: 760px;
+      }
+
+      .creation,
+      .archive,
+      .adventure {
+        grid-column: span 4;
+      }
+
+      .frame {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .index {
+        color: var(--gold);
+        font-family: "Cinzel", serif;
+        letter-spacing: 0.12em;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr 420px;
+        align-items: center;
+      }
+
+      .trust,
+      .paper,
+      .panel,
+      .rail-card {
+        padding: 16px 18px;
+        border-radius: 20px;
+        border: 1px solid rgba(136, 239, 255, 0.14);
+        background: var(--panel);
+      }
+
+      .paper {
+        background: linear-gradient(180deg, rgba(246, 232, 203, 0.98), rgba(231, 213, 179, 0.94));
+        border-color: rgba(168, 127, 70, 0.34);
+      }
+
+      .paper,
+      .paper p,
+      .paper h4 {
+        color: #4c3a1e;
+      }
+
+      .visual {
+        position: relative;
+        min-height: 500px;
+        display: grid;
+        place-items: center;
+      }
+
+      .visual::before,
+      .visual::after,
+      .portal,
+      .portal::before,
+      .portal::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .visual::before {
+        width: 480px;
+        height: 480px;
+        background:
+          radial-gradient(circle at center, rgba(98, 242, 255, 0.18), transparent 55%),
+          radial-gradient(circle at center, rgba(99, 255, 216, 0.1), transparent 72%);
+      }
+
+      .visual::after {
+        width: 390px;
+        height: 390px;
+        border: 1px dashed rgba(214, 173, 109, 0.26);
+      }
+
+      .portal {
+        width: 312px;
+        height: 312px;
+        border: 2px solid rgba(98, 242, 255, 0.44);
+        box-shadow: 0 0 42px rgba(98, 242, 255, 0.26), inset 0 0 42px rgba(98, 242, 255, 0.2);
+      }
+
+      .portal::before {
+        inset: 44px;
+        border: 1px solid rgba(255, 180, 95, 0.16);
+      }
+
+      .portal::after {
+        inset: 84px;
+        background: rgba(98, 242, 255, 0.15);
+        box-shadow: 0 0 28px rgba(98, 242, 255, 0.32);
+      }
+
+      .book {
+        position: relative;
+        width: 154px;
+        height: 206px;
+        border-radius: 32px;
+        background: linear-gradient(160deg, rgba(8, 16, 28, 0.98), rgba(16, 34, 55, 0.88));
+        border: 1px solid rgba(136, 239, 255, 0.2);
+        box-shadow: 0 22px 48px rgba(0, 0, 0, 0.45), 0 0 38px rgba(98, 242, 255, 0.22);
+      }
+
+      .book::before,
+      .book::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .book::before {
+        top: 28px;
+        width: 70px;
+        height: 108px;
+        clip-path: polygon(50% 0%, 82% 28%, 66% 100%, 34% 100%, 18% 28%);
+        background: linear-gradient(180deg, rgba(148, 252, 255, 0.98), rgba(40, 174, 255, 0.58));
+        box-shadow: 0 0 28px rgba(98, 242, 255, 0.42);
+      }
+
+      .book::after {
+        bottom: 20px;
+        width: 90px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(98, 242, 255, 0.8);
+        filter: blur(12px);
+      }
+
+      .actions,
+      .chips,
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .button,
+      .chip,
+      .tab {
+        padding: 12px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: var(--panel-strong);
+      }
+
+      .button {
+        min-width: 224px;
+        text-transform: uppercase;
+        font-size: 0.96rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      .button small {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+      }
+
+      .archive-btn {
+        border-color: rgba(98, 242, 255, 0.34);
+        box-shadow: 0 0 28px rgba(98, 242, 255, 0.18);
+      }
+
+      .flame-btn {
+        border-color: rgba(255, 180, 95, 0.32);
+        box-shadow: 0 0 24px rgba(255, 180, 95, 0.16);
+      }
+
+      .floating {
+        position: absolute;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(243, 228, 190, 0.96), rgba(232, 214, 176, 0.92));
+        color: #503c1d;
+        font-family: "Cormorant Garamond", serif;
+        box-shadow: 0 16px 24px rgba(0, 0, 0, 0.22);
+      }
+
+      .floating b {
+        display: block;
+        font-family: "Manrope", sans-serif;
+        font-size: 0.64rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(80, 60, 29, 0.76);
+      }
+
+      .f-left {
+        left: 22px;
+        bottom: 38px;
+        transform: rotate(-5deg);
+      }
+
+      .f-right {
+        right: 34px;
+        top: 104px;
+        transform: rotate(6deg);
+      }
+
+      .altar-stage,
+      .scene {
+        position: relative;
+        min-height: 230px;
+        border-radius: 22px;
+        border: 1px solid rgba(136, 239, 255, 0.14);
+        background:
+          radial-gradient(circle at 50% 18%, rgba(98, 242, 255, 0.18), transparent 24%),
+          linear-gradient(180deg, rgba(8, 14, 26, 0.98), rgba(8, 13, 23, 0.82));
+      }
+
+      .altar-stage::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 28px;
+        transform: translateX(-50%);
+        width: 212px;
+        height: 60px;
+        border-radius: 44px;
+        border: 1px solid rgba(214, 173, 109, 0.24);
+        background: linear-gradient(180deg, rgba(13, 21, 37, 0.98), rgba(9, 15, 27, 0.82));
+        box-shadow: inset 0 -10px 24px rgba(98, 242, 255, 0.16);
+      }
+
+      .columns-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .mini,
+      .ledger-card {
+        padding: 16px;
+        border-radius: 20px;
+        border: 1px solid rgba(136, 239, 255, 0.14);
+        background: rgba(8, 13, 24, 0.78);
+      }
+
+      .mini::before,
+      .ledger-card::before {
+        content: "";
+        display: block;
+        width: 72px;
+        height: 92px;
+        margin: 6px auto 10px;
+        border-radius: 18px;
+        border: 1px solid rgba(136, 239, 255, 0.18);
+        background:
+          radial-gradient(circle at 50% 18%, rgba(98, 242, 255, 0.24), transparent 28%),
+          linear-gradient(180deg, rgba(12, 21, 38, 0.98), rgba(9, 15, 26, 0.78));
+      }
+
+      .flame::before {
+        background:
+          radial-gradient(circle at 50% 24%, rgba(255, 180, 95, 0.26), transparent 28%),
+          linear-gradient(180deg, rgba(35, 20, 10, 0.98), rgba(23, 12, 8, 0.78));
+        border-color: rgba(255, 180, 95, 0.24);
+      }
+
+      .summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .chip,
+      .tab {
+        color: var(--mist);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .active {
+        border-color: rgba(255, 180, 95, 0.26);
+        box-shadow: 0 0 22px rgba(255, 180, 95, 0.12);
+        color: var(--paper);
+      }
+
+      .split {
+        grid-template-columns: 1.08fr 0.92fr;
+      }
+
+      .input {
+        margin-top: 12px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(88, 108, 136, 0.24);
+        background: rgba(255, 255, 255, 0.54);
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.32rem;
+      }
+
+      .stack {
+        display: grid;
+        gap: 12px;
+      }
+
+      .stack-card {
+        display: grid;
+        grid-template-columns: 60px 1fr;
+        gap: 12px;
+        align-items: center;
+        padding: 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(136, 239, 255, 0.12);
+        background: rgba(9, 15, 27, 0.86);
+      }
+
+      .stack-card::before {
+        content: "";
+        width: 60px;
+        height: 60px;
+        border-radius: 18px;
+        border: 1px solid rgba(136, 239, 255, 0.18);
+        background:
+          radial-gradient(circle at 50% 28%, rgba(98, 242, 255, 0.28), transparent 28%),
+          linear-gradient(180deg, rgba(12, 21, 38, 0.98), rgba(8, 14, 24, 0.82));
+      }
+
+      .status {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .track {
+        position: relative;
+        flex: 1;
+        height: 10px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .track::after {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 72%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, rgba(98, 242, 255, 0.95), rgba(99, 255, 216, 0.74));
+      }
+
+      .ledger-grid,
+      .adventure-grid,
+      .status-row {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .ledger-card::before {
+        width: 100%;
+        height: 82px;
+        margin: 0 0 12px;
+        border-radius: 16px;
+        background:
+          linear-gradient(130deg, rgba(40, 69, 116, 0.66), rgba(15, 25, 39, 0.26)),
+          radial-gradient(circle at 72% 20%, rgba(98, 242, 255, 0.28), transparent 22%),
+          radial-gradient(circle at 34% 58%, rgba(99, 255, 216, 0.18), transparent 24%);
+      }
+
+      .scene {
+        overflow: hidden;
+      }
+
+      .scene::before,
+      .scene::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 96px;
+        height: 166px;
+        border-radius: 30px 30px 0 0;
+        background: linear-gradient(180deg, rgba(20, 30, 47, 0.65), rgba(9, 14, 24, 0.96));
+      }
+
+      .scene::before {
+        left: 16px;
+      }
+
+      .scene::after {
+        right: 16px;
+      }
+
+      .scene .portal {
+        width: 180px;
+        height: 180px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+      }
+
+      .bullet {
+        margin: 14px 0 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .note {
+        margin-top: 22px;
+        padding: 18px 22px;
+        color: var(--mist);
+        line-height: 1.7;
+      }
+
+      .note strong {
+        color: var(--paper);
+      }
+
+      @media (max-width: 1180px) {
+        .intro-grid,
+        .hero-grid,
+        .split,
+        .ledger-grid,
+        .adventure-grid,
+        .status-row {
+          grid-template-columns: 1fr;
+        }
+
+        .hero,
+        .altar,
+        .creation,
+        .archive,
+        .adventure {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 820px) {
+        .board {
+          width: min(100vw - 18px, 100%);
+          padding: 14px;
+          margin: 14px auto 40px;
+          border-radius: 24px;
+        }
+
+        .intro,
+        .screen,
+        .note {
+          padding: 18px;
+          border-radius: 22px;
+        }
+
+        .columns-3,
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .button {
+          min-width: 0;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <section class="intro">
+        <span class="eyebrow">Concept board - original art direction from your references</span>
+        <div class="intro-grid">
+          <div>
+            <h1>Void-Verse<br />The Archive</h1>
+            <p>
+              A cosmic reliquary direction for the live browser shell:
+              ceremonial, luminous, and narrative-first, but explicitly rebuilt
+              around the audit's trust problems. The flow here is
+              <strong>Landing -> Chronicle Altar -> Character Creation -> Celestial Ledger -> Adventure</strong>,
+              with the same visual language carried all the way through.
+            </p>
+          </div>
+          <div class="audit-list">
+            <article class="audit">
+              <h4>Trust Before Spectacle</h4>
+              <p>Origin, oath, and opening spawn are shown as one contract.</p>
+            </article>
+            <article class="audit">
+              <h4>Paced Ritual Funnel</h4>
+              <p>Soul Crucible density becomes staged chambers with a live summary strip.</p>
+            </article>
+            <article class="audit">
+              <h4>Quiet First Impression</h4>
+              <p>Install noise is demoted so the first feeling is "enter a chronicle," not "install a web app."</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="screens">
+        <article class="screen hero">
+          <div class="frame">
+            <span class="tag">Entry / Landing Shell</span>
+            <span class="index">01</span>
+          </div>
+          <div class="hero-grid">
+            <div>
+              <h2>The Archive Awaits</h2>
+              <p>
+                The landing shell sells the ritual in one move: clear headline,
+                dual entry routes, and a trust banner that states the opening pact plainly.
+              </p>
+              <div class="trust">
+                <h4>Chosen origin becomes your first scene.</h4>
+                <p>No contradictory review state, no hidden handoff, and no suspense about whether the oath actually stuck.</p>
+              </div>
+              <div class="actions" style="margin-top: 22px">
+                <div class="button archive-btn">Enter the Archive<small>Cloud Chronicle - live-bound entry</small></div>
+                <div class="button flame-btn">Ignite Local Flame<small>Offline ritual - same origin pact</small></div>
+              </div>
+            </div>
+            <div class="visual">
+              <div class="portal"></div>
+              <div class="book"></div>
+            </div>
+          </div>
+          <div class="floating f-left"><b>First signal</b>Archive before install prompt.</div>
+          <div class="floating f-right"><b>Outcome</b>Fantasy with a truthful contract.</div>
+        </article>
+
+        <article class="screen altar">
+          <div class="frame">
+            <span class="tag">Chronicle Altar / Hub</span>
+            <span class="index">02</span>
+          </div>
+          <div class="altar-stage"></div>
+          <div class="columns-3" style="margin-top: 16px">
+            <section class="mini">
+              <h4>Name the Sigil</h4>
+              <p>Identity lives on a ceremonial surface, not buried inside a dense stack.</p>
+            </section>
+            <section class="mini">
+              <h4>Temper the Vessel</h4>
+              <p>Build choices arrive in readable waves with visible progress and summaries.</p>
+            </section>
+            <section class="mini flame">
+              <h4>Seal the First Page</h4>
+              <p>The final review mirrors the destination and consequence of the oath exactly.</p>
+            </section>
+          </div>
+          <div class="panel" style="margin-top: 16px">
+            <h4>Design correction</h4>
+            <p>The altar turns the three highest-stakes onboarding moments into a visible ritual map, so the player never wonders whether the build is actually canonical.</p>
+          </div>
+        </article>
+
+        <article class="screen creation">
+          <div class="frame">
+            <span class="tag">Character Creation Shell</span>
+            <span class="index">03</span>
+          </div>
+          <div class="summary">
+            <span class="chip"><b>Origin</b> Meridian Arcology</span>
+            <span class="chip"><b>Class</b> Fracture Weaver</span>
+            <span class="chip active"><b>Phase</b> Temper the Vessel</span>
+          </div>
+          <div class="summary" style="margin-top: 12px">
+            <span class="chip">Name</span>
+            <span class="chip active">Temper</span>
+            <span class="chip">Seal</span>
+          </div>
+          <div class="split" style="margin-top: 16px">
+            <section class="paper">
+              <h4>Name the Sigil</h4>
+              <p>The identity field becomes parchment, separating tone from the denser mechanics.</p>
+              <div class="input">Kaelith Voss</div>
+            </section>
+            <section class="panel">
+              <h4>Live Oath Summary</h4>
+              <p>Every high-salience choice uses the same labels that appear in the final seal.</p>
+              <ul class="bullet">
+                <li>Origin locked: Meridian Arcology</li>
+                <li>Spawn destination: City Atrium / First Dawn</li>
+                <li>State confidence: Ready to seal</li>
+              </ul>
+            </section>
+          </div>
+          <div class="stack" style="margin-top: 16px">
+            <article class="stack-card">
+              <div><strong>Lineage</strong><br /><span style="color: var(--muted)">Astral-bound vessel</span></div>
+            </article>
+            <article class="stack-card">
+              <div><strong>Starting Pressure</strong><br /><span style="color: var(--muted)">Debt owed to the fracture wardens</span></div>
+            </article>
+            <article class="stack-card">
+              <div><strong>First Technique</strong><br /><span style="color: var(--muted)">Shiver Thread - short-range reality stitch</span></div>
+            </article>
+          </div>
+          <div class="status" style="margin-top: 16px">
+            <strong style="color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.82rem">4 of 5 chambers sealed</strong>
+            <div class="track"></div>
+          </div>
+        </article>
+
+        <article class="screen archive">
+          <div class="frame">
+            <span class="tag">Celestial Ledger / Archive Page</span>
+            <span class="index">04</span>
+          </div>
+          <div class="tabs">
+            <span class="tab active">All Chronicles</span>
+            <span class="tab">Bound Fractures</span>
+            <span class="tab">Fallen Zones</span>
+            <span class="tab">Local Flame</span>
+          </div>
+          <div class="ledger-grid" style="margin-top: 16px">
+            <div class="cards">
+              <article class="ledger-card">
+                <h4>The Meridian Chorus</h4>
+                <p>High social pressure and rapid faction consequences.</p>
+              </article>
+              <article class="ledger-card">
+                <h4>The Veiled Spine</h4>
+                <p>Darker archive lane with stronger mystery hooks.</p>
+              </article>
+              <article class="ledger-card">
+                <h4>Tideward Ash</h4>
+                <p>Coastal fracture travel with softer onboarding.</p>
+              </article>
+              <article class="ledger-card">
+                <h4>Shore of Broken Oaths</h4>
+                <p>Hard-mode opening for players who want hostility early.</p>
+              </article>
+            </div>
+            <aside style="display: grid; gap: 12px">
+              <div class="rail-card">
+                <small style="letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted)">Featured Chronicle</small>
+                <h4 style="font-size: 1.45rem">The Meridian Chorus</h4>
+              </div>
+              <div class="rail-card">
+                <small style="letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted)">Opening Zone</small>
+                <h4 style="font-size: 1.45rem">Meridian Arcology</h4>
+              </div>
+              <div class="rail-card">
+                <small style="letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted)">Promise</small>
+                <h4 style="font-size: 1.45rem">Catalogue copy matches runtime spawn</h4>
+              </div>
+            </aside>
+          </div>
+        </article>
+
+        <article class="screen adventure">
+          <div class="frame">
+            <span class="tag">Adventure Shell</span>
+            <span class="index">05</span>
+          </div>
+          <div class="status-row">
+            <div class="rail-card">
+              <small style="letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted)">Current Chronicle</small>
+              <h4 style="font-size: 1.45rem">The Meridian Chorus - Level 1 readiness</h4>
+            </div>
+            <div class="rail-card">
+              <small style="letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted)">Spawn Echo</small>
+              <h4 style="font-size: 1.45rem">Arrived exactly where the oath pointed</h4>
+            </div>
+          </div>
+          <div class="adventure-grid" style="margin-top: 16px">
+            <section class="panel">
+              <div class="scene">
+                <div class="portal"></div>
+              </div>
+              <h4 style="margin-top: 14px; font-size: 1.55rem">The First Threshold</h4>
+              <p>You stand inside the Meridian transit sanctum. The first scene names the chosen origin outright so the payoff lands instantly.</p>
+            </section>
+            <section class="panel">
+              <h4 style="font-size: 1.55rem">Guided First Moves</h4>
+              <p>Command chips mirror the room's real affordances, so the shell teaches without overpromising.</p>
+              <div class="chips" style="margin-top: 14px">
+                <span class="chip active">Inspect the ward ring</span>
+                <span class="chip">Speak to the usher</span>
+                <span class="chip">Open your sealed page</span>
+                <span class="chip">Scan the fracture weather</span>
+              </div>
+              <ul class="bullet">
+                <li>Level 1 is framed as readiness, not an earned milestone.</li>
+                <li>Starting zone is visible in both copy and shell chrome.</li>
+                <li>Action examples stay grounded in the current room.</li>
+              </ul>
+            </section>
+          </div>
+          <div class="chips" style="margin-top: 16px">
+            <span class="chip active">Continue Writing</span>
+            <span class="chip">Seal Chronicle</span>
+            <span class="chip">Review Oath</span>
+            <span class="chip">Channel Local Flame</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="note">
+        <strong>How to use this artifact:</strong> this is a style-locked concept board for the current shell path
+        (<code>GameUIRoot -> CharacterHub -> CharacterCreationShell -> AdventureShell</code>).
+        You can open it directly in a browser, screen-capture it into Figma later, or translate it into implementation tickets.
+      </section>
+    </main>
+  </body>
+</html>

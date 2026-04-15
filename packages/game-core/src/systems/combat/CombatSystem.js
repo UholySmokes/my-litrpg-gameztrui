@@ -301,22 +301,32 @@ const resolveSkillDefinition = (state, skillInput) => {
   return pools.find((skill) => skill?.id === skillId) || null;
 };
 const ELEMENTAL_REACTIONS = [...DEFAULT_ELEMENTAL_REACTIONS, ...EXTRA_ELEMENTAL_REACTIONS];
+const ARENA_TAGS_BY_ZONE_ID = {
+  auric_crown: ["crowded-cover", "contract-crossfire"],
+  skybound_marches: ["wind-shear", "catwalk-drop"],
+  glassstep_expanse: ["terrain-glassstep_expanse", "heat-haze"],
+  emberline_archipelago: ["terrain-emberline_archipelago", "heat-haze"],
+  veilward_depths: ["terrain-veilward_depths", "low-visibility"],
+  wildroot_basin: ["terrain-wildroot_basin", "dense-cover"],
+  frostveil_reach: ["terrain-frostveil_reach", "whiteout"],
+  dawnreef_tangle: ["salt-slick-stone", "tide-pull"],
+  bloodwake_dominion: ["terrain-bloodwake_dominion", "red-grass-charge"],
+  thunderplate_steppe: ["wind-shear", "terrain-thunderplate_steppe"],
+  ossuary_vale: ["terrain-ossuary_vale", "gravewind"],
+  hollowroot_deep: ["terrain-hollowroot_deep", "dense-cover"],
+  riftscar_barrens: ["terrain-riftscar_barrens", "fracture-drift"],
+  moonfen_coil: ["terrain-moonfen_coil", "low-visibility"],
+  ironquake_shelf: ["terrain-ironquake_shelf", "fault-line"],
+  lucent_verge: ["terrain-lucent_verge", "dazzle-burn"],
+  sunvault_crown: ["terrain-sunvault_crown", "high-ground"],
+  gravewell_mantle: ["terrain-gravewell_mantle", "gravewind"],
+};
 const getArenaTags = (state = {}) => {
   if (Array.isArray(state?.combat?.arenaTags) && state.combat.arenaTags.length > 0) {
     return state.combat.arenaTags;
   }
-  const openingArcId = state?.player?.openingArcId || state?.world?.vars?.openingArcId || "";
   const zoneId = state?.player?.oathOrigin?.zoneId || state?.world?.location?.biome || "";
-  if (openingArcId.includes("meridian") || zoneId === "city") {
-    return ["crowded-cover", "contract-crossfire"];
-  }
-  if (openingArcId.includes("tideward") || zoneId === "coast") {
-    return ["salt-slick-stone", "tide-pull"];
-  }
-  if (openingArcId.includes("skyforge") || zoneId === "skydocks") {
-    return ["wind-shear", "catwalk-drop"];
-  }
-  return zoneId ? [`terrain-${zoneId}`] : [];
+  return ARENA_TAGS_BY_ZONE_ID[zoneId] || (zoneId ? [`terrain-${zoneId}`] : []);
 };
 const applyStanceModifier = (damageResult, stance, mode) => {
   if (!damageResult) return damageResult;

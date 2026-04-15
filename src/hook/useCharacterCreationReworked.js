@@ -60,6 +60,10 @@ import {
   sanitizeStartCommand,
 } from "../core/customStart.js";
 import {
+  STARTING_LANDMASS_IDS,
+  WORLD_ATLAS_LANDMASSES,
+} from "../world/WorldDataRegistry.js";
+import {
   patchCharacterCreationDraft,
   readCharacterCreationDraft,
 } from "../components/gameui/characterCreationDraft.js";
@@ -88,7 +92,7 @@ const CREATION_STEPS = Object.freeze({
   REVIEW: 13,
 });
 
-const AVAILABLE_STARTING_POINTS = Object.freeze([
+const LEGACY_AVAILABLE_STARTING_POINTS = Object.freeze([
   { id: "city", name: "Meridian Arcology", type: "social", summary: "You open unfamiliar eyes on cold stone in a neon-lit alcove — guild signs flicker above, and your new body's first breath tastes like ozone and commerce." },
   { id: "ruins", name: "Leyfall Ruins", type: "exploration", summary: "Consciousness returns among shattered wards and exposed foundations — leyline energy hums through a body that wasn't yours a moment ago." },
   { id: "wilds", name: "Wildroot Fringe", type: "exploration", summary: "Wet earth, root-smell, and birdsong — you wake under tangled canopy with borrowed limbs and a system prompt blinking behind unfamiliar eyes." },
@@ -100,6 +104,20 @@ const AVAILABLE_STARTING_POINTS = Object.freeze([
   { id: "volcanic", name: "Emberline Caldera", type: "combat", summary: "A furnace-blast of awareness as you gasp awake on scorched rock — the air shimmers, your skin isn't your skin, and something molten glows below." },
   { id: "dreamscape", name: "Mnemonic Dreamscape", type: "exploration", summary: "Thought before body — you exist as pure awareness in psychic mist before the world slowly gives you form, one uncertain sense at a time." },
 ]);
+void LEGACY_AVAILABLE_STARTING_POINTS;
+const WORLD_ATLAS_LANDMASS_BY_ID = new Map(
+  WORLD_ATLAS_LANDMASSES.map((entry) => [entry.id, entry]),
+);
+const AVAILABLE_STARTING_POINTS = Object.freeze(
+  STARTING_LANDMASS_IDS.map((landmassId) => WORLD_ATLAS_LANDMASS_BY_ID.get(landmassId))
+    .filter(Boolean)
+    .map((landmass) => ({
+      id: landmass.id,
+      name: landmass.name,
+      type: landmass.gameplayType,
+      summary: landmass.startingSummary || landmass.summary,
+    })),
+);
 const AVAILABLE_ARCHETYPE_SYSTEMS = getCharacterCreationArchetypeSystems().sort((left, right) => {
   const leftPriority = Number(left?.characterCreation?.ordering?.priority || 999);
   const rightPriority = Number(right?.characterCreation?.ordering?.priority || 999);

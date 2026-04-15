@@ -22,15 +22,23 @@ import { getArchetypeSystemById } from "../systems/archetype/ArchetypeSystemRegi
 import { isDevourerCorePlayer, normalizeDevourerArchetypeState } from "../systems/archetype/devourerCore.js";
 import {
   DEFAULT_START_LOCATION_ID,
+  DEFAULT_START_ZONE_ID,
+  WORLD_FLAG_DEFAULTS,
   WORLD_META,
   MAJOR_FACTION_IDS,
   resolveLocationId,
+  resolveZoneId,
   getLocationById,
   getZoneById,
   getZoneEntryLocationId,
   getBiomeEssenceProfile,
   getEssenceAnomalyById,
 } from "../world/WorldDataRegistry.js";
+import {
+  getOpeningArcByOathOriginId,
+  resolveOpeningArcId,
+} from "../world/OpeningArcRegistry.js";
+import { resolveOpeningTutorialBundleId } from "../world/OpeningTutorialBundleRegistry.js";
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import { defaultPrestigeStats } from "../systems/PrestigeSystem";
 import {
@@ -199,12 +207,11 @@ function normalizeOathOriginRef(value, fallback = null) {
     fallback?.id ||
     null;
 
-  if (!zoneId) return fallback ?? null;
-
-  const resolvedZoneId = String(zoneId).trim();
+  const resolvedZoneId = canonicalizeZoneId(zoneId, null);
+  if (!resolvedZoneId) return fallback ?? null;
   const resolvedLocationId =
-    (typeof source?.locationId === "string" && source.locationId.trim()) ||
-    (typeof fallback?.locationId === "string" && fallback.locationId.trim()) ||
+    canonicalizeLocationId(source?.locationId) ||
+    canonicalizeLocationId(fallback?.locationId) ||
     getZoneEntryLocationId(resolvedZoneId) ||
     null;
   const zone = getZoneById(resolvedZoneId);
@@ -375,15 +382,18 @@ function normalizePlayer(rawPlayer, config) {
     fallback: null,
   });
   const normalizedOrigin = normalizeOriginRef(player.origin, null);
+  const normalizedStartingZoneId = canonicalizeZoneId(player.startingZoneId, null);
+  const normalizedStartingLocationId = canonicalizeLocationId(
+    player.startingLocationId || null,
+  );
   const legacyOathOriginFallback =
-    typeof player.startingZoneId === "string" && player.startingZoneId.trim()
+    normalizedStartingZoneId
       ? {
-          id: player.startingZoneId.trim(),
-          zoneId: player.startingZoneId.trim(),
+          id: normalizedStartingZoneId,
+          zoneId: normalizedStartingZoneId,
           locationId:
-            (typeof player.startingLocationId === "string" &&
-              player.startingLocationId.trim()) ||
-            getZoneEntryLocationId(player.startingZoneId.trim()) ||
+            normalizedStartingLocationId ||
+            getZoneEntryLocationId(normalizedStartingZoneId) ||
             null,
         }
       : null;
@@ -391,6 +401,16 @@ function normalizePlayer(rawPlayer, config) {
     player.oathOrigin,
     legacyOathOriginFallback,
   );
+  const resolvedOpeningArc =
+    getOpeningArcByOathOriginId(
+      normalizedOathOrigin?.id || normalizedStartingZoneId,
+    ) || null;
+  const normalizedOpeningArcId =
+    resolveOpeningArcId(player.openingArcId) || resolvedOpeningArc?.id || null;
+  const normalizedTutorialBundleId =
+    resolveOpeningTutorialBundleId(player.tutorialBundleId) ||
+    resolvedOpeningArc?.tutorialBundleId ||
+    null;
   const attributes = normalizeAttributes(
     player.attributes,
     config.baseAttributeValue,
@@ -486,18 +506,18 @@ function normalizePlayer(rawPlayer, config) {
     archetypeSystem,
     progressionModifiers,
     talents: Array.isArray(player.talents) ? player.talents : [],
-    openingArcId:
-      typeof player.openingArcId === "string" && player.openingArcId.trim()
-        ? player.openingArcId.trim()
-        : null,
+    startingZoneId: normalizedStartingZoneId || normalizedOathOrigin?.zoneId || null,
+    startingLocationId:
+      normalizedStartingLocationId ||
+      normalizedOathOrigin?.locationId ||
+      getZoneEntryLocationId(normalizedOathOrigin?.zoneId || normalizedStartingZoneId) ||
+      DEFAULT_START_LOCATION_ID,
+    openingArcId: normalizedOpeningArcId,
     entrySceneId:
       typeof player.entrySceneId === "string" && player.entrySceneId.trim()
         ? player.entrySceneId.trim()
         : null,
-    tutorialBundleId:
-      typeof player.tutorialBundleId === "string" && player.tutorialBundleId.trim()
-        ? player.tutorialBundleId.trim()
-        : null,
+    tutorialBundleId: normalizedTutorialBundleId,
     professions: isPlainObject(player.professions) ? player.professions : {},
     prestige: isPlainObject(player.prestige)
       ? { ...defaultPrestigeStats(), ...player.prestige }
@@ -639,6 +659,17 @@ function normalizeDungeonState(rawDungeon) {
 }
 
 const DEFAULT_WORLD_ID = WORLD_META.id;
+const LEGACY_WORLD_FLAG_MAP = {
+  leyline_storms_active: "riftscar_fold_event_active",
+  market_unrest_active: "auric_choir_tension_active",
+  bloom_ignition_active: "wildroot_bloom_surge_active",
+  skydock_lockdown_active: "skybound_redline_active",
+  veil_alert_active: "veilward_ledger_surge_active",
+  tideward_breach_active: "dawnreef_maelstrom_watch_active",
+  mirage_storm_active: "glassstep_shatterstorm_active",
+  caldera_vents_unstable: "emberline_vent_alarm_active",
+  dream_wisps_active: "lucent_revelation_active",
+};
 const DEFAULT_WORLD_COUNTERS = {
   day: 1,
   chapter: 0,
@@ -646,17 +677,11 @@ const DEFAULT_WORLD_COUNTERS = {
 };
 
 function createDefaultWorldFlags() {
-  return {
-    leyline_storms_active: false,
-    market_unrest_active: false,
-    bloom_ignition_active: false,
-    skydock_lockdown_active: false,
-    veil_alert_active: false,
-    tideward_breach_active: false,
-    mirage_storm_active: false,
-    caldera_vents_unstable: false,
-    dream_wisps_active: false,
-  };
+  return { ...WORLD_FLAG_DEFAULTS };
+}
+
+function canonicalizeZoneId(value, fallback = null) {
+  return resolveZoneId(value) || fallback;
 }
 
 function canonicalizeLocationId(value) {
@@ -706,6 +731,15 @@ function normalizeWorldVars(rawVars) {
     typeof next.current_quest_id === "string" && next.current_quest_id.trim()
       ? next.current_quest_id.trim()
       : null;
+  next.openingArcId = resolveOpeningArcId(next.openingArcId) || null;
+  next.tutorialBundleId = resolveOpeningTutorialBundleId(next.tutorialBundleId) || null;
+
+  if (isPlainObject(next.onboarding)) {
+    next.onboarding = {
+      ...next.onboarding,
+      bundleId: resolveOpeningTutorialBundleId(next.onboarding.bundleId) || null,
+    };
+  }
 
   return next;
 }
@@ -765,7 +799,8 @@ function migrateWorldFlags(rawFlags, baseVars, baseCounters) {
     }
 
     if (typeof value === "boolean") {
-      nextFlags[key] = value;
+      const mappedKey = LEGACY_WORLD_FLAG_MAP[key] || key;
+      nextFlags[mappedKey] = value;
       return;
     }
 
@@ -811,8 +846,8 @@ function normalizeLocation(rawLocation) {
 
     const resolvedLoc = resolvedCurrent ? getLocationById(resolvedCurrent) : null;
     const derivedBiome = resolvedLoc?.zoneId || null;
-    const biomeRaw = typeof rawLocation.biome === "string" ? rawLocation.biome : null;
-    const biome = biomeRaw || derivedBiome || "city";
+    const biomeRaw = canonicalizeZoneId(rawLocation.biome);
+    const biome = biomeRaw || derivedBiome || DEFAULT_START_ZONE_ID;
 
     return {
       ...rawLocation,
@@ -825,7 +860,7 @@ function normalizeLocation(rawLocation) {
 
   if (typeof rawLocation === "string" && rawLocation.trim()) {
     const current = canonicalizeLocationId(rawLocation) || DEFAULT_START_LOCATION_ID;
-    const biome = getLocationById(current)?.zoneId || "city";
+    const biome = getLocationById(current)?.zoneId || DEFAULT_START_ZONE_ID;
     return {
       current,
       visited: [current],
@@ -834,7 +869,7 @@ function normalizeLocation(rawLocation) {
     };
   }
 
-  const biome = getLocationById(DEFAULT_START_LOCATION_ID)?.zoneId || "city";
+  const biome = getLocationById(DEFAULT_START_LOCATION_ID)?.zoneId || DEFAULT_START_ZONE_ID;
   return {
     current: DEFAULT_START_LOCATION_ID,
     visited: [DEFAULT_START_LOCATION_ID],
@@ -875,22 +910,34 @@ function normalizeWorldTime(rawTime) {
 }
 
 function normalizeWorldWeather(rawWeather, biomeId, turnCount) {
-  const byBiome = isPlainObject(rawWeather?.byBiome) ? { ...rawWeather.byBiome } : {};
+  const rawByBiome = isPlainObject(rawWeather?.byBiome) ? rawWeather.byBiome : {};
+  const byBiome = {};
+
+  Object.entries(rawByBiome).forEach(([rawBiomeId, weatherNode]) => {
+    const canonicalBiomeId = canonicalizeZoneId(rawBiomeId, rawBiomeId);
+    if (!canonicalBiomeId || !isPlainObject(weatherNode)) return;
+    byBiome[canonicalBiomeId] = weatherNode;
+  });
+
+  const zone = getZoneById(biomeId);
+  const fallbackType =
+    typeof zone?.seedWeather?.type === "string" ? zone.seedWeather.type : "clear";
+  const fallbackIntensity = clamp(toNumber(zone?.seedWeather?.intensity, 0.3), 0, 1);
   const existing = isPlainObject(byBiome[biomeId]) ? byBiome[biomeId] : null;
   if (!existing) {
     byBiome[biomeId] = {
-      type: "clear",
-      intensity: 0.3,
+      type: fallbackType,
+      intensity: fallbackIntensity,
       updatedTurn: turnCount,
     };
   } else {
-    const typeRaw = typeof existing.type === "string" ? existing.type : "clear";
+    const typeRaw = typeof existing.type === "string" ? existing.type : fallbackType;
     const type = ["clear", "rain", "storm", "drought", "fog"].includes(typeRaw)
       ? typeRaw
-      : "clear";
+      : fallbackType;
     byBiome[biomeId] = {
       type,
-      intensity: clamp(toNumber(existing.intensity, 0.3), 0, 1),
+      intensity: clamp(toNumber(existing.intensity, fallbackIntensity), 0, 1),
       updatedTurn: Math.max(0, Math.floor(toNumber(existing.updatedTurn, turnCount))),
     };
   }
@@ -984,6 +1031,60 @@ function normalizeWorldEssence(rawEssence, { locationId, biomeId, time, weather 
       space: 0.03,
       time: 0.03,
     };
+    if (text.includes("auric") || text.includes("basilica") || text.includes("gilt")) {
+      return { ...base, light: 0.24, creation: 0.18, air: 0.16, fire: 0.06 };
+    }
+    if (text.includes("skybound") || text.includes("aerie") || text.includes("cable")) {
+      return { ...base, air: 0.24, lightning: 0.18, light: 0.12, earth: 0.08 };
+    }
+    if (text.includes("glassstep") || text.includes("mirror") || text.includes("oasis")) {
+      return { ...base, air: 0.22, fire: 0.16, time: 0.12, water: 0.06 };
+    }
+    if (text.includes("emberline") || text.includes("ashmouth") || text.includes("vent")) {
+      return { ...base, fire: 0.28, earth: 0.18, destruction: 0.08, water: 0.05 };
+    }
+    if (text.includes("veilward") || text.includes("recall") || text.includes("ledger")) {
+      return { ...base, shadow: 0.2, water: 0.16, earth: 0.16, light: 0.04 };
+    }
+    if (text.includes("wildroot") || text.includes("seed parliament") || text.includes("orchard")) {
+      return { ...base, life: 0.26, earth: 0.18, water: 0.14, shadow: 0.06 };
+    }
+    if (text.includes("frostveil") || text.includes("aurora") || text.includes("hushdock")) {
+      return { ...base, water: 0.22, air: 0.16, time: 0.14, earth: 0.08 };
+    }
+    if (text.includes("dawnreef") || text.includes("salt sanctuary") || text.includes("reef")) {
+      return { ...base, water: 0.28, life: 0.16, air: 0.14, fire: 0.05 };
+    }
+    if (text.includes("bloodwake") || text.includes("crimson") || text.includes("inheritance")) {
+      return { ...base, life: 0.22, fire: 0.16, destruction: 0.14, earth: 0.08 };
+    }
+    if (text.includes("thunderplate") || text.includes("strikemere") || text.includes("herd")) {
+      return { ...base, lightning: 0.24, air: 0.18, earth: 0.14, fire: 0.05 };
+    }
+    if (text.includes("ossuary") || text.includes("sepul") || text.includes("gravewind")) {
+      return { ...base, shadow: 0.22, earth: 0.18, time: 0.14, water: 0.06 };
+    }
+    if (text.includes("hollowroot") || text.includes("loam") || text.includes("underbloom")) {
+      return { ...base, life: 0.24, earth: 0.18, shadow: 0.14, water: 0.08 };
+    }
+    if (text.includes("riftscar") || text.includes("stillpoint") || text.includes("fold")) {
+      return { ...base, space: 0.18, time: 0.16, air: 0.14, lightning: 0.08 };
+    }
+    if (text.includes("moonfen") || text.includes("silver sleep") || text.includes("somnarch")) {
+      return { ...base, shadow: 0.18, water: 0.18, time: 0.14, life: 0.08 };
+    }
+    if (text.includes("ironquake") || text.includes("worldhammer") || text.includes("fault")) {
+      return { ...base, earth: 0.26, fire: 0.16, lightning: 0.12, air: 0.06 };
+    }
+    if (text.includes("lucent") || text.includes("open eye") || text.includes("prism")) {
+      return { ...base, light: 0.24, space: 0.16, life: 0.14, air: 0.08 };
+    }
+    if (text.includes("sunvault") || text.includes("helior")) {
+      return { ...base, light: 0.24, air: 0.16, earth: 0.14, fire: 0.06 };
+    }
+    if (text.includes("gravewell") || text.includes("mourngate") || text.includes("underbloom sea")) {
+      return { ...base, shadow: 0.22, earth: 0.16, water: 0.14, fire: 0.05 };
+    }
     if (text.includes("coast") || text.includes("pier") || text.includes("tide")) {
       return { ...base, water: 0.35, air: 0.18, life: 0.14, fire: 0.06 };
     }
@@ -1241,8 +1342,7 @@ export function normalizeGameState(rawState) {
     baseWorldVars,
     baseWorldCounters,
   );
-  const normalizedWorldId =
-    typeof world.id === "string" && world.id.trim() ? world.id.trim() : DEFAULT_WORLD_ID;
+  const normalizedWorldId = DEFAULT_WORLD_ID;
   const normalizedWorldLocation = normalizeLocation(world.location);
   const normalizedWorldVars = normalizeWorldVars(migratedWorldFlags.vars);
   const normalizedWorldCounters = normalizeWorldCounters(
@@ -1255,12 +1355,12 @@ export function normalizeGameState(rawState) {
   const normalizedWorldTime = normalizeWorldTime(world.time);
   const normalizedWorldWeather = normalizeWorldWeather(
     world.weather,
-    normalizedWorldLocation.biome || "city",
+    normalizedWorldLocation.biome || DEFAULT_START_ZONE_ID,
     normalizedTurnCount,
   );
   const normalizedWorldEssence = normalizeWorldEssence(world.essence, {
     locationId: normalizedWorldLocation.current,
-    biomeId: normalizedWorldLocation.biome || "city",
+    biomeId: normalizedWorldLocation.biome || DEFAULT_START_ZONE_ID,
     time: normalizedWorldTime,
     weather: normalizedWorldWeather,
   });

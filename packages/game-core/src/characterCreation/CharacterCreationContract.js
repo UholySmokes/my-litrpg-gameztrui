@@ -1,5 +1,10 @@
 import { getCharacterCreationSkillSelectionLimits } from "./CharacterCreationOptionsRegistry.js";
-import { getLocationById } from "../world/WorldDataRegistry.js";
+import {
+  getLocationById,
+  getZoneEntryLocationId,
+  resolveLocationId,
+  resolveZoneId,
+} from "../world/WorldDataRegistry.js";
 import { SKILL_CATALOG_VERSION } from "../systems/skills/LivingLatticeCatalog.js";
 
 const BLUEPRINT_VERSION = 4;
@@ -44,13 +49,30 @@ export function migrateCharacterCreationBlueprint(legacy = {}, options = {}) {
     normalizeId(source.archetypeSystem?.id) ||
     normalizeId(source.archetypeSystem);
   const startingLocationId =
+    resolveLocationId(
+      normalizeId(source.startingLocationId) ||
+      normalizeId(source.startingLocation?.id) ||
+      normalizeId(source.startingLocation),
+    ) ||
     normalizeId(source.startingLocationId) ||
     normalizeId(source.startingLocation?.id) ||
     normalizeId(source.startingLocation);
+  const startingZoneId =
+    resolveZoneId(
+      normalizeId(source.startingZoneId) ||
+      normalizeId(source.startingZone?.id) ||
+      normalizeId(source.startingZone),
+    ) ||
+    normalizeId(source.startingZoneId) ||
+    normalizeId(source.startingZone?.id) ||
+    normalizeId(source.startingZone);
   const derivedStartingZoneId =
     startingLocationId && getLocationById(startingLocationId)?.zoneId
       ? getLocationById(startingLocationId).zoneId
-      : null;
+      : startingZoneId;
+  const normalizedStartingLocationId =
+    startingLocationId ||
+    (startingZoneId ? getZoneEntryLocationId(startingZoneId) : null);
 
   return {
     version: Number.isFinite(source.version)
@@ -73,8 +95,8 @@ export function migrateCharacterCreationBlueprint(legacy = {}, options = {}) {
       typeof source.startingPrompt === "string"
         ? source.startingPrompt.trim()
         : "",
-    startingLocationId,
-    startingZoneId: normalizeId(source.startingZoneId) || derivedStartingZoneId,
+    startingLocationId: normalizedStartingLocationId,
+    startingZoneId: derivedStartingZoneId,
     professionId,
     archetypeSystemId,
     attributes: normalizeAttributes(source.attributes),

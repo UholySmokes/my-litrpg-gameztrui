@@ -6,6 +6,10 @@
 import { emit } from "../../core/EventBus.js";
 import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
 import { regenerateMana } from "../magic/ManaSystem.js";
+import {
+  DEFAULT_START_ZONE_ID,
+  resolveZoneId,
+} from "../../world/WorldDataRegistry.js";
 
 /**
  * TIME CONFIGURATION
@@ -183,18 +187,21 @@ function advanceWeather(state, { turnCount, cadenceTurns } = {}) {
   const world = state.world || {};
   const location = world.location && typeof world.location === "object" ? world.location : {};
   const activeBiome =
-    typeof location.biome === "string" && location.biome.trim()
-      ? location.biome.trim().toLowerCase()
-      : "city";
+    resolveZoneId(location.biome) || DEFAULT_START_ZONE_ID;
 
   const weatherRoot =
     world.weather && typeof world.weather === "object" && !Array.isArray(world.weather)
       ? world.weather
       : {};
-  const currentByBiome =
+  const currentByBiomeRaw =
     weatherRoot.byBiome && typeof weatherRoot.byBiome === "object" && !Array.isArray(weatherRoot.byBiome)
       ? weatherRoot.byBiome
       : {};
+  const currentByBiome = Object.fromEntries(
+    Object.entries(currentByBiomeRaw)
+      .map(([biomeId, entry]) => [resolveZoneId(biomeId) || String(biomeId || "").trim().toLowerCase(), entry])
+      .filter(([biomeId]) => Boolean(biomeId)),
+  );
 
   const nextTurn = Math.max(0, Math.floor(toFiniteNumber(turnCount, world.turnCount || 0)));
   const cadence = Math.max(

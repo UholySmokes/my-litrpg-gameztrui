@@ -1,15 +1,17 @@
+import { resolveZoneId } from "../../world/WorldDataRegistry.js";
+
 const ORIGIN_DEFINITIONS = [
   {
     id: "freehold_scrapper",
     name: "Freehold Scrapper",
     description:
-      "Raised in salvage lanes and black-market alleys, you know how to turn scraps into leverage.",
+      "Raised in the tariff shadows of Auric Crown, you learned how to turn salvage and gossip into leverage.",
     attributeBonuses: {
       dexterity: 1,
       luck: 1,
       charisma: -1,
     },
-    favoredBiome: "city",
+    favoredBiome: "auric_crown",
     favoredFactionId: "aurum_exchange",
     favoredQuestTags: ["economy", "crafting", "quests"],
   },
@@ -17,13 +19,13 @@ const ORIGIN_DEFINITIONS = [
     id: "ledger_apprentice",
     name: "Ledger Apprentice",
     description:
-      "You learned the city through invoices, audits, and the quiet violence of contracts.",
+      "You learned Auric Crown through invoices, audits, and the quiet violence of ceremonial contracts.",
     attributeBonuses: {
       intelligence: 1,
       charisma: 1,
       strength: -1,
     },
-    favoredBiome: "city",
+    favoredBiome: "auric_crown",
     favoredFactionId: "aurum_exchange",
     favoredQuestTags: ["systems", "factions", "economy"],
   },
@@ -31,13 +33,13 @@ const ORIGIN_DEFINITIONS = [
     id: "salvage_adept",
     name: "Salvage Adept",
     description:
-      "Collapsed districts and dead towers taught you to read danger, residue, and forgotten machinery.",
+      "Riftscar fault lines and dead relay towers taught you to read danger, residue, and broken machinery.",
     attributeBonuses: {
       dexterity: 1,
       willpower: 1,
       charisma: -1,
     },
-    favoredBiome: "ruins",
+    favoredBiome: "riftscar_barrens",
     favoredFactionId: "arcane_wardens",
     favoredQuestTags: ["magic-research", "mystery", "puzzle"],
   },
@@ -45,13 +47,13 @@ const ORIGIN_DEFINITIONS = [
     id: "grove_exile",
     name: "Grove Exile",
     description:
-      "You came from the wild edges where roots, spores, and old pacts mattered more than coin.",
+      "You came from the Wildroot vote-edges where roots, spores, and old pacts mattered more than coin.",
     attributeBonuses: {
       agility: 1,
       wisdom: 1,
       charisma: -1,
     },
-    favoredBiome: "wilds",
+    favoredBiome: "wildroot_basin",
     favoredFactionId: "verdant_envoys",
     favoredQuestTags: ["mystic", "combat", "atmosphere"],
   },
@@ -59,13 +61,13 @@ const ORIGIN_DEFINITIONS = [
     id: "deckhand_cadet",
     name: "Deckhand Cadet",
     description:
-      "You grew up on catwalks and engine decks, trusting timing, grit, and altitude over comfort.",
+      "You grew up on Marchward catwalks and engine decks, trusting timing, grit, and altitude over comfort.",
     attributeBonuses: {
       agility: 1,
       vitality: 1,
       intelligence: -1,
     },
-    favoredBiome: "skydocks",
+    favoredBiome: "skybound_marches",
     favoredFactionId: "skyforge_sentinels",
     favoredQuestTags: ["action", "tutorial", "skills"],
   },
@@ -73,13 +75,13 @@ const ORIGIN_DEFINITIONS = [
     id: "archive_runner",
     name: "Archive Runner",
     description:
-      "Courier, thief, and witness in the undercity, you survived by moving faster than secrets spread.",
+      "Courier, thief, and witness in the Veilward markets, you survived by moving faster than secrets spread.",
     attributeBonuses: {
       intelligence: 1,
       willpower: 1,
       strength: -1,
     },
-    favoredBiome: "undercity",
+    favoredBiome: "veilward_depths",
     favoredFactionId: "veil_wardens",
     favoredQuestTags: ["mystery", "magic-research", "factions"],
   },
@@ -87,13 +89,13 @@ const ORIGIN_DEFINITIONS = [
     id: "tidebound_votary",
     name: "Tidebound Votary",
     description:
-      "Stormglass shrines and oath-heavy harbors trained you to endure pressure and listen for omens.",
+      "Reef shrines and oath-heavy harbors trained you to endure pressure and listen for storm omens.",
     attributeBonuses: {
       wisdom: 1,
       soul: 1,
       dexterity: -1,
     },
-    favoredBiome: "coast",
+    favoredBiome: "dawnreef_tangle",
     favoredFactionId: "tideward_order",
     favoredQuestTags: ["atmosphere", "factions", "mystic"],
   },
@@ -101,13 +103,13 @@ const ORIGIN_DEFINITIONS = [
     id: "sandstep_scout",
     name: "Sandstep Scout",
     description:
-      "Caravan routes and mirage storms taught you to read false horizons and keep moving anyway.",
+      "Glassstep caravan routes and mirage storms taught you to read false horizons and keep moving anyway.",
     attributeBonuses: {
       agility: 1,
       luck: 1,
       vitality: -1,
     },
-    favoredBiome: "desert",
+    favoredBiome: "glassstep_expanse",
     favoredFactionId: "mirage_guides",
     favoredQuestTags: ["mystery", "puzzle", "atmosphere"],
   },
@@ -115,13 +117,13 @@ const ORIGIN_DEFINITIONS = [
     id: "ashmarked_prospector",
     name: "Ashmarked Prospector",
     description:
-      "You worked the caldera margins where every haul cost blood, breath, and a little patience.",
+      "You worked Emberline vent margins where every haul cost blood, breath, and a little patience.",
     attributeBonuses: {
       strength: 1,
       vitality: 1,
       charisma: -1,
     },
-    favoredBiome: "volcanic",
+    favoredBiome: "emberline_archipelago",
     favoredFactionId: "smoke_wardens",
     favoredQuestTags: ["combat", "crafting", "high-hook"],
   },
@@ -129,13 +131,13 @@ const ORIGIN_DEFINITIONS = [
     id: "dreamwake_survivor",
     name: "Dreamwake Survivor",
     description:
-      "You returned from a place that edits memory. The world feels real enough, but never simple.",
+      "You returned from a clarity break in Lucent Verge. The world feels real enough, but never simple.",
     attributeBonuses: {
       willpower: 1,
       soul: 1,
       strength: -1,
     },
-    favoredBiome: "dreamscape",
+    favoredBiome: "lucent_verge",
     favoredFactionId: null,
     favoredQuestTags: ["weird", "high-hook", "mystery"],
   },
@@ -147,6 +149,7 @@ function cloneOrigin(origin) {
   if (!origin || typeof origin !== "object") return null;
   return {
     ...origin,
+    favoredBiome: resolveZoneId(origin.favoredBiome) || origin.favoredBiome || "neutral",
     attributeBonuses:
       origin.attributeBonuses && typeof origin.attributeBonuses === "object"
         ? { ...origin.attributeBonuses }

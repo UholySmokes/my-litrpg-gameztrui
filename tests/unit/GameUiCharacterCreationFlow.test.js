@@ -4,7 +4,7 @@ import { createInitialWorldState } from "../../src/world/WorldInitializer.js";
 import { getLocationById } from "../../src/world/WorldDataRegistry.js";
 
 describe("buildCharacterCreationState", () => {
-  it("starts a fresh run without auto-seeded quests", () => {
+  it("starts a fresh run with the Crowngrave onboarding anchor quest", () => {
     const nextState = buildCharacterCreationState(
       {
         player_profile: { characters_created: 0 },
@@ -47,16 +47,25 @@ describe("buildCharacterCreationState", () => {
     );
 
     expect(nextState.player_profile.characters_created).toBe(1);
-    expect(nextState.quests).toEqual({
-      active: [],
-      completed: [],
-    });
-    expect(nextState.world.vars.current_quest_id).toBeNull();
+    expect(nextState.quests.completed).toEqual([]);
+    expect(nextState.quests.active).toHaveLength(1);
+    expect(nextState.quests.active[0]?.id).toBe("otb_dawnreef_tangle_anchor");
+    expect(nextState.world.vars.current_quest_id).toBe("otb_dawnreef_tangle_anchor");
     expect(nextState.world.vars.startingSceneId).toBeNull();
     expect(nextState.world.vars.openingSceneChoicePending).toBe(false);
+    expect(nextState.world.vars.openingArcId).toBe("oa_dawnreef_tangle_storm_omen");
+    expect(nextState.world.vars.tutorialBundleId).toBe("pilot_dawnreef_tangle");
+    expect(nextState.world.vars.onboarding).toMatchObject({
+      bundleId: "pilot_dawnreef_tangle",
+      currentStepId: "anchor",
+      deferredMainQuestId: "oq_dawnreef_storm_omen",
+      deferredMainQuestReady: false,
+      openingArcId: "oa_dawnreef_tangle_storm_omen",
+      tutorialBundleId: "pilot_dawnreef_tangle",
+    });
 
     const startLocation = getLocationById(nextState.world.location.current);
-    expect(startLocation?.zoneId).toBe("coast");
+    expect(startLocation?.zoneId).toBe("dawnreef_tangle");
     expect(nextState.player.secondaryClass).toEqual({ id: "sentinel", name: "Sentinel" });
     expect(nextState.player.archetypeSystem).toEqual({ id: "runebound", name: "Runebound" });
     expect(nextState.player.alignment).toBe("guardian");

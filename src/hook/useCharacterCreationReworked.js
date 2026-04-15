@@ -92,19 +92,6 @@ const CREATION_STEPS = Object.freeze({
   REVIEW: 13,
 });
 
-const LEGACY_AVAILABLE_STARTING_POINTS = Object.freeze([
-  { id: "city", name: "Meridian Arcology", type: "social", summary: "You open unfamiliar eyes on cold stone in a neon-lit alcove — guild signs flicker above, and your new body's first breath tastes like ozone and commerce." },
-  { id: "ruins", name: "Leyfall Ruins", type: "exploration", summary: "Consciousness returns among shattered wards and exposed foundations — leyline energy hums through a body that wasn't yours a moment ago." },
-  { id: "wilds", name: "Wildroot Fringe", type: "exploration", summary: "Wet earth, root-smell, and birdsong — you wake under tangled canopy with borrowed limbs and a system prompt blinking behind unfamiliar eyes." },
-  { id: "skydocks", name: "Skyforge Skydocks", type: "combat", summary: "Wind and engine roar slam into you as awareness returns — you're sprawled on open gantry with altitude all around and no memory of how you arrived." },
-  { id: "undercity", name: "Veilward Undercity", type: "combat", summary: "Darkness first, then dripping water, then the slow horror of waking in a body you don't recognize, somewhere below the world." },
-  { id: "coast", name: "Tideward Coast", type: "exploration", summary: "Salt spray across a face that isn't yours — you gasp awake on wet stone as the tide pulls back, revealing ward-carved pylons and a shore you've never seen." },
-  { id: "mountain", name: "Crystal Ridgeworks", type: "exploration", summary: "Thin air fills lungs that weren't yours a breath ago — you wake on frozen stone amid crystal veins that ring like tuning forks at your presence." },
-  { id: "desert", name: "Glassstep Sands", type: "combat", summary: "Heat and white light — the first sensations of a mind dropped into a body it doesn't recognize, half-buried in sun-fused glass sand." },
-  { id: "volcanic", name: "Emberline Caldera", type: "combat", summary: "A furnace-blast of awareness as you gasp awake on scorched rock — the air shimmers, your skin isn't your skin, and something molten glows below." },
-  { id: "dreamscape", name: "Mnemonic Dreamscape", type: "exploration", summary: "Thought before body — you exist as pure awareness in psychic mist before the world slowly gives you form, one uncertain sense at a time." },
-]);
-void LEGACY_AVAILABLE_STARTING_POINTS;
 const WORLD_ATLAS_LANDMASS_BY_ID = new Map(
   WORLD_ATLAS_LANDMASSES.map((entry) => [entry.id, entry]),
 );

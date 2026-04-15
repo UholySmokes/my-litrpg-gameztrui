@@ -1,31 +1,16 @@
 import { DEFAULT_START_LOCATION_ID } from "../../world/WorldDataRegistry.js";
 import {
+  getAttackEncounterPools,
+  resolveEncounterZoneId,
+} from "../../world/WorldEncounterProfiles.js";
+import {
   startCombat,
   playerAttack,
   processEnemyTurns,
 } from "../../systems/combat/CombatSystem.js";
 
-const DEFAULT_ENCOUNTER_POOLS = [
-  ["goblin", "slime"],
-  ["giant_rat", "goblin"],
-  ["bandit"],
-];
-
-const BIOME_ENCOUNTER_POOLS = {
-  city: [["bandit"], ["slime", "bandit"], ["giant_rat", "bandit"]],
-  ruins: [["goblin", "slime"], ["goblin", "giant_rat"], ["bandit", "goblin"]],
-  wilds: [["wolf"], ["slime", "wolf"], ["giant_rat", "wolf"]],
-  skydocks: [["bandit"], ["goblin", "bandit"], ["slime", "bandit"]],
-  undercity: [["giant_rat", "slime"], ["giant_rat", "bandit"], ["slime", "goblin"]],
-  mountain: [["goblin", "wolf"], ["bandit", "wolf"], ["slime", "goblin"]],
-  coast: [["slime", "wolf"], ["bandit", "slime"], ["goblin", "wolf"]],
-  desert: [["bandit", "slime"], ["goblin", "bandit"], ["giant_rat", "bandit"]],
-  volcanic: [["slime", "goblin"], ["wolf", "bandit"], ["goblin", "bandit"]],
-  dreamscape: [["slime", "goblin"], ["giant_rat", "slime"], ["bandit", "slime"]],
-};
-
 function resolveEncounterSelection(state) {
-  const biome = state?.world?.location?.biome || "city";
+  const biome = resolveEncounterZoneId(state?.world?.location?.biome);
   const locationId =
     state?.world?.location?.current || DEFAULT_START_LOCATION_ID;
   const visitedCount = Array.isArray(state?.world?.location?.visited)
@@ -33,7 +18,7 @@ function resolveEncounterSelection(state) {
     : 1;
   const totalKills = Number(state?.player?.progress?.totalKills || 0);
   const director = state?.world?.vars?.combatDirector || {};
-  const pools = BIOME_ENCOUNTER_POOLS[biome] || DEFAULT_ENCOUNTER_POOLS;
+  const pools = getAttackEncounterPools(biome);
 
   let index =
     Math.abs(totalKills + visitedCount + String(locationId).length) % pools.length;
@@ -49,7 +34,7 @@ function resolveEncounterSelection(state) {
 
   return {
     encounterId: `${biome}:${index}`,
-    enemyIds: pools[index] || DEFAULT_ENCOUNTER_POOLS[0],
+    enemyIds: pools[index] || pools[0],
   };
 }
 
@@ -78,7 +63,7 @@ export function handleAttack(state, action) {
         spawnMeta: {
           encounterId: encounterSelection.encounterId,
           enemyIds: encounterSelection.enemyIds.slice(),
-          biome: state?.world?.location?.biome || "city",
+          biome: resolveEncounterZoneId(state?.world?.location?.biome),
         },
       },
     };

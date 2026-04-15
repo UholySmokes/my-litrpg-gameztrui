@@ -255,6 +255,7 @@ export function buildCharacterCreationState(state, characterData) {
               actionVocabulary: openingArc.actionVocabulary,
               landmarks: openingArc.landmarks,
               unlockReward: openingArc.unlockReward,
+              firstQuest: openingArc.firstQuest,
             }
           : null,
       },

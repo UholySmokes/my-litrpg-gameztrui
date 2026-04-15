@@ -183,10 +183,11 @@ export class QuestManager {
   }
 
   static generateInitialQuestPlan(player) {
+    const openingArc = getOpeningArcForPlayer(player);
     const bundleId =
       typeof player?.tutorialBundleId === "string" && player.tutorialBundleId.trim()
         ? player.tutorialBundleId.trim()
-        : getOpeningArcForPlayer(player)?.tutorialBundleId || null;
+        : openingArc?.tutorialBundleId || null;
     const bundle = getOpeningTutorialBundle(bundleId);
 
     if (!bundle) {
@@ -203,9 +204,10 @@ export class QuestManager {
       this.isQuestSuitable(quest, player),
     );
     const deferredMainQuest =
-      suitableMainQuests.length > 0
+      openingArc?.firstQuest ||
+      (suitableMainQuests.length > 0
         ? this.pullQuestByPriority([...suitableMainQuests], player)
-        : null;
+        : null);
 
     const archetypeSystem = this.resolveArchetypeSystem(player);
     if ((player?.level || 1) >= 4 && archetypeSystem?.questHooks?.length) {

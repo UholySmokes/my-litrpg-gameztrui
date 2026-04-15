@@ -73,7 +73,9 @@ function buildZoneSummary(zone) {
     name: zone.name,
     biome: zone.biome || null,
     summary: zone.summary || zone.description || "",
-    startingLocationId: zone.startingLocationId || null,
+    startingLocationId:
+      zone.startingLocationId ||
+      (Array.isArray(zone.startLocationIds) ? zone.startLocationIds[0] || null : null),
     connections: Array.isArray(zone.connections) ? zone.connections.slice() : [],
   };
 }

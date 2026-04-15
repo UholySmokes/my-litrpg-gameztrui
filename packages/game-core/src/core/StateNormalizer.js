@@ -700,7 +700,13 @@ function canonicalizeLocationId(value) {
   }
 
   // Prefer canonical ids when possible; preserve unknown strings for forward-compat.
-  return resolveLocationId(trimmed) || trimmed;
+  const resolvedLocationId = resolveLocationId(trimmed);
+  if (resolvedLocationId) return resolvedLocationId;
+  const resolvedZoneId = resolveZoneId(trimmed);
+  if (resolvedZoneId) {
+    return getZoneEntryLocationId(resolvedZoneId) || trimmed;
+  }
+  return trimmed;
 }
 
 function canonicalizeLocationArray(values) {

@@ -137,9 +137,14 @@ export function seedWorldAfterCharacterCreation(
   resolvePlayerArchetypeIds(player);
   const playerLocationId = player?.startingLocationId || null;
   const playerZoneId = resolveZoneId(player?.startingZoneId) || null;
+  const resolvedPlayerLocationId = playerLocationId
+    ? resolveStartingLocationId(playerLocationId, {
+        fallbackLocationId: STARTING_LOCATION_ID,
+      })
+    : null;
   const questBiome = resolveZoneId(mainQuest?.tags?.biome) || null;
-  const zoneId = playerLocationId
-    ? getLocationById(playerLocationId)?.zoneId || playerZoneId || null
+  const zoneId = resolvedPlayerLocationId
+    ? getLocationById(resolvedPlayerLocationId)?.zoneId || playerZoneId || null
     : (playerZoneId && getZoneById(playerZoneId))
       ? playerZoneId
       : getZoneById(questBiome)
@@ -147,7 +152,7 @@ export function seedWorldAfterCharacterCreation(
         : DEFAULT_START_ZONE_ID;
 
   const startLocationId = pickStartLocationId({
-    locationId: playerLocationId,
+    locationId: resolvedPlayerLocationId,
     zoneId,
   });
 

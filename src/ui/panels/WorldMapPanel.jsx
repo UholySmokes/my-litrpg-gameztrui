@@ -2,49 +2,46 @@ import { useState } from "react";
 import styles from "./WorldMapPanel.module.css";
 import { buildWorldAtlasModel } from "./worldAtlasModel.js";
 
-const ATLAS_VIEWBOX = Object.freeze({ width: 860, height: 700 });
-const PLANET_DISC = Object.freeze({ x: 286, y: 336, radius: 216 });
-const MERIDIAN_INSET = Object.freeze({ x: 488, y: 116, width: 326, height: 324 });
+const ATLAS_VIEWBOX = Object.freeze({ width: 920, height: 760 });
+const PLANET_DISC = Object.freeze({ x: 340, y: 386, radius: 278 });
 
 const STARFIELD_POINTS = Object.freeze([
-  { cx: 42, cy: 44, r: 1.6 },
-  { cx: 92, cy: 106, r: 1.2 },
-  { cx: 132, cy: 52, r: 1.1 },
-  { cx: 168, cy: 624, r: 1.6 },
-  { cx: 224, cy: 36, r: 1.1 },
-  { cx: 328, cy: 664, r: 1.8 },
-  { cx: 388, cy: 76, r: 1.3 },
-  { cx: 456, cy: 596, r: 1.1 },
-  { cx: 534, cy: 68, r: 1.6 },
-  { cx: 622, cy: 52, r: 1.2 },
-  { cx: 704, cy: 610, r: 1.5 },
-  { cx: 768, cy: 136, r: 1.2 },
-  { cx: 800, cy: 534, r: 1.6 },
-  { cx: 744, cy: 262, r: 1.3 },
-  { cx: 664, cy: 652, r: 1.2 },
-  { cx: 580, cy: 650, r: 1.1 },
-  { cx: 94, cy: 692, r: 1.3 },
-  { cx: 804, cy: 58, r: 1.4 },
+  { cx: 48, cy: 72, r: 1.6 },
+  { cx: 94, cy: 116, r: 1.1 },
+  { cx: 142, cy: 56, r: 1.2 },
+  { cx: 172, cy: 702, r: 1.5 },
+  { cx: 252, cy: 44, r: 1.2 },
+  { cx: 298, cy: 704, r: 1.7 },
+  { cx: 412, cy: 94, r: 1.2 },
+  { cx: 470, cy: 676, r: 1.1 },
+  { cx: 558, cy: 84, r: 1.6 },
+  { cx: 618, cy: 62, r: 1.2 },
+  { cx: 706, cy: 698, r: 1.4 },
+  { cx: 762, cy: 140, r: 1.2 },
+  { cx: 842, cy: 566, r: 1.6 },
+  { cx: 804, cy: 304, r: 1.3 },
+  { cx: 724, cy: 718, r: 1.2 },
+  { cx: 612, cy: 720, r: 1.1 },
+  { cx: 82, cy: 730, r: 1.2 },
+  { cx: 874, cy: 66, r: 1.4 },
 ]);
 
-const FRACTURE_PATHS = Object.freeze([
-  "M184 142 C236 186 216 248 262 298 C306 346 286 416 244 514",
-  "M224 198 C268 232 272 278 304 318 C342 362 356 424 334 476",
-  "M166 360 C212 334 246 338 298 358 C344 374 382 370 426 334",
+const LEYLINE_PATHS = Object.freeze([
+  "M118 242 C192 198 246 214 308 250 C372 286 428 288 506 244",
+  "M128 430 C198 390 250 384 318 412 C380 438 448 448 540 402",
+  "M192 606 C268 560 332 556 402 582 C462 606 520 606 610 548",
+  "M294 118 C334 168 350 220 356 280 C362 344 388 408 454 470",
+  "M506 164 C548 220 562 268 566 334 C568 398 592 468 644 514",
 ]);
 
-const ZONE_STATUS_LABELS = Object.freeze({
-  current: "Current Zone",
-  known: "Known Thread",
-  unseen: "Veiled Thread",
+const STATUS_LABELS = Object.freeze({
+  current: "Current foothold",
+  known: "Known theater",
+  unseen: "Unseen theater",
 });
 
 function joinClasses(...values) {
   return values.filter(Boolean).join(" ");
-}
-
-function toHotspotId(kind, id) {
-  return `${kind}:${id}`;
 }
 
 function capitalizeLabel(value) {
@@ -55,134 +52,143 @@ function capitalizeLabel(value) {
     .join(" ");
 }
 
-function getOrbitMarker(region) {
-  const dx = region.atlasPlacement.x - PLANET_DISC.x;
-  const dy = region.atlasPlacement.y - PLANET_DISC.y;
-  const distance = Math.hypot(dx, dy) || 1;
-  return {
-    x1: PLANET_DISC.x + (dx / distance) * (PLANET_DISC.radius + 12),
-    y1: PLANET_DISC.y + (dy / distance) * (PLANET_DISC.radius + 12),
-    x2: PLANET_DISC.x + (dx / distance) * (PLANET_DISC.radius + 28),
-    y2: PLANET_DISC.y + (dy / distance) * (PLANET_DISC.radius + 28),
-  };
-}
-
-function getMeridianCanvasPoint(zone) {
-  return {
-    x: MERIDIAN_INSET.x + zone.atlasPlacement.x,
-    y: MERIDIAN_INSET.y + 46 + zone.atlasPlacement.y,
-  };
-}
-
-function DetailToken({ accent = "var(--holo-cyan)", children }) {
+function DetailToken({ children, tone = "cyan" }) {
   return (
-    <span
-      className={styles.detailToken}
-      style={{
-        borderColor: `color-mix(in srgb, ${accent} 36%, transparent)`,
-        color: accent,
-        background: `color-mix(in srgb, ${accent} 14%, transparent)`,
-      }}
-    >
+    <span className={joinClasses(styles.detailToken, styles[`token${capitalizeLabel(tone)}`])}>
       {children}
     </span>
   );
 }
 
+function LegendSwatch({ className }) {
+  return <span className={joinClasses(styles.legendSwatch, className)} />;
+}
+
 function DetailRail({ selectedHotspot, currentLocationName }) {
-  const isZone = selectedHotspot?.kind === "zone";
-  const accent = selectedHotspot?.accent || "var(--holo-cyan)";
-  const statusLabel = isZone ? ZONE_STATUS_LABELS[selectedHotspot.status] : "Macro Region";
+  const scaleLabel = selectedHotspot?.isMajor
+    ? "Major supercontinent"
+    : selectedHotspot?.startingEligible
+      ? "Starting continent"
+      : "Advanced continent";
+  const statusLabel = STATUS_LABELS[selectedHotspot?.status] || "Atlas focus";
 
   return (
     <aside className={styles.detailRail}>
       <section className={styles.detailCard}>
-        <div className={styles.detailEyebrow}>
-          {isZone ? "Meridian Zone Focus" : "Planetary Focus"}
-        </div>
+        <div className={styles.detailEyebrow}>Crowngrave Focus</div>
         <h3 className={styles.detailTitle}>{selectedHotspot?.name || "No focus selected"}</h3>
-        <div className={styles.detailMeta}>{statusLabel}</div>
+        <div className={styles.detailMeta}>
+          {scaleLabel} • {selectedHotspot?.countryCount || 0} countries • {statusLabel}
+        </div>
         <p className={styles.detailCopy}>
           {selectedHotspot?.summary ||
-            "The atlas waits for a locus to stabilize before it reveals detail."}
+            "The atlas waits for a stable landmass focus before it reveals its deeper strata."}
         </p>
-
+        <p className={styles.doctrineCopy}>
+          {selectedHotspot?.uniquenessThesis ||
+            "Crowngrave does not keep ordinary geography. Each landmass is a political ecology with its own death logic and awakening rites."}
+        </p>
         <div className={styles.detailTokenRow}>
-          <DetailToken accent={accent}>{isZone ? "Lore hotspot" : "World shell"}</DetailToken>
-          {isZone && selectedHotspot?.isCurrent ? (
-            <DetailToken accent="var(--holo-gold)">Current footing</DetailToken>
+          {selectedHotspot?.isMajor ? <DetailToken tone="gold">Major landmass</DetailToken> : null}
+          {selectedHotspot?.startingEligible ? (
+            <DetailToken tone="cyan">Starting region</DetailToken>
           ) : null}
-          {!isZone && selectedHotspot?.isCurrentTheater ? (
-            <DetailToken accent="var(--holo-gold)">Playable theater</DetailToken>
+          {selectedHotspot?.isLocked ? (
+            <DetailToken tone="dim">Locked advanced region</DetailToken>
+          ) : null}
+          {selectedHotspot?.isCurrent ? (
+            <DetailToken tone="gold">Current foothold</DetailToken>
           ) : null}
         </div>
       </section>
 
-      {isZone ? (
-        <>
-          <section className={styles.detailCard}>
-            <div className={styles.sectionLabel}>Essence Triad</div>
-            <div className={styles.detailTokenRow}>
-              {selectedHotspot.essenceTriad.map((essence) => (
-                <DetailToken key={essence} accent={selectedHotspot.accent}>
-                  {capitalizeLabel(essence)}
-                </DetailToken>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.detailCard}>
-            <div className={styles.sectionLabel}>
-              {selectedHotspot.isCurrent ? "Current Foothold" : "Notable Sites"}
-            </div>
-            {selectedHotspot.isCurrent ? (
-              <div className={styles.currentFooting}>{currentLocationName}</div>
-            ) : null}
-            <div className={styles.metaList}>
-              {selectedHotspot.notableLocations.map((location) => (
-                <div key={location.id} className={styles.metaItem}>
-                  <strong>{location.name}</strong>
-                  <span>{location.summary}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        </>
-      ) : (
-        <section className={styles.detailCard}>
-          <div className={styles.sectionLabel}>Signal Hooks</div>
-          <div className={styles.detailTokenRow}>
-            {selectedHotspot?.hooks?.map((hook) => (
-              <DetailToken key={hook} accent={accent}>
-                {hook}
-              </DetailToken>
-            ))}
-          </div>
-        </section>
-      )}
+      <section className={styles.detailCard}>
+        <div className={styles.sectionLabel}>Climate Bands</div>
+        <div className={styles.detailTokenRow}>
+          {(selectedHotspot?.climateBands || []).map((climate) => (
+            <DetailToken key={climate}>{climate}</DetailToken>
+          ))}
+        </div>
+      </section>
 
       <section className={styles.detailCard}>
-        <div className={styles.sectionLabel}>Atlas Doctrine</div>
-        <p className={styles.doctrineCopy}>
-          Lore hotspots only. The atlas records mythic scale and known pressure lines, but it does
-          not replace route discovery or travel commands.
-        </p>
+        <div className={styles.sectionLabel}>Exemplar Countries</div>
+        <div className={styles.metaList}>
+          {(selectedHotspot?.countries || []).map((country) => (
+            <div key={country.id} className={styles.metaItem}>
+              <strong>{country.name}</strong>
+              <span>Exemplar state within the broader continental sprawl.</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.detailCard}>
+        <div className={styles.sectionLabel}>Hazard And Wonder</div>
+        <div className={styles.metaList}>
+          <div className={styles.metaItem}>
+            <strong>{selectedHotspot?.deathZone?.name || "No death zone recorded"}</strong>
+            <span>
+              {selectedHotspot?.deathZone?.kind
+                ? `${capitalizeLabel(selectedHotspot.deathZone.kind)} • `
+                : ""}
+              {selectedHotspot?.deathZone?.summary || "No hazard summary recorded."}
+            </span>
+          </div>
+          <div className={styles.metaItem}>
+            <strong>{selectedHotspot?.mysticalPlace?.name || "No mystical place recorded"}</strong>
+            <span>
+              {selectedHotspot?.mysticalPlace?.kind
+                ? `${capitalizeLabel(selectedHotspot.mysticalPlace.kind)} • `
+                : ""}
+              {selectedHotspot?.mysticalPlace?.summary || "No mystical note recorded."}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.detailCard}>
+        <div className={styles.sectionLabel}>Essence Triad</div>
+        <div className={styles.detailTokenRow}>
+          {(selectedHotspot?.essenceTriad || []).map((essence) => (
+            <DetailToken key={essence} tone="gold">
+              {capitalizeLabel(essence)}
+            </DetailToken>
+          ))}
+        </div>
+        {selectedHotspot?.isCurrent ? (
+          <div className={styles.currentFooting}>
+            Current foothold: {selectedHotspot.currentLocationName || currentLocationName}
+          </div>
+        ) : null}
       </section>
 
       <section className={styles.detailCard}>
         <div className={styles.sectionLabel}>Legend</div>
         <div className={styles.legend}>
           <span className={styles.legendItem}>
-            <span className={joinClasses(styles.legendSwatch, styles.legendCurrent)} />
-            Current zone
+            <LegendSwatch className={styles.legendMajor} />
+            Major supercontinent
           </span>
           <span className={styles.legendItem}>
-            <span className={joinClasses(styles.legendSwatch, styles.legendKnown)} />
-            Known zone
+            <LegendSwatch className={styles.legendStarter} />
+            Starting continent
           </span>
           <span className={styles.legendItem}>
-            <span className={joinClasses(styles.legendSwatch, styles.legendVeiled)} />
-            Veiled zone
+            <LegendSwatch className={styles.legendLocked} />
+            Locked advanced region
+          </span>
+          <span className={styles.legendItem}>
+            <LegendSwatch className={styles.legendDeath} />
+            Death zone marker
+          </span>
+          <span className={styles.legendItem}>
+            <LegendSwatch className={styles.legendMystical} />
+            Mystical place marker
+          </span>
+          <span className={styles.legendItem}>
+            <LegendSwatch className={styles.legendCurrent} />
+            Current foothold
           </span>
         </div>
       </section>
@@ -195,21 +201,16 @@ export default function WorldMapPanel({ state }) {
   const [pinnedHotspotId, setPinnedHotspotId] = useState(null);
   const [hoveredHotspotId, setHoveredHotspotId] = useState(null);
 
-  const selectedHotspotId =
-    hoveredHotspotId || pinnedHotspotId || model.defaultHotspotId;
+  const selectedHotspotId = hoveredHotspotId || pinnedHotspotId || model.defaultHotspotId;
   const selectedHotspot =
     model.hotspotsById[selectedHotspotId] ||
     model.hotspotsById[model.defaultHotspotId] ||
-    model.macroRegions[0];
-
-  const setPinnedHotspot = (hotspotId) => {
-    setPinnedHotspotId(hotspotId);
-  };
+    model.landmasses[0];
 
   const handleHotspotKeyDown = (event, hotspotId) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      setPinnedHotspot(hotspotId);
+      setPinnedHotspotId(hotspotId);
     }
     if (event.key === "Escape") {
       setPinnedHotspotId(null);
@@ -221,12 +222,12 @@ export default function WorldMapPanel({ state }) {
     <div className={styles.root}>
       <section className={styles.surface}>
         <header className={styles.header}>
-          <div className={styles.eyebrow}>Celestial Atlas</div>
-          <h2 className={styles.title}>Map the bound world, not the route lattice.</h2>
+          <div className={styles.eyebrow}>Crowngrave Atlas</div>
+          <h2 className={styles.title}>Eighteen landmasses, two supercontinents, one impossible world.</h2>
           <p className={styles.copy}>
-            This planet refuses literal scale. The atlas renders it as a sigil-disc: seven
-            macro-realms around the brightest fracture seam, with Shardfall Meridian unfolded into
-            a readable inset.
+            Crowngrave is rendered as a ritual disc rather than a literal globe. Every hotspot is a
+            continent-scale polity with its own climates, death zones, awakening sites, and
+            continental thesis. Hover or focus to preview; click or tap to pin.
           </p>
         </header>
 
@@ -236,19 +237,19 @@ export default function WorldMapPanel({ state }) {
               className={styles.svg}
               viewBox={`0 0 ${ATLAS_VIEWBOX.width} ${ATLAS_VIEWBOX.height}`}
               role="img"
-              aria-label="Celestial atlas of the mythic world shell and the Shardfall Meridian inset."
+              aria-label="Crowngrave world atlas showing two major supercontinents and sixteen continental theaters."
             >
               <defs>
-                <radialGradient id="atlas-disc-glow" cx="48%" cy="42%" r="62%">
-                  <stop offset="0%" stopColor="rgba(255,255,255,0.28)" />
-                  <stop offset="28%" stopColor="rgba(115, 239, 227, 0.16)" />
-                  <stop offset="70%" stopColor="rgba(10, 14, 28, 0.94)" />
-                  <stop offset="100%" stopColor="rgba(6, 9, 18, 0.98)" />
+                <radialGradient id="crowngrave-disc-glow" cx="44%" cy="38%" r="66%">
+                  <stop offset="0%" stopColor="rgba(255,255,255,0.2)" />
+                  <stop offset="24%" stopColor="rgba(115,239,227,0.18)" />
+                  <stop offset="72%" stopColor="rgba(10,14,28,0.94)" />
+                  <stop offset="100%" stopColor="rgba(6,9,18,0.98)" />
                 </radialGradient>
-                <linearGradient id="atlas-seam-glow" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(211, 165, 106, 0.2)" />
-                  <stop offset="45%" stopColor="rgba(115, 239, 227, 0.9)" />
-                  <stop offset="100%" stopColor="rgba(211, 165, 106, 0.36)" />
+                <linearGradient id="crowngrave-seam" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(211,165,106,0.18)" />
+                  <stop offset="46%" stopColor="rgba(115,239,227,0.82)" />
+                  <stop offset="100%" stopColor="rgba(211,165,106,0.28)" />
                 </linearGradient>
               </defs>
 
@@ -265,246 +266,115 @@ export default function WorldMapPanel({ state }) {
               <circle
                 cx={PLANET_DISC.x}
                 cy={PLANET_DISC.y}
-                r={PLANET_DISC.radius + 34}
+                r={PLANET_DISC.radius + 30}
                 className={styles.orbitRing}
               />
               <circle
                 cx={PLANET_DISC.x}
                 cy={PLANET_DISC.y}
-                r={PLANET_DISC.radius + 12}
+                r={PLANET_DISC.radius + 10}
                 className={styles.orbitRingInner}
               />
               <circle
                 cx={PLANET_DISC.x}
                 cy={PLANET_DISC.y}
                 r={PLANET_DISC.radius}
-                fill="url(#atlas-disc-glow)"
+                fill="url(#crowngrave-disc-glow)"
                 className={styles.planetDisc}
               />
 
-              {FRACTURE_PATHS.map((pathData) => (
+              {LEYLINE_PATHS.map((pathData) => (
                 <path
                   key={pathData}
                   d={pathData}
-                  className={styles.fractureSeam}
-                  stroke="url(#atlas-seam-glow)"
+                  className={styles.leyline}
+                  stroke="url(#crowngrave-seam)"
                 />
               ))}
 
-              {model.macroRegions.map((region) => {
-                const isSelected = selectedHotspotId === region.hotspotId;
-                const isPinned = pinnedHotspotId === region.hotspotId;
-                const orbitMarker = getOrbitMarker(region);
-                const regionStyle = {
-                  fill:
-                    isSelected || region.isCurrentTheater
-                      ? `color-mix(in srgb, ${region.accent} 26%, transparent)`
-                      : `color-mix(in srgb, ${region.accent} 14%, transparent)`,
-                  stroke: region.accent,
-                };
+              {model.landmasses.map((landmass) => {
+                const isSelected = selectedHotspotId === landmass.hotspotId;
+                const isPinned = pinnedHotspotId === landmass.hotspotId;
+                const point = landmass.atlasPlacement;
+                const deathMarkerX = point.x + point.rx * 0.34;
+                const deathMarkerY = point.y - point.ry * 0.18;
+                const mysticalMarkerX = point.x - point.rx * 0.28;
+                const mysticalMarkerY = point.y + point.ry * 0.22;
 
                 return (
                   <g
-                    key={region.id}
+                    key={landmass.id}
                     className={joinClasses(
                       styles.hotspot,
-                      styles.macroHotspot,
+                      landmass.isMajor && styles.hotspotMajor,
+                      landmass.startingEligible && styles.hotspotStarter,
+                      landmass.isLocked && styles.hotspotLocked,
                       isSelected && styles.hotspotSelected,
-                      region.isCurrentTheater && styles.hotspotCurrentTheater,
+                      landmass.isCurrent && styles.hotspotCurrent,
                     )}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${region.name}: ${region.summary}`}
+                    aria-label={`${landmass.name}: ${landmass.summary}`}
                     aria-pressed={isPinned}
-                    onMouseEnter={() => setHoveredHotspotId(region.hotspotId)}
+                    aria-current={landmass.isCurrent ? "true" : undefined}
+                    onMouseEnter={() => setHoveredHotspotId(landmass.hotspotId)}
                     onMouseLeave={() => setHoveredHotspotId(null)}
-                    onFocus={() => setHoveredHotspotId(region.hotspotId)}
+                    onFocus={() => setHoveredHotspotId(landmass.hotspotId)}
                     onBlur={() => setHoveredHotspotId(null)}
-                    onClick={() => setPinnedHotspot(region.hotspotId)}
-                    onKeyDown={(event) => handleHotspotKeyDown(event, region.hotspotId)}
+                    onClick={() => setPinnedHotspotId(landmass.hotspotId)}
+                    onKeyDown={(event) => handleHotspotKeyDown(event, landmass.hotspotId)}
                   >
-                    <line
-                      x1={orbitMarker.x1}
-                      y1={orbitMarker.y1}
-                      x2={orbitMarker.x2}
-                      y2={orbitMarker.y2}
-                      className={styles.orbitTick}
-                      style={{ stroke: region.accent }}
-                    />
-                    <ellipse
-                      cx={region.atlasPlacement.x}
-                      cy={region.atlasPlacement.y}
-                      rx={region.atlasPlacement.rx}
-                      ry={region.atlasPlacement.ry}
-                      transform={`rotate(${region.atlasPlacement.rotate} ${region.atlasPlacement.x} ${region.atlasPlacement.y})`}
-                      className={styles.macroShape}
-                      style={regionStyle}
-                    />
-                    {region.isCurrentTheater ? (
+                    {landmass.isCurrent ? (
                       <ellipse
-                        cx={region.atlasPlacement.x}
-                        cy={region.atlasPlacement.y}
-                        rx={region.atlasPlacement.rx + 9}
-                        ry={region.atlasPlacement.ry + 9}
-                        transform={`rotate(${region.atlasPlacement.rotate} ${region.atlasPlacement.x} ${region.atlasPlacement.y})`}
-                        className={styles.macroPulse}
-                        style={{ stroke: region.accent }}
+                        cx={point.x}
+                        cy={point.y}
+                        rx={point.rx + 10}
+                        ry={point.ry + 10}
+                        transform={`rotate(${point.rotate} ${point.x} ${point.y})`}
+                        className={styles.currentBeacon}
                       />
                     ) : null}
+                    <ellipse
+                      cx={point.x}
+                      cy={point.y}
+                      rx={point.rx}
+                      ry={point.ry}
+                      transform={`rotate(${point.rotate} ${point.x} ${point.y})`}
+                      className={joinClasses(
+                        styles.landmassShape,
+                        landmass.isMajor && styles.landmassMajor,
+                        landmass.status === "known" && styles.landmassKnown,
+                        landmass.status === "unseen" && styles.landmassUnseen,
+                      )}
+                    />
+                    <polygon
+                      points={`${deathMarkerX},${deathMarkerY - 6} ${deathMarkerX + 6},${deathMarkerY} ${deathMarkerX},${deathMarkerY + 6} ${deathMarkerX - 6},${deathMarkerY}`}
+                      className={styles.deathZoneMarker}
+                    />
+                    <circle
+                      cx={mysticalMarkerX}
+                      cy={mysticalMarkerY}
+                      r="4.5"
+                      className={styles.mysticalMarker}
+                    />
                     <line
-                      x1={region.atlasPlacement.x}
-                      y1={region.atlasPlacement.y}
-                      x2={region.atlasPlacement.labelX}
-                      y2={region.atlasPlacement.labelY - 12}
-                      className={styles.regionCallout}
-                      style={{ stroke: region.accent }}
+                      x1={point.x}
+                      y1={point.y}
+                      x2={point.labelX}
+                      y2={point.labelY - 12}
+                      className={styles.callout}
                     />
                     <text
-                      x={region.atlasPlacement.labelX}
-                      y={region.atlasPlacement.labelY}
-                      textAnchor={region.atlasPlacement.labelAnchor}
+                      x={point.labelX}
+                      y={point.labelY}
+                      textAnchor={point.labelAnchor}
                       className={styles.regionLabel}
-                      style={{ fill: region.accent }}
                     >
-                      {region.name}
+                      {landmass.name}
                     </text>
                   </g>
                 );
               })}
-
-              <g>
-                <rect
-                  x={MERIDIAN_INSET.x}
-                  y={MERIDIAN_INSET.y}
-                  width={MERIDIAN_INSET.width}
-                  height={MERIDIAN_INSET.height}
-                  rx="26"
-                  className={styles.insetFrame}
-                />
-                <rect
-                  x={MERIDIAN_INSET.x + 18}
-                  y={MERIDIAN_INSET.y + 18}
-                  width={MERIDIAN_INSET.width - 36}
-                  height={MERIDIAN_INSET.height - 36}
-                  rx="18"
-                  className={styles.insetFrameInner}
-                />
-                <text
-                  x={MERIDIAN_INSET.x + 24}
-                  y={MERIDIAN_INSET.y + 36}
-                  className={styles.insetEyebrow}
-                >
-                  SHARDFALL MERIDIAN // ZONE SIGIL
-                </text>
-                <text
-                  x={MERIDIAN_INSET.x + 24}
-                  y={MERIDIAN_INSET.y + 62}
-                  className={styles.insetTitle}
-                >
-                  Current chronicle theater
-                </text>
-
-                {model.meridianConnections.map((connection) => {
-                  const from = model.hotspotsById[toHotspotId("zone", connection.from)];
-                  const to = model.hotspotsById[toHotspotId("zone", connection.to)];
-                  if (!from || !to) return null;
-                  const fromPoint = getMeridianCanvasPoint(from);
-                  const toPoint = getMeridianCanvasPoint(to);
-                  const controlX = (fromPoint.x + toPoint.x) / 2 + (connection.detached ? 28 : 0);
-                  const controlY = (fromPoint.y + toPoint.y) / 2 - (connection.detached ? 36 : 14);
-                  return (
-                    <path
-                      key={connection.id}
-                      d={`M ${fromPoint.x} ${fromPoint.y} Q ${controlX} ${controlY} ${toPoint.x} ${toPoint.y}`}
-                      className={joinClasses(
-                        styles.connectionPath,
-                        connection.detached && styles.connectionDetached,
-                      )}
-                    />
-                  );
-                })}
-
-                {model.meridianZones.map((zone) => {
-                  const isSelected = selectedHotspotId === zone.hotspotId;
-                  const isPinned = pinnedHotspotId === zone.hotspotId;
-                  const point = getMeridianCanvasPoint(zone);
-                  const labelX = point.x + Number(zone.atlasPlacement.labelDx || 0);
-                  const labelY = point.y + Number(zone.atlasPlacement.labelDy || 0);
-
-                  return (
-                    <g
-                      key={zone.id}
-                      className={joinClasses(
-                        styles.hotspot,
-                        styles.zoneHotspot,
-                        styles[`zoneStatus${capitalizeLabel(zone.status)}`],
-                        zone.detached && styles.zoneDetached,
-                        isSelected && styles.hotspotSelected,
-                        zone.isCurrent && styles.hotspotCurrent,
-                      )}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`${zone.name}: ${zone.summary}`}
-                      aria-pressed={isPinned}
-                      aria-current={zone.isCurrent ? "true" : undefined}
-                      onMouseEnter={() => setHoveredHotspotId(zone.hotspotId)}
-                      onMouseLeave={() => setHoveredHotspotId(null)}
-                      onFocus={() => setHoveredHotspotId(zone.hotspotId)}
-                      onBlur={() => setHoveredHotspotId(null)}
-                      onClick={() => setPinnedHotspot(zone.hotspotId)}
-                      onKeyDown={(event) => handleHotspotKeyDown(event, zone.hotspotId)}
-                    >
-                      {zone.detached ? (
-                        <circle
-                          cx={point.x}
-                          cy={point.y}
-                          r={zone.radius + 11}
-                          className={styles.detachedOrbit}
-                          style={{ stroke: zone.accent }}
-                        />
-                      ) : null}
-                      {zone.isCurrent ? (
-                        <circle
-                          cx={point.x}
-                          cy={point.y}
-                          r={zone.radius + 8}
-                          className={styles.currentBeacon}
-                          style={{ stroke: zone.accent }}
-                        />
-                      ) : null}
-                      <circle
-                        cx={point.x}
-                        cy={point.y}
-                        r={zone.radius + 4}
-                        className={styles.zoneHalo}
-                        style={{ fill: `color-mix(in srgb, ${zone.accent} 16%, transparent)` }}
-                      />
-                      <circle
-                        cx={point.x}
-                        cy={point.y}
-                        r={zone.radius}
-                        className={styles.zoneCore}
-                        style={{
-                          fill:
-                            zone.status === "unseen"
-                              ? "rgba(255, 255, 255, 0.035)"
-                              : `color-mix(in srgb, ${zone.accent} 24%, rgba(6, 10, 18, 0.8))`,
-                          stroke: zone.accent,
-                        }}
-                      />
-                      <text
-                        x={labelX}
-                        y={labelY}
-                        textAnchor={zone.atlasPlacement.labelAnchor}
-                        className={styles.zoneLabel}
-                        style={{ fill: zone.accent }}
-                      >
-                        {zone.name}
-                      </text>
-                    </g>
-                  );
-                })}
-              </g>
             </svg>
           </div>
 

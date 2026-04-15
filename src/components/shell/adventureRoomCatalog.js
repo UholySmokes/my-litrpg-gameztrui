@@ -56,7 +56,7 @@ const BASE_CATALOG = [
   {
     id: "map",
     title: "Celestial Atlas",
-    subtitle: "Survey the mythic world shell, Meridian inset, and bound lore hotspots.",
+    subtitle: "Survey Crowngrave's supercontinents, continental theaters, and hazard strata.",
     tone: "azure",
     entryAction: "Open atlas",
     size: "xl",

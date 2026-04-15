@@ -9,7 +9,7 @@ import { getLocationById } from "../../src/world/WorldDataRegistry.js";
 describe("WorldInitializer", () => {
   it("creates initial world state with defaults", () => {
     const world = createInitialWorldState({ seed: 123 });
-    expect(world.id).toBe("shardfall_meridian");
+    expect(world.id).toBe("crowngrave");
     expect(world.location.current).toBe(STARTING_LOCATION_ID);
     expect(world.location.visited).toEqual([STARTING_LOCATION_ID]);
     expect(world.location.unlockedAreas).toEqual([STARTING_LOCATION_ID]);
@@ -66,11 +66,11 @@ describe("WorldInitializer", () => {
 
     const loc = getLocationById(seeded.location.current);
     expect(loc).toBeTruthy();
-    expect(loc.zoneId).toBe("skydocks");
+    expect(loc.zoneId).toBe("skybound_marches");
 
-    expect(seeded.flags.skydock_lockdown_active).toBe(true);
-    expect(seeded.flags.leyline_storms_active).toBe(false);
-    expect(seeded.flags.dream_wisps_active).toBe(false);
+    expect(seeded.flags.skybound_redline_active).toBe(true);
+    expect(seeded.flags.riftscar_fold_event_active).toBe(false);
+    expect(seeded.flags.lucent_revelation_active).toBe(false);
   });
 
   it("uses opening scene biome for location, not just quest biome", () => {
@@ -100,7 +100,7 @@ describe("WorldInitializer", () => {
 
     const loc = getLocationById(seeded.location.current);
     expect(loc).toBeTruthy();
-    expect(loc.zoneId).not.toBe("city");
+    expect(loc.zoneId).toBe("wildroot_basin");
     expect(seeded.location.current).not.toBe(STARTING_LOCATION_ID);
   });
 
@@ -123,7 +123,7 @@ describe("WorldInitializer", () => {
 
     const loc = getLocationById(seeded.location.current);
     expect(loc).toBeTruthy();
-    expect(loc.zoneId).toBe("coast");
+    expect(loc.zoneId).toBe("dawnreef_tangle");
     expect(seeded.vars.current_quest_id).toBeNull();
     expect(seeded.vars.startingSceneId).toBeNull();
     expect(seeded.vars.openingSceneChoicePending).toBe(false);

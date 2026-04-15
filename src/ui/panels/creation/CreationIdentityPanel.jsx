@@ -1,4 +1,19 @@
+import { getZoneById } from "../../../world/WorldDataRegistry.js";
+
 const genderOptions = ["male", "female", "other"];
+
+function humanizeToken(value) {
+  return String(value || "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function formatOriginBiomeLabel(biomeId) {
+  if (!biomeId) return "Neutral";
+  return getZoneById(biomeId)?.name || humanizeToken(biomeId);
+}
 
 export default function CreationIdentityPanel({
   gender,
@@ -118,7 +133,7 @@ export default function CreationIdentityPanel({
                       </span>
                     ) : null}
                     <span style={{ color: "var(--holo-gold)", fontSize: "0.72rem" }}>
-                      {String(origin.favoredBiome || "neutral").toUpperCase()}
+                      {formatOriginBiomeLabel(origin.favoredBiome).toUpperCase()}
                     </span>
                   </div>
                 </div>

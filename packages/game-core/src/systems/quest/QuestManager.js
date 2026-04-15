@@ -12,6 +12,7 @@ import {
   createOpeningTutorialQuest,
   getOpeningTutorialBundle,
 } from "../../world/OpeningTutorialBundleRegistry.js";
+import { resolveZoneId } from "../../world/WorldDataRegistry.js";
 
 const TUTORIAL_QUEST_IDS = [
   "bq_first_stride",
@@ -20,6 +21,18 @@ const TUTORIAL_QUEST_IDS = [
 ];
 
 export class QuestManager {
+  static canonicalizeBiomeId(value) {
+    const raw = typeof value === "string" ? value.trim() : "";
+    if (!raw) return null;
+    return resolveZoneId(raw) || raw.toLowerCase();
+  }
+
+  static biomesMatch(left, right) {
+    const leftBiome = this.canonicalizeBiomeId(left);
+    const rightBiome = this.canonicalizeBiomeId(right);
+    return Boolean(leftBiome && rightBiome && leftBiome === rightBiome);
+  }
+
   static resolvePlayerClassId(player) {
     return player?.class?.id || player?.class || null;
   }
@@ -72,10 +85,10 @@ export class QuestManager {
     ) {
       weight += 2;
     }
-    if (player?.origin?.favoredBiome && tags.biome === player.origin.favoredBiome) {
+    if (this.biomesMatch(tags.biome, player?.origin?.favoredBiome)) {
       weight += 1;
     }
-    if (player?.oathOrigin?.zoneId && tags.biome === player.oathOrigin.zoneId) {
+    if (this.biomesMatch(tags.biome, player?.oathOrigin?.zoneId)) {
       weight += 1;
     }
 
@@ -262,7 +275,11 @@ export class QuestManager {
       pool = pool.filter((quest) => {
         const tones = quest.tags?.tones || [];
         const biome = quest.tags?.biome;
-        return tones.includes("serene") || tones.includes("neutral") || biome === "city";
+        return (
+          tones.includes("serene") ||
+          tones.includes("neutral") ||
+          this.biomesMatch(biome, "auric_crown")
+        );
       });
     } else if (
       normalizedAction.includes("explore") ||
@@ -271,7 +288,10 @@ export class QuestManager {
       normalizedAction.includes("travel")
     ) {
       pool = pool.filter(
-        (quest) => !currentBiome || !quest.tags?.biome || quest.tags.biome === currentBiome,
+        (quest) =>
+          !currentBiome ||
+          !quest.tags?.biome ||
+          this.biomesMatch(quest.tags.biome, currentBiome),
       );
     } else if (
       normalizedAction.includes("train") ||

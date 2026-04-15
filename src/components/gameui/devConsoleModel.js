@@ -1,3 +1,5 @@
+import { DEFAULT_START_ZONE_ID } from "../../world/WorldDataRegistry.js";
+
 const MAX_LOG_ENTRIES = 380;
 
 export const QUICK_COMMANDS = Object.freeze([
@@ -443,7 +445,7 @@ export async function executeDevConsoleCommand(rawCommand, tools) {
                 ...(locationState.unlockedAreas || []),
                 location.id,
               ]),
-              biome: location.zoneId || locationState.biome || "city",
+              biome: location.zoneId || locationState.biome || DEFAULT_START_ZONE_ID,
             },
           },
         };

@@ -28,25 +28,16 @@ import {
   getSquadProfileForClass,
   resolveSquadProfileId,
 } from "./SkirmishSquadProfiles.js";
+import {
+  getSkirmishEncounterPool,
+  resolveEncounterZoneId,
+} from "../../world/WorldEncounterProfiles.js";
 
 const MAX_BOARD_SLOTS = 9;
 const MAX_COMBAT_LOG = 200;
 const DEFAULT_ITEM_FALLBACK = {
   heal: 0,
   mana: 0,
-};
-
-const BIOME_ENCOUNTER_POOLS = {
-  city: ["bandit", "slime", "giant_rat"],
-  ruins: ["goblin", "slime", "giant_rat", "bandit"],
-  wilds: ["wolf", "slime", "giant_rat", "wild_boar"],
-  skydocks: ["bandit", "goblin", "slime"],
-  undercity: ["giant_rat", "slime", "bandit", "goblin"],
-  mountain: ["goblin", "wolf", "bandit", "wild_boar"],
-  coast: ["slime", "wolf", "bandit", "goblin"],
-  desert: ["bandit", "slime", "goblin", "giant_rat"],
-  volcanic: ["slime", "goblin", "wolf", "bandit"],
-  dreamscape: ["slime", "goblin", "giant_rat", "bandit"],
 };
 
 setSimulationSkillResolver((skillId) => getSkillById(skillId) || { id: skillId });
@@ -407,7 +398,7 @@ function placeUnit(units, faction, unit, preferredCells) {
 }
 
 function getCombatBiome(state) {
-  return state?.world?.location?.biome || "city";
+  return resolveEncounterZoneId(state?.world?.location?.biome);
 }
 
 function scoreEncounterType(seeds) {
@@ -442,7 +433,7 @@ function expandEnemyRoster(state, enemyIds = []) {
         seedTemplates.length
       : 1;
   const allEnemies = DataRegistry.getEnemies();
-  const biomePoolIds = BIOME_ENCOUNTER_POOLS[combatBiome] || [];
+  const biomePoolIds = getSkirmishEncounterPool(combatBiome);
   const bandCandidates = allEnemies.filter((template) => {
     const level = toNumber(template?.level, 1);
     return level >= averageLevel - 4 && level <= averageLevel + 6;

@@ -99,6 +99,7 @@ export function createWorldRegistryRuntime({
   const zoneById = new Map();
   const locationById = new Map();
   const locationsByZoneId = new Map();
+  const zoneAliasIndex = new Map();
   const zoneNameIndex = new Map();
   const locationAliasIndex = new Map();
   const locationNameIndex = new Map();
@@ -124,9 +125,17 @@ export function createWorldRegistryRuntime({
       if (normalizedName) {
         pushIndexEntry(zoneNameIndex, normalizedName, zone.id);
       }
+      const aliases = Array.isArray(zone.aliases) ? zone.aliases : [];
+      for (const alias of aliases) {
+        const normalizedAlias = normalizeSearchText(alias);
+        if (normalizedAlias) {
+          pushIndexEntry(zoneAliasIndex, normalizedAlias, zone.id);
+        }
+      }
       zoneSearchEntries.push({
         id: zone.id,
         name: normalizedName,
+        aliases: aliases.map(normalizeSearchText).filter(Boolean),
       });
       return buildZoneSummary(zone);
     });
@@ -166,7 +175,49 @@ export function createWorldRegistryRuntime({
 
   finalizeIndex(locationAliasIndex);
   finalizeIndex(locationNameIndex);
+  finalizeIndex(zoneAliasIndex);
   finalizeIndex(zoneNameIndex);
+
+  const resolveZoneIdInternal = (raw) => {
+    const trimmed = typeof raw === "string" ? raw.trim() : "";
+    const rawLower = trimmed.toLowerCase();
+    const normalized = normalizeSearchText(trimmed);
+    if (!normalized) return null;
+
+    if (zoneById.has(rawLower)) {
+      return rawLower;
+    }
+
+    const aliasMatches = zoneAliasIndex.get(normalized);
+    if (Array.isArray(aliasMatches) && aliasMatches.length === 1) {
+      return aliasMatches[0];
+    }
+    if (Array.isArray(aliasMatches) && aliasMatches.length > 1) {
+      return pickLexicographicallySmallestId(aliasMatches);
+    }
+
+    const nameMatches = zoneNameIndex.get(normalized);
+    if (Array.isArray(nameMatches) && nameMatches.length === 1) {
+      return nameMatches[0];
+    }
+    if (Array.isArray(nameMatches) && nameMatches.length > 1) {
+      return pickLexicographicallySmallestId(nameMatches);
+    }
+
+    const containsMatches = zoneSearchEntries
+      .filter((entry) => {
+        if (entry.name.includes(normalized) || normalized.includes(entry.name)) {
+          return true;
+        }
+        return entry.aliases.some(
+          (alias) => alias.includes(normalized) || normalized.includes(alias),
+        );
+      })
+      .map((entry) => entry.id);
+
+    if (containsMatches.length === 1) return containsMatches[0];
+    return pickLexicographicallySmallestId(containsMatches);
+  };
 
   const starterLocationIds = new Set(
     zoneSummaries.flatMap((zone) =>
@@ -191,7 +242,8 @@ export function createWorldRegistryRuntime({
     locationSearchEntries.filter((entry) => starterLocationIds.has(entry.id));
 
   const getZoneEntryLocationId = (zoneId, { allowedLocationIds } = {}) => {
-    const zone = zoneById.get(zoneId);
+    const resolvedZoneId = resolveZoneIdInternal(zoneId);
+    const zone = zoneById.get(resolvedZoneId);
     if (!zone) return null;
 
     const allowedSet = normalizeAllowedIds(allowedLocationIds);
@@ -224,7 +276,6 @@ export function createWorldRegistryRuntime({
     locationById.has(defaultStartLocationId)
       ? defaultStartLocationId
       : null) ||
-    getZoneEntryLocationId("city") ||
     getStarterLocationEntries()[0]?.id ||
     locationSearchEntries[0]?.id ||
     null;
@@ -256,29 +307,7 @@ export function createWorldRegistryRuntime({
       return locationSummaries.slice();
     },
     resolveZoneId(raw) {
-      const trimmed = typeof raw === "string" ? raw.trim() : "";
-      const rawLower = trimmed.toLowerCase();
-      const normalized = normalizeSearchText(trimmed);
-      if (!normalized) return null;
-
-      if (zoneById.has(rawLower)) {
-        return rawLower;
-      }
-
-      const nameMatches = zoneNameIndex.get(normalized);
-      if (Array.isArray(nameMatches) && nameMatches.length === 1) {
-        return nameMatches[0];
-      }
-      if (Array.isArray(nameMatches) && nameMatches.length > 1) {
-        return pickLexicographicallySmallestId(nameMatches);
-      }
-
-      const containsMatches = zoneSearchEntries
-        .filter((entry) => entry.name.includes(normalized) || normalized.includes(entry.name))
-        .map((entry) => entry.id);
-
-      if (containsMatches.length === 1) return containsMatches[0];
-      return pickLexicographicallySmallestId(containsMatches);
+      return resolveZoneIdInternal(raw);
     },
     resolveLocationId(raw, { allowedLocationIds } = {}) {
       const trimmed = typeof raw === "string" ? raw.trim() : "";
@@ -324,7 +353,7 @@ export function createWorldRegistryRuntime({
     resolveTravelLocationId(raw, { allowedLocationIds } = {}) {
       const locationId = this.resolveLocationId(raw, { allowedLocationIds });
       if (locationId) return locationId;
-      const zoneId = this.resolveZoneId(raw);
+      const zoneId = resolveZoneIdInternal(raw);
       if (!zoneId) return null;
       return getZoneEntryLocationId(zoneId, { allowedLocationIds });
     },
@@ -352,7 +381,7 @@ export function createWorldRegistryRuntime({
         return pickLexicographicallySmallestId(exactLocationMatches) || fallback;
       }
 
-      const exactZoneId = this.resolveZoneId(trimmed);
+      const exactZoneId = resolveZoneIdInternal(trimmed);
       if (exactZoneId) {
         return getZoneEntryLocationId(exactZoneId) || fallback;
       }

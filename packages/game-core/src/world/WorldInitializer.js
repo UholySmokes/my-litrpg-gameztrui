@@ -1,28 +1,21 @@
 import { SimBridge } from "../simulation/bridge/SimulationContext.js";
 import {
   DEFAULT_START_LOCATION_ID,
+  DEFAULT_START_ZONE_ID,
+  WORLD_FLAG_DEFAULTS,
   WORLD_META,
   MAJOR_FACTION_IDS,
   getZoneById,
   getLocationById,
   getZoneEntryLocationId,
+  resolveZoneId,
   resolveStartingLocationId,
 } from "./WorldDataRegistry.js";
 
 export const STARTING_LOCATION_ID = DEFAULT_START_LOCATION_ID;
 
 function createDefaultWorldFlags() {
-  return {
-    leyline_storms_active: false,
-    market_unrest_active: false,
-    bloom_ignition_active: false,
-    skydock_lockdown_active: false,
-    veil_alert_active: false,
-    tideward_breach_active: false,
-    mirage_storm_active: false,
-    caldera_vents_unstable: false,
-    dream_wisps_active: false,
-  };
+  return { ...WORLD_FLAG_DEFAULTS };
 }
 
 function createDefaultFactionReputation() {
@@ -59,15 +52,31 @@ function pickStartLocationId({ locationId, zoneId } = {}) {
     });
   }
 
-  if (typeof zoneId === "string" && zoneId.trim() && getZoneById(zoneId)) {
-    return getZoneEntryLocationId(zoneId) || STARTING_LOCATION_ID;
+  const resolvedZoneId = resolveZoneId(zoneId);
+  if (resolvedZoneId && getZoneById(resolvedZoneId)) {
+    return getZoneEntryLocationId(resolvedZoneId) || STARTING_LOCATION_ID;
   }
 
   return STARTING_LOCATION_ID;
 }
 
+function getZoneSeedWeather(zoneId) {
+  const zone = getZoneById(zoneId);
+  const weather = zone?.seedWeather;
+  const type =
+    typeof weather?.type === "string" && weather.type.trim()
+      ? weather.type.trim()
+      : "clear";
+  const intensity = Number.isFinite(weather?.intensity)
+    ? Math.max(0, Math.min(1, weather.intensity))
+    : 0.3;
+  return { type, intensity };
+}
+
 export function createInitialWorldState({ seed } = {}) {
   const worldSeed = seed ?? SimBridge.now();
+  const startZoneId = getLocationById(STARTING_LOCATION_ID)?.zoneId || DEFAULT_START_ZONE_ID;
+  const startWeather = getZoneSeedWeather(startZoneId);
 
   return {
     id: WORLD_META.id,
@@ -75,7 +84,7 @@ export function createInitialWorldState({ seed } = {}) {
       current: STARTING_LOCATION_ID,
       visited: [STARTING_LOCATION_ID],
       unlockedAreas: [STARTING_LOCATION_ID],
-      biome: getLocationById(STARTING_LOCATION_ID)?.zoneId || "city",
+      biome: startZoneId,
     },
     flags: createDefaultWorldFlags(),
     vars: {
@@ -103,9 +112,9 @@ export function createInitialWorldState({ seed } = {}) {
     turnCount: 0,
     weather: {
       byBiome: {
-        [(getLocationById(STARTING_LOCATION_ID)?.zoneId || "city")]: {
-          type: "clear",
-          intensity: 0.3,
+        [startZoneId]: {
+          type: startWeather.type,
+          intensity: startWeather.intensity,
           updatedTurn: 0,
         },
       },
@@ -127,15 +136,15 @@ export function seedWorldAfterCharacterCreation(
 
   resolvePlayerArchetypeIds(player);
   const playerLocationId = player?.startingLocationId || null;
-  const playerZoneId = player?.startingZoneId || null;
-  const questBiome = mainQuest?.tags?.biome;
+  const playerZoneId = resolveZoneId(player?.startingZoneId) || null;
+  const questBiome = resolveZoneId(mainQuest?.tags?.biome) || null;
   const zoneId = playerLocationId
     ? getLocationById(playerLocationId)?.zoneId || playerZoneId || null
     : (playerZoneId && getZoneById(playerZoneId))
       ? playerZoneId
       : getZoneById(questBiome)
         ? questBiome
-        : "city";
+        : DEFAULT_START_ZONE_ID;
 
   const startLocationId = pickStartLocationId({
     locationId: playerLocationId,
@@ -143,43 +152,14 @@ export function seedWorldAfterCharacterCreation(
   });
 
   const resolvedStartLoc = getLocationById(startLocationId);
-  const startZoneId = resolvedStartLoc?.zoneId || zoneId;
+  const startZoneId = resolvedStartLoc?.zoneId || zoneId || DEFAULT_START_ZONE_ID;
 
   const nextFlags = createDefaultWorldFlags();
-  // Toggle 1 relevant boolean based on starting biome.
-  switch (startZoneId) {
-    case "ruins":
-      nextFlags.leyline_storms_active = true;
-      break;
-    case "city":
-      if (mainQuest?.id === "mq_whisper_market") {
-        nextFlags.market_unrest_active = true;
-      }
-      break;
-    case "wilds":
-      nextFlags.bloom_ignition_active = true;
-      break;
-    case "skydocks":
-      nextFlags.skydock_lockdown_active = true;
-      break;
-    case "undercity":
-      nextFlags.veil_alert_active = true;
-      break;
-    case "coast":
-      nextFlags.tideward_breach_active = true;
-      break;
-    case "desert":
-      nextFlags.mirage_storm_active = true;
-      break;
-    case "volcanic":
-      nextFlags.caldera_vents_unstable = true;
-      break;
-    case "dreamscape":
-      nextFlags.dream_wisps_active = true;
-      break;
-    default:
-      break;
+  const startZone = getZoneById(startZoneId);
+  if (startZone?.flagId) {
+    nextFlags[startZone.flagId] = true;
   }
+  const startWeather = getZoneSeedWeather(startZoneId);
 
   return {
     ...baseWorld,
@@ -211,8 +191,8 @@ export function seedWorldAfterCharacterCreation(
     weather: {
       byBiome: {
         [startZoneId]: {
-          type: nextFlags.mirage_storm_active ? "storm" : "clear",
-          intensity: nextFlags.mirage_storm_active ? 0.75 : 0.3,
+          type: startWeather.type,
+          intensity: startWeather.intensity,
           updatedTurn: 0,
         },
       },

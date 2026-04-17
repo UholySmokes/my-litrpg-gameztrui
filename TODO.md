@@ -1,7 +1,7 @@
 # Void-Verse Ritual UI Canva Master - TODO
 
 ## Plan Breakdown
-- [ ] Create docs/canva-ritual-ui-plan.md - Detailed spec doc.
+- [x] Create docs/canva-ritual-ui-plan.md - Detailed spec doc.
 - [ ] Setup Rube MCP (https://rube.app/mcp) + Composio auth (https://dashboard.composio.dev/f.marsmann81_workspace/).
 - [ ] Launch Canva via automation/skill, create "Void-Verse // Ritual UI Master" presentation (1600x900).
 - [ ] Build pages 00 Cover + Brief.

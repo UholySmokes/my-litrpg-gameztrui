@@ -43,11 +43,13 @@
  * @property {ClassEvolutionOption[]} evolutionOptions
  */
 
-const evo = (id, targetId, name, description, requirements = {}) => ({
+const evo = (id, targetId, name, description, tierReq = 1, loreReqs = {}, requirements = {}) => ({
   id,
   targetId,
   name,
   description,
+  tierReq,
+  loreReqs, // faction, quest, item, mastery
   requirements,
 });
 

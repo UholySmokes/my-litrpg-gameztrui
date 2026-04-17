@@ -52,14 +52,17 @@ export function handleProgressionAction(state, action, helpers) {
         evolutionCount,
         progressionModifiers,
       );
+      // Support new loreReqs field
       const mergedRequirements = {
         ...(selectedOption.requirements || {}),
         minLevel: Math.max(
           progressionLevelRequirement,
-          toNumber(selectedOption.requirements?.minLevel, 1),
+          toNumber(selectedOption.requirements?.minLevel || selectedOption.tierReq || 1, 1),
         ),
       };
+      // Check base requirements
       if (!meetsRequirements(mergedRequirements, state, player)) return state;
+      // TODO: Check loreReqs (faction rep, quest flags, etc.)
 
       const history = Array.isArray(progress.classEvolutionHistory)
         ? [...progress.classEvolutionHistory]

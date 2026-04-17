@@ -13,4 +13,4 @@
 - [ ] Verify mixed editable rule, repo naming, portal motif.
 - [ ] Test handoff: notes complete, exports collectable.
 
-Current: Starting with plan doc.
+Current: Canva auth blocked (404/private). Adapting to HTML prototype of presentation pages (1600x900, export SVG/PNG). Next: Create index.html structure.

@@ -1,0 +1,138 @@
+{
+  "id": "low_ward_market",
+  "name": "Low Ward Market",
+  "type": "market_district",
+  "region": "shardfall_meridian",
+  "biome": "urban",
+  "level": "1-3",
+  
+  "general": {
+    "description": "A bustling open-air market built among the twisted wreckage of pre-Spirefall buildings. Merchants hawk wares from converted cargo containers and patched tents.",
+    "atmosphere": "Colorful, loud, crowded, opportunity",
+    "danger_level": "low",
+    "crowd_density": "high"
+  },
+  
+  "shops": [
+    {
+      "id": "grundels_forge",
+      "name": "Grundel's Forge",
+      "type": "blacksmith",
+      "owner": "Grundel Ironhammer",
+      "race": "dwarf",
+      "specialties": ["basic_weapons", "armor_repair"],
+      "price_range": "10-100",
+      "inventory": ["iron_sword", "iron_dagger", "steel_helm", "chain_armor"]
+    },
+    {
+      "id": "wise_herbs",
+      "name": "Wise Herbs",
+      "type": "herbalist", 
+      "owner": "Mara Wise",
+      "race": "human",
+      "specialties": ["potions", "herbal_remedies"],
+      "price_range": "15-75",
+      "inventory": ["health_potion", "mana_potion", "cleansing_tea"]
+    },
+    {
+      "id": "gems_of_chance",
+      "name": "Gems of Chance",
+      "type": "gamble_shop",
+      "owner": "Krin the Quick",
+      "race": "halfling",
+      "description": "Mysterious stones that supposedly hold Void-essence",
+      "warning": "Often a scam"
+    },
+    {
+      "id": "armor_warehouse",
+      "name": "Armor Warehouse",
+      "type": "armorer",
+      "owner": "Trade Guild affiliate",
+      "description": "New and used armor, slightly-damaged prices"
+    }
+  ],
+  
+  "street_merchants": [
+    {
+      "wares": "cooked_meats",
+      "price": 5
+    },
+    {
+      "wares": "fresh_bread", 
+      "price": 3
+    },
+    {
+      "wares": "small_tools",
+      "price": "varies"
+    },
+    {
+      "wares": "used_books",
+      "price": "varies"
+    }
+  ],
+  
+  "points_of_interest": [
+    {
+      "id": "notice_board",
+      "name": "Guild Notice Board",
+      "description": "Quest postings, guild business, wanted posters",
+      "location": "center_square"
+    },
+    {
+      "id": "fountain_square",
+      "name": "Broken Fountain",
+      "description": "A pre-Spirefall fountain, dry but decorative",
+      "location": "center"
+    }
+  ],
+  
+  "criminal_elements": [
+    {
+      "name": "Pocket Pickers",
+      "frequency": "common",
+      "target": "distracted_tourists"
+    },
+    {
+      "name": "Fake Gems",
+      "frequency": "occasional", 
+      "shop": "Gems of Chance"
+    }
+  ],
+  
+  "quests": [
+    {
+      "id": "market_dispute",
+      "type": "main_quest",
+      "description": "Resolve a dispute between two merchants",
+      "gives": "grundels_forge",
+      "reward": { "gold": 50, "reputation": "trade_guild" }
+    },
+    {
+      "id": "missing_supplies",
+      "type": "fetch",
+      "description": "Find stolen supplies from the Underworks",
+      "reward": { "gold": 30 }
+    },
+    {
+      "id": "counterfeit_coin",
+      "type": "investigation",
+      "description": "Investigate fake gold coins appearing in the market",
+      "difficulty": "hard"
+    }
+  ],
+  
+  "exits": [
+    { "to": "silver_shadow_street", "direction": "north", "label": "The Silver Shadow tavern" },
+    { "to": "underworks_entrance", "direction": "south", "label": "Underworks" },
+    { "to": "main_ward_road", "direction": "east", "label": "Main Ward" }
+  ],
+  
+  "flavor": {
+    "audio": ["street_hucksters", "smith_hammer", "barter_shouts"],
+    "smell": ["bread", "metal", "crowds"],
+    "weather_effects": {
+      "rain": "Merchants pack up quickly, prices double",
+      "fog": "Mysterious figures appear with offers"
+    }
+  }
+}

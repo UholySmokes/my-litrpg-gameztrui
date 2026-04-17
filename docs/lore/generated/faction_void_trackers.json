@@ -1,0 +1,105 @@
+{
+  "id": "void_trackers",
+  "name": "The Void Trackers",
+  "type": "faction",
+  
+  "identity": {
+    "full_name": "The Void Trackers",
+    "short_name": "Trackers",
+    "symbol": "A broken eye with a star pupil",
+    "colors": ["void_black", "starlight_silver"],
+    "motif": "broken mirrors reflecting false stars"
+  },
+  
+  "headquarters": {
+    "location": "Underworks, Low Ward",
+    "description": "A converted basement accessed through a collapsed storm drain"
+  },
+  
+  "leadership": {
+    "leader": "Known only as 'The Reader'",
+    "age": "unknown",
+    "appearance": "Never seen personally, communicates only through mirrors"
+  },
+  
+  "membership": {
+    "count": "~30 active",
+    "requirements": ["survived_Void_exposure", "passed_trials_of_mirror"],
+    "initiation": "Stare into a Void-spark for 3 days without going mad"
+  },
+  
+  "goals": [
+    "Track and contain Void rifts before they spread",
+    "Document all known Void-phenomena", 
+    "Prevent the Unseen from opening major rifts"
+  ],
+  
+  "methods": [
+    "Surveillance",
+    "Containment rituals",
+    "Acquiring Void-artifacts for study",
+    "Intelligence gathering"
+  ],
+  
+  "resources": {
+    "income": "Void-artifacts (sold to highest bidder)",
+    "strength": "Unmatched knowledge of Void-phenomena",
+    "weakness": "Small numbers, paranoia"
+  },
+  
+  "public_knowledge": {
+    "known": true,
+    "reputation": "dangerous_but_necessary",
+    "legal_status": "tolerated_grey"
+  },
+  
+  "allies": [
+    { "faction": "Tideward Order", "type": "unstable_understand", "reason": "Shared enemy" },
+    { "faction": "Veil Archive", "type": "reluctant", "reason": "Information exchange" }
+  ],
+  
+  "enemies": [
+    { "faction": "Unseen", "type": "mortal", "reason": "Opposite goals" },
+    { "faction": "Void Cult", "type": "mortal", "reason": "They want rifts, Trackers seal them" }
+  ],
+  
+  "ranks": [
+    { "name": "Watcher", "requirement": "trial_survived" },
+    { "name": "Tracker", "requirement": "50_hours_monitoring" },
+    { "name": "Sealer", "requirement": "successfiul_containment" },
+    { "name": "Reader", "requirement": "selected_by_mirror" }
+  ],
+  
+  "加入条件": {
+    "approach": "Find one of their mirrors in the Underworks and ask a question",
+    "trial": "They will test you with Void-exposure"
+  },
+  
+  "quest_hooks": [
+    {
+      "id": "tracker_trial",
+      "name": "Trial of Mirrors",
+      "type": "initiation",
+      "description": "Pass the Trackers' test to prove you can survive near the Void",
+      "risk": "high",
+      "reward": { "title": "Watcher", "skill": "void_sense" }
+    },
+    {
+      "id": "contain_rift",
+      "name": "Contain the Rift",
+      "type": "combat_investigation",
+      "description": "Assist in sealing a newly-discovered Void rift",
+      "reward": { "xp": 200, "gold": 100, "reputation": "void_trackers" }
+    },
+    {
+      "id": "find_the_reader",
+      "name": "Find The Reader",
+      "type": "special",
+      "difficulty": "extreme",
+      "description": "Locate the leadership of the Void Trackers",
+      "unlock": "reader_rank"
+    }
+  ],
+  
+  "recruitment_rumor": "They say if you stare into a mirror in the Underworks at midnight and ask 'Who watches?', someone might answer."
+}

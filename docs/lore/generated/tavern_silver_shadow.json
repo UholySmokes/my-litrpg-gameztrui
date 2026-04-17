@@ -1,0 +1,96 @@
+{
+  "id": "silver_shadow_tavern",
+  "name": "The Silver Shadow",
+  "type": "tavern",
+  "location": "meridian_arcology",
+  "region": "shardfall_meridian",
+  "district": "low_ward",
+  "floor": "ground",
+  
+  "owner": {
+    "name": "Vellara Moonshade",
+    "race": "half_elf",
+    "age": "45",
+    "appearance": "Silver-streaked dark hair, mysterious smile, always cleaning a glass that never seems to empty",
+    "personality": ["mysterious", "observant", "helpful but cryptic"],
+    "secret": "Former spy for the Veil Archive"
+  },
+  
+  "atmosphere": {
+    "ambient_sound": ["low chatter", "occasional music box", "fire crackling"],
+    "smell": ["roasted meat", "ale", "woodsmoke"],
+    "lighting": "warm amber, few windows"
+  },
+  
+  "interior": {
+    "bar": true,
+    "tables": "12",
+    "secret_rooms": 1,
+    "back_room": "meetings"
+  },
+  
+  "menu": {
+    "common_dishes": ["spiced stew", "rye bread", "roasted chestnuts"],
+    "specialties": ["Shadow Ale (uncommon)", "Void-Smoked Pheasant (rare)", "Moonfire Wine (limited)"],
+    "drinks": ["house ale", "silver mead", "black lager", "arcology bourbon"]
+  },
+  
+  "daily_special": {
+    "type": "mystery_meal",
+    "description": "Vellara picks something special based on what she sees in your eyes"
+  },
+  
+  "services": ["information", "rumors", "message_board", "quiet_meeting_space"],
+  
+  "quest_hooks": [
+    {
+      "id": "shadow_tavern_rumor",
+      "type": "fetch",
+      "giver": "any patron",
+      "description": "Deliver a sealed letter to The Silver Shadow",
+      "reward": { "gold": 25, "xp": 15 }
+    },
+    {
+      "id": "vellara_secret",
+      "type": "reputation",
+      "prerequisite": "high_social",
+      "description": "Help Vellara with a private matter",
+      "unlock": "access to secret room and intelligence network"
+    }
+  ],
+  
+  "rumors": [
+    "The Tideward Order is cracking down on Void-tainted shipments lately.",
+    "There's a new gang in the Underworks called the Unseen. Nobody knows their leader.",
+    "They say the Archon dreams in code now. The Spirefall changed more than just the buildings.",
+    "A woman matching your description was asking about you, just last night.",
+    "The leyline fees are going up again. Next month, it'll cost double to get to the skydocks."
+  ],
+  
+  "characters": [
+    {
+      "id": "old_thomas",
+      "name": "Old Thomas",
+      "role": "regular",
+      "description": "Retired guard who always sits in the corner, tells war stories for coin"
+    },
+    {
+      "id": "mira_cash",
+      "name": "Mira Cash",
+      "role": "merchant",
+      "description": "Traveling trader who arrives with exotic goods weekly"
+    }
+  ],
+  
+  "connections": {
+    "to_underworks": "back_door",
+    "to_market": "side_alley",
+    "to_wards": "front_door"
+  },
+  
+  "flavor_text": {
+    "enter": "The warm smell of the Shadow welcomes you. A fire crackles in the hearth.",
+    "leave": "The Shadow's warmth fades behind you. The low ward feels colder now.",
+    "rainy": "Rain drums steadily on the shutters. The tavern is busier than usual."
+  }
+}

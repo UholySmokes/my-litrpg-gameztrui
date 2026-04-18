@@ -114,6 +114,7 @@
     "@opentelemetry/resources": "^1.25.1",
     "@opentelemetry/sdk-node": "^0.52.0",
     "@opentelemetry/semantic-conventions": "^1.25.1",
+    "@rollup/rollup-linux-x64-gnu": "^4.60.1",
     "@supabase/supabase-js": "^2.100.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",

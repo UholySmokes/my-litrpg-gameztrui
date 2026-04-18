@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import ProgressBar from "../../ui/ProgressBar.jsx";
 import GameQuickActions from "../gameui/GameQuickActions.jsx";
 import {
   DEFAULT_START_LOCATION_ID,
@@ -164,21 +165,30 @@ export default function AdventureShell({
       temporaryEffectCount,
     ],
   );
-  const topMeters = [
-    { label: "HP", value: formatMeter(player?.hp?.current, player?.hp?.max) },
-    { label: "MP", value: formatMeter(player?.mana?.current, player?.mana?.max) },
-    { label: "XP", value: formatMeter(player?.xp?.current, player?.xp?.max) },
+
+
+const topMeters = [
+    { label: "HP", current: player?.hp?.current ?? 0, max: player?.hp?.max ?? 1, color: '#ef4444', tooltip: 'Health - Damage brings you closer to archive ejection' },
+    { label: "MP", current: player?.mana?.current ?? 0, max: player?.mana?.max ?? 1, color: '#3b82f6', tooltip: 'Mana - Archive weave energy' },
+    { label: "XP", current: player?.xp?.current ?? 0, max: player?.xp?.max ?? 1, color: '#eab308', tooltip: 'Experience - Progress toward milestone thresholds' },
   ];
   if (onboardingTier >= 2) {
+    const gold = player?.currency?.goldCoins ?? player?.player?.gold ?? 0;
     topMeters.push({
       label: "Gold",
-      value: String(player?.currency?.goldCoins ?? player?.gold ?? 0),
+      current: gold,
+      max: 999999,
+      color: '#f59e0b',
+      tooltip: 'Gold coins - Trade medium for rare matrices and services'
     });
   }
   if (archetypeView?.resource) {
     topMeters.push({
       label: archetypeView.resource.name,
-      value: formatMeter(archetypeView.resource.current, archetypeView.resource.max),
+      current: archetypeView.resource.current,
+      max: archetypeView.resource.max,
+      color: '#8b5cf6',
+      tooltip: `${archetypeView.resource.name} - ${archetypeView.resource.desc || 'System resource'}`
     });
   }
 
@@ -331,12 +341,16 @@ export default function AdventureShell({
           <section className="archive-sidecar__panel">
             <div className="adventure-shell__eyebrow">Vital Readout</div>
             <h3 className="surface-section__title">Current reserves</h3>
-            <div className="archive-meter-grid">
+<div className="archive-meter-grid">
               {topMeters.map((meter) => (
-                <div key={meter.label} className="archive-meter">
-                  <span>{meter.label}</span>
-                  <strong>{meter.value}</strong>
-                </div>
+                <ProgressBar 
+                  key={meter.label}
+                  current={meter.current}
+                  max={meter.max}
+                  label={meter.label}
+                  color={meter.color}
+                  tooltip={meter.tooltip}
+                />
               ))}
             </div>
           </section>

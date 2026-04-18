@@ -4,9 +4,9 @@
 
 - [x] Create `scripts/hermes-integration.js`: Node script to trigger Hermes via `wsl.exe hermes`, monitor generated files, validate/load into src/data/. (Fixed ESLint)
 
-- [ ] Create `src/data/lore-loader.js`: Import/validate Hermes JSON for game use (e.g., factions, quests).
+- [x] Create `src/data/lore-loader.js`: Import/validate Hermes JSON for game use (e.g., factions, quests).
 
-- [ ] Create `docs/HERMES_BLACKBOX_PIPELINE.md`: Detailed workflow doc.
+- [x] Create `docs/HERMES_BLACKBOX_PIPELINE.md`: Detailed workflow doc.
 
 - [ ] Edit `PLAN.md`: Add Hermes integration milestone/section.
 

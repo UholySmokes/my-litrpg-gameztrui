@@ -1,5 +1,5 @@
 /* global require, process, fs, path, console, Math */
-/* eslint-disable no-undef */
+ 
 // Magic Physics Simulator - Unified version using new ManaBalance/ManaSystem
 // CLI: node magic_physics_sim.js [--scenarios=magic_physics_scenarios.json] [--runs=1000] [--output=results.json]
 // Now resolves inconsistencies with canonical resolution formulas

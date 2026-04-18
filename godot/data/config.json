@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-15T02:34:53.811Z",
-  "source": "dist\\runtime-config.js",
+  "generatedAt": "2026-04-17T23:25:08.850Z",
+  "source": "dist/runtime-config.js",
   "profile": "local",
   "runtimeMode": "online",
   "devConsoleEnabled": false,

@@ -1,11 +1,8 @@
-const { execSync, spawn } = require('child_process');
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const chokidar = require('chokidar'); // npm install chokidar
 
 const ROOT = process.cwd();
-const HERMES_CMD = 'wsl.exe';
-const HERMES_ARGS = ['hermes'];
 const GENERATED_DIR = path.join(ROOT, 'docs/lore/generated');
 const DATA_DIR = path.join(ROOT, 'src/data/lore');
 
@@ -16,7 +13,7 @@ function ensureDirs() {
 
 function triggerHermes(skill, params = '') {
   console.log(`Triggering Hermes: load skill: ${skill}; ${params}`);
-  const cmd = `${HERMES_CMD} ${HERMES_ARGS.join(' ')} "load skill: ${skill}; generate ${params}"`;
+  const cmd = `wsl.exe hermes "load skill: ${skill}; generate ${params}"`;
   try {
     execSync(cmd, { stdio: 'inherit', cwd: ROOT });
     console.log('Hermes command executed.');
@@ -28,3 +25,38 @@ function triggerHermes(skill, params = '') {
 function processGeneratedFile(filePath) {
   if (!filePath.includes('.json')) return;
   console.log(`Processing ${filePath}`);
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const targetFile = path.join(DATA_DIR, path.basename(filePath));
+    fs.writeFileSync(targetFile, JSON.stringify(data, null, 2));
+    console.log(`Copied to ${targetFile}`);
+  } catch (error) {
+    console.error('Process error:', error.message);
+  }
+}
+
+function watchGenerated() {
+  ensureDirs();
+  console.log('Watching docs/lore/generated/ for new .json files...');
+  fs.watch(GENERATED_DIR, { recursive: true }, (event, filename) => {
+    if (event === 'rename' && filename && filename.endsWith('.json')) {
+      const fullPath = path.join(GENERATED_DIR, filename);
+      if (fs.existsSync(fullPath)) {
+        processGeneratedFile(fullPath);
+      }
+    }
+  });
+}
+
+const args = process.argv.slice(2);
+if (args.includes('--watch')) {
+  watchGenerated();
+} else if (args[0] === '--generate') {
+  const skill = args[1] || 'lore-faction-generator';
+  const params = args.slice(2).join(' ') || '';
+  triggerHermes(skill, params);
+} else {
+  console.log('Usage: node scripts/hermes-integration.js [--generate <skill> <params> | --watch]');
+  console.log('Example: node scripts/hermes-integration.js --generate lore-faction-generator faction --name "Shadow Guild"');
+}
+

@@ -1,4 +1,4 @@
-﻿/* eslint-disable no-unused-vars */
+﻿ 
 /* ManaBalance.js - Unified Casting Resolution Engine
  * Implements canonical computeResolution formula from review task.
  * Resolves manaCost, strainGain, damageMult etc. for spells.

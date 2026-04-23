@@ -1,21 +1,61 @@
-# BLACKBOXAI-Hermes Collaboration Pipeline TODO
+# Magic Physics System Readiness & Multi-Platform Verification
+## Status: IN PROGRESS - BlackboxAI Assessment [2026-04-XX]
 
-## Hermes Integration Pipeline
+### 0. Information Gathered (from file analysis)
+- Magic physics simulation exists (`magic_physics_sim.js/.cjs`) but **broken** (CJS require in ESM repo).
+- Backend API routing exists (`functions/lib/api-router.js`, `scripts/dev-api-server.mjs`) with Firebase/Supabase deps.
+- Android toolchain fully scripted (`scripts/android-preflight.mjs`, `scripts/export-godot-android.mjs`) with Godot 4.6 export presets.
+- Web dev server ready (`npm run dev`, Vite port 5173).
+- Simulation/game tests exist (`npm test:smoke`, `npm run simulate`).
+- No active "lvl 7" browser verification or specific backend failure logs found.
 
-- [x] Create `scripts/hermes-integration.js`: Node script to trigger Hermes via `wsl.exe hermes`, monitor generated files, validate/load into src/data/. (Fixed ESLint)
+### 1. Detailed Plan (File-Level)
+**A. Fix Magic Physics Engine (Priority 1)**
+- Convert `magic_physics_sim.js` to valid ESM (dynamic import for CJS deps or full rewrite).
+- Update `package.json` scripts: `simulate` → `simulate:cjs` fallback.
+- Run `npm run simulate` + verify `magic_physics_results_*.json`.
 
-- [x] Create `src/data/lore-loader.js`: Import/validate Hermes JSON for game use (e.g., factions, quests).
+**B. Backend Health Check & Fix (Priority 2)**
+- Run `npm run dev:api` + `npm run test:smoke` to surface exact backend issue.
+- Patch failing routes/configs in `functions/lib/*` (likely auth/DB).
+- Verify Firebase/Supabase connection.
 
-- [x] Create `docs/HERMES_BLACKBOX_PIPELINE.md`: Detailed workflow doc.
+**C. Android Readiness (Priority 3)**
+- Run `npm run android:preflight`.
+- Export test APK: `npm run android:export:singleplayer`.
 
-- [ ] Edit `PLAN.md`: Add Hermes integration milestone/section.
+**D. Browser Playtest to Level 7 (Priority 4)**
+- Run `npm run dev` → http://127.0.0.1:5173.
+- Manual verification: char creation → lvl1 → fight/XP → lvl7 progression.
+- Capture console/network logs for failures.
 
-- [ ] Test pipeline: Trigger sample Hermes gen (e.g., faction), process data, run simulation.
+**E. Final Verification**
+- Run `npm run check` suite.
+- Update docs/ with status report.
 
-- [ ] Git commit all changes: `git add . && git commit -m "feat: hermes-blackbox pipeline"`.
+### 2. Dependent Files to Edit
+| Category | Files |
+|----------|-------|
+| Magic Sim | `magic_physics_sim.js`, `package.json` (scripts) |
+| Backend | `functions/lib/api-router.js`, `scripts/dev-api-server.mjs`, `firebase.json`/`firestore.rules` |
+| Android | None (scripts ready) |
+| Docs/Tracking | `TODO.md`, `progress.md`, `docs/MAGIC_PHYSICS_LORE.md` |
+| Tests | `tests/unit/*` if backend regressions |
 
-- [ ] Deploy validated lore to Firebase/Supabase if applicable.
+### 3. Execution Steps (Checklist - Update on completion)
+- [ ] **Step 1**: Fix `magic_physics_sim.js` ESM → run sim.
+- [ ] **Step 2**: Backend smoke (`npm run dev:api && npm run test:smoke`).
+- [ ] **Step 3**: Android preflight/export test.
+- [ ] **Step 4**: Browser dev server + manual lvl7 playtest.
+- [ ] **Step 5**: Full `npm run check` + lint/test.
+- [ ] **Step 6**: Generate summary report + `attempt_completion`.
 
-- [ ] Update TODO with progress.
+### 4. Follow-up Steps
+| Step | Commands |
+|------|----------|
+| Installs | `npm ci` if deps drift |
+| Testing | `npm run test:smoke`, `npm run validate:*` suite |
+| Deployment | `npm run android:export:*` for real builds |
+| Reporting | Update `progress.md`, `TEST_REPORT.md` |
 
-Next: Implement scripts/hermes-integration.js.
+**Proceeding step-by-step. Current: Awaiting sim fix approval/confirmation.**

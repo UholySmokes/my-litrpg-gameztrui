@@ -113,7 +113,7 @@ export default function CreationSummaryPanel({
           </div>
           <p className="creation-summary__hero-copy">
             {canFinalize
-              ? "The first page is stable. The archive recognizes the build as coherent."
+              ? "The first page is stable. The archive has aligned the landing, invocation, and opening identity."
               : "The dossier is still unstable. Resolve the remaining rite fragments before descent."}
           </p>
         </div>
@@ -131,6 +131,21 @@ export default function CreationSummaryPanel({
           title={selectionSummary.originName}
           copy={selectionSummary.originDescription}
           badge={biomeBadge}
+          meta={
+            <>
+              {selectionSummary.originZoneName ? (
+                <div>
+                  <strong>Canonical zone:</strong> {selectionSummary.originZoneName}
+                </div>
+              ) : null}
+              {selectionSummary.originLocationName ? (
+                <div>
+                  <strong>Entry point:</strong> {selectionSummary.originLocationName}
+                </div>
+              ) : null}
+              {selectionSummary.originTrustNote ? <div>{selectionSummary.originTrustNote}</div> : null}
+            </>
+          }
         />
         <SummaryCard
           label="Lineage"

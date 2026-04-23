@@ -1,6 +1,13 @@
 import { getItemData } from "../data/registries/ItemDataRegistry.js";
-import { getZoneEntryLocationId } from "../world/WorldDataRegistry.js";
-import { buildOpeningArcPayload } from "../world/OpeningArcRegistry.js";
+import {
+  getLocationById,
+  getZoneById,
+  getZoneEntryLocationId,
+} from "../world/WorldDataRegistry.js";
+import {
+  buildOpeningArcPayload,
+  getOpeningArcById,
+} from "../world/OpeningArcRegistry.js";
 import {
   deriveOnboardingTierFromState,
   getOpeningTutorialContext,
@@ -170,7 +177,7 @@ export function resolveStartingPointPayload(startingPoint = null) {
 
   return {
     oathOrigin: openingArcPayload.oathOrigin,
-    startingZoneId: startingPoint.id,
+    startingZoneId: openingArcPayload.oathOrigin?.zoneId || startingPoint.id,
     startingLocationId:
       openingArcPayload.oathOrigin?.locationId ||
       getZoneEntryLocationId(startingPoint.id) ||
@@ -178,6 +185,27 @@ export function resolveStartingPointPayload(startingPoint = null) {
     openingArcId: openingArcPayload.openingArcId,
     entrySceneId: openingArcPayload.entrySceneId,
     tutorialBundleId: openingArcPayload.tutorialBundleId,
+  };
+}
+
+export function describeStartingPointSelection(startingPoint = null) {
+  const originPayload = resolveStartingPointPayload(startingPoint);
+  const zone = originPayload.startingZoneId
+    ? getZoneById(originPayload.startingZoneId)
+    : null;
+  const location = originPayload.startingLocationId
+    ? getLocationById(originPayload.startingLocationId)
+    : null;
+  const openingArc = originPayload.openingArcId
+    ? getOpeningArcById(originPayload.openingArcId)
+    : null;
+
+  return {
+    ...originPayload,
+    zoneName:
+      startingPoint?.name || zone?.name || originPayload.oathOrigin?.name || null,
+    locationName: location?.name || null,
+    openingArc,
   };
 }
 

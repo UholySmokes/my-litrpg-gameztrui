@@ -363,11 +363,16 @@ export function useGameUiCharacterCreationFlow({
       const activeDirective = Array.isArray(nextState?.quests?.active)
         ? nextState.quests.active[0] || null
         : null;
-      const startingLocationId = characterData?.startingLocationId || null;
+      const startingLocationId =
+        oathOrigin?.locationId || characterData?.startingLocationId || null;
       const startingLocation = startingLocationId
         ? getLocationById(startingLocationId)
         : null;
-      const zoneId = startingLocation?.zoneId || characterData?.startingZoneId || null;
+      const zoneId =
+        startingLocation?.zoneId ||
+        oathOrigin?.zoneId ||
+        characterData?.startingZoneId ||
+        null;
       const zone = zoneId ? getZoneById(zoneId) : null;
       setTransitionSummary({
         name: playerObj?.name || "Adventurer",
@@ -375,8 +380,7 @@ export function useGameUiCharacterCreationFlow({
           (typeof playerObj?.class === "string"
             ? playerObj.class
             : playerObj?.class?.name) || "Unknown",
-        startingPoint:
-          oathOrigin?.name || startingLocation?.name || zone?.name || zoneId || null,
+        startingPoint: zone?.name || oathOrigin?.name || startingLocation?.name || zoneId || null,
         starterKitLabel: characterData?.starterKitLabel || null,
         firstDirective: activeDirective?.name || openingArc?.firstQuest?.name || null,
       });
@@ -400,7 +404,7 @@ export function useGameUiCharacterCreationFlow({
       }
       if (startingLocation?.name || zone?.name) {
         addSystemMessage(
-          `Origin sealed: ${oathOrigin?.name || startingLocation?.name || zone?.name}. Your first directive is ready in the World Atrium.`,
+          `Origin sealed: ${zone?.name || oathOrigin?.name || startingLocation?.name}. Entry point: ${startingLocation?.name || "World Atrium access corridor"}. Your first directive is ready in the World Atrium.`,
           "system",
         );
       }

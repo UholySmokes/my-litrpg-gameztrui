@@ -22,6 +22,7 @@ import {
   calculateCreationSyncProgress,
 } from "../../core/characterCreationWizardFlow.js";
 import {
+  describeStartingPointSelection,
   buildStarterKitPreview,
   mergeCreationOnboardingData,
 } from "../../core/creationOnboarding.js";
@@ -166,9 +167,9 @@ function SoulCrucibleSummaryStrip({ raceName, className, systemName, completionB
       }}
     >
       <span style={{ color: "var(--holo-cyan)" }}>{raceName}</span>
-      <span>·</span>
+      <span>|</span>
       <span style={{ color: "var(--holo-cyan)" }}>{className}</span>
-      <span>·</span>
+      <span>|</span>
       <span style={{ color: "var(--holo-cyan)" }}>{systemName}</span>
       <span style={{ marginLeft: "auto", opacity: 0.7 }}>{done}/{steps.length} complete</span>
     </div>
@@ -338,6 +339,10 @@ export default function CharacterCreationMode({
       }),
     [selectedClass, selectedProfession],
   );
+  const startingPointSelection = useMemo(
+    () => describeStartingPointSelection(selectedStartingPoint),
+    [selectedStartingPoint],
+  );
 
   const selectionSummary = useMemo(() => {
     const systemMatchSummaryParts = [];
@@ -396,9 +401,18 @@ export default function CharacterCreationMode({
       grantedPassiveSkills,
       startingPrompt:
         startingPrompt?.trim() || "Script the first invocation to lock the opening handoff.",
-      originName: selectedStartingPoint?.name || "Landing not selected",
+      originName:
+        startingPointSelection.zoneName || selectedStartingPoint?.name || "Landing not selected",
       originDescription: selectedStartingPoint?.summary || "Choose a landing to shape the opening pressure.",
       originBiome: selectedStartingPoint?.type || null,
+      originZoneName: startingPointSelection.zoneName,
+      originLocationName: startingPointSelection.locationName,
+      originTrustNote:
+        startingPointSelection.zoneName && startingPointSelection.locationName
+          ? `Canonical spawn: ${startingPointSelection.zoneName} via ${startingPointSelection.locationName}.`
+          : startingPointSelection.zoneName
+            ? `Canonical spawn: ${startingPointSelection.zoneName}.`
+            : "Choose a landing to lock the initial spawn before descent.",
       starterKitLabel: starterKitPreview.starterKitLabel,
       starterWeaponName: starterKitPreview.weapon?.name || null,
       starterArmorName: starterKitPreview.armor?.name || null,
@@ -419,6 +433,8 @@ export default function CharacterCreationMode({
     selectedRace,
     selectedActiveSkills,
     selectedStartingPoint,
+    startingPointSelection.locationName,
+    startingPointSelection.zoneName,
     starterKitPreview,
     startingPrompt,
     systemAttributeBias,
@@ -457,13 +473,12 @@ export default function CharacterCreationMode({
       MAX_PASSIVE_SKILLS,
       advancedUnlocked,
       availablePoints,
-      canFinalize,
       canSealChronicle,
       characterName,
       creationPerkLimits?.maxPicks,
       creationPerkLimits?.minPicks,
-      starterTreeLimits?.maxPicks,
       starterTreeLimits?.minPicks,
+      starterTreeLimits?.maxPicks,
       selectedActiveSkills.length,
       selectedAlignmentId,
       selectedArchetypeSystem,
@@ -498,16 +513,18 @@ export default function CharacterCreationMode({
         advancedUnlocked && (starterTreeLimits?.minPicks || 0) > 0,
       alignmentLocked: completionById.alignment,
       hasOrigin: Boolean(selectedStartingPoint),
-      hasStartingPrompt: completionById["starting-point"],
+      hasStartingPrompt: Boolean(startingPrompt?.trim()),
       canFinalize: canSealChronicle,
     }),
-    [advancedUnlocked, canSealChronicle, completionById, selectedStartingPoint, starterTreeLimits?.minPicks],
+    [
+      advancedUnlocked,
+      canSealChronicle,
+      completionById,
+      selectedStartingPoint,
+      starterTreeLimits?.minPicks,
+      startingPrompt,
+    ],
   );
-
-  // Clear validation errors when the player makes a selection that changes chamber checks.
-  useEffect(() => {
-    setWizardError((prev) => (prev ? "" : prev));
-  }, [chamberChecks]);
 
   const chamberCompletion = useMemo(
     () =>
@@ -593,7 +610,6 @@ export default function CharacterCreationMode({
       completionById,
       creationPerkLimits?.maxPicks,
       gender,
-      starterTreeLimits?.minPicks,
       selectedActiveSkills.length,
       selectedAlignmentId,
       selectedArchetypeSystem,
@@ -731,8 +747,14 @@ export default function CharacterCreationMode({
               : "#4ade9a",
         lines: [
           `Opening pressure: ${selectedStartingPoint.type}.`,
+          startingPointSelection.zoneName
+            ? `Canonical zone: ${startingPointSelection.zoneName}.`
+            : null,
+          startingPointSelection.locationName
+            ? `Entry point: ${startingPointSelection.locationName}.`
+            : null,
           selectedStartingPoint.summary,
-        ],
+        ].filter(Boolean),
       });
     }
 
@@ -754,11 +776,13 @@ export default function CharacterCreationMode({
     selectedProfession,
     selectedRace,
     selectedStartingPoint,
+    startingPointSelection.locationName,
+    startingPointSelection.zoneName,
     selectionSummary.raceActiveAbility,
     selectionSummary.racePassiveAbility,
     selectionSummary.systemMatchSummary,
     starterKitPreview,
-    systemAttributeBias?.primary,
+    systemAttributeBias,
   ]);
   const activeChamber = chambers[activeChamberIndex] || chambers[0];
   const asciiArt = selectedRace ? RACE_ASCII[selectedRace.id] || RACE_ASCII.default : RACE_ASCII.default;
@@ -1168,7 +1192,7 @@ export default function CharacterCreationMode({
                           {point.type}
                         </span>
                         {isSelected && (
-                          <span style={{ marginLeft: "auto", color: colors.badge, fontSize: "0.75rem", flexShrink: 0 }}>✓</span>
+                          <span style={{ marginLeft: "auto", color: colors.badge, fontSize: "0.75rem", flexShrink: 0 }}>Selected</span>
                         )}
                       </div>
                       <p style={{ fontSize: "0.76rem", color: "var(--text-dim)", lineHeight: 1.45, margin: 0 }}>
@@ -1177,6 +1201,39 @@ export default function CharacterCreationMode({
                     </button>
                   );
                 })}
+              </div>
+              <div
+                style={{
+                  marginTop: "1rem",
+                  padding: "0.9rem 1rem",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(118, 214, 255, 0.22)",
+                  background: "linear-gradient(180deg, rgba(10, 20, 34, 0.92), rgba(5, 11, 20, 0.92))",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.72rem",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    color: "var(--holo-cyan)",
+                    marginBottom: "0.45rem",
+                  }}
+                >
+                  Canonical Spawn Check
+                </div>
+                <div style={{ fontSize: "0.96rem", fontWeight: 600, marginBottom: "0.35rem" }}>
+                  {startingPointSelection.zoneName || "No landing sealed yet"}
+                </div>
+                <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--text-dim)", lineHeight: 1.5 }}>
+                  {startingPointSelection.locationName
+                    ? `The first scene will open in ${startingPointSelection.locationName}.`
+                    : "Choose a landing to reveal the exact first-scene entry point."}
+                  {" "}
+                  {startingPointSelection.openingArc?.firstQuest?.name
+                    ? `Opening directive: ${startingPointSelection.openingArc.firstQuest.name}.`
+                    : ""}
+                </p>
               </div>
             </ChamberSection>
             <ChamberSection eyebrow="Invocation" title="Script the first line">
@@ -1341,3 +1398,4 @@ export default function CharacterCreationMode({
     </section>
   );
 }
+

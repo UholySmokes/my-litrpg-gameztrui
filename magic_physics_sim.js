@@ -4,13 +4,11 @@
 // CLI: node magic_physics_sim.js [--scenarios=magic_physics_scenarios.json] [--runs=1000] [--output=results.json]
 // Now resolves inconsistencies with canonical resolution formulas
 
-const fs = require('fs');
-const path = require('path');
-
-// New unified imports
-const { canonicalize, CANONICAL_ESSENCES, FORM_DATA, UNIFIED_FORMS } = require('./src/systems/magic/constants.js');
-const computeResolution = require('./src/systems/magic/ManaBalance.js');
-const ManaSystem = require('./src/systems/magic/ManaSystem.js').default;
+import { readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { canonicalize, FORM_DATA, UNIFIED_FORMS } from './src/systems/magic/constants.js';
+import computeResolution from './src/systems/magic/ManaBalance.js';
+import ManaSystem from './src/systems/magic/ManaSystem.js';
 
 class MagicSimulator {
   constructor(scenario) {
@@ -139,12 +137,11 @@ function simScenario(scenarioStr, runs = 1000) {
   };
 }
 
-const args = process.argv.slice(2);
-const scenariosFile = args.find(a => a.includes('--scenarios='))?.split('=')[1] || 'magic_physics_scenarios.json';
+
 const runs = parseInt(args.find(a => a.includes('--runs='))?.split('=')[1]) || 1000;
 const output = args.find(a => a.includes('--output=') )?.split('=')[1] || 'magic_physics_results_unified.json';
 
-const scenariosData = JSON.parse(fs.readFileSync(scenariosFile, 'utf8'));
+
 const results = scenariosData.map(scen => simScenario(JSON.stringify(scen), runs));
 
 fs.writeFileSync(output, JSON.stringify(results, null, 2));

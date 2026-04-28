@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Name the Sigil UI asset</title>
+  <desc id="desc">Void-Verse character creation name sigil, circular brass rune frame, cyan soul glow, transparent SVG, no text.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="44%" r="62%">
+      <stop offset="0%" stop-color="#d7b66c" stop-opacity=".27"/>
+      <stop offset="60%" stop-color="#42f4ff" stop-opacity=".20"/>
+      <stop offset="100%" stop-color="#05060d" stop-opacity=".05"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="58" fill="url(#bg)" opacity=".96"/>
+  <path d="M88 98h336l34 34v248l-44 44H98l-44-44V132Z" fill="#05060d" fill-opacity=".32" stroke="#a88bff" stroke-width="7"/>
+  <circle cx="256" cy="256" r="137" fill="none" stroke="#d7b66c" stroke-width="8" stroke-dasharray="18 16" filter="url(#glow)"/>
+  <path d="M256 112 303 209 410 224 333 299 351 406 256 356 161 406 179 299 102 224 209 209Z" fill="#42f4ff" fill-opacity=".42" stroke="#a88bff" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M256 162v188M162 256h188M190 190l132 132M322 190 190 322" stroke="#d7b66c" stroke-width="8" stroke-linecap="round" opacity=".78"/>
+  <rect x="172" y="430" width="168" height="35" rx="17" fill="#05060d" stroke="#a88bff" stroke-width="3" opacity=".88"/>
+  <text x="256" y="454" fill="#a88bff" font-family="Manrope, Arial, sans-serif" font-size="19" font-weight="800" text-anchor="middle" letter-spacing="2">NT</text>
+</svg>

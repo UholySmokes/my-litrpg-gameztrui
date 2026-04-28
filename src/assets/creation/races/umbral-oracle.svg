@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Umbral Oracle race portrait asset</title>
+  <desc id="desc">Seers of the void who channel duskborn mana. Top stats: int+4 will+4 soul+3.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="36%" r="66%">
+      <stop offset="0%" stop-color="hsl(353 84% 65%)" stop-opacity=".34"/>
+      <stop offset="54%" stop-color="hsl(229 58% 42%)" stop-opacity=".24"/>
+      <stop offset="100%" stop-color="#05060d"/>
+    </radialGradient>
+    <linearGradient id="figure" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="hsl(229 58% 42%)"/>
+      <stop offset="100%" stop-color="#081827"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="48" fill="url(#bg)"/>
+  <path d="M48 424V108c0-33 27-60 60-60h296c33 0 60 27 60 60v316" fill="none" stroke="#d7b66c" stroke-width="7" opacity=".82"/>
+  <circle cx="256" cy="256" r="178" fill="none" stroke="hsl(353 84% 65%)" stroke-width="5" stroke-dasharray="14 18" opacity=".45" filter="url(#glow)"/>
+
+  <path d="M196 158c33-35 87-35 120 0" fill="none" stroke="#d7b66c" stroke-width="8" stroke-linecap="round"/>
+  <path d="M181 369h150" stroke="hsl(353 84% 65%)" stroke-width="7" stroke-linecap="round"/>
+
+  <path d="M256 128c54 0 98 45 98 101 0 23-8 45-21 62 47 29 76 75 76 127v18H103v-18c0-52 29-98 76-127-13-17-21-39-21-62 0-56 44-101 98-101Z" fill="url(#figure)" stroke="#d7b66c" stroke-width="5"/>
+  <path d="M187 292c21 28 44 42 69 42s48-14 69-42" fill="none" stroke="hsl(353 84% 65%)" stroke-width="7" stroke-linecap="round" opacity=".88"/>
+  <circle cx="222" cy="229" r="8" fill="hsl(353 84% 65%)"/>
+  <circle cx="290" cy="229" r="8" fill="hsl(353 84% 65%)"/>
+  <rect x="94" y="426" width="324" height="45" rx="22" fill="#05060d" stroke="#d7b66c" stroke-width="4" opacity=".88"/>
+  <text x="256" y="456" fill="#d7b66c" font-family="Manrope, Arial, sans-serif" font-size="25" font-weight="800" text-anchor="middle" letter-spacing="2">UO</text>
+</svg>

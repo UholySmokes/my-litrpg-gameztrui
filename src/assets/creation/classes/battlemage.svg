@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Battlemage class icon asset</title>
+  <desc id="desc">Hybrid frontliner combining weapon control with mana burst. Resource: mana. Top stats: intelligence+3 strength+2 dexterity+1.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="64%">
+      <stop offset="0%" stop-color="#42f4ff" stop-opacity=".28"/>
+      <stop offset="58%" stop-color="hsl(125 66% 44%)" stop-opacity=".20"/>
+      <stop offset="100%" stop-color="#05060d"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="320" height="320" rx="44" fill="url(#bg)"/>
+  <path d="M48 58h224l24 24v156l-48 48H72l-48-48V82Z" fill="none" stroke="#f08a4b" stroke-width="6" opacity=".82"/>
+  <circle cx="240" cy="194" r="118" fill="none" stroke="#42f4ff" stroke-width="4" stroke-dasharray="10 13" opacity=".45" filter="url(#glow)"/>
+  <g transform="translate(-80 -34)">
+<path d="M240 54 319 166 240 335 161 166Z" fill="hsl(125 66% 44%)" stroke="#f08a4b" stroke-width="8"/><path d="M240 54v281M161 166h158M198 111l84 110" stroke="#42f4ff" stroke-width="6" opacity=".78"/>
+  </g>
+  <rect x="74" y="260" width="172" height="31" rx="15" fill="#05060d" stroke="#f08a4b" stroke-width="3" opacity=".9"/>
+  <text x="160" y="282" fill="#f08a4b" font-family="Manrope, Arial, sans-serif" font-size="18" font-weight="800" text-anchor="middle" letter-spacing="1.5">B</text>
+</svg>

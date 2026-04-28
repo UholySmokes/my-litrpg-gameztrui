@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Shadow Assassin class icon asset</title>
+  <desc id="desc">Stealth killer focused on target deletion and reset pressure. Resource: energy. Top stats: dexterity+5 strength+1 constitution+1.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="64%">
+      <stop offset="0%" stop-color="hsl(339 82% 64%)" stop-opacity=".28"/>
+      <stop offset="58%" stop-color="hsl(195 66% 44%)" stop-opacity=".20"/>
+      <stop offset="100%" stop-color="#05060d"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="320" height="320" rx="44" fill="url(#bg)"/>
+  <path d="M48 58h224l24 24v156l-48 48H72l-48-48V82Z" fill="none" stroke="#f08a4b" stroke-width="6" opacity=".82"/>
+  <circle cx="240" cy="194" r="118" fill="none" stroke="hsl(339 82% 64%)" stroke-width="4" stroke-dasharray="10 13" opacity=".45" filter="url(#glow)"/>
+  <g transform="translate(-80 -34)">
+<path d="M226 72h36l18 151-36 48-36-48Z" fill="hsl(195 66% 44%)" stroke="#f08a4b" stroke-width="7"/><path d="M179 268h130M214 302h60" stroke="hsl(339 82% 64%)" stroke-width="11" stroke-linecap="round"/><path d="M245 95v121" stroke="hsl(339 82% 64%)" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <rect x="74" y="260" width="172" height="31" rx="15" fill="#05060d" stroke="#f08a4b" stroke-width="3" opacity=".9"/>
+  <text x="160" y="282" fill="#f08a4b" font-family="Manrope, Arial, sans-serif" font-size="18" font-weight="800" text-anchor="middle" letter-spacing="1.5">SA</text>
+</svg>

@@ -90,6 +90,7 @@
     "validate:worldbuild:strict": "node scripts/run-worldbuild-integrity-check.mjs --strict",
     "validate:worldbuild:update-baseline": "node scripts/run-worldbuild-integrity-check.mjs --update-baseline",
     "generate:creation-content-pack": "node scripts/generate-character-creation-content-pack.mjs",
+    "generate:creation-assets": "node scripts/generate-character-creation-assets.mjs",
     "generate:living-lattice-v2": "node scripts/generate-living-lattice-v2.mjs",
     "generate:profession-content-pack": "node scripts/generate-profession-content-pack.mjs",
     "generate:talent-content-pack": "node scripts/generate-talent-content-pack.mjs",

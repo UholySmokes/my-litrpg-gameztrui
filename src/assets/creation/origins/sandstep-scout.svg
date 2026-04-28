@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="432" viewBox="0 0 768 432" role="img" aria-labelledby="title desc">
+  <title id="title">Sandstep Scout origin card asset</title>
+  <desc id="desc">Caravan routes and mirage storms taught you to read false horizons and keep moving anyway. Biome: desert. Tags: mystery, puzzle, atmosphere.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#05060d"/>
+      <stop offset="45%" stop-color="#46351d"/>
+      <stop offset="100%" stop-color="#081827"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+<rect width="768" height="432" rx="34" fill="url(#bg)"/><rect x="24" y="24" width="720" height="384" rx="28" fill="none" stroke="#f08a4b" stroke-width="5" opacity=".8"/><path d="M64 336c98-42 177-37 264 0 117-58 230-43 376 0v72H64Z" fill="#46351d" opacity=".85"/><path d="M69 340c92-31 184-29 276 6 111-45 221-39 331 0" fill="none" stroke="#f0c775" stroke-width="6" opacity=".7"/><path d="M74 336c90-67 185-67 285 0 98-68 203-68 319 0" fill="#46351d" stroke="#f08a4b" stroke-width="5"/><circle cx="612" cy="113" r="48" fill="#f08a4b" opacity=".83"/><path d="M208 282h112M474 260h132" stroke="#f0c775" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="666" cy="86" r="39" fill="#05060d" stroke="#f0c775" stroke-width="5" opacity=".88" filter="url(#glow)"/>
+  <text x="666" y="97" fill="#f08a4b" font-family="Manrope, Arial, sans-serif" font-size="26" font-weight="800" text-anchor="middle" letter-spacing="2">SS</text>
+  <rect x="52" y="52" width="330" height="44" rx="22" fill="#05060d" stroke="#f08a4b" stroke-width="3" opacity=".78"/>
+  <text x="217" y="82" fill="#f08a4b" font-family="Manrope, Arial, sans-serif" font-size="19" font-weight="800" text-anchor="middle" letter-spacing="1.5">DESERT</text>
+</svg>
